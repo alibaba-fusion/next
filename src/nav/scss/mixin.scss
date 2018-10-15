@@ -1,0 +1,134 @@
+// nav mixins
+// --------------------------------------------------
+
+@mixin nav-size(
+    $direction,
+    $height,
+    $fontSize,
+    $padding,
+    $activeLineWidth,
+    $marginTB,
+    $marginLR,
+    $itemCorner
+) {
+    line-height: $height;
+    font-size: $fontSize;
+
+    #{$menu-prefix}-item {
+        margin-left: $marginLR;
+        margin-right: $marginLR;
+        padding: 0 $padding;
+        border-radius: $itemCorner;
+
+        &:before {
+            @if $direction == 'hoz' {
+                height: $activeLineWidth;
+            } @else {
+                width: $activeLineWidth;
+            }
+        }
+    }
+
+    #{$menu-prefix}-item:not(:first-child),
+    #{$menu-prefix}-sub-menu-wrapper:not(:first-child) > #{$menu-prefix}-item {
+        margin-top: $marginTB;
+    }
+
+    #{$menu-prefix}-item:not(:last-child),
+    #{$menu-prefix}-sub-menu-wrapper:not(:last-child) > #{$menu-prefix}-item {
+        margin-bottom: $marginTB;
+    }
+
+    #{$menu-prefix}-item-inner {
+        height: $height;
+        font-size: $fontSize;
+    }
+}
+
+@mixin nav-statement(
+    $bgColor,
+    $borderColor,
+    $textColor,
+    $textWeight,
+    $shadow,
+    $hoverBgColor,
+    $hoverColor,
+    $selectedBgColor,
+    $selectedColor,
+    $selectedWeight,
+    $activeColor,
+    $openedBgColor,
+    $openedColor,
+    $groupColor,
+    $groupWeight
+) {
+    background-color: $bgColor;
+    border-color: $borderColor;
+    color: $textColor;
+    font-weight: $textWeight;
+    box-shadow: $shadow;
+
+    #{$nav-prefix}-item#{$menu-prefix}-item {
+        background-color: $bgColor;
+        color: $textColor;
+
+        &.#{$css-prefix}focused,
+        &:hover {
+            background-color: $hoverBgColor;
+            color: $hoverColor;
+        }
+
+        &.#{$css-prefix}selected {
+            background-color: $selectedBgColor;
+            color: $selectedColor;
+            font-weight: $selectedWeight;
+        }
+
+        &.#{$css-prefix}opened {
+            background-color: $openedBgColor;
+            color: $openedColor;
+        }
+
+        &:before {
+            background-color: $activeColor;
+        }
+    }
+
+    #{$menu-prefix}-sub-menu #{$menu-prefix}-item.#{$css-prefix}opened {
+        background-color: $openedBgColor;
+        color: $openedColor;
+    }
+
+    #{$nav-prefix}-group-label {
+        color: $groupColor;
+        font-weight: $groupWeight;
+    }
+}
+
+@mixin sub-nav-statement(
+    $textColor,
+    $textWeight,
+    $bgColor,
+    $hoverBgColor,
+    $hoverColor,
+    $selectedBgColor,
+    $selectedColor,
+    $activeColor
+) {
+    #{$menu-prefix}-sub-menu #{$menu-prefix}-item {
+        background-color: $bgColor;
+        color: $textColor;
+        font-weight: $textWeight;
+
+        &.#{$css-prefix}focused,
+        &:hover {
+            background-color: $hoverBgColor;
+            color: $hoverColor;
+        }
+
+        &.#{$css-prefix}selected {
+            background-color: $selectedBgColor;
+            color: $selectedColor;
+        }
+    }
+}

@@ -1,0 +1,66 @@
+.basic-demo {
+    height: 200px;
+}
+
+.my-zoom-in, .my-zoom-appear, .my-zoom-enter {
+    opacity: 0;
+}
+
+.my-zoom-in-active, .my-zoom-appear-active, .my-zoom-enter-active {
+    animation: my-zoom-in 300ms linear;
+}
+
+.my-zoom-out, .my-zoom-leave {
+    opacity: 1;
+}
+
+.my-zoom-out-active, .my-zoom-leave-active {
+    animation: my-zoom-out 300ms linear;
+}
+
+@keyframes my-zoom-in {
+    from {
+        opacity: 0;
+        transform: scale3d(.3, .3, .3);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes my-zoom-out {
+    from {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        transform: scale3d(.3, .3, .3);
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.expand-enter {
+    overflow: hidden;
+}
+
+.expand-enter-active {
+    transition: all .3s ease-out;
+}
+
+.expand-leave {
+    overflow: hidden;
+}
+
+.expand-leave-active {
+    transition: all .3s ease-out;
+}
+

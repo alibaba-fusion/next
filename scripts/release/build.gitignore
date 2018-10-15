@@ -1,0 +1,14 @@
+node_modules/
+dist/
+es/
+test/coverage/
+test/**/coverage/
+platform-docs/
+.idea/
+.vscode/
+*.iml
+*.log
+.DS_Store
+coverage/
+docs-lang/
+gemini-report/

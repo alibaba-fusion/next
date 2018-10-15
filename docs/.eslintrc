@@ -1,0 +1,15 @@
+{
+    "extends": [
+        "@alifd/eslint-config-next"
+    ],
+    "rules": {
+        "eol-last": 0,
+        "no-console": 0,
+        "no-undef": 0,
+        "react/react-in-jsx-scope": 0,
+        "react/jsx-filename-extension": 0,
+        "react/no-multi-comp": 0,
+        "react/prefer-stateless-function": 0,
+        "react/prop-types": 0
+    }
+}

@@ -1,0 +1,46 @@
+<% include partials/header %>
+
+  <style>
+    #mount-node {
+      min-height: 500px;
+    }
+  </style>
+  <div class="next-demo-section">
+    <div id="mount-node"></div>
+    <div id="next-demo-reloading">Reloading....</div>
+  </div>
+  <div class="next-demo-section">
+    <div id="component-desc"></div>
+  </div>
+  <div class="next-demo-section">
+    <div id="component-body"></div>
+  </div>
+  <% if (disableAnimation) { %>
+  <style>
+    *,
+    *:before,
+    *:after {
+      transition: none !important;
+      animation: none !important;
+    }
+  </style>
+  <% } %>
+  <script>
+    if (!window.requestAnimationFrame) {
+      window.requestAnimationFrame = function(callback) {
+        setTimeout(callback, 0);
+      };
+    }
+  </script>
+  <script src="//unpkg.com/babel-polyfill/dist/polyfill.min.js"></script>
+  <script src="//unpkg.com/react@16.x/umd/react.development.js"></script>
+  <script src="//unpkg.com/react-dom@16.x/umd/react-dom.development.js"></script>
+  <script src="//unpkg.com/moment@2.x/min/moment-with-locales.js"></script>
+  <script>
+    window.mountNode = document.getElementById('mount-node');
+  </script>
+<% scripts.forEach(function(src) { %>
+  <script src="<%= src %>"></script>
+<% })%>
+
+<% include partials/footer %>

@@ -1,0 +1,569 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import shallowElementEquals from 'shallow-element-equals';
+import Loading from '../loading';
+import zhCN from '../locale/zh-cn';
+import { log, obj } from '../util';
+import BodyComponent from './base/body';
+import HeaderComponent from './base/header';
+import WrapperComponent from './base/wrapper';
+import RowComponent from './base/row';
+import CellComponent from './base/cell';
+import FilterComponent from './base/filter';
+import SortComponent from './base/sort';
+import Column from './column';
+import ColumnGroup from './column-group';
+
+const Children = React.Children,
+    noop = () => { };
+
+
+//<Table>
+//    <Table.Column/>
+//    <Table.ColumnGroup>
+//      <Table.Column/>
+//      <Table.Column/>
+//    </Table.ColumnGroup>
+//</Table>
+
+/** Table */
+export default class Table extends React.Component {
+
+    static Column = Column;
+    static ColumnGroup = ColumnGroup;
+    static Header = HeaderComponent;
+    static Body = BodyComponent;
+    static Wrapper = WrapperComponent;
+    static Row = RowComponent;
+    static Cell = CellComponent;
+    static Filter = FilterComponent;
+    static Sort = SortComponent;
+
+    static propTypes = {
+        /**
+         * 样式类名的品牌前缀
+         */
+        prefix: PropTypes.string,
+        pure: PropTypes.bool,
+        /**
+         * 自定义类名
+         */
+        className: PropTypes.string,
+        /**
+         * 自定义内联样式
+         */
+        style: PropTypes.object,
+        /**
+         * 表格展示的数据源
+         */
+        dataSource: PropTypes.array,
+        entireDataSource: PropTypes.array,
+        /**
+         * 点击表格每一行触发的事件
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @param {Event} e DOM事件对象
+         */
+        onRowClick: PropTypes.func,
+        /**
+         * 悬浮在表格每一行的时候触发的事件
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @param {Event} e DOM事件对象
+         */
+        onRowMouseEnter: PropTypes.func,
+        /**
+         * 离开表格每一行的时候触发的事件
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @param {Event} e DOM事件对象
+         */
+        onRowMouseLeave: PropTypes.func,
+        /**
+         * 点击列排序触发的事件
+         * @param {String} dataIndex 指定的排序的字段
+         * @param {String} order 排序对应的顺序, 有`desc`和`asc`两种
+         */
+        onSort: PropTypes.func,
+        /**
+         * 点击过滤确认按钮触发的事件
+         * @param {Object} filterParams 过滤的字段信息
+         */
+        onFilter: PropTypes.func,
+        /**
+         * 重设列尺寸的时候触发的事件
+         * @param {String} dataIndex 指定重设的字段
+         * @param {Number} value 列宽变动的数值
+         */
+        onResizeChange: PropTypes.func,
+        /**
+         * 设置每一行的属性，如果返回值和其他针对行操作的属性冲突则无效。
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @returns {Object} 需要设置的行属性
+         */
+        getRowProps: PropTypes.func,
+        /**
+         * 设置单元格的属性，通过该属性可以进行合并单元格
+         * @param {Number} rowIndex 该行所对应的序列
+         * @param {Number} colIndex 该列所对应的序列
+         * @param {String} dataIndex 该列所对应的字段名称
+         * @param {Object} record 该行对应的记录
+         * @returns {Object} 返回td元素的所支持的属性对象
+         */
+        getCellProps: PropTypes.func,
+        /**
+         * 表格是否具有边框
+         */
+        hasBorder: PropTypes.bool,
+        /**
+         * 表格是否具有头部
+         */
+        hasHeader: PropTypes.bool,
+        /**
+         * 表格是否是斑马线
+         */
+        isZebra: PropTypes.bool,
+        /**
+         * 表格是否在加载中
+         */
+        loading: PropTypes.bool,
+        /**
+         * 自定义 Loading 组件
+         * @type {Function}
+         */
+        loadingComponent: PropTypes.func,
+        /**
+         * 当前过滤的的keys,使用此属性可以控制表格的头部的过滤选项中哪个菜单被选中,格式为 {dataIndex: {selectedKeys:[]}}
+         * 示例:
+         * 假设要控制dataIndex为id的列的过滤菜单中key为one的菜单项选中
+         * `<Table filterParams={{id: {selectedKeys: ['one']}}}/>`
+         */
+        filterParams: PropTypes.object,
+        /**
+         * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{dataIndex: 'asc'}
+         */
+        sort: PropTypes.object,
+        /**
+         * 自定义国际化文案对象
+         * @property {String} ok 过滤器中确认按钮文案
+         * @property {String} reset 过滤器中重置按钮文案
+         * @property {String} empty 没有数据情况下 table内的文案
+         * @property {String} asc 排序升序状态下的文案
+         * @property {String} desc 排序将序状态下的文案
+         * @property {String} expanded 可折叠行，展开状态下的文案
+         * @property {String} folded 可折叠行，折叠状态下的文案
+         * @property {String} filter 过滤器文案
+         * @property {String} selectAll header里全选的按钮文案
+         */
+        locale: PropTypes.object,
+        components: PropTypes.object,
+        columns: PropTypes.array,
+        /**
+         * 设置数据为空的时候的表格内容展现
+         */
+        emptyContent: PropTypes.node,
+        /**
+         * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
+         */
+        primaryKey: PropTypes.string,
+        lockType: PropTypes.oneOf(['left', 'right']),
+        wrapperContent: PropTypes.any,
+        refs: PropTypes.object,
+        /**
+         * 额外渲染行的渲染函数
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @returns {Element} 渲染内容
+         */
+        expandedRowRender: PropTypes.func,
+        /**
+         * 额外渲染行的缩进
+         */
+        expandedRowIndent: PropTypes.array,
+        /**
+         * 默认情况下展开的渲染行或者Tree, 传入此属性为受控状态
+         */
+        openRowKeys: PropTypes.array,
+        /**
+         * 是否显示点击展开额外渲染行的+号按钮
+         */
+        hasExpandedRowCtrl: PropTypes.bool,
+        /**
+         * 设置额外渲染行的属性
+         */
+        getExpandedColProps: PropTypes.func,
+        /**
+         * 在额外渲染行或者Tree展开或者收起的时候触发的事件
+         * @param {Array} openRowKeys 展开的渲染行的key
+         * @param {String} currentRowKey 当前点击的渲染行的key
+         * @param {Boolean} expanded 当前点击是展开还是收起
+         * @param {Object} currentRecord 当前点击额外渲染行的记录
+         */
+        onRowOpen: PropTypes.func,
+        /**
+         * 点击额外渲染行触发的事件
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @param {Event} e DOM事件对象
+         */
+        onExpandedRowClick: PropTypes.func,
+        /**
+          * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
+          */
+        fixedHeader: PropTypes.bool,
+        /**
+         * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
+         */
+        maxBodyHeight: PropTypes.number,
+        /**
+         * 是否启用选择模式
+        * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
+        * @property {Function} onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。
+        * @property {Function} onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
+        * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
+        * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
+        * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
+        */
+        rowSelection: PropTypes.object,
+        /**
+         * 表头是否是sticky
+         */
+        stickyHeader: PropTypes.bool,
+        /**
+         * 距离窗口顶部达到指定偏移量后触发
+         */
+        offsetTop: PropTypes.number,
+        /**
+         * affix组件的的属性
+         */
+        affixProps: PropTypes.object,
+        /**
+         * 在tree模式下的缩进尺寸， 仅在isTree为true时候有效
+         */
+        indent: PropTypes.number,
+        /**
+         * 开启Table的tree模式, 接收的数据格式中包含children则渲染成tree table
+         */
+        isTree: PropTypes.bool,
+        /**
+         * 是否开启虚拟滚动
+         */
+        useVirtual: PropTypes.bool,
+        /**
+         * 设置行高
+         */
+        rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+        /**
+         * 在内容区域滚动的时候触发的函数
+         */
+        onBodyScroll: PropTypes.func
+    };
+
+    static defaultProps = {
+        dataSource: [],
+        onRowClick: noop,
+        onRowMouseEnter: noop,
+        onRowMouseLeave: noop,
+        onSort: noop,
+        onFilter: noop,
+        onResizeChange: noop,
+        getRowProps: noop,
+        getCellProps: noop,
+        prefix: 'next-',
+        hasBorder: true,
+        hasHeader: true,
+        isZebra: false,
+        loading: false,
+        primaryKey: 'id',
+        components: {},
+        locale: zhCN.Table
+    };
+
+    static childContextTypes = {
+        notRenderCellIndex: PropTypes.array,
+        lockType: PropTypes.oneOf(['left', 'right']),
+    }
+
+    static contextTypes = {
+        getTableInstance: PropTypes.func,
+        getTableInstanceForVirtual: PropTypes.func
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        const { getTableInstance, getTableInstanceForVirtual } = this.context;
+        getTableInstance && getTableInstance(props.lockType, this);
+        getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
+        this.notRenderCellIndex = [];
+    }
+
+    state = {
+        sort: this.props.sort || {}
+    }
+
+    getChildContext() {
+        return {
+            notRenderCellIndex: this.notRenderCellIndex,
+            lockType: this.props.lockType
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if (typeof this.props.sort !== 'undefined') {
+            this.setState({
+                sort: nextProps.sort
+            });
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        if (nextProps.pure) {
+            const isEqual = shallowElementEquals(nextProps, this.props) && obj.shallowEqual(nextState, this.state) && obj.shallowEqual(nextContext, this.context);
+            return !isEqual;
+        }
+
+        return true;
+    }
+
+    componentWillUpdate() {
+        this.notRenderCellIndex = [];
+    }
+
+    normalizeChildrenState(props) {
+        let columns = props.columns;
+        if (props.children) {
+            columns = this.normalizeChildren(props);
+        }
+        return this.fetchInfoFromBinaryChildren(columns);
+    }
+
+    // 将React结构化数据提取props转换成数组
+    normalizeChildren(props) {
+        let { columns } = props;
+        const getChildren = (children) => {
+            const ret = [];
+            Children.forEach(children, child => {
+                if (child) {
+                    const props = { ...child.props };
+
+                    if (!(child && typeof child.type === 'function' && (child.type._typeMark === 'column' || child.type._typeMark === 'columnGroup'))) {
+                        log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
+                    }
+                    ret.push(props);
+                    if (child.props.children) {
+                        props.children = getChildren(child.props.children);
+                    }
+                }
+            });
+            return ret;
+        };
+        if (props.children) {
+            columns = getChildren(props.children);
+        }
+        return columns;
+    }
+
+    fetchInfoFromBinaryChildren(children) {
+        let hasGroupHeader = false;
+        const flatChildren = [],
+            groupChildren = [],
+            getChildren = (propsChildren, level) => {
+                groupChildren[level] = groupChildren[level] || [];
+                propsChildren.forEach((child) => {
+                    if (child.children) {
+                        hasGroupHeader = true;
+                        getChildren(child.children, level + 1);
+                    } else {
+                        flatChildren.push(child);
+                    }
+                    groupChildren[level].push(child);
+                });
+            },
+            getColSpan = (children, colSpan) => {
+                colSpan = colSpan || 0;
+                children.forEach((child) => {
+                    if (child.children) {
+                        colSpan = getColSpan(child.children, colSpan);
+                    } else {
+                        colSpan += 1;
+                    }
+                });
+                return colSpan;
+            };
+
+        getChildren(children, 0);
+
+        groupChildren.forEach((groupChild, i) => {
+            groupChild.forEach((child, j) => {
+                let colSpan;
+                const children = child.children;
+
+                if (children) {
+                    colSpan = getColSpan(children);
+                    child.colSpan = colSpan;
+                    groupChildren[i][j] = child;
+                }
+            });
+        });
+
+        return {
+            flatChildren,
+            groupChildren,
+            hasGroupHeader
+        };
+    }
+
+    renderColGroup(flatChildren) {
+        const cols = flatChildren.map((col, index) => {
+            const width = col.width;
+            let style = {};
+            if (width) {
+                style = {
+                    width: width
+                };
+            }
+
+            return <col style={style} key={index}></col>;
+        });
+        return <colgroup key="table-colgroup">{cols}</colgroup>;
+    }
+
+    onSort = (dataIndex, order, sort) => {
+
+        if (typeof this.props.sort === 'undefined') {
+            this.setState({
+                sort: sort
+            }, () => {
+                this.props.onSort(dataIndex, order, sort);
+            });
+        } else {
+            this.props.onSort(dataIndex, order, sort);
+        }
+    }
+
+    onFilter = (filterParams) => {
+        this.props.onFilter(filterParams);
+    }
+
+    onResizeChange = (dataIndex, value) => {
+        this.props.onResizeChange(dataIndex, value);
+    }
+
+    // 通过头部和扁平的结构渲染表格
+    renderTable(groupChildren, flatChildren) {
+        if (flatChildren.length || (!flatChildren.length && !this.props.lockType)) {
+            const { hasHeader, components, prefix, wrapperContent, filterParams, locale, dataSource, emptyContent, loading, getCellProps, primaryKey, getRowProps, onRowClick, onRowMouseEnter, onRowMouseLeave, pure } = this.props;
+            const {sort} = this.state;
+            const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
+            const colGroup = this.renderColGroup(flatChildren);
+
+            return (<Wrapper colGroup={colGroup} ref={this.getWrapperRef} prefix={prefix}>
+                {hasHeader ? <Header prefix={prefix}
+                    pure={pure}
+                    colGroup={colGroup}
+                    className={`${prefix}table-header`}
+                    filterParams={filterParams}
+                    columns={groupChildren}
+                    locale={locale}
+                    headerCellRef={this.getHeaderCellRef}
+                    components={components}
+                    onFilter={this.onFilter}
+                    sort={sort}
+                    onResizeChange={this.onResizeChange}
+                    onSort={this.onSort} /> : null}
+                <Body prefix={prefix}
+                    pure={pure}
+                    colGroup={colGroup}
+                    className={`${prefix}table-body`}
+                    components={components}
+                    loading={loading}
+                    emptyContent={emptyContent}
+                    getCellProps={getCellProps}
+                    primaryKey={primaryKey}
+                    getRowProps={getRowProps}
+                    columns={flatChildren}
+                    rowRef={this.getRowRef}
+                    cellRef={this.getCellRef}
+                    onRowClick={onRowClick}
+                    onRowMouseEnter={onRowMouseEnter}
+                    onRowMouseLeave={onRowMouseLeave}
+                    dataSource={dataSource}
+                    locale={locale} />
+                {wrapperContent}
+            </Wrapper>);
+        } else {
+            return null;
+        }
+    }
+
+    getWrapperRef = (wrapper) => {
+        if (!wrapper) {
+            return this.wrapper;
+        }
+        this.wrapper = wrapper;
+    }
+
+    getHeaderCellRef = (i, j, cell) => {
+        const cellRef = `header_cell_${i}_${j}`;
+        if (!cell) {
+            return this[cellRef];
+        }
+        this[cellRef] = cell;
+    }
+
+    getRowRef = (i, row) => {
+        const rowRef = `row_${i}`;
+        if (!row) {
+            return this[rowRef];
+        }
+        this[rowRef] = row;
+    }
+
+    getCellRef = (i, j, cell) => {
+        const cellRef = `cell_${i}_${j}`;
+        if (!cell) {
+            return this[cellRef];
+        }
+        this[cellRef] = cell;
+    }
+
+    render() {
+        const ret = this.normalizeChildrenState(this.props);
+        this.groupChildren = ret.groupChildren;
+        this.flatChildren = ret.flatChildren;
+        /* eslint-disable no-unused-vars, prefer-const */
+        let table = this.renderTable(ret.groupChildren, ret.flatChildren),
+            {
+                className, hasBorder, isZebra, loading, hasHeader, prefix,
+                dataSource, entireDataSource, onSort, onResizeChange,
+                onRowClick, onRowMouseEnter, onRowMouseLeave, onFilter,
+                getRowProps, getCellProps, primaryKey, components,
+                wrapperContent, lockType, locale, refs, pure, emptyContent,
+                filterParams, loadingComponent: LoadingComponent = Loading,
+                ...others
+            } = this.props,
+            cls = classnames({
+                [`${prefix}table`]: true,
+                'only-bottom-border': !hasBorder,
+                'no-header': !hasHeader,
+                zebra: isZebra,
+                [className]: className
+            }),
+
+            content = (<div className={cls} {...others}>
+                {table}
+            </div>);
+        if (loading) {
+            const loadingClassName = `${prefix}table-loading`;
+            return (
+                <LoadingComponent className={loadingClassName}>
+                    {content}
+                </LoadingComponent>
+            );
+        }
+        return content;
+    }
+}
