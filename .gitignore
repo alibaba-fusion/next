@@ -65,8 +65,6 @@ es/
 lib/
 test/coverage/
 test/**/coverage/
-compiled_docs/
-demos/
 platform-docs/
 coverage/
 docs-lang/
