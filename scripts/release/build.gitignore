@@ -60,9 +60,7 @@ typings/
 # next.js build output
 .next
 
-dist/
-es/
-lib/
+
 test/coverage/
 test/**/coverage/
 platform-docs/
