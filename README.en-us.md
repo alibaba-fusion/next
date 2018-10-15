@@ -13,3 +13,9 @@
 * [Internationalization](./site/en-us/i18n.md)
 * [Deploy Font File](./site/en-us/font-deploy.md)
 * [Contributing](./site/en-us/contributing.md)
+
+## Join Group
+
+ Use [Dingtalk App](https://www.dingtalk.com/en) scan the Qrcode to join in *Dingtalk Group* :
+
+<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1ayWlbhYaK1RjSZFnXXa80pXa-750-990.png" width="300">
