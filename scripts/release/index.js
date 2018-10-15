@@ -24,7 +24,7 @@ co(function* () {
 
   yield pushMaster();
   yield pushPlatformDocsBranch();
-  // yield publishToNpm();
+  yield publishToNpm();
 }).catch(err => {
   utils.logger.error('Release failed', err.stack);
 });
