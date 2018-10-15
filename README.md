@@ -13,3 +13,9 @@
 * [国际化](./site/zh-cn/i18n.md)
 * [字体文件私有化部署](./site/zh-cn/font-deploy.md)
 * [贡献代码](./site/zh-cn/contributing.md)
+
+## 加入社区
+
+扫码*钉钉群* 加入即刻交流与反馈：
+
+<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1ayWlbhYaK1RjSZFnXXa80pXa-750-990.png" width="300">
