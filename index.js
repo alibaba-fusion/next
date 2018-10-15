@@ -1,5 +1,5 @@
 const next = require('./lib/index.js');
 
-next.version = '1.7.40';
+next.version = '1.9.0';
 
 module.exports = next;
