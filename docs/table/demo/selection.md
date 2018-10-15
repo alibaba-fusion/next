@@ -1,0 +1,44 @@
+# 可选择
+
+- order: 1
+
+表格可选择功能
+
+:::lang=en-us
+# Selectable
+
+- order: 1
+
+Demo the selectable table.
+:::
+
+---
+
+````jsx
+import { Table } from '@alifd/next';
+
+const dataSource = () => {
+    const result = [];
+    for (let i = 0; i < 5; i++) {
+        result.push({
+            title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+            id: 100306660940 + i,
+            time: 2000 + i
+        });
+    }
+    return result;
+};
+const render = (value, index, record) => {
+    return <a href="javascript:;">Remove({record.id})</a>;
+};
+const onChange = function(...args) {
+    console.log(args);
+};
+
+ReactDOM.render(<Table dataSource={dataSource()} rowSelection={{onChange: onChange}}>
+    <Table.Column title="Id" dataIndex="id"/>
+    <Table.Column title="Title" dataIndex="title.name" />
+    <Table.Column title="Time" dataIndex="time"/>
+    <Table.Column cell={render}/>
+</Table>, mountNode);
+````

@@ -1,0 +1,102 @@
+{
+  "engine": "sass",
+  "publish-template": "@alifd/next-theme-template@0.0.4",
+  "class-prefix": ".next",
+  "icon": {
+    "iconfont-project-id": "283554",
+    "iconfont-path": "//at.alicdn.com/daily/font_283554_840q5490nzppw33vr52ymn29"
+  },
+  "import": {
+    "sources": {
+      "dir": "lib",
+      "entry-file": {
+        "sass": "index.scss"
+      },
+      "entries": {
+        "core": {
+          "sass": {
+            "core.scss": "lib/core/index-noreset.scss"
+          }
+        },
+        "form-element": {
+          "sass": {
+            "form-element.scss": "lib/core/form-element.scss"
+          }
+        },
+        "mask": {
+          "sass": {
+            "mask.scss": "lib/core/mask.scss"
+          }
+        },
+        "popup": {
+          "sass": {
+            "popup.scss": "lib/core/popup.scss"
+          }
+        }
+      }
+    },
+    "demos": {
+      "dir": "demos",
+      "entry-file": {
+        "html": "index.html",
+        "deps": "deps.json"
+      }
+    }
+  },
+  "variables": {
+    "global": "lib/core/style/_global.scss",
+    "size": "lib/core/style/_size.scss",
+    "color": "lib/core/style/_color.scss",
+    "corner": "lib/core/style/_corner.scss",
+    "font": "lib/core/style/_font.scss",
+    "line": "lib/core/style/_line.scss",
+    "shadow": "lib/core/style/_shadow.scss",
+    "icon": "lib/core/style/_icon.scss",
+    "form-element": "lib/core/utility/_form-element.scss",
+    "popup": "lib/core/utility/_popup.scss",
+    "mask": "lib/core/utility/_mask.scss",
+    "animate": "lib/animate/scss/variable.scss",
+    "badge": "lib/badge/scss/variable.scss",
+    "balloon": "lib/balloon/scss/variable.scss",
+    "breadcrumb": "lib/breadcrumb/scss/variable.scss",
+    "button": "lib/button/scss/variable.scss",
+    "radio": "lib/radio/scss/variable.scss",
+    "tag": "lib/tag/scss/variable.scss",
+    "checkbox": "lib/checkbox/scss/variable.scss",
+    "menu": "lib/menu/scss/variable.scss",
+    "input": "lib/input/scss/variable.scss",
+    "select": "lib/select/scss/variable.scss",
+    "calendar": "lib/calendar/scss/variable.scss",
+    "card": "lib/card/scss/variable.scss",
+    "cascader": "lib/cascader/scss/variable.scss",
+    "cascader-select": "lib/cascader-select/scss/variable.scss",
+    "collapse": "lib/collapse/scss/variable.scss",
+    "time-picker": "lib/time-picker/scss/variable.scss",
+    "date-picker": "lib/date-picker/scss/variable.scss",
+    "message": "lib/message/scss/variable.scss",
+    "dialog": "lib/dialog/scss/variable.scss",
+    "grid": "lib/grid/scss/variable.scss",
+    "form": "lib/form/scss/variable.scss",
+    "loading": "lib/loading/scss/variable.scss",
+    "menu-button": "lib/menu-button/scss/variable.scss",
+    "nav": "lib/nav/scss/variable.scss",
+    "number-picker": "lib/number-picker/scss/variable.scss",
+    "pagination": "lib/pagination/scss/variable.scss",
+    "paragraph": "lib/paragraph/scss/variable.scss",
+    "progress": "lib/progress/scss/variable.scss",
+    "range": "lib/range/scss/variable.scss",
+    "rating": "lib/rating/scss/variable.scss",
+    "search": "lib/search/scss/variable.scss",
+    "slider": "lib/slider/scss/variable.scss",
+    "split-button": "lib/split-button/scss/variable.scss",
+    "step": "lib/step/scss/variable.scss",
+    "switch": "lib/switch/scss/variable.scss",
+    "tab": "lib/tab/scss/variable.scss",
+    "table": "lib/table/scss/variable.scss",
+    "timeline": "lib/timeline/scss/variable.scss",
+    "transfer": "lib/transfer/scss/variable.scss",
+    "tree": "lib/tree/scss/variable.scss",
+    "tree-select": "lib/tree-select/scss/variable.scss",
+    "upload": "lib/upload/scss/variable.scss"
+  }
+}

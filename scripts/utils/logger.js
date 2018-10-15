@@ -1,0 +1,16 @@
+const chalk = require('chalk');
+
+const level2Color = {
+  info: false,
+  debug: 'cyanBright',
+  success: 'greenBright',
+  warn: 'yellowBright',
+  error: 'redBright'
+};
+
+module.exports = Object.keys(level2Color).reduce((ret, level) => {
+  const color = level2Color[level];
+  // eslint-disable-next-line
+  ret[level] = color ? (...args) => console.log(chalk[color](...args)) : console.log;
+  return ret;
+}, {});

@@ -1,0 +1,54 @@
+# 自定义导航箭头
+
+- order: 7
+
+开发者可以通过 `prevArrow` 和 `nextArrow` 两个属性传入自定义的导航箭头组件。
+
+:::lang=en-us
+# Custom Navigation Arrows
+
+- order: 7
+
+You can pass custom navigation arrow components through the two attributes `prevArrow` and `nextArrow`.
+:::
+---
+
+````jsx
+import { Slider, Icon } from '@alifd/next';
+
+const slides = [
+    { url: 'https://img.alicdn.com/tps/TB1bewbNVXXXXc5XXXXXXXXXXXX-1000-300.png', text: 'Tape Player Skin Design Competition' },
+    { url: 'https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg', text: 'Mobile Phone Taobao Skin Call' },
+    { url: 'https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg', text: 'Design Enabling Public Welfare' },
+    { url: 'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg', text: 'Amoy Doll Design Competition' },
+];
+
+const arrowStyle = {
+    display: 'block',
+    background: 'red',
+    opacity: 1,
+    margin: '0 20px',
+};
+
+const CustomNextArrow = (props) => {
+    return <div {...props} style={arrowStyle}><Icon type="arrow-double-right" /></div>;
+};
+
+const CustomPrevArrow = (props) => {
+    return <div {...props} style={arrowStyle}><Icon type="arrow-double-left" /></div>;
+};
+
+ReactDOM.render(
+    <Slider nextArrow={<CustomNextArrow />} prevArrow={<CustomPrevArrow />} lazyLoad>
+        {
+            slides.map((item, index) => <div key={index} className="slider-img-wrapper"><img src={item.url} alt={item.text} /></div>)
+        }
+    </Slider>
+    , mountNode);
+````
+
+````css
+.slider-img-wrapper img {
+    width: 100%;
+}
+````

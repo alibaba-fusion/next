@@ -1,0 +1,5 @@
+{
+    "extends": [
+        "@alifd/eslint-config-next"
+    ]
+}

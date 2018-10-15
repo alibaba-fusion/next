@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>主题 Demo</title>
+  <% if (disableAnimation) { %>
+    <style>
+      *,
+      *:before,
+      *:after {
+        transition: none !important;
+        animation: none !important;
+      }
+    </style>
+  <% } %>
+    <script src="//unpkg.com/babel-polyfill/dist/polyfill.min.js"></script>
+    <script src="//unpkg.com/react@16.x/umd/react.development.js"></script>
+    <script src="//unpkg.com/react-dom@16.x/umd/react-dom.development.js"></script>
+    <script src="//unpkg.com/moment@2.x/min/moment-with-locales.js"></script>
+</head>
+<body>
+  <div id="container"></div>
+  <% scripts.forEach(function(src) { %>
+  <script src="<%= src %>"></script>
+  <% })%>
+</body>
+</html>
+
+
