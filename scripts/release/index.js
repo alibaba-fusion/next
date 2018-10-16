@@ -17,12 +17,12 @@ const runCmd = function(cmd) {
 };
 
 co(function* () {
-  yield changelog();
+  // yield changelog();
 
   packageInfo = require(packagePath);
-  updateVersionInCode();
+  // updateVersionInCode();
 
-  yield pushMaster();
+  // yield pushMaster();
   yield pushPlatformDocsBranch();
   yield publishToNpm();
 }).catch(err => {
