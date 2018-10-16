@@ -94,6 +94,11 @@ $nav-icon-only-font-size: $icon-s !default;
 /// background
 /// @namespace statement/normal
 $nav-primary-bg-color: $color-text1-4 !default;
+
+/// border
+/// @namespace size/normal
+$nav-primary-border-width: $line-zero !default;
+
 /// border
 /// @namespace statement/normal
 $nav-primary-border-color: $color-text1-4 !default;
@@ -166,6 +171,9 @@ $nav-primary-item-opened-text-color: $color-white !default;
 /// background
 /// @namespace statement/normal
 $nav-secondary-bg-color: $color-brand1-6 !default;
+/// border
+/// @namespace size/normal
+$nav-secondary-border-width: $line-zero !default;
 /// border
 /// @namespace statement/normal
 $nav-secondary-border-color: $color-brand1-6 !default;
