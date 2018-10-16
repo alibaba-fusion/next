@@ -9,22 +9,28 @@ export const ieVersion = typeof document !== 'undefined' ? document.documentMode
  * 判断是否是生产环境
  * @type {Boolean}
  */
-export const isProduction = (function() {
+export const isProduction = () => {
     const PRODUCTION_ENV = 'production';
-    let determination = false;
+    let result = false;
     try {
-        if (
-            // Compat with using `webpack.DefinePlugin`
-            process.env.NODE_ENV === PRODUCTION_ENV ||
-            window.process.env.NODE_ENV === PRODUCTION_ENV
-        ) {
-            determination = true;
+        if (process.env.NODE_ENV === PRODUCTION_ENV) {
+            result = true;
         }
-    } catch (err) {}
+    } catch(err) {}
+
+    if (!result) {
+        try {
+            if (window.process.env.NODE_ENV === PRODUCTION_ENV) {
+                result = true;
+            }
+        } catch (err) {}
+    }
+
 
     return determination;
-})();
+};
 
 export default {
-    ieVersion
+    ieVersion,
+    isProduction,
 };
