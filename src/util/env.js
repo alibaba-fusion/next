@@ -27,7 +27,7 @@ export const isProduction = () => {
     }
 
 
-    return determination;
+    return result;
 };
 
 export default {
