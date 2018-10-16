@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -142,6 +142,8 @@
     "stylelint": "^9.2.1",
     "stylelint-scss": "^3.1.1",
     "typescript": "^3.0.1",
+    "whatwg-fetch": "^2.0.3",
+    "react-cropper": "^1.0.0",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.11.2"
   },
