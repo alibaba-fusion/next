@@ -1,13 +1,12 @@
 # Change Log 
 
-<a name="1.9.5"></a>
-## [1.9.5](https://github.com/alibaba-fusion/next/compare/1.9.4...1.9.5) (2018-10-16)
+<a name="1.9.7"></a>
+## [1.9.7](https://github.com/alibaba-fusion/next/compare/1.9.6...1.9.7) (2018-10-17)
 
 
 ### Bug Fixes
 
-* **Util:** Resolve env.isProduction in correct ([190ae61](https://github.com/alibaba-fusion/next/commit/190ae61))
-* **Util:** Undefined return statement ([2dcf9d3](https://github.com/alibaba-fusion/next/commit/2dcf9d3))
+* **Nav:** primary/secondary active border ([4c2c211](https://github.com/alibaba-fusion/next/commit/4c2c211))
 
 
 

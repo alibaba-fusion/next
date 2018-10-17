@@ -1,0 +1,263 @@
+////
+/// @module icon: 图标
+/// @type String
+/// @category style
+////
+
+// Icon
+// 根据 Alibaba Base DPL 设计实现
+
+/// icon font path 字体路径
+$icon-font-path: "//at.alicdn.com/t/font_515771_emcns5054x3whfr" !default;
+
+/// icon font name 自定义的icon font 名称
+$icon-font-name: "icon" !default;
+
+$icon-font-family: #{to-upper-case(str-slice($css-prefix, 1, 1))}#{str-slice($css-prefix, 2, str-length($css-prefix) - 1)}Icon !default;
+
+$icon-prefix: #{$css-prefix}icon !default;
+
+// ------------------- 图标尺寸 ---------------------- //
+
+/// icon-xxs
+/// @export
+$icon-xxs: $s-2 !default;
+
+/// icon-xs
+/// @export
+$icon-xs: $s-3 !default;
+
+/// icon-s
+/// @export
+$icon-s: $s-4 !default;
+
+/// icon-m
+/// @export
+$icon-m: $s-5 !default;
+
+/// icon-l
+/// @export
+$icon-l: $s-6 !default;
+
+/// icon-xl
+/// @export
+$icon-xl: $s-8 !default;
+
+/// icon-xxl
+/// @export
+$icon-xxl: $s-12 !default;
+
+/// icon-xxxl
+/// @export
+$icon-xxxl: $s-16 !default;
+
+// ------------------- 图标 unicode 值 ---------------------- //
+/// icon-content-smile
+/// @group type
+/// @unconfigurable
+$icon-content-smile: "\e65f" !default;
+
+/// icon-content-cry
+/// @group type
+/// @unconfigurable
+$icon-content-cry: "\e65d" !default;
+
+/// icon-content-success
+/// @group type
+/// @unconfigurable
+$icon-content-success: "\e60a" !default;
+
+/// icon-content-warning
+/// @group type
+/// @unconfigurable
+$icon-content-warning: "\e60b" !default;
+
+/// icon-content-prompt
+/// @group type
+/// @unconfigurable
+$icon-content-prompt: "\e60c" !default;
+
+/// icon-content-error
+/// @group type
+/// @unconfigurable
+$icon-content-error: "\e60d" !default;
+
+/// icon-content-help
+/// @group type
+/// @unconfigurable
+$icon-content-help: "\e673" !default;
+
+/// icon-content-clock
+/// @group type
+/// @unconfigurable
+$icon-content-clock: "\e621" !default;
+
+/// icon-content-success-filling
+/// @group type
+/// @unconfigurable
+$icon-content-success-filling: "\e63a" !default;
+
+/// icon-content-delete-filling
+/// @group type
+/// @unconfigurable
+$icon-content-delete-filling: "\e623" !default;
+
+/// icon-content-favorites-filling
+/// @group type
+/// @unconfigurable
+$icon-content-favorites-filling: "\e60e" !default;
+
+/// icon-content-add
+/// @group type
+/// @unconfigurable
+$icon-content-add: "\e655" !default;
+
+/// icon-content-minus
+/// @group type
+/// @unconfigurable
+$icon-content-minus: "\e601" !default;
+
+/// icon-content-arrow-up
+/// @group type
+/// @unconfigurable
+$icon-content-arrow-up: "\e625" !default;
+
+/// icon-content-arrow-down
+/// @group type
+/// @unconfigurable
+$icon-content-arrow-down: "\e63d" !default;
+
+/// icon-content-arrow-left
+/// @group type
+/// @unconfigurable
+$icon-content-arrow-left: "\e61d" !default;
+
+/// icon-content-arrow-right
+/// @group type
+/// @unconfigurable
+$icon-content-arrow-right: "\e619" !default;
+
+/// icon-content-arrow-double-left
+/// @group type
+/// @unconfigurable
+$icon-content-arrow-double-left: "\e659" !default;
+
+/// icon-content-arrow-double-right
+/// @group type
+/// @unconfigurable
+$icon-content-arrow-double-right: "\e65e" !default;
+
+/// icon-content-switch
+/// @group type
+/// @unconfigurable
+$icon-content-switch: "\e6b3" !default;
+
+/// icon-content-sorting
+/// @group type
+/// @unconfigurable
+$icon-content-sorting: "\e634" !default;
+
+/// icon-content-descending
+/// @group type
+/// @unconfigurable
+$icon-content-descending: "\e61f" !default;
+
+/// icon-content-ascending
+/// @group type
+/// @unconfigurable
+$icon-content-ascending: "\e61e" !default;
+
+/// icon-content-select
+/// @group type
+/// @unconfigurable
+$icon-content-select: "\e632" !default;
+
+/// icon-content-semi-select
+/// @group type
+/// @unconfigurable
+$icon-content-semi-select: "\e633" !default;
+
+/// icon-content-loading
+/// @group type
+/// @unconfigurable
+$icon-content-loading: "\e646" !default;
+
+/// icon-content-search
+/// @group type
+/// @unconfigurable
+$icon-content-search: "\e656" !default;
+
+/// icon-content-close
+/// @group type
+/// @unconfigurable
+$icon-content-close: "\e626" !default;
+
+/// icon-content-ellipsis
+/// @group type
+/// @unconfigurable
+$icon-content-ellipsis: "\e654" !default;
+
+/// icon-content-picture
+/// @group type
+/// @unconfigurable
+$icon-content-picture: "\e631" !default;
+
+/// icon-content-calendar
+/// @group type
+/// @unconfigurable
+$icon-content-calendar: "\e607" !default;
+
+/// icon-content-ashbin
+/// @group type
+/// @unconfigurable
+$icon-content-ashbin: "\e639" !default;
+
+/// icon-content-upload
+/// @group type
+/// @unconfigurable
+$icon-content-upload: "\e7ee" !default;
+
+/// icon-content-download
+/// @group type
+/// @unconfigurable
+$icon-content-download: "\e628" !default;
+
+/// icon-content-set
+/// @group type
+/// @unconfigurable
+$icon-content-set: "\e683" !default;
+
+/// icon-content-edit
+/// @group type
+/// @unconfigurable
+$icon-content-edit: "\e63b" !default;
+
+/// icon-content-refresh
+/// @group type
+/// @unconfigurable
+$icon-content-refresh: "\e677" !default;
+
+/// icon-content-filter
+/// @group type
+/// @unconfigurable
+$icon-content-filter: "\e627" !default;
+
+/// icon-content-attachment
+/// @group type
+/// @unconfigurable
+$icon-content-attachment: "\e665" !default;
+
+/// icon-content-account
+/// @group type
+/// @unconfigurable
+$icon-content-account: "\e608" !default;
+
+/// icon-content-email
+/// @group type
+/// @unconfigurable
+$icon-content-email: "\e605" !default;
+
+/// icon-content-atm
+/// @group type
+/// @unconfigurable
+$icon-content-atm: "\e606" !default;
