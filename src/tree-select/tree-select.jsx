@@ -527,7 +527,7 @@ export default class TreeSelect extends Component {
         const treeSelectPrefix = `${prefix}tree-select-`;
 
         if (!this.state.visible) {
-            return <div className={`${treeSelectPrefix}dropdown`}></div>;
+            return <div className={`${treeSelectPrefix}dropdown`} />;
         }
 
         const {

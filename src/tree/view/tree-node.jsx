@@ -298,7 +298,7 @@ export default class TreeNode extends Component {
 
     renderRightAngle() {
         const { prefix, pos } = this.props;
-        return this.showLine && !isRoot(pos) ? <span className={`${prefix}tree-right-angle`}></span> : null;
+        return this.showLine && !isRoot(pos) ? <span className={`${prefix}tree-right-angle`} /> : null;
     }
 
     renderCheckbox() {

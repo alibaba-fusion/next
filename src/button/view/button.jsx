@@ -84,11 +84,11 @@ export default class Button extends Component {
         if (this.props.onMouseUp) {
             this.props.onMouseUp(e);
         }
-    }
+    };
 
     buttonRefHandler = (button) => {
         this.button = button;
-    }
+    };
 
     render() {
         const { prefix, className, type, size, htmlType, loading, text, warning, ghost, component, iconSize, children, ...others } = this.props;
