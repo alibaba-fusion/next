@@ -91,6 +91,6 @@ function* publishToNpm() {
   yield runCmd('git pull');
   yield runCmd(`git tag ${packageInfo.version}`);
   yield runCmd(`git push origin ${packageInfo.version}`);
-  yield runCmd('npm publish');
+  // yield runCmd('npm publish');
 }
 
