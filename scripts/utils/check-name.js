@@ -8,12 +8,12 @@ module.exports = function (allowAll = false) {
 
   let componentName = argv._[0];
   if (componentName) {
-    // compatible with tnpm run dev -- Menu
+    // compatible with npm run dev -- Menu
     componentName = _.kebabCase(componentName);
     const componentPath = path.join(process.cwd(), 'docs', componentName);
 
     if (!fs.existsSync(componentPath)) {
-      logger.error(`The input component name (${componentName}) is invalid, try again like: tnpm run [command] -- number-picker`);
+      logger.error(`The input component name (${componentName}) is invalid, try again like: npm run [command] -- number-picker`);
       process.exit(0);
       return false;
     }
@@ -22,7 +22,7 @@ module.exports = function (allowAll = false) {
   } else if (allowAll) {
     return 'all';
   } else {
-    logger.error('Please input the component name, like: tnpm run [command] -- number-picker');
+    logger.error('Please input the component name, like: npm run [command] -- number-picker');
     process.exit(0);
     return false;
   }

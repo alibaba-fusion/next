@@ -18,7 +18,7 @@ DPL 中 UED 设计体系与前端 UI 体系的核心接口层，负责将 UED �
 ### 使用
 
 ```
-tnpm install @alifd/next-core --save
+npm install @alifd/next-core --save
 ```
 
 index.scss
