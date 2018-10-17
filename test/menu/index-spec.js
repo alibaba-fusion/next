@@ -56,6 +56,23 @@ describe('Menu', () => {
         assert(item.find('.next-menu-item-helper').text() === 'helper');
     });
 
+    it('should pass className', () => {
+      wrapper = mount(
+          <Menu defaultOpenKeys="sub-menu" className="custom" style={{ color: 'red' }}>
+              <Item className="custom-className">item</Item>
+              <Group label="Group">
+                <Item className="custom-className" key="group-1">Group option 1</Item>
+              </Group>
+              <SubMenu key="sub-menu" label="Sub menu">
+                <Item className="custom-className" key="sub-1">Sub option 1</Item>
+            </SubMenu>
+          </Menu>
+      );
+      const menu = wrapper.find('.next-menu li.custom-className');
+
+      assert(menu.length === 3);
+    });
+
     it('should support onItemClick', () => {
         let called = false, key, item, event;
         const handleItemClick = (k, i, e) => {
