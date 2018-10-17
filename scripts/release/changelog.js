@@ -19,32 +19,27 @@ module.exports = function* changelog() {
 
   const npmVersion = npmInfo['dist-tags'].latest;
 
-  if (npmInfo && !semver.gt(packageInfo.version, npmVersion)) {
-    logger.success(`[提示] [local:${packageInfo.version}] [npm:${npmVersion}] 请为本次提交指定新的版本号:`);
+  logger.success(`[提示] [local:${packageInfo.version}] [npm:${npmVersion}] 请为本次提交指定新的版本号:`);
 
-    const current = yield inquirer.prompt([{
-      name: 'version',
-      type: 'input',
-      default: updateVersion(packageInfo.version, 'z'),
-      message: '请输入待发布的版本号：',
-      validate: function(value) {
-        if (!semver.valid(value) || semver.lte(value, packageInfo.version)) {
-          return logger.warn('请输入正确的版本号，并且大于基线版本号！');
-        }
-        return true;
+  const current = yield inquirer.prompt([{
+    name: 'version',
+    type: 'input',
+    default: updateVersion(packageInfo.version, 'z'),
+    message: '请输入待发布的版本号：',
+    validate: function(value) {
+      if (!semver.valid(value) || semver.lte(value, packageInfo.version)) {
+        return logger.warn('请输入正确的版本号，并且大于基线版本号！');
       }
-    }]);
+      return true;
+    }
+  }]);
 
-    packageInfo.version = current.version;
+  packageInfo.version = current.version;
 
-    yield fs.writeJson(packagePath, packageInfo, {spaces: 2});
+  yield fs.writeJson(packagePath, packageInfo, {spaces: 2});
 
-    logger.success(`[提示] 回写版本号 ${packageInfo.version} 到 package.json success`);
+  logger.success(`[提示] 回写版本号 ${packageInfo.version} 到 package.json success`);
 
-
-  } else {
-    logger.info(`[提示] [本地 package.json 版本:${packageInfo.version}] > [npm 版本:${npmVersion}] `);
-  }
 
   logger.info(`正在生成 ${changelogPath} 文件,请稍等几秒钟...`);
 
