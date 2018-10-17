@@ -69,7 +69,7 @@ class App extends React.Component {
             <br/>
 
             <Range style={{...layout, marginTop: 30}} slider={'double'} scales={10}
-                 arks={10}  {...init('range', {initValue: [20, 40]})}/>
+                marks={10}  {...init('range', {initValue: [20, 40]})}/>
 
             <div style={{marginBottom: 10}}>
                 <CheckboxGroup dataSource={list}  {...init('checkboxgroup', {initValue: ['apple']})} />

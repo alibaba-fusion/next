@@ -177,7 +177,7 @@ Pass the props and displayName of the component to get the object containing pre
 
 You can get the context of ConfigProvider via this method. The format of the value returned as follows. For multiple ConfigProvider nested, the results will be merged and the nearer the higher priority。
 
-```js
+```jsx
 {
     prefix: nextPrefix,
     locale: nextLocale,

@@ -48,7 +48,8 @@ const dataSource = [
     {label:'option1', value:'option1'},
     {label:'option2', value:'option2'},
     {label:'disabled', disabled:true}
-]
+];
+
 <Select dataSource={dataSource}/>
 ```
 

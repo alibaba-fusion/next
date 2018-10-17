@@ -5,7 +5,7 @@ const fs = require('fs');
 const cwd = process.cwd();
 const source = path.join(cwd, 'src');
 
-const PATTERN_NEXT = /([^\/]+)(.*)$/;
+const PATTERN_NEXT = /([^/]+)(.*)$/;
 const PATTERN_IMPORT1 = /^import.*\/([\w-]*)\/style\.js';$/;
 const PATTERN_IMPORT2 = /^import.*from.*\/src\/([\w-]*)';$/;
 const NEXT_CORE = 'core';
