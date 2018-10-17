@@ -40,10 +40,12 @@
     "release": "node ./scripts/release/index.js",
     "test": "node --max_old_space_size=4096 ./scripts/test/index.js",
     "order-var": "node ./scripts/order-var.js",
-    "eslint": "eslint '@(src|scripts|docs)/**/*.@(js|jsx|md)'",
+    "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint 'docs/**/demo/*.@(md)'",
     "stylelint": "stylelint 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
-    "prepublishOnly": "npm run build && npm run check && npm run docs && npm run pack && npm run pack -- minimize && npm run release"
+    "changelog": "node ./scripts/changelog.js",
+    "prepub": "npm run build && npm run docs && npm run pack && npm run pack -- minimize && npm run changelog",
+    "prepublishWork": "npm run build && npm run check && npm run docs && npm run pack && npm run pack -- minimize"
   },
   "lint-staged": {
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [

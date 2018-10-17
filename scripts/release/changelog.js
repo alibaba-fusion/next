@@ -50,7 +50,10 @@ module.exports = function* changelog() {
       const log = chunk.toString().replace(/(\n## [.\d\w]+ )\(([\d-]+)\)\n/g, (all, s1, s2) => {
         return `${s1}/ ${s2}\n`;
       });
-      fs.writeFileSync(changelogPath, '# Change Log \n\n' + log);
+
+      let changelogContent = fs.readFileSync(changelogPath, 'utf8');
+      changelogContent = changelogContent.replace('# Change Log \n\n', '');
+      fs.writeFileSync(changelogPath, '# Change Log \n\n' + log + changelogContent);
 
       const lines = log.split(/\n/g);
       let firstIndex = -1, secondIndex = -1;
@@ -69,7 +72,7 @@ module.exports = function* changelog() {
       if (firstIndex > -1) {
         secondIndex = secondIndex === -1 ? lines.length : secondIndex;
         const latestedLog = lines.slice(firstIndex, secondIndex - 1).join('\n');
-        fs.writeFileSync(latestedLogPath, latestedLog);
+        fs.writeFileSync(latestedLogPath, '# Latest Log \n\n' + latestedLog);
       }
     });
 
@@ -78,7 +81,7 @@ module.exports = function* changelog() {
 
 
 function getRemotePkgInfo() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     var requestUrl = 'https://registry.npmjs.org/@alifd/next';
 
     try {
@@ -90,6 +93,7 @@ function getRemotePkgInfo() {
         resolve(body);
       });
     } catch (err) {
+      logger.error('Failed to reach: https://registry.npmjs.org/@alifd/next');
       resolve();
     }
   });

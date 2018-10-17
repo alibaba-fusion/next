@@ -2,8 +2,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const cp = require('child_process');
 const co = require('co');
-const changelog = require('./changelog');
 const utils = require('../utils');
+const { execSync } = require('child_process');
 
 const cwd = process.cwd();
 const packagePath = path.resolve('package.json');
@@ -17,10 +17,9 @@ const runCmd = function(cmd) {
 };
 
 co(function* () {
-  yield changelog();
-
   packageInfo = require(packagePath);
-  updateVersionInCode();
+
+  checkTags();
 
   yield pushMaster();
   yield pushPlatformDocsBranch();
@@ -29,13 +28,23 @@ co(function* () {
   utils.logger.error('Release failed', err.stack);
 });
 
-function updateVersionInCode() {
-  const entryPath = path.join(cwd, 'index.js');
-  let entryContent = fs.readFileSync(entryPath, 'utf8');
-  entryContent = entryContent.replace(/(next\.version = ')[\d.\w]+(';)/, (all, s1, s2) => {
-    return `${s1}${packageInfo.version}${s2}`;
-  });
-  fs.writeFileSync(entryPath, entryContent);
+function checkTags() {
+  const stdout = execSync('git tag').toString();
+  let repeatTag = '';
+
+  if (stdout.match(packageInfo.version)) {
+    repeatTag += `[${packageInfo.version}]`;
+  }
+  if (stdout.match(`build/${packageInfo.version}`)) {
+    repeatTag += `  [build/${packageInfo.version}]`;
+  }
+
+  if (repeatTag !== '') {
+    utils.logger.error(`You have duplicate tags: ${repeatTag}`);
+    process.exit(0);
+  } else {
+    utils.logger.success(`There is no [${packageInfo.version}] or [build/${packageInfo.version}] exits`,'\n');
+  }
 }
 
 function* pushMaster() {
