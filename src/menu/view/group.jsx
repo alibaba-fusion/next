@@ -33,11 +33,13 @@ export default class Group extends Component {
             [className]: !!className
         });
 
-        const newChildClassName = cx({
-            [`${prefix}menu-group-item`]: true
-        });
-
         const newChildren = children.map(child => {
+            const { className } = child.props;
+            const newChildClassName = cx({
+                [`${prefix}menu-group-item`]: true,
+                [className]: !!className
+            });
+
             return cloneElement(child, {
                 parentMode,
                 className: newChildClassName
