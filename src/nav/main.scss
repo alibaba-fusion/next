@@ -90,7 +90,7 @@
         }
 
         &.#{$css-prefix}top #{$nav-prefix}-item:before {
-            top: 0;
+            top: - $popup-local-border-width;
         }
 
         &.#{$css-prefix}bottom #{$nav-prefix}-item:before {
@@ -139,7 +139,7 @@
         }
 
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
-            left: 0;
+            left: - $popup-local-border-width;
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
@@ -153,6 +153,10 @@
     }
 
     &.#{$css-prefix}primary {
+        @include nav-border-fix(
+            $nav-hoz-height,
+            $nav-primary-border-width
+        );
         @include nav-statement(
             $nav-primary-bg-color,
             $nav-primary-border-color,
@@ -183,6 +187,10 @@
     }
 
     &.#{$css-prefix}secondary {
+        @include nav-border-fix(
+            $nav-hoz-height,
+            $nav-secondary-border-width
+        );
         @include nav-statement(
             $nav-secondary-bg-color,
             $nav-secondary-border-color,

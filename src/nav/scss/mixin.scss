@@ -45,6 +45,44 @@
     }
 }
 
+@mixin nav-border-fix($height, $border-width) {
+    $real-height: $height - $border-width * 2;
+
+    border-width: $border-width;
+    &.#{$css-prefix}hoz {
+        line-height: $real-height;
+
+        #{$menu-prefix}-header {
+            height: $real-height;
+        }
+
+        #{$menu-prefix}-footer {
+            height: $real-height;
+        }
+
+        #{$menu-prefix}-item-inner {
+            height: $real-height;
+        }
+
+        &.#{$css-prefix}top #{$nav-prefix}-item:before {
+            top: - $border-width;
+        }
+
+        &.#{$css-prefix}bottom #{$nav-prefix}-item:before {
+            bottom: - $border-width;
+        }
+    }
+    &.#{$css-prefix}ver {
+        &.#{$css-prefix}left #{$nav-prefix}-item:before {
+            left: - $border-width;
+        }
+
+        &.#{$css-prefix}right #{$nav-prefix}-item:before {
+            right: - $border-width;
+        }
+    }
+}
+
 @mixin nav-statement(
     $bgColor,
     $borderColor,
