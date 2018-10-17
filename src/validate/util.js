@@ -59,8 +59,8 @@ function asyncSerialArray(arr, func, callback) {
 
 /**
  * 平铺规则
- * @param  {[type]} objArr [description]
- * @return {[type]}        [description]
+ * @param  {object} objArr [description]
+ * @return {Array}        [description]
  */
 function flattenObjArr(objArr) {
     const ret = [];

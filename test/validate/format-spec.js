@@ -137,7 +137,7 @@ describe('format', () => {
             });
         });
 
-        it('works for a valid email', (done) => {
+        it('not valid email', (done) => {
             new Schema({
                 v: {
                     format: 'email'
@@ -192,7 +192,7 @@ describe('format', () => {
             });
         });
 
-        it('works for a valid number', (done) => {
+        it('not valid number', (done) => {
             new Schema({
                 v: {
                     format: 'number'
@@ -242,7 +242,7 @@ describe('format', () => {
             });
         });
 
-        it('works for a valid tel', (done) => {
+        it('not valid tel', (done) => {
             new Schema({
                 v: {
                     format: 'tel'
