@@ -42,8 +42,8 @@ Note: 1. Select uses `value` as the `key` value of the rendered menu item by def
 
 2. The way `props`
 
-```js
-Const dataSource = [
+```jsx
+const dataSource = [
     {label:'option1', value:'option1'},
     {label:'option2', value:'option2'},
     {label:'disabled', disabled:true}

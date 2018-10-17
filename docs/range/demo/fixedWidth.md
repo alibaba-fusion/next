@@ -64,9 +64,9 @@ class App extends React.Component {
                 <div style={{width: '400px', marginTop: '50px'}}>
                     <p>range 0 ~ 1024</p>
                     <Range fixedWidth value={this.state.value}
-                         onChange={this.onChange.bind(this)}
-                         onProcess={this.onProcess.bind(this)}
-                         min={0} max={1024} marks={[0, 1024]} />
+                        onChange={this.onChange.bind(this)}
+                        onProcess={this.onProcess.bind(this)}
+                        min={0} max={1024} marks={[0, 1024]} />
                 </div>
             </div>
         );

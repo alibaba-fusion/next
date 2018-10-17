@@ -16,14 +16,18 @@ export const isProduction = () => {
         if (process.env.NODE_ENV === PRODUCTION_ENV) {
             result = true;
         }
-    } catch(err) {}
+    } catch (err) {
+        //
+    }
 
     if (!result) {
         try {
             if (window.process.env.NODE_ENV === PRODUCTION_ENV) {
                 result = true;
             }
-        } catch (err) {}
+        } catch (err) {
+            //
+        }
     }
 
 
