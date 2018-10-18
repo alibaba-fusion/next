@@ -10,7 +10,7 @@
 
 - order: 6
 
-By default, a Button component is rendered by a html `<button>` tag, its render behavior could be modified by a props named `component`, which should be setted to `button` or `a`.
+By default, a Button component is rendered by a html `<button>` tag, its render behavior could be modified by a props named `component`, which should be set to `button` or `a`.
 
 :::
 

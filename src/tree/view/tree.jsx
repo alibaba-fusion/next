@@ -244,6 +244,7 @@ class Tree extends Component {
         onDrop: () => {},
         canDrop: () => true,
         onEditFinish: () => {},
+        onRightClick: () => {},
         isLabelBlock: false,
         isNodeBlock: false,
         animation: true
