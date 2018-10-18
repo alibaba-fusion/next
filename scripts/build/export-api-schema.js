@@ -30,7 +30,7 @@ module.exports = function (options) {
       entries.push(`export { default as ${apiInfo.name} } from './${shortName}';\n`);
 
       fs.writeFileSync(apiPath, apiString);
-      tsgen(apiString).then(apiData => {
+      tsgen(apiInfo).then(apiData => {
         fs.writeFileSync(exportDTSPath, apiData.message);
       });
     }
