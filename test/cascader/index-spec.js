@@ -41,10 +41,14 @@ describe('Cascader', () => {
     let wrapper;
 
     afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
+      const overlay = document.querySelectorAll('.next-overlay-wrapper');
+      overlay.forEach(dom => {
+        document.body.removeChild(dom);
+      });
+      if (wrapper) {
+          wrapper.unmount();
+          wrapper = null;
+      }
     });
 
     it('should render single cascader', () => {
@@ -395,9 +399,9 @@ describe('Cascader', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render(<Cascader defaultValue={['2975']} dataSource={ChinaArea} style={{ width: '700px' }} listStyle={{ width: '200px' }} />, div);
+        ReactDOM.render(<Cascader id="cascader-style" defaultValue={['2975']} dataSource={ChinaArea} style={{ width: '700px' }} listStyle={{ width: '200px' }} />, div);
 
-        const inner = document.querySelector('.next-cascader-inner');
+        const inner = document.querySelector('#cascader-style .next-cascader-inner');
         assert(inner.style.width === '600px');
         const lists = document.querySelectorAll('.next-cascader-menu');
         assert(lists[lists.length - 1].className.indexOf('next-has-right-border') > -1);

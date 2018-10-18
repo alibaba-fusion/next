@@ -127,6 +127,13 @@ class PopupControlDemo extends React.Component {
 describe('Overlay', () => {
     let wrapper;
 
+    beforeEach(() => {
+        const overlay = document.querySelectorAll('.next-overlay-wrapper');
+        overlay.forEach(dom => {
+            document.body.removeChild(dom);
+        });
+    });
+
     afterEach(() => {
         if (wrapper) {
             wrapper.unmount();
