@@ -106,7 +106,7 @@ class FunctionDemo extends React.Component {
         }
 
         return (
-            <Demo title={multiple ? 'Single' : 'Multiple'} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo title={multiple ? 'Multiple' : 'Single'} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Normal">
                     <DemoHead cols={['L', 'M', 'S']} />
                     <DemoGroup label="normal">
