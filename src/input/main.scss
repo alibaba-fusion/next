@@ -267,6 +267,39 @@
             width: 100%;
             border-radius: 0 !important;
         }
+
+        > #{$input-prefix}:first-child {
+            &.#{$css-prefix}small {
+                border-top-left-radius: $form-element-small-corner !important;
+                border-bottom-left-radius: $form-element-small-corner !important;
+            }
+    
+            &.#{$css-prefix}medium {
+                border-top-left-radius: $form-element-medium-corner !important;
+                border-bottom-left-radius: $form-element-medium-corner !important;
+            }
+    
+            &.#{$css-prefix}large {
+                border-top-left-radius: $form-element-large-corner !important;
+                border-bottom-left-radius: $form-element-large-corner !important;
+            }
+        }
+        > #{$input-prefix}:last-child {
+            &.#{$css-prefix}small {
+                border-top-right-radius: $form-element-small-corner !important;
+                border-bottom-right-radius: $form-element-small-corner !important;
+            }
+    
+            &.#{$css-prefix}medium {
+                border-top-right-radius: $form-element-medium-corner !important;
+                border-bottom-right-radius: $form-element-medium-corner !important;
+            }
+    
+            &.#{$css-prefix}large {
+                border-top-right-radius: $form-element-large-corner !important;
+                border-bottom-right-radius: $form-element-large-corner !important;
+            }
+        }
     }
     &-group-addon {
         width: 1px;
