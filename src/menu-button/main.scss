@@ -5,6 +5,7 @@
 
 #{$menu-btn-prefix} {
     display: inline-block;
+    box-shadow: none;
 
     .#{$css-prefix}icon {
         transition: transform .3s cubic-bezier(.645, .045, .355, 1);

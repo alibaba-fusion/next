@@ -4,6 +4,7 @@ import '../../../src/demo-helper/style.js';
 import '../../../src/message/style.js';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
 import Message from '../../../src/message';
+import Paragraph from '../../../src/paragraph';
 
 const i18nMap = {
     'en-us': {
@@ -69,7 +70,7 @@ class FunctionDemo extends React.Component {
             const content = types.map(type => {
                 const children = ['large', 'medium'].map(size => (
                     <Message type={type} title={title} shape={shape} size={size} closeable={closeable} key={`${shape}-${type}-${size}`}>
-                        {i18n.content}
+                        <Paragraph>{i18n.content}</Paragraph>
                     </Message>
                 ));
                 return (<DemoGroup label={type} key={type}>{children}</DemoGroup>);
