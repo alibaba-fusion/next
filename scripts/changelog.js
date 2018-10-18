@@ -4,7 +4,7 @@ const path = require('path');
 
 const cwd = process.cwd();
 const changelog = require('./release/changelog');
-const { logger } = require('../utils');
+const { logger } = require('./utils');
 const packagePath = path.resolve('package.json');
 
 co(function* () {
