@@ -19,7 +19,7 @@ Use the script and link tags in the browser to directly import the file and use 
 
 <script src="https://unpkg.com/@alifd/next/dist/next.js"></script>
 
-// The above ways import latest @alifd/next, we recommend you specify version.
+// The above ways import latest @alifd/next, we recommend you specify version.
 <script src="https://unpkg.com/@alifd/next@1.8.6/dist/next.min.js"></script>
 
 // Or import as your own static resource
