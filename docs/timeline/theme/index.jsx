@@ -82,7 +82,7 @@ class FunctionDemo extends React.Component {
                 },
                 icon: {
                     label: '图标',
-                    value: 'true',
+                    value: 'false',
                     enum: [{ value: 'true', label: '显示' }, { value: 'false', label: '隐藏' }],
                 }
             }
