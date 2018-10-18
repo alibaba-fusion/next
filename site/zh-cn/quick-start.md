@@ -19,7 +19,7 @@ npm install @alifd/next --save
 
 <script src="https://unpkg.com/@alifd/next/dist/next.js"></script>
 
-// 以上引入都是引入的最新版本 @alifd/next ，但我们推荐引入固定版本的next组件，以保证代码稳定
+// 以上引入都是引入的最新版本 @alifd/next ，但我们推荐引入固定版本的next组件，以保证代码稳定
 <script src="https://unpkg.com/@alifd/next@1.8.6/dist/next.min.js"></script>
 
 // 或作为自己的静态资源引入
