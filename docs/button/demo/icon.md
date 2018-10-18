@@ -9,7 +9,7 @@ Button 可以嵌入 Icon，默认情况下 Icon 尺寸自动跟随 Button 的尺
 
 - order: 2
 
-Button could contain Icon as its children. For some purpose, the default size of Icon is controlled by the Button size. However, you can breaking the limitation by setting `iconSize` attribute.
+Button could contain Icon as its children, the default size of Icon is controlled by the Button size. And it can be manually controlled by using `iconSize` prop.
 
 :::
 

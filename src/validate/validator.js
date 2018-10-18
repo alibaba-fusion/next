@@ -2,9 +2,9 @@ import rules from './rules/';
 
 /**
  * {required, format} => format; {required} => required
- * @param  {[type]} validator [description]
- * @param  {[type]} ruleType  [description]
- * @return {[type]}           [description]
+ * @param  {function} validator [description]
+ * @param  {string} ruleType  [description]
+ * @return {function}           [description]
  */
 export function validateFunc(validator, ruleType) {
     return (rule, value, cb, options) => {
@@ -31,8 +31,8 @@ export function validateFunc(validator, ruleType) {
 
 /**
  * {required, format} => format; {required} => required
- * @param  {[type]} rule [description]
- * @return {[type]}      [description]
+ * @param  {object} rule [description]
+ * @return {function}      [description]
  */
 export function getValidationMethod(rule) {
     if (typeof rule.validator === 'function') {
@@ -42,7 +42,7 @@ export function getValidationMethod(rule) {
     const keys = Object.keys(rule);
 
     //required和其他校验规则共存
-    //{required, format} {required, unknow}
+    //{required, format} {required, unknown}
     for (let i = 0; i < keys.length; i++) {
         const ruleType = keys[i];
 
