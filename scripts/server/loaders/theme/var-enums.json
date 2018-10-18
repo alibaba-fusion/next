@@ -45,7 +45,7 @@
     "$corner-2": "corner-2",
     "$corner-3": "corner-3",
     "$corner-circle": "corner-circle",
-    "$corner-right-angle": "corner-right-angle"
+    "$corner-zero": "corner-zero"
   },
   "font.weightcore": {
     "$font-weight-1": "light",
@@ -74,7 +74,7 @@
     "$icon-xxxl": "icon-xxxl"
   },
   "line.width": {
-    "$line-0": "line-0",
+    "$line-zero": "line-zero",
     "$line-1": "line-1",
     "$line-2": "line-2",
     "$line-3": "line-3"
@@ -85,7 +85,7 @@
     "$line-dotted": "line-dotted"
   },
   "shadow.default": {
-    "$shadow-0": "shadow-0",
+    "$shadow-zero": "shadow-zero",
     "$shadow-1": "shadow-1",
     "$shadow-1-up": "shadow-1-up",
     "$shadow-1-right": "shadow-1-right",
@@ -111,7 +111,7 @@
     "$font-lineheight-5": "lineheight-5"
   },
   "size.length": {
-    "$s-0": "s-0",
+    "$s-zero": "s-zero",
     "$s-1": "s-1",
     "$s-2": "s-2",
     "$s-3": "s-3",

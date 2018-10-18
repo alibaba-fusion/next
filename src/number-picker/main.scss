@@ -12,6 +12,7 @@
     .#{$css-prefix}btn {
         padding: 0 !important;
         line-height: 0 !important;
+        box-shadow: none !important;
     }
 
     &-normal {
