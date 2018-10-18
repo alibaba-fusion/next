@@ -52,7 +52,7 @@ module.exports = function* changelog() {
       });
 
       let changelogContent = fs.readFileSync(changelogPath, 'utf8');
-      changelogContent = changelogContent.replace('# Change Log \n\n', '');
+      changelogContent = changelogContent.split('\n').slice(1);
       fs.writeFileSync(changelogPath, '# Change Log \n\n' + log + changelogContent);
 
       const lines = log.split(/\n/g);
