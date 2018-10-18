@@ -34,14 +34,12 @@ const cardStyle = {
 
 const placeholderStyle = {
     height: '250px',
-    textAlign: 'center',
-    background: '#F7F8FA',
+    textAlign: 'center'
 };
 
 const extendPlaceholderStyle = {
     height: '120px',
-    textAlign: 'center',
-    background: '#F7F8FA',
+    textAlign: 'center'
 };
 
 function CardDemo({ locale, noBullet, noSubtitle, noLink, demoFunction, onFunctionChange }) {
