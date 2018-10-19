@@ -32,6 +32,17 @@
       padding: 0 10px;
     }
 
+    .next-demo-links li.title {
+      background: #5584ff;
+      color: #fff;
+      position: relative;
+      left: -10px;
+    }
+
+    .next-demo-links li.title + li {
+      border-top: none;
+    }
+
     .next-demo-links li + li {
       border-top: 1px solid #C4C6Cf;
     }
@@ -200,19 +211,27 @@
 <body>
   <ul class="next-demo-links">
   <% links.forEach(function(link) {%>
-    <li>
-    <% if (link.filename === name) { %>
-      <a class="current" href="/<%= link.href %>">
-    <% } else { %>
-      <a href="/<%= link.href %>">
-    <% } %>
-      <% if (lang === 'zh') { %>
-        <%= link.title %>
-        <em><%= link.filename %></em>
-      <% } else { %>
-        <em><%= link.filename || link.title %></em>
+    <li class="<%= link.href ? '' : 'title' %>">
+      <% if (link.filename === name) { %>
+        <a class="current" href="/<%= link.href %>">
+      <% } else if (link.href){ %>
+        <a href="/<%= link.href %>">
+      <% } else {%>
+        <span>
       <% } %>
-      </a>
+
+        <% if (lang === 'zh') { %>
+          <%= link.title %>
+          <em><%= link.filename %></em>
+        <% } else { %>
+          <em><%= link.filename || link.title %></em>
+        <% } %>
+
+      <% if (link.href) { %>
+        </a>
+      <% } else {%>
+        </span>
+      <% } %>
     </li>
   <% })%>
   </ul>
