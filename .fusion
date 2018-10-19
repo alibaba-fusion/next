@@ -3,8 +3,8 @@
   "publish-template": "@alifd/next-theme-template@0.0.4",
   "class-prefix": ".next",
   "icon": {
-    "iconfont-project-id": "283554",
-    "iconfont-path": "//at.alicdn.com/daily/font_283554_840q5490nzppw33vr52ymn29"
+    "iconfont-project-id": "544230",
+    "iconfont-path": "//at.alicdn.com/t/font_t6jzs3l3nwtmaemi"
   },
   "import": {
     "sources": {
