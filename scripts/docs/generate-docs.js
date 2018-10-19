@@ -183,6 +183,7 @@ function* buildCompiledDocs(cwd) {
 function mutliLangHandler(orginData = '') {
   const enDocReg = /:{3}lang(.|\n|\r)*:{3}/g;
   const jsxReg = /`{3,}(.|\n|\r)*`{3,}/g;
+  const toDeleteReg = /import\s*('|")([^'"]+?)(?:\1);?\n?/g;
 
   let enDocs = orginData.match(enDocReg);
   enDocs = enDocs ? enDocs[0] : '';
@@ -192,6 +193,7 @@ function mutliLangHandler(orginData = '') {
 
   let jsxCode = orginData.match(jsxReg);
   jsxCode = jsxCode ? jsxCode[0] : '';
+  jsxCode = jsxCode.replace(toDeleteReg, '');
 
   const cnDocs = orginData.replace(enDocReg, '').replace(jsxReg, '');
 
