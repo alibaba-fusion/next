@@ -2,7 +2,7 @@
 
 `@alifd/next` is a configurable component library for PC in Fusion Design. It is based on React and supports all modern browsers and IE9+.
 
-[中文 README](./README.md)
+[中文 README](./README.zh-cn.md)
 
 [![npm package](https://img.shields.io/npm/v/@alifd/next.svg?style=flat-square)](https://www.npmjs.org/package/@alifd/next)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
