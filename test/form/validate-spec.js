@@ -4,6 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Input from '../../src/input';
 import Form from '../../src/form/index';
+import Field from '../../src/field';
 
 const FormItem = Form.Item;
 const Submit = Form.Submit;
@@ -150,4 +151,35 @@ describe('Reset', () => {
         wrapper.find('button').simulate('click');
         assert(wrapper.find('input#first').prop('value') === 'test');
     });
+
+    it('should support custom filed', () => {
+      class Demo extends React.Component {
+        field = new Field(this, {forceUpdate: true});
+
+        render() {
+            const { init, setValue, reset } = this.field;
+
+            return (<div>
+                <Input  {...init('input', {initValue: 'test'})}  />
+                <Reset field={this.field} onClick={reset}>click</Reset>
+            </div>);
+        }
+      }
+
+      const wrapper = mount(<Demo />);
+
+      assert(wrapper.find('input').prop('value') === 'test');
+      wrapper.find('button').simulate('click');
+      assert(wrapper.find('input').prop('value') === '');
+    })
+
+    it('should warn & callback if field not exist', () => {
+
+      let warnFlag = false;
+
+      const wrapper = mount(<Reset onClick={() => warnFlag = true} />);
+
+      wrapper.find('button').simulate('click');
+      assert(warnFlag);
+    })
 });
