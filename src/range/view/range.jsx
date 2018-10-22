@@ -481,10 +481,10 @@ export default class Range extends React.Component {
         } else if (position > end) {
             position = end;
         }
-        const pecent = getPercent(start, end, position);
+        const percent = getPercent(start, end, position);
 
         // reset by step
-        const newValue = parseFloat((Math.round(pecent / 100 * (max - min) / step) * step).toFixed(getPrecision(step)));
+        const newValue = parseFloat((Math.round(percent / 100 * (max - min) / step) * step).toFixed(getPrecision(step)));
 
         return min + newValue;
     }

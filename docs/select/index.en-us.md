@@ -83,7 +83,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
 | filter | A local filter method that returns a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |
 | dataSource | The incoming data source that can dynamically render children, as described in [DataSource Usage] (Use of #dataSource) | Array<Object/Boolean/Number/String> | - |
-| itemRender | How to render MenuItem content <br><br><br><br><br><br><br>Function(item: Object, searchValue: String) => ReacNode<br>**Parameters:<br>_item_: {Object} Item for render node<br>_searchValue_: {String} Search keyword (if search is enabled) <br>**Return value:<br>{ReacNode} item node<br> | Function | - |
+| itemRender | How to render MenuItem content <br><br><br><br><br><br><br>Function(item: Object, searchValue: String) => ReactNode<br>**Parameters:<br>_item_: {Object} Item for render node<br>_searchValue_: {String} Search keyword (if search is enabled) <br>**Return value:<br>{ReactNode} item node<br> | Function | - |
 | mode | Selector mode <br><br>** Optional **:<br>'single', 'multiple', 'tag' | Enum | 'single' |
 | notFoundContent | Empty copy of the shell content | ReactNode | 'No options' |
 |hasBorder | Whether there is a border | Boolean | - |
@@ -94,7 +94,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 |fillProps | key to fill the value of the select box key?? | String | - |
 |useDetailValue | value returned by onChange object using dataSource | Boolean | - |
 |cacheValue | dataSource keeps the selected content | Boolean | true |
-|valueRender | Methods for rendering Select to display content <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>** Parameters**:<br>_item_: {Object} Render node's item<br>**return value **:<br>{ReacNode} show content <br> | Function | item => item.label \|\| item.value |
+|valueRender | Methods for rendering Select to display content <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>** Parameters**:<br>_item_: {Object} Render node's item<br>**return value **:<br>{ReactNode} show content <br> | Function | item => item.label \|\| item.value |
 | searchValue | Controlled search value, generally not set | String | - |
 | onRemove | tag Delete callback <br><br><br>**Signature**:<br>Function(item: object) => void<br>**Parameters**:<br>_item_: {object} Render node's Item | Function | func.noop |
 | onFocus         | focus event<br><br>**签名**:<br>Function() => void | Function | func.noop |
