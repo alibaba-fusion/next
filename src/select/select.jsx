@@ -95,7 +95,7 @@ class Select extends Base {
         /**
          * 渲染 Select 展现内容的方法
          * @param {Object} item 渲染节点的item
-         * @return {ReacNode} 展现内容
+         * @return {ReactNode} 展现内容
          * @default item => item.label \|\| item.value
          */
         valueRender: PropTypes.func,
@@ -103,7 +103,7 @@ class Select extends Base {
          * 渲染 MenuItem 内容的方法
          * @param {Object} item 渲染节点的item
          * @param {String} searchValue 搜索关键字（如果开启搜索）
-         * @return {ReacNode} item node
+         * @return {ReactNode} item node
          */
         itemRender: PropTypes.func,
         /**
