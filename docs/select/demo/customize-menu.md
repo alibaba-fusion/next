@@ -60,7 +60,7 @@ const dataSource2 = [
     'deserunt mollit anim id est laborum',
 ];
 
-// hightlight keywords
+// highlight keywords
 const itemRender2 = (item, searchKey) => {
     let label = item.label;
     if (searchKey && searchKey.length) {
@@ -75,7 +75,7 @@ const itemRender2 = (item, searchKey) => {
 ReactDOM.render(
     <div className="demo-container">
         <Select dataSource={dataSource} itemRender={itemRender} valueRender={valueRender} placeholder="pick your color" />
-        <Select showSearch dataSource={dataSource2} itemRender={itemRender2} placeholder="hightlight keywords" style={{minWidth: 200}} />
+        <Select showSearch dataSource={dataSource2} itemRender={itemRender2} placeholder="highlight keywords" style={{minWidth: 200}} />
     </div>,
     mountNode
 );

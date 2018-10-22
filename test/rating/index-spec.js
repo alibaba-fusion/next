@@ -33,7 +33,8 @@ describe('Rating', () => {
 
         it('should render correct when value < min value', () => {
             ReactDOM.render(<Rating value={-1} id="render-test-0" />, parent);
-            assert(document.querySelectorAll('#render-test-0 .next-rating-overlay')[0].style.width === 'auto');
+            // 16 x 0 + 4 x (0 + 1) = 0 + 4 = 4
+            assert(document.querySelectorAll('#render-test-0 .next-rating-overlay')[0].style.width <= '4px');
         });
 
         it('should render correct rating', () => {
@@ -45,12 +46,12 @@ describe('Rating', () => {
 
         it('should render correct when value > count', () => {
             ReactDOM.render(<Rating value={6} id="render-test-2" />, parent);
-            
+
             // 16 x 5 + 4 x (5 + 1) = 80 + 24 = 104
-            assert(parseInt(document.querySelectorAll('#render-test-2 .next-rating-overlay')[0].style.width) > 104);
+            assert(parseInt(document.querySelectorAll('#render-test-2 .next-rating-overlay')[0].style.width) >= 104);
         });
 
-        it('should render with diffrent types', () => {
+        it('should render with different types', () => {
             // 覆盖componentWillReceiveProps的setState
             wrapper.setProps({value: 3.3});
             wrapper.setProps({showGrade: true});
