@@ -9,7 +9,7 @@
 
 - order: 10
 
-`AutoComplete` api of  size/disalbed/hasClear
+`AutoComplete` api of  size/disabled/hasClear
 :::
 ---
 

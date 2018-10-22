@@ -2,14 +2,14 @@
 
 - order: 8
 
-`useDetailValu` 把 `value` 从字符串变成对象
+`useDetailValue` 把 `value` 从字符串变成对象
 
 :::lang=en-us
 # useDetailValue
 
 - order: 8
 
-`useDetailValu` change `value` from string to object
+`useDetailValue` change `value` from string to object
 
 :::
 ---
