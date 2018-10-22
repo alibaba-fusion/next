@@ -8,20 +8,20 @@ const exportVariables = require('./export-variables');
 const { logger } = require('../utils');
 
 function* run() {
-  const options = initOptions();
+    const options = initOptions();
 
-  logger.info('> generate docs...');
-  yield* generateDocs();
+    logger.info('> generate docs...');
+    yield* generateDocs();
 
-  logger.info('> build theme demos...');
-  yield* buildDemos(options);
+    logger.info('> build theme demos...');
+    yield* buildDemos(options);
 
-  logger.info('> export variables...');
-  yield* exportVariables(options);
+    logger.info('> export variables...');
+    yield* exportVariables(options);
 
-  logger.success('Run docs successfully!');
+    logger.success('Run docs successfully!');
 }
 
 co(run).catch(err => {
-  logger.error(err);
+    logger.error(err);
 });
