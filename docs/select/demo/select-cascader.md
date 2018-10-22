@@ -39,7 +39,7 @@ class Demo extends React.Component {
 
     handleProvinceChange(value) {
         const data = cityData[value];
-        this.setState({data, province: value, disabled: !data});
+        this.setState({data, province: value, city: '', disabled: !data});
     }
 
     handleCityChange(value) {
