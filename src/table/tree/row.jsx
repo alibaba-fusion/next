@@ -19,8 +19,8 @@ export default class TreeRow extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const {className, record, primaryKey, prefix, ...others} = this.props;
-        const {treeStatus, openRowKeys} = this.context;
+        const { className, record, primaryKey, prefix, ...others } = this.props;
+        const { treeStatus, openRowKeys } = this.context;
         const cls = classnames({
             hidden: !(treeStatus.indexOf(record[primaryKey]) > -1) && record.__level !== 0,
             [`${prefix}table-row-level-${record.__level}`]: true,

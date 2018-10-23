@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {obj} from '../../util';
+import { obj } from '../../util';
 
 export default class Cell extends React.Component {
     static propTypes = {
@@ -43,13 +43,13 @@ export default class Cell extends React.Component {
             const isEqual = obj.shallowEqual(this.props, nextProps);
             return !isEqual;
         }
-
         return true;
     }
 
     render() {
         /* eslint-disable no-unused-vars */
-        const {prefix, className, cell, value, resizable, colIndex, rowIndex, record, context, align, style = {}, component: Tag, children, title, width, innerStyle, primaryKey, __normalized, filterMode, filters, sortable, lock, pure, ...others} = this.props;
+        const {prefix, className, cell, value, resizable, colIndex, rowIndex, record, context, align, style = {}, component: Tag,
+            children, title, width, innerStyle, primaryKey, __normalized, filterMode, filters, sortable, lock, pure, ...others} = this.props;
         const cellProps = {value, index: rowIndex, record, context};
         let content = cell;
         if (React.isValidElement(content)) {

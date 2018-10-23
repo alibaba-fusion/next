@@ -1,11 +1,11 @@
-import React, {Children} from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Icon from '../icon';
 import { KEYCODE } from '../util';
 import RowComponent from './expanded/row';
 import Col from './column';
-import {statics} from './util';
+import { statics } from './util';
 
 const noop = () => { };
 
