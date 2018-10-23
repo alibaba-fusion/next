@@ -1,5 +1,5 @@
 module.exports = function(data) {
-  return `<!DOCTYPE html>
+    return `<!DOCTYPE html>
 <html>
 <head>
 <title>Component Demo</title>

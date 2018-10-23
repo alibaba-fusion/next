@@ -9,12 +9,12 @@ exports.ip = require('./ip');
 exports.checkComponentName = require('./check-name');
 
 exports.getComponentName = function (component) {
-  const camelCaseName = _.camelCase(component);
-  return camelCaseName[0].toUpperCase() + camelCaseName.slice(1);
+    const camelCaseName = _.camelCase(component);
+    return camelCaseName[0].toUpperCase() + camelCaseName.slice(1);
 };
 
 exports.replaceExt = function (filePath, ext) {
-  return path.join(path.dirname(filePath), `${path.basename(filePath, path.extname(filePath))}${ext}`);
+    return path.join(path.dirname(filePath), `${path.basename(filePath, path.extname(filePath))}${ext}`);
 };
 
 /**
@@ -24,13 +24,13 @@ exports.replaceExt = function (filePath, ext) {
  * @param {object} options 参数，默认值 { stdio: 'inherit' }
  */
 exports.runCmd = function (command, options = { stdio: 'inherit' }) {
-  return new Promise(function(resolve, reject) {
-    exec(command, options, function(error, stdout, stderr) {
-      if (error) {
-        reject(error);
-      }
+    return new Promise(function(resolve, reject) {
+        exec(command, options, function(error, stdout, stderr) {
+            if (error) {
+                reject(error);
+            }
 
-      resolve(stdout || stderr);
+            resolve(stdout || stderr);
+        });
     });
-  });
 };
