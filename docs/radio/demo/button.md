@@ -37,22 +37,30 @@ class ControlApp extends React.Component {
 
         this.state = {
             value1: 'apple',
-            value2: ''
+            value2: 'apple',
+            value3: ''
         };
 
         this.onNestChange = this.onNestChange.bind(this);
-        this.onNormalChange = this.onNormalChange.bind(this);
+        this.onSmallChange = this.onSmallChange.bind(this);
+        this.onMediumChange = this.onMediumChange.bind(this);
     }
 
-    onNormalChange(value) {
+    onSmallChange(value) {
         this.setState({
             value1: value
         });
     }
 
-    onNestChange(value) {
+    onMediumChange(value) {
         this.setState({
             value2: value
+        });
+    }
+
+    onNestChange(value) {
+        this.setState({
+            value3: value
         });
     }
 
@@ -60,15 +68,15 @@ class ControlApp extends React.Component {
         return (
             <div>
                 <h4>Small size</h4>
-                <RadioGroup dataSource={list} shape="button" size="small" value={this.state.value1} onChange={this.onNormalChange} />
+                <RadioGroup dataSource={list} shape="button" size="small" value={this.state.value1} onChange={this.onSmallChange} />
                 <br/>
                 <br/>
                 <h4>Medium size (default)</h4>
-                <RadioGroup dataSource={list} shape="button" size="medium" value={this.state.value1} onChange={this.onNormalChange} />
+                <RadioGroup dataSource={list} shape="button" size="medium" value={this.state.value2} onChange={this.onMediumChange} />
                 <br/>
                 <br/>
                 <h4>Large size</h4>
-                <RadioGroup shape="button" size="large" value={this.state.value2} onChange={this.onNestChange}>
+                <RadioGroup shape="button" size="large" value={this.state.value3} onChange={this.onNestChange}>
                     <Radio id="banana" value="banana">Banana</Radio>
                     <Radio id="watermelon" value="watermelon">Watermelon</Radio>
                     <Radio id="peach" value="peach">Peach</Radio>
