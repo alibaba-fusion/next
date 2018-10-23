@@ -313,7 +313,7 @@ export default class Base extends React.Component {
     }
 
     /**
-     * Toggle hightlight MenuItem
+     * Toggle highlight MenuItem
      * @private
      * @param {number} dir -1: up, 1: down
      */
@@ -364,8 +364,8 @@ export default class Base extends React.Component {
     scrollMenuIntoView() {
         const { prefix } = this.props;
 
-        clearTimeout(this.highlightTimmer);
-        this.highlightTimmer = setTimeout(() => {
+        clearTimeout(this.highlightTimer);
+        this.highlightTimer = setTimeout(() => {
             try {
                 const menuNode = findDOMNode(this.menuRef);
                 const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);

@@ -10,7 +10,7 @@
 
 - order: 1
 
-You can controll the size of rating component by `size` attribute, and there are three options: `small`, `medium`, `large`, the default value is `medium`.
+You can control the size of rating component by `size` attribute, and there are three options: `small`, `medium`, `large`, the default value is `medium`.
 
 :::
 ---

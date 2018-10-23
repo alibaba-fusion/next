@@ -107,7 +107,11 @@ export default class Rating extends Component {
     }
 
     componentWillUnmount() {
-        // 延时设置
+        this.clearTimer();
+    }
+
+    // 清除延时
+    clearTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
@@ -160,11 +164,8 @@ export default class Rating extends Component {
         const value = this.getValue(e);
         const { onHoverChange } = this.props;
         if (value !== this.state.hoverValue) {
-            // 延时设置
-            if (this.timer) {
-                clearTimeout(this.timer);
-                this.timer = null;
-            }
+
+            this.clearTimer();
 
             this.timer = setTimeout(() => {
                 this.setState({ hoverValue: value }, () => {
@@ -175,11 +176,8 @@ export default class Rating extends Component {
     }
 
     handleLeave() {
-        // 清除延时
-        if (this.timer) {
-            clearTimeout(this.timer);
-            this.timer = null;
-        }
+
+        this.clearTimer();
 
         this.setState({
             hoverValue: 0

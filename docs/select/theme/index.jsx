@@ -69,7 +69,7 @@ class FunctionDemo extends React.Component {
             disabled: true
         }];
 
-        const comboboxSource = ['Canada', 'China', 'Colombia', 'Congo', 'Georgia', 'Germany', 'Greece', 'Grenada', 'Guam', 'Singapore', 'South Korea', 'Switzerland', 'Uganda', 'United Kiongdom', 'United States'];
+        const comboboxSource = ['Canada', 'China', 'Colombia', 'Congo', 'Georgia', 'Germany', 'Greece', 'Grenada', 'Guam', 'Singapore', 'South Korea', 'Switzerland', 'Uganda', 'United Kingdom', 'United States'];
 
         const selectProps = {
             dataSource,

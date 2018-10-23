@@ -8,23 +8,23 @@ const generateApi = require('./generate-api');
 const { logger } = require('../utils');
 
 function run() {
-  const options = initOptions();
+    const options = initOptions();
 
-  logger.info('> transform es6 to es5...');
-  transform();
+    logger.info('> transform es6 to es5...');
+    transform();
 
-  logger.info('> generate scss entry...');
-  generateScssEntry();
+    logger.info('> generate scss entry...');
+    generateScssEntry();
 
-  logger.info('> generate api...');
-  generateApi();
+    logger.info('> generate api...');
+    generateApi();
 
-  logger.info('> export-api-schema...');
-  exportApiSchema(options);
+    logger.info('> export-api-schema...');
+    exportApiSchema(options);
 
-  logger.success('Run build successfully!');
+    logger.success('Run build successfully!');
 }
 
 co(run).catch(err => {
-  logger.error(err);
+    logger.error(err);
 });
