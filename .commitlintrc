@@ -2,7 +2,7 @@
   "rules": {
     "header-max-length": [2, "always", 72],
     "scope-empty": [2, "never"],
-    "scope-case": [2, "always", "lower-case"],
+    "scope-case": [2, "always", "pascal-case"],
     "subject-empty": [2, "never"],
     "subject-full-stop": [2, "never", "."],
     "type-empty": [2, "never"],

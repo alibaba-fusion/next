@@ -6,9 +6,9 @@ const logger  = require('./logger');
 const EN_DOC_REG = /:{3}lang=en-us((.|\r|\n)*):{3}/;
 
 function html2Escape(sHtml) {
-  return sHtml.replace(/[<>&"]/g,function(c){
-    return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];
-  });
+    return sHtml.replace(/[<>&"]/g, function(c) {
+        return {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;'}[c];
+    });
 }
 
 module.exports = function(content, filePath, lang) {
@@ -51,17 +51,16 @@ module.exports = function(content, filePath, lang) {
                 }
 
                 const paragraphNode = header.find(child => child.type === 'paragraph');
-                    let desc = '';
-                    if (paragraphNode && paragraphNode.children) {
-                        desc = paragraphNode.children.map(itemNode => {
-                            if (itemNode.type === 'inlineCode') {
-                                return `<code>${html2Escape(itemNode.value)}</code>`;
-                            }
-                            return itemNode.value;
-                        }).join(' ');
-                    }
-                    result.meta.desc = desc;
+                let desc = '';
+                if (paragraphNode && paragraphNode.children) {
+                    desc = paragraphNode.children.map(itemNode => {
+                        if (itemNode.type === 'inlineCode') {
+                            return `<code>${html2Escape(itemNode.value)}</code>`;
+                        }
+                        return itemNode.value;
+                    }).join(' ');
                 }
+                result.meta.desc = desc;
             }
         }
         if (bodyContent) {

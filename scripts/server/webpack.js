@@ -16,18 +16,18 @@ const cwd = process.cwd();
 module.exports = function getWebpackConfig(options) {
     const config = getConfig();
     const { componentName, componentPath, disableAnimation, lang } = options;
-    
+
     const indexPath = path.join(componentPath, lang === 'zh' ? 'index.md' : 'index.en-us.md');
     const demoPaths = glob.sync(path.join(componentPath, 'demo', '*.md'));
     const themePaths = glob.sync(path.resolve(componentPath, 'theme/**/*.jsx'));
     const entry = getEntry([indexPath, ...demoPaths, ...themePaths]);
     config.entry = entry;
-    
+
     config.output = {
         publicPath: '/',
         filename: '[name].js'
     };
-    
+
     config.resolveLoader = {
         alias: {
             'index-loader': path.join(loadersPath, 'index/index.js'),
@@ -35,12 +35,12 @@ module.exports = function getWebpackConfig(options) {
             'theme-loader': path.join(loadersPath, 'theme/index.js')
         }
     };
-    
+
     const babelLoaderIndex = config.module.rules.findIndex(rule => {
         return rule.test.toString().indexOf('js') > -1;
     });
     config.module.rules[babelLoaderIndex] = babelLoader;
-    
+
     let links = getLinks(demoPaths);
     links = [{
         href: componentName,
@@ -51,13 +51,13 @@ module.exports = function getWebpackConfig(options) {
         title: '使用示例',
         filename: 'Usage'
     }].concat(links);
-    
+
     links.push({
         href: null,
         title: '主题配置',
         filename: 'Usage of theme'
     });
-    
+
     if (themePaths.length) {
         const docsPath = path.join(cwd, 'docs');
         if (componentName === 'core') {
