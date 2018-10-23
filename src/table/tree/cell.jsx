@@ -45,7 +45,6 @@ export default class TreeCell extends React.Component {
         const treeArrowNodeIndex = rowSelection ? 1 : 0;
         let firstCellStyle, treeArrowNode;
         if (colIndex === treeArrowNodeIndex) {
-            //
             let treeArrowType;
             if (isTree) {
                 firstCellStyle = {

@@ -27,7 +27,7 @@ class Demo extends React.Component {
     render() {
         return (
             <div className="custom-affix-container" ref={this._containerRefHandler.bind(this)}>
-                <div className="a-wrapper">
+                <div className="affix-wrapper">
                     <Affix container={() => this.container} offsetTop={0}>
                         <Button type="secondary">Affixed Button</Button>
                     </Affix>
@@ -49,7 +49,7 @@ ReactDOM.render(<Demo />, mountNode);
     background: url(https://img.alicdn.com/tfs/TB1AbJXSpXXXXXJXpXXXXXXXXXX-32-32.jpg) repeat 50% 50%;
 }
 
-.custom-affix-container .a-wrapper {
+.custom-affix-container .affix-wrapper {
     padding-top: 50px;
     height: 500px;
 }

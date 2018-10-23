@@ -12,7 +12,7 @@ class Paragraph extends React.Component {
         /**
          * 额外的样式名 会附加到 root dom 上
          */
-        className: PropTypes.any,
+        className: PropTypes.string,
         /**
          * 什么方式展示段落
          * @enumdesc 展示所有文本, 展示三行以内（非强制）

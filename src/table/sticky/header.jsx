@@ -10,7 +10,7 @@ export default class StickHeader extends React.Component {
         affixProps: PropTypes.object
     }
     render() {
-        const {Header, offsetTop, affixProps} = this.context;
+        const { Header, offsetTop, affixProps } = this.context;
         return (<Affix {...affixProps} offsetTop={offsetTop}>
             <Header {...this.props}/>
         </Affix>);

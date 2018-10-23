@@ -1,5 +1,5 @@
 import React from 'react';
-import {findDOMNode}  from  'react-dom';
+import { findDOMNode }  from  'react-dom';
 import PropTypes from 'prop-types';
 import BodyComponent from '../base/body';
 
@@ -53,7 +53,7 @@ export default class VirtualBody extends React.Component {
     }
 
     render() {
-        const {prefix, className, colGroup, ...others} = this.props;
+        const { prefix, className, colGroup, ...others } = this.props;
         const {maxBodyHeight, bodyHeight, innerTop} = this.context;
         return (<div style={{maxHeight: maxBodyHeight}} className={className} onScroll={this.onScroll}>
             <div style={{height: bodyHeight, overflow: 'hidden', position: 'relative'}} ref={this.virtualScrollRef}>

@@ -7,7 +7,7 @@ import RowComponent from './list/row';
 import BodyComponent from './list/body';
 import HeaderComponent from './fixed/header';
 import WrapperComponent from './fixed/wrapper';
-import {statics} from './util';
+import { statics } from './util';
 
 export default function list(BaseComponent) {
     class ListTable extends React.Component {

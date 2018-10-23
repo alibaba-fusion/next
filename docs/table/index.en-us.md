@@ -4,7 +4,7 @@
 -   family: DataDisplay
 -   chinese: 表格
 -   cols: 1
--   type: 展示
+-   type: Display
 
 ---
 
@@ -82,7 +82,7 @@ ReactDOM.render(
 
 ### Table
 
-| params                  | desc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | type              | default       |
+| Property                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Type              | Default       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | --------- |
 | dataSource          | data source shown in the table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Array           | \[]       |
 | onRowClick          | callback triggered when click each row<br><br>**signatures**:<br>Function(record: Object, index: Number, e: Event) => void<br>**params**:<br>_record_: {Object} the data corresponding to the row<br>_index_: {Number} the index corresponding to the row<br>_e_: {Event} event object                                                                                                                                                                                                                                                                                                                                                                                                                               | Function        | () => { } |

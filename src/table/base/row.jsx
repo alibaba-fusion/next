@@ -2,8 +2,8 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {obj, dom} from '../../util';
-import {fetchDataByPath} from '../util';
+import { obj, dom } from '../../util';
+import { fetchDataByPath } from '../util';
 
 const noop = () => { };
 

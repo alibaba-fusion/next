@@ -10,11 +10,6 @@ import Badge from '../../../src/badge';
 import '../../../src/icon/style.js';
 import Icon from '../../../src/icon';
 
-// import demo helper
-
-// import badge
-
-
 const badgeExampleStyle = {
     width: '42px',
     height: '42px',

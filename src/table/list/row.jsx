@@ -65,12 +65,11 @@ export default class GroupListRow extends Row {
         return null;
     }
     renderContent(type) {
-        const { columns, prefix, record, rowIndex, rowSelection } = this.props;
+        const { columns, prefix, record, rowIndex } = this.props;
         const cameType = type.charAt(0).toUpperCase() + type.substr(1);
         const list = this.context[`list${cameType}`];
         let listNode;
         if (list) {
-            const { hasChildrenSelection } = list;
             if (React.isValidElement(list.cell)) {
                 listNode = React.cloneElement(list.cell, { record, index: rowIndex });
             } else if (typeof list.cell === 'function') {
