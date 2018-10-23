@@ -5,10 +5,8 @@ const { checkComponentName } = require('../utils');
 
 const scriptPath = path.join(__dirname, 'server.js');
 
-const args = process.argv.slice(2);
-
-checkComponentName();
-start(args);
+const componentName = checkComponentName();
+start([componentName]);
 
 function start(args) {
     const worker = cp.fork(scriptPath, args);

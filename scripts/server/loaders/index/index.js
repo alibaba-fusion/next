@@ -17,11 +17,16 @@ module.exports = function(content) {
     this.addDependency(indexTplPath);
     this.addDependency(resourcePath);
 
+    const lines = content.split(/\n/g);
+    // const startIndex = lines.findIndex(line => /^-/.test(line));
+    const endIndex = lines.findIndex(line => /^-{3,}/.test(line));
+    const newContent = lines.slice(endIndex + 1).join('\n');
+
     ejs.renderFile(indexTplPath, {
         links,
         lang,
         name: 'index',
-        readmeHTML: marked(content)
+        readmeHTML: marked(newContent)
     }, (err, html) => {
         if (err) {
             logger.error(`Render index.html failed: ${err}`);

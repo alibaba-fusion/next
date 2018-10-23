@@ -41,12 +41,23 @@ module.exports = function getWebpackConfig(options) {
     });
     config.module.rules[babelLoaderIndex] = babelLoader;
 
-    const links = getLinks(demoPaths);
-    links.unshift({
+    let links = getLinks(demoPaths);
+    links = [{
         href: componentName,
         title: '首页',
         filename: 'index'
+    }, {
+        href: null,
+        title: '使用示例',
+        filename: 'Usage'
+    }].concat(links);
+
+    links.push({
+        href: null,
+        title: '主题配置',
+        filename: 'Usage of theme'
     });
+
     if (themePaths.length) {
         const docsPath = path.join(cwd, 'docs');
         if (componentName === 'core') {
