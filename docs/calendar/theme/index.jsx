@@ -122,7 +122,7 @@ function render(i18n, lang) {
                     <Demo title={i18n.date}>
                         <DemoGroup label={i18n.normal}>
                             <div style={wrappedRangeCalendarStyle}>
-                                <RangeCalendar startValue={calendarValue} endValue={calendarValue.clone().add(1, 'months')} />
+                                <RangeCalendar showOtherMonth startValue={calendarValue} endValue={calendarValue.clone().add(1, 'months')} />
                             </div>
                         </DemoGroup>
                     </Demo>
