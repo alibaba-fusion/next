@@ -40,7 +40,6 @@
     $colorBg,
     $shadow,
     $widthBorder,
-    $arrowCenter,
     $arrorExpose
 ) {
     $shadow-top: $balloon-shadow-top;
@@ -60,19 +59,20 @@
         height: $height;
         content: ' ';
         transform: rotate(45deg);
+        box-sizing: content-box !important;
         border: $widthBorder $balloon-border-style $colorBorder;
         background-color: $colorBg;
         z-index: -1;
     }
     &.#{$css-prefix}balloon-top:after {
         top: $arrorExpose;
-        left: calc(#{$arrowCenter});
+        left: calc(50% + #{$arrorExpose});
         border-right: none;
         border-bottom: none;
         box-shadow: $shadow-top;
     }
     &.#{$css-prefix}balloon-right:after {
-        top: calc(#{$arrowCenter});
+        top: calc(50% + #{$arrorExpose});
         right: $arrorExpose;
         border-left: none;
         border-bottom: none;
@@ -80,13 +80,13 @@
     }
     &.#{$css-prefix}balloon-bottom:after {
         bottom: $arrorExpose;
-        left: calc(#{$arrowCenter});
+        left: calc(50% + #{$arrorExpose});
         border-top: none;
         border-left: none;
         box-shadow: $shadow-bottom;
     }
     &.#{$css-prefix}balloon-left:after {
-        top: calc(#{$arrowCenter});
+        top: calc(50% + #{$arrorExpose});
         left: $arrorExpose;
         border-top: none;
         border-right: none;
@@ -218,19 +218,20 @@
         height: $height;
         content: ' ';
         transform: rotate(45deg);
+        box-sizing: content-box !important;
         border: $balloon-tooltip-border-width $balloon-tooltip-border-style $colorBorder;
         background-color: $colorBg;
         z-index: -1;
     }
     &-top:after {
         top: $balloon-size-arrow-expose;
-        left: calc(#{$balloon-size-arrow-center});
+        left: calc(50% + #{$balloon-size-arrow-expose});
         border-right: none;
         border-bottom: none;
         box-shadow: $shadow-top;
     }
     &-right:after {
-        top: calc(#{$balloon-size-arrow-center});
+        top: calc(50% + #{$balloon-size-arrow-expose});
         right: $balloon-size-arrow-expose;
         border-left: none;
         border-bottom: none;
@@ -238,13 +239,13 @@
     }
     &-bottom:after {
         bottom: $balloon-size-arrow-expose;
-        left: calc(#{$balloon-size-arrow-center});
+        left: calc(50% + #{$balloon-size-arrow-expose});
         border-top: none;
         border-left: none;
         box-shadow: $shadow-bottom;
     }
     &-left:after {
-        top: calc(#{$balloon-size-arrow-center});
+        top: calc(50% + #{$balloon-size-arrow-expose});
         left: $balloon-size-arrow-expose;
         border-top: none;
         border-right: none;
