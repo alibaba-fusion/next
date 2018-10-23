@@ -1,5 +1,5 @@
 import React from 'react';
-import {findDOMNode} from 'react-dom';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import BodyComponent from '../base/body';
 
@@ -25,19 +25,19 @@ export default class FixedBody extends React.Component {
     }
 
     componentDidMount() {
-        const {getNode} = this.context;
+        const { getNode } = this.context;
         getNode && getNode('body', findDOMNode(this));
     }
 
     onBodyScroll = () => {
-        const {onBodyScroll} = this.context;
+        const { onBodyScroll } = this.context;
         onBodyScroll && onBodyScroll();
         this.props.onScroll();
     }
 
     render() {
-        const {className, colGroup, ...others} = this.props;
-        const {maxBodyHeight, fixedHeader} = this.context;
+        const { className, colGroup, ...others } = this.props;
+        const { maxBodyHeight, fixedHeader } = this.context;
         const style = {};
         if (fixedHeader) {
             style.maxHeight = maxBodyHeight;

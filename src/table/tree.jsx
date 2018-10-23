@@ -165,7 +165,7 @@ export default function tree(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let {components, isTree, dataSource, indent, ...others } = this.props;
+            let { components, isTree, dataSource, indent, ...others } = this.props;
 
             if (isTree) {
                 components = {...components};

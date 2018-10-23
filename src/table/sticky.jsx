@@ -46,8 +46,8 @@ export default function sticky(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars */
-            const {stickyHeader, offsetTop, affixProps, ...others} = this.props;
-            let {components, maxBodyHeight, fixedHeader} = this.props;
+            const { stickyHeader, offsetTop, affixProps, ...others } = this.props;
+            let { components, maxBodyHeight, fixedHeader } = this.props;
             if (stickyHeader) {
                 components = {...components};
                 components.Header = StickyHeader;

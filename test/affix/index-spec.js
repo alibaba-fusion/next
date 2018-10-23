@@ -23,7 +23,7 @@ class AffixDemo extends React.Component {
 // TODO: 目前没有找到测试 scroll 事件的好办法
 describe('Affix', () => {
     describe('render', () => {
-        let wrapper, parent, clock;
+        let wrapper, parent;
 
         beforeEach(() => {
             parent = document.createElement('div');
@@ -52,7 +52,7 @@ describe('Affix', () => {
             const style = { padding: '40px 0' };
             wrapper = mount(<div style={style}>
                 <Affix offsetTop={0}>
-                    < Button type = "secondary" > Hello World </Button>
+                    <Button type = "secondary"> Hello World </Button>
                 </Affix>
             </div>);
             assert(wrapper.find('.next-affix').length === 0);
@@ -62,7 +62,7 @@ describe('Affix', () => {
             const style = { padding: '40px 0' };
             wrapper = mount(<div style={style}>
                 <Affix offsetBottom={0}>
-                    < Button type = "secondary" > Hello World </Button>
+                    <Button type = "secondary"> Hello World </Button>
                 </Affix>
             </div>);
             assert(wrapper.find('.next-affix').length === 0);

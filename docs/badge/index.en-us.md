@@ -17,7 +17,7 @@ When we receive a new message, or our app/plugin/module should be update or upgr
 
 ### Badge
 
-| Params            | Desc                                                    | Type            | Default  |
+| Property            | Description                                                   | Type            | Default  |
 | ------------- | ----------------------------------------------------- | ------------- | ----- |
 | children      | content of Badge based on                                               | ReactNode     | -     |
 | count         | number to display, display ${overflowCount}+ when count is greater than overflowCount, display none when count equal to 0 | Number/String | 0     |

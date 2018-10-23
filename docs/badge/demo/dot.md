@@ -17,7 +17,6 @@ Just a red dot, not a number.
 ````jsx
 import { Badge, Icon } from '@alifd/next';
 
-
 ReactDOM.render(
     <div>
         <Badge dot>

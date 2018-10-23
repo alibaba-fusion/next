@@ -5,10 +5,6 @@ import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
 import Paragraph from '../../../src/paragraph';
 import '../../../src/paragraph/style.js';
 
-// import demo helper
-
-// import tag
-
 const i18nMap = {
     'zh-cn': {
         short: '等你, 在雨中, 在造虹的雨中。蝉声沉落, 蛙声升起。一池的红莲如红焰, 在雨中。你来不来都一样, 竟感觉。每朵莲都像你。尤其隔着黄昏, 隔着这样的细雨。永恒, 刹那, 刹那, 永恒。',

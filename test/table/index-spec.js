@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount, render } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-import ReactTestUtils from 'react-dom/test-utils';
+// import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Loading from '../../src/loading';
 import Checkbox from '../../src/checkbox';
