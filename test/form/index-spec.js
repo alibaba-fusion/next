@@ -91,6 +91,13 @@ describe('form', () => {
             assert(onSubmit.calledOnce);
             done();
         });
+        it('should deprecated direction', () => {
+          const wrapper1 = mount(<Form></Form>);
+          const wrapper2 = mount(<Form direction={'hoz'}></Form>);
+
+          assert(!wrapper1.instance()._instance.props.inline);
+          assert(wrapper2.instance()._instance.props.inline);
+        })
     });
     describe('FormItem', () => {
         it('should supoort props', () => {

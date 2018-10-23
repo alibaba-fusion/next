@@ -30,6 +30,7 @@ class ControlApp extends React.Component {
 
         this.onChange = this.onChange.bind(this);
     }
+
     onChange(value) {
         this.setState({
             value: value
@@ -40,20 +41,33 @@ class ControlApp extends React.Component {
     onClick(e) {
         console.log('onClick', e);
     }
+
     render() {
         return (
             <div >
                 <h4>Grid Layout</h4>
                 <RadioGroup onChange={this.onChange} style={{ width: '1000px'}} >
                     <Row>
-                        <Col span="8"><Radio value="apple1" onClick={this.onClick} >Apple</Radio></Col>
-                        <Col span="8"><Radio value="pear1" onClick={this.onClick} >Pear</Radio></Col>
-                        <Col span="8"><Radio value="banana1" onClick={this.onClick} >Banana</Radio></Col>
+                        <Col span="8">
+                            <Radio value="apple1" onClick={this.onClick} >Apple</Radio>
+                        </Col>
+                        <Col span="8">
+                            <Radio value="pear1" onClick={this.onClick} >Pear</Radio>
+                        </Col>
+                        <Col span="8">
+                            <Radio value="banana1" onClick={this.onClick} >Banana</Radio>
+                        </Col>
                     </Row>
                     <Row>
-                        <Col span="8"><Radio value="peach" onClick={this.onClick} >Peach</Radio></Col>
-                        <Col span="8"><Radio value="watermelon" onClick={this.onClick} >Watermelon</Radio></Col>
-                        <Col span="8"><Radio value="strawberry" onClick={this.onClick} >Strawberry</Radio></Col>
+                        <Col span="8">
+                            <Radio value="peach" onClick={this.onClick} >Peach</Radio>
+                        </Col>
+                        <Col span="8">
+                            <Radio value="watermelon" onClick={this.onClick} >Watermelon</Radio>
+                        </Col>
+                        <Col span="8">
+                            <Radio value="strawberry" onClick={this.onClick} >Strawberry</Radio>
+                        </Col>
                     </Row>
                 </RadioGroup>
             </div>

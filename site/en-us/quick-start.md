@@ -43,17 +43,17 @@ import '@alifd/next/dist/next.css';
 import { Button, Input } from '@alifd/next';
 ```
 
-### Import Modular with Plugin
+### Import module with plugin
 
 
-#### 1.Import Modular Manually
+#### 1. Import module manually
 
 ``` js
 import Button from '@alifd/next/lib/button';
 import '@alifd/next/lib/button/style';
 ```
 
-#### 2.Use with [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) ( Recommend )
+#### 2. Use with [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) ( Recommend )
 
 ``` js
 // webpack babel loader option or .babelrc
@@ -68,7 +68,7 @@ import '@alifd/next/lib/button/style';
 }
 ```
 
-It will transform below code
+It will transform code as below
 
 ``` js
 import { Button } from '@alifd/next';
@@ -84,10 +84,10 @@ import '@alifd/next/lib/button/style';
 
 ## Release Schedule
 
-Follow [Semantic Versioning 2.0.0](https://semver.org/) Semantic Version Strategy:
+Follow [Semantic Versioning 2.0.0](https://semver.org/) Semantic Version Strategy.
 
 Patch Version: Every Monday release of a bugfix version(anytime for urgent bugfix).
 
-Minor Version: Monthly release of a backward compatible version with new features
+Minor Version: Monthly release of a backward compatible version with new features.
 
 Major version: contains some break changes, usually one to two years release of a version.
