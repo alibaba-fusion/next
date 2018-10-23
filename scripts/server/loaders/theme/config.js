@@ -13,21 +13,25 @@ module.exports = function(context, componentName) {
     co(function* () {
         const locals = {
             componentName,
-            hasRubySass: !cp.execSync('type scss >/dev/null 2>&1 || echo >&2 1').toString()
+            hasRubySass: true
         };
 
-        if (locals.hasRubySass) {
-            try {
-                Object.assign(locals, yield {
-                    varEnums: getVariableEnums(),
-                    trackerJS: getTrackerJS()
-                });
-                locals.error = false;
-            } catch (e) {
-                locals.error = e.stack;
-            }
-        } else {
+        try {
+            cp.execSync('sass -v');
+        } catch (e) {
+            locals.hasRubySass = false;
+            locals.error = false;
             logger.warn('如果想调试配置平台Demo，请执行 `sudo gem install sass` 命令安装 ruby-sass.');
+        }
+
+        try {
+            Object.assign(locals, yield {
+                varEnums: getVariableEnums(),
+                trackerJS: getTrackerJS()
+            });
+            locals.error = false;
+        } catch (e) {
+            locals.error = e.stack;
         }
 
         const html = yield renderFile(cofigTplPath, locals);
