@@ -39,10 +39,10 @@ module.exports = function(content, filePath, lang) {
                 if (listNode && listNode.children) {
                     listNode.children.forEach(itemNode => {
                         if (itemNode.children &&
-                itemNode.children[0] &&
-                itemNode.children[0].children &&
-                itemNode.children[0].children[0] &&
-                itemNode.children[0].children[0].value) {
+							itemNode.children[0] &&
+							itemNode.children[0].children &&
+							itemNode.children[0].children[0] &&
+							itemNode.children[0].children[0].value) {
                             const str = itemNode.children[0].children[0].value;
                             const arr = str.split(':').map(part => part.trim());
                             result.meta[arr[0]] = arr[1];
