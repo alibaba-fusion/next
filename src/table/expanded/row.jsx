@@ -21,7 +21,7 @@ export default class ExpandedRow extends React.Component {
 
     renderExpandedRow(record, index, colSpan) {
         const { expandedRowRender, expandedRowIndent, openRowKeys, lockType } = this.context;
-        const {columns, cellRef} = this.props;
+        const { columns, cellRef } = this.props;
         if (expandedRowRender) {
             const { primaryKey, prefix } = this.props,
                 leftIndent = expandedRowIndent[0],
@@ -76,7 +76,7 @@ export default class ExpandedRow extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { record, rowIndex, columns, ...others } = this.props;
+        const { record, rowIndex, columns } = this.props;
         if (record.__expanded) {
             return this.renderExpandedRow(record, rowIndex, columns.length);
         }

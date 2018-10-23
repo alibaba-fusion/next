@@ -60,12 +60,12 @@ class Badge extends Component {
             others.title = others.title || `${count}`;
         }
 
-        const clazz = classNames(`${prefix}badge`, {
+        const classes = classNames(`${prefix}badge`, {
             [`${prefix}badge-not-a-wrapper`]: !children,
         }, className);
 
         return (
-            <span className={clazz} {...others}>
+            <span className={classes} {...others}>
                 {children}
                 <Sup {...({prefix, content, count, overflowCount, dot, style})} />
             </span>

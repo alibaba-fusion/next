@@ -45,7 +45,8 @@ export default class Header extends React.Component {
 
     render() {
         /*eslint-disable no-unused-vars */
-        const { prefix, className, children, component: Tag, colGroup, columns, locale, filterParams, onFilter, components, headerCellRef, onSort, sort, onResizeChange, pure, ...others } = this.props;
+        const { prefix, className, children, component: Tag, colGroup, columns, locale, filterParams, onFilter, components,
+            headerCellRef, onSort, sort, onResizeChange, pure, ...others } = this.props;
 
         const { Cell = CellComponent, Filter = FilterComponent, Sort = SortComponent, Resize = ResizeComponent } = components;
         const rowSpan = columns.length;

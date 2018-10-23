@@ -184,7 +184,6 @@ export default function lock(BaseComponent) {
             Array.prototype.unshift.apply(originChildren, lockLeftChildren);
             originChildren = originChildren.concat(lockRightChildren);
             return originChildren;
-
         }
 
         getTableInstance = (type, instance) => {

@@ -8,7 +8,6 @@ import {support, dom} from '../util';
  * badge sup component
  */
 
-
 // util::getDigitArray
 const getDigitArray = num => num.toString().split('').reverse().map(i => parseInt(i, 10));
 
@@ -132,7 +131,7 @@ export default class Sup extends Component {
     render() {
         const {prefix, count, overflowCount, dot, style, content} = this.props;
 
-        const supClazz = classNames(`${prefix}badge-scroll-number`, {
+        const supClasses = classNames(`${prefix}badge-scroll-number`, {
             [`${prefix}badge-count`]: !!count,
             [`${prefix}badge-dot`]: dot,
             [`${prefix}badge-custom`]: !!content
@@ -157,7 +156,7 @@ export default class Sup extends Component {
         };
 
         const wrapper = support.animation ? <Animate animation={animation} /> : <span />;
-        const element = show ? <sup ref="sup" className={supClazz} style={style}>{children}</sup> : null;
+        const element = show ? <sup ref="sup" className={supClasses} style={style}>{children}</sup> : null;
 
         return React.cloneElement(wrapper, {}, element);
     }

@@ -10,7 +10,7 @@
 
 - order: 0
 
-The simples usage is to wrap your components direcly with Affix component.
+The simple usage is to wrap your components direcly with Affix component.
 
 :::
 

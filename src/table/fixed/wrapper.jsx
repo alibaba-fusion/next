@@ -10,7 +10,7 @@ export default class FixedWrapper extends React.Component {
         wrapperContent: PropTypes.any
     }
     render() {
-        const {children, wrapperContent, prefix} = this.props;
+        const { children, wrapperContent, prefix } = this.props;
         return (<div className={`${prefix}table-inner`}>
             {children}
             {wrapperContent}

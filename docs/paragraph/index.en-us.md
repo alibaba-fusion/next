@@ -3,7 +3,7 @@
 -   category: Components
 -   family: General
 -   chinese: 段落
--   type: 基本
+-   type: Basic
 
 ---
 
@@ -20,7 +20,7 @@ Paragraphs are used to control the overall text visual of the page, and are main
 
 ### Paragraph
 
-| Parameter | Description | Type | Default |
+| Property | Description | Type | Default |
 | ---- | ------------------------------------------ | ------ | -------- |
 | size | component size. Default: medium medium, small small | String | 'medium' |
 | type | What way to show paragraphs. Default: long shows all text, short shows three lines (not mandatory) | String | 'long' |

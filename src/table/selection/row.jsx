@@ -19,7 +19,7 @@ export default class SelectionRow extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { className, record, primaryKey, ...others } = this.props;
+        const { className, record, primaryKey } = this.props;
         const { selectedRowKeys } = this.context;
         const cls = classnames({
             selected: selectedRowKeys.indexOf(record[primaryKey]) > -1,

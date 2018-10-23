@@ -1,5 +1,5 @@
 import React from 'react';
-import {findDOMNode} from 'react-dom';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import HeaderComponent from '../base/header';
 
@@ -22,7 +22,7 @@ export default class FixedHeader extends React.Component {
     }
 
     render() {
-        const {prefix, className, colGroup, ...others} = this.props;
+        const { prefix, className, colGroup, ...others } = this.props;
         return (<div className={className}>
             <div className={`${prefix}table-header-inner`}>
                 <table>

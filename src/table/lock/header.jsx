@@ -1,4 +1,4 @@
-import {findDOMNode} from 'react-dom';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import FixedHeader from '../fixed/header';
 
