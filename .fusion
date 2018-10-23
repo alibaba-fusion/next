@@ -15,7 +15,7 @@
       "entries": {
         "core": {
           "sass": {
-            "core.scss": "lib/core/index-noreset.scss"
+            "core.scss": "lib/core/reset.scss"
           }
         },
         "form-element": {
