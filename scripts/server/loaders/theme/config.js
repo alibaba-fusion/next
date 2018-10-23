@@ -18,8 +18,7 @@ module.exports = function(context, componentName) {
 
         try {
             cp.execSync('sass -v');
-        }
-        catch(e) {
+        } catch (e) {
             locals.hasRubySass = false;
             locals.error = false;
             logger.warn('如果想调试配置平台Demo，请执行 `sudo gem install sass` 命令安装 ruby-sass.');
