@@ -12,41 +12,48 @@
 
 /// line-zero
 /// @semantic 无
-/// @export width
+/// @export size
+/// @group size
 /// @type Length
 /// @unconfigurable
 $line-zero: 0 !default;
 
 /// line-1
 /// @semantic 细
-/// @export width
+/// @export size
+/// @group size
 /// @type Length
 $line-1: 1px !default;
 
 /// line-2
 /// @semantic 常规
-/// @export width
+/// @export size
+/// @group size
 /// @type Length
 $line-2: 2px !default;
 
 /// line-3
 /// @semantic 粗
-/// @export width
+/// @export size
+/// @group size
 /// @type Length
 $line-3: 3px !default;
 
 /// line-solid
 /// @export style
+/// @group style
 /// @unconfigurable
 $line-solid: solid !default;
 
 /// line-dashed
 /// @export style
+/// @group style
 /// @unconfigurable
 $line-dashed: dashed !default;
 
 /// line-dotted
 /// @export style
+/// @group style
 /// @unconfigurable
 $line-dotted: dotted !default;
 

@@ -22,7 +22,7 @@ class Radio extends UIState {
          */
         className: PropTypes.string,
         /**
-         * id 组件input的id
+         * 组件input的id
          */
         id: PropTypes.string,
         /**
@@ -34,7 +34,7 @@ class Radio extends UIState {
          */
         checked: PropTypes.bool,
         /**
-         * radio的默认选中
+         * 设置radio是否默认选中
          */
         defaultChecked: PropTypes.bool,
         /**
@@ -58,7 +58,7 @@ class Radio extends UIState {
          */
         onMouseLeave: PropTypes.func,
         /**
-         * 表示radio被禁用
+         * radio是否被禁用
          */
         disabled: PropTypes.bool,
     }
@@ -120,6 +120,7 @@ class Radio extends UIState {
             this.resetUIState();
         }
     }
+
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         const { shallowEqual } = obj;
         return !shallowEqual(this.props, nextProps) ||

@@ -9,7 +9,7 @@
 
 - order: 3
 
-api useage of select
+api usage of select
 :::
 ---
 

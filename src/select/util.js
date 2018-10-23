@@ -174,7 +174,7 @@ export function normalizeDataSource(dataSource, deep = 0) {
 
 
 /**
- * Get flattern dataSource
+ * Get flatten dataSource
  * @static
  * @param  {Array} dataSource structured dataSource
  * @return {Array}
@@ -284,7 +284,7 @@ export function getValueDataSource(value, mapValueDS, mapMenuDS) {
 }
 
 /**
- * Get flattern dataSource
+ * Get flatten dataSource
  * @static
  * @param  {any} value structured dataSource
  * @return {String}

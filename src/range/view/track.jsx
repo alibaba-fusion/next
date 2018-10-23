@@ -2,23 +2,21 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Track extends React.Component {
-    static propTypes = {
-        prefix: PropTypes.string
-    }
+const Track = ({ prefix }) => {
+    const classes = classNames({
+        [`${prefix}range-track`]: true
+    });
+    return (
+        <div className={classes}></div>
+    );
+};
 
-    static defaultProps = {
-        prefix: 'next-'
-    }
+Track.propTypes = {
+    prefix: PropTypes.string
+};
 
-    render() {
-        const {prefix} = this.props;
-        const classes = classNames({
-            [`${prefix}range-track`]: true
-        });
+Track.defaultProps = {
+    prefix: 'next-'
+};
 
-        return (
-            <div className={classes}></div>
-        );
-    }
-}
+export default Track;
