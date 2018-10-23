@@ -7,7 +7,7 @@
 /// @family data-entry
 /// @varPrefix $input-
 /// @classPrefix {prefix}-input
-/// @order {"size/bounding":10,"size/feedback":11,"size/maxlen":12,"size/clear":13,"statement/normal":10,"statement/normal/addon":100,"statement/normal/feedback":101,"statement/normal/maxlen":102,"statement/normal/clear":103,"statement/disabled":11,"statement/hover":12,"statement/hover/clear":120,"statement/focus":13,"statement/error":14}
+/// @order {"statement/normal":10,"statement/normal/addon":100,"statement/normal/feedback":101,"statement/normal/maxlen":102,"statement/normal/clear":103,"statement/hover":11,"statement/hover/clear":110,"statement/focus":12,"statement/disabled":13,"statement/error":14,"size/bounding":10,"size/bounding/addon":100,"size/label":11,"size/maxlen":12}
 ////
 
 $input-prefix: '.#{$css-prefix}input';
