@@ -12,12 +12,10 @@
 
 $search-prefix: '.#{$css-prefix}search';
 
+// Normal
 /// corner
 /// @namespace size/bounding
 $search-normal-corner: $corner-1 !default;
-/// corner
-/// @namespace size/bounding
-$search-simple-corner: $corner-1 !default;
 
 // Primary
 // ----------------------------------------
@@ -30,6 +28,9 @@ $search-normal-primary-hover-color: $color-brand1-6 !default;
 /// split
 /// @namespace statement/normal
 $search-normal-primary-split-color: $color-line1-1 !default;
+/// shadow
+/// @namespace statement/normal
+$search-normal-primary-shadow: $shadow-zero !default;
 /// text
 /// @namespace statement/btn
 $search-normal-primary-btn-text-color: $color-white !default;
@@ -45,6 +46,8 @@ $search-normal-primary-border-width: $line-2 !default;
 /// icon-margin(r)
 /// @namespace size/btn
 $search-normal-primary-btn-text-padding-left: $s-zero !default;
+
+
 // Primary Large
 // ----------------------------------------
 /// height
@@ -78,6 +81,9 @@ $search-normal-secondary-split-color: $color-line1-1 !default;
 /// hover
 /// @namespace statement/normal
 $search-normal-secondary-hover-color: $color-brand1-6 !default;
+/// shadow
+/// @namespace statement/normal
+$search-normal-secondary-shadow: $shadow-zero !default;
 /// background
 /// @namespace statement/btn
 $search-normal-secondary-btn-bg-color: $color-brand1-6 !default;
@@ -130,6 +136,9 @@ $search-normal-normal-split-color: $color-line1-1 !default;
 /// hover
 /// @namespace statement/normal
 $search-normal-normal-hover-color: $color-line1-4 !default;
+/// shadow
+/// @namespace statement/normal
+$search-normal-normal-shadow: $shadow-zero !default;
 /// background
 /// @namespace statement/normal/btn
 $search-normal-normal-btn-bg-color: $color-fill1-1 !default;
@@ -190,6 +199,9 @@ $search-normal-dark-bg-color: $color-white !default;
 /// @namespace statement/normal
 /// @type alpha
 $search-normal-dark-bg-opacity: 0 !default;
+/// shadow
+/// @namespace statement/normal
+$search-normal-dark-shadow: $shadow-zero !default;
 /// text
 /// @namespace statement/btn
 $search-normal-dark-btn-text-color: $color-white !default;
@@ -229,7 +241,9 @@ $search-normal-dark-m-btn-text-size: $font-size-subhead !default;
 $search-normal-dark-m-btn-text-size: $font-size-subhead !default;
 
 // Simple
-
+/// corner
+/// @namespace size/bounding
+$search-simple-corner: $corner-1 !default;
 /// right
 /// @namespace size/margin
 $search-simple-l-icon-margin-right: $s-3 !default;
@@ -248,6 +262,9 @@ $search-simple-normal-hover-color: $color-line1-4 !default;
 /// split
 /// @namespace statement/normal
 $search-simple-normal-split-color: $color-line1-3 !default;
+/// shadow
+/// @namespace statement/normal
+$search-simple-normal-shadow: $shadow-zero !default;
 /// text
 /// @namespace statement/icon
 $search-simple-normal-icon-text-color: $color-text1-2 !default;
@@ -285,6 +302,9 @@ $search-simple-dark-bg-opacity: 0 !default;
 /// text
 /// @namespace statement/normal
 $search-simple-dark-text-color: $color-white !default;
+/// shadow
+/// @namespace statement/normal
+$search-simple-dark-shadow: $shadow-zero !default;
 /// text
 /// @namespace statement/icon
 $search-simple-dark-icon-text-color: $color-text1-2 !default;
