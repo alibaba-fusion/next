@@ -84,8 +84,6 @@ $balloon-size-padding: $balloon-size-padding-top $balloon-size-padding-right;
 $balloon-size-closable-padding: $balloon-size-padding-top $balloon-size-padding-closable-right $balloon-size-padding-top $balloon-size-padding-right;
 $balloon-size-arrow-expose: -$balloon-size-arrow-size / 2 - 1;
 $balloon-size-arrow-expose-primary: -$balloon-size-arrow-size / 2 - $balloon-primary-border-width;
-$balloon-size-arrow-center: 50% + #{$balloon-size-arrow-expose};
-$balloon-size-arrow-center-primary: 50% + #{$balloon-size-arrow-expose-primary};
 
 // Common
 /// border style
