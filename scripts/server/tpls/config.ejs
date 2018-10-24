@@ -246,71 +246,71 @@
             var tracker = new SassTracker(iWin, varObj.classPrefix.replace('{prefix}', 'next'));
 
             iDoc.body.addEventListener('click', function (e) {
-              var demo = tracker.findDemo(e.target);
-              if (!demo) {
-                return console.warn('Can not find the event target demo parent, may be it was triggered in overlay.');
-              }
-              var cssRules = tracker.findCssRules(demo, true);
-              var vars = tracker.findVars(cssRules, cssScssMap);
-              var varItems = vars.map(name => varObj.items[name]);
+                var demo = tracker.findDemo(e.target);
+                if (!demo) {
+                    return console.warn('Can not find the event target demo parent, may be it was triggered in overlay.');
+                }
+                var cssRules = tracker.findCssRules(demo, true);
+                var vars = tracker.findVars(cssRules, cssScssMap);
+                var varItems = vars.map(name => varObj.items[name]);
 
-              var order = varObj.order;
-              if (order) {
-                order.size = 1;
-                order.statement = 2;
-                varItems = varItems.sort((prev, next) => {
-                  var result = -1;
+                var order = varObj.order;
+                if (order) {
+                    order.size = 1;
+                    order.statement = 2;
+                    varItems = varItems.sort((prev, next) => {
+                    var result = -1;
 
-                  var prevArr = prev.attrs.namespace.split('/');
-                  var nextArr = next.attrs.namespace.split('/');
-                  var length = Math.min(prevArr.length, nextArr.length);
-                  for (var i = 0; i < length; i++) {
-                    const prevPartNS = prevArr.slice(0, i + 1).join('/');
-                    const nextPartNS = nextArr.slice(0, i + 1).join('/');
-                    const prevOrderValue = order[prevPartNS];
-                    const nextOrderValue = order[nextPartNS];
-                    if (!prevOrderValue) {
-                      console.error('Can not find the namespace order: ' + prevPartNS);
-                      result = 1;
-                      break;
+                    var prevArr = prev.attrs.namespace.split('/');
+                    var nextArr = next.attrs.namespace.split('/');
+                    var length = Math.min(prevArr.length, nextArr.length);
+                    for (var i = 0; i < length; i++) {
+                        const prevPartNS = prevArr.slice(0, i + 1).join('/');
+                        const nextPartNS = nextArr.slice(0, i + 1).join('/');
+                        const prevOrderValue = order[prevPartNS];
+                        const nextOrderValue = order[nextPartNS];
+                        if (!prevOrderValue) {
+                        console.error('Can not find the namespace order: ' + prevPartNS);
+                        result = 1;
+                        break;
+                        }
+                        if (!nextOrderValue) {
+                        console.error('Can not find the namespace order: ' + nextPartNS);
+                        result = -1;
+                        break;
+                        }
+                        if (prevOrderValue !== nextOrderValue) {
+                        result = prevOrderValue - nextOrderValue;
+                        break;
+                        }
+                        if (i === length - 1) {
+                        result = prevArr.length - nextArr.length;
+                        }
                     }
-                    if (!nextOrderValue) {
-                      console.error('Can not find the namespace order: ' + nextPartNS);
-                      result = -1;
-                      break;
-                    }
-                    if (prevOrderValue !== nextOrderValue) {
-                      result = prevOrderValue - nextOrderValue;
-                      break;
-                    }
-                    if (i === length - 1) {
-                      result = prevArr.length - nextArr.length;
-                    }
-                  }
 
-                  return result;
-                });
-              }
-
-              var varMap = varItems.reduce(function(ret, varItem) {
-                if (varItem && varItem.attrs && varItem.attrs.namespace) {
-                  var arr = varItem.attrs.namespace.split('/');
-                  var ns1 = arr[0];
-                  var ns2 = arr[1];
-                  var ns3 = arr[2];
-                  if (ns1 && ns2) {
-                    ret[ns1] = ret[ns1] || {};
-                    ret[ns1][ns2] = ret[ns1][ns2] || {};
-                    if (ns3) {
-                      ret[ns1][ns2][ns3] = ret[ns1][ns2][ns3] || {};
-                      ret[ns1][ns2][ns3][varItem.description] = varItem;
-                    } else {
-                      ret[ns1][ns2][varItem.description] = varItem;
-                    }
-                  }
+                    return result;
+                    });
                 }
 
-                return ret;
+                var varMap = varItems.reduce(function(ret, varItem) {
+                    if (varItem && varItem.attrs && varItem.attrs.namespace) {
+                    var arr = varItem.attrs.namespace.split('/');
+                    var ns1 = arr[0];
+                    var ns2 = arr[1];
+                    var ns3 = arr[2];
+                    if (ns1 && ns2) {
+                        ret[ns1] = ret[ns1] || {};
+                        ret[ns1][ns2] = ret[ns1][ns2] || {};
+                        if (ns3) {
+                        ret[ns1][ns2][ns3] = ret[ns1][ns2][ns3] || {};
+                        ret[ns1][ns2][ns3][varItem.description] = varItem;
+                        } else {
+                        ret[ns1][ns2][varItem.description] = varItem;
+                        }
+                    }
+                    }
+
+                    return ret;
               }, {});
               renderEditor(varMap);
             });
@@ -335,25 +335,26 @@
             url: '/rebuildScss.json',
             data: changeCache,
             success: function(result) {
-              var iWin = iframe.contentWindow;
-              var iDoc = iWin.document;
-              var styleElement = iDoc.getElementById('rebuild');
-              if (!styleElement) {
-                styleElement = iDoc.createElement('style');
-                styleElement.id = 'rebuild';
-                iDoc.head.appendChild(styleElement);
-              }
-              styleElement.innerHTML = result.css;
+                console.log(result)
+                var iWin = iframe.contentWindow;
+                var iDoc = iWin.document;
+                var styleElement = iDoc.getElementById('rebuild');
+                if (!styleElement) {
+                    styleElement = iDoc.createElement('style');
+                    styleElement.id = 'rebuild';
+                    iDoc.head.appendChild(styleElement);
+                }
+                styleElement.innerHTML = result.css;
 
-              if (firstRequest) {
-                var styleElements = iDoc.head.querySelectorAll('style');
-                styleElements.forEach(function(el) {
-                  if (el !== styleElement && el.textContent.indexOf('.demo-container > h2') === -1) {
-                    iDoc.head.removeChild(el);
-                  }
-                });
-                firstRequest = false;
-              }
+                if (firstRequest) {
+                    var styleElements = iDoc.head.querySelectorAll('style');
+                    styleElements.forEach(function(el) {
+                        if (el !== styleElement && el.textContent.indexOf('.demo-container > h2') === -1) {
+                            iDoc.head.removeChild(el);
+                        }
+                    });
+                    firstRequest = false;
+                }
             },
             error: function(error) {
               console.error('fetch rebuild scss failed: ' + error);

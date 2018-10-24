@@ -16,6 +16,7 @@ const sassRender = options => {
 };
 const scss2AST = scss => postcss().process(scss, { syntax: syntax }).result.root;
 
+const PATTEN = /^import\s+['"](.+)style\.js['"];?/mg;
 module.exports = function(options) {
     return function(req, res, next) {
         co(function* () {
@@ -25,14 +26,23 @@ module.exports = function(options) {
                 delete req.query.componentName;
 
                 const entryPath = path.join(cwd, 'src', componentName, 'main.scss');
+                const entryStylePath = path.join(cwd, 'src', componentName, 'style.js');
                 const entryScss = yield fs.readFile(entryPath, 'utf8');
-                const root = scss2AST(entryScss);
+                const entryStyleScss = yield fs.readFile(entryStylePath, 'utf8');
+                let newEntryStyleScss = entryStyleScss.match(PATTEN).join('\n');
+                newEntryStyleScss = newEntryStyleScss.replace(PATTEN, (all, s1, s2, s3) => {
+                    return `@import "${s1}main.scss";`;
+                });
+
+                const root = scss2AST(newEntryStyleScss + entryScss);
                 const varsScss = Object.keys(req.query).reduce((ret, key) => {
                     return `${ret}\n${key}: ${req.query[key]};`;
                 }, '');
+
                 const varsRoot = scss2AST(varsScss);
                 const improtVarIndex = root.nodes.findIndex(node =>
-                    node.name === 'import' && /core\/index-noreset/.test(node.params));
+                    node.name === 'import' && /core\/index-noreset/.test(node.params)
+                );
                 root.insertAfter(improtVarIndex, varsRoot);
                 const newEntryScss = root.toResult().css;
 
@@ -41,6 +51,7 @@ module.exports = function(options) {
                     includePaths: [path.join(cwd, 'src', componentName)],
                     importer: packageImporter({ cwd })
                 });
+
                 res.json({ css: result.css.toString() });
             } else {
                 next();
