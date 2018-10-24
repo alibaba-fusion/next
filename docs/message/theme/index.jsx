@@ -4,7 +4,6 @@ import '../../../src/demo-helper/style.js';
 import '../../../src/message/style.js';
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
 import Message from '../../../src/message';
-import Paragraph from '../../../src/paragraph';
 
 const i18nMap = {
     'en-us': {
@@ -66,11 +65,17 @@ class FunctionDemo extends React.Component {
         const title = demoFunction.hasTitle.value === 'true' ? i18n.title : null;
         const closeable = demoFunction.closeable.value === 'true';
 
+        const style = {
+            lineHeight: 1.7,
+            fontSize: '14px',
+            margin: 0
+        };
+
         const newChildren = shapes.map(shape => {
             const content = types.map(type => {
                 const children = ['large', 'medium'].map(size => (
                     <Message type={type} title={title} shape={shape} size={size} closeable={closeable} key={`${shape}-${type}-${size}`}>
-                        <Paragraph>{i18n.content}</Paragraph>
+                        <p style={style}>{i18n.content}</p>
                     </Message>
                 ));
                 return (<DemoGroup label={type} key={type}>{children}</DemoGroup>);

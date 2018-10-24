@@ -3,6 +3,9 @@
 @import "../core/index-noreset";
 @import "scss/variable";
 
+.#{$css-prefix}upload-list-item-name {
+    text-decoration: none;
+}
 #{$upload-prefix} {
     @include box-sizing;
 
