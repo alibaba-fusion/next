@@ -2,7 +2,8 @@
 
 // search mixins
 // --------------------------------------------------
-@mixin search-type($height, $btn-font-size, $icon-size, $border-width, $btn-text-padding-left) {
+@mixin search-type($height, $btn-font-size, $icon-size, $border-width, $btn-text-padding-left, $box-shadow) {
+    box-shadow: $box-shadow;
 
     #{$search-prefix}-left, #{$search-prefix}-btn {
         border-width: $border-width;
