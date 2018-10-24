@@ -60,7 +60,7 @@
         &.#{$css-prefix}primary {
             @include search-type-color(
                 $search-normal-primary-color,
-                $search-normal-primary-color,
+                $search-normal-primary-hover-color,
                 $search-normal-primary-color,
                 $search-normal-primary-btn-text-color,
                 $search-normal-primary-color,
@@ -166,7 +166,7 @@
         &.#{$css-prefix}dark {
             @include search-type-color(
                 $search-normal-dark-color,
-                $search-normal-dark-color,
+                $search-normal-dark-hover-color,
                 $search-normal-dark-color,
                 $search-normal-dark-btn-text-color,
                 $search-normal-dark-color,
@@ -253,7 +253,7 @@
         }
 
         &.#{$css-prefix}dark {
-            @include search-simple-color( $search-simple-dark-color, $search-simple-dark-color, $search-simple-dark-icon-text-color, $search-simple-dark-icon-hover-text-color, $search-simple-dark-split-color );
+            @include search-simple-color( $search-simple-dark-color, $search-simple-dark-hover-color, $search-simple-dark-icon-text-color, $search-simple-dark-icon-hover-text-color, $search-simple-dark-split-color );
 
             .#{$css-prefix}select-inner,
             input {
