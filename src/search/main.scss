@@ -4,11 +4,6 @@
 @import "scss/mixin";
 @import "scss/variable";
 
-button {
-    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.12);
-}
-
-
 #{$search-prefix} {
     @include box-sizing;
 
