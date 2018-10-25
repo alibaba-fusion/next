@@ -3,12 +3,12 @@
     @include clearfix;
 
     &-header {
-        padding: 6px;
         border-bottom: $line-1 $line-solid $time-picker-panel-border-color;
     }
 
     &-input.#{$css-prefix}input {
         width: 100%;
+        padding: 6px;
         border-color: $color-transparent;
         vertical-align: middle;
     }
