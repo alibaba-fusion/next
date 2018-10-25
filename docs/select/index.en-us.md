@@ -59,7 +59,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 ## API
 
 ### Select
-| Parameter | Description | Type | Default |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ---------------------------------- |
 |Size | selector size<br><br>**optional values**:<br>'small', 'medium', 'large' | Enum | 'medium' |
 | value | Current value for controlled mode | any | - |
@@ -103,7 +103,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | hiddenSelected | hide menu after selected (only mode="multiple" or "tag") | Boolean                                | -                                  |
 
 ### Select.AutoComplete
-| Parameter | Description | Type | Default |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | --------- |
 | size | selector size<br><br>**optional values**:<br>'small', 'medium', 'large' | Enum | 'medium' |
 | value | current value for controlled mode | String/Number | - |
@@ -132,13 +132,13 @@ This is because the layer's animation of the overlay is implemented by `classNam
 
 ### Select.OptionGroup
 
-| Parameter | Description | Type | Default |
+| Param | Descripiton  | Type  | Default Value |
 | ----- | ------- | --------- | --- |
 | label | Grouping text | ReactNode | - |
 
 ### Select.Option
 
-| Parameter | Description | Type | Default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ---- | ------- | --- |
 | value | option value | any | - |
 | disabled | disabled | Boolean | - |

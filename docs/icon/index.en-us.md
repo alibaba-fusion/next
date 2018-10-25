@@ -11,7 +11,7 @@
 
 ### Icon
 
-| params   | desc                                             | type     | default      |
+| Param | Descripiton  | Type  | Default Value |
 | ---- | ---------------------------------------------------- | -------- | ------------ |
 | size | To set the icon size<br><br>**option**:<br>'xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl' | Enum   | 'medium' |
 | type | Specify which icon to display                         | String   | -        |

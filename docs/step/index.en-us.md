@@ -11,7 +11,7 @@
 
 ### Step
 
-| Parameters     | Description                                            | Type     | Default value |
+| Param | Descripiton  | Type  | Default Value |
 | -------------- | ------------------------------------------------------ | -------- | ------------ |
 | current        | current step                                           | Number   | 0            |
 | shape          | shape<br><br>**optional**:<br>'circle', 'arrow', 'dot'         | Enum     | 'circle'     |
@@ -24,7 +24,7 @@
 ### Step.Item
 
 
-| Parameters     | Description                                            | Type     | Default value |
+| Param | Descripiton  | Type  | Default Value |
 | -------------- | ------------------------------------------------------ | -------- | ------------ |
 | status         |The status of a step, if not passed, is generated based on the current attribute of the outer Step, with optional values `wait`, `process`, `finish`<br><br>**optional**:<br>'wait', 'process', 'finish'  | Enum      | -         |
 | title          | title                                         | ReactNode | -         |

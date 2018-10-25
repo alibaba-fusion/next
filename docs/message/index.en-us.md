@@ -13,7 +13,7 @@
 
 ### Message
 
-| params             | desc                                                                                 | type        | default       |
+| Param | Descripiton  | Type  | Default Value |
 | -------------- | ---------------------------------------------------------------------------------- | --------- | --------- |
 | size           | size of message<br><br>**option**:<br>'medium', 'large'                                          | Enum      | 'medium'  |
 | type           | type of message<br><br>**option**:<br>'success', 'warning', 'error', 'notice', 'help', 'loading' | Enum      | 'success' |
@@ -34,7 +34,7 @@
 
 `Message.show(props)` provides a singleton call with the following configuration parameters (inheriting `Overlay` configuration):
 
-| param           | desc                                                                                                  | type        | default       |
+| Param | Descripiton  | Type  | Default Value |
 | ------------ | --------------------------------------------------------------------------------------------------- | --------- | --------- |
 | type         | type of message                                                                                                | String    | 'success' |
 | title        | title of message                                                                                                | ReactNode | -         |

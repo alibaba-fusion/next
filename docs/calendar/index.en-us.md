@@ -29,7 +29,7 @@ moment.locale('zh-cn');
 
 ### Calendar
 
-| Property                  | Description                                                                                                                                                                        | Type       | Default Value                     |
+| Param                  | Description                                                                                                                                                                        | Type       | Default Value                     |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------- |
 | defaultValue        | Default value of calendar  | custom   | -                       |
 | shape               | Shape of calendar<br><br>**option**:<br>'card', 'fullscreen', 'panel'                                                                                                                     | Enum     | 'fullscreen'            |

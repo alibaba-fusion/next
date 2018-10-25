@@ -18,7 +18,7 @@ This grid system provides response rules for almost all mainstream resolution sc
 
 ### Grid.Row
 
-| params         | desc                                                                                                                                                                          | type            | default       |
+| Param | Descripiton  | Type  | Default Value |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | --------- |
 | children   | content of the row                                                                                                                                                                         | ReactNode     | -         |
 | gutter     | spacing of the columns                                                                                                                                                                       | String/Number | 0         |
@@ -31,7 +31,7 @@ This grid system provides response rules for almost all mainstream resolution sc
 
 ### Grid.Col
 
-| params          | desc                                                                                                                                                          | type                   | default |
+| Param | Descripiton  | Type  | Default Value |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --- |
 | children    | content of the column                                                                                                                                                         | ReactNode            | -   |
 | span        | width of the column<br><br>**option**:<br>1, 2, 3, ..., 22, 23, 24                                                                                                             | String/Number        | -   |

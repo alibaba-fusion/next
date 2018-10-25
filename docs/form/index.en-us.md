@@ -24,7 +24,7 @@ Form layout, validation, data submission operations used.
 
 ### Form
 
-| params             | desc                                        | type       | default        |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------ | ------------------------------------------- | ---------- | ------------ |
 | inline             | Inline form                                 | Boolean    | -           |
 | size               | Customization of a single Item's size takes precedence over Form's size, and when the component is used with Item, the component itself sets the size attribute to be invalid. <br><br>**option**:<br>'large'<br>'medium'<br>'small' | Enum     | 'medium'                                               |
@@ -44,7 +44,7 @@ Form layout, validation, data submission operations used.
 
 > Passing the wrapCol labelCol will use the Grid auxiliary layout; `labelAlign = 'top'` will force the Grid to be disabled
 
-| params             | desc                                        | type        | default   |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------ | ------------------------------------------- | --------- | ----- |
 | label          | To set the label of item                                        | ReactNode | -     |
 | size           | Customization of Item's own size takes precedence over Form's size. when Form and Item both set the size, the component itself sets the size attribute to be invalid。<br><br>**option**:<br>'large', 'small', 'medium' | Enum      | -     |
@@ -85,7 +85,7 @@ Form layout, validation, data submission operations used.
 
 > Inherit the Button API
 
-| params        | desc                                           | type       | default       |
+| Param | Descripiton  | Type  | Default Value |
 | --------- | -------------------------------------------- | -------- | --------- |
 | names     | Specify the reset field                                     | Array    | -         |
 | onClick   | Callback function trigget after click Reset-Button<br><br>**signatures**:<br>Function() => void | Function | func.noop |
@@ -96,7 +96,7 @@ Form layout, validation, data submission operations used.
 
 > Inherit the Button API
 
-| params       | desc                                           | type            | default       |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | -------------------------------------------- | ------------- | --------- |
 | onClick  | Callback function trigget after click Submit-Button <br><br>**signatures**:<br>Function(value: Object, errors: Object) => void<br>**params**:<br>_value_: {Object} values<br>_errors_: {Object} errors<br>_field_: {class} Field instance | Function      | func.noop |
 | validate | Specify the field, whitch need validate.            | Boolean/Array | -         |
@@ -106,7 +106,7 @@ Form layout, validation, data submission operations used.
 
 > custom error message
 
-| 参数       | 说明                        | 类型                 | 默认值 |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ------------------------- | ------------------ | --- |
 | name     | Specify the reset field                         | String/Array       | -   |
 | field    | Specify field (No need in Form )   | Object             | -   |

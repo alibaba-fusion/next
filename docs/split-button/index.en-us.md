@@ -15,7 +15,7 @@ SplitButton is kind of GroupButton, only the icon part could be trigerred by use
 
 ### SplitButton
 
-| Property               | Description  | Type        | Default Value       |
+| Param | Descripiton  | Type  | Default Value |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | --------- |
 | size             | Size of button<br><br>**option**:<br>'small', 'medium', 'large'                                                                                                             | Enum      | 'medium'  |
 | type             | Typeo of button<br><br>**option**:<br>'normal', 'primary', 'secondary'                                                                                                        | Enum      | 'normal'  |

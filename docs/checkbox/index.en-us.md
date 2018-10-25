@@ -17,7 +17,7 @@ Checkbox is used to verify which options you want selected from a group. If you 
 
 ### Checkbox
 
-| params                   | desc                        | type         | default       |
+| Param           | Description                                                                                                                  | Type       | Default Value          |
 | ------------------------ |---------------------------- | ------------ | ------------- |
 | id                   | checkbox id, mounted on input                  | String   | -         |
 | checked              | Set the status to be checked                      | Boolean  | -         |

@@ -25,7 +25,7 @@ By default, TimePicker using moment instance as input value, which is the sugges
 
 ### TimePicker
 
-| Property | Description | Type | Default Value  |
+| Param | Descripiton  | Type  | Default Value |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------- |
 | label            | Inset label of input | ReactNode | -          |
 | size             | Size of input <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum      | 'medium'   |

@@ -11,7 +11,7 @@
 
 ### Menu
 
-| param                  | desc                                                                                                                                                                                                                                                                                                                                                              | type           | default        |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------- |
 | children            | submenu and menu item                                                                                                                                                                                                                                                                                                                                                        | ReactNode    | -          |
 | onItemClick         | callback function triggered when click the menu item<br><br>**signatures**:<br>Function(key: String, item: Object, event: Object) => void<br>**params**:<br>_key_: {String} key of clicked menu item<br>_item_: {Object} clicked menu item<br>_event_: {Object} clicked event                                                                                                                                                                 | Function     | () => {}   |
@@ -43,7 +43,7 @@
 
 ### Menu.Item
 
-| params       | desc      | type        | default   |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ------- | --------- | ----- |
 | disabled | whether is disabled    | Boolean   | false |
 | helper   | help text    | ReactNode | -     |
@@ -51,7 +51,7 @@
 
 ### Menu.SubMenu
 
-| params         | desc                                                               | type        | default             |
+| Param | Descripiton  | Type  | Default Value |
 | ---------- | ---------------------------------------------------------------- | --------- | --------------- |
 | label      | label of submenu                                                             | ReactNode | -               |
 | selectable | whether is selectable, it only works when set selectMode of Menu                            | Boolean   | false           |
@@ -60,7 +60,7 @@
 
 ### Menu.PopupItem
 
-| params       | desc      | type        | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ------- | --------- | --- |
 | label    | label of the parent item    | ReactNode | -   |
 | children | content of the pop up | ReactNode | -   |
@@ -69,7 +69,7 @@
 
 > This subcomponent selection is not controlled by defaultSelectedKeys/selectedKeys. Please control the selected yourself.
 
-| params            | desc                                                                                                                                                     | type        | default      |
+| Param | Descripiton  | Type  | Default Value |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- |
 | checked       | whether is checked                                                                                                                                                   | Boolean   | false    |
 | indeterminate | whether is indeterminate                                                                                                                                                 | Boolean   | false    |
@@ -82,7 +82,7 @@
 
 > This subcomponent selection is not controlled by defaultSelectedKeys/selectedKeys. Please control the selected yourself.
 
-| params       | desc                                                                                                                                                     | type        | default      |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- |
 | checked  | whether is checked                                                                                                                                                   | Boolean   | false    |
 | disabled | whether is disabled                                                                                                                                                   | Boolean   | false    |
@@ -92,7 +92,7 @@
 
 ### Menu.Group
 
-| params       | desc   | type        | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ---- | --------- | --- |
 | label    | label of group | ReactNode | -   |
 | children | menu items  | ReactNode | -   |
@@ -112,7 +112,7 @@ Create a context menu.
 
 ## ARIA and KeyBoard
 
-| key          | desc                              |
+| KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
 | Up Arrow    | navigate to previous item                          |
 | Down Arrow  | navigate to next item                          |

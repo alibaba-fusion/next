@@ -19,7 +19,7 @@ Buttons are used for emphasizing important functions on your page.
 
 ### Button
 
-| Property        | Description                                                                                                           | Type       | Default Value      |
+| Param        | Description                                                                                                           | Type       | Default Value      |
 | --------- | ------------------------------------------------------------------------------------------------------------ | -------- | -------- |
 | size      | Size of button<br><br>**return**:<br>'small', 'medium', 'large'                                                          | Enum     | 'medium' |
 | type      | Typeo of button<br><br>**return**:<br>'primary', 'secondary', 'normal'                                                    | Enum     | 'normal' |
@@ -35,6 +35,6 @@ Buttons are used for emphasizing important functions on your page.
 
 ### Button.Group
 
-| Property   | Description                  | Type     | Default Value      |
+| Param   | Description                  | Type     | Default Value      |
 | ---- | ------------------- | ------ | -------- |
 | size | Size of buttons in group | String | 'medium' |

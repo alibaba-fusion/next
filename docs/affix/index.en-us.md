@@ -17,7 +17,7 @@ The Affix component allows an element to become affixed (locked) to an area on t
 
 ### Affix
 
-| Property           | Description                                                                                                                  | Type       | Default Value          |
+| Param           | Description                                                                                                                  | Type       | Default Value          |
 | ------------ | ------------------------------------------------------------------------------------------------------------------- | -------- | ------------ |
 | container    | The container for listening scroll events<br><br>**signature**:<br>Function() => ReactElement<br>**return**:<br>{ReactElement} the instance of container<br>     | Function | () => window |
 | offsetTop    | Offset from top when event triggers  | Number   | -       |

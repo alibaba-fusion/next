@@ -16,7 +16,7 @@ Need to customize animation.
 
 ### Animate
 
-| param              | desc                                                                                                                                                | type                                  | default      |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------- |
 | animation       | animation class names                                                                                                                                      | String/Object                       | -        |
 | animationAppear | whether the child elements performs animation when it is first mounted                                                                                                                                   | Boolean                             | true     |

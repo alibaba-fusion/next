@@ -17,7 +17,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 
 ### TreeSelect
 
-| params                      | desc                                                                                                                                                                                                                                                       | type                      | default         |
+| Param | Descripiton  | Type  | Default Value |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------- |
 | children                | tree nodes                                                                                                                                                                                                                                                      | ReactNode               | -           |
 | size                    | size of selector<br><br>**options**:<br>'small', 'medium', 'large'                                                                                                                                                                                                      | Enum                    | 'medium'    |
@@ -55,7 +55,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 
 ### TreeSelect.Node
 
-| params               | desc                              | type        | default   |
+| Param | Descripiton  | Type  | Default Value |
 | ---------------- | ------------------------------- | --------- | ----- |
 | children         | tree nodes                             | ReactNode | -     |
 | label            | content of node                          | ReactNode | '---' |

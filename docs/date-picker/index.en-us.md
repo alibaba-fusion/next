@@ -15,7 +15,7 @@ DatePicker are used to select a single date for an input.
 
 ### DatePicker
 
-| Property | Descripiton  | Type  | Default Value |
+| Param | Descripiton  | Type  | Default Value |
 | ----- |---------------- | -------------- | ------------ |
 | label               | Inset label of input  | ReactNode      | -            |
 | size                | Size of input<br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
@@ -45,7 +45,7 @@ DatePicker are used to select a single date for an input.
 
 ### DatePicker.RangePicker
 
-| Property | Description  | Type  | Default Value  |
+| Param | Description  | Type  | Default Value  |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ |
 | size                | Size of input <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
 | defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                 | Function       | -            |
