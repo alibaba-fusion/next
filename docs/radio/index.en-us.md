@@ -18,7 +18,7 @@ Radio buttons allow the user to select a single option from data-set. User can u
 
 ### Radio
 
-| params        | desc          | type       | default       |
+| Param | Descripiton  | Type  | Default Value |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
 | id             | Input`s id in component            | String   | -         |
 | checked        | To set radio button is checked                                                                                                                               | Boolean  | -         |
@@ -31,7 +31,7 @@ Radio buttons allow the user to select a single option from data-set. User can u
 
 ### Radio.Group
 
-| params           | desc                       | type                                  | default       |
+| Param | Descripiton  | Type  | Default Value |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | --------- |
 | value        | The value of the Item witch is selected in radio group                  | String/Number/Boolean               | -         |
 | size         | Used with `shape` prop，valid when shape is set to button<br><br>**option**:<br>'large'<br>'medium'<br>'small'              | Enum                                | 'medium'  |

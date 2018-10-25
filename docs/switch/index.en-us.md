@@ -22,7 +22,7 @@ The Switch Component toggles the state. The options in the switch, as well as it
 
 ### Switch
 
-| Property                | Description                                                                                                                                             | Type       | Default Value       |
+| Param | Descripiton  | Type  | Default Value |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
 
 | size              | size of switch<br><br>**option**:<br>'medium'<br>'small'                                                                              | Enum     | 'medium'  |

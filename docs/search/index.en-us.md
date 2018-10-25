@@ -19,7 +19,7 @@ search data in forms or pages.
 
 > Inhert from  Select.AutoComplete, you can use AutoComplete api directly
 
-| params                 | desc                                                                                                                         | type            | default       |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------- | --------- |
 | size               | size<br><br>**option**:<br>'large'<br>'medium'                                                                       | Enum          | 'medium'  |
 | type               | type. when shape=normal, type options: primary/secondary; when shape=simple, type options: normal/dark;<br><br>**option**:<br>'primary', 'secondary', 'normal', 'dark' | Enum          | 'normal'  |

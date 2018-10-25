@@ -26,7 +26,7 @@ It provides top navigation and side navigation, the top navigation provides glob
 
 > The API inherits from `Menu`, please look at the `Menu` document
 
-| param              | desc                                                                                                    | type        | default        |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ----------------------------------------------------------------------------------------------------- | --------- | ---------- |
 | children        | navigation item and sub navigation                                                                                              | ReactNode | -          |
 | type            | type of navigation<br><br>**option**:<br>'normal'<br>'primary'<br>'secondary'<br>'line'               | Enum      | 'normal'   |
@@ -53,7 +53,7 @@ It provides top navigation and side navigation, the top navigation provides glob
 
 > The API inherits from `Menu.Group`, please look at the `Menu.Group` document
 
-| param       | desc      | type        | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ------- | --------- | --- |
 | label    | content of label    | ReactNode | -   |
 | children | navigation item and sub navigation | ReactNode | -   |
@@ -62,7 +62,7 @@ It provides top navigation and side navigation, the top navigation provides glob
 
 > The API inherits from `Menu.Item`, please look at the `Menu.Item` document
 
-| param       | desc                                                         | type               | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ---------------------------------------------------------- | ---------------- | --- |
 | icon     | custom icon, it can be type of Icon or such as `<Icon type="icon type" />` | String/ReactNode | -   |
 | children | content of navigation item                                                       | ReactNode        | -   |
@@ -71,7 +71,7 @@ It provides top navigation and side navigation, the top navigation provides glob
 
 > The API inherits from `Menu.PopupItem`, please look at the `Menu.PopupItem` document
 
-| param       | desc                                                          | type               | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ----------------------------------------------------------- | ---------------- | --- |
 | icon     | custom icon, it can be type of Icon or such as `<Icon type="icon type" />` | String/ReactNode | -   |
 | label    | content of label                                                        | ReactNode        | -   |
@@ -81,7 +81,7 @@ It provides top navigation and side navigation, the top navigation provides glob
 
 > The API inherits from `Menu.SubMenu`, please look at the `Menu.SubMenu` document
 
-| param       | desc                                                         | type               | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------- | ---------------------------------------------------------- | ---------------- | --- |
 | icon     | custom icon, it can be type of Icon or such as `<Icon type="icon type" />` | String/ReactNode | -   |
 | label    | content of label                                                       | ReactNode        | -   |

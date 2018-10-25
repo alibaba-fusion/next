@@ -22,7 +22,7 @@ If a task will take long time to complete, it could be use a `Progress` to show 
 
 ### Progress
 
-| Property  | Description | Type | Default Value |
+| Param | Descripiton  | Type  | Default Value |
 | ----------- |---------- | -------- | ----------- |
 | size        | Size <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                | Enum     | 'medium'                 |
 | shape       | Shape <br><br>**option**:<br>'circle', 'line'                                                                                                          | Enum     | 'line'                   |

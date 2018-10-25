@@ -19,7 +19,7 @@ Disable animation with `animation={false}`
 
 ### Tab
 
-| Property                  | Description                                                                                                                                                                                                                  | Type            | Default Value      |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
 | activeKey           | Key of the current active tab | Number/String | -        |
 | size                | Size of tab<br><br>**option**:<br>'small', 'medium'                                                                                                                                                                             | Enum          | 'medium' |
@@ -43,7 +43,7 @@ Disable animation with `animation={false}`
 
 ### Tab.Item
 
-| Property        | Description         | Type      | Default Value   |
+| Param | Descripiton  | Type  | Default Value |
 | --------- | ---------- | --------- | ----- |
 | title     | Title of tab   | ReactNode | -     |
 | closeable | If tab is closeable | Boolean   | false |

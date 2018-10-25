@@ -17,7 +17,7 @@ The dialog is used to provide the user with an auxiliary window for quickly perf
 
 ### Dialog
 
-| param                   | desc                                                                                                                                                                                                                                                  | type                | default                                                                               |
+| Param | Descripiton  | Type  | Default Value |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | --------------------------------------------------------------------------------- |
 | visible              | whether is visible                                                                                                                                                                                                                                                | Boolean           | false                                                                             |
 | title                | title of dialog                                                                                                                                                                                                                                                  | ReactNode         | -                                                                                 |
@@ -47,7 +47,7 @@ The dialog is used to provide the user with an auxiliary window for quickly perf
 
 The following only list common properties that config can pass, and other properties of the Dialog can also be passed in.
 
-| params           | desc                | type        | default      |
+| Param | Descripiton  | Type  | Default Value |
 | :----------- | :---------------- | :-------- | :------- |
 | title        | title of dialog                | ReactNode | ''       |
 | content      | content of dialog                | ReactNode | ''       |
@@ -59,7 +59,7 @@ The following only list common properties that config can pass, and other proper
 
 The following only list common properties that config can pass, and other properties of the Dialog can also be passed in.
 
-| params       | desc              | type        | default      |
+| Param | Descripiton  | Type  | Default Value |
 | :------- | :-------------- | :-------- | :------- |
 | title    | title of dialog              | ReactNode | ''       |
 | content  | content of dialog              | ReactNode | ''       |
@@ -80,7 +80,7 @@ The Dialog uses JS for positioning by default. When the content is too long, JS 
 
 ## ARIA and Keyboard
 
-| keyboard        | desc                                       |
+| Keyboard        | Descripiton                                       |
 | :-------- | :--------------------------------------- |
 | esc       | pressing ESC will close dialog                |
 | tab       | focus on any element that can be focused, the focus remains in the dialog when the dialog is displayed |

@@ -18,7 +18,7 @@ You can storage operation command with dropdown component when there are too muc
 ### Dropdown
 > Dropdown component extends API of Popup component,  unless special note.
 
-| Params              | Desc                                                                                                                                                                                              | Type             | Default                                        |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------ |
 | children        | content in overlay                                                                                                                                                                                            | ReactNode      | -                                          |
 | visible         | overlay display or not now                                                                                                                                                                                        | Boolean        | -                                          |

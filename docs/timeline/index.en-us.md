@@ -20,13 +20,13 @@ Vertical display of time flow information.
 
 ### Timeline
 
-| Parameters   | Description                                                                  | Type    | Default value |
+| Param | Descripiton  | Type  | Default Value |
 | ---- | ------------------------------------------------------------------- | ----- | --- |
 | fold | custom folding options, eg: `[{foldArea: [startIndex, endIndex], foldShow: boolean}]` | Array | \[] |
 
 ### Timeline.Item
 
-| Parameters        | Description                                                            | Type        | Default value    |
+| Param | Descripiton  | Type  | Default Value |
 | --------- | ------------------------------------------------------------- | --------- | ------ |
 | state     | node state <br><br>**optional**:<br>'done', 'process', 'error', 'success' | Enum      | 'done' |
 | icon      | icon                                                            | String    | -      |

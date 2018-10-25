@@ -147,7 +147,7 @@ export default config(Component);
 
 ### ConfigProvider
 
-| param       | desc                                  | type           | default |
+| Param           | Description                                | Type       | Default Value          |
 | -------- | ----------------------------------- | ------------ | --- |
 | pure     | whether enable the Pure Render mode, it will improve performance, but it will also have side effects | Boolean      | -   |
 | warning  | whether to display the warning prompt for component properties being deprecated in development mode        | Boolean      | true  |

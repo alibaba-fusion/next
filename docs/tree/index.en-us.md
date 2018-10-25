@@ -17,7 +17,7 @@ Folders, organizational structures, taxonomy, countries, regions, etc. Most of t
 
 ### Tree
 
-| params                  | desc                                                                                                                                                                                                                                                                                                                                                                                                               | type                      | default        |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ---------- |
 | children            | tree nodes                                                                                                                                                                                                                                                                                                                                                                                                              | ReactNode               | -          |
 | dataSource          | data source, this property has a higher priority than children                                                                                                                                                                                                                                                                                                                                                                                            | Array                   | -          |
@@ -57,7 +57,7 @@ Folders, organizational structures, taxonomy, countries, regions, etc. Most of t
 
 ### Tree.Node
 
-| params               | desc                              | type        | default   |
+| Param | Descripiton  | Type  | Default Value |
 | ---------------- | ------------------------------- | --------- | ----- |
 | children         | tree nodes                             | ReactNode | -     |
 | label            | content of node                          | ReactNode | '---' |

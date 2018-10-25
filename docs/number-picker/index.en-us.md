@@ -25,7 +25,7 @@ Number input and auto correct data.
 
 ### NumberPicker
 
-| params           | desc                                                                                                               | type            | default       |
+| Param | Descripiton  | Type  | Default Value |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------- | ------------- | --------- |
 | size         | size<br><br>**option**:<br>'large', 'medium'                                                                                         | Enum          | 'medium'  |
 | type         | display type<br><br>**option**:<br>'normal'<br>'inline'                                                                         | Enum          | 'normal'  |

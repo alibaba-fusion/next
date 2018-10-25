@@ -18,7 +18,7 @@ When user want to upload some file to server side or cloud storage, upload compo
 
 ### Upload
 
-| params              | desc                                                                                                                                                  | type             | default       |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | --------- |
 | action          | upload url                                                                                                                                               | String          | -         |
 | shape           | upload button shape<br><br>option:<br>'card'                                                                                                                      | Enum            | -         |
@@ -51,7 +51,7 @@ When user want to upload some file to server side or cloud storage, upload compo
 
 > Inherit from Upload API
 
-| params        | desc                                                    | type       | default       |
+| Param | Descripiton  | Type  | Default Value |
 | --------- | ----------------------------------------------------- | -------- | --------- |
 | onPreview | callback when click image<br><br>**signature**:<br>Function() => void | Function | func.noop |
 | onChange  | callback when value changes<br><br>**signature**:<br>Function() => void       | Function | func.noop |
@@ -64,7 +64,7 @@ When user want to upload some file to server side or cloud storage, upload compo
 
 > [Basic Ability] Custom Style for File Selector
 
-| params          | desc                                                                                                                                                    | type       | default       |
+| Param | Descripiton  | Type  | Default Value |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
 | disabled    | disable this upload component                                                                                                                                            | Boolean  | -         |
 | multiple    | select more than one file at once, only works on `ie10+`. Press `Ctrl` to Select files                                                                                                               | Boolean  | false     |
@@ -84,7 +84,7 @@ When user want to upload some file to server side or cloud storage, upload compo
 
 #### options
 
-| params              | desc                                                                     | type              | default   |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ---------------------------------------------------------------------- | --------------- | ----- |
 | action          | upload url                                                                   | String          | -     |
 | data            | extra upload data                                                                | Object/Function | -     |

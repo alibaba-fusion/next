@@ -42,7 +42,7 @@ Popup is the wrapper of Overlay. It receives a node as a trigger node and pops u
 
 ### Overlay
 
-| param                     | desc                                                                                                                                                                                                                                                                                                          | type             | default                                        |
+| Param | Descripiton  | Type  | Default Value |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------ |
 | children               | conent of overlay                                                                                                                                                                                                                                                                                                        | any            | -                                          |
 | visible                | whether to show the overlay                                                                                                                                                                                                                                                                                                      | Boolean        | false                                      |
@@ -77,7 +77,7 @@ Popup is the wrapper of Overlay. It receives a node as a trigger node and pops u
 
 > Inherited Overlay's API unless otherwise specified
 
-| param                | desc                                                                                                                                                                                              | type           | default             |
+| Param | Descripiton  | Type  | Default Value |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- |
 | children          | content of overlay                                                                                                                                                                                            | ReactNode    | -               |
 | trigger           | trigger the overlay to show or hide elements                                                                                                                                                                                    | ReactElement | -               |

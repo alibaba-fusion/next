@@ -15,7 +15,7 @@ Rating component is usually used for customer feedback.
 
 ### Rating
 
-| Params          | Desc                                                                                                | Type       | Default       |
+| Param | Descripiton  | Type  | Default Value |
 | ------------ | -------------------------------------------------------------------------------------------------- | -------- | --------- |
 | defaultValue | default value                                                                                                | Number   | 0         |
 | size         | size<br><br>**options**:<br>'small', 'medium', 'large'                                                   | Enum     | 'medium'  |

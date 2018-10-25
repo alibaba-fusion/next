@@ -15,7 +15,7 @@ MenuButton is a button which, when clicked or pressed, will show a context menu.
 
 ### MenuButton
 
-| Property               | Description                                                    | Type        | Default Value       |
+| Param | Descripiton  | Type  | Default Value |
 | ---------------- | ----------------------------------------------------- | --------- | --------- |
 | label            | The text in button     | ReactNode | -         |
 | autoWidth        | If popup width equals to button width        | Boolean   | true      |

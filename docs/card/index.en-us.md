@@ -19,7 +19,7 @@ A card could contain a photo, text, and a link about a single subject.
 
 ### Card
 
-| Property     | Description           | Type            | Default Value  |
+| Param     | Description           | Type            | Default Value  |
 | --------------- | ------------ | ------------- | ---- |
 | title           | Title of card | String        | -    |
 | subTitle        | Sub title of card | String        | -    |

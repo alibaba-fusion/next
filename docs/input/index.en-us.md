@@ -16,7 +16,7 @@ Form Input, use it with Form components usually.
 
 ### Input
 
-| params             | desc                                                                                                                                    | type            | default       |
+| Param | Descripiton  | Type  | Default Value |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | --------- |
 | value           | current value  | String/Number | -         |
 | size            | Size<br><br>option:<br>'small'<br>'medium'<br>'large'   | Enum          | 'medium'  |
@@ -52,7 +52,7 @@ Form Input, use it with Form components usually.
 
 ### Input.TextArea
 
-| params            | desc                                                                                                                                   | type            | default       |
+| Param | Descripiton  | Type  | Default Value |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------- |
 | value          | currentValue                                                           | String/Number  | -         |
 | defaultValue   | inital value                                                                                          | String/Number  | -         |
@@ -75,7 +75,7 @@ Form Input, use it with Form components usually.
 
 ### Input.Group
 
-| params                   | desc          | type        | default |
+| Param | Descripiton  | Type  | Default Value |
 | -------------------- | ----------- | --------- | --- |
 | addonBefore          | Elements appended  before input      | ReactNode | -   |
 | addonBeforeClassName | Classnames before input, usually use for css | String    | -   |
@@ -84,7 +84,7 @@ Form Input, use it with Form components usually.
 
 ## Input/TextArea Inner Methods(Got by refs)
 
-| params           | desc                                                                                                                       | type       | default |
+| Param | Descripiton  | Type  | Default Value |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
 | getInputNode | get truely input html dom node                                                                                           | Function |     |
 | focus        | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |     |

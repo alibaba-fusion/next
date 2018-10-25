@@ -82,7 +82,7 @@ ReactDOM.render(
 
 ### Table
 
-| Property                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Type              | Default       |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | --------- |
 | dataSource          | data source shown in the table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Array           | \[]       |
 | onRowClick          | callback triggered when click each row<br><br>**signatures**:<br>Function(record: Object, index: Number, e: Event) => void<br>**params**:<br>_record_: {Object} the data corresponding to the row<br>_index_: {Number} the index corresponding to the row<br>_e_: {Event} event object                                                                                                                                                                                                                                                                                                                                                                                                                               | Function        | () => { } |
@@ -123,7 +123,7 @@ ReactDOM.render(
 
 ### Table.Column
 
-| params         | desc                                                    | type                              | default              |
+| Param | Descripiton  | Type  | Default Value |
 | ---------- | ----------------------------------------------------- | ------------------------------- | ---------------- |
 | dataIndex  | specify the column corresponding field, support the fast value of `a.b` format                               | String                          | -                |
 | cell       | cell rendering logic<br>Function(value, index, record) => Element   | ReactElement/ReactNode/Function | (value) => value |
@@ -138,13 +138,13 @@ ReactDOM.render(
 
 ### Table.ColumnGroup
 
-| params    | desc      | type                              | default            |
+| Param | Descripiton  | Type  | Default Value |
 | ----- | ------- | ------------------------------- | -------------- |
 | title | content of table header | ReactElement/ReactNode/Function | 'column-group' |
 
 ### Table.GroupHeader
 
-| params                   | desc                          | type                              | default      |
+| Param | Descripiton  | Type  | Default Value |
 | -------------------- | --------------------------- | ------------------------------- | -------- |
 | cell                 | cell rendering logic                      | ReactElement/ReactNode/Function | () => '' |
 | hasChildrenSelection | whether to render selection on Children    | Boolean                         | false    |
@@ -152,6 +152,6 @@ ReactDOM.render(
 
 ### Table.GroupFooter
 
-| params   | desc     | type                              | default      |
+| Param | Descripiton  | Type  | Default Value |
 | ---- | ------ | ------------------------------- | -------- |
 | cell | cell rendering logic | ReactElement/ReactNode/Function | () => '' |

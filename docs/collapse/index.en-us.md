@@ -16,7 +16,7 @@ When some earas may toggle between collapse state and expand state.
 
 ### Collapse
 
-| params              | desc                                               | type     | default   |
+| Param           | Description                                | Type       | Default Value          |
 | ------------------- | -------------------------------------------------- | -------- | --------- |
 | dataSource          | data model                                         | Array    | -         |
 | defaultExpandedKeys | default expand panel keys                                           | Array    | -         |
@@ -27,7 +27,7 @@ When some earas may toggle between collapse state and expand state.
 
 ### Collapse.Panel
 
-| params   | desc     | type      | default |
+| Param      | Description         | Type       | Default Value          |
 | -------- | -------- | --------- | --- |
 | disabled | disable this panel | Boolean   | -   |
 | title    | panel title       | ReactNode | -   |

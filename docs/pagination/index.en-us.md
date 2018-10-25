@@ -17,7 +17,7 @@ When there is a lot of content to show when paged load processing is needed.
 
 ### Pagination
 
-| params               | desc                             | type            | default         |
+| Param | Descripiton  | Type  | Default Value |
 | -------------------- | -------------------------------- | --------------- | --------------- |
 | size             | Set the size of Pagination component<br><br>**option**:<br>'small', 'medium', 'large'              | Enum                              | 'medium'    |
 | type             | Set the type of Pagination component<br><br>**option**:<br>'normal', 'simple', 'mini'                                                                                          | Enum                              | 'normal'    |

@@ -14,7 +14,7 @@ The Slider are independent of each other and there is no logical relationship be
 ###  When To Use
 
 -   **single picture**：This style is usually used to carry operational banners. It is a relatively fixed module.
--   **multiple picture**：browse multiple unit message 
+-   **multiple picture**：browse multiple unit message
 
 ### Note
 
@@ -26,7 +26,7 @@ The Slider are independent of each other and there is no logical relationship be
 
 ### Slider
 
-| params                 | desc                                               | type           | default   |
+| Param | Descripiton  | Type  | Default Value |
 | ------------------ | ------------------------------------------------------ | -------------- | -------- |
 | adaptiveHeight     | Whether to use adaptive height                         | Boolean        | false    |
 | animation          | Animation type, default is 'slide'                     | String/Boolean | 'slide'  |

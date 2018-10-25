@@ -23,7 +23,7 @@ Range Component is used to select a value in a range by dragging slider. Normall
 
 ### Range
 
-| Property            | Description                                                                                                                                                                          | Type                                     | Default Value               |
+| Param | Descripiton  | Type  | Default Value |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------- |
 | slider        | number of sliders<br><br>**option**:<br>'single'<br>'double'                                                                                                                       | Enum                                   | 'single'       |
 | min           | minimal value                                                                                                                                                                         | Number                                 | 0              |

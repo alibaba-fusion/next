@@ -21,7 +21,7 @@
 
 ### Balloon
 
-| Property                   | Description                                                                                                                                                                    | Type              | Default Value                                      |
+| Param                   | Description                                                                                                                                                                    | Type              | Default Value                                      |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ---------------------------------------- |
 | type                 | type of style<br><br>**option**:<br>'normal', 'primary'                                                                                                                           | Enum            | 'normal'                                 |
 | children             | content of popup layer                                                                                                                                                                 | any             | -                                        |
@@ -52,7 +52,7 @@
 
 ### Balloon.Tooltip
 
-| Property             | Description                                                                                                                                                                    | Type      | Default Value                 |
+| Param             | Description                                                                                                                                                                    | Type      | Default Value                 |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------- |
 | children       | content of tooltip                                                                                                                                                          | any     | -                   |
 | align          | position of popup relative to the trigger<br><br>**option**:<br>'t'(top)<br>'r'(right)<br>'b'(bottom)<br>'l'(left)<br>'tl'(top left)<br>'tr'(top right)<br>'bl'(bottom left)<br>'br'(bottom right)<br>'lt'(left top)<br>'lb'(left bottom)<br>'rt'(right top)<br>'rb'(right bottom) or their combinations | Enum    | 'b'                 |

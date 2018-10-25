@@ -18,12 +18,12 @@ Tags are used to mark something for its atrribute, or to classify things
 ### Attention
 
 1. the attribute `size` can be set to `large`, but for compatible with form situation, `size` = `large` is actually equal to `size` = `medium`,
-2. it is not recommanded to use large text inside Tag; 
+2. it is not recommanded to use large text inside Tag;
 ## API
 
 ### Tag
 
-| params         | illustration                                                                                | type       | defualt       |
+| Param | Descripiton  | Type  | Default Value |
 | ----------- | ----------------------------------------------------------------------------------- | -------- | --------- |
 | size        | size of tag（large = medium for compatible with form situation ）<br><br>**optional**:<br>'small', 'medium', 'large' | Enum     | 'medium'  |
 | type        | type of tag <br><br>**optional**:<br>'normal', 'primary'                                        | Enum     | 'normal'  |
@@ -33,7 +33,7 @@ Tags are used to mark something for its atrribute, or to classify things
 
 ### Tag.Closeable
 
-|params         | desc                                                                                                                                                                           | type       | default value |
+| Param | Descripiton  | Type  | Default Value |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
 | closeArea  | area for responsing close action, tag: entire tag, tail(default): only the button at the end <br><br>**optional**:<br>'tag', 'tail'                                                                                         | Enum     | -   |
 | size       | size of tag（large = medium for compatible with form situation ）<br><br>**optional**:<br>'small', 'medium', 'large'                                                                                         | Enum     | -   |
@@ -43,7 +43,7 @@ Tags are used to mark something for its atrribute, or to classify things
 
 ### Tag.Selectable
 
-| params             | desc                                                                                                                                           | type       | default value       |
+| Param | Descripiton  | Type  | Default Value |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
 | checked        | check the tag, under controlled way                                                                                                                                 | Boolean  | -         |
 | defaultChecked | tag is checked by default, under uncontrolled way                                                                                                                         | Boolean  | -         |

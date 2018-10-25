@@ -23,7 +23,7 @@ if you want `wrap all the element`, please use `<Loading style={{display: 'block
 
 ### Loading
 
-| params        | desc                                                                        | type      | default     |
+| Param | Descripiton  | Type  | Default Value |
 | ---------- | -------------------------------------------------------------------------- | ------- | -------- |
 | tip        | custom text in loading                                                                      | any     | -        |
 | size       | the animation size<br><br>option:<br>'large'<br>'medium'             | Enum    | 'large'  |
