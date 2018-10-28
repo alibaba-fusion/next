@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.9.12",
+  "version": "1.9.13",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
