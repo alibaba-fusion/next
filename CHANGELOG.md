@@ -1,4 +1,15 @@
-# Change Log
+# Change Log 
+
+<a name="1.9.13"></a>
+## [1.9.13](https://github.com/alibaba-fusion/next/compare/1.9.12...1.9.13) (2018-10-28)
+
+
+### Bug Fixes
+
+* **TimePicker:** cann't config bg of input ([e5cae7b](https://github.com/alibaba-fusion/next/commit/e5cae7b))
+
+
+
 
 <a name="1.9.12"></a>
 ## [1.9.12](https://github.com/alibaba-fusion/next/compare/1.9.11...1.9.12) (2018-10-24)
