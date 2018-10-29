@@ -427,7 +427,7 @@ export default class Base extends React.Component {
         const menuProps = {
             ref: this.saveMenuRef,
             children,
-            style: autoWidth ? { width: this.width } : {minWidth: this.width},
+            style: autoWidth ? { width: this.width } : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
             focusable: false,
@@ -507,7 +507,7 @@ export default class Base extends React.Component {
     }
 
     beforeOpen() {
-        const {value, highlightKey} = this.state;
+        const { value, highlightKey } = this.state;
         if (this.props.mode === 'single' && !value && !highlightKey) {
             this.setFirstHightLightKeyForMenu();
         }
@@ -559,7 +559,7 @@ export default class Base extends React.Component {
 
         return (<Popup {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
             {popupContent ?
-                <div className={`${prefix}select-popup-wrap`} style={autoWidth ? { width: this.width } : {minWidth: this.width}}>
+                <div className={`${prefix}select-popup-wrap`} style={autoWidth ? { width: this.width } : {}}>
                     {popupContent}
                 </div> : this.renderMenu()}
         </Popup>);
