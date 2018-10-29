@@ -11,7 +11,7 @@ export default {
     Calendar: {
         today: 'Today',
         now: 'Now',
-        ok: 'Ok',
+        ok: 'OK',
         clear: 'Clear',
         month: 'Month',
         year: 'Year',
@@ -39,7 +39,7 @@ export default {
         second: 'S'
     },
     Dialog: {
-        ok: 'Ok',
+        ok: 'OK',
         cancel: 'Cancel'
     },
     Pagination: {
@@ -60,7 +60,7 @@ export default {
     },
     Table: {
         empty: 'No data',
-        ok: 'Ok',
+        ok: 'OK',
         reset: 'Reset',
         asc: 'Ascending order',
         desc: 'Descending order',

@@ -4,15 +4,15 @@
  * @author gaofeng.gf
  */
 
-'use strict';
+
 
 const path = require('path');
-const Sassaby = require('sassaby');
+const Sassaby = require('sassaby-next');
 
 // Test function
 describe('../../src/core/util/_function.scss', function() {
-    let file = path.join(__dirname, '../../src/core/util/_function.scss');
-    let sassaby = new Sassaby(file);
+    const file = path.join(__dirname, '../../src/core/util/_function.scss');
+    const sassaby = new Sassaby(file);
 
     describe('#strip-units', function() {
         it('应该去除所有数值的单位', function() {
