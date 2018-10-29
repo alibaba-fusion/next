@@ -4,18 +4,18 @@
  * @author gaofeng.gf
  */
 
-'use strict';
+
 
 const path = require('path');
-const Sassaby = require('sassaby');
+const Sassaby = require('sassaby-next');
 
 // Test mixin
 describe('../../src/core/util/_mixin.scss', function() {
-    let file = path.join(__dirname, '../../src/core/util/_mixin.scss');
-    let sassaby = new Sassaby(file, {
-       dependencies: [
-           path.join(__dirname, '../../src/core/util/_function.scss')
-       ]
+    const file = path.join(__dirname, '../../src/core/util/_mixin.scss');
+    const sassaby = new Sassaby(file, {
+        dependencies: [
+            path.join(__dirname, '../../src/core/util/_function.scss')
+        ]
     });
 
     describe('#size (快捷设置元素 width, height 的混入)', function() {
