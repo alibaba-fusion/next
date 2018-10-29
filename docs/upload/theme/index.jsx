@@ -256,6 +256,7 @@ class FunctionDemo extends React.Component {
                 <DemoGroup label="drag-error">
                     <Dragger
                         style={style}
+                        listType={getValue('demo3').listType.value === 'true' ? 'text' : undefined}
                         defaultValue={[{
                             name: 'xxx.png',
                             state: 'error',
