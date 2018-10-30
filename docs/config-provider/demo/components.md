@@ -16,8 +16,15 @@ Show the components that support internationalization in the current Next compon
 
 ````jsx
 import { ConfigProvider, Button, Radio, Calendar, Card, DatePicker, Dialog, Pagination, TimePicker, Timeline, Transfer, Select, Upload, Table } from '@alifd/next';
-import enUS from '@alifd/next/lib/locale/en-us';
-import zhCN from '@alifd/next/lib/locale/zh-cn';
+
+import enUS from '@alifd/next/lib/locale/en-us.js';
+import zhCN from '@alifd/next/lib/locale/zh-cn.js';
+
+// If the application directly imports the next-with-locales.js file from cdn
+// it need to import locale file in the following way
+// import { locales } from '@alifd/next';
+// const enUS = locales['en-us'];
+// const zhCN = locales['zh-cn'];
 
 const RangePicker = DatePicker.RangePicker;
 
