@@ -335,7 +335,17 @@ class Tree extends Component {
             expandedKeys = normalizeToArray(expandedKeys);
 
             if (props.autoExpandParent) {
-                const expandedPoss = expandedKeys.map(key => this._k2n[key].pos);
+                const newExpandedKeys = [];
+
+                const expandedPoss = expandedKeys.reduce((ret, key) => {
+                    const pos = this._k2n[key] && this._k2n[key].pos;
+                    if (pos) {
+                        ret.push(pos);
+                        newExpandedKeys.push(key);
+                    }
+                    return ret;
+                }, []);
+
                 expandedPoss.forEach(pos => {
                     const nums = pos.split('-');
                     if (nums.length === 2) {
@@ -344,11 +354,13 @@ class Tree extends Component {
                     for (let i = 1; i <= nums.length - 2; i++) {
                         const ancestorPos = nums.slice(0, i + 1).join('-');
                         const ancestorKey = this._p2n[ancestorPos].key;
-                        if (expandedKeys.indexOf(ancestorKey) === -1) {
-                            expandedKeys.push(ancestorKey);
+                        if (newExpandedKeys.indexOf(ancestorKey) === -1) {
+                            newExpandedKeys.push(ancestorKey);
                         }
                     }
                 });
+
+                return newExpandedKeys;
             }
         }
 
@@ -360,7 +372,11 @@ class Tree extends Component {
             props.selectedKeys :
             willReceiveProps ? [] : props.defaultSelectedKeys;
         selectedKeys = normalizeToArray(selectedKeys);
-        return selectedKeys;
+
+        const newSelectKeys = selectedKeys.filter(key => {
+            return this._k2n[key];
+        });
+        return newSelectKeys;
     }
 
     getCheckedKeys(props, willReceiveProps) {
