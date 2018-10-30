@@ -251,7 +251,7 @@ export default class TreeSelect extends Component {
 
     getKeysByValue(value) {
         return value.reduce((ret, v) => {
-            const k = this._v2n[v].key;
+            const k = this._v2n[v] && this._v2n[v].key;
             if (k) {
                 ret.push(k);
             }

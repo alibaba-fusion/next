@@ -384,11 +384,18 @@ export default function lock(BaseComponent) {
                     if (headerLeftLockRow && !this._notNeedAdjustLockLeft) {
                         headerLeftLockRowHeight = headerLeftLockRow.offsetHeight;
                     }
-                    const
-                        maxRightRowHeight = Math.max(headerRightLockRowHeight, headerRightRow.offsetHeight),
-                        maxLeftRowHeight = Math.max(headerLeftLockRowHeight, headerLeftRow.offsetHeight);
-                    headerRightLockRow && dom.setStyle(headerRightLockRow, 'height', maxRightRowHeight);
-                    headerLeftLockRow && dom.setStyle(headerLeftLockRow, 'height', maxLeftRowHeight);
+
+                    if (headerRightRow) {
+                        const
+                            maxRightRowHeight = Math.max(headerRightLockRowHeight, headerRightRow.offsetHeight);
+                        headerRightLockRow && dom.setStyle(headerRightLockRow, 'height', maxRightRowHeight);
+                    }
+
+                    if (headerLeftRow) {
+                        const maxLeftRowHeight = Math.max(headerLeftLockRowHeight, headerLeftRow.offsetHeight);
+                        headerLeftLockRow && dom.setStyle(headerLeftLockRow, 'height', maxLeftRowHeight);
+                    }
+
                 });
             }
         }
