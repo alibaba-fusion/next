@@ -120,6 +120,7 @@
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
     "markdown-it": "^8.4.2",
+    "md5": "^2.2.1",
     "minimist": "^1.2.0",
     "mocha": "^3.5.3",
     "moment": "^2.20.1",
