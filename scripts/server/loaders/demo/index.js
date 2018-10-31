@@ -98,7 +98,7 @@ function getCSSRequireString(resourcePath, context) {
 function fixImport(code, resourcePath) {
     const matched = code.match(IMPORT_REG);
     const matchedLib = code.match(IMPORT_LIB_REG_G);
-    console.log(matchedLib);
+
     if (matched) {
         const components = matched[1].replace(/\s/g, '').split(',');
 
