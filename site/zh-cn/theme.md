@@ -1,11 +1,11 @@
 # 使用主题包
 
-如果默认的组件主题样式无法满足你的视觉需求，那么你可以通过 Fusion Design 提供的强大的样式配置能力配置自定义的主题样式包。该主题包(包名例如取 `@alifd/dpl-xxx` )可以在平台上导出发布至npm，它的本质是一个 scss 变量包，配合`@alifd/next`共同使用。
+如果默认的组件主题样式无法满足你的视觉需求，那么你可以通过 Fusion Design 提供的强大的样式配置能力配置自定义的主题样式包。该主题包(包名例如取 `@alifd/theme-xxx` )可以在平台上导出发布至npm，它的本质是一个 scss 变量包，配合`@alifd/next`共同使用。
 
-## 安装　
+## 安装
 
 ```
-npm install @alifd/dpl-xxx --save
+npm install @alifd/theme-xxx --save
 ```
 
 ## 引入
@@ -13,8 +13,8 @@ npm install @alifd/dpl-xxx --save
 ### 全量引入
 
 ``` js
-import '@alifd/dpl-xxx/index.scss';
-// import '@alifd/dpl-xxx/dist/next.css';
+import '@alifd/theme-xxx/index.scss';
+
 
 import { Button, Input } from '@alifd/next';
 ```
@@ -76,7 +76,7 @@ module.exports = {
             // 添加 @alifd/next-theme-loader，引入自定义主题样式对应的 scss 变量
             loader: '@alifd/next-theme-loader',
             options: {
-              theme: '@alifd/dpl-xxx'
+              theme: '@alifd/theme-xxx'
             }
           }
         ]
@@ -85,7 +85,7 @@ module.exports = {
   },
   plugins: [
     // 添加 @alifd/next-theme-webpack-plugin，引入 normalize 样式以及自定义 icon 定义
-    new ThemePlugin({ theme: '@alifd/dpl-xxx' }),
+    new ThemePlugin({ theme: '@alifd/theme-xxx' }),
     new ExtractTextPlugin('[name].css')
   ]
 };
