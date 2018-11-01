@@ -286,11 +286,10 @@ class Select extends Base {
      * 单选模式
      */
     handleSingleSelect(key, triggerType) {
-        // get data only from dataStore while cacheValue=false 
+        const { cacheValue } = this.props;
+        // get data only from dataStore while cacheValue=false
         const itemObj = getValueDataSource(key, cacheValue ? this.valueDataSource.mapValueDS : {}, this.dataStore.getMapDS());
         this.valueDataSource = itemObj;
-
-        const { cacheValue } = this.props;
 
         this.setVisible(false, triggerType);
 
@@ -677,14 +676,14 @@ class Select extends Base {
             `${prefix}${size}`,
             className,
         ], {
-                [`${prefix}active`]: visible,       // 用于设置 searchInput 样式
-                [`${prefix}inactive`]: !visible,    // 用于设置 searchInput 样式
-                [`${prefix}no-search`]: !hasSearch, // 用于判断是否将 searchInput 设置为 1px + 透明
-                [`${prefix}has-search`]: hasSearch, // 用于单选时展开后判断是否隐藏值
-                [`${prefix}select-in-ie`]: isIE9,
-                [`${prefix}select-in-ie-fixwidth`]: this.state.fixWidth,
-                [`${prefix}has-clear`]: this.hasClear()
-            });
+            [`${prefix}active`]: visible,       // 用于设置 searchInput 样式
+            [`${prefix}inactive`]: !visible,    // 用于设置 searchInput 样式
+            [`${prefix}no-search`]: !hasSearch, // 用于判断是否将 searchInput 设置为 1px + 透明
+            [`${prefix}has-search`]: hasSearch, // 用于单选时展开后判断是否隐藏值
+            [`${prefix}select-in-ie`]: isIE9,
+            [`${prefix}select-in-ie-fixwidth`]: this.state.fixWidth,
+            [`${prefix}has-clear`]: this.hasClear()
+        });
 
         const valuetext = this.valueDataSource.valueDS ? this.valueDataSource.valueDS.label : '';
 
