@@ -12,6 +12,10 @@ const config = {
     runAll: false
 };
 
+if(componentName === 'all') {
+    logger.info('Now run all components tests. (You can test one compoent by: npm run test -- number-picker');
+}
+
 const coreTest = (cb) => {
     const worker = cp.spawn('mocha', [ join('test', 'core'), '--inline-diffs' ]);
     worker.stdout.on('data', data => {
