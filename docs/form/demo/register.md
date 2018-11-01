@@ -61,7 +61,7 @@ class Demo extends React.Component {
                 <FormItem label="name" required asterisk={false}>
                     <Input name="username" trim defaultValue="frank" />
                 </FormItem>
-                <FormItem label="phone" format="tel" required asterisk={false}>
+                <FormItem label="phone" format="tel" required asterisk={false} requiredTrigger="onBlur">
                     <Input name="phone" trim innerAfter={
                         <Form.Submit
                             text
