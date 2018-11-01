@@ -12,7 +12,7 @@ const config = {
     runAll: false
 };
 
-if(componentName === 'all') {
+if (componentName === 'all') {
     logger.info('Now run all components tests. (You can test one compoent by: npm run test -- number-picker');
 }
 
