@@ -1,11 +1,11 @@
 # Use with Theme Package
 
-If the default theme style does not meet your visual needs, you can configure a custom theme style package with the powerful style configuration capabilities provided by Fusion Design. It is essentially a scss variable package, maintained by an npm package, below The documentation uses the `@alifd/dpl-xxx` example to illustrate the use of the theme package.
+If the default theme style does not meet your visual needs, you can configure a custom theme style package with the powerful style configuration capabilities provided by Fusion Design. It is essentially a scss variable package, maintained by an npm package, below The documentation uses the `@alifd/theme-xxx` example to illustrate the use of the theme package.
 
 ## Install
 
 ```
-npm install @alifd/dpl-xxx --save
+npm install @alifd/theme-xxx --save
 ```
 
 ## Import
@@ -13,8 +13,8 @@ npm install @alifd/dpl-xxx --save
 ### Import All
 
 ``` js
-import '@alifd/dpl-xxx/index.scss';
-// import '@alifd/dpl-xxx/dist/next.css';
+import '@alifd/theme-xxx/index.scss';
+// import '@alifd/theme-xxx/dist/next.css';
 
 import { Button, Input } from '@alifd/next';
 ```
@@ -76,7 +76,7 @@ module.exports = {
             // add @alifd/next-theme-loader to inject the scss variable of the custom theme package
             loader: '@alifd/next-theme-loader',
             options: {
-              theme: '@alifd/dpl-xxx'
+              theme: '@alifd/theme-xxx'
             }
           }
         ]
@@ -85,7 +85,7 @@ module.exports = {
   },
   plugins: [
     // add @alifd/next-theme-webpack-plugin to inject normalize css and custom icon css
-    new ThemePlugin({ theme: '@alifd/dpl-xxx' }),
+    new ThemePlugin({ theme: '@alifd/theme-xxx' }),
     new ExtractTextPlugin('[name].css')
   ]
 };

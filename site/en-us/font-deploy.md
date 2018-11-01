@@ -11,7 +11,7 @@ replace the variable that represents the path to the icon font file:
 
     ``` scss
     $icon-font-path: "//g.alicdn.com/icon-font-path";
-    @import "~@alifd/dpl-xxx/index.scss";
+    @import "~@alifd/theme-xxx/index.scss";
     ```
 
 2. modular import js/scss
@@ -28,7 +28,7 @@ replace the variable that represents the path to the icon font file:
           {
             loader: '@alifd/next-theme-loader',
             options: {
-              theme: '@alifd/dpl-xxx',
+              theme: '@alifd/theme-xxx',
               modifyVars: {
                 '$icon-font-path': '"//g.alicdn.com/icon-font-path"'
               }
@@ -67,7 +67,7 @@ replace the variable that represents the path to the roboto font file:
     ``` scss
     // Note, finally end with /
     $font-custom-path: "//g.alicdn.com/font-path/";
-    @improt "~@alifd/dpl-xxx/index.scss";
+    @improt "~@alifd/theme-xxx/index.scss";
     ```
 
 2. modular import js/scss
@@ -76,7 +76,7 @@ replace the variable that represents the path to the roboto font file:
 
     ``` js
     new ThemePlugin({
-      theme: '@alifd/dpl-xxx',
+      theme: '@alifd/theme-xxx',
       modifyVars: {
         // Note, finally end with /
         '$font-custom-path': '"//g.alicdn.com/font-path/"'
