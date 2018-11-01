@@ -85,11 +85,11 @@ class Select extends Base {
          */
         fillProps: PropTypes.string,
         /**
-         * onChange返回的value使用dataSource的对象
+         * onChange 返回的 value 使用 dataSource 的对象
          */
         useDetailValue: PropTypes.bool,
         /**
-         * dataSource变化的时是否保留已选的内容
+         * dataSource 变化的时是否保留已选的内容
          */
         cacheValue: PropTypes.bool,
         /**
@@ -160,7 +160,7 @@ class Select extends Base {
 
         // @extend Base state
         Object.assign(this.state, {
-            // 搜索的关键字
+            // search keyword
             searchValue: 'searchValue' in props ? props.searchValue : '',
         });
 
@@ -286,17 +286,13 @@ class Select extends Base {
      * 单选模式
      */
     handleSingleSelect(key, triggerType) {
-        const itemObj = getValueDataSource(key, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
+        // get data only from dataStore while cacheValue=false 
+        const itemObj = getValueDataSource(key, cacheValue ? this.valueDataSource.mapValueDS : {}, this.dataStore.getMapDS());
+        this.valueDataSource = itemObj;
 
         const { cacheValue } = this.props;
 
-
         this.setVisible(false, triggerType);
-
-        // 更新缓存map
-        if (cacheValue) {
-            this.valueDataSource = itemObj;
-        }
 
         if (this.useDetailValue()) {
             return this.handleChange(itemObj.valueDS, triggerType);
@@ -681,14 +677,14 @@ class Select extends Base {
             `${prefix}${size}`,
             className,
         ], {
-            [`${prefix}active`]: visible,       // 用于设置 searchInput 样式
-            [`${prefix}inactive`]: !visible,    // 用于设置 searchInput 样式
-            [`${prefix}no-search`]: !hasSearch, // 用于判断是否将 searchInput 设置为 1px + 透明
-            [`${prefix}has-search`]: hasSearch, // 用于单选时展开后判断是否隐藏值
-            [`${prefix}select-in-ie`]: isIE9,
-            [`${prefix}select-in-ie-fixwidth`]: this.state.fixWidth,
-            [`${prefix}has-clear`]: this.hasClear()
-        });
+                [`${prefix}active`]: visible,       // 用于设置 searchInput 样式
+                [`${prefix}inactive`]: !visible,    // 用于设置 searchInput 样式
+                [`${prefix}no-search`]: !hasSearch, // 用于判断是否将 searchInput 设置为 1px + 透明
+                [`${prefix}has-search`]: hasSearch, // 用于单选时展开后判断是否隐藏值
+                [`${prefix}select-in-ie`]: isIE9,
+                [`${prefix}select-in-ie-fixwidth`]: this.state.fixWidth,
+                [`${prefix}has-clear`]: this.hasClear()
+            });
 
         const valuetext = this.valueDataSource.valueDS ? this.valueDataSource.valueDS.label : '';
 
