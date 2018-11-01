@@ -94,7 +94,7 @@ The passed locale object has the following format:
 
     ```scss
     $css-prefix: "my-";
-    @import "~@alifd/dpl-xxx/index.scss";
+    @import "~@alifd/theme-xxx/index.scss";
     ```
 
 #### Enable Pure Render

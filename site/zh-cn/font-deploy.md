@@ -11,7 +11,7 @@
 
     ``` scss
     $icon-font-path: "//g.alicdn.com/icon-font-path";
-    @import "~@alifd/dpl-xxx/index.scss";
+    @import "~@alifd/theme-xxx/index.scss";
     ```
 
 2. 按需加载组件的 js/scss
@@ -28,7 +28,7 @@
           {
             loader: '@alifd/next-theme-loader',
             options: {
-              theme: '@alifd/dpl-xxx',
+              theme: '@alifd/theme-xxx',
               modifyVars: {
                 '$icon-font-path': '"//g.alicdn.com/icon-font-path"'
               }
@@ -66,7 +66,7 @@ icon-font.svg
     ``` scss
     // 注意，最后以 / 结束
     $font-custom-path: "//g.alicdn.com/font-path/";
-    @improt "~@alifd/dpl-xxx/index.scss";
+    @improt "~@alifd/theme-xxx/index.scss";
     ```
 
 2. 按需加载组件的 js/scss
@@ -75,7 +75,7 @@ icon-font.svg
 
     ``` js
     new ThemePlugin({
-      theme: '@alifd/dpl-xxx',
+      theme: '@alifd/theme-xxx',
       modifyVars: {
         // 注意，最后以 / 结束
         '$font-custom-path': '"//g.alicdn.com/font-path/"'

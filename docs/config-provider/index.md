@@ -152,7 +152,7 @@ class App extends React.Component {
 
     ```scss
     $css-prefix: "my-";
-    @import "~@alifd/dpl-xxx/index.scss";
+    @import "~@alifd/theme-xxx/index.scss";
     ```
 
 #### 开启 Pure Render
