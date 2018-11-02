@@ -211,6 +211,15 @@
         }
     }
 
+    &-wrapped:before, &-wrapped:after, {
+        content: "";
+        display: table;
+    }
+
+    &-wrapped:after {
+        clear: both;
+    }
+
     &-wrapped > #{$tab-prefix}-content {
         position: relative;
     }
