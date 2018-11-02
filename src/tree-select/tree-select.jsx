@@ -85,6 +85,7 @@ export default class TreeSelect extends Component {
          * @param {String} keyword 输入的关键字
          */
         onSearch: PropTypes.func,
+        onSearchClear: PropTypes.func,
         /**
          * 无数据时显示内容
          */
@@ -168,6 +169,7 @@ export default class TreeSelect extends Component {
         onChange: noop,
         showSearch: false,
         onSearch: noop,
+        onSearchClear: noop,
         notFoundContent: 'Not Found',
         multiple: false,
         treeCheckable: false,
@@ -192,7 +194,7 @@ export default class TreeSelect extends Component {
             autoExpandParent: false
         };
 
-        bindCtx(this, ['handleSelect', 'handleCheck', 'handleSearch', 'handleVisibleChange', 'handleChange', 'handleRemove', 'handleExpand']);
+        bindCtx(this, ['handleSelect', 'handleCheck', 'handleSearch', 'handleSearchClear', 'handleVisibleChange', 'handleChange', 'handleRemove', 'handleExpand']);
 
         this.updateCache(props);
     }
@@ -420,6 +422,14 @@ export default class TreeSelect extends Component {
         this.retainedKeys = retainedKeys;
 
         this.props.onSearch(searchedValue);
+    }
+
+    handleSearchClear(triggerType) {
+        this.setState({
+            searchedValue: '',
+            expandedKeys: []
+        });
+        this.props.onSearchClear(triggerType);
     }
 
     handleExpand(expandedKeys) {
@@ -675,6 +685,7 @@ export default class TreeSelect extends Component {
                 onVisibleChange={this.handleVisibleChange}
                 showSearch={showSearch}
                 onSearch={this.handleSearch}
+                onSearchClear={this.handleSearchClear}
                 popupContent={this.renderPopupContent()}
                 popupContainer={popupContainer}
                 popupStyle={popupStyle}
