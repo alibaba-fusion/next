@@ -21,7 +21,7 @@
 
 #### 指定多语言文案
 
-通过 `<ConfigProvider locale={localeObj}>` 传入语言包，以支持多语言。目前 Fusion 内置的 locale 库支持中英繁日四种语言，覆盖各组件的简单词汇，例如：确定、取消、展开、收起、下一页等， 简单词汇映射表可参考 https://unpkg.com/@alifd/next/lib/locale/
+通过 `<ConfigProvider locale={localeObj}>` 传入语言包，以支持多语言。目前 Fusion 内置的 locale 库支持中英繁日四种语言，覆盖各组件的简单词汇，例如：确定、取消、展开、收起、下一页等， 简单词汇映射表可参考 <https://unpkg.com/@alifd/next/lib/locale/>
 <br />
 (ConfigProvider 提供简单组件简单词汇国际化能力，由于日期时间的国际化较为特殊，例如中国的日历是从周一到周日，美国的日历是从周日到周六等，时间相关的组件如DatePicker等需要国际化，请查看相应组件文档。)
 <br />
@@ -47,7 +47,9 @@
     }
 }
 ```
+
 优先级顺序为: 组件自身 locale > 最近 ConfigProvider 的 locale > 更远父级 ConfigProvider 的 locale
+
 ```js
 import { ConfigProvider, DatePicker } from '@alifd/next';
 
@@ -81,6 +83,7 @@ class App extends React.Component {
 
 根据引入组件库方式的不同(CDN直接引用、作为依赖引用)，使用语言包的方式略有差异，具体见如下代码：
 <br />
+
 ```js
 import { ConfigProvider, DatePicker } from '@alifd/next';
 import enUS from '@alifd/next/lib/locale/en-us';
@@ -105,7 +108,7 @@ class App extends React.Component {
 }
 ```
 
-如果内置的 locale 库不满足你的需求(比如想支持法语、德语、西班牙语)，你也可以参考 https://unpkg.com/@alifd/next/lib/locale/ 来自定义语言包，按照如下格式传入给 locale 即可：
+如果内置的 locale 库不满足你的需求(比如想支持法语、德语、西班牙语)，你也可以参考 <https://unpkg.com/@alifd/next/lib/locale/> 来自定义语言包，按照如下格式传入给 locale 即可：
 
 ```js
 {
