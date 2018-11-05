@@ -18,7 +18,7 @@
 
 - 使用Field `init` 过的组件, `value` `onChange` 必须放在 init 的第三个参数, 否则有可能被 init 覆盖。
 - `Form`已经和`Field` 在`数据获取`和`自动校验提示`方面做了深度优化，建议在`Form`中使用`Field`, 请查看 Form demo。
-- initValue 类似组件的 defauValue， 只有在组件第一次render的时候才生效(ajax异步调用设置initValue可能已经错过了第一次render)
+- initValue 类似组件的 defaultValue 只有在组件第一次render的时候才生效(ajax 异步调用设置 initValue 可能已经错过了第一次render)
 - autoUnmount 默认打开的，如果需要保留会 `自动卸载的组件` 数据请关闭此项
 
 ### 基本使用
@@ -33,7 +33,7 @@ class Demo extends React.Component {
     render() {
         const init = this.field.init;
 
-        // 注意：initVaue只会在组件第一次初始化的时候被赋值，如果你是异步赋值请用setValue
+        // 注意：initValue只会在组件第一次初始化的时候被赋值，如果你是异步赋值请用setValue
         return <div>
             <Input {...init('name',{initValue:'first value'})} />
             <button onClick={this.onClick>获取数据</button>
@@ -276,7 +276,7 @@ init(name, options, props)
 - 一次完整操作抛一次onChange事件 `建议`
     比如有Process表示进展中的状态，建议增加API `onProcess`；如果有Start表示启动状态，建议增加API `onStart`
 
-- `value={undefined}`的时候清空数据, field的reset函数会给所有组件下发undefined数据 `建议`
+- `value={undefined}`的时候清空数据, field 的 reset 函数会给所有组件下发 undefined 数据 `建议`
 
 ```
 componentWillReceiveProps(nextProps) {
