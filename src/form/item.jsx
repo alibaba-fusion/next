@@ -48,7 +48,10 @@ export default class Item extends React.Component {
          */
         style: PropTypes.object,
         id: PropTypes.string,
-        children: PropTypes.node,
+        /**
+         * node 或者 function(values)
+         */
+        children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         /**
          * 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面
          */
@@ -244,8 +247,13 @@ export default class Item extends React.Component {
             childrenProps.label = this.getItemLabel();
         }
 
-        const ele = React.Children.map(children, (child) => {
-            if (child && typeof child.type === 'function' && child.type._typeMark !== 'form_error') {
+        let childrenNode = children;
+        if (typeof children === 'function' && this.context._formField) {
+            childrenNode = children(this.context._formField.getValues());
+        }
+
+        const ele = React.Children.map(childrenNode, (child) => {
+            if (child && typeof child.type === 'function' && child.type._typeMark !== 'form_item' && child.type._typeMark !== 'form_error') {
                 let extraProps = childrenProps;
                 if (this.context._formField && 'name' in child.props && !('data-meta' in child.props)) {
                     extraProps = this.context._formField.init(child.props.name, {
@@ -258,6 +266,7 @@ export default class Item extends React.Component {
 
                 return React.cloneElement(child, extraProps);
             }
+
             return child;
         });
 
