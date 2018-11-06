@@ -9,7 +9,7 @@ Input 的 name 必须全局唯一, 否则可能会出现串行的错误
 
 - order: 6
 
-name of Input must be uniquie
+name of Input must be unique
 :::
 ---
 
