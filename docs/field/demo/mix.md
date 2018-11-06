@@ -9,7 +9,7 @@
 
 - order: 8
 
-mutil type of component
+multi type of component
 :::
 ---
 
