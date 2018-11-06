@@ -170,5 +170,25 @@ describe('form', () => {
 
             assert(wrapper.find('.next-form-item-label label').prop('required'));
         });
+        it('should supoort function children', () => {
+            const wrapper = mount(<Form>
+                <FormItem required label="test">
+                    <Input name="name" defaultValue="frank"/>
+                </FormItem>
+                <FormItem required label="test">
+                {(values) => {
+                    return values.name === 'frank' ? <Input name="frank" value="frankqian"/> : <Input name="unknow" value="unknow" />
+                }}
+                </FormItem>
+            </Form>);
+
+            assert(wrapper.find('input[name="unknow"]').length === 0);
+            assert(wrapper.find('input[name="frank"]').prop('value') === 'frankqian');
+            
+            wrapper.find('input[name="name"]').simulate('change', {target: {value: ''}});
+            assert(wrapper.find('input[name="frank"]').length === 0);
+            assert(wrapper.find('input[name="unknow"]').prop('value') === 'unknow');
+
+        });
     });
 });
