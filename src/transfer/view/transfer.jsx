@@ -18,7 +18,7 @@ const { pickOthers } = obj;
 class Transfer extends Component {
     static contextTypes = {
         prefix: PropTypes.string
-    }
+    };
 
     static propTypes = {
         prefix: PropTypes.string,
@@ -52,10 +52,18 @@ class Transfer extends Component {
          * @param {String} extra.direction 移动的方向，值为'left'或'right'
          */
         onChange: PropTypes.func,
-        /*
+        /**
          * 是否禁用
          */
         disabled: PropTypes.bool,
+        /**
+         * 是否禁用左侧面板
+         */
+        leftDisabled: PropTypes.bool,
+        /**
+         * 是否禁用右侧面板
+         */
+        rightDisabled: PropTypes.bool,
         /**
          * 列表项渲染函数
          * @param {Object} data 数据
@@ -135,6 +143,8 @@ class Transfer extends Component {
         dataSource: [],
         defaultValue: [],
         disabled: false,
+        leftDisabled: false,
+        rightDisabled: false,
         itemRender: data => data.label,
         showSearch: false,
         filter: (searchedValue, data) => {
@@ -395,18 +405,16 @@ class Transfer extends Component {
     }
 
     renderCenter() {
-        const { prefix, mode, operations, disabled } = this.props;
+        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled } = this.props;
         const { leftCheckedValue, rightCheckedValue } = this.state;
-        const leftDisabled = this.props.leftDisabled || disabled;
-        const rightDisabled = this.props.rightDisabled || disabled;
 
         return (
             <div className={`${prefix}transfer-operations`}>
                 {mode === 'simple' ? <Icon className={`${prefix}transfer-move`} size="large" type="switch" /> : [
-                    <Button key="l2r" className={`${prefix}transfer-operation`} type={leftCheckedValue.length ? 'primary' : 'normal'} disabled={leftDisabled || !leftCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'right')}>
+                    <Button key="l2r" className={`${prefix}transfer-operation`} type={leftCheckedValue.length ? 'primary' : 'normal'} disabled={leftDisabled || disabled || !leftCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'right')}>
                         {operations[0]}
                     </Button>,
-                    <Button key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'}  disabled={rightDisabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
+                    <Button key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'}  disabled={rightDisabled || disabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
                         {operations[1]}
                     </Button>
                 ]}
@@ -416,17 +424,15 @@ class Transfer extends Component {
 
     render() {
         const { prefix, mode, disabled, className, dataSource, locale, showSearch, filter, onSearch,
-            searchPlaceholder, notFoundContent, titles, listClassName, listStyle, itemRender, sortable } = this.props;
+            leftDisabled, rightDisabled, searchPlaceholder, notFoundContent, titles, listClassName,
+            listStyle, itemRender, sortable } = this.props;
         const { value, leftCheckedValue, rightCheckedValue } = this.state;
         const itemValues = dataSource.map(item => item.value);
         const leftDatasource = this.groupDatasource(this.leftValue, itemValues, dataSource);
         const rightDatasource = this.groupDatasource(value, itemValues, dataSource);
-        const leftDisabled = this.props.leftDisabled || disabled;
-        const rightDisabled = this.props.rightDisabled || disabled;
         const panelProps = {
             prefix,
             mode,
-            disabled,
             locale,
             showSearch,
             filter,
@@ -449,14 +455,14 @@ class Transfer extends Component {
                 <TransferPanel {...panelProps}
                     position="left"
                     dataSource={leftDatasource}
-                    disabled={leftDisabled}
+                    disabled={leftDisabled || disabled}
                     value={leftCheckedValue}
                     title={titles[0]} />
                 {this.renderCenter()}
                 <TransferPanel {...panelProps}
                     position="right"
                     dataSource={rightDatasource}
-                    disabled={rightDisabled}
+                    disabled={rightDisabled || disabled}
                     value={rightCheckedValue}
                     title={titles[1]} />
             </div>
