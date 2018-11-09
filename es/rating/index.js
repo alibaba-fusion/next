@@ -1,0 +1,20 @@
+import _extends from 'babel-runtime/helpers/extends';
+import _objectWithoutProperties from 'babel-runtime/helpers/objectWithoutProperties';
+import ConfigProvider from '../config-provider';
+import Rating from './rating';
+
+export default ConfigProvider.config(Rating, {
+    transform: function transform(props, deprecated) {
+        if ('type' in props) {
+            deprecated('type', 'showGrade', 'Rating');
+
+            var _props = props,
+                type = _props.type,
+                others = _objectWithoutProperties(_props, ['type']);
+
+            props = _extends({ showGrade: type === 'grade' }, others);
+        }
+
+        return props;
+    }
+});
