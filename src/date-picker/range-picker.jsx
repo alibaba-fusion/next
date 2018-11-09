@@ -605,6 +605,7 @@ export default class RangePicker extends Component {
 
         const datePanel = (<RangeCalendar
             showOtherMonth
+            format={this.format}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}
             disabledDate={disabledDate}

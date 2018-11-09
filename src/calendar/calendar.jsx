@@ -29,6 +29,8 @@ class Calendar extends Component {
         mode: PropTypes.oneOf(CALENDAR_MODES),
         // 面板可变化的模式列表，仅初始化时接收一次
         modes: PropTypes.array,
+        // 日期值的格式（用于日期title显示的格式）
+        format: PropTypes.string,
         /**
          * 是否展示非本月的日期
          */
@@ -84,6 +86,7 @@ class Calendar extends Component {
         prefix: 'next-',
         shape: 'fullscreen',
         modes: CALENDAR_MODES,
+        format: 'YYYY-MM-DD',
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
         dateCellRender: (value) => value.date(),
@@ -185,7 +188,7 @@ class Calendar extends Component {
     }
 
     render() {
-        const { prefix, className, shape, showOtherMonth, locale, dateCellRender, monthCellRender, disabledDate, ...others } = this.props;
+        const { prefix, className, shape, showOtherMonth, format, locale, dateCellRender, monthCellRender, disabledDate, ...others } = this.props;
         const state = this.state;
 
         const classNames = classnames({
@@ -237,7 +240,7 @@ class Calendar extends Component {
         };
 
         const tables = {
-            [CALENDAR_MODE_DATE]: <DateTable {...tableProps} onSelectDate={this.onSelectCell} />,
+            [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
             [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
             [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} onSelectYear={this.onSelectCell} />,
         };

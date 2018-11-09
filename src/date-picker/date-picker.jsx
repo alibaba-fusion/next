@@ -409,6 +409,7 @@ export default class DatePicker extends Component {
         const datePanel = (<Calendar
             shape="panel"
             value={value}
+            format={this.format}
             onSelect={this.onSelectCalendarPanel}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}
