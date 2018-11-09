@@ -44,7 +44,7 @@
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run build && npm run docs && npm run pack && npm run pack -- minimize && npm run changelog",
+    "prepub": "npm run changelog && npm run build && npm run docs && npm run pack && npm run pack -- minimize",
     "prepublishWork": "npm run build && npm run check && npm run docs && npm run pack && npm run pack -- minimize"
   },
   "lint-staged": {
