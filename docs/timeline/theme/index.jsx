@@ -167,96 +167,96 @@ function render(lang) {
             {
                 title: i18n.simpleContOne,
                 content: i18n.orderContOne,
-                time: '2016-06-10 10:30:00',
+                time: 'Jun, 10, 2016 10:30:00',
                 state: 'process'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContTwo,
-                time: '2016-06-10 09:30:00',
+                time: 'Jun, 10, 2016 09:30:00',
                 icon: 'atm'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContThree,
-                time: '2016-06-10 09:03:00'
+                time: 'Jun, 10, 2016 09:03:00'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContFour,
-                time: '2016-06-10 06:10:00'
+                time: 'Jun, 10, 2016 06:10:00'
             }
         ],
         successItems: [
             {
                 title: i18n.simpleContOne,
                 content: i18n.orderContOne,
-                time: '2016-06-10 10:30:00',
+                time: 'Jun, 10, 2016 10:30:00',
                 state: 'success'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContTwo,
-                time: '2016-06-10 09:30:00',
+                time: 'Jun, 10, 2016 09:30:00',
                 icon: 'atm'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContThree,
-                time: '2016-06-10 09:03:00'
+                time: 'Jun, 10, 2016 09:03:00'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContFour,
-                time: '2016-06-10 06:10:00'
+                time: 'Jun, 10, 2016 06:10:00'
             }
         ],
         errorItems: [
             {
                 title: i18n.simpleContOne,
                 content: i18n.orderContOne,
-                time: '2016-06-10 10:30:00',
+                time: 'Jun, 10, 2016 10:30:00',
                 state: 'error'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContTwo,
-                time: '2016-06-10 09:30:00',
+                time: 'Jun, 10, 2016 09:30:00',
                 icon: 'atm'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContThree,
-                time: '2016-06-10 09:03:00'
+                time: 'Jun, 10, 2016 09:03:00'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContFour,
-                time: '2016-06-10 06:10:00'
+                time: 'Jun, 10, 2016 06:10:00'
             }
         ],
         expandItems: [
             {
                 title: i18n.simpleContOne,
                 content: i18n.orderContOne,
-                time: '2016-06-10 10:30:00',
+                time: 'Jun, 10, 2016 10:30:00',
                 state: 'process'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContTwo,
-                time: '2016-06-10 09:30:00',
+                time: 'Jun, 10, 2016 09:30:00',
                 icon: 'atm'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContThree,
-                time: '2016-06-10 09:03:00'
+                time: 'Jun, 10, 2016 09:03:00'
             },
             {
                 title: i18n.simpleContTwo,
                 content: i18n.orderContFour,
-                time: '2016-06-10 06:10:00'
+                time: 'Jun, 10, 2016 06:10:00'
             }
         ]
     },
@@ -265,96 +265,96 @@ function render(lang) {
                 {
                     title: i18n.simpleContOne,
                     content: i18n.orderContOne,
-                    timeLeft: '2016-06-10 10:30:00',
+                    timeLeft: 'Jun, 10, 2016 10:30:00',
                     state: 'process'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContTwo,
-                    timeLeft: '2016-06-10 09:30:00',
+                    timeLeft: 'Jun, 10, 2016 09:30:00',
                     icon: 'atm'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContThree,
-                    timeLeft: '2016-06-10 09:03:00'
+                    timeLeft: 'Jun, 10, 2016 09:03:00'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContFour,
-                    timeLeft: '2016-06-10 06:10:00'
+                    timeLeft: 'Jun, 10, 2016 06:10:00'
                 }
             ],
             successItems: [
                 {
                     title: i18n.simpleContOne,
                     content: i18n.orderContOne,
-                    timeLeft: '2016-06-10 10:30:00',
+                    timeLeft: 'Jun, 10, 2016 10:30:00',
                     state: 'success'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContTwo,
-                    timeLeft: '2016-06-10 09:30:00',
+                    timeLeft: 'Jun, 10, 2016 09:30:00',
                     icon: 'atm'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContThree,
-                    timeLeft: '2016-06-10 09:03:00'
+                    timeLeft: 'Jun, 10, 2016 09:03:00'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContFour,
-                    timeLeft: '2016-06-10 06:10:00'
+                    timeLeft: 'Jun, 10, 2016 06:10:00'
                 }
             ],
             errorItems: [
                 {
                     title: i18n.simpleContOne,
                     content: i18n.orderContOne,
-                    timeLeft: '2016-06-10 10:30:00',
+                    timeLeft: 'Jun, 10, 2016 10:30:00',
                     state: 'error'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContTwo,
-                    timeLeft: '2016-06-10 09:30:00',
+                    timeLeft: 'Jun, 10, 2016 09:30:00',
                     icon: 'atm'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContThree,
-                    timeLeft: '2016-06-10 09:03:00'
+                    timeLeft: 'Jun, 10, 2016 09:03:00'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContFour,
-                    timeLeft: '2016-06-10 06:10:00'
+                    timeLeft: 'Jun, 10, 2016 06:10:00'
                 }
             ],
             expandItems: [
                 {
                     title: i18n.simpleContOne,
                     content: i18n.orderContOne,
-                    timeLeft: '2016-06-10 10:30:00',
+                    timeLeft: 'Jun, 10, 2016 10:30:00',
                     state: 'process'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContTwo,
-                    timeLeft: '2016-06-10 09:30:00',
+                    timeLeft: 'Jun, 10, 2016 09:30:00',
                     icon: 'atm'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContThree,
-                    timeLeft: '2016-06-10 09:03:00'
+                    timeLeft: 'Jun, 10, 2016 09:03:00'
                 },
                 {
                     title: i18n.simpleContTwo,
                     content: i18n.orderContFour,
-                    timeLeft: '2016-06-10 06:10:00'
+                    timeLeft: 'Jun, 10, 2016 06:10:00'
                 }
             ]
         }
@@ -372,4 +372,3 @@ window.renderDemo = function (lang) {
 renderDemo();
 
 initDemo('timeline');
-
