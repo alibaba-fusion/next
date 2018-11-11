@@ -33,7 +33,7 @@ const i18nMap = {
         medium: 'Medium',
         large: 'Large',
 
-        normal: 'normal',
+        normal: 'Normal',
         error: 'Error',
         success: 'Success',
         noInfo: 'No Info',
