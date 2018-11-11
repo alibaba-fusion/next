@@ -19,7 +19,7 @@ const styles = {};
 const i18nMap = {
     'zh-cn': {
         withLabel: '文本',
-        label: '雪梨',
+        label: '标签',
         show: '显示',
         hide: '隐藏'
     },
@@ -64,31 +64,31 @@ class FunctionDemo extends React.Component {
                 trigger: 'onFunctionChange'
             })}>
                 <Demo title="Basic">
-                <DemoGroup label="normal">
+                <DemoGroup label="Normal">
                     <Checkbox checked={false} style={styles}>{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="hover">
+                <DemoGroup label="Hover">
                     <Checkbox checked={false} className="hovered" style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="indeterminate">
+                <DemoGroup label="Indeterminate">
                     <Checkbox defaultIndeterminate style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="indeterminate hover">
+                <DemoGroup label="Indeterminate Hover">
                     <Checkbox defaultIndeterminate className="hovered" style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="checked">
+                <DemoGroup label="Checked">
                     <Checkbox checked style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="checked hover">
+                <DemoGroup label="Checked Hover">
                     <Checkbox checked className="hovered" style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="disabled normal">
+                <DemoGroup label="Disabled Normal">
                     <Checkbox disabled style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="disabled checked">
+                <DemoGroup label="Disabled Checked">
                     <Checkbox checked disabled style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
-                <DemoGroup label="disabled indeterminate">
+                <DemoGroup label="Disabled Indeterminate">
                     <Checkbox defaultIndeterminate disabled style={styles} >{labelProp}</Checkbox>
                 </DemoGroup>
                 </Demo>
