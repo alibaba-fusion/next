@@ -16,8 +16,7 @@ import Column from './column';
 import ColumnGroup from './column-group';
 
 const Children = React.Children,
-    noop = () => { };
-
+    noop = () => {};
 
 //<Table>
 //    <Table.Column/>
@@ -29,7 +28,6 @@ const Children = React.Children,
 
 /** Table */
 export default class Table extends React.Component {
-
     static Column = Column;
     static ColumnGroup = ColumnGroup;
     static Header = HeaderComponent;
@@ -46,6 +44,7 @@ export default class Table extends React.Component {
          */
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -210,8 +209,8 @@ export default class Table extends React.Component {
          */
         onExpandedRowClick: PropTypes.func,
         /**
-          * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
-          */
+         * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
+         */
         fixedHeader: PropTypes.bool,
         /**
          * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
@@ -219,13 +218,13 @@ export default class Table extends React.Component {
         maxBodyHeight: PropTypes.number,
         /**
          * 是否启用选择模式
-        * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
-        * @property {Function} onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。
-        * @property {Function} onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
-        * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
-        * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
-        * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
-        */
+         * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
+         * @property {Function} onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。
+         * @property {Function} onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
+         * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
+         * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
+         * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
+         */
         rowSelection: PropTypes.object,
         /**
          * 表头是否是sticky
@@ -283,25 +282,26 @@ export default class Table extends React.Component {
 
     static childContextTypes = {
         notRenderCellIndex: PropTypes.array,
-        lockType: PropTypes.oneOf(['left', 'right']),
-    }
+        lockType: PropTypes.oneOf(['left', 'right'])
+    };
 
     static contextTypes = {
         getTableInstance: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func
-    }
+    };
 
     constructor(props, context) {
         super(props, context);
         const { getTableInstance, getTableInstanceForVirtual } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
-        getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
+        getTableInstanceForVirtual &&
+            getTableInstanceForVirtual(props.lockType, this);
         this.notRenderCellIndex = [];
     }
 
     state = {
         sort: this.props.sort || {}
-    }
+    };
 
     getChildContext() {
         return {
@@ -311,7 +311,6 @@ export default class Table extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
         if (typeof this.props.sort !== 'undefined') {
             this.setState({
                 sort: nextProps.sort
@@ -321,7 +320,10 @@ export default class Table extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         if (nextProps.pure) {
-            const isEqual = shallowElementEquals(nextProps, this.props) && obj.shallowEqual(nextState, this.state) && obj.shallowEqual(nextContext, this.context);
+            const isEqual =
+                shallowElementEquals(nextProps, this.props) &&
+                obj.shallowEqual(nextState, this.state) &&
+                obj.shallowEqual(nextContext, this.context);
             return !isEqual;
         }
 
@@ -343,14 +345,23 @@ export default class Table extends React.Component {
     // 将React结构化数据提取props转换成数组
     normalizeChildren(props) {
         let { columns } = props;
-        const getChildren = (children) => {
+        const getChildren = children => {
             const ret = [];
             Children.forEach(children, child => {
                 if (child) {
                     const props = { ...child.props };
 
-                    if (!(child && typeof child.type === 'function' && (child.type._typeMark === 'column' || child.type._typeMark === 'columnGroup'))) {
-                        log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
+                    if (
+                        !(
+                            child &&
+                            typeof child.type === 'function' &&
+                            (child.type._typeMark === 'column' ||
+                                child.type._typeMark === 'columnGroup')
+                        )
+                    ) {
+                        log.warning(
+                            'Use <Table.Column/>, <Table.ColumnGroup/> as child.'
+                        );
                     }
                     ret.push(props);
                     if (child.props.children) {
@@ -372,7 +383,7 @@ export default class Table extends React.Component {
             groupChildren = [],
             getChildren = (propsChildren, level) => {
                 groupChildren[level] = groupChildren[level] || [];
-                propsChildren.forEach((child) => {
+                propsChildren.forEach(child => {
                     if (child.children) {
                         hasGroupHeader = true;
                         getChildren(child.children, level + 1);
@@ -384,7 +395,7 @@ export default class Table extends React.Component {
             },
             getColSpan = (children, colSpan) => {
                 colSpan = colSpan || 0;
-                children.forEach((child) => {
+                children.forEach(child => {
                     if (child.children) {
                         colSpan = getColSpan(child.children, colSpan);
                     } else {
@@ -426,85 +437,123 @@ export default class Table extends React.Component {
                 };
             }
 
-            return <col style={style} key={index}></col>;
+            return <col style={style} key={index} />;
         });
         return <colgroup key="table-colgroup">{cols}</colgroup>;
     }
 
     onSort = (dataIndex, order, sort) => {
-
         if (typeof this.props.sort === 'undefined') {
-            this.setState({
-                sort: sort
-            }, () => {
-                this.props.onSort(dataIndex, order, sort);
-            });
+            this.setState(
+                {
+                    sort: sort
+                },
+                () => {
+                    this.props.onSort(dataIndex, order, sort);
+                }
+            );
         } else {
             this.props.onSort(dataIndex, order, sort);
         }
-    }
+    };
 
-    onFilter = (filterParams) => {
+    onFilter = filterParams => {
         this.props.onFilter(filterParams);
-    }
+    };
 
     onResizeChange = (dataIndex, value) => {
         this.props.onResizeChange(dataIndex, value);
-    }
+    };
 
     // 通过头部和扁平的结构渲染表格
     renderTable(groupChildren, flatChildren) {
-        if (flatChildren.length || (!flatChildren.length && !this.props.lockType)) {
-            const { hasHeader, components, prefix, wrapperContent, filterParams, locale, dataSource, emptyContent, loading, getCellProps, primaryKey, getRowProps, onRowClick, onRowMouseEnter, onRowMouseLeave, pure } = this.props;
-            const {sort} = this.state;
-            const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
+        if (
+            flatChildren.length ||
+            (!flatChildren.length && !this.props.lockType)
+        ) {
+            const {
+                hasHeader,
+                components,
+                prefix,
+                wrapperContent,
+                filterParams,
+                locale,
+                dataSource,
+                emptyContent,
+                loading,
+                getCellProps,
+                primaryKey,
+                getRowProps,
+                onRowClick,
+                onRowMouseEnter,
+                onRowMouseLeave,
+                pure
+            } = this.props;
+            const { sort } = this.state;
+            const {
+                Header = HeaderComponent,
+                Wrapper = WrapperComponent,
+                Body = BodyComponent
+            } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
-            return (<Wrapper colGroup={colGroup} ref={this.getWrapperRef} prefix={prefix}>
-                {hasHeader ? <Header prefix={prefix}
-                    pure={pure}
+            return (
+                <Wrapper
                     colGroup={colGroup}
-                    className={`${prefix}table-header`}
-                    filterParams={filterParams}
-                    columns={groupChildren}
-                    locale={locale}
-                    headerCellRef={this.getHeaderCellRef}
-                    components={components}
-                    onFilter={this.onFilter}
-                    sort={sort}
-                    onResizeChange={this.onResizeChange}
-                    onSort={this.onSort} /> : null}
-                <Body prefix={prefix}
-                    pure={pure}
-                    colGroup={colGroup}
-                    className={`${prefix}table-body`}
-                    components={components}
-                    loading={loading}
-                    emptyContent={emptyContent}
-                    getCellProps={getCellProps}
-                    primaryKey={primaryKey}
-                    getRowProps={getRowProps}
-                    columns={flatChildren}
-                    rowRef={this.getRowRef}
-                    cellRef={this.getCellRef}
-                    onRowClick={onRowClick}
-                    onRowMouseEnter={onRowMouseEnter}
-                    onRowMouseLeave={onRowMouseLeave}
-                    dataSource={dataSource}
-                    locale={locale} />
-                {wrapperContent}
-            </Wrapper>);
+                    ref={this.getWrapperRef}
+                    prefix={prefix}
+                >
+                    {hasHeader ? (
+                        <Header
+                            prefix={prefix}
+                            pure={pure}
+                            colGroup={colGroup}
+                            className={`${prefix}table-header`}
+                            filterParams={filterParams}
+                            columns={groupChildren}
+                            locale={locale}
+                            headerCellRef={this.getHeaderCellRef}
+                            components={components}
+                            onFilter={this.onFilter}
+                            sort={sort}
+                            onResizeChange={this.onResizeChange}
+                            onSort={this.onSort}
+                        />
+                    ) : null}
+                    <Body
+                        prefix={prefix}
+                        pure={pure}
+                        colGroup={colGroup}
+                        className={`${prefix}table-body`}
+                        components={components}
+                        loading={loading}
+                        emptyContent={emptyContent}
+                        getCellProps={getCellProps}
+                        primaryKey={primaryKey}
+                        getRowProps={getRowProps}
+                        columns={flatChildren}
+                        rowRef={this.getRowRef}
+                        cellRef={this.getCellRef}
+                        onRowClick={onRowClick}
+                        onRowMouseEnter={onRowMouseEnter}
+                        onRowMouseLeave={onRowMouseLeave}
+                        dataSource={dataSource}
+                        locale={locale}
+                    />
+                    {wrapperContent}
+                </Wrapper>
+            );
         } else {
             return null;
         }
     }
 
-    getWrapperRef = (wrapper) => {
+    getWrapperRef = wrapper => {
         if (!wrapper) {
             return this.wrapper;
         }
         this.wrapper = wrapper;
-    }
+    };
 
     getHeaderCellRef = (i, j, cell) => {
         const cellRef = `header_cell_${i}_${j}`;
@@ -512,7 +561,7 @@ export default class Table extends React.Component {
             return this[cellRef];
         }
         this[cellRef] = cell;
-    }
+    };
 
     getRowRef = (i, row) => {
         const rowRef = `row_${i}`;
@@ -520,7 +569,7 @@ export default class Table extends React.Component {
             return this[rowRef];
         }
         this[rowRef] = row;
-    }
+    };
 
     getCellRef = (i, j, cell) => {
         const cellRef = `cell_${i}_${j}`;
@@ -528,7 +577,7 @@ export default class Table extends React.Component {
             return this[cellRef];
         }
         this[cellRef] = cell;
-    }
+    };
 
     render() {
         const ret = this.normalizeChildrenState(this.props);
@@ -537,12 +586,33 @@ export default class Table extends React.Component {
         /* eslint-disable no-unused-vars, prefer-const */
         let table = this.renderTable(ret.groupChildren, ret.flatChildren),
             {
-                className, hasBorder, isZebra, loading, hasHeader, prefix,
-                dataSource, entireDataSource, onSort, onResizeChange,
-                onRowClick, onRowMouseEnter, onRowMouseLeave, onFilter,
-                getRowProps, getCellProps, primaryKey, components,
-                wrapperContent, lockType, locale, refs, pure, emptyContent,
-                filterParams, loadingComponent: LoadingComponent = Loading,
+                className,
+                hasBorder,
+                isZebra,
+                loading,
+                hasHeader,
+                prefix,
+                dataSource,
+                entireDataSource,
+                onSort,
+                onResizeChange,
+                onRowClick,
+                onRowMouseEnter,
+                onRowMouseLeave,
+                onFilter,
+                getRowProps,
+                getCellProps,
+                primaryKey,
+                components,
+                wrapperContent,
+                lockType,
+                locale,
+                refs,
+                pure,
+                rtl,
+                emptyContent,
+                filterParams,
+                loadingComponent: LoadingComponent = Loading,
                 ...others
             } = this.props,
             cls = classnames({
@@ -551,11 +621,16 @@ export default class Table extends React.Component {
                 'no-header': !hasHeader,
                 zebra: isZebra,
                 [className]: className
-            }),
+            });
 
-            content = (<div className={cls} {...others}>
+        if (rtl) {
+            others.dir = 'rtl';
+        }
+        const content = (
+            <div className={cls} {...others}>
                 {table}
-            </div>);
+            </div>
+        );
         if (loading) {
             const loadingClassName = `${prefix}table-loading`;
             return (

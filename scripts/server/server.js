@@ -12,6 +12,7 @@ const getWebpackConfig = require('./webpack');
 const getVariables = require('./middlewares/get-variables');
 const rebuildScss = require('./middlewares/rebuild-scss');
 const changeLang = require('./middlewares/change-lang');
+const changeDir = require('./middlewares/change-dir');
 const event = require('./event');
 const { logger } = require('../utils');
 
@@ -23,11 +24,12 @@ const argv = parseArgs(process.argv.slice(2), {
         port: 3000,
         silent: false,
         'disable-animation': false,
-        lang: 'zh'
+        lang: 'zh',
+        dir: 'ltr'
     }
 });
 
-const { host, silent, lang } = argv;
+const { host, silent, lang, dir } = argv;
 const port = parseInt(argv.port, 10);
 const componentName = argv._[0];
 const componentPath = path.join(process.cwd(), 'docs', componentName);
@@ -50,7 +52,8 @@ function run(port) {
         componentName,
         componentPath,
         disableAnimation,
-        lang
+        lang,
+        dir
     });
     const compiler = webpack(config);
 
@@ -83,6 +86,7 @@ function run(port) {
             app.use(getVariables({ cwd }));
             app.use(rebuildScss({ cwd }));
             app.use(changeLang());
+            app.use(changeDir());
         }
     });
 
@@ -110,6 +114,11 @@ function run(port) {
             event.on('CHANGE_LANG', lang => {
                 logger.warn('Change language, try to restart server');
                 process.send(`CHANGE_LANG=${lang}`);
+            });
+
+            event.on('CHANGE_DIR', dir => {
+                logger.warn('Change direction, try to restart server');
+                process.send(`CHANGE_DIR=${dir}`);
             });
         }, 1000);
     }

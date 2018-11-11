@@ -21,6 +21,13 @@ function start(args) {
             argv.lang = lang;
             const newArgs = restoreArgs(argv);
             start(newArgs);
+        } else if (data.indexOf('CHANGE_DIR') === 0) {
+            worker.kill('SIGINT');
+            const dir = data.split('=')[1];
+            const argv = parseArgs(args);
+            argv.dir = dir;
+            const newArgs = restoreArgs(argv);
+            start(newArgs);
         }
     });
 }
