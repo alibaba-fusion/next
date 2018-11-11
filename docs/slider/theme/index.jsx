@@ -25,11 +25,11 @@ const i18nMap = {
         hide: '隐藏'
     },
     'en-us': {
-        large: 'Large arrow',
-        medium: 'Medium arrow',
-        normal: 'normal',
-        widthDots: 'with dots',
-        widthArrow: 'with arrows',
+        large: 'Large Arrow',
+        medium: 'Medium Arrow',
+        normal: 'Normal',
+        widthDots: 'With Dots',
+        widthArrow: 'With Arrows',
         show: 'show',
         hide: 'hide'
     },
