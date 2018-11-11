@@ -11,7 +11,7 @@ const i18nMaps = {
     'en-us': {
         item: 'Nav Item ',
         option: 'Option ',
-        group: 'Group title'
+        group: 'Group Title'
     },
     'zh-cn': {
         item: '导航项 ',
@@ -103,13 +103,13 @@ class FuncDemoHoz extends FuncDemo {
     renderHozType(title, type) {
         return (
             <Demo title={title}>
-                <DemoGroup label="normal">
+                <DemoGroup label="Normal">
                     {this.renderNav('hoz', type)}
                 </DemoGroup>
-                <DemoGroup label="hover">
+                <DemoGroup label="Hover">
                     {this.renderNav('hoz', type, null, 'next-focused')}
                 </DemoGroup>
-                <DemoGroup label="selected">
+                <DemoGroup label="Selected">
                     {this.renderNav('hoz', type, ['2'])}
                 </DemoGroup>
             </Demo>
@@ -181,7 +181,7 @@ class FuncDemoVer extends FuncDemo {
     renderVerType(title, type) {
         return (
             <Demo title={title}>
-                <DemoHead cols={['normal', 'hover', 'selected']} />
+                <DemoHead cols={['Normal', 'Hover', 'Selected']} />
                 <DemoGroup label={title}>
                     {this.renderNav('ver', type)}
                     {this.renderNav('ver', type, null, 'next-focused')}
