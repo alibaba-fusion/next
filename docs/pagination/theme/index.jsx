@@ -43,31 +43,31 @@ class NormalFunctionDemo extends React.Component {
             trigger: 'onFunctionChange'
         })}>
             <Demo title="Basic">
-                <DemoGroup label="normal(L)">
+                <DemoGroup label="Normal(L)">
                     <Pagination locale={locale} defaultCurrent={2} size="large" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="normal(M)">
+                <DemoGroup label="Normal(M)">
                     <Pagination locale={locale} defaultCurrent={2} size="medium" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="normal(S)">
+                <DemoGroup label="Normal(S)">
                     <Pagination locale={locale} defaultCurrent={2} size="small" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="with-filter(L)">
+                <DemoGroup label="With Filter(L)">
                     <Pagination locale={locale} defaultCurrent={2} size="large" pageSizeSelector="filter" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="with-filter(M)">
+                <DemoGroup label="With Filter(M)">
                     <Pagination locale={locale} defaultCurrent={2} size="medium" pageSizeSelector="filter" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="with-filter(S)">
+                <DemoGroup label="With Filter(S)">
                     <Pagination locale={locale} defaultCurrent={2} size="small" pageSizeSelector="filter" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="with-dropdown(L)">
+                <DemoGroup label="With Dropdown(L)">
                     <Pagination locale={locale} defaultCurrent={2} size="large" pageSizeSelector="dropdown" pageSizePosition="end" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="with-dropdown(M)">
+                <DemoGroup label="With Dropdown(M)">
                     <Pagination locale={locale} defaultCurrent={2} size="medium" pageSizeSelector="dropdown" pageSizePosition="end" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="with-dropdown(S)">
+                <DemoGroup label="With Dropdown(S)">
                     <Pagination locale={locale} defaultCurrent={2} size="small" pageSizeSelector="dropdown" pageSizePosition="end" shape={shape} />
                 </DemoGroup>
             </Demo>
@@ -98,13 +98,13 @@ class SimpleFunctionDemo extends React.Component {
             trigger: 'onFunctionChange'
         })}>
             <Demo title="Basic">
-                <DemoGroup label="normal(L)">
+                <DemoGroup label="Normal(L)">
                     <Pagination locale={locale} defaultCurrent={2} size="large" type="simple" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="normal(M)">
+                <DemoGroup label="Normal(M)">
                     <Pagination locale={locale} defaultCurrent={2} size="medium" type="simple" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="normal(S)">
+                <DemoGroup label="Normal(S)">
                     <Pagination locale={locale} defaultCurrent={2} size="small" type="simple" shape={shape} />
                 </DemoGroup>
             </Demo>
@@ -135,13 +135,13 @@ class MiniFunctionDemo extends React.Component {
             trigger: 'onFunctionChange'
         })}>
             <Demo title="Basic">
-                <DemoGroup label="normal(L)">
+                <DemoGroup label="Normal(L)">
                     <Pagination locale={locale} defaultCurrent={2} size="large" type="mini" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="normal(M)">
+                <DemoGroup label="Normal(M)">
                     <Pagination locale={locale} defaultCurrent={2} size="medium" type="mini" shape={shape} />
                 </DemoGroup>
-                <DemoGroup label="normal(S)">
+                <DemoGroup label="Normal(S)">
                     <Pagination locale={locale} defaultCurrent={2} size="small" type="mini" shape={shape} />
                 </DemoGroup>
             </Demo>
