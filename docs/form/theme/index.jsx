@@ -53,17 +53,17 @@ const i18nMap = {
     },
     'en-us': {
         labels: {
-            username: 'Username:',
-            password: 'Password:',
-            others: 'Others:',
+            username: 'Username',
+            password: 'Password',
+            others: 'Others',
             firstName: 'First Name',
             lastName: 'Last Name',
-            address: 'Address:'
+            address: 'Address'
         },
         help: {
-            username: 'Please input your username.',
-            password: 'Please input your password.',
-            required: 'required a value'
+            username: 'Please input your username',
+            password: 'Please input your password',
+            required: 'Required a value'
         }
     }
 };
@@ -123,13 +123,13 @@ class FunctionDemo extends React.Component {
         return (<ConfigProvider locale={lang === 'en-us' ? enUS : zhCN} >
             <div className="demo-container">
                 <h2>Form</h2>
-                <Demo title="Form inline" block {...init('demo1', {
+                <Demo title="Form Inline" block {...init('demo1', {
                     initValue: demo1,
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange'
                 })}>
-                    <Demo title="Form inline - Large">
-                        <DemoGroup label="label left" >
+                    <Demo title="Form Inline - Large">
+                        <DemoGroup label="Label Left" >
                             <Form inline size="large" style={{width: 700}}>
                                 <FormItem label={i18n.labels.username}
                                     help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
@@ -161,7 +161,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label top" >
+                        <DemoGroup label="Label Top" >
                             <Form inline labelAlign="top" size="large"  style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
@@ -180,7 +180,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label inset" >
+                        <DemoGroup label="Label Inset" >
                             <Form inline labelAlign="inset" size="large" style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
@@ -195,8 +195,8 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                     </Demo>
-                    <Demo title="Form inline - Medium">
-                        <DemoGroup label="label left" >
+                    <Demo title="Form Inline - Medium">
+                        <DemoGroup label="Label Left" >
                             <Form inline size="medium" style={{width: 700}}>
                                 <FormItem label={i18n.labels.username}
                                     help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
@@ -228,7 +228,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label top" >
+                        <DemoGroup label="Label Top" >
                             <Form inline labelAlign="top" size="medium"  style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
@@ -247,7 +247,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label inset" size="medium">
+                        <DemoGroup label="Label Inset" size="medium">
                             <Form inline labelAlign="inset" size="medium" style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
@@ -262,8 +262,8 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                     </Demo>
-                    <Demo title="Form inline - small">
-                        <DemoGroup label="label left" >
+                    <Demo title="Form Inline - Small">
+                        <DemoGroup label="Label Left" >
                             <Form inline size="small" style={{width: 700}}>
                                 <FormItem label={i18n.labels.username}
                                     help={getValue('demo1').help.value === 'true' ? i18n.help.username : null}>
@@ -295,7 +295,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label top" >
+                        <DemoGroup label="Label Top" >
                             <Form inline labelAlign="top" size="small"  style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
@@ -314,7 +314,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label inset" >
+                        <DemoGroup label="Label Inset" >
                             <Form inline labelAlign="inset" size="small" style={{minWidth: 500}}>
                                 <FormItem
                                     label={i18n.labels.username}
@@ -330,12 +330,12 @@ class FunctionDemo extends React.Component {
                         </DemoGroup>
                     </Demo>
                 </Demo>
-                <Demo title="Form Ver" block {...init('demo2', {
+                <Demo title="Form Vertical" block {...init('demo2', {
                     initValue: demo2,
                     valueName: 'demoFunction',
                     trigger: 'onFunctionChange'
                 })}>
-                    <Demo title="Form Ver - large">
+                    <Demo title="Form Vertical - large">
                         <DemoGroup label="Normal">
                             <Form labelAlign="left" style={{minWidth: 500}} size="large">
                                 <FormItem {...formItemLayout}
@@ -367,7 +367,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label top">
+                        <DemoGroup label="Label Top">
                             <Form labelAlign="top" style={{minWidth: 500}} size="large" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayout}
@@ -415,7 +415,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label inset" >
+                        <DemoGroup label="Label Inset" >
                             <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size="large" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayoutLarge}
@@ -448,7 +448,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                     </Demo>
-                    <Demo title="Form Ver - medium">
+                    <Demo title="Form Vertical - Medium">
                         <DemoGroup label="Normal">
                             <Form labelAlign="left" style={{minWidth: 500}} size="medium">
                                 <FormItem {...formItemLayout}
@@ -480,7 +480,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label top">
+                        <DemoGroup label="Label Top">
                             <Form labelAlign="top" style={{minWidth: 500}} size="medium" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayout}
@@ -528,7 +528,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label inset" >
+                        <DemoGroup label="Label Inset" >
                             <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size="medium" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayout2}
@@ -560,7 +560,7 @@ class FunctionDemo extends React.Component {
                             </Form>
                         </DemoGroup>
                     </Demo>
-                    <Demo title="Form Ver - small">
+                    <Demo title="Form Vertical - small">
                         <DemoGroup label="Normal">
                             <Form labelAlign="left" style={{minWidth: 500}} size="small">
                                 <FormItem {...formItemLayout}
@@ -592,7 +592,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label top">
+                        <DemoGroup label="Label Top">
                             <Form labelAlign="top" style={{minWidth: 500}} size="small" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayout}
@@ -640,7 +640,7 @@ class FunctionDemo extends React.Component {
                                 </FormItem>
                             </Form>
                         </DemoGroup>
-                        <DemoGroup label="label inset" >
+                        <DemoGroup label="Label Inset" >
                             <Form labelAlign="inset" labelTextAlign={getValue('demo2').insetAlign.value} style={{minWidth: 500}} size="small" help={getValue('demo2').help.value === 'true' ? i18n.help.username : null}>
                                 <FormItem
                                     {...formItemLayout2}
