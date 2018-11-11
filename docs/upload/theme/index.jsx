@@ -87,7 +87,7 @@ class FunctionDemo extends React.Component {
                 valueName: 'demoFunction',
                 trigger: 'onFunctionChange'
             })}>
-                <DemoGroup label="uploading">
+                <DemoGroup label="Uploading">
                     <Upload
                         limit={1}
                         listType="text"
@@ -96,7 +96,7 @@ class FunctionDemo extends React.Component {
                         style={style}
                     />
                 </DemoGroup>
-                <DemoGroup label="finished">
+                <DemoGroup label="Finished">
                     <Upload
                         limit={1}
                         listType="text"
@@ -105,7 +105,7 @@ class FunctionDemo extends React.Component {
                         style={style}
                     />
                 </DemoGroup>
-                <DemoGroup label="failed">
+                <DemoGroup label="Failed">
                     <Upload
                         limit={1}
                         listType="text"
@@ -122,7 +122,7 @@ class FunctionDemo extends React.Component {
                 trigger: 'onFunctionChange'
             })}>
                 <Demo title="Image">
-                    <DemoGroup label="uploading">
+                    <DemoGroup label="Uploading">
                         <Upload
                             listType="image"
                             limit={1}
@@ -137,7 +137,7 @@ class FunctionDemo extends React.Component {
                             style={style}
                         />
                     </DemoGroup>
-                    <DemoGroup label="finished">
+                    <DemoGroup label="Finished">
                         <Upload
                             listType="image"
                             limit={1}
@@ -151,7 +151,7 @@ class FunctionDemo extends React.Component {
                             style={style}
                         />
                     </DemoGroup>
-                    <DemoGroup label="failed">
+                    <DemoGroup label="Failed">
                         <Upload
                             listType="image"
                             limit={1}
@@ -166,15 +166,15 @@ class FunctionDemo extends React.Component {
                     </DemoGroup>
                 </Demo>
                 <Demo title="Card" block>
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Card style={style}
                         />
                     </DemoGroup>
-                    <DemoGroup label="disable">
+                    <DemoGroup label="Disabled">
                         <Card style={style} disabled
                         />
                     </DemoGroup>
-                    <DemoGroup label="uploading">
+                    <DemoGroup label="Uploading">
                         <Card style={style}
 
                             limit={1}
@@ -185,7 +185,7 @@ class FunctionDemo extends React.Component {
                             }]}
                         />
                     </DemoGroup>
-                    <DemoGroup label="finished">
+                    <DemoGroup label="Finished">
                         <Card style={style}
                             limit={1}
                             onPreview={this.onPreview}
@@ -197,7 +197,7 @@ class FunctionDemo extends React.Component {
                             }]}
                         />
                     </DemoGroup>
-                    <DemoGroup label="failed">
+                    <DemoGroup label="Failed">
                         <Card style={style}
                             limit={1}
                             defaultValue={[{
@@ -214,18 +214,18 @@ class FunctionDemo extends React.Component {
                 valueName: 'demoFunction',
                 trigger: 'onFunctionChange'
             })}>
-                <DemoGroup label="normal">
+                <DemoGroup label="Normal">
                     <Dragger style={style} />
                 </DemoGroup>
-                <DemoGroup label="disabled">
+                <DemoGroup label="Disabled">
                     <Dragger style={style} disabled />
                 </DemoGroup>
-                <DemoGroup label="dragover">
+                <DemoGroup label="Drag Over">
                     <Dragger className="next-upload-drag-over"
                         style={style}
                     />
                 </DemoGroup>
-                <DemoGroup label="drag-uploading">
+                <DemoGroup label="Drag Uploading">
                     <Dragger
                         style={style}
                         listType={getValue('demo3').listType.value === 'true' ? 'text' : undefined}
@@ -236,7 +236,7 @@ class FunctionDemo extends React.Component {
                         }]}
                     />
                 </DemoGroup>
-                <DemoGroup label="drag-finish">
+                <DemoGroup label="Drag Finish">
                     <Dragger
                         style={style}
                         listType={getValue('demo3').listType.value === 'true' ? 'text' : undefined}
@@ -253,7 +253,7 @@ class FunctionDemo extends React.Component {
                         }]}
                     />
                 </DemoGroup>
-                <DemoGroup label="drag-error">
+                <DemoGroup label="Drag Error">
                     <Dragger
                         style={style}
                         listType={getValue('demo3').listType.value === 'true' ? 'text' : undefined}
