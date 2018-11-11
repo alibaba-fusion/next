@@ -17,22 +17,22 @@ const i18nMap = {
 
 function ItemDemo({title, marksPosition, ...others}) {
     return (<Demo title={title}>
-        <DemoGroup label="normal">
+        <DemoGroup label="Normal">
             <div style={{width: '400px', margin: '10px'}}>
                 <Range {...others} marksPosition={marksPosition} />
             </div>
         </DemoGroup>
-        <DemoGroup label="hover">
+        <DemoGroup label="Hover">
             <div style={{width: '400px', margin: '10px'}}>
                 <Range {...others} marksPosition={marksPosition} className="simulation-hover" />
             </div>
         </DemoGroup>
-        <DemoGroup label="clicked">
+        <DemoGroup label="Clicked">
             <div style={{width: '400px', margin: '10px'}}>
                 <Range {...others} marksPosition={marksPosition} className="simulation-click" />
             </div>
         </DemoGroup>
-        <DemoGroup label="disabled">
+        <DemoGroup label="Disabled">
             <div style={{width: '400px', margin: '10px'}}>
                 <Range {...others} disabled marksPosition={marksPosition} />
             </div>
@@ -75,7 +75,7 @@ class OriginalDemo extends Component {
         const marksPosition = demoFunction.marksPosition.value;
 
         return (
-            <Demo title="WithScale" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo title="With Scale" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <ItemDemo marksPosition={marksPosition} title="Single" defaultValue={3} max={10} scales={5} marks={5} />
                 <ItemDemo marksPosition={marksPosition} title="Double" defaultValue={[20, 40]} slider="double" scales={10} marks={10} />
             </Demo>
