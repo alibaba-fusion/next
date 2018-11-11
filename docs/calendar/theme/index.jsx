@@ -25,7 +25,7 @@ const i18nMap = {
         dateFullscreenCalendar: 'Fullscreen',
         cardCalendar: 'Card',
         panelCalendar: 'Panel',
-        rangeCalendar: 'RangePanel',
+        rangeCalendar: 'Range Panel',
 
         date: 'Day',
         month: 'Month',
