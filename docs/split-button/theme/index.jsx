@@ -96,13 +96,13 @@ function render(locale, lang) {
     return ReactDOM.render((<ConfigProvider>
         <div className="demo-container">
             <Demo title={locale.splitButton}>
-                {renderButton('normal', locale)}
-                {renderButton('primary', locale)}
-                {renderButton('secondary', locale)}
+                {renderButton('Normal', locale)}
+                {renderButton('Primary', locale)}
+                {renderButton('Secondary', locale)}
             </Demo>
             <Demo title={locale.ghostSplitButton}>
-                {renderButton('normal', locale, { ghost: 'light' })}
-                {renderButton('normal', locale, { ghost: 'dark' })}
+                {renderButton('Normal', locale, { ghost: 'light' })}
+                {renderButton('Normal', locale, { ghost: 'dark' })}
             </Demo>
         </div></ConfigProvider>
     ), document.getElementById('container'));
