@@ -46,7 +46,10 @@ function checkTags() {
         logger.error(`You have duplicate tags: ${repeatTag}`);
         process.exit(0);
     } else {
-        logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
+        logger.success(
+            `There is no [${masterTag}] or [${buildTag}] exits`,
+            '\n'
+        );
     }
 }
 
@@ -84,14 +87,20 @@ function* pushPlatformDocsBranch() {
 
         yield runCommond('cd platform-docs;git add .');
 
-        logger.success(`[command] cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`);
-        cp.execSync(`cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`);
+        logger.success(
+            `[command] cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
+        );
+        cp.execSync(
+            `cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
+        );
 
         yield runCommond('cd platform-docs;git push origin platform-docs -f');
         yield runCommond(`cd platform-docs;git tag ${buildTag}`);
         yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
 
-        logger.success('******** push to branch platform-docs success! ********\n');
+        logger.success(
+            '******** push to branch platform-docs success! ********\n'
+        );
     } finally {
         yield fs.remove(docs);
         yield runCommond('git worktree prune');
@@ -104,29 +113,54 @@ function* publishToNpm() {
     yield runCommond(`git tag ${masterTag}`);
     yield runCommond(`git push origin ${masterTag}`);
 
-    // yield runCommond('npm publish');
-    // yield triggerRelease();
+    const pubNpm = yield inquirer.prompt([
+        {
+            name: 'pub',
+            type: 'input',
+            validate: value => {
+                if (['yes', 'no'].indexOf(value.toLowerCase()) !== -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            message: 'Are you sure to publish to npmjs.com ? (yes | no)'
+        }
+    ]);
+    if (pubNpm.pub.toLowerCase() === 'yes') {
+        logger.success('publishing ...');
+        yield runCommond('npm publish');
+        yield triggerRelease();
+    } else {
+        logger.success('publish abort.');
+    }
 }
 
 function* getGithubInfo() {
-    return yield inquirer.prompt([{
-        name: 'uname',
-        type: 'input',
-        message: '请输入github用户名:'
-    }, {
-        name: 'pwd',
-        type: 'password',
-        message: '请输入github密码:'
-    }]);
+    return yield inquirer.prompt([
+        {
+            name: 'uname',
+            type: 'input',
+            message: '请输入github用户名:'
+        },
+        {
+            name: 'pwd',
+            type: 'password',
+            message: '请输入github密码:'
+        }
+    ]);
 }
 
 function* triggerRelease() {
     logger.success(`正在准备发布Github release: ${buildTag}`);
     const hubInfo = yield getGithubInfo();
 
-    const latestLog = fs.readFileSync(path.join(cwd, 'LATESTLOG.md'), 'utf8')
+    const latestLog = fs
+        .readFileSync(path.join(cwd, 'LATESTLOG.md'), 'utf8')
         .replace(/\n+/g, '\n')
-        .split('\n').slice(1).join('\n');
+        .split('\n')
+        .slice(1)
+        .join('\n');
 
     return new Promise(function(resolve, reject) {
         Github.hook.before('request', () => {
@@ -137,23 +171,26 @@ function* triggerRelease() {
             });
         });
 
-        Github.repos.createRelease({
-            owner: 'alibaba-fusion',
-            repo: 'next',
-            /* eslint-disable */
-            tag_name: buildTag,
-            target_commitish: 'platform-docs',
-            /* eslint-enable */
-            name: buildTag,
-            body: latestLog,
-            draft: false,
-            prerelease: false,
-        }).then(result => {
-            logger.success('Create release success');
-            resolve();
-        }).catch(err => {
-            logger.error(`Failed to release: ${err}`);
-            reject();
-        });
+        Github.repos
+            .createRelease({
+                owner: 'alibaba-fusion',
+                repo: 'next',
+                /* eslint-disable */
+                tag_name: buildTag,
+                target_commitish: "platform-docs",
+                /* eslint-enable */
+                name: buildTag,
+                body: latestLog,
+                draft: false,
+                prerelease: false
+            })
+            .then(() => {
+                logger.success('Create release success');
+                resolve();
+            })
+            .catch(err => {
+                logger.error(`Failed to release: ${err}`);
+                reject();
+            });
     });
 }
