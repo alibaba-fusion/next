@@ -39,7 +39,13 @@ class ThemeDemo extends Component {
         this.state = {
             demoFunction: {
                 showText: {
-                    ...props.i18n.showText
+                    label: '是否显示文字',
+                    value: 'false',
+                    enum: [{
+                        label: '是', value: 'true'
+                    }, {
+                        label: '否', value: 'false'
+                    }]
                 }
             }
         };
@@ -100,11 +106,11 @@ function render (i18n) {
     ), document.getElementById('container'));
 }
 
-window.renderDemo = function (lang) {
+window.renderDemo = function (lang = 'en-us') {
     render(i18nMap[lang]);
 };
 
-window.renderDemo('zh-cn');
+window.renderDemo('en-us');
 
 
 initDemo('switch');
