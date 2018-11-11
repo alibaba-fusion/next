@@ -120,7 +120,7 @@ class FunctionDemo extends Component {
             <div className="demo-container">
                 <Demo title="Dialog" demoFunction={this.state.demoFunction} onFunctionChange={this.onFunctionChange}>
                     <Demo title="Normal">
-                        <DemoGroup label="align">
+                        <DemoGroup label="Align">
                             {this.renderMask(hasMask, normalContent)}
                         </DemoGroup>
                     </Demo>
