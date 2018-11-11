@@ -27,25 +27,22 @@ const mapKeys = (obj, fn) => {
  * @param {String} key
  * @return {String}
  */
-const replaceKey = key => key.replace(
-    /^(next)([A-Z])/,
-    (match, p1, p2) => p2.toLowerCase()
-);
+const replaceKey = key =>
+    key.replace(/^(next)([A-Z])/, (match, p1, p2) => p2.toLowerCase());
 
 /**
  * @param {Object} source
  * @return {Object}
  */
-const transformContext = (source) => mapKeys(source, replaceKey);
+const transformContext = source => mapKeys(source, replaceKey);
 
 /**
  * Consumer
  * @param {Object} prop
  * @param {Object} context
  */
-const Consumer = ({ children }, context) => (
-    typeof children === 'function' ? children(transformContext(context)) : null
-);
+const Consumer = ({ children }, context) =>
+    typeof children === 'function' ? children(transformContext(context)) : null;
 
 /**
  * PropTypes
@@ -55,7 +52,7 @@ const Consumer = ({ children }, context) => (
 Consumer.propTypes = {
     // Render context as function
     // Function(context: object): ReactElement
-    children: PropTypes.func,
+    children: PropTypes.func
 };
 
 /**
@@ -67,7 +64,8 @@ Consumer.contextTypes = {
     nextPrefix: PropTypes.string,
     nextLocale: PropTypes.object,
     nextPure: PropTypes.bool,
-    nextWarning: PropTypes.bool,
+    newRtl: PropTypes.bool,
+    nextWarning: PropTypes.bool
 };
 
 export default Consumer;

@@ -1,7 +1,14 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import getContextProps from './get-context-props';
-import { config, initLocales, setLanguage, setLocale, getLocale, getLanguage } from './config';
+import {
+    config,
+    initLocales,
+    setLanguage,
+    setLocale,
+    getLocale,
+    getLanguage
+} from './config';
 import Consumer from './consumer';
 
 let childContextCache = {};
@@ -29,19 +36,25 @@ class ConfigProvider extends Component {
          */
         warning: PropTypes.bool,
         /**
+         * 是否开启 rtl 模式
+         */
+        rtl: PropTypes.bool,
+        /**
          * 组件树
          */
         children: PropTypes.element
     };
 
     static defaultProps = {
-        warning: true
+        warning: true,
+        rtl: false
     };
 
     static childContextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
         nextPure: PropTypes.bool,
+        nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool
     };
 
@@ -73,23 +86,31 @@ class ConfigProvider extends Component {
     static Consumer = Consumer;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextWarning } = childContextCache;
+        const {
+            nextPrefix,
+            nextLocale,
+            nextPure,
+            nextRtl,
+            nextWarning
+        } = childContextCache;
 
         return {
             prefix: nextPrefix,
             locale: nextLocale,
             pure: nextPure,
+            rtl: nextRtl,
             warning: nextWarning
         };
-    }
+    };
 
     getChildContext() {
-        const { prefix, locale, pure, warning } = this.props;
+        const { prefix, locale, pure, warning, rtl } = this.props;
 
         return {
             nextPrefix: prefix,
             nextLocale: locale,
             nextPure: pure,
+            nextRtl: rtl,
             nextWarning: warning
         };
     }
@@ -99,7 +120,11 @@ class ConfigProvider extends Component {
     }
 
     componentDidMount() {
-        childContextCache = Object.assign({}, this.getChildContext(), childContextCache);
+        childContextCache = Object.assign(
+            {},
+            this.getChildContext(),
+            childContextCache
+        );
     }
 
     componentWillReceiveProps(nextProps) {
