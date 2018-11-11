@@ -11,7 +11,7 @@ function html2Escape(sHtml) {
     });
 }
 
-module.exports = function(content, filePath, lang) {
+module.exports = function(content, filePath, lang, dir) {
     const result = {
         meta: {},
         js: null,
@@ -25,7 +25,8 @@ module.exports = function(content, filePath, lang) {
     if (content.match(splitReg)) {
         const arr = content.split(splitReg, 2);
         const headerContent = arr[0];
-        const bodyContent = arr[1];
+        let bodyContent = arr[1];
+
         if (headerContent) {
             const headerAST = remark.parse(headerContent);
             if (headerAST && headerAST.children) {
@@ -64,6 +65,26 @@ module.exports = function(content, filePath, lang) {
             }
         }
         if (bodyContent) {
+            let code = bodyContent;
+            if (dir === 'rtl') {
+                const IMPORT_REG = /import {(.+)} from ['"]@alifd\/next['"];?/;
+                let components = code.match(IMPORT_REG)[1].replace(/\s/g, '').split(',');
+                components.push('ConfigProvider');
+                components = [...new Set(components)];
+
+                code = code.replace(IMPORT_REG, `import { ${components.join(', ')} } from '@alifd/next';`);
+
+                const RENDER_REG = /(.*)ReactDOM\.render\(([\s\S]*), +mountNode\);?(.*)/g;
+                code = code.replace(RENDER_REG, (all, s1, s2, s3) => {
+                    return `${s1} ReactDOM.render(
+<ConfigProvider rtl>
+    ${s2}
+</ConfigProvider>, mountNode);${s3}`;
+                });
+
+                bodyContent = code;
+            }
+
             const bodyAST = remark.parse(bodyContent);
             if (bodyAST && bodyAST.children) {
                 const body = bodyAST.children;
