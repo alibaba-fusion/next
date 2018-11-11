@@ -39,20 +39,20 @@ const i18nMap = {
         basic: 'Basic',
         vertical: 'Portrait',
         horizontal: 'Landscape',
-        verticalGroup: 'vertical',
-        horizontalGroup: 'horizontal',
+        verticalGroup: 'Vertical',
+        horizontalGroup: 'Horizontal',
         percent: 'Percent',
         circle: 'Circle',
         arrow: 'Arrow',
         dot: 'Dot',
         disabled: 'Disabled',
-        stepOne: 'Step One',
-        stepTwo: 'Step Two',
-        stepThree: 'Step Three',
-        stepFour: 'Step Four',
-        stepOneContent: 'Open the door',
-        stepTwoContent: 'Put the elephant into the fridge',
-        stepThreeContent: 'Close the door'
+        stepOne: 'Step 1',
+        stepTwo: 'Step 2',
+        stepThree: 'Step 3',
+        stepFour: 'Step 4',
+        stepOneContent: 'Open the door,',
+        stepTwoContent: 'put the elephant into the fridge',
+        stepThreeContent: 'close the door'
     }
 };
 
