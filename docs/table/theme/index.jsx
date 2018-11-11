@@ -120,7 +120,7 @@ class FunctionDemo extends React.Component {
             return <div>{record.product[0].title}</div>;
         }
         const listDataSource = [{
-            price: 'US $2.45',
+            price: '$2.45(USD)',
             status: 0,
             id: 1,
             product: [{
@@ -128,7 +128,7 @@ class FunctionDemo extends React.Component {
                 avatar: 'https://sc01.alicdn.com/kf/HTB1ravHKXXXXXccXVXXq6xXFXXXJ/Chinese-Style-Fashion-Custom-Digital-Print-Silk.jpg_220x220.jpg'
             }],
             children: [{
-                price: 'US $2.5',
+                price: '$2.5(USD)',
                 status: 1,
                 id: 2,
                 product: [{
@@ -136,7 +136,7 @@ class FunctionDemo extends React.Component {
                     avatar: 'https://sc02.alicdn.com/kf/HTB1efnNLVXXXXbtXpXXq6xXFXXXN/Light-100-acrylic-fashionabe-snood-shawl-weight.jpg_220x220.jpg'
                 }]
             }, {
-                price: 'US $2.5',
+                price: '$2.5(USD)',
                 status: 1,
                 id: 3,
                 product: [{
@@ -145,7 +145,7 @@ class FunctionDemo extends React.Component {
                 }]
             }]
         }, {
-            price: 'US $2.5',
+            price: '$2.5(USD)',
             status: 1,
             id: 4,
             product: [{
@@ -153,7 +153,7 @@ class FunctionDemo extends React.Component {
                 avatar: 'https://sc02.alicdn.com/kf/HTB1efnNLVXXXXbtXpXXq6xXFXXXN/Light-100-acrylic-fashionabe-snood-shawl-weight.jpg_220x220.jpg'
             }],
             children: [{
-                price: 'US $2.5',
+                price: '$2.5(USD)',
                 status: 1,
                 id: 5,
                 product: [{
@@ -161,7 +161,7 @@ class FunctionDemo extends React.Component {
                     avatar: 'https://sc02.alicdn.com/kf/HTB1efnNLVXXXXbtXpXXq6xXFXXXN/Light-100-acrylic-fashionabe-snood-shawl-weight.jpg_220x220.jpg'
                 }]
             }, {
-                price: 'US $2.5',
+                price: '$2.5(USD)',
                 status: 1,
                 id: 6,
                 product: [{
@@ -187,24 +187,24 @@ class FunctionDemo extends React.Component {
         return (
             <Demo title="List" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="List">
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Table dataSource={listDataSource} hasBorder={false}>{cols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="selected">
+                    <DemoGroup label="Selected">
                         <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={false} getRowProps={getSelectedRowProps}>{cols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="no-data">
+                    <DemoGroup label="No Data">
                         <Table dataSource={[]} hasBorder={false}>{cols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="Group">
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Table dataSource={listDataSource}>{groupCols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="selected">
+                    <DemoGroup label="Selected">
                         <Table rowSelection={rowSelection} dataSource={listDataSource} getRowProps={getSelectedRowProps}>{groupCols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="no-data">
+                    <DemoGroup label="No Data">
                         <Table dataSource={[]}>{groupCols}</Table>
                     </DemoGroup>
                 </Demo>
@@ -274,7 +274,7 @@ class TableFunctionDemo extends React.Component {
         const isZebra = functions.zebra === 'true';
         const align = functions.align;
         const listDataSource = [{
-            price: 'US $2.45',
+            price: '$2.45(USD)',
             status: 0,
             id: 1,
             product: [{
@@ -282,7 +282,7 @@ class TableFunctionDemo extends React.Component {
                 avatar: 'https://sc01.alicdn.com/kf/HTB1ravHKXXXXXccXVXXq6xXFXXXJ/Chinese-Style-Fashion-Custom-Digital-Print-Silk.jpg_220x220.jpg'
             }],
             children: [{
-                price: 'US $2.5',
+                price: '$2.5(USD)',
                 status: 1,
                 id: 2,
                 product: [{
@@ -290,7 +290,7 @@ class TableFunctionDemo extends React.Component {
                     avatar: 'https://sc02.alicdn.com/kf/HTB1efnNLVXXXXbtXpXXq6xXFXXXN/Light-100-acrylic-fashionabe-snood-shawl-weight.jpg_220x220.jpg'
                 }]
             }, {
-                price: 'US $2.5',
+                price: '$2.5(USD)',
                 status: 1,
                 id: 3,
                 product: [{
@@ -299,7 +299,7 @@ class TableFunctionDemo extends React.Component {
                 }]
             }]
         }, {
-            price: 'US $2.5',
+            price: '$2.5(USD)',
             status: 1,
             id: 4,
             product: [{
@@ -354,16 +354,16 @@ class TableFunctionDemo extends React.Component {
         return (
             <Demo title="Table" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Table">
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="selected">
+                    <DemoGroup label="Selected">
                         <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="selected + expanded">
+                    <DemoGroup label="Selected & Expanded">
                         <Table rowSelection={rowSelection} expandedRowRender={(record) => record.price} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
-                    <DemoGroup label="no-data">
+                    <DemoGroup label="No Data">
                         <Table rowSelection={rowSelection} dataSource={[]} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
 
@@ -384,5 +384,5 @@ window.renderDemo = function (lang) {
         </ConfigProvider>
     ), document.getElementById('container'));
 };
-window.renderDemo('zh-cn');
+window.renderDemo('en-us');
 initDemo('table');
