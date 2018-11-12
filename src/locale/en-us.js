@@ -15,25 +15,25 @@ export default {
         clear: 'Clear',
         month: 'Month',
         year: 'Year',
-        prevYear: 'Previous year',
-        nextYear: 'Next year',
-        prevMonth: 'Previous month',
-        nextMonth: 'Next month',
-        prevDecade: 'Previous decade',
-        nextDecade: 'Next decade',
+        prevYear: 'Previous Year',
+        nextYear: 'Next Year',
+        prevMonth: 'Previous Month',
+        nextMonth: 'Next Month',
+        prevDecade: 'Previous Decade',
+        nextDecade: 'Next Decade',
     },
     DatePicker: {
-        placeholder: 'Select date',
-        datetimePlaceholder: 'Select date and time',
-        monthPlaceholder: 'Select month',
-        yearPlaceholder: 'Select year',
+        placeholder: 'Select Date',
+        datetimePlaceholder: 'Select Date And Time',
+        monthPlaceholder: 'Select Month',
+        yearPlaceholder: 'Select Year',
         now: 'Now',
-        selectTime: 'Select time',
-        selectDate: 'Select date',
+        selectTime: 'Select Time',
+        selectDate: 'Select Date',
         ok: 'OK',
         clear: 'Clear',
-        startPlaceholder: 'Start date',
-        endPlaceholder: 'End date',
+        startPlaceholder: 'Start Date',
+        endPlaceholder: 'End Date',
         hour: 'H',
         minute: 'M',
         second: 'S'
@@ -54,23 +54,23 @@ export default {
         clear: 'Clear'
     },
     Select: {
-        selectPlaceholder: 'Please select',
-        autoCompletePlaceholder: 'Please input',
-        notFoundContent: 'No options'
+        selectPlaceholder: 'Please Select',
+        autoCompletePlaceholder: 'Please Input',
+        notFoundContent: 'No Options'
     },
     Table: {
-        empty: 'No data',
+        empty: 'No Data',
         ok: 'OK',
         reset: 'Reset',
-        asc: 'Ascending order',
-        desc: 'Descending order',
+        asc: 'Ascending Order',
+        desc: 'Descending Order',
         expanded: 'Expanded',
         folded: 'Folded',
         filter: 'Filter',
-        selectAll: 'Select all'
+        selectAll: 'Select All'
     },
     TimePicker: {
-        placeholder: 'Select time',
+        placeholder: 'Select Time',
         clear: 'Clear',
         hour: 'H',
         minute: 'M',
@@ -80,7 +80,7 @@ export default {
         items: 'items',
         item: 'item',
         moveAll: 'Move All',
-        searchPlaceholder: 'Please input'
+        searchPlaceholder: 'Please Input'
     },
     Upload: {
         card: {
@@ -93,6 +93,6 @@ export default {
         }
     },
     Search: {
-        buttonText: 'search',
+        buttonText: 'Search',
     },
 };
