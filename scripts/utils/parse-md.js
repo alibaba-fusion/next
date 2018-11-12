@@ -74,7 +74,7 @@ module.exports = function(content, filePath, lang, dir) {
 
                 code = code.replace(IMPORT_REG, `import { ${components.join(', ')} } from '@alifd/next';`);
 
-                const RENDER_REG = /(.*)ReactDOM\.render\(([\s\S]*), +mountNode\);?(.*)/g;
+                const RENDER_REG = /(.*)ReactDOM\.render\(([\s\S]*),[ \n]*mountNode[ \n]*\);?(.*)/g;
                 code = code.replace(RENDER_REG, (all, s1, s2, s3) => {
                     return `${s1} ReactDOM.render(
 <ConfigProvider rtl>

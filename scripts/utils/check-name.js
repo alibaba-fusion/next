@@ -1,10 +1,11 @@
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
+const minimist = require('minimist');
 const logger = require('./logger');
 
-module.exports = function (allowAll = false) {
-    const argv = require('minimist')(process.argv.slice(2));
+module.exports = function (allowAll = false, withOtherArgs = false) {
+    const argv = minimist(process.argv.slice(2));
 
     let componentName = argv._[0];
     if (componentName) {
@@ -17,12 +18,19 @@ module.exports = function (allowAll = false) {
             process.exit(0);
             return false;
         }
+
+        if (withOtherArgs) {
+            const newArgs =  argv._;
+            newArgs.shift();
+            newArgs.unshift(componentName);
+            return newArgs;
+        }
         return componentName;
 
     } else if (allowAll) {
         return 'all';
     } else {
-        logger.error('Please input the component name, like: npm run [command] -- number-picker');
+        logger.error('Please input the component name, like: npm run [command] number-picker');
         process.exit(0);
         return false;
     }
