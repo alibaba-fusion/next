@@ -47,7 +47,7 @@ export default {
         next: 'Next',
         goTo: 'Go to',
         page: 'Page',
-        go: 'Go',
+        go: 'View',
         pageSize: 'Items per page:'
     },
     Input: {
