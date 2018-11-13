@@ -4,7 +4,7 @@
 
 校验的错误信息需要用`getError`获取
 
-`注意`：Form和Field做了深度结合，在Form中使用Field，错误信息不需`getError`获取会自动展现。
+`注意`：Form 和 Field 做了深度结合，在 Form 中使用Field，错误信息不需`getError`获取会自动展现。
 
 :::lang=en-us
 # validate

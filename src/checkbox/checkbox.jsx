@@ -202,7 +202,7 @@ class Checkbox extends UIState {
             className={`${prefix}checkbox-input`}
         />);
 
-        // disabe 无状态操作
+        // disable 无状态操作
         if (!disabled) {
             childInput = this.getStateElement(childInput);
         }
