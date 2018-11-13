@@ -3,9 +3,5 @@
     "es6": true,
     "node": true
   },
-  "extends": "@alifd/eslint-config-next",
-  "ignoreFiles": [
-    "index.js",
-    "index-with-locales.js"
-  ]
+  "extends": "@alifd/eslint-config-next"
 }
