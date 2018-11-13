@@ -44,7 +44,7 @@
 | visible          | 弹层是否显示（受控）                                                                                                                                                        | Boolean   | -          |
 | defaultVisible   | 弹层默认是否显示（非受控）                                                                                                                                                     | Boolean   | -          |
 | popupContainer   | 弹层容器<br><br>**签名**:<br>Function(target: Object) => ReactNode<br>**参数**:<br>_target_: {Object} 目标节点<br>**返回值**:<br>{ReactNode} 容器节点<br>                            | Function  | -          |
-| popupAlign       | 弹层对齐方式                                                                                                                                                            | String    | 'tl tl'    |
+| popupAlign       | 弹层对齐方式, 详情见Overlay 文档                                                                                                                                             | String    | 'tl tl'    |
 | popupTriggerType | 弹层触发方式<br><br>**可选值**:<br>'click', 'hover'                                                                                                                        | Enum      | 'click'    |
 | onVisibleChange  | 弹层展示状态变化时的回调<br><br>**签名**:<br>Function(visible: Boolean, reason: String) => void<br>**参数**:<br>_visible_: {Boolean} 弹层是否隐藏和显示<br>_reason_: {String} 触发弹层显示和隐藏的来源 | Function  | func.noop  |
 | popupStyle       | 弹层自定义样式                                                                                                                                                           | Object    | -          |

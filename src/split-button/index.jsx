@@ -85,7 +85,7 @@ class SplitButton extends React.Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式
+         * 弹层对齐方式, 详情见Overlay align
          */
         popupAlign: PropTypes.string,
         /**
