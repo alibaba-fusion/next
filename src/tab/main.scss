@@ -168,10 +168,10 @@
                     $tab-pure-text-color-hover,
                     $tab-pure-text-color-selected,
                     $tab-pure-text-color-disabled,
-                    transparent, // bg color
-                    transparent,
-                    transparent,
-                    transparent
+                    $tab-pure-bg-color,
+                    $tab-pure-bg-color-hover,
+                    $tab-pure-bg-color-selected,
+                    $tab-pure-bg-color-disabled
                 );
 
                 @include tabs-tab-inkbar(

@@ -142,6 +142,22 @@ $tab-pure-ink-bar-width: $line-2 !default;
 /// @namespace statement/normal/tab
 $tab-pure-text-color-normal: $color-text1-3 !default;
 
+/// background
+/// @namespace statement/normal/tab
+$tab-pure-bg-color: $color-white !default;
+
+/// background
+/// @namespace statement/hover/tab
+$tab-pure-bg-color-hover: $color-white !default;
+
+/// background
+/// @namespace statement/selected/tab
+$tab-pure-bg-color-selected: $color-white !default;
+
+/// background
+/// @namespace statement/disabled/tab
+$tab-pure-bg-color-disabled: $color-white !default;
+
 /// text
 /// @namespace statement/hover/tab
 $tab-pure-text-color-hover: $color-text1-4 !default;
