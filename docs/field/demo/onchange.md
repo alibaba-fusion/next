@@ -46,7 +46,7 @@ class App extends React.Component {
         };
 
         return (<div>
-            <Input placeholder="controled by onChange" {...init('input')} style={layout}/><br/>
+            <Input placeholder="controlled by onChange" {...init('input')} style={layout}/><br/>
             <Input placeholder="under control" {...init('input')} style={layout}/><br/>
 
             <Select style={layout} {...init('select', {initValue: 'lucy'})}>

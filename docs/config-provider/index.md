@@ -27,14 +27,18 @@
 <br />
 
 可通过两种方式设置多语言文案，两种方式接收的对象格式略有不同:
-1. 设置组件自身 locale 属性
+
+-   1.设置组件自身 locale 属性
+
 ```jsx
 {
     key1: value1,
     key2: value2
 }
 ```
-2. ConfigProvider 的 locale 属性 (推荐)
+
+-   2.ConfigProvider 的 locale 属性 (推荐)
+
 ```jsx
 {
     component1: {

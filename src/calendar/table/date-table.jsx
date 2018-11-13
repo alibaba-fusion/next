@@ -31,7 +31,7 @@ function isNextMonthDate(date, target) {
 class DateTable extends PureComponent {
 
     render() {
-        const { prefix, visibleMonth, showOtherMonth, endValue, today, momentLocale, dateCellRender, disabledDate, onSelectDate } = this.props;
+        const { prefix, visibleMonth, showOtherMonth, endValue, format, today, momentLocale, dateCellRender, disabledDate, onSelectDate } = this.props;
         const startValue = this.props.startValue || this.props.value;
 
         const firstDayOfMonth = visibleMonth.clone().startOf('month'); // 该月的 1 号
@@ -88,7 +88,7 @@ class DateTable extends PureComponent {
 
                 weekElements.push(<td
                     key={counter}
-                    title={currentDate.format('YYYY-MM-DD')}
+                    title={currentDate.format(format)}
                     onClick={isDisabled ? undefined : onSelectDate.bind(null, currentDate)}
                     className={elementCls}
                     role="cell"
