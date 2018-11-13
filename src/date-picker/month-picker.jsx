@@ -94,7 +94,7 @@ class MonthPicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式
+         * 弹层对齐方式, 具体含义见 OverLay文档
          */
         popupAlign: PropTypes.string,
         /**

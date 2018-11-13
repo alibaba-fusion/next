@@ -132,7 +132,7 @@ export default class RangePicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式
+         * 弹层对齐方式, 具体含义见 OverLay文档
          */
         popupAlign: PropTypes.string,
         /**
@@ -605,6 +605,7 @@ export default class RangePicker extends Component {
 
         const datePanel = (<RangeCalendar
             showOtherMonth
+            format={this.format}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}
             disabledDate={disabledDate}

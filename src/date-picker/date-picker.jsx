@@ -110,7 +110,7 @@ export default class DatePicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式
+         * 弹层对齐方式,具体含义见 OverLay文档
          */
         popupAlign: PropTypes.string,
         /**
@@ -409,6 +409,7 @@ export default class DatePicker extends Component {
         const datePanel = (<Calendar
             shape="panel"
             value={value}
+            format={this.format}
             onSelect={this.onSelectCalendarPanel}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}

@@ -101,7 +101,7 @@ export default class Dialog extends Component {
          */
         autoFocus: PropTypes.bool,
         /**
-         * 对话框对齐方式
+         * 对话框对齐方式, 具体见Overlay文档
          */
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**

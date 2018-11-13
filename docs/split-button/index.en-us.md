@@ -33,7 +33,7 @@ SplitButton is kind of GroupButton, only the icon part could be trigerred by use
 | defaultVisible   | Default visible state of the popup  | Boolean   | -         |
 | onVisibleChange  | Callback when visible state change<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**parameters**:<br>_visible_: {Boolean} visible state of the popup<br>_reason_: {String} reason to change visible state | Function  | func.noop |
 | popupTriggerType | Trigger type of popup<br><br>**option**:<br>'click', 'hover'                                                                                                                      | Enum      | 'click'   |
-| popupAlign       | Align of popup  | String    | 'tr br'   |
+| popupAlign       | Align of popup, @see Overlay doc for detail  | String    | 'tr br'   |
 | popupStyle       | Custom style of popup  | Object    | -         |
 | popupClassName   | Custom className of popup | String    | -         |
 | popupProps       | Props of popup  | Object    | {}         |
