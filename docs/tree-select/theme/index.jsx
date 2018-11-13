@@ -4,6 +4,9 @@ import '../../../src/demo-helper/style.js';
 import '../../../src/tree-select/style.js';
 import { Demo, DemoHead, DemoGroup, initDemo } from '../../../src/demo-helper';
 import TreeSelect from '../../../src/tree-select';
+import zhCN from '../../../src/locale/zh-cn';
+import enUS from '../../../src/locale/en-us';
+import ConfigProvider from '../../../src/config-provider';
 
 const { Node: TreeNode } = TreeSelect;
 
@@ -18,7 +21,7 @@ const i18nMap = {
         trunk: 'Trunk',
         branch: 'Branch',
         leaf: 'Leaf',
-        label: 'Label:'
+        label: 'Label'
     }
 };
 
@@ -97,17 +100,17 @@ class FunctionDemo extends React.Component {
             <Demo title={treeCheckable ? 'Checkable' : 'Selectable'} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Normal">
                     <DemoHead cols={['L', 'M', 'S']} />
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <TreeSelect {...treeSelectProps} size="large" />
                         <TreeSelect {...treeSelectProps} size="medium" />
                         <TreeSelect {...treeSelectProps} size="small" />
                     </DemoGroup>
-                    <DemoGroup label="expanded">
+                    <DemoGroup label="Expanded">
                         <TreeSelect {...treeSelectProps} visible size="large" defaultValue="5" style={{ width: '200px', marginBottom: '212px' }} popupProps={{ needAdjust: false }} />
                         <TreeSelect {...treeSelectProps} visible size="medium" defaultValue="5" style={{ width: '200px', marginBottom: '212px' }} popupProps={{ needAdjust: false }} />
                         <TreeSelect {...treeSelectProps} visible size="small" defaultValue="5" style={{ width: '200px', marginBottom: '212px' }} popupProps={{ needAdjust: false }} />
                     </DemoGroup>
-                    <DemoGroup label="disabled">
+                    <DemoGroup label="Disabled">
                         <TreeSelect {...treeSelectProps} disabled size="large" defaultValue="5" />
                         <TreeSelect {...treeSelectProps} disabled size="medium" defaultValue="5" />
                         <TreeSelect {...treeSelectProps} disabled size="small" defaultValue="5" />
@@ -118,17 +121,16 @@ class FunctionDemo extends React.Component {
     }
 }
 
-function render(i18n) {
-    ReactDOM.render((
-        <div className="demo-container">
-            <FunctionDemo i18n={i18n} />
-            <FunctionDemo i18n={i18n} treeCheckable />
-        </div>
-    ), document.getElementById('container'));
-}
-
 window.renderDemo = function(lang = 'en-us') {
-    render(i18nMap[lang]);
+    const i18n = i18nMap[lang];
+    ReactDOM.render((
+        <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
+            <div className="demo-container">
+                <FunctionDemo i18n={i18n} />
+                <FunctionDemo i18n={i18n} treeCheckable />
+            </div>
+        </ConfigProvider>
+    ), document.getElementById('container'));
 };
 
 window.renderDemo();

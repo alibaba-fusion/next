@@ -26,10 +26,10 @@ const i18nMap = {
         unselected: 'Unselected',
         hover: 'Hover',
         selected: 'Selected',
-        gradeHoverLevelOne: 'Hover Level One',
-        gradeSelectedLevelOne: 'Selected Level One',
-        gradeHoverLevelTwo: 'Hover Level Two',
-        gradeSelectedLevelTwo: 'Selected Level Two'
+        gradeHoverLevelOne: 'Hover Level 1',
+        gradeSelectedLevelOne: 'Selected Level 1',
+        gradeHoverLevelTwo: 'Hover Level 2',
+        gradeSelectedLevelTwo: 'Selected Level 2'
     }
 };
 

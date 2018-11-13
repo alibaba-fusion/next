@@ -19,7 +19,7 @@ ReactDOM.render((
 
         <Demo title="Loading">
             <DemoHead cols={['L', 'M']}/>
-            <DemoGroup label="normal">
+            <DemoGroup label="Normal">
                 <Loading>
                     <div style={lightDemo}></div>
                 </Loading>

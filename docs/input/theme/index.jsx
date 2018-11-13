@@ -19,6 +19,8 @@ const i18nMap = {
         disabled: '禁用',
         password: '密码',
         feedback: '反馈',
+        loading: '加载中',
+        success: '成功',
         clear: '清除',
         multiple: '多行',
         long: '比较长的字符串！',
@@ -34,11 +36,13 @@ const i18nMap = {
         disabled: 'disabled',
         password: 'password',
         feedback: 'feedback',
+        loading: 'loading',
+        success: 'success',
         clear: 'clear',
         multiple: 'multiple line',
         long: 'long long string!',
         alibaba: 'alibaba',
-        label: 'label:'
+        label: 'Label'
     }
 };
 
@@ -74,14 +78,14 @@ function render(i18n) {
                 <Input htmlType="password" value={i18n.password} size="small"/>
             </DemoGroup>
             <DemoGroup label="Success">
-                <Input value={i18n.feedback} size="large" state="success"/>
-                <Input value={i18n.feedback} state="success"/>
-                <Input value={i18n.feedback} size="small" state="success"/>
+                <Input value={i18n.success} size="large" state="success"/>
+                <Input value={i18n.success} state="success"/>
+                <Input value={i18n.success} size="small" state="success"/>
             </DemoGroup>
             <DemoGroup label="Loading">
-                <Input value={i18n.feedback} size="large" state="loading"/>
-                <Input value={i18n.feedback} state="loading"/>
-                <Input value={i18n.feedback} size="small" state="loading"/>
+                <Input value={i18n.loading} size="large" state="loading"/>
+                <Input value={i18n.loading} state="loading"/>
+                <Input value={i18n.loading} size="small" state="loading"/>
             </DemoGroup>
             <DemoGroup label="Clear">
                 <Input value={i18n.clear} size="large" hasClear/>
@@ -93,7 +97,7 @@ function render(i18n) {
                 <Input value={i18n.medium} hasLimitHint maxLength={5}/>
                 <Input value={i18n.small} size="small" hasLimitHint maxLength={5}/>
             </DemoGroup>
-            <DemoGroup label="label">
+            <DemoGroup label="Label">
                 <Input label={i18n.label} id="label1" value={i18n.large} size="large" />
                 <Input label={i18n.label} id="label2" value={i18n.medium} />
                 <Input label={i18n.label} id="label3" value={i18n.small} size="small" />
@@ -112,7 +116,7 @@ function render(i18n) {
         </Demo>
         <Demo title="Addon" block>
             <DemoHead cols={['L', 'M', 'S']}/>
-            <DemoGroup label="normal">
+            <DemoGroup label="Normal">
                 <Input addonTextBefore="http://" addonTextAfter=".com" size="large" value={i18n.alibaba} style={{width: 200}}/>
                 <Input addonTextBefore="http://" addonTextAfter=".com" size="medium" value={i18n.alibaba} style={{width: 200}}/>
                 <Input addonTextBefore="http://" addonTextAfter=".com" size="small" value={i18n.alibaba} style={{width: 200}}/>

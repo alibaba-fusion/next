@@ -80,7 +80,7 @@ class FunctionDemo extends React.Component {
             })}>
                 <Demo title="Primary" block={false}>
                     <DemoHead cols={['L', 'M']}/>
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Search filter={filter} searchText={title} type="primary" size="large" style={style}    />
                         <Search filter={filter} searchText={title} type="primary"  style={style}   />
                     </DemoGroup>
@@ -88,7 +88,7 @@ class FunctionDemo extends React.Component {
                 <Demo title="Secondary" block>
                     <DemoHead cols={['L', 'M']}/>
 
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Search filter={filter} searchText={title} type="secondary" size="large" style={style}   />
                         <Search filter={filter} searchText={title} type="secondary" style={style}   />
                     </DemoGroup>
@@ -97,7 +97,7 @@ class FunctionDemo extends React.Component {
                 <Demo title="Normal" block>
                     <DemoHead cols={['L', 'M']}/>
 
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Search filter={filter} searchText={title} type="normal" size="large"  style={style}    />
                         <Search filter={filter} searchText={title} type="normal" size="medium"  style={style}    />
                     </DemoGroup>
@@ -105,7 +105,7 @@ class FunctionDemo extends React.Component {
                 <div>
                     <Demo title="Dark" block defaultBackground="dark">
                         <DemoHead cols={['L', 'M']}/>
-                        <DemoGroup label="normal" >
+                        <DemoGroup label="Normal" >
                             <Search filter={filter} searchText={title} type="dark" size="large" style={style}   />
                             <Search filter={filter} searchText={title} type="dark" size="medium" style={style}   />
                         </DemoGroup>
@@ -117,7 +117,7 @@ class FunctionDemo extends React.Component {
                 <Demo title="Normal" block>
                     <DemoHead cols={['L', 'M']}/>
 
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Search filter={filter} searchText={i18n.title} type="normal" size="large" shape="simple" style={style}   />
                         <Search filter={filter} searchText={i18n.title} type="normal" size="medium" shape="simple" style={style}   />
                     </DemoGroup>
@@ -125,7 +125,7 @@ class FunctionDemo extends React.Component {
                 <div>
                     <Demo title="Dark" block defaultBackground="dark">
                         <DemoHead cols={['L', 'M']}/>
-                        <DemoGroup label="normal">
+                        <DemoGroup label="Normal">
                             <Search filter={filter} searchText={i18n.title} type="dark" size="large" shape="simple" style={style}   />
                             <Search filter={filter} searchText={i18n.title} type="dark" size="medium" shape="simple" style={style}   />
                         </DemoGroup>

@@ -21,7 +21,7 @@ const i18nMap = {
         card: 'Card',
         normal: 'Normal',
         title: 'Title',
-        subTile: 'description',
+        subTile: 'Description',
         link: 'Link',
         noUnderline: 'No Header Line',
         noExpand: 'Expanded',
