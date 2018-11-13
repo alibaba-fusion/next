@@ -484,13 +484,12 @@ export default class RangePicker extends Component {
 
     // 如果用户没有给定时间禁用逻辑，则给默认到禁用逻辑，即如果是同一天，则时间不能是同样的
     getDisabledTime = ({ startValue, endValue }) => {
-        const { disabledHours, disabledMinutes, disabledSeconds } = this.props;
+        const { disabledHours, disabledMinutes, disabledSeconds } = this.props.showTime || {};
 
         let disabledTime = {};
 
         if (startValue && endValue) {
             const isSameDay = startValue.format('L') === endValue.format('L');
-
             const newDisabledHours = isFunction(disabledHours) ?
                 disabledHours : (index) => {
                     if (isSameDay && index < startValue.hour()) {
