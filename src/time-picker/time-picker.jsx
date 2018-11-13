@@ -98,7 +98,7 @@ export default class TimePicker extends Component {
          */
         popupContainer: PropTypes.func,
         /**
-         * 弹层对齐方式
+         * 弹层对齐方式, 详情见Overlay 文档
          */
         popupAlign: PropTypes.string,
         /**
