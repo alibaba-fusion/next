@@ -129,6 +129,7 @@ class Card extends Base {
                 style={style}
                 listType="card"
                 closable
+                locale={locale}
                 value={this.state.value}
                 onRemove={onRemove}
                 onCancel={onCancel}

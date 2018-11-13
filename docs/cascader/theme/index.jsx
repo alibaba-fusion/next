@@ -55,19 +55,19 @@ function render(lang = 'en-us') {
 
     ReactDOM.render((
         <div className="demo-container">
-            <Demo title="single">
-                <DemoGroup label="normal">
+            <Demo title="Single">
+                <DemoGroup label="Normal">
                     <Cascader canOnlySelectLeaf listStyle={{ width: '120px' }} expandTriggerType="hover" dataSource={dataSource} />
                 </DemoGroup>
-                <DemoGroup label="selected">
+                <DemoGroup label="Selected">
                     <Cascader canOnlySelectLeaf listStyle={{ width: '120px' }} expandTriggerType="hover" dataSource={disabledDataSource} defaultValue="0-0-0" />
                 </DemoGroup>
             </Demo>
-            <Demo title="multiple">
-                <DemoGroup label="normal">
+            <Demo title="Multiple">
+                <DemoGroup label="Normal">
                     <Cascader multiple listStyle={{ width: '140px' }} expandTriggerType="hover" dataSource={dataSource} />
                 </DemoGroup>
-                <DemoGroup label="selected">
+                <DemoGroup label="Selected">
                     <Cascader multiple listStyle={{ width: '140px' }} expandTriggerType="hover" dataSource={disabledDataSource} defaultValue="0-0-0" />
                 </DemoGroup>
             </Demo>

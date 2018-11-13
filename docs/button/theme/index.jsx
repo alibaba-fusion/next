@@ -38,8 +38,8 @@ const i18nMap = {
         dark: 'Dark',
         hover: 'Hover',
         disabled: 'Disabled',
-        goback: 'Go back',
-        goforward: 'Go forward',
+        goback: 'Go Back',
+        goforward: 'Go Forward',
     }
 };
 
