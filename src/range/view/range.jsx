@@ -343,12 +343,14 @@ export default class Range extends React.Component {
     }
 
     _onMouseDown(e) {
-        this.setState({
-            hasMovingClass: true
-        });
-        this._start(e.pageX);
-        this._addDocumentEvents();
-        pauseEvent(e);
+        if(e.button === 0) {
+            this.setState({
+                hasMovingClass: true
+            });
+            this._start(e.pageX);
+            this._addDocumentEvents();
+            pauseEvent(e);
+        }
     }
 
     _start(position) {
