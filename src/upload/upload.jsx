@@ -162,7 +162,7 @@ class Upload extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? [] : value
+            value: typeof value === 'undefined' ? [] : [].concat(value)
         };
 
         this.uploading = false;
@@ -171,7 +171,7 @@ class Upload extends Base {
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps && !this.uploading) {
             this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : nextProps.value
+                value: typeof nextProps.value === 'undefined' ? [] : [].concat(nextProps.value)
             });
         }
     }
