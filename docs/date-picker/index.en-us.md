@@ -37,7 +37,7 @@ DatePicker are used to select a single date for an input.
 | defaultVisible      | Default visible state of popup   | Boolean        | -            |
 | onVisibleChange     | Callback when visible state changes<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**parameter**:<br>_visible_: {Boolean} if popup visible<br>_reason_: {String} reason to change visible | Function       | func.noop    |
 | popupTriggerType    | Trigger type of popup<br><br>**option**:<br>'click', 'hover'                                                                                                                     | Enum           | 'click'      |
-| popupAlign          | Align of popup  | String         | 'tl tl'      |
+| popupAlign          | Align of popup, see Overlay doc for detail  | String         | 'tl tl'      |
 | popupContainer      | Container of popup <br><br>**signature**:<br>Function(target: Element) => Element<br>**parameter**:<br>_target_: {Element} target element<br>**return**:<br>{Element} container of popup<br>                        | Function       | -            |
 | popupStyle          | Custom style of popup | Object         | -            |
 | popupClassName      | Custom className of popup  | String         | -            |

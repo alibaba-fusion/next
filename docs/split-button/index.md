@@ -34,7 +34,7 @@ SplitButton 同样由 Button 和 Menu 组成，其在触发区域上可以分为
 | defaultVisible      | 弹层默认是否显示                                                                                                                                                         | Boolean   | -         |
 | onVisibleChange     | 弹层显示状态变化时的回调函数<br><br>**签名**:<br>Function(visible: Boolean, reason: String) => void<br>**参数**:<br>_visible_: {Boolean} 弹层显示状态<br>_reason_: {String} 触发弹层显示和隐藏的来源 | Function  | func.noop |
 | popupTriggerType    | 弹层的触发方式<br><br>**可选值**:<br>'click', 'hover'                                                                                                                      | Enum      | 'click'   |
-| popupAlign          | 弹层对齐方式                                                                                                                                                           | String    | -         |
+| popupAlign          | 弹层对齐方式, 详情见Overlay align                                                                                                                                         | String    | -         |
 | popupStyle          | 弹层自定义样式                                                                                                                                                          | Object    | -         |
 | popupClassName      | 弹层自定义样式类                                                                                                                                                         | String    | -         |
 | popupProps          | 透传给弹层的属性                                                                                                                                                         | Object    | -         |
