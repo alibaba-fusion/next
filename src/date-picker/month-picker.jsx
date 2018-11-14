@@ -60,7 +60,8 @@ class MonthPicker extends Component {
         footerRender: PropTypes.func,
         /**
          * 日期值改变时的回调
-         * @return {MomentObject|String} 日期值
+         * @param {MomentObject|String} value 日期值
+         * @return void
          */
         onChange: PropTypes.func,
         /**
