@@ -1,0 +1,136 @@
+{
+  "name": "Timeline",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式的品牌前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式的品牌前缀"
+    },
+    "fold": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]`",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]`"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "state": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'done'",
+                "computed": false
+              },
+              {
+                "value": "'process'",
+                "computed": false
+              },
+              {
+                "value": "'error'",
+                "computed": false
+              },
+              {
+                "value": "'success'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "节点状态",
+          "defaultValue": {
+            "value": "'done'",
+            "computed": false
+          },
+          "docblock": "节点状态"
+        },
+        "icon": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "图标",
+          "docblock": "图标"
+        },
+        "dot": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "自定义时间轴节点",
+          "docblock": "自定义时间轴节点"
+        },
+        "time": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "格式化后的时间",
+          "docblock": "格式化后的时间"
+        },
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标题",
+          "docblock": "标题"
+        },
+        "timeLeft": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "左侧时间",
+          "docblock": "左侧时间"
+        },
+        "content": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "右侧内容",
+          "docblock": "右侧内容"
+        },
+        "animation": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "动画",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "动画"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
