@@ -116,7 +116,7 @@ export default class TreeSelect extends Component {
          */
         treeDefaultExpandedKeys: PropTypes.arrayOf(PropTypes.string),
         /**
-         * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](http://fusion-demo.alibaba-inc.com/components?type=next&themeId=next&name=tree#tree-4)
+         * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)
          * @param {ReactElement} node 被点击展开的节点
          */
         treeLoadData: PropTypes.func,
