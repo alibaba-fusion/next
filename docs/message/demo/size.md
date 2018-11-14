@@ -15,12 +15,18 @@ You can control the size of message by setting the `size` property.
 ---
 
 ````jsx
-import { Message, Select } from '@alifd/next';
-
-
-const Option = Select.Option;
+import { Message, Radio } from '@alifd/next';
 
 const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+const list = [
+    {
+        value: 'medium',
+        label: 'medium'
+    }, {
+        value: 'large',
+        label: 'large'
+    }
+];
 
 class Demo extends React.Component {
     constructor(props) {
@@ -41,13 +47,10 @@ class Demo extends React.Component {
         return (
             <div className="message-size-demo">
                 <span className="demo-label">Select Size：</span>
-                <Select defaultValue="medium" onChange={this.handleSelect}>
-                    <Option value="medium">Medium</Option>
-                    <Option value="large">Large</Option>
-                </Select>
+                <Radio.Group defaultValue="medium"  dataSource={list} value={this.state.size} onChange={this.handleSelect} />
 
                 {types.map(type => (
-                    <Message key={type} title="title" type={type} size={size}>
+                    <Message key={type} title={type} type={type} size={size}>
                         Content Content Content Content
                     </Message>
                 ))}
@@ -65,6 +68,10 @@ ReactDOM.render(<Demo />, mountNode);
     vertical-align: top;
     height: 28px;
     line-height: 28px;
+}
+
+.message-size-demo .next-message-title {
+    text-transform: capitalize;
 }
 
 .message-size-demo .next-message {
