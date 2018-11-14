@@ -217,7 +217,7 @@ export default class Cascader extends Component {
         const loop = (data, prefix = '0') => data.forEach((item, index) => {
             const { value, children } = item;
             const pos = `${prefix}-${index}`;
-            this._v2n[value] = this._p2n[pos] = { ...item, pos };
+            this._v2n[value] = this._p2n[pos] = { ...item, pos, _source: item };
 
             if (children && children.length) {
                 loop(children, pos);
@@ -490,7 +490,8 @@ export default class Cascader extends Component {
 
             const { loadData } = this.props;
             if (canExpand && loadData) {
-                return loadData(this._v2n[value]).then(callback);
+                const data = this._v2n[value];
+                return loadData(data, data._source).then(callback);
             } else {
                 callback();
             }
