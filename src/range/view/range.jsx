@@ -343,7 +343,7 @@ export default class Range extends React.Component {
     }
 
     _onMouseDown(e) {
-        if(e.button === 0) {
+        if (e.button === 0) {
             this.setState({
                 hasMovingClass: true
             });
