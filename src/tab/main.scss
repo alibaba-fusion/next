@@ -158,7 +158,7 @@
     &-pure > #{$tab-prefix}-bar {
         border-bottom: $tab-pure-divider-line;
         background-color: $tab-pure-bg-color;
-        
+
         #{$tab-prefix}-nav-container {
             margin-bottom: -$tab-pure-divider-line-width;
             box-shadow: $tab-pure-divider-shadow;
@@ -172,7 +172,7 @@
                     transparent, // bg color
                     transparent,
                     transparent,
-                    transparent,
+                    transparent
                 );
 
                 @include tabs-tab-inkbar(
