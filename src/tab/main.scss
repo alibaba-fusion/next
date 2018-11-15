@@ -6,7 +6,10 @@
 @import "scss/placeholder";
 
 #{$tab-prefix} {
-    @include box-sizing;
+    & {
+        @include box-sizing;
+        width: 100%;
+    }
 
     &-bar {
         outline: none;
