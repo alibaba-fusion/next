@@ -157,6 +157,7 @@ export default class Filter extends React.Component {
             triggerType="click"
             visible={visible}
             autoFocus
+            container={node => node.parentNode}
             onVisibleChange={this.onFilterVisible}>
                 <Menu footer={footer}
                     selectedKeys={selectedKeys}
