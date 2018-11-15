@@ -212,20 +212,22 @@ export default class Cascader extends Component {
         }
     }
 
-    updateCache(dataSource) {
-        this._v2n = {};
-        this._p2n = {};
-        const loop = (data, prefix = '0') => data.forEach((item, index) => {
+    setCache(data, prefix = '0') {
+        data.forEach((item, index) => {
             const { value, children } = item;
             const pos = `${prefix}-${index}`;
             this._v2n[value] = this._p2n[pos] = { ...item, pos, _source: item };
 
             if (children && children.length) {
-                loop(children, pos);
+                this.setCache(children, pos);
             }
         });
+    }
 
-        loop(dataSource);
+    updateCache(dataSource) {
+        this._v2n = {};
+        this._p2n = {};
+        this.setCache(dataSource);
     }
 
     normalizeValue(value) {
