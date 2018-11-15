@@ -30,7 +30,7 @@ module.exports = function(options) {
                 const entryScss = yield fs.readFile(entryPath, 'utf8');
                 const entryStyleScss = yield fs.readFile(entryStylePath, 'utf8');
                 let newEntryStyleScss = entryStyleScss.match(PATTEN).join('\n');
-                newEntryStyleScss = newEntryStyleScss.replace(PATTEN, (all, s1, s2, s3) => {
+                newEntryStyleScss = newEntryStyleScss.replace(PATTEN, (all, s1) => {
                     return `@import "${s1}main.scss";`;
                 });
 

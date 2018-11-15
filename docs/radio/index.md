@@ -24,7 +24,7 @@
 | id             | 组件input的id                                                                                                                                 | String   | -         |
 | checked        | 设置radio是否选中                                                                                                                                | Boolean  | -         |
 | defaultChecked | 设置radio是否默认选中                                                                                                                              | Boolean  | -         |
-| label          | 通过属性配置label                                                                                                                                | String   | -         |
+| label          | 通过属性配置label                                                                                                                                | ReactNode   | -         |
 | onChange       | 状态变化时触发的事件<br><br>**签名**:<br>Function(checked: Boolean, e: Event) => void<br>**参数**:<br>_checked_: {Boolean} 是否选中<br>_e_: {Event} Dom 事件对象 | Function | func.noop |
 | onMouseEnter   | 鼠标进入enter事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} Dom 事件对象                                               | Function | func.noop |
 | onMouseLeave   | 鼠标离开事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} Dom 事件对象                                                    | Function | func.noop |
