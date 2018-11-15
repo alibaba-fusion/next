@@ -29,6 +29,9 @@
         font-weight: $table-th-font-weight;
         border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
     }
+    &-affix {
+        z-index: 1;
+    }
     &-header-resizable {
         position: relative;
         #{$table-prefix}-resize-handler {
