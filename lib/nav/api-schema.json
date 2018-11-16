@@ -1,0 +1,629 @@
+{
+  "name": "Nav",
+  "props": {
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "导航项和子导航",
+      "docblock": "导航项和子导航"
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false,
+            "description": "普通"
+          },
+          {
+            "value": "'primary'",
+            "computed": false,
+            "description": "主要"
+          },
+          {
+            "value": "'secondary'",
+            "computed": false,
+            "description": "次要"
+          },
+          {
+            "value": "'line'",
+            "computed": false,
+            "description": "线形"
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "导航类型\n@enumdesc 普通, 主要, 次要, 线形",
+      "value": [
+        {
+          "value": "'normal'",
+          "computed": false,
+          "description": "普通"
+        },
+        {
+          "value": "'primary'",
+          "computed": false,
+          "description": "主要"
+        },
+        {
+          "value": "'secondary'",
+          "computed": false,
+          "description": "次要"
+        },
+        {
+          "value": "'line'",
+          "computed": false,
+          "description": "线形"
+        }
+      ]
+    },
+    "direction": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false,
+            "description": "水平"
+          },
+          {
+            "value": "'ver'",
+            "computed": false,
+            "description": "垂直"
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航布局",
+      "defaultValue": {
+        "value": "'ver'",
+        "computed": false
+      },
+      "docblock": "导航布局\n@enumdesc 水平, 垂直",
+      "value": [
+        {
+          "value": "'hoz'",
+          "computed": false,
+          "description": "水平"
+        },
+        {
+          "value": "'ver'",
+          "computed": false,
+          "description": "垂直"
+        }
+      ]
+    },
+    "hozAlign": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'left'",
+            "computed": false
+          },
+          {
+            "value": "'right'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "横向导航条 items 和 footer 的对齐方向，在 direction 设置为 'hoz' 并且 header 存在时生效",
+      "defaultValue": {
+        "value": "'left'",
+        "computed": false
+      },
+      "docblock": "横向导航条 items 和 footer 的对齐方向，在 direction 设置为 'hoz' 并且 header 存在时生效"
+    },
+    "activeDirection": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "null",
+            "computed": false,
+            "description": "无"
+          },
+          {
+            "value": "'top'",
+            "computed": false,
+            "description": "上"
+          },
+          {
+            "value": "'bottom'",
+            "computed": false,
+            "description": "下"
+          },
+          {
+            "value": "'left'",
+            "computed": false,
+            "description": "左"
+          },
+          {
+            "value": "'right'",
+            "computed": false,
+            "description": "右"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置组件选中状态的 active 边方向",
+      "docblock": "设置组件选中状态的 active 边方向\n@enumdesc 无, 上, 下, 左, 右\n@default 当 direction 为 'hoz' 时，默认值为 'bottom'，当 direction 为 'ver' 时，默认值为 'left'",
+      "value": [
+        {
+          "value": "null",
+          "computed": false,
+          "description": "无"
+        },
+        {
+          "value": "'top'",
+          "computed": false,
+          "description": "上"
+        },
+        {
+          "value": "'bottom'",
+          "computed": false,
+          "description": "下"
+        },
+        {
+          "value": "'left'",
+          "computed": false,
+          "description": "左"
+        },
+        {
+          "value": "'right'",
+          "computed": false,
+          "description": "右"
+        }
+      ],
+      "defaultValue": {
+        "value": "当 direction 为 'hoz' 时，默认值为 'bottom'，当 direction 为 'ver' 时，默认值为 'left'",
+        "computed": false
+      }
+    },
+    "mode": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'inline'",
+            "computed": false
+          },
+          {
+            "value": "'popup'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "子导航打开的模式（水平导航只支持弹出）",
+      "defaultValue": {
+        "value": "'inline'",
+        "computed": false
+      },
+      "docblock": "子导航打开的模式（水平导航只支持弹出）\n@eumdesc 行内, 弹出"
+    },
+    "triggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "子导航打开的触发方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "子导航打开的触发方式"
+    },
+    "inlineIndent": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "内联子导航缩进距离",
+      "defaultValue": {
+        "value": "20",
+        "computed": false
+      },
+      "docblock": "内联子导航缩进距离"
+    },
+    "defaultOpenAll": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "初始展开所有的子导航，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "初始展开所有的子导航，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效"
+    },
+    "openMode": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'single'",
+            "computed": false
+          },
+          {
+            "value": "'multiple'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "内联子导航的展开模式，同时可以展开一个同级子导航还是多个同级子导航，该属性仅在 mode 为 inline 时生效",
+      "defaultValue": {
+        "value": "'multiple'",
+        "computed": false
+      },
+      "docblock": "内联子导航的展开模式，同时可以展开一个同级子导航还是多个同级子导航，该属性仅在 mode 为 inline 时生效\n@eumdesc 一个, 多个"
+    },
+    "selectedKeys": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "array"
+          }
+        ]
+      },
+      "required": false,
+      "description": "当前选中导航项的 key 值",
+      "docblock": "当前选中导航项的 key 值"
+    },
+    "defaultSelectedKeys": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "array"
+          }
+        ]
+      },
+      "required": false,
+      "description": "初始选中导航项的 key 值",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "初始选中导航项的 key 值"
+    },
+    "onSelect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选中或取消选中导航项触发的回调函数",
+      "docblock": "选中或取消选中导航项触发的回调函数\n@param {Array} selectedKeys 选中的所有导航项的 key\n@param {Object} item 选中或取消选中的导航项\n@param {Object} extra 额外参数\n@param {Boolean} extra.select 是否是选中\n@param {Array} extra.key 导航项的 key\n@param {Object} extra.label 导航项的文本\n@param {Array} extra.keyPath 导航项 key 的路径",
+      "params": [
+        {
+          "name": "selectedKeys",
+          "description": "选中的所有导航项的 key",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "item",
+          "description": "选中或取消选中的导航项",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra",
+          "description": "额外参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.select",
+          "description": "是否是选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "extra.key",
+          "description": "导航项的 key",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.label",
+          "description": "导航项的文本",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.keyPath",
+          "description": "导航项 key 的路径",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "popupAlign": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'follow'",
+            "computed": false
+          },
+          {
+            "value": "'outside'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "弹出子导航的对齐方式（水平导航只支持 follow ）",
+      "defaultValue": {
+        "value": "'follow'",
+        "computed": false
+      },
+      "docblock": "弹出子导航的对齐方式（水平导航只支持 follow ）\n@eumdesc Item 顶端对齐, Nav 顶端对齐"
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹出子导航的自定义类名",
+      "docblock": "弹出子导航的自定义类名"
+    },
+    "iconOnly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否只显示图标",
+      "docblock": "是否只显示图标"
+    },
+    "hasArrow": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示右侧的箭头（仅在 iconOnly=true 时生效）",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示右侧的箭头（仅在 iconOnly=true 时生效）"
+    },
+    "hasTooltip": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有 ToolTips （仅在 iconOnly=true 时生效）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否有 ToolTips （仅在 iconOnly=true 时生效）"
+    },
+    "header": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义导航头部",
+      "docblock": "自定义导航头部"
+    },
+    "footer": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义导航尾部",
+      "docblock": "自定义导航尾部"
+    }
+  },
+  "methods": [],
+  "description": "继承自 `Menu` 的能力请查看 `Menu` 文档",
+  "subComponents": [
+    {
+      "name": "Group",
+      "props": {
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义类名",
+          "docblock": "自定义类名"
+        },
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标签内容",
+          "docblock": "标签内容"
+        },
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "导航项和子导航",
+          "docblock": "导航项和子导航"
+        }
+      },
+      "methods": [],
+      "description": "继承自 `Menu.Group` 的能力请查看 `Menu.Group` 文档"
+    },
+    {
+      "name": "Item",
+      "props": {
+        "icon": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "node"
+              }
+            ]
+          },
+          "required": false,
+          "description": "自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type=\"icon type\" />`",
+          "docblock": "自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type=\"icon type\" />`"
+        },
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "导航内容",
+          "docblock": "导航内容"
+        }
+      },
+      "methods": [],
+      "description": "继承自 `Menu.Item` 的能力请查看 `Menu.Item` 文档"
+    },
+    {
+      "name": "PopupItem",
+      "props": {
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义类名",
+          "docblock": "自定义类名"
+        },
+        "icon": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "node"
+              }
+            ]
+          },
+          "required": false,
+          "description": "自定义图标，可以使用 Icon 的 type, 也可以使用组件 `<Icon type=\"icon type\" />`",
+          "docblock": "自定义图标，可以使用 Icon 的 type, 也可以使用组件 `<Icon type=\"icon type\" />`"
+        },
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标签内容",
+          "docblock": "标签内容"
+        },
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "弹出内容",
+          "docblock": "弹出内容"
+        }
+      },
+      "methods": [],
+      "description": "继承自 `Menu.PopupItem` 的能力请查看 `Menu.PopupItem` 文档"
+    },
+    {
+      "name": "SubNav",
+      "props": {
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义类名",
+          "docblock": "自定义类名"
+        },
+        "icon": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "node"
+              }
+            ]
+          },
+          "required": false,
+          "description": "自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type=\"your type\" />`",
+          "docblock": "自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type=\"your type\" />`"
+        },
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标签内容",
+          "docblock": "标签内容"
+        },
+        "selectable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否可选",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否可选"
+        },
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "导航项和子导航",
+          "docblock": "导航项和子导航"
+        }
+      },
+      "methods": [],
+      "description": "继承自 `Menu.SubMenu` 的能力请查看 `Menu.SubMenu` 文档"
+    }
+  ]
+}
