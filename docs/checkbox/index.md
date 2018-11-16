@@ -19,18 +19,18 @@
 
 ### Checkbox
 
-| 参数                   | 说明                                                                                                                                         | 类型       | 默认值       |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
-| id                   | checkbox id, 挂载在input上                                                                                                                     | String   | -         |
-| checked              | 选中状态                                                                                                                                       | Boolean  | -         |
-| defaultChecked       | 默认选中状态                                                                                                                                     | Boolean  | false     |
-| disabled             | 禁用                                                                                                                                         | Boolean  | -         |
-| label                | 通过属性配置label，                                                                                                                               | ReactNode   | -         |
-| indeterminate        | Checkbox 的中间状态，只会影响到 Checkbox 的样式，并不影响其 checked 属性                                                                                         | Boolean  | -         |
-| defaultIndeterminate | Checkbox 的默认中间态，只会影响到 Checkbox 的样式，并不影响其 checked 属性                                                                                        | Boolean  | false     |
-| onChange             | 状态变化时触发的事件<br><br>**签名**:<br>Function(checked: Boolean, e: Event) => void<br>**参数**:<br>_checked_: {Boolean} 是否选中<br>_e_: {Event} Dom 事件对象 | Function | func.noop |
-| onMouseEnter         | 鼠标进入enter事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} Dom 事件对象                                               | Function | func.noop |
-| onMouseLeave         | 鼠标离开Leave事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} Dom 事件对象                                               | Function | func.noop |
+| 参数                   | 说明                                                                                                                                         | 类型        | 默认值       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------- | --------- |
+| id                   | checkbox id, 挂载在input上                                                                                                                     | String    | -         |
+| checked              | 选中状态                                                                                                                                       | Boolean   | -         |
+| defaultChecked       | 默认选中状态                                                                                                                                     | Boolean   | false     |
+| disabled             | 禁用                                                                                                                                         | Boolean   | -         |
+| label                | 通过属性配置label，                                                                                                                               | ReactNode | -         |
+| indeterminate        | Checkbox 的中间状态，只会影响到 Checkbox 的样式，并不影响其 checked 属性                                                                                         | Boolean   | -         |
+| defaultIndeterminate | Checkbox 的默认中间态，只会影响到 Checkbox 的样式，并不影响其 checked 属性                                                                                        | Boolean   | false     |
+| onChange             | 状态变化时触发的事件<br><br>**签名**:<br>Function(checked: Boolean, e: Event) => void<br>**参数**:<br>_checked_: {Boolean} 是否选中<br>_e_: {Event} Dom 事件对象 | Function  | func.noop |
+| onMouseEnter         | 鼠标进入enter事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} Dom 事件对象                                               | Function  | func.noop |
+| onMouseLeave         | 鼠标离开Leave事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} Dom 事件对象                                               | Function  | func.noop |
 
 ### Checkbox.Group
 

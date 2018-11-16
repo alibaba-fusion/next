@@ -41,7 +41,7 @@ class Demo extends React.Component {
         console.log(data, source);
 
         return new Promise(resolve => {
-            source.children = source.value == '2974' ? [
+            source.children = source.value === '2974' ? [
                 { value: '2975', label: '西安市', isLeaf: true },
                 { value: '2976', label: '高陵县', isLeaf: true }
             ] : [
