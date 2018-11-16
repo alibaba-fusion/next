@@ -86,7 +86,6 @@ export default class RangePicker extends Component {
         /**
          * 日期范围值改变时的回调 [ MomentObject|String, MomentObject|String ]
          * @param {Array<MomentObject|String>} value 日期值
-         * @return void
          */
         onChange: PropTypes.func,
         /**

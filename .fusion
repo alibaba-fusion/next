@@ -40,6 +40,12 @@
       "entry-file": {
         "html": "index.html",
         "deps": "deps.json"
+      },
+      "entries": {
+        "color": {
+          "html": "//g.alicdn.com/fusion-platform/next-preview/0.0.2/index.html",
+          "deps": ["button", "nav", "tab", "form", "input", "select", "grid", "checkbox", "message", "progress"]
+        }
       }
     }
   },
