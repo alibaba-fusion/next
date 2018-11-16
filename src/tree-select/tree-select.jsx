@@ -288,7 +288,7 @@ export default class TreeSelect extends Component {
 
     getData(value, forSelect) {
         return value.reduce((ret, v) => {
-            const k = this._v2n[v].key;
+            const k = this._v2n[v] && this._v2n[v].key;
             if (k) {
                 const { label, pos, disabled, checkboxDisabled } = this._k2n[k];
                 const d = {
