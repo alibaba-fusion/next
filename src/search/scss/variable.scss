@@ -12,10 +12,17 @@
 
 $search-prefix: '.#{$css-prefix}search';
 
-// Normal
+// Normal large
+// ----------------------------------------
 /// corner
 /// @namespace size/bounding
-$search-normal-corner: $corner-1 !default;
+$search-normal-l-corner: $corner-1 !default;
+
+// Normal Medium
+/// corner
+/// @namespace size/bounding
+$search-normal-m-corner: $corner-1 !default;
+
 
 // Primary
 // ----------------------------------------
