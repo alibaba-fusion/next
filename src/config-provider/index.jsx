@@ -63,7 +63,7 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(props, childContextCache.root(), displayName);
+        return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
     static initLocales = initLocales;
@@ -74,7 +74,7 @@ class ConfigProvider extends Component {
     static Consumer = Consumer;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextWarning } = childContextCache.root();
+        const { nextPrefix, nextLocale, nextPure, nextWarning } = childContextCache.root() || {};
 
         return {
             prefix: nextPrefix,
@@ -82,6 +82,14 @@ class ConfigProvider extends Component {
             pure: nextPure,
             warning: nextWarning
         };
+    }
+
+    constructor(...args) {
+        super(...args)
+        childContextCache.add(
+            this,
+            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+        );
     }
 
     getChildContext() {
@@ -97,13 +105,6 @@ class ConfigProvider extends Component {
 
     componentWillMount() {
         this.setMomentLocale(this.props.locale);
-    }
-
-    componentDidMount() {
-        childContextCache.add(
-            this,
-            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
-        );
     }
 
     componentWillReceiveProps(nextProps) {
