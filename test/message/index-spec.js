@@ -247,31 +247,10 @@ describe('toast', done => {
     });
 });
 
-describe('toast quick', () => {
-    it('should render type message', () => {
-        const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
-        methods.forEach(method => {
-            Message[method](method);
-            const nodes = document.querySelectorAll(`.next-overlay-wrapper .next-message.next-message-${method}`);
-            assert(nodes[nodes.length - 1].innerText.trim() === method);
-        });
-    });
-});
-
 describe('should support configProvider', () => {
-
-    let wrapper;
-
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('normal should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
         const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
-        wrapper = render(
+        const wrapper = render(
                 <ConfigProvider prefix="far-" locale={{
                     momentLocale: 'en',
                     Dialog: {
@@ -298,12 +277,13 @@ describe('should support configProvider', () => {
             );
         const innerBtn = document.querySelectorAll('.near-message .near-message-content .near-btn-primary');
         assert(innerBtn.length === methods.length);
+        wrapper.unmount();
     });
 
-    it('quick should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
+    it('quick-calling should use root context\'s state if its exists', () => {
         const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
         methods.forEach(method => {
-            wrapper = render(
+            const wrapper = render(
                 <ConfigProvider prefix="far-" locale={{
                     momentLocale: 'en',
                     Dialog: {
@@ -337,20 +317,36 @@ describe('should support configProvider', () => {
 
             const btn = document.querySelector('button');
             ReactTestUtils.Simulate.click(btn);
-            const overlayWrapper = document.querySelector('.near-overlay-wrapper');
-            const icon = document.querySelector('.near-icon.near-message-symbol');
-            const innerBtn = document.querySelector('.near-message-content .near-btn-primary');
+            const icon = document.querySelector('.far-icon.far-message-symbol');
+            const innerBtn = document.querySelector('.far-message-content .far-btn-primary');
 
-            assert(overlayWrapper);
             assert(icon);
             assert(innerBtn);
 
             wrapper.unmount();
-            wrapper = null;
         });
-
-        const lastOverlayWrapper = document.querySelector('.near-overlay-wrapper');
-        document.body.removeChild(lastOverlayWrapper);
-        assert(!document.querySelector('.near-overlay-wrapper'));
     });
+});
+
+describe('toast quick-calling', () => {
+    const avaliableMethods = [
+        'success',
+        'warning',
+        'error',
+        'notice',
+        'help',
+        'loading',
+    ];
+
+    for (const method of avaliableMethods) {
+        it(`render ${method}`, (done) => {
+            Message.show('content');
+            assert(document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() === 'content');
+            setTimeout(() => {
+                Message.hide();
+            }, 500);
+            setTimeout(done, 1000);
+            done()
+        })
+    }
 });

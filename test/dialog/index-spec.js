@@ -356,7 +356,7 @@ describe('inner', () => {
         assert(cancel.innerHTML === 'near cancel');
     });
 
-    it('quick should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
+    it('quick-calling should use root context\'s state if its exists', () => {
         wrapper = render(
             <ConfigProvider prefix="far-" locale={{
                 momentLocale: 'en',
@@ -391,90 +391,19 @@ describe('inner', () => {
         const btn = document.querySelector('button');
         ReactTestUtils.Simulate.click(btn);
 
-        const footer = document.querySelector('.near-dialog-footer');
-        const overlayWrapper = document.querySelector('.near-overlay-wrapper');
+        const footer = document.querySelector('.far-dialog-footer');
+        const overlayWrapper = document.querySelector('.far-overlay-wrapper');
         const ok = footer.querySelectorAll('button')[0];
         const cancel = footer.querySelectorAll('button')[1];
 
         assert(footer);
         assert(overlayWrapper);
-        assert(ok.innerHTML === 'near ok');
+        assert(ok.innerHTML === 'far ok');
         assert(cancel.innerHTML === 'my cancel');
 
         document.body.removeChild(overlayWrapper);
 
-        assert(!document.querySelector('.near-overlay-wrapper'));
-    });
-
-    it('alert should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
-        wrapper = render(
-            <ConfigProvider prefix="far-" locale={{
-                momentLocale: 'en',
-                Dialog: {
-                    ok: 'far ok',
-                    cancel: 'far cancel'
-                }
-            }}>
-                <ConfigProvider prefix="near-" locale={{
-                    momentLocale: 'en',
-                    Dialog: {
-                        ok: 'near ok',
-                        cancel: 'near cancel'
-                    }
-                }}>
-                    <div>
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                Dialog.alert({
-                                    locale: {
-                                        ok: 'my ok'
-                                    },
-                                    content: <Button type="primary">test</Button>,
-                                });
-                            }}>
-                            OK
-                        </Button>
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                Dialog.alert({
-                                    content: <Button type="primary">test</Button>,
-                                });
-                            }}>
-                            OK
-                        </Button>
-                    </div>
-                </ConfigProvider>
-            </ConfigProvider>
-        );
-
-        const btn1 = document.querySelectorAll('button')[0];
-        const btn2 = document.querySelectorAll('button')[1];
-        ReactTestUtils.Simulate.click(btn1);
-        let footer = document.querySelector('.near-dialog-footer');
-        let overlayWrapper = document.querySelector('.near-overlay-wrapper');
-        let ok = footer.querySelectorAll('button')[0];
-        let innerBtn = document.querySelector('.near-dialog-message button.near-btn-primary');
-
-        assert(footer);
-        assert(overlayWrapper);
-        assert(innerBtn);
-        assert(ok.innerHTML === 'my ok');
-        document.body.removeChild(overlayWrapper);
-        assert(!document.querySelector('.near-overlay-wrapper'));
-
-        ReactTestUtils.Simulate.click(btn2);
-        footer = document.querySelector('.near-dialog-footer');
-        overlayWrapper = document.querySelector('.near-overlay-wrapper');
-        ok = footer.querySelectorAll('button')[0];
-        innerBtn = document.querySelector('.near-dialog-message button.near-btn-primary');
-        assert(footer);
-        assert(overlayWrapper);
-        assert(innerBtn);
-        assert(ok.innerHTML === 'near ok');
-        document.body.removeChild(overlayWrapper);
-        assert(!document.querySelector('.near-overlay-wrapper'));
+        assert(!document.querySelector('.far-overlay-wrapper'));
     });
 });
 
