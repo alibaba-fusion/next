@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import getContextProps from './get-context-props';
 import { config, initLocales, setLanguage, setLocale, getLocale, getLanguage } from './config';
 import Consumer from './consumer';
-import Cache from './cache'
+import Cache from './cache';
 
-let childContextCache = new Cache();
+const childContextCache = new Cache();
 
 /**
  * ConfigProvider
@@ -85,7 +85,7 @@ class ConfigProvider extends Component {
     }
 
     constructor(...args) {
-        super(...args)
+        super(...args);
         childContextCache.add(
             this,
             Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
