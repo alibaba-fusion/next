@@ -73,18 +73,32 @@ function render(i18n) {
                 <Demo title="Normal">
                     <DemoHead cols={['L', 'M', 'S']} />
                     <DemoGroup label="Normal">
+                        <Tag.Selectable type="normal" size="large">{i18n.large}</Tag.Selectable>
+                        <Tag.Selectable type="normal" size="medium">{i18n.medium}</Tag.Selectable>
+                        <Tag.Selectable type="normal" size="small">{i18n.small}</Tag.Selectable>
+                    </DemoGroup>
+
+                    <DemoGroup label="Hover">
+                        <Tag.Selectable type="normal" size="large" className="hover">{i18n.large}</Tag.Selectable>
+                        <Tag.Selectable type="normal" size="medium" className="hover">{i18n.medium}</Tag.Selectable>
+                        <Tag.Selectable type="normal" size="small" className="hover">{i18n.small}</Tag.Selectable>
+                    </DemoGroup>
+                    <DemoGroup label="Selected">
                         <Tag.Selectable type="normal" size="large" checked>{i18n.large}</Tag.Selectable>
                         <Tag.Selectable type="normal" size="medium" checked>{i18n.medium}</Tag.Selectable>
                         <Tag.Selectable type="normal" size="small" checked>{i18n.small}</Tag.Selectable>
                     </DemoGroup>
-
-                    <DemoGroup label="Hover">
+                    <DemoGroup label="Selected & Hover">
                         <Tag.Selectable type="normal" size="large" className="hover" checked>{i18n.large}</Tag.Selectable>
                         <Tag.Selectable type="normal" size="medium" className="hover" checked>{i18n.medium}</Tag.Selectable>
                         <Tag.Selectable type="normal" size="small" className="hover" checked>{i18n.small}</Tag.Selectable>
                     </DemoGroup>
-
                     <DemoGroup label="Disabled">
+                        <Tag.Selectable type="normal" size="large" disabled>{i18n.large}</Tag.Selectable>
+                        <Tag.Selectable type="normal" size="medium" disabled>{i18n.medium}</Tag.Selectable>
+                        <Tag.Selectable type="normal" size="small" disabled>{i18n.small}</Tag.Selectable>
+                    </DemoGroup>
+                    <DemoGroup label="Selected & Disabled">
                         <Tag.Selectable type="normal" size="large" disabled checked>{i18n.large}</Tag.Selectable>
                         <Tag.Selectable type="normal" size="medium" disabled checked>{i18n.medium}</Tag.Selectable>
                         <Tag.Selectable type="normal" size="small" disabled checked>{i18n.small}</Tag.Selectable>
@@ -94,18 +108,31 @@ function render(i18n) {
                 <Demo title="Primary">
                     <DemoHead cols={['L', 'M', 'S']} />
                     <DemoGroup label="Normal">
+                        <Tag.Selectable type="primary" size="large">{i18n.large}</Tag.Selectable>
+                        <Tag.Selectable type="primary" size="medium">{i18n.medium}</Tag.Selectable>
+                        <Tag.Selectable type="primary" size="small">{i18n.small}</Tag.Selectable>
+                    </DemoGroup>
+                    <DemoGroup label="Hover">
+                        <Tag.Selectable type="primary" size="large" className="hover">{i18n.large}</Tag.Selectable>
+                        <Tag.Selectable type="primary" size="medium" className="hover">{i18n.medium}</Tag.Selectable>
+                        <Tag.Selectable type="primary" size="small" className="hover">{i18n.small}</Tag.Selectable>
+                    </DemoGroup>
+                    <DemoGroup label="Selected">
                         <Tag.Selectable type="primary" size="large" checked>{i18n.large}</Tag.Selectable>
                         <Tag.Selectable type="primary" size="medium" checked>{i18n.medium}</Tag.Selectable>
                         <Tag.Selectable type="primary" size="small" checked>{i18n.small}</Tag.Selectable>
                     </DemoGroup>
-
-                    <DemoGroup label="Hover">
+                    <DemoGroup label="Selected & Hover">
                         <Tag.Selectable type="primary" size="large" className="hover" checked>{i18n.large}</Tag.Selectable>
                         <Tag.Selectable type="primary" size="medium" className="hover" checked>{i18n.medium}</Tag.Selectable>
                         <Tag.Selectable type="primary" size="small" className="hover" checked>{i18n.small}</Tag.Selectable>
                     </DemoGroup>
-
                     <DemoGroup label="Disabled">
+                        <Tag.Selectable type="primary" size="large" disabled>{i18n.large}</Tag.Selectable>
+                        <Tag.Selectable type="primary" size="medium" disabled>{i18n.medium}</Tag.Selectable>
+                        <Tag.Selectable type="primary" size="small" disabled>{i18n.small}</Tag.Selectable>
+                    </DemoGroup>
+                    <DemoGroup label="Disabled & Selected">
                         <Tag.Selectable type="primary" size="large" disabled checked>{i18n.large}</Tag.Selectable>
                         <Tag.Selectable type="primary" size="medium" disabled checked>{i18n.medium}</Tag.Selectable>
                         <Tag.Selectable type="primary" size="small" disabled checked>{i18n.small}</Tag.Selectable>
