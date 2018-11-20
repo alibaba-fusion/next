@@ -156,12 +156,14 @@
     .#{$css-prefix}range-scale {
         .#{$css-prefix}range-scale-item {
             border-color: $unselectedColor;
+            background-color: $unselectedColor;
             &:hover {
                 border-color: $unselectedColorHover;
             }
 
             &.activated {
                 border-color: $selectedColor;
+                background-color: $selectedColor;
                 &:hover {
                     border-color: $selectedColorHover;
                 }

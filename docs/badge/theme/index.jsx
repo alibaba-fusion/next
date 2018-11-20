@@ -27,7 +27,7 @@ const i18nMap = {
     },
     'en-us': {
         badge: 'Badge',
-        normal: 'normal',
+        normal: 'Normal',
         unreadCombo: 'Unread Combo',
         unreadText: 'Unread Text'
     },

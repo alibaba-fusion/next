@@ -2,14 +2,14 @@
 
 - order: 5
 
-当 Tab 标签非常多时，组件会自动增加滑动支持。可以用过 `excessMode` 属性切换滑动模式。
+当 Tab 标签非常多时，组件会自动增加滑动支持。可以用过 `excessMode` 属性切换滑动模式，该属性仅在`tabPosition`为`top`或者`bottom`时生效。
 
 :::lang=en-us
 # Excess mode
 
 - order: 5
 
-If your Tab excess the range, you can setting `excessMode` to `dropdown` for vertical display, or `slide` for horizontal display.
+If your Tab excess the range, you can setting `excessMode` to `dropdown` for vertical display, or `slide` for horizontal display, just note that this `excessMode` will only be effective when `tabPosition` is set to be `top` or `bottom`.
 
 :::
 

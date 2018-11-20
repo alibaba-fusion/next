@@ -109,6 +109,7 @@ export default function selection(BaseComponent) {
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple';
 
             let checked = !!selectedRowKeys.length;
+            let indeterminate = false;
             this.flatDataSource(dataSource)
                 .filter((record, index) => {
                     if (!rowSelection.getProps) {
@@ -121,13 +122,18 @@ export default function selection(BaseComponent) {
                 .forEach(id => {
                     if (selectedRowKeys.indexOf(id) === -1) {
                         checked = false;
+                    } else {
+                        indeterminate = true;
                     }
                 });
             attrs.onClick = makeChain((e) => {
                 e.stopPropagation();
             }, attrs.onClick);
 
-            return mode === 'multiple' ? <Checkbox aria-label={locale.selectAll} checked={checked} onChange={onChange} {...attrs} /> : null;
+            if (checked) {
+                indeterminate = false;
+            }
+            return mode === 'multiple' ? <Checkbox indeterminate={indeterminate} aria-label={locale.selectAll} checked={checked} onChange={onChange} {...attrs} /> : null;
         }
 
         renderSelectionBody = (value, index, record) => {

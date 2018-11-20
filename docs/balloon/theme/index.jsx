@@ -85,10 +85,35 @@ class BalloonDemo extends React.Component {
         this.state = {
             demoFunction: {
                 align: {
-                    ...props.align
+                    label: '箭头方向',
+                    value: 'b',
+                    enum: [
+                        {label: '上', value: 'b'},
+                        {label: '下', value: 't'},
+                        {label: '左', value: 'r'},
+                        {label: '右', value: 'l'},
+                        {label: '上左', value: 'br'},
+                        {label: '上右', value: 'bl'},
+                        {label: '下左', value: 'tr'},
+                        {label: '下右', value: 'tl'},
+                        {label: '左上', value: 'rb'},
+                        {label: '左下', value: 'rt'},
+                        {label: '右上', value: 'lb'},
+                        {label: '右下', value: 'lt'},
+                    ]
                 },
                 closable: {
-                    ...props.closable
+                    label: '关闭按钮',
+                    value: 'true',
+                    enum: [
+                        {
+                            label: '显示',
+                            value: 'true'
+                        }, {
+                            label: '隐藏',
+                            value: 'false'
+                        }
+                    ]
                 }
             }
         };
@@ -150,8 +175,22 @@ class TooltipDemo extends React.Component {
         this.state = {
             demoFunction: {
                 align: {
-                    ...props.align,
-                    enum: props.align.enum.slice(0, 8)
+                    label: '箭头方向',
+                    value: 'b',
+                    enum: [
+                        {label: '上', value: 'b'},
+                        {label: '下', value: 't'},
+                        {label: '左', value: 'r'},
+                        {label: '右', value: 'l'},
+                        {label: '上左', value: 'br'},
+                        {label: '上右', value: 'bl'},
+                        {label: '下左', value: 'tr'},
+                        {label: '下右', value: 'tl'},
+                        {label: '左上', value: 'rb'},
+                        {label: '左下', value: 'rt'},
+                        {label: '右上', value: 'lb'},
+                        {label: '右下', value: 'lt'},
+                    ].slice(0, 8)
                 }
             }
         };
@@ -220,7 +259,7 @@ function render(i18n) {
     ), document.getElementById('container'));
 }
 
-window.renderDemo = function (lang = 'zh-cn') {
+window.renderDemo = function (lang = 'en-us') {
     render(i18nMap[lang]);
 };
 

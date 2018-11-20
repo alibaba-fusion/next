@@ -60,7 +60,7 @@ class MonthPicker extends Component {
         footerRender: PropTypes.func,
         /**
          * 日期值改变时的回调
-         * @return {MomentObject|String} 日期值
+         * @param {MomentObject|String} value 日期值
          */
         onChange: PropTypes.func,
         /**
@@ -94,7 +94,7 @@ class MonthPicker extends Component {
          */
         popupTriggerType: PropTypes.oneOf(['click', 'hover']),
         /**
-         * 弹层对齐方式
+         * 弹层对齐方式, 具体含义见 OverLay文档
          */
         popupAlign: PropTypes.string,
         /**

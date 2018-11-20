@@ -8,7 +8,7 @@ import Message from '../../../src/message';
 const i18nMap = {
     'en-us': {
         title: 'Title',
-        content: 'This item already has the label "travel". You can add a new label.'
+        content: 'This item already has the label "travel", You can add a new label.'
     },
     'zh-cn': {
         title: '标题',
@@ -18,6 +18,8 @@ const i18nMap = {
 
 const shapes = ['inline', 'addon', 'toast'];
 const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+
+const toFirstUpperCase = (str) => str && (str.substring(0, 1).toUpperCase() + str.substring(1));
 
 class FunctionDemo extends React.Component {
     constructor(props) {
@@ -78,10 +80,10 @@ class FunctionDemo extends React.Component {
                         <p style={style}>{i18n.content}</p>
                     </Message>
                 ));
-                return (<DemoGroup label={type} key={type}>{children}</DemoGroup>);
+                return (<DemoGroup label={toFirstUpperCase(type)} key={type}>{children}</DemoGroup>);
             });
             return (
-                <Demo title={shape} key={shape}>
+                <Demo title={toFirstUpperCase(shape)} key={shape}>
                     <DemoHead cols={['L', 'M']} />
                     {content}
                 </Demo>
@@ -89,7 +91,7 @@ class FunctionDemo extends React.Component {
         });
 
         return (
-            <Demo title="normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo title="Normal" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 {newChildren}
             </Demo>
         );

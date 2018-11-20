@@ -38,6 +38,8 @@ class RangeCalendar extends React.Component {
         endValue: checkMomentObj,
         // 面板模式
         mode: PropTypes.oneOf(CALENDAR_MODES),
+        // 日期值的格式（用于日期title显示的格式）
+        format: PropTypes.string,
         /**
          * 是否显示非本月的日期
          */
@@ -74,6 +76,7 @@ class RangeCalendar extends React.Component {
     static defaultProps = {
         prefix: 'next-',
         mode: CALENDAR_MODE_DATE,
+        format: 'YYYY-MM-DD',
         dateCellRender: (value) => value.date(),
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
@@ -186,7 +189,7 @@ class RangeCalendar extends React.Component {
     }
 
     render() {
-        const { prefix, dateCellRender, className, locale, showOtherMonth, disabledDate, ...others } = this.props;
+        const { prefix, dateCellRender, className, format, locale, showOtherMonth, disabledDate, ...others } = this.props;
         const { startValue, endValue, mode, startVisibleMonth, activePanel } = this.state;
 
         // reset moment locale
@@ -239,10 +242,10 @@ class RangeCalendar extends React.Component {
             case CALENDAR_MODE_DATE: {
                 table = [
                     <div className={`${prefix}calendar-body-left`} key="left-panel">
-                        <DateTable {...tableProps} visibleMonth={startVisibleMonth} onSelectDate={this.onSelectCell} />
+                        <DateTable format={format} {...tableProps} visibleMonth={startVisibleMonth} onSelectDate={this.onSelectCell} />
                     </div>,
                     <div className={`${prefix}calendar-body-right`} key="right-panel">
-                        <DateTable {...tableProps} visibleMonth={endVisibleMonth} onSelectDate={this.onSelectCell} />
+                        <DateTable format={format} {...tableProps} visibleMonth={endVisibleMonth} onSelectDate={this.onSelectCell} />
                     </div>
                 ];
                 header = (<RangePanelHeader

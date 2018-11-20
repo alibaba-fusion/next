@@ -7,15 +7,14 @@
 [![npm package](https://img.shields.io/npm/v/@alifd/next.svg?style=flat-square)](https://www.npmjs.org/package/@alifd/next)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-
-* [Quick Start](./site/en-us/quick-start.md)
-* [Use with Theme Package](./site/en-us/theme.md)
-* [Internationalization](./site/en-us/i18n.md)
-* [Deploy Font File](./site/en-us/font-deploy.md)
-* [Contributing](./site/en-us/contributing.md)
+-   [Quick Start](./site/en-us/quick-start.md)
+-   [Use with Theme Package](./site/en-us/theme.md)
+-   [Internationalization](./site/en-us/i18n.md)
+-   [Deploy Font File](./site/en-us/font-deploy.md)
+-   [Contributing](./site/en-us/contributing.md)
 
 ## Join Group
 
- Use [Dingtalk App](https://www.dingtalk.com/en) scan the Qrcode to join in *Dingtalk Group* :
+Use [Dingtalk App](https://www.dingtalk.com/en) scan the Qrcode to join in _Dingtalk Group_ :
 
-<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1ayWlbhYaK1RjSZFnXXa80pXa-750-990.png" width="300">
+<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1iH9unxnaK1RjSZFtXXbC2VXa-1125-1485.jpg" width="300">

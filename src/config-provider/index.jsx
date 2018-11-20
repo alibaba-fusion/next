@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import getContextProps from './get-context-props';
 import { config, initLocales, setLanguage, setLocale, getLocale, getLanguage } from './config';
 import Consumer from './consumer';
+import Cache from './cache'
 
-let childContextCache = {};
+let childContextCache = new Cache();
 
 /**
  * ConfigProvider
@@ -62,7 +63,7 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(props, childContextCache, displayName);
+        return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
     static initLocales = initLocales;
@@ -73,7 +74,7 @@ class ConfigProvider extends Component {
     static Consumer = Consumer;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextWarning } = childContextCache;
+        const { nextPrefix, nextLocale, nextPure, nextWarning } = childContextCache.root() || {};
 
         return {
             prefix: nextPrefix,
@@ -81,6 +82,14 @@ class ConfigProvider extends Component {
             pure: nextPure,
             warning: nextWarning
         };
+    }
+
+    constructor(...args) {
+        super(...args)
+        childContextCache.add(
+            this,
+            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+        );
     }
 
     getChildContext() {
@@ -98,10 +107,6 @@ class ConfigProvider extends Component {
         this.setMomentLocale(this.props.locale);
     }
 
-    componentDidMount() {
-        childContextCache = Object.assign({}, this.getChildContext(), childContextCache);
-    }
-
     componentWillReceiveProps(nextProps) {
         if (this.props.locale !== nextProps.locale) {
             this.setMomentLocale(nextProps.locale);
@@ -109,11 +114,14 @@ class ConfigProvider extends Component {
     }
 
     componentDidUpdate() {
-        childContextCache = this.getChildContext();
+        childContextCache.add(
+            this,
+            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+        );
     }
 
     componentWillUnmount() {
-        childContextCache = {};
+        childContextCache.remove(this);
     }
 
     setMomentLocale(locale) {
