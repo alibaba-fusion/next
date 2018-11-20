@@ -17,7 +17,7 @@ Fields can be used to manage data when it comes to form data manipulation and va
 
 - With Field `init` components, `value` `onChange` must be placed in init's third argument, otherwise it may be overridden by init.
 - `Form` has been deeply optimized with `Field` for `data acquisition` and `automatic verification prompt`. It is recommended to use `Field` in `Form`. Please check Form demo.
-- initValue The defauValue of a similar component, which only takes effect when the component first renders (the ajax asynchronous invocation setting initValue may have missed the first render)
+- initValue The defaultValue of a similar component, which only takes effect when the component first renders (the ajax asynchronous invocation setting initValue may have missed the first render)
 
 ### basic use
 
@@ -31,7 +31,7 @@ Class Demo extends React.Component {
     Render() {
         Const init = this.field.init;
 
-        // Note: initVaue will only be assigned when the component is first initialized. If you are using an asynchronous assignment, use setValue
+        // Note: initValue will only be assigned when the component is first initialized. If you are using an asynchronous assignment, use setValue
         Return <div>
             <Input {...init('name',{initValue:'first value'})} />
             <button onClick={this.onClick>Get Data</button>

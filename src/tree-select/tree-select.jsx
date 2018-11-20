@@ -85,6 +85,7 @@ export default class TreeSelect extends Component {
          * @param {String} keyword 输入的关键字
          */
         onSearch: PropTypes.func,
+        onSearchClear: PropTypes.func,
         /**
          * 无数据时显示内容
          */
@@ -115,7 +116,7 @@ export default class TreeSelect extends Component {
          */
         treeDefaultExpandedKeys: PropTypes.arrayOf(PropTypes.string),
         /**
-         * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](http://fusion-demo.alibaba-inc.com/components?type=next&themeId=next&name=tree#tree-4)
+         * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)
          * @param {ReactElement} node 被点击展开的节点
          */
         treeLoadData: PropTypes.func,
@@ -168,6 +169,7 @@ export default class TreeSelect extends Component {
         onChange: noop,
         showSearch: false,
         onSearch: noop,
+        onSearchClear: noop,
         notFoundContent: 'Not Found',
         multiple: false,
         treeCheckable: false,
@@ -192,7 +194,7 @@ export default class TreeSelect extends Component {
             autoExpandParent: false
         };
 
-        bindCtx(this, ['handleSelect', 'handleCheck', 'handleSearch', 'handleVisibleChange', 'handleChange', 'handleRemove', 'handleExpand']);
+        bindCtx(this, ['handleSelect', 'handleCheck', 'handleSearch', 'handleSearchClear', 'handleVisibleChange', 'handleChange', 'handleRemove', 'handleExpand']);
 
         this.updateCache(props);
     }
@@ -286,7 +288,7 @@ export default class TreeSelect extends Component {
 
     getData(value, forSelect) {
         return value.reduce((ret, v) => {
-            const k = this._v2n[v].key;
+            const k = this._v2n[v] && this._v2n[v].key;
             if (k) {
                 const { label, pos, disabled, checkboxDisabled } = this._k2n[k];
                 const d = {
@@ -420,6 +422,14 @@ export default class TreeSelect extends Component {
         this.retainedKeys = retainedKeys;
 
         this.props.onSearch(searchedValue);
+    }
+
+    handleSearchClear(triggerType) {
+        this.setState({
+            searchedValue: '',
+            expandedKeys: []
+        });
+        this.props.onSearchClear(triggerType);
     }
 
     handleExpand(expandedKeys) {
@@ -675,6 +685,7 @@ export default class TreeSelect extends Component {
                 onVisibleChange={this.handleVisibleChange}
                 showSearch={showSearch}
                 onSearch={this.handleSearch}
+                onSearchClear={this.handleSearchClear}
                 popupContent={this.renderPopupContent()}
                 popupContainer={popupContainer}
                 popupStyle={popupStyle}

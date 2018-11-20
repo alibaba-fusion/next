@@ -77,15 +77,23 @@
 ) {
     .#{$css-prefix}breadcrumb-text {
         color: $textColor;
-
         > b {
             color: $keywordTextColor;
+        }
+        > a {
+            color: $textColor;
+            text-decoration: none;
+            text-align: center;
         }
     }
 
     .#{$css-prefix}breadcrumb-text.activated {
         color: $currentTextColor;
         font-weight: $currentTextWeight;
+        > a {
+            color: $currentTextColor;
+            font-weight: $currentTextWeight;
+        }
     }
 
     .#{$css-prefix}breadcrumb-text-ellipsis {
@@ -95,6 +103,14 @@
 
     .#{$css-prefix}breadcrumb-separator {
         color: $iconColor;
+    }
+
+    .#{$css-prefix}breadcrumb-text:not(.next-breadcrumb-text-ellipsis):hover > a {
+        color: $textColorHover;
+    }
+
+    a.#{$css-prefix}breadcrumb-text.activated:hover > a {
+        color: $currentTextColorHover;
     }
 
     a.#{$css-prefix}breadcrumb-text:not(.next-breadcrumb-text-ellipsis):hover {

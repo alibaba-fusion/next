@@ -92,6 +92,7 @@ export default class Cascader extends Component {
         /**
          * 异步加载数据函数
          * @param {Object} data 当前点击异步加载的数据
+         * @param {Object} source 当前点击数据
          */
         loadData: PropTypes.func,
         searchValue: PropTypes.string,
@@ -211,20 +212,22 @@ export default class Cascader extends Component {
         }
     }
 
+    setCache(data, prefix = '0') {
+        data.forEach((item, index) => {
+            const { value, children } = item;
+            const pos = `${prefix}-${index}`;
+            this._v2n[value] = this._p2n[pos] = { ...item, pos, _source: item };
+
+            if (children && children.length) {
+                this.setCache(children, pos);
+            }
+        });
+    }
+
     updateCache(dataSource) {
         this._v2n = {};
         this._p2n = {};
-        const loop = (data, prefix = '0') => data.forEach((item, index) => {
-            const { value, children } = item;
-            const pos = `${prefix}-${index}`;
-            this._v2n[value] = this._p2n[pos] = { ...item, pos };
-
-            if (children && children.length) {
-                loop(children, pos);
-            }
-        });
-
-        loop(dataSource);
+        this.setCache(dataSource);
     }
 
     normalizeValue(value) {
@@ -490,7 +493,8 @@ export default class Cascader extends Component {
 
             const { loadData } = this.props;
             if (canExpand && loadData) {
-                return loadData(this._v2n[value]).then(callback);
+                const data = this._v2n[value];
+                return loadData(data, data._source).then(callback);
             } else {
                 callback();
             }

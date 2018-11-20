@@ -104,8 +104,8 @@ function* publishToNpm() {
     yield runCommond(`git tag ${masterTag}`);
     yield runCommond(`git push origin ${masterTag}`);
 
-    // yield runCommond('npm publish');
-    // yield triggerRelease();
+    yield runCommond('npm publish');
+    yield triggerRelease();
 }
 
 function* getGithubInfo() {

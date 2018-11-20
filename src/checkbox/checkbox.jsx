@@ -48,7 +48,7 @@ class Checkbox extends UIState {
         /**
          * 通过属性配置label，
          */
-        label: PropTypes.string,
+        label: PropTypes.node,
         /**
          * Checkbox 的中间状态，只会影响到 Checkbox 的样式，并不影响其 checked 属性
          */
@@ -202,7 +202,7 @@ class Checkbox extends UIState {
             className={`${prefix}checkbox-input`}
         />);
 
-        // disabe 无状态操作
+        // disable 无状态操作
         if (!disabled) {
             childInput = this.getStateElement(childInput);
         }

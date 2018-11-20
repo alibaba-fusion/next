@@ -1,6 +1,6 @@
 {
   "engine": "sass",
-  "publish-template": "@alifd/next-theme-template@0.1.7",
+  "publish-template": "@alifd/next-theme-template@0.2.0",
   "class-prefix": ".next",
   "icon": {
     "iconfont-project-id": "544230",
@@ -40,6 +40,12 @@
       "entry-file": {
         "html": "index.html",
         "deps": "deps.json"
+      },
+      "entries": {
+        "color": {
+          "html": "//g.alicdn.com/fusion-platform/next-preview/0.0.2/index.html",
+          "deps": ["button", "nav", "tab", "form", "input", "select", "grid", "checkbox", "message", "progress"]
+        }
       }
     }
   },

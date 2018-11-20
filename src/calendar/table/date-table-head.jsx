@@ -5,14 +5,14 @@ class DateTableHead extends PureComponent {
     render() {
         const { prefix, momentLocale } = this.props;
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
-        const weekdaysMin = momentLocale.weekdaysMin();
+        const weekdaysShort = momentLocale.weekdaysShort();
 
         const elements = [];
         for (let i = 0; i < DAYS_OF_WEEK; i++) {
             const index = (firstDayOfWeek + i) % DAYS_OF_WEEK;
             elements.push(
                 <th key={i} className={`${prefix}calendar-th`} role="cell">
-                    {weekdaysMin[index]}
+                    {weekdaysShort[index]}
                 </th>
             );
         }
