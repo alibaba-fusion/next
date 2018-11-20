@@ -178,7 +178,7 @@ class Search extends React.Component {
             placeholder, type, className,
             style, size, prefix, searchText,
             dataSource, filterProps, buttonProps,
-            popupContent, hasClear,  ...others } = this.props;
+            popupContent, hasClear, visible, ...others } = this.props;
 
         const cls = classNames({
             [`${prefix}search`]: true,
@@ -237,6 +237,7 @@ class Search extends React.Component {
                 value={this.state.value}
                 onChange={this.onChange}
                 popupContent={popupContent}
+                visible={visible}
             />
         </Group>);
 
