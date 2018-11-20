@@ -19,7 +19,6 @@ class Cache {
     }
 
     add(key, value) {
-        const store = this._store;
         if (this.empty()) {
             this._root = key;
         }
