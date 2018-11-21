@@ -23,7 +23,9 @@
     #{$search-prefix}-left-addon {
         .#{$css-prefix}input,
         .#{$css-prefix}select-trigger-search {
-            height: 100%;
+            min-height: 100%;
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
         }
 
         .#{$css-prefix}select-values {
