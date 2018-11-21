@@ -161,7 +161,7 @@ export default class Base extends React.Component {
             'beforeOpen',
             'beforeClose',
             'afterClose',
-            'handleResize'
+            'handleResize',
         ]);
     }
 
@@ -223,7 +223,7 @@ export default class Base extends React.Component {
     syncWidth() {
         const width = dom.getStyle(this.selectDOM, 'width');
 
-        if (width && (this.width !== width)) {
+        if (this.props.autoWidth && width && (this.width !== width)) {
             this.width = width;
 
             if (this.popupRef) {
