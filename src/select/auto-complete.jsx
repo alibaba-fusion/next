@@ -309,7 +309,7 @@ class AutoComplete extends Base {
             label,
             // extra: arrowNode,
             onChange: this.handleChange,
-            onKeyDown: makeChain(onKeyDown, this.handleTriggerKeyDown)
+            onKeyDown: this.handleTriggerKeyDown
         };
 
         return (
