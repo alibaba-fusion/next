@@ -440,6 +440,10 @@ class Select extends Base {
 
         const { highlightKey } = this.state;
 
+        if(highlightKey === null) {
+            return;
+        }
+
         const { mode } = this.props;
 
         if (mode === 'single') {
