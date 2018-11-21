@@ -148,7 +148,7 @@ function* triggerRelease() {
             body: latestLog,
             draft: false,
             prerelease: false,
-        }).then(result => {
+        }).then(() => {
             logger.success('Create release success');
             resolve();
         }).catch(err => {
