@@ -161,7 +161,7 @@ export default class Base extends React.Component {
             'beforeOpen',
             'beforeClose',
             'afterClose',
-            'handleResize'
+            'handleResize',
         ]);
     }
 
@@ -226,7 +226,7 @@ export default class Base extends React.Component {
         if (width && (this.width !== width)) {
             this.width = width;
 
-            if (this.popupRef) {
+            if (this.popupRef && this.props.autoWidth) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef && this.popupRef.getInstance().overlay) {
