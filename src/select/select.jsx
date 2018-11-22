@@ -440,6 +440,11 @@ class Select extends Base {
 
         const { highlightKey } = this.state;
 
+        // 没有高亮选项 或者 没有可选菜单
+        if(highlightKey === null || !this.dataStore.getMenuDS().length) {
+            return;
+        }
+
         const { mode } = this.props;
 
         if (mode === 'single') {
@@ -774,6 +779,8 @@ class Select extends Base {
     render() {
         const { mode } = this.props;
         const props = { ...this.props };
+
+        // 搜索的时候不允许回车触发关闭
         if (this.hasSearch()) {
             props.canCloseByTrigger = false;
         }
