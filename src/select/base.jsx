@@ -223,10 +223,10 @@ export default class Base extends React.Component {
     syncWidth() {
         const width = dom.getStyle(this.selectDOM, 'width');
 
-        if (this.props.autoWidth && width && (this.width !== width)) {
+        if (width && (this.width !== width)) {
             this.width = width;
 
-            if (this.popupRef) {
+            if (this.popupRef && this.props.autoWidth) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef && this.popupRef.getInstance().overlay) {
