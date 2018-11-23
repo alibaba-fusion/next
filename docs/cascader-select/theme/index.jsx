@@ -10,7 +10,7 @@ import enUS from '../../../src/locale/en-us';
 
 const i18nMap = {
     'en-us': {
-        label: 'Label:'
+        label: 'Label'
     },
     'zh-cn': {
         label: '标签：'
@@ -109,17 +109,17 @@ class FunctionDemo extends React.Component {
             <Demo title={multiple ? 'Multiple' : 'Single'} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Normal">
                     <DemoHead cols={['L', 'M', 'S']} />
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <CascaderSelect {...cascaderSelectProps} size="large" />
                         <CascaderSelect {...cascaderSelectProps} size="medium" />
                         <CascaderSelect {...cascaderSelectProps} size="small" />
                     </DemoGroup>
-                    <DemoGroup label="expanded">
+                    <DemoGroup label="Expanded">
                         <CascaderSelect {...cascaderSelectProps} visible size="large" defaultValue="0-0-1" style={{ width: '300px', marginBottom: '212px' }} popupProps={{ needAdjust: false }} />
                         <CascaderSelect {...cascaderSelectProps} visible size="medium" defaultValue="0-0-1" style={{ width: '300px', marginBottom: '212px' }} popupProps={{ needAdjust: false }} />
                         <CascaderSelect {...cascaderSelectProps}  visible size="small" defaultValue="0-0-1" style={{ width: '300px', marginBottom: '212px' }} popupProps={{ needAdjust: false }} />
                     </DemoGroup>
-                    <DemoGroup label="disabled">
+                    <DemoGroup label="Disabled">
                         <CascaderSelect {...cascaderSelectProps} disabled size="large" defaultValue="0-0-1" />
                         <CascaderSelect {...cascaderSelectProps} disabled size="medium" defaultValue="0-0-1" />
                         <CascaderSelect {...cascaderSelectProps} disabled size="small" defaultValue="0-0-1" />

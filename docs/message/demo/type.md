@@ -19,22 +19,22 @@ import { Message } from '@alifd/next';
 
 ReactDOM.render(
     <div className="message-type-demo">
-        <Message title="title">
+        <Message title="Success" type="success">
             Content Content Content Content
         </Message>
-        <Message title="title" type="warning">
+        <Message title="Warning" type="warning">
             Content Content Content Content
         </Message>
-        <Message title="title" type="error">
+        <Message title="Error" type="error">
             Content Content Content Content
         </Message>
-        <Message title="title" type="notice">
+        <Message title="Notice" type="notice">
             Content Content Content Content
         </Message>
-        <Message title="title" type="help">
+        <Message title="Help" type="help">
             Content Content Content Content
         </Message>
-        <Message title="title" type="loading">
+        <Message title="Loading" type="loading">
             Content Content Content Content
         </Message>
     </div>, mountNode);

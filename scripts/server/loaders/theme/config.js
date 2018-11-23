@@ -17,7 +17,7 @@ module.exports = function(context, componentName) {
         };
 
         try {
-            cp.execSync('sass -v');
+            cp.execSync('sass --version');
         } catch (e) {
             locals.hasRubySass = false;
             locals.error = false;

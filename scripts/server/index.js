@@ -14,7 +14,7 @@ argv._.forEach(item => {
         const value = item.split('=')[1];
         argv[key] = value;
     }
-})
+});
 
 start(restoreArgs(argv));
 

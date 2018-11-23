@@ -22,9 +22,9 @@ const i18nMap = {
         disabled: '禁用',
     },
     'en-us': {
-        datepicker: 'DatePicker',
-        rangepicker: 'RangePicker',
-        label: 'Label:',
+        datepicker: 'Date Picker',
+        rangepicker: 'Range Picker',
+        label: 'Label',
         normal: 'Normal',
         expandNormal: 'Date Expanded',
         expandTime: 'Datetime Expanded',

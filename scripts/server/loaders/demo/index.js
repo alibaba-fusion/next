@@ -94,7 +94,7 @@ function getCSSRequireString(resourcePath, context) {
 `;
 }
 
-function fixImport(code, resourcePath, dir) {
+function fixImport(code, resourcePath) {
     const matched = code.match(IMPORT_REG);
     const matchedLib = code.match(IMPORT_LIB_REG_G);
 

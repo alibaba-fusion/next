@@ -40,22 +40,22 @@ const i18nMap = {
     },
     'en-us': {
         label: 'label',
-        withLabel: 'with label',
-        number: 'number of buttons',
-        editLabel: 'edit label',
+        withLabel: 'With Label',
+        number: 'Number Of Buttons',
+        editLabel: 'Edit Label',
         dataSource: [
             {
                 value: 'gcellone',
-                label: 'Cell One'
+                label: 'Cell 1'
             }, {
                 value: 'gcelltwo',
-                label: 'Cell Two'
+                label: 'Cell 2'
             }, {
                 value: 'gcellthree',
-                label: 'Cell Three'
+                label: 'Cell 3'
             }, {
                 value: 'gcellfour',
-                label: 'Cell Four'
+                label: 'Cell 4'
             }
         ]
     }
@@ -92,22 +92,22 @@ class RadioDefaultDemo extends React.Component {
                 trigger: 'onFunctionChange'
             })}>
                 <Demo title="Basic">
-                    <DemoGroup label="normal">
+                    <DemoGroup label="Normal">
                         <Radio checked={false}>{label}</Radio>
                     </DemoGroup>
-                    <DemoGroup label="hover">
+                    <DemoGroup label="Hover">
                         <Radio checked={false} className="hovered" >{label}</Radio>
                     </DemoGroup>
-                    <DemoGroup label="selected">
+                    <DemoGroup label="Selected">
                         <Radio checked >{label}</Radio>
                     </DemoGroup>
-                    <DemoGroup label="selected-hover">
+                    <DemoGroup label="Selected & Hover">
                         <Radio checked className="hovered" >{label}</Radio>
                     </DemoGroup>
-                    <DemoGroup label="disabled-normal">
+                    <DemoGroup label="Disabled & Normal">
                         <Radio disabled >{label}</Radio>
                     </DemoGroup>
-                    <DemoGroup label="disabled-selected">
+                    <DemoGroup label="Disabled & Selected">
                         <Radio disabled checked >{label}</Radio>
                     </DemoGroup>
                 </Demo>
@@ -135,17 +135,17 @@ class RadioButtonDemo extends React.Component {
             <Demo title="Radio button">
                 <Demo title={'Button'}>
                 <DemoHead cols={['L', 'M', 'S']} />
-                <DemoGroup label="normal">
+                <DemoGroup label="Normal">
                     <RadioGroup dataSource={dataSource} shape="button" size="large" value="" />
                     <RadioGroup dataSource={dataSource} shape="button" size="medium" value="" />
                     <RadioGroup dataSource={dataSource} shape="button" size="small" value="" />
                 </DemoGroup>
-                <DemoGroup label="selected">
+                <DemoGroup label="Selected">
                     <RadioGroup dataSource={dataSource} shape="button" size="large" value="gcellone" />
                     <RadioGroup dataSource={dataSource} shape="button" size="medium" value="gcellone" />
                     <RadioGroup dataSource={dataSource} shape="button" size="small" value="gcellone" />
                 </DemoGroup>
-                <DemoGroup label="disabled">
+                <DemoGroup label="Disabled">
                     <RadioGroup shape="button" size="large" value="gcellone">
                         {disabledRadio}
                     </RadioGroup>
@@ -156,7 +156,7 @@ class RadioButtonDemo extends React.Component {
                         {disabledRadio}
                     </RadioGroup>
                 </DemoGroup>
-                <DemoGroup label="disabled - selected">
+                <DemoGroup label="Disabled & Selected">
                     <RadioGroup shape="button" size="large" value="gcellone">
                         {disabledSelectedRadio}
                     </RadioGroup>

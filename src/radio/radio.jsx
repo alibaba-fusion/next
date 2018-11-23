@@ -40,7 +40,7 @@ class Radio extends UIState {
         /**
          * 通过属性配置label
          */
-        label: PropTypes.string,
+        label: PropTypes.node,
         /**
          * 状态变化时触发的事件
          * @param {Boolean} checked 是否选中

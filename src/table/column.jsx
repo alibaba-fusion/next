@@ -14,11 +14,13 @@ export default class Column extends React.Component {
         dataIndex: PropTypes.string,
         /**
          * 行渲染的逻辑
+         * value, rowIndex, record, context四个属性只可读不可被更改
          * Function(value, index, record) => Element
          */
         cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         /**
          * 表头显示的内容
+         * value, rowIndex, record, context四个属性只可读不可被更改
          */
         title: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         /**
