@@ -9,28 +9,28 @@ import '../../../src/number-picker/style.js';
 
 ReactDOM.render((
     <div className="demo-container">
-        <Demo title="NumberPicker" block>
-            <Demo title="normal" block>
-                <DemoHead cols={['large', 'medium']}/>
+        <Demo title="Number Picker" block>
+            <Demo title="Normal" block>
+                <DemoHead cols={['Large', 'Medium']}/>
 
-                <DemoGroup label="normal">
+                <DemoGroup label="Normal">
                     <NumberPicker defaultValue={0} size="large"/>
                     <NumberPicker defaultValue={0} />
                 </DemoGroup>
-                <DemoGroup label="disabled">
+                <DemoGroup label="Disabled">
                     <NumberPicker defaultValue={0} size="large" disabled/>
                     <NumberPicker defaultValue={0} disabled/>
                 </DemoGroup>
             </Demo>
 
-            <Demo title="inline" block>
-                <DemoHead cols={['large', 'medium']}/>
+            <Demo title="Inline" block>
+                <DemoHead cols={['Large', 'Medium']}/>
 
-                <DemoGroup label="normal">
+                <DemoGroup label="Normal">
                     <NumberPicker defaultValue={0} size="large" type="inline"/>
                     <NumberPicker defaultValue={0} type="inline"/>
                 </DemoGroup>
-                <DemoGroup label="disabled">
+                <DemoGroup label="Disabled">
                     <NumberPicker defaultValue={0} size="large" type="inline" disabled/>
                     <NumberPicker defaultValue={0} type="inline" disabled/>
                 </DemoGroup>

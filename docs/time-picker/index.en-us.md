@@ -44,7 +44,7 @@ By default, TimePicker using moment instance as input value, which is the sugges
 | visible          | Visible state of popup | Boolean   | -          |
 | defaultVisible   | Default visible state of popup  | Boolean   | -          |
 | popupContainer   | Container of popup<br><br>**signature**:<br>Function(target: Object) => ReactNode<br>**paramter**:<br>_target_: {Object} target container<br>**return**:<br>{ReactNode} container element<br>                            | Function  | -          |
-| popupAlign       | Align of popup  | String    | 'tl tl'    |
+| popupAlign       | Align of popup, @see Overylay doc for detail  | String    | 'tl tl'    |
 | popupTriggerType | Trigger type of popup<br><br>**option**:<br>'click', 'hover'                                                                                                                        | Enum      | 'click'    |
 | onVisibleChange  | Callback when visible changes<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**paramter**:<br>_visible_: {Boolean} visible of popup<br>_reason_: {String} reason to change visible | Function  | func.noop  |
 | popupStyle       | Custom style of popup | Object    | -          |

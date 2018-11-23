@@ -25,9 +25,9 @@ const i18nMap = {
         paste: '粘贴',
     },
     'en-us': {
-        menuButton: 'MenuButton',
-        textMenuButton: 'Text MenuButton',
-        ghostMenuButton: 'Ghost MenuButton',
+        menuButton: 'Menu Button',
+        textMenuButton: 'Text Menu Button',
+        ghostMenuButton: 'Ghost Menu Button',
         normal: 'Normal',
         expand: 'Expanded',
         disable: 'Disabled',
@@ -99,17 +99,17 @@ function render(locale, lang) {
     return ReactDOM.render((<ConfigProvider>
         <div className="demo-container">
             <Demo title={locale.menuButton}>
-                {renderButton('normal', locale)}
-                {renderButton('primary', locale)}
-                {renderButton('secondary', locale)}
+                {renderButton('Normal', locale)}
+                {renderButton('Primary', locale)}
+                {renderButton('Secondary', locale)}
             </Demo>
             <Demo title={locale.textMenuButton}>
-                {renderButton('normal', locale, { text: true })}
-                {renderButton('primary', locale, { text: true })}
+                {renderButton('Normal', locale, { text: true })}
+                {renderButton('Primary', locale, { text: true })}
             </Demo>
             <Demo title={locale.ghostMenuButton}>
-                {renderButton('normal', locale, { ghost: 'light' })}
-                {renderButton('normal', locale, { ghost: 'dark' })}
+                {renderButton('Normal', locale, { ghost: 'light' })}
+                {renderButton('Normal', locale, { ghost: 'dark' })}
             </Demo>
         </div></ConfigProvider>
     ), document.getElementById('container'));

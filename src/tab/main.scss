@@ -6,7 +6,10 @@
 @import "scss/placeholder";
 
 #{$tab-prefix} {
-    @include box-sizing;
+    & {
+        @include box-sizing;
+        width: 100%;
+    }
 
     &-bar {
         outline: none;
@@ -157,6 +160,7 @@
     /* ----------------- */
     &-pure > #{$tab-prefix}-bar {
         border-bottom: $tab-pure-divider-line;
+        background-color: $tab-pure-bg-color;
 
         #{$tab-prefix}-nav-container {
             margin-bottom: -$tab-pure-divider-line-width;

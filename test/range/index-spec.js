@@ -173,7 +173,7 @@ describe('Range ', () => {
         </Range>);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
-        RangeInstance._onMouseDown({pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
+        RangeInstance._onMouseDown({button: 0, pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
         RangeInstance._move({pageX: 20, stopPropagation: () => {}, preventDefault: () => {}});
         RangeInstance._end();
 
@@ -204,14 +204,14 @@ describe('Range ', () => {
         </Range>);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
-        RangeInstance._onMouseDown({pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
+        RangeInstance._onMouseDown({button: 0, pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
         RangeInstance._move({pageX: 30, stopPropagation: () => {}, preventDefault: () => {}});
         RangeInstance._end();
 
         assert(changeValue[0] === 20);
         assert(changeValue[1] === 30);
 
-        RangeInstance._onMouseDown({pageX: 30, stopPropagation: () => {}, preventDefault: () => {} });
+        RangeInstance._onMouseDown({button: 0, pageX: 30, stopPropagation: () => {}, preventDefault: () => {} });
         RangeInstance._move({pageX: 0, stopPropagation: () => {}, preventDefault: () => {}});
         RangeInstance._end();
 
@@ -275,7 +275,7 @@ describe('Range ', () => {
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
 
-        RangeInstance._onMouseDown({pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
+        RangeInstance._onMouseDown({button: 0, pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
         assert(RangeInstance.dom.querySelector('.next-range-active') !== null);
     });
 
@@ -293,7 +293,7 @@ describe('Range ', () => {
 
         assert(document.querySelector('.next-balloon-tooltip') === null);
         // wrapper.find('.next-range-frag').simulate('mousedown');
-        ReactTestUtils.Simulate.mouseDown(document.querySelectorAll('.next-range-frag')[0]);
+        ReactTestUtils.Simulate.mouseDown(document.querySelectorAll('.next-range-frag')[0], {button: 0});
         assert(document.querySelector('.next-balloon-tooltip') !== null);
         simulateEvent.simulate(document, 'mouseup');
 

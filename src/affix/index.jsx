@@ -50,6 +50,7 @@ class Affix extends React.Component {
 
     componentDidMount() {
         const { container } = this.props;
+        this._updateNodePosition();
         // wait for parent rendered
         this.timeout = setTimeout(() => {
             this._setEventHandlerForContainer(container);
@@ -87,6 +88,9 @@ class Affix extends React.Component {
         const { container } = this.props;
         const affixContainer = container();
 
+        if (!affixContainer) {
+            return false;
+        }
         const containerScrollTop = getScroll(affixContainer, true);    // 容器在垂直位置上的滚动 offset
         const affixOffset = this._getOffset(this.affixNode, affixContainer); // 目标节点当前相对于容器的 offset
         const containerHeight = getNodeHeight(affixContainer);         // 容器的高度
