@@ -6,7 +6,7 @@ import { func, obj, KEYCODE } from '../util';
 import Input from '../input';
 import Base from './base';
 
-const { bindCtx, makeChain, noop } = func;
+const { bindCtx, noop } = func;
 
 /**
  * Select.AutoComplete
@@ -264,7 +264,7 @@ class AutoComplete extends Base {
      * @param {object} props
      */
     renderSelect(props = this.props) {
-        const { placeholder, size, prefix, className, style, label, readOnly, disabled, onKeyDown, highlightHolder, locale, hasClear, state } = props;
+        const { placeholder, size, prefix, className, style, label, readOnly, disabled, highlightHolder, locale, hasClear, state } = props;
         const others = obj.pickOthers(AutoComplete.propTypes, props);
         const othersData = obj.pickAttrsWith(others, 'data-');
 

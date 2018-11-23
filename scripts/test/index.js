@@ -1,52 +1,102 @@
-const cp = require('child_process');
+const fs = require('fs-extra');
 const { join } = require('path');
 const { Server } = require('karma');
+const Mocha = require('mocha');
+const co = require('co');
+const inquirer = require('inquirer');
 const { logger, checkComponentName } = require('../utils');
 
-const componentName = checkComponentName(true);
 let server = null;
+let failedNum = 0, successNum = 0;
 
+const componentName = checkComponentName(true);
 const config = {
     configFile: join(__dirname, 'karma.js'),
     component: componentName,
     runAll: false
 };
 
-if (componentName === 'all') {
-    logger.info('Now run all components tests. (You can test one compoent by: npm run test -- number-picker');
-}
-
 const coreTest = (cb) => {
-    const worker = cp.spawn('mocha', [ join('test', 'core'), '--inline-diffs' ]);
-    worker.stdout.on('data', data => {
-        logger.info(data.toString());
-    });
+    const mocha = new Mocha();
+    mocha.addFile(join('test', 'core'));
 
-    worker.stderr.on('data', data => {
-        logger.warn(data.toString());
-    });
-
-    worker.on('close', code => {
-        typeof cb === 'function' && cb(code);
+    mocha.run(failures => {
+        failedNum += failures;
+        typeof cb === 'function' && cb();
     });
 };
+
+const runRest = components => {
+    if (components && components.length > 0) {
+        const com = components.shift();
+        if (com === 'core') {
+            coreTest(() => {
+                runRest(components);
+            });
+            return;
+        }
+        config.component = com;
+        config.runAll = true;
+
+        server = new Server(config, () => {
+            server = null;
+        });
+        server.start();
+
+        server.on('run_complete', (brower, result) => {
+            const {error, failed, success, exitCode}  = result;
+            failedNum += failed;
+            successNum += success;
+            if (error) {
+                process.exit(exitCode);
+            } else {
+                runRest(components);
+            }
+        });
+    } else if (failedNum) {
+        logger.error(`TOTAL: ${failedNum} FAILED, ${successNum} SUCCESS`);
+        process.exit(1);
+    } else {
+        logger.success('Run all successfully!');
+        process.exit(0);
+    }
+
+};
+
+const runAllTest = () => {
+    const components = fs.readdirSync(join(process.cwd(), 'test'));
+    runRest(components);
+};
+
 
 switch (componentName) {
     case 'core':
         coreTest();
         break;
     case 'all':
-        config.runAll = true;
-        server = new Server(config);
+        co(function* () {
+            if (process.env.TRAVIS) {
+                runAllTest();
+            } else {
+                const allTest = yield inquirer.prompt([{
+                    name: 'runAllTest',
+                    type: 'list',
+                    choices: ['yes', 'no'],
+                    default: 1,
+                    message: logger.success('This will run ALL components test cases, are you sure to run all?')
+                }]);
 
-        coreTest(() => {
-            server.start();
+                if (allTest.runAllTest === 'no') {
+                    logger.success('quit');
+                    return;
+                } else {
+                    runAllTest();
+                }
+            }
         });
-
         break;
     default:
         server = new Server(config);
         server.start();
         break;
 }
-
