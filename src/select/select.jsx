@@ -441,7 +441,7 @@ class Select extends Base {
         const { highlightKey } = this.state;
 
         // 没有高亮选项 或者 没有可选菜单
-        if(highlightKey === null || !this.dataStore.getMenuDS().length) {
+        if (highlightKey === null || !this.dataStore.getMenuDS().length) {
             return;
         }
 

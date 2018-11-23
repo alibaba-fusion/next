@@ -32,6 +32,7 @@
     "url": "https://github.com/alibaba-fusion/next.git"
   },
   "scripts": {
+    "report-coverage": "codecov",
     "dev": "node ./scripts/server/index.js",
     "build": "node ./scripts/build/index.js",
     "check": "node ./scripts/check/index.js",
@@ -39,7 +40,7 @@
     "api": "node ./scripts/api.js",
     "pack": "node ./scripts/pack.js",
     "release": "node ./scripts/release/index.js",
-    "test": "node --max_old_space_size=4096 ./scripts/test/index.js",
+    "test": "node --max_old_space_size=8192 ./scripts/test/index.js",
     "order-var": "node ./scripts/order-var.js",
     "eslint": "eslint --fix '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
@@ -86,6 +87,7 @@
     "chokidar": "^2.0.4",
     "chrome-launcher": "^0.10.2",
     "co": "^4.6.0",
+    "inquirer": "^6.1.0",
     "console-polyfill": "^0.3.0",
     "conventional-changelog": "^2.0.1",
     "css-loader": "^0.28.7",
