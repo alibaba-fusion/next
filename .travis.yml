@@ -1,0 +1,19 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - 8
+
+install:
+  - npm install
+  - npm install -g codecov
+
+before_script:
+  - npm i -g npm
+
+script:
+  - npm run eslint
+  - npm run stylelint
+  - npm test
+  - codecov

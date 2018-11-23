@@ -22,8 +22,8 @@ describe('Range ', () => {
     });
 
     it('defaultValue', () => {
-        const wrapperSingle = mount(<Range defaultValue={10}></Range>);
-        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]}></Range>);
+        const wrapperSingle = mount(<Range defaultValue={10} />);
+        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} />);
 
         assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {width: '10%', left: '0%'});
         assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {width: '20%', left: '10%'});
@@ -38,8 +38,8 @@ describe('Range ', () => {
 
     });
     it('value', () => {
-        const wrapperSingle = mount(<Range value={10}></Range>);
-        const wrapperDouble = mount(<Range value={[10, 30]}></Range>);
+        const wrapperSingle = mount(<Range value={10} />);
+        const wrapperDouble = mount(<Range value={[10, 30]} />);
 
         assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {width: '10%', left: '0%'});
         assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {width: '20%', left: '10%'});
@@ -54,29 +54,20 @@ describe('Range ', () => {
     });
     it('min max', () => {
 
-        const wrapper = mount(<Range min={10} value={20} max={30}
-        >
-
-        </Range>);
+        const wrapper = mount(<Range min={10} value={20} max={30} />);
         assert.deepEqual(wrapper.find('.next-range-selected').props().style, {width: '50%', left: '0%'});
 
     });
     it('disabled', () => {
 
-        const wrapper = mount(<Range disabled value={20}
-        >
-
-        </Range>);
+        const wrapper = mount(<Range disabled value={20} />);
         assert(wrapper.find('.next-range.disabled').length === 1);
 
     });
     it('step', () => {
 
-        const wrapper1 = mount(<Range value={20} step={10}
-        ></Range>);
-        const wrapper2 = mount(<Range min={0} max={1} step={0.01}
-                    >
-        </Range>);
+        const wrapper1 = mount(<Range value={20} step={10} />);
+        const wrapper2 = mount(<Range min={0} max={1} step={0.01} />);
         wrapper2.find('.next-range').simulate('mousedown', {pageX: 1});
 
         // 这里模拟的pageX 无效
@@ -88,46 +79,35 @@ describe('Range ', () => {
 
     });
 
-    it('hasTip === true and tipRender', (done) => {
+    it('hasTip === true and tipRender', () => {
         const tipRender = sinon.spy();
         const wrapper = mount(<Range value={20} hasTip tipRender={tipRender} />);
-        const RangeInstance = wrapper.find('Range').at(0).instance();
 
         wrapper.find('.next-range-slider').simulate('mouseenter');
 
-        setTimeout(function() {
-            assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
-            assert(tipRender.called);
-            done();
-        }, 100);
+        assert(tipRender.called);
     });
 
     it('hasTip === false', (done) => {
         const wrapper1 = mount(<Range disabled value={20}
-                                   hasTip={false}
-        >
-
-        </Range>);
+            hasTip={false}
+        />);
 
         wrapper1.find('.next-range-slider').simulate('mouseenter');
 
-        setTimeout(function() {
-            assert(document.querySelector('.next-balloon-tooltip') === null);
-            done();
-        }, 0);
+        assert(document.querySelector('.next-balloon-tooltip') === null);
+        done();
     });
     it('marks', () => {
 
         const wrapper = mount(<Range
             defaultValue={30}
             marks={[3, 26, 37, 100]}
-        >
-        </Range>);
+        />);
         const wrapper2 = mount(<Range
             defaultValue={30}
             marks={10}
-        >
-        </Range>);
+        />);
 
         const wrapper3 = mount(<Range defaultValue={26} marks={{0: '0°C', 26: '26°C', 37: '37°C', 100: '100°C'}} />);
 
@@ -168,21 +148,17 @@ describe('Range ', () => {
             }}
             min={0}
             max={100}
-        >
-
-        </Range>);
+        />);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
         RangeInstance._onMouseDown({button: 0, pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
         RangeInstance._move({pageX: 20, stopPropagation: () => {}, preventDefault: () => {}});
         RangeInstance._end();
 
-        setTimeout(function() {
-            assert(processValue === 20);
-            assert(processCall === 1);
-            assert(onChangeCall === 1);
-            done();
-        }, 100);
+        assert(processValue === 20);
+        assert(processCall === 1);
+        assert(onChangeCall === 1);
+        done();
     });
 
     it('exchange upper and lower', (done) => {
@@ -199,9 +175,7 @@ describe('Range ', () => {
             }}
             min={0}
             max={100}
-        >
-
-        </Range>);
+        />);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
         RangeInstance._onMouseDown({button: 0, pageX: 10, stopPropagation: () => {}, preventDefault: () => {} });
@@ -221,8 +195,8 @@ describe('Range ', () => {
     });
 
     it('value bigger max', () => {
-        const wrapperSingle = mount(<Range value={100} max={10} min={1} ></Range>);
-        const wrapperDouble = mount(<Range slider="double" value={[100, 200]} max={10} min={1}></Range>);
+        const wrapperSingle = mount(<Range value={100} max={10} min={1}  />);
+        const wrapperDouble = mount(<Range slider="double" value={[100, 200]} max={10} min={1} />);
 
         assert.deepEqual(wrapperSingle.find('.next-range-slider').props().style, {zIndex: 100, left: '100%'});
         assert.deepEqual(wrapperDouble.find('.next-range-slider').at(0).props().style, {zIndex: 100, left: '100%'});
@@ -230,8 +204,8 @@ describe('Range ', () => {
     });
 
     it('set value === undefined for reset ', () => {
-        const wrapperSingle = mount(<Range value={10} min={2}></Range>);
-        const wrapperDouble = mount(<Range value={[10, 30]}></Range>);
+        const wrapperSingle = mount(<Range value={10} min={2} />);
+        const wrapperDouble = mount(<Range value={[10, 30]} />);
 
         wrapperSingle.setProps({
             value: undefined
@@ -243,21 +217,21 @@ describe('Range ', () => {
         assert.deepEqual(wrapperDouble.find('.next-range-selected').props().style, {width: '0%', left: '0%'});
     });
     it('reverse  ', () => {
-        const wrapperSingle = mount(<Range defaultValue={10} reverse></Range>);
-        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} reverse></Range>);
+        const wrapperSingle = mount(<Range defaultValue={10} reverse />);
+        const wrapperDouble = mount(<Range slider="double" defaultValue={[10, 30]} reverse />);
 
         assert.deepEqual(wrapperSingle.find('.next-range-selected').props().style, {width: '90%', left: '10%'});
         assert(wrapperDouble.find('.next-range-selected').length === 2);
     });
 
     it('fixedWidth ', () => {
-        const wrapperSingle = mount(<Range fixedWidth defaultValue={[20, 40]}></Range>);
+        const wrapperSingle = mount(<Range fixedWidth defaultValue={[20, 40]} />);
 
         assert.deepEqual(wrapperSingle.find('.next-range-frag').props().style, {left: '20%', right: '60%'});
     });
 
     it('fixedWidth no tip', () => {
-        const wrapper = mount(<Range fixedWidth hasTip={false} defaultValue={[20, 40]}></Range>);
+        const wrapper = mount(<Range fixedWidth hasTip={false} defaultValue={[20, 40]} />);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
 
@@ -271,7 +245,7 @@ describe('Range ', () => {
                 marks={[0, 100]}
                 marksPosition="below"
                 fixedWidth
-                defaultValue={[20, 40]}></Range>);
+                defaultValue={[20, 40]} />);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
 
@@ -283,7 +257,7 @@ describe('Range ', () => {
         const wrapper = mount(
             <Range
                 fixedWidth
-                defaultValue={[20, 40]}></Range>);
+                defaultValue={[20, 40]} />);
         let parent = document.createElement('div');
         document.body.appendChild(parent);
 
@@ -312,7 +286,7 @@ describe('Range ', () => {
             <Range
                 tooltipVisible
                 fixedWidth
-                defaultValue={[20, 40]}></Range>);
+                defaultValue={[20, 40]} />);
 
         const RangeInstance = wrapper.find('Range').at(0).instance();
         assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
