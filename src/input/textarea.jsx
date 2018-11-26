@@ -179,7 +179,7 @@ export default class TextArea extends Base {
     }
 
     render() {
-        const {rows, style, className, autoHeight, prefix} = this.props;
+        const {rows, style, className, autoHeight, prefix, rtl} = this.props;
 
         const cls = classNames(this.getClass(), {
             [`${prefix}input-textarea`]: true,
@@ -207,7 +207,7 @@ export default class TextArea extends Base {
             position: 'relative',
         } : style;
 
-        return (<span className={cls} style={wrapStyle} {...dataProps}>
+        return (<span className={cls} style={wrapStyle} dir={rtl? 'rtl': undefined} {...dataProps}>
             <textarea
                 {...others}
                 {...props}
