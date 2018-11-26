@@ -44,10 +44,6 @@ export default class Progress extends Component {
          * 进度条颜色,
          */
         color: PropTypes.string,
-        /**
-         * 背景色
-         */
-        backgroundColor: PropTypes.string,
     };
 
     static defaultProps = {
@@ -59,6 +55,7 @@ export default class Progress extends Component {
         progressive: false,
         hasBorder: false,
         textRender: percent => `${Math.floor(percent)}%`,
+        color: '',
     };
 
     static contextTypes = {
