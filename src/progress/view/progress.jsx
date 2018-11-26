@@ -40,6 +40,14 @@ export default class Progress extends Component {
          * @return {ReactNode} 返回文本节点
          */
         textRender: PropTypes.func,
+        /**
+         * 进度条颜色,
+         */
+        color: PropTypes.string,
+        /**
+         * 背景色
+         */
+        backgroundColor: PropTypes.string,
     };
 
     static defaultProps = {
