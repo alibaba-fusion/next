@@ -20,6 +20,7 @@ const menu = (
 
 describe('Dropdown', () => {
     it('should render by defaultVisible', () => {
+        const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
         let triggered = false;
         let show = false;
         const handleVisible = (visible, triggerType) => {
@@ -39,23 +40,25 @@ describe('Dropdown', () => {
             </Dropdown>
         );
 
-        assert(document.querySelector('.next-overlay-wrapper') === null);
+
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
 
         wrapper.find('.trigger').simulate('click');
         assert(triggered);
-        assert(document.querySelector('.next-overlay-wrapper') !== null);
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
         triggered = false;
 
         const item = document.querySelector('.next-menu-item');
         ReactTestUtils.Simulate.click(item);
         assert(triggered);
-        assert(document.querySelector('.next-overlay-wrapper') === null);
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
         triggered = false;
 
         wrapper.unmount();
     });
 
     it('should render by visible', () => {
+        const initialLen = document.querySelectorAll('.next-overlay-wrapper').length;
         let triggered = false;
         let show = false;
         const handleVisible = (visible, triggerType) => {
@@ -67,7 +70,7 @@ describe('Dropdown', () => {
             }
             wrapper.setProps({
                 visible
-            })
+            });
             show = visible;
             triggered = true;
         };
@@ -77,17 +80,17 @@ describe('Dropdown', () => {
                 {menu}
             </Dropdown>
         );
-        assert(document.querySelector('.next-overlay-wrapper') === null);
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
 
         wrapper.find('.trigger').simulate('click');
         assert(triggered);
-        assert(document.querySelector('.next-overlay-wrapper') !== null);
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen + 1);
         triggered = false;
 
         const item = document.querySelector('.next-menu-item');
         ReactTestUtils.Simulate.click(item);
         assert(triggered);
-        assert(document.querySelector('.next-overlay-wrapper') === null);
+        assert(document.querySelectorAll('.next-overlay-wrapper').length === initialLen);
         triggered = false;
 
         wrapper.unmount();
@@ -97,7 +100,7 @@ describe('Dropdown', () => {
         let triggered = false;
         const handleClick = () => {
             triggered = true;
-        }
+        };
 
         const wrapper = mount(
             <Dropdown defaultVisible trigger={<a className="trigger">Hello dropdown</a>} animation={false}>

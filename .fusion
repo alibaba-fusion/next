@@ -1,6 +1,6 @@
 {
   "engine": "sass",
-  "publish-template": "@alifd/next-theme-template@0.2.0",
+  "publish-template": "@alifd/next-theme-template@0.2.x",
   "class-prefix": ".next",
   "icon": {
     "iconfont-project-id": "544230",

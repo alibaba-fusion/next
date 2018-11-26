@@ -6,6 +6,8 @@
 
 [![npm package](https://img.shields.io/npm/v/@alifd/next.svg?style=flat-square)](https://www.npmjs.org/package/@alifd/next)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Build Status](https://travis-ci.com/alibaba-fusion/next.svg?token=KAYresHL1UPaaLzUYyx6&branch=master)](https://travis-ci.com/alibaba-fusion/next)
+[![codecov](https://codecov.io/gh/alibaba-fusion/next/branch/master/graph/badge.svg?token=FSufKVDhmT)](https://codecov.io/gh/alibaba-fusion/next)
 
 -   [Quick Start](./site/en-us/quick-start.md)
 -   [Use with Theme Package](./site/en-us/theme.md)
