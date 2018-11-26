@@ -19,11 +19,13 @@ export default class CascaderMenu extends Component {
     scrollToSelectedItem () {
         const { prefix, useVirtual, children } = this.props;
         if (useVirtual) {
-            if (!children || children.length === 0) return;
+            if (!children || children.length === 0) {
+                return;
+            }
             const selectedIndex = children.findIndex(item => !!item.props.selected);
             if (selectedIndex !== -1) {
                 const instance = this.refs.virtual.getInstance();
-                instance.scrollTo(selectedIndex);
+                setTimeout(() => instance.scrollTo(selectedIndex), 0);
             }
         } else {
             const itemSelector = `.${prefix}menu-item`;
