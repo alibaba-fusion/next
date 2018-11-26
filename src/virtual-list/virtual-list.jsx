@@ -43,6 +43,14 @@ export default class VirtualList extends Component {
          * 缓冲区高度
          */
         threshold: PropTypes.number,
+        /**
+         * 获取item高度的函数
+         */
+        itemSizeGetter: PropTypes.func,
+        /**
+         * 设置跳转位置，需要设置 itemSizeGetter 才能生效
+         */
+        jumpIndex: PropTypes.number,
         className: PropTypes.string
     };
 
@@ -51,32 +59,47 @@ export default class VirtualList extends Component {
         itemsRenderer: (items, ref) => <ul ref={ref}>{items}</ul>,
         minSize: 1,
         pageSize: 10,
+        jumpIndex: 0,
         threshold: 100
     };
 
     constructor(props) {
         super(props);
-        const {from, size} = this.constrain(0, 0, props);
-        this.state = {from, size};
+        const { jumpIndex } = props;
+        const { from, size } = this.constrain(jumpIndex, 0, props);
+        this.state = { from, size};
         this.cache = {};
+        this.scrollTo = this.scrollTo.bind(this);
         this.cachedScroll = null;
         this.unstable = false;
         this.updateCounter = 0;
     }
 
     componentDidMount() {
+        const { jumpIndex } = this.props;
+
         this.updateFrameAndClearCache = this.updateFrameAndClearCache.bind(this);
 
         events.on(window, 'resize', this.updateFrameAndClearCache);
-        this.updateFrame(this.scrollTo.bind(this, 0));
+
+        this.updateFrame(this.scrollTo.bind(this, jumpIndex));
     }
 
     componentWillReceiveProps(next) {
         const {from, size} = this.state;
+
+        const oldIndex = this.props.jumpIndex;
+        const newIndex = next.jumpIndex;
+
+        if (oldIndex !== newIndex) {
+            this.updateFrame(this.scrollTo.bind(this, newIndex));
+        }
+
         this.maybeSetState(this.constrain(from, size, next), NOOP);
     }
 
     componentDidUpdate() {
+
         // If the list has reached an unstable state, prevent an infinite loop.
         if (this.unstable) {
             return;
@@ -232,7 +255,9 @@ export default class VirtualList extends Component {
     }
 
     updateVariableFrame(cb) {
-        this.cacheSizes();
+        if (!this.props.itemSizeGetter) {
+            this.cacheSizes();
+        }
 
         const {start, end} = this.getStartAndEnd();
         const {pageSize, children} = this.props;
@@ -312,10 +337,14 @@ export default class VirtualList extends Component {
     }
 
     getSizeOf(index) {
-        const {cache} = this;
+        const { cache } = this;
+        const { itemSizeGetter } = this.props;
         // Try the cache.
         if (index in cache) {
             return cache[index];
+        }
+        if (itemSizeGetter) {
+            return itemSizeGetter(index);
         }
     }
 
