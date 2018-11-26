@@ -11,6 +11,7 @@ export default class Line extends React.PureComponent {
         progressive: PropTypes.bool,
         hasBorder: PropTypes.bool,
         textRender: PropTypes.func,
+        color: PropTypes.string,
     };
 
     render() {

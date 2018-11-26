@@ -110,9 +110,7 @@
 
         &-underlay {
             stroke-width: $progress-circle-underlay-width;
-            &-normal {
-                stroke: $progress-circle-underlay-color;
-            }
+            stroke: $progress-circle-underlay-color;
         }
 
         &-overlay {
