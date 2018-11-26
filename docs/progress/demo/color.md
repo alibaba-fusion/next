@@ -5,7 +5,7 @@
 通过 `color` 属性可以改变进度条的颜色, 而且优先级: color > progressive >  state。
 
 :::lang=en-us
-# Progress circle
+# Color
 
 - order: 5
 
