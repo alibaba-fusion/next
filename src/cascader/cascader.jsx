@@ -60,6 +60,10 @@ export default class Cascader extends Component {
          */
         onExpand: PropTypes.func,
         /**
+         * 是否开启虚拟滚动
+         */
+        useVirtual: PropTypes.bool,
+        /**
          * 是否多选
          */
         multiple: PropTypes.bool,
@@ -110,6 +114,7 @@ export default class Cascader extends Component {
         canOnlyCheckLeaf: false,
         expandTriggerType: 'click',
         multiple: false,
+        useVirtual: false,
         checkStrictly: false,
         itemRender: item => item.label
     };
@@ -191,7 +196,7 @@ export default class Cascader extends Component {
         if (!this.cascaderInner) {
             return;
         }
-        const menus = [].slice.call(this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu`));
+        const menus = [].slice.call(this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu-wrapper`));
         if (menus.length === 0) {
             return;
         }
@@ -553,12 +558,12 @@ export default class Cascader extends Component {
     }
 
     renderMenu(data, level) {
-        const { prefix, multiple, checkStrictly, expandTriggerType, loadData,
+        const { prefix, multiple, useVirtual, checkStrictly, expandTriggerType, loadData,
             canOnlyCheckLeaf, listClassName, listStyle, itemRender } = this.props;
         const { value, expandedValue, focusedValue } = this.state;
 
         return (
-            <CascaderMenu key={level} prefix={prefix} className={listClassName} style={listStyle} focusedKey={focusedValue} onItemFocus={this.handleFocus}>
+            <CascaderMenu key={level} prefix={prefix} useVirtual={useVirtual} className={listClassName} style={listStyle} focusedKey={focusedValue} onItemFocus={this.handleFocus}>
                 {data.map(item => {
                     const disabled = !!item.disabled;
                     const canExpand = (!!item.children && !!item.children.length) || (!!loadData && !item.isLeaf);
