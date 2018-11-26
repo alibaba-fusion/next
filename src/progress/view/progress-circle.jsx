@@ -16,7 +16,8 @@ export default class Circle extends Component {
         progressive: PropTypes.bool,
         textRender: PropTypes.func,
         prefix: PropTypes.string,
-        className: PropTypes.string
+        className: PropTypes.string,
+        color: PropTypes.string,
     };
 
     constructor(props) {
@@ -91,21 +92,16 @@ export default class Circle extends Component {
 
         const pathCls = classNames({
             [`${prefix}progress-circle-overlay`]: true,
-            // [`${prefix}progress-circle-overlay-${state}`]: !progressive && state,
-            // [`${prefix}progress-circle-overlay-started`]: progressive && percent <= 30,
-            // [`${prefix}progress-circle-overlay-middle`]: progressive && percent > 30 && percent < 80,
-            // [`${prefix}progress-circle-overlay-finishing`]: progressive && percent >= 80,
-        });
-
-        const underlayCls = classNames({
-            [`${prefix}progress-circle-underlay`]: true,
-            [`${prefix}progress-circle-underlay-normal`]: false,
+            [`${prefix}progress-circle-overlay-${state}`]: !color && !progressive && state,
+            [`${prefix}progress-circle-overlay-started`]: !color && progressive && percent <= 30,
+            [`${prefix}progress-circle-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
+            [`${prefix}progress-circle-overlay-finishing`]: !color && progressive && percent >= 80,
         });
 
         return (
             <div {...others} className={wrapCls}>
                 <svg className={`${prefix}progress-circle-container`} viewBox={viewBox}>
-                    <path className={underlayCls} d={underlayPath} fillOpacity="0" ref={this._underlayRefHandler} stroke="green"/>
+                    <path className={`${prefix}progress-circle-underlay`} d={underlayPath} fillOpacity="0" ref={this._underlayRefHandler} />
                     <path
                         className={pathCls}
                         d={overlayPath}
@@ -113,7 +109,7 @@ export default class Circle extends Component {
                         strokeDasharray={overlayStrokeDasharray}
                         strokeDashoffset={overlayStrokeDashoffset}
                         ref={this._overlayRefHandler}
-                        stroke="red"
+                        stroke={color}
                         />
                 </svg>
                 {suffixText ? <div className={`${prefix}progress-circle-text`}>{suffixText}</div> : null}
