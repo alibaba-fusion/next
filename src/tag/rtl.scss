@@ -1,13 +1,5 @@
-@charset "UTF-8";
-@import "../core/index-noreset.scss";
-@import "./scss/animation.scss";
-@import "./scss/mixin.scss";
-@import "./scss/placeholder.scss";
-@import "./scss/variable.scss";
-@import "./rtl.scss";
-
 .#{$css-prefix} {
-    &tag-group {
+    &tag-group[dir="rtl"] {
         .#{$css-prefix}tag-medium,
         .#{$css-prefix}tag-large {
             @include tag-group-margin($tag-size-m-margin);
@@ -18,7 +10,7 @@
         }
     }
 
-    &tag {
+    &tag[dir="rtl"] {
         @include box-sizing();
         display: inline-block;
         max-width: 100%;
