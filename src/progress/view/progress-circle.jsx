@@ -91,23 +91,30 @@ export default class Circle extends Component {
 
         const pathCls = classNames({
             [`${prefix}progress-circle-overlay`]: true,
-            [`${prefix}progress-circle-overlay-${state}`]: !progressive && state,
-            [`${prefix}progress-circle-overlay-started`]: progressive && percent <= 30,
-            [`${prefix}progress-circle-overlay-middle`]: progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-circle-overlay-finishing`]: progressive && percent >= 80,
+            // [`${prefix}progress-circle-overlay-${state}`]: !progressive && state,
+            // [`${prefix}progress-circle-overlay-started`]: progressive && percent <= 30,
+            // [`${prefix}progress-circle-overlay-middle`]: progressive && percent > 30 && percent < 80,
+            // [`${prefix}progress-circle-overlay-finishing`]: progressive && percent >= 80,
+        });
+
+        const underlayCls = classNames({
+            [`${prefix}progress-circle-underlay`]: true,
+            [`${prefix}progress-circle-underlay-normal`]: false,
         });
 
         return (
             <div {...others} className={wrapCls}>
                 <svg className={`${prefix}progress-circle-container`} viewBox={viewBox}>
-                    <path className={`${prefix}progress-circle-underlay`} d={underlayPath} fillOpacity="0" ref={this._underlayRefHandler} />
+                    <path className={underlayCls} d={underlayPath} fillOpacity="0" ref={this._underlayRefHandler} stroke="green"/>
                     <path
                         className={pathCls}
                         d={overlayPath}
                         fillOpacity="0"
                         strokeDasharray={overlayStrokeDasharray}
                         strokeDashoffset={overlayStrokeDashoffset}
-                        ref={this._overlayRefHandler} />
+                        ref={this._overlayRefHandler}
+                        stroke="red"
+                        />
                 </svg>
                 {suffixText ? <div className={`${prefix}progress-circle-text`}>{suffixText}</div> : null}
             </div>
