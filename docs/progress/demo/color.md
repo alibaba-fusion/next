@@ -1,13 +1,13 @@
 # 颜色
 
-- order: 1
+- order: 5
 
 通过 `color` 属性可以改变进度条的颜色, 而且优先级: color > progressive >  state。
 
 :::lang=en-us
 # Progress circle
 
-- order: 1
+- order: 5
 
 Use `color` prop to controll progress bar color. priority: color > progressive >  state.
 
