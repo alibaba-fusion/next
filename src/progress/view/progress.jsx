@@ -23,11 +23,11 @@ export default class Progress extends Component {
          */
         percent: PropTypes.number,
         /**
-         * 进度状态
+         * 进度状态, 显示优先级: color > progressive > state
          */
         state: PropTypes.oneOf(['normal', 'success', 'error']),
         /**
-         * 是否为色彩阶段变化模式
+         * 是否为色彩阶段变化模式, 显示优先级: color > progressive > state
          */
         progressive: PropTypes.bool,
         /**
@@ -41,7 +41,7 @@ export default class Progress extends Component {
          */
         textRender: PropTypes.func,
         /**
-         * 进度条颜色,
+         * 进度条颜色, 显示优先级: color > progressive > state
          */
         color: PropTypes.string,
         /**
