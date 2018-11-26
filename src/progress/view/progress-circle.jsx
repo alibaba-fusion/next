@@ -67,7 +67,7 @@ export default class Circle extends Component {
     }
 
     render() {
-        const { prefix, size, state, percent, className, textRender, progressive, ...others } = this.props;
+        const { prefix, size, state, percent, className, textRender, progressive, color, ...others } = this.props;
         const { underlayStrokeWidth, overlayStrokeWidth } = this.state;
 
         // underlay path
