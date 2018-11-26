@@ -27,7 +27,8 @@ If a task will take long time to complete, it could be use a `Progress` to show 
 | size        | Size <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                | Enum     | 'medium'                 |
 | shape       | Shape <br><br>**option**:<br>'circle', 'line'                                                                                                          | Enum     | 'line'                   |
 | percent     | Current percente of progress | Number   | 0                        |
-| state       | State of progress <br><br>**option**:<br>'normal', 'success', 'error'   | Enum     | 'normal'                 |
-| progressive | Progressive mode (with dynamic color) | Boolean  | false                    |
+| state       | State of progress, priority: color > progressive > state <br><br>**option**:<br>'normal', 'success', 'error'   | Enum     | 'normal'                 |
+| progressive | Progressive mode (with dynamic color), priority: color > progressive > state | Boolean  | false                    |
 | hasBorder   | Has border for progress line  | Boolean  | false                    |
 | textRender  | Text render <br><br>**signature**:<br>Function(percent: Number) => ReactNode<br>**parameter**:<br>_percent_: {Number} current percent<br>**return**:<br>{ReactNode} text node<br> | Function | percent => `${Math.floor(percent)}%` |
+| color       | progressbar color, priority: color > progressive > state                                                                                                       | String   | ''                                   |
