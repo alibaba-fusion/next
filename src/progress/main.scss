@@ -109,8 +109,10 @@
         display: inline-block;
 
         &-underlay {
-            stroke: $progress-circle-underlay-color;
             stroke-width: $progress-circle-underlay-width;
+            &-normal {
+                stroke: $progress-circle-underlay-color;
+            }
         }
 
         &-overlay {
