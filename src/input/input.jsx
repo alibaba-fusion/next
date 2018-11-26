@@ -207,7 +207,7 @@ export default class Input extends Base {
     }
 
     render() {
-        const {size, htmlType, htmlSize, autoComplete, autoFocus, disabled, style, innerBefore, innerAfter, innerBeforeClassName, innerAfterClassName, className, hasBorder, prefix, addonBefore, addonAfter, addonTextBefore, addonTextAfter, inputRender} = this.props;
+        const {size, htmlType, htmlSize, autoComplete, autoFocus, disabled, style, innerBefore, innerAfter, innerBeforeClassName, innerAfterClassName, className, hasBorder, prefix, addonBefore, addonAfter, addonTextBefore, addonTextAfter, inputRender, rtl} = this.props;
 
         const hasAddon = addonBefore || addonAfter || addonTextBefore || addonTextAfter;
         const cls = classNames(this.getClass(), {
@@ -250,7 +250,7 @@ export default class Input extends Base {
             ref={this.saveRef}
         />);
 
-        const inputWrap = (<span {...dataProps} className={cls} style={hasAddon ? undefined : style}>
+        const inputWrap = (<span {...dataProps} dir={rtl? 'rtl': undefined} className={cls} style={hasAddon ? undefined : style}>
             {this.renderInner(innerBefore, innerBeforeCls)}
             {this.renderLabel()}
             {inputRender(inputEl)}

@@ -264,7 +264,7 @@ class AutoComplete extends Base {
      * @param {object} props
      */
     renderSelect(props = this.props) {
-        const { placeholder, size, prefix, className, style, label, readOnly, disabled, onKeyDown, highlightHolder, locale, hasClear, state } = props;
+        const { placeholder, size, prefix, className, style, label, readOnly, disabled, onKeyDown, highlightHolder, locale, hasClear, state, rtl } = props;
         const others = obj.pickOthers(AutoComplete.propTypes, props);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
@@ -316,6 +316,7 @@ class AutoComplete extends Base {
             <span {...othersData}
                 className={triggerClazz}
                 style={style}
+                dir={rtl? 'rtl': undefined}
                 ref={this.saveSelectRef}
                 onClick={this.focusInput}>
                 <Input
