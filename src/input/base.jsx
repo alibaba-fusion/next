@@ -137,7 +137,8 @@ class Base extends React.Component {
             });
         }
 
-        if (this.props.htmlType === 'number') {
+        // Number('') = 0
+        if (value && this.props.htmlType === 'number') {
             value = Number(value);
         }
 
