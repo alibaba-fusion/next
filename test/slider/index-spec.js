@@ -234,7 +234,7 @@ describe('slider', function() {
             wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
             clock.tick(100);
             assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
-            wrapper.find('.next-slick-arrow .next-slick-next').simulate('click');
+            wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
             clock.tick(300);
             assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
             wrapper.find('.next-slick-prev').simulate('click');
@@ -243,13 +243,13 @@ describe('slider', function() {
         it('should hover next/prev arrow', () => {
             wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
 
-            wrapper.find('.next-slick-arrow .next-slick-next').simulate('mouseEnter');
+            wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
             clock.tick(300);
-            wrapper.find('.next-slick-arrow .next-slick-next').simulate('mouseLeave');
+            wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseLeave');
 
-            wrapper.find('.next-slick-arrow .next-slick-prev').simulate('mouseEnter');
+            wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseEnter');
             clock.tick(300);
-            wrapper.find('.next-slick-arrow .next-slick-prev').simulate('mouseLeave');
+            wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
 
             assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
         });
@@ -272,7 +272,7 @@ describe('slider', function() {
             }
 
             wrapper = mount(<Slider {...settings}>{slides}</Slider>);
-            wrapper.find('.next-slick-arrow .next-slick-next').simulate('click');
+            wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
         });
     });
 });
