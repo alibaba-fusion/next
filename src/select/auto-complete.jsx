@@ -26,6 +26,7 @@ class AutoComplete extends Base {
          * Select发生改变时触发的回调
          * @param {*} value 选中的值
          * @param {String} actionType 触发的方式, 'itemClick', 'enter', 'change'
+         * @param {*} item 选中的值的对象数据
          */
         onChange: PropTypes.func,
         /**
@@ -145,10 +146,10 @@ class AutoComplete extends Base {
             this.setVisible(false, triggerType);
         }
 
-        this.handleChange(value, triggerType);
+        this.handleChange(value, triggerType, item);
     }
 
-    handleChange = (value, proxy) => {
+    handleChange = (value, proxy, item) => {
         const { disabled, readOnly, filterLocal } = this.props;
 
         if (disabled || readOnly) {
@@ -175,7 +176,7 @@ class AutoComplete extends Base {
             });
         }
 
-        this.props.onChange(value, actionType);
+        this.props.onChange(value, actionType, item);
 
         if (actionType === 'itemClick' || actionType === 'enter') {
             // 点击 item 的时候不会触发关闭，需要手动关闭，其它类型比如 keyDown 等都会有其它事件句柄处理

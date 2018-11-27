@@ -305,6 +305,38 @@ describe('Select', () => {
         wrapper.find('i.next-icon-delete-filling').simulate('click');
     });
 
+    it('should support onChange with mode=single ', (done) => {
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
+        wrapper.setProps({
+            dataSource,
+            visible: true,
+            onChange:(v, e, item) => {
+                assert(v === 1)
+                assert(item.value === 1)
+                done();
+            }
+        });
+
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
+    });
+
+    it('should support onChange with mode=multiple ', (done) => {
+        const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
+        wrapper.setProps({
+            dataSource,
+            mode:'multiple',
+            visible: true,
+            onChange:(v, e, item) => {
+                assert(v.length === 1)
+                assert(item.length === 1);
+                done();
+            }
+        });
+
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
+
+    });
+
     it('should support useDetailValue onChange with mode=single ', (done) => {
         const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: false }];
         wrapper.setProps({
