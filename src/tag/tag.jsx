@@ -45,7 +45,8 @@ class Tag extends Component {
          */
         onClick: PropTypes.func,
         _shape: PropTypes.oneOf(['default', 'closable', 'checkable']),
-        disabled: PropTypes.bool
+        disabled: PropTypes.bool,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -59,7 +60,8 @@ class Tag extends Component {
         afterAppear: noop,
         onClick: noop,
         _shape: 'default',
-        disabled: false
+        disabled: false,
+        rtl: false,
     };
 
     constructor(props) {
@@ -188,7 +190,8 @@ class Tag extends Component {
             className,
             children,
             animation,
-            disabled
+            disabled,
+            rtl
         } = this.props;
         const { visible } = this.state;
         const others = obj.pickOthers(Tag.propTypes, this.props);
@@ -206,13 +209,11 @@ class Tag extends Component {
             },
             className
         );
-
         // close btn
         const tailNode = this.renderTailNode();
         // tag node
         const tagNode = !visible ? null : (
             <div
-                ref={n => (this.tagNode = n)}
                 className={bodyClazz}
                 onClick={this.handleBodyClick}
                 onKeyDown={this.onKeyDown}
@@ -220,6 +221,8 @@ class Tag extends Component {
                 role="button"
                 aria-disabled={disabled}
                 disabled={disabled}
+                dir={rtl ? 'rtl' : undefined }
+                ref={n => (this.tagNode = n)}
                 {...others}
             >
                 <span className={`${prefix}tag-body`}>{children}</span>
