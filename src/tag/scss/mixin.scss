@@ -14,7 +14,6 @@
     $paddingLr,
     $fontSize,
     $iconSize,
-    $rtl
 ) {
     height: $height;
     padding: 0;
@@ -29,28 +28,26 @@
     }
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
-        @if $rtl == 'rtl' {
-            padding: 0 0 0 $paddingLr;
-            margin-right: $_marginLeft;
-        } @else {
-            padding: 0 $paddingLr 0 0;
-        }
+        padding: 0 0 0 $paddingLr;
+    }
+    &[dir=rtl].#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
+        padding: 0 $paddingLr 0 0;
     }
 
     > .#{$css-prefix}tag-close-btn {
-        @if $rtl == 'rtl' {
-            margin-left: 0;
-            padding-left: $paddingLr;
-            padding-right: 0;
-        } @else {
             margin-left: $_marginLeft;
             padding-right: $paddingLr;
-        }
-
         .#{$css-prefix}icon {
             @include icon-size($iconSize);
         }
     }
+    &[dir=rtl] > .#{$css-prefix}tag-close-btn {
+        margin-right: $_marginLeft;
+        margin-left: 0;
+        padding-right: 0;
+        padding-left: $paddingLr;
+    }
+
 }
 
 @mixin tag-statement(
