@@ -18,4 +18,4 @@
 | itemsRenderer | items parent dom，by default (items, ref) => <ul ref={ref}>{items}</ul><br><br>**signature**:<br>Function() => void | Function | (items, ref) => &lt;ul ref={ref}>{items}&lt;/ul> |
 | threshold     | height of threshold                                                                                     | Number   | 100                                              |
 | itemSizeGetter | get item's height<br><br>**signature**:<br>Function() => void                                          | Function | -                                                |
-| jumpIndex   | set this to jump to the index you want, works only when you set itemSizeGetter                                                          | Number   | 0                                                |
+| jumpIndex   | the index you want to jump to, set itemSizeGetter if the height of items vary                                                      | Number   | 0                                                |
