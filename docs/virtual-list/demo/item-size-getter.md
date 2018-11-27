@@ -1,15 +1,15 @@
-# 设置初始位置
+# 不等高的item
 
-- order: 1
+- order: 2
 
-使用 jumpIndex 设置初始位置
+使用 jumpIndex 设置初始位置, 并设置 itemSizeGetter
 
 :::lang=en-us
 # Basic
 
-- order: 1
+- order: 2
 
-Use jumpIndex to set first item.
+Use jumpIndex and itemSizeGetter to set first item in visual area.
 
 :::
 
@@ -21,7 +21,11 @@ import { VirtualList } from '@alifd/next';
 const dataSource = [];
 
 function generateLi(index) {
-    return (<li key={`key-${index}`}  style={{lineHeight: '20px'}}>key-{index}</li>);
+    if (index % 3 === 0) {
+        return (<li key={`key-${index}`} style={{lineHeight: '30px', background: '#5f83ff', color: '#fff'}}>key-{index}</li>);
+    } else {
+        return (<li key={`key-${index}`}  style={{lineHeight: '20px'}}>key-{index}</li>);
+    }
 }
 function generateData(len) {
     for (let i = 0; i < len; i++) {
@@ -31,14 +35,28 @@ function generateData(len) {
 
 class App extends React.Component  {
     state = {
-        initial: 50,
+        initial: 20,
         dataSource: generateData(1000)
     }
+
+    componentDidMount() {
+        setTimeout(()=> {
+            const instance = this.refs.virtual.getInstance();
+            instance.scrollTo(50);
+        }, 200);
+
+    }
+
+    getHeight(index) {
+        return index % 3 === 0 ? 30 : 20;
+    }
+
     onClick() {
         this.setState({
             initial: this.state.initial + 20
         })
     }
+
     render() {
         return (
             <div>
@@ -46,7 +64,7 @@ class App extends React.Component  {
                 <br/>
                 <br/>
                 <div className={'virtual-box'}>
-                    <VirtualList ref="virtual" jumpIndex={this.state.initial}>
+                    <VirtualList ref="virtual" jumpIndex={this.state.initial} itemSizeGetter={this.getHeight.bind(this)}>
                         {dataSource}
                     </VirtualList>
                 </div>
