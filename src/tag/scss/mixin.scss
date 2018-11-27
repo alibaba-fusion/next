@@ -13,7 +13,8 @@
     $borderWidth,
     $paddingLr,
     $fontSize,
-    $iconSize
+    $iconSize,
+    $rtl
 ) {
     height: $height;
     padding: 0;
@@ -28,12 +29,24 @@
     }
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
-        padding: 0 0 0 $paddingLr;
+        @if $rtl == 'rtl' {
+            padding: 0 0 0 $paddingLr;
+            margin-right: $_marginLeft;
+        } @else {
+            padding: 0 $paddingLr 0 0;
+        }
     }
 
     > .#{$css-prefix}tag-close-btn {
-        margin-left: $_marginLeft;
-        padding-right: $paddingLr;
+        @if $rtl == 'rtl' {
+            margin-left: 0;
+            padding-left: $paddingLr;
+            padding-right: 0;
+        } @else {
+            margin-left: $_marginLeft;
+            padding-right: $paddingLr;
+        }
+
         .#{$css-prefix}icon {
             @include icon-size($iconSize);
         }

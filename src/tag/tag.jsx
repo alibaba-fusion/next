@@ -209,14 +209,12 @@ class Tag extends Component {
             },
             className
         );
-
+        console.log('rtl', rtl);
         // close btn
         const tailNode = this.renderTailNode();
         // tag node
         const tagNode = !visible ? null : (
             <div
-                dir={rtl ? 'rtl' : undefined }
-                ref={n => (this.tagNode = n)}
                 className={bodyClazz}
                 onClick={this.handleBodyClick}
                 onKeyDown={this.onKeyDown}
@@ -224,6 +222,8 @@ class Tag extends Component {
                 role="button"
                 aria-disabled={disabled}
                 disabled={disabled}
+                dir={rtl ? 'rtl' : undefined }
+                ref={n => (this.tagNode = n)}
                 {...others}
             >
                 <span className={`${prefix}tag-body`}>{children}</span>
