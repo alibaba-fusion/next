@@ -110,15 +110,14 @@ export default class Base extends React.Component {
          * 键盘上下键切换菜单高亮选项的回调
          */
         onToggleHighlightItem: PropTypes.func,
-        // 自定义类名
         className: PropTypes.any,
-        // children
         children: PropTypes.any,
         dataSource: PropTypes.array,
         itemRender: PropTypes.func,
         mode: PropTypes.string,
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {

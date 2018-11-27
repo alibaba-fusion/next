@@ -651,7 +651,7 @@ class Select extends Base {
      * @param {object} props
      */
     renderSelect() {
-        const { prefix, showSearch, placeholder, mode, size, className, style, readOnly, disabled, hasBorder, label, locale, state, onBlur, onFocus } = this.props;
+        const { prefix, showSearch, placeholder, mode, size, className, style, readOnly, disabled, hasBorder, label, locale, state, onBlur, onFocus, rtl } = this.props;
         const others = obj.pickOthers(Select.propTypes, this.props);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
@@ -696,6 +696,7 @@ class Select extends Base {
             <span {...othersData}
                 className={triggerClazz}
                 style={style}
+                dir={rtl? 'rtl': undefined}
                 ref={this.saveSelectRef}
                 onClick={this.handleWrapClick}
                 onMouseDown={this.handleWrapClick}
