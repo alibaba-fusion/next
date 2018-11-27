@@ -171,6 +171,7 @@ describe('input', () => {
                     return (
                         <Input ref='input' onFocus={(e) => {
                             assert(this.refs.input.getInstance().getInputNode() !== undefined)
+                            done();
                         }}/>
                     );
                 }
@@ -178,20 +179,25 @@ describe('input', () => {
             let wrapper = mount(<App/>);
 
             wrapper.find('input').simulate('focus');
-
-            done();
         });
 
         it('should support htmlType=number', (done) => {
             let onChange = (value) => {
                 assert(value === 20);
+                done();
             }, wrapper = mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange}/>);
 
             wrapper.find('input').simulate('change', {target: {value: '20'}});
-
-            done();
         });
 
+        it('should support htmlType=number value="" ', (done) => {
+            let onChange = (value) => {
+                assert(value === '');
+                done();
+            }, wrapper = mount(<Input defaultValue="abcdef" htmlType="number" onChange={onChange}/>);
+
+            wrapper.find('input').simulate('change', {target: {value: ''}});
+        });
     });
     describe('react api', () => {
         it('calls componentWillReceiveProps', (done) => {
