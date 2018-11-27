@@ -22,7 +22,7 @@ export default class CascaderMenu extends Component {
             if (!children || children.length === 0) {
                 return;
             }
-            const selectedIndex = children.findIndex(item => !!item.props.selected);
+            const selectedIndex = children.findIndex(item => !!item.props.checked);
             if (selectedIndex !== -1) {
                 const instance = this.refs.virtual.getInstance();
                 setTimeout(() => instance.scrollTo(selectedIndex), 0);
