@@ -221,6 +221,10 @@ class Search extends React.Component {
         }
 
         const othersAttributes = obj.pickOthers(Search.propTypes, others);
+        if (visible !== undefined) {
+            // 受控属性 visible 不能直接写在组件上
+            othersAttributes.visible = Boolean(visible);
+        }
         const dataAttr = obj.pickAttrsWith(others, 'data-');
         const left = (<Group addonBefore={filterSelect}
             className={`${prefix}search-left`}
@@ -237,7 +241,6 @@ class Search extends React.Component {
                 value={this.state.value}
                 onChange={this.onChange}
                 popupContent={popupContent}
-                visible={visible}
             />
         </Group>);
 
