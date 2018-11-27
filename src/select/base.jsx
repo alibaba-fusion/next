@@ -29,12 +29,6 @@ export default class Base extends React.Component {
         // 初始化的默认值
         defaultValue: PropTypes.any, // to be override
         /**
-         * Select发生改变时触发的回调
-         * @param {*} value 选中的值
-         * @param {String} actionType 触发的方式, 'itemClick', 'enter', 'tag'
-         */
-        onChange: PropTypes.func,
-        /**
          * 没有值的时候的占位符
          */
         placeholder: PropTypes.string,
