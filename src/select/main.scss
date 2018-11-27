@@ -267,6 +267,18 @@
         /* transform-origin: center 41.8%; // icon 图像中心 */
     }
 
+    &-menu-wrapper {
+        max-height: 260px;
+        overflow: auto;
+        border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
+        border-radius: $popup-local-corner;
+        box-shadow: $popup-local-shadow;
+        #{$select-prefix}-menu {
+            max-height: none;
+            border: none;
+        }
+    }
+
     /* 弹层 */
     &-menu {
         max-height: 260px;
