@@ -18,19 +18,22 @@ export default class CascaderMenu extends Component {
 
     scrollToSelectedItem () {
         const { prefix, useVirtual, children } = this.props;
+        if (!children || children.length === 0) {
+            return;
+        }
+        const selectedIndex = children.findIndex(item => !!item.props.checked || !!item.props.selected || !!item.props.expanded);
+
+        if (selectedIndex === -1) {
+            return;
+        }
+
         if (useVirtual) {
-            if (!children || children.length === 0) {
-                return;
-            }
-            const selectedIndex = children.findIndex(item => !!item.props.checked);
-            if (selectedIndex !== -1) {
-                const instance = this.refs.virtual.getInstance();
-                setTimeout(() => instance.scrollTo(selectedIndex), 0);
-            }
+            const instance = this.refs.virtual.getInstance();
+            setTimeout(() => instance.scrollTo(selectedIndex), 0);
         } else {
             const itemSelector = `.${prefix}menu-item`;
             const menu = findDOMNode(this.refs.menu);
-            const targetItem = menu.querySelector(`${itemSelector}.${prefix}expanded, ${itemSelector}.${prefix}selected`);
+            const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex];
             if (targetItem) {
                 menu.scrollTop = targetItem.offsetTop - Math.floor((menu.clientHeight / targetItem.clientHeight - 1) / 2) * targetItem.clientHeight;
             }
