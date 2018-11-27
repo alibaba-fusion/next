@@ -32,8 +32,6 @@ const generateLi = (index = 'index') => {
 for (let i = 0; i < 1000; i++) {
     dataSource.push(generateLi(i));
 }
-console.log(dataSource)
-const getHeight = index => index % 3 === 0 ? 20 : 30;
 
 const demo = (
     <div className={'virtual-box'}>

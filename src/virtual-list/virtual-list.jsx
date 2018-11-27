@@ -48,7 +48,7 @@ export default class VirtualList extends Component {
          */
         itemSizeGetter: PropTypes.func,
         /**
-         * 设置跳转位置，需要设置 itemSizeGetter 才能生效
+         * 设置跳转位置，需要设置 itemSizeGetter 才能生效, 不设置认为元素等高并取第一个元素高度作为默认高
          */
         jumpIndex: PropTypes.number,
         className: PropTypes.string
@@ -153,7 +153,7 @@ export default class VirtualList extends Component {
         el = el.parentElement;
 
         switch (window.getComputedStyle(el).overflowY) {
-            case 'auto': case 'scroll': case 'overlay': return el;
+            case 'auto': case 'scroll': case 'overlay': case 'visible': return el;
         }
 
         return window;
@@ -338,13 +338,23 @@ export default class VirtualList extends Component {
 
     getSizeOf(index) {
         const { cache } = this;
-        const { itemSizeGetter } = this.props;
+        const { itemSizeGetter, jumpIndex } = this.props;
+
         // Try the cache.
         if (index in cache) {
             return cache[index];
         }
         if (itemSizeGetter) {
             return itemSizeGetter(index);
+        }
+
+        const height = Object.values(this.cache).pop();
+        if (!this.defaultItemHeight && jumpIndex > -1 && height) {
+            this.defaultItemHeight = height;
+        }
+
+        if (this.defaultItemHeight) {
+            return this.defaultItemHeight;
         }
     }
 
