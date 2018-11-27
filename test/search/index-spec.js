@@ -1,11 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
-import Menu from '../../src/menu';
 import Search from '../../src/search/Search';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -15,37 +12,37 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('Search', () => {
     describe('render', () => {
         it('should accept type ', () => {
-            let wrapper = mount(<Search type="secondary" />);
+            const wrapper = mount(<Search type="secondary" />);
 
             assert(wrapper.props().type === 'secondary');
         });
         it('should accept value ', () => {
             const VALUE = '123';
-            let wrapper = mount(<Search value={VALUE} />);
+            const wrapper = mount(<Search value={VALUE} />);
 
             assert(wrapper.find('input').props().value === VALUE);
         });
         it('should accept value=undefind ', () => {
             const VALUE = undefined;
-            let wrapper = mount(<Search value={VALUE} />);
+            const wrapper = mount(<Search value={VALUE} />);
 
             assert(wrapper.find('input').props().value === '');
         });
         it('should accept simple icon ', () => {
             const VALUE = undefined;
-            let wrapper = mount(<Search shape="simple" />);
+            const wrapper = mount(<Search shape="simple" />);
 
             assert(wrapper.find('button').length === 0);
             assert(wrapper.find('.next-icon-search').length === 1);
         });
         it('should accept no-icon', () => {
-            let wrapper = mount(<Search hasIcon={false} />);
+            const wrapper = mount(<Search hasIcon={false} />);
             assert(wrapper.find('.next-icon').length === 0);
         });
         it('should accept search text', () => {
             const text = 'search';
             const SearchText = <span>{text}</span>;
-            let wrapper = mount(<Search searchText={SearchText} />);
+            const wrapper = mount(<Search searchText={SearchText} />);
 
             assert(wrapper.find('.next-search-btn-text').length === 1);
             assert(wrapper.find('.next-search-btn-text').text() === text);
@@ -53,12 +50,18 @@ describe('Search', () => {
     });
 
     describe('behavior', () => {
+        let wrapper;
+        afterEach(() => {
+            wrapper.unmount();
+            wrapper = null;
+        });
+
         it('simulates onChange/onSearch/onBlur events', () => {
             const onChange = sinon.spy();
             const onSearch = sinon.spy();
             const onBlur = sinon.spy();
 
-            const wrapper = mount(
+            wrapper = mount(
                 <Search onChange={onChange} onSearch={onSearch} onBlur={onBlur} />
             );
 
@@ -77,9 +80,10 @@ describe('Search', () => {
         });
         it('should support defaultValue ', (done) => {
 
-            let onChange = (value) => {
+            const onChange = (value) => {
                 assert(value === '20');
-            }, wrapper = mount(<Search defaultValue={"123"} onChange={onChange} />);
+            };
+            wrapper = mount(<Search defaultValue={'123'} onChange={onChange} />);
 
             wrapper.find('input').simulate('change', { target: { value: '20' } });
             assert(wrapper.find('input').prop('value') === '20');
@@ -93,9 +97,10 @@ describe('Search', () => {
         });
 
         it('should support onSearch ', (done) => {
-            let onSearch = (value) => {
+            const onSearch = (value) => {
                 assert(value === '123');
-            }, wrapper = mount(<Search defaultValue={"123"} onSearch={onSearch} />);
+            };
+            wrapper = mount(<Search defaultValue={'123'} onSearch={onSearch} />);
 
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
 
@@ -124,7 +129,7 @@ describe('Search', () => {
                 assert(value === filter[FILTER_INDEX].value);
             };
 
-            const wrapper = mount(<Search filter={filter} defaultValue={"123"}  onFilterChange={onFilterChange} />);
+            wrapper = mount(<Search filter={filter} defaultValue={'123'}  onFilterChange={onFilterChange} />);
             // 点击
             wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
             wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
@@ -171,8 +176,8 @@ describe('Search', () => {
             const onSearch = (value, filterValue) => {
                 assert(filterValue === FILTER_VALUE);
                 done();
-            }
-            const wrapper = mount(<Search defaultValue={"123"} filter={filter} filterValue={FILTER_VALUE} onSearch={onSearch} />);
+            };
+            wrapper = mount(<Search defaultValue={'123'} filter={filter} filterValue={FILTER_VALUE} onSearch={onSearch} />);
             assert(wrapper.find('.next-select-values em').text() === FILTER_VALUE);
             wrapper.find('button').simulate('click');
 
@@ -204,7 +209,7 @@ describe('Search', () => {
                 done();
             };
 
-            const wrapper = mount(
+            wrapper = mount(
                 <Search onSearch={onSearch} />
             );
 
@@ -222,8 +227,8 @@ describe('Search', () => {
                 value: 'yyy'
             },
             {
-                label: "Recent",
-                value: "Recent"
+                label: 'Recent',
+                value: 'Recent'
             },
         ];
 
