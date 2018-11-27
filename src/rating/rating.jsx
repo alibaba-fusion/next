@@ -204,7 +204,7 @@ export default class Rating extends Component {
         value = value >= max ? max : value;
         value = value <= min ? min : value;
 
-        return value;
+        return value || 0;
     }
 
     getOverlayWidth() {

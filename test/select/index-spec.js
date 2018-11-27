@@ -107,7 +107,7 @@ describe('Select', () => {
         assert(wrapper.find('span.next-select div.next-tag').length === 1);
     });
 
-    it('should support useDetailValue with mode=multiple and showSearch', () => {
+    it('should support useDetailValue with mode=multiple and showSearch', (done) => {
         const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
         wrapper.setProps({
             dataSource,
@@ -355,6 +355,31 @@ describe('Select', () => {
         wrapper.find('input').simulate('keydown', {keyCode: 13});
         wrapper.update();
     });
+
+    // 输入aaa 回车，不关闭弹层
+    it('should not close popup while searching and searchValue not in dataSource', () => {
+        const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
+        wrapper.setProps({
+            dataSource,
+            mode: 'single',
+            popupProps: {cache: false},
+            showSearch: true,
+        });
+
+        // a 回车，搜索到值，弹层关闭
+        wrapper.find('input').simulate('change', {target: {value: 'a'}});
+        wrapper.find('input').simulate('keydown', {keyCode: 13});
+        wrapper.update();
+        assert(wrapper.instance().getInstance().state.visible === false);
+
+        // aaa 回车，搜索不到值，弹层打开状态
+        wrapper.find('input').simulate('change', {target: {value: 'aaa'}});
+        wrapper.find('input').simulate('keydown', {keyCode: 13});
+        wrapper.update();
+        assert(document.querySelectorAll('.next-select-menu .next-select-menu-empty-content').length === 1);
+        assert(wrapper.instance().getInstance().state.visible === true);
+    });
+
 
     it('should fix tags mode issue #62', () => {
         class App extends React.Component{

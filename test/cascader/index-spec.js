@@ -41,14 +41,14 @@ describe('Cascader', () => {
     let wrapper;
 
     afterEach(() => {
-      const overlay = document.querySelectorAll('.next-overlay-wrapper');
-      overlay.forEach(dom => {
-        document.body.removeChild(dom);
-      });
-      if (wrapper) {
-          wrapper.unmount();
-          wrapper = null;
-      }
+        const overlay = document.querySelectorAll('.next-overlay-wrapper');
+        overlay.forEach(dom => {
+            document.body.removeChild(dom);
+        });
+        if (wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
     });
 
     it('should render single cascader', () => {
@@ -60,12 +60,16 @@ describe('Cascader', () => {
             changeCalled = true;
             assert(v === '2980');
             delete d.children;
+            delete d._source;
             assert.deepEqual(d, {
                 value: '2980',
                 label: '铜川',
                 pos: '0-0-1'
             });
-            e.selectedPath.forEach(d => delete d.children);
+            e.selectedPath.forEach(d => {
+                delete d.children;
+                delete d._source;
+            });
             assert.deepEqual(e, {
                 selectedPath: [{
                     value: '2973',
@@ -100,12 +104,16 @@ describe('Cascader', () => {
             changeCalled = true;
             assert(v === '2980');
             delete d.children;
+            delete d._source;
             assert.deepEqual(d, {
                 value: '2980',
                 label: '铜川',
                 pos: '0-0-1'
             });
-            e.selectedPath.forEach(d => delete d.children);
+            e.selectedPath.forEach(d => {
+                delete d.children;
+                delete d._source;
+            });
             assert.deepEqual(e, {
                 selectedPath: [{
                     value: '2973',
@@ -208,6 +216,8 @@ describe('Cascader', () => {
         let data;
         let extra;
         const handleChange = (v, d, e) => {
+            d.forEach(d => delete d._source);
+            e.checkedData.forEach(d => delete d._source);
             assert.deepEqual(value, sortByValue(v, true));
             assert.deepEqual(data, sortByValue(d));
             e.checkedData = sortByValue(e.checkedData);
@@ -270,6 +280,8 @@ describe('Cascader', () => {
         let data;
         let extra;
         const handleChange = (v, d, e) => {
+            d.forEach(d => delete d._source);
+            e.checkedData.forEach(d => delete d._source);
             assert.deepEqual(value, sortByValue(v, true));
             assert.deepEqual(data, sortByValue(d));
             e.checkedData = sortByValue(e.checkedData);

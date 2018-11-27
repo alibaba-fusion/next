@@ -5,8 +5,8 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const babelConfig = require('@alifd/babel-preset-next')({ modules: false });
 const loaders = require('./loaders');
 
-module.exports = function() {
-    return {
+module.exports = function(progress = true) {
+    const conf = {
         output: {
             filename: '[name].js'
         },
@@ -28,11 +28,17 @@ module.exports = function() {
             }]
         },
         plugins: [
-            new webpack.NamedModulesPlugin(),
             new CaseSensitivePathsPlugin(),
             new WatchMissingNodeModulesPlugin(path.resolve(process.cwd(), 'node_modules')),
-            new webpack.optimize.ModuleConcatenationPlugin(),
-            new webpack.ProgressPlugin()
+            new webpack.optimize.ModuleConcatenationPlugin()
         ]
     };
+
+    if (progress) {
+        conf.plugins.concat([
+            new webpack.ProgressPlugin(),
+            new webpack.NamedModulesPlugin()
+        ]);
+    }
+    return conf;
 };

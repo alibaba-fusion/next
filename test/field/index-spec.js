@@ -73,43 +73,7 @@ describe('field', () => {
             assert(wrapper.find('input').prop('value') === 'test2');
             done();
         });
-        it('performence', (done) => {
-
-            class Demo extends React.PureComponent {
-                constructor(props) {
-                    super(props);
-                    this.field = new Field(this, {forceUpdate: false});
-                    this.arr = [];
-                    for (var i = 0; i < 200; i++) {
-                        this.arr.push(i);
-                    };
-                }
-
-                render() {
-                    const init = this.field.init;
-                    return <div>
-                        <Input {...init('input')} name="input"/> {this.arr.map((i) => {
-                            return <Input {...init('input'+i)}/>
-                        })}
-                    </div>
-                }
-            }
-            const wrapper = mount(<Demo/>);
-            wrapper.find('input[name="input"]').simulate('change', {
-                target: {
-                    value: "test"
-                }
-            });
-            wrapper.find('input[name="input"]').simulate('change', {
-                target: {
-                    value: "test2"
-                }
-            });
-
-            //forceUpdate cost 2 times more than setState
-
-            done();
-        });
+        
         it('should support origin input/checkbox/radio', (done) => {
 
             class Demo extends React.Component {

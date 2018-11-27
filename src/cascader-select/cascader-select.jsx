@@ -83,6 +83,10 @@ export default class CascaderSelect extends Component {
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
         onExpand: PropTypes.func,
         /**
+         * 是否开启虚拟滚动
+         */
+        useVirtual: PropTypes.bool,
+        /**
          * 是否多选
          */
         multiple: PropTypes.bool,
@@ -198,6 +202,7 @@ export default class CascaderSelect extends Component {
         defaultValue: null,
         expandTriggerType: 'click',
         onExpand: () => {},
+        useVirtual: false,
         multiple: false,
         changeOnSelect: false,
         canOnlyCheckLeaf: false,
@@ -596,6 +601,7 @@ export default class CascaderSelect extends Component {
 
         const {
             multiple,
+            useVirtual,
             changeOnSelect,
             checkStrictly,
             canOnlyCheckLeaf,
@@ -615,6 +621,7 @@ export default class CascaderSelect extends Component {
             dataSource,
             value,
             multiple,
+            useVirtual,
             canOnlySelectLeaf: !changeOnSelect,
             checkStrictly,
             canOnlyCheckLeaf,

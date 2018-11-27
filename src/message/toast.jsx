@@ -101,7 +101,13 @@ const create = props => {
 
     const newContext = ConfigProvider.getContext();
 
-    let mask, myRef;
+    let mask, myRef, destroyed = false;
+    const destroy = () => {
+        const inc = mask && mask.getInstance();
+        inc && inc.handleClose(true);
+        destroyed = true;
+    };
+
     ReactDOM.render(
         <ConfigProvider {...newContext}>
             <NewMask afterClose={closeChain} {...others} ref={ref => {
@@ -110,14 +116,14 @@ const create = props => {
         </ConfigProvider>
         , div, function() {
             mask = myRef;
+            if (mask && destroyed) {
+                destroy();
+            }
         });
 
     return {
         component: mask,
-        destroy: () => {
-            const inc = mask && mask.getInstance();
-            inc && inc.handleClose(true);
-        }
+        destroy
     };
 };
 
