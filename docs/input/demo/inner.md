@@ -39,7 +39,7 @@ class App extends React.Component {
 
         return (<div>
             <Input
-                innerBefore={<Icon type="search" style={{marginLeft: 4}}  onClick={this.onClick} />}
+                innerBefore={<Icon type="search" style={{margin: 4}}  onClick={this.onClick} />}
                 placeholder="search"
                 value={this.state.v}
                 aria-label="input with config of innerBefore"
@@ -47,7 +47,7 @@ class App extends React.Component {
             /><br /><br />
 
             <Input
-                innerAfter={<Icon type="search" size="xs" onClick={this.onClick} style={{marginRight: 4}}/>}
+                innerAfter={<Icon type="search" size="xs" onClick={this.onClick} style={{margin: 4}}/>}
                 placeholder="search"
                 value={this.state.v}
                 aria-label="input with config of innerAfter"
@@ -57,7 +57,7 @@ class App extends React.Component {
             <Input
                 disabled
                 defaultValue="hi"
-                innerAfter={<Icon type="calendar" style={{marginRight: 4}}/>}
+                innerAfter={<Icon type="calendar" style={{margin: 4}}/>}
                 aria-label="input with config of innerAfter and disabled" />
         </div>);
     }

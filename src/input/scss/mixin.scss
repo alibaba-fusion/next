@@ -40,6 +40,21 @@
     }
 }
 
+
+@mixin input-size-rtl(
+    $labelPadding,
+    $iconPadding
+) {
+    #{$input-prefix}-label {
+        padding-left: 0;
+        padding-right: $labelPadding;
+    }
+    #{$input-prefix}-control {
+        padding-right: 0;
+        padding-left: $iconPadding;
+    }
+}
+
 @mixin input-border-radius($size) {
     border-radius: $size;
     input {
