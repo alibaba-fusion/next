@@ -209,7 +209,6 @@ class Tag extends Component {
             },
             className
         );
-        console.log('rtl', rtl);
         // close btn
         const tailNode = this.renderTailNode();
         // tag node
