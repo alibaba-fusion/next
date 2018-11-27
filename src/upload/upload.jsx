@@ -52,7 +52,7 @@ class Upload extends Base {
         data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
         /**
          * 数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)
-         * @param {String} response 返回
+         * @param {Object} response 返回
          * @param {File} file 文件对象
          */
         formatter: PropTypes.func,
