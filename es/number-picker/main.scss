@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+@import "../core/index-noreset.scss";
+@import "scss/mixin";
+@import "scss/variable";
+
+#{$number-picker-prefix} {
+    @include box-sizing;
+    display: inline-block;
+
+    /* stylelint-disable declaration-no-important */
+    .#{$css-prefix}btn {
+        padding: 0 !important;
+        line-height: 0 !important;
+        box-shadow: none !important;
+    }
+
+    &-normal {
+        width: 80px;
+
+        .#{$css-prefix}input {
+            width: 100%;
+            input {
+                padding-right: 2px;
+            }
+        }
+
+        .#{$css-prefix}btn {
+            display: block;
+
+            &:hover {
+                z-index: 1;
+            }
+            &:first-child {
+                border-right: none;
+                border-top: none;
+                height: calc(50%);
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+            &:last-child {
+                border-right: none;
+                border-bottom: none;
+                margin-top: -1px;
+                height: calc(50% + 1px);
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+        }
+        #{$number-picker-prefix}-handler {
+            opacity: 0;
+            transition: opacity .24s linear .1s;
+            height: 100%;
+        }
+
+        &:hover #{$number-picker-prefix}-handler {
+            opacity: 1;
+        }
+
+        .#{$css-prefix}input.#{$css-prefix}disabled #{$number-picker-prefix}-handler {
+            opacity: 0;
+        }
+
+        &.#{$css-prefix}medium {
+            .#{$css-prefix}btn {
+                width: $number-picker-normal-m-button-width;
+            }
+            .#{$css-prefix}icon {
+                @include icon-size($number-picker-normal-m-button-icon-size);
+            }
+        }
+        &.#{$css-prefix}large {
+            .#{$css-prefix}btn {
+                width: $number-picker-normal-l-button-width;
+            }
+            .#{$css-prefix}icon {
+                @include icon-size($number-picker-normal-l-button-icon-size);
+            }
+        }
+    }
+    &-inline {
+        input {
+            text-align: center;
+        }
+        &.#{$css-prefix}medium {
+            width: 100px;
+            .#{$css-prefix}icon {
+                @include icon-size($number-picker-inline-m-button-icon-size);
+            }
+            .#{$css-prefix}btn:first-child {
+                margin-right: $number-picker-inline-m-button-margin;
+            }
+            .#{$css-prefix}btn:last-child {
+                margin-left: $number-picker-inline-m-button-margin;
+            }
+        }
+        &.#{$css-prefix}large {
+            width: 128px;
+            .#{$css-prefix}icon {
+                @include icon-size($number-picker-inline-l-button-icon-size);
+            }
+            .#{$css-prefix}btn:first-child {
+                margin-right: $number-picker-inline-l-button-margin;
+            }
+            .#{$css-prefix}btn:last-child {
+                margin-left: $number-picker-inline-l-button-margin;
+            }
+        }
+
+        .#{$css-prefix}btn {
+            &.#{$css-prefix}medium {
+                width: $form-element-medium-height;
+            }
+            &.#{$css-prefix}large {
+                width: $form-element-large-height;
+            }
+        }
+    }
+}
