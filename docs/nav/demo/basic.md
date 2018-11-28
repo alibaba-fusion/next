@@ -23,7 +23,7 @@ const { Item, SubNav } = Nav;
 const header = <span className="fusion">FUSION</span>;
 const footer = <a className="login-in" href="javascript:;">Login in</a>;
 
-ReactDOM.render((
+ReactDOM.render(
     <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
         <Item key="home">Home</Item>
         <SubNav label="Component" selectable>
@@ -32,7 +32,7 @@ ReactDOM.render((
         </SubNav>
         <Item key="document">Document</Item>
     </Nav>
-), mountNode);
+, mountNode);
 ````
 
 ````css

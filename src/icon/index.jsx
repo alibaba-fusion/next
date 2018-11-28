@@ -41,6 +41,11 @@ class Icon extends Component {
             [`${prefix}${size}`]: !!size,
             [className]: !!className
         });
+
+        if (rtl && ['arrow-left', 'arrow-right', 'arrow-double-left', 'arrow-double-right', 'switch', 'sorting', 'descending', 'ascending'].indexOf(type) !== -1) {
+            other.dir = 'rtl';
+        }
+
         return <i {...other} className={classes} />;
     }
 }
