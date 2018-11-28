@@ -13,10 +13,8 @@ const { makeChain, noop } = func;
 class Radio extends UIState {
     static displayName = 'Radio';
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -145,7 +143,8 @@ class Radio extends UIState {
     }
 
     render() {
-        const { id, className, children, style, label, onMouseEnter, onMouseLeave, tabIndex,
+        /* eslint-disable no-unused-vars */
+        const { id, className, children, style, label, onMouseEnter, onMouseLeave, tabIndex, rtl,
             ...otherProps } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
