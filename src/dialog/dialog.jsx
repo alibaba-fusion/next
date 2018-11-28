@@ -18,6 +18,7 @@ export default class Dialog extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 是否显示
@@ -282,7 +283,12 @@ export default class Dialog extends Component {
     }
 
     renderInner(closeable) {
-        const { prefix, className, title, children, footer, footerAlign, footerActions, onOk, onCancel, okProps, cancelProps, onClose, locale, visible } = this.props;
+        const {
+            prefix, className, title,
+            children, footer, footerAlign,
+            footerActions, onOk, onCancel,
+            okProps, cancelProps, onClose,
+            locale, visible, rtl } = this.props;
         const others = pickOthers(Object.keys(Dialog.propTypes), this.props);
 
         return (
@@ -298,6 +304,7 @@ export default class Dialog extends Component {
                 cancelProps={cancelProps}
                 locale={locale}
                 closeable={closeable}
+                rtl={rtl}
                 onClose={onClose.bind(this, 'closeClick')}
                 {...others}>
                 {children}
@@ -307,7 +314,10 @@ export default class Dialog extends Component {
 
     render() {
         const {
-            prefix, visible, hasMask, animation, autoFocus, closeable, onClose, afterClose, shouldUpdatePosition, align, overlayProps
+            prefix, visible, hasMask,
+            animation, autoFocus, closeable,
+            onClose, afterClose, shouldUpdatePosition,
+            align, overlayProps, rtl,
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
@@ -326,7 +336,8 @@ export default class Dialog extends Component {
             onRequestClose: onClose,
             needAdjust: false,
             disableScroll: true,
-            ref: this.getOverlayRef
+            ref: this.getOverlayRef,
+            rtl,
         };
         if (!useCSS) {
             newOverlayProps.beforePosition = this.beforePosition;
@@ -339,7 +350,7 @@ export default class Dialog extends Component {
         return (
             <Overlay {...newOverlayProps}>
                 {useCSS ?
-                    <div className={`${prefix}dialog-container`}>
+                    <div className={`${prefix}dialog-container`} dir={rtl ? "rtl" : undefined}>
                         {inner}
                     </div> :
                     inner}
