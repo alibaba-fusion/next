@@ -190,6 +190,7 @@ export default class PopupItem extends Component {
 
         const positionProps = {};
         let arrowProps;
+
         if (direction === 'hoz' && level === 1) {
             positionProps.align = 'tl bl';
             positionProps.offset = [0, 0];
