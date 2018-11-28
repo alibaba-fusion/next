@@ -47,36 +47,19 @@
     }
     &-normal {
         width: 600px;
-        &.#{$css-prefix}large {
-            #{$search-prefix}-left {
-                border-right: none;
-                border-top-left-radius: $search-normal-l-corner;
-                border-bottom-left-radius: $search-normal-l-corner;
-            }
 
-            .#{$css-prefix}input {
-                border-radius: $search-normal-l-corner 0 0 $search-normal-l-corner;
-            }
-
-            .#{$css-prefix}btn {
-                border-radius: 0 $search-normal-l-corner $search-normal-l-corner 0;
-            }
+        #{$search-prefix}-left {
+            border-right: none;
+            border-top-left-radius: $search-normal-corner;
+            border-bottom-left-radius: $search-normal-corner;
         }
 
-        &.#{$css-prefix}medium {
-            #{$search-prefix}-left {
-                border-right: none;
-                border-top-left-radius: $search-normal-m-corner;
-                border-bottom-left-radius: $search-normal-m-corner;
-            }
+        .#{$css-prefix}input {
+            border-radius: $search-normal-corner 0 0 $search-normal-corner;
+        }
 
-            .#{$css-prefix}input {
-                border-radius: $search-normal-m-corner 0 0 $search-normal-m-corner;
-            }
-
-            .#{$css-prefix}btn {
-                border-radius: 0 $search-normal-m-corner $search-normal-m-corner 0;
-            }
+        .#{$css-prefix}btn {
+            border-radius: 0 $search-normal-corner $search-normal-corner 0;
         }
 
         &.#{$css-prefix}primary {
@@ -99,10 +82,6 @@
                     $search-normal-primary-border-width,
                     $search-normal-primary-btn-text-padding-left,
                     $search-normal-primary-shadow);
-                    .#{$css-prefix}input {
-                        border-top-left-radius: $search-normal-l-corner - $search-normal-primary-border-width;
-                        border-bottom-left-radius: $search-normal-l-corner - $search-normal-primary-border-width;
-                    }
             }
 
             &.#{$css-prefix}medium {
@@ -113,12 +92,12 @@
                     $search-normal-primary-border-width,
                     $search-normal-primary-btn-text-padding-left,
                     $search-normal-primary-shadow);
-                    .#{$css-prefix}input {
-                        border-top-left-radius: $search-normal-m-corner - $search-normal-primary-border-width;
-                        border-bottom-left-radius: $search-normal-m-corner - $search-normal-primary-border-width;
-                    }
             }
 
+            .#{$css-prefix}input {
+                border-top-left-radius: $search-normal-corner - $search-normal-primary-border-width;
+                border-bottom-left-radius: $search-normal-corner - $search-normal-primary-border-width;
+            }
         }
 
         &.#{$css-prefix}secondary {
@@ -140,10 +119,6 @@
                     $search-normal-secondary-border-width,
                     $search-normal-secondary-btn-text-padding-left,
                     $search-normal-secondary-shadow);
-                    .#{$css-prefix}input {
-                        border-top-left-radius: $search-normal-l-corner - $search-normal-secondary-border-width;
-                        border-bottom-left-radius: $search-normal-l-corner - $search-normal-secondary-border-width;
-                    }
             }
 
             &.#{$css-prefix}medium {
@@ -154,12 +129,12 @@
                     $search-normal-secondary-border-width,
                     $search-normal-secondary-btn-text-padding-left,
                     $search-normal-secondary-shadow);
-                    .#{$css-prefix}input {
-                        border-top-left-radius: $search-normal-m-corner - $search-normal-secondary-border-width;
-                        border-bottom-left-radius: $search-normal-m-corner - $search-normal-secondary-border-width;
-                    }
             }
 
+            .#{$css-prefix}input {
+                border-top-left-radius: $search-normal-corner - $search-normal-secondary-border-width;
+                border-bottom-left-radius: $search-normal-corner - $search-normal-secondary-border-width;
+            }
         }
 
         &.#{$css-prefix}normal {
@@ -181,10 +156,6 @@
                     $search-normal-normal-border-width,
                     $search-normal-normal-btn-text-padding-left,
                     $search-normal-normal-shadow);
-                    .#{$css-prefix}input {
-                        border-top-left-radius: $search-normal-l-corner - $search-normal-normal-border-width;
-                        border-bottom-left-radius: $search-normal-l-corner - $search-normal-normal-border-width;
-                    }
             }
 
             &.#{$css-prefix}medium {
@@ -195,13 +166,12 @@
                     $search-normal-normal-border-width,
                     $search-normal-normal-btn-text-padding-left,
                     $search-normal-normal-shadow);
-                    .#{$css-prefix}input {
-                        border-top-left-radius: $search-normal-m-corner - $search-normal-normal-border-width;
-                        border-bottom-left-radius: $search-normal-m-corner - $search-normal-normal-border-width;
-                    }
             }
 
-
+            .#{$css-prefix}input {
+                border-top-left-radius: $search-normal-corner - $search-normal-normal-border-width;
+                border-bottom-left-radius: $search-normal-corner - $search-normal-normal-border-width;
+            }
         }
 
         &.#{$css-prefix}dark {
