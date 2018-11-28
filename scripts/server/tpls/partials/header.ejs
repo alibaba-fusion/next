@@ -177,6 +177,14 @@
       font-weight: bold;
     }
 
+    #toggle-rtl {
+        position: absolute;
+        top: 20px;
+        right: 280px;
+        height: 20px;
+        background: #fff;
+    }
+
     .next-demo-dir {
         position: absolute;
         top: 20px;
@@ -246,6 +254,7 @@
     </li>
   <% })%>
   </ul>
+  <button id="toggle-rtl">toggle mount-node</button>
   <% if (dir === 'rtl') { %>
   <select class="next-demo-dir" aria-label="请选择方向">
       <option value="rtl" selected>rtl</option>
@@ -274,6 +283,17 @@
   </div>
   <script>
     (function() {
+        var toggleRtlBtn = document.querySelector('#toggle-rtl');
+
+        toggleRtlBtn.addEventListener('click', function (){
+            var mountNode = document.querySelector('#mount-node');
+            if (mountNode.dir === 'rtl') {
+                mountNode.dir = 'lrt';
+            } else {
+                mountNode.dir = 'rtl';
+            }
+        });
+
         var langSelect = document.querySelector('.next-demo-lang');
         langSelect.addEventListener('change', function(e) {
           var newLang = e.target.value;
