@@ -15,23 +15,23 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
     &-inner {
         @include clearfix;
     }
+    &-menu-wrapper {
+        float: left;
+        overflow: auto;
+        width: $s-25;
+        height: $s-8 * 6;
+        & + & {
+            border-left: $cascader-menu-border;
+        }
+    }
 
     &-menu {
-        float: left;
         position: relative;
-        width: $s-25;
-        /* TODO */
-        height: $s-8 * 6;
         padding: 0;
         border: none;
         border-radius: 0;
         box-shadow: none;
-        overflow: auto;
-
-        & + & {
-            border-left: $cascader-menu-border;
-        }
-
+        min-height: $s-8 * 6;
         &.#{$css-prefix}has-right-border {
             border-right: $cascader-menu-border;
         }

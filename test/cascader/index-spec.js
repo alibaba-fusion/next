@@ -381,7 +381,7 @@ describe('Cascader', () => {
     it('should support listClassName and listStyle', () => {
         wrapper = mount(<Cascader dataSource={ChinaArea} listStyle={{ width: '400px', height: '400px' }} listClassName="custom" />);
 
-        const list = wrapper.find('ul.next-cascader-menu');
+        const list = wrapper.find('div.next-cascader-menu-wrapper');
         assert(list.prop('style').width === '400px');
         assert(list.prop('style').height === '400px');
         assert(list.hasClass('custom'));
@@ -415,7 +415,7 @@ describe('Cascader', () => {
 
         const inner = document.querySelector('#cascader-style .next-cascader-inner');
         assert(inner.style.width === '600px');
-        const lists = document.querySelectorAll('.next-cascader-menu');
+        const lists = document.querySelectorAll('.next-cascader-menu-wrapper');
         assert(lists[lists.length - 1].className.indexOf('next-has-right-border') > -1);
 
         ReactDOM.unmountComponentAtNode(div);

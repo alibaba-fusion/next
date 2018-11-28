@@ -12,6 +12,7 @@
 
     #{$search-prefix}-input {
         @include input-height($height - $border-width*2, 0);
+        overflow-y: hidden;
     }
 
     .#{$css-prefix}select {

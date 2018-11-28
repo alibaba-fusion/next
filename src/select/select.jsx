@@ -38,6 +38,13 @@ class Select extends Base {
          */
         defaultValue: PropTypes.any,
         /**
+         * Select发生改变时触发的回调
+         * @param {*} value 选中的值
+         * @param {String} actionType 触发的方式, 'itemClick', 'enter', 'tag'
+         * @param {*} item 选中的值的对象数据 (useDetailValue=false有效)
+         */
+        onChange: PropTypes.func,
+        /**
          * 传入的数据源，可以动态渲染子项，详见 [dataSource的使用](#dataSource的使用)
          */
         dataSource: PropTypes.arrayOf(PropTypes.oneOfType([
@@ -296,7 +303,7 @@ class Select extends Base {
         if (this.useDetailValue()) {
             return this.handleChange(itemObj.valueDS, triggerType);
         } else {
-            this.handleChange(itemObj.value, triggerType);
+            this.handleChange(itemObj.value, triggerType, itemObj.valueDS);
         }
 
         this.setState({
@@ -329,7 +336,7 @@ class Select extends Base {
         if (this.useDetailValue()) {
             this.handleChange(itemObj.valueDS, triggerType);
         } else {
-            this.handleChange(itemObj.value, triggerType);
+            this.handleChange(itemObj.value, triggerType, itemObj.valueDS);
         }
 
         // 清空搜索
