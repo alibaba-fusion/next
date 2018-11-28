@@ -648,7 +648,7 @@ export default class Overlay extends Component {
                         children, target, align, offset, needAdjust,
                         beforePosition,
                         onPosition: makeChain(this.handlePosition, onPosition),
-                        shouldUpdatePosition
+                        shouldUpdatePosition, rtl
                     })} />
                 );
             }
