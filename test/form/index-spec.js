@@ -50,7 +50,7 @@ describe('form', () => {
                 }
 
                 render() {
-                    return <Form field={this.field}>
+                    return (<Form field={this.field}>
                         <FormItem label="test" hasFeedback>
                             <Input name="input1"/>
                         </FormItem>
@@ -60,7 +60,7 @@ describe('form', () => {
                         <FormItem label="test">
                             <Input />
                         </FormItem>
-                    </Form>;
+                    </Form>);
                 }
             }
 
@@ -92,12 +92,12 @@ describe('form', () => {
             done();
         });
         it('should deprecated direction', () => {
-          const wrapper1 = mount(<Form></Form>);
-          const wrapper2 = mount(<Form direction={'hoz'}></Form>);
+            const wrapper1 = mount(<Form />);
+            const wrapper2 = mount(<Form direction={'hoz'} />);
 
-          assert(!wrapper1.instance()._instance.props.inline);
-          assert(wrapper2.instance()._instance.props.inline);
-        })
+            assert(!wrapper1.instance()._instance.props.inline);
+            assert(wrapper2.instance()._instance.props.inline);
+        });
     });
     describe('FormItem', () => {
         it('should supoort props', () => {
@@ -136,11 +136,11 @@ describe('form', () => {
                 }
 
                 render() {
-                    return <Form field={this.field}>
+                    return (<Form field={this.field}>
                         <FormItem label="test" type="email" format="email" hasFeedback>
                             <Input name="email"/>
                         </FormItem>
-                    </Form>;
+                    </Form>);
                 }
             }
 
@@ -176,18 +176,18 @@ describe('form', () => {
                     <Input name="name" defaultValue="frank"/>
                 </FormItem>
                 <FormItem required label="test">
-                {(values) => {
-                    return values.name === 'frank' ? <Input name="frank" value="frankqian"/> : <Input name="unknow" value="unknow" />
-                }}
+                    {(values) => {
+                        return values.name === 'frank' ? <Input name="frank" value="frankqian"/> : <Input name="unknow" value="unknow" />;
+                    }}
                 </FormItem>
             </Form>);
 
-            assert(wrapper.find('input[name="unknow"]').length === 0);
-            assert(wrapper.find('input[name="frank"]').prop('value') === 'frankqian');
-            
-            wrapper.find('input[name="name"]').simulate('change', {target: {value: ''}});
-            assert(wrapper.find('input[name="frank"]').length === 0);
-            assert(wrapper.find('input[name="unknow"]').prop('value') === 'unknow');
+            assert(wrapper.find('input[id="unknow"]').length === 0);
+            assert(wrapper.find('input[id="frank"]').prop('value') === 'frankqian');
+
+            wrapper.find('input[id="name"]').simulate('change', {target: {value: ''}});
+            assert(wrapper.find('input[id="frank"]').length === 0);
+            assert(wrapper.find('input[id="unknow"]').prop('value') === 'unknow');
 
         });
     });
