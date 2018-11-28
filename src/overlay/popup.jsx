@@ -63,7 +63,8 @@ export default class Popup extends Component {
         followTrigger: PropTypes.bool,
         container: PropTypes.any,
         hasMask: PropTypes.bool,
-        wrapperStyle: PropTypes.object
+        wrapperStyle: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -74,7 +75,8 @@ export default class Popup extends Component {
         delay: 200,
         canCloseByTrigger: true,
         followTrigger: false,
-        container: () => document.body
+        container: () => document.body,
+        rtl: false,
     };
 
     constructor(props) {

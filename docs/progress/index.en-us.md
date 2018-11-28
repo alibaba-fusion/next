@@ -30,4 +30,4 @@ If a task will take long time to complete, it could be use a `Progress` to show 
 | state       | State of progress <br><br>**option**:<br>'normal', 'success', 'error'   | Enum     | 'normal'                 |
 | progressive | Progressive mode (with dynamic color) | Boolean  | false                    |
 | hasBorder   | Has border for progress line  | Boolean  | false                    |
-| textRender  | Text render <br><br>**signature**:<br>Function(percent: Number) => ReactNode<br>**parameter**:<br>_percent_: {Number} current percent<br>**return**:<br>{ReactNode} text node<br> | Function | percent => `${Math.floor(percent)}%` |
+| textRender  | Text render<br><br>**signature**:<br>Function(percent: Number, option: Object) => ReactNode<br>**parameter**:<br>_percent_: {Number} current percent<br>_option_: {Object} option<br>**returns**:<br>{ReactNode} text node<br> | Function | percent => `${Math.floor(percent)}%` |
