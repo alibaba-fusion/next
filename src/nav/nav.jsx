@@ -12,6 +12,7 @@ class Nav extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
         /**
@@ -161,7 +162,7 @@ class Nav extends Component {
 
     render() {
         // eslint-disable-next-line
-        const {prefix, className, style, children, type, direction, activeDirection, mode, triggerType, inlineIndent, openMode, popupAlign, popupClassName, iconOnly, hasArrow, hasTooltip, popupProps, ...others} = this.props;
+        const {prefix, className, style, children, type, direction, activeDirection, mode, triggerType, inlineIndent, openMode, popupAlign, popupClassName, iconOnly, hasArrow, hasTooltip, popupProps, rtl, ...others} = this.props;
 
         let realActiveDirection = activeDirection;
         if (realActiveDirection &&
