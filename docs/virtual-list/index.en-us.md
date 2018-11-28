@@ -1,8 +1,8 @@
 # VirtualList
 
 -   category: Components
+-   family: Util
 -   chinese: 虚拟滚动列表
--   type: 基本
 
 ---
 

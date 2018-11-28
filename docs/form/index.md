@@ -45,38 +45,39 @@
 
 > 手动传递了 wrapCol labelCol 会使用 Grid 辅助布局; labelAlign='top' 会强制禁用 Grid
 
-| 参数                  | 说明                                                                                                                      | 类型           | 默认值   |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------ | ----- |
-| label               | label 标签的文本                                                                                                             | ReactNode    | -     |
-| size                | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large', 'small', 'medium' | Enum         | -     |
-| labelCol            | label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效                                             | Object       | -     |
-| wrapperCol          | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol                                                                                       | Object       | -     |
-| help                | 自定义提示信息，如不设置，则会根据校验规则自动生成.                                                                                              | ReactNode    | -     |
-| validateState       | 校验状态，如不设置，则会根据校验规则自动生成<br><br>**可选值**:<br>'error'<br>'success'(成功)<br>'loading'(失败)                                     | Enum         | -     |
-| hasFeedback         | 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持                                                         | Boolean      | false |
-| extra               | 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面                                                                    | ReactNode    | -     |
-| labelAlign          | 标签的位置<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                            | Enum         | -     |
-| labelTextAlign      | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                    | Enum         | -     |
-| required            | [表单校验] 不能为空                                                                                                             | Boolean      | -     |
-| asterisk            | required 的星号是否显示                                                                                                        | Boolean      | -     |
-| requiredMessage     | required 自定义错误信息                                                                                                        | String       | -     |
-| requiredTrigger     | required 自定义触发方式                                                                                                        | String/Array | -     |
-| min                 | [表单校验] 最小值                                                                                                              | Number       | -     |
-| max                 | [表单校验] 最大值                                                                                                              | Number       | -     |
-| minmaxMessage       | min/max 自定义错误信息                                                                                                         | String       | -     |
-| minmaxTrigger       | min/max 自定义触发方式                                                                                                         | String/Array | -     |
-| minLength           | [表单校验] 字符串最小长度 / 数组最小个数                                                                                                 | Number       | -     |
-| maxLength           | [表单校验] 字符串最大长度 / 数组最大个数                                                                                                 | Number       | -     |
-| minmaxLengthMessage | minLength/maxLength 自定义错误信息                                                                                             | String       | -     |
-| minmaxLengthTrigger | minLength/maxLength 自定义触发方式                                                                                             | String/Array | -     |
-| length              | [表单校验] 字符串精确长度 / 数组精确个数                                                                                                 | Number       | -     |
-| lengthMessage       | length 自定义错误信息                                                                                                          | String       | -     |
-| lengthTrigger       | length 自定义触发方式                                                                                                          | String/Array | -     |
-| pattern             | 正则校验                                                                                                                    | any          | -     |
-| format              | [表单校验] 四种常用的 pattern<br><br>**可选值**:<br>'number', 'email', 'url', 'tel'                                                 | Enum         | -     |
-| formatMessage       | format 自定义错误信息                                                                                                          | String       | -     |
-| formatTrigger       | format 自定义触发方式                                                                                                          | String/Array | -     |
-| validator           | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function     | -     |
+| 参数                  | 说明                                                                                                                      | 类型                 | 默认值   |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
+| size                | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large', 'small', 'medium' | Enum               | -     |
+| label               | label 标签的文本                                                                                                             | ReactNode          | -     |
+| labelCol            | label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效                                             | Object             | -     |
+| wrapperCol          | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol                                                                                       | Object             | -     |
+| help                | 自定义提示信息，如不设置，则会根据校验规则自动生成.                                                                                              | ReactNode          | -     |
+| validateState       | 校验状态，如不设置，则会根据校验规则自动生成<br><br>**可选值**:<br>'error'<br>'success'(成功)<br>'loading'(失败)                                     | Enum               | -     |
+| hasFeedback         | 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持                                                         | Boolean            | false |
+| children            | node 或者 function(values)                                                                                                | ReactNode/Function | -     |
+| extra               | 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面                                                                    | ReactNode          | -     |
+| labelAlign          | 标签的位置<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                            | Enum               | -     |
+| labelTextAlign      | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                    | Enum               | -     |
+| required            | [表单校验] 不能为空                                                                                                             | Boolean            | -     |
+| asterisk            | required 的星号是否显示                                                                                                        | Boolean            | -     |
+| requiredMessage     | required 自定义错误信息                                                                                                        | String             | -     |
+| requiredTrigger     | required 自定义触发方式                                                                                                        | String/Array       | -     |
+| min                 | [表单校验] 最小值                                                                                                              | Number             | -     |
+| max                 | [表单校验] 最大值                                                                                                              | Number             | -     |
+| minmaxMessage       | min/max 自定义错误信息                                                                                                         | String             | -     |
+| minmaxTrigger       | min/max 自定义触发方式                                                                                                         | String/Array       | -     |
+| minLength           | [表单校验] 字符串最小长度 / 数组最小个数                                                                                                 | Number             | -     |
+| maxLength           | [表单校验] 字符串最大长度 / 数组最大个数                                                                                                 | Number             | -     |
+| minmaxLengthMessage | minLength/maxLength 自定义错误信息                                                                                             | String             | -     |
+| minmaxLengthTrigger | minLength/maxLength 自定义触发方式                                                                                             | String/Array       | -     |
+| length              | [表单校验] 字符串精确长度 / 数组精确个数                                                                                                 | Number             | -     |
+| lengthMessage       | length 自定义错误信息                                                                                                          | String             | -     |
+| lengthTrigger       | length 自定义触发方式                                                                                                          | String/Array       | -     |
+| pattern             | 正则校验                                                                                                                    | any                | -     |
+| format              | [表单校验] 四种常用的 pattern<br><br>**可选值**:<br>'number', 'email', 'url', 'tel'                                                 | Enum               | -     |
+| formatMessage       | format 自定义错误信息                                                                                                          | String             | -     |
+| formatTrigger       | format 自定义触发方式                                                                                                          | String/Array       | -     |
+| validator           | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function           | -     |
 
 ### Form.Submit
 
