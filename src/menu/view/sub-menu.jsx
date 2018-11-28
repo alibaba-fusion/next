@@ -123,7 +123,7 @@ export default class SubMenu extends Component {
 
     renderInline() {
         const { _key, level, root, className, selectable: selectableFromProps, label, children, subMenuContentClassName, triggerType: propsTriggerType, parentMode } = this.props;
-        const { prefix, selectMode, triggerType: rootTriggerType, inlineArrowDirection, expandAnimation } = root.props;
+        const { prefix, selectMode, triggerType: rootTriggerType, inlineArrowDirection, expandAnimation, rtl } = root.props;
         const triggerType = propsTriggerType || rootTriggerType;
         const open = this.getOpen();
         const others = obj.pickOthers(Object.keys(SubMenu.propTypes), this.props);
@@ -174,7 +174,7 @@ export default class SubMenu extends Component {
         });
 
         const subMenu = open ? (
-            <ul role="menu" ref="subMenu" className={newSubMenuContentClassName}>
+            <ul role="menu" dir={rtl ? 'rtl' : undefined} ref="subMenu" className={newSubMenuContentClassName}>
                 {this.passParentToChildren(children)}
             </ul>
         ) : null;
@@ -198,7 +198,7 @@ export default class SubMenu extends Component {
     renderPopup() {
         const { children, subMenuContentClassName, ...others } = this.props;
         const root = this.props.root;
-        const { prefix, popupClassName, popupStyle } = root.props;
+        const { prefix, popupClassName, popupStyle, rtl } = root.props;
 
         const newClassName = cx({
             [`${prefix}menu`]: true,
@@ -209,7 +209,7 @@ export default class SubMenu extends Component {
 
         return (
             <PopupItem {...others} hasSubMenu>
-                <ul role="menu" className={newClassName} style={popupStyle}>
+                <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
                     {this.passParentToChildren(children)}
                 </ul>
             </PopupItem>

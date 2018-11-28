@@ -19,7 +19,7 @@ import { Menu } from '@alifd/next';
 
 const { SubMenu, Item, Divider } = Menu;
 
-ReactDOM.render((
+ReactDOM.render(
     <Menu className="my-menu" mode="popup">
         <Item key="1">Option 1</Item>
         <Item key="2">Option 2</Item>
@@ -34,7 +34,7 @@ ReactDOM.render((
             <Item key="popup-2-2">Popup option 2</Item>
         </SubMenu>
     </Menu>
-), mountNode);
+, mountNode);
 ````
 
 ````css

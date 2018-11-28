@@ -142,10 +142,17 @@ export default function create(props) {
         afterClose && afterClose();
     };
 
+    const newContext = ConfigProvider.getContext();
+
     let menu;
-    render(<ContextMenu afterClose={closeChain} {...others} />, div, function() {
-        menu = this;
-    });
+    render(
+        <ConfigProvider {...newContext}>
+            <ContextMenu afterClose={closeChain} {...others} />
+        </ConfigProvider>
+        , div, function() {
+            menu = this;
+        }
+    );
 
     menuInstance = {
         destroy: () => {

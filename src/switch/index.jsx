@@ -10,10 +10,9 @@ class Switch extends React.Component {
         prefix: PropTypes.string
     }
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
+        pure: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -22,10 +21,6 @@ class Switch extends React.Component {
          * 自定义内敛样式
          */
         style: PropTypes.object,
-        /**
-         * 是否开启shouldComponentUpdate优化
-         */
-        pure: PropTypes.bool,
         /**
          * 打开时的内容
          */
@@ -119,7 +114,8 @@ class Switch extends React.Component {
     }
 
     render() {
-        const {prefix, className, disabled, size, checkedChildren, unCheckedChildren, ...others } = this.props,
+        /* eslint-disable no-unused-vars */
+        const {prefix, className, disabled, size, checkedChildren, unCheckedChildren, rtl, ...others } = this.props,
             status = this.state.checked ? 'on' : 'off';
         const children = this.state.checked ? checkedChildren : unCheckedChildren;
 
