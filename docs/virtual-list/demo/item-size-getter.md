@@ -40,7 +40,7 @@ class App extends React.Component  {
     }
 
     componentDidMount() {
-        setTimeout(()=> {
+        setTimeout(() => {
             const instance = this.refs.virtual.getInstance();
             instance.scrollTo(50);
         }, 200);
@@ -54,7 +54,7 @@ class App extends React.Component  {
     onClick() {
         this.setState({
             initial: this.state.initial + 20
-        })
+        });
     }
 
     render() {

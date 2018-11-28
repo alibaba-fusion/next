@@ -37,7 +37,7 @@ class App extends React.Component  {
     onClick() {
         this.setState({
             initial: this.state.initial + 20
-        })
+        });
     }
     render() {
         return (
