@@ -64,7 +64,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 |Size | selector size<br><br>**optional values**:<br>'small', 'medium', 'large' | Enum | 'medium' |
 | value | Current value for controlled mode | any | - |
 | defaultValue | initial default | any | - |
-| onChange | Callback that fires when Select changes <br><br> **Signature**:<br>Function(value: mixed, actionType: String) => void<br>**Parameters**:<br> _value_: {mixed} Selected value <br>_actionType_: {String} Triggered, 'itemClick', 'enter', 'tag' | Function | func.noop |
+| onChange | Callback that fires when Select changes <br><br> **Signature**:<br>Function(value: mixed, actionType: String) => void<br>**Parameters**:<br> _value_: {mixed} Selected value <br>_actionType_: {String} Triggered, 'itemClick', 'enter', 'tag' <br> _item_: {mixed} value in dataSource(only useDetailValue=false) | Function | func.noop |
 | placeholder | placeholder when there is no value | ReactNode | - |
 | autoWidth | Drop-down menu to align with selector | Boolean | true |
 | label | custom inline label | ReactNode | - |

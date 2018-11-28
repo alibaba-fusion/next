@@ -53,6 +53,7 @@ module.exports = {
         'tree-select',
         'util',
         'upload',
-        'validate'
+        'validate',
+        'virtual-list'
     ]
 };

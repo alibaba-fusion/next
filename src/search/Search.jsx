@@ -178,7 +178,7 @@ class Search extends React.Component {
             placeholder, type, className,
             style, size, prefix, searchText,
             dataSource, filterProps, buttonProps,
-            popupContent, hasClear,  ...others } = this.props;
+            popupContent, hasClear, visible, ...others } = this.props;
 
         const cls = classNames({
             [`${prefix}search`]: true,
@@ -221,6 +221,10 @@ class Search extends React.Component {
         }
 
         const othersAttributes = obj.pickOthers(Search.propTypes, others);
+        if (visible !== undefined) {
+            // 受控属性 visible 不能直接写在组件上
+            othersAttributes.visible = Boolean(visible);
+        }
         const dataAttr = obj.pickAttrsWith(others, 'data-');
         const left = (<Group addonBefore={filterSelect}
             className={`${prefix}search-left`}

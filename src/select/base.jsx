@@ -7,6 +7,7 @@ import Menu from '../menu';
 import Overlay from '../overlay';
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
+import VirtualList from '../virtual-list';
 import { isSingle, filter, isNull, valueToSelectKey } from './util';
 
 const { Popup } = Overlay;
@@ -28,12 +29,6 @@ export default class Base extends React.Component {
         value: PropTypes.any, // to be override
         // 初始化的默认值
         defaultValue: PropTypes.any, // to be override
-        /**
-         * Select发生改变时触发的回调
-         * @param {*} value 选中的值
-         * @param {String} actionType 触发的方式, 'itemClick', 'enter', 'tag'
-         */
-        onChange: PropTypes.func,
         /**
          * 没有值的时候的占位符
          */
@@ -110,6 +105,10 @@ export default class Base extends React.Component {
          * 键盘上下键切换菜单高亮选项的回调
          */
         onToggleHighlightItem: PropTypes.func,
+        /**
+         * 是否开启虚拟滚动模式
+         */
+        useVirtual: PropTypes.bool,
         // 自定义类名
         className: PropTypes.any,
         // children
@@ -384,10 +383,6 @@ export default class Base extends React.Component {
         return null;
     }
 
-    saveMenuRef = (ref) => {
-        this.menuRef = ref;
-    };
-
     handleSelect() {
 
     }
@@ -398,7 +393,7 @@ export default class Base extends React.Component {
      * @param {object} props
      */
     renderMenu() {
-        const { prefix, mode, autoWidth, locale, notFoundContent } = this.props;
+        const { prefix, mode, autoWidth, locale, notFoundContent, useVirtual } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
@@ -425,7 +420,6 @@ export default class Base extends React.Component {
         }
 
         const menuProps = {
-            ref: this.saveMenuRef,
             children,
             style: autoWidth ? { width: this.width } : { minWidth: this.width },
             selectedKeys,
@@ -440,7 +434,21 @@ export default class Base extends React.Component {
             className: menuClassName
         };
 
-        return <Menu {...menuProps} />;
+        return (
+            useVirtual ?
+                <div className={`${prefix}select-menu-wrapper`} style={{position: 'relative'}}>
+                    <VirtualList
+                        itemsRenderer={(items, ref) => {
+                            return (<Menu ref={c => {
+                                ref(c);
+                                this.menuRef = c;
+                            }} {...menuProps}>{items}</Menu>);
+                        }}>
+                        {children}
+                    </VirtualList>
+                </div> :
+                <Menu {...menuProps} />
+        );
     }
 
     /**
