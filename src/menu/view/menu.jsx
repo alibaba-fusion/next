@@ -17,6 +17,7 @@ export default class Menu extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 菜单项和子菜单
@@ -607,7 +608,7 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { prefix, className, direction, hozAlign, header, footer, selectMode } = this.props;
+        const { prefix, className, direction, hozAlign, header, footer, selectMode, rtl } = this.props;
         const others = pickOthers(Object.keys(Menu.propTypes), this.props);
 
         const newClassName = cx({
@@ -622,6 +623,10 @@ export default class Menu extends Component {
         const itemsElement = header || footer ?  <ul className={`${prefix}menu-content`}>{this.newChildren}</ul> : this.newChildren;
         const footerElement = footer ? <li className={`${prefix}menu-footer`}>{footer}</li> : null;
         const shouldWrapItemsAndFooter = hozAlign === 'right' && !!header;
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         return (
             <ul role={role} className={newClassName} onKeyDown={this.handleEnter} aria-multiselectable={selectMode === 'multiple'} {...others}>

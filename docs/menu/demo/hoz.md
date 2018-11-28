@@ -19,7 +19,7 @@ import { Menu } from '@alifd/next';
 
 const { SubMenu, Item } = Menu;
 
-ReactDOM.render((
+ReactDOM.render(
     <Menu header="aaa" direction="hoz" mode="popup" className="my-hoz-menu" popupClassName="my-hoz-menu" popupAutoWidth>
         <Item key="1">First</Item>
         <Item key="2">Second</Item>
@@ -33,7 +33,7 @@ ReactDOM.render((
         </SubMenu>
         <Item key="3">Third</Item>
     </Menu>
-), mountNode);
+, mountNode);
 ````
 
 ````css
