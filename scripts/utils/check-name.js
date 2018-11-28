@@ -4,30 +4,45 @@ const path = require('path');
 const minimist = require('minimist');
 const logger = require('./logger');
 
-module.exports = function (allowAll = false, withOtherArgs = false) {
+const cwd = process.cwd();
+
+module.exports = function (runtest = false, withOtherArgs = false) {
     const argv = minimist(process.argv.slice(2));
+    const arr = argv._;
+    const comIndex = arr.findIndex((a) => a.indexOf('=') === -1);
 
-    let componentName = argv._[0];
+    let componentName = arr[comIndex];
+
     if (componentName) {
-    // compatible with npm run dev -- Menu
+        // compatible with npm run dev -- Menu
         componentName = _.kebabCase(componentName);
-        const componentPath = path.join(process.cwd(), 'docs', componentName);
+        const file = runtest ? 'test' : 'docs';
+        const components = fs.readdirSync(path.join(cwd, file));
+        let name = componentName;
+        const valid = components.some((com) => {
+            if (componentName.replace('-', '') === com.replace('-', '')) {
+                name = com;
+                return true;
+            } else {
+                return false;
+            }
+        });
 
-        if (!fs.existsSync(componentPath)) {
-            logger.error(`The input component name (${componentName}) is invalid, try again like: npm run [command] -- number-picker`);
+        if (!valid) {
+            logger.error(`The input component name (${componentName}) is invalid, try again like: npm run [command] number-picker`);
             process.exit(0);
             return false;
         }
 
         if (withOtherArgs) {
             const newArgs =  argv._;
-            newArgs.shift();
+            newArgs.splice(comIndex, 1);
             newArgs.unshift(componentName);
             return newArgs;
         }
-        return componentName;
+        return name;
 
-    } else if (allowAll) {
+    } else if (runtest) {
         return 'all';
     } else {
         logger.error('Please input the component name, like: npm run [command] number-picker');
