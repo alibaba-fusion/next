@@ -1,11 +1,51 @@
-#{$date-picker-prefix}-body[dir="rtl"],
-#{$range-picker-prefix}[dir="rtl"],
-#{$month-picker-prefix}[dir="rtl"],
-#{$year-picker-prefix}[dir="rtl"] {
-    &-panel {
-        &-footer {
-            text-align: left;
+#{$date-picker-prefix}-body[dir="rtl"]{
+    #{$date-picker-prefix}-panel-footer {
+        text-align: left;
+    }
+    #{$date-picker-prefix}-panel-footer > #{$date-picker-btn-prefix}:not(:last-child) {
+        margin-right: 0;
+        margin-left: $s-4;
+    }
+}
+
+#{$date-picker-prefix}-body[dir="rtl"]#{$date-picker-prefix}-body-show-time {
+    #{$date-picker-prefix}-panel-input#{$date-picker-input-prefix} {
+        &:first-child {
+            margin-left: 2%;
+            margin-right: 0;
         }
     }
+}
 
+
+#{$range-picker-prefix}-body[dir="rtl"] {
+    #{$range-picker-prefix}-panel-input {
+        text-align: right;
+    }
+    #{$date-picker-prefix}-panel-footer {
+        text-align: left;
+    }
+    #{$date-picker-prefix}-panel-footer > #{$date-picker-btn-prefix}:not(:last-child) {
+        margin-right: 0;
+        margin-left: $s-4;
+    }
+}
+
+#{$range-picker-prefix}-body[dir="rtl"]#{$range-picker-prefix}-body-show-time {
+    #{$range-picker-prefix}-panel {
+        &-input-start-date {
+            margin-right: 0;
+            margin-left: $s-2;
+        }
+
+        &-input-end-time {
+            margin-left: 0;
+            margin-right: $s-2;
+        }
+
+        &-time-start, &-time-end {
+            width: 50%;
+            float: left;
+        }
+    }
 }

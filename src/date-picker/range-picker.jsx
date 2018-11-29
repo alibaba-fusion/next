@@ -735,7 +735,7 @@ export default class RangePicker extends Component {
                 style={popupStyle}
                 className={popupClassName}
                 trigger={trigger}>
-                <div className={panelBodyClassName}>
+                <div dir={others.dir} className={panelBodyClassName}>
                     <div className={`${prefix}range-picker-panel-header`}>
                         <div className={`${prefix}range-picker-panel-input`}>
                             {startDateInput}
