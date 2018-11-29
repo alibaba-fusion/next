@@ -15,6 +15,13 @@
             margin-right: 0;
         }
     }
+    #{$time-picker-prefix}-menu {
+        float: right;
+        &:not(:last-child) {
+            border-right: none;
+            border-left: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
+        }
+    }
 }
 
 
