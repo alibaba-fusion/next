@@ -277,7 +277,7 @@ export default class Position {
             elementRect.top >= 0 && elementRect.top + element.offsetHeight <= viewportSize.height);
     }
     // 在这里做RTL判断 top-left 定位转化为等效的 top-right定位
-    _setPinElementPostion(pinElement, postion, offset) {
+    _setPinElementPostion(pinElement, postion, offset = [0, 0]) {
         const {top, left} = postion;
         if (!this.isRtl) {
             dom.setStyle(pinElement, {
