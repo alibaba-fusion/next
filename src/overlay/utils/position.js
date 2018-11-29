@@ -35,6 +35,16 @@ function _getElementRect (elem) {
     };
 }
 
+/**
+ * @private get viewport size
+ * @return {Object}
+ */
+function _getViewportSize() {
+    return {
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight
+    };
+}
 export default class Position {
 
     static VIEWPORT = VIEWPORT;
@@ -85,16 +95,12 @@ export default class Position {
         for (let i = 0; i < expectedAlign.length; i++) {
             const align = expectedAlign[i];
             const pinElementPoints = this._normalizePosition(pinElement, align.split(' ')[0], isPinFixed);
-            const baseElementPoints = this._normalizePosition(baseElement, align.split(' ')[1], isPinFixed);
+            const baseElementPoints = this._normalizePosition(baseElement, align.split(' ')[1], isBaseFixed);
             const pinElementParentOffset = this._getParentOffset(pinElement);
             const baseElementOffset = (isPinFixed && isBaseFixed) ? this._getLeftTop(baseElement) : baseElementPoints.offset();
-            const top = baseElementOffset.top + baseElementPoints.y - pinElementParentOffset.top - pinElementPoints.y + this.offset[1];
-            const left = baseElementOffset.left + baseElementPoints.x - pinElementParentOffset.left  - pinElementPoints.x + this.offset[0];
-
-            dom.setStyle(pinElement, {
-                left: `${left}px`,
-                top: `${top}px`
-            });
+            const top = baseElementOffset.top + baseElementPoints.y - pinElementParentOffset.top - pinElementPoints.y;
+            const left = baseElementOffset.left + baseElementPoints.x - pinElementParentOffset.left  - pinElementPoints.x;
+            this._setPinElementPostion(pinElement, {left, top}, this.offset);
 
             if (!firstPositionResult) {
                 firstPositionResult = {left, top};
@@ -107,11 +113,7 @@ export default class Position {
         const inViewportLeft = this._makeElementInViewport(pinElement, firstPositionResult.left, 'Left', isPinFixed);
         const inViewportTop = this._makeElementInViewport(pinElement, firstPositionResult.top, 'Top', isPinFixed);
 
-        dom.setStyle(pinElement, {
-            left: `${inViewportLeft}px`,
-            top: `${inViewportTop}px`
-        });
-
+        this._setPinElementPostion(pinElement, {left: inViewportLeft, top: inViewportTop});
         return expectedAlign[0];
     }
 
@@ -268,13 +270,31 @@ export default class Position {
 
     // Detecting element is in the window， we want to adjust position later.
     _isInViewport(element) {
-        const viewportSize = {
-            width: document.documentElement.clientWidth,
-            height: document.documentElement.clientHeight
-        };
+        const viewportSize = _getViewportSize();
         // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         const elementRect = _getElementRect(element);
         return (elementRect.left >= 0 && elementRect.left + element.offsetWidth <= viewportSize.width &&
             elementRect.top >= 0 && elementRect.top + element.offsetHeight <= viewportSize.height);
+    }
+    // 在这里做RTL判断 top-left 定位转化为等效的 top-right定位
+    _setPinElementPostion(pinElement, postion, offset = [0, 0]) {
+        const {top, left} = postion;
+        if (!this.isRtl) {
+            dom.setStyle(pinElement, {
+                left: `${left + offset[0]}px`,
+                top: `${top + offset[1]}px`,
+            });
+            return;
+        }
+
+        // transfer {left,top} equaly to {right,top}
+        const {width: viewportWidth} = _getViewportSize();
+        const {width} = _getElementRect(pinElement);
+        const right = viewportWidth - (left + width);
+        dom.setStyle(pinElement, {
+            left: "auto",
+            right: `${right + offset[0]}px`,
+            top: `${top + offset[1]}px`,
+        });
     }
 }
