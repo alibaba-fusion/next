@@ -345,7 +345,7 @@ class MonthPicker extends Component {
                 style={popupStyle}
                 className={popupClassName}
                 trigger={trigger}>
-                <div className={panelBodyClassName}>
+                <div className={panelBodyClassName} dir={others.dir}>
                     <div className={`${prefix}month-picker-panel-header`}>
                         {dateInput}
                     </div>

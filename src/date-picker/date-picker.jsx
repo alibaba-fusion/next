@@ -499,7 +499,7 @@ export default class DatePicker extends Component {
                 style={popupStyle}
                 className={popupClassName}
                 trigger={trigger}>
-                <div className={panelBodyClassName}>
+                <div dir={others.dir} className={panelBodyClassName}>
                     <div className={`${prefix}date-picker-panel-header`}>
                         {dateInput}
                         {timeInput}
