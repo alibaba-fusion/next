@@ -18,6 +18,7 @@ class YearPicker extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 输入框内置标签
          */
@@ -116,6 +117,7 @@ class YearPicker extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         format: 'YYYY',
         size: 'medium',
         disabledDate: () => false,
@@ -241,6 +243,7 @@ class YearPicker extends Component {
     render() {
         const {
             prefix,
+            rtl,
             locale,
             label,
             state,
@@ -275,6 +278,10 @@ class YearPicker extends Component {
         const panelBodyClassName = classnames({
             [`${prefix}year-picker-body`]: true,
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const panelInputCls = `${prefix}year-picker-panel-input`;
 

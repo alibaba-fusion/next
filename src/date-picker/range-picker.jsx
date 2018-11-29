@@ -46,6 +46,7 @@ export default class RangePicker extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 默认展示的起始月份
          * @return {MomentObject} 返回包含指定月份的 moment 对象实例
@@ -159,6 +160,7 @@ export default class RangePicker extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         format: 'YYYY-MM-DD',
         size: 'medium',
         showTime: false,
@@ -523,6 +525,7 @@ export default class RangePicker extends Component {
     render() {
         const {
             prefix,
+            rtl,
             defaultVisibleMonth,
             onVisibleMonthChange,
             showTime,
@@ -571,6 +574,10 @@ export default class RangePicker extends Component {
             [`${prefix}range-picker-panel-input-end-date`]: true,
             [`${prefix}focus`]: state.activeDateInput === 'endValue',
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const startDateInputValue = (state.inputing === 'startValue') ?
             state.startDateInputStr : ((state.startValue && state.startValue.format(this.format)) || '');

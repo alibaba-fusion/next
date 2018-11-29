@@ -1,0 +1,11 @@
+#{$date-picker-prefix}-body[dir="rtl"],
+#{$range-picker-prefix}[dir="rtl"],
+#{$month-picker-prefix}[dir="rtl"],
+#{$year-picker-prefix}[dir="rtl"] {
+    &-panel {
+        &-footer {
+            text-align: left;
+        }
+    }
+
+}
