@@ -44,8 +44,25 @@
         }
 
         &-time-start, &-time-end {
-            width: 50%;
-            float: left;
+            float: right;
+        }
+        &-time-start {
+            // Extend time-picker border
+            border-right: none;
+            border-left: $line-1 $line-solid $date-picker-panel-time-panel-separator-color;
+        }
+
+        &-time-end {
+            // Extend time-picker border
+            border-left: none;
+            border-right: $line-1 $line-solid $date-picker-panel-time-panel-separator-color;
+        }
+    }
+    #{$time-picker-prefix}-menu {
+        float: right;
+        &:not(:last-child) {
+            border-right: none;
+            border-left: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
         }
     }
 }
