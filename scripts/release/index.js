@@ -22,11 +22,11 @@ const runCommond = function(cmd) {
 };
 
 co(function* () {
-    checkTags();
+    // checkTags();
 
-    yield pushMaster();
+    // yield pushMaster();
     yield pushPlatformDocsBranch();
-    yield publishToNpm();
+    // yield publishToNpm();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
