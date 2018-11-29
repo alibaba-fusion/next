@@ -20,6 +20,7 @@ export default class DatePicker extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 输入框内置标签
          */
@@ -137,6 +138,7 @@ export default class DatePicker extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         format: 'YYYY-MM-DD',
         size: 'medium',
         showTime: false,
@@ -345,6 +347,7 @@ export default class DatePicker extends Component {
     render() {
         const {
             prefix,
+            rtl,
             locale,
             label,
             state,
@@ -387,6 +390,10 @@ export default class DatePicker extends Component {
             [`${prefix}date-picker-panel-input`]: true,
             [`${prefix}focus`]: panel === PANEL.DATE,
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const sharedInputProps = {
             size,
@@ -480,7 +487,6 @@ export default class DatePicker extends Component {
                 hasClear={allowClear}
                 className={triggerInputCls} />
         </div>);
-
         return (<div {...obj.pickOthers(DatePicker.propTypes, others)} className={datePickerCls}>
             <Popup
                 {...popupProps}
