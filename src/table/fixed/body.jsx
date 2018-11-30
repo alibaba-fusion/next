@@ -19,7 +19,7 @@ export default class FixedBody extends React.Component {
 
     static contextTypes = {
         fixedHeader: PropTypes.bool,
-        maxBodyHeight: PropTypes.number,
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onBodyScroll: PropTypes.func,
         getNode: PropTypes.func,
     }

@@ -13,7 +13,7 @@ export default class VirtualBody extends React.Component {
     }
 
     static contextTypes = {
-        maxBodyHeight: PropTypes.number,
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onBodyScroll: PropTypes.func,
         onVirtualScroll: PropTypes.func,
         onLockBodyScroll: PropTypes.func,

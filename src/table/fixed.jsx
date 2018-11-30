@@ -25,7 +25,7 @@ export default function fixed(BaseComponent) {
             /**
              * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
              */
-            maxBodyHeight: PropTypes.number,
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             ...BaseComponent.propTypes
         }
 
@@ -41,7 +41,7 @@ export default function fixed(BaseComponent) {
 
         static childContextTypes = {
             fixedHeader: PropTypes.bool,
-            maxBodyHeight: PropTypes.number,
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             onBodyScroll: PropTypes.func,
             getNode: PropTypes.func
         }
