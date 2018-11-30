@@ -18,7 +18,7 @@ export default class StickHeader extends React.Component {
         const { Header, offsetTop, affixProps } = this.context;
 
         const newAffixProps = affixProps || {};
-        const { className, others } = newAffixProps;
+        const { className, ...others } = newAffixProps;
         const cls = classnames({
             [`${prefix}table-affix`]: true,
             className
