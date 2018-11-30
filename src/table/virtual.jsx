@@ -18,7 +18,7 @@ export default function virtual(BaseComponent) {
              * 设置行高
              */
             rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-            maxBodyHeight: PropTypes.number,
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             primaryKey: PropTypes.string,
             dataSource: PropTypes.array,
             /**

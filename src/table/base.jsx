@@ -216,7 +216,7 @@ export default class Table extends React.Component {
         /**
          * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
          */
-        maxBodyHeight: PropTypes.number,
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 是否启用选择模式
         * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
