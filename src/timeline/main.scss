@@ -4,6 +4,7 @@
 @import "scss/normalize";
 @import "scss/mixin";
 @import "scss/util";
+@import "./rtl.scss";
 
 #{$timeline-prefix} {
     & {
@@ -48,19 +49,19 @@
 }
 
 #{$timeline-prefix}-item-done {
-    @include node-state($timeline-item-done-background, $timeline-item-done-color, $timeline-item-done-dot-size);
+    @include node-state('ltr', $timeline-item-done-background, $timeline-item-done-color, $timeline-item-done-dot-size);
 }
 
 #{$timeline-prefix}-item-process {
-    @include node-state($timeline-item-process-background, $timeline-item-process-color, $timeline-item-process-dot-size);
+    @include node-state('ltr', $timeline-item-process-background, $timeline-item-process-color, $timeline-item-process-dot-size);
 }
 
 #{$timeline-prefix}-item-success {
-    @include node-state($timeline-item-success-background, $timeline-item-success-color, $timeline-item-success-dot-size);
+    @include node-state('ltr', $timeline-item-success-background, $timeline-item-success-color, $timeline-item-success-dot-size);
 }
 
 #{$timeline-prefix}-item-error {
-    @include node-state($timeline-item-error-background, $timeline-item-error-color, $timeline-item-error-dot-size);
+    @include node-state('ltr', $timeline-item-error-background, $timeline-item-error-color, $timeline-item-error-dot-size);
 }
 
 #{$timeline-prefix}-item-last {
