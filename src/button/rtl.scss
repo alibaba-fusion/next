@@ -59,63 +59,62 @@
     }
 }
 
-#{$btn-prefix}[dir="rtl"] {
-    &#{$btn-prefix} {
-        /* 尺寸维度 */
-        /* ---------------------------------------- */
-        &.#{$css-prefix} {
-            &small {
-                @include next-button-size-rtl(
-                    $btn-size-s-padding,
-                    $btn-size-s-icon-margin,
-                    $btn-size-s-icon-size,
-                    $btn-size-s-corner
-                );
-            }
-            &medium {
-                @include next-button-size-rtl(
-                    $btn-size-m-padding,
-                    $btn-size-m-icon-margin,
-                    $btn-size-m-icon-size,
-                    $btn-size-m-corner,
-                );
-            }
-            &large {
-                @include next-button-size-rtl(
-                    $btn-size-l-padding,
-                    $btn-size-l-icon-margin,
-                    $btn-size-l-icon-size,
-                    $btn-size-l-corner,
-                );
-            }
+#{$btn-prefix}{
+    /* 尺寸维度 */
+    /* ---------------------------------------- */
+    &.#{$css-prefix} {
+        &small[dir="rtl"]  {
+            @include next-button-size-rtl(
+            $btn-size-s-padding,
+            $btn-size-s-icon-margin,
+            $btn-size-s-icon-size,
+            $btn-size-s-corner
+            );
         }
-
-        /* 文本按钮 */
-        &-text {
-            &.#{$css-prefix}large {
-                @include next-button-size-rtl(
-                    0,
-                    $btn-text-icon-l-margin,
-                    $btn-size-l-icon-size,
-                    0
-                );
-            }
-            &.#{$css-prefix}medium {
-                @include next-button-size-rtl(
-                    0,
-                    $btn-text-icon-m-margin,
-                    $btn-size-m-icon-size,
-                    0
-                );
-            }
-            &.#{$css-prefix}small {
-                @include next-button-size-rtl(
-                    0,
-                    $btn-text-icon-s-margin,
-                    $btn-size-s-icon-size,
-                    0
-                );
-            }
+        &medium[dir="rtl"]  {
+            @include next-button-size-rtl(
+            $btn-size-m-padding,
+            $btn-size-m-icon-margin,
+            $btn-size-m-icon-size,
+            $btn-size-m-corner
+            );
+        }
+        &large[dir="rtl"]  {
+            @include next-button-size-rtl(
+            $btn-size-l-padding,
+            $btn-size-l-icon-margin,
+            $btn-size-l-icon-size,
+            $btn-size-l-corner
+            );
         }
     }
+
+    /* 文本按钮 */
+    &-text[dir="rtl"] {
+        &.#{$css-prefix}large {
+            @include next-button-size-rtl(
+            0,
+            $btn-text-icon-l-margin,
+            $btn-size-l-icon-size,
+            0
+            );
+        }
+        &.#{$css-prefix}medium {
+            @include next-button-size-rtl(
+            0,
+            $btn-text-icon-m-margin,
+            $btn-size-m-icon-size,
+            0
+            );
+        }
+        &.#{$css-prefix}small {
+            @include next-button-size-rtl(
+            0,
+            $btn-text-icon-s-margin,
+            $btn-size-s-icon-size,
+            0
+            );
+        }
+    }
+
 }
