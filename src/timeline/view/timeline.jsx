@@ -12,6 +12,7 @@ class Timeline extends Component {
          * 样式的品牌前缀
          */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]`
          */
@@ -27,6 +28,7 @@ class Timeline extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         fold: [],
         locale: locale.Timeline,
         animation: true
@@ -65,7 +67,7 @@ class Timeline extends Component {
     }
 
     render() {
-        const { prefix, className, children, locale, animation, ...others } = this.props;
+        const { prefix, rtl, className, children, locale, animation, ...others } = this.props;
         const { fold } = this.state;
 
         // 修改子节点属性
@@ -99,6 +101,10 @@ class Timeline extends Component {
         const timelineCls = classNames({
             [`${prefix}timeline`]: true,
         }, className);
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         return (
             <ul {...obj.pickOthers(Timeline.propTypes, others)} className={timelineCls}>
