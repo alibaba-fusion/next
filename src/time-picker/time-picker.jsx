@@ -20,6 +20,7 @@ export default class TimePicker extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 按钮的文案
          */
@@ -137,6 +138,7 @@ export default class TimePicker extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         locale: timePickerLocale,
         size: 'medium',
         format: 'HH:mm:ss',
@@ -270,6 +272,7 @@ export default class TimePicker extends Component {
             disabled,
             className,
             locale,
+            rtl,
             ...others } = this.props;
 
         const { value, inputStr, inputing, visible } = this.state;
@@ -277,6 +280,10 @@ export default class TimePicker extends Component {
         const triggerCls = classnames({
             [`${prefix}time-picker-trigger`]: true,
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const inputValue = inputing ? inputStr : (value && value.format(format) || '');
         const sharedInputProps = {
@@ -334,7 +341,7 @@ export default class TimePicker extends Component {
                 triggerType={popupTriggerType}
                 style={popupStyle}
                 className={popupClassName}>
-                <div className={`${prefix}time-picker-body`}>
+                <div dir={others.dir} className={`${prefix}time-picker-body`}>
                     <div className={`${prefix}time-picker-panel-header`}>
                         <Input
                             {...sharedInputProps}
