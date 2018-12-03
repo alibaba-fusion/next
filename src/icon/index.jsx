@@ -8,10 +8,8 @@ import ConfigProvider from '../config-provider';
  */
 class Icon extends Component {
     static propTypes = {
-        /**
-        * 样式类名的品牌前缀
-        */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 指定显示哪种图标
          */
@@ -21,7 +19,6 @@ class Icon extends Component {
          */
         size: PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl']),
         className: PropTypes.string,
-        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
