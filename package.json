@@ -33,6 +33,7 @@
   },
   "scripts": {
     "dev": "node ./scripts/server/index.js",
+    "dev-remote": "node ./scripts/server-remote/index.js",
     "build": "node ./scripts/build/index.js",
     "check": "node ./scripts/check/index.js",
     "docs": "node ./scripts/docs/index.js",

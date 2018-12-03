@@ -8,6 +8,7 @@
 
 @import "scss/date-picker";
 @import "scss/range-picker";
+@import "./rtl.scss";
 
 #{$date-picker-prefix}, #{$range-picker-prefix}, #{$month-picker-prefix}, #{$year-picker-prefix} {
     @include box-sizing;
