@@ -207,6 +207,8 @@ export default class SubMenu extends Component {
             [subMenuContentClassName]: !!subMenuContentClassName
         });
 
+        others.rtl = rtl;
+
         return (
             <PopupItem {...others} hasSubMenu>
                 <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
