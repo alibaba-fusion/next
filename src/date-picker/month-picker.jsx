@@ -18,6 +18,7 @@ class MonthPicker extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 输入框内置标签
          */
@@ -121,6 +122,7 @@ class MonthPicker extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         format: 'YYYY-MM',
         size: 'medium',
         disabledDate: () => false,
@@ -246,6 +248,7 @@ class MonthPicker extends Component {
     render() {
         const {
             prefix,
+            rtl,
             locale,
             label,
             state,
@@ -281,6 +284,10 @@ class MonthPicker extends Component {
         const panelBodyClassName = classnames({
             [`${prefix}month-picker-body`]: true,
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const panelInputCls = `${prefix}month-picker-panel-input`;
 
@@ -325,7 +332,6 @@ class MonthPicker extends Component {
                 hasClear={allowClear}
                 className={triggerInputCls} />
         </div>);
-
         return (<div {...obj.pickOthers(MonthPicker.propTypes, others)} className={monthPickerCls}>
             <Popup
                 {...popupProps}
@@ -339,7 +345,7 @@ class MonthPicker extends Component {
                 style={popupStyle}
                 className={popupClassName}
                 trigger={trigger}>
-                <div className={panelBodyClassName}>
+                <div className={panelBodyClassName} dir={others.dir}>
                     <div className={`${prefix}month-picker-panel-header`}>
                         {dateInput}
                     </div>
