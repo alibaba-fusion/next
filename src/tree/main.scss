@@ -173,6 +173,7 @@
         }
     }
 
+
     &.#{$css-prefix}node-indent {
         #{$tree-prefix}-node #{$tree-prefix}-node {
             margin-left: $tree-child-indent;
@@ -190,8 +191,12 @@
 
         #{$tree-prefix}-node-label {
             transition: color cubic-bezier(.23, 1, .32, 1) 300ms, background-color cubic-bezier(.23, 1, .32, 1) 300ms;
-            cursor: pointer;
+            cursor: default;
             @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
+        }
+
+        #{$tree-prefix}-node-label-selectable {
+            cursor: pointer;
         }
 
         #{$tree-prefix}-node-label:hover {
