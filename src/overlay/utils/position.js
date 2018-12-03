@@ -131,7 +131,7 @@ export default class Position {
 
         offset.top += parseFloat(dom.getStyle(parent, 'border-top-width'), 10);
         offset.left += parseFloat(dom.getStyle(parent, 'border-left-width'), 10);
-
+        offset.offsetParent = parent;
         return offset;
     }
 
@@ -288,9 +288,10 @@ export default class Position {
         }
 
         // transfer {left,top} equaly to {right,top}
-        const {width: viewportWidth} = _getViewportSize();
+        const pinElementParentOffset = this._getParentOffset(pinElement);
+        const {width: offsetParentWidth} =  _getElementRect(pinElementParentOffset.offsetParent);
         const {width} = _getElementRect(pinElement);
-        const right = viewportWidth - (left + width);
+        const right = offsetParentWidth - (left + width);
         dom.setStyle(pinElement, {
             left: "auto",
             right: `${right + offset[0]}px`,
