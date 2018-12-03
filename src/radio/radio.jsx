@@ -204,6 +204,7 @@ class Radio extends UIState {
             <label
                 {...othersData}
                 role="radio"
+                dir={rtl ? 'rtl' : 'ltr'}
                 style={style}
                 tabIndex={tabIndex}
                 aria-checked={checked}

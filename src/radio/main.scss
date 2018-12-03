@@ -2,6 +2,7 @@
 
 @import '../core/index-noreset';
 @import "scss/variable";
+@import './rtl.scss';
 
 #{$radio-prefix}-wrapper {
     outline: 0;
