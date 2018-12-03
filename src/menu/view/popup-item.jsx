@@ -24,6 +24,7 @@ export default class PopupItem extends Component {
         root: PropTypes.object,
         level: PropTypes.number,
         hasSubMenu: PropTypes.bool,
+        rtl: PropTypes.bool,
         selectable: PropTypes.bool,
         /**
          * 标签内容
@@ -170,7 +171,7 @@ export default class PopupItem extends Component {
     }
 
     render() {
-        const { root, level, hasSubMenu, selectable: selectableFromProps, children, triggerType, align } = this.props;
+        const { root, level, hasSubMenu, selectable: selectableFromProps, children, triggerType, align, rtl } = this.props;
         const others = obj.pickOthers(Object.keys(PopupItem.propTypes), this.props);
         const { prefix, selectMode, direction, popupAlign: rootPopupAlign, triggerType: rootTriggerType } = root.props;
         const popupAlign = align || rootPopupAlign;
@@ -208,7 +209,10 @@ export default class PopupItem extends Component {
                     return findDOMNode(root);
                 };
                 positionProps.align = 'tl tr';
-                positionProps.offset = [2, 0];
+
+                rtl ?
+                    positionProps.offset = [-2, 0] :
+                    positionProps.offset = [2, 0];
             } else {
                 if (triggerIsIcon) {
                     positionProps.target = () => {
@@ -216,7 +220,10 @@ export default class PopupItem extends Component {
                     };
                 }
                 positionProps.align = 'tl tr';
-                positionProps.offset = [-2, -8];
+
+                rtl ?
+                    positionProps.offset = [2, -8] :
+                    positionProps.offset = [-2, -8];
             }
 
             arrowProps = {
