@@ -4,7 +4,6 @@ const path = require('path');
 const parseArgs = require('minimist');
 const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const choosePort = require('react-dev-utils/WebpackDevServerUtils').choosePort;
 const getWebpackConfig = require('./webpack');
 const { logger } = require('../utils');
 
@@ -19,25 +18,13 @@ const argv = parseArgs(process.argv.slice(2), {
     }
 });
 
-const { host, lang, dir, name } = argv;
+const { lang, dir, name } = argv;
 
-const port = parseInt(argv.port, 10);
 const componentName = name;
 const componentPath = path.join(process.cwd(), 'docs', componentName);
 const disableAnimation = argv['disable-animation'];
 
-choosePort(host, port).then(tryToRun);
-
-function tryToRun(port) {
-    if (port) {
-        try {
-            run(port);
-        } catch (e) {
-            logger.error(`Start server failed: ${e.stack}`);
-        }
-    }
-}
-
+run();
 function run() {
     const config = getWebpackConfig({
         componentName,

@@ -23,7 +23,6 @@ if (argv._.length === 2 && argv._[0] === 'push') {
         start(restoreArgs(argv), () => {
             num--;
             if (num === 0) {
-                cp.execSync('cd __html/ && git status');
                 cp.execSync('cd __html/ && git add . && git commit -m "html push" && git pull && git push -u -f origin master');
             }
         });
@@ -58,7 +57,6 @@ function start(args, cb) {
 
     worker.on('exit', data => {
         cb();
-        console.log('========end=====');
     });
 }
 
