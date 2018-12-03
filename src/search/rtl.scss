@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+#{$search-prefix} {
+        &-simple[dir=rtl] {
+            &.#{$css-prefix}large {
+                #{$search-prefix}-icon {
+                    margin-left: $search-simple-l-icon-margin-right;
+                    margin-right: 0;
+                }
+            }
+            &.#{$css-prefix}medium {
+                #{$search-prefix}-icon {
+                    margin-left: $search-simple-m-icon-margin-right;
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &-normal[dir=rtl] {
+            #{$search-prefix}-left {
+                border-left: none;
+                border-top-right-radius: $search-normal-corner;
+                border-bottom-right-radius: $search-normal-corner;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+            #{$search-prefix}-btn.#{$css-prefix}btn {
+                border-top-left-radius: $search-normal-corner;
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+                border-bottom-left-radius: $search-normal-corner;
+                // border-radius: $search-normal-corner 0 0 $search-normal-corner !important;
+            }
+        }
+}
+
