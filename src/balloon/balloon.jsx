@@ -16,14 +16,9 @@ export default class Balloon extends React.Component {
         prefix: PropTypes.string
     }
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
-        /**
-         * 是否pure render
-         */
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -227,17 +222,24 @@ export default class Balloon extends React.Component {
     }
 
     _onPosition(res) {
+        const { rtl } = this.props;
         alignMap = this.props.alignEdge ? edgeMap : normalMap;
         const newAlign = res.align.join(' ');
         let resAlign;
 
+        let alignKey = 'align';
+        if (rtl) {
+            alignKey = 'rtlAlign';
+        }
+
         for (const key in alignMap) {
-            if (alignMap[key].align === newAlign) {
+            if (alignMap[key][alignKey] === newAlign) {
                 resAlign = key;
 
                 break;
             }
         }
+
         resAlign = resAlign || this.state.align;
         if (resAlign !== this.state.align) {
             this.setState({
@@ -251,7 +253,7 @@ export default class Balloon extends React.Component {
             trigger, triggerType, children, closable,
             shouldUpdatePosition, delay, needAdjust,
             safeId, autoFocus, safeNode, onClick, onHover,
-            animation, offset, style, container, popupContainer, cache, popupStyle, popupClassName, popupProps, ...others } = this.props;
+            animation, offset, style, container, popupContainer, cache, popupStyle, popupClassName, popupProps, rtl, ...others } = this.props;
 
         if (container) {
             log.deprecated('container', 'popupContainer', 'Balloon');
@@ -262,9 +264,13 @@ export default class Balloon extends React.Component {
         alignMap = alignEdge ? edgeMap : normalMap;
         const _prefix = this.context.prefix || prefix;
 
+        let trOrigin = 'trOrigin';
+        if (rtl) {
+            trOrigin = 'rtlTrOrigin';
+        }
 
         const _offset = [alignMap[align].offset[0] + offset[0], alignMap[align].offset[1] + offset[1]];
-        const transformOrigin = alignMap[align].trOrigin;
+        const transformOrigin = alignMap[align][trOrigin];
         const _style = {...{transformOrigin}, ...style};
 
         const content = (<BalloonInner
@@ -277,6 +283,7 @@ export default class Balloon extends React.Component {
             style={_style}
             align={align}
             type={type}
+            rtl={rtl}
             alignEdge={alignEdge}
         >
             {children}
