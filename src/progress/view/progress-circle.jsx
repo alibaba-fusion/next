@@ -16,7 +16,8 @@ export default class Circle extends Component {
         progressive: PropTypes.bool,
         textRender: PropTypes.func,
         prefix: PropTypes.string,
-        className: PropTypes.string
+        className: PropTypes.string,
+        color: PropTypes.string,
     };
 
     constructor(props) {
@@ -66,7 +67,7 @@ export default class Circle extends Component {
     }
 
     render() {
-        const { prefix, size, state, percent, className, textRender, progressive, ...others } = this.props;
+        const { prefix, size, state, percent, className, textRender, progressive, color, ...others } = this.props;
         const { underlayStrokeWidth, overlayStrokeWidth } = this.state;
 
         // underlay path
@@ -91,10 +92,10 @@ export default class Circle extends Component {
 
         const pathCls = classNames({
             [`${prefix}progress-circle-overlay`]: true,
-            [`${prefix}progress-circle-overlay-${state}`]: !progressive && state,
-            [`${prefix}progress-circle-overlay-started`]: progressive && percent <= 30,
-            [`${prefix}progress-circle-overlay-middle`]: progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-circle-overlay-finishing`]: progressive && percent >= 80,
+            [`${prefix}progress-circle-overlay-${state}`]: !color && !progressive && state,
+            [`${prefix}progress-circle-overlay-started`]: !color && progressive && percent <= 30,
+            [`${prefix}progress-circle-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
+            [`${prefix}progress-circle-overlay-finishing`]: !color && progressive && percent >= 80,
         });
 
         return (
@@ -107,7 +108,9 @@ export default class Circle extends Component {
                         fillOpacity="0"
                         strokeDasharray={overlayStrokeDasharray}
                         strokeDashoffset={overlayStrokeDashoffset}
-                        ref={this._overlayRefHandler} />
+                        ref={this._overlayRefHandler}
+                        stroke={color}
+                        />
                 </svg>
                 {suffixText ? <div className={`${prefix}progress-circle-text`}>{suffixText}</div> : null}
             </div>
