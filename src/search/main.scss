@@ -3,6 +3,7 @@
 @import "../input/scss/mixin.scss";
 @import "scss/mixin";
 @import "scss/variable";
+@import "./rtl.scss";
 
 #{$search-prefix} {
     @include box-sizing;
@@ -49,7 +50,8 @@
         width: 600px;
 
         #{$search-prefix}-left {
-            border-right: none;
+            // border-right: none; 该属性一旦添加 无法被 rtl.scss覆盖 故在后面用 :not选择器进行
+
             border-top-left-radius: $search-normal-corner;
             border-bottom-left-radius: $search-normal-corner;
         }
@@ -218,7 +220,11 @@
             }
         }
     }
-
+    &-normal:not([dir=rtl]) {
+        #{$search-prefix}-left {
+            border-right: none;
+        }
+    }
     &-simple {
         width: 300px;
         box-shadow: $search-simple-normal-shadow;
@@ -293,3 +299,4 @@
         }
     }
 }
+
