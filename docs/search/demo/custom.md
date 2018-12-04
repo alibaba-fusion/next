@@ -50,12 +50,12 @@ class App extends React.Component {
     renderMenu() {
         const menuData = this.state.menuData;
 
-        return (<Menu onSelect={this.onSelect.bind(this)} className="diy-menu" selectMode="single">
+        return (<Menu onSelect={this.onSelect.bind(this)} rtl className="diy-menu" selectMode="single">
             <Menu.Group label="Recent" key="xxx">
                 {menuData.map((item) => {
                     return (<Menu.Item key={item.value}>
                         {item.label}
-                        <Button onClick={this.onDelete.bind(this, item.index)} shape="text" style={{float: 'right'}}>Delete</Button>
+                        <Button className="diy-menu-button" onClick={this.onDelete.bind(this, item.index)} text>Delete</Button>
                     </Menu.Item>);
                 })}
             </Menu.Group>
@@ -137,6 +137,12 @@ ReactDOM.render(<App/>, mountNode);
 }
 .diy-menu .next-menu-item:hover a{
     display:inline-block;
+}
+.diy-menu .diy-menu-button {
+    float: right;
+}
+.diy-menu[dir=rtl] .diy-menu-button {
+    float: left;
 }
 ````
 
