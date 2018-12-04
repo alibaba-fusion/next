@@ -10,7 +10,8 @@
 
 - order: 3
 
-Change the default container by passing a function to `container`.
+Change the default container by passing a function to `container`;
+enable `absoluteAffix` to use `absolute position` to implement affix component;
 
 :::
 
