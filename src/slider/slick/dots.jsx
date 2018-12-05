@@ -35,7 +35,7 @@ export default class Dots extends React.Component {
     }
 
     render () {
-        const {prefix, slideCount, slidesToScroll, currentSlide, dotsClass, dotsDirection, dotsRender, triggerType} = this.props;
+        const {prefix, slideCount, slidesToScroll, currentSlide, dotsClass, dotsDirection, dotsRender, triggerType, rtl} = this.props;
 
         const dotsClazz = classNames(`${prefix}slick-dots`, dotsDirection, dotsClass);
         const dotCount = Math.ceil(slideCount / slidesToScroll);
@@ -58,12 +58,19 @@ export default class Dots extends React.Component {
                 [(triggerType.toLowerCase() === 'hover') ? 'onMouseEnter' : 'onClick']: this.handleChangeSlide.bind(this, dotOptions)
             };
 
+            let docIndex = i;
+            let currentSlideIndex = i;
+            if (rtl) {
+                docIndex = dotCount - 1 - i;
+                currentSlideIndex = dotCount - 1 - currentSlide;
+            }
+
             children.push(
                 <li key={i} className={itemClazz}>
                     {
                         (dotsRender instanceof Function) ?
                             <span {...handleProp}>
-                                {dotsRender(i, currentSlide)}
+                                {dotsRender(docIndex, currentSlideIndex)}
                             </span> :
                             <button {...handleProp} />
                     }

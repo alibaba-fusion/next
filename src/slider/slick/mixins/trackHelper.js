@@ -88,7 +88,13 @@ export const getTrackLeft = function(spec) {
             verticalOffset = (spec.slideHeight * spec.slidesToShow) * -1;
         }
         if (spec.slideCount % spec.slidesToScroll !== 0) {
-            if (spec.slideIndex + spec.slidesToScroll > spec.slideCount && spec.slideCount > spec.slidesToShow) {
+            let condition = spec.slideIndex + spec.slidesToScroll > spec.slideCount && spec.slideCount > spec.slidesToShow;
+
+            if (spec.rtl) {
+                const slideIndex = spec.slideIndex >= spec.slideCount ? spec.slideCount - spec.slideIndex : spec.slideIndex;
+                condition = slideIndex + spec.slidesToScroll > spec.slideCount && spec.slideCount > spec.slidesToShow;
+            }
+            if (condition) {
                 if (spec.slideIndex > spec.slideCount) {
                     slideOffset = ((spec.slidesToShow - (spec.slideIndex - spec.slideCount)) * spec.slideWidth) * -1;
                     verticalOffset = ((spec.slidesToShow - (spec.slideIndex - spec.slideCount)) * spec.slideHeight) * -1;
