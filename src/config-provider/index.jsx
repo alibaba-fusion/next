@@ -1,7 +1,16 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import getContextProps from './get-context-props';
-import { config, initLocales, setLanguage, setLocale, getLocale, getLanguage } from './config';
+import {
+    config,
+    initLocales,
+    setLanguage,
+    setLocale,
+    setDirection,
+    getLocale,
+    getLanguage,
+    getDirection
+} from './config';
 import Consumer from './consumer';
 import Cache from './cache';
 
@@ -30,6 +39,10 @@ class ConfigProvider extends Component {
          */
         warning: PropTypes.bool,
         /**
+         * 是否开启 rtl 模式
+         */
+        rtl: PropTypes.bool,
+        /**
          * 组件树
          */
         children: PropTypes.element
@@ -43,6 +56,7 @@ class ConfigProvider extends Component {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
         nextPure: PropTypes.bool,
+        nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool
     };
 
@@ -69,20 +83,23 @@ class ConfigProvider extends Component {
     static initLocales = initLocales;
     static setLanguage = setLanguage;
     static setLocale = setLocale;
+    static setDirection = setDirection;
     static getLanguage = getLanguage;
     static getLocale = getLocale;
+    static getDirection = getDirection;
     static Consumer = Consumer;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextWarning } = childContextCache.root() || {};
+        const { nextPrefix, nextLocale, nextPure, nextRtl, nextWarning } = childContextCache.root() || {};
 
         return {
             prefix: nextPrefix,
             locale: nextLocale,
             pure: nextPure,
+            rtl: nextRtl,
             warning: nextWarning
         };
-    }
+    };
 
     constructor(...args) {
         super(...args);
@@ -93,12 +110,13 @@ class ConfigProvider extends Component {
     }
 
     getChildContext() {
-        const { prefix, locale, pure, warning } = this.props;
+        const { prefix, locale, pure, warning, rtl } = this.props;
 
         return {
             nextPrefix: prefix,
             nextLocale: locale,
             nextPure: pure,
+            nextRtl: rtl,
             nextWarning: warning
         };
     }

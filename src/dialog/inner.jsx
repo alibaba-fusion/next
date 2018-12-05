@@ -26,7 +26,8 @@ export default class Inner extends Component {
         closeable: PropTypes.bool,
         onClose: PropTypes.func,
         locale: PropTypes.object,
-        role: PropTypes.string
+        role: PropTypes.string,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -65,7 +66,7 @@ export default class Inner extends Component {
     }
 
     renderFooter() {
-        const { prefix, footer, footerAlign, footerActions, locale } = this.props;
+        const { prefix, footer, footerAlign, footerActions, locale, rtl } = this.props;
 
         if (footer === false) {
             return null;
@@ -115,7 +116,7 @@ export default class Inner extends Component {
     }
 
     render() {
-        const { prefix, className, closeable, title, role } = this.props;
+        const { prefix, className, closeable, title, role, rtl } = this.props;
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
@@ -137,7 +138,7 @@ export default class Inner extends Component {
         }
 
         return (
-            <div {...ariaProps} className={newClassName} {...others}>
+            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? "rtl" : undefined}>
                 {header}
                 {body}
                 {footer}

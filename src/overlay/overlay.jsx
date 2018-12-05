@@ -48,6 +48,7 @@ export default class Overlay extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
         /**
@@ -613,7 +614,7 @@ export default class Overlay extends Component {
         const {
             prefix, className, style, children: propChildren,
             target, align, offset, container, hasMask, needAdjust,
-            beforePosition, onPosition, wrapperStyle,
+            beforePosition, onPosition, wrapperStyle, rtl,
             shouldUpdatePosition: propShouldUpdatePosition,
             cache, wrapperClassName, onMaskMouseEnter, onMaskMouseLeave
         } = this.props;
@@ -647,7 +648,7 @@ export default class Overlay extends Component {
                         children, target, align, offset, needAdjust,
                         beforePosition,
                         onPosition: makeChain(this.handlePosition, onPosition),
-                        shouldUpdatePosition
+                        shouldUpdatePosition, rtl
                     })} />
                 );
             }
@@ -661,12 +662,13 @@ export default class Overlay extends Component {
             }, wrapperStyle);
 
             children = (
-                <div className={wrapperClazz} style={newWrapperStyle}>
+                <div className={wrapperClazz} style={newWrapperStyle} dir={rtl ? 'rtl' : undefined}>
                     {hasMask ?
                         <div className={`${prefix}overlay-backdrop`}
                             onClick={this.handleMaskClick}
                             onMouseEnter={onMaskMouseEnter}
-                            onMouseLeave={onMaskMouseLeave} /> :
+                            onMouseLeave={onMaskMouseLeave}
+                            dir={rtl ? 'rtl' : undefined} /> :
                         null}
                     {children}
                 </div>

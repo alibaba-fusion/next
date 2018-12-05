@@ -21,7 +21,8 @@ const helpers = {
         const slideHeight = this.getHeight(slickList.querySelector('[data-index="0"]'));
         const listHeight = slideHeight * props.slidesToShow;
 
-        const currentSlide = props.rtl ? slideCount - 1 - props.defaultActiveIndex : props.defaultActiveIndex;
+        const slidesToShow = props.slidesToShow || 1;
+        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1)  - props.defaultActiveIndex : props.defaultActiveIndex;
 
         this.setState({
             slideCount,
@@ -88,6 +89,8 @@ const helpers = {
     },
 
     slideHandler (index) {
+        const { rtl } = this.props;
+
         // Functionality of animateSlide and postSlide is merged into this function
         let targetSlide, currentSlide;
         let callback;
@@ -139,7 +142,34 @@ const helpers = {
         }
 
         targetSlide = index;
-        if (targetSlide < 0) {
+
+        if (rtl) {
+            if (targetSlide < 0) {
+                if (this.props.infinite === false) {
+                    currentSlide = 0;
+                } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
+                    if (targetSlide + this.props.slidesToScroll <= 0) {
+                        currentSlide = this.state.slideCount + targetSlide;
+                        targetSlide = this.state.slideCount - this.props.slidesToScroll;
+                    } else {
+                        currentSlide = targetSlide = 0;
+                    }
+                } else {
+                    // this.state.slideCount % this.props.slidesToScroll
+                    currentSlide =  this.state.slideCount + targetSlide;
+                }
+            } else if (targetSlide >= this.state.slideCount) {
+                if (this.props.infinite === false) {
+                    currentSlide = this.state.slideCount - this.props.slidesToShow;
+                } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
+                    currentSlide = 0;
+                } else {
+                    currentSlide = targetSlide - this.state.slideCount;
+                }
+            } else {
+                currentSlide = targetSlide;
+            }
+        } else if (targetSlide < 0) {
             if (this.props.infinite === false) {
                 currentSlide = 0;
             } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
@@ -158,6 +188,7 @@ const helpers = {
         } else {
             currentSlide = targetSlide;
         }
+
 
         let targetLeft = getTrackLeft({
             slideIndex: targetSlide,
@@ -182,10 +213,20 @@ const helpers = {
             const slidesToLoad = [];
 
             const sliderIndex = (targetSlide < 0 ? this.state.slideCount + targetSlide : currentSlide);
+
             for (let i = sliderIndex; i < sliderIndex + this.props.slidesToShow; i++) {
-                loaded = loaded && (this.state.lazyLoadedList.indexOf(i) >= 0);
+                let k = i;
+                if (rtl) {
+                    k =
+                    i >= this.state.slideCount ?
+                        this.state.slideCount * 2 - i - 1 :
+                        this.state.slideCount - i - 1;
+
+                }
+
+                loaded = loaded && (this.state.lazyLoadedList.indexOf(k) >= 0);
                 if (!loaded) {
-                    slidesToLoad.push(i);
+                    slidesToLoad.push(k);
                 }
             }
             if (!loaded) {

@@ -14,6 +14,7 @@ function mapIconSize(size) {
 export default class Button extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 按钮的类型
          */
@@ -91,7 +92,7 @@ export default class Button extends Component {
     };
 
     render() {
-        const { prefix, className, type, size, htmlType, loading, text, warning, ghost, component, iconSize, children, ...others } = this.props;
+        const { prefix, className, type, size, htmlType, loading, text, warning, ghost, component, iconSize, children, rtl, ...others } = this.props;
         const ghostType = ['light', 'dark'].indexOf(ghost) >= 0 ? ghost : 'dark';
 
         const btnCls = classNames({
@@ -142,7 +143,7 @@ export default class Button extends Component {
         }
 
         return (
-            <TagName {...tagAttrs} onMouseUp={this.onMouseUp} ref={this.buttonRefHandler} role="button">
+            <TagName {...tagAttrs} dir={rtl ? 'rtl' : undefined} onMouseUp={this.onMouseUp} ref={this.buttonRefHandler} role="button">
                 {clonedChildren}
             </TagName>
         );

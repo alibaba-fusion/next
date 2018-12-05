@@ -104,3 +104,5 @@
         @include balloon-size($balloon-tooltip-size-padding-top, $balloon-tooltip-size-padding-right, $balloon-tooltip-size-padding-bottom, $balloon-tooltip-size-padding-left);
     }
 }
+
+@import "./rtl.scss";

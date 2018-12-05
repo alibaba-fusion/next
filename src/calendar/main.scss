@@ -7,6 +7,7 @@
 
 @import "scss/header";
 @import "scss/table";
+@import "./rtl.scss";
 
 #{$calendar-prefix} {
     &-table {

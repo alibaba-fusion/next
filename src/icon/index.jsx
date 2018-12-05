@@ -8,10 +8,8 @@ import ConfigProvider from '../config-provider';
  */
 class Icon extends Component {
     static propTypes = {
-        /**
-        * 样式类名的品牌前缀
-        */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 指定显示哪种图标
          */
@@ -20,7 +18,7 @@ class Icon extends Component {
          * 指定图标大小
          */
         size: PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl']),
-        className: PropTypes.string
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -31,7 +29,8 @@ class Icon extends Component {
     static _typeMark = 'icon';
 
     render() {
-        const { prefix, type, size, className, ...other } = this.props;
+        /* eslint-disable no-unused-vars*/
+        const { prefix, type, size, className, rtl, ...other } = this.props;
 
         const classes = cx({
             [`${prefix}icon`]: true,
@@ -39,6 +38,11 @@ class Icon extends Component {
             [`${prefix}${size}`]: !!size,
             [className]: !!className
         });
+
+        if (rtl && ['arrow-left', 'arrow-right', 'arrow-double-left', 'arrow-double-right', 'switch', 'sorting', 'descending', 'ascending'].indexOf(type) !== -1) {
+            other.dir = 'rtl';
+        }
+
         return <i {...other} className={classes} />;
     }
 }

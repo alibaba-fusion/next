@@ -1,6 +1,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/variable";
 @import "scss/mixin";
+@import "./rtl.scss";
 
 #{$menu-prefix} {
     @include box-sizing;

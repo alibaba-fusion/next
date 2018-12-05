@@ -19,6 +19,7 @@ class Pagination extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 自定义国际化文案对象
@@ -118,6 +119,7 @@ class Pagination extends Component {
     static defaultProps = {
         prefix: 'next-',
         pure: false,
+        rtl: false,
         locale: zhCN.Pagination,
         type: 'normal',
         shape: 'normal',
@@ -260,9 +262,11 @@ class Pagination extends Component {
             onClick: this.onPageItemClick.bind(this, current - 1)
         };
 
+        const icon = <Icon type="arrow-left" />;
+
         return (
             <Button {...props}>
-                <Icon type="arrow-left" />
+                {icon}
                 {shape === 'arrow-only' ||
                  shape === 'arrow-prev-only' ||
                  shape === 'no-border' ?  '' : locale.prev}
@@ -284,11 +288,13 @@ class Pagination extends Component {
             onClick: this.onPageItemClick.bind(this, current + 1)
         };
 
+        const icon = <Icon type="arrow-right" />;
+
         return (
             <Button {...props}>
                 {shape === 'arrow-only' ||
                  shape === 'no-border' ? '' : locale.next}
-                <Icon type="arrow-right" />
+                {icon}
             </Button>
         );
     }
@@ -464,7 +470,7 @@ class Pagination extends Component {
     render() {
         /* eslint-disable no-unused-vars */
         const {
-            prefix, pure, type, size, shape, className, total, totalRender,
+            prefix, pure, rtl, type, size, shape, className, total, totalRender,
             pageSize, pageSizeSelector, pageSizeList, pageSizePosition, useFloatLayout, onPageSizeChange,
             hideOnlyOnePage, showJump, locale, current, defaultCurrent, pageShowCount, pageNumberRender,
             link, onChange, ...others
@@ -487,6 +493,10 @@ class Pagination extends Component {
             [`${prefix}hide`]: totalPage <= 1 && hideOnlyOnePage,
             [className]: !!className
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const buildComponent = (...coms) => (
             <div className={classes} {...others}>

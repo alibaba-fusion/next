@@ -19,7 +19,7 @@ import { Overlay } from '@alifd/next';
 
 const { Popup } = Overlay;
 
-ReactDOM.render((
+ReactDOM.render(
     <Popup trigger={<button>Open first overlay</button>}
         triggerType="click">
         <div className="overlay-demo">
@@ -33,7 +33,7 @@ ReactDOM.render((
             <p>Hello World From First Overlay!</p>
         </div>
     </Popup>
-), mountNode);
+, mountNode);
 ````
 
 ````css

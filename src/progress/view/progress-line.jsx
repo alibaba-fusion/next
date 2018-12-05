@@ -11,12 +11,18 @@ export default class Line extends React.PureComponent {
         progressive: PropTypes.bool,
         hasBorder: PropTypes.bool,
         textRender: PropTypes.func,
+        color: PropTypes.string,
+        rtl: PropTypes.bool,
     };
 
     render() {
-        const { prefix, size, state, percent, progressive, hasBorder, textRender, className, ...others } = this.props;
+        const {
+            prefix, size, state, color,
+            percent, progressive, hasBorder,
+            textRender, className, rtl,
+            ...others } = this.props;
 
-        const suffixText = textRender(percent);
+        const suffixText = textRender(percent, {rtl});
 
         const wrapCls = classNames({
             [`${prefix}progress-line`]: true,
@@ -27,16 +33,16 @@ export default class Line extends React.PureComponent {
         });
         const lineCls = classNames({
             [`${prefix}progress-line-overlay`]: true,
-            [`${prefix}progress-line-overlay-${state}`]: !progressive && state,
-            [`${prefix}progress-line-overlay-started`]: progressive && percent <= 30,
-            [`${prefix}progress-line-overlay-middle`]: progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-line-overlay-finishing`]: progressive && percent >= 80,
+            [`${prefix}progress-line-overlay-${state}`]: !color && !progressive && state,
+            [`${prefix}progress-line-overlay-started`]: !color && progressive && percent <= 30,
+            [`${prefix}progress-line-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
+            [`${prefix}progress-line-overlay-finishing`]: !color && progressive && percent >= 80,
         });
 
-        const lineStyle = { width: `${percent}%` };
+        const lineStyle = { width: `${percent}%`, backgroundColor: color };
 
         return (
-            <div {...others} className={wrapCls}>
+            <div {...others} className={wrapCls} dir={rtl ? "rtl" : undefined}>
                 <div className={`${prefix}progress-line-container`}>
                     <div className={`${prefix}progress-line-underlay`}>
                         <div className={lineCls} style={lineStyle}></div>

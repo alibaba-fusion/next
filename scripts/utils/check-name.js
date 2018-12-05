@@ -1,19 +1,22 @@
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
+const minimist = require('minimist');
 const logger = require('./logger');
 
 const cwd = process.cwd();
 
-module.exports = function (runtest = false) {
-    const argv = require('minimist')(process.argv.slice(2));
+module.exports = function (runtest = false, withOtherArgs = false) {
+    const argv = minimist(process.argv.slice(2));
+    const arr = argv._;
+    const comIndex = arr.findIndex((a) => a.indexOf('=') === -1);
 
-    let componentName = argv._[0];
+    let componentName = arr[comIndex];
+
     if (componentName) {
         // compatible with npm run dev -- Menu
         componentName = _.kebabCase(componentName);
         const file = runtest ? 'test' : 'docs';
-        // const componentPath = path.join(cwd, file, componentName);
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;
         const valid = components.some((com) => {
@@ -29,6 +32,13 @@ module.exports = function (runtest = false) {
             logger.error(`The input component name (${componentName}) is invalid, try again like: npm run [command] number-picker`);
             process.exit(0);
             return false;
+        }
+
+        if (withOtherArgs) {
+            const newArgs =  argv._;
+            newArgs.splice(comIndex, 1);
+            newArgs.unshift(componentName);
+            return newArgs;
         }
         return name;
 

@@ -13,6 +13,7 @@ function getDisplayName(Component) {
 let globalLocales;
 let currentGlobalLanguage = 'zh-cn';
 let currentGlobalLocale = {};
+let currentGlobalRtl = false;
 
 export function initLocales(locales) {
     globalLocales = locales;
@@ -33,6 +34,10 @@ export function setLocale(locale) {
     };
 }
 
+export function setDirection(dir) {
+    currentGlobalRtl = dir === 'rtl';
+}
+
 export function getLocale() {
     return currentGlobalLocale;
 }
@@ -41,11 +46,21 @@ export function getLanguage() {
     return currentGlobalLanguage;
 }
 
+export function getDirection() {
+    return currentGlobalRtl;
+}
+
 export function config(Component, options = {}) {
     if (Component.prototype.shouldComponentUpdate === undefined) {
-        Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+        Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
+            nextProps,
+            nextState
+        ) {
             if (this.props.pure) {
-                return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
+                return (
+                    !shallowEqual(this.props, nextProps) ||
+                    !shallowEqual(this.state, nextState)
+                );
             }
 
             return true;
@@ -57,13 +72,15 @@ export function config(Component, options = {}) {
             ...(Component.propTypes || {}),
             prefix: PropTypes.string,
             locale: PropTypes.object,
-            pure: PropTypes.bool
+            pure: PropTypes.bool,
+            rtl: PropTypes.bool
         };
         static contextTypes = {
             ...(Component.contextTypes || {}),
             nextPrefix: PropTypes.string,
             nextLocale: PropTypes.object,
             nextPure: PropTypes.bool,
+            nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool
         };
 
@@ -100,25 +117,48 @@ export function config(Component, options = {}) {
         }
 
         render() {
-            const { prefix, locale, pure, ...others } = this.props;
-            const { nextPrefix, nextLocale = {}, nextPure } = this.context;
+            const { prefix, locale, pure, rtl, ...others } = this.props;
+            const {
+                nextPrefix,
+                nextLocale = {},
+                nextPure,
+                nextRtl
+            } = this.context;
 
-            const displayName = options.componentName || getDisplayName(Component);
+            const displayName =
+                options.componentName || getDisplayName(Component);
             const contextProps = getContextProps(
-                { prefix, locale, pure },
-                { nextPrefix, nextLocale: { ...currentGlobalLocale, ...nextLocale }, nextPure }, displayName
+                { prefix, locale, pure, rtl },
+                {
+                    nextPrefix,
+                    nextLocale: { ...currentGlobalLocale, ...nextLocale },
+                    nextPure,
+                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl : currentGlobalRtl
+                },
+                displayName
             );
 
-            const newContextProps = ['prefix', 'locale', 'pure'].reduce((ret, name) => {
-                if (typeof contextProps[name] !== 'undefined') {
-                    ret[name] = contextProps[name];
-                }
-                return ret;
-            }, {});
+            const newContextProps = ['prefix', 'locale', 'pure', 'rtl'].reduce(
+                (ret, name) => {
+                    if (typeof contextProps[name] !== 'undefined') {
+                        ret[name] = contextProps[name];
+                    }
+                    return ret;
+                },
+                {}
+            );
 
-            const newOthers = options.transform ? options.transform(others, this._deprecated) : others;
+            const newOthers = options.transform ?
+                options.transform(others, this._deprecated) :
+                others;
 
-            return <Component {...newOthers} {...newContextProps} ref={this._getInstance} />;
+            return (
+                <Component
+                    {...newOthers}
+                    {...newContextProps}
+                    ref={this._getInstance}
+                />
+            );
         }
     }
 

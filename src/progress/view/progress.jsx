@@ -23,11 +23,11 @@ export default class Progress extends Component {
          */
         percent: PropTypes.number,
         /**
-         * 进度状态
+         * 进度状态, 显示优先级: color > progressive > state
          */
         state: PropTypes.oneOf(['normal', 'success', 'error']),
         /**
-         * 是否为色彩阶段变化模式
+         * 是否为色彩阶段变化模式, 显示优先级: color > progressive > state
          */
         progressive: PropTypes.bool,
         /**
@@ -37,9 +37,20 @@ export default class Progress extends Component {
         /**
          * 文本渲染函数
          * @param {Number} percent 当前的进度信息
+         * @param {Object} option 额外的参数
+         * @property {Boolean} option.rtl 是否在rtl 模式下渲染
          * @return {ReactNode} 返回文本节点
          */
         textRender: PropTypes.func,
+        /**
+         * 进度条颜色, 显示优先级: color > progressive > state
+         */
+        color: PropTypes.string,
+        /**
+         * 背景色
+         */
+        backgroundColor: PropTypes.string,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {

@@ -28,6 +28,11 @@ class Affix extends React.Component {
          * @param {Boolean} 元素是否被固钉
          */
         onAffix: PropTypes.func,
+        /**
+         * 是否启用绝对布局实现 affix
+         * @param {Boolean} 是否启用绝对布局
+         */
+        useAbsolute: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
         children: PropTypes.any,
@@ -71,9 +76,8 @@ class Affix extends React.Component {
         if (!container) {
             return;
         }
-
-        events.on(container, 'scroll', this._updateNodePosition);
-        events.on(container, 'resize', this._updateNodePosition);
+        events.on(container, 'scroll', this._updateNodePosition, false);
+        events.on(container, 'resize', this._updateNodePosition, false);
     }
 
     _removeEventHandlerForContainer(getContainer) {
@@ -85,7 +89,7 @@ class Affix extends React.Component {
     }
 
     _updateNodePosition = () => {
-        const { container } = this.props;
+        const { container, useAbsolute } = this.props;
         const affixContainer = container();
 
         if (!affixContainer) {
@@ -98,35 +102,44 @@ class Affix extends React.Component {
         const containerRect = getRect(affixContainer);
 
         const affixMode = this.affixMode;
+        const affixStyle = {
+            width: affixOffset.width,
+        };
+        const containerStyle = {
+            width: affixOffset.width,
+            height: affixHeight,
+        };
 
         if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
             // affix top
-            this._setAffixStyle({
-                position: 'fixed',
-                top: affixMode.offset + containerRect.top,
-                width: affixOffset.width,
-            });
-            this._setContainerStyle({
-                width: affixOffset.width,
-                height: affixHeight,
-            });
+            if (useAbsolute) {
+                affixStyle.position = 'absolute';
+                affixStyle.top = containerScrollTop - (affixOffset.top - affixMode.offset);
+                containerStyle.position = 'relative';
+            } else {
+                affixStyle.position = 'fixed';
+                affixStyle.top = affixMode.offset + containerRect.top;
+            }
+            this._setAffixStyle(affixStyle, true);
+            this._setContainerStyle(containerStyle);
         } else if (affixMode.bottom && containerScrollTop < affixOffset.top + affixHeight + affixMode.offset - containerHeight) {
             // affix bottom
-            this._setAffixStyle({
-                position: 'fixed',
-                bottom: affixMode.offset,
-                width: affixOffset.width,
-                height: affixHeight,
-            });
-            this._setContainerStyle({
-                width: affixOffset.width,
-                height: affixHeight,
-            });
+            affixStyle.height = affixHeight;
+            if (useAbsolute) {
+                affixStyle.position = 'absolute';
+                affixStyle.top = containerScrollTop - (affixOffset.top + affixHeight + affixMode.offset - containerHeight);
+                containerStyle.position = 'relative';
+            } else {
+                affixStyle.position = 'fixed';
+                affixStyle.bottom = affixMode.offset;
+            }
+            this._setAffixStyle(affixStyle, true);
+            this._setContainerStyle(containerStyle);
         } else {
             this._setAffixStyle(null);
             this._setContainerStyle(null);
         }
-    }
+    };
 
     _getAffixMode() {
         const { offsetTop, offsetBottom } = this.props;
@@ -150,7 +163,7 @@ class Affix extends React.Component {
         return affixMode;
     }
 
-    _setAffixStyle(affixStyle) {
+    _setAffixStyle(affixStyle, affixed = false) {
         if (obj.shallowEqual(affixStyle, this.state.style)) {
             return;
         }
@@ -161,7 +174,7 @@ class Affix extends React.Component {
 
         const { onAffix } = this.props;
 
-        if (affixStyle && affixStyle.position === 'fixed') {
+        if (affixed) {
             onAffix(true);
         } else if (!affixStyle) {
             onAffix(false);

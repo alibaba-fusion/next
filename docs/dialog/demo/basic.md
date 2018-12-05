@@ -42,7 +42,8 @@ class Demo extends React.Component {
                 <Button onClick={this.onOpen} type="primary">
                     Open dialog
                 </Button>
-                <Dialog title="Welcome to Alibaba.com"
+                <Dialog
+                    title="Welcome to Alibaba.com"
                     visible={this.state.visible}
                     onOk={this.onClose.bind(this, 'okClick')}
                     onCancel={this.onClose.bind(this, 'cancelClick')}

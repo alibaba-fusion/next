@@ -13,7 +13,7 @@
     $borderWidth,
     $paddingLr,
     $fontSize,
-    $iconSize
+    $iconSize,
 ) {
     height: $height;
     padding: 0;
@@ -30,14 +30,24 @@
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 0 0 $paddingLr;
     }
+    &[dir=rtl].#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
+        padding: 0 $paddingLr 0 0;
+    }
 
     > .#{$css-prefix}tag-close-btn {
-        margin-left: $_marginLeft;
-        padding-right: $paddingLr;
+            margin-left: $_marginLeft;
+            padding-right: $paddingLr;
         .#{$css-prefix}icon {
             @include icon-size($iconSize);
         }
     }
+    &[dir=rtl] > .#{$css-prefix}tag-close-btn {
+        margin-right: $_marginLeft;
+        margin-left: 0;
+        padding-right: 0;
+        padding-left: $paddingLr;
+    }
+
 }
 
 @mixin tag-statement(

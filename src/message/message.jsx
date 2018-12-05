@@ -73,7 +73,8 @@ class Message extends Component {
         /**
          * 是否开启展开收起动画
          */
-        animation: PropTypes.bool
+        animation: PropTypes.bool,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -112,7 +113,7 @@ class Message extends Component {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { prefix, pure, className, type, shape, size, title, children, defaultVisible, visible: propsVisible, iconType: icon, closeable, onClose, afterClose, animation, ...others } = this.props;
+        const { prefix, pure, className, type, shape, size, title, children, defaultVisible, visible: propsVisible, iconType: icon, closeable, onClose, afterClose, animation, rtl, ...others } = this.props;
         /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
@@ -128,7 +129,7 @@ class Message extends Component {
         });
 
         const newChildren = visible ?
-            (<div role="alert" {...others} className={classes}>
+            (<div role="alert" {...others} className={classes} dir={rtl ? 'rtl': undefined}>
                 {closeable ?
                     <a role="button" href="javascript:;" className={`${messagePrefix}-close`} onClick={this.onClose}>
                         <Icon type="close" />

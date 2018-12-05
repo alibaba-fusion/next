@@ -31,6 +31,10 @@ class Group extends React.Component {
          * 输入框后额外css
          */
         addonAfterClassName: PropTypes.string,
+        /**
+         * rtl
+         */
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -38,7 +42,7 @@ class Group extends React.Component {
     };
 
     render() {
-        const {className, style, children, prefix, addonBefore, addonAfter, addonBeforeClassName, addonAfterClassName, ...others} = this.props;
+        const {className, style, children, prefix, addonBefore, addonAfter, addonBeforeClassName, addonAfterClassName, rtl, ...others} = this.props;
 
         const cls = classNames({
             [`${prefix}input-group`]: true,
@@ -68,7 +72,7 @@ class Group extends React.Component {
         ) : null;
 
         return (
-            <span {...others} className={cls} style={style}>
+            <span {...others} dir={rtl? 'rtl': undefined} className={cls} style={style}>
                 {before}
                 {children}
                 {after}

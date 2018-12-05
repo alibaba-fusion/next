@@ -7,18 +7,16 @@ const { logger, parseMD, marked, replaceExt } = require('../../../utils');
 const selectorPath = require.resolve('./selector');
 
 const cwd = process.cwd();
-const IMPORT_REG = /import {(.+)} from '@alifd\/next';/;
-const IMPORT_LIB_REG = /import (.+) from '@alifd\/next\/lib\/(.+)';/;
-const IMPORT_LIB_REG_G = /^import .+ from '@alifd\/next\/lib\/(.+)';/mg;
+const IMPORT_REG = /import {(.+)} from ['"]@alifd\/next['"];?/;
+const IMPORT_LIB_REG = /import (.+) from ['"]@alifd\/next\/lib\/(.+)['"];?/;
+const IMPORT_LIB_REG_G = /^import .+ from ['"]@alifd\/next\/lib\/(.+)['"];?/mg;
 const tplsPath = path.resolve(__dirname, '../../tpls');
 const headerTplPath = path.resolve(tplsPath, 'partials/header.ejs');
 const demoTplPath = path.resolve(tplsPath, 'demo.ejs');
 
 module.exports = function(content) {
     const options = loaderUtils.getOptions(this);
-    const links = options.links;
-    const disableAnimation = options.disableAnimation;
-    const lang = options.lang;
+    const { dir, lang, links, disableAnimation } = options;
     const resourcePath = this.resourcePath;
     const ext = path.extname(resourcePath);
     const name = path.basename(resourcePath, ext);
@@ -33,6 +31,7 @@ module.exports = function(content) {
     ejs.renderFile(demoTplPath, {
         scripts,
         links,
+        dir,
         disableAnimation,
         lang,
         name
@@ -45,16 +44,16 @@ module.exports = function(content) {
         }
     });
 
-    const result = parseMD(content, resourcePath, lang);
-    return processJS(result.js, result.css, result.meta.desc, result.body, resourcePath, this.context);
+    const result = parseMD(content, resourcePath, lang, dir);
+    return processJS(result.js, result.css, result.meta.desc, result.body, resourcePath, this.context, dir);
 };
 
-function processJS(js, css, desc, body, resourcePath, context) {
+function processJS(js, css, desc, body, resourcePath, context, dir) {
     if (!js) {
         return '';
     }
 
-    js = fixImport(js, resourcePath);
+    js = fixImport(js, resourcePath, dir);
 
     // eslint-disable-next-line
   body = marked(body).replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}');

@@ -18,6 +18,7 @@ class RadioGroup extends Component {
          * 样式类名的品牌前缀
          */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -135,9 +136,13 @@ class RadioGroup extends Component {
     }
 
     render() {
-        const { className, shape, size, style, prefix, itemDirection } = this.props;
+        const { rtl, className, shape, size, style, prefix, itemDirection } = this.props;
         const others = pickOthers(Object.keys(RadioGroup.propTypes), this.props);
         const disabled = this.props.disabled;
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         let children;
         if (this.props.children) {

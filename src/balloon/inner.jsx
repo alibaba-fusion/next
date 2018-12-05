@@ -17,6 +17,7 @@ class BalloonInner extends React.Component {
     }
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         closable: PropTypes.bool,
         children: PropTypes.any,
         className: PropTypes.string,
@@ -39,7 +40,7 @@ class BalloonInner extends React.Component {
     };
 
     render() {
-        const {prefix, closable, className, style, isTooltip, align, type, onClose, alignEdge, children, ...others} = this.props;
+        const {prefix, closable, className, style, isTooltip, align, type, onClose, alignEdge, children, rtl, ...others} = this.props;
 
         const alignMap = alignEdge ? edgeMap : normalMap;
         let _prefix = prefix;
@@ -59,7 +60,7 @@ class BalloonInner extends React.Component {
             [className]: className
         });
 
-        return (<div role="tooltip" className={classes} style={style} {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}>
+        return (<div role="tooltip" dir={rtl ? 'rtl' : undefined} className={classes} style={style} {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}>
             {
                 closable ?
                     <a role="button" tabIndex="0" href="javascript:void(0);" className={`${_prefix}-close`}

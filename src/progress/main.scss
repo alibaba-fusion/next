@@ -1,6 +1,7 @@
 @import "../core/index-noreset";
 @import "scss/variable";
 @import "scss/mixin";
+@import "./rtl.scss";
 
 #{$progress-prefix}-line {
     @include box-sizing;
@@ -109,8 +110,8 @@
         display: inline-block;
 
         &-underlay {
-            stroke: $progress-circle-underlay-color;
             stroke-width: $progress-circle-underlay-width;
+            stroke: $progress-circle-underlay-color;
         }
 
         &-overlay {
