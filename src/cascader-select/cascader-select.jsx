@@ -295,7 +295,13 @@ export default class CascaderSelect extends Component {
     }
 
     flatValue(value) {
-        const getDepth = v => this.getPos(v).split('-').length;
+        const getDepth = v => {
+            const pos = this.getPos(v);
+            if (!pos) {
+                return 0;
+            }
+            return pos.split('-').length;
+        };
         const newValue = value.slice(0).sort((prev, next) => {
             return getDepth(prev) - getDepth(next);
         });
