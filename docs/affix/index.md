@@ -23,4 +23,4 @@
 | offsetTop     | 距离窗口顶部达到指定偏移量后触发                                                                                                    | Number   | -            |
 | offsetBottom  | 距离窗口底部达到制定偏移量后触发                                                                                                    | Number   | -            |
 | onAffix       | 当元素的样式发生固钉样式变化时触发的回调函数<br><br>**签名**:<br>Function(元素是否被固钉: Boolean) => void<br>**参数**:<br>_元素是否被固钉_: {Boolean} null | Function | func.noop    |
-| absoluteAffix | 是否启用绝对布局实现 affix                                                                                                    | Boolean  | -            |
+| useAbsolute | 是否启用绝对布局实现 affix                                                                                                    | Boolean  | -            |
