@@ -249,7 +249,7 @@ class Pagination extends Component {
     }
 
     renderPageFirst(current) {
-        const { prefix, size, shape, locale, rtl } = this.props;
+        const { prefix, size, shape, locale } = this.props;
 
         const isFirst = current <= 1;
         const props = {
@@ -262,7 +262,7 @@ class Pagination extends Component {
             onClick: this.onPageItemClick.bind(this, current - 1)
         };
 
-        const icon = rtl ?  <Icon type="arrow-right" /> :  <Icon type="arrow-left" />;
+        const icon = <Icon type="arrow-left" />;
 
         return (
             <Button {...props}>
@@ -275,7 +275,7 @@ class Pagination extends Component {
     }
 
     renderPageLast(current, totalPage) {
-        const { prefix, size, shape, locale, rtl } = this.props;
+        const { prefix, size, shape, locale } = this.props;
 
         const isLast = current >= totalPage;
         const props = {
@@ -288,7 +288,7 @@ class Pagination extends Component {
             onClick: this.onPageItemClick.bind(this, current + 1)
         };
 
-        const icon = rtl ?  <Icon type="arrow-left" /> :  <Icon type="arrow-right" />;
+        const icon = <Icon type="arrow-right" />;
 
         return (
             <Button {...props}>
