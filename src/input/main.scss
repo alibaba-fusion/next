@@ -75,7 +75,7 @@
 
         #{$input-prefix}-len {
             padding-bottom: 4px;
-            padding-right: $input-l-icon-padding-right;
+            padding: $input-l-icon-padding-right;
             display: block;
             text-align: right;
             width: auto;
@@ -183,7 +183,8 @@
             width: 1%;
             top: 0;
         }
-        > * + * {
+
+        > *:not(:first-child) {
             padding-left: $s-1;
         }
 
@@ -333,10 +334,10 @@
         padding: 0 $input-addon-padding;
 
         &:first-child {
-            border-right: 0;
+            border-right-width: 0;
         }
         &:last-child {
-            border-left: 0;
+            border-left-width: 0;
         }
 
         &.#{$css-prefix}disabled {
@@ -359,3 +360,5 @@
         }
     }
 }
+
+@import './rtl.scss';

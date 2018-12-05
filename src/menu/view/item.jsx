@@ -134,7 +134,7 @@ export default class Item extends Component {
         const { level, root, replaceClassName, groupIndent, component, disabled, className, children, needIndent, parentMode, _key } = this.props;
         const others = pickOthers(Object.keys(Item.propTypes), this.props);
 
-        const { prefix, focusable, inlineIndent, itemClassName } = root.props;
+        const { prefix, focusable, inlineIndent, itemClassName, rtl } = root.props;
         const focused = this.getFocused();
 
         const newClassName = replaceClassName ? className : cx({
@@ -153,7 +153,7 @@ export default class Item extends Component {
         if (parentMode === 'inline' && level > 1 && inlineIndent > 0 && needIndent) {
             others.style = {
                 ...(others.style || {}),
-                paddingLeft: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
+                [rtl ? 'paddingRight' : 'paddingLeft']: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
             };
         }
         const TagName = component;

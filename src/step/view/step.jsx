@@ -10,10 +10,8 @@ const setHeight = (el, height) => dom.setStyle(el, 'height', height);
 /** Step */
 export default class Step extends Component {
     static propTypes = {
-        /**
-         * 样式的品牌前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 当前步骤
          */
@@ -140,7 +138,7 @@ export default class Step extends Component {
 
     render() {
         // eslint-disable-next-line
-        let { prefix, locale, className, current, direction, labelPlacement, shape, children, readOnly, animation, itemRender, ...others } = this.props;
+        let { prefix, locale, className, current, direction, labelPlacement, shape, children, readOnly, animation, itemRender, rtl, ...others } = this.props;
         prefix = this.context.prefix || prefix;
         const { parentWidth, parentHeight } = this.state;
 
@@ -178,6 +176,11 @@ export default class Step extends Component {
             [`${prefix}step-label-${labelPlacement}`]: labelPlacement,
             [className]: className
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
+
         return (
             <div {...others} className={stepCls} ref={this._stepRefHandler}>
                 {cloneChildren}

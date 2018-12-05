@@ -11,10 +11,8 @@ const { pickOthers } = obj;
 class CheckboxGroup extends Component {
 
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */

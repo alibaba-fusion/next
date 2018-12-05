@@ -33,6 +33,7 @@ class Closeable extends Component {
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         children: PropTypes.any,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -46,9 +47,11 @@ class Closeable extends Component {
             closeArea, onClose,
             afterClose, onClick,
             type, size, children,
+            rtl
         } = this.props;
 
         return (<Tag
+            rtl={rtl}
             disabled={disabled}
             className={className}
             closeArea={closeArea}

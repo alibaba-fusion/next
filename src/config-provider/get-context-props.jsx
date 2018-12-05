@@ -1,6 +1,6 @@
 export default function getContextProps(props, context, displayName) {
-    const { prefix, locale, pure } = props;
-    const { nextPrefix, nextLocale, nextPure, nextWarning } = context;
+    const { prefix, locale, pure, rtl } = props;
+    const { nextPrefix, nextLocale, nextPure, nextWarning, nextRtl } = context;
 
     const newPrefix = prefix || nextPrefix;
 
@@ -19,11 +19,13 @@ export default function getContextProps(props, context, displayName) {
     }
 
     const newPure = typeof pure === 'boolean' ? pure : nextPure;
+    const newRtl = typeof rtl === 'boolean' ? rtl : nextRtl;
 
     return {
         prefix: newPrefix,
         locale: newLocale,
         pure: newPure,
+        rtl: newRtl,
         warning: nextWarning
     };
 }

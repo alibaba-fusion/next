@@ -111,13 +111,13 @@ export default class Base extends React.Component {
         useVirtual: PropTypes.bool,
         // 自定义类名
         className: PropTypes.any,
-        // children
         children: PropTypes.any,
         dataSource: PropTypes.array,
         itemRender: PropTypes.func,
         mode: PropTypes.string,
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {

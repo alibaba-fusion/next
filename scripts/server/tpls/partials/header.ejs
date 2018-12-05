@@ -24,10 +24,11 @@
       background: #FFF;
       border: 1px solid #C4C6Cf;
       border-radius: 3px;
+      overflow-y: auto;
+      max-height: 500px;
     }
 
     .next-demo-links li {
-      /* height: 30px; */
       line-height: 30px;
       padding: 0 10px;
     }
@@ -35,8 +36,6 @@
     .next-demo-links li.title {
       background: #5584ff;
       color: #fff;
-      position: relative;
-      left: -10px;
     }
 
     .next-demo-links li.title + li {
@@ -177,6 +176,25 @@
       font-weight: bold;
     }
 
+    #toggle-rtl {
+        position: absolute;
+        top: 20px;
+        right: 280px;
+        height: 20px;
+        background: #fff;
+    }
+
+    .next-demo-dir {
+        position: absolute;
+        top: 20px;
+        right: 160px;
+        width: 100px;
+        height: 20px;
+        line-height: 20px;
+        background: #fff;
+        border: 1px solid #C4C6Cf;
+    }
+
     .next-demo-lang {
       position: absolute;
       top: 20px;
@@ -235,6 +253,19 @@
     </li>
   <% })%>
   </ul>
+  <button id="toggle-rtl">toggle mount-node</button>
+  <% if (dir === 'rtl') { %>
+  <select class="next-demo-dir" aria-label="请选择方向">
+      <option value="rtl" selected>rtl</option>
+      <option value="ltr">ltr</option>
+  </select>
+  <% } else { %>
+  <select class="next-demo-dir" aria-label="Please select a direction">
+      <option value="rtl">rtl</option>
+      <option value="ltr" selected>ltr</option>
+  </select>
+  <% } %>
+
   <% if (lang === 'zh') { %>
   <select class="next-demo-lang" aria-label="请选择语言">
       <option value="zh" selected>中文</option>
@@ -247,10 +278,21 @@
   </select>
   <% } %>
   <div class="next-demo-change-lang-loading">
-    Changing language...
+    Changing ...
   </div>
   <script>
     (function() {
+        var toggleRtlBtn = document.querySelector('#toggle-rtl');
+
+        toggleRtlBtn.addEventListener('click', function (){
+            var mountNode = document.querySelector('#mount-node');
+            if (mountNode.dir === 'rtl') {
+                mountNode.dir = 'ltr';
+            } else {
+                mountNode.dir = 'rtl';
+            }
+        });
+
         var langSelect = document.querySelector('.next-demo-lang');
         langSelect.addEventListener('change', function(e) {
           var newLang = e.target.value;
@@ -260,6 +302,19 @@
             data: { lang: newLang },
             error: function(error) {
               console.log('change language failed: ' + error);
+            }
+          });
+        });
+
+        var dirSelect = document.querySelector('.next-demo-dir');
+        dirSelect.addEventListener('change', function(e) {
+          var newDir = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeDir.json',
+            data: { dir: newDir },
+            error: function(error) {
+              console.log('change dir failed: ' + error);
             }
           });
         });

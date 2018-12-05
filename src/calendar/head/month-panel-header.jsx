@@ -13,7 +13,9 @@ class MonthPanelHeader extends React.PureComponent {
                 role="button"
                 title={locale.prevYear}
                 className={`${btnCls} ${btnCls}-prev-year`}
-                onClick={goPrevYear}><Icon type="arrow-double-left" /></button>
+                onClick={goPrevYear}>
+                <Icon type="arrow-double-left" />
+            </button>
             <div className={`${prefix}calendar-panel-header-full`}>
                 <button role="button" title={yearLabel} className={`${btnCls}`} onClick={() => changeMode('year')}>{yearLabel}</button>
             </div>
@@ -21,7 +23,9 @@ class MonthPanelHeader extends React.PureComponent {
                 role="button"
                 title={locale.nextYear}
                 className={`${btnCls} ${btnCls}-next-year`}
-                onClick={goNextYear}><Icon type="arrow-double-right" /></button>
+                onClick={goNextYear}>
+                <Icon type="arrow-double-right" />
+            </button>
         </div>);
     }
 }

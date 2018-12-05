@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../../icon';
 import Progress from '../../progress';
+import ConfigProvider from '../../config-provider';
 import { support, events, dom } from '../../util';
 
 /** Step.Item */
 class StepItem extends Component {
     static propTypes = {
-        /**
-         * 组件的样式品牌前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`
          */
@@ -93,7 +92,7 @@ class StepItem extends Component {
     }
 
     componentDidUpdate() {
-        const { shape, direction, labelPlacement, index, total } = this.props;
+        const { shape, direction, labelPlacement, index, total, rtl } = this.props;
         if (shape === 'arrow') {
             return;
         }
@@ -101,9 +100,10 @@ class StepItem extends Component {
         if (direction === 'vertical') {
             this.resize();
         } else if (direction === 'horizontal') {
+            const pos = rtl ? 'right' : 'left';
             dom.setStyle(this.body, {
                 width: '',
-                left: ''
+                [pos]: ''
             });
         } else if (shape === 'circle' && labelPlacement === 'horizontal' && index !== (total - 1)) { // 调整横向Content
             this.adjustTail();
@@ -130,7 +130,11 @@ class StepItem extends Component {
 
     resize() {
         const stepWidth = dom.getStyle(this.step, 'width');
-        this.body.style.left = `${stepWidth}px`;
+        const { rtl } = this.props;
+
+        rtl ?
+            this.body.style.right = `${stepWidth}px` :
+            this.body.style.left = `${stepWidth}px`;
         dom.setStyle(this.body, {
             width: dom.getStyle(this.step.parentNode.parentNode, 'width') - stepWidth
         });
@@ -251,7 +255,7 @@ class StepItem extends Component {
 
     render() {
         // eslint-disable-next-line
-        const { prefix, locale, className, status, title, icon, index, total, shape, content, direction, disabled, onClick, readOnly, animation, parentHeight, itemRender, parentWidth, labelPlacement, ...others } = this.props;
+        const { prefix, locale, className, status, title, icon, index, total, shape, content, direction, disabled, onClick, readOnly, animation, parentHeight, itemRender, parentWidth, labelPlacement, rtl, ...others } = this.props;
 
         const stepCls = classNames({
             [`${prefix}step-item`]: true,
@@ -277,5 +281,5 @@ class StepItem extends Component {
     }
 
 }
-export default StepItem;
+export default ConfigProvider.config(StepItem);
 

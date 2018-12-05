@@ -28,6 +28,7 @@ Overlay provides the function of hiding itself by clicking document. If you want
 
 2. The align support Boolean value is only false. When set to false, JS positioning is not used, so you can pass the style or className for CSS positioning according to your needs.
 
+3. Under RTL Mode, Overylay will transfer r(right) and l(left) to each other automatically. It means `tl bl` under RTL Mode works the same to `tr br` under Non-RTL Mode
 The following example shows how to position the overlay to the top right corner of the page:
 
 ```html

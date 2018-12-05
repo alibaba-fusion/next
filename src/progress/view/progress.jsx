@@ -37,6 +37,8 @@ export default class Progress extends Component {
         /**
          * 文本渲染函数
          * @param {Number} percent 当前的进度信息
+         * @param {Object} option 额外的参数
+         * @property {Boolean} option.rtl 是否在rtl 模式下渲染
          * @return {ReactNode} 返回文本节点
          */
         textRender: PropTypes.func,
@@ -48,6 +50,7 @@ export default class Progress extends Component {
          * 背景色
          */
         backgroundColor: PropTypes.string,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {

@@ -19,6 +19,7 @@ class Modal extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         type: PropTypes.string,
         title: PropTypes.node,
         content: PropTypes.node,
@@ -83,7 +84,12 @@ class Modal extends Component {
     }
 
     render() {
-        const { prefix, type, title, content, messageProps, footerActions, onOk, onCancel, onClose, okProps, needWrapper, ...others } = this.props;
+        const {
+            prefix, type, title,
+            content, messageProps, footerActions,
+            onOk, onCancel, onClose,
+            okProps, needWrapper, rtl,
+            ...others } = this.props;
         const newTitle = needWrapper && type ? null : title;
 
         const newContent = needWrapper && type ? (
@@ -95,6 +101,7 @@ class Modal extends Component {
                 title={title}
                 className={cx(`${prefix}dialog-message`, messageProps.className)}>
                 {content}
+                rtl={rtl}
             </Message>
         ) : content;
 
@@ -117,6 +124,7 @@ class Modal extends Component {
                 {...others}
                 visible={visible}
                 title={newTitle}
+                rtl={rtl}
                 footerActions={newFooterActions}
                 onOk={this.state.loading ? noop : newOnOk}
                 onCancel={newOnCancel}

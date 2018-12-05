@@ -107,6 +107,7 @@ class Search extends React.Component {
          */
         hasClear: PropTypes.bool,
         locale: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -178,7 +179,8 @@ class Search extends React.Component {
             placeholder, type, className,
             style, size, prefix, searchText,
             dataSource, filterProps, buttonProps,
-            popupContent, hasClear, visible, ...others } = this.props;
+            popupContent, hasClear, visible, rtl,
+            ...others } = this.props;
 
         const cls = classNames({
             [`${prefix}search`]: true,
@@ -244,7 +246,7 @@ class Search extends React.Component {
             />
         </Group>);
 
-        return (<span className={cls} style={style} {...dataAttr}>
+        return (<span className={cls} style={style} {...dataAttr} dir={rtl ? 'rtl' : undefined}>
             {searchBtn ? <Group addonAfter={searchBtn}>{left}</Group> : left}
         </span>);
     }
