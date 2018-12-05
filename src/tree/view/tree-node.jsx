@@ -308,10 +308,16 @@ export default class TreeNode extends Component {
     }
 
     renderLabel() {
-        const { prefix, root } = this.props;
+        const { prefix, root, disabled } = this.props;
         const { isNodeBlock } = root.props;
         const { label } = this.state;
-        const labelProps = { className: `${prefix}tree-node-label` };
+        const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
+        const labelProps = {
+            className: cx({
+                [`${prefix}tree-node-label`]: true,
+                [`${prefix}tree-node-label-selectable`]: selectable && !disabled
+            })
+        };
         if (!isNodeBlock) {
             this.addCallbacks(labelProps);
         }
@@ -351,7 +357,6 @@ export default class TreeNode extends Component {
         const { prefix, className, children, isLeaf, root, pos, selected, disabled, dragOver, dragOverGapTop, dragOverGapBottom } = this.props;
         const { loadData, isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root.props;
         this.showLine = !isNodeBlock && showLine;
-
         const others = pickOthers(Object.keys(TreeNode.propTypes), this.props);
         if (rootDraggable) {
             others.onDragEnter = this.handleDragEnter;
