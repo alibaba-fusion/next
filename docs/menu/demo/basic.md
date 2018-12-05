@@ -47,7 +47,7 @@ ReactDOM.render(
             <a href="https://www.taobao.com/" target="__blank">Option Link</a>
         </Item>
     </Menu>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

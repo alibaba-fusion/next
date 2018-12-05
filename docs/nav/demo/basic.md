@@ -32,7 +32,7 @@ ReactDOM.render(
         </SubNav>
         <Item key="document">Document</Item>
     </Nav>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

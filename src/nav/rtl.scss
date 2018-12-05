@@ -56,7 +56,6 @@
         @include nav-border-fix-rtl(
             $nav-primary-border-width
         );
-
     }
 
     &.#{$css-prefix}secondary {

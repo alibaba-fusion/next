@@ -35,8 +35,8 @@
     }
 
     > .#{$css-prefix}tag-close-btn {
-            margin-left: $_marginLeft;
-            padding-right: $paddingLr;
+        margin-left: $_marginLeft;
+        padding-right: $paddingLr;
         .#{$css-prefix}icon {
             @include icon-size($iconSize);
         }
@@ -47,7 +47,6 @@
         padding-right: 0;
         padding-left: $paddingLr;
     }
-
 }
 
 @mixin tag-statement(

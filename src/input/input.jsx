@@ -250,7 +250,7 @@ export default class Input extends Base {
             ref={this.saveRef}
         />);
 
-        const inputWrap = (<span {...dataProps} dir={rtl? 'rtl': undefined} className={cls} style={hasAddon ? undefined : style}>
+        const inputWrap = (<span {...dataProps} dir={rtl ? 'rtl' : undefined} className={cls} style={hasAddon ? undefined : style}>
             {this.renderInner(innerBefore, innerBeforeCls)}
             {this.renderLabel()}
             {inputRender(inputEl)}

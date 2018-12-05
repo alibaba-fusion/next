@@ -42,7 +42,7 @@ ReactDOM.render(
             <Item key="3-2">Sub option 3</Item>
         </SubMenu>
     </Menu>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

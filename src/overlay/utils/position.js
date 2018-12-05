@@ -293,7 +293,7 @@ export default class Position {
         const {width} = _getElementRect(pinElement);
         const right = offsetParentWidth - (left + width);
         dom.setStyle(pinElement, {
-            left: "auto",
+            left: 'auto',
             right: `${right + offset[0]}px`,
             top: `${top + offset[1]}px`,
         });

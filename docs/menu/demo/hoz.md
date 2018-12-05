@@ -33,7 +33,7 @@ ReactDOM.render(
         </SubMenu>
         <Item key="3">Third</Item>
     </Menu>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

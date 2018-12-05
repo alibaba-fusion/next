@@ -178,7 +178,6 @@
             } @else {
                 margin-left: $timeline-item-left-content-width;
             }
-
         }
         & > #{$timeline-prefix}-item-content {
             @if $direction == 'rtl' {

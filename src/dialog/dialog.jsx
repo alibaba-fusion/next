@@ -350,7 +350,7 @@ export default class Dialog extends Component {
         return (
             <Overlay {...newOverlayProps}>
                 {useCSS ?
-                    <div className={`${prefix}dialog-container`} dir={rtl ? "rtl" : undefined}>
+                    <div className={`${prefix}dialog-container`} dir={rtl ? 'rtl' : undefined}>
                         {inner}
                     </div> :
                     inner}

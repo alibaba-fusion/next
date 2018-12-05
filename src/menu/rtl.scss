@@ -29,7 +29,6 @@
         &-icon-selected.#{$css-prefix}icon {
             @include icon-size($menu-icon-selected-size, 0, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
         }
-
     }
     #{$menu-prefix}-icon-arrow.#{$css-prefix}icon {
         left: 10px;

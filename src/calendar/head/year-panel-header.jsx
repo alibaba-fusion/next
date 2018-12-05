@@ -11,7 +11,7 @@ class YearPanelHeader extends React.PureComponent {
     }
 
     render() {
-        const { prefix, rtl, visibleMonth, locale, goPrevDecade, goNextDecade } = this.props;
+        const { prefix, visibleMonth, locale, goPrevDecade, goNextDecade } = this.props;
         const decadeLable = this.getDecadeLabel(visibleMonth);
         const btnCls = `${prefix}calendar-btn`;
 

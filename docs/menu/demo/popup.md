@@ -34,7 +34,7 @@ ReactDOM.render(
             <Item key="popup-2-2">Popup option 2</Item>
         </SubMenu>
     </Menu>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

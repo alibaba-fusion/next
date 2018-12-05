@@ -42,7 +42,7 @@ export default class Line extends React.PureComponent {
         const lineStyle = { width: `${percent}%`, backgroundColor: color };
 
         return (
-            <div {...others} className={wrapCls} dir={rtl ? "rtl" : undefined}>
+            <div {...others} className={wrapCls} dir={rtl ? 'rtl' : undefined}>
                 <div className={`${prefix}progress-line-container`}>
                     <div className={`${prefix}progress-line-underlay`}>
                         <div className={lineCls} style={lineStyle}></div>

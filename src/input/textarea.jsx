@@ -207,7 +207,7 @@ export default class TextArea extends Base {
             position: 'relative',
         } : style;
 
-        return (<span className={cls} style={wrapStyle} dir={rtl? 'rtl': undefined} {...dataProps}>
+        return (<span className={cls} style={wrapStyle} dir={rtl ? 'rtl' : undefined} {...dataProps}>
             <textarea
                 {...others}
                 {...props}

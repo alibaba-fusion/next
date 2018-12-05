@@ -66,7 +66,7 @@ export default class Inner extends Component {
     }
 
     renderFooter() {
-        const { prefix, footer, footerAlign, footerActions, locale, rtl } = this.props;
+        const { prefix, footer, footerAlign, footerActions, locale } = this.props;
 
         if (footer === false) {
             return null;
@@ -138,7 +138,7 @@ export default class Inner extends Component {
         }
 
         return (
-            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? "rtl" : undefined}>
+            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
                 {header}
                 {body}
                 {footer}

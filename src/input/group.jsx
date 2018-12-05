@@ -72,7 +72,7 @@ class Group extends React.Component {
         ) : null;
 
         return (
-            <span {...others} dir={rtl? 'rtl': undefined} className={cls} style={style}>
+            <span {...others} dir={rtl ? 'rtl' : undefined} className={cls} style={style}>
                 {before}
                 {children}
                 {after}

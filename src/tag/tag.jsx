@@ -221,7 +221,7 @@ class Tag extends Component {
                 role="button"
                 aria-disabled={disabled}
                 disabled={disabled}
-                dir={rtl ? 'rtl' : undefined }
+                dir={rtl ? 'rtl' : undefined}
                 ref={n => (this.tagNode = n)}
                 {...others}
             >

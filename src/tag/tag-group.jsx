@@ -20,7 +20,7 @@ class Group extends Component {
         const {className, prefix, children, rtl, ...others} = this.props;
         const clazz = classNames(`${prefix || 'next-'}tag-group`, className);
 
-        return <div className={clazz} dir={rtl ? 'rtl' : undefined } {...others}>{children}</div>;
+        return <div className={clazz} dir={rtl ? 'rtl' : undefined} {...others}>{children}</div>;
     }
 }
 

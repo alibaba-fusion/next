@@ -31,7 +31,7 @@ ReactDOM.render(
         </Popup>
         <div style={{ height: '300px' }} />
     </div>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

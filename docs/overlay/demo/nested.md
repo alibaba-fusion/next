@@ -33,7 +33,7 @@ ReactDOM.render(
             <p>Hello World From First Overlay!</p>
         </div>
     </Popup>
-, mountNode);
+    , mountNode);
 ````
 
 ````css

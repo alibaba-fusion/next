@@ -317,7 +317,7 @@ class AutoComplete extends Base {
             <span {...othersData}
                 className={triggerClazz}
                 style={style}
-                dir={rtl? 'rtl': undefined}
+                dir={rtl ? 'rtl' : undefined}
                 ref={this.saveSelectRef}
                 onClick={this.focusInput}>
                 <Input
