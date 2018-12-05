@@ -13,6 +13,7 @@ function getDisplayName(Component) {
 let globalLocales;
 let currentGlobalLanguage = 'zh-cn';
 let currentGlobalLocale = {};
+let currentGlobalRtl = false;
 
 export function initLocales(locales) {
     globalLocales = locales;
@@ -33,12 +34,20 @@ export function setLocale(locale) {
     };
 }
 
+export function setDirection(dir) {
+    currentGlobalRtl = dir === 'rtl';
+}
+
 export function getLocale() {
     return currentGlobalLocale;
 }
 
 export function getLanguage() {
     return currentGlobalLanguage;
+}
+
+export function getDirection() {
+    return currentGlobalRtl;
 }
 
 export function config(Component, options = {}) {
@@ -124,7 +133,7 @@ export function config(Component, options = {}) {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
                     nextPure,
-                    nextRtl
+                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl : currentGlobalRtl
                 },
                 displayName
             );

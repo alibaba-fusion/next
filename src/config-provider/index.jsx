@@ -6,8 +6,10 @@ import {
     initLocales,
     setLanguage,
     setLocale,
+    setDirection,
     getLocale,
-    getLanguage
+    getLanguage,
+    getDirection
 } from './config';
 import Consumer from './consumer';
 import Cache from './cache';
@@ -47,8 +49,7 @@ class ConfigProvider extends Component {
     };
 
     static defaultProps = {
-        warning: true,
-        rtl: false
+        warning: true
     };
 
     static childContextTypes = {
@@ -82,8 +83,10 @@ class ConfigProvider extends Component {
     static initLocales = initLocales;
     static setLanguage = setLanguage;
     static setLocale = setLocale;
+    static setDirection = setDirection;
     static getLanguage = getLanguage;
     static getLocale = getLocale;
+    static getDirection = getDirection;
     static Consumer = Consumer;
 
     static getContext = () => {
