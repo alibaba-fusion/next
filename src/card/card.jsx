@@ -4,6 +4,9 @@ import classNames from 'classnames';
 import Icon from '../icon';
 import Button from '../button';
 import locale from '../locale/zh-cn';
+import { obj } from '../util';
+
+const { pickOthers } = obj;
 
 /** Card */
 export default class Card extends React.Component {
@@ -11,6 +14,7 @@ export default class Card extends React.Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 卡片的标题
          */
@@ -116,7 +120,7 @@ export default class Card extends React.Component {
     }
 
     render() {
-        const { prefix, className, title, subTitle, extra, showTitleBullet, showHeadDivider, children, locale, ...others } = this.props;
+        const { prefix, className, title, subTitle, extra, showTitleBullet, showHeadDivider, children, locale } = this.props;
         const { needMore, expand } = this.state;
 
         const cardCls = classNames({
@@ -130,7 +134,7 @@ export default class Card extends React.Component {
             [`${prefix}card-head-show-bullet`]: showTitleBullet,
         });
 
-        delete others.contentHeight;
+        const others = pickOthers(Object.keys(Card.propTypes), this.props);
 
         const headExtra = extra ? <div className={`${prefix}card-extra`}>{extra}</div> : null;
 

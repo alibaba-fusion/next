@@ -99,9 +99,9 @@ class Modal extends Component {
                 type={MESSAGE_TYPE[type]}
                 {...messageProps}
                 title={title}
+                rtl={rtl}
                 className={cx(`${prefix}dialog-message`, messageProps.className)}>
                 {content}
-                rtl={rtl}
             </Message>
         ) : content;
 
