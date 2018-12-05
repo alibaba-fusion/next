@@ -10,7 +10,7 @@ class YearTable extends React.PureComponent {
     }
 
     render() {
-        const { prefix, rtl, value, today, visibleMonth, locale, disabledDate, goPrevDecade, goNextDecade } = this.props;
+        const { prefix, value, today, visibleMonth, locale, disabledDate, goPrevDecade, goNextDecade } = this.props;
         const currentYear = today.year();
         const selectedYear = value ? value.year() : null;
         const visibleYear = visibleMonth.year();
@@ -34,11 +34,11 @@ class YearTable extends React.PureComponent {
                 if (i === 0 && j === 0) {
                     title = locale.prevDecade;
                     onClick = goPrevDecade;
-                    content = rtl ? <Icon type="arrow-right" size="xs" /> : <Icon type="arrow-left" size="xs" />;
+                    content = <Icon type="arrow-left" size="xs" />;
                 } else if (i === lastRowIndex && j === lastColIndex) {
                     title = locale.nextDecade;
                     onClick = goNextDecade;
-                    content = rtl ? <Icon type="arrow-left" size="xs" /> : <Icon type="arrow-right" size="xs" />;
+                    content = <Icon type="arrow-right" size="xs" />;
                 } else {
                     year = startYear + counter++;
                     content = year;
