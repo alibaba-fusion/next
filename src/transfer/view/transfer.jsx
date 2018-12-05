@@ -23,6 +23,7 @@ class Transfer extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 移动选项模式

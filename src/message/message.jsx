@@ -129,7 +129,7 @@ class Message extends Component {
         });
 
         const newChildren = visible ?
-            (<div role="alert" {...others} className={classes} dir={rtl? 'rtl': undefined}>
+            (<div role="alert" {...others} className={classes} dir={rtl ? 'rtl': undefined}>
                 {closeable ?
                     <a role="button" href="javascript:;" className={`${messagePrefix}-close`} onClick={this.onClose}>
                         <Icon type="close" />

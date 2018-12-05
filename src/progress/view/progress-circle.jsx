@@ -68,11 +68,7 @@ export default class Circle extends Component {
     }
 
     render() {
-<<<<<<< HEAD
-        const { prefix, size, state, percent, className, textRender, progressive, color, ...others } = this.props;
-=======
-        const { prefix, size, state, percent, className, textRender, progressive, rtl, ...others } = this.props;
->>>>>>> feature/rtl
+        const { prefix, size, state, percent, className, textRender, progressive, color, rtl, ...others } = this.props;
         const { underlayStrokeWidth, overlayStrokeWidth } = this.state;
 
         // underlay path
@@ -104,7 +100,7 @@ export default class Circle extends Component {
         });
 
         return (
-            <div {...others} className={wrapCls} dir={rtl ? "rtl" : undefined}>
+            <div {...others} className={wrapCls} dir={rtl ? 'rtl' : undefined}>
                 <svg className={`${prefix}progress-circle-container`} viewBox={viewBox}>
                     <path className={`${prefix}progress-circle-underlay`} d={underlayPath} fillOpacity="0" ref={this._underlayRefHandler} />
                     <path
@@ -115,7 +111,7 @@ export default class Circle extends Component {
                         strokeDashoffset={overlayStrokeDashoffset}
                         ref={this._overlayRefHandler}
                         stroke={color}
-                        />
+                    />
                 </svg>
                 {suffixText ? <div className={`${prefix}progress-circle-text`}>{suffixText}</div> : null}
             </div>
