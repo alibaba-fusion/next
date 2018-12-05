@@ -28,8 +28,8 @@ Overlay 提供了点击弹层外文档中节点隐藏该弹层的功能，如果
 
 2.  align 支持的 Boolean 值仅为 false，在设置为 false 时，不使用 JS 定位，这样你可以根据你的需要传入 style 或者 className 进行 CSS 定位。
 
-3. rtl情况下会自动翻转 r(right)与 l(left), 例如 rtl状态下`tl bl`与 非rtl状态下`tr br`等效
-下面的例子演示了如何将弹层定位到页面的右上角：
+3.  rtl情况下会自动翻转 r(right)与 l(left), 例如 rtl状态下`tl bl`与 非rtl状态下`tr br`等效
+    下面的例子演示了如何将弹层定位到页面的右上角：
 
 ```html
 <Overlay visible align="tr tr"><span>123</span></Overlay>

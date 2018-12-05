@@ -212,12 +212,12 @@ export default config(Component);
 
 ### ConfigProvider
 
-| 参数       | 说明                                  | 类型           | 默认值   |
-| -------- | ----------------------------------- | ------------ | ----- |
-| pure     | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用 | Boolean      | -     |
-| warning  | 是否在开发模式下显示组件属性被废弃的 warning 提示       | Boolean      | true  |
-| rtl      | 是否开启 rtl 模式                         | Boolean      | false |
-| children | 组件树                                 | ReactElement | -     |
+| 参数       | 说明                                  | 类型           | 默认值  |
+| -------- | ----------------------------------- | ------------ | ---- |
+| pure     | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用 | Boolean      | -    |
+| warning  | 是否在开发模式下显示组件属性被废弃的 warning 提示       | Boolean      | true |
+| rtl      | 是否开启 rtl 模式                         | Boolean      | -    |
+| children | 组件树                                 | ReactElement | -    |
 
 <!-- api-extra-start -->
 

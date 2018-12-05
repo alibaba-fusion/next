@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.10.3",
+  "version": "1.11.0",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -49,9 +49,18 @@
     "changelog": "node ./scripts/changelog.js",
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [
       "eslint",
+      "git add"
+    ],
+    "@src/**/*.@(css|scss)": [
+      "stylelint",
       "git add"
     ]
   },

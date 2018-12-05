@@ -83,6 +83,7 @@
 | addonBeforeClassName | 输入框前附加内容css | String    | -   |
 | addonAfter           | 输入框后附加内容    | ReactNode | -   |
 | addonAfterClassName  | 输入框后额外css   | String    | -   |
+| rtl                  | rtl         | Boolean   | -   |
 
 ## Input/TextArea 内部函数(通过refs获取)
 

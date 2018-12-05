@@ -59,7 +59,7 @@ module.exports = function* changelog() {
             let firstIndex = -1, secondIndex = -1;
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
-                if (/^##[^#]/.test(line)) {
+                if (/^##? \[/.test(line)) {
                     if (firstIndex === -1) {
                         firstIndex = i;
                     } else if (secondIndex === -1) {
