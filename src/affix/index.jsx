@@ -54,11 +54,11 @@ class Affix extends React.Component {
     }
 
     componentDidMount() {
-        const { container, useAbsolute } = this.props;
+        const { container } = this.props;
         this._updateNodePosition();
         // wait for parent rendered
         this.timeout = setTimeout(() => {
-            this._setEventHandlerForContainer(container, useAbsolute);
+            this._setEventHandlerForContainer(container);
         });
     }
 
@@ -67,29 +67,29 @@ class Affix extends React.Component {
             clearTimeout(this.timeout);
             this.timeout = null;
         }
-        const { container, useAbsolute } = this.props;
-        this._removeEventHandlerForContainer(container, useAbsolute);
+        const { container } = this.props;
+        this._removeEventHandlerForContainer(container);
     }
 
-    _setEventHandlerForContainer(getContainer, useAbsolute = false) {
+    _setEventHandlerForContainer(getContainer) {
         const container = getContainer();
         if (!container) {
             return;
         }
-        events.on(container, 'scroll', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition, false);
-        events.on(container, 'resize', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition, false);
+        events.on(container, 'scroll', this._updateNodePosition, false);
+        events.on(container, 'resize', this._updateNodePosition, false);
     }
 
-    _removeEventHandlerForContainer(getContainer, useAbsolute = false) {
+    _removeEventHandlerForContainer(getContainer) {
         const container = getContainer();
         if (container) {
-            events.off(container, 'scroll', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition);
-            events.off(container, 'resize', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition);
+            events.off(container, 'scroll', this._updateNodePosition);
+            events.off(container, 'resize', this._updateNodePosition);
         }
     }
 
     _updateNodePosition = () => {
-        const { container } = this.props;
+        const { container, useAbsolute } = this.props;
         const affixContainer = container();
 
         if (!affixContainer) {
@@ -102,74 +102,39 @@ class Affix extends React.Component {
         const containerRect = getRect(affixContainer);
 
         const affixMode = this.affixMode;
+        const affixStyle = {
+            width: affixOffset.width,
+        };
+        const containerStyle = {
+            width: affixOffset.width,
+            height: affixHeight,
+        };
 
         if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
             // affix top
-            this._setAffixStyle({
-                position: 'fixed',
-                top: affixMode.offset + containerRect.top,
-                width: affixOffset.width,
-            });
-            this._setContainerStyle({
-                width: affixOffset.width,
-                height: affixHeight,
-            });
+            if (useAbsolute) {
+                affixStyle.position = 'absolute';
+                affixStyle.top = containerScrollTop - (affixOffset.top - affixMode.offset);
+                containerStyle.position = 'relative';
+            } else {
+                affixStyle.position = 'fixed';
+                affixStyle.top = affixMode.offset + containerRect.top;
+            }
+            this._setAffixStyle(affixStyle, true);
+            this._setContainerStyle(containerStyle);
         } else if (affixMode.bottom && containerScrollTop < affixOffset.top + affixHeight + affixMode.offset - containerHeight) {
             // affix bottom
-            this._setAffixStyle({
-                position: 'fixed',
-                bottom: affixMode.offset,
-                width: affixOffset.width,
-                height: affixHeight,
-            });
-            this._setContainerStyle({
-                width: affixOffset.width,
-                height: affixHeight,
-            });
-        } else {
-            this._setAffixStyle(null);
-            this._setContainerStyle(null);
-        }
-    };
-
-    _updateNodeAbsolutePosition = () => {
-        const { container } = this.props;
-        const affixContainer = container();
-
-        if (!affixContainer) {
-            return false;
-        }
-        const containerScrollTop = getScroll(affixContainer, true);    // 容器在垂直位置上的滚动 offset
-        const affixOffset = this._getOffset(this.affixNode, affixContainer); // 目标节点当前相对于容器的 offset
-        const containerHeight = getNodeHeight(affixContainer);         // 容器的高度
-        const affixHeight = this.affixNode.offsetHeight;
-
-        const affixMode = this.affixMode;
-        if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
-            // affix top
-            this._setAffixStyle({
-                position: 'absolute',
-                top: containerScrollTop - (affixOffset.top - affixMode.offset),
-                width: affixOffset.width,
-            }, true);
-            this._setContainerStyle({
-                width: affixOffset.width,
-                height: affixHeight,
-                position: 'relative',
-            });
-        } else if (affixMode.bottom && containerScrollTop < affixOffset.top + affixHeight + affixMode.offset - containerHeight) {
-            // affix bottom
-            this._setAffixStyle({
-                position: 'absolute',
-                top: containerScrollTop - (affixOffset.top + affixHeight + affixMode.offset - containerHeight),
-                width: affixOffset.width,
-                height: affixHeight,
-            }, true);
-            this._setContainerStyle({
-                width: affixOffset.width,
-                height: affixHeight,
-                position: 'relative',
-            });
+            affixStyle.height = affixHeight;
+            if (useAbsolute) {
+                affixStyle.position = 'absolute';
+                affixStyle.top = containerScrollTop - (affixOffset.top + affixHeight + affixMode.offset - containerHeight);
+                containerStyle.position = 'relative';
+            } else {
+                affixStyle.position = 'fixed';
+                affixStyle.bottom = affixMode.offset;
+            }
+            this._setAffixStyle(affixStyle, true);
+            this._setContainerStyle(containerStyle);
         } else {
             this._setAffixStyle(null);
             this._setContainerStyle(null);
@@ -209,7 +174,7 @@ class Affix extends React.Component {
 
         const { onAffix } = this.props;
 
-        if ((affixStyle && affixStyle.position === 'fixed') || affixed) {
+        if (affixed) {
             onAffix(true);
         } else if (!affixStyle) {
             onAffix(false);
