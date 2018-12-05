@@ -15,6 +15,7 @@ const {noop} = func;
 export default class Arrow extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         type: PropTypes.oneOf(['prev', 'next']).isRequired,
         centerMode: PropTypes.bool,
         currentSlide: PropTypes.number,

@@ -57,7 +57,7 @@
         outline: 0;
         transition: all .3s cubic-bezier(.86, 0, .07, 1);
 
-        [dir="rtl"] & {
+        #{$slick-prefix}[dir="rtl"] & {
             float: right;
         }
 

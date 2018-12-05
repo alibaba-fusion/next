@@ -24,10 +24,11 @@
       background: #FFF;
       border: 1px solid #C4C6Cf;
       border-radius: 3px;
+      overflow-y: auto;
+      max-height: 500px;
     }
 
     .next-demo-links li {
-      /* height: 30px; */
       line-height: 30px;
       padding: 0 10px;
     }
@@ -35,8 +36,6 @@
     .next-demo-links li.title {
       background: #5584ff;
       color: #fff;
-      position: relative;
-      left: -10px;
     }
 
     .next-demo-links li.title + li {
@@ -288,7 +287,7 @@
         toggleRtlBtn.addEventListener('click', function (){
             var mountNode = document.querySelector('#mount-node');
             if (mountNode.dir === 'rtl') {
-                mountNode.dir = 'lrt';
+                mountNode.dir = 'ltr';
             } else {
                 mountNode.dir = 'rtl';
             }

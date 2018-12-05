@@ -3,16 +3,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {obj} from '../util';
 import InnerSlider from './slick/inner-slider';
+import ConfigProvider from '../config-provider';
 
 /**
  * Slider
 */
 export default class Slider extends Component {
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 自定义传入的样式
          */
@@ -90,7 +89,6 @@ export default class Slider extends Component {
          * 是否启用懒加载
          */
         lazyLoad: PropTypes.bool,
-        rtl: PropTypes.bool,
         slide: PropTypes.string,
         /**
          * 轮播方向
@@ -230,9 +228,11 @@ export default class Slider extends Component {
         }
 
         return (
-            <div className={clazz} style={style} {...obj.pickOthers({...Slider.propTypes, ...InnerSlider.propTypes}, sliderProps)}>
-                <InnerSlider ref={InnerSlider => (this.innerSlider = InnerSlider)} {...sliderProps} />
-            </div>
+            <ConfigProvider rtl={false}>
+                <div dir="ltr" className={clazz} style={style} {...obj.pickOthers({...Slider.propTypes, ...InnerSlider.propTypes}, sliderProps)}>
+                    <InnerSlider ref={InnerSlider => (this.innerSlider = InnerSlider)} {...sliderProps} />
+                </div>
+            </ConfigProvider>
         );
     }
 }
