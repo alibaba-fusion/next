@@ -60,6 +60,7 @@ typings/
 # next.js build output
 .next
 
+scripts/server-remote
 __html/
 dist/
 es/
