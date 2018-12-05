@@ -6,18 +6,21 @@ class Group extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.any,
-        children: PropTypes.node
+        children: PropTypes.node,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
-        prefix: 'next-'
+        prefix: 'next-',
+        rtl: false,
     };
 
     render() {
-        const {className, prefix, children, ...others} = this.props;
+
+        const {className, prefix, children, rtl, ...others} = this.props;
         const clazz = classNames(`${prefix || 'next-'}tag-group`, className);
 
-        return <div className={clazz} {...others}>{children}</div>;
+        return <div className={clazz} dir={rtl ? 'rtl' : undefined } {...others}>{children}</div>;
     }
 }
 

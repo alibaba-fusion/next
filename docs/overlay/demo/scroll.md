@@ -20,7 +20,7 @@ import { Overlay } from '@alifd/next';
 
 const { Popup } = Overlay;
 
-ReactDOM.render((
+ReactDOM.render(
     <div className="scroll-container">
         <Popup trigger={<button>Open</button>}
             triggerType="click"
@@ -31,7 +31,7 @@ ReactDOM.render((
         </Popup>
         <div style={{ height: '300px' }} />
     </div>
-), mountNode);
+, mountNode);
 ````
 
 ````css

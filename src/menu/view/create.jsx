@@ -110,6 +110,8 @@ class ContextMenu extends Component {
             onItemClick: this.handleItemClick
         };
 
+        newOverlayProps.rtl = false;
+
         return (
             <Overlay {...newOverlayProps}>
                 <Menu {...menuProps} />
@@ -142,10 +144,17 @@ export default function create(props) {
         afterClose && afterClose();
     };
 
+    const newContext = ConfigProvider.getContext();
+
     let menu;
-    render(<ContextMenu afterClose={closeChain} {...others} />, div, function() {
-        menu = this;
-    });
+    render(
+        <ConfigProvider {...newContext}>
+            <ContextMenu ref={ref => {
+                menu = ref;
+            }} afterClose={closeChain} {...others} />
+        </ConfigProvider>
+        , div
+    );
 
     menuInstance = {
         destroy: () => {

@@ -19,7 +19,7 @@ import { Menu } from '@alifd/next';
 
 const { SubMenu, Item, Group, Divider } = Menu;
 
-ReactDOM.render((
+ReactDOM.render(
     <Menu className="my-menu" defaultOpenKeys="sub-menu">
         <Item key="1">Option 1</Item>
         <Item disabled key="2">Disabled option 2</Item>
@@ -47,7 +47,7 @@ ReactDOM.render((
             <a href="https://www.taobao.com/" target="__blank">Option Link</a>
         </Item>
     </Menu>
-), mountNode);
+, mountNode);
 ````
 
 ````css

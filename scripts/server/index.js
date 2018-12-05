@@ -5,8 +5,18 @@ const { checkComponentName } = require('../utils');
 
 const scriptPath = path.join(__dirname, 'server.js');
 
-const componentName = checkComponentName();
-start([componentName]);
+const args = checkComponentName(false, true);
+const argv = parseArgs(args);
+
+argv._.forEach(item => {
+    if (item.indexOf('=') > -1) {
+        const key = item.split('=')[0];
+        const value = item.split('=')[1];
+        argv[key] = value;
+    }
+});
+
+start(restoreArgs(argv));
 
 function start(args) {
     const worker = cp.fork(scriptPath, args);
@@ -19,6 +29,13 @@ function start(args) {
             const lang = data.split('=')[1];
             const argv = parseArgs(args);
             argv.lang = lang;
+            const newArgs = restoreArgs(argv);
+            start(newArgs);
+        } else if (data.indexOf('CHANGE_DIR') === 0) {
+            worker.kill('SIGINT');
+            const dir = data.split('=')[1];
+            const argv = parseArgs(args);
+            argv.dir = dir;
             const newArgs = restoreArgs(argv);
             start(newArgs);
         }

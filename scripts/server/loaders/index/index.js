@@ -11,6 +11,7 @@ module.exports = function(content) {
     const options = loaderUtils.getOptions(this);
     const links = options.links;
     const lang = options.lang;
+    const dir = options.dir;
     const resourcePath = this.resourcePath;
 
     this.addDependency(headerTplPath);
@@ -25,6 +26,7 @@ module.exports = function(content) {
     ejs.renderFile(indexTplPath, {
         links,
         lang,
+        dir,
         name: 'index',
         readmeHTML: marked(newContent)
     }, (err, html) => {

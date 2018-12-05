@@ -2,6 +2,7 @@
 // --------------------------------------------------
 
 @mixin pagination-size(
+    $direction,
     $itemSplit,
     $itemPaddingLeftRight,
     $ellipsisSize,
@@ -23,7 +24,12 @@
         padding: 0 $itemPaddingLeftRight;
 
         & + #{$pagination-prefix}-item {
-            margin-left: $itemSplit;
+
+            @if $direction == 'rtl' {
+                margin: 0 $itemSplit 0 0 ;
+            } @else {
+                margin: 0 0 0 $itemSplit;
+            }
         }
     }
     #{$pagination-prefix}-ellipsis {

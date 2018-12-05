@@ -11,7 +11,7 @@ class YearPanelHeader extends React.PureComponent {
     }
 
     render() {
-        const { prefix, visibleMonth, locale, goPrevDecade, goNextDecade } = this.props;
+        const { prefix, rtl, visibleMonth, locale, goPrevDecade, goNextDecade } = this.props;
         const decadeLable = this.getDecadeLabel(visibleMonth);
         const btnCls = `${prefix}calendar-btn`;
 
@@ -20,7 +20,9 @@ class YearPanelHeader extends React.PureComponent {
                 role="button"
                 title={locale.prevDecade}
                 className={`${btnCls} ${btnCls}-prev-decade`}
-                onClick={goPrevDecade}><Icon type="arrow-double-left" /></button>
+                onClick={goPrevDecade}>
+                <Icon type="arrow-double-left" />
+            </button>
             <div className={`${prefix}calendar-panel-header-full`}>
                 <button role="button" title={decadeLable} className={btnCls}>{decadeLable}</button>
             </div>
@@ -28,7 +30,9 @@ class YearPanelHeader extends React.PureComponent {
                 role="button"
                 title={locale.nextDecade}
                 className={`${btnCls} ${btnCls}-next-decade`}
-                onClick={goNextDecade}><Icon type="arrow-double-right" /></button>
+                onClick={goNextDecade}>
+                <Icon type="arrow-double-right" />
+            </button>
         </div>);
     }
 }

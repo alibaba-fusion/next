@@ -22,7 +22,7 @@ export default class Position extends Component {
         needAdjust: PropTypes.bool,
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
-        isRtl: PropTypes.bool
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
@@ -33,7 +33,7 @@ export default class Position extends Component {
         needAdjust: true,
         needListenResize: true,
         shouldUpdatePosition: false,
-        isRtl: false,
+        rtl: false,
     };
 
     constructor(props) {
@@ -72,7 +72,7 @@ export default class Position extends Component {
     }
 
     setPosition() {
-        const { align, offset, beforePosition, onPosition, needAdjust, isRtl } = this.props;
+        const { align, offset, beforePosition, onPosition, needAdjust, rtl } = this.props;
 
         beforePosition();
 
@@ -85,7 +85,7 @@ export default class Position extends Component {
                 align,
                 offset,
                 needAdjust,
-                isRtl
+                isRtl: rtl,
             });
             const top = getStyle(contentNode, 'top');
             const left = getStyle(contentNode, 'left');

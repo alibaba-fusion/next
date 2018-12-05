@@ -251,6 +251,7 @@ class InnerSlider extends React.Component {
         if (dots === true && slideCount > slidesToShow) {
             const dotProps = {
                 prefix,
+                rtl,
                 dotsClass,
                 slideCount,
                 slidesToShow,
@@ -269,6 +270,7 @@ class InnerSlider extends React.Component {
 
         const arrowProps = {
             prefix,
+            rtl,
             arrowSize,
             arrowPosition,
             arrowDirection,

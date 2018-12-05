@@ -20,6 +20,7 @@ class RangeCalendar extends React.Component {
          * 样式前缀
          */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 默认的开始日期
          */
@@ -75,6 +76,7 @@ class RangeCalendar extends React.Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         mode: CALENDAR_MODE_DATE,
         format: 'YYYY-MM-DD',
         dateCellRender: (value) => value.date(),
@@ -189,7 +191,7 @@ class RangeCalendar extends React.Component {
     }
 
     render() {
-        const { prefix, dateCellRender, className, format, locale, showOtherMonth, disabledDate, ...others } = this.props;
+        const { prefix, rtl, dateCellRender, className, format, locale, showOtherMonth, disabledDate, ...others } = this.props;
         const { startValue, endValue, mode, startVisibleMonth, activePanel } = this.state;
 
         // reset moment locale
@@ -199,11 +201,16 @@ class RangeCalendar extends React.Component {
             startVisibleMonth.locale(locale.momentLocale);
         }
 
+        if (rtl) {
+            others.dir = 'rtl';
+        }
+
         const localeData = startVisibleMonth.localeData();
         const endVisibleMonth = startVisibleMonth.clone().add(1, 'months');
 
         const headerProps = {
             prefix,
+            rtl,
             mode,
             locale,
             momentLocale: localeData,
@@ -264,6 +271,7 @@ class RangeCalendar extends React.Component {
             case CALENDAR_MODE_YEAR: {
                 table = (<YearTable
                     {...tableProps}
+                    rtl={rtl}
                     visibleMonth={visibleMonth}
                     onSelectYear={this.onSelectCell}
                     goPrevDecade={this.goPrevDecade}

@@ -2,6 +2,7 @@
 
 @import "scss/variable";
 @import "scss/mixin";
+@import "./rtl.scss";
 
 #{$pagination-prefix} {
     @include box-sizing;
@@ -138,6 +139,7 @@
 
     &.#{$css-prefix}small {
         @include pagination-size(
+            'ltr',
             $itemSplit: $pagination-small-item-split,
             $itemPaddingLeftRight: $s-2 - 2px,
             $ellipsisSize: $pagination-small-ellipsis-size,
@@ -168,6 +170,7 @@
 
     &.#{$css-prefix}medium {
         @include pagination-size(
+            'ltr',
             $itemSplit: $pagination-item-split,
             $itemPaddingLeftRight: $s-3 - 2px,
             $ellipsisSize: $pagination-ellipsis-size,
@@ -198,6 +201,7 @@
 
     &.#{$css-prefix}large {
         @include pagination-size(
+            'ltr',
             $itemSplit: $pagination-large-item-split,
             $itemPaddingLeftRight: $s-4 - 1px,
             $ellipsisSize: $pagination-large-ellipsis-size,

@@ -75,6 +75,24 @@
     }
 }
 
+@mixin search-type-color-rtl(
+    $primary-color,
+    $hover-color,
+    $btn-bg-color,
+    $btn-text-color,
+    $btn-border-color,
+    $btn-hover-bg-color,
+    $btn-hover-text-color,
+    $split-color
+) {
+    #{$search-prefix}-left {
+        #{$search-prefix}-left-addon {
+            border-left: 1px solid $split-color;
+            border-right: none;
+        }
+    }
+}
+
 @mixin search-simple-type($icon-size) {
     #{$search-prefix}-icon {
         @include icon-size($icon-size);
@@ -103,6 +121,20 @@
         color: $btn-text-color;
         &:hover {
             color: $btn-hover-text-color;
+        }
+    }
+}
+@mixin search-simple-color-rtl(
+    $primary-color,
+    $hover-color,
+    $btn-text-color,
+    $btn-hover-text-color,
+    $split-color
+) {
+    #{$search-prefix}-left {
+        #{$search-prefix}-left-addon {
+            border-left: 1px solid $split-color;
+            border-right: none;
         }
     }
 }

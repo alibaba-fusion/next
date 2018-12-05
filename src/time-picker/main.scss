@@ -3,6 +3,7 @@
 @import "scss/variable";
 @import './scss/menu.scss';
 @import './scss/panel.scss';
+@import './rtl.scss';
 
 #{$time-picker-prefix} {
     @include box-sizing;

@@ -79,9 +79,15 @@ export default class Tooltip extends React.Component {
 
     render() {
         const { className, align, style, prefix, trigger, children, popupContainer,
-            popupProps, popupClassName, popupStyle, triggerType, ...others} = this.props;
+            popupProps, popupClassName, popupStyle, triggerType, rtl, ...others} = this.props;
 
-        const transformOrigin = alignMap[align].trOrigin;
+        let trOrigin = 'trOrigin';
+        if (rtl) {
+            others.rtl = true;
+            trOrigin = 'rtlTrOrigin';
+        }
+
+        const transformOrigin = alignMap[align][trOrigin];
         const _offset = alignMap[align].offset;
         const _style = {transformOrigin, ...style};
 

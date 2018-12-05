@@ -19,7 +19,7 @@ import { Menu } from '@alifd/next';
 
 const { SubMenu, Item } = Menu;
 
-ReactDOM.render((
+ReactDOM.render(
     <Menu defaultOpenKeys="1" className="my-menu" openMode="single">
         <SubMenu key="0" label="Sub menu 1">
             <Item key="0-0">Sub option 1</Item>
@@ -42,7 +42,7 @@ ReactDOM.render((
             <Item key="3-2">Sub option 3</Item>
         </SubMenu>
     </Menu>
-), mountNode);
+, mountNode);
 ````
 
 ````css

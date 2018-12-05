@@ -1,6 +1,7 @@
 @import "../core/index-noreset";
 @import "scss/variable";
 @import "scss/mixin";
+@import "./rtl.scss";
 
 #{$progress-prefix}-line {
     @include box-sizing;

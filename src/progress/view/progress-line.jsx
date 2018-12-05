@@ -12,12 +12,17 @@ export default class Line extends React.PureComponent {
         hasBorder: PropTypes.bool,
         textRender: PropTypes.func,
         color: PropTypes.string,
+        rtl: PropTypes.bool,
     };
 
     render() {
-        const { prefix, size, state, percent, progressive, hasBorder, textRender, className, color, ...others } = this.props;
+        const {
+            prefix, size, state, color,
+            percent, progressive, hasBorder,
+            textRender, className, rtl,
+            ...others } = this.props;
 
-        const suffixText = textRender(percent);
+        const suffixText = textRender(percent, {rtl});
 
         const wrapCls = classNames({
             [`${prefix}progress-line`]: true,
@@ -37,7 +42,7 @@ export default class Line extends React.PureComponent {
         const lineStyle = { width: `${percent}%`, backgroundColor: color };
 
         return (
-            <div {...others} className={wrapCls}>
+            <div {...others} className={wrapCls} dir={rtl ? "rtl" : undefined}>
                 <div className={`${prefix}progress-line-container`}>
                     <div className={`${prefix}progress-line-underlay`}>
                         <div className={lineCls} style={lineStyle}></div>

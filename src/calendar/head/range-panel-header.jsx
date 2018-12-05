@@ -18,12 +18,16 @@ class RangePanelHeader extends React.PureComponent {
                 role="button"
                 title={locale.prevYear}
                 className={`${btnCls} ${btnCls}-prev-year`}
-                onClick={goPrevYear}><Icon type="arrow-double-left" /></button>
+                onClick={goPrevYear}>
+                <Icon type="arrow-double-left" />
+            </button>
             <button
                 role="button"
                 title={locale.prevMonth}
                 className={`${btnCls} ${btnCls}-prev-month`}
-                onClick={goPrevMonth}><Icon type="arrow-left" /></button>
+                onClick={goPrevMonth}>
+                <Icon type="arrow-left" />
+            </button>
             <div className={`${prefix}calendar-panel-header-left`}>
                 <button role="button" title={startMonthLabel} className={btnCls} onClick={() => changeMode('month', 'start')}>{startMonthLabel}</button>
                 <button role="button" title={startYearLable} className={btnCls} onClick={() => changeMode('year', 'start')}>{startYearLable}</button>
@@ -36,12 +40,16 @@ class RangePanelHeader extends React.PureComponent {
                 role="button"
                 title={locale.nextMonth}
                 className={`${btnCls} ${btnCls}-next-month`}
-                onClick={goNextMonth}><Icon type="arrow-right" /></button>
+                onClick={goNextMonth}>
+                <Icon type="arrow-right" />
+            </button>
             <button
                 role="button"
                 title={locale.nextYear}
                 className={`${btnCls} ${btnCls}-next-year`}
-                onClick={goNextYear}><Icon type="arrow-double-right" /></button>
+                onClick={goNextYear}>
+                <Icon type="arrow-double-right" />
+            </button>
         </div>);
     }
 }

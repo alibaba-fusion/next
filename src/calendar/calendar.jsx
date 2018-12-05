@@ -17,6 +17,7 @@ import { checkMomentObj, formatDateValue, getVisibleMonth, isSameYearMonth, CALE
 class Calendar extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 默认选中的日期（moment 对象）
          */
@@ -84,6 +85,7 @@ class Calendar extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         shape: 'fullscreen',
         modes: CALENDAR_MODES,
         format: 'YYYY-MM-DD',
@@ -188,13 +190,17 @@ class Calendar extends Component {
     }
 
     render() {
-        const { prefix, className, shape, showOtherMonth, format, locale, dateCellRender, monthCellRender, disabledDate, ...others } = this.props;
+        const { prefix, rtl, className, shape, showOtherMonth, format, locale, dateCellRender, monthCellRender, disabledDate, ...others } = this.props;
         const state = this.state;
 
         const classNames = classnames({
             [`${prefix}calendar`]: true,
             [`${prefix}calendar-${shape}`]: shape,
         }, className);
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const visibleMonth = state.visibleMonth;
 
@@ -211,6 +217,7 @@ class Calendar extends Component {
             value: state.value,
             mode: state.mode,
             locale,
+            rtl,
             visibleMonth,
             momentLocale: localeData,
             changeMode: this.changeMode,
@@ -242,7 +249,7 @@ class Calendar extends Component {
         const tables = {
             [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
             [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
-            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} onSelectYear={this.onSelectCell} />,
+            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />,
         };
 
         const panelHeaders = {

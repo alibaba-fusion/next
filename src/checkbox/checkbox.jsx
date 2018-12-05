@@ -17,10 +17,8 @@ function isChecked(selectedValue, value) {
 class Checkbox extends UIState {
     static displayName = 'Checkbox';
     static propTypes = {
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -179,7 +177,8 @@ class Checkbox extends UIState {
     }
 
     render() {
-        const { id, className, children, style, label, onMouseEnter, onMouseLeave,
+        /* eslint-disable no-unused-vars */
+        const { id, className, children, style, label, onMouseEnter, onMouseLeave, rtl,
             ...otherProps } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;

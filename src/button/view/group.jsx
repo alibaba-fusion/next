@@ -8,6 +8,7 @@ import ConfigProvider from '../../config-provider';
  */
 class ButtonGroup extends Component {
     static propTypes = {
+        rtl: PropTypes.bool,
         prefix: PropTypes.string,
         /**
          * 统一设置 Button 组件的按钮大小
@@ -23,7 +24,7 @@ class ButtonGroup extends Component {
     };
 
     render() {
-        const { prefix, className, size, children, ...others } = this.props;
+        const { prefix, className, size, children, rtl, ...others } = this.props;
 
         const groupCls = classNames({
             [`${prefix}btn-group`]: true,
@@ -37,6 +38,10 @@ class ButtonGroup extends Component {
                 });
             }
         });
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         return (
             <div {...others} className={groupCls}>

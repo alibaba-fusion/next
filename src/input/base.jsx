@@ -6,9 +6,6 @@ import zhCN from '../locale/zh-cn';
 
 class Base extends React.Component {
     static propTypes = {
-        /**
-         * 样式前缀
-         */
         prefix: PropTypes.string,
         /**
          * 当前值
@@ -89,6 +86,7 @@ class Base extends React.Component {
          * name
          */
         name: PropTypes.string,
+        rtl: PropTypes.bool,
         state: PropTypes.oneOf(['error', 'loading', 'success']),
         locale: PropTypes.object,
     };
@@ -181,7 +179,7 @@ class Base extends React.Component {
     }
 
     renderLength() {
-        const { maxLength, hasLimitHint, prefix } = this.props;
+        const { maxLength, hasLimitHint, prefix, rtl } = this.props;
         const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
 
         const classesLenWrap = classNames({
@@ -189,7 +187,9 @@ class Base extends React.Component {
             [`${prefix}error`]: len > maxLength
         });
 
-        return maxLength && hasLimitHint ? <span className={classesLenWrap}>{len}/{maxLength}</span> : null;
+        const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
+
+        return maxLength && hasLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
     }
 
     renderControl() {

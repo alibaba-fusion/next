@@ -60,6 +60,7 @@ typings/
 # next.js build output
 .next
 
+__html/
 dist/
 es/
 lib/
