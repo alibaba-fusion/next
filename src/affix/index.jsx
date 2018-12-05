@@ -32,7 +32,7 @@ class Affix extends React.Component {
          * 是否启用绝对布局实现 affix
          * @param {Boolean} 是否启用绝对布局
          */
-        absoluteAffix: PropTypes.bool,
+        useAbsolute: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
         children: PropTypes.any,
@@ -54,11 +54,11 @@ class Affix extends React.Component {
     }
 
     componentDidMount() {
-        const { container, absoluteAffix } = this.props;
+        const { container, useAbsolute } = this.props;
         this._updateNodePosition();
         // wait for parent rendered
         this.timeout = setTimeout(() => {
-            this._setEventHandlerForContainer(container, absoluteAffix);
+            this._setEventHandlerForContainer(container, useAbsolute);
         });
     }
 
@@ -67,24 +67,24 @@ class Affix extends React.Component {
             clearTimeout(this.timeout);
             this.timeout = null;
         }
-        const { container, absoluteAffix } = this.props;
-        this._removeEventHandlerForContainer(container, absoluteAffix);
+        const { container, useAbsolute } = this.props;
+        this._removeEventHandlerForContainer(container, useAbsolute);
     }
 
-    _setEventHandlerForContainer(getContainer, absoluteAffix = false) {
+    _setEventHandlerForContainer(getContainer, useAbsolute = false) {
         const container = getContainer();
         if (!container) {
             return;
         }
-        events.on(container, 'scroll', absoluteAffix ? this._updateNodeAbsolutePosition : this._updateNodePosition, false);
-        events.on(container, 'resize', absoluteAffix ? this._updateNodeAbsolutePosition : this._updateNodePosition, false);
+        events.on(container, 'scroll', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition, false);
+        events.on(container, 'resize', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition, false);
     }
 
-    _removeEventHandlerForContainer(getContainer, absoluteAffix = false) {
+    _removeEventHandlerForContainer(getContainer, useAbsolute = false) {
         const container = getContainer();
         if (container) {
-            events.off(container, 'scroll', absoluteAffix ? this._updateNodeAbsolutePosition : this._updateNodePosition);
-            events.off(container, 'resize', absoluteAffix ? this._updateNodeAbsolutePosition : this._updateNodePosition);
+            events.off(container, 'scroll', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition);
+            events.off(container, 'resize', useAbsolute ? this._updateNodeAbsolutePosition : this._updateNodePosition);
         }
     }
 

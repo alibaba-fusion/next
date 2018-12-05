@@ -23,4 +23,4 @@ The Affix component allows an element to become affixed (locked) to an area on t
 | offsetTop     | Offset from top when event triggers  | Number   | -       |
 | offsetBottom  | Offset from bottom when event triggers | Number   | -     |
 | onAffix       | Callback when affix event triggers <br><br>**signature**:<br>Function(isAffixed: Boolean) => void<br>**parameters**:<br>_if element is affixed_: {Boolean} null | Function | func.noop    |
-| absoluteAffix | Enable absolute position                                                                                                    | Boolean  | -            |
+| useAbsolute | Enable absolute position                                                                                                    | Boolean  | -            |
