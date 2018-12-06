@@ -27,7 +27,7 @@ module.exports = function* changelog() {
         default: updateVersion(packageInfo.version, 'z'),
         message: '请输入待发布的版本号：',
         validate: function(value) {
-            if (!semver.valid(value) || semver.lte(value, npmVersion)) {
+            if (!semver.valid(value)) {
                 return logger.warn('请输入正确的版本号，并且大于基线版本号！');
             }
             return true;
