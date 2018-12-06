@@ -5,7 +5,7 @@
 
 @mixin step-item-state-rtl(
     $shape: 'circle',
-    $background: $color-white,
+    $background: $color-white
 ) {
     #{$step-prefix}-item-node-dot {
         right: 50%;

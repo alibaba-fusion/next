@@ -76,7 +76,7 @@
 }
 
 @mixin balloon-close-rtl(
-    $left,
+    $left
 ) {
     .#{$css-prefix}balloon-close {
         left: $left;

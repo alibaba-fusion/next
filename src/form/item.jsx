@@ -139,6 +139,14 @@ export default class Item extends React.Component {
          */
         pattern: PropTypes.any,
         /**
+         * pattern 自定义错误信息
+         */
+        patternMessage: PropTypes.string,
+        /**
+         * pattern 自定义触发方式
+         */
+        patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        /**
          * [表单校验] 四种常用的 pattern
          */
         format: PropTypes.oneOf(['number', 'email', 'url', 'tel']),
