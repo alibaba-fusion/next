@@ -95,7 +95,7 @@ export default class Position {
         for (let i = 0; i < expectedAlign.length; i++) {
             const align = expectedAlign[i];
             const pinElementPoints = this._normalizePosition(pinElement, align.split(' ')[0], isPinFixed);
-            const baseElementPoints = this._normalizePosition(baseElement, align.split(' ')[1], isBaseFixed);
+            const baseElementPoints = this._normalizePosition(baseElement, align.split(' ')[1], isPinFixed);
             const pinElementParentOffset = this._getParentOffset(pinElement);
             const baseElementOffset = (isPinFixed && isBaseFixed) ? this._getLeftTop(baseElement) : baseElementPoints.offset();
             const top = baseElementOffset.top + baseElementPoints.y - pinElementParentOffset.top - pinElementPoints.y;
