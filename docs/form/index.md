@@ -47,8 +47,8 @@
 
 | 参数                  | 说明                                                                                                                      | 类型                 | 默认值   |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
-| size                | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large', 'small', 'medium' | Enum               | -     |
 | label               | label 标签的文本                                                                                                             | ReactNode          | -     |
+| size                | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large', 'small', 'medium' | Enum               | -     |
 | labelCol            | label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效                                             | Object             | -     |
 | wrapperCol          | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol                                                                                       | Object             | -     |
 | help                | 自定义提示信息，如不设置，则会根据校验规则自动生成.                                                                                              | ReactNode          | -     |
@@ -74,6 +74,8 @@
 | lengthMessage       | length 自定义错误信息                                                                                                          | String             | -     |
 | lengthTrigger       | length 自定义触发方式                                                                                                          | String/Array       | -     |
 | pattern             | 正则校验                                                                                                                    | any                | -     |
+| patternMessage      | pattern 自定义错误信息                                                                                                         | String             | -     |
+| patternTrigger      | pattern 自定义触发方式                                                                                                         | String/Array       | -     |
 | format              | [表单校验] 四种常用的 pattern<br><br>**可选值**:<br>'number', 'email', 'url', 'tel'                                                 | Enum               | -     |
 | formatMessage       | format 自定义错误信息                                                                                                          | String             | -     |
 | formatTrigger       | format 自定义触发方式                                                                                                          | String/Array       | -     |
