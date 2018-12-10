@@ -44,10 +44,12 @@ class Search extends React.Component {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
          * 输入关键字时的回掉
+         * @param {Object} 输入值
          */
         onChange: PropTypes.func,
         /**
          * 点击搜索按钮触发的回调
+         * @param {Object} 输入值
          */
         onSearch: PropTypes.func,
         /**
@@ -64,6 +66,7 @@ class Search extends React.Component {
         filterValue: PropTypes.string,
         /**
          * 选择器发生变化时回调
+         * @param {Object} filter value
          */
         onFilterChange: PropTypes.func,
         /**
