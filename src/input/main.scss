@@ -183,8 +183,8 @@
             top: 0;
         }
 
-        > *:not(:first-child) {
-            padding-left: $s-1;
+        > *:not(:last-child) {
+            padding-right: $s-1;
         }
 
         .#{$css-prefix}icon {
