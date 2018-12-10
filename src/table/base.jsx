@@ -507,6 +507,7 @@ export default class Table extends React.Component {
                         <Header
                             prefix={prefix}
                             pure={pure}
+                            affixRef={this.getAffixRef}
                             colGroup={colGroup}
                             className={`${prefix}table-header`}
                             filterParams={filterParams}
@@ -553,6 +554,13 @@ export default class Table extends React.Component {
             return this.wrapper;
         }
         this.wrapper = wrapper;
+    };
+
+    getAffixRef = (affixRef) => {
+        if (!affixRef) {
+            return this.affixRef;
+        }
+        this.affixRef = affixRef;
     };
 
     getHeaderCellRef = (i, j, cell) => {

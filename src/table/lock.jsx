@@ -385,15 +385,25 @@ export default function lock(BaseComponent) {
                         headerLeftLockRowHeight = headerLeftLockRow.offsetHeight;
                     }
 
-                    if (headerRightRow) {
+                    if (headerRightRow && headerRightLockRow) {
                         const
                             maxRightRowHeight = Math.max(headerRightLockRowHeight, headerRightRow.offsetHeight);
-                        headerRightLockRow && dom.setStyle(headerRightLockRow, 'height', maxRightRowHeight);
+
+                        dom.setStyle(headerRightLockRow, 'height', maxRightRowHeight);
+
+                        setTimeout(() => {
+                            this.tableRightInc.affixRef && this.tableRightInc.affixRef.getInstance().updatePosition();
+                        });
                     }
 
-                    if (headerLeftRow) {
+                    if (headerLeftRow && headerLeftLockRow) {
                         const maxLeftRowHeight = Math.max(headerLeftLockRowHeight, headerLeftRow.offsetHeight);
-                        headerLeftLockRow && dom.setStyle(headerLeftLockRow, 'height', maxLeftRowHeight);
+
+                        dom.setStyle(headerLeftLockRow, 'height', maxLeftRowHeight);
+
+                        setTimeout(() => {
+                            this.tableLeftInc.affixRef && this.tableLeftInc.affixRef.getInstance().updatePosition();
+                        });
                     }
 
                 });
