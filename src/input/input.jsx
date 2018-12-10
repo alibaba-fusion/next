@@ -161,6 +161,10 @@ export default class Input extends Base {
             </span>);
         }
 
+        if (state === 'loading') {
+            clearWrap = null;
+        }
+
         return clearWrap || lenWrap || stateWrap || extra ? <span className={`${prefix}input-control`}>
             {clearWrap}{lenWrap}{stateWrap}{extra}
         </span> : null;
