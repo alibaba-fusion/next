@@ -70,7 +70,7 @@ class TimelineItem extends Component {
         this['timeline-item'].style['min-height'] = '48px'; // timeleft 节点最小高度
     }
     render() {
-        const { prefix, className, state, icon, dot, time, title, timeLeft, content, index, total, folderIndex, foldShow, locale, animation } = this.props;
+        const { prefix, className, state, icon, dot, time, title, timeLeft, content, index, total, folderIndex, foldShow, locale, animation, ...others } = this.props;
         const finalItemNode = dot ? dot : icon ? <span className={`${prefix}timeline-item-icon`}><Icon type={icon} size="xs" /></span> : <span className={`${prefix}timeline-item-dot`}></span>;
         const itemCls = classNames({
             [`${prefix}timeline-item`]: true,
@@ -80,7 +80,7 @@ class TimelineItem extends Component {
             [`${prefix}timeline-item-folded`]: folderIndex,
             [`${prefix}timeline-item-unfolded`]: foldShow,
             [`${prefix}timeline-item-has-left-content`]: timeLeft,
-            className: className
+            [className]: className
         });
         const folderCls = classNames({
             [`${prefix}timeline-item-folder`]: true,
@@ -102,7 +102,7 @@ class TimelineItem extends Component {
             type: 'primary',
             onClick: this.toggleFold.bind(this, folderIndex, total),
         };
-        const timelineNode = folderIndex && foldShow || !folderIndex ? (<div className={itemCls} ref={e => {
+        const timelineNode = folderIndex && foldShow || !folderIndex ? (<div {...others} className={itemCls} ref={e => {
             this['timeline-item'] = e;
         }}>
             <div className={`${prefix}timeline-item-left-content`}>
