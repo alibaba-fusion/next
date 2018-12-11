@@ -66,13 +66,13 @@ export default class Dots extends React.Component {
             }
 
             children.push(
-                <li key={i} className={itemClazz}>
+                <li key={i} className={itemClazz} {...handleProp}>
                     {
                         (dotsRender instanceof Function) ?
-                            <span {...handleProp}>
+                            <span>
                                 {dotsRender(docIndex, currentSlideIndex)}
                             </span> :
-                            <button {...handleProp} />
+                            <button />
                     }
                 </li>
             );
