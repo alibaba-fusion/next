@@ -374,20 +374,9 @@ export default function lock(BaseComponent) {
                         headerLeftRow = this.getHeaderCellNode(index, 0),
                         headerRightLockRow = this.getHeaderCellNode(index, 0, 'right'),
                         headerLeftLockRow = this.getHeaderCellNode(index, 0, 'left');
-                    let headerRightLockRowHeight = 0, headerLeftLockRowHeight = 0;
-                    // 如果不需要锁列的出现，就不要在计算锁列的header的高度
-                    // 这在浏览器缩放的时候可能会造成高度计算的问题
-                    if (headerRightLockRow && !this._notNeedAdjustLockRight) {
-                        headerRightLockRowHeight = headerRightLockRow.offsetHeight;
-                    }
-
-                    if (headerLeftLockRow && !this._notNeedAdjustLockLeft) {
-                        headerLeftLockRowHeight = headerLeftLockRow.offsetHeight;
-                    }
 
                     if (headerRightRow && headerRightLockRow) {
-                        const
-                            maxRightRowHeight = Math.max(headerRightLockRowHeight, headerRightRow.offsetHeight);
+                        const maxRightRowHeight = headerRightRow.offsetHeight;
 
                         dom.setStyle(headerRightLockRow, 'height', maxRightRowHeight);
 
@@ -397,7 +386,7 @@ export default function lock(BaseComponent) {
                     }
 
                     if (headerLeftRow && headerLeftLockRow) {
-                        const maxLeftRowHeight = Math.max(headerLeftLockRowHeight, headerLeftRow.offsetHeight);
+                        const maxLeftRowHeight = headerLeftRow.offsetHeight;
 
                         dom.setStyle(headerLeftLockRow, 'height', maxLeftRowHeight);
 
@@ -416,7 +405,7 @@ export default function lock(BaseComponent) {
                     const lockLeftRow = this.getCellNode(index, 0, 'left'),
                         lockRightRow = this.getCellNode(index, 0, 'right'),
                         row = this.getFirstNormalCellNode(index),
-                        rowHeight = row && row.offsetHeight || 0;
+                        rowHeight = row && parseFloat(getComputedStyle(row).height) || 0;
                     let lockLeftHeight = 0, lockRightHeight = 0;
 
                     if (lockLeftRow) {
