@@ -80,6 +80,7 @@
 | formatMessage       | format 自定义错误信息                                                                                                          | String             | -     |
 | formatTrigger       | format 自定义触发方式                                                                                                          | String/Array       | -     |
 | validator           | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function           | -     |
+| validatorTrigger    | validator 自定义触发方式                                                                                                       | String/Array       | -     |
 
 ### Form.Submit
 
