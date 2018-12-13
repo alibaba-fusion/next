@@ -20,9 +20,9 @@
     }
 
     #{$input-prefix}-control {
-        > *:not(:first-child) {
-            padding-right: $s-1;
-            padding-left: 0;
+        > *:not(:last-child) {
+            padding-left: $s-1;
+            padding-right: 0;
         }
     }
 }

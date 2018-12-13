@@ -99,7 +99,7 @@
 }
 
 
-#{$step-prefix} {
+#{$step-prefix}[dir="rtl"] {
     &-horizontal {
         & > #{$step-prefix}-item {
             text-align: right;
@@ -107,7 +107,7 @@
     }
 }
 
-#{$step-prefix}-arrow {
+#{$step-prefix}-arrow[dir="rtl"] {
     #{$step-prefix}-item {
         @include step-item-size(
             $step-arrow-item-height,
@@ -173,7 +173,7 @@
 // 圆形
 // ----------------------------------------
 
-#{$step-prefix}-circle {
+#{$step-prefix}-circle[dir="rtl"] {
 
     & > #{$step-prefix}-item-wait {
         @include step-item-state-rtl(
@@ -261,7 +261,7 @@
 // ----------------------------------------
 
 
-#{$step-prefix}-dot {
+#{$step-prefix}-dot[dir="rtl"] {
     & > #{$step-prefix}-item-wait {
         @include step-item-state-rtl(
             'dot',

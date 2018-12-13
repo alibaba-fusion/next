@@ -64,9 +64,6 @@ $form-element-large-height:40px;
             padding-left: 0;
             line-height: inherit;
         }
-        &.#{$css-prefix}left > #{$form-prefix}-item-label {
-            display: table-cell\0;
-        }
     }
     &-item-control {
         #{$form-prefix}-text-align {
@@ -118,7 +115,6 @@ $form-element-large-height:40px;
             /* label on left */
             &.#{$css-prefix}left #{$form-prefix}-item-control {
                 display: inline-block;
-                display: table-cell\0;
                 vertical-align: top;
                 line-height: 0;
             }
@@ -133,5 +129,14 @@ $form-element-large-height:40px;
                 margin-right: $form-inline-s-item-margin-r;
             }
         }
+    }
+}
+
+@media screen and (min-width: 0\0) and (min-resolution: .001dpcm) {
+    #{$form-prefix}-item.#{$css-prefix}left > #{$form-prefix}-item-label {
+        display: table-cell;
+    }
+    #{$form-prefix}.#{$css-prefix}inline #{$form-prefix}-item.#{$css-prefix}left #{$form-prefix}-item-control {
+        display: table-cell;
     }
 }

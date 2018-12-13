@@ -145,6 +145,7 @@ export default class Menu extends Component {
         focusedKey: PropTypes.string,
         focusable: PropTypes.bool,
         onItemFocus: PropTypes.func,
+        onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string
@@ -195,7 +196,7 @@ export default class Menu extends Component {
             focusedKey: 'focusedKey' in this.props ? focusedKey : (focusable && autoFocus ? this.tabbableKey : null)
         };
 
-        bindCtx(this, ['handleOpen', 'handleSelect', 'handleItemClick', 'handleItemKeyDown']);
+        bindCtx(this, ['handleOpen', 'handleSelect', 'handleItemClick', 'handleItemKeyDown', 'onBlur']);
 
         this.popupNodes = [];
     }
@@ -233,6 +234,14 @@ export default class Menu extends Component {
                 this.tabbableKey = this.getFirstAvaliablelChildKey('0');
             }
         }
+    }
+
+    onBlur(e) {
+        this.setState({
+            focusedKey: ''
+        });
+
+        this.props.onBlur && this.props.onBlur(e);
     }
 
     getInitOpenKeys(props) {
@@ -629,7 +638,7 @@ export default class Menu extends Component {
         }
 
         return (
-            <ul role={role} className={newClassName} onKeyDown={this.handleEnter} aria-multiselectable={selectMode === 'multiple'} {...others}>
+            <ul role={role} onBlur={this.onBlur} className={newClassName} onKeyDown={this.handleEnter} aria-multiselectable={selectMode === 'multiple'} {...others}>
                 {headerElement}
                 {shouldWrapItemsAndFooter ?
                     <div className={`${prefix}menu-hoz-right`}>

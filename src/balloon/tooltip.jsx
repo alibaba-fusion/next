@@ -100,6 +100,7 @@ export default class Tooltip extends React.Component {
             className={className}
             style={_style}
             align={align}
+            rtl={rtl}
         >
             {children}
         </BalloonInner>);
@@ -121,6 +122,7 @@ export default class Tooltip extends React.Component {
                 delay={0}
                 className={popupClassName}
                 style={popupStyle}
+                rtl={rtl}
                 shouldUpdatePosition
             >
                 {content}

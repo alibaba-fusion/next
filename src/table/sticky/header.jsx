@@ -13,6 +13,11 @@ export default class StickHeader extends React.Component {
         offsetTop: PropTypes.number,
         affixProps: PropTypes.object
     }
+
+    getAffixRef = (ref) => {
+        this.props.affixRef && this.props.affixRef(ref);
+    }
+
     render() {
         const { prefix } = this.props;
         const { Header, offsetTop, affixProps } = this.context;
@@ -24,7 +29,7 @@ export default class StickHeader extends React.Component {
             className
         });
 
-        return (<Affix {...others} className={cls} offsetTop={offsetTop}>
+        return (<Affix ref={this.getAffixRef} {...others} className={cls} offsetTop={offsetTop}>
             <Header {...this.props}/>
         </Affix>);
     }

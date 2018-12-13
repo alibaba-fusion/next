@@ -319,6 +319,7 @@ export default class Balloon extends React.Component {
                 container={popupContainer || container}
                 className={popupClassName}
                 style={popupStyle}
+                rtl={rtl}
             >
                 {content}
             </Popup>

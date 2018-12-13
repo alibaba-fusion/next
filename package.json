@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.11.1",
+  "version": "1.11.3",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -46,20 +46,16 @@
     "eslint": "eslint --fix '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
+    "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [
       "eslint",
       "git add"
     ],
-    "@src/**/*.@(css|scss)": [
+    "src/**/*.@(css|scss)": [
       "stylelint",
       "git add"
     ]
@@ -136,7 +132,7 @@
     "minimist": "^1.2.0",
     "mocha": "^3.5.3",
     "moment": "^2.20.1",
-    "node-sass": "^4.5.3",
+    "node-sass": "4.6.0",
     "node-sass-package-importer": "^5.2.0",
     "postcss-loader": "^2.0.6",
     "postcss-scss": "1.0.2",

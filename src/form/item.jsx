@@ -162,6 +162,10 @@ export default class Item extends React.Component {
          * [表单校验] 自定义校验函数
          */
         validator: PropTypes.func,
+        /**
+         * validator 自定义触发方式
+         */
+        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     };
 
     static defaultProps = {

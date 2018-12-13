@@ -133,7 +133,8 @@ export function config(Component, options = {}) {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
                     nextPure,
-                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl : currentGlobalRtl
+                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl :
+                        currentGlobalRtl === true ? true : undefined
                 },
                 displayName
             );
