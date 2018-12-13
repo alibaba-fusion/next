@@ -96,18 +96,18 @@ async function ajax() {
     });
 }
 
-function beforeUpload(info, options) {
-    console.log('beforeUpload callback : ', info, options);
+function beforeUpload(file, options) {
+    console.log('beforeUpload callback : ', file, options);
     return requestOpts;
 }
 
-async function asyncBeforeUpload(info, options) {
-    console.log('beforeUpload callback : ', info, options);
+async function asyncBeforeUpload(file, options) {
+    console.log('beforeUpload callback : ', file, options);
     return await ajax();
 }
 
-function onChange(info) {
-    console.log('onChange callback : ', info);
+function onChange(file) {
+    console.log('onChange callback : ', file);
 }
 
 
