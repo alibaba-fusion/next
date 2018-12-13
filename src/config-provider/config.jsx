@@ -13,17 +13,25 @@ function getDisplayName(Component) {
 let globalLocales;
 let currentGlobalLanguage = 'zh-cn';
 let currentGlobalLocale = {};
-let currentGlobalRtl = false;
+let currentGlobalRtl;
 
 export function initLocales(locales) {
     globalLocales = locales;
     currentGlobalLocale = locales[currentGlobalLanguage];
+
+    if (typeof currentGlobalRtl !== 'boolean') {
+        currentGlobalRtl = currentGlobalLocale.rtl;
+    }
 }
 
 export function setLanguage(language) {
     if (globalLocales) {
         currentGlobalLanguage = language;
         currentGlobalLocale = globalLocales[language];
+
+        if (typeof currentGlobalRtl !== 'boolean') {
+            currentGlobalRtl = currentGlobalLocale.rtl;
+        }
     }
 }
 
@@ -32,6 +40,10 @@ export function setLocale(locale) {
         ...(globalLocales ? globalLocales[currentGlobalLanguage] : {}),
         ...locale
     };
+
+    if (typeof currentGlobalRtl !== 'boolean') {
+        currentGlobalRtl = currentGlobalLocale.rtl;
+    }
 }
 
 export function setDirection(dir) {
