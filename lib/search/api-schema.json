@@ -1,0 +1,317 @@
+{
+  "name": "Search",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式前缀"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'simple'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "形状",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "形状"
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'primary'",
+            "computed": false
+          },
+          {
+            "value": "'secondary'",
+            "computed": false
+          },
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'dark'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "类型 shape=normal: primary/secondary; shape=simple: normal/dark;",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "类型 shape=normal: primary/secondary; shape=simple: normal/dark;"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'large'",
+            "computed": false,
+            "description": "'大'"
+          },
+          {
+            "value": "'medium'",
+            "computed": false,
+            "description": "'小'"
+          }
+        ]
+      },
+      "required": false,
+      "description": "大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "大小\n@enumdesc '大', '小'",
+      "value": [
+        {
+          "value": "'large'",
+          "computed": false,
+          "description": "'大'"
+        },
+        {
+          "value": "'medium'",
+          "computed": false,
+          "description": "'小'"
+        }
+      ]
+    },
+    "defaultValue": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "搜索框默认值",
+      "docblock": "搜索框默认值"
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "搜索框数值",
+      "docblock": "搜索框数值"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "输入关键字时的回掉",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "输入关键字时的回掉\n@param {Object} 输入值",
+      "params": [
+        {
+          "name": "输入值",
+          "description": null,
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onSearch": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击搜索按钮触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "点击搜索按钮触发的回调\n@param {Object} 输入值",
+      "params": [
+        {
+          "name": "输入值",
+          "description": null,
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "defaultFilterValue": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "选择器默认值",
+      "docblock": "选择器默认值"
+    },
+    "filter": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "选择器",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "选择器"
+    },
+    "filterValue": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "选择器值",
+      "docblock": "选择器值"
+    },
+    "onFilterChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选择器发生变化时回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "选择器发生变化时回调\n@param {Object} filter value",
+      "params": [
+        {
+          "name": "filter",
+          "description": "value",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "dataSource": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "搜索框下拉联想列表",
+      "docblock": "搜索框下拉联想列表"
+    },
+    "placeholder": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "默认提示",
+      "docblock": "默认提示"
+    },
+    "searchText": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "button 的内容",
+      "docblock": "button 的内容"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义样式",
+      "docblock": "自定义样式",
+      "properties": []
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式名称",
+      "docblock": "样式名称"
+    },
+    "filterProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "选择器的props",
+      "docblock": "选择器的props",
+      "properties": []
+    },
+    "buttonProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "按钮的额外属性",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "按钮的额外属性",
+      "properties": []
+    },
+    "popupContent": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义渲染的的下拉框",
+      "docblock": "自定义渲染的的下拉框"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "自定义渲染的的下拉框",
+      "docblock": "自定义渲染的的下拉框"
+    },
+    "hasClear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示清除按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示清除按钮"
+    }
+  },
+  "methods": [],
+  "description": "输入框部分继承 Select.AutoComplete 的能力，可以直接用AutoComplete 的 api",
+  "subComponents": []
+}
