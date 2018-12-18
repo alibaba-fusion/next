@@ -304,6 +304,8 @@ class NumberPicker extends React.Component {
         let result;
         if (typeof val === 'number') {
             result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
+
+            result = this.hackChrome(result);
         } else {
             result = min === -Infinity ? step : min;
         }
@@ -317,15 +319,25 @@ class NumberPicker extends React.Component {
         if (typeof val === 'number') {
             result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
 
-            // in chrome browser: 0.3 - 0.2 = 0.09999999999, we should creact to 0.1
-            const precision = this.getPrecision();
-            if (precision > 0) {
-                result = Number(Number(result).toFixed(precision));
-            }
+            result = this.hackChrome(result);
         } else {
             result = min === -Infinity ? -step : min;
         }
         return result;
+    }
+
+    /**
+     * fix bug in chrome browser
+     * 0.28 + 0.01 = 0.29000000000000004
+     * 0.29 - 0.01 = 0.27999999999999997
+     * @param {Number} value value
+     */
+    hackChrome(value) {
+        const precision = this.getPrecision();
+        if (precision > 0) {
+            return Number(Number(value).toFixed(precision));
+        }
+        return value;
     }
 
     step(type, e) {
