@@ -13,14 +13,14 @@ describe('Tab', () => {
 
     describe('simple', () => {
         it('should render only one tab', () => {
-            const wrapper = mount(<Tab><Tab.Item title="foo" /></Tab>)
+            const wrapper = mount(<Tab><Tab.Item title="foo" /></Tab>);
             assert(wrapper.find('.next-tabs-tab').length === 1);
-        })
+        });
     });
 
     describe('with props', () => {
         let wrapper;
-        const panes = [1, 2, 3, 4].map((item, index) => <Tab.Item title={`item ${item}`} key={index}></Tab.Item>);
+        const panes = [1, 2, 3, 4, 5].map((item, index) => item < 5 ? <Tab.Item title={`item ${item}`} key={index}></Tab.Item> : null);
 
         afterEach(() => {
             wrapper.unmount();
@@ -68,7 +68,7 @@ describe('Tab', () => {
             const wrapper2 = mount(<Tab tabPosition="right" shape="wrapped">{panes}</Tab>);
             assert(wrapper2.find('.next-tabs').hasClass('next-tabs-vertical'));
 
-            const wrapper3 = mount(<Tab tabPosition="bottom" shape="wrapped">{panes}</Tab>)
+            const wrapper3 = mount(<Tab tabPosition="bottom" shape="wrapped">{panes}</Tab>);
             assert(wrapper3.find('.next-tabs').hasClass('next-tabs-bottom'));
         });
 
@@ -83,7 +83,7 @@ describe('Tab', () => {
         });
 
         it('should render extra in left side', () => {
-            wrapper = mount(<Tab shape="wrapped" tabPosition="left" extra={<button className="test-extra">hello world</button>}>{panes}</Tab>)
+            wrapper = mount(<Tab shape="wrapped" tabPosition="left" extra={<button className="test-extra">hello world</button>}>{panes}</Tab>);
             assert(wrapper.find('.test-extra').length === 1);
         });
 
@@ -96,7 +96,7 @@ describe('Tab', () => {
         });
 
         it('should render with contentStyle & contentClassName', () => {
-            const contentStyle={ background: 'red' };
+            const contentStyle = { background: 'red' };
             wrapper = mount(<Tab contentStyle={contentStyle} contentClassName="custom-content">{panes}</Tab>);
             assert(wrapper.find('.next-tabs-content').hasClass('custom-content'));
             const tabContent = wrapper.find('.next-tabs-content').instance();
@@ -104,7 +104,7 @@ describe('Tab', () => {
         });
 
         it('should render with tabRender', () => {
-            wrapper = mount(<Tab tabRender={(key, props) => <div className="custom-tab-item">{props.title}</div>}>{panes}</Tab>)
+            wrapper = mount(<Tab tabRender={(key, props) => <div className="custom-tab-item">{props.title}</div>}>{panes}</Tab>);
             assert(wrapper.find('.custom-tab-item').length === 4);
         });
 
@@ -162,7 +162,7 @@ describe('Tab', () => {
             wrapper = mount(<Tab onClose={key => tabKey = key}>
                 <Tab.Item title="foo" />
                 <Tab.Item title="bar" closeable />
-            </Tab>)
+            </Tab>);
             const closeIcon = wrapper.find('.next-icon-close');
             assert(closeIcon.length === 1);
             closeIcon.simulate('click');
@@ -222,7 +222,7 @@ describe('Tab', () => {
         it('should scrollToActiveTab', () => {
             wrapper = mount(<div style={boxStyle}><Tab activeKey="9">{panes}</Tab></div>, { attachTo: target });
             // console.log(wrapper.find('.next-tabs').instance());
-            wrapper.setProps({ activeKey: "3" });
+            wrapper.setProps({ activeKey: '3' });
             // wrapper.find('.next-tabs-tab').at(1).simulate('click');
 
         });
