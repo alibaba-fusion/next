@@ -49,8 +49,8 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | contentClassName    | 内容区容器的自定义样式类                                                                                                                                                                                                        | String        | -        |
 | extra               | 导航栏附加内容                                                                                                                                                                                                             | ReactNode     | -        |
 | onClick             | 点击单个选项卡时触发的回调<br><br>**签名**:<br>Function() => void                                                                                                                                                                  | Function      | () => {} |
-| onChange            | 选项卡发生切换时的事件回调<br><br>**签名**:<br>Function(key: String) => void<br>**参数**:<br>_key_: {String} 改变后的 key                                                                                                                | Function      | () => {} |
-| onClose             | 选项卡被关闭时的事件回调<br><br>**签名**:<br>Function(key: String) => void<br>**参数**:<br>_key_: {String} 关闭的选项卡的 key                                                                                                              | Function      | () => {} |
+| onChange            | 选项卡发生切换时的事件回调<br><br>**签名**:<br>Function(key: String/Number) => void<br>**参数**:<br>_key_: {String/Number} 改变后的 key                                                                                                  | Function      | () => {} |
+| onClose             | 选项卡被关闭时的事件回调<br><br>**签名**:<br>Function(key: String/Number) => void<br>**参数**:<br>_key_: {String/Number} 关闭的选项卡的 key                                                                                                | Function      | () => {} |
 | tabRender           | 自定义选项卡模板渲染函数<br><br>**签名**:<br>Function(key: String, props: Object) => ReactNode<br>**参数**:<br>_key_: {String} 当前 Tab.Item 的 key 值<br>_props_: {Object} 传给 Tab.Item 的所有属性键值对<br>**返回值**:<br>{ReactNode} 返回自定义组件<br> | Function      | -        |
 
 ### Tab.Item

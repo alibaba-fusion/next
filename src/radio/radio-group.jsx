@@ -28,6 +28,10 @@ class RadioGroup extends Component {
          */
         style: PropTypes.object,
         /**
+         * name
+         */
+        name: PropTypes.string,
+        /**
          * radio group的选中项的值
          */
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),

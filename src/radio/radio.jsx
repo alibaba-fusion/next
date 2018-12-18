@@ -59,6 +59,14 @@ class Radio extends UIState {
          * radio是否被禁用
          */
         disabled: PropTypes.bool,
+        /**
+         * radio 的value
+         */
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        /**
+         * name
+         */
+        name: PropTypes.string,
     }
 
     static defaultProps = {
