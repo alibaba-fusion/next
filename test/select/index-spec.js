@@ -58,6 +58,25 @@ describe('Select', () => {
         assert(wrapper.find('span.next-select em').text() === 'empty');
     });
 
+    it('should support async dataSource', () => {
+        
+        const DATASOURCE = [
+            { label: 'TT1', value: 'test1' },
+            { label: 'TT2', value: 'test2' },
+            { label: 'TT3', value: 'test3' },
+        ]
+
+        const wrapper = mount(<Select defaultValue="test2"/>);
+
+        wrapper.setProps({
+            dataSource: DATASOURCE,
+        });
+        
+        wrapper.update();
+
+        assert(wrapper.find('.next-select em').text() === 'TT2');
+    });
+
     it('should support not string value', (done) => {
         const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: false }];
         const onChange = (value) => {
