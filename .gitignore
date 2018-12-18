@@ -60,6 +60,8 @@ typings/
 # next.js build output
 .next
 
+precss.css
+.sass-cache/
 scripts/server-remote
 __html/
 dist/
