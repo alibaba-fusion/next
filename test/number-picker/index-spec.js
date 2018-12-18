@@ -318,4 +318,24 @@ describe('number-picker', () => {
             done();
         });
     });
+    describe('chrome bug hack', () => {
+        it('0.28 + 0.01 should be 0.29 not 0.29000000000000004', (done) => {
+            let onChange = (value) => {
+                    assert(value === 0.29);
+                    done();
+                },
+                wrapper = mount(<NumberPicker defaultValue={0.28} onChange={onChange} step={0.01} precision={2}/>);
+
+            wrapper.find('button').at(0).simulate('click');
+        });
+        it('0.29 - 0.01 should be 0.28 not 0.27999999999999997', (done) => {
+            let onChange = (value) => {
+                    assert(value === 0.28);
+                    done();
+                },
+                wrapper = mount(<NumberPicker defaultValue={0.29} onChange={onChange} step={0.01} precision={2}/>);
+
+            wrapper.find('button').at(1).simulate('click');
+        });
+    });
 });
