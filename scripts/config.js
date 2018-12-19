@@ -1,4 +1,19 @@
 module.exports = {
+    child2parent: {
+        // Overlay.Popup inherent from Overlay, add this to generate entire d.ts files
+        'Overlay.Popup': 'Overlay',
+        Dropdown: 'Overlay.Popup',
+        'Form.Submit': 'Button',
+        'Form.Reset': 'Button',
+        Nav: 'Menu',
+        'Nav.Group': 'Menu.Group',
+        'Nav.Item': 'Menu.Item',
+        'Nav.PopupItem': 'Menu.PopupItem',
+        'Nav.SubMenu': 'Menu.SubMenu',
+        Search: 'Select.AutoComplete',
+        'Upload.Card': 'Upload',
+        'Upload.Drager': 'Upload'
+    },
     components: [
         'affix',
         'animate',

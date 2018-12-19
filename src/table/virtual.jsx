@@ -100,6 +100,16 @@ export default function virtual(BaseComponent) {
                 });
             }
 
+            if (this.state.rowHeight && 'rowHeight' in nextProps) {
+                const row = this.getRowNode();
+                const rowClientHeight = row && row.clientHeight;
+                if (rowClientHeight && rowClientHeight !== this.state.rowHeight) {
+                    this.setState({
+                        rowHeight: rowClientHeight
+                    });
+                }
+            }
+
         }
 
         componentDidUpdate() {
@@ -140,19 +150,21 @@ export default function virtual(BaseComponent) {
 
         getVisibleRange(ExpectStart) {
             const { height, rowHeight } = this.state;
+            const len = this.props.dataSource.length;
+
             let end, visibleCount = 0;
             let start = 0;
             if (typeof rowHeight === 'function') {
                 // try get cell height;
-                end = 2;
+                end = 1;
             } else {
                 visibleCount = parseInt(height / rowHeight, 10);
 
                 if ('number' === typeof ExpectStart) {
-                    start = ExpectStart;
+                    start = ExpectStart < len ? ExpectStart : 0;
                 }
 
-                end = +start + 1 + visibleCount + 10;
+                end = Math.min(+start + 1 + visibleCount + 10, len);
             }
             this.end = end;
             this.visibleCount = visibleCount;
@@ -172,11 +184,16 @@ export default function virtual(BaseComponent) {
             if (this.hasVirtualData) {
                 const body = this.bodyNode;
                 const virtualScrollNode = body.querySelector('div');
-                const table = virtualScrollNode.querySelector('table');
                 const { clientHeight, clientWidth } = body;
-                const { clientWidth: tableClientWidth } = table;
-                if (clientWidth < tableClientWidth) {
-                    dom.setStyle(virtualScrollNode, 'width', tableClientWidth);
+
+                const tableInc = this.tableInc;
+                const tableNode = findDOMNode(tableInc);
+                const { prefix } = this.props;
+                const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
+                const headerClientWidth = headerNode && headerNode.clientWidth;
+
+                if (clientWidth < headerClientWidth) {
+                    dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
                     const leftNode = this.bodyLeftNode;
                     const rightNode = this.bodyRightNode;
                     leftNode && dom.setStyle(leftNode, 'max-height', clientHeight);
@@ -223,7 +240,14 @@ export default function virtual(BaseComponent) {
         }
 
         getRowNode() {
-            return findDOMNode(this.tableInc.getRowRef(1));
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of this.tableInc when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(this.tableInc.getRowRef(0));
+            } catch (error) {
+                return null;
+            }
         }
 
         render() {

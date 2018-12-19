@@ -28,11 +28,14 @@ Radio buttons allow the user to select a single option from data-set. User can u
 | onMouseEnter   | Callback on mouse enter<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom Event                                               | Function | func.noop |
 | onMouseLeave   | Callback on mouse leave<br><br>**signatures**:<br>Function(e: Event) => void<br>**params**:<br>_e_: {Event} Dom Event                                                    | Function | func.noop |
 | disabled       | Set radio button disabel to be used                                                                                                                                 | Boolean  | -         |
+| value          | value                                                                                                                               | String/Number/Boolean | -         |
+| name           | name                                                                                                                                       | String                | -         |
 
 ### Radio.Group
 
 | Param | Descripiton  | Type  | Default Value |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | --------- |
+| name         | name                                                                                                                                               | String                              | -         |
 | value        | The value of the Item witch is selected in radio group                  | String/Number/Boolean               | -         |
 | size         | Used with `shape` prop，valid when shape is set to button<br><br>**option**:<br>'large'<br>'medium'<br>'small'              | Enum                                | 'medium'  |
 | shape        | Make radio shape like button, when it set value to 'button'<br><br>**option**:<br>'button'                                                                                                 | Enum                                | -         |

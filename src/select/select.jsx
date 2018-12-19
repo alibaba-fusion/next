@@ -220,9 +220,13 @@ class Select extends Base {
         super.componentWillReceiveProps(nextProps);
 
         if ('value' in nextProps) {
-            // 更新valueDataSource值
+            // under controll
             this.valueDataSource = getValueDataSource(nextProps.value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
+        } else if ('defaultValue' in nextProps && (nextProps.children !== this.props.children || nextProps.dataSource !== this.props.dataSource)) {
+            //has defaultValue and dataSource changed
+            this.valueDataSource = getValueDataSource(nextProps.defaultValue, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
         }
+
     }
 
     componentDidMount() {

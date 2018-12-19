@@ -80,12 +80,12 @@ export default class Tab extends Component {
         onClick: PropTypes.func,
         /**
          * 选项卡发生切换时的事件回调
-         * @param {String} key 改变后的 key
+         * @param {String|Number} key 改变后的 key
          */
         onChange: PropTypes.func,
         /**
          * 选项卡被关闭时的事件回调
-         * @param {String} key   关闭的选项卡的 key
+         * @param {String|Number} key   关闭的选项卡的 key
          */
         onClose: PropTypes.func,
         /**

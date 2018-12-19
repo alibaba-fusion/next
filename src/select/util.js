@@ -239,8 +239,9 @@ function getKeyItemByValue(value, valueMap) {
 }
 
 /**
+ * compute valueDataSource by new value
  * @param {Array/String} value 数据
- * @param {Object} mapValueDS   缓存数据 value => {value,label} 的映射关系表
+ * @param {Object} mapValueDS   上个value的缓存数据 value => {value,label} 的映射关系表
  * @param {*} mapMenuDS  通过 dataSource 建立 value => {value,label} 的映射关系表
  * @returns {Object} value: [value]; valueDS: [{value,label}]; mapValueDS: {value: {value,label}}
  */

@@ -99,11 +99,9 @@
 }
 
 
-#{$step-prefix}[dir="rtl"] {
-    &-horizontal {
-        & > #{$step-prefix}-item {
-            text-align: right;
-        }
+#{$step-prefix}-horizontal[dir="rtl"] {
+    & > #{$step-prefix}-item {
+        text-align: right;
     }
 }
 

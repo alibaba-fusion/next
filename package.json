@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.11.3",
+  "version": "1.11.5",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -34,9 +34,9 @@
   "scripts": {
     "report-coverage": "codecov",
     "dev": "node ./scripts/server/index.js",
-    "dev-remote": "node ./scripts/server-remote/index.js",
     "build": "node ./scripts/build/index.js",
     "check": "node ./scripts/check/index.js",
+    "check-sass": "node ./scripts/check/sass.js",
     "docs": "node ./scripts/docs/index.js",
     "api": "node ./scripts/api.js",
     "pack": "node ./scripts/pack.js",
@@ -69,7 +69,7 @@
     "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
-    "@alifd/api-extractor": "^3.0.0",
+    "@alifd/api-extractor": "^3.4.0",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
     "@alifd/dts-generator": "^1.0.0",
@@ -93,7 +93,6 @@
     "chokidar": "^2.0.4",
     "chrome-launcher": "^0.10.2",
     "co": "^4.6.0",
-    "inquirer": "^6.1.0",
     "console-polyfill": "^0.3.0",
     "conventional-changelog": "^2.0.1",
     "css-loader": "^0.28.7",
@@ -115,6 +114,7 @@
     "highlight.js": "^9.12.0",
     "html5shiv": "^3.7.3",
     "husky": "^0.14.3",
+    "inquirer": "^6.1.0",
     "jsonp": "^0.2.1",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -147,6 +147,7 @@
     "react-router": "^4.3.1",
     "redux": "^4.0.0",
     "remark": "^9.0.0",
+    "sass": "^1.15.2",
     "sassaby-next": "^3.0.0",
     "simulate-event": "^1.4.0",
     "sinon": "^5.0.10",
