@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.11.4",
+  "version": "1.11.5",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -47,7 +47,6 @@
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
-    "prepush": "npm run check-sass",
     "changelog": "node ./scripts/changelog.js",
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
   },

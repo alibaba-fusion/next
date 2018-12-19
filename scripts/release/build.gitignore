@@ -61,6 +61,8 @@ typings/
 .next
 
 
+precss.css
+.sass-cache/
 test/coverage/
 test/**/coverage/
 platform-docs/
