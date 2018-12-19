@@ -47,3 +47,4 @@ Disable animation with `animation={false}`
 | --------- | ---------- | --------- | ----- |
 | title     | Title of tab   | ReactNode | -     |
 | closeable | If tab is closeable | Boolean   | false |
+| disabled  | If tab is disabled   | Boolean   | false     |

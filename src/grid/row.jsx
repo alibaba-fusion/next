@@ -36,13 +36,11 @@ export default class Row extends Component {
         /**
          * （不支持IE9浏览器）多列垂直方向对齐方式
          * @enumdesc 顶部对齐, 居中对齐, 底部对齐, 按第一行文字基线对齐, 未设置高度或设为 auto，将占满整个容器的高度
-         * @default 'stretch'
          */
         align: PropTypes.oneOf(['top', 'center', 'bottom', 'baseline', 'stretch']),
         /**
          * （不支持IE9浏览器）行内具有多余空间时的布局方式
          * @enumdesc 左对齐, 居中对齐, 右对齐, 两端对齐，列之间间距相等, 每列具有相同的左右间距，行两端间距是列间距的二分之一
-         * @default 'start'
          */
         justify: PropTypes.oneOf(['start', 'center', 'end', 'space-between', 'space-around']),
         /**
