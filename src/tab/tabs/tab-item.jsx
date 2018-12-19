@@ -14,6 +14,10 @@ class TabItem extends React.Component {
          * 单个选项卡是否可关闭
          */
         closeable: PropTypes.bool,
+        /**
+         * 选项卡是否被禁用
+         */
+        disabled: PropTypes.bool,
         active: PropTypes.bool,
         lazyLoad: PropTypes.bool,
         unmountInactiveTabs: PropTypes.bool,
