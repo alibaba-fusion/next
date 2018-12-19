@@ -3,8 +3,21 @@ const fs = require('fs-extra');
 const apiExtractor = require('@alifd/api-extractor');
 const tsgen = require('@alifd/dts-generator');
 const { logger } = require('../utils');
+const config = require('../config');
 
 const cwd = process.cwd();
+const parentMap = config.child2parent;
+const parentPathMap = {};
+
+Object.keys(parentMap).forEach(child => {
+    const parent = parentMap[child];
+    const component = parent.split('.')[0].toLowerCase();
+
+    parentPathMap[child] = {
+        name: parent,
+        path: path.join(cwd, 'src', component)
+    };
+});
 
 module.exports = function (options) {
     const libPath = path.join(cwd, 'lib');
@@ -20,7 +33,7 @@ module.exports = function (options) {
 
         const srcComponentPath = path.join(cwd, 'src', shortName);
         const libComponentPath = path.join(cwd, 'lib', shortName);
-        const apiInfo = apiExtractor.extract(srcComponentPath);
+        const apiInfo = apiExtractor.extract(srcComponentPath, {}, parentPathMap);
 
         const apiPath = path.join(libComponentPath, 'api-schema.json');
         const exportDTSPath = path.join(libComponentPath, 'index.d.ts');
