@@ -103,7 +103,7 @@ export default function virtual(BaseComponent) {
             if (this.state.rowHeight && 'rowHeight' in nextProps) {
                 const row = this.getRowNode();
                 const rowClientHeight = row && row.clientHeight;
-                if (rowClientHeight !== this.state.rowHeight) {
+                if (rowClientHeight && rowClientHeight !== this.state.rowHeight) {
                     this.setState({
                         rowHeight: rowClientHeight
                     });
@@ -240,7 +240,14 @@ export default function virtual(BaseComponent) {
         }
 
         getRowNode() {
-            return findDOMNode(this.tableInc.getRowRef(0));
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of this.tableInc when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(this.tableInc.getRowRef(0));
+            } catch (error) {
+                return null;
+            }
         }
 
         render() {

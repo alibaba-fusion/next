@@ -426,7 +426,14 @@ export default function lock(BaseComponent) {
 
         getWrapperNode(type) {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
-            return findDOMNode(this.refs[`lock${type}`]);
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of table when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(this.refs[`lock${type}`]);
+            } catch (error) {
+                return null;
+            }
         }
 
         getFirstNormalCellNode(index) {
@@ -443,19 +450,43 @@ export default function lock(BaseComponent) {
         getRowNode(index, type) {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
             const table = this[`table${type}Inc`];
-            return findDOMNode(table.getRowRef(index));
+
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of table when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(table.getRowRef(index));
+            } catch (error) {
+                return null;
+            }
         }
 
         getHeaderCellNode(index, i, type) {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
             const table = this[`table${type}Inc`];
-            return findDOMNode(table.getHeaderCellRef(index, i));
+
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of table when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(table.getHeaderCellRef(index, i));
+            } catch (error) {
+                return null;
+            }
         }
 
         getCellNode(index, i, type) {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
             const table = this[`table${type}Inc`];
-            return findDOMNode(table.getCellRef(index, i));
+
+            try {
+                // in case of finding an unmounted component due to cached data
+                // need to clear refs of table when dataSource Changed
+                // use try catch for temporary
+                return findDOMNode(table.getCellRef(index, i));
+            } catch (error) {
+                return null;
+            }
         }
 
         render() {
