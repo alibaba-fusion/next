@@ -357,10 +357,6 @@ class Upload extends Base {
      * @return {void}
      */
     removeFile = (file) => {
-        if (this.props.disabled) {
-            // disabled状态下不许删除文件
-            return;
-        }
         file.state = 'removed';
         this.uploaderRef.abort(file);     // 删除组件时调用组件的 `abort` 方法中断上传
 
