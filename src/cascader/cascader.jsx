@@ -100,6 +100,7 @@ export default class Cascader extends Component {
          */
         loadData: PropTypes.func,
         searchValue: PropTypes.string,
+        onBlur: PropTypes.func,
         filteredPaths: PropTypes.array,
         filteredListStyle: PropTypes.object,
         resultRender: PropTypes.func
@@ -148,7 +149,7 @@ export default class Cascader extends Component {
 
         this.lastExpandedValue = [...this.state.expandedValue];
 
-        bindCtx(this, ['handleMouseLeave', 'handleFocus', 'handleFold', 'getCascaderNode']);
+        bindCtx(this, ['handleMouseLeave', 'handleFocus', 'handleFold', 'getCascaderNode', 'onBlur']);
     }
 
     componentDidMount() {
@@ -557,13 +558,21 @@ export default class Cascader extends Component {
         return indeterminate;
     }
 
+    onBlur(e) {
+        this.setState({
+            focusedValue: ''
+        });
+
+        this.props.onBlur && this.props.onBlur(e);
+    }
+
     renderMenu(data, level) {
         const { prefix, multiple, useVirtual, checkStrictly, expandTriggerType, loadData,
             canOnlyCheckLeaf, listClassName, listStyle, itemRender } = this.props;
         const { value, expandedValue, focusedValue } = this.state;
 
         return (
-            <CascaderMenu key={level} prefix={prefix} useVirtual={useVirtual} className={listClassName} style={listStyle} focusedKey={focusedValue} onItemFocus={this.handleFocus}>
+            <CascaderMenu key={level} prefix={prefix} useVirtual={useVirtual} className={listClassName} style={listStyle} focusedKey={focusedValue} onItemFocus={this.handleFocus} onBlur={this.onBlur}>
                 {data.map(item => {
                     const disabled = !!item.disabled;
                     const canExpand = (!!item.children && !!item.children.length) || (!!loadData && !item.isLeaf);
