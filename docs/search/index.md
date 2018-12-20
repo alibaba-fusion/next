@@ -27,8 +27,8 @@
 | shape              | 形状<br><br>**可选值**:<br>'normal', 'simple'                                                                                   | Enum          | 'normal'  |
 | defaultValue       | 搜索框默认值                                                                                                                     | String        | -         |
 | value              | 搜索框数值                                                                                                                      | String/Number | -         |
-| onChange           | 输入关键字时的回掉<br><br>**签名**:<br>Function(输入值: Object) => void<br>**参数**:<br>_输入值_: {Object} null                               | Function      | func.noop |
-| onSearch           | 点击搜索按钮触发的回调<br><br>**签名**:<br>Function(输入值: Object) => void<br>**参数**:<br>_输入值_: {Object} null                             | Function      | func.noop |
+| onChange           | 输入关键字时的回掉<br><br>**签名**:<br>Function(value: Object) => void<br>**参数**:<br>_value_: {Object} 输入值                            | Function      | func.noop |
+| onSearch           | 点击搜索按钮触发的回调<br><br>**签名**:<br>Function(value: Object) => void<br>**参数**:<br>_value_: {Object} 输入值                          | Function      | func.noop |
 | defaultFilterValue | 选择器默认值                                                                                                                     | String        | -         |
 | filter             | 选择器                                                                                                                        | Array         | \[]       |
 | filterValue        | 选择器值                                                                                                                       | String        | -         |

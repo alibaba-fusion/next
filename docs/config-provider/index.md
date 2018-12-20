@@ -252,6 +252,57 @@ Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextP
 }
 ```
 
+### ConfigProvider.initLocales(locales)
+
+配置所有语言包, 可配合 `ConfigProvider.setLanguage` 方法，确定组件使用的语言包。
+
+```js
+ConfigProvider.initLocales({
+    'zh-cn': {},
+    'en-us': {}
+});
+```
+
+### ConfigProvider.setLanguage(language)
+
+设置语言，参数 `language` 需要能在 `ConfigProvider.initLocales` 方法传入的参数的 key 中找到， 默认为 `zh-cn`
+
+```js
+ConfigProvider.setLanguage('zh-cn');
+```
+
+### ConfigProvider.setLocale(locale)
+
+直接设置语言包
+
+```js
+// 相当于 同时用ConfigProvider.initLocales 和 ConfigProvider.setLanguage
+ConfigProvider.setLocale({
+    DatePicker: {},
+    Dialog: {}
+});
+```
+
+### ConfigProvider.setDirection(dir)
+
+设置组件展示方向，当传入 `rtl`时，会在组件的根DOM节点加上 `dir="rtl"`，同时组件展示rtl视觉。可用于阿拉伯等阅读顺序从右到左的国家。
+
+```js
+ConfigProvider.setDirection('rtl');
+```
+
+### ConfigProvider.getLocale()
+
+获取当前的语言包
+
+### ConfigProvider.getLanguage()
+
+获取当前设定的语言
+
+### ConfigProvider.getDirection()
+
+获取当前设定的方向
+
 <!-- api-extra-end -->
 
 ## 使用注意
