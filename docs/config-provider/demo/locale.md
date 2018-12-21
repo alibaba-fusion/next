@@ -1,13 +1,13 @@
 # 国际化
 
-- order: 2
+- order: 3
 
 展示如何配合 ConfigProvider 实现具有国际化能力的组件。
 
 :::lang=en-us
 # Internationalization
 
-- order: 2
+- order: 3
 
 Demo how to use ConfigProvider to implement components with international capabilities.
 :::
