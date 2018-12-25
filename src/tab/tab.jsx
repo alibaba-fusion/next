@@ -133,9 +133,11 @@ export default class Tab extends Component {
         let activeKey = props.activeKey || props.defaultActiveKey;
         if (!activeKey) {
             React.Children.forEach(props.children, (child, index) => {
-                /* eslint-disable eqeqeq */
-                if (activeKey == undefined && !child.props.disabled) {
-                    activeKey = child.key || index;
+                if (React.isValidElement(child)) {
+                    /* eslint-disable eqeqeq */
+                    if (activeKey == undefined && !child.props.disabled) {
+                        activeKey = child.key || index;
+                    }
                 }
             });
         }
@@ -145,11 +147,13 @@ export default class Tab extends Component {
     getNextActiveKey(isNext) {
         const children = [];
         React.Children.forEach(this.props.children, child => {
-            if (!child.props.disabled) {
-                if (isNext) {
-                    children.push(child);
-                } else {
-                    children.unshift(child);
+            if (React.isValidElement(child)) {
+                if (!child.props.disabled) {
+                    if (isNext) {
+                        children.push(child);
+                    } else {
+                        children.unshift(child);
+                    }
                 }
             }
         });

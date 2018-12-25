@@ -186,6 +186,57 @@ You can get the context of ConfigProvider via this method. The format of the val
 }
 ```
 
+### ConfigProvider.initLocales(locales)
+
+Config locales, together with method `ConfigProvider.setLanguage` to specify the language package
+
+```js
+ConfigProvider.initLocales({
+    'zh-cn': {},
+    'en-us': {}
+});
+```
+
+### ConfigProvider.setLanguage(language)
+
+Set language, the parameter `language` needs to be one of the keys of `locales` which is the input of `ConfigProvider.initLocales`. `zh-cn` by default.
+
+```js
+ConfigProvider.setLanguage('zh-cn');
+```
+
+### ConfigProvider.setLocale(locale)
+
+Set language package directly.
+
+```js
+// The effect is the same as using ConfigProvider.initLocales and ConfigProvider.setLanguage
+ConfigProvider.setLocale({
+    DatePicker: {},
+    Dialog: {}
+});
+```
+
+### ConfigProvider.setDirection(dir)
+
+Set dir, when it is `rtl`, `dir="rtl"` will be added on the DOM element of each component's root node.
+
+```js
+ConfigProvider.setDirection('rtl');
+```
+
+### ConfigProvider.getLocale()
+
+Return the setted language package.
+
+### ConfigProvider.getLanguage()
+
+Return the language's name.
+
+### ConfigProvider.getDirection()
+
+Return the direction.
+
 <!-- api-extra-end -->
 
 ## Note
