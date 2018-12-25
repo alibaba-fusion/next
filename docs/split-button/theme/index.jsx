@@ -47,7 +47,7 @@ function renderButton(type, locale, props) {
 
     const commonProps = {
         ...props,
-        type,
+        type: type.toLowerCase(),
         label: locale.editDocument
     };
 
