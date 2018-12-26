@@ -86,7 +86,7 @@ import '@alifd/next/lib/button/style';
 
 Follow [Semantic Versioning 2.0.0](https://semver.org/) Semantic Version Strategy.
 
-Patch Version: Every Monday release of a bugfix version(anytime for urgent bugfix).
+Patch Version: Every Wednesday release of a bugfix version(anytime for urgent bugfix).
 
 Minor Version: Monthly release of a backward compatible version with new features.
 
