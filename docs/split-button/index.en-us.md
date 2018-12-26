@@ -37,3 +37,5 @@ SplitButton is kind of GroupButton, only the icon part could be trigerred by use
 | popupStyle       | Custom style of popup  | Object    | -         |
 | popupClassName   | Custom className of popup | String    | -         |
 | popupProps       | Props of popup  | Object    | {}         |
+| menuProps           | Props of Menu                                                                                                                                                    | Object    | {}        |
+| leftButtonProps     | Props of left button                                                                                                                                                  | Object    | {}        |
