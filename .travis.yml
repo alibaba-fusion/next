@@ -17,3 +17,6 @@ script:
   - npm run stylelint
   - npm test
   - codecov
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
