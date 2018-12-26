@@ -59,4 +59,4 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | --------- | ---------- | --------- | ----- |
 | title     | 选项卡标题      | ReactNode | -     |
 | closeable | 单个选项卡是否可关闭 | Boolean   | false |
-| disabled  | 选项卡是否被禁用   | Boolean   | false  |
+| disabled  | 选项卡是否被禁用   | Boolean   | -     |
