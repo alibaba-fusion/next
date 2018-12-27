@@ -5,10 +5,14 @@ const getWebpackConfig = require('./webpack');
 module.exports = function(config) {
     const { runAll } = config;
     const componentName = config.component ? _.kebabCase(config.component) : config.component;
-    const testDir = `test/${componentName}`;
     const singleRun = runAll;
     const coveragePath = resolveCwd('coverage');
-    const specPath = resolveCwd(testDir, '**/*-spec.js');
+    // const componentArray = config.componentArray;
+    // 'table' or 'table|tree|tree-select'
+    // const componentList = componentArray ? componentArray.join('|') : componentName;
+
+    const specPath = runAll ? resolveCwd('scripts/test/allinone.js') : resolveCwd('test', `@(${componentName})/*-spec.js`);
+
 
     const options = {
         frameworks: ['mocha'],

@@ -9,7 +9,7 @@ import '../../src/tree-select/style.js';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
-
+/* global describe it beforeEach */
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -45,6 +45,14 @@ const _v2n = createMap(dataSource);
 
 describe('TreeSelect', () => {
     let wrapper;
+
+    beforeEach(() => {
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
+
+        nodeListArr.forEach((node) => {
+            node.parentNode.removeChild(node);
+        });
+    });
 
     afterEach(() => {
         if (wrapper) {
