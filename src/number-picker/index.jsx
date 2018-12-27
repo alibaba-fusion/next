@@ -5,7 +5,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import ConfigProvider from '../config-provider';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 
 /** NumberPicker */
 class NumberPicker extends React.Component {
@@ -95,13 +95,20 @@ class NumberPicker extends React.Component {
          */
         style: PropTypes.object,
         state: PropTypes.oneOf(['error']),
-
         /**
          * 格式化当前值
          * @param {Number} value
          * @return {String|Number}
          */
         format: PropTypes.func,
+        /**
+         * 增加按钮的props
+         */
+        upBtnProps: PropTypes.object,
+        /**
+         * 减少按钮的props
+         */
+        downBtnProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -259,7 +266,7 @@ class NumberPicker extends React.Component {
             });
         }
 
-        this.props.onChange(isNaN(v) || v === '' ? undefined : v, {...e, triggerType});
+        this.props.onChange(isNaN(v) || v === '' ? undefined : v, { ...e, triggerType });
     }
 
     setInputValue(v, e) {
@@ -299,7 +306,7 @@ class NumberPicker extends React.Component {
     }
 
     upStep(val) {
-        const {step, min} = this.props;
+        const { step, min } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
@@ -313,7 +320,7 @@ class NumberPicker extends React.Component {
     }
 
     downStep(val) {
-        const {step, min} = this.props;
+        const { step, min } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
@@ -344,7 +351,7 @@ class NumberPicker extends React.Component {
         if (e) {
             e.preventDefault();
         }
-        const {disabled, min, max} = this.props;
+        const { disabled, min, max } = this.props;
         if (disabled) {
             return;
         }
@@ -382,7 +389,7 @@ class NumberPicker extends React.Component {
     }
 
     render() {
-        const {type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state} = this.props;
+        const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state, upBtnProps, downBtnProps } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -409,32 +416,35 @@ class NumberPicker extends React.Component {
         let innerAfter = null, innerAfterClassName = null, addonBefore = null, addonAfter = null;
         if (type === 'normal') {
             innerAfter = ([
-                <Button disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
-                    <Icon size="xxs" type="arrow-up"/>
+                <Button {...upBtnProps} disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
+                    <Icon size="xxs" type="arrow-up" />
                 </Button>,
-                <Button disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
-                    <Icon size="xxs" type="arrow-down"/>
+                <Button {...downBtnProps} disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
+                    <Icon size="xxs" type="arrow-down" />
                 </Button>
             ]);
             innerAfterClassName = `${prefixCls}-handler`;
         } else {
             addonBefore = (
-                <Button size={size} disabled={disabled || downDisabled} onClick={this.down.bind(this)}>
-                    <Icon type="minus" size="xs"/>
+                <Button {...downBtnProps} size={size} disabled={disabled || downDisabled} onClick={this.down.bind(this)}>
+                    <Icon type="minus" size="xs" />
                 </Button>
             );
             addonAfter = (
-                <Button size={size} disabled={disabled || upDisabled} onClick={this.up.bind(this)}>
-                    <Icon type="add" size="xs"/>
+                <Button {...upBtnProps} size={size} disabled={disabled || upDisabled} onClick={this.up.bind(this)}>
+                    <Icon type="add" size="xs" />
                 </Button>
             );
         }
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
+
         return (<span className={cls} style={style} {...dataAttrs}>
             <Input
                 {...others}
+                aria-valuemax={max !== Infinity ? max : undefined}
+                aria-valuemin={min !== -Infinity ? min : undefined}
                 state={state === 'error' ? 'error' : null}
                 onBlur={this.onBlur.bind(this)}
                 onFocus={this.onFocus.bind(this)}
