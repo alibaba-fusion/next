@@ -105,7 +105,7 @@
     }
     &-off#{&}-small {
         > .#{$css-prefix}switch-children {
-            right: $switch-size-s-text-off-right;
+            right: $switch-size-s-text-off-right + $switch-border-width-container;
         }
     }
 }
