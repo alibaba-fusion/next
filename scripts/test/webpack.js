@@ -11,7 +11,7 @@ module.exports = function(componentName, runAll) {
     config.module.rules = config.module.rules.map(rule => {
         if (rule.use.loader === 'babel-loader') {
             rule.use.options.plugins.push(
-                componentName ? [require.resolve('babel-plugin-istanbul'), {
+                componentName && !runAll ? [require.resolve('babel-plugin-istanbul'), {
                     exclude: [`src/!(${componentName})/**/*.@(js|jsx)`, 'test/**']
                 }] : require.resolve('babel-plugin-istanbul'),
                 require.resolve('babel-plugin-espower')

@@ -17,7 +17,7 @@ describe('Pagination', () => {
     });
 
     afterEach(() => {
-        wrapper.unmount();
+        wrapper && wrapper.unmount();
         wrapper = null;
     });
 
@@ -121,13 +121,13 @@ describe('Pagination', () => {
         const initCurrent = 2;
         let current;
         wrapper = mount(<Pagination />);
-        
+
         wrapper.setProps({
             current: initCurrent,
             onChange: index => assert(index === current)
         });
 
-        
+
 
         const currentTest = () => {
             wrapper.update();
