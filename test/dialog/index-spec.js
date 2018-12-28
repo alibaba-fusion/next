@@ -7,9 +7,11 @@ import Button from '../../src/button';
 import ConfigProvider from '../../src/config-provider';
 import Dialog from '../../src/dialog/index';
 import '../../src/dialog/style.js';
+import zhCN from '../../src/locale/zh-cn';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
+/* global describe it beforeEach */
 
 
 const { hasClass, getStyle } = dom;
@@ -76,6 +78,13 @@ class Demo extends React.Component {
 
 describe('inner', () => {
     let wrapper;
+
+    beforeEach(() => {
+        ConfigProvider.initLocales({
+            'zh-cn': zhCN
+        });
+        ConfigProvider.setLanguage('zh-cn');
+    });
 
     afterEach(() => {
         if (wrapper) {
@@ -401,6 +410,7 @@ describe('inner', () => {
         assert(ok.innerHTML === 'far ok');
         assert(cancel.innerHTML === 'my cancel');
 
+        cancel.click();
         document.body.removeChild(overlayWrapper);
 
         assert(!document.querySelector('.far-overlay-wrapper'));

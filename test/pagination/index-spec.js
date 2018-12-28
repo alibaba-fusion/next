@@ -17,7 +17,7 @@ describe('Pagination', () => {
     });
 
     afterEach(() => {
-        wrapper.unmount();
+        wrapper && wrapper.unmount();
         wrapper = null;
     });
 
