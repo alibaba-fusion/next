@@ -20,7 +20,8 @@ import { ConfigProvider, Button, Radio, Menu, Calendar, DatePicker, Dialog, Time
 const { SubMenu, Item, Group, Divider } = Menu;
 const RangePicker = DatePicker.RangePicker;
 
-ConfigProvider.setDirection('rtl');
+// Set global direction to 'rtl'. This affects the whole page
+// ConfigProvider.setDirection('rtl');
 
 class Demo extends React.Component {
     constructor(props) {
@@ -50,18 +51,18 @@ class Demo extends React.Component {
     render() {
 
         return (
-            <div dir={this.state.dir}>
+            <div>
                 <div className="change-rtl">
                     <span style={{ marginRight: 16 }}>Change direction of components: </span>
                     <Radio.Group shape="button" size="large" value={this.state.dir} onChange={this.changeDir}>
-                        <Radio key="en" value="rtl">RTL</Radio>
-                        <Radio key="cn" value="ltr">LTR</Radio>
+                        <Radio key="rtl" value="rtl">RTL</Radio>
+                        <Radio key="ltr" value="ltr">LTR</Radio>
                     </Radio.Group>
                 </div>
                 <br />
                 <hr />
                 <ConfigProvider rtl={this.state.dir === 'rtl'}>
-                    <div className="locale-components">
+                    <div className="locale-components" dir={this.state.dir}>
                         <Button type="primary" onClick={this.showDialog}>Show Dialog</Button>
                         <Select style={{ width: '150px' }} dataSource={['hello', 'bye']} />
                         <RangePicker showTime/>
