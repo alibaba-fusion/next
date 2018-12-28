@@ -118,6 +118,12 @@ export default class CascaderSelect extends Component {
          */
         displayRender: PropTypes.func,
         /**
+         * 渲染 item 内容的方法
+         * @param {Object} item 渲染节点的item
+         * @return {ReactNode} item node
+         */
+        itemRender: PropTypes.func,
+        /**
          * 是否显示搜索框
          */
         showSearch: PropTypes.bool,
@@ -619,7 +625,8 @@ export default class CascaderSelect extends Component {
             loadData,
             showSearch,
             resultRender,
-            readOnly
+            readOnly,
+            itemRender
         } = this.props;
         const { value } = this.state;
 
@@ -636,7 +643,8 @@ export default class CascaderSelect extends Component {
             onExpand,
             listStyle,
             listClassName,
-            loadData
+            loadData,
+            itemRender
         };
         if (!readOnly) {
             props.onChange = this.handleChange;
