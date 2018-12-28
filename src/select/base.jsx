@@ -393,7 +393,7 @@ export default class Base extends React.Component {
      * @param {object} props
      */
     renderMenu() {
-        const { prefix, mode, autoWidth, locale, notFoundContent, useVirtual } = this.props;
+        const { prefix, mode, autoWidth, locale, notFoundContent, useVirtual, rtl } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
@@ -421,6 +421,7 @@ export default class Base extends React.Component {
 
         const menuProps = {
             children,
+            rtl,
             style: autoWidth ? { width: this.width } : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
@@ -457,7 +458,7 @@ export default class Base extends React.Component {
      * @param {Array} dataSource
      */
     renderMenuItem(dataSource) {
-        const { prefix, itemRender } = this.props;
+        const { prefix, itemRender, rtl } = this.props;
         // If it has.
         let searchKey;
         if (this.isAutoComplete) {
@@ -474,6 +475,7 @@ export default class Base extends React.Component {
             if (Array.isArray(item.children)) {
                 return (
                     <MenuGroup
+                        rtl={rtl}
                         key={index}
                         label={item.label}>{this.renderMenuItem(item.children)}
                     </MenuGroup>
@@ -538,7 +540,7 @@ export default class Base extends React.Component {
     }
 
     render(props) {
-        const { prefix, mode, popupProps, popupContainer, popupClassName, popupStyle, popupContent, autoWidth, canCloseByTrigger, cache } = props;
+        const { prefix, mode, popupProps, popupContainer, popupClassName, popupStyle, popupContent, autoWidth, canCloseByTrigger, cache, rtl } = props;
 
         const cls = classNames({
             [`${prefix}select-auto-complete-menu`]: !popupContent && this.isAutoComplete,
@@ -546,6 +548,7 @@ export default class Base extends React.Component {
         }, popupClassName || popupProps.className);
 
         const _props = {
+            rtl,
             triggerType: 'click',
             autoFocus: false,
             cache: cache,

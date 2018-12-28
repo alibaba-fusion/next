@@ -597,6 +597,7 @@ export default class RangePicker extends Component {
 
         const startDateInput = (<Input
             {...sharedInputProps}
+            rtl={rtl}
             placeholder={this.format}
             value={startDateInputValue}
             onFocus={() => this.onFocusDateInput('startValue')}
@@ -604,12 +605,14 @@ export default class RangePicker extends Component {
 
         const endDateInput = (<Input
             {...sharedInputProps}
+            rtl={rtl}
             placeholder={this.format}
             value={endDateInputValue}
             onFocus={() => this.onFocusDateInput('endValue')}
             className={endDateInputCls} />);
 
         const datePanel = (<RangeCalendar
+            rtl={rtl}
             showOtherMonth
             format={this.format}
             defaultVisibleMonth={defaultVisibleMonth}
@@ -649,6 +652,7 @@ export default class RangePicker extends Component {
 
             startTimeInput = (<Input
                 {...sharedTimeInputProps}
+                rtl={rtl}
                 value={startTimeInputValue}
                 disabled={disabled || !state.startValue || !state.endValue}
                 onFocus={() => this.onFocusTimeInput('startTime')}
@@ -662,6 +666,7 @@ export default class RangePicker extends Component {
 
             endTimeInput = (<Input
                 {...sharedTimeInputProps}
+                rtl={rtl}
                 value={endTimeInputValue}
                 disabled={disabled || !state.endValue || !state.startValue}
                 onFocus={() => this.onFocusTimeInput('endTime')}
@@ -687,6 +692,7 @@ export default class RangePicker extends Component {
         }
 
         panelFooter = panelFooter || (<PanelFooter
+            rtl={rtl}
             prefix={prefix}
             value={state.startValue && state.endValue}
             locale={locale}
@@ -704,6 +710,7 @@ export default class RangePicker extends Component {
         const trigger = (<div className={triggerCls}>
             <Input
                 {...sharedInputProps}
+                rtl={rtl}
                 label={label}
                 placeholder={locale.startPlaceholder}
                 value={startTriggerValue}
@@ -713,6 +720,7 @@ export default class RangePicker extends Component {
             <span className={`${prefix}range-picker-trigger-separator`}>-</span>
             <Input
                 {...sharedInputProps}
+                rtl={rtl}
                 placeholder={locale.endPlaceholder}
                 value={endTriggerValue}
                 hasBorder={false}
@@ -725,6 +733,7 @@ export default class RangePicker extends Component {
         return (<div {...obj.pickOthers(RangePicker.propTypes, others)} className={classNames}>
             <Popup
                 {...popupProps}
+                rtl={rtl}
                 autoFoucs
                 disabled={disabled}
                 visible={state.visible}

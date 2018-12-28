@@ -288,6 +288,7 @@ export default class TimePicker extends Component {
         const inputValue = inputing ? inputStr : (value && value.format(format) || '');
         const sharedInputProps = {
             size,
+            rtl,
             disabled,
             value: inputValue,
             hasClear: value && hasClear,
@@ -308,6 +309,7 @@ export default class TimePicker extends Component {
 
         const panelProps = {
             prefix,
+            rtl,
             locale,
             value,
             disabled,
@@ -332,6 +334,7 @@ export default class TimePicker extends Component {
             <Popup
                 {...popupProps}
                 autoFocus
+                rtl={rtl}
                 visible={visible}
                 onVisibleChange={this.onVisibleChange}
                 trigger={triggerInput}

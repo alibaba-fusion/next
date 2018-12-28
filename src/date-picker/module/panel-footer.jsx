@@ -19,19 +19,20 @@ class PanelFooter extends React.PureComponent {
     }
 
     render() {
-        const { prefix, locale, panel, value, onPanelChange, onOk } = this.props;
+        const { prefix, locale, panel, value, onPanelChange, onOk, rtl } = this.props;
         const panelBtnLabel = ({
             [PANEL.DATE]: locale.selectTime,
             [PANEL.TIME]: locale.selectDate,
         })[panel];
 
         const sharedBtnProps = {
+            rtl: rtl,
             size: 'small',
             type: 'primary',
             disabled: !value,
         };
 
-        return (<div className={`${prefix}date-picker-panel-footer`}>
+        return (<div dir={rtl ? 'rtl' : undefined} className={`${prefix}date-picker-panel-footer`}>
             {
                 onPanelChange ?
                     <Button {...sharedBtnProps} text onClick={this.changePanel}>{panelBtnLabel}</Button> : null

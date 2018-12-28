@@ -13,6 +13,7 @@ class TimePickerPanel extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 时间值（moment 对象）
          */
@@ -109,6 +110,7 @@ class TimePickerPanel extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
+            rtl,
             ...others } = this.props;
 
         const classNames = classnames({
@@ -118,6 +120,7 @@ class TimePickerPanel extends Component {
         }, className);
 
         const commonProps = {
+            rtl,
             prefix,
             disabled,
             onSelect: this.onSelectMenuItem,

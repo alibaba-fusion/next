@@ -408,12 +408,14 @@ export default class DatePicker extends Component {
 
         const dateInput = (<Input
             {...sharedInputProps}
+            rtl={rtl}
             value={dateInputValue}
             onFocus={this.onFoucsDateInput}
             placeholder={this.format}
             className={panelDateInputCls} />);
 
         const datePanel = (<Calendar
+            rtl={rtl}
             shape="panel"
             value={value}
             format={this.format}
@@ -441,6 +443,7 @@ export default class DatePicker extends Component {
             });
 
             timeInput = (<Input
+                rtl={rtl}
                 placeholder={this.timeFormat}
                 value={timeInputValue}
                 size={size}
@@ -453,6 +456,7 @@ export default class DatePicker extends Component {
 
             timePanel = (<TimePickerPanel
                 {...timePanelProps}
+                rtl={rtl}
                 locale={locale}
                 className={`${prefix}date-picker-panel-time`}
                 showSecond={showSecond}
@@ -462,6 +466,7 @@ export default class DatePicker extends Component {
                 onSelect={this.onSelectTimePanel} />);
 
             panelFooter = panelFooter || (<PanelFooter
+                rtl={rtl}
                 prefix={prefix}
                 locale={locale}
                 value={value}
@@ -479,6 +484,7 @@ export default class DatePicker extends Component {
         const trigger = (<div className={`${prefix}date-picker-trigger`}>
             <Input
                 {...sharedInputProps}
+                rtl={rtl}
                 label={label}
                 state={state}
                 value={triggerInputValue}
@@ -490,6 +496,7 @@ export default class DatePicker extends Component {
         return (<div {...obj.pickOthers(DatePicker.propTypes, others)} className={datePickerCls}>
             <Popup
                 {...popupProps}
+                rtl={rtl}
                 disabled={disabled}
                 visible={visible}
                 onVisibleChange={this.onVisibleChange}

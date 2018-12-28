@@ -225,6 +225,7 @@ class RangeCalendar extends React.Component {
             startValue,
             endValue,
             mode,
+            rtl,
             locale,
             momentLocale: localeData,
             showOtherMonth,
@@ -271,7 +272,6 @@ class RangeCalendar extends React.Component {
             case CALENDAR_MODE_YEAR: {
                 table = (<YearTable
                     {...tableProps}
-                    rtl={rtl}
                     visibleMonth={visibleMonth}
                     onSelectYear={this.onSelectCell}
                     goPrevDecade={this.goPrevDecade}

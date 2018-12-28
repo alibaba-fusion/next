@@ -142,18 +142,18 @@ class StepItem extends Component {
     }
 
     _getNode() {
-        const { prefix, index, status, icon, shape, percent, itemRender } = this.props;
+        const { prefix, index, status, icon, shape, percent, itemRender, rtl } = this.props;
         let nodeElement = icon;
         if (shape === 'dot') {
-            nodeElement = icon ? <Icon type={icon} /> : <div className={`${prefix}step-item-node-circle`}> </div>;
+            nodeElement = icon ? <Icon rtl={rtl} type={icon} /> : <div className={`${prefix}step-item-node-circle`}> </div>;
         } else if (shape === 'circle' && percent) {
-            nodeElement = <Progress shape="circle" percent={percent} className={`${prefix}step-item-progress`} />;
+            nodeElement = <Progress rtl={rtl} shape="circle" percent={percent} className={`${prefix}step-item-progress`} />;
         } else if (shape === 'circle' && !!itemRender && typeof itemRender === 'function') {
             nodeElement = null; // 如果是需要自定义节点，则不处理，返回空
         } else {
             nodeElement = (
                 <div className={`${prefix}step-item-node-circle`}>
-                    {icon ? <Icon type={icon} /> : this._itemRender(index, status)}
+                    {icon ? <Icon rtl={rtl} type={icon} /> : this._itemRender(index, status)}
                 </div>
             );
         }
@@ -239,11 +239,11 @@ class StepItem extends Component {
 
     // 节点的渲染方法
     _itemRender(index, status) {
-        const { itemRender } = this.props;
+        const { itemRender, rtl } = this.props;
         if (itemRender) {
             return itemRender(index, status);
         }
-        return status === 'finish' ? <Icon type="select" /> : index + 1;
+        return status === 'finish' ? <Icon rtl={rtl} type="select" /> : index + 1;
     }
 
     _refHandlerCreator(refName) {

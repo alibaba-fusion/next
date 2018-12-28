@@ -212,7 +212,7 @@ class Nav extends Component {
         };
 
         return (
-            <Menu className={cls} style={newStyle} {...props} {...others} ref={this.getMenuRef}>
+            <Menu rtl={rtl} className={cls} style={newStyle} {...props} {...others} ref={this.getMenuRef}>
                 {children}
             </Menu>
         );

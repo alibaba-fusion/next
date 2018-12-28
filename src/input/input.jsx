@@ -280,6 +280,7 @@ export default class Input extends Base {
                 {...dataProps}
                 className={className}
                 style={style}
+                rtl={rtl}
                 addonBefore={addonBefore || addonTextBefore}
                 addonBeforeClassName={addonBeforeCls}
                 addonAfter={addonAfter || addonTextAfter}

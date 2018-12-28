@@ -206,7 +206,7 @@ class Search extends React.Component {
                 [`${prefix}search-btn`]: true,
                 [buttonProps.className]: !!buttonProps.className
             });
-            searchBtn = (<Button  {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown}>
+            searchBtn = (<Button rtl={rtl} {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown}>
                 {hasIcon ? <Icon type="search" /> : null}
                 {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
             </Button>);
@@ -216,6 +216,7 @@ class Search extends React.Component {
             filterSelect = (
                 <Select
                     {...filterProps}
+                    rtl={rtl}
                     hasBorder={false}
                     dataSource={filter}
                     size={size}
@@ -231,11 +232,13 @@ class Search extends React.Component {
             othersAttributes.visible = Boolean(visible);
         }
         const dataAttr = obj.pickAttrsWith(others, 'data-');
-        const left = (<Group addonBefore={filterSelect}
+        const left = (<Group rtl={rtl}
+            addonBefore={filterSelect}
             className={`${prefix}search-left`}
             addonBeforeClassName={`${prefix}search-left-addon`}>
             <AutoComplete
                 {...othersAttributes}
+                rtl={rtl}
                 hasClear={hasClear}
                 className={`${prefix}search-input`}
                 size={size}
@@ -250,7 +253,7 @@ class Search extends React.Component {
         </Group>);
 
         return (<span className={cls} style={style} {...dataAttr} dir={rtl ? 'rtl' : undefined}>
-            {searchBtn ? <Group addonAfter={searchBtn}>{left}</Group> : left}
+            {searchBtn ? <Group rtl={rtl} addonAfter={searchBtn}>{left}</Group> : left}
         </span>);
     }
 }

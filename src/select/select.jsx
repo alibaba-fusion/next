@@ -560,7 +560,7 @@ class Select extends Base {
      * @param {object} props
      */
     renderValues() {
-        const { mode, size, valueRender, fillProps, disabled } = this.props;
+        const { mode, size, valueRender, fillProps, disabled, rtl } = this.props;
         let value = this.state.value;
 
         if (isNull(value)) {
@@ -592,6 +592,7 @@ class Select extends Base {
                 const labelNode = fillProps ? v[fillProps] : valueRender(v);
                 return (
                     <Tag key={v.value}
+                        rtl={rtl}
                         disabled={disabled || v.disabled}
                         type="primary"
                         size={size === 'large' ? 'medium' : 'small'}
@@ -638,19 +639,19 @@ class Select extends Base {
      * @param {function} [clickHandler]
      */
     renderExtraNode() {
-        const { hasArrow, hasClear, prefix } = this.props;
+        const { hasArrow, hasClear, prefix, rtl } = this.props;
 
         const ret = [];
 
         if (hasArrow) {
             ret.push(<span key="arrow" onClick={this.handleArrowClick} className={`${prefix}select-arrow`}><Icon
-                type="arrow-down" /></span>);
+                type="arrow-down" rtl={rtl} /></span>);
         }
 
         // 不能使用 this.hasClear() 方法判断，要保证 clear 按钮 dom 结构一直存在，防止其不能成为弹层的安全节点，导致弹层没有必要的显示或隐藏
         if (hasClear) {
             ret.push(<span key="clear" onClick={this.handleClear} className={`${prefix}select-clear`}><Icon
-                type="delete-filling" /></span>);
+                type="delete-filling" rtl={rtl} /></span>);
         }
 
         return ret;
@@ -713,6 +714,7 @@ class Select extends Base {
                 onMouseDown={this.handleWrapClick}
             >
                 <Input
+                    rtl={rtl}
                     aria-valuetext={valuetext}
                     {...obj.pickOthers(othersData, others)}
                     role="combobox"

@@ -298,12 +298,14 @@ class YearPicker extends Component {
 
         const dateInput = (<Input
             {...sharedInputProps}
+            rtl={rtl}
             value={dateInputValue}
             onFocus={this.onFoucsDateInput}
             placeholder={format}
             className={panelInputCls} />);
 
         const datePanel = (<Calendar
+            rtl={rtl}
             shape="panel"
             modes={['year']}
             value={value}
@@ -317,6 +319,7 @@ class YearPicker extends Component {
         const trigger = (<div className={`${prefix}year-picker-trigger`}>
             <Input
                 {...sharedInputProps}
+                rtl={rtl}
                 label={label}
                 state={state}
                 value={triggerInputValue}
@@ -329,6 +332,7 @@ class YearPicker extends Component {
         return (<div {...obj.pickOthers(YearPicker.propTypes, others)} className={yearPickerCls}>
             <Popup
                 {...popupProps}
+                rtl={rtl}
                 autoFocus
                 disabled={disabled}
                 visible={visible}

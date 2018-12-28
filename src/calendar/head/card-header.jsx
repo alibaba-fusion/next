@@ -18,7 +18,7 @@ class CardHeader extends React.PureComponent {
     }
 
     getYearSelect(year) {
-        const { prefix, yearRangeOffset } = this.props;
+        const { prefix, yearRangeOffset, rtl } = this.props;
         const startYear = year - yearRangeOffset;
         const endYear = year + yearRangeOffset;
 
@@ -28,6 +28,7 @@ class CardHeader extends React.PureComponent {
         }
 
         return (<Select
+            rtl={rtl}
             prefix={prefix}
             value={year}
             onChange={this.onYearChange}
@@ -37,13 +38,14 @@ class CardHeader extends React.PureComponent {
     }
 
     getMonthSelect(month) {
-        const { prefix, momentLocale } = this.props;
+        const { prefix, momentLocale, rtl } = this.props;
         const localeMonths = momentLocale.monthsShort();
         const options = [];
         for (let i = 0; i < 12; i++) {
             options.push(<Select.Option key={i} value={i}>{localeMonths[i]}</Select.Option>);
         }
         return (<Select
+            rtl={rtl}
             prefix={prefix}
             value={month}
             onChange={this.changeVisibleMonth}
@@ -67,11 +69,11 @@ class CardHeader extends React.PureComponent {
     }
 
     render() {
-        const { prefix, mode, locale, visibleMonth } = this.props;
+        const { prefix, mode, locale, visibleMonth, rtl } = this.props;
 
         const yearSelect = this.getYearSelect(visibleMonth.year());
         const monthSelect = mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
-        const panelSelect = (<Radio.Group shape="button" size="medium" value={mode} onChange={this.onModePanelChange}>
+        const panelSelect = (<Radio.Group rtl={rtl} shape="button" size="medium" value={mode} onChange={this.onModePanelChange}>
             <Radio value="date">{locale.month}</Radio>
             <Radio value="month">{locale.year}</Radio>
         </Radio.Group>);

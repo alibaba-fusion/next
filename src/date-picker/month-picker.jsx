@@ -304,12 +304,14 @@ class MonthPicker extends Component {
 
         const dateInput = (<Input
             {...sharedInputProps}
+            rtl={rtl}
             value={dateInputValue}
             onFocus={this.onFoucsDateInput}
             placeholder={format}
             className={panelInputCls} />);
 
         const datePanel = (<Calendar
+            rtl={rtl}
             shape="panel"
             modes={['month', 'year']}
             value={value}
@@ -324,6 +326,7 @@ class MonthPicker extends Component {
         const trigger = (<div className={`${prefix}month-picker-trigger`}>
             <Input
                 {...sharedInputProps}
+                rtl={rtl}
                 label={label}
                 state={state}
                 value={triggerInputValue}
@@ -335,6 +338,7 @@ class MonthPicker extends Component {
         return (<div {...obj.pickOthers(MonthPicker.propTypes, others)} className={monthPickerCls}>
             <Popup
                 {...popupProps}
+                rtl={rtl}
                 autoFocus
                 disabled={disabled}
                 visible={visible}

@@ -17,6 +17,7 @@ class MenuButton extends React.Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 按钮上的文本内容
          */
@@ -172,6 +173,7 @@ class MenuButton extends React.Component {
             selectMode,
             menuProps,
             children,
+            rtl,
             ...others
         } = this.props;
 
@@ -187,12 +189,13 @@ class MenuButton extends React.Component {
             [`${prefix}menu-btn-popup`]: true,
         }, popupClassName);
 
-        const trigger = (<Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)}>
+        const trigger = (<Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)} rtl={rtl}>
             {label} <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
         </Button>);
 
         return (
             <Popup
+                rtl={rtl}
                 {...popupProps}
                 visible={state.visible}
                 onVisibleChange={this.onPopupVisibleChange}
@@ -204,6 +207,7 @@ class MenuButton extends React.Component {
                 className={popupClassNames}
             >
                 <Menu
+                    rtl={rtl}
                     {...menuProps}
                     ref={this._menuRefHandler}
                     selectedKeys={state.selectedKeys}

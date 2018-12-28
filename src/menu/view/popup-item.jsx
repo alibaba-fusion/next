@@ -145,7 +145,7 @@ export default class PopupItem extends Component {
     }
 
     renderPopup(trigger, triggerType, positionProps, children) {
-        const { root, level, selectable } = this.props;
+        const { root, level, selectable, rtl } = this.props;
         const { direction } = root.props;
         this.popupProps = this.getPopupProps();
         const open = this.getOpen();
@@ -158,6 +158,7 @@ export default class PopupItem extends Component {
             <Popup ref={this.getPopup}
                 {...positionProps}
                 {...this.popupProps}
+                rtl={rtl}
                 canCloseByEsc={false}
                 trigger={trigger}
                 triggerType={triggerType}
@@ -232,7 +233,7 @@ export default class PopupItem extends Component {
             };
         }
 
-        const arrow = <Icon {...arrowProps} />;
+        const arrow = <Icon rtl={rtl} {...arrowProps} />;
         const trigger = triggerIsIcon ? arrow : this.renderItem(selectable, arrow, others);
         const popup = this.renderPopup(trigger, newTriggerType, positionProps, newChildren);
         return triggerIsIcon ? this.renderItem(selectable, popup, others) : popup;

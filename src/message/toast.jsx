@@ -71,12 +71,12 @@ class Mask extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { prefix, type, title, content, align, offset, hasMask, afterClose, animation, overlayProps, timeoutId, ...others } = this.props;
+        const { prefix, type, title, content, align, offset, hasMask, afterClose, animation, overlayProps, timeoutId, rtl, ...others } = this.props;
         /* eslint-enable */
         const { visible } = this.state;
         return (
-            <Overlay {...overlayProps} prefix={prefix} animation={animation} visible={visible} align={align} offset={offset} hasMask={hasMask} afterClose={afterClose}>
-                <Message {...others} prefix={prefix} visible type={type} shape="toast" title={title} className={`${prefix}message-wrapper`} onClose={this.handleClose}>
+            <Overlay {...overlayProps} prefix={prefix} animation={animation} visible={visible} align={align} offset={offset} hasMask={hasMask} afterClose={afterClose} rtl={rtl}>
+                <Message {...others} prefix={prefix} visible type={type} shape="toast" title={title} className={`${prefix}message-wrapper`} onClose={this.handleClose} rtl={rtl}>
                     {content}
                 </Message>
             </Overlay>

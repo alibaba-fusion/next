@@ -214,6 +214,7 @@ class SplitButton extends React.Component {
             selectMode,
             menuProps,
             disabled,
+            rtl,
             ...others
         } = this.props;
 
@@ -224,6 +225,7 @@ class SplitButton extends React.Component {
         }, className);
 
         const sharedBtnProps = {
+            rtl,
             type,
             size,
             component,
@@ -237,14 +239,15 @@ class SplitButton extends React.Component {
             opened: state.visible,
         });
 
-        const trigger = (<Button {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
-            <Icon type="arrow-down" />
+        const trigger = (<Button rtl={rtl} {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
+            <Icon rtl={rtl} type="arrow-down" />
         </Button>);
 
         return (
-            <Button.Group {...obj.pickOthers(SplitButton.propTypes, others)} className={classNames} style={style} size={size} ref={this._wrapperRefHandler}>
+            <Button.Group {...obj.pickOthers(SplitButton.propTypes, others)} rtl={rtl} className={classNames} style={style} size={size} ref={this._wrapperRefHandler}>
                 <Button {...sharedBtnProps}>{label}</Button>
                 <Popup
+                    rtl={rtl}
                     {...popupProps}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
@@ -257,6 +260,7 @@ class SplitButton extends React.Component {
                     className={popupClassName}
                     onOpen={this.onPopupOpen}>
                     <Menu
+                        rtl={rtl}
                         {...menuProps}
                         selectMode={selectMode}
                         selectedKeys={state.selectedKeys}

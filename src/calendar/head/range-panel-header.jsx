@@ -4,7 +4,7 @@ import Icon from '../../icon';
 class RangePanelHeader extends React.PureComponent {
 
     render() {
-        const { prefix, startVisibleMonth, endVisibleMonth, momentLocale, locale, changeMode, goNextMonth, goNextYear, goPrevMonth, goPrevYear } = this.props;
+        const { prefix, startVisibleMonth, endVisibleMonth, momentLocale, locale, changeMode, goNextMonth, goNextYear, goPrevMonth, goPrevYear, rtl } = this.props;
 
         const localedMonths = momentLocale.months();
         const startMonthLabel = localedMonths[startVisibleMonth.month()];
@@ -19,14 +19,14 @@ class RangePanelHeader extends React.PureComponent {
                 title={locale.prevYear}
                 className={`${btnCls} ${btnCls}-prev-year`}
                 onClick={goPrevYear}>
-                <Icon type="arrow-double-left" />
+                <Icon rtl={rtl} type="arrow-double-left" />
             </button>
             <button
                 role="button"
                 title={locale.prevMonth}
                 className={`${btnCls} ${btnCls}-prev-month`}
                 onClick={goPrevMonth}>
-                <Icon type="arrow-left" />
+                <Icon rtl={rtl} type="arrow-left" />
             </button>
             <div className={`${prefix}calendar-panel-header-left`}>
                 <button role="button" title={startMonthLabel} className={btnCls} onClick={() => changeMode('month', 'start')}>{startMonthLabel}</button>
@@ -41,14 +41,14 @@ class RangePanelHeader extends React.PureComponent {
                 title={locale.nextMonth}
                 className={`${btnCls} ${btnCls}-next-month`}
                 onClick={goNextMonth}>
-                <Icon type="arrow-right" />
+                <Icon rtl={rtl} type="arrow-right" />
             </button>
             <button
                 role="button"
                 title={locale.nextYear}
                 className={`${btnCls} ${btnCls}-next-year`}
                 onClick={goNextYear}>
-                <Icon type="arrow-double-right" />
+                <Icon rtl={rtl} type="arrow-double-right" />
             </button>
         </div>);
     }

@@ -299,6 +299,7 @@ class AutoComplete extends Base {
         // Input props
         const _inputProps = {
             ...obj.pickOthers(othersData, others),
+            rtl,
             state: state,
             ref: this.saveInputRef,
             hasClear: hasClear,
