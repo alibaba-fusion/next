@@ -31,6 +31,7 @@ class Panel extends React.Component {
          */
         className: PropTypes.string,
         onClick: PropTypes.func,
+        id: PropTypes.string,
     };
 
     static defaultProps = {
@@ -50,7 +51,7 @@ class Panel extends React.Component {
         }
     }
     render() {
-        const { title, children, className, isExpanded, disabled, style, prefix, onClick, ...others} = this.props;
+        const { title, children, className, isExpanded, disabled, style, prefix, onClick, id, ...others} = this.props;
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
@@ -59,24 +60,32 @@ class Panel extends React.Component {
             [className]: className,
         });
 
+        // 为了无障碍 需要添加两个id
+        const headingId = id ? `${id}-heading` : undefined;
+        const regionId = id ? `${id}-region` : undefined;
         return (
             <div
                 className={cls}
                 style={style}
+                id={id}
                 {...others}>
                 <div
+                    id={headingId}
                     className={`${prefix}collapse-panel-title`}
+                    onClick={onClick}
+                    onKeyDown={this.onKeyDown}
                     tabIndex="0"
                     aria-disabled={disabled}
                     aria-expanded={isExpanded}
-                    onClick={onClick}
-                    onKeyDown={this.onKeyDown}
-                    role="button"
-                >
+                    aria-controls={regionId}
+                    role="button">
                     <Icon type="arrow-up" className={`${prefix}collapse-panel-icon`} aria-hidden="true"/>
                     {title}
                 </div>
-                <div className={`${prefix}collapse-panel-content`} role="region">
+                <div
+                    className={`${prefix}collapse-panel-content`}
+                    role="region"
+                    id={regionId}>
                     {children}
                 </div>
             </div>
