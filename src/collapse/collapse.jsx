@@ -186,7 +186,7 @@ class Collapse extends React.Component {
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);
         return (
-            <div className={collapseClassName} style={style} {...others}>
+            <div className={collapseClassName} style={style} {...others} role="presentation">
                 {dataSource ? this.getItemsByDataSource() : this.getItemsByChildren()}
             </div>
         );

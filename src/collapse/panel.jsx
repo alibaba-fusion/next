@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import {func} from '../util';
+import {func, KEYCODE} from '../util';
 
 /** Collapse.Panel */
 class Panel extends React.Component {
@@ -41,6 +41,14 @@ class Panel extends React.Component {
 
     static isNextPanel = true; //
 
+    onKeyDown = (e) => {
+        const {keyCode} = e;
+        if (keyCode === KEYCODE.SPACE) {
+            const {onClick} = this.props;
+            e.preventDefault();
+            onClick && onClick(e);
+        }
+    }
     render() {
         const { title, children, className, isExpanded, disabled, style, prefix, onClick, ...others} = this.props;
 
@@ -52,12 +60,23 @@ class Panel extends React.Component {
         });
 
         return (
-            <div className={cls} style={style} {...others}>
-                <div className={`${prefix}collapse-panel-title`} onClick={onClick}>
-                    <Icon type="arrow-up" className={`${prefix}collapse-panel-icon`} />
+            <div
+                className={cls}
+                style={style}
+                {...others}>
+                <div
+                    className={`${prefix}collapse-panel-title`}
+                    tabIndex="0"
+                    aria-disabled={disabled}
+                    aria-expanded={isExpanded}
+                    onClick={onClick}
+                    onKeyDown={this.onKeyDown}
+                    role="button"
+                >
+                    <Icon type="arrow-up" className={`${prefix}collapse-panel-icon`} aria-hidden="true"/>
                     {title}
                 </div>
-                <div className={`${prefix}collapse-panel-content`}>
+                <div className={`${prefix}collapse-panel-content`} role="region">
                     {children}
                 </div>
             </div>
