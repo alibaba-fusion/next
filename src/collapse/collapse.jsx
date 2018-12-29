@@ -45,6 +45,7 @@ class Collapse extends React.Component {
          */
         accordion: PropTypes.bool,
         children: PropTypes.node,
+        id: PropTypes.string,
     };
 
     static defaultProps = {
@@ -97,6 +98,18 @@ class Collapse extends React.Component {
         this.setExpandedKey(expandedKeys);
     }
 
+    genratePanelId(itemId, index) {
+        const {id: collapseId} = this.props;
+        let id;
+        if (itemId) {
+            // 优先用 item自带的id
+            id = itemId;
+        } else if (collapseId) {
+            // 其次用 collapseId 和 index 生成id
+            id = `${collapseId}-panel-${index}`;
+        }
+        return id;
+    }
     getProps(item, index, key) {
         const expandedKeys = this.state.expandedKeys;
         const {title} = item;
@@ -124,11 +137,13 @@ class Collapse extends React.Component {
             });
         }
 
+        const id = this.genratePanelId(item.id, index);
         return {
             key,
             title,
             isExpanded,
             disabled,
+            id,
             onClick: disabled ? null : () => {
                 this.onItemClick(key);
                 if ('onClick' in item) {
