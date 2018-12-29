@@ -52,8 +52,8 @@ export default class Line extends React.PureComponent {
                 aria-valuenow={percent}
                 aria-valuemin="0"
                 aria-valuemax="100"
-                {...others}
-                className={wrapCls}>
+                className={wrapCls}
+                {...others}>
                 <div className={`${prefix}progress-line-container`}>
                     <div className={`${prefix}progress-line-underlay`}>
                         <div className={lineCls} style={lineStyle}></div>
