@@ -6,11 +6,11 @@ export const triggerEvents = {
 };
 
 export function getOffsetWH(node, tabPosition) {
-    let prop = 'offsetWidth';
+    let prop = 'width';
     if (tabPosition === 'left' || tabPosition === 'right') {
-        prop = 'offsetHeight';
+        prop = 'height';
     }
-    return node ? node[prop] : 0;
+    return node ? node.getBoundingClientRect()[prop] : 0;
 }
 
 export function getOffsetLT(node, tabPosition) {
