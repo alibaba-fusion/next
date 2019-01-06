@@ -51,11 +51,11 @@
 | size                | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large', 'small', 'medium' | Enum               | -     |
 | labelCol            | label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效                                             | Object             | -     |
 | wrapperCol          | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol                                                                                       | Object             | -     |
-| help                | 自定义提示信息，如不设置，则会根据校验规则自动生成.                                                                                              | ReactNode          | -     |
+| help                | 自定义提示信息，如不设置，则会根据校验规则自动生成. 设置后会覆盖校验信息                                                                                            | ReactNode          | -     |
+| extra               | 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面                                                                    | ReactNode          | -     |
 | validateState       | 校验状态，如不设置，则会根据校验规则自动生成<br><br>**可选值**:<br>'error'<br>'success'(成功)<br>'loading'(失败)                                     | Enum               | -     |
 | hasFeedback         | 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持                                                         | Boolean            | false |
 | children            | node 或者 function(values)                                                                                                | ReactNode/Function | -     |
-| extra               | 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面                                                                    | ReactNode          | -     |
 | labelAlign          | 标签的位置<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                            | Enum               | -     |
 | labelTextAlign      | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                    | Enum               | -     |
 | required            | [表单校验] 不能为空                                                                                                             | Boolean            | -     |
