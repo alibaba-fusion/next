@@ -40,9 +40,9 @@ export default class Item extends React.Component {
         extra: PropTypes.node,
         /**
          * 校验状态，如不设置，则会根据校验规则自动生成
-         * @enumdesc , 成功, 失败, 校验中
+         * @enumdesc 成功, 失败, 校验中
          */
-        validateState: PropTypes.oneOf(['', 'error', 'success', 'loading']), // TODO: remove '' in 2.x
+        validateState: PropTypes.oneOf(['error', 'success', 'loading']),
         /**
          * 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持
          */
@@ -212,6 +212,7 @@ export default class Item extends React.Component {
                 return '';
             }
 
+            // get first name
             return getState(names[0]);
         }
 
