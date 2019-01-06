@@ -1,3 +1,5 @@
+import { isValidElement, cloneElement } from 'react';
+
 /**
  * 从组件事件中获取数据
  * @param e Event或者value
@@ -27,7 +29,12 @@ export function getErrorStrs(errors) {
     if (errors) {
         return errors.map((e) => {
             if ('message' in e) {
-                return e.message;
+                const message = e.message;
+                // add key for jsx to ignore key warning
+                if (message && isValidElement(message) && !message.props.key) {
+                    return cloneElement(message, { key: 'error' });
+                }
+                return message;
             }
             return e;
         });
