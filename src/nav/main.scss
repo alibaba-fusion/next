@@ -74,6 +74,12 @@
             $nav-hoz-item-corner
         );
 
+        #{$nav-prefix}-group-label #{$menu-prefix}-item-inner {
+            height: $nav-group-height;
+            line-height: $nav-group-height;
+            font-size: $nav-group-font-size;
+        }
+
         #{$menu-prefix}-header {
             float: left;
             height: $nav-hoz-height - $popup-local-border-width * 2;
@@ -116,6 +122,12 @@
             $nav-ver-item-margin-lr,
             $nav-ver-item-corner
         );
+
+        #{$nav-prefix}-group-label #{$menu-prefix}-item-inner {
+            height: $nav-group-height;
+            line-height: $nav-group-height;
+            font-size: $nav-group-font-size;
+        }
 
         > #{$menu-prefix}-item:first-child,
         > #{$menu-prefix}-sub-menu-wrapper:first-child > #{$menu-prefix}-item {
