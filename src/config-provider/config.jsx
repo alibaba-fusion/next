@@ -22,7 +22,7 @@ export function initLocales(locales) {
         currentGlobalLocale = locales[currentGlobalLanguage];
 
         if (typeof currentGlobalRtl !== 'boolean') {
-            currentGlobalRtl = currentGlobalLocale.rtl;
+            currentGlobalRtl = currentGlobalLocale && currentGlobalLocale.rtl;
         }
     }
 }
@@ -33,7 +33,7 @@ export function setLanguage(language) {
         currentGlobalLocale = globalLocales[language];
 
         if (typeof currentGlobalRtl !== 'boolean') {
-            currentGlobalRtl = currentGlobalLocale.rtl;
+            currentGlobalRtl = currentGlobalLocale && currentGlobalLocale.rtl;
         }
     }
 }
@@ -45,7 +45,7 @@ export function setLocale(locale) {
     };
 
     if (typeof currentGlobalRtl !== 'boolean') {
-        currentGlobalRtl = currentGlobalLocale.rtl;
+        currentGlobalRtl = currentGlobalLocale && currentGlobalLocale.rtl;
     }
 }
 
