@@ -15,7 +15,7 @@ export default class Tab extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
-         * 被激活的选项卡的 key
+         * 被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换
          */
         activeKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
