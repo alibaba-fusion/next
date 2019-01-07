@@ -150,6 +150,44 @@ describe('Radio.Group', () => {
                 assert(Math.abs(container.querySelector('.next-radio-wrapper').getBoundingClientRect().height - 40) < 0.0001);
             });
         });
+
+        describe('default tagName', () => {
+            let wrapper;
+            const container = document.createElement('div');
+            container.style.visibility = 'hidden';
+            document.body.appendChild(container);
+            before((done) => {
+                ReactDOM.render(
+                    <RadioGroup shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    container,
+                    function init() {
+                        done();
+                    }
+                );
+            });
+            it('should be div', () => {
+                assert(container.querySelector('div.next-radio-group'));
+            });
+        });
+
+        describe('customer tagName', () => {
+            let wrapper;
+            const container = document.createElement('div');
+            container.style.visibility = 'hidden';
+            document.body.appendChild(container);
+            before((done) => {
+                ReactDOM.render(
+                    <RadioGroup component="footer" shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    container,
+                    function init() {
+                        done();
+                    }
+                );
+            });
+            it('should be footer', () => {
+                assert(container.querySelector('footer.next-radio-group'));
+            });
+        });
     });
 
     describe('[events] simulate change', () => {

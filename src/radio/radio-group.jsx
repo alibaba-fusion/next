@@ -40,6 +40,10 @@ class RadioGroup extends Component {
          */
         defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
         /**
+         * 设置标签类型
+         */
+        component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        /**
          * 选中值改变时的事件
          * @param {String/Number} value 选中项的值
          * @param {Event} e Dom 事件对象
@@ -85,6 +89,7 @@ class RadioGroup extends Component {
         onChange: () => {
         },
         prefix: 'next-',
+        component: 'div',
         itemDirection: 'hoz',
     }
 
@@ -140,7 +145,7 @@ class RadioGroup extends Component {
     }
 
     render() {
-        const { rtl, className, shape, size, style, prefix, itemDirection } = this.props;
+        const { rtl, className, shape, size, style, prefix, itemDirection, component } = this.props;
         const others = pickOthers(Object.keys(RadioGroup.propTypes), this.props);
         const disabled = this.props.disabled;
 
@@ -184,7 +189,8 @@ class RadioGroup extends Component {
             disabled
         });
 
-        return <div {...others} aria-disabled={disabled} role="radiogroup" className={cls} style={style}>{children}</div>;
+        const TagName = component;
+        return <TagName {...others} aria-disabled={disabled} role="radiogroup" className={cls} style={style}>{children}</TagName>;
     }
 }
 
