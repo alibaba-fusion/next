@@ -96,7 +96,6 @@ export default class PopupItem extends Component {
         }
         if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
             setStyle(this.popupNode, 'height', `${menuNode.offsetHeight}px`);
-            setStyle(this.popupNode, 'overflow-y', 'scroll');
         }
         // removeClass(this.popupNode, `${prefix}hide`);
 
