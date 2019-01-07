@@ -104,6 +104,10 @@ class SplitButton extends React.Component {
          * 透传给 Menu 的属性
          */
         menuProps: PropTypes.object,
+        /**
+         * 透传给 左侧按钮 的属性
+         */
+        leftButtonProps: PropTypes.object,
         className: PropTypes.string,
         children: PropTypes.any,
     };
@@ -119,6 +123,7 @@ class SplitButton extends React.Component {
         onSelect: func.noop,
         defaultSelectedKeys: [],
         menuProps: {},
+        leftButtonProps: {},
     };
 
     constructor(props, context) {
@@ -213,6 +218,7 @@ class SplitButton extends React.Component {
             popupProps,
             selectMode,
             menuProps,
+            leftButtonProps,
             disabled,
             ...others
         } = this.props;
@@ -243,7 +249,7 @@ class SplitButton extends React.Component {
 
         return (
             <Button.Group {...obj.pickOthers(SplitButton.propTypes, others)} className={classNames} style={style} size={size} ref={this._wrapperRefHandler}>
-                <Button {...sharedBtnProps}>{label}</Button>
+                <Button {...sharedBtnProps} {...leftButtonProps}>{label}</Button>
                 <Popup
                     {...popupProps}
                     visible={state.visible}
