@@ -388,6 +388,10 @@ class NumberPicker extends React.Component {
         this.inputRef = ref;
     }
 
+    handleMouseDown(e) {
+        e.preventDefault();
+    }
+
     render() {
         const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state, upBtnProps, downBtnProps } = this.props;
 
@@ -416,10 +420,10 @@ class NumberPicker extends React.Component {
         let innerAfter = null, innerAfterClassName = null, addonBefore = null, addonAfter = null;
         if (type === 'normal') {
             innerAfter = ([
-                <Button {...upBtnProps} disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
+                <Button {...upBtnProps} onMouseDown={this.handleMouseDown} disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
                     <Icon size="xxs" type="arrow-up" />
                 </Button>,
-                <Button {...downBtnProps} disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
+                <Button {...downBtnProps} onMouseDown={this.handleMouseDown} disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
                     <Icon size="xxs" type="arrow-down" />
                 </Button>
             ]);
