@@ -561,6 +561,8 @@ class Select extends Base {
      */
     renderValues() {
         const { mode, size, valueRender, fillProps, disabled } = this.props;
+        const isSingle = mode === 'single';
+
         let value = this.state.value;
 
         if (isNull(value)) {
@@ -569,7 +571,13 @@ class Select extends Base {
 
         // get detail value
         if (!this.useDetailValue()) {
-            value = this.valueDataSource.valueDS;
+            const vds = this.valueDataSource;
+
+            if (isSingle) {
+                value = vds && vds.mapValueDS && vds.mapValueDS[`${vds.value}`];
+            } else {
+                value = vds.valueDS;
+            }
         }
 
         if (mode === 'single') {
@@ -701,7 +709,14 @@ class Select extends Base {
             [`${prefix}has-clear`]: this.hasClear()
         });
 
-        const valuetext = this.valueDataSource.valueDS ? this.valueDataSource.valueDS.label : '';
+        const vds = this.valueDataSource;
+        let valuetext;
+
+        if (isSingle) {
+            valuetext = vds && vds.mapValueDS && vds.mapValueDS[`${vds.value}`] ? vds.mapValueDS[`${vds.value}`].label : '';
+        } else {
+            valuetext = vds.valueDS;
+        }
 
         return (
             <span {...othersData}
