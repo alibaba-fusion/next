@@ -179,7 +179,7 @@ describe('Tab', () => {
 
     describe('slide mode', () => {
         let wrapper, target;
-        const panes = [1, 2, 3, 4, 5, 6, 7, 9, 10].map((item, index) => <Tab.Item title={`tab item ${item}`} key={index}></Tab.Item>);
+        const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => <Tab.Item title={`tab item ${item}`} key={index}></Tab.Item>);
         const boxStyle = { width: '200px' };
 
         beforeEach(() => {
@@ -218,14 +218,10 @@ describe('Tab', () => {
             assert(wrapper.find('.next-menu-item').at(0).hasClass('next-selected'));
         });
 
-        // TODO: not work
         it('should scrollToActiveTab', () => {
-            wrapper = mount(<div style={boxStyle}><Tab activeKey="9">{panes}</Tab></div>, { attachTo: target });
-            // console.log(wrapper.find('.next-tabs').instance());
-            wrapper.setProps({ activeKey: '3' });
-            // wrapper.find('.next-tabs-tab').at(1).simulate('click');
-
+            wrapper = mount(<div style={boxStyle}><Tab defaultActiveKey="9">{panes}</Tab></div>, { attachTo: target });
+            wrapper.find('.next-tabs-tab').at(3).simulate('click');
+            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'))
         });
-
     });
 });

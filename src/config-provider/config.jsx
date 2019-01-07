@@ -17,10 +17,13 @@ let currentGlobalRtl;
 
 export function initLocales(locales) {
     globalLocales = locales;
-    currentGlobalLocale = locales[currentGlobalLanguage];
 
-    if (typeof currentGlobalRtl !== 'boolean') {
-        currentGlobalRtl = currentGlobalLocale.rtl;
+    if (locales) {
+        currentGlobalLocale = locales[currentGlobalLanguage];
+
+        if (typeof currentGlobalRtl !== 'boolean') {
+            currentGlobalRtl = currentGlobalLocale.rtl;
+        }
     }
 }
 
