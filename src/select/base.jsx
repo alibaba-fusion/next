@@ -435,7 +435,7 @@ export default class Base extends React.Component {
         };
 
         return (
-            useVirtual ?
+            useVirtual && children.length ?
                 <div className={`${prefix}select-menu-wrapper`} style={{position: 'relative'}}>
                     <VirtualList
                         itemsRenderer={(items, ref) => {
@@ -493,7 +493,7 @@ export default class Base extends React.Component {
                     </MenuItem>
                 );
             }
-        });
+        }).filter(item => item);
     }
 
     saveSelectRef = (ref) => {
