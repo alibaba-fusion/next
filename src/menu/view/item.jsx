@@ -2,7 +2,7 @@ import React, { Component, Children, isValidElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { func, obj } from '../../util';
+import { func, obj, KEYCODE } from '../../util';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
@@ -107,6 +107,10 @@ export default class Item extends Component {
         const { _key, root, type } = this.props;
         if (this.focusable()) {
             root.handleItemKeyDown(_key, type, this, e);
+
+            if (e.keyCode === KEYCODE.SPACE) {
+                this.handleClick(e);
+            }
         }
 
         this.props.onKeyDown && this.props.onKeyDown(e);
