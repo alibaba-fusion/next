@@ -286,6 +286,7 @@ class InnerSlider extends React.Component {
             prevArrow = (
                 <Arrow {...arrowProps}
                     type="prev"
+                    aria-label="Previous"
                     ref={this._instanceRefHandler.bind(this, 'pArrow')}
                     onMouseEnter={animation ? this.onEnterArrow.bind(this, 'prev') : noop}
                     onMouseLeave={animation ? this.onLeaveArrow.bind(this, 'prev') : noop}
@@ -295,6 +296,7 @@ class InnerSlider extends React.Component {
             nextArrow = (
                 <Arrow {...arrowProps}
                     type="next"
+                    aria-label="Next"
                     ref={this._instanceRefHandler.bind(this, 'nArrow')}
                     onMouseEnter={animation ? this.onEnterArrow.bind(this, 'next') : noop}
                     onMouseLeave={animation ? this.onLeaveArrow.bind(this, 'next') : noop}

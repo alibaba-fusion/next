@@ -137,6 +137,7 @@
                 }
             }
 
+            & button:focus,
             &.active button {
                 background: rgba($slick-dots-background-color-selected, $slick-dots-background-opacity-selected);
                 /* border-width: $slick-dots-border-width-selected; */
