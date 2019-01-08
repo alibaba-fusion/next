@@ -18,3 +18,16 @@ export function camelcase (str) {
 export function hyphenate (str) {
     return str.replace(/([A-Z])/g, $0 => `-${$0.toLowerCase()}`);
 }
+
+/**
+ * 替换模板字符串
+ * @param {String} tpl     例：当前{current}, 共{total}页
+ * @param {Object} object  例：{current: 1, total: 9}
+ * @return {String}        例：
+ */
+export function template (tpl, object = {}) {
+    return tpl.replace(/\{[a-z]*\}/g, (str) => {
+        const key = str.substring(1, str.length - 1);
+        return object[key] || '';
+    });
+}

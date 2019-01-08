@@ -6,7 +6,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import Select from '../select';
-import { KEYCODE } from '../util';
+import { KEYCODE, str } from '../util';
 import zhCN from '../locale/zh-cn.js';
 
 const { Option } = Select;
@@ -228,7 +228,7 @@ class Pagination extends Component {
     }
 
     renderPageItem(index) {
-        const { prefix, size, link, pageNumberRender } = this.props;
+        const { prefix, size, link, pageNumberRender, total, locale } = this.props;
         const { current } = this.state;
 
         const isCurrent = parseInt(index, 10) === current;
@@ -245,7 +245,14 @@ class Pagination extends Component {
             props.href = link.replace('{page}', index);
         }
 
-        return <Button {...props} key={index}>{pageNumberRender(index)}</Button>;
+        return (
+            <Button
+                aria-label={str.template(locale.total, { current: index, total })}
+                {...props}
+                key={index}>
+                {pageNumberRender(index)}
+            </Button>
+        );
     }
 
     renderPageFirst(current) {
@@ -265,7 +272,7 @@ class Pagination extends Component {
         const icon = <Icon type="arrow-left" />;
 
         return (
-            <Button {...props}>
+            <Button {...props} aria-label={str.template(locale.labelPrev, { current })}>
                 {icon}
                 {shape === 'arrow-only' ||
                  shape === 'arrow-prev-only' ||
@@ -291,7 +298,7 @@ class Pagination extends Component {
         const icon = <Icon type="arrow-right" />;
 
         return (
-            <Button {...props}>
+            <Button {...props} aria-label={str.template(locale.labelNext, { current })}>
                 {shape === 'arrow-only' ||
                  shape === 'no-border' ? '' : locale.next}
                 {icon}
