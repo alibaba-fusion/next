@@ -24,6 +24,12 @@ describe('Select', () => {
     afterEach(() => {
         wrapper.unmount();
         wrapper = null;
+
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
+
+        nodeListArr.forEach((node) => {
+            node.parentNode.removeChild(node);
+        });
     });
 
     it('should render from dataSource', () => {
@@ -59,19 +65,19 @@ describe('Select', () => {
     });
 
     it('should support async dataSource', () => {
-        
+
         const DATASOURCE = [
             { label: 'TT1', value: 'test1' },
             { label: 'TT2', value: 'test2' },
             { label: 'TT3', value: 'test3' },
-        ]
+        ];
 
         const wrapper = mount(<Select defaultValue="test2"/>);
 
         wrapper.setProps({
             dataSource: DATASOURCE,
         });
-        
+
         wrapper.update();
 
         assert(wrapper.find('.next-select em').text() === 'TT2');
@@ -119,7 +125,7 @@ describe('Select', () => {
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
-            mode:'multiple',
+            mode: 'multiple',
             value: [{ label: 'xxx', value: '0' }]
         });
         wrapper.update();
@@ -132,7 +138,7 @@ describe('Select', () => {
             dataSource,
             useDetailValue: true,
             showSearch: true,
-            mode:'multiple',
+            mode: 'multiple',
             value: [{ label: 'xxx', value: '0' }],
             onChange: function (value) {
                 assert(value.length === 2);
@@ -182,7 +188,7 @@ describe('Select', () => {
     it('should support disabled', () => {
         wrapper.setProps({
             disabled: true,
-            popupProps:{cache: false}
+            popupProps: {cache: false}
         });
         wrapper.find('.next-select').simulate('click');
         // because popup-menu has been cache
@@ -329,9 +335,9 @@ describe('Select', () => {
         wrapper.setProps({
             dataSource,
             visible: true,
-            onChange:(v, e, item) => {
-                assert(v === 1)
-                assert(item.value === 1)
+            onChange: (v, e, item) => {
+                assert(v === 1);
+                assert(item.value === 1);
                 done();
             }
         });
@@ -343,10 +349,10 @@ describe('Select', () => {
         const dataSource = [{ label: 'xxx', value: '0' }, { label: 'empty', value: 1 }];
         wrapper.setProps({
             dataSource,
-            mode:'multiple',
+            mode: 'multiple',
             visible: true,
-            onChange:(v, e, item) => {
-                assert(v.length === 1)
+            onChange: (v, e, item) => {
+                assert(v.length === 1);
                 assert(item.length === 1);
                 done();
             }
@@ -362,8 +368,8 @@ describe('Select', () => {
             dataSource,
             useDetailValue: true,
             visible: true,
-            onChange:(v) => {
-                assert(v.label === 'empty')
+            onChange: (v) => {
+                assert(v.label === 'empty');
                 done();
             }
         });
@@ -376,10 +382,10 @@ describe('Select', () => {
         wrapper.setProps({
             dataSource,
             useDetailValue: true,
-            mode:'multiple',
+            mode: 'multiple',
             visible: true,
-            onChange:(v) => {
-                assert(v.length === 1)
+            onChange: (v) => {
+                assert(v.length === 1);
                 done();
             }
         });
@@ -392,12 +398,12 @@ describe('Select', () => {
         const dataSource = [{ label: 'xxx', value: 'a' }, { label: 'empty', value: 'b' }];
         wrapper.setProps({
             dataSource,
-            mode:'multiple',
+            mode: 'multiple',
             visible: true,
             hiddenSelected: true,
             onVisibleChange: (v) => {
                 assert(v === false);
-                done()
+                done();
             }
         });
 
@@ -433,43 +439,43 @@ describe('Select', () => {
 
 
     it('should fix tags mode issue #62', () => {
-        class App extends React.Component{
-            constructor(props){
+        class App extends React.Component {
+            constructor(props) {
                 super(props);
                 this.state = {
                     dataSource: [{
-                        value:'测试',
-                        label:'测试',
+                        value: '测试',
+                        label: '测试',
                         time: 123
                     }],
                     value: ['测试']
-                }
+                };
             }
-            render(){
+            render() {
                 return (
                     <div>
                         <Select size="large"
-                            value = {this.state.value}
+                            value={this.state.value}
                             dataSource={this.state.dataSource}
                             onChange={this.onChange.bind(this)}
-                            onSearch ={this.onSearch.bind(this)}
+                            onSearch={this.onSearch.bind(this)}
                             mode="tag"
                             filterLocal={false}
-                            />
+                        />
                     </div>
-                )
+                );
             }
             onSearch(value) {
                 let options;
                 if (!value || value.indexOf('@') > 0) {
                     options = [];
                 } else {
-                    options = ['126.com','163.com','gmail.com'].map(mail => {
+                    options = ['126.com', '163.com', 'gmail.com'].map(mail => {
                         return {
-                            label: value + '@'+ mail,
-                            value: value + '@'+ mail,
+                            label: `${value}@${mail}`,
+                            value: `${value}@${mail}`,
                             time: Math.random()
-                        }
+                        };
                     });
                 }
                 this.setState({dataSource: options});
@@ -491,8 +497,8 @@ describe('Select', () => {
 describe('Select Controlled', () => {
     class App extends React.Component {
         state = {}
-        render(){
-            return <Select value={this.state.value} visible={this.state.visible} searchValue={this.state.searchValue} showSearch dataSource={[{ label: 'xxx', value: 'yyy' }]} onChange={this.onChange}></Select>
+        render() {
+            return <Select value={this.state.value} visible={this.state.visible} searchValue={this.state.searchValue} showSearch dataSource={[{ label: 'xxx', value: 'yyy' }]} onChange={this.onChange} />;
         }
         onChange = (value) => {
             this.setState({
@@ -503,13 +509,13 @@ describe('Select Controlled', () => {
 
     let wrapper;
 
-    beforeEach(()=>{
+    beforeEach(() => {
         wrapper = mount(<App/>);
-    })
+    });
 
-    afterEach(()=>{
+    afterEach(() => {
         wrapper.unmount();
-    })
+    });
 
     it('should support Modify value', () => {
         wrapper.setState({
@@ -704,10 +710,10 @@ describe('AutoComplete', () => {
     // });
 
     it('should fix autoWidth bug', (done) => {
-        class App extends React.Component{
+        class App extends React.Component {
             render() {
                 return (
-                    <Select placeholder="选择尺寸"style={{float:'right'}}>
+                    <Select placeholder="选择尺寸"style={{float: 'right'}}>
                         <Option value="small">Small</Option>
                         <Option value="medium">MediumMediumMediumMediumMedium</Option>
                         <Option value="large">Large</Option>

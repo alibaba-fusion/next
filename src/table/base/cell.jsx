@@ -50,6 +50,7 @@ export default class Cell extends React.Component {
         /* eslint-disable no-unused-vars */
         const {prefix, className, cell, value, resizable, colIndex, rowIndex, record, context, align, style = {}, component: Tag,
             children, title, width, innerStyle, primaryKey, __normalized, filterMode, filters, sortable, lock, pure, ...others} = this.props;
+        const tagStyle = {...style};
         const cellProps = {value, index: rowIndex, record, context};
         let content = cell;
         if (React.isValidElement(content)) {
@@ -58,14 +59,14 @@ export default class Cell extends React.Component {
             content = content(value, rowIndex, record, context);
         }
         if (align) {
-            style.textAlign = align;
+            tagStyle.textAlign = align;
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,
             [className]: className
         });
 
-        return (<Tag {...others} className={cls} style={style} role="gridcell">
+        return (<Tag {...others} className={cls} style={tagStyle} role="gridcell">
             <div className={`${prefix}table-cell-wrapper`} style={innerStyle}>
                 {content}
                 {children}

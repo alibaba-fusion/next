@@ -17,7 +17,7 @@ describe('Pagination', () => {
     });
 
     afterEach(() => {
-        wrapper.unmount();
+        wrapper && wrapper.unmount();
         wrapper = null;
     });
 
@@ -121,13 +121,13 @@ describe('Pagination', () => {
         const initCurrent = 2;
         let current;
         wrapper = mount(<Pagination />);
-        
+
         wrapper.setProps({
             current: initCurrent,
             onChange: index => assert(index === current)
         });
 
-        
+
 
         const currentTest = () => {
             wrapper.update();
@@ -401,26 +401,28 @@ describe('Pagination', () => {
                 });
             }
         });
-        assert(wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-dropdown').hostNodes().length === 1);
+        setTimeout(() => {
+            assert(wrapper.find('.next-pagination-size-selector .next-pagination-size-selector-dropdown').hostNodes().length === 1);
 
-        wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
-        const lis = document.querySelectorAll('.next-menu li');
-        pageSizeList.forEach((size, index) => {
-            assert(lis[index].textContent.trim() === size.toString());
-        });
-        assert(lis[2].className.indexOf('selected') > -1);
+            wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
+            const lis = document.querySelectorAll('.next-menu li');
+            pageSizeList.forEach((size, index) => {
+                assert(lis[index].textContent.trim() === size.toString());
+            });
+            assert(lis[2].className.indexOf('selected') > -1);
 
-        currentPageSize = 20;
-        lis[1].click();
+            currentPageSize = 20;
+            lis[1].click();
 
-        wrapper.setProps({
-            current: 20
-        });
-        wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
-        const newLis = document.querySelectorAll('.next-menu li');
-        currentPageSize = 50;
-        newLis[2].click();
-        assert(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes().text() === '10');
+            wrapper.setProps({
+                current: 20
+            });
+            wrapper.find('.next-pagination-size-selector-dropdown').hostNodes().simulate('click');
+            const newLis = document.querySelectorAll('.next-menu li');
+            currentPageSize = 50;
+            newLis[2].click();
+            assert(wrapper.find('.next-pagination-list .next-pagination-item.next-current').hostNodes().text() === '10');
+        }, 300)
     });
 
     it('should render a tag with the specified href when set link', () => {

@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+// const fs = require('fs-extra');
 const { join } = require('path');
 const { Server } = require('karma');
 const Mocha = require('mocha');
@@ -28,14 +28,14 @@ const coreTest = (cb) => {
 
 const runRest = components => {
     if (components && components.length > 0) {
-        const com = components.shift();
+        const com = components.splice(0, 10);
         if (com === 'core') {
             coreTest(() => {
                 runRest(components);
             });
             return;
         }
-        config.component = com;
+        config.componentArray = com;
         config.runAll = true;
 
         server = new Server(config, () => {
@@ -64,8 +64,12 @@ const runRest = components => {
 };
 
 const runAllTest = () => {
-    const components = fs.readdirSync(join(process.cwd(), 'test'));
-    runRest(components);
+    // const components = fs.readdirSync(join(process.cwd(), 'test'));
+    // runRest(components);
+
+    config.runAll = true;
+    server = new Server(config);
+    server.start();
 };
 
 

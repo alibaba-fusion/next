@@ -67,6 +67,27 @@ describe('Collapse', () => {
             assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
         });
 
+        it('Should expanded by space key', () => {
+            const collapse = (<Collapse id="test-id">
+                <Panel title="Pannel Title1">
+                    Pannel Content1
+                </Panel>
+                <Panel title="Pannel Title2">
+                    Pannel Content2
+                </Panel>
+                <Panel title="Pannel Title3">
+                    Pannel Content3
+                </Panel>
+            </Collapse>);
+            const wrapper = mount(collapse);
+
+            wrapper.find('.next-collapse-panel-title').first().simulate('keyDown', {keyCode: 32});
+            assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('keyDown', {keyCode: 32});
+            assert(wrapper.find('.next-collapse-panel-expanded').length === 2);
+            wrapper.find('.next-collapse-panel-title').at(1).simulate('keyDown', {keyCode: 32});
+            assert(wrapper.find('.next-collapse-panel-expanded').length === 1);
+        });
         it('should support accordion', () => {
             const collapse = (<Collapse accordion>
                 <Panel title="Pannel Title1">
@@ -146,4 +167,36 @@ describe('Collapse', () => {
             done();
         });
     });
+    describe('panel', () => {
+        it('id should be auto add', (done) => {
+            const collapse = (<Collapse>
+                <Panel id="test-id-1" title="Pannel Title">
+                    Pannel Content
+                </Panel>
+            </Collapse>);
+            const wrapper = mount(collapse);
+            assert(wrapper.find("#test-id-1-heading").length === 1);
+            assert(wrapper.find("#test-id-1-region").length === 1);
+            done();
+        });
+        it('all id should be auto add', (done) => {
+            const collapse = (<Collapse id="test-id-2">
+                <Panel title="Pannel Title 1">
+                    Pannel Content
+                </Panel>
+                <Panel title="Pannel Title 2">
+                    Pannel Content
+                </Panel>
+            </Collapse>);
+            const wrapper = mount(collapse);
+
+            assert(wrapper.find(".next-collapse#test-id-2").length === 1);
+            const panels = wrapper.find(".next-collapse-panel");
+            assert(panels.length === 2);
+            assert(panels.at(0).getDOMNode().id);
+            assert(panels.at(1).getDOMNode().id);
+            done();
+        });
+    });
+
 });

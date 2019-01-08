@@ -5,10 +5,12 @@
     &.#{$css-prefix}ver {
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
             right: - $border-width;
+            left: auto;
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
             left: - $border-width;
+            right: auto;
         }
     }
 }
