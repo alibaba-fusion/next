@@ -192,7 +192,7 @@ class Collapse extends React.Component {
     }
 
     render() {
-        const {prefix, className, style, disabled, dataSource} = this.props;
+        const {prefix, className, style, disabled, dataSource, id} = this.props;
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,
@@ -201,7 +201,7 @@ class Collapse extends React.Component {
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);
         return (
-            <div className={collapseClassName} style={style} {...others} role="presentation">
+            <div id={id} className={collapseClassName} style={style} {...others} role="presentation">
                 {dataSource ? this.getItemsByDataSource() : this.getItemsByChildren()}
             </div>
         );
