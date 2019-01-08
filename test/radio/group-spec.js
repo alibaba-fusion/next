@@ -170,7 +170,7 @@ describe('Radio.Group', () => {
             });
         });
 
-        describe('customer tagName', () => {
+        describe('customer tagName(String)', () => {
             let wrapper;
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
@@ -186,6 +186,26 @@ describe('Radio.Group', () => {
             });
             it('should be footer', () => {
                 assert(container.querySelector('footer.next-radio-group'));
+            });
+        });
+
+        describe('customer tagName(Func)', () => {
+            let wrapper;
+            const container = document.createElement('div');
+            container.style.visibility = 'hidden';
+            document.body.appendChild(container);
+            const Footer = props => <div className="special-name" />
+            before((done) => {
+                ReactDOM.render(
+                    <RadioGroup component={Footer} shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    container,
+                    function init() {
+                        done();
+                    }
+                );
+            });
+            it('should be special-name', () => {
+                assert(container.querySelector('.special-name'));
             });
         });
     });
