@@ -87,7 +87,6 @@ class Dropdown extends Component {
         align: 'tl bl',
         offset: [0, 0],
         delay: 200,
-        autoFocus: true,
         hasMask: false,
         cache: false,
         onPosition: noop
@@ -97,10 +96,12 @@ class Dropdown extends Component {
         super(props);
 
         this.state = {
-            visible: 'visible' in props ? props.visible : (props.defaultVisible || false)
+            visible: 'visible' in props ? props.visible : (props.defaultVisible || false),
+            autoFocus: 'autoFocus' in props ? props.autoFocus : false
         };
 
         bindCtx(this, [
+            'onTriggerKeyDown',
             'onMenuClick',
             'onVisibleChange'
         ]);
@@ -120,6 +121,18 @@ class Dropdown extends Component {
         this.props.onVisibleChange(visible, from);
     }
 
+    onTriggerKeyDown() {
+        let autoFocus = true;
+
+        if ('autoFocus' in this.props) {
+            autoFocus = this.props.autoFocus;
+        }
+
+        this.setState({
+            autoFocus
+        });
+    }
+
     render() {
         let child = Children.only(this.props.children);
         if (typeof child.type === 'function' && child.type.isNextMenu) {
@@ -128,8 +141,15 @@ class Dropdown extends Component {
             });
         }
 
+        const { trigger } = this.props;
+        const newTrigger = React.cloneElement(trigger, {
+            onKeyDown: makeChain(this.onTriggerKeyDown, trigger.props.onKeyDown)
+        });
+
         return (
             <Popup {...this.props}
+                autoFocus={this.state.autoFocus}
+                trigger={newTrigger}
                 visible={this.getVisible()}
                 onVisibleChange={this.onVisibleChange}
                 canCloseByOutSideClick>{child}</Popup>
