@@ -493,7 +493,7 @@ export default class Base extends React.Component {
                     </MenuItem>
                 );
             }
-        }).filter(item => item);
+        });
     }
 
     saveSelectRef = (ref) => {
