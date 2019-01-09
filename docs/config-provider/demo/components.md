@@ -1,13 +1,13 @@
 # 支持国际化的组件
 
-- order: 1
+- order: 2
 
 展示目前 Next 组件中支持国际化的组件。
 
 :::lang=en-us
 # Components that support internationalization
 
-- order: 1
+- order: 2
 
 Show the components that support internationalization in the current Next components.
 :::

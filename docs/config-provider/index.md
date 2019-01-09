@@ -54,6 +54,8 @@
 
 优先级顺序为: 组件自身 locale > 最近 ConfigProvider 的 locale > 更远父级 ConfigProvider 的 locale
 
+(注： 由于`Dialog.show()` `Message.show()` 等函数式方法的特殊性，他们的将默认读取页面上的root context。当页面上有多个包含`<ConfigProvider/>` 的 `ReactDOM.render()`方法调用时，由第一个渲染的决定root context)
+
 ```js
 import { ConfigProvider, DatePicker } from '@alifd/next';
 
