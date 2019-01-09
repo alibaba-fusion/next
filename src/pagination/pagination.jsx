@@ -228,9 +228,10 @@ class Pagination extends Component {
     }
 
     renderPageItem(index) {
-        const { prefix, size, link, pageNumberRender, total, locale } = this.props;
+        const { prefix, size, link, pageNumberRender, total, pageSize, locale } = this.props;
         const { current } = this.state;
 
+        const totalPage = this.getTotalPage(total, pageSize);
         const isCurrent = parseInt(index, 10) === current;
         const props = {
             size,
@@ -247,7 +248,7 @@ class Pagination extends Component {
 
         return (
             <Button
-                aria-label={str.template(locale.total, { current: index, total })}
+                aria-label={str.template(locale.total, { current: index, total: totalPage })}
                 {...props}
                 key={index}>
                 {pageNumberRender(index)}
