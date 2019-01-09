@@ -476,7 +476,14 @@ export default class TreeNode extends Component {
 
         return (
             <li className={newClassName} {...others}>
-                <div ref="node" role="treeitem" aria-expanded={expanded && !!hasChildTree} {...innerProps}>
+                <div
+                    ref="node"
+                    role="treeitem"
+                    aria-selected={selected}
+                    aria-disabled={disabled}
+                    aria-expanded={expanded && !!hasChildTree}
+                    {...innerProps}
+                >
                     {canExpand ? this.renderSwitcher() : this.renderNoopSwitcher()}
                     {checkable ? this.renderCheckbox() : null}
                     {editing ? this.renderInput() : this.renderLabel()}
