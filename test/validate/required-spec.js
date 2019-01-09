@@ -22,7 +22,7 @@ describe('required', () => {
 
     it('error with array=[]', (done) => {
         new Schema({
-            v: {required,message: 'no'},
+            v: {required, message: 'no'},
         }).validate({
             v: [],
         }, (errors) => {
@@ -34,7 +34,7 @@ describe('required', () => {
 
     it('error with string=""', (done) => {
         new Schema({
-            v: {required,message: 'no'},
+            v: {required, message: 'no'},
         }).validate({
             v: '',
         }, (errors) => {
@@ -44,14 +44,13 @@ describe('required', () => {
         });
     });
 
-    it('error with boolean=false', (done) => {
+    it('no error with boolean=false', (done) => {
         new Schema({
-            v: {required,message: 'no'},
+            v: {required, message: 'no'},
         }).validate({
             v: false,
         }, (errors) => {
-            assert(errors.length === 1);
-            assert(errors[0].message === 'no');
+            assert(errors === null);
             done();
         });
     });
