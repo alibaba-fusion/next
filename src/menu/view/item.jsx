@@ -117,7 +117,7 @@ export default class Item extends Component {
 
         const loop = children => {
             Children.forEach(children, child => {
-                if (isValidElement(child) &&  child.props.children) {
+                if (isValidElement(child) && child.props.children) {
                     loop(child.props.children);
                 } else if (typeof child === 'string') {
                     labelString += child;
@@ -131,7 +131,19 @@ export default class Item extends Component {
     }
 
     render() {
-        const { level, root, replaceClassName, groupIndent, component, disabled, className, children, needIndent, parentMode, _key } = this.props;
+        const {
+            level,
+            root,
+            replaceClassName,
+            groupIndent,
+            component,
+            disabled,
+            className,
+            children,
+            needIndent,
+            parentMode,
+            _key
+        } = this.props;
         const others = pickOthers(Object.keys(Item.propTypes), this.props);
 
         const { prefix, focusable, inlineIndent, itemClassName, rtl } = root.props;
@@ -150,10 +162,12 @@ export default class Item extends Component {
 
         others.tabIndex = root.tabbableKey === _key ? '0' : '-1';
 
+
         if (parentMode === 'inline' && level > 1 && inlineIndent > 0 && needIndent) {
+            const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [rtl ? 'paddingRight' : 'paddingLeft']: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
+                [paddingProp]: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
             };
         }
         const TagName = component;
