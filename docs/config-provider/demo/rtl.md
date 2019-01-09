@@ -1,13 +1,13 @@
 # 组件的RTL
 
-- order: 2
+- order: 4
 
 组件RTL样式展示(目前部分支持)
 
 :::lang=en-us
 # Components with rtl
 
-- order: 2
+- order: 4
 
 Show components with RTL(Partial supported currently).
 :::
