@@ -748,3 +748,26 @@ describe('AutoComplete', () => {
         });
     });
 });
+
+describe('virtual list', () => {
+    it('should works with showSearch', (done) => {
+        const dataSource = [{label: '海关总署', value: '0000'}, {label: '北京关区', value: '0100'}, {label: '机场单证', value: '0101'}, {label: '京监管处', value: '0102'}, {label: '京关展览', value: '0103'}, {label: '京一处', value: '0104'}, {label: '京二处', value: '0105'}, {label: '京关关税', value: '0106'}, {label: '机场库区', value: '0107'}, {label: '京通关处', value: '0108'}];
+
+        const wrapper = mount(<Select placeholder="选择尺寸" useVirtual showSearch style={{float: 'right'}} dataSource={dataSource} />);
+
+        wrapper.update();
+        wrapper.simulate('click');
+
+        const input = wrapper.find('input').instance();
+        input.value = 'fff';
+        wrapper.find('input').simulate('change');
+        wrapper.find('input').simulate('keydown', {
+            key: 'Enter',
+            keyCode: 13,
+            which: 13
+        });
+        setTimeout(() => {
+            done();
+        }, 200);
+    });
+});
