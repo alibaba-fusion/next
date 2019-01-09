@@ -2,11 +2,11 @@ export default {
     momentLocale: 'zh-tw',
     Timeline: {
         expand: '展開',
-        fold: '收起',
+        fold: '收起'
     },
     Card: {
         expand: '展開',
-        fold: '收起',
+        fold: '收起'
     },
     Calendar: {
         today: '今天',
@@ -20,7 +20,7 @@ export default {
         prevMonth: '上个月',
         nextMonth: '下个月',
         prevDecade: '上十年',
-        nextDecade: '后十年',
+        nextDecade: '后十年'
     },
     DatePicker: {
         placeholder: '請選擇日期',
@@ -48,6 +48,9 @@ export default {
         goTo: '到第',
         page: '頁',
         go: '確定',
+        total: '第{current}頁，共{total}頁',
+        labelPrev: '上一頁，當前第{current}頁',
+        labelNext: '下一頁，當前第{current}頁',
         pageSize: '每頁顯示：'
     },
     Input: {
@@ -93,6 +96,6 @@ export default {
         }
     },
     Search: {
-        buttonText: '檢索',
-    },
+        buttonText: '檢索'
+    }
 };
