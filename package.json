@@ -156,7 +156,7 @@
     "stylelint-scss": "^3.1.1",
     "typescript": "^3.0.1",
     "webpack": "^3.0.0",
-    "webpack-dev-server": ">=3.1.11",
+    "webpack-dev-server": "^2.x",
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
