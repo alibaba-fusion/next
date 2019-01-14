@@ -89,14 +89,25 @@ class Upload extends Base {
         onChange: PropTypes.func,
         /**
          * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
+         * @param {Object} file 文件
+         * @param {Array<Object>} value 值
          */
         onSuccess: PropTypes.func,
+        /**
+         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
+         * @param {Object} file
+         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
+         */
+        afterSelect: PropTypes.func,
         /**
          * 移除文件回调函数，详见 [onRemove](#onRemove)
          */
         onRemove: PropTypes.func,
         /**
          * 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件
+         * @param {Object} error 错误信息
+         * @param {Object} xhr 请求对象
+         * @param {Object} file 文件
          */
         onError: PropTypes.func,
         /**
@@ -126,12 +137,7 @@ class Upload extends Base {
          * 自动上传
          */
         autoUpload: PropTypes.bool,
-        /**
-         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
-         * @param {Object} file
-         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
-         */
-        afterSelect: PropTypes.func,
+
     };
 
     static defaultProps = {
