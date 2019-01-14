@@ -40,6 +40,7 @@
 | onError         | 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件<br><br>**签名**:<br>Function(error: Object, xhr: Object, file: Object) => void<br>**参数**:<br>_error_: {Object} 错误信息<br>_xhr_: {Object} 请求对象<br>_file_: {Object} 文件                                            | Function        | func.noop |
 | timeout         | 设置上传超时,单位ms                                                                                                                                                                                                                                   | Number          | -         |
 | method          | 上传方法<br><br>**可选值**:<br>'post', 'put'                                                                                                                                                                                                         | Enum            | 'post'    |
+| request         | 自定义上传方法<br><br>**签名**:<br>Function(option: Object) => Object<br>**参数**:<br>_option_: {Object} null<br>**返回值**:<br>{Object} object with abort method<br>                                                                                       | Function        | -         |
 | onSelect        | 选择文件回调<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                   | Function        | func.noop |
 | onDrop          | 放文件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                      | Function        | func.noop |
 | defaultValue    | 默认文件列表                                                                                                                                                                                                                                        | Array           | -         |
@@ -99,6 +100,39 @@
 | onProgress      | 上传中<br><br>**签名**:<br>Function() => void                               | Function        | noop  |
 | onSuccess       | 上传成功回调函数，参数为请求下响应信息以及文件<br><br>**签名**:<br>Function() => void           | Function        | noop  |
 | onError         | 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件<br><br>**签名**:<br>Function() => void | Function        | noop  |
+
+### 自定义Request
+某些场景下需要自定义Request,例如对接AWS S3 jd-sdk or aliyun oss sdk,. Upload 支持 传入自定义的 request方法.
+```
+function customRequest(option) {
+    /* coding here */
+    return {abort() {/* coding here */}};
+}
+
+<Upload request={customRequest}/>
+```
+customRequest被传入一个 object,包含以下属性:
+```
+    onProgress: (event: { percent: number }): void
+    onError: (event: Error, body?: Object): void
+    onSuccess: (body: Object): void
+    data: Object // 额外的数据
+    filename: String // 文件名
+    file: File // 原生File对象
+    withCredentials: Boolean // 是否携带cookie
+    action: String // 请求地址
+    method: String // 请求类型 post/put
+    timeout: Number // 超时
+    headers: Object // 请求头
+```
+request需要返回一个包含abort方法的对象,用于中断上传
+
+```
+abort(file?: File) => void: abort the uploading file
+```
+具体实现参照 Upload 默认request方法: https://github.com/alibaba-fusion/next/blob/master/src/upload/runtime/request.jsx
+
+
 
 ### onChange 返回结构
 

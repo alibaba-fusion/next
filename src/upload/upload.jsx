@@ -137,7 +137,12 @@ class Upload extends Base {
          * 自动上传
          */
         autoUpload: PropTypes.bool,
-
+        /**
+         * 自定义上传方法
+         * @param {Object} option
+         * @return {Object} object with abort method
+         */
+        request: PropTypes.func,
     };
 
     static defaultProps = {

@@ -5,6 +5,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
 import Upload from '../../src/upload/index';
+import request from '../../src/upload/runtime/request'
+import { func } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -105,6 +107,7 @@ describe('Upload', () => {
             }
 
         });
+
         it('should support onChange/onRemove events', (done) => {
             const onChange = sinon.spy();
             const onRemove = sinon.spy();
@@ -159,7 +162,7 @@ describe('Upload', () => {
     });
 
     describe('[behavior] Upload Request', () => {
-        it('should suooprt header', done => {
+        it('should support header', done => {
 
             const formatter = res => {
                 assert(res.test === 123);
@@ -182,6 +185,34 @@ describe('Upload', () => {
                 assert(request.requestBody.get('test-data') === 'test-data');
 
                 requests[0].respond(200, {}, '{"success": true, "url":"https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg", "test": 123}');
+            } else {
+                done();
+            }
+        });
+        it('should support custom request', done => {
+            const pass = {isPass: false};
+            const customRequest = function customRequest(options) {
+                pass.isPass = true;
+                return request(options);
+            }
+            const onSuccess = function onSuccess() {
+                assert(pass.isPass);
+                done();
+            }
+            const wrapper = mount(<Upload autoUplod={false} request={customRequest} onSuccess={onSuccess}/>);
+            if (typeof atob === 'function' && typeof Blob  === 'function' && typeof File === 'function') {
+                // 模拟文件上传
+                let base64 ='iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggkFBTzlUWEwwWTRPSHdBQUFBQkpSVTVFcmtKZ2dnPT0=';
+
+                let binary = fixBinary(atob(base64));
+
+                let blob = new Blob([binary], {type: 'image/png'});
+
+                let file = new File([blob], 'test.png', {type: 'image/png'});
+                wrapper.find('input').simulate('change', { target: { files: [ file ] } });
+                const request = requests[0];
+
+                request.respond(200, {}, '{"success": true, "url":"https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg", "test": 123}');
             } else {
                 done();
             }

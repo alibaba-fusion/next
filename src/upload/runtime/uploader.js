@@ -1,6 +1,6 @@
 import {func, obj} from '../../util';
 import {uid} from '../util';
-import request from './request';
+import defaultRequest from './request';
 
 const noop = func.noop;
 
@@ -102,7 +102,7 @@ export default class Uploader {
             onProgress,
             onSuccess,
             onError,
-            method
+            method,
         } = requestOptions;
 
         let data = requestOptions.data;
@@ -112,6 +112,7 @@ export default class Uploader {
 
         const {uid} = file;
 
+        const request = typeof requestOptions.request === 'function' ? requestOptions.request : defaultRequest;
         this.reqs[uid] = request({
             action,
             filename: name,
