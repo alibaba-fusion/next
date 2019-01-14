@@ -14,6 +14,15 @@ describe('src/func.js', function () {
       assert(func.noop() === undefined);
     });
   });
+  describe('#func.prevent', function () {
+    it('prevent should be a function', function () {
+      assert(typeof func.noop === 'function');
+    });
+
+    it('prevent() should return false', function () {
+      assert(func.prevent() === false);
+    });
+  });
 
   describe('#func.makeChain', function () {
     it('makeChain should return a function', function () {
