@@ -14,6 +14,7 @@ export default class Tab extends Component {
 
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换
          */
@@ -232,6 +233,7 @@ export default class Tab extends Component {
             className,
             onClose,
             children,
+            rtl,
             ...others
         } = this.props;
         const { activeKey } = this.state;
@@ -282,7 +284,7 @@ export default class Tab extends Component {
             tabChildren.reverse();
         }
 
-        return (<div className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
+        return (<div dir={rtl ? 'rtl' : undefined} className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
             {tabChildren}
         </div>);
     }
