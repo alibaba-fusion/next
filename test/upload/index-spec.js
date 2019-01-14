@@ -217,6 +217,52 @@ describe('Upload', () => {
                 done();
             }
         });
+        it('should throw error when response json invalid', done => {
+
+            const onError = function onError() {
+                done();
+            }
+            const wrapper = mount(<Upload autoUplod={false} onError={onError}/>);
+            if (typeof atob === 'function' && typeof Blob  === 'function' && typeof File === 'function') {
+                // 模拟文件上传
+                let base64 ='iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggkFBTzlUWEwwWTRPSHdBQUFBQkpSVTVFcmtKZ2dnPT0=';
+
+                let binary = fixBinary(atob(base64));
+
+                let blob = new Blob([binary], {type: 'image/png'});
+
+                let file = new File([blob], 'test.png', {type: 'image/png'});
+                wrapper.find('input').simulate('change', { target: { files: [ file ] } });
+                const request = requests[0];
+
+                request.respond(200, {}, '{"succe3}');
+            } else {
+                done();
+            }
+        });
+        it('should throw error when response.success=false', done => {
+
+            const onError = function onError() {
+                done();
+            }
+            const wrapper = mount(<Upload autoUplod={false} onError={onError}/>);
+            if (typeof atob === 'function' && typeof Blob  === 'function' && typeof File === 'function') {
+                // 模拟文件上传
+                let base64 ='iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggkFBTzlUWEwwWTRPSHdBQUFBQkpSVTVFcmtKZ2dnPT0=';
+
+                let binary = fixBinary(atob(base64));
+
+                let blob = new Blob([binary], {type: 'image/png'});
+
+                let file = new File([blob], 'test.png', {type: 'image/png'});
+                wrapper.find('input').simulate('change', { target: { files: [ file ] } });
+                const request = requests[0];
+
+                request.respond(200, {}, '{"success": false}');
+            } else {
+                done();
+            }
+        });
     });
     describe('[behavior] CardUpload Request', () => {
         it('should supprt header', done => {
