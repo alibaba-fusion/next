@@ -83,8 +83,8 @@ export default class Uploader {
                 return;
             }
             this.post(file, obj.isPlainObject(options) ? options : undefined);
-        }, () => {
-            this.options.onError(null, null, file);
+        }, (error) => {
+            this.options.onError(error, null, file);
         });
     }
 
