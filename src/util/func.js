@@ -6,6 +6,11 @@ import {isPromise} from './object';
 export const noop = () => {};
 
 /**
+ * 一个空方法，返回false
+ */
+export const prevent = () => false;
+
+/**
  * 将N个方法合并为一个链式调用的方法
  * @return {Function}     合并后的方法
  * 参考 https://github.com/react-component/util/
