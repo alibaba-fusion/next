@@ -230,6 +230,14 @@
 
     /* Shape: wrapped(top) */
     &-wrapped#{$tab-prefix}-top > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
         #{$tab-prefix}-tab {
             margin-right: $tab-wrapped-tab-margin-right;
             @include tabs-tab-border(
@@ -260,6 +268,14 @@
 
     /* Shape: wrapped(bottom) */
     &-wrapped#{$tab-prefix}-bottom > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
         #{$tab-prefix}-tab {
             margin-right: $tab-wrapped-tab-margin-right;
             @include tabs-tab-border( $tab-wrapped-bar-border, null, $tab-wrapped-tab-bottom-border-radius, $tab-wrapped-border-line-color-hover, $tab-wrapped-bg-color-selected, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color);
@@ -370,3 +386,5 @@
         }
     }
 }
+
+@import "./rtl.scss";
