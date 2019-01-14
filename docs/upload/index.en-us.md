@@ -95,6 +95,44 @@ When user want to upload some file to server side or cloud storage, upload compo
 | onSuccess       | callback when upload success<br><br>signature:<br>Function() => void           | Function        | noop  |
 | onError         | callback when upload failed<br><br>signature:<br>Function() => void | Function        | noop  |
 
+
+
+### Custom Request
+某些场景下需要自定义Request,例如对接AWS S3 jd-sdk or aliyun oss sdk. Upload 支持 传入自定义的 request方法.
+Under some circumstances, a developer may want to overriding default request call method， just like using AWS S3 jd-sdk or aliyun oss sdk. Upload has a prop named request.
+```
+function customRequest(option) {
+    /* coding here */
+    return {abort() {/* coding here */}};
+}
+
+<Upload request={customRequest}/>
+```
+
+a object named 'option' will be pass into customRequest method and it's schema:
+```
+    onProgress: (event: { percent: number }): void
+    onError: (event: Error, body?: Object): void
+    onSuccess: (body: Object): void
+    data: Object // 额外的数据
+    filename: String // 文件名
+    file: File // 原生File对象
+    withCredentials: Boolean // 是否携带cookie
+    action: String // 请求地址
+    method: String // 请求类型 post/put
+    timeout: Number // 超时
+    headers: Object // 请求头
+```
+
+customRequest should return a object with a abort method which can abort a request
+```
+abort(file?: File) => void: abort the uploading file
+```
+customRequest implements reference: https://github.com/alibaba-fusion/next/blob/master/src/upload/runtime/request.jsx
+
+
+
+
 ### onChange Return Data Schema
 
         {
