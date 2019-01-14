@@ -46,6 +46,7 @@ When user want to upload some file to server side or cloud storage, upload compo
 | onRemove        | callback when file removed，See [onRemove](#onRemove)<br><br>signature:<br>Function() => void                                                                                | Function        | func.noop |
 | autoUpload      | auto upload after select file                                                                                                                                                                                                                                          | Boolean         | true      |
 | afterSelect      | callback after select file, afterSelect only works when autoUpload=false; when autoUpload=true, use beforeUpload to replace it<br><br>**signaure**:<br>Function(file: Object) => Boolean<br>**params**:<br>_file_: {Object} null<br>**return**:<br>{Boolean} return false will prevent upload file<br>   return false will prevent upload<br>        | Function        | func.noop |
+| request         | custom reuqest method <br><br>**signaure**:<br>Function(option: Object) => Object<br>**params**:<br>_option_: {Object} null<br>**returns**:<br>{Object} object with abort method<br>                                                                                       | Function        | -         |
 
 ### Upload.Card
 
