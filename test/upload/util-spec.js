@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import {uid, fileToObject, getFileItem, removeFileItem, previewFile} from '../../src/upload/util';
+import {uid, fileToObject, getFileItem, removeFileItem, previewFile, errorCode} from '../../src/upload/util';
 
 describe('util function test', () => {
     it('uid generate', () => {
@@ -53,5 +53,13 @@ describe('util function test', () => {
             done();
         })
     });
+    it('errCode', () => {
+        const code = {
+            EXCEED_LIMIT: 'EXCEED_LIMIT',
+            BEFOREUPLOAD_REJECT: 'BEFOREUPLOAD_REJECT',
+            RESPONSE_FAIL: 'RESPONSE_FAIL',
+        };
+        assert.deepStrictEqual(code, errorCode);
+    })
 
 });
