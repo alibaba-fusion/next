@@ -67,7 +67,6 @@ describe('TextUpload', () => {
         it('should render a wrapper upload', () => {
             const wrapper = mount(<Upload listType="text" defaultValue={defaultValue} />);
             assert(wrapper.find('.next-upload').length === 1);
-            // remove item
             assert(wrapper.find('.next-upload-list-item').length === 1);
         });
         it('should render a error item without text', () => {
@@ -78,7 +77,6 @@ describe('TextUpload', () => {
                 url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             }]} />);
             assert(wrapper.find('.next-upload').length === 1);
-            // remove item
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
             assert(wrapper.find('.next-upload-list-item-error-with-text').length === 0);
         });
@@ -92,8 +90,7 @@ describe('TextUpload', () => {
                 errorText: 'error text',
             }]} />);
             assert(wrapper.find('.next-upload').length === 1);
-            // remove item
-            assert(wrapper.find('.next-upload-list-item-upload').length === 1);
+            assert(wrapper.find('.next-upload-list-item-uploading').length === 1);
         });
         it('should render a error item with text', () => {
             const wrapper = mount(<Upload listType="text" defaultValue={[{
@@ -104,7 +101,6 @@ describe('TextUpload', () => {
                 errorText: 'error text',
             }]} />);
             assert(wrapper.find('.next-upload').length === 1);
-            // remove item
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
             assert(wrapper.find('.next-upload-list-item-error-with-text').length === 1);
         });
