@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Progress from '../progress';
 import Icon from '../icon';
 import Button from '../button';
-import {func, obj, KEYCODE} from '../util';
+import { func, obj, KEYCODE } from '../util';
 import zhCN from '../locale/zh-cn.js';
-import {previewFile} from './util';
+import { previewFile } from './util';
 
 class List extends Component {
 
@@ -64,11 +64,12 @@ class List extends Component {
     };
 
     componentDidUpdate() {
-        if (this.props.listType !== 'image' && this.props.listType !== 'card') {
+        const { listType, useDataURL, value } = this.props;
+        if (listType !== 'image' && listType !== 'card') {
             return;
         }
 
-        this.props.useDataURL && this.props.value.forEach(file => {
+        useDataURL && value.forEach(file => {
             if (typeof document === 'undefined' || typeof window === 'undefined' || !window.FileReader || !window.File || !(file.originFileObj instanceof File) || file.imgURL !== undefined) {
                 return;
             }
@@ -81,7 +82,7 @@ class List extends Component {
     }
 
     handleClose = (file) => {
-        const {onRemove, uploader} = this.props;
+        const { onRemove, uploader } = this.props;
 
         const remove = onRemove(file);
 
@@ -91,7 +92,7 @@ class List extends Component {
     };
 
     handleCancel = (file) => {
-        const {onCancel, uploader} = this.props;
+        const { onCancel, uploader } = this.props;
         const cancel = onCancel(file);
 
         func.promiseCall(cancel, () => {
@@ -115,10 +116,11 @@ class List extends Component {
         const size = this.sizeCaculator(file.size);
         const itemCls = classNames({
             [`${prefixCls}-list-item`]: true,
-            [`${prefixCls}-list-item-${file.state}`]: file.state
+            [`${prefixCls}-list-item-${file.state}`]: file.state,
+            [`${prefixCls}-list-item-error-with-text`]: file.state === 'error' && file.errorText,
         });
         const alt = file.name || file.alt;
-        return {prefixCls, downloadURL, imgURL, size, itemCls, alt};
+        return { prefixCls, downloadURL, imgURL, size, itemCls, alt };
     }
     // transfer size from number to xx K/ XxxM / xxG
     sizeCaculator(size) {
@@ -144,9 +146,9 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const {extraRender} = this.props;
+        const { extraRender } = this.props;
 
-        const {prefixCls, downloadURL, size, itemCls} = this.getInfo(file);
+        const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
         const onClick = () => file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file);
         const onKeyDown = (e) => {
             if (e.keyCode === KEYCODE.ENTER) {
@@ -155,37 +157,38 @@ class List extends Component {
         };
         return (
             <div className={itemCls} key={file.uid || file.name}>
-                <div>
-                    <a href={downloadURL} target="_blank" style={{pointerEvents: downloadURL ? '' : 'none'}}
+                <div className={`${prefixCls}-list-item-name-wrap`}>
+                    <a href={downloadURL} target="_blank" style={{ pointerEvents: downloadURL ? '' : 'none' }}
                         className={`${prefixCls}-list-item-name`}>
                         <span>{file.name}</span>
                         {!!size && <span className={`${prefixCls}-list-item-size`}>({size})</span>}
+                        <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
                     </a>
-                    {file.state === 'uploading' ?
-                        <div className={`${prefixCls}-list-item-progress`}>
-                            <Progress size="medium" percent={file.percent} textRender={func.noop}/>
-                        </div> : null}
-
-                    <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
-
                 </div>
-
+                {file.state === 'uploading' ?
+                    <div className={`${prefixCls}-list-item-progress`}>
+                        <Progress size="medium" percent={file.percent} textRender={func.noop} />
+                    </div> : null}
+                {file.state === 'error' && file.errorText ?
+                    <div className={`${prefixCls}-list-item-error-text`}>
+                        {file.errorText}
+                    </div> : null}
                 {this.props.closable ?
                     <Icon type="close"
                         size="large"
                         role="button"
                         tabIndex="0"
                         onClick={onClick}
-                        onKeyDown={onKeyDown}/> : null
+                        onKeyDown={onKeyDown} /> : null
                 }
             </div>
         );
     }
 
     getImageList(file) {
-        const {extraRender} = this.props;
+        const { extraRender } = this.props;
 
-        const {prefixCls, downloadURL, imgURL, size, itemCls, alt} = this.getInfo(file);
+        const { prefixCls, downloadURL, imgURL, size, itemCls, alt } = this.getInfo(file);
 
         let img = null;
 
@@ -197,11 +200,11 @@ class List extends Component {
         };
 
         if (file.state === 'uploading' || (file.state === 'selected' && !imgURL)) {
-            img = (<Icon type="picture"/>);
+            img = (<Icon type="picture" />);
         } else if (file.state === 'error') {
-            img = (<Icon type="cry"/>);
+            img = (<Icon type="cry" />);
         } else {
-            img = (<img src={imgURL} onError={this.onImageError.bind(this, file)} tabIndex="0" alt={alt} onClick={this.onPreview.bind(this, file)}/>);
+            img = (<img src={imgURL} onError={this.onImageError.bind(this, file)} tabIndex="0" alt={alt} onClick={this.onPreview.bind(this, file)} />);
         }
 
         return (
@@ -209,30 +212,30 @@ class List extends Component {
                 <div className={`${prefixCls}-list-item-thumbnail`}>
                     {img}
                 </div>
-                {file.state !== 'uploading' ? <a href={downloadURL} target="_blank" style={{pointerEvents: downloadURL ? '' : 'none'}} className={`${prefixCls}-list-item-name`}>
+                {file.state !== 'uploading' ? <a href={downloadURL} target="_blank" style={{ pointerEvents: downloadURL ? '' : 'none' }} className={`${prefixCls}-list-item-name`}>
                     <span>{file.name}</span>
                     {!!size && <span className={`${prefixCls}-list-item-size`}>({size})</span>}
                 </a> : null}
                 {file.state === 'uploading' ? <div className={`${prefixCls}-list-item-progress`}>
-                    <Progress size="medium" percent={file.percent} textRender={func.noop}/>
+                    <Progress size="medium" percent={file.percent} textRender={func.noop} />
                 </div> : null}
                 <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
-                {this.props.closable ? <Icon type="close" size="large" tabIndex="0" role="button" onClick={onClick} onKeyDown={onKeyDown}/> : null}
+                {this.props.closable ? <Icon type="close" size="large" tabIndex="0" role="button" onClick={onClick} onKeyDown={onKeyDown} /> : null}
             </div>
         );
     }
 
     getPictureCardList(file) {
-        const {locale} = this.props;
+        const { locale } = this.props;
 
-        const {prefixCls, downloadURL, imgURL, itemCls, alt} = this.getInfo(file);
+        const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
 
         let img = null;
 
         if (file.state === 'uploading' || (file.state === 'selected' && !imgURL)) {
             img = (
                 <div className={`${prefixCls}-list-item-handler`}>
-                    <Icon type="picture"/>
+                    <Icon type="picture" />
                     <Button text onClick={() => this.handleCancel(file)} >
                         {locale.card.cancel}
                     </Button>
@@ -241,11 +244,11 @@ class List extends Component {
         } else if (file.state === 'error') {
             img = (
                 <div className={`${prefixCls}-list-item-handler`}>
-                    <Icon type="cry"/>
+                    <Icon type="cry" />
                 </div>
             );
         } else {
-            img = (<img src={imgURL} tabIndex="0" alt={alt} onError={this.onImageError.bind(this, file)} onClick={this.onPreview.bind(this, file)}/>);
+            img = (<img src={imgURL} tabIndex="0" alt={alt} onError={this.onImageError.bind(this, file)} onClick={this.onPreview.bind(this, file)} />);
         }
 
         const onClose = () => this.handleClose(file);
@@ -262,18 +265,18 @@ class List extends Component {
                     </div>
                     {file.state === 'uploading' ?
                         <div className={`${prefixCls}-list-item-progress`}>
-                            <Progress size="medium" percent={file.percent} textRender={func.noop}/>
+                            <Progress size="medium" percent={file.percent} textRender={func.noop} />
                         </div> : null
                     }
                     {file.state !== 'uploading' ? (
                         <span className={`${prefixCls}-tool ${!this.props.closable ? '`${prefixCls}-noclose' : ''}`}>
-                            <a href={downloadURL} target="_blank" tabIndex={downloadURL ? '0' : '-1'} style={{pointerEvents: downloadURL ? '' : 'none'}}>
-                                <Icon type={downloadURL ? 'download' : ''} className={`${prefixCls}-tool-download-icon`}/>
+                            <a href={downloadURL} target="_blank" tabIndex={downloadURL ? '0' : '-1'} style={{ pointerEvents: downloadURL ? '' : 'none' }}>
+                                <Icon type={downloadURL ? 'download' : ''} className={`${prefixCls}-tool-download-icon`} />
                             </a>
 
                             {this.props.closable ?
                                 <span className={`${prefixCls}-tool-close`}>
-                                    <Icon type="ashbin" tabIndex="0" role="button" onClick={onClose} onKeyDown={onKeyDownClose}/>
+                                    <Icon type="ashbin" tabIndex="0" role="button" onClick={onClose} onKeyDown={onKeyDownClose} />
                                 </span> : null
                             }
                         </span>
@@ -286,7 +289,7 @@ class List extends Component {
     }
 
     render() {
-        const {listType, children, prefix} = this.props;
+        const { listType, children, prefix } = this.props;
         const prefixCls = `${prefix}upload`;
 
         const list = this.props.value.map((file) => {

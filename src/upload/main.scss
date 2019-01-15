@@ -48,13 +48,13 @@
 #{$upload-prefix}-list-text {
     #{$upload-prefix}-list-item {
         height: $upload-text-list-height;
-        line-height: $upload-text-list-height;
+        line-height: $upload-text-list-height - $s-2;
         background-color: $upload-text-list-bg-color;
-        padding: 0 $upload-text-list-padding-left-right;
+        padding: $s-1 $upload-text-list-padding-left-right $upload-text-list-padding-left-right - $s-1;
         font-size: $upload-text-list-font-size;
         overflow: hidden;
         transition: all .2s ease-out;
-        padding-right: $upload-text-list-close-icon-right + $upload-text-list-close-icon-size;
+        padding-right: $upload-text-list-close-icon-right * 2 + $upload-text-list-close-icon-size;
 
         &:not(:last-child) {
             margin-bottom: 4px;
@@ -68,7 +68,7 @@
             cursor: pointer;
             text-align: center;
             transition: all .2s ease-out;
-
+            line-height: $upload-text-list-height;
             @include icon-size($upload-text-list-close-icon-size);
         }
 
@@ -78,26 +78,30 @@
                 color: $upload-text-list-close-icon-color-hover;
             }
         }
-
-        &-name {
-            color: $upload-text-list-name-font-color;
+        &-name-wrap {
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-            float: left;
             margin-right: 4px;
+        }
+        &-name {
+            color: $upload-text-list-name-font-color;
             transition: all .2s ease-out;
         }
+
         &-size {
             color: $upload-text-list-size-font-color;
             margin-left: 8px;
         }
-        &-uploading #{$upload-prefix}-list-item-name {
-            max-width: 30%;
+        &-uploading {
+            line-height: $upload-text-list-height / 2 - $s-1;
         }
-        &-progress {
-            float: left;
-            width: 60%;
+        // &-uploading #{$upload-prefix}-list-item-name {
+        // }
+        // &-progress {
+        // }
+        &-done {
+            line-height: $upload-text-list-height - $s-2;
         }
         &-done:hover .#{$css-prefix}upload-list-item-name {
             color: $upload-text-list-name-font-color-hover;
@@ -108,7 +112,13 @@
         &-error {
             /* stylelint-disable declaration-no-important */
             background-color: $upload-text-list-bg-color-error !important;
-            .#{$css-prefix}upload-list-item-name {
+            &#{$upload-prefix}-list-item-error-with-text {
+                line-height: $upload-text-list-height / 2 - $s-1;
+            }
+            &-text {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
                 color: $upload-text-list-error-text-color;
             }
         }
