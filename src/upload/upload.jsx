@@ -7,7 +7,7 @@ import Base from './base';
 import Uploader from './runtime/index';
 import html5Uploader from './runtime/html5-uploader';
 import List from './list';
-import {fileToObject, getFileItem} from './util';
+import {fileToObject, getFileItem, errorCode} from './util';
 
 const noop = func.noop;
 
@@ -191,6 +191,14 @@ class Upload extends Base {
 
     onSelect = (files) => {
         const {autoUpload, afterSelect, onSelect, limit} = this.props;
+        // 总数
+        const total = this.state.value.length + files.length;
+        // 差额
+        const less = limit - this.state.value.length;
+        if (less <= 0) {
+            // 差额不足 则不上传
+            return;
+        }
 
         const fileList = files.map(file => {
             const objFile = fileToObject(file);
@@ -198,11 +206,13 @@ class Upload extends Base {
             return objFile;
         });
 
-        const total = this.state.value.length + fileList.length;
-
+        // 默认全量上传
+        let uploadFiles = fileList;
+        let discardFiles = [];
         if (total > limit) {
-            const more = total - limit;
-            fileList.splice(fileList.length - more, more);
+            // 全量上传总数会超过limit 但是 还有差额
+            uploadFiles = fileList.slice(0, less);
+            discardFiles = fileList.slice(less);
         }
 
         const value = this.state.value.concat(fileList);
@@ -212,19 +222,25 @@ class Upload extends Base {
 
 
         if (autoUpload) {
-            this.uploadFiles(fileList);
+            this.uploadFiles(uploadFiles);
         }
 
-        onSelect(fileList, value);
+        onSelect(uploadFiles, value);
+        discardFiles.forEach(file => {
+            // 丢弃的文件
+            const err = new Error(errorCode.EXCEED_LIMIT);
+            err.code = errorCode.EXCEED_LIMIT;
+            this.onError(err, null, file);
+        });
 
         if (!autoUpload) {
-            fileList.forEach(file => {
+            uploadFiles.forEach(file => {
                 const isPassed = afterSelect(file);
                 func.promiseCall(isPassed, func.noop, error => {
                     this.onError(error, null, file); // TODO: handle error message
                 });
             });
-            this.onChange(value, fileList);
+            this.onChange(value, uploadFiles);
         }
     };
 
@@ -313,12 +329,14 @@ class Upload extends Base {
                 response = JSON.parse(response);
             }
         } catch (e) {
-            this.onError(e, response, file);
-            return;
+            e.code = errorCode.RESPONSE_FAIL;
+            return this.onError(e, response, file);
         }
 
         if (response.success === false) {
-            return this.onError(response.message, response, file);
+            const err = new Error(response.message || errorCode.RESPONSE_FAIL);
+            err.code = errorCode.RESPONSE_FAIL;
+            return this.onError(err, response, file);
         }
 
         const value = this.state.value;
@@ -399,12 +417,6 @@ class Upload extends Base {
     };
 
     onChange = (value, file) => {
-        // not controlled
-        // if (!('value' in this.props)) {
-        //     this.setState({
-        //         value
-        //     });
-        // }
         this.setState({
             value
         });
@@ -439,10 +451,10 @@ class Upload extends Base {
             [className]: className
         });
 
-        const hidden = this.state.value.length >= limit;
+        const isExceedLimit = this.state.value.length >= limit;
         const innerCls = classNames({
             [`${prefix}upload-inner`]: true,
-            [`${prefix}hidden`]: hidden,
+            [`${prefix}hidden`]: isExceedLimit,
         });
 
         let children = this.props.children;
@@ -468,7 +480,7 @@ class Upload extends Base {
                     {...others}
                     beforeUpload={beforeUpload}
                     dragable={dragable}
-                    disabled={disabled}
+                    disabled={disabled || isExceedLimit}
                     className={innerCls}
                     onSelect={this.onSelect}
                     onDrop={this.onDrop}
