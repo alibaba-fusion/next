@@ -222,6 +222,30 @@ describe('Upload', () => {
                 requests[0].respond(200, {}, '{"success": false}');
             });
         });
+        it('should throw error when return false in BeforeUpload', done => {
+            const beforeUpload = () => false;
+            const onError = function onError() {
+                done();
+            }
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} beforeUpload={beforeUpload}/>);
+            triggerUploadEvent(wrapper, done);
+        });
+        it('should throw error when return Promise.resolve(false) in BeforeUpload', done => {
+            const beforeUpload = () => Promise.resolve(false);
+            const onError = function onError() {
+                done();
+            }
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} beforeUpload={beforeUpload}/>);
+            triggerUploadEvent(wrapper, done);
+        });
+        it('should throw error when return Promise.reject() in BeforeUpload', done => {
+            const beforeUpload = () => Promise.reject({});
+            const onError = function onError() {
+                done();
+            }
+            const wrapper = mount(<Upload autoUplod={false} onError={onError} beforeUpload={beforeUpload}/>);
+            triggerUploadEvent(wrapper, done);
+        });
     });
     describe('[behavior] CardUpload Request', () => {
         it('should support header', done => {
