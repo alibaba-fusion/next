@@ -102,20 +102,19 @@ class Upload extends Base {
         /**
          * 移除文件回调函数
          * @param {Object} file 文件
-         * @returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件上传, 并触发onError
+         * @returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除
          */
         onRemove: PropTypes.func,
         /**
          * 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件
-         * @param {Object} error 错误信息
-         * @param {Object} xhr 请求对象
-         * @param {Object} file 文件
+         * @param {Object} file 出错的文件
+         * @param {Array} value 当前值
          */
         onError: PropTypes.func,
         /**
          * 可选参数, 详见 [beforeUpload](#beforeUpload)
-         * @param {Object} files
-         * @param {Object} options
+         * @param {Object} file 所有文件
+         * @param {Object} options 参数
          * @returns {Boolean|Object|Promise} 返回值作用见demo
          */
         beforeUpload: PropTypes.func,

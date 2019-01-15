@@ -26,10 +26,10 @@ When user want to upload some file to server side or cloud storage, upload compo
 | data            | extra upload data                                                                                                                                                | Object/Function | -         |
 | headers         | upload request headers                                                                                                                                              | Object          | -         |
 | withCredentials | Allow request with cookie or not                                                                                                                                       | Boolean         | true     |
-| beforeUpload    | callback before upload start. returning null/undefined means do nothing, returning object will modify upload options,returning false will stop upload, null/undefined/object/false can be returned directly or wrapped by Promise <br><br>**signature**:<br>Function(files: Object, options: Object) => Bool/Object/Promise<br>**params**:<br>_files_: {Object} null<br>_options_: {Object} null<br>**returns**:<br>{Bool/Object/Promise} null<br> | Function        | func.noop |
+| beforeUpload    | callback before upload start. returning null/undefined means do nothing, returning object will modify upload options,returning false will stop upload, null/undefined/object/false can be returned directly or wrapped by Promise <br><br>**signature**:<br>Function(file: Object, options: Object) => Bool/Object/Promise<br>**params**:<br>_file_: {Object} <br>_options_: {Object} <br>**returns**:<br>{Bool/Object/Promise} <br> | Function        | func.noop |
 | onProgress      | callback when upload progress change <br><br>signaure:<br>Function() => void                                                                                                              | Function        | func.noop |
 | onSuccess       | callback when upload success<br><br>**signaure**:<br>Function(file: Object, value: Array) => void<br>**params**:<br>_file_: {Object} file<br>_value_: {Array} value  | Function        | func.noop |
-| onError         | callback when upload failed<br><br>**signaure**:<br>Function(error: Object, xhr: Object, file: Object) => void<br>**params**:<br>_error_: {Object} error <br>_xhr_: {Object} request object<br>_file_: {Object} file | Function        | func.noop |
+| onError         | callback when upload failed <br><br>**signaure**:<br>Function(file: Object, value: Array) => void<br>**params**:<br>_file_: {Object} file<br>_value_: {Array} fileList   | func.noop |
 | children        | children element                                                                                                                                                   | ReactNode       | -         |
 | timeout         | limit request time, unit: ms                                                                                                                                            | Number          | -         |
 | method          | upload method<br><br>option:<br>'post', 'put'                                                                                                                 | Enum            | 'post'    |
@@ -132,6 +132,14 @@ customRequest implements reference: https://github.com/alibaba-fusion/next/blob/
 
 
 
+### ErrorCode
+
+|  ErrorCode |  description |
+|---|---|
+|  EXCEED_LIMIT |  when limit is set , selected files number + uploaded files number > limit  |
+|  BEFOREUPLOAD_REJECT |  BeforeUpload method returns false/Promise.resolve(false)/Promise.reject() |
+|  RESPONSE_FAIL |  Response Error |
+All the ErrorCode in `Upload.ErrorCode`.
 
 ### onChange Return Data Schema
 
