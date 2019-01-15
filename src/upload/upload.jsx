@@ -100,7 +100,9 @@ class Upload extends Base {
          */
         afterSelect: PropTypes.func,
         /**
-         * 移除文件回调函数，详见 [onRemove](#onRemove)
+         * 移除文件回调函数
+         * @param {Object} file 文件
+         * @returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件上传, 并触发onError
          */
         onRemove: PropTypes.func,
         /**
@@ -114,7 +116,7 @@ class Upload extends Base {
          * 可选参数, 详见 [beforeUpload](#beforeUpload)
          * @param {Object} files
          * @param {Object} options
-         * @returns {Boolean|Object|Promise}
+         * @returns {Boolean|Object|Promise} 返回值作用见demo
          */
         beforeUpload: PropTypes.func,
         /**
@@ -219,7 +221,7 @@ class Upload extends Base {
             fileList.forEach(file => {
                 const isPassed = afterSelect(file);
                 func.promiseCall(isPassed, func.noop, error => {
-                    this.onError(error, null, file); //TODO: handle error message
+                    this.onError(error, null, file); // TODO: handle error message
                 });
             });
             this.onChange(value, fileList);
@@ -457,6 +459,8 @@ class Upload extends Base {
             </div>);
         }
 
+        // disabled 状态下把 remove函数替换成禁止 remove的函数
+        const onRemoveFunc = disabled ? func.prevent : onRemove;
         const otherAttributes = obj.pickAttrsWith(this.props, 'data-');
         return (
             <div className={cls} style={style} {...otherAttributes}>
@@ -477,7 +481,7 @@ class Upload extends Base {
                 </Uploader>
                 {listType || list ?
                     <List useDataURL={useDataURL} uploader={this} listType={listType} value={this.state.value}
-                        closable={closable} onRemove={onRemove}
+                        closable={closable} onRemove={onRemoveFunc}
                         onCancel={onCancel} onPreview={onPreview} extraRender={extraRender}/> :
                     null}
             </div>
