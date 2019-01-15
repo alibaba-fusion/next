@@ -1,6 +1,6 @@
 import React from 'react';
 import ConfigProvider from '../config-provider';
-import { log } from '../util';
+import { log, errorCode } from '../util';
 import Upload from './upload';
 import List from './list';
 import Card from './card';
@@ -12,7 +12,7 @@ Upload.Card = ConfigProvider.config(Card, { componentName: 'Upload' });
 Upload.Dragger = ConfigProvider.config(Dragger, { componentName: 'Upload' });
 Upload.Selecter = Selecter;
 Upload.Uploader = Uploader;
-
+Upload.ErrorCode = errorCode;
 // compatible with 0.x version
 function transform(props, deprecated) {
     const { listType, defaultFileList, fileList, ...others } = props;
