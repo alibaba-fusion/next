@@ -98,7 +98,7 @@ describe('TextUpload', () => {
                 state: 'error',
                 size: 1024,
                 url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                errorText: 'error text',
+                errorMsg: 'error text',
             }]} />);
             assert(wrapper.find('.next-upload').length === 1);
             assert(wrapper.find('.next-upload-list-item-error').length === 1);

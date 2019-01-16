@@ -49,7 +49,14 @@ const defaultValue = [{
     url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
     downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
     imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    errorText: 'fail to upload something',
+    errorMsg: 'fail to upload something',
+}, {
+    uid: '3',
+    name: 'IMG.png',
+    state: 'error',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
 }];
 
 ReactDOM.render((
@@ -59,7 +66,7 @@ ReactDOM.render((
         onChange={onChange}
         onSuccess={onSuccess}
         listType="text"
-        extraRender={() => <span>11224</span>}
+        extraRender={(file) => <span>11224</span>}
         defaultValue={defaultValue}>
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
     </Upload>

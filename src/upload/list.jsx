@@ -117,7 +117,7 @@ class List extends Component {
         const itemCls = classNames({
             [`${prefixCls}-list-item`]: true,
             [`${prefixCls}-list-item-${file.state}`]: file.state,
-            [`${prefixCls}-list-item-error-with-text`]: file.state === 'error' && file.errorText,
+            [`${prefixCls}-list-item-error-with-text`]: file.state === 'error' && file.errorMsg,
         });
         const alt = file.name || file.alt;
         return { prefixCls, downloadURL, imgURL, size, itemCls, alt };
@@ -169,9 +169,9 @@ class List extends Component {
                     <div className={`${prefixCls}-list-item-progress`}>
                         <Progress size="medium" percent={file.percent} textRender={func.noop} />
                     </div> : null}
-                {file.state === 'error' && file.errorText ?
+                {file.state === 'error' && file.errorMsg ?
                     <div className={`${prefixCls}-list-item-error-text`}>
-                        {file.errorText}
+                        {file.errorMsg}
                     </div> : null}
                 {this.props.closable ?
                     <Icon type="close"
