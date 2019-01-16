@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="//unpkg.com/github-markdown-css@2.9.0/github-markdown.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 50px;
+      background: #EEE;
+    }
+
+    .next-demo-links {
+      margin: 0;
+      padding: 0;
+      width: 300px;
+      list-style: none;
+      position: fixed;
+      top: 50px;
+      right: 50px;
+      background: #FFF;
+      border: 1px solid #C4C6Cf;
+      border-radius: 3px;
+      overflow-y: auto;
+      max-height: 500px;
+    }
+
+    .next-demo-links li {
+      line-height: 30px;
+      padding: 0 10px;
+    }
+
+    .next-demo-links li.title {
+      background: #5584ff;
+      color: #fff;
+    }
+
+    .next-demo-links li.title + li {
+      border-top: none;
+    }
+
+    .next-demo-links li + li {
+      border-top: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-links a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .next-demo-links a.current {
+      color: #5584ff;
+    }
+
+    .next-demo-section {
+      position: relative;
+      padding: 20px;
+      margin-right: 350px;
+      margin-bottom: 30px;
+      border-radius: 3px;
+      background: #FFF;
+    }
+
+    #next-demo-reloading {
+      display: none;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 120px;
+      height: 30px;
+      line-height: 30px;
+      text-align:center;
+      font-size: 14px;
+      color: #fff;
+      background: #5584FF;
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.32);
+      border-radius: 3px;
+    }
+
+    .markdown-body .highlight pre, .markdown-body pre {
+      background: #fff;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #fff;
+    }
+
+    .hljs-comment,
+    .hljs-quote {
+      color: #998;
+      font-style: italic;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-subst {
+      color: #333;
+      font-weight: bold;
+    }
+
+    .hljs-number,
+    .hljs-literal,
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-tag .hljs-attr {
+      color: #008080;
+    }
+
+    .hljs-string,
+    .hljs-doctag {
+      color: #d14;
+    }
+
+    .hljs-title,
+    .hljs-section,
+    .hljs-selector-id {
+      color: #900;
+      font-weight: bold;
+    }
+
+    .hljs-subst {
+      font-weight: normal;
+    }
+
+    .hljs-type,
+    .hljs-class .hljs-title {
+      color: #458;
+      font-weight: bold;
+    }
+
+    .hljs-tag,
+    .hljs-name,
+    .hljs-attribute {
+      color: #000080;
+      font-weight: normal;
+    }
+
+    .hljs-regexp,
+    .hljs-link {
+      color: #009926;
+    }
+
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #990073;
+    }
+
+    .hljs-built_in,
+    .hljs-builtin-name {
+      color: #0086b3;
+    }
+
+    .hljs-meta {
+      color: #999;
+      font-weight: bold;
+    }
+
+    .hljs-deletion {
+      background: #fdd;
+    }
+
+    .hljs-addition {
+      background: #dfd;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+
+    #toggle-rtl {
+        position: absolute;
+        top: 20px;
+        right: 280px;
+        height: 20px;
+        background: #fff;
+    }
+
+    .next-demo-dir {
+        position: absolute;
+        top: 20px;
+        right: 160px;
+        width: 100px;
+        height: 20px;
+        line-height: 20px;
+        background: #fff;
+        border: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-lang {
+      position: absolute;
+      top: 20px;
+      right: 50px;
+      width: 100px;
+      height: 20px;
+      line-height: 20px;
+      background: #fff;
+      border: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-change-lang-loading {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: 999;
+      width: 200px;
+      height: 60px;
+      margin-top: -100px;
+      margin-left: -30px;
+      line-height: 60px;
+      text-align:center;
+      font-size: 14px;
+      color: #fff;
+      background: #5584FF;
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.32);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <ul class="next-demo-links">
+  
+    <li class="">
+      
+        <a class="current" href="/table">
+      
+
+        
+          首页
+          <em>index</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="title">
+      
+        <span>
+      
+
+        
+          使用示例
+          <em>Usage</em>
+        
+
+      
+        </span>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/basic.html">
+      
+
+        
+          简单
+          <em>basic</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/selection.html">
+      
+
+        
+          可选择
+          <em>selection</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/clear-selection.html">
+      
+
+        
+          选择可控
+          <em>clear-selection</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/filter&amp;sort.html">
+      
+
+        
+          排序与过滤
+          <em>filter&amp;sort</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/row-selection-config.html">
+      
+
+        
+          选择框属性
+          <em>row-selection-config</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/expanded.html">
+      
+
+        
+          可展开
+          <em>expanded</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/expanded-complex.html">
+      
+
+        
+          可展开-复杂
+          <em>expanded-complex</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/colspan.html">
+      
+
+        
+          行列合并
+          <em>colspan</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/crud.html">
+      
+
+        
+          增删改查
+          <em>crud</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/fixed-header.html">
+      
+
+        
+          固定表头
+          <em>fixed-header</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/list.html">
+      
+
+        
+          分组列表
+          <em>list</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/pagination.html">
+      
+
+        
+          分页
+          <em>pagination</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/multiple-header.html">
+      
+
+        
+          多表头
+          <em>multiple-header</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/virtual.html">
+      
+
+        
+          虚拟滚动
+          <em>virtual</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/lock-column.html">
+      
+
+        
+          锁列
+          <em>lock-column</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/column.html">
+      
+
+        
+          定制列
+          <em>column</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/style.html">
+      
+
+        
+          样式
+          <em>style</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/advanced.html">
+      
+
+        
+          扩展
+          <em>advanced</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/resize.html">
+      
+
+        
+          重设列的尺寸
+          <em>resize</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/mix.html">
+      
+
+        
+          混合模式
+          <em>mix</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/custom-loading.html">
+      
+
+        
+          自定义 Loading 组件
+          <em>custom-loading</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/get-row-props.html">
+      
+
+        
+          自定义Row/Cell
+          <em>get-row-props</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="title">
+      
+        <span>
+      
+
+        
+          主题配置
+          <em>Usage of theme</em>
+        
+
+      
+        </span>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/theme/index.html">
+      
+
+        
+          Theme Demo
+          <em></em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/theme/config.html">
+      
+
+        
+          Config Theme Demo
+          <em></em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+  </ul>
+  <button id="toggle-rtl">toggle mount-node</button>
+  
+  <select class="next-demo-dir" aria-label="Please select a direction">
+      <option value="rtl">rtl</option>
+      <option value="ltr" selected>ltr</option>
+  </select>
+  
+
+  
+  <select class="next-demo-lang" aria-label="请选择语言">
+      <option value="zh" selected>中文</option>
+      <option value="en">English</option>
+  </select>
+  
+  <div class="next-demo-change-lang-loading">
+    Changing ...
+  </div>
+  <script>
+    (function() {
+        var toggleRtlBtn = document.querySelector('#toggle-rtl');
+
+        toggleRtlBtn.addEventListener('click', function (){
+            var mountNode = document.querySelector('#mount-node');
+            if (mountNode.dir === 'rtl') {
+                mountNode.dir = 'ltr';
+            } else {
+                mountNode.dir = 'rtl';
+            }
+        });
+
+        var langSelect = document.querySelector('.next-demo-lang');
+        langSelect.addEventListener('change', function(e) {
+          var newLang = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeLang.json',
+            data: { lang: newLang },
+            error: function(error) {
+              console.log('change language failed: ' + error);
+            }
+          });
+        });
+
+        var dirSelect = document.querySelector('.next-demo-dir');
+        dirSelect.addEventListener('change', function(e) {
+          var newDir = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeDir.json',
+            data: { dir: newDir },
+            error: function(error) {
+              console.log('change dir failed: ' + error);
+            }
+          });
+        });
+
+        function getJson(options) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status >= 200 && xhr.status < 400) {
+                if (options.success) {
+                  options.success(JSON.parse(xhr.responseText));
+                }
+              } else {
+                if (options.error) {
+                  var html = xhr.responseText;
+                  var div = document.createElement('div');
+                  div.innerHTML = html;
+                  var text = div.textContent.trim();
+                  options.error(text);
+                }
+              }
+            }
+          }
+          if (options.data) {
+            options.url += '?' + Object.keys(options.data).map(function(key) {
+             return key + '=' + options.data[key]
+            }).join('&');
+          }
+          xhr.open('GET', options.url, true);
+          xhr.send();
+        }
+      })();
+  </script>
+
+
+  <style>
+    .markdown-body {
+      font-size: 14px;
+    }
+    .markdown-body .hljs {
+      font-size: 14px;
+      padding: 0;
+    }
+  </style>
+  <div class="next-demo-section">
+    <div class="markdown-body">
+      <h2>开发指南</h2>
+<p>Table 负责将数据呈现为高度可定制和具备可访问性的 HTML 表格，其核心功能为将结构化的数据使用表格的方式展现，然后可以使用各种参数来向表格中加入一些特性，比如排序，过滤，滚动，锁列等。</p>
+<h3>基本使用</h3>
+<p>基本的 Table 包含行和列，使用 Table.Column 来定义列的信息，使用传入的 dataSource 属性数据来创建行。</p>
+<p>下面的代码将会创建一行两列的数据表：</p>
+<pre><code class="language-js"><div class="hljs"><span class="hljs-keyword">import</span> { Table } <span class="hljs-keyword">from</span> <span class="hljs-string">'@alifd/next'</span>;
+
+<span class="hljs-keyword">const</span> dataSource = [{<span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">time</span>: <span class="hljs-string">'2016'</span>}];
+ReactDOM.render(
+    &lt;Table dataSource={dataSource}&gt;
+        &lt;Table.Column title="Id" dataIndex="id"/&gt;
+        &lt;Table.Column title="Time" dataIndex="time"/&gt;
+    &lt;/Table&gt;, mountNode);
+</div></code></pre>
+<h3>常见问题</h3>
+<ul>
+<li>Q: 通过 <code>rowSelection</code> 开启了选择模式，为什么选择任意一个都是全选？<br/>
+A: 给定的数据源中的属性需要有一个唯一标示该条数据的主键，默认值为id，可通过 <code>primaryKey</code> 更改 e.g.<code>&lt;Table primaryKey='myId'&gt;&lt;/Table&gt;</code></li>
+<li>Q: 还是 <code>rowSelection</code> 选择模式，如何设置默认选中/禁用呢？<br/>
+A: 通过受控模式，设置 <code>rowSelection</code> 属性的 <code>selectedRowKeys</code> 具体可搜索demo<code>选择可控</code></li>
+<li>Q: 能用什么样的方式支持行的双击事件/设置每一行的样式？处理整行点击呢？<br/>
+A: 通过 <code>getRowProps</code> 属性，重写行支持的原生属性，比如<code>className style onDoubleClick</code>等；通过 <code>onRowClick</code> 处理整行点击</li>
+</ul>
+<h4>列配置</h4>
+<p>Table.Column 提供了非常多的配置属性用于自定义列，最常见的就是使用<code>cell</code>自定义单元格的渲染逻辑. 其他的配置选项可以参考下面的 Table.Column 的 API。</p>
+<p>下面的代码会让<code>cell</code>根据值渲染不同的视图：</p>
+<pre><code class="language-js"><div class="hljs"><span class="hljs-keyword">import</span> { Table } <span class="hljs-keyword">from</span> <span class="hljs-string">'@alifd/next'</span>;
+
+<span class="hljs-keyword">const</span> dataSource = [{<span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">time</span>: <span class="hljs-string">'2016'</span>}];
+<span class="hljs-keyword">const</span> renderTime = <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> {
+    <span class="hljs-keyword">if</span> (value === <span class="hljs-string">'2016'</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'今年'</span>;
+    }
+    <span class="hljs-keyword">return</span> value;
+};
+ReactDOM.render(
+    &lt;Table dataSource={dataSource}&gt;
+        &lt;Table.Column title="Id" dataIndex="id"/&gt;
+        &lt;Table.Column title="Time" dataIndex="time" cell={renderTime}/&gt;
+    &lt;/Table&gt;, mountNode);
+</div></code></pre>
+<h4>多表头</h4>
+<p>使用 Table.ColumnGroup 包裹 Table.Column 来创建有多个表头的表格。</p>
+<pre><code class="language-js"><div class="hljs"><span class="hljs-keyword">import</span> { Table } <span class="hljs-keyword">from</span> <span class="hljs-string">'@alifd/next'</span>;
+
+<span class="hljs-keyword">const</span> dataSource = [{<span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">time</span>: <span class="hljs-string">'2016'</span>}];
+ReactDOM.render(
+    &lt;Table dataSource={dataSource}&gt;
+        &lt;Table.ColumnGroup&gt;
+            &lt;Table.Column title="Id" dataIndex="id"/&gt;
+            &lt;Table.Column title="Time" dataIndex="time"/&gt;
+        &lt;/Table.ColumnGroup&gt;
+        &lt;Table.ColumnGroup&gt;
+            &lt;Table.Column title="Id" dataIndex="id"/&gt;
+        &lt;/Table.ColumnGroup&gt;
+    &lt;/Table&gt;, mountNode);
+</div></code></pre>
+<h3>已知问题</h3>
+<h4>分组 Table 不支持在 Hover 状态和选中状态下显示背景色，无法合并单元格</h4>
+<h4>Table 锁列特性下面无法使用合并单元格功能</h4>
+<h2>API</h2>
+<h3>Table</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dataSource</td>
+<td>表格展示的数据源</td>
+<td>Array</td>
+<td>[]</td>
+</tr>
+<tr>
+<td>onRowClick</td>
+<td>点击表格每一行触发的事件<br><br><strong>签名</strong>:<br>Function(record: Object, index: Number, e: Event) =&gt; void<br><strong>参数</strong>:<br><em>record</em>: {Object} 该行所对应的数据<br><em>index</em>: {Number} 该行所对应的序列<br><em>e</em>: {Event} DOM事件对象</td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>onRowMouseEnter</td>
+<td>悬浮在表格每一行的时候触发的事件<br><br><strong>签名</strong>:<br>Function(record: Object, index: Number, e: Event) =&gt; void<br><strong>参数</strong>:<br><em>record</em>: {Object} 该行所对应的数据<br><em>index</em>: {Number} 该行所对应的序列<br><em>e</em>: {Event} DOM事件对象</td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>onRowMouseLeave</td>
+<td>离开表格每一行的时候触发的事件<br><br><strong>签名</strong>:<br>Function(record: Object, index: Number, e: Event) =&gt; void<br><strong>参数</strong>:<br><em>record</em>: {Object} 该行所对应的数据<br><em>index</em>: {Number} 该行所对应的序列<br><em>e</em>: {Event} DOM事件对象</td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>onSort</td>
+<td>点击列排序触发的事件<br><br><strong>签名</strong>:<br>Function(dataIndex: String, order: String) =&gt; void<br><strong>参数</strong>:<br><em>dataIndex</em>: {String} 指定的排序的字段<br><em>order</em>: {String} 排序对应的顺序, 有<code>desc</code>和<code>asc</code>两种</td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>onFilter</td>
+<td>点击过滤确认按钮触发的事件<br><br><strong>签名</strong>:<br>Function(filterParams: Object) =&gt; void<br><strong>参数</strong>:<br><em>filterParams</em>: {Object} 过滤的字段信息</td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>onResizeChange</td>
+<td>重设列尺寸的时候触发的事件<br><br><strong>签名</strong>:<br>Function(dataIndex: String, value: Number) =&gt; void<br><strong>参数</strong>:<br><em>dataIndex</em>: {String} 指定重设的字段<br><em>value</em>: {Number} 列宽变动的数值</td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>getRowProps</td>
+<td>设置每一行的属性，如果返回值和其他针对行操作的属性冲突则无效。<br><br><strong>签名</strong>:<br>Function(record: Object, index: Number) =&gt; Object<br><strong>参数</strong>:<br><em>record</em>: {Object} 该行所对应的数据<br><em>index</em>: {Number} 该行所对应的序列<br><strong>返回值</strong>:<br>{Object} 需要设置的行属性<br></td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>getCellProps</td>
+<td>设置单元格的属性，通过该属性可以进行合并单元格<br><br><strong>签名</strong>:<br>Function(rowIndex: Number, colIndex: Number, dataIndex: String, record: Object) =&gt; Object<br><strong>参数</strong>:<br><em>rowIndex</em>: {Number} 该行所对应的序列<br><em>colIndex</em>: {Number} 该列所对应的序列<br><em>dataIndex</em>: {String} 该列所对应的字段名称<br><em>record</em>: {Object} 该行对应的记录<br><strong>返回值</strong>:<br>{Object} 返回td元素的所支持的属性对象<br></td>
+<td>Function</td>
+<td>() =&gt; {}</td>
+</tr>
+<tr>
+<td>hasBorder</td>
+<td>表格是否具有边框</td>
+<td>Boolean</td>
+<td>true</td>
+</tr>
+<tr>
+<td>hasHeader</td>
+<td>表格是否具有头部</td>
+<td>Boolean</td>
+<td>true</td>
+</tr>
+<tr>
+<td>isZebra</td>
+<td>表格是否是斑马线</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>loading</td>
+<td>表格是否在加载中</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>loadingComponent</td>
+<td>自定义 Loading 组件<br><br><strong>签名</strong>:<br>Function() =&gt; void</td>
+<td>Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>filterParams</td>
+<td>当前过滤的的keys,使用此属性可以控制表格的头部的过滤选项中哪个菜单被选中,格式为 {dataIndex: {selectedKeys:[]}}<br>示例:<br>假设要控制dataIndex为id的列的过滤菜单中key为one的菜单项选中<br><code>&lt;Table filterParams={{id: {selectedKeys: ['one']}}}/&gt;</code></td>
+<td>Object</td>
+<td>-</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{dataIndex: 'asc'}</td>
+<td>Object</td>
+<td>-</td>
+</tr>
+<tr>
+<td>emptyContent</td>
+<td>设置数据为空的时候的表格内容展现</td>
+<td>ReactNode</td>
+<td>-</td>
+</tr>
+<tr>
+<td>primaryKey</td>
+<td>dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中</td>
+<td>String</td>
+<td>'id'</td>
+</tr>
+<tr>
+<td>expandedRowRender</td>
+<td>额外渲染行的渲染函数<br><br><strong>签名</strong>:<br>Function(record: Object, index: Number) =&gt; Element<br><strong>参数</strong>:<br><em>record</em>: {Object} 该行所对应的数据<br><em>index</em>: {Number} 该行所对应的序列<br><strong>返回值</strong>:<br>{Element} 渲染内容<br></td>
+<td>Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>expandedRowIndent</td>
+<td>额外渲染行的缩进</td>
+<td>Array</td>
+<td>-</td>
+</tr>
+<tr>
+<td>openRowKeys</td>
+<td>默认情况下展开的渲染行或者Tree, 传入此属性为受控状态</td>
+<td>Array</td>
+<td>-</td>
+</tr>
+<tr>
+<td>hasExpandedRowCtrl</td>
+<td>是否显示点击展开额外渲染行的+号按钮</td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr>
+<td>getExpandedColProps</td>
+<td>设置额外渲染行的属性<br><br><strong>签名</strong>:<br>Function() =&gt; void</td>
+<td>Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>onRowOpen</td>
+<td>在额外渲染行或者Tree展开或者收起的时候触发的事件<br><br><strong>签名</strong>:<br>Function(openRowKeys: Array, currentRowKey: String, expanded: Boolean, currentRecord: Object) =&gt; void<br><strong>参数</strong>:<br><em>openRowKeys</em>: {Array} 展开的渲染行的key<br><em>currentRowKey</em>: {String} 当前点击的渲染行的key<br><em>expanded</em>: {Boolean} 当前点击是展开还是收起<br><em>currentRecord</em>: {Object} 当前点击额外渲染行的记录</td>
+<td>Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>onExpandedRowClick</td>
+<td>点击额外渲染行触发的事件<br><br><strong>签名</strong>:<br>Function(record: Object, index: Number, e: Event) =&gt; void<br><strong>参数</strong>:<br><em>record</em>: {Object} 该行所对应的数据<br><em>index</em>: {Number} 该行所对应的序列<br><em>e</em>: {Event} DOM事件对象</td>
+<td>Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>fixedHeader</td>
+<td>表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条</td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr>
+<td>maxBodyHeight</td>
+<td>最大内容区域的高度,在<code>fixedHeader</code>为<code>true</code>的时候,超过这个高度会出现滚动条</td>
+<td>Number/String</td>
+<td>-</td>
+</tr>
+<tr>
+<td>rowSelection</td>
+<td>是否启用选择模式<br><br><strong>属性</strong>:<br><em>getProps</em>: {Function} <code>Function(record, index)=&gt;Object</code> 获取selection的默认属性<br><em>onChange</em>: {Function} <code>Function(selectedRowKeys:Array, records:Array)</code> 选择改变的时候触发的事件，<strong>注意:</strong> 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。<br><em>onSelect</em>: {Function} <code>Function(selected:Boolean, record:Object, records:Array)</code> 用户手动选择/取消选择某行的回调<br><em>onSelectAll</em>: {Function} <code>Function(selected:Boolean, records:Array)</code> 用户手动选择/取消选择所有行的回调<br><em>selectedRowKeys</em>: {Array} 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值<br><em>mode</em>: {String} 选择selection的模式, 可选值为<code>single</code>, <code>multiple</code>，默认为<code>multiple</code></td>
+<td>Object</td>
+<td>-</td>
+</tr>
+<tr>
+<td>stickyHeader</td>
+<td>表头是否是sticky</td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr>
+<td>offsetTop</td>
+<td>距离窗口顶部达到指定偏移量后触发</td>
+<td>Number</td>
+<td>-</td>
+</tr>
+<tr>
+<td>affixProps</td>
+<td>affix组件的的属性</td>
+<td>Object</td>
+<td>-</td>
+</tr>
+<tr>
+<td>indent</td>
+<td>在tree模式下的缩进尺寸， 仅在isTree为true时候有效</td>
+<td>Number</td>
+<td>-</td>
+</tr>
+<tr>
+<td>isTree</td>
+<td>开启Table的tree模式, 接收的数据格式中包含children则渲染成tree table</td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr>
+<td>useVirtual</td>
+<td>是否开启虚拟滚动</td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr>
+<td>rowHeight</td>
+<td>设置行高</td>
+<td>Number/Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>onBodyScroll</td>
+<td>在内容区域滚动的时候触发的函数<br><br><strong>签名</strong>:<br>Function() =&gt; void</td>
+<td>Function</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3>Table.Column</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dataIndex</td>
+<td>指定列对应的字段，支持<code>a.b</code>形式的快速取值</td>
+<td>String</td>
+<td>-</td>
+</tr>
+<tr>
+<td>cell</td>
+<td>行渲染的逻辑<br>value, rowIndex, record, context四个属性只可读不可被更改<br>Function(value, index, record) =&gt; Element</td>
+<td>ReactElement/ReactNode/Function</td>
+<td>(value) =&gt; value</td>
+</tr>
+<tr>
+<td>title</td>
+<td>表头显示的内容<br>value, rowIndex, record, context四个属性只可读不可被更改</td>
+<td>ReactElement/ReactNode/Function</td>
+<td>-</td>
+</tr>
+<tr>
+<td>sortable</td>
+<td>是否支持排序</td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr>
+<td>width</td>
+<td>列宽，注意在锁列的情况下一定需要配置宽度</td>
+<td>Number/String</td>
+<td>-</td>
+</tr>
+<tr>
+<td>align</td>
+<td>单元格的对齐方式<br><br><strong>可选值</strong>:<br>'left', 'center', 'right'</td>
+<td>Enum</td>
+<td>-</td>
+</tr>
+<tr>
+<td>filters</td>
+<td>生成标题过滤的菜单, 格式为<code>[{label:'xxx', value:'xxx'}]</code></td>
+<td>Array&lt;Object&gt;</td>
+<td>-</td>
+</tr>
+<tr>
+<td>filterMode</td>
+<td>过滤的模式是单选还是多选<br><br><strong>可选值</strong>:<br>'single', 'multiple'</td>
+<td>Enum</td>
+<td>'multiple'</td>
+</tr>
+<tr>
+<td>lock</td>
+<td>是否支持锁列,可选值为<code>left</code>,<code>right</code>, <code>true</code></td>
+<td>Boolean/String</td>
+<td>-</td>
+</tr>
+<tr>
+<td>resizable</td>
+<td>是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>Table.ColumnGroup</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>表头显示的内容</td>
+<td>ReactElement/ReactNode/Function</td>
+<td>'column-group'</td>
+</tr>
+</tbody>
+</table>
+<h3>Table.GroupHeader</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cell</td>
+<td>行渲染的逻辑</td>
+<td>ReactElement/ReactNode/Function</td>
+<td>() =&gt; ''</td>
+</tr>
+<tr>
+<td>hasChildrenSelection</td>
+<td>是否在Children上面渲染selection</td>
+<td>Boolean</td>
+<td>false</td>
+</tr>
+<tr>
+<td>hasSelection</td>
+<td>是否在GroupHeader上面渲染selection</td>
+<td>Boolean</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<h3>Table.GroupFooter</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cell</td>
+<td>行渲染的逻辑</td>
+<td>ReactElement/ReactNode/Function</td>
+<td>() =&gt; ''</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+  </div>
+
+</body>
+</html>
+

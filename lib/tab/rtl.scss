@@ -1,0 +1,17 @@
+@import "../core/index-noreset.scss";
+
+#{$tab-prefix}[dir="rtl"] {
+    &#{$tab-prefix}-wrapped#{$tab-prefix}-top > #{$tab-prefix}-bar {
+        #{$tab-prefix}-nav-extra {
+            right: auto;
+            left: 0;
+        }
+    }
+
+    &#{$tab-prefix}-wrapped#{$tab-prefix}-bottom > #{$tab-prefix}-bar {
+        #{$tab-prefix}-nav-extra {
+            right: auto;
+            left: 0;
+        }
+    }
+}
