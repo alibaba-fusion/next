@@ -77,7 +77,7 @@ $upload-text-list-size-font-color-hover: $color-brand1-6 !default;
 
 // Simple with Image
 // -----------------------------------
-/// padding
+/// padding (t, b)
 /// @namespace size/bounding
 $upload-image-list-item-padding: $s-2 !default;
 /// padding (l)
@@ -110,14 +110,12 @@ $upload-image-list-close-icon-right: $s-1 !default;
 /// @namespace size/border
 $upload-image-list-item-border-width: $line-1 !default;
 /// background
-/// @namespace statement/normal/bounding
+/// @namespace statement/normal
 $upload-image-list-item-bg-color: $color-white !default;
 /// background
-/// @namespace statement/normal/uploading
-$upload-image-list-item-uploading-bg-color: $color-transparent !default;
-/// background
-/// @namespace statement/normal/uploading
-$upload-image-list-item-error-bg-color: $color-transparent !default;
+/// @namespace statement/uploading
+$upload-image-list-item-uploading-bg-color: $color-white !default;
+
 /// icon
 /// @namespace statement/normal/close
 $upload-image-list-close-icon-color: $color-text1-2 !default;
@@ -130,6 +128,9 @@ $upload-image-list-item-border-color: $color-line1-2 !default;
 /// border
 /// @namespace statement/error/bounding
 $upload-image-list-item-border-color-error: $color-error-3 !default;
+/// background
+/// @namespace statement/error
+$upload-image-list-item-error-bg-color: $color-white !default;
 /// border
 /// @namespace statement/hover/bounding
 $upload-image-list-item-border-color-hover: $color-brand1-6 !default;

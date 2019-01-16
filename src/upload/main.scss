@@ -171,6 +171,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+            transition: all .2s ease-out;
         }
 
         &-size {
