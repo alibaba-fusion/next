@@ -5,7 +5,7 @@ import ButtonGroup from './view/group';
 Button.Group = ButtonGroup;
 
 export default ConfigProvider.config(Button, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('shape' in props) {
             deprecated('shape', 'text | warning | ghost', 'Button');
 
