@@ -66,7 +66,6 @@ ReactDOM.render((
         onChange={onChange}
         onSuccess={onSuccess}
         listType="text"
-        extraRender={(file) => <span>11224</span>}
         defaultValue={defaultValue}>
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
     </Upload>
