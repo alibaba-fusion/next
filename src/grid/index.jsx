@@ -4,7 +4,7 @@ import Col from './col';
 
 const Grid = {
     Row: ConfigProvider.config(Row, {
-        transform: (props, deprecated) => {
+        transform: /* istanbul ignore next */(props, deprecated) => {
             if ('type' in props) {
                 deprecated('type', 'fixed | wrap | gutter', 'Row');
 
