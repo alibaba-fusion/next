@@ -97,5 +97,21 @@ describe('ImageUpload', () => {
                 assert(wrapper.find(`.${className}`).length === 1);
             });
         });
+        it('should render a imageList upload with error msg', () => {
+            const wrapper = mount(<Upload listType="image" defaultValue={[{
+                uid: '2',
+                name: 'IMG.png',
+                state: 'error',
+                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                errorMsg: 'ErrorText'
+            }]} />);
+            assert(wrapper.find('.next-upload-list-item-error-with-msg').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-msg').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-msg').at(0).text() === 'ErrorText');
+
+        });
     });
 });

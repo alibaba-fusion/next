@@ -102,7 +102,9 @@ describe('TextUpload', () => {
             }]} />);
             assert(wrapper.find('.next-upload').length === 1);
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
-            assert(wrapper.find('.next-upload-list-item-error-with-text').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-with-msg').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-msg').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-msg').at(0).text() === 'error text');
         });
     });
 
