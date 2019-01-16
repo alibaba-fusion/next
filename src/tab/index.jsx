@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Tab from './tab';
 
 export default ConfigProvider.config(Tab, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Tab');
             const { type, ...others } = props;
