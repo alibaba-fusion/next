@@ -320,6 +320,12 @@
             bottom: 0;
             left: 0;
             width: 100%;
+            .#{$css-prefix}progress-line-underlay {
+                border-radius: 0;
+            }
+            .#{$css-prefix}progress-line-overlay {
+                border-radius: 0;
+            }
         }
 
         &-uploading .#{$css-prefix}upload-list-item-thumbnail {
