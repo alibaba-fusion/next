@@ -141,7 +141,7 @@ class Card extends Base {
                 <Upload
                     {...othersForUpload}
                     shape="card"
-                    disabled={disabled || isExceedLimit}
+                    disabled={disabled}
                     action={action}
                     timeout={timeout}
                     value={this.state.value}
