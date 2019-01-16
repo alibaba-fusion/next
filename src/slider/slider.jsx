@@ -155,6 +155,7 @@ export default class Slider extends Component {
         arrowSize: 'medium',
         arrowPosition: 'inner',
         vertical: false,
+        verticalSwiping: true,
         dots: true,
         dotsDirection: 'hoz',
         arrows: true,
@@ -225,6 +226,7 @@ export default class Slider extends Component {
         if (slideDirection === 'ver') {
             // 向下传递时使用 vertical 属性
             sliderProps.vertical = true;
+            sliderProps.verticalSwiping = true;
         }
 
         return (

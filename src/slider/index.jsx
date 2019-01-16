@@ -3,7 +3,7 @@ import Slider from './slider';
 
 export default ConfigProvider.config(Slider, {
     exportNames: ['resize'],
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('fade' in props) {
             deprecated('fade', 'animation', 'Slider');
 
