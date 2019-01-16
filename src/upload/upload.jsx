@@ -144,6 +144,10 @@ class Upload extends Base {
          * @return {Object} object with abort method
          */
         request: PropTypes.func,
+        /**
+         * 透传给Progress props
+         */
+        progressProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -441,6 +445,7 @@ class Upload extends Base {
             onPreview,
             list,
             extraRender,
+            progressProps,
             ...others} = this.props;
 
         const cls = classNames({
@@ -492,7 +497,7 @@ class Upload extends Base {
                 </Uploader>
                 {listType || list ?
                     <List useDataURL={useDataURL} uploader={this} listType={listType} value={this.state.value}
-                        closable={closable} onRemove={onRemoveFunc}
+                        closable={closable} onRemove={onRemoveFunc} progressProps={progressProps}
                         onCancel={onCancel} onPreview={onPreview} extraRender={extraRender}/> :
                     null}
             </div>

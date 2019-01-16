@@ -45,6 +45,10 @@ class List extends Component {
          * 自定义额外渲染
          */
         extraRender: PropTypes.func,
+        /**
+         * 透传给Progress props
+         */
+        progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
         useDataURL: PropTypes.bool,
@@ -61,6 +65,7 @@ class List extends Component {
         extraRender: func.noop,
         onImageError: func.noop,
         onPreview: func.noop,
+        progressProps: {},
     };
 
     componentDidUpdate() {
@@ -146,7 +151,7 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const { extraRender } = this.props;
+        const { extraRender, progressProps } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
         const onClick = () => file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file);
@@ -167,7 +172,7 @@ class List extends Component {
                 </div>
                 {file.state === 'uploading' ?
                     <div className={`${prefixCls}-list-item-progress`}>
-                        <Progress size="medium" percent={file.percent} textRender={func.noop} />
+                        <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps}/>
                     </div> : null}
                 {file.state === 'error' && file.errorMsg ?
                     <div className={`${prefixCls}-list-item-error-msg`}>
@@ -186,7 +191,7 @@ class List extends Component {
     }
 
     getImageList(file) {
-        const { extraRender } = this.props;
+        const { extraRender, progressProps } = this.props;
 
         const { prefixCls, downloadURL, imgURL, size, itemCls, alt } = this.getInfo(file);
 
@@ -219,7 +224,7 @@ class List extends Component {
                     <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
                 </a>
                 {file.state === 'uploading' ? <div className={`${prefixCls}-list-item-progress`}>
-                    <Progress size="medium" percent={file.percent} textRender={func.noop} />
+                    <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps}/>
                 </div> : null}
                 {file.state === 'error' && file.errorMsg ? <div className={`${prefixCls}-list-item-error-msg`}>
                     {file.errorMsg}
@@ -229,7 +234,7 @@ class List extends Component {
     }
 
     getPictureCardList(file) {
-        const { locale } = this.props;
+        const { locale, progressProps } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
 
@@ -268,7 +273,7 @@ class List extends Component {
                     </div>
                     {file.state === 'uploading' ?
                         <div className={`${prefixCls}-list-item-progress`}>
-                            <Progress size="medium" percent={file.percent} textRender={func.noop} />
+                            <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps}/>
                         </div> : null
                     }
                     {file.state !== 'uploading' ? (
