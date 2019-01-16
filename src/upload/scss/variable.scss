@@ -80,6 +80,12 @@ $upload-text-list-size-font-color-hover: $color-brand1-6 !default;
 /// padding
 /// @namespace size/bounding
 $upload-image-list-item-padding: $s-2 !default;
+/// padding (l)
+/// @namespace size/bounding
+$upload-image-list-item-padding-left: $s-2 !default;
+/// padding (r)
+/// @namespace size/bounding
+$upload-image-list-item-padding-right: $s-2 !default;
 /// size
 /// @namespace size/picture
 /// @type length
@@ -106,6 +112,12 @@ $upload-image-list-item-border-width: $line-1 !default;
 /// background
 /// @namespace statement/normal/bounding
 $upload-image-list-item-bg-color: $color-white !default;
+/// background
+/// @namespace statement/normal/uploading
+$upload-image-list-item-uploading-bg-color: $color-transparent !default;
+/// background
+/// @namespace statement/normal/uploading
+$upload-image-list-item-error-bg-color: $color-transparent !default;
 /// icon
 /// @namespace statement/normal/close
 $upload-image-list-close-icon-color: $color-text1-2 !default;
@@ -121,9 +133,12 @@ $upload-image-list-item-border-color-error: $color-error-3 !default;
 /// border
 /// @namespace statement/hover/bounding
 $upload-image-list-item-border-color-hover: $color-brand1-6 !default;
-/// border
-/// @namespace statement/normal/picture
+/// color
+/// @namespace statement/normal/picture/border
 $upload-image-list-item-picture-border-color: $color-line1-2 !default;
+/// width
+/// @namespace statement/normal/picture/border
+$upload-image-list-item-picture-border-width: $line-1 !default;
 /// background
 /// @namespace statement/normal/picture
 $upload-image-list-item-picture-background-color: $color-fill1-2 !default;

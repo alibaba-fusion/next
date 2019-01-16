@@ -117,7 +117,7 @@ class List extends Component {
         const itemCls = classNames({
             [`${prefixCls}-list-item`]: true,
             [`${prefixCls}-list-item-${file.state}`]: file.state,
-            [`${prefixCls}-list-item-error-with-text`]: file.state === 'error' && file.errorMsg,
+            [`${prefixCls}-list-item-error-with-msg`]: file.state === 'error' && file.errorMsg,
         });
         const alt = file.name || file.alt;
         return { prefixCls, downloadURL, imgURL, size, itemCls, alt };
@@ -170,7 +170,7 @@ class List extends Component {
                         <Progress size="medium" percent={file.percent} textRender={func.noop} />
                     </div> : null}
                 {file.state === 'error' && file.errorMsg ?
-                    <div className={`${prefixCls}-list-item-error-text`}>
+                    <div className={`${prefixCls}-list-item-error-msg`}>
                         {file.errorMsg}
                     </div> : null}
                 {this.props.closable ?
@@ -212,15 +212,18 @@ class List extends Component {
                 <div className={`${prefixCls}-list-item-thumbnail`}>
                     {img}
                 </div>
-                {file.state !== 'uploading' ? <a href={downloadURL} target="_blank" style={{ pointerEvents: downloadURL ? '' : 'none' }} className={`${prefixCls}-list-item-name`}>
+                {this.props.closable ? <Icon type="close" size="large" tabIndex="0" role="button" onClick={onClick} onKeyDown={onKeyDown} /> : null}
+                <a href={downloadURL} target="_blank" style={{ pointerEvents: downloadURL ? '' : 'none' }} className={`${prefixCls}-list-item-name`}>
                     <span>{file.name}</span>
                     {!!size && <span className={`${prefixCls}-list-item-size`}>({size})</span>}
-                </a> : null}
+                    <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
+                </a>
                 {file.state === 'uploading' ? <div className={`${prefixCls}-list-item-progress`}>
                     <Progress size="medium" percent={file.percent} textRender={func.noop} />
                 </div> : null}
-                <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
-                {this.props.closable ? <Icon type="close" size="large" tabIndex="0" role="button" onClick={onClick} onKeyDown={onKeyDown} /> : null}
+                {file.state === 'error' && file.errorMsg ? <div className={`${prefixCls}-list-item-error-msg`}>
+                    {file.errorMsg}
+                </div> : null}
             </div>
         );
     }
