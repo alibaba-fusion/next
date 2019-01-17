@@ -1,0 +1,1403 @@
+{
+  "name": "DatePicker",
+  "props": {
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "输入框内置标签",
+      "docblock": "输入框内置标签"
+    },
+    "state": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'success'",
+            "computed": false
+          },
+          {
+            "value": "'error'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "输入框状态",
+      "docblock": "输入框状态"
+    },
+    "placeholder": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "输入提示",
+      "docblock": "输入提示"
+    },
+    "defaultVisibleMonth": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "默认展现的月",
+      "docblock": "默认展现的月\n@return {MomentObject} 返回包含指定月份的 moment 对象实例",
+      "params": [],
+      "returns": {
+        "description": "返回包含指定月份的 moment 对象实例",
+        "type": {
+          "name": "MomentObject"
+        }
+      }
+    },
+    "value": {
+      "type": {
+        "name": "custom",
+        "raw": "checkDateValue"
+      },
+      "required": false,
+      "description": "日期值（受控）moment 对象",
+      "docblock": "日期值（受控）moment 对象"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "custom",
+        "raw": "checkDateValue"
+      },
+      "required": false,
+      "description": "初始日期值，moment 对象",
+      "docblock": "初始日期值，moment 对象"
+    },
+    "format": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "日期值的格式（用于限定用户输入和展示）",
+      "defaultValue": {
+        "value": "'YYYY-MM-DD'",
+        "computed": false
+      },
+      "docblock": "日期值的格式（用于限定用户输入和展示）"
+    },
+    "showTime": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "object"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }"
+    },
+    "resetTime": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "每次选择日期时是否重置时间（仅在 showTime 开启时有效）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "每次选择日期时是否重置时间（仅在 showTime 开启时有效）"
+    },
+    "disabledDate": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "禁用日期函数",
+      "defaultValue": {
+        "value": "() => false",
+        "computed": false
+      },
+      "docblock": "禁用日期函数\n@param {MomentObject} 日期值\n@return {Boolean} 是否禁用",
+      "params": [
+        {
+          "name": "日期值",
+          "description": null,
+          "type": {
+            "name": "MomentObject"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否禁用",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "footerRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义面板页脚",
+      "defaultValue": {
+        "value": "() => null",
+        "computed": false
+      },
+      "docblock": "自定义面板页脚\n@return {Node} 自定义的面板页脚组件",
+      "params": [],
+      "returns": {
+        "description": "自定义的面板页脚组件",
+        "type": {
+          "name": "Node"
+        }
+      }
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "日期值改变时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "日期值改变时的回调\n@param {MomentObject|String} value 日期值",
+      "params": [
+        {
+          "name": "value",
+          "description": "日期值",
+          "type": {
+            "name": "union",
+            "value": [
+              "MomentObject",
+              "String"
+            ]
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onOk": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击确认按钮时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "点击确认按钮时的回调\n@return {MomentObject|String} 日期值",
+      "params": [],
+      "returns": {
+        "description": "日期值",
+        "type": {
+          "name": "union",
+          "value": [
+            "MomentObject",
+            "String"
+          ]
+        }
+      }
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "输入框尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "输入框尺寸"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "docblock": "是否禁用"
+    },
+    "hasClear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示清空按钮",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示清空按钮"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层显示状态",
+      "docblock": "弹层显示状态"
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层默认是否显示",
+      "docblock": "弹层默认是否显示"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层展示状态变化时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层展示状态变化时的回调\n@param {Boolean} visible 弹层是否显示\n@param {String} reason 触发弹层显示和隐藏的来源",
+      "params": [
+        {
+          "name": "visible",
+          "description": "弹层是否显示",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "reason",
+          "description": "触发弹层显示和隐藏的来源",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "popupTriggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "弹层触发方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "弹层触发方式"
+    },
+    "popupAlign": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层对齐方式,具体含义见 OverLay文档",
+      "defaultValue": {
+        "value": "'tl tl'",
+        "computed": false
+      },
+      "docblock": "弹层对齐方式,具体含义见 OverLay文档"
+    },
+    "popupContainer": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层容器",
+      "docblock": "弹层容器\n@param {Element} target 目标元素\n@return {Element} 弹层的容器元素",
+      "params": [
+        {
+          "name": "target",
+          "description": "目标元素",
+          "type": {
+            "name": "Element"
+          }
+        }
+      ],
+      "returns": {
+        "description": "弹层的容器元素",
+        "type": {
+          "name": "Element"
+        }
+      }
+    },
+    "popupStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层自定义样式",
+      "docblock": "弹层自定义样式",
+      "properties": []
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层自定义样式类",
+      "docblock": "弹层自定义样式类"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层其他属性",
+      "docblock": "弹层其他属性",
+      "properties": []
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "MonthPicker",
+      "props": {
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "输入框内置标签",
+          "docblock": "输入框内置标签"
+        },
+        "state": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'success'",
+                "computed": false
+              },
+              {
+                "value": "'error'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "输入框状态",
+          "docblock": "输入框状态"
+        },
+        "placeholder": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "输入提示",
+          "docblock": "输入提示"
+        },
+        "defaultVisibleYear": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "默认展现的年",
+          "docblock": "默认展现的年\n@return {MomentObject} 返回包含指定年份的 moment 对象实例",
+          "params": [],
+          "returns": {
+            "description": "返回包含指定年份的 moment 对象实例",
+            "type": {
+              "name": "MomentObject"
+            }
+          }
+        },
+        "value": {
+          "type": {
+            "name": "custom",
+            "raw": "checkDateValue"
+          },
+          "required": false,
+          "description": "日期值（受控）moment 对象",
+          "docblock": "日期值（受控）moment 对象"
+        },
+        "defaultValue": {
+          "type": {
+            "name": "custom",
+            "raw": "checkDateValue"
+          },
+          "required": false,
+          "description": "初始日期值，moment 对象",
+          "docblock": "初始日期值，moment 对象"
+        },
+        "format": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "日期值的格式（用于限定用户输入和展示）",
+          "defaultValue": {
+            "value": "'YYYY-MM'",
+            "computed": false
+          },
+          "docblock": "日期值的格式（用于限定用户输入和展示）"
+        },
+        "disabledDate": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "禁用日期函数",
+          "defaultValue": {
+            "value": "() => false",
+            "computed": false
+          },
+          "docblock": "禁用日期函数\n@param {MomentObject} 日期值\n@return {Boolean} 是否禁用",
+          "params": [
+            {
+              "name": "日期值",
+              "description": null,
+              "type": {
+                "name": "MomentObject"
+              }
+            }
+          ],
+          "returns": {
+            "description": "是否禁用",
+            "type": {
+              "name": "Boolean"
+            }
+          }
+        },
+        "footerRender": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "自定义面板页脚",
+          "defaultValue": {
+            "value": "() => null",
+            "computed": false
+          },
+          "docblock": "自定义面板页脚\n@return {Node} 自定义的面板页脚组件",
+          "params": [],
+          "returns": {
+            "description": "自定义的面板页脚组件",
+            "type": {
+              "name": "Node"
+            }
+          }
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "日期值改变时的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "日期值改变时的回调\n@param {MomentObject|String} value 日期值",
+          "params": [
+            {
+              "name": "value",
+              "description": "日期值",
+              "type": {
+                "name": "union",
+                "value": [
+                  "MomentObject",
+                  "String"
+                ]
+              }
+            }
+          ],
+          "returns": null
+        },
+        "size": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'small'",
+                "computed": false
+              },
+              {
+                "value": "'medium'",
+                "computed": false
+              },
+              {
+                "value": "'large'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "输入框尺寸",
+          "defaultValue": {
+            "value": "'medium'",
+            "computed": false
+          },
+          "docblock": "输入框尺寸"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁用",
+          "docblock": "是否禁用"
+        },
+        "hasClear": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否显示清空按钮",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "是否显示清空按钮"
+        },
+        "visible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层显示状态",
+          "docblock": "弹层显示状态"
+        },
+        "defaultVisible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层默认是否显示",
+          "docblock": "弹层默认是否显示"
+        },
+        "onVisibleChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层展示状态变化时的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层展示状态变化时的回调\n@param {Boolean} visible 弹层是否显示\n@param {String} reason 触发弹层显示和隐藏的来源",
+          "params": [
+            {
+              "name": "visible",
+              "description": "弹层是否显示",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            {
+              "name": "reason",
+              "description": "触发弹层显示和隐藏的来源",
+              "type": {
+                "name": "String"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "popupTriggerType": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'click'",
+                "computed": false
+              },
+              {
+                "value": "'hover'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "弹层触发方式",
+          "defaultValue": {
+            "value": "'click'",
+            "computed": false
+          },
+          "docblock": "弹层触发方式"
+        },
+        "popupAlign": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层对齐方式, 具体含义见 OverLay文档",
+          "defaultValue": {
+            "value": "'tl tl'",
+            "computed": false
+          },
+          "docblock": "弹层对齐方式, 具体含义见 OverLay文档"
+        },
+        "popupContainer": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层容器",
+          "docblock": "弹层容器\n@param {Element} target 目标元素\n@return {Element} 弹层的容器元素",
+          "params": [
+            {
+              "name": "target",
+              "description": "目标元素",
+              "type": {
+                "name": "Element"
+              }
+            }
+          ],
+          "returns": {
+            "description": "弹层的容器元素",
+            "type": {
+              "name": "Element"
+            }
+          }
+        },
+        "popupStyle": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层自定义样式",
+          "docblock": "弹层自定义样式",
+          "properties": []
+        },
+        "popupClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层自定义样式类",
+          "docblock": "弹层自定义样式类"
+        },
+        "popupProps": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层其他属性",
+          "docblock": "弹层其他属性",
+          "properties": []
+        }
+      },
+      "methods": []
+    },
+    {
+      "name": "RangePicker",
+      "props": {
+        "defaultVisibleMonth": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "默认展示的起始月份",
+          "docblock": "默认展示的起始月份\n@return {MomentObject} 返回包含指定月份的 moment 对象实例",
+          "params": [],
+          "returns": {
+            "description": "返回包含指定月份的 moment 对象实例",
+            "type": {
+              "name": "MomentObject"
+            }
+          }
+        },
+        "value": {
+          "type": {
+            "name": "array"
+          },
+          "required": false,
+          "description": "日期范围值数组 [moment, moment]",
+          "docblock": "日期范围值数组 [moment, moment]"
+        },
+        "defaultValue": {
+          "type": {
+            "name": "array"
+          },
+          "required": false,
+          "description": "初始的日期范围值数组 [moment, moment]",
+          "docblock": "初始的日期范围值数组 [moment, moment]"
+        },
+        "format": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "日期格式",
+          "defaultValue": {
+            "value": "'YYYY-MM-DD'",
+            "computed": false
+          },
+          "docblock": "日期格式"
+        },
+        "showTime": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "object"
+              },
+              {
+                "name": "bool"
+              }
+            ]
+          },
+          "required": false,
+          "description": "是否使用时间控件，支持传入 TimePicker 的属性",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否使用时间控件，支持传入 TimePicker 的属性"
+        },
+        "resetTime": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "每次选择是否重置时间（仅在 showTime 开启时有效）",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "每次选择是否重置时间（仅在 showTime 开启时有效）"
+        },
+        "disabledDate": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "禁用日期函数",
+          "defaultValue": {
+            "value": "() => false",
+            "computed": false
+          },
+          "docblock": "禁用日期函数\n@param {MomentObject} 日期值\n@return {Boolean} 是否禁用",
+          "params": [
+            {
+              "name": "日期值",
+              "description": null,
+              "type": {
+                "name": "MomentObject"
+              }
+            }
+          ],
+          "returns": {
+            "description": "是否禁用",
+            "type": {
+              "name": "Boolean"
+            }
+          }
+        },
+        "footerRender": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "自定义面板页脚",
+          "defaultValue": {
+            "value": "() => null",
+            "computed": false
+          },
+          "docblock": "自定义面板页脚\n@return {Node} 自定义的面板页脚组件",
+          "params": [],
+          "returns": {
+            "description": "自定义的面板页脚组件",
+            "type": {
+              "name": "Node"
+            }
+          }
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "日期范围值改变时的回调 [ MomentObject|String, MomentObject|String ]",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "日期范围值改变时的回调 [ MomentObject|String, MomentObject|String ]\n@param {Array<MomentObject|String>} value 日期值",
+          "params": [
+            {
+              "name": "value",
+              "description": "日期值",
+              "type": {
+                "name": "Array"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "onOk": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "点击确认按钮时的回调 返回开始时间和结束时间`[ MomentObject|String, MomentObject|String ]`",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "点击确认按钮时的回调 返回开始时间和结束时间`[ MomentObject|String, MomentObject|String ]`\n@return {Array} 日期范围",
+          "params": [],
+          "returns": {
+            "description": "日期范围",
+            "type": {
+              "name": "Array"
+            }
+          }
+        },
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "输入框内置标签",
+          "docblock": "输入框内置标签"
+        },
+        "state": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'error'",
+                "computed": false
+              },
+              {
+                "value": "'success'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "输入框状态",
+          "docblock": "输入框状态"
+        },
+        "size": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'small'",
+                "computed": false
+              },
+              {
+                "value": "'medium'",
+                "computed": false
+              },
+              {
+                "value": "'large'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "输入框尺寸",
+          "defaultValue": {
+            "value": "'medium'",
+            "computed": false
+          },
+          "docblock": "输入框尺寸"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁用",
+          "docblock": "是否禁用"
+        },
+        "hasClear": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否显示清空按钮",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "是否显示清空按钮"
+        },
+        "visible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层显示状态",
+          "docblock": "弹层显示状态"
+        },
+        "defaultVisible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层默认是否显示",
+          "docblock": "弹层默认是否显示"
+        },
+        "onVisibleChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层展示状态变化时的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层展示状态变化时的回调\n@param {Boolean} visible 弹层是否显示\n@param {String} reason 触发弹层显示和隐藏的来源",
+          "params": [
+            {
+              "name": "visible",
+              "description": "弹层是否显示",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            {
+              "name": "reason",
+              "description": "触发弹层显示和隐藏的来源",
+              "type": {
+                "name": "String"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "popupTriggerType": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'click'",
+                "computed": false
+              },
+              {
+                "value": "'hover'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "弹层触发方式",
+          "defaultValue": {
+            "value": "'click'",
+            "computed": false
+          },
+          "docblock": "弹层触发方式"
+        },
+        "popupAlign": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层对齐方式, 具体含义见 OverLay文档",
+          "defaultValue": {
+            "value": "'tl tl'",
+            "computed": false
+          },
+          "docblock": "弹层对齐方式, 具体含义见 OverLay文档"
+        },
+        "popupContainer": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层容器",
+          "docblock": "弹层容器\n@param {Element} target 目标元素\n@return {Element} 弹层的容器元素",
+          "params": [
+            {
+              "name": "target",
+              "description": "目标元素",
+              "type": {
+                "name": "Element"
+              }
+            }
+          ],
+          "returns": {
+            "description": "弹层的容器元素",
+            "type": {
+              "name": "Element"
+            }
+          }
+        },
+        "popupStyle": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层自定义样式",
+          "docblock": "弹层自定义样式",
+          "properties": []
+        },
+        "popupClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层自定义样式类",
+          "docblock": "弹层自定义样式类"
+        },
+        "popupProps": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层其他属性",
+          "docblock": "弹层其他属性",
+          "properties": []
+        }
+      },
+      "methods": []
+    },
+    {
+      "name": "YearPicker",
+      "props": {
+        "label": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "输入框内置标签",
+          "docblock": "输入框内置标签"
+        },
+        "state": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'success'",
+                "computed": false
+              },
+              {
+                "value": "'error'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "输入框状态",
+          "docblock": "输入框状态"
+        },
+        "placeholder": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "输入提示",
+          "docblock": "输入提示"
+        },
+        "value": {
+          "type": {
+            "name": "custom",
+            "raw": "checkDateValue"
+          },
+          "required": false,
+          "description": "日期值（受控）moment 对象",
+          "docblock": "日期值（受控）moment 对象"
+        },
+        "defaultValue": {
+          "type": {
+            "name": "custom",
+            "raw": "checkDateValue"
+          },
+          "required": false,
+          "description": "初始日期值，moment 对象",
+          "docblock": "初始日期值，moment 对象"
+        },
+        "format": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "日期值的格式（用于限定用户输入和展示）",
+          "defaultValue": {
+            "value": "'YYYY'",
+            "computed": false
+          },
+          "docblock": "日期值的格式（用于限定用户输入和展示）"
+        },
+        "disabledDate": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "禁用日期函数",
+          "defaultValue": {
+            "value": "() => false",
+            "computed": false
+          },
+          "docblock": "禁用日期函数\n@param {MomentObject} 日期值\n@return {Boolean} 是否禁用",
+          "params": [
+            {
+              "name": "日期值",
+              "description": null,
+              "type": {
+                "name": "MomentObject"
+              }
+            }
+          ],
+          "returns": {
+            "description": "是否禁用",
+            "type": {
+              "name": "Boolean"
+            }
+          }
+        },
+        "footerRender": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "自定义面板页脚",
+          "defaultValue": {
+            "value": "() => null",
+            "computed": false
+          },
+          "docblock": "自定义面板页脚\n@return {Node} 自定义的面板页脚组件",
+          "params": [],
+          "returns": {
+            "description": "自定义的面板页脚组件",
+            "type": {
+              "name": "Node"
+            }
+          }
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "日期值改变时的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "日期值改变时的回调\n@param {MomentObject|String} value 日期值",
+          "params": [
+            {
+              "name": "value",
+              "description": "日期值",
+              "type": {
+                "name": "union",
+                "value": [
+                  "MomentObject",
+                  "String"
+                ]
+              }
+            }
+          ],
+          "returns": null
+        },
+        "size": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'small'",
+                "computed": false
+              },
+              {
+                "value": "'medium'",
+                "computed": false
+              },
+              {
+                "value": "'large'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "输入框尺寸",
+          "defaultValue": {
+            "value": "'medium'",
+            "computed": false
+          },
+          "docblock": "输入框尺寸"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁用",
+          "docblock": "是否禁用"
+        },
+        "hasClear": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否显示清空按钮",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "是否显示清空按钮"
+        },
+        "visible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层显示状态",
+          "docblock": "弹层显示状态"
+        },
+        "defaultVisible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层默认是否显示",
+          "docblock": "弹层默认是否显示"
+        },
+        "onVisibleChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层展示状态变化时的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层展示状态变化时的回调\n@param {Boolean} visible 弹层是否显示\n@param {String} reason 触发弹层显示和隐藏的来源",
+          "params": [
+            {
+              "name": "visible",
+              "description": "弹层是否显示",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            {
+              "name": "reason",
+              "description": "触发弹层显示和隐藏的来源",
+              "type": {
+                "name": "String"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "popupTriggerType": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'click'",
+                "computed": false
+              },
+              {
+                "value": "'hover'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "弹层触发方式",
+          "defaultValue": {
+            "value": "'click'",
+            "computed": false
+          },
+          "docblock": "弹层触发方式"
+        },
+        "popupAlign": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层对齐方式, 具体含义见 OverLay文档",
+          "defaultValue": {
+            "value": "'tl tl'",
+            "computed": false
+          },
+          "docblock": "弹层对齐方式, 具体含义见 OverLay文档"
+        },
+        "popupContainer": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层容器",
+          "docblock": "弹层容器\n@param {Element} target 目标元素\n@return {Element} 弹层的容器元素",
+          "params": [
+            {
+              "name": "target",
+              "description": "目标元素",
+              "type": {
+                "name": "Element"
+              }
+            }
+          ],
+          "returns": {
+            "description": "弹层的容器元素",
+            "type": {
+              "name": "Element"
+            }
+          }
+        },
+        "popupStyle": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层自定义样式",
+          "docblock": "弹层自定义样式",
+          "properties": []
+        },
+        "popupClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层自定义样式类",
+          "docblock": "弹层自定义样式类"
+        },
+        "popupProps": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层其他属性",
+          "docblock": "弹层其他属性",
+          "properties": []
+        }
+      },
+      "methods": []
+    }
+  ]
+}
