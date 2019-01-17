@@ -250,6 +250,7 @@ export default class Tab extends Component {
 
         const navProps = {
             prefix,
+            rtl,
             animation,
             activeKey,
             excessMode,
