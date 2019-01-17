@@ -10,6 +10,7 @@ import { events } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const noop = () => {};
+const floatRight = { float: 'right' };
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
@@ -440,7 +441,7 @@ class Nav extends React.Component {
                 key: 'nav-extra',
             };
             if (tabPosition === 'top' || tabPosition === 'bottom') {
-                navChildren.unshift(<div {...extraProps}>{extra}</div>);
+                navChildren.unshift(<div {...extraProps} style={floatRight}>{extra}</div>);
             } else {
                 navChildren.push(<div {...extraProps}>{extra}</div>);
             }
