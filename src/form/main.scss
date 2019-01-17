@@ -4,8 +4,6 @@
 @import "scss/mixin";
 @import "scss/variable";
 
-$form-element-large-height:40px;
-
 #{$form-prefix} {
     @include box-sizing;
 
