@@ -1,13 +1,13 @@
 # Latest Log 
 
-## [1.11.9](https://github.com/alibaba-fusion/next/compare/1.11.8...1.11.9) (2019-01-16)
+## [1.11.10](https://github.com/alibaba-fusion/next/compare/1.11.9...1.11.10) (2019-01-17)
 
 
 ### Bug Fixes
 
-* **Loading:** fix fullscreen in demo ([6378cc0](https://github.com/alibaba-fusion/next/commit/6378cc0))
-* **Nav:** overflow when icon-only without icon ([6b28cee](https://github.com/alibaba-fusion/next/commit/6b28cee))
-* **Slider:** can swipe vertical & width 100% invertical ([3998ec2](https://github.com/alibaba-fusion/next/commit/3998ec2))
-* **Tab:** extra align middle by default ([3f38491](https://github.com/alibaba-fusion/next/commit/3f38491))
+* **Loading:** block style ([7e9ea48](https://github.com/alibaba-fusion/next/commit/7e9ea48))
+* **Loading:** tests for inline class ([da1c10a](https://github.com/alibaba-fusion/next/commit/da1c10a))
+* **Tab:** add float right ([11f6d99](https://github.com/alibaba-fusion/next/commit/11f6d99))
+* **Tab:** rtl support ([2151ee8](https://github.com/alibaba-fusion/next/commit/2151ee8))
 
 
