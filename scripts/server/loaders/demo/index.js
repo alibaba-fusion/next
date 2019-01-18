@@ -88,10 +88,7 @@ if (module.hot) {
     if (devA11y) {
         reactAxe = `
             // Load react-axe library for a11y testing during development
-            import React from 'react';
-            import ReactDOM from 'react-dom';
             import Axe from 'react-axe';
-            
             Axe(React, ReactDOM, 1000);
             `;
     }
