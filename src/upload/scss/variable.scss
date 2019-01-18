@@ -93,6 +93,11 @@ $upload-image-list-item-picture-size: $s-12 !default;
 /// icon
 /// @namespace size/picture
 $upload-image-list-item-picture-icon-size: $icon-l !default;
+/// border
+/// @namespace size/picture
+$upload-image-list-item-picture-border-width: $line-1 !default;
+
+
 /// font
 /// @namespace statement/normal/thumbnail
 $upload-image-list-item-thumbnail-font-color: $color-text1-1 !default;
@@ -136,9 +141,6 @@ $upload-image-list-item-border-color-hover: $color-brand1-6 !default;
 /// border
 /// @namespace statement/normal/picture
 $upload-image-list-item-picture-border-color: $color-line1-2 !default;
-/// border-width
-/// @namespace statement/normal/picture
-$upload-image-list-item-picture-border-width: $line-1 !default;
 /// background
 /// @namespace statement/normal/picture
 $upload-image-list-item-picture-background-color: $color-fill1-2 !default;
