@@ -83,8 +83,19 @@ if (module.hot) {
     });
   }
 }`;
+    let reactAxe;
+    if (process.env.NODE_ENV !== 'production') {
+        reactAxe = `
+            // Load react-axe library for a11y testing during development
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+            import Axe from 'react-axe';
+            
+            Axe(React, ReactDOM, 1000);
+            `;
+    }
 
-    return `${css ? getCSSRequireString(resourcePath, context) : ''}${js}${hotReloadCode}`;
+    return `${css ? getCSSRequireString(resourcePath, context) : ''}${js}${hotReloadCode}${reactAxe}`;
 }
 
 function getCSSRequireString(resourcePath, context) {
