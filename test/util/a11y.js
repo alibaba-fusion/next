@@ -3,6 +3,8 @@ import assert from 'power-assert';
 import Axe from 'axe-core';
 import { mount } from 'enzyme';
 
+const divId = 'a11y-root';
+
 /**
  * Helper function for running a11y unit tests using axe-core
  *
@@ -12,12 +14,11 @@ import { mount } from 'enzyme';
  *                 {Boolean} `incomplete` - should test error if there was an incomplete test? (not recommended)
  *                 {Object} `rules` - set properties for rules
  */
-export default function (node, cb, options = {}) {
+const test = function (node, cb, options = {}) {
     const div = document.createElement('div');
-    const divId = 'a11y-root';
     div.id = divId;
     document.body.appendChild(div);
-    mount(node, { attachTo: div });
+    const wrapper = mount(node, { attachTo: div });
 
     // disable `color-contrast` test by default when failing on incomplete tests. Can be overriden by setting `options.rules`
     if (options.incomplete && !options.rules) {
@@ -36,4 +37,15 @@ export default function (node, cb, options = {}) {
         }
         cb();
     });
-}
+
+    return wrapper;
+};
+
+const afterEach = function () {
+    const div = document.querySelector(`#${divId}`);
+    if (div) {
+        div.remove();
+    }
+};
+
+export default { test, afterEach };
