@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import sinon from 'sinon';
+import co from 'co';
 import Icon from '../../src/icon';
 import Slider from '../../src/slider/index';
 import './index.scss';
@@ -10,31 +10,26 @@ import './index.scss';
 /* eslint-disable */
 
 Enzyme.configure({ adapter: new Adapter() });
-
-function useFakeTimers() {
-    const timer = sinon.useFakeTimers();
-    performance.mark = () => void 0;
-    performance.clearMarks = () => void 0;
-    performance.measure = () => void 0;
-    performance.clearMeasures = () => void 0;
-    return timer;
-}
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('slider', function() {
     this.timeout(0);
 
     describe('render', () => {
-        let wrapper, clock;
+        let wrapper;
         const slides = [1, 2, 3, 4].map((item, index) => <div key={index} className="custom-slick-item" style={{ width: '500px' }}><h3>{item}</h3></div>);
-        clock = useFakeTimers();
 
         afterEach(() => {
             const prevWrapper = wrapper;
-            clock.restore();
             if (prevWrapper) {
                 setTimeout(() => prevWrapper.unmount());
                 wrapper = null;
             }
+        });
+
+        it('should not show render', () => {
+            const wrapper = shallow(<Slider></Slider>);
+            assert(wrapper.find('.next-slick').length === 0);
         });
 
         it('should basic render', () => {
@@ -82,20 +77,21 @@ describe('slider', function() {
         });
 
         it('should autoplay', () => {
-            clock = useFakeTimers();
-            wrapper = mount(<Slider infinite={false} autoplay autoplaySpeed={200}>{slides}</Slider>);
-            clock.tick(300);
-            wrapper.update();
-            assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
+            return co(function* () {
+                wrapper = mount(<Slider infinite={false} autoplay autoplaySpeed={200}>{slides}</Slider>);
+                yield delay(300);
+                wrapper.update();
+                assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
+            });
         });
 
         it('should fade', () => {
-            clock = useFakeTimers();
-            wrapper = mount(<Slider infinite={false} animation="fade" autoplay autoplaySpeed={200}>{slides}</Slider>);
-            clock.tick(300);
-            wrapper.update();
-            assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
-            // assert(wrapper.find('.next-slick-slide').at(1).node.style.position === 'relative');
+            return co(function* () {
+                wrapper = mount(<Slider infinite={false} animation="fade" autoplay autoplaySpeed={200}>{slides}</Slider>);
+                yield delay(300);
+                wrapper.update();
+                assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
+            });
         });
 
         it('should render with custom arrow', () => {
@@ -178,15 +174,16 @@ describe('slider', function() {
         });
 
         it('too more slidesToShow ', () => {
-            const clock = useFakeTimers();
-            const settings = {
-                slidesToShow: 5,
-                slidesToScroll: 10,
-                autoplaySpeed: 200,
-            }
-            wrapper = mount(<Slider {...settings}>{slides}</Slider>);
-            clock.tick(2000);
-            assert(wrapper.find('.next-slick').length === 1);
+            return co(function* () {
+                const settings = {
+                    slidesToShow: 5,
+                    slidesToScroll: 10,
+                    autoplaySpeed: 200,
+                }
+                wrapper = mount(<Slider {...settings}>{slides}</Slider>);
+                yield delay(2000);
+                assert(wrapper.find('.next-slick').length === 1);
+            });
         });
 
         it('should variableWidth', () => {
@@ -214,16 +211,11 @@ describe('slider', function() {
     });
 
     describe('action', () => {
-        let wrapper, clock;
+        let wrapper;
         const slides = [1, 2, 3, 4].map(item => <div key={item}><h3>{item}</h3></div>);
-
-        beforeEach(() => {
-            clock = useFakeTimers();
-        });
 
         afterEach(() => {
             const prevWrapper = wrapper;
-            clock.restore();
             if (prevWrapper) {
                 setTimeout(() => prevWrapper.unmount());
                 wrapper = null;
@@ -231,36 +223,42 @@ describe('slider', function() {
         });
 
         it('should click next/prev arrow', () => {
-            wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
-            clock.tick(100);
-            assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
-            wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
-            clock.tick(300);
-            assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
-            wrapper.find('.next-slick-prev').simulate('click');
+            return co(function* () {
+                wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
+                yield delay(100);
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
+                yield delay(300);
+                assert(wrapper.find('.next-slick-slide').at(1).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-prev').simulate('click');
+            });
         });
 
         it('should hover next/prev arrow', () => {
-            wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
+            return co(function* () {
+                wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
 
-            wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
-            clock.tick(300);
-            wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseLeave');
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
+                yield delay(300);
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseLeave');
 
-            wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseEnter');
-            clock.tick(300);
-            wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseEnter');
+                yield delay(300);
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
 
-            assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+            });
         });
 
         it('should click dots', () => {
-            wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
-            assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
-            wrapper.find('.next-slick-dots-item button').at(2).simulate('click');
-            clock.tick(300);
-            assert(wrapper.find('.next-slick-dots-item').at(2).hasClass('active'));
-            assert(wrapper.find('.next-slick-slide').at(2).hasClass('next-slick-active'));
+            return co(function* () {
+                wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-dots-item button').at(2).simulate('click');
+                yield delay(300);
+                assert(wrapper.find('.next-slick-dots-item').at(2).hasClass('active'));
+                assert(wrapper.find('.next-slick-slide').at(2).hasClass('next-slick-active'));
+            });
         });
 
         it('should call onChange hook', () => {
@@ -273,6 +271,102 @@ describe('slider', function() {
 
             wrapper = mount(<Slider {...settings}>{slides}</Slider>);
             wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
+        });
+    });
+
+    describe('action rtl', () => {
+        let wrapper;
+        const slides = [1, 2, 3, 4].map((item, index) => <div key={index} className="custom-slick-item" style={{ width: '500px' }}><h3>{item}</h3></div>);
+
+        afterEach(() => {
+            const prevWrapper = wrapper;
+            if (prevWrapper) {
+                setTimeout(() => prevWrapper.unmount());
+                wrapper = null;
+            }
+        });
+
+        it('should click next/prev arrow', () => {
+            return co(function* () {
+                wrapper = mount(<Slider rtl infinite={false}>{slides}</Slider>);
+                yield delay(100);
+                const len = wrapper.find('.next-slick-slide').length;
+
+                assert(wrapper.find('.next-slick-slide').at(len-1).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('click');
+                yield delay(300);
+                assert(wrapper.find('.next-slick-slide').at(len-2).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-prev').simulate('click');
+            });
+        });
+
+        it('should hover next/prev arrow', () => {
+            return co(function* () {
+                wrapper = mount(<Slider rtl infinite={false}>{slides}</Slider>);
+
+                const len = wrapper.find('.next-slick-slide').length;
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseEnter');
+                yield delay(300);
+                wrapper.find('.next-slick-arrow.next-slick-prev').simulate('mouseLeave');
+
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseEnter');
+                yield delay(300);
+                wrapper.find('.next-slick-arrow.next-slick-next').simulate('mouseLeave');
+
+                assert(wrapper.find('.next-slick-slide').at(len-1).hasClass('next-slick-active'));
+            });
+        });
+
+        it('should click dots', () => {
+            return co(function* () {
+                wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
+                assert(wrapper.find('.next-slick-slide').at(0).hasClass('next-slick-active'));
+                wrapper.find('.next-slick-dots-item button').at(2).simulate('click');
+                yield delay(300);
+                assert(wrapper.find('.next-slick-dots-item').at(2).hasClass('active'));
+                assert(wrapper.find('.next-slick-slide').at(2).hasClass('next-slick-active'));
+            });
+        });
+
+        it('should call onChange hook', () => {
+            const settings = {
+                infinite: false,
+                onChange: (index) => {
+                    assert(index === 1);
+                }
+            }
+
+            wrapper = mount(<Slider rtl {...settings}>{slides}</Slider>);
+            wrapper.find('.next-slick-arrow.next-slick-next').simulate('click');
+        });
+
+        it('should autoplay', () => {
+            return co(function* () {
+                wrapper = mount(<Slider rtl autoplay infinite={false} autoplaySpeed={200}>{slides}</Slider>);
+                yield delay(300);
+                wrapper.update();
+                const len = wrapper.find('.next-slick-slide').length;
+                assert(wrapper.find('.next-slick-slide').at(len-2).hasClass('next-slick-active'));
+            });
+        });
+
+        it('should render with lazyLoad', () => {
+            const wrapper = mount(<Slider rtl lazyLoad infinite={false}>{slides}</Slider>);
+            assert(wrapper.find('.custom-slick-item').length === 1);
+        })
+
+        it('too more slidesToShow ', () => {
+            return co(function* () {
+                const settings = {
+                    rtl: true,
+                    slidesToShow: 2,
+                    slidesToScroll: 10,
+                    autoplaySpeed: 200,
+                }
+                wrapper = mount(<Slider {...settings}>{slides}</Slider>);
+                yield delay(2000);
+                assert(wrapper.find('.next-slick').length === 1);
+            });
         });
     });
 });

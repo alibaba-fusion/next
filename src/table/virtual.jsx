@@ -176,7 +176,7 @@ export default function virtual(BaseComponent) {
 
         adjustScrollTop() {
             if (this.hasVirtualData) {
-                this.bodyNode.scrollTop = this.lastScrollTop || this.state.scrollToRow * this.state.rowHeight;
+                this.bodyNode.scrollTop = this.lastScrollTop % this.state.rowHeight + this.state.rowHeight * this.state.scrollToRow;
             }
         }
 

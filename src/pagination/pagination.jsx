@@ -269,7 +269,7 @@ class Pagination extends Component {
                 {icon}
                 {shape === 'arrow-only' ||
                  shape === 'arrow-prev-only' ||
-                 shape === 'no-border' ?  '' : locale.prev}
+                 shape === 'no-border' ? '' : locale.prev}
             </Button>
         );
     }
@@ -446,6 +446,9 @@ class Pagination extends Component {
         return (
             <Select className={`${prefix}pagination-size-selector-dropdown`}
                 popupClassName={`${prefix}pagination-size-selector-popup`}
+                popupContainer={node => {
+                    return node.parentNode;
+                }}
                 autoWidth
                 size={size}
                 value={currentPageSize}
@@ -518,8 +521,10 @@ class Pagination extends Component {
             }
             case 'normal': {
                 const pageList = this.renderPageList(currentPage, totalPage);
-                const pageDisplay = showJump && total > pageSize * pageShowCount ? this.renderPageDisplay(currentPage, totalPage) : null;
-                const pageJump = showJump && total > pageSize * pageShowCount ? this.renderPageJump(currentPage, totalPage) : null;
+                const pageDisplay = showJump && total > pageSize * pageShowCount ?
+                    this.renderPageDisplay(currentPage, totalPage) : null;
+                const pageJump = showJump && total > pageSize * pageShowCount ?
+                    this.renderPageJump(currentPage, totalPage) : null;
                 return buildComponent(pageFirst, pageList, pageLast, pageDisplay, ...pageJump);
             }
             default:

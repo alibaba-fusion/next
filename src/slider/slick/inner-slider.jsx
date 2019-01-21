@@ -40,6 +40,7 @@ class InnerSlider extends React.Component {
         slidesToScroll: PropTypes.number,
         variableWidth: PropTypes.bool,
         vertical: PropTypes.bool,
+        verticalSwiping: PropTypes.bool,
         prevArrow: PropTypes.element,
         nextArrow: PropTypes.element,
         dotsRender: PropTypes.func,
@@ -212,7 +213,7 @@ class InnerSlider extends React.Component {
             prefix, animation, arrows, arrowSize, arrowPosition, arrowDirection,
             dots, dotsClass, cssEase, speed, infinite, centerMode, centerPadding,
             lazyLoad, dotsDirection, rtl, slidesToShow, slidesToScroll,
-            variableWidth, vertical, focusOnSelect, children, dotsRender, triggerType
+            variableWidth, vertical, verticalSwiping, focusOnSelect, children, dotsRender, triggerType
         } = this.props;
 
         const {
@@ -242,6 +243,7 @@ class InnerSlider extends React.Component {
             trackStyle,
             variableWidth,
             vertical,
+            verticalSwiping,
             triggerType
             // clickHandler: this.changeSlide, unused
         };

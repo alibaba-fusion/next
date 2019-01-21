@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import Animate from '../../animate';
 import Icon from '../../icon';
 import Button from '../../button';
+import { obj } from '../../util';
 
 const { Expand } = Animate;
-/** Timeline.Item */
+/*Timeline.Item */
 class TimelineItem extends Component {
     static propTypes = {
         prefix: PropTypes.string,
@@ -70,8 +71,28 @@ class TimelineItem extends Component {
         this['timeline-item'].style['min-height'] = '48px'; // timeleft 节点最小高度
     }
     render() {
-        const { prefix, className, state, icon, dot, time, title, timeLeft, content, index, total, folderIndex, foldShow, locale, animation, ...others } = this.props;
-        const finalItemNode = dot ? dot : icon ? <span className={`${prefix}timeline-item-icon`}><Icon type={icon} size="xs" /></span> : <span className={`${prefix}timeline-item-dot`}></span>;
+        const {
+            prefix,
+            className,
+            state,
+            icon,
+            dot,
+            time,
+            title,
+            timeLeft,
+            content,
+            index,
+            total,
+            folderIndex,
+            foldShow,
+            locale,
+            animation,
+            ...others
+        } = this.props;
+        const finalItemNode = dot ?
+            dot : icon ?
+                <span className={`${prefix}timeline-item-icon`}><Icon type={icon} size="xs" /></span> :
+                <span className={`${prefix}timeline-item-dot`}></span>;
         const itemCls = classNames({
             [`${prefix}timeline-item`]: true,
             [`${prefix}timeline-item-first`]: index === 0,
@@ -100,26 +121,27 @@ class TimelineItem extends Component {
             text: true,
             size: 'small',
             type: 'primary',
-            onClick: this.toggleFold.bind(this, folderIndex, total),
+            onClick: this.toggleFold.bind(this, folderIndex, total)
         };
-        const timelineNode = folderIndex && foldShow || !folderIndex ? (<div {...others} className={itemCls} ref={e => {
-            this['timeline-item'] = e;
-        }}>
-            <div className={`${prefix}timeline-item-left-content`}>
-                <p className={`${prefix}timeline-item-body`}>{timeLeft}</p>
-            </div>
-            <div className={`${prefix}timeline-item-timeline`}>
-                <div className={`${prefix}timeline-item-tail`}><i></i></div>
-                <div className={itemNodeCls}>
-                    {finalItemNode}
+        const timelineNode = folderIndex && foldShow || !folderIndex ?
+            (<div {...obj.pickOthers(TimelineItem.propTypes, others)} className={itemCls} ref={e => {
+                this['timeline-item'] = e;
+            }}>
+                <div className={`${prefix}timeline-item-left-content`}>
+                    <p className={`${prefix}timeline-item-body`}>{timeLeft}</p>
                 </div>
-            </div>
-            <div className={`${prefix}timeline-item-content`}>
-                <div className={`${prefix}timeline-item-title`}>{title}</div>
-                <div className={`${prefix}timeline-item-body`}>{content}</div>
-                <div className={`${prefix}timeline-item-time`}>{time}</div>
-            </div>
-        </div>) : null;
+                <div className={`${prefix}timeline-item-timeline`}>
+                    <div className={`${prefix}timeline-item-tail`}><i></i></div>
+                    <div className={itemNodeCls}>
+                        {finalItemNode}
+                    </div>
+                </div>
+                <div className={`${prefix}timeline-item-content`}>
+                    <div className={`${prefix}timeline-item-title`}>{title}</div>
+                    <div className={`${prefix}timeline-item-body`}>{content}</div>
+                    <div className={`${prefix}timeline-item-time`}>{time}</div>
+                </div>
+            </div>) : null;
         return (<li>
             {
                 animation && folderIndex ? <Expand

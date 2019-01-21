@@ -91,7 +91,12 @@ const EventHandlers = {
         touchObject.curY = (e.touches) ? e.touches[0].pageY : e.clientY;
         touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2)));
 
-        const positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
+        let positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
+
+        if (this.props.verticalSwiping === true) {
+            touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2)));
+            positionOffset = touchObject.curY > touchObject.startY ? 1 : -1;
+        }
 
         const currentSlide = this.state.currentSlide;
         const dotCount = Math.ceil(this.state.slideCount / this.props.slidesToScroll);

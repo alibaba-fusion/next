@@ -2,6 +2,8 @@
 @import "scss/mixin";
 @import "scss/variable";
 
+$nav-icononly-width: $s-15;
+
 #{$nav-prefix} {
     @include box-sizing;
     min-width: auto;
@@ -18,8 +20,10 @@
 
     &-icon-placeholder {
         display: inline-block;
-        width: $nav-icon-self-size;
-        height: $nav-icon-self-size;
+        width: $nav-icon-only-font-size;
+        height: $nav-icon-only-font-size;
+        margin-left: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
+        margin-right: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
     }
 
     &-group-label {
@@ -74,6 +78,12 @@
             $nav-hoz-item-corner
         );
 
+        #{$nav-prefix}-group-label #{$menu-prefix}-item-inner {
+            height: $nav-group-height;
+            line-height: $nav-group-height;
+            font-size: $nav-group-font-size;
+        }
+
         #{$menu-prefix}-header {
             float: left;
             height: $nav-hoz-height - $popup-local-border-width * 2;
@@ -116,6 +126,12 @@
             $nav-ver-item-margin-lr,
             $nav-ver-item-corner
         );
+
+        #{$nav-prefix}-group-label #{$menu-prefix}-item-inner {
+            height: $nav-group-height;
+            line-height: $nav-group-height;
+            font-size: $nav-group-font-size;
+        }
 
         > #{$menu-prefix}-item:first-child,
         > #{$menu-prefix}-sub-menu-wrapper:first-child > #{$menu-prefix}-item {
@@ -302,13 +318,35 @@
             opacity: 0;
         }
 
-        #{$nav-prefix}-icon.#{$css-prefix}icon {
-            @include icon-size(
-                $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
-                $marginRight: 0
-            );
+        &.#{$css-prefix}normal {
+            #{$nav-prefix}-icon.#{$css-prefix}icon {
+                @include icon-size(
+                    $size: $nav-icon-only-font-size,
+                    $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $popup-local-border-width,
+                    $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $popup-local-border-width
+                );
+            }
         }
+
+        &.#{$css-prefix}primary {
+            #{$nav-prefix}-icon.#{$css-prefix}icon {
+                @include icon-size(
+                    $size: $nav-icon-only-font-size,
+                    $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width,
+                    $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width
+                );
+            }
+        }
+        &.#{$css-prefix}secondary {
+            #{$nav-prefix}-icon.#{$css-prefix}icon {
+                @include icon-size(
+                    $size: $nav-icon-only-font-size,
+                    $marginLeft: ($nav-icononly-width - $nav-ver-item-padding-lr * 2 - $nav-secondary-border-width * 2 - $nav-icon-only-font-size) / 2,
+                    $marginRight: ($nav-icononly-width - $nav-ver-item-padding-lr * 2 - $nav-secondary-border-width * 2 - $nav-icon-only-font-size) / 2
+                );
+            }
+        }
+
 
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(

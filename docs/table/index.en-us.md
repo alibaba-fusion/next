@@ -109,7 +109,7 @@ ReactDOM.render(
 | getExpandedColProps | get properties of expanded row<br><br>**signatures**:<br>Function() => void                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Function        | -         |
 | onRowOpen           | callback triggered when expand row<br><br>**signatures**:<br>Function(openRowKeys: Array, currentRowKey: String, expanded: Boolean, currentRecord: Object) => void<br>**params**:<br>_openRowKeys_: {Array} key of expanded row<br>_currentRowKey_: {String} key of current clicked row<br>_expanded_: {Boolean} whether is expanded<br>_currentRecord_: {Object} the data corresponding to the current clicked row                                                                                                                                                                                                                                                                                            | Function        | -         |
 | onExpandedRowClick  | callback triggered when click the expanded row<br><br>**signatures**:<br>Function(record: Object, index: Number, e: Event) => void<br>**params**:<br>_record_: {Object} the data corresponding to the row<br>_index_: {Number} the index corresponding to the row<br>_e_: {Event} event object                                                                                                                                                                                                                                                                                                                                                                                                                               | Function        | -         |
-| fixedHeader         | whether the talbe header is fixed, this property is used with maxBodyHeight. When the height of the content area exceeds maxBodyHeight, a scroll bar appears in the content area.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Boolean         | -         |
+| fixedHeader         | whether the table header is fixed, this property is used with maxBodyHeight. When the height of the content area exceeds maxBodyHeight, a scroll bar appears in the content area.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Boolean         | -         |
 | maxBodyHeight       | the height of the largest content area, when `fixedHeader` is `true`, scroll bars will appear above this height                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Number/String          | -         |
 | rowSelection        | whether to enable selection mode <br><br>**properties**:<br>_getProps_: {Function} `Function(record, index)=>Object` get default attributes of selection<br>_onChange_: {Function} `Function(selectedRowKeys:Array, records:Array)` callback triggered when selection change, **Note:** where records only contains the data of the current dataSource, it is likely to be less than the length of the selectedRowKeys.<br>_onSelect_: {Function} `Function(selected:Boolean, record:Object, records:Array)` callback triggered when user select<br>_onSelectAll_: {Function} `Function(selected:Boolean, records:Array)` callback triggered when user select all<br>_selectedRowKeys_: {Array} if this property is set, the rowSelection is controlled, and the received value is the value of the primaryKey of the row's data.<br>_mode_: {String} the mode of selection, the optional value is `single`, `multiple`, the default is `multiple` | Object          | -         |
 | stickyHeader        | whether the table header is sticky                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Boolean         | -         |
@@ -123,7 +123,7 @@ ReactDOM.render(
 
 ### Table.Column
 
-| Param | Descripiton  | Type  | Default Value |
+| Param | Description  | Type  | Default Value |
 | ---------- | ----------------------------------------------------- | ------------------------------- | ---------------- |
 | dataIndex  | specify the column corresponding field, support the fast value of `a.b` format                               | String                          | -                |
 | cell       | cell rendering logic<br>Function(value, index, record) => Element   | ReactElement/ReactNode/Function | (value) => value |
@@ -138,13 +138,13 @@ ReactDOM.render(
 
 ### Table.ColumnGroup
 
-| Param | Descripiton  | Type  | Default Value |
+| Param | Description  | Type  | Default Value |
 | ----- | ------- | ------------------------------- | -------------- |
 | title | content of table header | ReactElement/ReactNode/Function | 'column-group' |
 
 ### Table.GroupHeader
 
-| Param | Descripiton  | Type  | Default Value |
+| Param | Description  | Type  | Default Value |
 | -------------------- | --------------------------- | ------------------------------- | -------- |
 | cell                 | cell rendering logic                      | ReactElement/ReactNode/Function | () => '' |
 | hasChildrenSelection | whether to render selection on Children    | Boolean                         | false    |
@@ -152,6 +152,6 @@ ReactDOM.render(
 
 ### Table.GroupFooter
 
-| Param | Descripiton  | Type  | Default Value |
+| Param | Description  | Type  | Default Value |
 | ---- | ------ | ------------------------------- | -------- |
 | cell | cell rendering logic | ReactElement/ReactNode/Function | () => '' |

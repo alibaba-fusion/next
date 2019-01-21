@@ -15,7 +15,7 @@ You can use displayRender to customize the results displayed when single select,
 ---
 
 ````jsx
-import { CascaderSelect } from '@alifd/next';
+import { CascaderSelect, Icon } from '@alifd/next';
 
 const dataSource = [{
     value: '2973',
@@ -48,5 +48,13 @@ const dataSource = [{
     }]
 }];
 
-ReactDOM.render(<CascaderSelect style={{ width: '452px'}} listStyle={{ width: '150px', height: '160px' }} displayRender={labels => labels[labels.length - 1]} defaultValue="3431" dataSource={dataSource} />, mountNode);
+const itemRender = item => {
+    return (
+        <span>
+            <Icon type="account" size="xs" /> {item.label}
+        </span>
+    );
+};
+
+ReactDOM.render(<CascaderSelect style={{ width: '452px'}} listStyle={{ width: '150px', height: '160px' }} displayRender={labels => labels[labels.length - 1]} defaultValue="3431" dataSource={dataSource} itemRender={itemRender} />, mountNode);
 ````

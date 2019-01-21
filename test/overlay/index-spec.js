@@ -10,6 +10,7 @@ import '../../src/overlay/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it afterEach */
+/* global describe it beforeEach */
 
 const { hasClass } = dom;
 const { Popup } = Overlay;
@@ -128,9 +129,10 @@ describe('Overlay', () => {
     let wrapper;
 
     beforeEach(() => {
-        const overlay = document.querySelectorAll('.next-overlay-wrapper');
-        overlay.forEach(dom => {
-            document.body.removeChild(dom);
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
+
+        nodeListArr.forEach((node) => {
+            node.parentNode.removeChild(node);
         });
     });
 
@@ -334,7 +336,7 @@ describe('Overlay', () => {
 
     it('should not destory overlay node if set cache to true', () => {
         return co(function* () {
-            wrapper = render(<OverlayControlDemo cache />);
+            wrapper = render(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />);
             const btn = document.querySelector('button');
 
             simulateEvent.simulate(btn, 'click');
@@ -343,7 +345,7 @@ describe('Overlay', () => {
             simulateEvent.simulate(btn, 'click');
             yield delay(500);
 
-            assert(document.querySelector('.next-overlay-wrapper').style.display === 'none');
+            assert(document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display === 'none');
         });
     });
 

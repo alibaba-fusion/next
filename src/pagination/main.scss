@@ -78,7 +78,7 @@
 
     &-size-selector {
         display: inline-block;
-
+        position: relative;
         &-title {
             margin-right: $pagination-size-selector-title-margin-right;
             color: $pagination-size-selector-title-color;
