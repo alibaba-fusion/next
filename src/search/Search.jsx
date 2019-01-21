@@ -109,8 +109,13 @@ class Search extends React.Component {
          * 是否显示清除按钮
          */
         hasClear: PropTypes.bool,
+        /**
+         * 是否禁用
+         */
+        disabled: PropTypes.bool,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
+
     };
 
     static defaultProps = {
@@ -125,6 +130,7 @@ class Search extends React.Component {
         onSearch: func.noop,
         onFilterChange: func.noop,
         hasClear: false,
+        disabled: false,
     };
 
     constructor(props) {
@@ -151,6 +157,9 @@ class Search extends React.Component {
     }
 
     onChange = (value) => {
+        if (this.props.disabled) {
+            return;
+        }
         if (!('value' in this.props)) {
             this.setState({ value });
         }
@@ -159,10 +168,16 @@ class Search extends React.Component {
     };
 
     onSearch = () => {
+        if (this.props.disabled) {
+            return;
+        }
         this.props.onSearch(this.state.value, this.state.filterValue);
     };
 
     onFilterChange = (filterValue) => {
+        if (this.props.disabled) {
+            return;
+        }
         if (!('filterValue' in this.props)) {
             this.setState({ filterValue });
         }
@@ -171,6 +186,9 @@ class Search extends React.Component {
     };
 
     onKeyDown = (e) => {
+        if (this.props.disabled) {
+            return;
+        }
         if (e.keyCode !== KEYCODE.ENTER) {
             return;
         }
@@ -178,7 +196,7 @@ class Search extends React.Component {
     }
     render() {
         const {
-            shape, filter, hasIcon,
+            shape, filter, hasIcon, disabled,
             placeholder, type, className,
             style, size, prefix, searchText,
             dataSource, filterProps, buttonProps,
@@ -206,7 +224,7 @@ class Search extends React.Component {
                 [`${prefix}search-btn`]: true,
                 [buttonProps.className]: !!buttonProps.className
             });
-            searchBtn = (<Button  {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown}>
+            searchBtn = (<Button  {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown} disabled={disabled}>
                 {hasIcon ? <Icon type="search" /> : null}
                 {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
             </Button>);
@@ -219,6 +237,7 @@ class Search extends React.Component {
                     hasBorder={false}
                     dataSource={filter}
                     size={size}
+                    disabled={disabled}
                     value={this.state.filterValue}
                     onChange={this.onFilterChange}
                 />
@@ -246,6 +265,7 @@ class Search extends React.Component {
                 value={this.state.value}
                 onChange={this.onChange}
                 popupContent={popupContent}
+                disabled={disabled}
             />
         </Group>);
 
