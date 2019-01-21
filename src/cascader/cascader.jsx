@@ -123,7 +123,17 @@ export default class Cascader extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const { defaultValue, value, defaultExpandedValue, expandedValue, dataSource, multiple, checkStrictly, canOnlyCheckLeaf, loadData } = props;
+        const {
+            defaultValue,
+            value,
+            defaultExpandedValue,
+            expandedValue,
+            dataSource,
+            multiple,
+            checkStrictly,
+            canOnlyCheckLeaf,
+            loadData
+        } = props;
 
         this.updateCache(dataSource);
 
@@ -134,7 +144,9 @@ export default class Cascader extends Component {
         // TODO loadData
         const realExpandedValue = typeof expandedValue === 'undefined' ?
             (
-                typeof defaultExpandedValue === 'undefined' ? this.getExpandedValue(normalizedValue[0]) : this.normalizeValue(defaultExpandedValue)
+                typeof defaultExpandedValue === 'undefined' ?
+                    this.getExpandedValue(normalizedValue[0]) :
+                    this.normalizeValue(defaultExpandedValue)
             ) :
             this.normalizeValue(expandedValue);
         const st = {
@@ -271,7 +283,7 @@ export default class Cascader extends Component {
             return expandedMap[prev].split('-').length - expandedMap[next].split('-').length;
         });
     }
-
+    /*eslint-disable max-statements*/
     completeValue(dataSource, value) {
         const filterValue = value.filter(v => typeof this._v2n[v] !== 'undefined');
         let flatValue = this.flatValue(filterValue);
@@ -315,7 +327,7 @@ export default class Cascader extends Component {
 
         return newValue;
     }
-
+    /*eslint-enable*/
     flatValue(value) {
         const getDepth = v => this.getPos(v).split('-').length;
         const newValue = value.slice(0).sort((prev, next) => {
@@ -408,7 +420,7 @@ export default class Cascader extends Component {
             this.lastExpandedValue = [...this.state.expandedValue];
         }
     }
-
+    /*eslint-disable max-statements*/
     handleCheck(v, checked) {
         const { checkStrictly, canOnlyCheckLeaf } = this.props;
         const value = [...this.state.value];
@@ -431,12 +443,13 @@ export default class Cascader extends Component {
                 let parentChecked = true;
                 for (let j = 0; j < ps.length; j++) {
                     const p = ps[j];
-                    if (this.isSiblingOrSelf(currentPos, p)) {
-                        const v = this.getValue(p);
-                        if (value.indexOf(v) === -1) {
-                            parentChecked = false;
-                            break;
-                        }
+                    if (!this.isSiblingOrSelf(currentPos, p)) {
+                        continue;
+                    }
+                    const v = this.getValue(p);
+                    if (value.indexOf(v) === -1) {
+                        parentChecked = false;
+                        break;
                     }
                 }
                 const parentPos = nums.slice(0, i - 1).join('-');
@@ -504,7 +517,7 @@ export default class Cascader extends Component {
                 const data = this._v2n[value];
                 return loadData(data, data._source).then(callback);
             } else {
-                callback();
+                return callback();
             }
         }
     }
@@ -545,7 +558,7 @@ export default class Cascader extends Component {
     getIndeterminate(value) {
         const indeterminate = [];
 
-        const positions = this.flatValue(value).map(::this.getPos);
+        const positions = this.flatValue(value).map(value => this.getPos(value));
         positions.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
@@ -574,7 +587,16 @@ export default class Cascader extends Component {
         const { value, expandedValue, focusedValue } = this.state;
 
         return (
-            <CascaderMenu key={level} prefix={prefix} useVirtual={useVirtual} className={listClassName} style={listStyle} focusedKey={focusedValue} onItemFocus={this.handleFocus} onBlur={this.onBlur}>
+            <CascaderMenu
+                key={level}
+                prefix={prefix}
+                useVirtual={useVirtual}
+                className={listClassName}
+                style={listStyle}
+                focusedKey={focusedValue}
+                onItemFocus={this.handleFocus}
+                onBlur={this.onBlur}
+            >
                 {data.map(item => {
                     const disabled = !!item.disabled;
                     const canExpand = (!!item.children && !!item.children.length) || (!!loadData && !item.isLeaf);
@@ -592,7 +614,8 @@ export default class Cascader extends Component {
                     if (multiple) {
                         props.checkable = !(canOnlyCheckLeaf && canExpand);
                         props.checked = value.indexOf(item.value) > -1;
-                        props.indeterminate = (checkStrictly || canOnlyCheckLeaf) ? false : this.indeterminate.indexOf(item.value) > -1;
+                        props.indeterminate = (checkStrictly || canOnlyCheckLeaf) ?
+                            false : this.indeterminate.indexOf(item.value) > -1;
                         props.checkboxDisabled = !!item.checkboxDisabled;
                         props.onCheck = this.handleCheck.bind(this, item.value);
                     } else {
@@ -654,7 +677,10 @@ export default class Cascader extends Component {
             Item = Menu.CheckboxItem;
             const { checkStrictly, canOnlyCheckLeaf } = this.props;
             props.checked = value.indexOf(lastItem.value) > -1;
-            props.indeterminate = !checkStrictly && !canOnlyCheckLeaf && this.indeterminate.indexOf(lastItem.value) > -1;
+            props.indeterminate =
+                !checkStrictly &&
+                !canOnlyCheckLeaf &&
+                this.indeterminate.indexOf(lastItem.value) > -1;
             props.checkboxDisabled = lastItem.checkboxDisabled;
             props.onChange = this.handleCheck.bind(this, lastItem.value);
         } else {
