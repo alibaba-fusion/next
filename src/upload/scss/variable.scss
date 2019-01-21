@@ -118,10 +118,10 @@ $upload-image-list-item-border-width: $line-1 !default;
 /// @namespace statement/normal
 $upload-image-list-item-bg-color: $color-white !default;
 /// background
-/// @namespace statement/normal
+/// @namespace statement/uploading
 $upload-image-list-item-uploading-bg-color: $color-white !default;
 /// background
-/// @namespace statement/normal
+/// @namespace statement/error
 $upload-image-list-item-error-bg-color: $color-white !default;
 /// icon
 /// @namespace statement/normal/close
@@ -133,7 +133,7 @@ $upload-image-list-close-icon-color-hover: $color-text1-3 !default;
 /// @namespace statement/normal/bounding
 $upload-image-list-item-border-color: $color-line1-2 !default;
 /// border
-/// @namespace statement/normal/bounding
+/// @namespace statement/error/bounding
 $upload-image-list-item-border-color-error: $color-error-3 !default;
 /// border
 /// @namespace statement/hover/bounding
