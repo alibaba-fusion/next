@@ -617,7 +617,10 @@ class Select extends Base {
     handleArrowClick = (e) => {
         e.preventDefault();
         this.focusInput();
-        this.setVisible(!this.state.visible);
+
+        // because of can not close Popup by click Input while hasSearch.
+        // so when Popup open and hasSearch, we should close Popup intentionally
+        this.state.visible && this.hasSearch() && this.setVisible(!this.state.visible);
     }
 
     handleClear = e => {
@@ -793,7 +796,7 @@ class Select extends Base {
         const { mode } = this.props;
         const props = { ...this.props };
 
-        // 搜索的时候不允许回车触发关闭
+        // forbid to close Popup by click Input while hasSearch
         if (this.hasSearch()) {
             props.canCloseByTrigger = false;
         }
