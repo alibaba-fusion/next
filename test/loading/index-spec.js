@@ -38,5 +38,11 @@ describe('Test', () => {
           const wrapper2 = mount(<Loading tip="hello world" visible={false}/>);
           assert(!wrapper2.find('.next-loading').hasClass('next-open'));
       });
+      it('should support inline', () => {
+        const wrapper = mount(<Loading tip="hello world"/>);
+        assert(wrapper.find('.next-loading').hasClass('next-loading-inline'));
+        const wrapper2 = mount(<Loading tip="hello world" inline={false}/>);
+        assert(!wrapper2.find('.next-loading').hasClass('next-loading-inline'));
+    });
     });
 });

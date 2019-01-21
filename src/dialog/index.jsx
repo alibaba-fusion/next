@@ -27,6 +27,7 @@ Dialog.confirm = config => {
     return confirm(config);
 };
 
+/* istanbul ignore next */
 function processProps(props, deprecated) {
     if ('closable' in props) {
         deprecated('closable', 'closeable', 'Dialog');

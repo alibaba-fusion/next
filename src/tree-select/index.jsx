@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import TreeSelect from './tree-select';
 
 export default ConfigProvider.config(TreeSelect, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('shape' in props) {
             deprecated('shape', 'hasBorder', 'TreeSelect');
             const { shape, ...others } = props;
