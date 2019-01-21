@@ -158,6 +158,10 @@ export default class RangePicker extends Component {
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
+        /**
+         * 自定义日期单元格渲染
+         */
+        dateCellRender: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string
     }
@@ -549,6 +553,7 @@ export default class RangePicker extends Component {
             className,
             locale,
             inputProps,
+            dateCellRender,
             ...others
         } = this.props;
 
@@ -617,6 +622,7 @@ export default class RangePicker extends Component {
 
         const datePanel = (<RangeCalendar
             showOtherMonth
+            dateCellRender={dateCellRender}
             format={this.format}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}
