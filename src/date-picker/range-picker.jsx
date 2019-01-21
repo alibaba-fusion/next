@@ -101,7 +101,7 @@ export default class RangePicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['error', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success']),
         /**
          * 输入框尺寸
          */
@@ -154,8 +154,12 @@ export default class RangePicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -544,6 +548,7 @@ export default class RangePicker extends Component {
             popupProps,
             className,
             locale,
+            inputProps,
             ...others
         } = this.props;
 
@@ -588,11 +593,12 @@ export default class RangePicker extends Component {
         let endTriggerValue = endDateInputValue;
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const startDateInput = (<Input

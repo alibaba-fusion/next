@@ -26,7 +26,7 @@ class MonthPicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -116,8 +116,12 @@ class MonthPicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -267,6 +271,7 @@ class MonthPicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
             ...others
         } = this.props;
 
@@ -292,11 +297,12 @@ class MonthPicker extends Component {
         const panelInputCls = `${prefix}month-picker-panel-input`;
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing ? dateInputStr : ((value && value.format(format)) || '');

@@ -28,7 +28,7 @@ export default class DatePicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -132,8 +132,12 @@ export default class DatePicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -367,6 +371,7 @@ export default class DatePicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
             ...others
         } = this.props;
 
@@ -396,11 +401,12 @@ export default class DatePicker extends Component {
         }
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing === 'date' ? dateInputStr : ((value && value.format(this.format)) || '');
