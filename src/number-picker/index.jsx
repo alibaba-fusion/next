@@ -5,7 +5,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import ConfigProvider from '../config-provider';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 
 /** NumberPicker */
 class NumberPicker extends React.Component {
@@ -259,7 +259,7 @@ class NumberPicker extends React.Component {
             });
         }
 
-        this.props.onChange(isNaN(v) || v === '' ? undefined : v, {...e, triggerType});
+        this.props.onChange(isNaN(v) || v === '' ? undefined : v, { ...e, triggerType });
     }
 
     setInputValue(v, e) {
@@ -299,7 +299,7 @@ class NumberPicker extends React.Component {
     }
 
     upStep(val) {
-        const {step, min} = this.props;
+        const { step, min } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
@@ -313,7 +313,7 @@ class NumberPicker extends React.Component {
     }
 
     downStep(val) {
-        const {step, min} = this.props;
+        const { step, min } = this.props;
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
@@ -344,17 +344,23 @@ class NumberPicker extends React.Component {
         if (e) {
             e.preventDefault();
         }
-        const {disabled, min, max} = this.props;
+
+        const { disabled, min, max } = this.props;
         if (disabled) {
             return;
         }
+
         const value = this.state.value;
         if (isNaN(value)) {
             return;
         }
-        const val = this[`${type}Step`](value);
-        if (val > max || val < min) {
-            return;
+
+        let val = this[`${type}Step`](value);
+        if (val > max) {
+            val = max;
+        }
+        if (val < min) {
+            val = min;
         }
         this.setValue(val, e, type);
     }
@@ -382,7 +388,7 @@ class NumberPicker extends React.Component {
     }
 
     render() {
-        const {type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state} = this.props;
+        const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -410,22 +416,22 @@ class NumberPicker extends React.Component {
         if (type === 'normal') {
             innerAfter = ([
                 <Button disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
-                    <Icon size="xxs" type="arrow-up"/>
+                    <Icon size="xxs" type="arrow-up" />
                 </Button>,
                 <Button disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
-                    <Icon size="xxs" type="arrow-down"/>
+                    <Icon size="xxs" type="arrow-down" />
                 </Button>
             ]);
             innerAfterClassName = `${prefixCls}-handler`;
         } else {
             addonBefore = (
                 <Button size={size} disabled={disabled || downDisabled} onClick={this.down.bind(this)}>
-                    <Icon type="minus" size="xs"/>
+                    <Icon type="minus" size="xs" />
                 </Button>
             );
             addonAfter = (
                 <Button size={size} disabled={disabled || upDisabled} onClick={this.up.bind(this)}>
-                    <Icon type="add" size="xs"/>
+                    <Icon type="add" size="xs" />
                 </Button>
             );
         }
