@@ -157,9 +157,6 @@ class Search extends React.Component {
     }
 
     onChange = (value) => {
-        if (this.props.disabled) {
-            return;
-        }
         if (!('value' in this.props)) {
             this.setState({ value });
         }
@@ -175,9 +172,6 @@ class Search extends React.Component {
     };
 
     onFilterChange = (filterValue) => {
-        if (this.props.disabled) {
-            return;
-        }
         if (!('filterValue' in this.props)) {
             this.setState({ filterValue });
         }
@@ -218,7 +212,7 @@ class Search extends React.Component {
                 [`${prefix}search-icon`]: true,
                 [buttonProps.className]: !!buttonProps.className
             });
-            searchIcon = <Icon {...buttonProps} type="search" tabIndex="0" role="button" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown}/>;
+            searchIcon = <Icon {...buttonProps} type="search" tabIndex="0" role="button" aria-disabled={disabled} className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown}/>;
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
