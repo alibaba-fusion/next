@@ -48,9 +48,9 @@
 #{$upload-prefix}-list-text {
     #{$upload-prefix}-list-item {
         background-color: $upload-text-list-bg-color;
-        // 上下 s-1 左边 $upload-text-list-padding-left-right
+        // top-bottom s-1  left $upload-text-list-padding-left-right
         padding: $s-1 $upload-text-list-padding-left-right;
-        // 右边 icon大小 + icon 左右两边等距离
+        // righrt: icon size + icon paddinng left-right
         padding-right: $upload-text-list-close-icon-right * 2 + $upload-text-list-close-icon-size;
         height: $upload-text-list-height;
         // 行高 = 高度 - 上下padding
@@ -97,7 +97,8 @@
             margin-left: 8px;
         }
         &-uploading {
-            // uploading需要双行  行高 = 高度 / 2  - 上pading
+            // uploading state, two line display
+            //  so  line-height = height / 2  - padding-top;
             line-height: $upload-text-list-height / 2 - $s-1;
         }
         &-done {
@@ -114,7 +115,8 @@
             /* stylelint-disable declaration-no-important */
             background-color: $upload-text-list-bg-color-error !important;
             &#{$upload-prefix}-list-item-error-with-msg {
-                // 状态为error 且有error msg需要双行  行高 = 高度 / 2  - 上pading
+                // error state with error msg, we need they are display at two line
+                // so  line-height = height / 2  - padding-top;
                 line-height: $upload-text-list-height / 2 - $s-1;
             }
             &-msg {
@@ -132,7 +134,7 @@
         box-sizing: content-box;
         border: $upload-image-list-item-border-width solid $upload-image-list-item-border-color;
         background-color: $upload-image-list-item-bg-color;
-        padding: $upload-image-list-item-padding $upload-image-list-item-padding-right $upload-image-list-item-padding $upload-image-list-item-padding-left;
+        padding: $upload-image-list-item-padding;
         height: $upload-image-list-item-picture-size;
         line-height: $upload-image-list-item-picture-size;
         font-size: $upload-image-list-item-font-size;
@@ -164,9 +166,9 @@
         &-name {
             display: block;
             color: $upload-text-list-name-font-color;
-            // 左边 把 thumbnail 的空间空出来
+            // leave spaces for thumbnail
             margin-left: $upload-image-list-item-picture-size + $upload-image-list-item-padding;
-            // 右边边 把 icon 的空间空出来
+            // leave spaces for close icon
             margin-right: $upload-image-list-close-icon-size + $upload-image-list-close-icon-right * 2;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -190,8 +192,8 @@
         }
 
         $thumbnail-margin-right: $s-2 !default;
-        @if ($upload-image-list-item-padding-left > $s-2) {
-            $thumbnail-margin-right: $upload-image-list-item-padding-left;
+        @if ($upload-image-list-item-padding > $s-2) {
+            $thumbnail-margin-right: $upload-image-list-item-padding;
         }
         &-thumbnail {
             float: left;

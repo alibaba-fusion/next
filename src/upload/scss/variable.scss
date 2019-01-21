@@ -77,15 +77,10 @@ $upload-text-list-size-font-color-hover: $color-brand1-6 !default;
 
 // Simple with Image
 // -----------------------------------
-/// padding (t, b)
+/// padding
 /// @namespace size/bounding
 $upload-image-list-item-padding: $s-2 !default;
-/// padding (l)
-/// @namespace size/bounding
-$upload-image-list-item-padding-left: $s-2 !default;
-/// padding (r)
-/// @namespace size/bounding
-$upload-image-list-item-padding-right: $s-2 !default;
+
 /// size
 /// @namespace size/picture
 /// @type length
@@ -108,7 +103,7 @@ $upload-image-list-item-font-size: $font-size-body-1 !default;
 /// size
 /// @namespace size/close icon
 $upload-image-list-close-icon-size: $icon-xs !default;
-/// margin (r)
+/// margin
 /// @namespace size/close icon
 $upload-image-list-close-icon-right: $s-1 !default;
 /// width
