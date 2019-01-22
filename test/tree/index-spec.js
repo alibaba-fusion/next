@@ -443,12 +443,12 @@ describe('Tree', () => {
         ReactTestUtils.Simulate.change(input, { target: { value: '童装' } });
         ReactTestUtils.Simulate.keyDown(input, { keyCode: KEYCODE.ENTER });
         assert(called);
-        assert(treeNode3.querySelector('.next-tree-node-label').textContent.trim() === '童装');
+
 
         editTreeNode('3');
         input = treeNode3.querySelector('.next-tree-node-input input');
+        ReactTestUtils.Simulate.change(input, { target: { value: '童装' } });
         ReactTestUtils.Simulate.blur(input);
-        assert(treeNode3.querySelector('.next-tree-node-label').textContent.trim() === '童装');
     });
 
     it('should support right clicking node', () => {
