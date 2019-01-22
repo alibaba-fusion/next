@@ -2,7 +2,9 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
+import Axe from 'axe-core';
 import Progress from '../../src/progress/index';
+import '../../src/progress/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -63,6 +65,23 @@ describe('Line', () => {
             assert(wrapper.find('.next-progress-line-overlay-finishing').length === 1);
         });
     });
+
+    describe('a11y', () => {
+        it('should not have any violations', (done) => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            mount(<Progress percent={30} />, { attachTo: div });
+
+            Axe.run('.next-progress-line', {}, function(error, results) {
+                if (error) {
+                    return error;
+                }
+
+                assert(results.violations.length === 0);
+                done();
+            });
+        });
+    });
 });
 
 describe('Circle', () => {
@@ -109,6 +128,23 @@ describe('Circle', () => {
 
             wrapper.setProps({ percent: 90 });
             assert(wrapper.find('.next-progress-circle-overlay-finishing').length === 1);
+        });
+    });
+
+    describe('a11y', () => {
+        it('should not have any violations', (done) => {
+            const div = document.createElement('div');
+            document.body.appendChild(div);
+            mount(<Progress shape="circle" percent={30} />, { attachTo: div });
+
+            Axe.run('.next-progress-circle', {}, function(error, results) {
+                if (error) {
+                    return error;
+                }
+
+                assert(results.violations.length === 0);
+                done();
+            });
         });
     });
 });
