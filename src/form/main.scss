@@ -4,8 +4,6 @@
 @import "scss/mixin";
 @import "scss/variable";
 
-$form-element-large-height:40px;
-
 #{$form-prefix} {
     @include box-sizing;
 
@@ -38,6 +36,9 @@ $form-element-large-height:40px;
             }
 
             @include form-enhance($form-element-large-height - 1);
+            .#{$css-prefix}switch {
+                margin-top: ($form-element-large-height - 26)/2;
+            }
 
             #{$form-prefix}-item-label {
                 font-size: $form-element-large-font-size;

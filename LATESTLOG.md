@@ -1,15 +1,13 @@
-# Latest Log
+# Latest Log 
 
-## [1.11.6](https://github.com/alibaba-fusion/next/compare/1.11.5...1.11.6) (2018-12-26)
+## [1.11.10](https://github.com/alibaba-fusion/next/compare/1.11.9...1.11.10) (2019-01-17)
 
 
 ### Bug Fixes
 
-* **Cascader:** keyboard not blur ([3e43e6a](https://github.com/alibaba-fusion/next/commit/3e43e6a))
-* **Pagination:** select dropdown menu position error on scrolling ([70375c1](https://github.com/alibaba-fusion/next/commit/70375c1))
-* **Tab:** can not render when child have null item ([fb20367](https://github.com/alibaba-fusion/next/commit/fb20367))
-* **Tab, Grid:** inconsistency between doc and code ([5145fe7](https://github.com/alibaba-fusion/next/commit/5145fe7)) ([b07f5ac](https://github.com/alibaba-fusion/next/commit/b07f5ac)) ([43a4fd1](https://github.com/alibaba-fusion/next/commit/43a4fd1))
-* **Table:** style conflict with align ([aa32515](https://github.com/alibaba-fusion/next/commit/aa32515))
-* **Upload:** allow remove file when disabled ([2590a70](https://github.com/alibaba-fusion/next/commit/2590a70))
+* **Loading:** block style ([7e9ea48](https://github.com/alibaba-fusion/next/commit/7e9ea48))
+* **Loading:** tests for inline class ([da1c10a](https://github.com/alibaba-fusion/next/commit/da1c10a))
+* **Tab:** add float right ([11f6d99](https://github.com/alibaba-fusion/next/commit/11f6d99))
+* **Tab:** rtl support ([2151ee8](https://github.com/alibaba-fusion/next/commit/2151ee8))
 
 

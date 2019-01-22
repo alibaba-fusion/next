@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Cascader from './cascader';
 
 export default ConfigProvider.config(Cascader, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('expandTrigger' in props) {
             deprecated('expandTrigger', 'expandTriggerType', 'Cascader');
             const { expandTrigger, ...others } = props;

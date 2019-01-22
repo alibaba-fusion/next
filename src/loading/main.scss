@@ -9,11 +9,11 @@
 
 #{$loading-prefix} {
     position: relative;
-    display: inline-block;
 
     &.#{$css-prefix}open {
         pointer-events: none;
     }
+
     /* 遮罩层 */
     #{$loading-prefix}-component {
         opacity: .7;
@@ -33,6 +33,10 @@
         z-index: 99;
         opacity: .2;
         background: #FFF;
+    }
+
+    &-inline {
+        display: inline-block;
     }
 
     &-tip {

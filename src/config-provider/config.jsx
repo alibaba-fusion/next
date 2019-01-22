@@ -17,7 +17,10 @@ let currentGlobalRtl = false;
 
 export function initLocales(locales) {
     globalLocales = locales;
-    currentGlobalLocale = locales[currentGlobalLanguage];
+
+    if (locales) {
+        currentGlobalLocale = locales[currentGlobalLanguage];
+    }
 }
 
 export function setLanguage(language) {

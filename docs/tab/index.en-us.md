@@ -21,7 +21,7 @@ Disable animation with `animation={false}`
 
 | Param | Descripiton  | Type  | Default Value |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
-| activeKey           | Key of the current active tab | Number/String | -        |
+| activeKey           | Key of the current active tab<br> This prop will make tab a 'controlled component', end user will be unable to change tabs | Number/String | -        |
 | size                | Size of tab<br><br>**option**:<br>'small', 'medium'                                                                                                                                                                             | Enum          | 'medium' |
 | shape               | Shape of tab<br><br>**option**:<br>'pure', 'wrapped', 'text', 'capsule'                                                                                                                                                        | Enum          | 'pure'   |
 | defaultActiveKey    | Key of default active tab  | Number/String | -        |

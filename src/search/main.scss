@@ -15,6 +15,14 @@
     .#{$css-prefix}select {
         border: none;
     }
+    .#{$css-prefix}select {
+        .#{$css-prefix}input {
+            height: auto;
+            .#{$css-prefix}input-text-field {
+                height: auto;
+            }
+        }
+    }
 
     #{$search-prefix}-left {
         border-style: solid;

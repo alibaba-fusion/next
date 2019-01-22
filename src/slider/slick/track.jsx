@@ -60,6 +60,10 @@ const getSlideStyle = function(specProps) {
         }
     }
 
+    if (specProps.vertical) {
+        style.width = '100%';
+    }
+
     return style;
 };
 

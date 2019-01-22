@@ -31,7 +31,7 @@ Table.GroupFooter = ListFooter;
 
 export default ConfigProvider.config(Table, {
     componentName: 'Table',
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('expandedRowKeys' in props) {
             deprecated('expandedRowKeys', 'openRowKeys', 'Table');
 

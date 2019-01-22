@@ -5,9 +5,8 @@ import Group from './tag-group';
 import Selectable from './selectable';
 import Closable from './closeable';
 
-/* istanbul ignore next */
 const ConfigTag = ConfigProvider.config(Tag, {
-    transfrom: (props, deprecated) => {
+    transfrom: /* istanbul ignore next */(props, deprecated) => {
         const {shape, type} = props;
         if (shape === 'selectable') {
             deprecated('shape=selectable', 'Tag.Selectable', 'Tag');
