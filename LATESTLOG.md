@@ -1,13 +1,12 @@
 # Latest Log 
 
-## [1.11.10](https://github.com/alibaba-fusion/next/compare/1.11.9...1.11.10) (2019-01-17)
+## [1.11.11](https://github.com/alibaba-fusion/next/compare/1.11.10...1.11.11) (2019-01-22)
 
 
 ### Bug Fixes
 
-* **Loading:** block style ([7e9ea48](https://github.com/alibaba-fusion/next/commit/7e9ea48))
-* **Loading:** tests for inline class ([da1c10a](https://github.com/alibaba-fusion/next/commit/da1c10a))
-* **Tab:** add float right ([11f6d99](https://github.com/alibaba-fusion/next/commit/11f6d99))
-* **Tab:** rtl support ([2151ee8](https://github.com/alibaba-fusion/next/commit/2151ee8))
+* **Form:** no need form-element-large-size in form ([08420c6](https://github.com/alibaba-fusion/next/commit/08420c6))
+* **NumberPicker:** value set to min while next value < min by click + ([6863b9f](https://github.com/alibaba-fusion/next/commit/6863b9f))
+* **Select:** double trigger onVisibleChange while click arrow ([20f2e1c](https://github.com/alibaba-fusion/next/commit/20f2e1c))
 
 
