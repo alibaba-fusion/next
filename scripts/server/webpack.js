@@ -15,7 +15,7 @@ const cwd = process.cwd();
 
 module.exports = function getWebpackConfig(options) {
     const config = getConfig();
-    const { componentName, componentPath, disableAnimation, lang, dir } = options;
+    const { componentName, componentPath, disableAnimation, lang, dir, devA11y } = options;
 
     const indexPath = path.join(componentPath, lang === 'zh' ? 'index.md' : 'index.en-us.md');
     const demoPaths = glob.sync(path.join(componentPath, 'demo', '*.md'));
@@ -98,7 +98,8 @@ module.exports = function getWebpackConfig(options) {
                 links,
                 disableAnimation,
                 lang,
-                dir
+                dir,
+                devA11y
             }
         }]
     });
