@@ -83,6 +83,31 @@ describe('Select', () => {
         assert(wrapper.find('.next-select em').text() === 'TT2');
     });
 
+    it('should change display text while choose item and change dataSource', () => {
+        const dataSource = ['abc', 'bbb'];
+        class App extends React.Component {
+            render() {
+              return (
+                <Select
+                  defaultValue={'0'}
+                  visible
+                  dataSource={dataSource.map((i, idx) => {
+                    return { value: idx, label: i };
+                  })}
+                  onChange={() => {
+                    this.setState({
+                      a: 1,
+                    });
+                  }}
+                />
+              );
+            }
+        }
+        wrapper = mount(<App/>);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[1]);
+        assert(wrapper.find('span.next-select em').text() === 'bbb');
+    });
+
     it('should support not string value', (done) => {
         const dataSource = [{ label: 'xxx', value: 123 }, { label: 'empty', value: false }];
         const onChange = (value) => {

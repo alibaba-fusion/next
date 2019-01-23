@@ -222,8 +222,10 @@ class Select extends Base {
         if ('value' in nextProps) {
             // under controll
             this.valueDataSource = getValueDataSource(nextProps.value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
-        } else if ('defaultValue' in nextProps && (nextProps.children !== this.props.children || nextProps.dataSource !== this.props.dataSource)) {
-            //has defaultValue and dataSource changed
+        } else if ('defaultValue' in nextProps &&
+            nextProps.defaultValue === this.valueDataSource.value &&
+            (nextProps.children !== this.props.children || nextProps.dataSource !== this.props.dataSource)) {
+            //has defaultValue and value not changed and dataSource changed
             this.valueDataSource = getValueDataSource(nextProps.defaultValue, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
         }
 
@@ -620,7 +622,7 @@ class Select extends Base {
 
         // because of can not close Popup by click Input while hasSearch.
         // so when Popup open and hasSearch, we should close Popup intentionally
-        this.state.visible && this.hasSearch() && this.setVisible(!this.state.visible);
+        this.state.visible && this.hasSearch() && this.setVisible(false);
     }
 
     handleClear = e => {

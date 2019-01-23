@@ -75,7 +75,7 @@ function run(port) {
     });
 
     const url = `http://${host}:${port}/${componentName}`;
-    logger.warn(`Start server, listen to ${url}.`);
+    logger.warn(`Start server, listen to ${url}`);
 
     const server = new WebpackDevServer(compiler, {
         disableHostCheck: true,
