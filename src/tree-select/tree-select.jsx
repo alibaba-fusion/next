@@ -2,7 +2,13 @@ import React, { Component, Children, isValidElement, cloneElement } from 'react'
 import PropTypes from 'prop-types';
 import Select from '../select';
 import Tree from '../tree';
-import { normalizeToArray, getAllCheckedKeys, filterChildKey, filterParentKey, isDescendantOrSelf } from '../tree/view/util';
+import {
+    normalizeToArray,
+    getAllCheckedKeys,
+    filterChildKey,
+    filterParentKey,
+    isDescendantOrSelf
+} from '../tree/view/util';
 import { func, obj } from '../util';
 
 const noop = () => {};
@@ -194,7 +200,16 @@ export default class TreeSelect extends Component {
             autoExpandParent: false
         };
 
-        bindCtx(this, ['handleSelect', 'handleCheck', 'handleSearch', 'handleSearchClear', 'handleVisibleChange', 'handleChange', 'handleRemove', 'handleExpand']);
+        bindCtx(this, [
+            'handleSelect',
+            'handleCheck',
+            'handleSearch',
+            'handleSearchClear',
+            'handleVisibleChange',
+            'handleChange',
+            'handleRemove',
+            'handleExpand'
+        ]);
 
         this.updateCache(props);
     }
@@ -362,7 +377,7 @@ export default class TreeSelect extends Component {
         let value;
         if (treeCheckable && !treeCheckStrictly && treeCheckedStrategy === 'all') {
             const removedPos = this._v2n[removedValue].pos;
-            value  = this.state.value.filter(v => {
+            value = this.state.value.filter(v => {
                 const p = this._v2n[v].pos;
                 return !isDescendantOrSelf(removedPos, p);
             });
@@ -531,7 +546,7 @@ export default class TreeSelect extends Component {
 
         return loop(data, false);
     }
-
+    /*eslint-disable max-statements*/
     renderPopupContent() {
         const prefix = this.props.prefix;
         const treeSelectPrefix = `${prefix}tree-select-`;
@@ -566,7 +581,7 @@ export default class TreeSelect extends Component {
             multiple,
             loadData: treeLoadData,
             defaultExpandAll: treeDefaultExpandAll,
-            defaultExpandedKeys: treeDefaultExpandedKeys,
+            defaultExpandedKeys: treeDefaultExpandedKeys
         };
 
         const keys = this.getKeysByValue(value);
@@ -630,7 +645,7 @@ export default class TreeSelect extends Component {
             </div>
         );
     }
-
+    /*eslint-enable*/
     render() {
         const {
             prefix,
@@ -651,7 +666,7 @@ export default class TreeSelect extends Component {
             treeCheckStrictly,
             className,
             popupContainer,
-            popupProps,
+            popupProps
         } = this.props;
         const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
         const {
