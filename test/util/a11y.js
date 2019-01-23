@@ -31,8 +31,19 @@ const test = function (node, cb, options = {}) {
 
     Axe.run(`#${divId}`, { rules: options.rules }, function(error, results) {
         assert(!error);
+
+        if (results.violations.length) {
+            // eslint-disable-next-line no-console
+            console.error(results.violations);
+        }
+
         assert(results.violations.length === 0);
+
         if (options.incomplete) {
+            if (results.incomplete.length) {
+                // eslint-disable-next-line no-console
+                console.error(results.incomplete);
+            }
             assert(results.incomplete.length === 0);
         }
         cb();
