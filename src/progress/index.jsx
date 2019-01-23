@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Progress from './view/progress';
 
 export default ConfigProvider.config(Progress, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'progressive', 'Progress');
 

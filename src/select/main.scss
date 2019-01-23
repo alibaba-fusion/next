@@ -45,6 +45,9 @@
                 display: inline-block;
                 width: auto;
             }
+            > .#{$css-prefix}select-arrow {
+                padding-right: 0;
+            }
         }
 
         .#{$css-prefix}input.#{$css-prefix}disabled {

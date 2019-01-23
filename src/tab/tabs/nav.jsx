@@ -10,12 +10,14 @@ import { events } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const noop = () => {};
-const floatRight = { float: 'right', position: 'relative', zIndex: 1 };
+const floatRight = { float: 'right' };
+const floatLeft = { float: 'left' };
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         animation: PropTypes.bool,
         activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         excessMode: PropTypes.string,
@@ -68,12 +70,20 @@ class Nav extends React.Component {
         events.off(window, 'resize', this.onWindowResized);
     }
 
+    /**
+     * The key method about move
+     * @param {number} target position to slide to
+     * @param {bool} checkSlideBtn need to check the slide button status or not
+     * @param {bool} setActive need to check the active status or not
+     */
     setOffset(target, checkSlideBtn = true, setActive = true) {
         const { tabPosition } = this.props;
         const navWH = getOffsetWH(this.nav, tabPosition);
         const wrapperWH = getOffsetWH(this.wrapper);
 
+        // target should not be great than 0, i.e. should not over slide to left-most
         target = target >= 0 ? 0 : target;
+        // when need to slide, should not slide to exceed right-most
         target = target <= wrapperWH - navWH && wrapperWH - navWH < 0 ? wrapperWH - navWH : target;
 
         const relativeOffset = target - this.offset;
@@ -140,7 +150,7 @@ class Nav extends React.Component {
         if (minOffset >= 0 || navWH <= navbarWH) {
             next = false;
             prev = false;
-            this.setOffset(0);
+            this.setOffset(0, false); // no need to check slide again since this call is invoked from inside setSlideBtn
         } else if (this.offset < 0 && this.offset <= minOffset) {
             prev = true;
             next = false;
@@ -186,7 +196,7 @@ class Nav extends React.Component {
     }
 
     removeTab = (key, e) => {
-        e && e.stopPropagation(); // 不再传递事件，防止触发父级事件处理器
+        e && e.stopPropagation(); // stop bubble, so that it won't trigger upstream listener
         this.props.onClose(key);
     }
 
@@ -355,7 +365,7 @@ class Nav extends React.Component {
     }
 
     render() {
-        const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className } = this.props;
+        const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className, rtl } = this.props;
         const state = this.state;
 
         let nextButton;
@@ -433,7 +443,8 @@ class Nav extends React.Component {
                 key: 'nav-extra',
             };
             if (tabPosition === 'top' || tabPosition === 'bottom') {
-                navChildren.unshift(<div {...extraProps} style={floatRight}>{extra}</div>);
+                const style = rtl ? floatLeft : floatRight;
+                navChildren.unshift(<div {...extraProps} style={style}>{extra}</div>);
             } else {
                 navChildren.push(<div {...extraProps}>{extra}</div>);
             }

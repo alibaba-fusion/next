@@ -12,6 +12,7 @@ Select.Option = Option;
 Select.OptionGroup = OptionGroup;
 
 // compatible with 0.x version
+/* istanbul ignore next */
 function transform(props, deprecated) {
     const { shape, container, multiple, filterBy, overlay, safeNode, noFoundContent, ...others } = props;
 
@@ -55,7 +56,7 @@ function transform(props, deprecated) {
 
 // compatible with 0.x version: Select.Combobox
 Select.Combobox = ConfigProvider.config(Select, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         deprecated('Select.Combobox', '<Select showSearch={true}/>', 'Select');
 
         const newprops = transform(props, deprecated);

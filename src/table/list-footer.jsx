@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/* istanbul ignore file */
 /**
  * Table.GroupFooter
  * @order 3

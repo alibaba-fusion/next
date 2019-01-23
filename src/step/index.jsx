@@ -5,7 +5,7 @@ import StepItem from './view/step-item';
 Step.Item = StepItem;
 
 export default ConfigProvider.config(Step, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Step');
 

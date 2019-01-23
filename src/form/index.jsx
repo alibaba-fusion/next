@@ -6,7 +6,7 @@ import Reset from './reset';
 import Error from './error';
 
 Form.Item = ConfigProvider.config(Item, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('validateStatus' in props) {
             deprecated('validateStatus', 'validateState', 'Form.Item');
 
@@ -22,7 +22,7 @@ Form.Reset = Reset;
 Form.Error = Error;
 
 export default ConfigProvider.config(Form, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('direction' in props) {
             deprecated('direction', 'inline', 'Form');
             const { direction, ...others } = props;
