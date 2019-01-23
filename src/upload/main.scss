@@ -53,7 +53,7 @@
         // righrt: icon size + icon paddinng left-right
         padding-right: $upload-text-list-close-icon-right * 2 + $upload-text-list-close-icon-size;
         height: $upload-text-list-height;
-        // 行高 = 高度 - 上下padding
+        // line-height = height - padding-top-bottom
         line-height: $upload-text-list-height - $s-2;
         font-size: $upload-text-list-font-size;
         overflow: hidden;
