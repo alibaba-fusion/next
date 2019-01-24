@@ -33,3 +33,4 @@ Loading 默认使用 `display='inline-block'` 布局的方式包裹内部元素�
 | color      | 动画颜色                                                             | String  | -        |
 | fullScreen | 全屏展示                                                             | Boolean | -        |
 | children   | 子元素                                                              | any     | -        |
+| inline     | should loader be displayed inline                                | Boolean | true     |

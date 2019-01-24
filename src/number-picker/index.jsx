@@ -351,17 +351,23 @@ class NumberPicker extends React.Component {
         if (e) {
             e.preventDefault();
         }
+
         const { disabled, min, max } = this.props;
         if (disabled) {
             return;
         }
+
         const value = this.state.value;
         if (isNaN(value)) {
             return;
         }
-        const val = this[`${type}Step`](value);
-        if (val > max || val < min) {
-            return;
+
+        let val = this[`${type}Step`](value);
+        if (val > max) {
+            val = max;
+        }
+        if (val < min) {
+            val = min;
         }
         this.setValue(val, e, type);
     }

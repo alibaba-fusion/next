@@ -14,6 +14,7 @@ Upload.Selecter = Selecter;
 Upload.Uploader = Uploader;
 
 // compatible with 0.x version
+/* istanbul ignore next */
 function transform(props, deprecated) {
     const { listType, defaultFileList, fileList, ...others } = props;
     const newprops = others;
@@ -44,7 +45,7 @@ function transform(props, deprecated) {
 // compatible with 0.x version
 Upload.ImageUpload = ConfigProvider.config(Card, {
     componentName: 'Upload',
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         deprecated('Upload.ImageUpload', 'Upload.Card', 'Upload');
         const newprops = transform(props, () => { });
         if (newprops.locale && newprops.locale.image) {
@@ -58,7 +59,7 @@ Upload.ImageUpload = ConfigProvider.config(Card, {
 // compatible with 0.x version
 Upload.DragUpload = ConfigProvider.config(Dragger, {
     componentName: 'Upload',
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         deprecated('Upload.DragUpload', 'Upload.Dragger', 'Upload');
         const newprops = transform(props, () => { });
         if (!newprops.listType) {
@@ -70,6 +71,7 @@ Upload.DragUpload = ConfigProvider.config(Dragger, {
 });
 
 // compatible with 0.x version
+/* istanbul ignore next */
 Upload.Core = class Core extends React.Component {
     constructor(props) {
         super(props);
@@ -117,6 +119,7 @@ Upload.List = ConfigProvider.config(List, {
 });
 
 // compatible with 0.x version
+/* istanbul ignore next */
 Upload.CropUpload = function() {
     log.deprecated('Upload.CropUpload', '@alife/bc-next-crop-upload', 'Upload');
     return null;

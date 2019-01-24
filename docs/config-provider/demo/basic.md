@@ -1,13 +1,13 @@
 # 基本
 
-- order: 0
+- order: 1
 
 最简单的用法，展示 ConfigProvider 是如何工作的。
 
 :::lang=en-us
 # Basic
 
-- order: 0
+- order: 1
 
 The simplest usage, demo how ConfigProvider works.
 :::

@@ -3,7 +3,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-// import ReactTestUtils from 'react-dom/test-utils';
+import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Loading from '../../src/loading';
 import Checkbox from '../../src/checkbox';
@@ -244,58 +244,63 @@ describe('Table', () => {
             done();
         });
     });
-    // it('should support filter', () => {
-    //     let id;
-    //     const onFilter = (...args) => {
-    //         id = args[0].id.selectedKeys[0];
-    //     },
-    //         filters = [{
-    //             label: 'Nano 包含3',
-    //             value: 3
-    //         }, {
-    //             label: 'Nano 包含2',
-    //             value: 2,
-    //             children: [{
-    //                 label: 'Nano 包含12',
-    //                 value: 22
-    //             }, {
-    //                 label: 'Nano 包含23',
-    //                 value: 23
-    //             }]
-    //         }, {
-    //             label: '其他',
-    //             children: [{
-    //                 label: 'Nano 包含4',
-    //                 value: 4
-    //             }, {
-    //                 label: 'Nano 包含5',
-    //                 value: 5
-    //             }]
-    //         }];
-    //     wrapper.setProps({
-    //         onFilter,
-    //         children: [<Table.Column dataIndex='id' filters={filters}></Table.Column>]
-    //     });
-    //     wrapper.find('.next-icon-filter').simulate('click');
-    //     ReactTestUtils.Simulate.click(document.querySelectorAll('.next-btn')[0])
-    //     wrapper.find('.next-icon-filter').simulate('click');
-    //     ReactTestUtils.Simulate.click(document.querySelectorAll('.next-btn')[1])
-    //     wrapper.find('.next-icon-filter').simulate('click');
-    //     ReactTestUtils.Simulate.click(document.querySelectorAll('.next-menu-item')[0])
-    //     ReactTestUtils.Simulate.click(document.querySelectorAll('.next-btn')[0])
-    //     assert.deepEqual(id, '3');
-    //     wrapper.find('.next-icon-filter').simulate('click');
-    //     ReactTestUtils.Simulate.click(document.querySelectorAll('.next-btn')[1])
-    //     wrapper.setProps({
-    //         filterParams: {
-    //             id: {
-    //                 selectedKeys: '3'
-    //             }
-    //         }
-    //     });
-    //     wrapper.find('.next-icon-filter').simulate('click');
-    //     assert.deepEqual(document.querySelectorAll('.next-menu-item')[0].className.indexOf('selected') > -1, true);
-    // })
+    it('should support filter', () => {
+        let id;
+        const onFilter = (...args) => {
+            console.log('on filter', args)
+            id = args[0].id.selectedKeys[0];
+        },
+            filters = [{
+                label: 'Nano 包含1',
+                value: 1
+            }, {
+                label: 'Nano 包含3',
+                value: 3
+            },{
+                label: 'Nano 包含2',
+                value: 2,
+                children: [{
+                    label: 'Nano 包含12',
+                    value: 22
+                }, {
+                    label: 'Nano 包含23',
+                    value: 23
+                }]
+            }, {
+                label: '其他',
+                children: [{
+                    label: 'Nano 包含4',
+                    value: 4
+                }, {
+                    label: 'Nano 包含5',
+                    value: 5
+                }]
+            }];
+        wrapper.setProps({
+            onFilter,
+            children: [<Table.Column dataIndex='id' filters={filters}></Table.Column>]
+        });
+        wrapper.find('.next-icon-filter').simulate('click');
+        wrapper.find('.next-btn').at(0).simulate('click');
+
+        assert.deepEqual(id, undefined);
+        wrapper.find('.next-icon-filter').simulate('click');
+        wrapper.find('.next-menu-item').at(1).simulate('click');
+        wrapper.find('.next-btn').at(0).simulate('click');
+        assert.deepEqual(id, '3');
+
+        wrapper.setProps({
+            filterParams: {
+                id: {
+                    selectedKeys: '1'
+                }
+            }
+        });
+        wrapper.find('.next-btn').at(0).simulate('click');
+        assert.deepEqual(id, '1');
+        wrapper.find('.next-icon-filter').simulate('click');
+        assert.deepEqual(wrapper.find('.next-menu-item').at(0).props().className.indexOf('next-selected') > -1, true);
+    })
 
     it('should support lock', () => {
         wrapper.setProps({
@@ -311,6 +316,30 @@ describe('Table', () => {
             dataSource: []
         });
         assert(wrapper.find('div.next-table-empty').length !== 0);
+    })
+
+    it('should support lock row mouseEnter mouseLeave', (done) => {
+        wrapper.setProps({
+            children: [<Table.Column dataIndex='id' lock width={200}></Table.Column>,
+            <Table.Column dataIndex='id' lock='right' width={200}></Table.Column>]
+        })
+        const onRowClick = sinon.spy();
+        const onRowMouseEnter = sinon.spy();
+        const onRowMouseLeave = sinon.spy();
+        timeout({
+            onRowClick,
+            onRowMouseEnter,
+            onRowMouseLeave
+        }, () => {
+            const row = wrapper.find('.next-table-body .next-table-row').first();
+            row.simulate('click');
+            assert(onRowClick.called);
+            row.simulate('mouseenter');
+            assert(onRowMouseEnter.called);
+            row.simulate('mouseleave');
+            assert(onRowMouseLeave.called);
+            done();
+        })
     })
 
     it('should support treeMode', (done) => {
@@ -413,5 +442,36 @@ describe('Table', () => {
         const colgroup = mount(<Table.ColumnGroup/>)
         const col = mount(<Table.Column/>)
         const groupHeader = mount(<Table.GroupHeader/>)
+    });
+
+    it('should support stickyHeader', done => {
+        timeout({
+            stickyHeader: true
+        }, () => {
+            assert(wrapper.find('div.next-table-affix').length === 1);
+            done();
+        })
+    });
+
+    it('should support resize', done => {
+        timeout({
+            children: [
+                <Table.Column dataIndex='id' resizable width={200}></Table.Column>,
+                <Table.Column dataIndex='name' width={200}></Table.Column>
+            ],
+            onResizeChange: (dataIndex, value) => {
+                console.log(dataIndex, value)
+            }
+        }, () => {
+            wrapper.find('.next-table-resize-handler').simulate('mousedown', {pageX: 0});
+            assert(document.body.style.cursor === 'ew-resize');
+            document.dispatchEvent(new Event('mousemove', {pageX: 0}));
+            document.dispatchEvent(new Event('mouseup'));
+
+            setTimeout(()=> {
+                assert(document.body.style.cursor === '');
+                done();
+            }, 100)
+        })
     });
 });

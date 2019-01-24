@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Card from './card';
 
 export default ConfigProvider.config(Card, {
-    transform: (props, deprecated) => {
+    transform: /* istanbul ignore next */(props, deprecated) => {
         if ('titlePrefixLine' in props) {
             deprecated('titlePrefixLine', 'showTitleBullet', 'Card');
             const { titlePrefixLine, ...others } = props;

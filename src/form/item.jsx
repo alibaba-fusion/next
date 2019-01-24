@@ -35,8 +35,12 @@ export default class Item extends React.Component {
          */
         help: PropTypes.node,
         /**
+         * 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面
+         */
+        extra: PropTypes.node,
+        /**
          * 校验状态，如不设置，则会根据校验规则自动生成
-         * @enumdesc , 成功, 失败, 校验中
+         * @enumdesc 成功, 失败, 校验中
          */
         validateState: PropTypes.oneOf(['error', 'success', 'loading']),
         /**
@@ -52,10 +56,6 @@ export default class Item extends React.Component {
          * node 或者 function(values)
          */
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-        /**
-         * 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面
-         */
-        extra: PropTypes.node,
         /**
          * 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。
          */
@@ -212,6 +212,7 @@ export default class Item extends React.Component {
                 return '';
             }
 
+            // get first name
             return getState(names[0]);
         }
 
