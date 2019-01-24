@@ -171,7 +171,7 @@ class Select extends Base {
             searchValue: 'searchValue' in props ? props.searchValue : '',
         });
 
-        // For cache choosen value
+        // because dataSource maybe updated while select a item, so we should cache choosen value's item
         this.valueDataSource = {
             valueDS: [],    // [{value,label}]
             mapValueDS: {}  // {value: {value,label}}
@@ -330,7 +330,7 @@ class Select extends Base {
 
         const { cacheValue, mode, hiddenSelected } = this.props;
 
-        // 非受控更新缓存map
+        // cache those value maybe not exists in dataSource
         if (cacheValue || mode === 'tag') {
             this.valueDataSource = itemObj;
         }
@@ -571,7 +571,11 @@ class Select extends Base {
 
         // get detail value
         if (!this.useDetailValue()) {
-            value = this.valueDataSource.valueDS;
+            if (value === this.valueDataSource.value) {
+                value = this.valueDataSource.valueDS;
+            } else {
+                value = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS()).valueDS;
+            }
         }
 
         if (mode === 'single') {
