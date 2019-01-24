@@ -9,7 +9,7 @@ import {
     filterParentKey,
     isDescendantOrSelf
 } from '../tree/view/util';
-import { func, obj } from '../util';
+import { func, obj, KEYCODE } from '../util';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
@@ -208,7 +208,10 @@ export default class TreeSelect extends Component {
             'handleVisibleChange',
             'handleChange',
             'handleRemove',
-            'handleExpand'
+            'handleExpand',
+            'handleKeyDown',
+            'saveTreeRef',
+            'saveSelectRef'
         ]);
 
         this.updateCache(props);
@@ -323,11 +326,23 @@ export default class TreeSelect extends Component {
         }, []);
     }
 
+    saveTreeRef(ref) {
+        this.tree = ref;
+    }
+
+    saveSelectRef(ref) {
+        this.select = ref;
+    }
+
     handleVisibleChange(visible, type) {
         if (!('visible' in this.props)) {
             this.setState({
                 visible
             });
+        }
+
+        if (['fromTree', 'keyboard'].indexOf(type) !== -1 && !visible) {
+            this.select.focusInput();
         }
 
         this.props.onVisibleChange(visible, type);
@@ -452,6 +467,28 @@ export default class TreeSelect extends Component {
             expandedKeys,
             autoExpandParent: false
         });
+    }
+
+    handleKeyDown(e) {
+        const { onKeyDown } = this.props;
+        const { visible } = this.state;
+
+        if (onKeyDown) {
+            onKeyDown(e);
+        }
+
+        if (!visible) {
+            return;
+        }
+
+        switch (e.keyCode) {
+            case KEYCODE.UP:
+            case KEYCODE.DOWN:
+                this.tree.setFocusKey();
+                e.preventDefault();
+                break;
+            default: break;
+        }
     }
 
     handleChange() {
@@ -579,6 +616,7 @@ export default class TreeSelect extends Component {
 
         const treeProps = {
             multiple,
+            ref: this.saveTreeRef,
             loadData: treeLoadData,
             defaultExpandAll: treeDefaultExpandAll,
             defaultExpandedKeys: treeDefaultExpandedKeys
@@ -692,6 +730,7 @@ export default class TreeSelect extends Component {
                 autoWidth={autoWidth}
                 label={label}
                 readOnly={readOnly}
+                ref={this.saveSelectRef}
                 mode={treeCheckable || multiple ? 'multiple' : 'single'}
                 value={data}
                 onRemove={this.handleRemove}
@@ -701,6 +740,7 @@ export default class TreeSelect extends Component {
                 showSearch={showSearch}
                 onSearch={this.handleSearch}
                 onSearchClear={this.handleSearchClear}
+                onKeyDown={this.handleKeyDown}
                 popupContent={this.renderPopupContent()}
                 popupContainer={popupContainer}
                 popupStyle={popupStyle}

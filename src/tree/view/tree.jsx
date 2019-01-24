@@ -347,6 +347,13 @@ class Tree extends Component {
         }
     }
 
+    setFocusKey() {
+        const { selectedKeys = [] } = this.state;
+        this.setState({
+            focusedKey: selectedKeys.length > 0 ? selectedKeys[0] : this.getFirstAvaliablelChildKey('0')
+        });
+    }
+
     getExpandedKeys(props, willReceiveProps) {
         let expandedKeys;
 
@@ -557,10 +564,10 @@ class Tree extends Component {
                     focusedKey
                 });
             }
-
-            this.props.onItemKeyDown(focusedKey, item, e);
-            this.props.onItemFocus(focusedKey, e);
         }
+
+        this.props.onItemKeyDown(focusedKey, item, e);
+        this.props.onItemFocus(focusedKey, e);
     }
 
     handleBlur(e) {
@@ -926,4 +933,6 @@ class Tree extends Component {
     }
 }
 
-export default ConfigProvider.config(Tree);
+export default ConfigProvider.config(Tree, {
+    exportNames: ['setFocusKey']
+});
