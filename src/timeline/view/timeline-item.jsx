@@ -142,7 +142,7 @@ class TimelineItem extends Component {
                     <div className={`${prefix}timeline-item-time`}>{time}</div>
                 </div>
             </div>) : null;
-        return (<li>
+        return (<li tabIndex="0">
             {
                 animation && folderIndex ? <Expand
                     animationAppear={false}
