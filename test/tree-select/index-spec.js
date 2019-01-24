@@ -3,7 +3,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import { dom } from '../../src/util';
+import { dom, KEYCODE } from '../../src/util';
 import TreeSelect from '../../src/tree-select/index';
 import '../../src/tree-select/style.js';
 
@@ -351,7 +351,42 @@ describe('TreeSelect', () => {
         wrapper.update();
         assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
     });
+
+    it('should support keyboard', done => {
+        wrapper = mount(<TreeSelect dataSource={cloneData(dataSource, {
+            2: {
+                disabled: false
+            }
+        })} />);
+        wrapper.find('.next-select').simulate('click');
+
+        setTimeout(() => {
+            assert(document.querySelector('.next-tree'));
+            wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(document.activeElement === document.querySelectorAll('.next-tree  > .next-tree-node > .next-tree-node-inner')[0]);
+            done();
+        }, 2000);
+    });
 });
+
+function cloneData(data, keyMap = {}) {
+    const loop = data => data.map(item => {
+        let newItem;
+
+        if (item.key in keyMap) {
+            newItem = { ...item, ...keyMap[item.key] };
+        } else {
+            newItem = { ...item };
+        }
+        if (newItem.children) {
+            newItem.children = loop(newItem.children);
+        }
+
+        return newItem;
+    });
+
+    return loop(data);
+}
 
 function assertDataAndNodes(dataSource) {
     const loop = (data, nodes) => data.forEach((item, index) => {
