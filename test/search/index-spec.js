@@ -180,7 +180,6 @@ describe('Search', () => {
             wrapper = mount(<Search defaultValue={'123'} filter={filter} filterValue={FILTER_VALUE} onSearch={onSearch} />);
             assert(wrapper.find('.next-select-values em').text() === FILTER_VALUE);
             wrapper.find('button').simulate('click');
-
         });
 
         it('act in controlled way', (done) => {
@@ -215,6 +214,32 @@ describe('Search', () => {
 
             wrapper.setProps({ value: VALUE, filterValue: FILTER_VALUE });
             wrapper.find('button').simulate('click');
+        });
+        it('should support disabled', () => {
+            const onSearch = sinon.spy();
+            const onChange = sinon.spy();
+            wrapper = mount(<Search shape="simple" onSearch={onSearch} onChange={onChange} disabled/>);
+            wrapper.find('.next-icon').simulate('click');
+            assert(onSearch.notCalled);
+            wrapper.find('input').simulate('change', { target: { value: '20' } });
+            assert(onChange.notCalled);
+        });
+        it('should support enter key', () => {
+            const onSearch = sinon.spy();
+            wrapper = mount(<Search onSearch={onSearch} value="123"/>);
+            // 支持enter
+            wrapper.find('button').simulate('keyDown', {keyCode: 13});
+            assert(onSearch.calledOnce);
+            // 不支持非enter
+            wrapper.find('button').simulate('keyDown', {keyCode: 14});
+            assert(onSearch.calledOnce);
+        });
+        it('should support disable enter key', () => {
+            const onSearch = sinon.spy();
+            wrapper = mount(<Search disabled shape="simple" onSearch={onSearch} value="123"/>);
+            // 支持enter
+            wrapper.find('.next-icon').simulate('keyDown', {keyCode: 13});
+            assert(onSearch.notCalled);
         });
     });
 

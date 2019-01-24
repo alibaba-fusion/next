@@ -40,3 +40,4 @@ search data in forms or pages.
 | popupContent       | custom popup menu                                                                                                                 | ReactNode     | -         |
 | visible            | popupContent is displayed                                                                                                                 | Boolean       | -         |
 | hasClear           | show clear text button                                                                                                                   | Boolean       | false     |
+| disabled           | disabled or not                                                                                                                   | Boolean       | false     |
