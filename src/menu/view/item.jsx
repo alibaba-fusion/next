@@ -105,12 +105,19 @@ export default class Item extends Component {
 
     handleKeyDown(e) {
         const { _key, root, type } = this.props;
+
         if (this.focusable()) {
             root.handleItemKeyDown(_key, type, this, e);
 
-            if (e.keyCode === KEYCODE.SPACE) {
-                this.handleClick(e);
+            switch (e.keyCode) {
+                case KEYCODE.ENTER: {
+                    if (!(type === 'submenu')) {
+                        this.handleClick(e);
+                    }
+                    break;
+                }
             }
+
         }
 
         this.props.onKeyDown && this.props.onKeyDown(e);
