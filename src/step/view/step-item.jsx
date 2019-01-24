@@ -59,7 +59,8 @@ class StepItem extends Component {
          * 自定义样式
          */
         className: PropTypes.string,
-        readOnly: PropTypes.bool
+        readOnly: PropTypes.bool,
+        'aria-current': PropTypes.string
     }
 
     static defaultProps = {
@@ -164,6 +165,7 @@ class StepItem extends Component {
         const { prefix, itemRender, index, status, title, content } = this.props;
         const { others, stepCls, overlayCls } = args;
         const nodeElement = this._getNode();
+        const ariaCurrent = this.props['aria-current'];
         let finalNodeElement = (
             <div className={`${prefix}step-item-container`} ref={this._refHandlerCreator('container')}>
                 <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>
@@ -186,7 +188,7 @@ class StepItem extends Component {
         }
 
         return (
-            <div tabIndex="0" {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
+            <div tabIndex="0" aria-current={status === 'process' && !ariaCurrent ? 'step' : null} {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
                 {finalNodeElement}
                 <div className={`${prefix}step-item-body`} ref={this._refHandlerCreator('body')}>
                     <div className={`${prefix}step-item-title`} ref={this._refHandlerCreator('title')}>{title}</div>
@@ -256,6 +258,7 @@ class StepItem extends Component {
     render() {
         // eslint-disable-next-line
         const { prefix, locale, className, status, title, icon, index, total, shape, content, direction, disabled, onClick, readOnly, animation, parentHeight, itemRender, parentWidth, labelPlacement, rtl, ...others } = this.props;
+        const ariaCurrent = this.props['aria-current'];
 
         const stepCls = classNames({
             [`${prefix}step-item`]: true,
@@ -269,7 +272,7 @@ class StepItem extends Component {
 
         const overlayCls = status === 'finish' ? { width: '100%' } : null;
         const arrowElement = (
-            <div tabIndex="0" {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
+            <div tabIndex="0" aria-current={status === 'process' && !ariaCurrent ? 'step' : null} {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
                 <div className={`${prefix}step-item-container`}>
                     <div className={`${prefix}step-item-title`}>{title}</div>
                 </div>
