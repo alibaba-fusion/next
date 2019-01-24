@@ -13,6 +13,7 @@ export default class Item extends Component {
         level: PropTypes.number,
         groupIndent: PropTypes.number,
         root: PropTypes.object,
+        menu: PropTypes.any,
         parent: PropTypes.object,
         parentMode: PropTypes.oneOf(['inline', 'popup']),
         type: PropTypes.oneOf(['submenu', 'item']),
@@ -41,8 +42,10 @@ export default class Item extends Component {
     componentDidMount() {
         this.itemNode = findDOMNode(this);
 
-        const { parentMode, root } = this.props;
-        if (parentMode === 'popup') {
+        const { parentMode, root, menu } = this.props;
+        if (menu) {
+            this.menuNode = findDOMNode(menu);
+        } else if (parentMode === 'popup') {
             this.menuNode = this.itemNode.parentNode;
         } else {
             this.menuNode = findDOMNode(root);

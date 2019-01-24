@@ -17,5 +17,6 @@ export default ConfigProvider.config(Cascader, {
         }
 
         return props;
-    }
+    },
+    exportNames: ['setFocusValue']
 });

@@ -538,6 +538,50 @@ export default class Cascader extends Component {
         }
     }
 
+    getFirstFocusKeyByDataSource(dataSource) {
+        if (!dataSource || dataSource.length === 0) {
+            return '';
+        }
+
+        for (let i = 0; i < dataSource.length; i++) {
+            if (dataSource[i] && !dataSource[i].disabled) {
+                return dataSource[i].value;
+            }
+        }
+
+        return '';
+    }
+
+    getFirstFocusKeyByFilteredPaths(filteredPaths) {
+        if (!filteredPaths || filteredPaths.length === 0) {
+            return '';
+        }
+
+        for (let i = 0; i < filteredPaths.length; i++) {
+            const path = filteredPaths[i];
+            if (!path.some(item => item.disabled)) {
+                const lastItem = path[path.length - 1];
+                return lastItem.value;
+            }
+        }
+
+        return '';
+    }
+
+    getFirstFocusKey () {
+        const { dataSource, searchValue, filteredPaths } = this.props;
+
+        return !searchValue ?
+            this.getFirstFocusKeyByDataSource(dataSource) :
+            this.getFirstFocusKeyByFilteredPaths(filteredPaths);
+    }
+
+    setFocusValue() {
+        this.setState({
+            focusedValue: this.getFirstFocusKey()
+        });
+    }
+
     handleFocus(focusedValue) {
         this.setState({
             focusedValue
@@ -593,6 +637,7 @@ export default class Cascader extends Component {
                 useVirtual={useVirtual}
                 className={listClassName}
                 style={listStyle}
+                ref={this.saveMenuRef}
                 focusedKey={focusedValue}
                 onItemFocus={this.handleFocus}
                 onBlur={this.onBlur}
@@ -694,8 +739,14 @@ export default class Cascader extends Component {
 
     renderFilteredList() {
         const { prefix, filteredListStyle, filteredPaths } = this.props;
+        const { focusedValue } = this.state;
         return (
-            <Menu className={`${prefix}cascader-filtered-list`} style={filteredListStyle}>
+            <Menu
+                focusedKey={focusedValue}
+                onItemFocus={this.handleFocus}
+                className={`${prefix}cascader-filtered-list`}
+                style={filteredListStyle}
+            >
                 {filteredPaths.map(path => this.renderFilteredItem(path))}
             </Menu>
         );
