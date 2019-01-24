@@ -1,5 +1,6 @@
+/* eslint-disable valid-jsdoc */
 export function normalizeToArray(keys) {
-    if (keys) {
+    if (keys !== undefined && keys !== null) {
         if (Array.isArray(keys)) {
             return [...keys];
         }
@@ -70,6 +71,7 @@ export function isSiblingOrSelf(currentPos, targetPos) {
     });
 }
 
+// eslint-disable-next-line max-statements
 export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     checkedKeys = normalizeToArray(checkedKeys);
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);
