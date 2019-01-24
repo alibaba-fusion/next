@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {events, func} from '../../util';
+import { events, func, KEYCODE } from '../../util';
 import Balloon from '../../balloon';
-import {getPercent, getPrecision, isEqual, getDragging} from '../utils';
+import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
 import Scale from './scale';
 import Track from './track';
 import Selected from './selected';
@@ -12,14 +12,14 @@ import Slider from './slider';
 import FixedSlider from './fixedSlider';
 
 const Tooltip = Balloon.Tooltip;
-const {noop, bindCtx} = func;
+const { noop, bindCtx } = func;
 
 function _isMultiple(slider, isFixedWidth) {
     return isFixedWidth || slider === 'double';
 }
 
 function LowerSlider(props) {
-    const {hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = props;
+    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = props;
 
     if (_isMultiple(slider)) {
         return hasTip ? (<Tooltip
@@ -29,9 +29,9 @@ function LowerSlider(props) {
                 onVisibleChange: onTooltipVisibleChange,
                 animation: tooltipAnimation
             }}
-            trigger={Slider({...props, value: value[0]})}
+            trigger={Slider({ ...props, value: value[0] })}
             align="t"
-        >{tipRender(`${value[0]}`)}</Tooltip>) : Slider({...props, value: value[0]});
+        >{tipRender(`${value[0]}`)}</Tooltip>) : Slider({ ...props, value: value[0] });
     }
     return null;
 }
@@ -53,8 +53,10 @@ LowerSlider.propTypes = {
 };
 
 function UpperSlider(props) {
-    const {hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = props;
+    const newprop = Object.assign({}, props);
+    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = newprop;
     if (_isMultiple(slider)) {
+        delete newprop.onKeyDown;
         return hasTip ?
             <Tooltip
                 popupContainer={target => target.parentNode}
@@ -63,12 +65,12 @@ function UpperSlider(props) {
                     onVisibleChange: onTooltipVisibleChange,
                     animation: tooltipAnimation
                 }}
-                trigger={Slider({...props, value: value[1]})}
+                trigger={Slider({ ...newprop, value: value[1] })}
                 align="t"
             >
                 {tipRender(value[1])}
             </Tooltip> :
-            Slider({...props, value: value[1]});
+            Slider({ ...newprop, value: value[1] });
     }
     return hasTip ?
         <Tooltip
@@ -82,12 +84,12 @@ function UpperSlider(props) {
                 in: 'fadeInUp',
                 out: 'fadeOutDown'
             }}
-            trigger={Slider(props)}
+            trigger={Slider(newprop)}
             align="t"
         >
             {tipRender(value)}
         </Tooltip> :
-        Slider(props);
+        Slider(newprop);
 }
 
 UpperSlider.propTypes = {
@@ -241,7 +243,7 @@ export default class Range extends React.Component {
 
     constructor(props) {
         super(props);
-        const {min} = props;
+        const { min } = props;
         const initialValue = _isMultiple(props.slider) ? [min, min] : min;
         const defaultValue = ('defaultValue' in props ? props.defaultValue : initialValue);
         const value = (props.value !== undefined ? props.value : defaultValue);
@@ -255,11 +257,11 @@ export default class Range extends React.Component {
             tooltipAnimation: true
         };
 
-        bindCtx(this, ['handleLowerTooltipVisibleChange', 'handleUpperTooltipVisibleChange']);
+        bindCtx(this, ['handleLowerTooltipVisibleChange', 'handleUpperTooltipVisibleChange', 'onKeyDown']);
     }
 
     componentWillReceiveProps(nextProps) {
-        const {min} = this.props;
+        const { min } = this.props;
         const initialValue = _isMultiple(nextProps.slider) ? [min, min] : min;
         if ('value' in nextProps) {
             let value = nextProps.value;
@@ -290,7 +292,7 @@ export default class Range extends React.Component {
     }
 
     _calcScales() {
-        const {min, max, marks} = this.props;
+        const { min, max, marks } = this.props;
         const scales = this._marksToScales(marks);
         // let scales = null;
 
@@ -314,7 +316,7 @@ export default class Range extends React.Component {
     }
 
     _calcMarks() {
-        const {min, max, marks} = this.props;
+        const { min, max, marks } = this.props;
 
         let result = {};
 
@@ -353,8 +355,33 @@ export default class Range extends React.Component {
         }
     }
 
+    onKeyDown(e) {
+        if (e.keyCode === KEYCODE.LEFT_ARROW || e.keyCode === KEYCODE.RIGHT_ARROW) {
+            e.stopPropagation();
+            e.preventDefault();
+            let newValue;
+            if (e.keyCode === KEYCODE.LEFT_ARROW) {
+                newValue = this.state.value - this.props.step;
+            } else {
+                newValue = this.state.value + this.props.step;
+            }
+            if (newValue > this.props.max) {
+                newValue = this.props.max;
+            }
+            if (newValue < this.props.min) {
+                newValue = this.props.min;
+            }
+            if (newValue !== this.state.value) {
+                this.setState({
+                    value: newValue,
+                });
+                this.props.onChange(newValue);
+            }
+        }
+    }
+
     _start(position) {
-        const {tempValue} = this.state;
+        const { tempValue } = this.state;
         const range = this.dom;
         const start = range.getBoundingClientRect().left;
         // used in unit test
@@ -379,8 +406,8 @@ export default class Range extends React.Component {
     }
 
     _end() {
-        const {startValue} = this._moving;
-        const {tempValue, value} = this.state;
+        const { startValue } = this._moving;
+        const { tempValue, value } = this.state;
         this._moving = null;
         this._removeDocumentEvents();
         this.setState({
@@ -411,7 +438,7 @@ export default class Range extends React.Component {
     }
 
     _onProcess(position, start) {
-        const {tempValue} = this.state;
+        const { tempValue } = this.state;
         const current = this._positionToCurrent(position);//current 为当前click的value
 
         if (this.isFixedWidth) {
@@ -475,8 +502,8 @@ export default class Range extends React.Component {
 
     // position => current (value type)
     _positionToCurrent(position) {
-        const {start, end} = this._moving;
-        const {step, min, max} = this.props;
+        const { start, end } = this._moving;
+        const { step, min, max } = this.props;
 
         if (position < start) {
             position = start;
@@ -492,13 +519,13 @@ export default class Range extends React.Component {
     }
 
     _currentToValue(current, preValue, lastPosition, isFixedWidth) {
-        const {dragging} = this._moving;
+        const { dragging } = this._moving;
 
         if (!_isMultiple(this.props.slider, isFixedWidth)) {
             return current;
         } else {
             let result;
-            const {min, max} = this.props;
+            const { min, max } = this.props;
 
             const precision = getPrecision(this.props.step);
             const diff = current - lastPosition;
@@ -558,7 +585,7 @@ export default class Range extends React.Component {
 
         let value = this._moving ? this.state.tempValue : this.state.value;
 
-        const {prefix, min, max, disabled, style, id, slider, reverse, className, marks, marksPosition, hasTip, tipRender, fixedWidth, defaultValue, tooltipVisible} = this.props;
+        const { prefix, min, max, disabled, style, id, slider, reverse, className, marks, marksPosition, hasTip, tipRender, fixedWidth, defaultValue, tooltipVisible } = this.props;
         const classes = classNames({
             [`${prefix}range`]: true,
             disabled: disabled,
@@ -601,15 +628,14 @@ export default class Range extends React.Component {
         return (
             <div ref={(dom) => {
                 this.dom = dom;
-            }} className={classes} id={id} onMouseDown={disabled ? noop : this._onMouseDown.bind(this)}
-            style={style}>
+            }} style={style} className={classes} id={id} onMouseDown={disabled ? noop : this._onMouseDown.bind(this)}>
                 {
                     marks !== false && marksPosition === 'above' ?
-                        <Mark {...commonProps} marks={this._calcMarks()}/> :
+                        <Mark {...commonProps} marks={this._calcMarks()} /> :
                         null
                 }
                 <div className={`${prefix}range-inner`}>
-                    <Scale {...commonProps} scales={this._calcScales()}/>
+                    <Scale {...commonProps} scales={this._calcScales()} />
                     <Track {...commonProps} />
                     {
                         this.isFixedWidth ?
@@ -622,6 +648,7 @@ export default class Range extends React.Component {
                                     onTooltipVisibleChange={this.handleLowerTooltipVisibleChange}
                                     tooltipAnimation={this.state.tooltipAnimation ? { in: 'expandInUp', out: 'expandOutDown' } : false} />
                                 <UpperSlider {...commonProps}
+                                    onKeyDown={this.onKeyDown}
                                     hasMovingClass={this.state.hasMovingClass && this._moving && this._moving.dragging === 'upper'}
                                     tooltipVisible={tooltipVisible || this.state.upperTooltipVisible}
                                     onTooltipVisibleChange={this.handleUpperTooltipVisibleChange}
@@ -632,7 +659,7 @@ export default class Range extends React.Component {
                 </div>
                 {
                     marks !== false && marksPosition === 'below' ?
-                        <Mark {...commonProps} marks={this._calcMarks()}/> :
+                        <Mark {...commonProps} marks={this._calcMarks()} /> :
                         null
                 }
             </div>
