@@ -13,6 +13,10 @@
 
 When we receive a new message, or our app/plugin/module should be update or upgrade.
 
+### Accessibility
+You can add class as below, so that messages will not appear on pages, but can be read by screen reader.
+`<span className="next-visually-hidden">unread messages</span>`
+
 ## API
 
 ### Badge

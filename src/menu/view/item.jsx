@@ -2,7 +2,7 @@ import React, { Component, Children, isValidElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { func, obj } from '../../util';
+import { func, obj, KEYCODE } from '../../util';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
@@ -105,8 +105,19 @@ export default class Item extends Component {
 
     handleKeyDown(e) {
         const { _key, root, type } = this.props;
+
         if (this.focusable()) {
             root.handleItemKeyDown(_key, type, this, e);
+
+            switch (e.keyCode) {
+                case KEYCODE.ENTER: {
+                    if (!(type === 'submenu')) {
+                        this.handleClick(e);
+                    }
+                    break;
+                }
+            }
+
         }
 
         this.props.onKeyDown && this.props.onKeyDown(e);
