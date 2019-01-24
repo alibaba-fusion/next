@@ -186,7 +186,7 @@ class StepItem extends Component {
         }
 
         return (
-            <div {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
+            <div tabIndex="0" aria-current={status === 'process' ? 'step' : null} {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
                 {finalNodeElement}
                 <div className={`${prefix}step-item-body`} ref={this._refHandlerCreator('body')}>
                     <div className={`${prefix}step-item-title`} ref={this._refHandlerCreator('title')}>{title}</div>
@@ -269,7 +269,7 @@ class StepItem extends Component {
 
         const overlayCls = status === 'finish' ? { width: '100%' } : null;
         const arrowElement = (
-            <div {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
+            <div tabIndex="0" aria-current={status === 'process' ? 'step' : null} {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
                 <div className={`${prefix}step-item-container`}>
                     <div className={`${prefix}step-item-title`}>{title}</div>
                 </div>
