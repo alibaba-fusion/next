@@ -393,7 +393,7 @@
     vertical-align: middle;
 
     .#{$css-prefix}icon {
-        color: $upload-card-border-color;
+        color: $upload-card-icon-color;
         @include icon-size($upload-card-add-icon-size);
     }
 
