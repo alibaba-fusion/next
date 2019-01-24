@@ -10,8 +10,6 @@ import { func } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const CardUpload = Upload.Card;
-const DragUpload = Upload.Dragger;
 
 const defaultValue = [
     {
@@ -51,7 +49,7 @@ function triggerUploadEvent(wrapper, done, callback) {
     }
 }
 
-describe('ImageUpload', () => {
+describe('TextUpload', () => {
     let requests;
     let xhr;
 
@@ -66,52 +64,48 @@ describe('ImageUpload', () => {
     });
 
     describe('render', () => {
-        it('should render a imageList upload', () => {
-            const wrapper = mount(<Upload listType="image" defaultValue={[
-                {
-                uid: '0',
-                name: 'IMG.png',
-                state: 'done',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }, {
-                uid: '1',
-                name: 'IMG.png',
-                percent: 50,
-                state: 'uploading',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }, {
-                uid: '2',
-                name: 'IMG.png',
-                state: 'error',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }]} />);
-            assert(wrapper.find('.next-upload-list.next-upload-list-image').length === 1);
-            assert(wrapper.find('.next-upload-list-item').length === 3);
-            ['next-upload-list-item-done', 'next-upload-list-item-uploading', 'next-upload-list-item-error'].forEach(className => {
-                assert(wrapper.find(`.${className}`).length === 1);
-            });
+        it('should render a wrapper upload', () => {
+            const wrapper = mount(<Upload listType="text" defaultValue={defaultValue} />);
+            assert(wrapper.find('.next-upload').length === 1);
+            assert(wrapper.find('.next-upload-list-item').length === 1);
         });
-        it('should render a imageList upload with error msg', () => {
-            const wrapper = mount(<Upload listType="image" defaultValue={[{
-                uid: '2',
+        it('should render a error item without text', () => {
+            const wrapper = mount(<Upload listType="text" defaultValue={[{
                 name: 'IMG.png',
                 state: 'error',
+                size: 1024,
                 url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                errorMsg: 'ErrorText'
             }]} />);
-            assert(wrapper.find('.next-upload-list-item-error-with-msg').length === 1);
+            assert(wrapper.find('.next-upload').length === 1);
             assert(wrapper.find('.next-upload-list-item-error').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-with-text').length === 0);
+        });
+        it('should render a upload item', () => {
+            const wrapper = mount(<Upload listType="text" defaultValue={[{
+                name: 'IMG.png',
+                state: 'uploading',
+                percent: 85,
+                size: 1024,
+                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                errorText: 'error text',
+            }]} />);
+            assert(wrapper.find('.next-upload').length === 1);
+            assert(wrapper.find('.next-upload-list-item-uploading').length === 1);
+        });
+        it('should render a error item with text', () => {
+            const wrapper = mount(<Upload listType="text" defaultValue={[{
+                name: 'IMG.png',
+                state: 'error',
+                size: 1024,
+                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                errorMsg: 'error text',
+            }]} />);
+            assert(wrapper.find('.next-upload').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error').length === 1);
+            assert(wrapper.find('.next-upload-list-item-error-with-msg').length === 1);
             assert(wrapper.find('.next-upload-list-item-error-msg').length === 1);
-            assert(wrapper.find('.next-upload-list-item-error-msg').at(0).text() === 'ErrorText');
-
+            assert(wrapper.find('.next-upload-list-item-error-msg').at(0).text() === 'error text');
         });
     });
+
 });
