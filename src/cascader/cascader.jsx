@@ -311,7 +311,7 @@ export default class Cascader extends Component {
 
         const newValue = [];
         if (flatValue.length) {
-            flatValue = flatValue.reverse();
+            // flatValue = flatValue.reverse(); TODO 后续检测大数据性能问题
             const ps = Object.keys(this._p2n);
             for (let i = 0; i < flatValue.length; i++) {
                 const pos = this.getPos(flatValue[i]);
