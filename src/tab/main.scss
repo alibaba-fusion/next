@@ -33,7 +33,9 @@
         display: inline-block;
         position: relative;
         transition: all .4s $ease-out-quint;
-
+        list-style: none;
+        padding: 0;
+        margin: 0;
         &-enter,
         &-appear {
             animation: fadeInLeft .4s cubic-bezier(.78, .14, .15, .86);
@@ -73,6 +75,9 @@
             $tab-close-icon-color-selected,
             $tab-close-icon-color-disabled
         );
+    }
+    &-tab:focus {
+        outline: none;
     }
 
     &-tabpane {
