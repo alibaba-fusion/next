@@ -301,4 +301,28 @@ describe('Range ', () => {
         assert(RangeInstance.dom.querySelector('.next-balloon-tooltip') !== null);
     });
 
+    it('keymove right', () => {
+        const aSpy = sinon.spy();
+        const wrapper = mount(<Range defaultValue={2} hasTip onChange={aSpy} />);
+
+        wrapper.find('.next-range-slider').simulate('keyDown', {keyCode: 39});
+        assert(aSpy.called);
+    });
+
+    it('keymove left', () => {
+        const aSpy = sinon.spy();
+        const wrapper = mount(<Range defaultValue={2} hasTip onChange={aSpy} />);
+
+        wrapper.find('.next-range-slider').simulate('keyDown', {keyCode: 37});
+        assert(aSpy.called);
+    });
+
+    it('keymove right at rightmost', () => {
+        const aSpy = sinon.spy();
+        const wrapper = mount(<Range defaultValue={100} min={1} max={100} hasTip onChange={aSpy} />);
+
+        wrapper.find('.next-range-slider').simulate('keyDown', {keyCode: 39});
+        assert(!aSpy.called);
+    });
+
 });
