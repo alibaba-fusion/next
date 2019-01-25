@@ -34,7 +34,7 @@ const test = function (node, cb, options = {}) {
 
         if (results.violations.length) {
             // eslint-disable-next-line no-console
-            console.error(results.violations);
+            console.error(JSON.stringify(results.violations));
         }
 
         assert(results.violations.length === 0);
