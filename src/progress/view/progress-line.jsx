@@ -47,7 +47,6 @@ export default class Line extends React.PureComponent {
         return (
             <div
                 dir={rtl ? 'rtl' : undefined}
-                tabIndex="0"
                 role="progressbar"
                 aria-valuenow={percent}
                 aria-valuemin="0"
