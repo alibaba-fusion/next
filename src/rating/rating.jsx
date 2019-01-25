@@ -364,7 +364,7 @@ export default class Rating extends Component {
         };
 
         return (
-            <div {...others} className={ratingCls} onKeyDown={this.onKeyDown} tabIndex="0">
+            <div id={id ? id : null} {...others} className={ratingCls} onKeyDown={this.onKeyDown} tabIndex="0">
                 <div className={baseCls} {...finalProps}>
                     <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)}>{underlay}</div>
                     <div className={`${prefix}rating-overlay`} style={overlayStyle}>
