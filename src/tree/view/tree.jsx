@@ -4,7 +4,14 @@ import cx from 'classnames';
 import ConfigProvider from '../../config-provider';
 import { func, dom, obj } from '../../util';
 import TreeNode from './tree-node';
-import { normalizeToArray, isDescendantOrSelf, isSiblingOrSelf, filterChildKey, filterParentKey, getAllCheckedKeys } from './util';
+import {
+    normalizeToArray,
+    isDescendantOrSelf,
+    isSiblingOrSelf,
+    filterChildKey,
+    filterParentKey,
+    getAllCheckedKeys
+} from './util';
 
 const { bindCtx } = func;
 const { getOffset } = dom;
@@ -64,7 +71,7 @@ class Tree extends Component {
          */
         checkedKeys: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string),
-            PropTypes.object,
+            PropTypes.object
         ]),
         /**
          * （用于非受控）默认勾选复选框节点 key 的数组
@@ -450,6 +457,7 @@ class Tree extends Component {
         });
     }
 
+    // eslint-disable-next-line max-statements
     handleCheck(check, key, node) {
         const { checkStrictly, checkedStrategy, onCheck } = this.props;
         const checkedKeys = [...this.state.checkedKeys];
