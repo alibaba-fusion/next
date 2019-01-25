@@ -171,7 +171,7 @@ class Select extends Base {
             searchValue: 'searchValue' in props ? props.searchValue : '',
         });
 
-        // For cache choosen value
+        // because dataSource maybe updated while select a item, so we should cache choosen value's item
         this.valueDataSource = {
             valueDS: [],    // [{value,label}]
             mapValueDS: {}  // {value: {value,label}}
@@ -222,8 +222,10 @@ class Select extends Base {
         if ('value' in nextProps) {
             // under controll
             this.valueDataSource = getValueDataSource(nextProps.value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
-        } else if ('defaultValue' in nextProps && (nextProps.children !== this.props.children || nextProps.dataSource !== this.props.dataSource)) {
-            //has defaultValue and dataSource changed
+        } else if ('defaultValue' in nextProps &&
+            nextProps.defaultValue === this.valueDataSource.value &&
+            (nextProps.children !== this.props.children || nextProps.dataSource !== this.props.dataSource)) {
+            //has defaultValue and value not changed and dataSource changed
             this.valueDataSource = getValueDataSource(nextProps.defaultValue, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
         }
 
@@ -328,7 +330,7 @@ class Select extends Base {
 
         const { cacheValue, mode, hiddenSelected } = this.props;
 
-        // 非受控更新缓存map
+        // cache those value maybe not exists in dataSource
         if (cacheValue || mode === 'tag') {
             this.valueDataSource = itemObj;
         }
@@ -569,7 +571,11 @@ class Select extends Base {
 
         // get detail value
         if (!this.useDetailValue()) {
-            value = this.valueDataSource.valueDS;
+            if (value === this.valueDataSource.value) {
+                value = this.valueDataSource.valueDS;
+            } else {
+                value = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS()).valueDS;
+            }
         }
 
         if (mode === 'single') {
@@ -617,7 +623,10 @@ class Select extends Base {
     handleArrowClick = (e) => {
         e.preventDefault();
         this.focusInput();
-        this.setVisible(!this.state.visible);
+
+        // because of can not close Popup by click Input while hasSearch.
+        // so when Popup open and hasSearch, we should close Popup intentionally
+        this.state.visible && this.hasSearch() && this.setVisible(false);
     }
 
     handleClear = e => {
@@ -793,7 +802,7 @@ class Select extends Base {
         const { mode } = this.props;
         const props = { ...this.props };
 
-        // 搜索的时候不允许回车触发关闭
+        // forbid to close Popup by click Input while hasSearch
         if (this.hasSearch()) {
             props.canCloseByTrigger = false;
         }

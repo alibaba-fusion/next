@@ -10,11 +10,14 @@ import { events } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const noop = () => {};
+const floatRight = { float: 'right' };
+const floatLeft = { float: 'left' };
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         animation: PropTypes.bool,
         activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         excessMode: PropTypes.string,
@@ -362,7 +365,7 @@ class Nav extends React.Component {
     }
 
     render() {
-        const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className } = this.props;
+        const { prefix, tabPosition, excessMode, extra, onKeyDown, animation, style, className, rtl } = this.props;
         const state = this.state;
 
         let nextButton;
@@ -440,7 +443,8 @@ class Nav extends React.Component {
                 key: 'nav-extra',
             };
             if (tabPosition === 'top' || tabPosition === 'bottom') {
-                navChildren.unshift(<div {...extraProps}>{extra}</div>);
+                const style = rtl ? floatLeft : floatRight;
+                navChildren.unshift(<div {...extraProps} style={style}>{extra}</div>);
             } else {
                 navChildren.push(<div {...extraProps}>{extra}</div>);
             }

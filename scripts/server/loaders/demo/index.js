@@ -45,10 +45,11 @@ module.exports = function(content) {
     });
 
     const result = parseMD(content, resourcePath, lang, dir);
-    return processJS(result.js, result.css, result.meta.desc, result.body, resourcePath, this.context, dir);
+    return processJS(result.js, result.css, result.meta.desc, result.body, resourcePath, this.context, dir, options);
 };
 
-function processJS(js, css, desc, body, resourcePath, context, dir) {
+function processJS(js, css, desc, body, resourcePath, context, dir, options) {
+    const { devA11y } = options;
     if (!js) {
         return '';
     }
@@ -83,8 +84,16 @@ if (module.hot) {
     });
   }
 }`;
+    let reactAxe;
+    if (devA11y) {
+        reactAxe = `
+            // Load react-axe library for a11y testing during development
+            import Axe from 'react-axe';
+            Axe(React, ReactDOM, 1000);
+            `;
+    }
 
-    return `${css ? getCSSRequireString(resourcePath, context) : ''}${js}${hotReloadCode}`;
+    return `${css ? getCSSRequireString(resourcePath, context) : ''}${js}${hotReloadCode}${reactAxe}`;
 }
 
 function getCSSRequireString(resourcePath, context) {

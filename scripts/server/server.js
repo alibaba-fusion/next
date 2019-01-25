@@ -34,6 +34,7 @@ const port = parseInt(argv.port, 10);
 const componentName = argv._[0];
 const componentPath = path.join(process.cwd(), 'docs', componentName);
 const disableAnimation = argv['disable-animation'];
+const devA11y = argv.a11y;
 
 choosePort(host, port).then(tryToRun);
 
@@ -53,7 +54,8 @@ function run(port) {
         componentPath,
         disableAnimation,
         lang,
-        dir
+        dir,
+        devA11y
     });
     const compiler = webpack(config);
 
@@ -75,7 +77,7 @@ function run(port) {
     });
 
     const url = `http://${host}:${port}/${componentName}`;
-    logger.warn(`Start server, listen to ${url}.`);
+    logger.warn(`Start server, listen to ${url}`);
 
     const server = new WebpackDevServer(compiler, {
         disableHostCheck: true,

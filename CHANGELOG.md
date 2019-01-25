@@ -1,4 +1,45 @@
-# Change Log
+# Change Log 
+
+<a name="1.11.11"></a>
+## [1.11.11](https://github.com/alibaba-fusion/next/compare/1.11.10...1.11.11) (2019-01-22)
+
+
+### Bug Fixes
+
+* **Form:** no need form-element-large-size in form ([08420c6](https://github.com/alibaba-fusion/next/commit/08420c6))
+* **NumberPicker:** value set to min while next value < min by click + ([6863b9f](https://github.com/alibaba-fusion/next/commit/6863b9f))
+* **Select:** double trigger onVisibleChange while click arrow ([20f2e1c](https://github.com/alibaba-fusion/next/commit/20f2e1c))
+
+
+
+
+<a name="1.11.10"></a>
+## [1.11.10](https://github.com/alibaba-fusion/next/compare/1.11.9...1.11.10) (2019-01-17)
+
+
+### Bug Fixes
+
+* **Loading:** block style ([7e9ea48](https://github.com/alibaba-fusion/next/commit/7e9ea48))
+* **Loading:** tests for inline class ([da1c10a](https://github.com/alibaba-fusion/next/commit/da1c10a))
+* **Tab:** add float right ([11f6d99](https://github.com/alibaba-fusion/next/commit/11f6d99))
+* **Tab:** rtl support ([2151ee8](https://github.com/alibaba-fusion/next/commit/2151ee8))
+
+
+
+
+<a name="1.11.9"></a>
+## [1.11.9](https://github.com/alibaba-fusion/next/compare/1.11.8...1.11.9) (2019-01-16)
+
+
+### Bug Fixes
+
+* **Loading:** fix fullscreen in demo ([6378cc0](https://github.com/alibaba-fusion/next/commit/6378cc0))
+* **Nav:** overflow when icon-only without icon ([6b28cee](https://github.com/alibaba-fusion/next/commit/6b28cee))
+* **Slider:** can swipe vertical & width 100% invertical ([3998ec2](https://github.com/alibaba-fusion/next/commit/3998ec2))
+* **Tab:** extra align middle by default ([3f38491](https://github.com/alibaba-fusion/next/commit/3f38491))
+
+
+
 
 <a name="1.11.8"></a>
 ## [1.11.8](https://github.com/alibaba-fusion/next/compare/1.11.7...1.11.8) (2019-01-09)

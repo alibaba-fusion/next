@@ -56,6 +56,10 @@ class Loading extends React.Component {
          * 子元素
          */
         children: PropTypes.any,
+        /**
+         * should loader be displayed inline
+         */
+        inline: PropTypes.bool
     };
 
     static defaultProps = {
@@ -65,6 +69,7 @@ class Loading extends React.Component {
         animate: null,
         tipAlign: 'bottom',
         size: 'large',
+        inline: true
     };
 
     render() {
@@ -80,7 +85,8 @@ class Loading extends React.Component {
             fullScreen,
             onVisibleChange,
             tipAlign,
-            size
+            size,
+            inline
         } = this.props;
 
         let indicatorDom = null;
@@ -105,6 +111,7 @@ class Loading extends React.Component {
         const loadingCls = classNames({
             [`${prefix}loading`]: true,
             [`${prefix}open`]: visible,
+            [`${prefix}loading-inline`]: inline,
             [className]: className
         });
 

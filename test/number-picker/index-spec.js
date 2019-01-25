@@ -200,6 +200,24 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should be equal min while next value < min by click +', (done) => {
+            let onChange = (value) => {
+                assert(value === 30);
+                done();
+            }, wrapper = mount(<NumberPicker defaultValue={5} min={30} step={3} onChange={onChange}/>);
+
+            wrapper.find('button').at(0).simulate('click');
+        });
+
+        it('should be equal max while next value > max by click -', (done) => {
+            let onChange = (value) => {
+                assert(value === 30);
+                done();
+            }, wrapper = mount(<NumberPicker defaultValue={205} max={30} step={3} onChange={onChange}/>);
+
+            wrapper.find('button').at(1).simulate('click');
+        });
+
         it('should support precision', (done) => {
             let wrapper = mount(<NumberPicker defaultValue={0.121}  step={0.01} precision={3} />);
 

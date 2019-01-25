@@ -39,6 +39,7 @@ export default {
         second: '秒'
     },
     Dialog: {
+        close: '關閉',
         ok: '確認',
         cancel: '取消'
     },

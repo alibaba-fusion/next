@@ -72,8 +72,8 @@ class App extends React.Component {
             <Table dataSource={this.state.dataSource}
                 isZebra={this.state.isZebra}
                 hasBorder={this.state.hasBorder}>
-                <Table.Column title="Id" dataIndex="id"  align={this.state.align}/>
-                <Table.Column title="Title" dataIndex="title" className={this.state.className}/>
+                <Table.Column title="Id" dataIndex="id"  alignHeader="center"/>
+                <Table.Column title="Title" dataIndex="title" align={this.state.align}  className={this.state.className}/>
                 <Table.Column title="Time" dataIndex="time"/>
                 <Table.Column cell={render} width={200}/>
             </Table>

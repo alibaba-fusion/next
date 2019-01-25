@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.11.8",
+  "version": "1.11.11",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -81,6 +81,7 @@
     "@no-repeat/sassdoc-parser": "^0.0.11",
     "@octokit/rest": "^15.15.1",
     "autoprefixer": "^7.1.4",
+    "axe-core": "^3.1.2",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.0.0",
@@ -139,6 +140,7 @@
     "power-assert": "^1.5.0",
     "promise-polyfill": "^8.1.0",
     "react": "^16.0.0",
+    "react-axe": "^3.0.2",
     "react-copy-to-clipboard": "^5.0.1",
     "react-cropper": "^1.0.0",
     "react-dev-utils": "^4.2.1",

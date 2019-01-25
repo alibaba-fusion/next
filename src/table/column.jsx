@@ -36,6 +36,10 @@ export default class Column extends React.Component {
          */
         align: PropTypes.oneOf(['left', 'center', 'right']),
         /**
+         * 单元格标题的对齐方式, 不配置默认读取align值
+         */
+        alignHeader: PropTypes.oneOf(['left', 'center', 'right']),
+        /**
          * 生成标题过滤的菜单, 格式为`[{label:'xxx', value:'xxx'}]`
          */
         filters: PropTypes.arrayOf(PropTypes.shape({
