@@ -197,8 +197,8 @@ export default class Rating extends Component {
     }
 
     onKeyDown(e) {
-        const { hoverValue, value } = this.state;
         const { disabled } = this.props;
+        const { hoverValue, value } = this.state;
         if (supportKeys.indexOf(e.keyCode) < 0 || disabled) {
             return;
         }
