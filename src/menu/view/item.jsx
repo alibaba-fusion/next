@@ -13,6 +13,7 @@ export default class Item extends Component {
         level: PropTypes.number,
         groupIndent: PropTypes.number,
         root: PropTypes.object,
+        menu: PropTypes.any,
         parent: PropTypes.object,
         parentMode: PropTypes.oneOf(['inline', 'popup']),
         type: PropTypes.oneOf(['submenu', 'item']),
@@ -41,8 +42,10 @@ export default class Item extends Component {
     componentDidMount() {
         this.itemNode = findDOMNode(this);
 
-        const { parentMode, root } = this.props;
-        if (parentMode === 'popup') {
+        const { parentMode, root, menu } = this.props;
+        if (menu) {
+            this.menuNode = findDOMNode(menu);
+        } else if (parentMode === 'popup') {
             this.menuNode = this.itemNode.parentNode;
         } else {
             this.menuNode = findDOMNode(root);
@@ -128,7 +131,7 @@ export default class Item extends Component {
 
         const loop = children => {
             Children.forEach(children, child => {
-                if (isValidElement(child) &&  child.props.children) {
+                if (isValidElement(child) && child.props.children) {
                     loop(child.props.children);
                 } else if (typeof child === 'string') {
                     labelString += child;
@@ -142,7 +145,19 @@ export default class Item extends Component {
     }
 
     render() {
-        const { level, root, replaceClassName, groupIndent, component, disabled, className, children, needIndent, parentMode, _key } = this.props;
+        const {
+            level,
+            root,
+            replaceClassName,
+            groupIndent,
+            component,
+            disabled,
+            className,
+            children,
+            needIndent,
+            parentMode,
+            _key
+        } = this.props;
         const others = pickOthers(Object.keys(Item.propTypes), this.props);
 
         const { prefix, focusable, inlineIndent, itemClassName, rtl } = root.props;
@@ -161,10 +176,12 @@ export default class Item extends Component {
 
         others.tabIndex = root.tabbableKey === _key ? '0' : '-1';
 
+
         if (parentMode === 'inline' && level > 1 && inlineIndent > 0 && needIndent) {
+            const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [rtl ? 'paddingRight' : 'paddingLeft']: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
+                [paddingProp]: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
             };
         }
         const TagName = component;
