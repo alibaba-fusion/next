@@ -26,3 +26,4 @@ Rating component is usually used for customer feedback.
 | onChange     | callback function on click star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
 | onHoverChange     | callback function on hover star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
 | disabled     | disabled rate or not                                                                                               | Boolean  | false     |
+| readAs        | make sense when you set id and enable accessibility<br><br>**signatures**:<br>Function() => void                                                | Function | val => val |
