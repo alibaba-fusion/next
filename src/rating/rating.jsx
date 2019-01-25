@@ -216,7 +216,7 @@ export default class Rating extends Component {
                 } else {
                     changingValue = 1;
                 }
-                this.setState({ hoverValue: changingValue });
+                this.handleChecked(changingValue);
                 break;
             case UP:
             case LEFT:
@@ -225,22 +225,18 @@ export default class Rating extends Component {
                 } else {
                     changingValue = count;
                 }
-                this.setState({ hoverValue: changingValue });
+                this.handleChecked(changingValue);
                 break;
             case ENTER:
                 this.props.onChange(changingValue);
                 this.setState({ value: changingValue, hoverValue: changingValue });
-                break;
-            default:
                 break;
         }
         return !onKeyDown || onKeyDown(e);
     }
 
     handleChecked(index) {
-        this.setState({
-            hoverValue: index
-        });
+        this.setState({hoverValue: index});
     }
 
     handleClick(e) {
@@ -312,7 +308,7 @@ export default class Rating extends Component {
                 overlay.push(
                     <input
                         id={`${id}-${prefix}star${i + 1}`}
-                        key={`input-${i}`} className="visually-hidden" aria-checked={(i + 1) === parseInt(hoverValue)}
+                        key={`input-${i}`} className={`${prefix}visually-hidden`} aria-checked={(i + 1) === parseInt(hoverValue)}
                         checked={(i + 1) === parseInt(hoverValue)}
                         onChange={this.handleChecked.bind(this, i + 1)}
                         type="radio" name="rating"
@@ -323,7 +319,7 @@ export default class Rating extends Component {
                 <label key={`overlay-${i}`}
                     htmlFor={`${id}-${prefix}star${i + 1}`} className={`${prefix}rating-icon`}>
                     {iconNode}
-                    <span className="visually-hidden">{`${i + 1} ${i > 0 ? 'Stars' : 'Star'}`}</span>
+                    <span className={`${prefix}visually-hidden`}>{`${i + 1} ${i > 0 ? 'Stars' : 'Star'}`}</span>
                 </label>
             );
         }

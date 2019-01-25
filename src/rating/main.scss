@@ -156,14 +156,3 @@
 #{$rating-prefix}-large {
     @include rating-size($rating-large-icon-size, $rating-large-font-size, $rating-large-text-margin-left);
 }
-
-.visually-hidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-}

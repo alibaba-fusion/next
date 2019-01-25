@@ -79,7 +79,6 @@ describe('Rating', () => {
         afterEach(() => {
             document.body.removeChild(parent);
             parent = null;
-            null;
             rect = null;
             onChange = null;
             onHoverChange = null;
