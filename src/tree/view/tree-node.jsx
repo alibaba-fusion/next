@@ -260,7 +260,9 @@ export default class TreeNode extends Component {
 
     handleKeyDown(e) {
         const { _key, root, disabled } = this.props;
-        if (disabled) return;
+        if (disabled) {
+            return;
+        }
 
         if (this.focusable()) {
             root.handleItemKeyDown(_key, this, e);

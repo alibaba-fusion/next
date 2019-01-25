@@ -23,7 +23,7 @@ const starMap = {
     3: 'Good',
     4: 'Great',
     5: 'Perfect'
-}
+};
 ReactDOM.render(<div>
     <Rating
         id="rating-a11y-1"
