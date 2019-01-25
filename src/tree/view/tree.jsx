@@ -420,7 +420,7 @@ class Tree extends Component {
 
     handleExpand(expand, key, node) {
         const { onExpand, loadData } = this.props;
-        const expandedKeys = [...this.state.expandedKeys];
+        const expandedKeys = this.state.expandedKeys; // 由于setState 是异步操作，所以去掉 [...this.state.expandedKeys]
         this.processKey(expandedKeys, key, expand);
         const setExpandedState = () => {
             if (!('expandedKeys' in this.props)) {
