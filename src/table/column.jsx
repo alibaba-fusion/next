@@ -36,7 +36,7 @@ export default class Column extends React.Component {
          */
         align: PropTypes.oneOf(['left', 'center', 'right']),
         /**
-         * 单元格标题的对齐方式
+         * 单元格标题的对齐方式, 不配置默认读取align值
          */
         alignHeader: PropTypes.oneOf(['left', 'center', 'right']),
         /**
