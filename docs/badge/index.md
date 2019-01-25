@@ -14,6 +14,7 @@
 在有新消息、讯息时，或者是app/插件/功能模块可以更新、升级时使用这个组件。
 
 ### 无障碍
+
 可通过添加如下class，使内容仅能被读屏软件读取，但不会展示到页面上
 `<span className="next-visually-hidden">unread messages</span>`
 

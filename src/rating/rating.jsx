@@ -57,11 +57,16 @@ export default class Rating extends Component {
          * 是否禁用
          */
         disabled: PropTypes.bool,
+        /**
+         * 传入id支持无障碍时，参数才有意义
+         */
+        readAs: PropTypes.func,
         // 实验属性: 自定义评分icon
         iconType: PropTypes.string,
         // 实验属性: 开启 `-webkit-text-stroke` 显示边框颜色，在IE中无效
         strokeMode: PropTypes.bool,
-        className: PropTypes.string
+        className: PropTypes.string,
+        id: PropTypes.string,
     };
 
     static defaultProps = {
@@ -71,6 +76,7 @@ export default class Rating extends Component {
         count: 5,
         showGrade: false,
         defaultValue: 0,
+        readAs: val => val,
         allowHalf: false,
         iconType: 'favorites-filling',
         onChange: noop,
@@ -278,7 +284,7 @@ export default class Rating extends Component {
     }
 
     render() {
-        const { id, prefix, className, showGrade, count, size, iconType, strokeMode, disabled} = this.props;
+        const { id, prefix, className, showGrade, count, size, iconType, strokeMode, disabled, readAs} = this.props;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const {hoverValue, clicked} = this.state;
         const underlay = [], overlay = [];
@@ -308,18 +314,22 @@ export default class Rating extends Component {
                 overlay.push(
                     <input
                         id={`${id}-${prefix}star${i + 1}`}
-                        key={`input-${i}`} className={`${prefix}visually-hidden`} aria-checked={(i + 1) === parseInt(hoverValue)}
+                        key={`input-${i}`}
+                        className={`${prefix}visually-hidden`}
+                        aria-checked={(i + 1) === parseInt(hoverValue)}
                         checked={(i + 1) === parseInt(hoverValue)}
                         onChange={this.handleChecked.bind(this, i + 1)}
-                        type="radio" name="rating"
+                        type="radio"
+                        name="rating"
                     />
                 );
             }
+
             overlay.push(
                 <label key={`overlay-${i}`}
-                    htmlFor={`${id}-${prefix}star${i + 1}`} className={`${prefix}rating-icon`}>
+                    htmlFor={enableA11y ? `${id}-${prefix}star${i + 1}` : null} className={`${prefix}rating-icon`}>
                     {iconNode}
-                    <span className={`${prefix}visually-hidden`}>{`${i + 1} ${i > 0 ? 'Stars' : 'Star'}`}</span>
+                    {enableA11y ? <span className={`${prefix}visually-hidden`}>{readAs(i + 1)}</span> : null}
                 </label>
             );
         }
@@ -358,7 +368,7 @@ export default class Rating extends Component {
                 <div className={baseCls} {...finalProps}>
                     <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)}>{underlay}</div>
                     <div className={`${prefix}rating-overlay`} style={overlayStyle}>
-                        <form action="#" aria-label="Rating" id={`${prefix}star_rating`} role="rating" aria-activedescendant={`${prefix}star`}>
+                        <form action="#">
                             {overlay}
                         </form>
                     </div>
