@@ -39,6 +39,7 @@ export default {
         second: 'S'
     },
     Dialog: {
+        close: 'Close',
         ok: 'OK',
         cancel: 'Cancel'
     },

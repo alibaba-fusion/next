@@ -131,6 +131,7 @@ ReactDOM.render(
 | sortable   | whether to support sorting                                                | Boolean                         | -                |
 | width      | width of column，width needs to be set in lock style                                  | Number/String                   | -                |
 | align      | alignment of cell<br><br>**options**:<br>'left', 'center', 'right' | Enum                            | -                |
+| alignHeader | alignment of header cell, value of align by default<br><br>**options**:<br>'left', 'center', 'right'                                             | Enum                            | -                |
 | filters    | generates a title filter menu in the format `[{label:'xxx', value:'xxx'}]`         | Array&lt;Object>                | -                |
 | filterMode | whether the filtering mode is single or multiple selection<br><br>**options**:<br>'single', 'multiple'  | Enum                            | 'multiple'       |
 | lock       | whether the lock column is supported, the options are `left`, `right`, `true`                    | Boolean/String                  | -                |

@@ -132,18 +132,19 @@ ReactDOM.render(
 
 ### Table.Column
 
-| 参数         | 说明                                                                                                  | 类型                              | 默认值              |
-| ---------- | --------------------------------------------------------------------------------------------------- | ------------------------------- | ---------------- |
-| dataIndex  | 指定列对应的字段，支持`a.b`形式的快速取值                                                                             | String                          | -                |
-| cell       | 行渲染的逻辑<br>value, rowIndex, record, context四个属性只可读不可被更改<br>Function(value, index, record) => Element | ReactElement/ReactNode/Function | (value) => value |
-| title      | 表头显示的内容<br>value, rowIndex, record, context四个属性只可读不可被更改                                             | ReactElement/ReactNode/Function | -                |
-| sortable   | 是否支持排序                                                                                              | Boolean                         | -                |
-| width      | 列宽，注意在锁列的情况下一定需要配置宽度                                                                                | Number/String                   | -                |
-| align      | 单元格的对齐方式<br><br>**可选值**:<br>'left', 'center', 'right'                                               | Enum                            | -                |
-| filters    | 生成标题过滤的菜单, 格式为`[{label:'xxx', value:'xxx'}]`                                                        | Array&lt;Object>                | -                |
-| filterMode | 过滤的模式是单选还是多选<br><br>**可选值**:<br>'single', 'multiple'                                                | Enum                            | 'multiple'       |
-| lock       | 是否支持锁列,可选值为`left`,`right`, `true`                                                                   | Boolean/String                  | -                |
-| resizable  | 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.                                                            | Boolean                         | false            |
+| 参数          | 说明                                                                                                  | 类型                              | 默认值              |
+| ----------- | --------------------------------------------------------------------------------------------------- | ------------------------------- | ---------------- |
+| dataIndex   | 指定列对应的字段，支持`a.b`形式的快速取值                                                                             | String                          | -                |
+| cell        | 行渲染的逻辑<br>value, rowIndex, record, context四个属性只可读不可被更改<br>Function(value, index, record) => Element | ReactElement/ReactNode/Function | (value) => value |
+| title       | 表头显示的内容<br>value, rowIndex, record, context四个属性只可读不可被更改                                             | ReactElement/ReactNode/Function | -                |
+| sortable    | 是否支持排序                                                                                              | Boolean                         | -                |
+| width       | 列宽，注意在锁列的情况下一定需要配置宽度                                                                                | Number/String                   | -                |
+| align       | 单元格的对齐方式<br><br>**可选值**:<br>'left', 'center', 'right'                                               | Enum                            | -                |
+| alignHeader | 单元格标题的对齐方式, 不配置默认读取align值<br><br>**可选值**:<br>'left', 'center', 'right'                              | Enum                            | -                |
+| filters     | 生成标题过滤的菜单, 格式为`[{label:'xxx', value:'xxx'}]`                                                        | Array&lt;Object>                | -                |
+| filterMode  | 过滤的模式是单选还是多选<br><br>**可选值**:<br>'single', 'multiple'                                                | Enum                            | 'multiple'       |
+| lock        | 是否支持锁列,可选值为`left`,`right`, `true`                                                                   | Boolean/String                  | -                |
+| resizable   | 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.                                                            | Boolean                         | false            |
 
 ### Table.ColumnGroup
 

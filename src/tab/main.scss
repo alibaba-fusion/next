@@ -390,6 +390,36 @@
             }
         }
     }
+
+    &-pure > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+    }
+
+    &-capsule > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+    }
+
+    &-text > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+    }
 }
 
 @import "./rtl.scss";
