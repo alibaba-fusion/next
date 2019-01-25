@@ -55,7 +55,7 @@ export default class Header extends React.Component {
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
                 /* eslint-disable no-unused-vars, prefer-const */
-                let { title, colSpan, sortable, resizable, dataIndex, filters, filterMode, width, align, className, __normalized, lock, ...others } = col;
+                let { title, colSpan, sortable, resizable, dataIndex, filters, filterMode, width, align, alignHeader, className, __normalized, lock, ...others } = col;
 
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
@@ -95,7 +95,7 @@ export default class Header extends React.Component {
                     pure={pure}
                     cell={title}
                     component="th"
-                    align={align}
+                    align={alignHeader ? alignHeader : align}
                     className={className}
                     ref={this.getCellRef.bind(this, index, j)}
                     type="header">

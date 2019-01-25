@@ -16,7 +16,7 @@ export default class GroupListRow extends Row {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, rowIndex, record, children, primaryKey, colGroup, cellRef, getCellProps, ...others } = this.props;
+        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, rowIndex, record, children, primaryKey, colGroup, cellRef, getCellProps, locale, ...others } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
             [className]: className
