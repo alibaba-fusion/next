@@ -101,11 +101,11 @@ export default class Inner extends Component {
     }
 
     renderCloseLink() {
-        const { prefix, closeable, onClose } = this.props;
+        const { prefix, closeable, onClose, locale } = this.props;
 
         if (closeable) {
             return (
-                <a role="button" href="javascript:;" className={`${prefix}dialog-close`}
+                <a role="button" aria-label={locale.close} href="javascript:;" className={`${prefix}dialog-close`}
                     onClick={onClose}>
                     <Icon className={`${prefix}dialog-close-icon`} type="close" />
                 </a>
