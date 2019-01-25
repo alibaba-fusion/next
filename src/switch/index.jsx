@@ -146,7 +146,7 @@ class Switch extends React.Component {
         }
 
         return (
-            <div {...others} className={classes} {...attrs} aria-checked={this.state.checked}>
+            <div role="switch" tabIndex="0" {...others} className={classes} {...attrs} aria-checked={this.state.checked}>
                 <div className={`${this.props.prefix}switch-children`}>{children}</div>
             </div>
         );

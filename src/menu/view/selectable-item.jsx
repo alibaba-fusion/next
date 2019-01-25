@@ -68,7 +68,7 @@ export default class SelectableItem extends Component {
     }
 
     handleKeyDown(e) {
-        if (e.keyCode === KEYCODE.SPACE) {
+        if (e.keyCode === KEYCODE.SPACE && !this.props.disabled) {
             this.handleSelect(e);
         }
 

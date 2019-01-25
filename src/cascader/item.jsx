@@ -19,6 +19,7 @@ export default class CascaderMenuItem extends Component {
         onSelect: PropTypes.func,
         expanded: PropTypes.bool,
         canExpand: PropTypes.bool,
+        menu: PropTypes.any,
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
         onExpand: PropTypes.func,
         onFold: PropTypes.func,
@@ -74,7 +75,7 @@ export default class CascaderMenuItem extends Component {
 
     handleKeyDown(e) {
         if (!this.props.disabled) {
-            if (e.keyCode === KEYCODE.RIGHT || e.keyCODE === KEYCODE.ENTER) {
+            if (e.keyCode === KEYCODE.RIGHT || e.keyCode === KEYCODE.ENTER) {
                 if (this.props.canExpand) {
                     this.handleExpand(true);
                 }
@@ -87,7 +88,7 @@ export default class CascaderMenuItem extends Component {
     }
 
     render() {
-        const { prefix, className, disabled, selected, onSelect, expanded, canExpand, expandTriggerType,
+        const { prefix, className, menu, disabled, selected, onSelect, expanded, canExpand, expandTriggerType,
             checkable, checked, indeterminate, checkboxDisabled, onCheck, children } = this.props;
         const others = pickOthers(Object.keys(CascaderMenuItem.propTypes), this.props);
         const { loading } = this.state;
@@ -99,6 +100,7 @@ export default class CascaderMenuItem extends Component {
                 [className]: !!className
             }),
             disabled,
+            menu,
             onKeyDown: this.handleKeyDown,
             role: 'option',
             'aria-expanded': expanded,
@@ -130,8 +132,14 @@ export default class CascaderMenuItem extends Component {
                 {children}
                 {canExpand ? (
                     loading ?
-                        <Icon className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-loading`} type="loading" /> :
-                        <Icon className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-expand`} type="arrow-right" />) :
+                        <Icon
+                            className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-loading`}
+                            type="loading"
+                        /> :
+                        <Icon
+                            className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-expand`}
+                            type="arrow-right"
+                        />) :
                     null}
             </Item>
         );

@@ -3,6 +3,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
+import { KEYCODE } from '../../src/util';
 import CascaderSelect from '../../src/cascader-select';
 import '../../src/cascader-select/style.js';
 
@@ -239,6 +240,19 @@ describe('CascaderSelect', () => {
 
         // assert.deepEqual(getLabels(wrapper), ['西安市', '高陵县']);
     });
+
+    it('should support keyborad', done => {
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} />);
+        wrapper.find('.next-select').simulate('click');
+        setTimeout(() => {
+            let cascader = document.querySelectorAll('.next-cascader');
+            cascader = cascader[cascader.length - 1];
+            assert(cascader);
+            wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(document.activeElement === findRealItem(cascader, 0, 0));
+            done();
+        }, 2000);
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
@@ -247,4 +261,9 @@ function findItem(menuIndex, itemIndex) {
 
 function getLabels(wrapper) {
     return wrapper.find('span.next-tag-body').map(node => node.text().trim());
+}
+
+
+function findRealItem(cascader, listIndex, itemIndex) {
+    return cascader.querySelectorAll('.next-cascader-menu')[listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
 }

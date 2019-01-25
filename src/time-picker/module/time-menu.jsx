@@ -38,14 +38,14 @@ class TimeMenu extends React.Component {
         activeIndex: PropTypes.number,
         disabledItems: PropTypes.func,
         onSelect: PropTypes.func,
-        disabled: PropTypes.bool,
+        disabled: PropTypes.bool
     }
 
     static defaultProps = {
         step: 1,
         disabledItems: () => false,
         onSelect: () => {},
-        disabled: false,
+        disabled: false
     }
 
     componentDidMount() {
@@ -80,10 +80,17 @@ class TimeMenu extends React.Component {
                 const itemCls = classnames({
                     [`${prefix}time-picker-menu-item`]: true,
                     [`${prefix}disabled`]: isDisabled,
-                    [`${prefix}selected`]: i === activeIndex,
+                    [`${prefix}selected`]: i === activeIndex
                 });
                 const onClick = isDisabled ? noop : () => onSelect(i, mode);
-                list.push(<li key={i} title={i} className={itemCls} onClick={onClick}>{i}</li>);
+                list.push(
+                    <li role="option"
+                        tabIndex="0"
+                        aria-selected={String(i === activeIndex)}
+                        key={i} title={i} className={itemCls} onClick={onClick}>
+                        {i}
+                    </li>
+                );
             }
         }
 
@@ -91,7 +98,7 @@ class TimeMenu extends React.Component {
 
         return (<div className={`${prefix}time-picker-menu`}>
             {menuTitle}
-            <ul className={`${prefix}time-picker-menu-${mode}`} ref={this._menuRefHandler}>{list}</ul>
+            <ul role="listbox" className={`${prefix}time-picker-menu-${mode}`} ref={this._menuRefHandler}>{list}</ul>
         </div>);
     }
 }

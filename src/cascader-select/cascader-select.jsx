@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Select from '../select';
 import Cascader from '../cascader';
 import Menu from '../menu';
-import { func, obj, dom } from '../util';
+import { func, obj, dom, KEYCODE } from '../util';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
@@ -253,7 +253,7 @@ export default class CascaderSelect extends Component {
 
         bindCtx(this, [
             'handleVisibleChange', 'handleAfterOpen', 'handleChange', 'handleClear', 'handleRemove',
-            'handleSearch', 'getPopup'
+            'handleSearch', 'getPopup', 'saveSelectRef', 'saveCascaderRef', 'handleKeyDown'
         ]);
     }
 
@@ -412,6 +412,14 @@ export default class CascaderSelect extends Component {
         return indeterminate;
     }
 
+    saveSelectRef(ref) {
+        this.select = ref;
+    }
+
+    saveCascaderRef(ref) {
+        this.cascader = ref;
+    }
+
     completeValue(value) {
         const newValue = [];
 
@@ -443,7 +451,33 @@ export default class CascaderSelect extends Component {
             });
         }
 
+        if (['fromCascader', 'keyboard'].indexOf(type) !== -1 && !visible) {
+            this.select.focusInput();
+        }
+
         this.props.onVisibleChange(visible, type);
+    }
+
+    handleKeyDown(e) {
+        const { onKeyDown } = this.props;
+        const { visible } = this.state;
+
+        if (onKeyDown) {
+            onKeyDown(e);
+        }
+
+        if (!visible) {
+            return;
+        }
+
+        switch (e.keyCode) {
+            case KEYCODE.UP:
+            case KEYCODE.DOWN:
+                this.cascader.setFocusValue();
+                e.preventDefault();
+                break;
+            default: break;
+        }
     }
 
     getPopup(ref) {
@@ -640,6 +674,7 @@ export default class CascaderSelect extends Component {
             canOnlyCheckLeaf,
             defaultExpandedValue,
             expandTriggerType,
+            ref: this.saveCascaderRef,
             onExpand,
             listStyle,
             listClassName,
@@ -711,6 +746,7 @@ export default class CascaderSelect extends Component {
             hasClear,
             label,
             readOnly,
+            ref: this.saveSelectRef,
             autoWidth: false,
             mode: multiple ? 'multiple' : 'single',
             value: multiple ? this.getMultipleData(value) : this.getSignleData(value),
@@ -721,6 +757,7 @@ export default class CascaderSelect extends Component {
             showSearch,
             searchValue,
             onSearch: this.handleSearch,
+            onKeyDown: this.handleKeyDown,
             popupContent,
             popupStyle,
             popupClassName,

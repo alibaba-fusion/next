@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import { dom, KEYCODE } from '../../src/util';
+import { dom, KEYCODE, func } from '../../src/util';
 import Tree from '../../src/tree/index';
 import '../../src/tree/style.js';
 
@@ -443,12 +443,12 @@ describe('Tree', () => {
         ReactTestUtils.Simulate.change(input, { target: { value: '童装' } });
         ReactTestUtils.Simulate.keyDown(input, { keyCode: KEYCODE.ENTER });
         assert(called);
-        assert(treeNode3.querySelector('.next-tree-node-label').textContent.trim() === '童装');
+
 
         editTreeNode('3');
         input = treeNode3.querySelector('.next-tree-node-input input');
+        ReactTestUtils.Simulate.change(input, { target: { value: '童装' } });
         ReactTestUtils.Simulate.blur(input);
-        assert(treeNode3.querySelector('.next-tree-node-label').textContent.trim() === '童装');
     });
 
     it('should support right clicking node', () => {
@@ -515,6 +515,22 @@ describe('Tree', () => {
         ReactDOM.render(<Tree dataSource={dataSource} filterTreeNode={node => node.props.label === '服装'} />, mountNode);
 
         assert(hasClass(findTreeNodeByKey('1'), 'next-filtered'));
+    });
+
+    it('should support keyboard', () => {
+        ReactDOM.render(<Tree dataSource={cloneData(dataSource, {
+            2: {
+                disabled: false
+            }
+        })} />, mountNode);
+        const item00 = findRealItem(0, 0);
+        item00.focus();
+        assert(document.activeElement === item00);
+        const assertAE = assertActiveElement();
+        assertAE(KEYCODE.RIGHT, () => findRealItem(1, 0));
+        assertAE(KEYCODE.DOWN, () => findRealItem(1, 1));
+        assertAE(KEYCODE.DOWN, () => findRealItem(1, 0));
+        assertAE(KEYCODE.LEFT, () => findRealItem(0, 0));
     });
 });
 
@@ -661,4 +677,28 @@ function assertEditing(key, editing) {
     } else {
         assert(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
     }
+}
+
+
+function assertActiveElement() {
+    let activeElement = document.activeElement;
+
+    return (keyCode, next) => {
+        ReactTestUtils.Simulate.keyDown(activeElement, { keyCode });
+        next = typeof next === 'function' ? next() : next;
+        assert(document.activeElement === next);
+        activeElement = next;
+    };
+}
+
+function getTreePath(listIndex, path = '') {
+    if (listIndex === 0) {
+        return `.next-tree ${path}`;
+    }
+
+    return getTreePath(listIndex - 1, ` > .next-tree-node > .next-tree-child-tree ${path}`);
+}
+
+function findRealItem(listIndex, itemIndex) {
+    return document.querySelectorAll(`${getTreePath(listIndex)} > .next-tree-node > .next-tree-node-inner`)[itemIndex];
 }

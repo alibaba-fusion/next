@@ -2,11 +2,11 @@ export default {
     momentLocale: 'ja',
     Timeline: {
         expand: '開く',
-        fold: '閉じる',
+        fold: '閉じる'
     },
     Card: {
         expand: '開く',
-        fold: '閉じる',
+        fold: '閉じる'
     },
     Calendar: {
         today: '本日',
@@ -20,7 +20,7 @@ export default {
         prevMonth: '前の月',
         nextMonth: '来月',
         prevDecade: '前の十年',
-        nextDecade: '次の十年',
+        nextDecade: '次の十年'
     },
     DatePicker: {
         placeholder: '日付けの選択',
@@ -49,6 +49,9 @@ export default {
         goTo: '第',
         page: 'ページへ',
         go: '確認',
+        total: '第{current}ページ、{total}ページ',
+        labelPrev: '前のページ、当面の第{current}ページ',
+        labelNext: '次のページ、当面の第{current}ページ',
         pageSize: 'ページサイズ：'
     },
     Input: {
@@ -94,6 +97,6 @@ export default {
         }
     },
     Search: {
-        buttonText: 'サーチ',
-    },
+        buttonText: 'サーチ'
+    }
 };
