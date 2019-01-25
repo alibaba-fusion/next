@@ -36,7 +36,7 @@ class ControlApp extends React.Component {
         super(props);
 
         this.state = {
-            value: 'orange',
+            value: 'orange'
         };
 
         this.onChange = this.onChange.bind(this);

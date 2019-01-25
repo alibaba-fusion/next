@@ -22,7 +22,7 @@ import { Tab } from '@alifd/next';
 const tabs = [
     { tab: 'Home', key: 'home', content: 'This is home page' },
     { tab: 'Document', key: 'doc', content: 'This is document page' },
-    { tab: 'API', key: 'api', content: 'This is api page' },
+    { tab: 'API', key: 'api', content: 'This is api page' }
 ];
 
 ReactDOM.render(

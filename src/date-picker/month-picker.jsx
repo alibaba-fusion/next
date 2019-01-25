@@ -242,7 +242,9 @@ class MonthPicker extends Component {
 
         if (newValueOf !== preValueOf) {
             this.onValueChange(newValue);
-            typeof callback === 'function' && callback();
+            if (typeof callback === 'function') {
+                return callback();
+            }
         }
     }
 

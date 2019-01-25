@@ -14,16 +14,16 @@ import { Search } from '@alifd/next';
 
 const dataSource = [{
     label: 'Recent',
-    value: 'Recent',
+    value: 'Recent'
 }, {
     label: 'dress',
-    value: 'dress',
+    value: 'dress'
 }, {
     label: 'sunglasses',
-    value: 'sunglasses',
+    value: 'sunglasses'
 }, {
     label: 't-shirt',
-    value: 't-shirt',
+    value: 't-shirt'
 }];
 
 class App extends React.Component {

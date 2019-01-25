@@ -22,8 +22,8 @@ import { Button, Balloon } from '@alifd/next';
 
 
 
-const top = <Button  id="top" style={{margin: '5px'}} className="btrigger">top</Button>;
-const right = <Button  id="right" style={{margin: '5px'}} className="btrigger">right</Button>;
+const top = <Button id="top" style={{margin: '5px'}} className="btrigger">top</Button>;
+const right = <Button id="right" style={{margin: '5px'}} className="btrigger">right</Button>;
 const bottom = <Button id="bottom" style={{margin: '5px'}} className="btrigger">bottom</Button>;
 const left = <Button id="left" style={{margin: '5px'}} className="btrigger">left</Button>;
 const topLeft = <Button id="topLeft" style={{margin: '5px'}} className="btrigger">top left</Button>;

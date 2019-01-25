@@ -23,10 +23,10 @@ function handleSubmit(v) {
 ReactDOM.render(<div>
     <Form inline>
         <FormItem label="Username:">
-            <FormItem  >
+            <FormItem >
                 <Input name="first" style={{width: 80}} placeholder="first"/>
             </FormItem>
-            <FormItem  >
+            <FormItem >
                 <Input name="second" style={{width: 80}} placeholder="second"/>
             </FormItem>
         </FormItem>

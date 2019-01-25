@@ -72,14 +72,14 @@ class Modal extends Component {
                     this.loading(false);
 
                     if (result !== false) {
-                        callback();
+                        return callback();
                     }
                 }).catch((e) => {
                     this.loading(false);
                     throw e;
                 });
             } else if (res !== false) {
-                callback();
+                return callback();
             }
         };
     }

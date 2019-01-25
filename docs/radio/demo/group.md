@@ -19,18 +19,18 @@ import { Radio } from '@alifd/next';
 
 const Shape = {
     NORMAL: 'normal',
-    BUTTON: 'button',
+    BUTTON: 'button'
 };
 
 const ItemDirection = {
     HORIZON: 'hoz',
-    VERTICAL: 'ver',
+    VERTICAL: 'ver'
 };
 
 class RadioGroup extends React.Component {
     state = {
         shape: Shape.NORMAL,
-        itemDirection: ItemDirection.HORIZON,
+        itemDirection: ItemDirection.HORIZON
     }
 
     onShapeChange = (shape) => {

@@ -1,3 +1,4 @@
+/* eslint-disable callback-return */
 import {complementError, asyncMap} from './util';
 import {getValidationMethod} from './validator';
 import defaultMessages from './messages';

@@ -440,6 +440,7 @@ class Field {
                 }
             }
 
+            // eslint-disable-next-line callback-return
             callback && callback(errorsGroup, this.getValues(fieldNames));
             this._reRender();
 

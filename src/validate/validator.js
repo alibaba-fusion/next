@@ -1,3 +1,4 @@
+/* eslint-disable callback-return */
 import rules from './rules/';
 
 /**

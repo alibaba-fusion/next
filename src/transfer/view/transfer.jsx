@@ -374,6 +374,7 @@ class Transfer extends Component {
         this.setValueState({}, rightValue, leftValue, movedValue, direction);
     }
 
+    // eslint-disable-next-line max-params
     setValueState(st, rightValue, leftValue, movedValue, direction) {
         const { dataSource } = this.props;
         const callback = () => {
@@ -401,6 +402,7 @@ class Transfer extends Component {
         if (Object.keys(st).length) {
             this.setState(st, callback);
         } else {
+            // eslint-disable-next-line callback-return
             callback();
         }
     }

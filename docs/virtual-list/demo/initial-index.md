@@ -21,7 +21,7 @@ import { VirtualList } from '@alifd/next';
 const dataSource = [];
 
 function generateLi(index) {
-    return (<li key={`key-${index}`}  style={{lineHeight: '20px'}}>key-{index}</li>);
+    return (<li key={`key-${index}`} style={{lineHeight: '20px'}}>key-{index}</li>);
 }
 function generateData(len) {
     for (let i = 0; i < len; i++) {
@@ -29,7 +29,7 @@ function generateData(len) {
     }
 }
 
-class App extends React.Component  {
+class App extends React.Component {
     state = {
         initial: 50,
         dataSource: generateData(1000)

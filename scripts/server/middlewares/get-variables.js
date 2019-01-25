@@ -20,7 +20,7 @@ module.exports = function(options) {
                     cssScssMap: getCssScssMap(varPath, cwd, componentName)
                 });
             } else {
-                next();
+                return next();
             }
         }).catch(e => {
             logger.error(e.stack);

@@ -43,7 +43,7 @@ class App extends React.Component {
     onSort(dataIndex, order) {
         const dataSource = this.state.dataSource.sort(function(a, b) {
             const result = a[dataIndex] - b[dataIndex];
-            return  (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
+            return (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
         });
         this.setState({
             dataSource,

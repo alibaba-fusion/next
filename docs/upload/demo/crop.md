@@ -56,7 +56,7 @@ class App extends React.Component {
     state = {
         src: null,
         visible: false,
-        img: null,
+        img: null
     };
 
     onSuccess = (value) => {
@@ -71,7 +71,7 @@ class App extends React.Component {
         reader.onload = () => {
             this.setState({
                 src: reader.result,
-                visible: true,
+                visible: true
             });
         };
         reader.readAsDataURL(files[0]);
@@ -79,7 +79,7 @@ class App extends React.Component {
 
     onCancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 
@@ -94,7 +94,7 @@ class App extends React.Component {
         this.uploader.startUpload(file);
 
         this.setState({
-            visible: false,
+            visible: false
         });
     };
 

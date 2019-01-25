@@ -23,7 +23,7 @@ class Demo extends React.Component {
         super(props, context);
 
         this.state = {
-            loading: false,
+            loading: false
         };
     }
 

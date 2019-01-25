@@ -287,7 +287,7 @@ class Nav extends React.Component {
     onNavItemClick(key, callback, e) {
         this.props.onTriggerEvent(triggerEvents.CLICK, key);
         if (callback) {
-            callback(key, e);
+            return callback(key, e);
         }
     }
 
@@ -299,13 +299,13 @@ class Nav extends React.Component {
     onNavItemMouseEnter(key, callback, e) {
         this.props.onTriggerEvent(triggerEvents.HOVER, key);
         if (callback) {
-            callback(key, e);
+            return callback(key, e);
         }
     }
 
     onNavItemMouseLeave(key, callback, e) {
         if (callback) {
-            callback(key, e);
+            return callback(key, e);
         }
     }
 

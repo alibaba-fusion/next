@@ -21,7 +21,7 @@ import { Card } from '@alifd/next';
 const commonProps = {
     style: { width: 300 },
     title: 'Title',
-    subTitle: 'Sub-title',
+    subTitle: 'Sub-title'
 };
 
 ReactDOM.render(<div>

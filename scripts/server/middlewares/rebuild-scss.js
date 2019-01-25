@@ -54,7 +54,7 @@ module.exports = function(options) {
 
                 res.json({ css: result.css.toString() });
             } else {
-                next();
+                return next();
             }
         }).catch(e => {
             logger.error(e.stack);

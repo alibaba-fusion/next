@@ -9,7 +9,7 @@ module.exports = function() {
             }
             res.json({});
         } else {
-            next();
+            return next();
         }
     };
 };

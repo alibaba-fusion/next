@@ -26,7 +26,7 @@ const {Row, Col} = Grid;
 
 const formItemLayout = {
     labelCol: {span: 6},
-    wrapperCol: {span: 14},
+    wrapperCol: {span: 14}
 };
 
 class Demo extends React.Component {
@@ -67,7 +67,7 @@ class Demo extends React.Component {
                     <Range defaultValue={30} scales={[0, 100]} marks={[0, 100]} name="range" />
                 </FormItem>
 
-                <FormItem  label="Select:" required>
+                <FormItem label="Select:" required>
                     <Select style={{width: 200}} name="select">
                         <Option value="jack">jack</Option>
                         <Option value="lucy">lucy</Option>

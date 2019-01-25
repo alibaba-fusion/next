@@ -23,20 +23,20 @@ const Option = Select.Option;
 
 const formItemLayout = {
     labelCol: {fixedSpan: 4},
-    wrapperCol: {span: 20},
+    wrapperCol: {span: 20}
 };
 
 ReactDOM.render(<div>
 
     <Form {...formItemLayout} labelAlign="inset" style={{maxWidth: '500px'}}>
-        <FormItem  label="User Name:">
+        <FormItem label="User Name:">
             <Input placeholder="Please enter your name" id="userName" name="userName"/>
         </FormItem>
-        <FormItem  label="Password:" validateState="error">
+        <FormItem label="Password:" validateState="error">
             <Input htmlType="password" placeholder="Please enter your password" id="password" name="password"/>
         </FormItem>
 
-        <FormItem  label="Size：">
+        <FormItem label="Size：">
             <Select style={{width: '100%'}}>
                 <Option value="small">small</Option>
                 <Option value="medium">medium</Option>
