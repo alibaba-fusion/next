@@ -66,7 +66,7 @@ export default class Rating extends Component {
         // 实验属性: 开启 `-webkit-text-stroke` 显示边框颜色，在IE中无效
         strokeMode: PropTypes.bool,
         className: PropTypes.string,
-        id: PropTypes.string,
+        id: PropTypes.string
     };
 
     static defaultProps = {
@@ -100,7 +100,7 @@ export default class Rating extends Component {
             hoverValue: 0,
             iconSpace: 0,
             iconSize: 0,
-            clicked: false, // 标记组件是否被点击过
+            clicked: false // 标记组件是否被点击过
         };
         this.timer = null;
 
@@ -301,7 +301,7 @@ export default class Rating extends Component {
             const isCurrent = Math.ceil(value - 1) === i;
             const iconCls = classNames({
                 hover: hoverValue > 0 && isCurrent,
-                clicked: clicked && isCurrent,
+                clicked: clicked && isCurrent
             });
             const iconNode = <Icon type={iconType} size={sizeMap} className={iconCls} />;
 
@@ -341,7 +341,7 @@ export default class Rating extends Component {
             [`${prefix}rating-grade-low`]: value <= count * 0.4,
             [`${prefix}rating-grade-high`]: value > count * 0.4,
             [`${prefix}rating-stroke-mode`]: strokeMode,
-            hover: hoverValue > 0,
+            hover: hoverValue > 0
         }, className);
 
         const baseCls = classNames(`${prefix}rating-base`, {

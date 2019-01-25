@@ -27,7 +27,7 @@ export default class Inner extends Component {
         onClose: PropTypes.func,
         locale: PropTypes.object,
         role: PropTypes.string,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {

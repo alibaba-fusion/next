@@ -27,7 +27,7 @@ class Mask extends React.Component {
         afterClose: PropTypes.func,
         animation: PropTypes.oneOfType([
             PropTypes.object,
-            PropTypes.bool,
+            PropTypes.bool
         ]),
         overlayProps: PropTypes.object,
         onClose: PropTypes.func,

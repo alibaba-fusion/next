@@ -147,7 +147,7 @@ class Upload extends Base {
         /**
          * 透传给Progress props
          */
-        progressProps: PropTypes.object,
+        progressProps: PropTypes.object
     };
 
     static defaultProps = {
@@ -164,7 +164,7 @@ class Upload extends Base {
         onError: noop,
         onDrop: noop,
         beforeUpload: noop,
-        afterSelect: noop,
+        afterSelect: noop
     };
 
     constructor(props) {
@@ -312,7 +312,7 @@ class Upload extends Base {
         });
 
         this.setState({
-            value,
+            value
         });
 
         this.props.onProgress(value, targetItem);
@@ -353,11 +353,11 @@ class Upload extends Base {
             state: 'done',
             response,
             url: response.url,
-            downloadURL: response.downloadURL || response.url,      // 下载地址(可选)
+            downloadURL: response.downloadURL || response.url // 下载地址(可选)
         });
 
         if (!this.props.useDataURL) {
-            targetItem.imgURL = response.imgURL || response.url;     // 缩略图地址(可选)
+            targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
         }
 
         this.props.onSuccess(targetItem, value);
@@ -377,7 +377,7 @@ class Upload extends Base {
         Object.assign(targetItem, {
             state: 'error',
             error: err,
-            response,
+            response
         });
 
         this.props.onError(targetItem, value);
@@ -392,7 +392,7 @@ class Upload extends Base {
      */
     removeFile = (file) => {
         file.state = 'removed';
-        this.uploaderRef.abort(file);     // 删除组件时调用组件的 `abort` 方法中断上传
+        this.uploaderRef.abort(file); // 删除组件时调用组件的 `abort` 方法中断上传
 
         const fileList = this.state.value;
         const targetItem = getFileItem(file, fileList);
@@ -416,7 +416,7 @@ class Upload extends Base {
             fileList.splice(index, 1);
             this.onChange(fileList, targetItem);
         }
-        this.uploaderRef.abort(file);     // 取消上传时调用组件的 `abort` 方法中断上传
+        this.uploaderRef.abort(file); // 取消上传时调用组件的 `abort` 方法中断上传
     };
 
     onChange = (value, file) => {
@@ -458,14 +458,14 @@ class Upload extends Base {
         const isExceedLimit = this.state.value.length >= limit;
         const innerCls = classNames({
             [`${prefix}upload-inner`]: true,
-            [`${prefix}hidden`]: isExceedLimit,
+            [`${prefix}hidden`]: isExceedLimit
         });
 
         let children = this.props.children;
         if (shape === 'card') {
             const cardCls = classNames({
                 [`${prefix}upload-card`]: true,
-                [`${prefix}disabled`]: disabled,
+                [`${prefix}disabled`]: disabled
             });
             children = (<div className={cardCls}>
                 <Icon type="add" size="large"/>

@@ -107,7 +107,7 @@ export default class Arrow extends Component {
             style: {display: 'block'},
             onClick: disabled ? null : this.handleClick.bind(this, {message: type}),
             onMouseEnter: disabled ? null : onMouseEnter,
-            onMouseLeave: disabled ? null : onMouseLeave,
+            onMouseLeave: disabled ? null : onMouseLeave
         };
 
         if (children) {

@@ -34,11 +34,11 @@ class Group extends React.Component {
         /**
          * rtl
          */
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
-        prefix: 'next-',
+        prefix: 'next-'
     };
 
     render() {
@@ -52,11 +52,11 @@ class Group extends React.Component {
         const addonCls = `${prefix}input-group-addon`;
         const beforeCls = classNames(addonCls, {
             [`${prefix}before`]: true,
-            [addonBeforeClassName]: addonBeforeClassName,
+            [addonBeforeClassName]: addonBeforeClassName
         });
         const afterCls = classNames(addonCls, {
             [`${prefix}after`]: true,
-            [addonAfterClassName]: addonAfterClassName,
+            [addonAfterClassName]: addonAfterClassName
         });
 
         const before = addonBefore ? (

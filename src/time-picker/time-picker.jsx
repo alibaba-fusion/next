@@ -5,7 +5,7 @@ import moment from 'moment';
 import Input from '../input';
 import Overlay from '../overlay';
 import locale from '../locale/zh-cn';
-import { func, obj }  from '../util';
+import { func, obj } from '../util';
 import TimePickerPanel from './panel';
 import { checkDateValue, formatDateValue } from './utils';
 
@@ -133,7 +133,7 @@ export default class TimePicker extends Component {
          * @param {Object|String} value 时间对象或时间字符串
          */
         onChange: PropTypes.func,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -147,7 +147,7 @@ export default class TimePicker extends Component {
         popupAlign: 'tl tl',
         popupTriggerType: 'click',
         onChange: noop,
-        onVisibleChange: noop,
+        onVisibleChange: noop
     }
 
     constructor(props, context) {
@@ -158,7 +158,7 @@ export default class TimePicker extends Component {
             value,
             inputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
@@ -166,13 +166,13 @@ export default class TimePicker extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
             this.setState({
-                value,
+                value
             });
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -184,7 +184,7 @@ export default class TimePicker extends Component {
 
     onClearValue = () => {
         this.setState({
-            value: null,
+            value: null
         });
         if (this.state.value) {
             this.onValueChange(null);
@@ -200,7 +200,7 @@ export default class TimePicker extends Component {
 
             this.setState({
                 inputStr: inputValue,
-                inputing: true,
+                inputing: true
             });
         } else if (eventType === 'clear') {
             // 受控状态下用户点击 clear
@@ -217,12 +217,12 @@ export default class TimePicker extends Component {
             if (parsed.isValid()) {
                 this.setState({
                     value: parsed,
-                    inputStr: '',
+                    inputStr: ''
                 });
                 this.onValueChange(parsed);
             }
             this.setState({
-                inputing: false,
+                inputing: false
             });
         }
     }
@@ -231,7 +231,7 @@ export default class TimePicker extends Component {
         if (!('value' in this.props)) {
             this.setState({
                 value,
-                inputing: false,
+                inputing: false
             });
         }
         if (!this.state.value || value.valueOf() !== this.state.value.valueOf()) {
@@ -242,7 +242,7 @@ export default class TimePicker extends Component {
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -278,7 +278,7 @@ export default class TimePicker extends Component {
         const { value, inputStr, inputing, visible } = this.state;
 
         const triggerCls = classnames({
-            [`${prefix}time-picker-trigger`]: true,
+            [`${prefix}time-picker-trigger`]: true
         });
 
         if (rtl) {
@@ -294,7 +294,7 @@ export default class TimePicker extends Component {
             onChange: this.onInputChange,
             onBlur: this.onInputBlur,
             onPressEnter: this.onInputBlur,
-            hint: 'clock',
+            hint: 'clock'
         };
 
         const triggerInput = (<div className={triggerCls}>
@@ -319,13 +319,13 @@ export default class TimePicker extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
-            onSelect: this.onTimePanelSelect,
+            onSelect: this.onTimePanelSelect
         };
 
         const classNames = classnames({
             [`${prefix}time-picker`]: true,
             [`${prefix}time-picker-${size}`]: size,
-            [`${prefix}disabled`]: disabled,
+            [`${prefix}disabled`]: disabled
         }, className);
 
         return (<div {...obj.pickOthers(TimePicker.propTypes, others)} className={classNames}>

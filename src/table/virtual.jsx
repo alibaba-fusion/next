@@ -25,7 +25,7 @@ export default function virtual(BaseComponent) {
              * 在内容区域滚动的时候触发的函数
              */
             onBodyScroll: PropTypes.func,
-            ...BaseComponent.propTypes,
+            ...BaseComponent.propTypes
         }
 
         static defaultProps = {
@@ -67,7 +67,7 @@ export default function virtual(BaseComponent) {
         componentWillMount() {
             const { useVirtual, dataSource } = this.props;
 
-            this.hasVirtualData =  useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
         }
 
         componentDidMount() {
@@ -84,7 +84,7 @@ export default function virtual(BaseComponent) {
         componentWillReceiveProps(nextProps) {
             const { useVirtual, dataSource } = nextProps;
 
-            this.hasVirtualData =  useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
 
             if ('maxBodyHeight' in nextProps) {
                 if (this.state.height !== nextProps.maxBodyHeight) {

@@ -7,7 +7,7 @@ class TabContent extends PureComponent {
         prefix: PropTypes.string,
         activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         lazyLoad: PropTypes.bool,
-        children: PropTypes.any,
+        children: PropTypes.any
     };
 
     render() {
@@ -20,12 +20,12 @@ class TabContent extends PureComponent {
                 prefix,
                 active,
                 lazyLoad,
-                unmountInactiveTabs,
+                unmountInactiveTabs
             }));
         });
 
         const classNames = classnames({
-            [`${prefix}tabs-content`]: true,
+            [`${prefix}tabs-content`]: true
         }, className);
 
         return (

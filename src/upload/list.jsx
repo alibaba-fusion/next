@@ -51,7 +51,7 @@ class List extends Component {
         progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
-        useDataURL: PropTypes.bool,
+        useDataURL: PropTypes.bool
     };
 
     static defaultProps = {
@@ -65,7 +65,7 @@ class List extends Component {
         extraRender: func.noop,
         onImageError: func.noop,
         onPreview: func.noop,
-        progressProps: {},
+        progressProps: {}
     };
 
     componentDidUpdate() {
@@ -122,7 +122,7 @@ class List extends Component {
         const itemCls = classNames({
             [`${prefixCls}-list-item`]: true,
             [`${prefixCls}-list-item-${file.state}`]: file.state,
-            [`${prefixCls}-list-item-error-with-msg`]: file.state === 'error' && file.errorMsg,
+            [`${prefixCls}-list-item-error-with-msg`]: file.state === 'error' && file.errorMsg
         });
         const alt = file.name || file.alt;
         return { prefixCls, downloadURL, imgURL, size, itemCls, alt };
@@ -317,7 +317,7 @@ class List extends Component {
 
         const others = obj.pickAttrsWith(this.props, 'data-');
         return (
-            <div {...others} className={listclassNames}  >
+            <div {...others} className={listclassNames} >
                 {list}
                 {children}
             </div>

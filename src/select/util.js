@@ -231,7 +231,7 @@ function getKeyItemByValue(value, valueMap) {
     } else {
         item = valueMap[`${value}`] || {
             value,
-            label: value,
+            label: value
         };
     }
 

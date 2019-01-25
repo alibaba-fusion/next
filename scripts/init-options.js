@@ -46,8 +46,8 @@ const options = {
                 return arr.filter((current, index, arr) =>
                     ['config-provider', entry.name].indexOf(current) === -1 && index === arr.indexOf(current)
                 );
-            },
-        },
+            }
+        }
     }, {
         match: NEXT_LOCALE,
         main: ['lib/en-us.js', 'lib/ja-jp.js', 'lib/zh-cn.js', 'lib/zh-tw.js']
@@ -78,7 +78,7 @@ const options = {
                 return arr.filter((current, index, arr) =>
                     ['config-provider', entry.name].indexOf(current) === -1 && index === arr.indexOf(current)
                 );
-            },
+            }
         }
     }]
 };

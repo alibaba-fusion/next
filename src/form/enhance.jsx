@@ -46,7 +46,7 @@ export function getRules(props) {
             maxLength,
             // minLengthMessage maxLengthMessage had been deprected, please use minmaxLength. TODO: removed in 2.0
             message: getCfgFromProps(props, 'minmaxLengthMessage') || getCfgFromProps(props, 'minLengthMessage') || getCfgFromProps(props, 'maxLengthMessage'),
-            trigger: getCfgFromProps(props, 'minmaxLengthTrigger') || getCfgFromProps(props, 'minLengthTrigger') || getCfgFromProps(props, 'maxLengthTrigger'),
+            trigger: getCfgFromProps(props, 'minmaxLengthTrigger') || getCfgFromProps(props, 'minLengthTrigger') || getCfgFromProps(props, 'maxLengthTrigger')
         });
     }
 
@@ -74,14 +74,14 @@ export function getRules(props) {
             max,
             // minMessage maxMessage had been deprected, please use minmaxLength. TODO: removed in 2.0
             message: getCfgFromProps(props, 'minmaxMessage') || getCfgFromProps(props, 'minMessage') || getCfgFromProps(props, 'maxMessage'),
-            trigger: getCfgFromProps(props, 'minmaxTrigger') || getCfgFromProps(props, 'minTrigger') || getCfgFromProps(props, 'maxTrigger'),
+            trigger: getCfgFromProps(props, 'minmaxTrigger') || getCfgFromProps(props, 'minTrigger') || getCfgFromProps(props, 'maxTrigger')
         });
     }
 
     if (props.validator && typeof props.validator === 'function') {
         result.push({
             validator: props.validator,
-            trigger: getCfgFromProps(props, 'validatorTrigger'),
+            trigger: getCfgFromProps(props, 'validatorTrigger')
         });
     }
 

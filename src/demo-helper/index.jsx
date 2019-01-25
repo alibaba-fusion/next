@@ -104,7 +104,7 @@ class Demo extends Component {
         switchBackground: PropTypes.bool,
         demoFunction: PropTypes.object,
         onFunctionChange: PropTypes.func,
-        style: PropTypes.object,
+        style: PropTypes.object
     }
 
     static defaultProps = {

@@ -29,7 +29,7 @@ class Submit extends React.Component {
     };
 
     static defaultProps = {
-        onClick: func.noop,
+        onClick: func.noop
     };
 
     static contextTypes = {

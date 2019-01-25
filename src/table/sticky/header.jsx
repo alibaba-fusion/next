@@ -6,7 +6,7 @@ import Affix from '../../affix';
 /* eslint-disable react/prefer-stateless-function*/
 export default class StickHeader extends React.Component {
     static propTypes = {
-        prefix: PropTypes.string,
+        prefix: PropTypes.string
     }
     static contextTypes = {
         Header: PropTypes.any,

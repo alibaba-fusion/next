@@ -50,7 +50,7 @@ class InnerSlider extends React.Component {
     static defaultProps = {
         prefix: 'next-',
         arrowDirection: 'hoz',
-        triggerType: 'click',
+        triggerType: 'click'
     }
 
     constructor(props) {
@@ -84,7 +84,7 @@ class InnerSlider extends React.Component {
             edgeDragged: false,
             swiped: false, // used by swipeEvent. differentites between touch and swipe.
             trackStyle: {},
-            trackWidth: 0,
+            trackWidth: 0
         };
 
         // this.filterProps = Object.assign({}, sliderPropTypes, InnerSlider.propTypes);
@@ -97,7 +97,7 @@ class InnerSlider extends React.Component {
             'onInnerSliderLeave',
             'swipeStart',
             'swipeMove',
-            'swipeEnd',
+            'swipeEnd'
         ]);
     }
 
@@ -142,7 +142,7 @@ class InnerSlider extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.defaultActiveIndex !== nextProps.defaultActiveIndex) {
             this.setState({
-                currentSlide: nextProps.defaultActiveIndex,
+                currentSlide: nextProps.defaultActiveIndex
             });
         }
 
@@ -153,7 +153,7 @@ class InnerSlider extends React.Component {
             this.changeSlide({
                 message: 'index',
                 index: nextProps.children.length - nextProps.slidesToShow,
-                currentSlide: this.state.currentSlide,
+                currentSlide: this.state.currentSlide
             });
         } else {
             const others = ['children'];
@@ -192,7 +192,7 @@ class InnerSlider extends React.Component {
         typeof slide === 'number' && this.changeSlide({
             message: 'index',
             index: slide,
-            currentSlide: this.state.currentSlide,
+            currentSlide: this.state.currentSlide
         });
     }
 
@@ -307,7 +307,7 @@ class InnerSlider extends React.Component {
         }
 
         const verticalHeightStyle = vertical ? {
-            height: listHeight,
+            height: listHeight
         } : null;
 
         let centerPaddingStyle;

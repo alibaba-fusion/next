@@ -36,7 +36,7 @@ export default function tree(BaseComponent) {
              */
             isTree: PropTypes.bool,
             locale: PropTypes.object,
-            ...BaseComponent.propTypes,
+            ...BaseComponent.propTypes
         }
 
         static defaultProps = {

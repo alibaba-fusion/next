@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export const PANEL = {
     TIME: 'time-panel',
-    DATE: 'date-panel',
+    DATE: 'date-panel'
 };
 
 export const DEFAULT_TIME_FORMAT = 'HH:mm:ss';
@@ -45,7 +45,7 @@ export function getDateTimeFormat(format, showTime) {
     return {
         format,
         timeFormat,
-        dateTimeFormat,
+        dateTimeFormat
     };
 }
 

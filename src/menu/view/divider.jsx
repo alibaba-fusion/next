@@ -11,7 +11,7 @@ export default class Divider extends Component {
 
     static propTypes = {
         root: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     render() {

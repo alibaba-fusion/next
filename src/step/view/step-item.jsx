@@ -66,7 +66,7 @@ class StepItem extends Component {
         shape: 'circle',
         index: 0,
         total: 1,
-        onClick: () => { },
+        onClick: () => { }
     }
 
     constructor(props) {
@@ -175,7 +175,7 @@ class StepItem extends Component {
             </div>
         );
 
-        if (!nodeElement) {  // 需要自定义子节点
+        if (!nodeElement) { // 需要自定义子节点
             finalNodeElement = (
                 <div className={`${prefix}step-item-container`} >
                     <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>

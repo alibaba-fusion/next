@@ -83,7 +83,7 @@ class MenuButton extends React.Component {
         menuProps: PropTypes.object,
         style: PropTypes.object,
         className: PropTypes.string,
-        children: PropTypes.any,
+        children: PropTypes.any
     };
 
     static defaultProps = {
@@ -94,27 +94,27 @@ class MenuButton extends React.Component {
         onItemClick: func.noop,
         onSelect: func.noop,
         defaultSelectedKeys: [],
-        menuProps: {},
+        menuProps: {}
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
             selectedKeys: props.selectedKeys || props.defaultSelectedKeys,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
 
         if ('selectedKeys' in nextProps) {
             this.setState({
-                selectedKeys: nextProps.selectedKeys,
+                selectedKeys: nextProps.selectedKeys
             });
         }
     }
@@ -127,7 +127,7 @@ class MenuButton extends React.Component {
     selectMenu = (keys, ...others) => {
         if (!('selectedKeys' in this.props)) {
             this.setState({
-                selectedKeys: keys,
+                selectedKeys: keys
             });
         }
         this.props.onSelect(keys, ...others);
@@ -180,11 +180,11 @@ class MenuButton extends React.Component {
         const classNames = classnames({
             [`${prefix}menu-btn`]: true,
             [`${prefix}expand`]: state.visible,
-            opened: state.visible,
+            opened: state.visible
         }, className);
 
         const popupClassNames = classnames({
-            [`${prefix}menu-btn-popup`]: true,
+            [`${prefix}menu-btn-popup`]: true
         }, popupClassName);
 
         const trigger = (<Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)}>

@@ -45,7 +45,7 @@ export default function selection(BaseComponent) {
             primaryKey: PropTypes.string,
             dataSource: PropTypes.array,
             entireDataSource: PropTypes.array,
-            ...BaseComponent.propTypes,
+            ...BaseComponent.propTypes
         }
 
         static defaultProps = {
@@ -56,7 +56,7 @@ export default function selection(BaseComponent) {
         }
 
         static contextTypes = {
-            listHeader: PropTypes.any,
+            listHeader: PropTypes.any
         }
 
         static childContextTypes = {

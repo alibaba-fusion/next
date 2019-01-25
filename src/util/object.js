@@ -168,7 +168,7 @@ export function each (obj, callback, direction) {
 }
 
 // @private 判断key是否在数组或对象中
-const _isInObj = (key, obj, isArray) => isArray ? (obj.indexOf(key) > -1)  : (key in obj);
+const _isInObj = (key, obj, isArray) => isArray ? (obj.indexOf(key) > -1) : (key in obj);
 
 /**
  * 过滤出其它属性

@@ -62,7 +62,7 @@ export default class Uploader {
             timeout,
             withCredentials,
             method,
-            data,
+            data
         } = this.options;
         const before = beforeUpload(
             file,
@@ -73,7 +73,7 @@ export default class Uploader {
                 timeout,
                 withCredentials,
                 method,
-                data,
+                data
             }
         );
 
@@ -93,7 +93,7 @@ export default class Uploader {
     post(file, options = {}) {
         const requestOptions = {
             ...this.options,
-            ...options,
+            ...options
         };
         const {
             action,
@@ -104,7 +104,7 @@ export default class Uploader {
             onProgress,
             onSuccess,
             onError,
-            method,
+            method
         } = requestOptions;
 
         let data = requestOptions.data;

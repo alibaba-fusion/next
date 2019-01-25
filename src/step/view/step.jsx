@@ -46,7 +46,7 @@ export default class Step extends Component {
          * @param {String} status  节点状态
          * @returns {Node} 节点的渲染结果
          */
-        itemRender: PropTypes.func,
+        itemRender: PropTypes.func
     }
 
     static defaultProps = {
@@ -67,7 +67,7 @@ export default class Step extends Component {
         super(props, context);
         this.state = {
             parentWidth: 'auto',
-            parentHeight: 'auto',
+            parentHeight: 'auto'
         };
         this.resize = this.resize.bind(this);
     }
@@ -117,7 +117,7 @@ export default class Step extends Component {
         if (this.step) {
             this.setState({
                 parentWidth: this.step.offsetWidth || 0,
-                parentHeight: this.step.offsetHeight || 0,
+                parentHeight: this.step.offsetHeight || 0
             });
         }
     }

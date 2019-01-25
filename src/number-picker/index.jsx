@@ -41,7 +41,7 @@ class NumberPicker extends React.Component {
          */
         step: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.string,
+            PropTypes.string
         ]),
         /**
          * 保留小数点后位数
@@ -108,7 +108,7 @@ class NumberPicker extends React.Component {
         /**
          * 减少按钮的props
          */
-        downBtnProps: PropTypes.object,
+        downBtnProps: PropTypes.object
     };
 
     static defaultProps = {
@@ -124,7 +124,7 @@ class NumberPicker extends React.Component {
         onChange: func.noop,
         onKeyDown: func.noop,
         onBlur: func.noop,
-        onCorrect: func.noop,
+        onCorrect: func.noop
     };
 
     constructor(props) {
@@ -139,14 +139,14 @@ class NumberPicker extends React.Component {
 
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
-            hasFocused: false,
+            hasFocused: false
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
             this.setState({
-                value: nextProps.value === undefined ? '' : nextProps.value,
+                value: nextProps.value === undefined ? '' : nextProps.value
             });
         }
     }
@@ -262,7 +262,7 @@ class NumberPicker extends React.Component {
     setValue(v, e, triggerType) {
         if (!('value' in this.props)) {
             this.setState({
-                value: v,
+                value: v
             });
         }
 
@@ -281,7 +281,7 @@ class NumberPicker extends React.Component {
         // Only trigger `setState` if `format` is settled to avoid unnecessary rendering
         if (typeof format === 'function') {
             this.setState({
-                hasFocused: status,
+                hasFocused: status
             });
         }
     }
@@ -407,7 +407,7 @@ class NumberPicker extends React.Component {
             [prefixCls]: true,
             [`${prefixCls}-${this.props.type}`]: this.props.type,
             [`${prefix}${size}`]: true,
-            [className]: className,
+            [className]: className
         });
 
         let upDisabled = false;

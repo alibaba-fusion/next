@@ -114,7 +114,7 @@ class Search extends React.Component {
          */
         disabled: PropTypes.bool,
         locale: PropTypes.object,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
 
     };
 
@@ -130,7 +130,7 @@ class Search extends React.Component {
         onSearch: func.noop,
         onFilterChange: func.noop,
         hasClear: false,
-        disabled: false,
+        disabled: false
     };
 
     constructor(props) {
@@ -141,7 +141,7 @@ class Search extends React.Component {
 
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
-            filterValue,
+            filterValue
         };
     }
 
@@ -218,7 +218,7 @@ class Search extends React.Component {
                 [`${prefix}search-btn`]: true,
                 [buttonProps.className]: !!buttonProps.className
             });
-            searchBtn = (<Button  {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown} disabled={disabled}>
+            searchBtn = (<Button {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown} disabled={disabled}>
                 {hasIcon ? <Icon type="search" /> : null}
                 {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
             </Button>);

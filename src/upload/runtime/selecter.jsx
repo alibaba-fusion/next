@@ -47,7 +47,7 @@ export default class Selecter extends React.Component {
          */
         onDrop: PropTypes.func,
         children: PropTypes.node,
-        name: PropTypes.string,
+        name: PropTypes.string
     };
 
 
@@ -136,11 +136,11 @@ export default class Selecter extends React.Component {
             events = Object.assign({
                 onClick: this.onClick,
                 onKeyDown: this.onKeyDown,
-                tabIndex: '0',
+                tabIndex: '0'
             }, dragable ? {
                 onDrop: this.onDrop,
                 onDragOver: this.onDragOver,
-                onDragLeave: this.props.onDragLeave,
+                onDragLeave: this.props.onDragLeave
             } : {});
         }
 

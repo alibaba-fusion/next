@@ -45,17 +45,17 @@ class Collapse extends React.Component {
          */
         accordion: PropTypes.bool,
         children: PropTypes.node,
-        id: PropTypes.string,
+        id: PropTypes.string
     };
 
     static defaultProps = {
         accordion: false,
         prefix: 'next-',
-        onExpand: func.noop,
+        onExpand: func.noop
     };
 
     static contextTypes = {
-        prefix: PropTypes.string,
+        prefix: PropTypes.string
     };
 
     constructor(props) {
@@ -149,7 +149,7 @@ class Collapse extends React.Component {
                 if ('onClick' in item) {
                     item.onClick(key);
                 }
-            },
+            }
         };
     }
 
@@ -161,7 +161,7 @@ class Collapse extends React.Component {
 
         return dataSource.map((item, index) => {
             // 传入过key就用item.key 没传入则统一使用index为key
-            const key = hasKeys ? item.key :  `${index}`;
+            const key = hasKeys ? item.key : `${index}`;
             return (<Panel {...this.getProps(item, index, key)} key={key}>
                 {item.content}
             </Panel>);
@@ -196,7 +196,7 @@ class Collapse extends React.Component {
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,
-            [className]: Boolean(className),
+            [className]: Boolean(className)
         });
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);

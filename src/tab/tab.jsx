@@ -97,7 +97,7 @@ export default class Tab extends Component {
          */
         tabRender: PropTypes.func,
         children: PropTypes.any,
-        className: PropTypes.string,
+        className: PropTypes.string
     };
 
     static defaultProps = {
@@ -112,20 +112,20 @@ export default class Tab extends Component {
         unmountInactiveTabs: false,
         onClick: noop,
         onChange: noop,
-        onClose: noop,
+        onClose: noop
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            activeKey: this.getDefaultActiveKey(props),
+            activeKey: this.getDefaultActiveKey(props)
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.activeKey && this.state.activeKey !== nextProps.activeKey) {
             this.setState({
-                activeKey: nextProps.activeKey,
+                activeKey: nextProps.activeKey
             });
         }
     }
@@ -182,7 +182,7 @@ export default class Tab extends Component {
             return;
         }
         this.setState({
-            activeKey: key,
+            activeKey: key
         });
     }
 
@@ -245,7 +245,7 @@ export default class Tab extends Component {
             [`${prefix}tabs-${shape}`]: shape,
             [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
             [`${prefix}tabs-${tabPosition}`]: shape === 'wrapped',
-            [`${prefix + size}`]: size,
+            [`${prefix + size}`]: size
         }, className);
 
         const navProps = {
@@ -264,7 +264,7 @@ export default class Tab extends Component {
             onTriggerEvent: this.handleTriggerEvent,
             onKeyDown: this.onNavKeyDown,
             style: navStyle,
-            className: navClassName,
+            className: navClassName
         };
 
         const contentProps = {
@@ -273,7 +273,7 @@ export default class Tab extends Component {
             lazyLoad,
             unmountInactiveTabs,
             style: contentStyle,
-            className: contentClassName,
+            className: contentClassName
         };
 
         const tabChildren = [

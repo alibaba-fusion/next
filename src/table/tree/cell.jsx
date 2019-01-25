@@ -22,7 +22,7 @@ export default class TreeCell extends React.Component {
         indent: PropTypes.number,
         onTreeNodeClick: PropTypes.func,
         isTree: PropTypes.bool,
-        rowSelection: PropTypes.object,
+        rowSelection: PropTypes.object
     }
 
     onTreeNodeClick = (record, e) => {

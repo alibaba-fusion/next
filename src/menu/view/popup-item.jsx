@@ -47,7 +47,7 @@ export default class PopupItem extends Component {
     constructor(props) {
         super(props);
 
-        bindCtx(this, [ 'handleOpen', 'handlePopupOpen', 'handlePopupClose', 'getPopup']);
+        bindCtx(this, ['handleOpen', 'handlePopupOpen', 'handlePopupClose', 'getPopup']);
     }
 
     getPopup(ref) {
@@ -202,7 +202,7 @@ export default class PopupItem extends Component {
                 className: cx({
                     [`${prefix}menu-hoz-icon-arrow`]: true,
                     [`${prefix}open`]: open
-                }),
+                })
             };
         } else {
             if (popupAlign === 'outside') {

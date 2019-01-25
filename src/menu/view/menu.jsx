@@ -629,7 +629,7 @@ export default class Menu extends Component {
 
         const role = direction === 'hoz' ? 'menubar' : 'menu';
         const headerElement = header ? <li className={`${prefix}menu-header`}>{header}</li> : null;
-        const itemsElement = header || footer ?  <ul className={`${prefix}menu-content`}>{this.newChildren}</ul> : this.newChildren;
+        const itemsElement = header || footer ? <ul className={`${prefix}menu-content`}>{this.newChildren}</ul> : this.newChildren;
         const footerElement = footer ? <li className={`${prefix}menu-footer`}>{footer}</li> : null;
         const shouldWrapItemsAndFooter = hozAlign === 'right' && !!header;
 

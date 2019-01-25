@@ -34,7 +34,7 @@ class Field {
             scrollToFirstError: true,
             first: false,
             onChange: func.noop,
-            autoUnmount: true,
+            autoUnmount: true
         }, options);
 
         ['init', 'getValue', 'getValues', 'setValue', 'setValues', 'getError', 'setError', 'setErrors', 'validate', 'getState', 'reset', 'resetToDefault', 'remove'].forEach((m) => {

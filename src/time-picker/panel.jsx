@@ -62,7 +62,7 @@ class TimePickerPanel extends Component {
         onSelect: PropTypes.func,
         locale: PropTypes.object,
         disabled: PropTypes.bool,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -74,7 +74,7 @@ class TimePickerPanel extends Component {
         disabledSeconds: noop,
         onSelect: noop,
         disabled: false,
-        locale: locale.TimePicker,
+        locale: locale.TimePicker
     }
 
     onSelectMenuItem = (index, type) => {
@@ -114,13 +114,13 @@ class TimePickerPanel extends Component {
         const classNames = classnames({
             [`${prefix}time-picker-panel`]: true,
             [`${prefix}time-picker-panel-col-3`]: showHour && showSecond,
-            [`${prefix}time-picker-panel-col-2`]: !showHour || !showSecond,
+            [`${prefix}time-picker-panel-col-2`]: !showHour || !showSecond
         }, className);
 
         const commonProps = {
             prefix,
             disabled,
-            onSelect: this.onSelectMenuItem,
+            onSelect: this.onSelectMenuItem
         };
 
         let activeHour;

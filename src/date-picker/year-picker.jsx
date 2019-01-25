@@ -131,7 +131,7 @@ class YearPicker extends Component {
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
         onChange: func.noop,
-        onVisibleChange: func.noop,
+        onVisibleChange: func.noop
     }
 
     constructor(props, context) {
@@ -144,7 +144,7 @@ class YearPicker extends Component {
             value,
             dateInputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
@@ -152,14 +152,14 @@ class YearPicker extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
             this.setState({
-                value,
+                value
             });
             this.inputAsString = typeof nextProps.value === 'string';
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -181,7 +181,7 @@ class YearPicker extends Component {
 
     clearValue = () => {
         this.setState({
-            dateInputStr: '',
+            dateInputStr: ''
         });
 
         this.handleChange(null, this.state.value);
@@ -194,7 +194,7 @@ class YearPicker extends Component {
         } else {
             this.setState({
                 dateInputStr: inputStr,
-                inputing: true,
+                inputing: true
             });
         }
     }
@@ -207,7 +207,7 @@ class YearPicker extends Component {
 
             this.setState({
                 dateInputStr: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
@@ -238,7 +238,7 @@ class YearPicker extends Component {
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -272,16 +272,16 @@ class YearPicker extends Component {
         const { visible, value, dateInputStr, inputing } = this.state;
 
         const yearPickerCls = classnames({
-            [`${prefix}year-picker`]: true,
+            [`${prefix}year-picker`]: true
         }, className);
 
         const triggerInputCls = classnames({
             [`${prefix}year-picker-input`]: true,
-            [`${prefix}error`]: false,
+            [`${prefix}error`]: false
         });
 
         const panelBodyClassName = classnames({
-            [`${prefix}year-picker-body`]: true,
+            [`${prefix}year-picker-body`]: true
         });
 
         if (rtl) {

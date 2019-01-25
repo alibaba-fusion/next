@@ -61,7 +61,7 @@ class Badge extends Component {
         }
 
         const classes = classNames(`${prefix}badge`, {
-            [`${prefix}badge-not-a-wrapper`]: !children,
+            [`${prefix}badge-not-a-wrapper`]: !children
         }, className);
 
         return (

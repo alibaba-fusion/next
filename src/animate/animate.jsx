@@ -113,7 +113,7 @@ class Animate extends Component {
                 enter: `${names.enter}`,
                 enterActive: `${names.enter}-active`,
                 leave: `${names.leave}`,
-                leaveActive: `${names.leave}-active`,
+                leaveActive: `${names.leave}-active`
             };
         }
     }

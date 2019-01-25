@@ -46,7 +46,7 @@ class Tag extends Component {
         onClick: PropTypes.func,
         _shape: PropTypes.oneOf(['default', 'closable', 'checkable']),
         disabled: PropTypes.bool,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
@@ -61,7 +61,7 @@ class Tag extends Component {
         onClick: noop,
         _shape: 'default',
         disabled: false,
-        rtl: false,
+        rtl: false
     };
 
     constructor(props) {

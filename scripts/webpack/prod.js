@@ -37,7 +37,7 @@ module.exports = function(options = {}) {
             // support ie 9
             new CssSplitWebpackPlugin({
                 size: 4000,
-                preserve: true,
+                preserve: true
             }),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': '"production"'
