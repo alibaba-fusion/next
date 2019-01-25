@@ -249,18 +249,18 @@ class Tree extends Component {
         defaultExpandedKeys: [],
         defaultCheckedKeys: [],
         defaultSelectedKeys: [],
-        onExpand: () => {},
-        onCheck: () => {},
-        onSelect: () => {},
-        onDragStart: () => {},
-        onDragEnter: () => {},
-        onDragOver: () => {},
-        onDragLeave: () => {},
-        onDragEnd: () => {},
-        onDrop: () => {},
+        onExpand: noop,
+        onCheck: noop,
+        onSelect: noop,
+        onDragStart: noop,
+        onDragEnter: noop,
+        onDragOver: noop,
+        onDragLeave: noop,
+        onDragEnd: noop,
+        onDrop: noop,
         canDrop: () => true,
-        onEditFinish: () => {},
-        onRightClick: () => {},
+        onEditFinish: noop,
+        onRightClick: noop,
         isLabelBlock: false,
         isNodeBlock: false,
         animation: true,
@@ -417,7 +417,6 @@ class Tree extends Component {
 
         return null;
     }
-
 
     getFirstAvaliablelChildKey(parentPos) {
         const pos = Object.keys(this._p2n).find(p => this.isAvailablePos(`${parentPos}-0`, p));
@@ -580,7 +579,7 @@ class Tree extends Component {
 
     handleExpand(expand, key, node) {
         const { onExpand, loadData } = this.props;
-        const expandedKeys = [...this.state.expandedKeys];
+        const expandedKeys = this.state.expandedKeys; // 由于setState 是异步操作，所以去掉 [...this.state.expandedKeys]
         this.processKey(expandedKeys, key, expand);
         const setExpandedState = () => {
             if (!('expandedKeys' in this.props)) {
@@ -616,7 +615,8 @@ class Tree extends Component {
             selected: select
         });
     }
-    /*eslint-disable*/
+
+    // eslint-disable-next-line max-statements
     handleCheck(check, key, node) {
         const { checkStrictly, checkedStrategy, onCheck } = this.props;
         const checkedKeys = [...this.state.checkedKeys];
