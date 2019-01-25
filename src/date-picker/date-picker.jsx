@@ -28,7 +28,7 @@ export default class DatePicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -132,8 +132,24 @@ export default class DatePicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
+        /**
+         * 自定义日期渲染函数
+         * @param {Object} value 日期值（moment对象）
+         * @returns {ReactNode}
+         */
+        dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -367,6 +383,9 @@ export default class DatePicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
+            dateCellRender,
+            monthCellRender,
             ...others
         } = this.props;
 
@@ -396,11 +415,12 @@ export default class DatePicker extends Component {
         }
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing === 'date' ? dateInputStr : ((value && value.format(this.format)) || '');
@@ -417,6 +437,8 @@ export default class DatePicker extends Component {
             shape="panel"
             value={value}
             format={this.format}
+            dateCellRender={dateCellRender}
+            monthCellRender={monthCellRender}
             onSelect={this.onSelectCalendarPanel}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}

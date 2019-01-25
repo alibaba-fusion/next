@@ -26,7 +26,7 @@ class MonthPicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -116,8 +116,18 @@ class MonthPicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -267,6 +277,8 @@ class MonthPicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
+            monthCellRender,
             ...others
         } = this.props;
 
@@ -292,11 +304,12 @@ class MonthPicker extends Component {
         const panelInputCls = `${prefix}month-picker-panel-input`;
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing ? dateInputStr : ((value && value.format(format)) || '');
@@ -312,6 +325,7 @@ class MonthPicker extends Component {
         const datePanel = (<Calendar
             shape="panel"
             modes={['month', 'year']}
+            monthCellRender={monthCellRender}
             value={value}
             onSelect={this.onSelectCalendarPanel}
             defaultVisibleMonth={defaultVisibleYear}
