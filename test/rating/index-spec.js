@@ -261,5 +261,32 @@ describe('Rating', () => {
             assert(ret === 2);
         });
 
+        it('should ignore unsupported keyboard event correct', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.SPACE});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 3);
+        });
+
+        it('should trigger keyboard left event correct when value is 0', () => {
+            ReactDOM.render(<Rating defaultValue={0} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.LEFT});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 5);
+        });
+
+        it('should trigger keyboard right event correct when value is the count of rating', () => {
+            ReactDOM.render(<Rating defaultValue={5} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.RIGHT});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 1);
+        });
+
     });
 });

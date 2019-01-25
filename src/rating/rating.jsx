@@ -5,8 +5,8 @@ import Icon from '../icon';
 import {func, KEYCODE, obj} from '../util';
 
 const {noop, bindCtx} = func;
-const {BACKSPACE, ENTER, ESC, SPACE, LEFT, UP, RIGHT, DOWN, ESCAPE} = KEYCODE;
-const supportKeys = [BACKSPACE, ENTER, ESC, SPACE, LEFT, UP, RIGHT, DOWN, ESCAPE];
+const {ENTER, LEFT, UP, RIGHT, DOWN} = KEYCODE;
+const supportKeys = [ENTER, LEFT, UP, RIGHT, DOWN];
 
 // 评分组件的大小与icon的大小映射关系
 const ICON_SIZE_MAP = {
@@ -197,42 +197,44 @@ export default class Rating extends Component {
     }
 
     onKeyDown(e) {
-        const { disabled } = this.props;
-        const { hoverValue, value } = this.state;
-        if (supportKeys.indexOf(e.keyCode) < 0 || disabled) {
-            return;
+        const { disabled, onKeyDown, count } = this.props;
+        if (disabled || supportKeys.indexOf(e.keyCode) < 0) {
+            return !onKeyDown || onKeyDown(e);
         }
+
+        const { hoverValue, value } = this.state;
         let changingValue = hoverValue;
         if (changingValue === 0) {
             changingValue = value;
         }
-        if ((e.keyCode === DOWN || e.keyCode === RIGHT)) {
-            if (changingValue < 5) {
-                changingValue += 1;
-            } else {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-            }
-        } else if ((e.keyCode === UP || e.keyCode === LEFT)) {
-            if (changingValue > 1) {
-                changingValue -= 1;
-            } else {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-            }
+
+        switch (e.keyCode) {
+            case DOWN:
+            case RIGHT:
+                if (changingValue < count) {
+                    changingValue += 1;
+                } else {
+                    changingValue = 1;
+                }
+                this.setState({ hoverValue: changingValue });
+                break;
+            case UP:
+            case LEFT:
+                if (changingValue > 1) {
+                    changingValue -= 1;
+                } else {
+                    changingValue = count;
+                }
+                this.setState({ hoverValue: changingValue });
+                break;
+            case ENTER:
+                this.props.onChange(changingValue);
+                this.setState({ value: changingValue, hoverValue: changingValue });
+                break;
+            default:
+                break;
         }
-        this.setState({
-            hoverValue: changingValue
-        });
-        if (e.keyCode === ENTER) {
-            this.props.onChange(hoverValue);
-            this.setState({
-                hoverValue: changingValue,
-                value: changingValue
-            });
-        }
+        return !onKeyDown || onKeyDown(e);
     }
 
     handleChecked(index) {
@@ -284,7 +286,8 @@ export default class Rating extends Component {
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const {hoverValue, clicked} = this.state;
         const underlay = [], overlay = [];
-        const prefixId = id || Math.floor(Math.random() * 10000);
+
+        const enableA11y = !!id;
 
         // 获得Value
         const value = Rating.currentValue(0, count, hoverValue, this.state.value);
@@ -305,18 +308,20 @@ export default class Rating extends Component {
                     {iconNode}
                 </span>
             );
-            overlay.push(
-                <input
-                    id={`${prefixId}-${prefix}star${i + 1}`}
-                    key={`input-${i}`} className="visually-hidden" aria-checked={(i + 1) === parseInt(hoverValue)}
-                    checked={(i + 1) === parseInt(hoverValue)}
-                    onChange={this.handleChecked.bind(this, i + 1)}
-                    type="radio" name="rating"
-                />
-            );
+            if (enableA11y) {
+                overlay.push(
+                    <input
+                        id={`${id}-${prefix}star${i + 1}`}
+                        key={`input-${i}`} className="visually-hidden" aria-checked={(i + 1) === parseInt(hoverValue)}
+                        checked={(i + 1) === parseInt(hoverValue)}
+                        onChange={this.handleChecked.bind(this, i + 1)}
+                        type="radio" name="rating"
+                    />
+                );
+            }
             overlay.push(
                 <label key={`overlay-${i}`}
-                    htmlFor={`${prefixId}-${prefix}star${i + 1}`} className={`${prefix}rating-icon`}>
+                    htmlFor={`${id}-${prefix}star${i + 1}`} className={`${prefix}rating-icon`}>
                     {iconNode}
                     <span className="visually-hidden">{`${i + 1} ${i > 0 ? 'Stars' : 'Star'}`}</span>
                 </label>
