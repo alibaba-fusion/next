@@ -287,5 +287,17 @@ describe('Rating', () => {
             assert(ret === 1);
         });
 
+        it('should behave correct when click outside rating', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelectorAll('#action-test-1 .next-rating-icon')[0].getBoundingClientRect();
+
+            ReactTestUtils.Simulate.click(document.querySelectorAll('#action-test-1 .next-rating-base')[0], {
+                pageX: rect.left - 1000,
+                pageY: rect.top + 8
+            });
+
+            assert(ret === -1);
+        });
+
     });
 });
