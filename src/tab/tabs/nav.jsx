@@ -9,7 +9,7 @@ import Animate from '../../animate';
 import { events } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
-const noop = () => {};
+const noop = () => { };
 const floatRight = { float: 'right' };
 const floatLeft = { float: 'left' };
 const { Popup } = Overlay;
@@ -64,6 +64,9 @@ class Nav extends React.Component {
         ctx.slideTimer = setTimeout(() => {
             ctx.setSlideBtn();
         }, 200);
+        if (this.activeTab) {
+            this.activeTab.focus();
+        }
     }
 
     componentWillUnmount() {
@@ -231,16 +234,17 @@ class Nav extends React.Component {
             }
 
             rst.push(
-                <div
+                <li
                     role="tab"
                     key={child.key}
                     ref={active ? this.activeTabRefHandler : null}
-                    aria-disabled={disabled ? 'true' : 'false'}
+                    aria-hidden={disabled ? 'true' : 'false'}
                     aria-selected={active ? 'true' : 'false'}
+                    tabIndex={active ? 0 : -1}
                     className={cls}
                     style={style}
                     {...events}>{tabTemplateFn(child.key, child.props)}
-                </div>
+                </li>
             );
         });
         return rst;
@@ -424,8 +428,8 @@ class Nav extends React.Component {
                     <div className={`${prefix}tabs-nav-scroll`}>
                         {
                             animation ?
-                                <Animate className={navCls} animation={navCls} singleMode={false} ref={this.navRefHandler}>{tabList}</Animate> :
-                                <div className={navCls} ref={this.navRefHandler}>{tabList}</div>
+                                <Animate role="tablist" aria-multiselectable={false} component="ul" className={navCls} animation={navCls} singleMode={false} ref={this.navRefHandler}>{tabList}</Animate> :
+                                <ul className={navCls} ref={this.navRefHandler}>{tabList}</ul>
                         }
                     </div>
                 </div>
@@ -455,7 +459,7 @@ class Nav extends React.Component {
         }, className);
 
         return (
-            <div role="tablist" className={navbarCls} style={style} onKeyDown={onKeyDown} tabIndex="0" ref={this.navbarRefHandler}>
+            <div className={navbarCls} style={style} onKeyDown={onKeyDown} ref={this.navbarRefHandler}>
                 {navChildren}
             </div>
         );

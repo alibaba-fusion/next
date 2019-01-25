@@ -152,7 +152,7 @@ class Radio extends UIState {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { id, className, children, style, label, onMouseEnter, onMouseLeave, tabIndex, rtl,
+        const { id, className, children, style, label, onMouseEnter, onMouseLeave, tabIndex, rtl, name,
             ...otherProps } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
@@ -165,6 +165,7 @@ class Radio extends UIState {
 
         let input = (<input
             {...obj.pickOthers(othersData, others)}
+            name={name}
             id={id}
             disabled={disabled}
             checked={checked}

@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -140,7 +141,7 @@ class Select extends Base {
          * 失去焦点事件
          */
         onBlur: PropTypes.func,
-        onKeyDown: PropTypes.func,
+        onKeyDown: PropTypes.func
     };
 
     static defaultProps = {
@@ -157,7 +158,7 @@ class Select extends Base {
         },
         onKeyDown: noop,
         onFocus: noop,
-        onBlur: noop,
+        onBlur: noop
     };
 
     static displayName = 'Select';
@@ -168,13 +169,13 @@ class Select extends Base {
         // @extend Base state
         Object.assign(this.state, {
             // search keyword
-            searchValue: 'searchValue' in props ? props.searchValue : '',
+            searchValue: 'searchValue' in props ? props.searchValue : ''
         });
 
         // because dataSource maybe updated while select a item, so we should cache choosen value's item
         this.valueDataSource = {
-            valueDS: [],    // [{value,label}]
-            mapValueDS: {}  // {value: {value,label}}
+            valueDS: [], // [{value,label}]
+            mapValueDS: {} // {value: {value,label}}
         };
 
         bindCtx(this, [
@@ -182,7 +183,7 @@ class Select extends Base {
             'handleItemClick',
             'handleSearch',
             'handleSearchKeyDown',
-            'handleSelectAll',
+            'handleSelectAll'
         ]);
     }
 
@@ -196,7 +197,11 @@ class Select extends Base {
 
         // 根据value和计算后的dataSource，更新value对应的详细数据valueDataSource
         if (typeof this.state.value !== 'undefined') {
-            this.valueDataSource = getValueDataSource(this.state.value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
+            this.valueDataSource = getValueDataSource(
+                this.state.value,
+                this.valueDataSource.mapValueDS,
+                this.dataStore.getMapDS()
+            );
         }
 
         if (isIE9) {
@@ -274,6 +279,7 @@ class Select extends Base {
      * Menu.Item onSelect
      * @private
      * @param  {Array<string>} keys
+     * @
      */
     handleMenuSelect(keys) {
         const { mode, readOnly, disabled } = this.props;
@@ -301,7 +307,11 @@ class Select extends Base {
     handleSingleSelect(key, triggerType) {
         const { cacheValue } = this.props;
         // get data only from dataStore while cacheValue=false
-        const itemObj = getValueDataSource(key, cacheValue ? this.valueDataSource.mapValueDS : {}, this.dataStore.getMapDS());
+        const itemObj = getValueDataSource(
+            key,
+            cacheValue ? this.valueDataSource.mapValueDS : {},
+            this.dataStore.getMapDS()
+        );
         this.valueDataSource = itemObj;
 
         this.setVisible(false, triggerType);
@@ -371,7 +381,7 @@ class Select extends Base {
             }
         } else if (!('searchValue' in this.props)) {
             this.setState({
-                searchValue: value,
+                searchValue: value
             });
         }
     }
@@ -509,6 +519,7 @@ class Select extends Base {
         return false;
     }
 
+    // eslint-disable-next-line valid-jsdoc
     /**
      * Handle BACKSPACE key event
      * @param {Event} e keyDown event
@@ -614,6 +625,7 @@ class Select extends Base {
     /**
      * 1. fix flash while click <label/>
      * 2. fix onBlur while has clear
+     * @returns
      */
     handleWrapClick = (e) => {
         e.preventDefault();
@@ -639,7 +651,12 @@ class Select extends Base {
         const { hasClear, readOnly, disabled, mode, showSearch } = this.props;
         const { value, visible } = this.state;
 
-        return typeof value !== 'undefined' && hasClear && !readOnly && !disabled && mode === 'single' && !(showSearch && visible);
+        return typeof value !== 'undefined' &&
+            hasClear &&
+            !readOnly &&
+            !disabled &&
+            mode === 'single' &&
+            !(showSearch && visible);
     }
 
     /**
@@ -672,7 +689,24 @@ class Select extends Base {
      * @param {object} props
      */
     renderSelect() {
-        const { prefix, showSearch, placeholder, mode, size, className, style, readOnly, disabled, hasBorder, label, locale, state, onBlur, onFocus, rtl } = this.props;
+        const {
+            prefix,
+            showSearch,
+            placeholder,
+            mode,
+            size,
+            className,
+            style,
+            readOnly,
+            disabled,
+            hasBorder,
+            label,
+            locale,
+            state,
+            onBlur,
+            onFocus,
+            rtl
+        } = this.props;
         const others = obj.pickOthers(Select.propTypes, this.props);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
@@ -700,10 +734,10 @@ class Select extends Base {
             `${prefix}select-trigger`,
             `${prefix}select-${mode}`,
             `${prefix}${size}`,
-            className,
+            className
         ], {
-            [`${prefix}active`]: visible,       // 用于设置 searchInput 样式
-            [`${prefix}inactive`]: !visible,    // 用于设置 searchInput 样式
+            [`${prefix}active`]: visible, // 用于设置 searchInput 样式
+            [`${prefix}inactive`]: !visible, // 用于设置 searchInput 样式
             [`${prefix}no-search`]: !hasSearch, // 用于判断是否将 searchInput 设置为 1px + 透明
             [`${prefix}has-search`]: hasSearch, // 用于单选时展开后判断是否隐藏值
             [`${prefix}select-in-ie`]: isIE9,
@@ -761,7 +795,7 @@ class Select extends Base {
 
         const cls = classNames({
             [`${prefix}select-values`]: true,
-            [`${prefix}input-text-field`]: true,
+            [`${prefix}input-text-field`]: true
         });
 
         return (<span className={cls}>

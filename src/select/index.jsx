@@ -69,5 +69,6 @@ Select.Combobox = ConfigProvider.config(Select, {
 });
 
 export default ConfigProvider.config(Select, {
-    transform
+    transform,
+    exportNames: ['focusInput']
 });

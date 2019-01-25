@@ -1,6 +1,6 @@
 import {func, obj} from '../../util';
-import {uid} from '../util';
-import request from './request';
+import {uid, errorCode} from '../util';
+import defaultRequest from './request';
 
 const noop = func.noop;
 
@@ -79,12 +79,14 @@ export default class Uploader {
 
         func.promiseCall(before, (options) => {
             if (options === false) {
-                this.options.onError(null, null, file);
-                return;
+                const err = new Error(errorCode.BEFOREUPLOAD_REJECT);
+                err.code = errorCode.BEFOREUPLOAD_REJECT;
+                return this.options.onError(err, null, file);
+
             }
             this.post(file, obj.isPlainObject(options) ? options : undefined);
-        }, () => {
-            this.options.onError(null, null, file);
+        }, (error) => {
+            this.options.onError(error, null, file);
         });
     }
 
@@ -102,7 +104,7 @@ export default class Uploader {
             onProgress,
             onSuccess,
             onError,
-            method
+            method,
         } = requestOptions;
 
         let data = requestOptions.data;
@@ -112,6 +114,7 @@ export default class Uploader {
 
         const {uid} = file;
 
+        const request = typeof requestOptions.request === 'function' ? requestOptions.request : defaultRequest;
         this.reqs[uid] = request({
             action,
             filename: name,

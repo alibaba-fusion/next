@@ -95,13 +95,20 @@ class NumberPicker extends React.Component {
          */
         style: PropTypes.object,
         state: PropTypes.oneOf(['error']),
-
         /**
          * 格式化当前值
          * @param {Number} value
          * @return {String|Number}
          */
         format: PropTypes.func,
+        /**
+         * 增加按钮的props
+         */
+        upBtnProps: PropTypes.object,
+        /**
+         * 减少按钮的props
+         */
+        downBtnProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -387,8 +394,12 @@ class NumberPicker extends React.Component {
         this.inputRef = ref;
     }
 
+    handleMouseDown(e) {
+        e.preventDefault();
+    }
+
     render() {
-        const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state } = this.props;
+        const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state, upBtnProps, downBtnProps } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -415,22 +426,22 @@ class NumberPicker extends React.Component {
         let innerAfter = null, innerAfterClassName = null, addonBefore = null, addonAfter = null;
         if (type === 'normal') {
             innerAfter = ([
-                <Button disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
+                <Button {...upBtnProps} onMouseDown={this.handleMouseDown} disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
                     <Icon size="xxs" type="arrow-up" />
                 </Button>,
-                <Button disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
+                <Button {...downBtnProps} onMouseDown={this.handleMouseDown} disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
                     <Icon size="xxs" type="arrow-down" />
                 </Button>
             ]);
             innerAfterClassName = `${prefixCls}-handler`;
         } else {
             addonBefore = (
-                <Button size={size} disabled={disabled || downDisabled} onClick={this.down.bind(this)}>
+                <Button {...downBtnProps} size={size} disabled={disabled || downDisabled} onClick={this.down.bind(this)}>
                     <Icon type="minus" size="xs" />
                 </Button>
             );
             addonAfter = (
-                <Button size={size} disabled={disabled || upDisabled} onClick={this.up.bind(this)}>
+                <Button {...upBtnProps} size={size} disabled={disabled || upDisabled} onClick={this.up.bind(this)}>
                     <Icon type="add" size="xs" />
                 </Button>
             );
@@ -438,9 +449,12 @@ class NumberPicker extends React.Component {
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
+
         return (<span className={cls} style={style} {...dataAttrs}>
             <Input
                 {...others}
+                aria-valuemax={max !== Infinity ? max : undefined}
+                aria-valuemin={min !== -Infinity ? min : undefined}
                 state={state === 'error' ? 'error' : null}
                 onBlur={this.onBlur.bind(this)}
                 onFocus={this.onFocus.bind(this)}

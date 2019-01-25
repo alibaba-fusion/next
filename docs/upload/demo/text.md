@@ -27,12 +27,36 @@ Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` A
 import { Upload, Button } from '@alifd/next';
 
 const defaultValue = [{
+    uid: '0',
     name: 'IMG.png',
     state: 'done',
-    size: 1024,
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
     downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    fileURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    size: 2000,
+}, {
+    uid: '1',
+    name: 'IMG.png',
+    percent: 50,
+    state: 'uploading',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
+}, {
+    uid: '2',
+    name: 'IMG.png',
+    state: 'error',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    errorMsg: 'fail to upload something',
+}, {
+    uid: '3',
+    name: 'IMG.png',
+    state: 'error',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
 }];
 
 ReactDOM.render((
@@ -42,8 +66,7 @@ ReactDOM.render((
         onChange={onChange}
         onSuccess={onSuccess}
         listType="text"
-        defaultValue={defaultValue}
-    >
+        defaultValue={defaultValue}>
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
     </Upload>
 ), mountNode);

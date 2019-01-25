@@ -160,7 +160,7 @@ export default class Form extends React.Component {
         });
 
         return (
-            <Tag {...obj.pickOthers(Form.propTypes, this.props)}
+            <Tag role="grid" {...obj.pickOthers(Form.propTypes, this.props)}
                 className={formClassName}
                 style={style}
                 onSubmit={onSubmit}>

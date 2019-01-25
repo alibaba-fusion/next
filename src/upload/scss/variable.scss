@@ -26,7 +26,7 @@ $upload-disable-border-color: $color-line1-1;
 // -----------------------------------------------------
 /// heigth
 /// @namespace size/bounding
-$upload-text-list-height: $s-7 !default;
+$upload-text-list-height: $s-10 !default;
 /// padding (l, r)
 /// @namespace size/bounding
 $upload-text-list-padding-left-right: $s-2 !default;
@@ -80,6 +80,7 @@ $upload-text-list-size-font-color-hover: $color-brand1-6 !default;
 /// padding
 /// @namespace size/bounding
 $upload-image-list-item-padding: $s-2 !default;
+
 /// size
 /// @namespace size/picture
 /// @type length
@@ -87,6 +88,11 @@ $upload-image-list-item-picture-size: $s-12 !default;
 /// icon
 /// @namespace size/picture
 $upload-image-list-item-picture-icon-size: $icon-l !default;
+/// border
+/// @namespace size/picture
+$upload-image-list-item-picture-border-width: $line-1 !default;
+
+
 /// font
 /// @namespace statement/normal/thumbnail
 $upload-image-list-item-thumbnail-font-color: $color-text1-1 !default;
@@ -97,15 +103,21 @@ $upload-image-list-item-font-size: $font-size-body-1 !default;
 /// size
 /// @namespace size/close icon
 $upload-image-list-close-icon-size: $icon-xs !default;
-/// margin (r)
+/// margin
 /// @namespace size/close icon
 $upload-image-list-close-icon-right: $s-1 !default;
 /// width
 /// @namespace size/border
 $upload-image-list-item-border-width: $line-1 !default;
 /// background
-/// @namespace statement/normal/bounding
+/// @namespace statement/normal
 $upload-image-list-item-bg-color: $color-white !default;
+/// background
+/// @namespace statement/uploading
+$upload-image-list-item-uploading-bg-color: $color-white !default;
+/// background
+/// @namespace statement/error
+$upload-image-list-item-error-bg-color: $color-white !default;
 /// icon
 /// @namespace statement/normal/close
 $upload-image-list-close-icon-color: $color-text1-2 !default;
@@ -160,12 +172,12 @@ $upload-card-border-color: $color-line1-3 !default;
 /// border
 /// @namespace statement/hover/bounding
 $upload-card-hover-border-color: $color-brand1-6 !default;
-/// border
-/// @namespace statement/hover/bounding
-$upload-card-icon-color: $color-brand1-6 !default;
 /// text
 /// @namespace statement/normal/add
 $upload-card-font-color: $color-text1-3 !default;
+/// color
+/// @namespace statement/normal/add
+$upload-card-icon-color: $color-line1-3 !default;
 /// text
 /// @namespace statement/hover/add
 $upload-card-hover-font-color: $color-brand1-6 !default;

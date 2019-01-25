@@ -2,11 +2,11 @@ export default {
     momentLocale: 'en',
     Timeline: {
         expand: 'Expand',
-        fold: 'Fold',
+        fold: 'Fold'
     },
     Card: {
         expand: 'Expand',
-        fold: 'Fold',
+        fold: 'Fold'
     },
     Calendar: {
         today: 'Today',
@@ -20,7 +20,7 @@ export default {
         prevMonth: 'Previous Month',
         nextMonth: 'Next Month',
         prevDecade: 'Previous Decade',
-        nextDecade: 'Next Decade',
+        nextDecade: 'Next Decade'
     },
     DatePicker: {
         placeholder: 'Select Date',
@@ -49,6 +49,9 @@ export default {
         goTo: 'Go to',
         page: 'Page',
         go: 'View',
+        total: 'Page {current}, {total} pages',
+        LabelPrev: 'Previous page, current page {current}',
+        labelNext: 'Next page, current page {current}',
         pageSize: 'Items per page:'
     },
     Input: {
@@ -94,6 +97,6 @@ export default {
         }
     },
     Search: {
-        buttonText: 'Search',
-    },
+        buttonText: 'Search'
+    }
 };

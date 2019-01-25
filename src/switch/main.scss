@@ -38,6 +38,7 @@
             color: $switch-normal-on-color-font;
         }
 
+        &:focus,
         &:hover {
             background-color: $switch-hover-on-bg-color;
             &:after {
@@ -70,6 +71,7 @@
         background-color: $switch-normal-off-bg-color;
         border-color: $switch-normal-off-border-color;
 
+        &:focus,
         &:hover {
             background-color: $switch-hover-off-bg-color;
             border-color: $switch-hover-off-border-color;
@@ -81,6 +83,7 @@
             box-shadow: $switch-on-shadow;
             background-color: $switch-normal-off-trigger-bg-color;
             border-color: $switch-handle-off-border-color;
+            &:focus,
             &:hover {
                 background-color: $switch-hover-off-trigger-bg-color;
             }

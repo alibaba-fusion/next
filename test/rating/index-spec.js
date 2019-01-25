@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount, render } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import { setTimeout } from 'timers';
 import Rating from '../../src/rating/index';
 import '../../src/rating/style.js';
+import {KEYCODE} from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -60,7 +61,7 @@ describe('Rating', () => {
     });
 
     describe('action', () => {
-        let ret, hval, parent, dom, rect, onChange, onHoverChange;
+        let ret, hval, parent, rect, onChange, onHoverChange;
 
         beforeEach(() => {
             ret = -1;
@@ -78,14 +79,13 @@ describe('Rating', () => {
         afterEach(() => {
             document.body.removeChild(parent);
             parent = null;
-            dom = null;
             rect = null;
             onChange = null;
             onHoverChange = null;
         });
 
         it('should be controlled ', () => {
-            dom = ReactDOM.render(<Rating value={3} onChange={onChange} id="action-test-0" />, parent);
+            ReactDOM.render(<Rating value={3} onChange={onChange} id="action-test-0" />, parent);
             rect = document.querySelectorAll('#action-test-0')[0].getBoundingClientRect();
 
 
@@ -99,7 +99,7 @@ describe('Rating', () => {
         });
 
         it('should trigger click event', () => {
-            dom = ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
             rect = document.querySelectorAll('#action-test-1 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.click(document.querySelectorAll('#action-test-1 .next-rating-base')[0], {
@@ -111,7 +111,7 @@ describe('Rating', () => {
         });
 
         it('should trigger click event correct', () => {
-            dom = ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
             rect = document.querySelectorAll('#action-test-1 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.click(document.querySelectorAll('#action-test-1 .next-rating-base')[0], {
@@ -123,7 +123,7 @@ describe('Rating', () => {
         });
 
         it('should trigger mouse event', (done) => {
-            dom = ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-2" />, parent);
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-2" />, parent);
             rect = document.querySelectorAll('#action-test-2 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.mouseOver(document.querySelectorAll('#action-test-2 .next-rating-base')[0], {
@@ -132,14 +132,14 @@ describe('Rating', () => {
             });
 
             setTimeout(() => {
-                 // 16 x 1 + 4 x (1 + 1) = 24
+                // 16 x 1 + 4 x (1 + 1) = 24
                 assert(document.querySelectorAll('#action-test-2 .next-rating-overlay')[0].style.width === '24px');
                 done();
             }, 200);
         });
 
         it('should trigger mouse event when allow half', (done) => {
-            dom = ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-3" allowHalf />, parent);
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-3" allowHalf />, parent);
             rect = document.querySelectorAll('#action-test-3 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.mouseOver(document.querySelectorAll('#action-test-3 .next-rating-base')[0], {
@@ -155,7 +155,7 @@ describe('Rating', () => {
         });
 
         it('should trigger twice mouse over', (done) => {
-            dom = ReactDOM.render(<Rating defaultValue={3} id="action-test-4" />, parent);
+            ReactDOM.render(<Rating defaultValue={3} id="action-test-4" />, parent);
             rect = document.querySelectorAll('#action-test-4 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.mouseOver(document.querySelectorAll('#action-test-4 .next-rating-base')[0], {
@@ -175,7 +175,7 @@ describe('Rating', () => {
         });
 
         it('should trigger mouse leave', (done) => {
-            dom = ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-5" />, parent);
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-5" />, parent);
             rect = document.querySelectorAll('#action-test-5 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.mouseOver(document.querySelectorAll('#action-test-5 .next-rating-base')[0], {
@@ -192,7 +192,7 @@ describe('Rating', () => {
         });
 
         it('should render readonly rating', () => {
-            dom = ReactDOM.render(<Rating value={3} disabled onChange={onChange} id="action-test-6" />, parent);
+            ReactDOM.render(<Rating value={3} disabled onChange={onChange} id="action-test-6" />, parent);
             rect = document.querySelectorAll('#action-test-6 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.click(document.querySelectorAll('#action-test-6 .next-rating-base')[0], {
@@ -205,7 +205,7 @@ describe('Rating', () => {
         });
 
         it('should trigger mouse over', (done) => {
-            dom = ReactDOM.render(<Rating id="action-test-7" onHoverChange={onHoverChange} />, parent);
+            ReactDOM.render(<Rating id="action-test-7" onHoverChange={onHoverChange} />, parent);
             rect = document.querySelectorAll('#action-test-7 .next-rating-icon')[0].getBoundingClientRect();
 
             ReactTestUtils.Simulate.mouseOver(document.querySelectorAll('#action-test-7 .next-rating-base')[0], {
@@ -222,6 +222,81 @@ describe('Rating', () => {
                 assert(hval === 3);
                 done();
             }, 300);
+        });
+
+        it('should trigger keyboard right event correct', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.RIGHT});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 4);
+        });
+
+        it('should trigger keyboard left event correct', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.LEFT});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 2);
+        });
+
+        it('should trigger keyboard down event correct', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.DOWN});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 4);
+        });
+
+        it('should trigger keyboard up event correct', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.UP});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 2);
+        });
+
+        it('should ignore unsupported keyboard event correct', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.SPACE});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 3);
+        });
+
+        it('should trigger keyboard left event correct when value is 0', () => {
+            ReactDOM.render(<Rating defaultValue={0} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.LEFT});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 5);
+        });
+
+        it('should trigger keyboard right event correct when value is the count of rating', () => {
+            ReactDOM.render(<Rating defaultValue={5} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelector('#action-test-1');
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.RIGHT});
+            ReactTestUtils.Simulate.keyDown(rect, {keyCode: KEYCODE.ENTER});
+
+            assert(ret === 1);
+        });
+
+        it('should behave correct when click outside rating', () => {
+            ReactDOM.render(<Rating defaultValue={3} onChange={onChange} id="action-test-1" />, parent);
+            rect = document.querySelectorAll('#action-test-1 .next-rating-icon')[0].getBoundingClientRect();
+
+            ReactTestUtils.Simulate.click(document.querySelectorAll('#action-test-1 .next-rating-base')[0], {
+                pageX: rect.left - 1000,
+                pageY: rect.top + 8
+            });
+
+            assert(ret === -1);
         });
 
     });

@@ -18,9 +18,16 @@ Simple usage of badge component.
 import { Badge } from '@alifd/next';
 
 ReactDOM.render(
-    <Badge count={5}>
-        <a href="#" className="basic-example"></a>
-    </Badge>, mountNode);
+    <div>
+        <Badge count={5}>
+            <a href="#" className="basic-example"></a>
+        </Badge>
+
+        <Badge count={5}>
+            <a href="#" className="basic-example"><span className="next-visually-hidden">unread messages</span></a>
+        </Badge>
+    </div>
+    , mountNode);
 ````
 
 ````css
@@ -30,5 +37,9 @@ ReactDOM.render(
     height: 42px;
     border-radius: 8px;
     background: #eee;
+}
+
+.next-badge {
+    margin-right: 16px;
 }
 ````

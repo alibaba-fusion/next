@@ -113,7 +113,7 @@ export default class Arrow extends Component {
         if (children) {
             return React.cloneElement(React.Children.only(children), arrowProps);
         } else {
-            return <div {...arrowProps}><Icon type={iconType} /></div>;
+            return <button type="button" role="button" {...arrowProps}><Icon type={iconType} /></button>;
         }
     }
 }

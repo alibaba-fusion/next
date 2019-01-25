@@ -26,10 +26,10 @@ When user want to upload some file to server side or cloud storage, upload compo
 | data            | extra upload data                                                                                                                                                | Object/Function | -         |
 | headers         | upload request headers                                                                                                                                              | Object          | -         |
 | withCredentials | Allow request with cookie or not                                                                                                                                       | Boolean         | true     |
-| beforeUpload    | callback before upload start. returning null/undefined means do nothing, returning object will modify upload options,returning false will stop upload, null/undefined/object/false can be returned directly or wrapped by Promise <br><br>**signature**:<br>Function(files: Object, options: Object) => Bool/Object/Promise<br>**params**:<br>_files_: {Object} null<br>_options_: {Object} null<br>**returns**:<br>{Bool/Object/Promise} null<br> | Function        | func.noop |
+| beforeUpload    | callback before upload start. returning null/undefined means do nothing, returning object will modify upload options,returning false will stop upload, null/undefined/object/false can be returned directly or wrapped by Promise <br><br>**signature**:<br>Function(file: Object, options: Object) => Bool/Object/Promise<br>**params**:<br>_file_: {Object} <br>_options_: {Object} <br>**returns**:<br>{Bool/Object/Promise} <br> | Function        | func.noop |
 | onProgress      | callback when upload progress change <br><br>signaure:<br>Function() => void                                                                                                              | Function        | func.noop |
-| onSuccess       | callback when upload success<br><br>signaure:<br>Function() => void                                                                                     | Function        | func.noop |
-| onError         | callback when upload failed<br><br>signaure:<br>Function() => void                                                                                | Function        | func.noop |
+| onSuccess       | callback when upload success<br><br>**signaure**:<br>Function(file: Object, value: Array) => void<br>**params**:<br>_file_: {Object} file<br>_value_: {Array} value  | Function        | func.noop |
+| onError         | callback when upload failed <br><br>**signaure**:<br>Function(file: Object, value: Array) => void<br>**params**:<br>_file_: {Object} file<br>_value_: {Array} fileList   | func.noop |
 | children        | children element                                                                                                                                                   | ReactNode       | -         |
 | timeout         | limit request time, unit: ms                                                                                                                                            | Number          | -         |
 | method          | upload method<br><br>option:<br>'post', 'put'                                                                                                                 | Enum            | 'post'    |
@@ -45,8 +45,10 @@ When user want to upload some file to server side or cloud storage, upload compo
 | onChange        | callback when uploaded file state chagnes<br><br>signature:<br>Function(info: Object) => void<br>params:<br>_info_: {Object} file info Object                                                     | Function        | func.noop |
 | onRemove        | callback when file removed，See [onRemove](#onRemove)<br><br>signature:<br>Function() => void                                                                                | Function        | func.noop |
 | autoUpload      | auto upload after select file                                                                                                                                                                                                                                          | Boolean         | true      |
-| afterSelect      | callback after select file, afterSelect only works when autoUpload=false; when autoUpload=true, use beforeUpload to replace it<br><br>signature:<br>Function(file: Object) => Boolean<br>params:<br>_file_: {Object} null<br>returns:<br>{Boolean} return false will prevent upload<br>        | Function        | func.noop |
-
+| afterSelect      | callback after select file, afterSelect only works when autoUpload=false; when autoUpload=true, use beforeUpload to replace it<br><br>**signaure**:<br>Function(file: Object) => Boolean<br>**params**:<br>_file_: {Object} null<br>**return**:<br>{Boolean} return false will prevent upload file<br>   return false will prevent upload<br>        | Function        | func.noop |
+| request         | custom reuqest method <br><br>**signaure**:<br>Function(option: Object) => Object<br>**params**:<br>_option_: {Object} null<br>**returns**:<br>{Object} object with abort method<br>                                                                                       | Function        | -         |
+| progressProps   | Progress props                                                                                                                                                                                                                               | Object          | -         |
+|
 ### Upload.Card
 
 > Inherit from Upload API
@@ -93,6 +95,52 @@ When user want to upload some file to server side or cloud storage, upload compo
 | onProgress      | callback when upload progress change<br><br>signature:<br>Function() => void                               | Function        | noop  |
 | onSuccess       | callback when upload success<br><br>signature:<br>Function() => void           | Function        | noop  |
 | onError         | callback when upload failed<br><br>signature:<br>Function() => void | Function        | noop  |
+
+
+
+### Custom Request
+某些场景下需要自定义Request,例如对接AWS S3 jd-sdk or aliyun oss sdk. Upload 支持 传入自定义的 request方法.
+Under some circumstances, a developer may want to overriding default request call method， just like using AWS S3 jd-sdk or aliyun oss sdk. Upload has a prop named request.
+```
+function customRequest(option) {
+    /* coding here */
+    return {abort() {/* coding here */}};
+}
+
+<Upload request={customRequest}/>
+```
+
+a object named 'option' will be pass into customRequest method and it's schema:
+```
+    onProgress: (event: { percent: number }): void
+    onError: (event: Error, body?: Object): void
+    onSuccess: (body: Object): void
+    data: Object // 额外的数据
+    filename: String // 文件名
+    file: File // 原生File对象
+    withCredentials: Boolean // 是否携带cookie
+    action: String // 请求地址
+    method: String // 请求类型 post/put
+    timeout: Number // 超时
+    headers: Object // 请求头
+```
+
+customRequest should return a object with a abort method which can abort a request
+```
+abort(file?: File) => void: abort the uploading file
+```
+customRequest implements reference: https://github.com/alibaba-fusion/next/blob/master/src/upload/runtime/request.jsx
+
+
+
+### ErrorCode
+
+|  ErrorCode |  description |
+|---|---|
+|  EXCEED_LIMIT |  when limit is set , selected files number + uploaded files number > limit  |
+|  BEFOREUPLOAD_REJECT |  BeforeUpload method returns false/Promise.resolve(false)/Promise.reject() |
+|  RESPONSE_FAIL |  Response Error |
+All the ErrorCode in `Upload.ErrorCode`.
 
 ### onChange Return Data Schema
 

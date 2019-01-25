@@ -32,6 +32,10 @@ describe('Radio', () => {
             const wrapper = mount(<Radio className="custom-name" />);
             assert(wrapper.find('.next-radio-wrapper.custom-name').length === 1);
         });
+        it('should support name', () => {
+            const wrapper = mount(<Radio name="customer" />);
+            assert(wrapper.find('input[name="customer"]').length === 1);
+        });
     });
 
     describe('behavior', () => {

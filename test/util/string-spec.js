@@ -19,4 +19,7 @@ describe('src/string.js', function() {
     assert(string.camelcase(string.hyphenate('WebkitTransition')) === 'WebkitTransition');
   });
 
+  it('string.template(tpl, obj) should return correct string', function () {
+    assert(string.template('当前{current}, 共{total}页', { total: 3, current: 1}) === '当前1, 共3页');
+  });
 });

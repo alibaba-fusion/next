@@ -231,7 +231,7 @@ export default class Slider extends Component {
 
         return (
             <ConfigProvider rtl={false}>
-                <div dir="ltr" className={clazz} style={style} {...obj.pickOthers({...Slider.propTypes, ...InnerSlider.propTypes}, sliderProps)}>
+                <div role="toolbar" dir="ltr" className={clazz} style={style} {...obj.pickOthers({...Slider.propTypes, ...InnerSlider.propTypes}, sliderProps)}>
                     <InnerSlider ref={InnerSlider => (this.innerSlider = InnerSlider)} {...sliderProps} />
                 </div>
             </ConfigProvider>

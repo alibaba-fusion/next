@@ -39,3 +39,4 @@ SplitButton 同样由 Button 和 Menu 组成，其在触发区域上可以分为
 | popupClassName      | 弹层自定义样式类                                                                                                                                                         | String    | -         |
 | popupProps          | 透传给弹层的属性                                                                                                                                                         | Object    | -         |
 | menuProps           | 透传给 Menu 的属性                                                                                                                                                     | Object    | {}        |
+| leftButtonProps     | 透传给 左侧按钮 的属性                                                                                                                                                     | Object    | {}        |

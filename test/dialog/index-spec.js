@@ -231,7 +231,7 @@ describe('inner', () => {
             content: 'Content',
             animation: false
         });
-        assert(hasClass(document.querySelector('.next-dialog-message.next-message.next-addon.next-large'), 'next-message-help'));        assert(!document.querySelector('.next-dialog-header'));
+        assert(hasClass(document.querySelector('.next-dialog-message.next-message.next-addon.next-large'), 'next-message-help')); assert(!document.querySelector('.next-dialog-header'));
         assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
         assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
         const btns = document.querySelectorAll('.next-dialog-btn');
@@ -300,7 +300,6 @@ describe('inner', () => {
                 });
             }
         });
-
         ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
 
         setTimeout(() => {
@@ -348,7 +347,7 @@ describe('inner', () => {
                         cancel: 'near cancel'
                     }
                 }}>
-                    <Demo locale={{ok: 'my ok'}} animation={false} />
+                    <Demo locale={{ ok: 'my ok' }} animation={false} />
                 </ConfigProvider>
             </ConfigProvider>
         );
@@ -414,6 +413,40 @@ describe('inner', () => {
         document.body.removeChild(overlayWrapper);
 
         assert(!document.querySelector('.far-overlay-wrapper'));
+    });
+
+    it('should throw error (async)', () => {
+        const { hide } = Dialog.show({
+            title: 'Title',
+            content: 'Content',
+            onOk: async () => {
+                throw Error();
+            }
+        });
+        try {
+            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+            assert(false);
+        } catch (e) {
+            assert(true);
+        }
+        hide();
+    });
+
+    it('should throw error', () => {
+        const { hide } = Dialog.show({
+            title: 'Title',
+            content: 'Content',
+            onOk: () => {
+                throw Error();
+            }
+        });
+        try {
+            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+            assert(false);
+        } catch (e) {
+            assert(true);
+        }
+        hide();
     });
 });
 

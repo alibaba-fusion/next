@@ -106,7 +106,9 @@
         }
     }
 
+    &:focus,
     &.hover {
+        outline: none;
         #{$rating-prefix}-overlay {
             @include rating-state($rating-normal-overlay-hover-color);
         }

@@ -7,7 +7,7 @@ import Base from './base';
 import Uploader from './runtime/index';
 import html5Uploader from './runtime/html5-uploader';
 import List from './list';
-import {fileToObject, getFileItem} from './util';
+import {fileToObject, getFileItem, errorCode} from './util';
 
 const noop = func.noop;
 
@@ -89,21 +89,33 @@ class Upload extends Base {
         onChange: PropTypes.func,
         /**
          * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
+         * @param {Object} file 文件
+         * @param {Array<Object>} value 值
          */
         onSuccess: PropTypes.func,
         /**
-         * 移除文件回调函数，详见 [onRemove](#onRemove)
+         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
+         * @param {Object} file
+         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
+         */
+        afterSelect: PropTypes.func,
+        /**
+         * 移除文件回调函数
+         * @param {Object} file 文件
+         * @returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除
          */
         onRemove: PropTypes.func,
         /**
          * 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件
+         * @param {Object} file 出错的文件
+         * @param {Array} value 当前值
          */
         onError: PropTypes.func,
         /**
          * 可选参数, 详见 [beforeUpload](#beforeUpload)
-         * @param {Object} files
-         * @param {Object} options
-         * @returns {Boolean|Object|Promise}
+         * @param {Object} file 所有文件
+         * @param {Object} options 参数
+         * @returns {Boolean|Object|Promise} 返回值作用见demo
          */
         beforeUpload: PropTypes.func,
         /**
@@ -127,11 +139,15 @@ class Upload extends Base {
          */
         autoUpload: PropTypes.bool,
         /**
-         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
-         * @param {Object} file
-         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
+         * 自定义上传方法
+         * @param {Object} option
+         * @return {Object} object with abort method
          */
-        afterSelect: PropTypes.func,
+        request: PropTypes.func,
+        /**
+         * 透传给Progress props
+         */
+        progressProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -178,6 +194,14 @@ class Upload extends Base {
 
     onSelect = (files) => {
         const {autoUpload, afterSelect, onSelect, limit} = this.props;
+        // 总数
+        const total = this.state.value.length + files.length;
+        // 差额
+        const less = limit - this.state.value.length;
+        if (less <= 0) {
+            // 差额不足 则不上传
+            return;
+        }
 
         const fileList = files.map(file => {
             const objFile = fileToObject(file);
@@ -185,11 +209,13 @@ class Upload extends Base {
             return objFile;
         });
 
-        const total = this.state.value.length + fileList.length;
-
+        // 默认全量上传
+        let uploadFiles = fileList;
+        let discardFiles = [];
         if (total > limit) {
-            const more = total - limit;
-            fileList.splice(fileList.length - more, more);
+            // 全量上传总数会超过limit 但是 还有差额
+            uploadFiles = fileList.slice(0, less);
+            discardFiles = fileList.slice(less);
         }
 
         const value = this.state.value.concat(fileList);
@@ -199,19 +225,25 @@ class Upload extends Base {
 
 
         if (autoUpload) {
-            this.uploadFiles(fileList);
+            this.uploadFiles(uploadFiles);
         }
 
-        onSelect(fileList, value);
+        onSelect(uploadFiles, value);
+        discardFiles.forEach(file => {
+            // 丢弃的文件
+            const err = new Error(errorCode.EXCEED_LIMIT);
+            err.code = errorCode.EXCEED_LIMIT;
+            this.onError(err, null, file);
+        });
 
         if (!autoUpload) {
-            fileList.forEach(file => {
+            uploadFiles.forEach(file => {
                 const isPassed = afterSelect(file);
                 func.promiseCall(isPassed, func.noop, error => {
-                    this.onError(error, null, file); //TODO: handle error message
+                    this.onError(error, null, file); // TODO: handle error message
                 });
             });
-            this.onChange(value, fileList);
+            this.onChange(value, uploadFiles);
         }
     };
 
@@ -300,12 +332,14 @@ class Upload extends Base {
                 response = JSON.parse(response);
             }
         } catch (e) {
-            this.onError(e, response, file);
-            return;
+            e.code = errorCode.RESPONSE_FAIL;
+            return this.onError(e, response, file);
         }
 
         if (response.success === false) {
-            return this.onError(response.message, response, file);
+            const err = new Error(response.message || errorCode.RESPONSE_FAIL);
+            err.code = errorCode.RESPONSE_FAIL;
+            return this.onError(err, response, file);
         }
 
         const value = this.state.value;
@@ -386,12 +420,6 @@ class Upload extends Base {
     };
 
     onChange = (value, file) => {
-        // not controlled
-        // if (!('value' in this.props)) {
-        //     this.setState({
-        //         value
-        //     });
-        // }
         this.setState({
             value
         });
@@ -417,6 +445,7 @@ class Upload extends Base {
             onPreview,
             list,
             extraRender,
+            progressProps,
             ...others} = this.props;
 
         const cls = classNames({
@@ -426,10 +455,10 @@ class Upload extends Base {
             [className]: className
         });
 
-        const hidden = this.state.value.length >= limit;
+        const isExceedLimit = this.state.value.length >= limit;
         const innerCls = classNames({
             [`${prefix}upload-inner`]: true,
-            [`${prefix}hidden`]: hidden,
+            [`${prefix}hidden`]: isExceedLimit,
         });
 
         let children = this.props.children;
@@ -446,6 +475,8 @@ class Upload extends Base {
             </div>);
         }
 
+        // disabled 状态下把 remove函数替换成禁止 remove的函数
+        const onRemoveFunc = disabled ? func.prevent : onRemove;
         const otherAttributes = obj.pickAttrsWith(this.props, 'data-');
         return (
             <div className={cls} style={style} {...otherAttributes}>
@@ -453,7 +484,7 @@ class Upload extends Base {
                     {...others}
                     beforeUpload={beforeUpload}
                     dragable={dragable}
-                    disabled={disabled}
+                    disabled={disabled || isExceedLimit}
                     className={innerCls}
                     onSelect={this.onSelect}
                     onDrop={this.onDrop}
@@ -466,7 +497,7 @@ class Upload extends Base {
                 </Uploader>
                 {listType || list ?
                     <List useDataURL={useDataURL} uploader={this} listType={listType} value={this.state.value}
-                        closable={closable} onRemove={onRemove}
+                        closable={closable} onRemove={onRemoveFunc} progressProps={progressProps}
                         onCancel={onCancel} onPreview={onPreview} extraRender={extraRender}/> :
                     null}
             </div>

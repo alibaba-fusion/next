@@ -33,6 +33,7 @@
         transition: background .3s ease-out;
         color: $time-picker-menu-item-color;
         background: $time-picker-menu-item-background;
+        outline: none;
 
         &:hover {
             color: $time-picker-menu-item-color-hover;

@@ -122,6 +122,7 @@ class Card extends Base {
 
         const children = this.props.children || locale.card.addPhoto;
 
+        const onRemoveFunc = disabled ? func.prevent : onRemove;
         const othersForList = obj.pickOthers(Card.propTypes, this.props);
         const othersForUpload = obj.pickOthers(List.propTypes, othersForList);
         return (
@@ -131,7 +132,7 @@ class Card extends Base {
                 closable
                 locale={locale}
                 value={this.state.value}
-                onRemove={onRemove}
+                onRemove={onRemoveFunc}
                 onCancel={onCancel}
                 onPreview={onPreview}
                 uploader={this.state.uploaderRef}
@@ -140,7 +141,7 @@ class Card extends Base {
                 <Upload
                     {...othersForUpload}
                     shape="card"
-                    disabled={disabled || isExceedLimit}
+                    disabled={disabled}
                     action={action}
                     timeout={timeout}
                     value={this.state.value}

@@ -21,7 +21,11 @@ export default class CascaderMenu extends Component {
         if (!children || children.length === 0) {
             return;
         }
-        const selectedIndex = children.findIndex(item => !!item.props.checked || !!item.props.selected || !!item.props.expanded);
+        const selectedIndex = children.findIndex(
+            item => !!item.props.checked ||
+                !!item.props.selected ||
+                !!item.props.expanded
+        );
 
         if (selectedIndex === -1) {
             return;
@@ -35,13 +39,27 @@ export default class CascaderMenu extends Component {
             const menu = findDOMNode(this.refs.menu);
             const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex];
             if (targetItem) {
-                menu.scrollTop = targetItem.offsetTop - Math.floor((menu.clientHeight / targetItem.clientHeight - 1) / 2) * targetItem.clientHeight;
+                menu.scrollTop = targetItem.offsetTop - Math.floor(
+                    (menu.clientHeight / targetItem.clientHeight - 1) / 2
+                ) * targetItem.clientHeight;
             }
         }
     }
 
     renderMenu (items, ref, props) {
-        return <Menu ref={ref} role="listbox" {...props}>{items}</Menu>;
+        return (
+            <Menu ref={ref} role="listbox" {...props}>{
+                items.map(node => {
+                    if (React.isValidElement(node) && node.type.menuChildType === 'item') {
+                        return React.cloneElement(node, {
+                            menu: this
+                        });
+                    }
+
+                    return node;
+                })
+            }</Menu>
+        );
     }
 
     render() {
