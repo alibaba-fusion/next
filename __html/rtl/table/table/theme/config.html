@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>配置主题 Demo</title>
+  <meta charset="utf-8">
+  <style>
+    * {
+      outline: none;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100%;
+      color: #333;
+      font-family: 'PingFang SC', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      background: #F2F3F7;
+    }
+
+    .error {
+      margin: 10px;
+      padding: 10px;
+      color: red;
+      background: #FFF;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .left {
+      flex: 1;
+      overflow: auto;
+      padding: 0 20px;
+    }
+
+    .demo {
+      width: 100%;
+    }
+
+    .right {
+      position: relative;
+      flex-direction: column;
+      width: 300px;
+      border: 1px solid #DCDEE3;
+      background: #FFF;
+    }
+
+    .language {
+      display: flex;
+      padding: 5px;
+      margin: 5px 0;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .language-label {
+      padding-left: 15px;
+      width: 100px;
+    }
+
+    .language-choice label {
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .language-choice input {
+      margin-right: 6px;
+    }
+
+    .editor {
+      width: 300px;
+      position: absolute;
+      top: 37px;
+      left: 0;
+      max-height: calc(100% - 37px);
+      min-height: 30px;
+      overflow-y: auto;
+    }
+
+    .editor-ns1 {
+      padding: 10px;
+      background: #F7F8FA;
+      border-top: 1px solid #E6E7EB;
+      border-bottom: 1px solid #E6E7EB;
+    }
+
+    .editor-ns2 {
+      padding: 7px 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .editor-ns3 {
+      padding: 7px 10px;
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    .editor-item {
+      display: flex;
+      flex-direction: row;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .editor-item-desc {
+      flex: 1;
+      align-self: center;
+      padding-right: 5px;
+      font-size: 12px;
+    }
+
+    .eidtor-item-input {
+      display: block;
+      width: 160px;
+      height: 24px;
+      border: 1px solid #CCC;
+      border-radius: 3px;
+      font-size: 12px;
+      background-color: #FFF;
+    }
+
+    input.eidtor-item-input {
+      padding: 0 7px;
+    }
+
+    .notice {
+      height: 40px;
+      margin: 20px 0;
+      line-height: 40px;
+      padding-left: 20px;
+      font-size: 14px;
+      background-color: #FAE7E7;
+      color: #E61C1C;
+    }
+
+    .loading {
+      height: 40px;
+      margin: 20px 0;
+      line-height: 40px;
+      padding-left: 20px;
+      font-size: 14px;
+      border: 1px solid #2192D9;
+      color: #2192D9;
+    }
+  </style>
+</head>
+<body>
+  
+    <div class="container">
+      <div class="left">
+        
+          <div class="loading">正在获取scss变量与css规则映射表，比较耗时，请勿重复刷新页面...</div>
+          <iframe class="demo" frameborder="0" scrolling="yes"></iframe>
+        
+      </div>
+      <div class="right">
+        <div class="language">
+          <div class="language-label">Language</div>
+          <div class="language-choice">
+            <label><input name="language" type="radio" value="en-us" checked>English</label>
+            <label><input name="language" type="radio" value="zh-cn">中文</label>
+          </div>
+        </div>
+        <div class="editor"></div>
+      </div>
+    </div>
+
+    
+    <script>
+      !function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.SassTracker=r():e.SassTracker=r()}(window,function(){return function(e){var r={};function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}return t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:n})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,r){if(1&r&&(e=t(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(t.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var o in e)t.d(n,o,function(r){return e[r]}.bind(null,o));return n},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},t.p="",t(t.s=0)}([function(e,r,t){"use strict";var n=function(){function e(e,r){for(var t=0;t<r.length;t++){var n=r[t];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(r,t,n){return t&&e(r.prototype,t),n&&e(r,n),r}}();var o=t(1),i=/:(hover|active|focus|visited)/,s=/::([\w-]+)/,a=/(::[\w-]+)|:(hover|active|focus|visited)/g,c=/:not\(\)/g,l=new RegExp("^("+["animation","background","border","border-left","border-right","border-top","border-bottom","font","outline","margin","padding"].join("|")+")"),u=["first-letter","last-letter","first-line","last-line","first-child","last-child","before","after"];var f=function(){function e(r,t){!function(e,r){if(!(e instanceof r))throw new TypeError("Cannot call a class as a function")}(this,e),this.win=r,this.doc=this.win.document,this.clsPrefix=t}return n(e,[{key:"getMatchedCSSRules",value:function(e,r){var t=this,n=this.doc.styleSheets,o=e.map(function(){return[]});function i(n){for(var s=0;s<n.length;s++){var l=n[s];if(l instanceof t.win.CSSMediaRule)t.win.matchMedia(l.conditionText).matches&&i(l.cssRules);else if(l instanceof t.win.CSSStyleRule){if(r&&!l.selectorText.match(r))continue;for(var u=0;u<e.length;u++){for(var f=l.selectorText.split(","),p=f.length-1;p>=0;p--){var d=f[p].replace(a,"").replace(c,"").trim();d?f[p]=d:f.splice(p,1)}e[u].matches(f.join(", "))&&o[u].push(l)}}}}for(var s=0;s<n.length;s++)n[s].cssRules&&i(n[s].cssRules);return o}},{key:"getMatchedElems",value:function(e,r,t,n,o){n=n||"",o=o||[],t=t||[];var i=e.getAttribute("class")||"";n+=e.tagName+"$"+i,o.indexOf(n)<0&&(t.push(e),o.push(n));var s=e.children;s.length<1&&this.hasPseudoElement(e)&&t.push(e);for(var a=0,c=s.length;a<c;a++)this.getMatchedElems(s[a],r,t,n+">",o);return t}},{key:"hasPseudoElement",value:function(e){var r=!1;return u.forEach(function(t){t=":"+t,window&&window.getComputedStyle(e,t).content.length>0&&(r=!0)}),r}},{key:"parseCssRule",value:function(e){var r=e.match(/([^\{]+)\{([^\}]+)\}/),t={};return r[2]&&r[2].replace(/([\w-]+)\s*:\s*(.+?);/g,function(e,r,n){t[r]=n}),t}},{key:"getWorkedRules",value:function(e){var r={};e.forEach(function(e,t){e.priority=o.parseSelector(e.selectors[0],t);for(var n=1;n<e.selectors.length;n++){var i=o.parseSelector(e.selectors[n],t);o.compare(i,e.priority)>0&&(e.priority=i)}for(var s in e.decls)if(e.decls.hasOwnProperty(s)){var a=e.priority.slice();if(e.decls[s].indexOf("!important")>0&&(a[0]=1),s in r){var c=r[s];o.compare(a,c.priority)>0&&(r[s]={selectors:e.selectors,priority:a})}else r[s]={selectors:e.selectors,priority:a}}});var t={};for(var n in r)if(r.hasOwnProperty(n)){var i=r[n].selectors.join(", ");i in t||(t[i]=[]),t[i].push(n)}return t}},{key:"mergeWorkedRules",value:function(e,r){var t=function(t){t in e||(e[t]=[]),r[t].forEach(function(r){e[t].indexOf(r)<0&&e[t].push(r)})};for(var n in r)t(n)}},{key:"findCssRules",value:function(e,r){var t=this,n=this,o=new RegExp("\\b"+this.clsPrefix.replace(/\./g,"\\.")),a=r?this.getMatchedElems(e,o):[e],c={};return this.getMatchedCSSRules(a,o).forEach(function(e,r){var o={};for(var a in e.forEach(function(e){var r=e.selectorText.split(/\s*,\s*/),t=n.parseCssRule(e.cssText),a=e.selectorText.match(i),c=a?a[1]:"normal";(a=e.selectorText.match(s))&&(c+="-"+a[1]),o[c]||(o[c]=[]),o[c].push({selectors:r,decls:t})}),o)o.hasOwnProperty(a)&&t.mergeWorkedRules(c,t.getWorkedRules(o[a]))}),c}},{key:"findVars",value:function(e,r){for(var t=r.selectors,n=[],o=t.length-1;o>=0;o--){var i=t[o];if(i.selector in e)for(var s=e[i.selector],a=s.length-1;a>=0;a--){var c=s[a];if(c in i.decls&&(n.push(i.decls[c]),s.splice(a,1)),c.match(l))for(var u in i.decls)0!==u.indexOf(c)&&0!==c.indexOf(u)&&u.split("-")[0]!==c.split("-")[0]||n.push(i.decls[u])}}for(var f in e)e.hasOwnProperty(f)&&(e[f].length||delete e[f]);var p=[];return n.forEach(function(e){e.forEach(function(e){!function(e,r){for(var t=0;t<r.length;t++)e.indexOf(r[t])<0&&e.push(r[t])}(p,r.vars[e])})}),p}},{key:"findDemo",value:function(e){do{if(e.classList.contains("demo-item"))return e}while(e=e.parentElement);return!1}},{key:"findDemoItems",value:function(e){var r=this,t=[];return e.forEach(function(e){for(var n=r.doc.querySelectorAll(e),o=0,i=n.length;o<i;o++){var s=n[o],a=r.findDemo(s);a&&t.indexOf(a)<0&&t.push(a)}}),t}}]),e}();e.exports=f},function(e,r,t){"use strict";var n=/(#[\w-]+)/g,o=/(\.[\w-]+)/g,i=/(\[[^\[\]]+\])/g,s=/(:[\w-]+)/g,a=/(::[\w-]+)/g,c=/([\w-]+)/g,l=["first-letter","last-letter","first-line","last-line","first-child","last-child","before","after"],u="",f="",p="";e.exports={parseSelector:function(e,r){var t=[0,0,0,0,0,r||0];return e=(e=(e=e.replace(/(::?)([\w-]+)/g,function(e,r,t){return l.indexOf(t)>=0&&":"===r?"::"+t:e})).replace(i,f).replace(a,p).replace(s,f).replace(n,u).replace(o,f).replace(c,p)).replace(/[\2\3\4]/g,function(e){var r=e.charCodeAt(0);return t[r]++,"<"+r+">"}),t},compare:function(e,r){for(var t=0;t<e.length;t++)if(e[t]!=r[t])return e[t]-r[t];return 0}}}])});
+    </script>
+    <script>
+      (function() {
+        'use strict';
+
+        var varEnums = JSON.parse('{  "color.default": {    "$color-brand1-1": "brand1-1",    "$color-brand1-6": "brand1-6",    "$color-brand1-9": "brand1-9",    "$color-success-1": "success-1",    "$color-success-2": "success-2",    "$color-success-3": "success-3",    "$color-notice-1": "notice-1",    "$color-notice-2": "notice-2",    "$color-notice-3": "notice-3",    "$color-warning-1": "warning-1",    "$color-warning-2": "warning-2",    "$color-warning-3": "warning-3",    "$color-error-1": "error-1",    "$color-error-2": "error-2",    "$color-error-3": "error-3",    "$color-help-1": "help-1",    "$color-help-2": "help-2",    "$color-help-3": "help-3",    "$color-link-1": "link-1",    "$color-link-2": "link-2",    "$color-link-3": "link-3",    "$color-other-1": "other-1",    "$color-other-2": "other-2",    "$color-other-3": "other-3",    "$color-white": "white",    "$color-black": "black",    "$color-transparent": "transparent",    "$color-line1-1": "line1-1",    "$color-line1-2": "line1-2",    "$color-line1-3": "line1-3",    "$color-line1-4": "line1-4",    "$color-fill1-1": "fill1-1",    "$color-fill1-2": "fill1-2",    "$color-fill1-3": "fill1-3",    "$color-fill1-4": "fill1-4",    "$color-text1-1": "text1-1",    "$color-text1-2": "text1-2",    "$color-text1-3": "text1-3",    "$color-text1-4": "text1-4"  },  "corner.default": {    "$corner-1": "corner-1",    "$corner-2": "corner-2",    "$corner-3": "corner-3",    "$corner-circle": "corner-circle",    "$corner-zero": "corner-zero"  },  "font.weightcore": {    "$font-weight-1": "light",    "$font-weight-2": "regular",    "$font-weight-3": "bold"  },  "font.size": {    "$font-size-display-3": "display-3",    "$font-size-display-2": "display-2",    "$font-size-display-1": "display-1",    "$font-size-headline": "headline",    "$font-size-title": "title",    "$font-size-subhead": "subhead",    "$font-size-body-2": "body-2",    "$font-size-body-1": "body-1",    "$font-size-caption": "caption"  },  "icon.default": {    "$icon-xxs": "icon-xxs",    "$icon-xs": "icon-xs",    "$icon-s": "icon-s",    "$icon-m": "icon-m",    "$icon-l": "icon-l",    "$icon-xl": "icon-xl",    "$icon-xxl": "icon-xxl",    "$icon-xxxl": "icon-xxxl"  },  "line.width": {    "$line-zero": "line-zero",    "$line-1": "line-1",    "$line-2": "line-2",    "$line-3": "line-3"  },  "line.style": {    "$line-solid": "line-solid",    "$line-dashed": "line-dashed",    "$line-dotted": "line-dotted"  },  "shadow.default": {    "$shadow-zero": "shadow-zero",    "$shadow-1": "shadow-1",    "$shadow-1-up": "shadow-1-up",    "$shadow-1-right": "shadow-1-right",    "$shadow-1-down": "shadow-1-down",    "$shadow-1-left": "shadow-1-left",    "$shadow-2": "shadow-2",    "$shadow-2-up": "shadow-2-up",    "$shadow-2-right": "shadow-2-right",    "$shadow-2-down": "shadow-2-down",    "$shadow-2-left": "shadow-2-left",    "$shadow-3": "shadow-3",    "$shadow-3-up": "shadow-3-up",    "$shadow-3-right": "shadow-3-right",    "$shadow-3-down": "shadow-3-down",    "$shadow-3-left": "shadow-3-left"  },  "font.default": {    "$font-family-base": "family",    "$font-lineheight-1": "lineheight-1",    "$font-lineheight-2": "lineheight-2",    "$font-lineheight-3": "lineheight-3",    "$font-lineheight-4": "lineheight-4",    "$font-lineheight-5": "lineheight-5"  },  "size.length": {    "$s-zero": "s-zero",    "$s-1": "s-1",    "$s-2": "s-2",    "$s-3": "s-3",    "$s-4": "s-4",    "$s-5": "s-5",    "$s-6": "s-6",    "$s-7": "s-7",    "$s-8": "s-8",    "$s-9": "s-9",    "$s-10": "s-10",    "$s-11": "s-11",    "$s-12": "s-12",    "$s-13": "s-13",    "$s-14": "s-14",    "$s-15": "s-15",    "$s-16": "s-16",    "$s-17": "s-17",    "$s-18": "s-18",    "$s-19": "s-19",    "$s-20": "s-20",    "$s-21": "s-21",    "$s-22": "s-22",    "$s-23": "s-23",    "$s-24": "s-24",    "$s-25": "s-25",    "$s-26": "s-26",    "$s-27": "s-27",    "$s-28": "s-28",    "$s-29": "s-29",    "$s-30": "s-30",    "$s-31": "s-31",    "$s-32": "s-32",    "$s-33": "s-33",    "$s-34": "s-34",    "$s-35": "s-35",    "$s-36": "s-36",    "$s-37": "s-37",    "$s-38": "s-38",    "$s-39": "s-39",    "$s-40": "s-40",    "$s-41": "s-41",    "$s-42": "s-42",    "$s-43": "s-43",    "$s-44": "s-44",    "$s-45": "s-45",    "$s-46": "s-46",    "$s-47": "s-47",    "$s-48": "s-48",    "$s-49": "s-49",    "$s-50": "s-50"  }}');
+        var componentName = 'table';
+
+        var iframe = document.querySelector('iframe');
+        var loading = document.querySelector('.loading')
+        var right = document.querySelector('.right');
+        var editor = document.querySelector('.editor');
+
+        iframe.addEventListener('load', function() {
+          iframe.height = window.innerHeight + 'px';
+
+          var iWin = iframe.contentWindow;
+          if (iWin.renderDemo) {
+            var choices = document.querySelector('.language-choice');
+            choices.addEventListener('change', function(e) {
+              iWin.renderDemo(e.target.value);
+            });
+          }
+        });
+
+        var varEnumsMap = Object.keys(varEnums).reduce(function(ret, enumKey) {
+          Object.keys(varEnums[enumKey]).forEach(function(variable) {
+            ret[variable] = enumKey;
+          });
+          return ret;
+        }, {});
+        var varObj;
+        var cssScssMap;
+
+        getJson({
+          url: '/getVariables.json',
+          data: {
+            componentName: componentName
+          },
+          success: function(result) {
+            iframe.src = "./index.html";
+            loading.style.display = 'none';
+            varObj = result.varObj;
+            if (varObj && varObj.items) {
+              varObj.items = varObj.items.reduce(function(ret, item) {
+                ret[item.name] = item;
+                return ret;
+              }, {});
+              cssScssMap = result.cssScssMap;
+            } else {
+              console.warn('there is no config variables.');
+            }
+          },
+          error: function(error) {
+            console.log('fetch varialbes and css-scss map failed: ' + error);
+          }
+        });
+
+        window.addEventListener('message', function (e) {
+          var data = e.data
+          if (!data || data.from !== 'demo' || !varObj) {
+            return
+          }
+
+          if (data.type === 'loaded') {
+            var iWin = iframe.contentWindow;
+            var iDoc = iWin.document;
+            var tracker = new SassTracker(iWin, varObj.classPrefix.replace('{prefix}', 'next'));
+
+            iDoc.body.addEventListener('click', function (e) {
+                var demo = tracker.findDemo(e.target);
+                if (!demo) {
+                    return console.warn('Can not find the event target demo parent, may be it was triggered in overlay.');
+                }
+                var cssRules = tracker.findCssRules(demo, true);
+                var vars = tracker.findVars(cssRules, cssScssMap);
+                var varItems = vars.map(name => varObj.items[name]);
+
+                var order = varObj.order;
+                if (order) {
+                    order.size = 1;
+                    order.statement = 2;
+                    varItems = varItems.sort((prev, next) => {
+                    var result = -1;
+
+                    var prevArr = prev.attrs.namespace.split('/');
+                    var nextArr = next.attrs.namespace.split('/');
+                    var length = Math.min(prevArr.length, nextArr.length);
+                    for (var i = 0; i < length; i++) {
+                        const prevPartNS = prevArr.slice(0, i + 1).join('/');
+                        const nextPartNS = nextArr.slice(0, i + 1).join('/');
+                        const prevOrderValue = order[prevPartNS];
+                        const nextOrderValue = order[nextPartNS];
+                        if (!prevOrderValue) {
+                        console.error('Can not find the namespace order: ' + prevPartNS);
+                        result = 1;
+                        break;
+                        }
+                        if (!nextOrderValue) {
+                        console.error('Can not find the namespace order: ' + nextPartNS);
+                        result = -1;
+                        break;
+                        }
+                        if (prevOrderValue !== nextOrderValue) {
+                        result = prevOrderValue - nextOrderValue;
+                        break;
+                        }
+                        if (i === length - 1) {
+                        result = prevArr.length - nextArr.length;
+                        }
+                    }
+
+                    return result;
+                    });
+                }
+
+                var varMap = varItems.reduce(function(ret, varItem) {
+                    if (varItem && varItem.attrs && varItem.attrs.namespace) {
+                    var arr = varItem.attrs.namespace.split('/');
+                    var ns1 = arr[0];
+                    var ns2 = arr[1];
+                    var ns3 = arr[2];
+                    if (ns1 && ns2) {
+                        ret[ns1] = ret[ns1] || {};
+                        ret[ns1][ns2] = ret[ns1][ns2] || {};
+                        if (ns3) {
+                        ret[ns1][ns2][ns3] = ret[ns1][ns2][ns3] || {};
+                        ret[ns1][ns2][ns3][varItem.description] = varItem;
+                        } else {
+                        ret[ns1][ns2][varItem.description] = varItem;
+                        }
+                    }
+                    }
+
+                    return ret;
+              }, {});
+              renderEditor(varMap);
+            });
+          } else if (data.type === 'displayed') {
+            e.source.postMessage({
+              from: 'config',
+              type: 'displayed',
+              body: data.body
+            }, '*');
+          }
+        });
+
+        var changeCache = {
+          componentName: componentName
+        };
+        var firstRequest = true;
+        editor.addEventListener('change', function(e) {
+          var element = e.target;
+          changeCache[element.name] = element.value;
+
+          getJson({
+            url: '/rebuildScss.json',
+            data: changeCache,
+            success: function(result) {
+                console.log(result)
+                var iWin = iframe.contentWindow;
+                var iDoc = iWin.document;
+                var styleElement = iDoc.getElementById('rebuild');
+                if (!styleElement) {
+                    styleElement = iDoc.createElement('style');
+                    styleElement.id = 'rebuild';
+                    iDoc.head.appendChild(styleElement);
+                }
+                styleElement.innerHTML = result.css;
+
+                if (firstRequest) {
+                    var styleElements = iDoc.head.querySelectorAll('style');
+                    styleElements.forEach(function(el) {
+                        if (el !== styleElement && el.textContent.indexOf('.demo-container > h2') === -1) {
+                            iDoc.head.removeChild(el);
+                        }
+                    });
+                    firstRequest = false;
+                }
+            },
+            error: function(error) {
+              console.error('fetch rebuild scss failed: ' + error);
+            }
+          });
+        });
+
+        function renderEditor(varMap) {
+          var html = '';
+          Object.keys(varMap).forEach(function(ns1) {
+            html += '<div><div class="editor-ns1">' + ns1 +'</div><div>';
+            Object.keys(varMap[ns1]).forEach(function(ns2) {
+              html += '<div class="editor-ns2">' + ns2 + '</div>';
+              if (ns1 === 'size') {
+                html += renderItems(varMap[ns1][ns2]);
+              } else {
+                Object.keys(varMap[ns1][ns2]).forEach(function(desc) {
+                  var item = varMap[ns1][ns2][desc];
+                  if (item.name && item.value && item.attrs) {
+                    html += renderItem(desc, item);
+                  } else {
+                    html += '<div class="editor-ns3">' + desc + '</div>';
+                    html += renderItems(item);
+                  }
+                });
+              }
+            });
+            html += '</div></div>';
+          });
+
+          editor.innerHTML = html;
+        }
+
+        function renderItems(map) {
+          let html = '';
+
+          Object.keys(map).sort().forEach(function(desc) {
+            html += renderItem(desc, map[desc]);
+          });
+
+          return html;
+        }
+
+        function renderItem(desc, item) {
+          var html = '<label class="editor-item"><div class="editor-item-desc">' + desc + '</div>';
+          if (item.value[0] !== '$') {
+            var value = item.attrs.type === 'number' || item.attrs.type === 'opacity' ? parseFloat(item.value) : item.value;
+            html += '<input class="eidtor-item-input" name="' + item.name + '" value="' + value + '">';
+          } else {
+            var varType = varEnumsMap[item.value];
+            if (varType) {
+              html += '<select class="eidtor-item-input" name="' + item.name + '">';
+              var varEnum = varEnums[varType];
+              Object.keys(varEnum).forEach(function(name) {
+                var desc = varEnum[name];
+                html += '<option ' + (item.value === name ? 'selected ' : '') + 'value="' + name + '">' + desc + '</option>';
+              });
+              html += '</select>';
+            } else {
+              console.error('Can not find the ' + item.name + ' value type: ' + item.value);
+            }
+          }
+          html += '</label>';
+          return html;
+        }
+
+        function getJson(options) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status >= 200 && xhr.status < 400) {
+                if (options.success) {
+                  options.success(JSON.parse(xhr.responseText));
+                }
+              } else {
+                if (options.error) {
+                  var html = xhr.responseText;
+                  var div = document.createElement('div');
+                  div.innerHTML = html;
+                  var text = div.textContent.trim();
+                  options.error(text);
+                }
+              }
+            }
+          }
+          if (options.data) {
+            options.url += '?' + Object.keys(options.data).map(function(key) {
+             return key + '=' + options.data[key]
+            }).join('&');
+          }
+          xhr.open('GET', options.url, true);
+          xhr.send();
+        }
+      })();
+    </script>
+    
+  
+</body>
+</html>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="//unpkg.com/github-markdown-css@2.9.0/github-markdown.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 50px;
+      background: #EEE;
+    }
+
+    .next-demo-links {
+      margin: 0;
+      padding: 0;
+      width: 300px;
+      list-style: none;
+      position: fixed;
+      top: 50px;
+      right: 50px;
+      background: #FFF;
+      border: 1px solid #C4C6Cf;
+      border-radius: 3px;
+      overflow-y: auto;
+      max-height: 500px;
+    }
+
+    .next-demo-links li {
+      line-height: 30px;
+      padding: 0 10px;
+    }
+
+    .next-demo-links li.title {
+      background: #5584ff;
+      color: #fff;
+    }
+
+    .next-demo-links li.title + li {
+      border-top: none;
+    }
+
+    .next-demo-links li + li {
+      border-top: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-links a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .next-demo-links a.current {
+      color: #5584ff;
+    }
+
+    .next-demo-section {
+      position: relative;
+      padding: 20px;
+      margin-right: 350px;
+      margin-bottom: 30px;
+      border-radius: 3px;
+      background: #FFF;
+    }
+
+    #next-demo-reloading {
+      display: none;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 120px;
+      height: 30px;
+      line-height: 30px;
+      text-align:center;
+      font-size: 14px;
+      color: #fff;
+      background: #5584FF;
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.32);
+      border-radius: 3px;
+    }
+
+    .markdown-body .highlight pre, .markdown-body pre {
+      background: #fff;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #fff;
+    }
+
+    .hljs-comment,
+    .hljs-quote {
+      color: #998;
+      font-style: italic;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-subst {
+      color: #333;
+      font-weight: bold;
+    }
+
+    .hljs-number,
+    .hljs-literal,
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-tag .hljs-attr {
+      color: #008080;
+    }
+
+    .hljs-string,
+    .hljs-doctag {
+      color: #d14;
+    }
+
+    .hljs-title,
+    .hljs-section,
+    .hljs-selector-id {
+      color: #900;
+      font-weight: bold;
+    }
+
+    .hljs-subst {
+      font-weight: normal;
+    }
+
+    .hljs-type,
+    .hljs-class .hljs-title {
+      color: #458;
+      font-weight: bold;
+    }
+
+    .hljs-tag,
+    .hljs-name,
+    .hljs-attribute {
+      color: #000080;
+      font-weight: normal;
+    }
+
+    .hljs-regexp,
+    .hljs-link {
+      color: #009926;
+    }
+
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #990073;
+    }
+
+    .hljs-built_in,
+    .hljs-builtin-name {
+      color: #0086b3;
+    }
+
+    .hljs-meta {
+      color: #999;
+      font-weight: bold;
+    }
+
+    .hljs-deletion {
+      background: #fdd;
+    }
+
+    .hljs-addition {
+      background: #dfd;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+
+    #toggle-rtl {
+        position: absolute;
+        top: 20px;
+        right: 280px;
+        height: 20px;
+        background: #fff;
+    }
+
+    .next-demo-dir {
+        position: absolute;
+        top: 20px;
+        right: 160px;
+        width: 100px;
+        height: 20px;
+        line-height: 20px;
+        background: #fff;
+        border: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-lang {
+      position: absolute;
+      top: 20px;
+      right: 50px;
+      width: 100px;
+      height: 20px;
+      line-height: 20px;
+      background: #fff;
+      border: 1px solid #C4C6Cf;
+    }
+
+    .next-demo-change-lang-loading {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: 999;
+      width: 200px;
+      height: 60px;
+      margin-top: -100px;
+      margin-left: -30px;
+      line-height: 60px;
+      text-align:center;
+      font-size: 14px;
+      color: #fff;
+      background: #5584FF;
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.32);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <ul class="next-demo-links">
+  
+    <li class="">
+      
+        <a href="/table">
+      
+
+        
+          首页
+          <em>index</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="title">
+      
+        <span>
+      
+
+        
+          使用示例
+          <em>Usage</em>
+        
+
+      
+        </span>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/basic.html">
+      
+
+        
+          简单
+          <em>basic</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/selection.html">
+      
+
+        
+          可选择
+          <em>selection</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/clear-selection.html">
+      
+
+        
+          选择可控
+          <em>clear-selection</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/filter&amp;sort.html">
+      
+
+        
+          排序与过滤
+          <em>filter&amp;sort</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a class="current" href="/table/demo/row-selection-config.html">
+      
+
+        
+          选择框属性
+          <em>row-selection-config</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/expanded.html">
+      
+
+        
+          可展开
+          <em>expanded</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/expanded-complex.html">
+      
+
+        
+          可展开-复杂
+          <em>expanded-complex</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/colspan.html">
+      
+
+        
+          行列合并
+          <em>colspan</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/crud.html">
+      
+
+        
+          增删改查
+          <em>crud</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/fixed-header.html">
+      
+
+        
+          固定表头
+          <em>fixed-header</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/list.html">
+      
+
+        
+          分组列表
+          <em>list</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/pagination.html">
+      
+
+        
+          分页
+          <em>pagination</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/multiple-header.html">
+      
+
+        
+          多表头
+          <em>multiple-header</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/virtual.html">
+      
+
+        
+          虚拟滚动
+          <em>virtual</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/lock-column.html">
+      
+
+        
+          锁列
+          <em>lock-column</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/column.html">
+      
+
+        
+          定制列
+          <em>column</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/style.html">
+      
+
+        
+          样式
+          <em>style</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/advanced.html">
+      
+
+        
+          扩展
+          <em>advanced</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/resize.html">
+      
+
+        
+          重设列的尺寸
+          <em>resize</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/mix.html">
+      
+
+        
+          混合模式
+          <em>mix</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/custom-loading.html">
+      
+
+        
+          自定义 Loading 组件
+          <em>custom-loading</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/demo/get-row-props.html">
+      
+
+        
+          自定义Row/Cell
+          <em>get-row-props</em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="title">
+      
+        <span>
+      
+
+        
+          主题配置
+          <em>Usage of theme</em>
+        
+
+      
+        </span>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/theme/index.html">
+      
+
+        
+          Theme Demo
+          <em></em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+    <li class="">
+      
+        <a href="/table/theme/config.html">
+      
+
+        
+          Config Theme Demo
+          <em></em>
+        
+
+      
+        </a>
+      
+    </li>
+  
+  </ul>
+  <button id="toggle-rtl">toggle mount-node</button>
+  
+  <select class="next-demo-dir" aria-label="Please select a direction">
+      <option value="rtl">rtl</option>
+      <option value="ltr" selected>ltr</option>
+  </select>
+  
+
+  
+  <select class="next-demo-lang" aria-label="请选择语言">
+      <option value="zh" selected>中文</option>
+      <option value="en">English</option>
+  </select>
+  
+  <div class="next-demo-change-lang-loading">
+    Changing ...
+  </div>
+  <script>
+    (function() {
+        var toggleRtlBtn = document.querySelector('#toggle-rtl');
+
+        toggleRtlBtn.addEventListener('click', function (){
+            var mountNode = document.querySelector('#mount-node');
+            if (mountNode.dir === 'rtl') {
+                mountNode.dir = 'ltr';
+            } else {
+                mountNode.dir = 'rtl';
+            }
+        });
+
+        var langSelect = document.querySelector('.next-demo-lang');
+        langSelect.addEventListener('change', function(e) {
+          var newLang = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeLang.json',
+            data: { lang: newLang },
+            error: function(error) {
+              console.log('change language failed: ' + error);
+            }
+          });
+        });
+
+        var dirSelect = document.querySelector('.next-demo-dir');
+        dirSelect.addEventListener('change', function(e) {
+          var newDir = e.target.value;
+          document.querySelector('.next-demo-change-lang-loading').style.display = 'block';
+          getJson({
+            url: '/changeDir.json',
+            data: { dir: newDir },
+            error: function(error) {
+              console.log('change dir failed: ' + error);
+            }
+          });
+        });
+
+        function getJson(options) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status >= 200 && xhr.status < 400) {
+                if (options.success) {
+                  options.success(JSON.parse(xhr.responseText));
+                }
+              } else {
+                if (options.error) {
+                  var html = xhr.responseText;
+                  var div = document.createElement('div');
+                  div.innerHTML = html;
+                  var text = div.textContent.trim();
+                  options.error(text);
+                }
+              }
+            }
+          }
+          if (options.data) {
+            options.url += '?' + Object.keys(options.data).map(function(key) {
+             return key + '=' + options.data[key]
+            }).join('&');
+          }
+          xhr.open('GET', options.url, true);
+          xhr.send();
+        }
+      })();
+  </script>
+
+
+  <style>
+    #mount-node {
+      min-height: 500px;
+    }
+    code {
+      padding: 2px 4px;
+      font-size: 90%;
+      color: #c7254e;
+      background-color: #f9f2f4;
+      border-radius: 2px;
+    }
+  </style>
+  <div class="next-demo-section">
+    <div id="mount-node"></div>
+    <div id="next-demo-reloading">Reloading....</div>
+  </div>
+  <div class="next-demo-section">
+    <div id="component-desc"></div>
+  </div>
+  <div class="next-demo-section">
+    <div id="component-body"></div>
+  </div>
+  
+  <script>
+    if (!window.requestAnimationFrame) {
+      window.requestAnimationFrame = function(callback) {
+        setTimeout(callback, 0);
+      };
+    }
+  </script>
+  <script src="//unpkg.com/babel-polyfill/dist/polyfill.min.js"></script>
+  <script src="//unpkg.com/react@16.6.1/umd/react.development.js"></script>
+  <script src="//unpkg.com/react-dom@16.6.1/umd/react-dom.development.js"></script>
+  <script src="//unpkg.com/moment@2.x/min/moment-with-locales.js"></script>
+  <script>
+    window.mountNode = document.getElementById('mount-node');
+  </script>
+
+  <script src="/common.js"></script>
+
+  <script src="/docs/table/demo/row-selection-config.js"></script>
+
+
+</body>
+</html>
+
