@@ -142,4 +142,15 @@ describe('Checkbox.Group', () => {
             assert.deepEqual(wrapper.dive().state().value, [1]);
         });
     });
+
+    describe('should respect children\'s indeternimate state', () => {
+        it('should support value === 0', () => {
+
+            const wrapper1 = mount(<CheckboxGroup ><Checkbox defaultIndeterminate={true} >1</Checkbox></CheckboxGroup>);
+            const wrapper2 = mount(<CheckboxGroup ><Checkbox indeterminate={true} >1</Checkbox></CheckboxGroup>);
+
+            assert(wrapper1.find('.indeterminate').length === 1);
+            assert(wrapper2.find('.indeterminate').length === 1);
+        });
+    });
 });
