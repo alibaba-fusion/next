@@ -178,7 +178,7 @@ class Checkbox extends UIState {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { id, className, children, style, label, onMouseEnter, onMouseLeave, rtl,
+        const { id, customizedRef, className, children, style, label, onMouseEnter, onMouseLeave, rtl,
             ...otherProps } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
@@ -196,6 +196,7 @@ class Checkbox extends UIState {
             disabled={disabled}
             checked={checked}
             type="checkbox"
+            ref={customizedRef}
             onChange={this.onChange}
             aria-checked={indeterminate ? 'mixed' : checked}
             className={`${prefix}checkbox-input`}
@@ -234,5 +235,9 @@ class Checkbox extends UIState {
             </label>);
     }
 }
-
-export default ConfigProvider.config(Checkbox);
+function wrapped() {
+    return React.forwardRef((props, ref) => {
+        return <Checkbox {...props} customizedRef={ref} />;
+    });
+}
+export default wrapped(ConfigProvider.config(Checkbox));

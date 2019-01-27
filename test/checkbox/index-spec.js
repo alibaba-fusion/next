@@ -107,4 +107,26 @@ describe('Checkbox', () => {
         });
 
     });
+
+    describe('[behavior] forward reference', () => {
+        it('should support forward ref', (done) => {
+            class App extends React.Component {
+                constructor() {
+                    super();
+                    this.reference = null;
+                    this.bindRef = ref=> {this.reference = ref;};
+                }
+                componentDidMount() {
+                    assert(this.reference.tagName==="INPUT");
+                    done();
+                }
+                render() {
+                    return (
+                        <Checkbox ref={this.bindRef} />
+                    );
+                }
+            }
+            mount(<App/>);
+        });
+    });
 });
