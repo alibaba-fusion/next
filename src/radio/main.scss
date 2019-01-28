@@ -144,6 +144,7 @@
             border: 1px solid $radio-button-border-color;
             background-color: $radio-button-bg-color;
             transition: ease all .3s 0s;
+            vertical-align: middle;
 
             #{$radio-prefix}-label {
                 display: block;
