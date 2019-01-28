@@ -50,7 +50,7 @@ export default {
         page: 'Page',
         go: 'View',
         total: 'Page {current}, {total} pages',
-        LabelPrev: 'Previous page, current page {current}',
+        labelPrev: 'Previous page, current page {current}',
         labelNext: 'Next page, current page {current}',
         pageSize: 'Items per page:'
     },
