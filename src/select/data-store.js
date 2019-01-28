@@ -3,7 +3,7 @@ import {
     parseDataSourceFromChildren,
     normalizeDataSource,
     flattingDataSource,
-    filterDataSource,
+    filterDataSource
 } from './util';
 
 /**

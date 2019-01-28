@@ -85,7 +85,7 @@ ReactDOM.render([
 const requestOpts = {
     action: 'https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload',
     data: {osstoken: 1234},
-    headers: {'X-Requested-With': 12345},
+    headers: {'X-Requested-With': 12345}
 };
 
 async function ajax() {

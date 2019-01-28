@@ -70,7 +70,7 @@ class Checkbox extends UIState {
          * 鼠标离开Leave事件
          * @param {Event} e Dom 事件对象
          */
-        onMouseLeave: PropTypes.func,
+        onMouseLeave: PropTypes.func
     }
 
     static defaultProps = {
@@ -79,7 +79,7 @@ class Checkbox extends UIState {
         onChange: noop,
         onMouseEnter: noop,
         onMouseLeave: noop,
-        prefix: 'next-',
+        prefix: 'next-'
     }
 
     static contextTypes = {
@@ -87,7 +87,7 @@ class Checkbox extends UIState {
         __group__: PropTypes.bool,
         selectedValue: PropTypes.array,
         disabled: PropTypes.bool,
-        prefix: PropTypes.string,
+        prefix: PropTypes.string
     }
 
     constructor(props, context) {
@@ -113,10 +113,10 @@ class Checkbox extends UIState {
 
         this.state = {
             checked,
-            indeterminate,
+            indeterminate
         };
 
-        this.disabled =  props.disabled || (context.__group__ && ('disabled' in context) && context.disabled);
+        this.disabled = props.disabled || (context.__group__ && ('disabled' in context) && context.disabled);
         this.onChange = this.onChange.bind(this);
     }
 

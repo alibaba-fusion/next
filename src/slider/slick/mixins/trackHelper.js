@@ -29,7 +29,7 @@ export const getTrackCSS = (spec) => {
     }
 
     let style = {
-        opacity: 1,
+        opacity: 1
     };
 
     const transform = {
@@ -37,7 +37,7 @@ export const getTrackCSS = (spec) => {
         transform: !spec.vertical ? `translate3d(${spec.left}px, 0px, 0px)` : `translate3d(0px, ${spec.left}px, 0px)`,
         transition: '',
         WebkitTransition: '',
-        msTransform: !spec.vertical ? `translateX(${spec.left}px)` : `translateY(${spec.left}px)`,
+        msTransform: !spec.vertical ? `translateX(${spec.left}px)` : `translateY(${spec.left}px)`
     };
 
     if (trackWidth) {
@@ -71,7 +71,7 @@ export const getTrackLeft = function(spec) {
 
     checkSpecKeys(spec, [
         'slideIndex', 'trackRef', 'infinite', 'centerMode', 'slideCount', 'slidesToShow',
-        'slidesToScroll', 'slideWidth', 'listWidth', 'variableWidth', 'slideHeight' ]);
+        'slidesToScroll', 'slideWidth', 'listWidth', 'variableWidth', 'slideHeight']);
 
     let slideOffset = 0;
     let targetLeft;

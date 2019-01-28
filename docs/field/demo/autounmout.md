@@ -21,7 +21,7 @@ import { Input, Button, Field } from '@alifd/next';
 class Demo extends React.Component {
     state = {
         show: true,
-        show2: true,
+        show2: true
     }
     field = new Field(this);
     field2 = new Field(this, { autoUnmount: false });

@@ -21,12 +21,12 @@ import { Tab, Select } from '@alifd/next';
 class Demo extends React.Component {
 
     state = {
-        position: 'top',
+        position: 'top'
     }
 
     changePosition = (val) => {
         this.setState({
-            position: val,
+            position: val
         });
     }
 

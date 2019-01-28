@@ -14,7 +14,7 @@ export default class SelectionRow extends React.Component {
     }
 
     static contextTypes = {
-        selectedRowKeys: PropTypes.array,
+        selectedRowKeys: PropTypes.array
     }
 
     render() {

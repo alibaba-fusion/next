@@ -26,7 +26,7 @@ export default class Circle extends Component {
 
         this.state = {
             underlayStrokeWidth: DEFAULT_STROKE_WIDTH,
-            overlayStrokeWidth: DEFAULT_STROKE_WIDTH,
+            overlayStrokeWidth: DEFAULT_STROKE_WIDTH
         };
     }
 
@@ -88,7 +88,7 @@ export default class Circle extends Component {
             [`${prefix}progress-circle`]: true,
             [`${prefix}progress-circle-show-info`]: suffixText,
             [`${prefix + size}`]: size,
-            [className]: className,
+            [className]: className
         });
 
         const pathCls = classNames({
@@ -96,7 +96,7 @@ export default class Circle extends Component {
             [`${prefix}progress-circle-overlay-${state}`]: !color && !progressive && state,
             [`${prefix}progress-circle-overlay-started`]: !color && progressive && percent <= 30,
             [`${prefix}progress-circle-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-circle-overlay-finishing`]: !color && progressive && percent >= 80,
+            [`${prefix}progress-circle-overlay-finishing`]: !color && progressive && percent >= 80
         });
 
         return (

@@ -24,7 +24,7 @@ export default class Row extends React.Component {
         children: PropTypes.any,
         cellRef: PropTypes.func,
         colGroup: PropTypes.object,
-        locale: PropTypes.object,
+        locale: PropTypes.object
     }
 
     static defaultProps = {

@@ -574,7 +574,7 @@ export default class Overlay extends Component {
     handleDocumentClick(e) {
         if (this.state.visible) {
             const { safeNode } = this.props;
-            const safeNodes  = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
+            const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
             safeNodes.unshift(() => this.getWrapperNode());
 
             for (let i = 0; i < safeNodes.length; i++) {

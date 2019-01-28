@@ -12,7 +12,7 @@ function _getProps(min, max, value) {
         'aria-valuenow': value,
         'aria-valuetext': value,
         'aria-valuemin': min,
-        'aria-valuemax': max,
+        'aria-valuemax': max
     };
 }
 

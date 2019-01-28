@@ -31,13 +31,13 @@ class Panel extends React.Component {
          */
         className: PropTypes.string,
         onClick: PropTypes.func,
-        id: PropTypes.string,
+        id: PropTypes.string
     };
 
     static defaultProps = {
         prefix: 'next-',
         isExpanded: false,
-        onClick: func.noop,
+        onClick: func.noop
     };
 
     static isNextPanel = true; //
@@ -57,7 +57,7 @@ class Panel extends React.Component {
             [`${prefix}collapse-panel`]: true,
             [`${prefix}collapse-panel-expanded`]: isExpanded,
             [`${prefix}collapse-panel-disabled`]: disabled,
-            [className]: className,
+            [className]: className
         });
 
         // 为了无障碍 需要添加两个id

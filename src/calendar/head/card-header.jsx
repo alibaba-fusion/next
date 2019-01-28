@@ -6,11 +6,11 @@ import Radio from '../../radio';
 class CardHeader extends React.PureComponent {
 
     static propTypes = {
-        yearRangeOffset: PropTypes.number,
+        yearRangeOffset: PropTypes.number
     }
 
     static defaultProps = {
-        yearRangeOffset: 10,
+        yearRangeOffset: 10
     }
 
     selectContainerHandler = target => {

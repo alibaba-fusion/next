@@ -25,7 +25,7 @@ const generateLi = (index = 'index') => {
     if (index % 3 === 0) {
         return <li key={`key-${index}`} style={{lineHeight: '30px', background: '#5f83ff', color: '#fff'}}>key-{index}</li>;
     } else {
-        return <li key={`key-${index}`}  style={{lineHeight: '20px'}}>key-{index}</li>;
+        return <li key={`key-${index}`} style={{lineHeight: '20px'}}>key-{index}</li>;
     }
 };
 

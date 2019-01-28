@@ -373,7 +373,7 @@ export default class Range extends React.Component {
             }
             if (newValue !== this.state.value) {
                 this.setState({
-                    value: newValue,
+                    value: newValue
                 });
                 this.props.onChange(newValue);
             }
@@ -589,7 +589,7 @@ export default class Range extends React.Component {
         const classes = classNames({
             [`${prefix}range`]: true,
             disabled: disabled,
-            [className]: className,
+            [className]: className
         });
 
         if (Array.isArray(value)) {

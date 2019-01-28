@@ -3,5 +3,10 @@
     "es6": true,
     "node": true
   },
-  "extends": "@alifd/eslint-config-next"
+  "extends": "@alifd/eslint-config-next",
+  "rules": {
+    "valid-jsdoc": "off",
+    "max-statements": "off",
+    "max-len": "off"
+  }
 }

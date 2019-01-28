@@ -10,7 +10,7 @@ export default class Gateway extends Component {
     static propTypes = {
         children: PropTypes.node,
         container: PropTypes.any,
-        target: PropTypes.any,
+        target: PropTypes.any
     };
 
     static defaultProps = {

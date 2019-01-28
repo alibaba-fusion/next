@@ -61,9 +61,9 @@ class BasicDemo extends React.Component {
     checkPass2(rule, value, callback) {
         const { getValue } = this.field;
         if (value && value !== getValue('passwd')) {
-            callback('Inconsistent password input twice!');
+            return callback('Inconsistent password input twice!');
         } else {
-            callback();
+            return callback();
         }
     }
 

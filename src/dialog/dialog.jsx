@@ -317,7 +317,7 @@ export default class Dialog extends Component {
             prefix, visible, hasMask,
             animation, autoFocus, closeable,
             onClose, afterClose, shouldUpdatePosition,
-            align, overlayProps, rtl,
+            align, overlayProps, rtl
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
@@ -337,7 +337,7 @@ export default class Dialog extends Component {
             needAdjust: false,
             disableScroll: true,
             ref: this.getOverlayRef,
-            rtl,
+            rtl
         };
         if (!useCSS) {
             newOverlayProps.beforePosition = this.beforePosition;

@@ -34,7 +34,7 @@ function generateData(len, isOption) {
     const data = [];
 
     for (let i = 0; i < len; i++) {
-        isOption ? data.push(generateOption(i)) :  data.push(generateItem(i));
+        isOption ? data.push(generateOption(i)) : data.push(generateItem(i));
     }
 
     return data;

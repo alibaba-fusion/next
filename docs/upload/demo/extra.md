@@ -41,7 +41,7 @@ ReactDOM.render((
             name: 'IMG.png',
             state: 'done',
             size: 100,
-            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
         }]}
     >
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>

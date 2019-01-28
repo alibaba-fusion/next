@@ -99,7 +99,7 @@ export default class Position {
             const pinElementParentOffset = this._getParentOffset(pinElement);
             const baseElementOffset = (isPinFixed && isBaseFixed) ? this._getLeftTop(baseElement) : baseElementPoints.offset();
             const top = baseElementOffset.top + baseElementPoints.y - pinElementParentOffset.top - pinElementPoints.y;
-            const left = baseElementOffset.left + baseElementPoints.x - pinElementParentOffset.left  - pinElementPoints.x;
+            const left = baseElementOffset.left + baseElementPoints.x - pinElementParentOffset.left - pinElementPoints.x;
             this._setPinElementPostion(pinElement, {left, top}, this.offset);
 
             if (!firstPositionResult) {
@@ -282,20 +282,20 @@ export default class Position {
         if (!this.isRtl) {
             dom.setStyle(pinElement, {
                 left: `${left + offset[0]}px`,
-                top: `${top + offset[1]}px`,
+                top: `${top + offset[1]}px`
             });
             return;
         }
 
         // transfer {left,top} equaly to {right,top}
         const pinElementParentOffset = this._getParentOffset(pinElement);
-        const {width: offsetParentWidth} =  _getElementRect(pinElementParentOffset.offsetParent);
+        const {width: offsetParentWidth} = _getElementRect(pinElementParentOffset.offsetParent);
         const {width} = _getElementRect(pinElement);
         const right = offsetParentWidth - (left + width);
         dom.setStyle(pinElement, {
             left: 'auto',
             right: `${right + offset[0]}px`,
-            top: `${top + offset[1]}px`,
+            top: `${top + offset[1]}px`
         });
     }
 }

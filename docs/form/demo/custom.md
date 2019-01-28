@@ -29,10 +29,10 @@ const {Row, Col} = Grid;
 const style = {
     padding: '20px',
     background: '#F7F8FA',
-    margin: '20px',
+    margin: '20px'
 };
 const formItemLayout = {
-    labelCol: {fixedSpan: 4},
+    labelCol: {fixedSpan: 4}
 };
 const label = (<span>
 name：<Balloon type="primary" trigger={<Icon type="prompt" size="small" />} closable={false}>blablablablablablablabla</Balloon>
@@ -55,7 +55,7 @@ class Demo extends React.Component {
                 <h3>Label Position</h3>
                 <Switch checkedChildren="left" unCheckedChildren="top" checked={this.state.labelAlign === 'left'} onChange={this.handleChange} />
 
-                <Form  style={style}>
+                <Form style={style}>
                     <Row gutter="4">
                         <Col>
                             <FormItem {...formItemLayout} labelAlign={labelAlign}
@@ -81,29 +81,29 @@ class Demo extends React.Component {
                             >
                                 <Input placeholder="Enter a search name:"/>
                             </FormItem>
-                            <FormItem  {...formItemLayout} labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Long search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
                             </FormItem>
-                            <FormItem  {...formItemLayout} labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
                             </FormItem>
                         </Col>
                         <Col>
-                            <FormItem  {...formItemLayout} labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
                             </FormItem>
-                            <FormItem  {...formItemLayout} labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Long search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
                             </FormItem>
-                            <FormItem  {...formItemLayout} labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
@@ -130,7 +130,7 @@ class Demo extends React.Component {
                             </FormItem>
                         </Col>
                         <Col>
-                            <FormItem {...formItemLayout}  labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Long search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
@@ -144,14 +144,14 @@ class Demo extends React.Component {
                             </FormItem>
                         </Col>
                         <Col>
-                            <FormItem {...formItemLayout}  labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>
                             </FormItem>
                         </Col>
                         <Col>
-                            <FormItem {...formItemLayout}  labelAlign={labelAlign}
+                            <FormItem {...formItemLayout} labelAlign={labelAlign}
                                 label="Search name:"
                             >
                                 <Input placeholder="Enter a search name:"/>

@@ -27,7 +27,7 @@ const hiddenStyle = {
     top: '-1000px',
     overflowY: 'hidden',
     left: 0,
-    right: 0,
+    right: 0
 };
 
 /**
@@ -49,7 +49,7 @@ export default class TextArea extends Base {
         /**
          * 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)
          */
-        rows: PropTypes.number,
+        rows: PropTypes.number
     };
 
     static defaultProps = {
@@ -69,7 +69,7 @@ export default class TextArea extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: typeof value === 'undefined' ? '' : value
         };
     }
 
@@ -82,7 +82,7 @@ export default class TextArea extends Base {
             } else {
                 this.setState({
                     height: this._getHeight(this.state.value),
-                    overflowY: 'hidden',
+                    overflowY: 'hidden'
                 });
             }
         }
@@ -111,7 +111,7 @@ export default class TextArea extends Base {
             minHeight,
             maxHeight,
             height,
-            overflowY: height <= maxHeight ? 'hidden' : undefined,
+            overflowY: height <= maxHeight ? 'hidden' : undefined
         };
     }
 
@@ -132,7 +132,7 @@ export default class TextArea extends Base {
 
             this.setState({
                 height: this._getHeight(value),
-                overflowY: height <= maxHeight ? 'hidden' : undefined,
+                overflowY: height <= maxHeight ? 'hidden' : undefined
             });
         });
     };
@@ -199,12 +199,12 @@ export default class TextArea extends Base {
             height: this.state.height,
             minHeight: this.state.minHeight,
             maxHeight: this.state.maxHeight,
-            overflowY: this.state.overflowY,
+            overflowY: this.state.overflowY
         };
 
         const wrapStyle = autoHeight ? {
             ...style,
-            position: 'relative',
+            position: 'relative'
         } : style;
 
         return (<span className={cls} style={wrapStyle} dir={rtl ? 'rtl' : undefined} {...dataProps}>

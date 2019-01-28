@@ -25,7 +25,7 @@ module.exports = function(config) {
         },
         reporters: ['spec', 'coverage'],
         preprocessors: {
-            [specPath]: ['webpack', 'sourcemap'],
+            [specPath]: ['webpack', 'sourcemap']
         },
         files: [
             path.join(__dirname, 'animation-polyfill.js'),

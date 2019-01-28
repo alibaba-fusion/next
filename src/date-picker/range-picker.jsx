@@ -18,14 +18,14 @@ function mapInputStateName(name) {
         startValue: 'startDateInputStr',
         endValue: 'endDateInputStr',
         startTime: 'startTimeInputStr',
-        endTime: 'endTimeInputStr',
+        endTime: 'endTimeInputStr'
     })[name];
 }
 
 function mapTimeToValue(name) {
     return ({
         startTime: 'startValue',
-        endTime: 'endValue',
+        endTime: 'endValue'
     })[name];
 }
 
@@ -35,7 +35,7 @@ function getFormatValues(values, format) {
     }
     return [
         formatDateValue(values[0], format),
-        formatDateValue(values[1], format),
+        formatDateValue(values[1], format)
     ];
 }
 
@@ -181,7 +181,7 @@ export default class RangePicker extends Component {
         locale: nextLocale.DatePicker,
         onChange: func.noop,
         onOk: func.noop,
-        onVisibleChange: func.noop,
+        onVisibleChange: func.noop
     }
 
     constructor(props, context) {
@@ -202,7 +202,7 @@ export default class RangePicker extends Component {
             startTimeInputStr: '',
             endTimeInputStr: '',
             inputing: false, // 当前是否处于输入状态
-            panel: PANEL.DATE,
+            panel: PANEL.DATE
         };
     }
 
@@ -216,14 +216,14 @@ export default class RangePicker extends Component {
             const values = getFormatValues(nextProps.value, this.dateTimeFormat);
             this.setState({
                 startValue: values[0],
-                endValue: values[1],
+                endValue: values[1]
             });
             this.inputAsString = nextProps.value && (typeof nextProps.value[0] === 'string' || typeof nextProps.value[1] === 'string');
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -235,7 +235,7 @@ export default class RangePicker extends Component {
         } else {
             ret = [
                 values[0] ? values[0].format(this.dateTimeFormat) : null,
-                values[1] ? values[1].format(this.dateTimeFormat) : null,
+                values[1] ? values[1].format(this.dateTimeFormat) : null
             ];
         }
         this.props[handler](ret);
@@ -246,7 +246,7 @@ export default class RangePicker extends Component {
         const { activeDateInput: prevActiveDateInput, startValue: prevStartValue, endValue: prevEndValue } = this.state;
         const newState = {
             activeDateInput: prevActiveDateInput,
-            inputing: false,
+            inputing: false
         };
 
         let newValue = value;
@@ -317,7 +317,7 @@ export default class RangePicker extends Component {
 
         this.setState(newState);
 
-        this.onValueChange([ newStartValue, newEndValue ]);
+        this.onValueChange([newStartValue, newEndValue]);
     }
 
     clearRange = () => {
@@ -326,13 +326,13 @@ export default class RangePicker extends Component {
             startDateInputStr: '',
             endDateInputStr: '',
             startTimeInputStr: '',
-            endTimeInputStr: '',
+            endTimeInputStr: ''
         });
 
         if (!('value' in this.props)) {
             this.setState({
                 startValue: null,
-                endValue: null,
+                endValue: null
             });
         }
 
@@ -347,7 +347,7 @@ export default class RangePicker extends Component {
             const stateName = mapInputStateName(this.state.activeDateInput);
             this.setState({
                 [stateName]: inputStr,
-                inputing: this.state.activeDateInput,
+                inputing: this.state.activeDateInput
             });
         }
     }
@@ -361,7 +361,7 @@ export default class RangePicker extends Component {
 
             this.setState({
                 [stateName]: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
@@ -377,12 +377,12 @@ export default class RangePicker extends Component {
     onFocusDateInput = (type) => {
         if (type !== this.state.activeDateInput) {
             this.setState({
-                activeDateInput: type,
+                activeDateInput: type
             });
         }
         if (this.state.panel !== PANEL.DATE) {
             this.setState({
-                panel: PANEL.DATE,
+                panel: PANEL.DATE
             });
         }
     }
@@ -390,13 +390,13 @@ export default class RangePicker extends Component {
     onFocusTimeInput = (type) => {
         if (type !== this.state.activeDateInput) {
             this.setState({
-                activeDateInput: type,
+                activeDateInput: type
             });
         }
 
         if (this.state.panel !== PANEL.TIME) {
             this.setState({
-                panel: PANEL.TIME,
+                panel: PANEL.TIME
             });
         }
     }
@@ -406,7 +406,7 @@ export default class RangePicker extends Component {
             this.setState({
                 startValue: value,
                 inputing: false,
-                activeDateInput: 'startTime',
+                activeDateInput: 'startTime'
             });
         }
         if (value.valueOf() !== this.state.startValue.valueOf()) {
@@ -419,7 +419,7 @@ export default class RangePicker extends Component {
             this.setState({
                 endValue: value,
                 inputing: false,
-                activeDateInput: 'endTime',
+                activeDateInput: 'endTime'
             });
         }
         if (value.valueOf() !== this.state.endValue.valueOf()) {
@@ -431,7 +431,7 @@ export default class RangePicker extends Component {
         const stateName = mapInputStateName(this.state.activeDateInput);
         this.setState({
             [stateName]: inputStr,
-            inputing: this.state.activeDateInput,
+            inputing: this.state.activeDateInput
         });
     }
 
@@ -443,7 +443,7 @@ export default class RangePicker extends Component {
 
             this.setState({
                 [stateName]: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid()) {
@@ -461,7 +461,7 @@ export default class RangePicker extends Component {
     handleChange = (valueName, newValue) => {
         if (!('value' in this.props)) {
             this.setState({
-                [valueName]: newValue,
+                [valueName]: newValue
             });
         }
 
@@ -474,7 +474,7 @@ export default class RangePicker extends Component {
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -483,7 +483,7 @@ export default class RangePicker extends Component {
     changePanel = (panel) => {
         this.setState({
             panel,
-            activeDateInput: panel === PANEL.DATE ? 'startValue' : 'startTime',
+            activeDateInput: panel === PANEL.DATE ? 'startValue' : 'startTime'
         });
     }
 
@@ -562,27 +562,27 @@ export default class RangePicker extends Component {
         const classNames = classnames({
             [`${prefix}range-picker`]: true,
             [`${prefix}${size}`]: size,
-            [`${prefix}disabled`]: disabled,
+            [`${prefix}disabled`]: disabled
         }, className);
 
         const panelBodyClassName = classnames({
             [`${prefix}range-picker-body`]: true,
-            [`${prefix}range-picker-body-show-time`]: showTime,
+            [`${prefix}range-picker-body-show-time`]: showTime
         });
 
         const triggerCls = classnames({
             [`${prefix}range-picker-trigger`]: true,
-            [`${prefix}error`]: inputState === 'error',
+            [`${prefix}error`]: inputState === 'error'
         });
 
         const startDateInputCls = classnames({
             [`${prefix}range-picker-panel-input-start-date`]: true,
-            [`${prefix}focus`]: state.activeDateInput === 'startValue',
+            [`${prefix}focus`]: state.activeDateInput === 'startValue'
         });
 
         const endDateInputCls = classnames({
             [`${prefix}range-picker-panel-input-end-date`]: true,
-            [`${prefix}focus`]: state.activeDateInput === 'endValue',
+            [`${prefix}focus`]: state.activeDateInput === 'endValue'
         });
 
         if (rtl) {
@@ -651,12 +651,12 @@ export default class RangePicker extends Component {
                 onFocus: this.onFocusTimeInput,
                 onBlur: this.onTimeInputBlur,
                 onPressEnter: this.onTimeInputBlur,
-                onChange: this.onTimeInputChange,
+                onChange: this.onTimeInputChange
             };
 
             const startTimeInputCls = classnames({
                 [`${prefix}range-picker-panel-input-start-time`]: true,
-                [`${prefix}focus`]: state.activeDateInput === 'startTime',
+                [`${prefix}focus`]: state.activeDateInput === 'startTime'
             });
 
             startTimeInput = (<Input
@@ -669,7 +669,7 @@ export default class RangePicker extends Component {
 
             const endTimeInputCls = classnames({
                 [`${prefix}range-picker-panel-input-end-time`]: true,
-                [`${prefix}focus`]: state.activeDateInput === 'endTime',
+                [`${prefix}focus`]: state.activeDateInput === 'endTime'
             });
 
             endTimeInput = (<Input
@@ -687,7 +687,7 @@ export default class RangePicker extends Component {
                 prefix,
                 locale,
                 disabled,
-                showSecond,
+                showSecond
             };
 
             const disabledTime = this.getDisabledTime(state);
@@ -709,7 +709,7 @@ export default class RangePicker extends Component {
 
         const panelBody = ({
             [PANEL.DATE]: datePanel,
-            [PANEL.TIME]: timePanel,
+            [PANEL.TIME]: timePanel
         })[state.panel];
 
         const allowClear = state.startValue && state.endValue && hasClear;

@@ -71,7 +71,7 @@ class RangeCalendar extends React.Component {
          */
         dateCellRender: PropTypes.func,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     };
 
     static defaultProps = {
@@ -83,7 +83,7 @@ class RangeCalendar extends React.Component {
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
         locale: locale.Calendar,
-        showOtherMonth: false,
+        showOtherMonth: false
     };
 
     constructor(props, context) {
@@ -98,7 +98,7 @@ class RangeCalendar extends React.Component {
             endValue,
             mode: props.mode,
             startVisibleMonth: visibleMonth,
-            activePanel: undefined,
+            activePanel: undefined
         };
         this.today = moment();
     }
@@ -107,12 +107,12 @@ class RangeCalendar extends React.Component {
         if ('startValue' in nextProps) {
             const startValue = formatDateValue(nextProps.startValue);
             this.setState({
-                startValue,
+                startValue
             });
 
             if (startValue) {
                 this.setState({
-                    startVisibleMonth: startValue,
+                    startVisibleMonth: startValue
                 });
             }
         }
@@ -120,7 +120,7 @@ class RangeCalendar extends React.Component {
         if ('endValue' in nextProps) {
             const endValue = formatDateValue(nextProps.endValue);
             this.setState({
-                endValue,
+                endValue
             });
         }
 
@@ -216,7 +216,7 @@ class RangeCalendar extends React.Component {
             momentLocale: localeData,
             startVisibleMonth,
             endVisibleMonth,
-            changeMode: this.changeMode,
+            changeMode: this.changeMode
         };
 
         const tableProps = {
@@ -232,12 +232,12 @@ class RangeCalendar extends React.Component {
             disabledDate,
             dateCellRender,
             changeMode: this.changeMode,
-            changeVisibleMonth: this.changeVisibleMonth,
+            changeVisibleMonth: this.changeVisibleMonth
         };
 
         const visibleMonths = {
             start: startVisibleMonth,
-            end: endVisibleMonth,
+            end: endVisibleMonth
         };
 
         const visibleMonth = visibleMonths[activePanel];
@@ -287,7 +287,7 @@ class RangeCalendar extends React.Component {
 
         const classNames = classnames({
             [`${prefix}calendar`]: true,
-            [`${prefix}calendar-range`]: true,
+            [`${prefix}calendar-range`]: true
         }, className);
 
         return (<div {...obj.pickOthers(RangeCalendar.propTypes, others)} className={classNames}>

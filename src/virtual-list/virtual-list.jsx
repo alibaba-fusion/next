@@ -328,7 +328,7 @@ export default class VirtualList extends Component {
         const { children, props = {} } = this.items;
         const itemEls = children || props.children || [];
         for (let i = 0, l = itemEls.length; i < l; ++i) {
-            const ulRef =  findDOMNode(this.items);
+            const ulRef = findDOMNode(this.items);
             const height = ulRef.children[i].offsetHeight;
             if (height > 0) {
                 cache[from + i] = height;
@@ -410,7 +410,7 @@ export default class VirtualList extends Component {
             transform
         };
 
-        const cls =  cx({
+        const cls = cx({
             [`${prefix}virtual-list-wrapper`]: true,
             [className]: !!className
         });

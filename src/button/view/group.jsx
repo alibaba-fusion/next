@@ -20,7 +20,7 @@ class ButtonGroup extends Component {
 
     static defaultProps = {
         prefix: 'next-',
-        size: 'medium',
+        size: 'medium'
     };
 
     render() {

@@ -22,7 +22,7 @@ const panes = [
     { tab: 'Mail', key: 1, closeable: false },
     { tab: 'Message', key: 2, closeable: true },
     { tab: 'Setting', key: 3, closeable: true },
-    { tab: 'Unread', key: 4, closeable: true },
+    { tab: 'Unread', key: 4, closeable: true }
 ];
 
 class CloseableTab extends React.Component {
@@ -31,7 +31,7 @@ class CloseableTab extends React.Component {
         super(props);
         this.state = {
             panes: panes,
-            activeKey: panes[0].key,
+            activeKey: panes[0].key
         };
     }
 
@@ -79,7 +79,7 @@ class CloseableTab extends React.Component {
                     onChange={this.onChange}
                     onClose={this.onClose}
                     className="custom-tab">
-                    {state.panes.map(item => <Tab.Item title={item.tab} key={item.key}  closeable={item.closeable}>{item.tab} content</Tab.Item>)}
+                    {state.panes.map(item => <Tab.Item title={item.tab} key={item.key} closeable={item.closeable}>{item.tab} content</Tab.Item>)}
                 </Tab>
             </div>
         );

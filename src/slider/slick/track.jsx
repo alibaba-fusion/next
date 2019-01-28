@@ -34,7 +34,7 @@ const getSlideClasses = (specProps) => {
     return classNames(`${prefix}slick-slide`, {
         [`${prefix}slick-active`]: slickActive,
         [`${prefix}slick-center`]: slickCenter,
-        [`${prefix}slick-cloned`]: slickCloned,
+        [`${prefix}slick-cloned`]: slickCloned
     });
 };
 
@@ -85,7 +85,7 @@ const renderSlides = (specProps) => {
             message: 'children',
             index,
             slidesToScroll: specProps.slidesToScroll,
-            currentSlide: specProps.currentSlide,
+            currentSlide: specProps.currentSlide
         };
 
         if (!specProps.lazyLoad | (specProps.lazyLoad && specProps.lazyLoadedList.indexOf(index) >= 0)) {
@@ -117,8 +117,8 @@ const renderSlides = (specProps) => {
             className: cssClasses,
             tabIndex: '-1',
             // server-side render depend on elements of their own style
-            style: !dom.hasDOM ? { outline: 'none', ...childStyle, ...child.props.style, } : { outline: 'none', ...child.props.style, ...childStyle},
-            onClick,
+            style: !dom.hasDOM ? { outline: 'none', ...childStyle, ...child.props.style } : { outline: 'none', ...child.props.style, ...childStyle},
+            onClick
         }));
 
         // variableWidth doesn't wrap properly.
@@ -131,7 +131,7 @@ const renderSlides = (specProps) => {
                     key: `precloned${getKey(child, key)}`,
                     'data-index': key,
                     className: cssClasses,
-                    style: { ...child.props.style, ...childStyle },
+                    style: { ...child.props.style, ...childStyle }
                 }));
             }
 
@@ -141,7 +141,7 @@ const renderSlides = (specProps) => {
                     key: `postcloned${getKey(child, key)}`,
                     'data-index': key,
                     className: cssClasses,
-                    style: { ...child.props.style, ...childStyle },
+                    style: { ...child.props.style, ...childStyle }
                 }));
             }
         }
@@ -160,7 +160,7 @@ const renderSlides = (specProps) => {
 export default class Track extends Component {
     static propTypes = {
         prefix: PropTypes.string,
-        trackStyle: PropTypes.object,
+        trackStyle: PropTypes.object
     };
 
     static defaultProps = {

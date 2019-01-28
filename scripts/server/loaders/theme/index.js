@@ -16,7 +16,7 @@ module.exports = function(content) {
 
     const scripts = [
         '/common.js',
-        `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
+        `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`
     ];
 
     ejs.renderFile(themeTplPath, {

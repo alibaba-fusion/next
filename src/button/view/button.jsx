@@ -6,7 +6,7 @@ function mapIconSize(size) {
     return ({
         large: 'small',
         medium: 'xs',
-        small: 'xs',
+        small: 'xs'
     })[size];
 }
 

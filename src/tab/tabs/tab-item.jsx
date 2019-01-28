@@ -21,12 +21,12 @@ class TabItem extends React.Component {
         active: PropTypes.bool,
         lazyLoad: PropTypes.bool,
         unmountInactiveTabs: PropTypes.bool,
-        children: PropTypes.any,
+        children: PropTypes.any
     }
 
     static defaultProps = {
         prefix: 'next-',
-        closeable: false,
+        closeable: false
     }
 
     render() {
@@ -43,7 +43,7 @@ class TabItem extends React.Component {
 
         const cls = classnames({
             [`${prefix}tabs-tabpane`]: true,
-            [`${active ? 'active' : 'hidden'}`]: true,
+            [`${active ? 'active' : 'hidden'}`]: true
         });
 
         return (

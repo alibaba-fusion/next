@@ -47,14 +47,14 @@ class App extends React.Component {
 
         return (<div className="demo">
             <h3>Object transfer</h3>
-            obj.b: <Input  {...init('obj.b', {initValue: 'test1'})}  /> &nbsp;
-            obj.c: <Input  {...init('obj.c', {initValue: 'test2'})}  />
+            obj.b: <Input {...init('obj.b', {initValue: 'test1'})} /> &nbsp;
+            obj.c: <Input {...init('obj.c', {initValue: 'test2'})} />
 
             <br/>
 
             <h3>Array transfer</h3>
-            arr.0: <Input  {...init('arr.0', {initValue: '0'})}  /> &nbsp;
-            arr.1: <Input  {...init('arr.1', {initValue: '1'})}  />
+            arr.0: <Input {...init('arr.0', {initValue: '0'})} /> &nbsp;
+            arr.1: <Input {...init('arr.1', {initValue: '1'})} />
             <br/><br/>
 
             result:

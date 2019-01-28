@@ -21,7 +21,7 @@ export default class FixedBody extends React.Component {
         fixedHeader: PropTypes.bool,
         maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onBodyScroll: PropTypes.func,
-        getNode: PropTypes.func,
+        getNode: PropTypes.func
     }
 
     componentDidMount() {

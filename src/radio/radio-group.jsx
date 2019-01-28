@@ -79,8 +79,8 @@ class RadioGroup extends Component {
          */
         itemDirection: PropTypes.oneOf([
             'hoz',
-            'ver',
-        ]),
+            'ver'
+        ])
     }
 
     static defaultProps = {
@@ -90,7 +90,7 @@ class RadioGroup extends Component {
         },
         prefix: 'next-',
         component: 'div',
-        itemDirection: 'hoz',
+        itemDirection: 'hoz'
     }
 
     static childContextTypes = {

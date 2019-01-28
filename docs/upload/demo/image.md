@@ -38,7 +38,7 @@ ReactDOM.render((
             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-            size: 2000,
+            size: 2000
         }, {
             uid: '1',
             name: 'IMG.png',
@@ -61,7 +61,7 @@ ReactDOM.render((
             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-            errorMsg: 'Fail to Upload something',
+            errorMsg: 'Fail to Upload something'
         }]}
     >
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>

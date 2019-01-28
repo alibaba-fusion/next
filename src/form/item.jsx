@@ -165,17 +165,17 @@ export default class Item extends React.Component {
         /**
          * validator 自定义触发方式
          */
-        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
     };
 
     static defaultProps = {
         prefix: 'next-',
-        hasFeedback: false,
+        hasFeedback: false
     };
 
     static contextTypes = {
         _formField: PropTypes.object,
-        _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formSize: PropTypes.oneOf(['large', 'small', 'medium'])
     };
 
     static _typeMark = 'form_item';
@@ -236,7 +236,7 @@ export default class Item extends React.Component {
 
         const cls = classNames({
             [`${prefix}form-item-label`]: true,
-            [`${prefix}left`]: labelTextAlign === 'left',
+            [`${prefix}left`]: labelTextAlign === 'left'
         });
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
@@ -309,7 +309,7 @@ export default class Item extends React.Component {
             [`${prefix}${labelAlign}`]: labelAlign,
             [`has-${state}`]: !!state,
             [`${prefix}${size}`]: !!size,
-            [`${className}`]: !!className,
+            [`${className}`]: !!className
         });
 
         // 垂直模式并且左对齐才用到
@@ -317,7 +317,7 @@ export default class Item extends React.Component {
         const label = labelAlign === 'inset' ? null : this.getItemLabel();
 
         return (
-            <Tag  {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
+            <Tag {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
                 {label}
                 {this.getItemWrapper()}
             </Tag>

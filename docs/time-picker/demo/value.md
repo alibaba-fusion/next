@@ -23,7 +23,7 @@ class ControlledTimePicker extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            value: moment('12:00:00', 'HH:mm:ss', true),
+            value: moment('12:00:00', 'HH:mm:ss', true)
         };
     }
 

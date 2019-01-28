@@ -88,7 +88,7 @@ class Base extends React.Component {
         name: PropTypes.string,
         rtl: PropTypes.bool,
         state: PropTypes.oneOf(['error', 'loading', 'success']),
-        locale: PropTypes.object,
+        locale: PropTypes.object
     };
 
     static defaultProps = {
@@ -104,7 +104,7 @@ class Base extends React.Component {
         onChange: func.noop,
         onKeyDown: func.noop,
         getValueLength: func.noop,
-        locale: zhCN.Input,
+        locale: zhCN.Input
     };
 
     componentWillReceiveProps(nextProps) {
@@ -207,7 +207,7 @@ class Base extends React.Component {
             [`${prefix}input`]: true,
             [`${prefix}disabled`]: !!disabled,
             [`${prefix}error`]: state === 'error',
-            [`${prefix}focus`]: this.state.focus,
+            [`${prefix}focus`]: this.state.focus
         });
     }
 
@@ -222,7 +222,7 @@ class Base extends React.Component {
             value: this.state.value,
             onChange: this.onChange.bind(this),
             onBlur: this.onBlur.bind(this),
-            onFocus: this.onFocus.bind(this),
+            onFocus: this.onFocus.bind(this)
         };
 
         // fix accessibility：auto process status of aria disabled

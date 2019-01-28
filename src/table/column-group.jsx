@@ -11,7 +11,7 @@ export default class ColumnGroup extends React.Component {
         /**
          * 表头显示的内容
          */
-        title: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
+        title: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func])
     }
 
     static childContextTypes = {

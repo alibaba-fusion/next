@@ -55,13 +55,13 @@ class AutoComplete extends Base {
         onKeyDown: PropTypes.func,
         // 是否将当前高亮的选项作为 placeholder
         highlightHolder: PropTypes.bool,
-        style: PropTypes.object,
+        style: PropTypes.object
     };
 
     static defaultProps = {
         ...Base.defaultProps,
         onKeyDown: noop,
-        fillProps: 'value',
+        fillProps: 'value'
     };
 
     constructor(props) {
@@ -283,7 +283,7 @@ class AutoComplete extends Base {
             `${prefix}select`,
             `${prefix}select-auto-complete`,
             `${prefix}size-${size}`,
-            className,
+            className
         ], {
             [`${prefix}active`]: visible,
             [`${prefix}disabled`]: disabled

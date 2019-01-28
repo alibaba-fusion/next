@@ -47,6 +47,7 @@ config.externals = [
 ];
 config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
+// eslint-disable-next-line handle-callback-err
 webpack(config, (err, stats) => {
     logger.info(stats.toString({
         colors: true,

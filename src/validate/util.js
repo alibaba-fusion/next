@@ -50,7 +50,7 @@ function asyncSerialArray(arr, func, callback) {
         if (original < arrLength) {
             func(arr[original], next);
         } else {
-            callback([]);
+            return callback([]);
         }
     }
 
@@ -94,7 +94,7 @@ export function asyncMap(objArr, option, func, callback) {
         results.push(errors);
         total++;
         if (total === objArrLength) {
-            callback(results);
+            return callback(results);
         }
     };
     objArrKeys.forEach((key) => {

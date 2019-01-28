@@ -31,7 +31,7 @@ const tabs = [
     { tab: 'Home', key: 'home', content: 'This is home page' },
     { tab: 'Document', key: 'doc', content: 'This is document page' },
     { tab: 'API', key: 'api', content: 'This is api page' },
-    { tab: 'Repo', key: 'repo', content: 'This ia repo link' },
+    { tab: 'Repo', key: 'repo', content: 'This ia repo link' }
 ];
 
 const shapes = ['pure', 'wrapped', 'text', 'capsule'];

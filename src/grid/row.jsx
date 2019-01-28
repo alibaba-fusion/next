@@ -51,7 +51,7 @@ export default class Row extends Component {
          * 指定以何种元素渲染该节点
          * - 默认为 'div'
          */
-        component: PropTypes.string,
+        component: PropTypes.string
     };
 
     static defaultProps = {
@@ -60,7 +60,7 @@ export default class Row extends Component {
         fixed: false,
         gutter: 0,
         wrap: false,
-        component: 'div',
+        component: 'div'
     };
 
     render() {

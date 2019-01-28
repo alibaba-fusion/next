@@ -93,7 +93,7 @@ class Calendar extends Component {
         onVisibleMonthChange: func.noop,
         dateCellRender: (value) => value.date(),
         locale: locale.Calendar,
-        showOtherMonth: true,
+        showOtherMonth: true
     }
 
     constructor(props, context) {
@@ -106,7 +106,7 @@ class Calendar extends Component {
         this.state = {
             value,
             mode: props.mode || this.MODES[0],
-            visibleMonth,
+            visibleMonth
         };
     }
 
@@ -114,12 +114,12 @@ class Calendar extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value);
             this.setState({
-                value,
+                value
             });
 
             if (value) {
                 this.setState({
-                    visibleMonth: value,
+                    visibleMonth: value
                 });
             }
         }
@@ -195,7 +195,7 @@ class Calendar extends Component {
 
         const classNames = classnames({
             [`${prefix}calendar`]: true,
-            [`${prefix}calendar-${shape}`]: shape,
+            [`${prefix}calendar-${shape}`]: shape
         }, className);
 
         if (rtl) {
@@ -227,7 +227,7 @@ class Calendar extends Component {
             goNextMonth: this.goNextMonth,
             goPrevDecade: this.goPrevDecade,
             goPrevYear: this.goPrevYear,
-            goPrevMonth: this.goPrevMonth,
+            goPrevMonth: this.goPrevMonth
         };
 
         const tableProps = {
@@ -243,19 +243,19 @@ class Calendar extends Component {
             momentLocale: localeData,
             today: this.today,
             goPrevDecade: this.goPrevDecade,
-            goNextDecade: this.goNextDecade,
+            goNextDecade: this.goNextDecade
         };
 
         const tables = {
             [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
             [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
-            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />,
+            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />
         };
 
         const panelHeaders = {
             [CALENDAR_MODE_DATE]: <DatePanelHeader {...headerProps} />,
             [CALENDAR_MODE_MONTH]: <MonthPanelHeader {...headerProps} />,
-            [CALENDAR_MODE_YEAR]: <YearPanelHeader {...headerProps} />,
+            [CALENDAR_MODE_YEAR]: <YearPanelHeader {...headerProps} />
         };
 
         return (

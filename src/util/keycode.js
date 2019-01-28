@@ -26,5 +26,5 @@ export default {
     OPTION: 18,
     CMD: 91,
     COMMAND: 91,
-    DELETE: 8,
+    DELETE: 8
 };

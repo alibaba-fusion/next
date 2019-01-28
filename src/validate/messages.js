@@ -12,19 +12,19 @@ export default {
         min: '%s 字段数值不得小于 %s',
         max: '%s 字段数值不得大于 %s',
         minLength: '%s 字段字符长度不得少于 %s',
-        maxLength: '%s 字段字符长度不得超过 %s',
+        maxLength: '%s 字段字符长度不得超过 %s'
     },
     string: {
         length: '%s 长度必须是 %s',
         min: '%s 字段数值不得小于 %s',
         max: '%s 字段数值不得大于 %s',
         minLength: '%s 字段字符长度不得少于 %s',
-        maxLength: '%s 字段字符长度不得超过 %s',
+        maxLength: '%s 字段字符长度不得超过 %s'
     },
     array: {
         length: '%s 个数必须是 %s',
         minLength: '%s 个数不得少于 %s',
         maxLength: '%s 个数不得超过 %s'
     },
-    pattern: '%s 字段数值 %s 不匹配正则 %s',
+    pattern: '%s 字段数值 %s 不匹配正则 %s'
 };

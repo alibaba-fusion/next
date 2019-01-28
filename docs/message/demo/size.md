@@ -47,7 +47,7 @@ class Demo extends React.Component {
         return (
             <div className="message-size-demo">
                 <span className="demo-label">Select Size：</span>
-                <Radio.Group defaultValue="medium"  dataSource={list} value={this.state.size} onChange={this.handleSelect} />
+                <Radio.Group defaultValue="medium" dataSource={list} value={this.state.size} onChange={this.handleSelect} />
 
                 {types.map(type => (
                     <Message key={type} title={type} type={type} size={size}>

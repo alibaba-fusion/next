@@ -6,7 +6,7 @@ import YearPicker from './year-picker';
 
 /* istanbul ignore next */
 const transform = (props, deprecated) => {
-    const { open, defaultOpen, onOpenChange,  ...others } = props;
+    const { open, defaultOpen, onOpenChange, ...others } = props;
     const newProps = others;
 
     delete newProps.formater;

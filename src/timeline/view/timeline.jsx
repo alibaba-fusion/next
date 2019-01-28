@@ -99,7 +99,7 @@ class Timeline extends Component {
         });
 
         const timelineCls = classNames({
-            [`${prefix}timeline`]: true,
+            [`${prefix}timeline`]: true
         }, className);
 
         if (rtl) {

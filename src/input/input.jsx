@@ -87,7 +87,7 @@ export default class Input extends Base {
         inputRender: PropTypes.func,
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
-        innerAfterClassName: PropTypes.string,
+        innerAfterClassName: PropTypes.string
     };
 
     static defaultProps = {
@@ -96,7 +96,7 @@ export default class Input extends Base {
         autoComplete: 'off',
         hasBorder: true,
         onPressEnter: func.noop,
-        inputRender: (el) => el,
+        inputRender: (el) => el
     };
 
     constructor(props) {
@@ -110,7 +110,7 @@ export default class Input extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: typeof value === 'undefined' ? '' : value
         };
     }
 
@@ -265,14 +265,14 @@ export default class Input extends Base {
         const groupCls = classNames({
             [`${prefix}input-group-text`]: true,
             [`${prefix}${size}`]: !!size,
-            [`${prefix}disabled`]: disabled,
+            [`${prefix}disabled`]: disabled
         });
 
         const addonBeforeCls = classNames({
-            [groupCls]: addonTextBefore,
+            [groupCls]: addonTextBefore
         });
         const addonAfterCls = classNames({
-            [groupCls]: addonTextAfter,
+            [groupCls]: addonTextAfter
         });
 
         if (hasAddon) {

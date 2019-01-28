@@ -27,6 +27,7 @@ class Demo extends React.Component {
     handleChange = value => {
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
+            // eslint-disable-next-line handle-callback-err
             jsonp(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, (err, data) => {
                 const dataSource = data.result.map(item => item[0]);
                 this.setState({dataSource});

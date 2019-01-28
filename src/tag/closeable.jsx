@@ -33,12 +33,12 @@ class Closeable extends Component {
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         children: PropTypes.any,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
         disabled: false,
-        type: 'normal',
+        type: 'normal'
     };
 
     render() {

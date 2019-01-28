@@ -30,6 +30,7 @@ class Demo extends React.Component {
             clearTimeout(this.searchTimeout);
         }
         this.searchTimeout = setTimeout(() => {
+            // eslint-disable-next-line handle-callback-err
             value ? jsonp(`https://suggest.taobao.com/sug?code=utf-8&q=${value}`, (err, data) => {
                 const dataSource = data.result.map(item => ({
                     label: item[0], value: (timestamp++).toString(36)

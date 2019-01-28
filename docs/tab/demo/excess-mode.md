@@ -34,7 +34,7 @@ const tabs = [
     { tab: 'More 8', key: 13 },
     { tab: 'More 9', key: 14 },
     { tab: 'More 10', key: 15 },
-    { tab: 'More 11', key: 16 },
+    { tab: 'More 11', key: 16 }
 ];
 
 function onClick(key) {

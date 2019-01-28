@@ -74,7 +74,7 @@ class Message extends Component {
          * 是否开启展开收起动画
          */
         animation: PropTypes.bool,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {

@@ -183,7 +183,7 @@ export default function expanded(BaseComponent) {
                 children = this.normalizeChildren(children);
             }
 
-            return (<BaseComponent {...others} dataSource={dataSource}  components={components}>
+            return (<BaseComponent {...others} dataSource={dataSource} components={components}>
                 {children}
             </BaseComponent>);
         }

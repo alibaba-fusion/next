@@ -24,7 +24,7 @@ class SliderWrapper extends React.Component {
         super(props);
         this.state = {
             autoplay: false,
-            autoplaySpeed: 1000,
+            autoplaySpeed: 1000
         };
     }
 

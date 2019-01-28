@@ -1,4 +1,4 @@
-const event  = require('../event');
+const event = require('../event');
 
 module.exports = function() {
     return function(req, res, next) {
@@ -9,7 +9,7 @@ module.exports = function() {
             }
             res.json({});
         } else {
-            next();
+            return next();
         }
     };
 };

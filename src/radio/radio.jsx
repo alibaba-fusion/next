@@ -66,7 +66,7 @@ class Radio extends UIState {
         /**
          * name
          */
-        name: PropTypes.string,
+        name: PropTypes.string
     }
 
     static defaultProps = {
@@ -82,7 +82,7 @@ class Radio extends UIState {
         __group__: PropTypes.bool,
         isButton: PropTypes.bool,
         selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-        disabled: PropTypes.bool,
+        disabled: PropTypes.bool
     }
 
     constructor(props, context) {
@@ -100,7 +100,7 @@ class Radio extends UIState {
         this.state = { checked };
 
         this.onChange = this.onChange.bind(this);
-        this.disabled = props.disabled ||  (context.__group__ && ('disabled' in context) && context.disabled);
+        this.disabled = props.disabled || (context.__group__ && ('disabled' in context) && context.disabled);
 
     }
 
@@ -109,7 +109,7 @@ class Radio extends UIState {
             const { selectedValue } = nextContext;
             if ('selectedValue' in nextContext) {
                 this.setState({
-                    checked: selectedValue === nextProps.value,
+                    checked: selectedValue === nextProps.value
                 });
             }
         } else if ('checked' in nextProps) {
@@ -118,7 +118,7 @@ class Radio extends UIState {
             });
         }
 
-        this.disabled = nextProps.disabled ||  (nextContext.__group__ && ('disabled' in nextContext) && nextContext.disabled);
+        this.disabled = nextProps.disabled || (nextContext.__group__ && ('disabled' in nextContext) && nextContext.disabled);
 
         // when disabled, reset UIState
         if (this.disabled) {

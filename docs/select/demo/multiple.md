@@ -25,7 +25,7 @@ const dataSource = [
         {value: new Date(), label: 'new Date()'},
         {value: 'false', label: 'FALSE'},
         {value: 0, label: 'ZERO'}
-    ]},
+    ]}
 ];
 
 function handleChange(value) {

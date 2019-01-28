@@ -20,7 +20,7 @@ const dataSource = [
     {value: 'Lilith', age: 22, gender: 'F'},
     {value: 'Tom Cat', age: 28, gender: 'M'},
     {value: 'Jim Green', age: 18, gender: 'M'},
-    {value: 'Monkey King', age: 999, gender: 'M'},
+    {value: 'Monkey King', age: 999, gender: 'M'}
 ];
 
 const handleChange = value => {

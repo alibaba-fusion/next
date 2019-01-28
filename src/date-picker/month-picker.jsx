@@ -142,7 +142,7 @@ class MonthPicker extends Component {
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
         onChange: func.noop,
-        onVisibleChange: func.noop,
+        onVisibleChange: func.noop
     }
 
     constructor(props, context) {
@@ -155,7 +155,7 @@ class MonthPicker extends Component {
             value,
             dateInputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
@@ -163,14 +163,14 @@ class MonthPicker extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
             this.setState({
-                value,
+                value
             });
             this.inputAsString = typeof nextProps.value === 'string';
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -192,7 +192,7 @@ class MonthPicker extends Component {
 
     clearValue = () => {
         this.setState({
-            dateInputStr: '',
+            dateInputStr: ''
         });
 
         this.handleChange(null, this.state.value);
@@ -205,7 +205,7 @@ class MonthPicker extends Component {
         } else {
             this.setState({
                 dateInputStr: inputStr,
-                inputing: true,
+                inputing: true
             });
         }
     }
@@ -218,7 +218,7 @@ class MonthPicker extends Component {
 
             this.setState({
                 dateInputStr: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
@@ -237,19 +237,21 @@ class MonthPicker extends Component {
 
         const { format } = this.props;
 
-        const newValueOf = newValue ? newValue.format(format)  : null;
+        const newValueOf = newValue ? newValue.format(format) : null;
         const preValueOf = prevValue ? prevValue.format(format) : null;
 
         if (newValueOf !== preValueOf) {
             this.onValueChange(newValue);
-            typeof callback === 'function' && callback();
+            if (typeof callback === 'function') {
+                return callback();
+            }
         }
     }
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -285,16 +287,16 @@ class MonthPicker extends Component {
         const { visible, value, dateInputStr, inputing } = this.state;
 
         const monthPickerCls = classnames({
-            [`${prefix}month-picker`]: true,
+            [`${prefix}month-picker`]: true
         }, className);
 
         const triggerInputCls = classnames({
             [`${prefix}month-picker-input`]: true,
-            [`${prefix}error`]: false,
+            [`${prefix}error`]: false
         });
 
         const panelBodyClassName = classnames({
-            [`${prefix}month-picker-body`]: true,
+            [`${prefix}month-picker-body`]: true
         });
 
         if (rtl) {

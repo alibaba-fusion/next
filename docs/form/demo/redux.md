@@ -28,7 +28,7 @@ function formReducer(state = {email: '', username: 'xiachi', fruit: ['apple']}, 
         case 'save_fields':
             return {
                 ...state,
-                ...action.payload,
+                ...action.payload
             };
         default:
             return state;
@@ -66,7 +66,7 @@ class FormDemo extends React.Component {
             type: 'save_fields',
             payload: {
                 email: 'qq@gmail.com'
-            },
+            }
         });
     }
 
@@ -75,7 +75,7 @@ class FormDemo extends React.Component {
             type: 'save_fields',
             payload: {
                 username: 'frank'
-            },
+            }
         });
     }
 
@@ -84,7 +84,7 @@ class FormDemo extends React.Component {
             type: 'save_fields',
             payload: {
                 fruit: ['pear']
-            },
+            }
         });
     }
 
@@ -110,7 +110,7 @@ class FormDemo extends React.Component {
 
 const ReduxFormDemo = connect((state) => {
     return {
-        formData: state.formReducer,
+        formData: state.formReducer
     };
 })(FormDemo);
 

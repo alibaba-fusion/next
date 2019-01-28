@@ -14,7 +14,7 @@ export default class Line extends React.PureComponent {
         color: PropTypes.string,
         rtl: PropTypes.bool,
         prefix: PropTypes.string,
-        className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+        className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     };
 
     render() {
@@ -39,7 +39,7 @@ export default class Line extends React.PureComponent {
             [`${prefix}progress-line-overlay-${state}`]: !color && !progressive && state,
             [`${prefix}progress-line-overlay-started`]: !color && progressive && percent <= 30,
             [`${prefix}progress-line-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-line-overlay-finishing`]: !color && progressive && percent >= 80,
+            [`${prefix}progress-line-overlay-finishing`]: !color && progressive && percent >= 80
         });
 
         const lineStyle = { width: `${percent}%`, backgroundColor: color };

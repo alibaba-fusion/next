@@ -34,7 +34,7 @@ const ConfigTag = ConfigProvider.config(Tag, {
             }
         });
 
-        if ('selected'  in props || 'defaultSelected' in props) {
+        if ('selected' in props || 'defaultSelected' in props) {
             log.warning('Warning: [ selected|defaultSelected  ] is deprecated at [ Tag ], use [ checked|defaultChecked ] at [ Tag.Selectable ] instead of it');
         }
 
@@ -51,7 +51,7 @@ const ConfigTag = ConfigProvider.config(Tag, {
         }
 
         return props;
-    },
+    }
 });
 
 

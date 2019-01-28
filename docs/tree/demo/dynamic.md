@@ -23,7 +23,7 @@ class Demo extends React.Component {
 
         this.state = {
             data: [
-                { label: 'Expand to load', key: '0', },
+                { label: 'Expand to load', key: '0' },
                 { label: 'Expand to load', key: '1' },
                 { label: 'Leaf', key: '2', isLeaf: true }
             ]

@@ -35,14 +35,14 @@ class Card extends Base {
         /**
          * 取消上传的回调
          */
-        onCancel: PropTypes.func,
+        onCancel: PropTypes.func
     };
 
     static defaultProps = {
         prefix: 'next-',
         locale: zhCN.Upload,
         onChange: func.noop,
-        onPreview: func.noop,
+        onPreview: func.noop
     };
 
     constructor(props) {
@@ -59,7 +59,7 @@ class Card extends Base {
         this.state = {
 
             value: typeof value === 'undefined' ? /* istanbul ignore next */[] : value,
-            uploaderRef: this.uploaderRef,
+            uploaderRef: this.uploaderRef
         };
     }
     /* eslint react/no-did-mount-set-state: [0] */
@@ -111,13 +111,13 @@ class Card extends Base {
             onPreview,
             onRemove,
             onCancel,
-            timeout,
+            timeout
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
         const uploadButtonCls = classNames({
             [`${prefix}upload-list-item`]: true,
-            [`${prefix}hidden`]: isExceedLimit,
+            [`${prefix}hidden`]: isExceedLimit
         });
 
         const children = this.props.children || locale.card.addPhoto;

@@ -19,7 +19,7 @@ Use TimePicker with Field.
 import { TimePicker, Field, Button } from '@alifd/next';
 import moment from 'moment';
 
-class Demo  extends React.Component {
+class Demo extends React.Component {
     field = new Field(this);
 
     onClick = () => {
@@ -34,7 +34,7 @@ class Demo  extends React.Component {
             rules: [
                 { required: true, message: 'Time Required' }
             ],
-            initValue: moment('00:00:00', 'HH:mm:ss', true),
+            initValue: moment('00:00:00', 'HH:mm:ss', true)
         });
 
         return (<div>
