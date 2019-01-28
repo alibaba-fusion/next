@@ -19,10 +19,11 @@ export function camelcase (str) {
  * @return {String}     例：-webkit-transition
  */
 export function hyphenate (str) {
-    if (typeof str !== 'string') {
+    const strType = typeOf(str);
+    if (strType !== 'String') {
         warning(
             '[ hyphenate(str: string): string ] ' +
-            `Expected arguments[0] to be a string but get a ${typeOf(str)}.` +
+            `Expected arguments[0] to be a string but get a ${strType}.` +
             'It will return an empty string without any processing.'
         );
         return '';
@@ -37,10 +38,11 @@ export function hyphenate (str) {
  * @return {String}        例：
  */
 export function template (tpl, object = {}) {
-    if (typeof tpl !== 'string') {
+    const tplType = typeOf(tpl);
+    if (tplType !== 'String') {
         warning(
             '[ template(tpl: string, object: object): string ] ' +
-            `Expected arguments[0] to be a string but get a ${typeOf(tpl)}.` +
+            `Expected arguments[0] to be a string but get a ${tplType}.` +
             'It will return an empty string without any processing.'
         );
         return '';
