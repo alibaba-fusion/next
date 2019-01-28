@@ -1,6 +1,7 @@
 import React from 'react';
 import ConfigProvider from '../config-provider';
-import { log, errorCode } from '../util';
+import { log } from '../util';
+import { errorCode } from './util';
 import Upload from './upload';
 import List from './list';
 import Card from './card';
