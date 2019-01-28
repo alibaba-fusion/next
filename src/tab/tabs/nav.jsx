@@ -64,7 +64,7 @@ class Nav extends React.Component {
         ctx.slideTimer = setTimeout(() => {
             ctx.setSlideBtn();
         }, 200);
-        if (this.activeTab) {
+        if (this.activeTab && findDOMNode(this).contains(document.activeElement)) {
             this.activeTab.focus();
         }
     }
