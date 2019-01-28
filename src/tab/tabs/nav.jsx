@@ -10,8 +10,8 @@ import { events } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const noop = () => { };
-const floatRight = { float: 'right' };
-const floatLeft = { float: 'left' };
+const floatRight = { float: 'right', zIndex: 1 };
+const floatLeft = { float: 'left', zIndex: 1 };
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
