@@ -64,7 +64,7 @@ class Affix extends React.Component {
 
     componentWillReceiveProps(props) {
         this.affixMode = this._getAffixMode(props);
-        this.updatePosition();
+        this._updateNodePosition();
     }
 
     componentWillUnmount() {
