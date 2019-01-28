@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+#{$input-prefix}[dir="rtl"] {
+    &.#{$css-prefix}small {
+        @include input-size-rtl($input-s-label-padding-left, $input-s-icon-padding-right);
+    }
+
+    &.#{$css-prefix}medium {
+        @include input-size-rtl($input-m-label-padding-left, $input-m-icon-padding-right);
+    }
+
+    &.#{$css-prefix}large {
+        @include input-size-rtl($input-l-label-padding-left, $input-l-icon-padding-right);
+    }
+
+    &#{$input-prefix}-textarea {
+        #{$input-prefix}-len {
+            text-align: left;
+        }
+    }
+
+    #{$input-prefix}-control {
+        > *:not(:last-child) {
+            padding-left: $s-1;
+            padding-right: 0;
+        }
+    }
+}
+#{$input-prefix}-group[dir="rtl"] {
+    #{$input-prefix}-group-addon {
+
+        /* stylelint-disable declaration-no-important */
+        &:first-child {
+            border-bottom-left-radius: 0 !important;
+            border-top-left-radius: 0 !important;
+
+            &.#{$css-prefix}small {
+                border-bottom-right-radius: $form-element-small-corner !important;
+                border-top-right-radius: $form-element-small-corner !important;
+            }
+
+            &.#{$css-prefix}medium {
+                border-bottom-right-radius: $form-element-medium-corner !important;
+                border-top-right-radius: $form-element-medium-corner !important;
+            }
+
+            &.#{$css-prefix}large {
+                border-bottom-right-radius: $form-element-large-corner !important;
+                border-top-right-radius: $form-element-large-corner !important;
+            }
+        }
+        &:last-child {
+            border-bottom-right-radius: 0 !important;
+            border-top-right-radius: 0 !important;
+
+            &.#{$css-prefix}small {
+                border-bottom-left-radius: $form-element-small-corner !important;
+                border-top-left-radius: $form-element-small-corner !important;
+            }
+
+            &.#{$css-prefix}medium {
+                border-bottom-left-radius: $form-element-medium-corner !important;
+                border-top-left-radius: $form-element-medium-corner !important;
+            }
+
+            &.#{$css-prefix}large {
+                border-bottom-left-radius: $form-element-large-corner !important;
+                border-top-left-radius: $form-element-large-corner !important;
+            }
+        }
+    }
+    #{$input-prefix}-group-text {
+        &:first-child {
+            border-right-width: $input-border-width;
+            border-left: 0;
+        }
+        &:last-child {
+            border-left-width: $input-border-width;
+            border-right: 0;
+        }
+    }
+}

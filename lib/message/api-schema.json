@@ -1,0 +1,333 @@
+{
+  "name": "Message",
+  "props": {
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'success'",
+            "computed": false
+          },
+          {
+            "value": "'warning'",
+            "computed": false
+          },
+          {
+            "value": "'error'",
+            "computed": false
+          },
+          {
+            "value": "'notice'",
+            "computed": false
+          },
+          {
+            "value": "'help'",
+            "computed": false
+          },
+          {
+            "value": "'loading'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "反馈类型",
+      "defaultValue": {
+        "value": "'success'",
+        "computed": false
+      },
+      "docblock": "反馈类型"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'inline'",
+            "computed": false
+          },
+          {
+            "value": "'addon'",
+            "computed": false
+          },
+          {
+            "value": "'toast'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "反馈外观",
+      "defaultValue": {
+        "value": "'inline'",
+        "computed": false
+      },
+      "docblock": "反馈外观"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "反馈大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "反馈大小"
+    },
+    "title": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "标题",
+      "docblock": "标题"
+    },
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "内容",
+      "docblock": "内容"
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "默认是否显示",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "默认是否显示"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当前是否显示",
+      "docblock": "当前是否显示"
+    },
+    "iconType": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "显示的图标类型，会覆盖内部设置的IconType",
+      "docblock": "显示的图标类型，会覆盖内部设置的IconType"
+    },
+    "closeable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "显示关闭按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "显示关闭按钮"
+    },
+    "onClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "关闭按钮的回调",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "关闭按钮的回调",
+      "params": [],
+      "returns": null
+    },
+    "afterClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "关闭之后调用的函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "关闭之后调用的函数",
+      "params": [],
+      "returns": null
+    },
+    "animation": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启展开收起动画",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否开启展开收起动画"
+    }
+  },
+  "methods": [
+    {
+      "name": "show",
+      "docblock": "\n  创建提示弹层\n  @exportName show\n  @param {Object} props 属性对象\n ",
+      "description": "创建提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "hide",
+      "docblock": "\n  关闭提示弹层\n  @exportName hide\n ",
+      "description": "关闭提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [],
+      "returns": null
+    },
+    {
+      "name": "success",
+      "docblock": "\n  创建成功提示弹层\n  @exportName success\n  @param {Object} props 属性对象\n ",
+      "description": "创建成功提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "warning",
+      "docblock": "\n  创建警告提示弹层\n  @exportName warning\n  @param {Object} props 属性对象\n ",
+      "description": "创建警告提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "error",
+      "docblock": "\n  创建错误提示弹层\n  @exportName error\n  @param {Object} props 属性对象\n ",
+      "description": "创建错误提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "help",
+      "docblock": "\n  创建帮助提示弹层\n  @exportName help\n  @param {Object} props 属性对象\n ",
+      "description": "创建帮助提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "loading",
+      "docblock": "\n  创建加载中提示弹层\n  @exportName loading\n  @param {Object} props 属性对象\n ",
+      "description": "创建加载中提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "notice",
+      "docblock": "\n  创建通知提示弹层\n  @exportName notice\n  @param {Object} props 属性对象\n ",
+      "description": "创建通知提示弹层",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "属性对象",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    }
+  ],
+  "subComponents": []
+}
