@@ -8,18 +8,13 @@ const divId = 'a11y-root';
 /**
  * Helper function for running a11y unit tests using axe-core
  *
- * @param {ReactDOM Node} node - React element to mount and run axe-core tests on
+ * @param {String} selector - css selector for element to test
  * @param {function} cb - callback function to call on success (normally will be `done` function)
  * @param {Object} options - options for axe tests
  *                 {Boolean} `incomplete` - should test error if there was an incomplete test? (not recommended)
  *                 {Object} `rules` - set properties for rules
  */
-const test = function (node, cb, options = {}) {
-    const div = document.createElement('div');
-    div.id = divId;
-    document.body.appendChild(div);
-    const wrapper = mount(node, { attachTo: div });
-
+const test = function (selector, cb, options) {
     // disable `color-contrast` test by default when failing on incomplete tests. Can be overriden by setting `options.rules`
     if (options.incomplete && !options.rules) {
         options.rules = {
@@ -29,7 +24,7 @@ const test = function (node, cb, options = {}) {
         };
     }
 
-    Axe.run(`#${divId}`, { rules: options.rules }, function(error, results) {
+    Axe.run(selector, { rules: options.rules }, function(error, results) {
         assert(!error);
 
         if (results.violations.length) {
@@ -48,9 +43,28 @@ const test = function (node, cb, options = {}) {
         }
         cb();
     });
+};
+
+/**
+ * Helper function for running a11y unit tests using axe-core
+ *
+ * @param {ReactDOM Element} node - React element to mount and run axe-core tests on
+ * @param {function} cb - callback function to call on success (normally will be `done` function)
+ * @param {Object} options - options for axe tests
+ *                 {Boolean} `incomplete` - should test error if there was an incomplete test? (not recommended)
+ *                 {Object} `rules` - set properties for rules
+ */
+const testReact = function (node, cb, options = {}) {
+    const div = document.createElement('div');
+    div.id = divId;
+    document.body.appendChild(div);
+    const wrapper = mount(node, { attachTo: div });
+
+    test(`#${divId}`, cb, options);
 
     return wrapper;
 };
+
 
 const afterEach = function () {
     const div = document.querySelector(`#${divId}`);
@@ -59,4 +73,4 @@ const afterEach = function () {
     }
 };
 
-export default { test, afterEach };
+export default { test, testReact, afterEach };
