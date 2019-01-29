@@ -14,15 +14,13 @@ const divId = 'a11y-root';
  *                 {Boolean} `incomplete` - should test error if there was an incomplete test? (not recommended)
  *                 {Object} `rules` - set properties for rules
  */
-const test = function (selector, cb, options) {
-    // disable `color-contrast` test by default when failing on incomplete tests. Can be overriden by setting `options.rules`
-    if (options.incomplete && !options.rules) {
-        options.rules = {
-            'color-contrast': {
-                enabled: false
-            }
-        };
-    }
+const test = function (selector, cb, options = {}) {
+    // disable `color-contrast` test by default. Can be overriden by setting `options.rules['color-contrast']`
+    options.rules = Object.assign({
+        'color-contrast': {
+            enabled: false
+        }
+    }, options.rules);
 
     Axe.run(selector, { rules: options.rules }, function(error, results) {
         assert(!error);
