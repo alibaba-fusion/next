@@ -98,5 +98,8 @@ export default {
     },
     Search: {
         buttonText: 'サーチ'
+    },
+    Tag: {
+        delete: 'デリート'
     }
 };
