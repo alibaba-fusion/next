@@ -217,7 +217,7 @@ class Tag extends Component {
                 className={bodyClazz}
                 onClick={this.handleBodyClick}
                 onKeyDown={this.onKeyDown}
-                tabIndex="0"
+                tabIndex={disabled ? '' : '0'}
                 role="button"
                 aria-disabled={disabled}
                 disabled={disabled}
