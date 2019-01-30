@@ -408,16 +408,15 @@ class Transfer extends Component {
     }
 
     renderCenter() {
-        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled } = this.props;
+        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled, locale } = this.props;
         const { leftCheckedValue, rightCheckedValue } = this.state;
-
         return (
             <div className={`${prefix}transfer-operations`}>
                 {mode === 'simple' ? <Icon className={`${prefix}transfer-move`} size="large" type="switch" /> : [
-                    <Button key="l2r" className={`${prefix}transfer-operation`} type={leftCheckedValue.length ? 'primary' : 'normal'} disabled={leftDisabled || disabled || !leftCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'right')}>
+                    <Button aria-label={locale.moveToRight} key="l2r" className={`${prefix}transfer-operation`} type={leftCheckedValue.length ? 'primary' : 'normal'} disabled={leftDisabled || disabled || !leftCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'right')}>
                         {operations[0]}
                     </Button>,
-                    <Button key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'} disabled={rightDisabled || disabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
+                    <Button aria-label={locale.moveToLeft} key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'} disabled={rightDisabled || disabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
                         {operations[1]}
                     </Button>
                 ]}

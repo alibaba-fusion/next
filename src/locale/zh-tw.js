@@ -84,7 +84,9 @@ export default {
         items: '項',
         item: '項',
         moveAll: '移動全部',
-        searchPlaceholder: '請輸入'
+        searchPlaceholder: '請輸入',
+        moveToLeft: '撤銷選中元素',
+        moveToRight: '提交選中元素'
     },
     Upload: {
         card: {

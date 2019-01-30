@@ -84,7 +84,9 @@ export default {
         items: '項目',
         item: '項目',
         moveAll: '全ての移動',
-        searchPlaceholder: '入力'
+        searchPlaceholder: '入力',
+        moveToLeft: '選択した要素のチェックを外します',
+        moveToRight: '選択した要素を送信'
     },
     Upload: {
         card: {
