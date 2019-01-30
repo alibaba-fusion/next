@@ -169,6 +169,19 @@ describe('Tab', () => {
             assert(tabKey === '1');
         });
 
+        it('should close tab with keyboard', ()=>{
+            let tabKey;
+            wrapper = mount(<Tab onClose={key => tabKey = key}>
+                <Tab.Item title="foo" />
+                <Tab.Item title="bar" closeable />
+            </Tab>);
+            const closeIcon = wrapper.find('.next-icon-close');
+            assert(closeIcon.length === 1);
+            closeIcon.simulate('focus');
+            closeIcon.simulate('keyDown', { keyCode: KEYCODE.ENTER });
+            assert(tabKey === '1');
+        });
+
         it('should unmountInactiveTabs', () => {
             wrapper = mount(<Tab unmountInactiveTabs>{panes}</Tab>);
             wrapper.find('.next-tabs-tab').at(3).simulate('click');
@@ -221,7 +234,7 @@ describe('Tab', () => {
         it('should scrollToActiveTab', () => {
             wrapper = mount(<div style={boxStyle}><Tab defaultActiveKey="9">{panes}</Tab></div>, { attachTo: target });
             wrapper.find('.next-tabs-tab').at(3).simulate('click');
-            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'))
+            assert(wrapper.find('.next-tabs-tab').at(3).hasClass('active'));
         });
     });
 });
