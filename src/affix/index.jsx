@@ -62,9 +62,15 @@ class Affix extends React.Component {
         });
     }
 
-    componentWillReceiveProps(props) {
-        this.affixMode = this._getAffixMode(props);
-        this._updateNodePosition();
+    componentWillReceiveProps(nextProps) {
+        const { offsetTop, offsetBottom } = nextProps;
+        const offset = this.affixMode.offset;
+        const topOffsetChanged = this.affixMode.top && (typeof offsetTop !== 'undefined') && (offsetTop !== offset);
+        const bottomOffsetChanged = this.affixMode.bottom && (typeof offsetBottom !== 'undefined') && (offsetBottom !== offset);
+        if (topOffsetChanged || bottomOffsetChanged) {
+            this.affixMode = this._getAffixMode(nextProps);
+            this._updateNodePosition();
+        }
     }
 
     componentWillUnmount() {
