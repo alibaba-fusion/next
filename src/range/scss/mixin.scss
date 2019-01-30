@@ -18,6 +18,11 @@
         position: relative;
     }
 
+    .#{$css-prefix}range-inner:only-child {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
     .#{$css-prefix}range-track {
         position: absolute;
         width: 100%;
