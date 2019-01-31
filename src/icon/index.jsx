@@ -17,7 +17,7 @@ class Icon extends Component {
         /**
          * 指定图标大小
          */
-        size: PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl']),
+        size: PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl', 'inherit']),
         className: PropTypes.string
     };
 

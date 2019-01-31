@@ -94,23 +94,21 @@ class Checkbox extends UIState {
         super(props);
 
         let checked, indeterminate;
-        if (context.__group__) {
-            indeterminate = false;
-            checked = isChecked(context.selectedValue, props.value);
-        } else {
-            if ('checked' in props) {
-                checked = props.checked;
-            } else {
-                checked = props.defaultChecked;
-            }
 
-            if ('indeterminate' in props) {
-                indeterminate = props.indeterminate;
-            } else {
-                indeterminate = props.defaultIndeterminate;
-            }
+        if ('checked' in props) {
+            checked = props.checked;
+        } else {
+            checked = props.defaultChecked;
         }
 
+        if ('indeterminate' in props) {
+            indeterminate = props.indeterminate;
+        } else {
+            indeterminate = props.defaultIndeterminate;
+        }
+        if (context.__group__) {
+            checked = isChecked(context.selectedValue, props.value);
+        }
         this.state = {
             checked,
             indeterminate
