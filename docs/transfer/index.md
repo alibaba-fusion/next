@@ -41,3 +41,14 @@
 | listStyle           | 左右面板列表自定义样式对象                                                                                                                                                                                                                                                                                                                                                                                | Object              | -                                                                     |
 | sortable            | 是否允许拖拽排序                                                                                                                                                                                                                                                                                                                                                                                     | Boolean             | false                                                                 |
 | onSort              | 拖拽排序时触发的回调函数<br><br>**签名**:<br>Function(value: Array, position: String) => void<br>**参数**:<br>_value_: {Array} 排序后的值<br>_position_: {String} 拖拽的面板位置，值为：left 或 right                                                                                                                                                                                                                         | Function            | () => {}                                                              |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Right Arrow | 获取当前项的后一项焦点 |
+| Left Arrow  | 获取当前项的前一项焦点    |
+| Enter       | 选择/取消当前项或当前列表选中的项移动到另一个列表                 |
+| SPACE       | 选择/取消当前项或当前列表选中的项移动到另一个列表    
+ 
+ 

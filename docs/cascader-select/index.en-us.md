@@ -87,3 +87,21 @@ const dataSource = [{
 The custom attribute of item in the array is also transparently passed to the data parameter of the onChange function.
 
 <!-- api-extra-end -->
+ 
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Right Arrow | Get the next item focus of the current item of same level  |
+| Left Arrow  | Get the previous item focus of the current item of same level  |
+| Enter       | Open the directory               |
+| Esc         | Close the directory     |
+| SPACE       | Select current item              |
+ 
+ 
+
+
+
+
+

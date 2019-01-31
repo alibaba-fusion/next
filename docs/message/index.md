@@ -79,3 +79,11 @@ Message.success({
 ```
 
 <!-- api-extra-end -->
+
+
+
+
+## ARIA and KeyBoard
+
+`说明`： 此组件需要结合其他组件使用，才会有提示。参考上文`无障碍`。
+

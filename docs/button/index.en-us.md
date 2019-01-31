@@ -38,3 +38,11 @@ Buttons are used for emphasizing important functions on your page.
 | Param   | Description                  | Type     | Default Value      |
 | ---- | ------------------- | ------ | -------- |
 | size | Size of buttons in group | String | 'medium' |
+
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Enter       | Get the onClick event    |
+| SPACE       | Get the onClick event    |

@@ -89,3 +89,17 @@ const dataSource = [{
 数组中 Item 的自定义属性也会被透传到 onChange 函数的 data 参数中。
 
 <!-- api-extra-end -->
+
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Right Arrow | 获取同级当前项前一项焦点 |
+| Left Arrow  | 获取同级当前项后一项焦点  |
+| Enter       | 打开目录                          |
+| Esc         | 关闭目录                  |
+| SPACE       | 选择当前项                 |
+ 
+
+  

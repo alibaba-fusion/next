@@ -198,3 +198,12 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 | popupStyle       | 弹层自定义样式                                                                                                                                                        | Object    | -           |
 | popupClassName   | 弹层自定义样式类                                                                                                                                                       | String    | -           |
 | popupProps       | 弹层其他属性                                                                                                                                                         | Object    | -           |
+
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| 数字键    |  需要手动输入日期，指定的日期格式     |
+| Enter       | 打开日期选择框或选择日期 |
+| Esc         | 关闭日期选择框       |

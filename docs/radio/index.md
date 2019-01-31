@@ -46,3 +46,10 @@
 | dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`                                                                                     | Array&lt;any>                       | \[]       |
 | children      | 通过子元素方式设置内部radio                                                                                                                                   | Array&lt;ReactElement>/ReactElement | -         |
 | itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                   | Enum                                | 'hoz'     |
+
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Tab       | 获取焦点，如果没有任何选中就是第一个，之后可以空格选中。如果有选中的就聚焦到选中项，然后通过左右键直接选中。       |

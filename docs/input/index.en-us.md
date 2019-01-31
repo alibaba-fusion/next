@@ -88,3 +88,10 @@ Form Input, use it with Form components usually.
 | ------------ | ------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
 | getInputNode | get truely input html dom node                                                                                           | Function |     |
 | focus        | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |     |
+
+
+## ARIA and KeyBoard
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Enter       | Get the onKeyDown event    |
+| any       | Get the onChange event    |

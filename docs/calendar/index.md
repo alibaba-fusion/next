@@ -41,3 +41,4 @@ moment.locale('zh-cn');
 | dateCellRender       | 自定义日期渲染函数<br><br>**签名**:<br>Function(value: Object) => ReactNode<br>**参数**:<br>_value_: {Object} 日期值（moment对象）<br>**返回值**:<br>{ReactNode} null<br>                        | Function | (value) => value.date() |
 | monthCellRender      | 自定义月份渲染函数<br><br>**签名**:<br>Function(calendarDate: Object) => ReactNode<br>**参数**:<br>_calendarDate_: {Object} 对应 Calendar 返回的自定义日期对象<br>**返回值**:<br>{ReactNode} null<br> | Function | -                       |
 | disabledDate         | 不可选择的日期<br><br>**签名**:<br>Function(calendarDate: Object) => Boolean<br>**参数**:<br>_calendarDate_: {Object} 对应 Calendar 返回的自定义日期对象<br>**返回值**:<br>{Boolean} null<br>       | Function | -                       |
+
