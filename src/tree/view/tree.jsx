@@ -1,7 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import ConfigProvider from '../../config-provider';
 import { func, dom, obj, KEYCODE } from '../../util';
 import TreeNode from './tree-node';
 import {
@@ -20,7 +19,7 @@ const { pickOthers, isPlainObject } = obj;
 /**
  * Tree
  */
-class Tree extends Component {
+export default class Tree extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -932,7 +931,3 @@ class Tree extends Component {
         );
     }
 }
-
-export default ConfigProvider.config(Tree, {
-    exportNames: ['setFocusKey']
-});
