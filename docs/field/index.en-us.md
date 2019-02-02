@@ -187,6 +187,7 @@ Let myfield = new Field(this [,options]);
 |forceUpdate | Only the components of PureComponent are recommended to open this forced refresh function, which will cause performance problems (500 components as an example: the render will cost 700ms when it is turned on, and 400ms if it is turned off) | Boolean |false|
 | scrollToFirstError | scrolling field.validate scrolls to the first errored component, offsets if it is an integer | Boolean/Number |true|
 | autoUnmount | Automatically delete the Unmout element, if you want to keep the data can be set to false | Boolean |true|
+| autoValidate | Automatically validate while value changed | Boolean  |true|
 | values | initial value| Object ||
 
 #### API Interface
@@ -225,6 +226,7 @@ init(name, options, props)
 | options.rules | Checksum Rules | Array/Object | | | |
 | options.getValueFromEvent | custom way to get value from `onChange` event, generally do not need to set. Detailed usage see demo `custom data get` | Function(value, ...args) parameter order and components are exactly the same The | | | |
 |props | Component-defined events can be written here | Object | | | |
+| autoValidate | Automatically validate while value changed | Boolean  |true|
 
 return
 

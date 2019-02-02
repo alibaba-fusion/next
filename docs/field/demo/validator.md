@@ -105,11 +105,11 @@ class App extends React.Component {
             <br/>
             <br/>
 
-            <Input multiple maxLength={10} defaultValue=">3 and <10" {...init('textarea', {
+            <Input.TextArea placeholder=">3 and <10" {...init('textarea', {
                 rules: [{
                     required: true,
-                    min: 3,
-                    max: 10
+                    minLength: 3,
+                    maxLength: 10
                 }]
             })} />
             {this.field.getError('textarea') ?

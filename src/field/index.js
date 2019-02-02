@@ -35,6 +35,7 @@ class Field {
             first: false,
             onChange: func.noop,
             autoUnmount: true,
+            autoValidate: true,
         }, options);
 
         ['init', 'getValue', 'getValues', 'setValue', 'setValues', 'getError', 'setError', 'setErrors', 'validate', 'getState', 'reset', 'resetToDefault', 'remove', 'spliceArray'].forEach((m) => {
@@ -51,7 +52,7 @@ class Field {
     }
 
     /**
-     * Control Component
+     * Controlled Component
      * @param {String} name
      * @param {Object} fieldOption
      * @returns {Object} {value, onChange}
@@ -63,7 +64,8 @@ class Field {
             trigger = 'onChange',
             rules = [],
             props = {},
-            getValueFromEvent = null
+            getValueFromEvent = null,
+            autoValidate = true,
         } = fieldOption;
         const originalProps = Object.assign({}, props, rprops);
         const defaultValueName = `default${valueName[0].toUpperCase()}${valueName.slice(1)}`;
@@ -80,7 +82,7 @@ class Field {
             ref: originalProps.ref
         });
 
-        // Control Component
+        // Controlled Component
         if (valueName in originalProps) {
             field.value = originalProps[valueName];
         }
@@ -97,21 +99,25 @@ class Field {
             [valueName]: field.value
         };
 
-        // trigger map
-        const rulesMap = mapValidateRules(field.rules, trigger);
+        let rulesMap = {};
 
-        // validate hook
-        for (const action in rulesMap) {
-            if (action === trigger) {
-                continue;
+        if (this.options.autoValidate && autoValidate !== false) {
+            // trigger map
+            rulesMap = mapValidateRules(field.rules, trigger);
+
+            // validate hook
+            for (const action in rulesMap) {
+                if (action === trigger) {
+                    continue;
+                }
+
+                const actionRule = rulesMap[action];
+                inputProps[action] = (...args) => {
+                    this._validate(name, actionRule, action);
+                    this._callPropsEvent(action, originalProps, ...args);
+                    this._reRender();
+                };
             }
-
-            const actionRule = rulesMap[action];
-            inputProps[action] = (...args) => {
-                this._validate(name, actionRule, action);
-                this._callPropsEvent(action, originalProps, ...args);
-                this._reRender();
-            };
         }
 
         // onChange hack
@@ -143,6 +149,9 @@ class Field {
         return this.fieldsMeta[name];
     }
 
+    /**
+     * update field.value and validate
+     */
     _callOnChange(name, rule, trigger, ...others) {
         const e = others[0];
         const field = this._get(name);
@@ -154,6 +163,8 @@ class Field {
         field.value = field.getValueFromEvent ? field.getValueFromEvent.apply(this, others) : getValueFromEvent(e);
 
         this._resetError(name);
+
+        // validate while onChange
         rule && this._validate(name, rule, trigger);
     }
 
