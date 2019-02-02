@@ -83,6 +83,11 @@ export default class Form extends React.Component {
         value: PropTypes.object,
         /**
          * 表单变化回调
+         * @param {Object} values 表单数据
+         * @param {Object} item 详细
+         * @param {String} item.name 变化的组件名
+         * @param {String} item.value 变化的数据
+         * @param {Object} item.field field 实例
          */
         onChange: PropTypes.func,
         /**
