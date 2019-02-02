@@ -92,6 +92,7 @@ export function getFieldInitCfg(props, displayName) {
     return {
         valueName: getValueName(props, displayName),
         trigger: props.trigger ? props.trigger : 'onChange',
+        autoValidate: props.autoValidate,
         rules: getRules(props)
     };
 }

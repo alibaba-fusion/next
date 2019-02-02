@@ -120,6 +120,25 @@ describe('Submit', () => {
         assert(wrapper.find('.next-form-item-help').first().text() === 'first 是必填字段');
         wrapper.find('button').simulate('click');
     });
+
+    it('autoValidate=false', (done) => {
+        const onClick = (v) => {
+            assert(v.first === '');
+            done()
+        }
+        const wrapper = mount(<Form>
+            <FormItem minLength={10} autoValidate={false}>
+                <Input name="first"/>
+            </FormItem>
+            <Submit validate={['first']} onClick={onClick}>click</Submit>
+        </Form>);
+
+        wrapper.find('input#first').simulate('change', {target: {value: ""}});
+        wrapper.update();
+        assert(wrapper.find('.next-form-item-help').first().length === 0);
+        wrapper.find('button').simulate('click');
+        assert(wrapper.find('.next-form-item-help').first().text() === 'first 是必填字段');
+    });
 });
 
 describe('Reset', () => {

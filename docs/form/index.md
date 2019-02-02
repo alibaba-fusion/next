@@ -81,6 +81,7 @@
 | formatTrigger       | format 自定义触发方式                                                                                                          | String/Array       | -     |
 | validator           | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function           | -     |
 | validatorTrigger    | validator 自定义触发方式                                                                                                       | String/Array       | -     |
+| autoValidate        | 是否修改数据时自动触发校验, 设为 false 后修改不会再触发校验 | Boolean            | -     |
 
 ### Form.Submit
 
