@@ -98,5 +98,8 @@ export default {
     },
     Search: {
         buttonText: 'Search'
+    },
+    Tag: {
+        delete: 'Delete'
     }
 };

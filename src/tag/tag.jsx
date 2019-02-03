@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Animate from '../animate';
 import Icon from '../icon';
 import { obj, func, support, KEYCODE } from '../util';
+import zhCN from '../locale/zh-cn';
 
 const { noop, bindCtx } = func;
 
@@ -46,7 +47,8 @@ class Tag extends Component {
         onClick: PropTypes.func,
         _shape: PropTypes.oneOf(['default', 'closable', 'checkable']),
         disabled: PropTypes.bool,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -61,7 +63,8 @@ class Tag extends Component {
         onClick: noop,
         _shape: 'default',
         disabled: false,
-        rtl: false
+        rtl: false,
+        locale: zhCN.Tag
     };
 
     constructor(props) {
@@ -164,7 +167,7 @@ class Tag extends Component {
     }
 
     renderTailNode() {
-        const { prefix, closable } = this.props;
+        const { prefix, closable, locale } = this.props;
 
         if (!closable) {
             return null;
@@ -174,6 +177,8 @@ class Tag extends Component {
             <span
                 className={`${prefix}tag-close-btn`}
                 onClick={this.handleTailClick}
+                role="button"
+                aria-label={locale.delete}
             >
                 <Icon type="close" />
             </span>
@@ -217,7 +222,7 @@ class Tag extends Component {
                 className={bodyClazz}
                 onClick={this.handleBodyClick}
                 onKeyDown={this.onKeyDown}
-                tabIndex="0"
+                tabIndex={disabled ? '' : '0'}
                 role="button"
                 aria-disabled={disabled}
                 disabled={disabled}
