@@ -39,9 +39,7 @@ const layout = {
 };
 
 class App extends React.Component {
-    field = new Field(this, {
-        deepReset: true
-    });
+    field = new Field(this);
 
     render() {
         const {init, getValue} = this.field;
