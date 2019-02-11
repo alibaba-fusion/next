@@ -14,5 +14,7 @@
       <%- readmeHTML %>
     </div>
   </div>
-
+  <% scripts.forEach(function(src) { %>
+    <script src="<%= src %>"></script>
+  <% })%>
 <% include partials/footer %>

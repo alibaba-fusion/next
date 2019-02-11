@@ -1,8 +1,9 @@
 const path = require('path');
 const loaderUtils = require('loader-utils');
 const ejs = require('ejs');
-const { marked, logger } = require('../../../utils');
+const { marked, logger, replaceExt } = require('../../../utils');
 
+const cwd = process.cwd();
 const tplsPath = path.resolve(__dirname, '../../tpls');
 const headerTplPath = path.resolve(tplsPath, 'partials/header.ejs');
 const indexTplPath = path.resolve(tplsPath, 'index.ejs');
@@ -24,6 +25,10 @@ module.exports = function(content) {
     const newContent = lines.slice(endIndex + 1).join('\n');
 
     ejs.renderFile(indexTplPath, {
+        scripts: [
+            '/common.js',
+            `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`
+        ],
         links,
         lang,
         dir,
@@ -33,10 +38,10 @@ module.exports = function(content) {
         if (err) {
             logger.error(`Render index.html failed: ${err}`);
         } else {
-            const htmlPath = path.relative(path.join(process.cwd(), 'docs'), this.resourcePath.replace(/\.(en-us\.)?md$/, '.html'));
+            const htmlPath = path.relative(path.join(cwd, 'docs'), this.resourcePath.replace(/\.(en-us\.)?md$/, '.html'));
             this.emitFile(htmlPath, html);
         }
     });
 
-    return '';
+    return `import '${path.join(cwd, 'src', 'core/reset.scss')}';`;
 };

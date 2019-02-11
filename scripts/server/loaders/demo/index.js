@@ -28,6 +28,7 @@ module.exports = function(content) {
     this.addDependency(headerTplPath);
     this.addDependency(demoTplPath);
 
+
     ejs.renderFile(demoTplPath, {
         scripts,
         links,
@@ -55,7 +56,10 @@ function processJS(js, css, desc, body, resourcePath, context, dir, options) {
         return '';
     }
 
-    js = fixImport(js, resourcePath, dir);
+    js = `
+        import '${path.join(cwd, 'src', 'core/reset.scss')}';
+        ${fixImport(js, resourcePath, dir)}
+    `;
 
     // eslint-disable-next-line
   body = marked(body).replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}');
