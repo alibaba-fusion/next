@@ -65,7 +65,7 @@ describe('Transfer', () => {
 
     it('should render by defaultLeftChecked and defaultRightChecked', () => {
         wrapper = mount(<Transfer defaultValue={['1']} defaultLeftChecked={['2']}
-        defaultRightChecked={['1']} dataSource={dataSource} />);
+            defaultRightChecked={'1'} dataSource={dataSource} />);
 
         assert(findFooterCount(wrapper, 0) === '1/3');
         assert(findFooterCheckbox(wrapper, 0).hasClass('indeterminate'));
@@ -77,7 +77,7 @@ describe('Transfer', () => {
     });
 
     it('should render by check checkbox of item and checkbox of footer', () => {
-        wrapper = mount(<Transfer defaultValue={['1']} dataSource={dataSource} />);
+        wrapper = mount(<Transfer defaultValue={['1']} defaultLeftChecked dataSource={dataSource} />);
 
         checkSingle(findItem(wrapper, 0, 1));
         assert(findItemCheckbox(wrapper, 0, 1).hasClass('checked'));
@@ -127,6 +127,26 @@ describe('Transfer', () => {
         assert(findItems(wrapper, 0).length === 2);
         assert(findItemText(wrapper, 0, 0) === 'a');
         assert(findItemText(wrapper, 0, 1) === 'abc');
+    });
+
+    it('should render load more button when set hasMore', () => {
+        const dataSource = [
+            { label: 'a', value: '0' },
+            { label: 'b', value: '1' },
+            { label: <i>abc</i>, value: '2' }
+        ];
+
+        wrapper = mount(<Transfer hasMore dataSource={dataSource} />);
+
+        const loadMoreBtn = wrapper.find('div.next-transfer-panel-load-more').find('a');
+
+        assert(loadMoreBtn.length === 1);
+
+        loadMoreBtn.at(0).simulate('click');
+
+        wrapper = mount(<Transfer hasMore dataSource={[]} />);
+
+        assert(wrapper.find('div.next-transfer-panel-load-more').find('a').length === 1);
     });
 
     it('should custom style and text', () => {

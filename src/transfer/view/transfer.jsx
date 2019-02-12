@@ -181,6 +181,7 @@ class Transfer extends Component {
             return false;
         },
         onSearch: () => {},
+        onLoadMore: () => {},
         notFoundContent: 'Not Found',
         titles: [],
         // eslint-disable-next-line
@@ -189,7 +190,6 @@ class Transfer extends Component {
         defaultRightChecked: [],
         sortable: false,
         onSort: () => {},
-        onLoadMore: () => {},
         locale: zhCN.Transfer
     };
 
