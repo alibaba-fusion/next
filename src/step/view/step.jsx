@@ -19,11 +19,11 @@ export default class Step extends Component {
         /**
          * 展示方向
          */
-        direction: PropTypes.oneOf(['horizontal', 'vertical']),
+        direction: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 横向布局时的内容排列
          */
-        labelPlacement: PropTypes.oneOf(['horizontal', 'vertical']),
+        labelPlacement: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 类型
          */
@@ -52,8 +52,8 @@ export default class Step extends Component {
     static defaultProps = {
         prefix: 'next-',
         current: 0,
-        direction: 'horizontal',
-        labelPlacement: 'vertical',
+        direction: 'hoz',
+        labelPlacement: 'ver',
         shape: 'circle',
         animation: true,
         itemRender: null
@@ -103,7 +103,7 @@ export default class Step extends Component {
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
-        if (shape !== 'arrow' && direction === 'horizontal' && labelPlacement === 'vertical') {
+        if (shape !== 'arrow' && (direction === 'horizontal' || direction === 'hoz') && (labelPlacement === 'vertical' || labelPlacement === 'ver')) {
             const step = ReactDOM.findDOMNode(this.step);
             const height = Array.prototype.slice.call(step.getElementsByClassName(`${prefix}step-item`)).reduce((ret, re) => {
                 const itemHeight = getHeight(re) + getHeight(re.getElementsByClassName(`${prefix}step-item-body`)[0]);
@@ -169,11 +169,13 @@ export default class Step extends Component {
             });
         });
 
+        const _direction = direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
+        const _labelPlacement = labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
         const stepCls = classNames({
             [`${prefix}step`]: true,
             [`${prefix}step-${shape}`]: shape,
-            [`${prefix}step-${direction}`]: direction,
-            [`${prefix}step-label-${labelPlacement}`]: labelPlacement,
+            [`${prefix}step-${_direction}`]: _direction,
+            [`${prefix}step-label-${_labelPlacement}`]: _labelPlacement,
             [className]: className
         });
 
