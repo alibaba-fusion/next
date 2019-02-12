@@ -54,6 +54,12 @@
         font-size: $font-size-body-2;
     }
 
+    &-panel-load-more {
+        padding-left: $s-5;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
     &-panel-item {
         &.#{$css-prefix}focused {
             transition: background-color .2s ease;

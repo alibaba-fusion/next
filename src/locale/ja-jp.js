@@ -84,7 +84,8 @@ export default {
         items: '項目',
         item: '項目',
         moveAll: '全ての移動',
-        searchPlaceholder: '入力'
+        searchPlaceholder: '入力',
+        loadMore: 'もっと読み込む'
     },
     Upload: {
         card: {

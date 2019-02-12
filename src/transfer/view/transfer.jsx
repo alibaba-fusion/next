@@ -76,6 +76,14 @@ class Transfer extends Component {
          */
         showSearch: PropTypes.bool,
         /**
+         * 左侧列表是否还有更多数据
+         */
+        hasMore: PropTypes.bool,
+        /**
+         * 左侧列表数据是否在加载中
+         */
+        loading: PropTypes.bool,
+        /**
          * 自定义搜索函数
          * @param {String} searchedValue 搜索的内容
          * @param {Object} data 数据
@@ -132,6 +140,10 @@ class Transfer extends Component {
          */
         onSort: PropTypes.func,
         /**
+         * 点击 load more 按钮的回调函数
+         */
+        onLoadMore: PropTypes.func,
+        /**
          * 自定义国际化文案对象
          */
         locale: PropTypes.object
@@ -148,6 +160,8 @@ class Transfer extends Component {
         rightDisabled: false,
         itemRender: data => data.label,
         showSearch: false,
+        hasMore: false,
+        loading: false,
         filter: (searchedValue, data) => {
             let labelString = '';
             const loop = arg => {
@@ -175,6 +189,7 @@ class Transfer extends Component {
         defaultRightChecked: [],
         sortable: false,
         onSort: () => {},
+        onLoadMore: () => {},
         locale: zhCN.Transfer
     };
 
@@ -428,7 +443,7 @@ class Transfer extends Component {
     render() {
         const { prefix, mode, disabled, className, dataSource, locale, showSearch, filter, onSearch,
             leftDisabled, rightDisabled, searchPlaceholder, notFoundContent, titles, listClassName,
-            listStyle, itemRender, sortable } = this.props;
+            listStyle, itemRender, sortable, hasMore, loading, onLoadMore } = this.props;
         const { value, leftCheckedValue, rightCheckedValue } = this.state;
         const itemValues = dataSource.map(item => item.value);
         const leftDatasource = this.groupDatasource(this.leftValue, itemValues, dataSource);
@@ -438,8 +453,11 @@ class Transfer extends Component {
             mode,
             locale,
             showSearch,
+            hasMore,
+            onLoadMore,
             filter,
             onSearch,
+            loading,
             searchPlaceholder,
             notFoundContent,
             listClassName,

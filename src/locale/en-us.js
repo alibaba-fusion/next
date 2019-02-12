@@ -84,7 +84,8 @@ export default {
         items: 'items',
         item: 'item',
         moveAll: 'Move All',
-        searchPlaceholder: 'Please Input'
+        searchPlaceholder: 'Please Input',
+        loadMore: 'load more'
     },
     Upload: {
         card: {

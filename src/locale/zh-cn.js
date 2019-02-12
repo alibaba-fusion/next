@@ -84,7 +84,8 @@ export default {
         items: '项',
         item: '项',
         moveAll: '移动全部',
-        searchPlaceholder: '请输入'
+        searchPlaceholder: '请输入',
+        loadMore: '加载更多'
     },
     Upload: {
         card: {

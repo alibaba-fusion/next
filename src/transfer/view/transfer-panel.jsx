@@ -4,6 +4,7 @@ import cx from 'classnames';
 import Checkbox from '../../checkbox';
 import Search from '../../search';
 import Menu from '../../menu';
+import Button from '../../button';
 import { func } from '../../util';
 import TransferItem from './transfer-item';
 
@@ -31,7 +32,10 @@ export default class TransferPanel extends Component {
         listStyle: PropTypes.object,
         itemRender: PropTypes.func,
         sortable: PropTypes.bool,
-        onSort: PropTypes.func
+        onSort: PropTypes.func,
+        hasMore: PropTypes.bool,
+        onLoadMore: PropTypes.func,
+        loading: PropTypes.bool
     };
 
     constructor(props, context) {
@@ -148,7 +152,7 @@ export default class TransferPanel extends Component {
 
     renderList(dataSource) {
         const { prefix, position, mode, value, onMove, disabled, listClassName, listStyle, itemRender,
-            sortable } = this.props;
+            sortable, hasMore, loading, onLoadMore, locale } = this.props;
         const { dragPosition, dragValue, dragOverValue } = this.state;
         const newClassName = cx({
             [`${prefix}transfer-panel-list`]: true,
@@ -178,10 +182,35 @@ export default class TransferPanel extends Component {
                         dragOverValue={dragOverValue}
                         panelPosition={position} />
                 ))}
+                <div className={`${prefix}transfer-panel-load-more`}>
+                    {
+                        (hasMore && (position === 'left')) ?
+                            <Button
+                                text
+                                size="small"
+                                component="a"
+                                type="primary"
+                                loading={loading}
+                                onClick={onLoadMore} >{locale.loadMore}</Button> :
+                            null
+                    }
+                </div>
             </Menu>
         ) : (
             <div className={newClassName} style={listStyle}>
-                {this.renderNotFoundContent()}
+                <div className={`${prefix}transfer-panel-load-more`}>
+                    {
+                        (hasMore && (position === 'left')) ?
+                            <Button
+                                text
+                                size="small"
+                                component="a"
+                                type="primary"
+                                loading={loading}
+                                onClick={onLoadMore} >{locale.loadMore}</Button> :
+                            this.renderNotFoundContent()
+                    }
+                </div>
             </div>
         );
     }
