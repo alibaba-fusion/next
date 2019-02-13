@@ -42,7 +42,7 @@ export default class Base extends React.Component {
          */
         label: PropTypes.node,
         /**
-         * 是否有清除按钮
+         * 是否有清除按钮（单选模式有效）
          */
         hasClear: PropTypes.bool,
         /**
