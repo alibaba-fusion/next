@@ -5,6 +5,7 @@ import Animate from '../animate';
 import Icon from '../icon';
 import { obj, func, support, KEYCODE } from '../util';
 import zhCN from '../locale/zh-cn';
+import ConfigProvider from '../config-provider';
 
 const { noop, bindCtx } = func;
 
@@ -244,4 +245,4 @@ class Tag extends Component {
     }
 }
 
-export default Tag;
+export default ConfigProvider.config(Tag);
