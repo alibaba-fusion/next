@@ -23,6 +23,9 @@ export const test = function (selector, options = {}) {
     }, options.rules);
 
     return Axe.run(selector, { rules: options.rules })
+        .catch((error) => {
+            assert(!error);
+        })
         .then((results) => {
             if (results.violations.length) {
             // eslint-disable-next-line no-console
@@ -38,8 +41,6 @@ export const test = function (selector, options = {}) {
                 }
                 assert(results.incomplete.length === 0);
             }
-        }).catch((error) => {
-            assert(!error);
         });
 };
 
@@ -52,7 +53,7 @@ export const test = function (selector, options = {}) {
  */
 export const mountReact = async function (node, id) {
     const div = document.createElement('div');
-    div.id = id;
+    div.id = id || divId;
     document.body.appendChild(div);
     const wrapper = mount(node, { attachTo: div });
     return wrapper;
