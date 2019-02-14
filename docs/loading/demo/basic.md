@@ -16,9 +16,20 @@ a basic way to use it
 ````jsx
 import { Loading } from '@alifd/next';
 
-ReactDOM.render(<Loading tip="loading...">
-    <div className="demo">test</div>
-</Loading>, mountNode);
+ReactDOM.render(
+    <div>
+        <div>LTR
+            <Loading tip="加载中..." >
+                <div className="demo">test</div>
+            </Loading>
+        </div>
+        <div>RTL
+            <Loading tip="加载中..." rtl >
+                <div className="demo">test</div>
+            </Loading>
+        </div>
+    </div>
+    , mountNode);
 ````
 
 ````css

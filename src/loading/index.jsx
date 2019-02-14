@@ -5,6 +5,8 @@ import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
 import {obj, func} from '../util';
 
+/* eslint-disable react/prefer-stateless-function */
+
 /** Loading */
 class Loading extends React.Component {
     static propTypes = {
@@ -59,7 +61,8 @@ class Loading extends React.Component {
         /**
          * should loader be displayed inline
          */
-        inline: PropTypes.bool
+        inline: PropTypes.bool,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -86,7 +89,8 @@ class Loading extends React.Component {
             onVisibleChange,
             tipAlign,
             size,
-            inline
+            inline,
+            rtl
         } = this.props;
 
         let indicatorDom = null;
@@ -100,7 +104,7 @@ class Loading extends React.Component {
                 [`${prefix}loading-fusion-reactor`]: true,
                 [`${prefix}loading-medium-fusion-reactor`]: size === 'medium'
             });
-            indicatorDom = (<div className={fusionReactorCls}>
+            indicatorDom = (<div className={fusionReactorCls} dir={rtl ? 'rtl' : undefined}>
                 <span className={dotCls} style={{backgroundColor}}></span>
                 <span className={dotCls} style={{backgroundColor}}></span>
                 <span className={dotCls} style={{backgroundColor}}></span>
