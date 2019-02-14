@@ -98,5 +98,8 @@ export default {
     },
     Search: {
         buttonText: '搜索'
+    },
+    Tag: {
+        delete: '删除'
     }
 };

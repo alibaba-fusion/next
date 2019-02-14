@@ -13,7 +13,7 @@ describe('Tag', () => {
 
     describe('render', () => {
         it('should render nothing if tag is unvisible', () => {
-            const wrapper = shallow(<Tag animation={false}/>).dive();
+            const wrapper = shallow(<Tag animation={false}/>).dive().dive();
             // note: react setState is asynchronous
             // so must force update or setTimeout in test suit to check render results.
             wrapper.setState({
@@ -35,14 +35,14 @@ describe('Tag', () => {
 
         it('`afterAppear` should be called when tag appeared', () => {
             const afterAppearCb = sinon.spy();
-            const wrapper = shallow(<Tag afterAppear={afterAppearCb} />).dive();
+            const wrapper = shallow(<Tag afterAppear={afterAppearCb} />).dive().dive();
             wrapper.instance().handleAnimationInit();
             assert(afterAppearCb.calledOnce === true);
         });
 
         it('`afterLeave` should be called when tag leaved', () => {
             const afterLeaveCb = sinon.spy();
-            const wrapper = shallow(<Tag afterClose={afterLeaveCb} />).dive();
+            const wrapper = shallow(<Tag afterClose={afterLeaveCb} />).dive().dive();
             wrapper.instance().handleAnimationEnd();
             assert(afterLeaveCb.calledOnce === true);
         });
@@ -71,7 +71,7 @@ describe('Tag', () => {
         });
 
         it('tag should be destroyed after unmoun', () => {
-            const wrapper = shallow(<Tag />).dive();
+            const wrapper = shallow(<Tag />).dive().dive();
             const willUnmount = sinon.spy();
             const instance = wrapper.instance();
             // for coverage

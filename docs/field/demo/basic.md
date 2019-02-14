@@ -19,8 +19,8 @@ import { Input, Button, Field } from '@alifd/next';
 
 
 
-class App extends React.PureComponent {
-    field = new Field(this, {forceUpdate: true});
+class App extends React.Component {
+    field = new Field(this);
 
     onGetValue() {
         console.log(this.field.getValue('input'));

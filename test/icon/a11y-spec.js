@@ -1,14 +1,15 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Progress from '../../src/progress/index';
-import '../../src/progress/style.js';
+import Icon from '../../src/icon/index';
+import '../../src/icon/style';
 import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+
 /* eslint-disable no-undef, react/jsx-filename-extension */
-describe('Progress A11y', () => {
+describe('Icon A11y', () => {
     let wrapper;
 
     afterEach(() => {
@@ -19,13 +20,8 @@ describe('Progress A11y', () => {
         a11yAfterEach();
     });
 
-    it('should not have any violations for Line Progress', async () => {
-        wrapper = await testReact(<Progress percent={30} />, { incomplete: true });
-        return wrapper;
-    });
-
-    it('should not have any violations for Circle Progress', async () => {
-        wrapper = await testReact(<Progress shape="circle" percent={30} />, { incomplete: true });
+    it('should not have any violations', async () => {
+        wrapper = await testReact(<Icon/>);
         return wrapper;
     });
 });
