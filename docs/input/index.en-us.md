@@ -93,5 +93,5 @@ Form Input, use it with Form components usually.
 ## ARIA and KeyBoard
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Enter       | Get the onKeyDown event    |
-| any       | Get the onChange event    |
+| Enter       | Trigger the onKeyDown event    |
+| Any       | Trigger the onChange event    |
