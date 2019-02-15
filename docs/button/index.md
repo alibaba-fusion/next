@@ -43,8 +43,8 @@
 ## ARIA and KeyBoard
 | 按键          | 说明                              |
 | :---------- | :------------------------------ |
-| Enter       | 获取onClick事件                |
-| SPACE       | 获取onClick事件                 |
+| Enter       | 触发onClick事件                |
+| SPACE       | 触发onClick事件                 |
 
 
  

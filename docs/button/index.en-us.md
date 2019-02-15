@@ -44,5 +44,5 @@ Buttons are used for emphasizing important functions on your page.
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Enter       | Get the onClick event    |
-| SPACE       | Get the onClick event    |
+| Enter       | Trigger the onClick event    |
+| SPACE       | Trigger the onClick event    |

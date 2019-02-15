@@ -2,11 +2,11 @@
 
 - order: 23
 
-请参考`ARIA and KeyBoard`。
+通过键盘方向键浏览表格。
 
 :::lang=en-us
 
-Please refer to `ARIA and KeyBoard`.
+Browse the table by keyboard arrow keys.
 
 # Addon
 
