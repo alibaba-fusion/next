@@ -9,6 +9,12 @@
 [![Build Status](https://travis-ci.com/alibaba-fusion/next.svg?token=KAYresHL1UPaaLzUYyx6&branch=master)](https://travis-ci.com/alibaba-fusion/next)
 [![codecov](https://codecov.io/gh/alibaba-fusion/next/branch/master/graph/badge.svg?token=FSufKVDhmT)](https://codecov.io/gh/alibaba-fusion/next)
 
+# 为什么用
+
+`@alifd/next` 配合 [Fusion Design](https://fusion.design) 解决在页面开发时设计师和前端协同的问题。通过这套体系设计师可以自由的定制组件的 UI 并产出一个 npm 主题包，前端可以直接使用这个主题包不需要关注组件的还原度问题。省去了和设计师反复的去做还原度 Review 的工作量，大幅度的提高了开发效率。
+
+![](https://img.alicdn.com/tfs/TB1MDP6GSzqK1RjSZFpXXakSXXa-1278-458.png)
+
 # 快速开始
 
 ## 安装

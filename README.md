@@ -9,6 +9,12 @@
 [![Build Status](https://travis-ci.com/alibaba-fusion/next.svg?token=KAYresHL1UPaaLzUYyx6&branch=master)](https://travis-ci.com/alibaba-fusion/next)
 [![codecov](https://codecov.io/gh/alibaba-fusion/next/branch/master/graph/badge.svg?token=FSufKVDhmT)](https://codecov.io/gh/alibaba-fusion/next)
 
+# Why use
+
+`@alifd/next` usually used with [Fusion Design](https://fusion.design) to improving designer-developer collaboration and development efficiency. Designer can customize the UI of components and release an npm theme package. Developer can use this theme package directly, and don't need to care about the UI refactoring. It saves the workload of reductive degree review repeatedly with designers, and greatly improves the development efficiency.
+
+![](https://img.alicdn.com/tfs/TB1DrcbGQvoK1RjSZFwXXciCFXa-1300-488.png)
+
 # Quick Start
 
 ## Install
@@ -21,7 +27,7 @@ npm install @alifd/next --save
 
 ### 2.Import in Browser
 
-Use the script and link tags in the browser to directly import the file and use the global variable Next. We provide files such as next.js/next.min.js and next.css/next.min.css in the `@alifd/next/dist` directory in the npm package, or via [unpkg](https:/ /unpkg.com/@alifd/next/dist/) Download it.
+Use the script and link tags in the browser to directly import the file and use the global variable Next. We provide files such as next.js/next.min.js and next.css/next.min.css in the `@alifd/next/dist` directory in the npm package, or via [unpkg](https://unpkg.com/@alifd/next/dist/) Download it.
 
 ``` html
 <link rel="stylesheet" href="https://unpkg.com/@alifd/next/dist/next.css">
