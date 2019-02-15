@@ -47,9 +47,9 @@ Move the items in two panels in an intuitive way to select.
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Right Arrow | Get the next item focus of the current item  |
-| Left Arrow  | Get the previous item focus of the current item   |
-| Enter       | Select or cancel the current item or the item selected in the current list to move to another list         |
+| Up Arrow  | Get the previous item focus of the current item   |
+| Down Arrow | Get the next item focus of the current item  |
+| Enter       | the item selected in the current list to move to another list         |
 | Space       | Select or cancel the current item or the item selected in the current list to move to another list    |
 
 

@@ -3,12 +3,12 @@
 - order: 6
 
 
-通过设置`locale`去修改对无障碍支持，默认已经设置并且`moveToLeft`和`moveToRight`值是一样的，请参考`ARIA and KeyBoard`。
+通过设置`locale`去修改对无障碍支持，默认已经设置，请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
 
 
-By setting the `locale` to modify on accessibility support,The default is set,The default `moveToLeft` and `moveToRight` values are the same,Please refer to `ARIA and KeyBoard`.
+By setting the `locale` to modify on accessibility support,The default is set,Please refer to `ARIA and KeyBoard`.
 
 # Addon
 
