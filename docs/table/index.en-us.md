@@ -156,11 +156,3 @@ ReactDOM.render(
 | ---- | ------ | ------------------------------- | -------- |
 | cell | cell rendering logic | ReactElement/ReactNode/Function | () => '' |
 
-
-
-## ARIA and KeyBoard
-
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Right Arrow       | Gets the current table cell, The On the right side table cell focus            |
-| Left Arrow        | Gets the current table cell, The On the left side table cell focus           |
