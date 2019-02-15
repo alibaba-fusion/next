@@ -2,7 +2,7 @@
 
 - order: 23
 
-Browse the table by keyboard arrow keys。
+通过键盘方向键浏览表格。
 
 :::lang=en-us
 
