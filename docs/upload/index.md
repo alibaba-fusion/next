@@ -168,7 +168,6 @@ Next Upload组件上传文件使用的`multipart/form-data`方式上传文件,�
 
         <script>document.domain="taobao.com";</script>
         {"status":1,"type":"ajax","name":"54.png","url":".\/files\/54.png"}
-å
 iframe上传会额外传递参数 `_documentDomain` 方便你设置域名
 
 
