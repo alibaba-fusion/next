@@ -32,3 +32,14 @@
 | -------- | -------- | --------- | --- |
 | disabled | 是否禁止用户操作 | Boolean   | -   |
 | title    | 标题       | ReactNode | -   |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | 导航到上一项                          |
+| Down Arrow  | 导航到下一项                          |
+| Right Arrow | 导航到右一项 |
+| Left Arrow  | 导航到左一项   |
+| Tab  | 切换到下一个collapse   |
+| Space| 切换collapse的折叠状态 |

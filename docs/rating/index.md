@@ -27,3 +27,13 @@
 | onHoverChange | 用户hover评分时触发的回调<br><br>**签名**:<br>Function(value: String) => void<br>**参数**:<br>_value_: {String} 评分值 | Function | func.noop  |
 | disabled      | 是否禁用                                                                                                  | Boolean  | false      |
 | readAs        | 传入id支持无障碍时，参数才有意义<br><br>**签名**:<br>Function() => void                                                | Function | val => val |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | 导航到上一项                          |
+| Down Arrow  | 导航到下一项                          |
+| Right Arrow | 导航到右一项 |
+| Left Arrow  | 导航到左一项   |
+| Space       | 选中星级等级                 |

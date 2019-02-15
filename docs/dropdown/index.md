@@ -35,3 +35,14 @@
 | hasMask         | 是否显示遮罩                                                                                                                                                                                          | Boolean        | false                                      |
 | cache           | 隐藏时是否保留子节点                                                                                                                                                                                      | Boolean        | false                                      |
 | animation       | 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画                                                                                                                 | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | 导航到上一项                          |
+| Down Arrow  | 导航到下一项                          |
+| Right Arrow | 打开子菜单，导航到子菜单第一项；横向菜单条第一层，导航到右一项 |
+| Left Arrow  | 关闭子菜单，导航到父级菜单；横向菜单条第一层，导航到左一项   |
+| Enter       | 打开子菜单，导航到子菜单第一项                 |
+| Esc         | 关闭子菜单，导航到父级菜单                   |

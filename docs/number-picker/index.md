@@ -49,3 +49,12 @@
 | format       | 格式化当前值<br><br>**签名**:<br>Function(value: Number) => String/Number<br>**参数**:<br>_value_: {Number} null<br>**返回值**:<br>{String/Number} null<br> | Function      | -         |
 | upBtnProps   | 增加按钮的props                                                                                                                                     | Object        | -         |
 | downBtnProps | 减少按钮的props                                                                                                                                     | Object        | -         |
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | 导航到上一项                          |
+| Down Arrow  | 导航到下一项                          |
+| Right Arrow | 导航到右一项 |
+| Left Arrow  | 导航到左一项   |
+| Enter       | 点击numberPicker的按钮                 |

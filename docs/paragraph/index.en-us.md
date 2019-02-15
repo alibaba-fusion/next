@@ -24,3 +24,12 @@ Paragraphs are used to control the overall text visual of the page, and are main
 | ---- | ------------------------------------------ | ------ | -------- |
 | size | component size. Default: medium medium, small small | String | 'medium' |
 | type | What way to show paragraphs. Default: long shows all text, short shows three lines (not mandatory) | String | 'long' |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | navigate to previous item                          |
+| Down Arrow  | navigate to next item                          |
+| Right Arrow | navigate to the right one |
+| Left Arrow  | navigation to the left one   |

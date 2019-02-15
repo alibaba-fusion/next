@@ -48,3 +48,11 @@ Disable animation with `animation={false}`
 | title     | Title of tab   | ReactNode | -     |
 | closeable | If tab is closeable | Boolean   | false |
 | disabled  | If tab is disabled   | Boolean   | false     |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Right Arrow | open the submenu, navigate to the first item of the submenu; horizontal menu bar first level, navigate to the right one |
+| Left Arrow  | close the submenu, navigate to the parent menu; horizontal menu bar first level, navigation to the left one   |
+| Space       | select the current tab                          |

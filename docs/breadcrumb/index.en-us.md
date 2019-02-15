@@ -28,3 +28,12 @@ It is used to inform the user of the current position and the position of the cu
 | Param           | Description                                                                                                                  | Type       | Default Value          |
 | ---- | -------------------------------------------- | ------ | --- |
 | link | The breadcrumb item link, if this property is set, the node is `<a />`, otherwise it is `<span />` | String | -   |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | navigate to previous item                          |
+| Down Arrow  | navigate to next item                          |
+| Right Arrow | navigate to the right one |
+| Left Arrow  | navigation to the left one   |

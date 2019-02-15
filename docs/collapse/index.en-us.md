@@ -31,3 +31,14 @@ When some earas may toggle between collapse state and expand state.
 | -------- | -------- | --------- | --- |
 | disabled | disable this panel | Boolean   | -   |
 | title    | panel title       | ReactNode | -   |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | navigate to previous item                          |
+| Down Arrow  | navigate to next item                          |
+| Right Arrow | navigate to the right one |
+| Left Arrow  | navigation to the left one   |
+| Tab       | navigate to the next collapse component                |
+| Space       | toggle selected or checked                          |

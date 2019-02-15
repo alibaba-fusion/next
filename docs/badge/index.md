@@ -29,3 +29,9 @@
 | content       | 自定义节点内容                                               | ReactNode     | -     |
 | overflowCount | 展示的封顶的数字                                              | Number/String | 99    |
 | dot           | 不展示数字，只展示一个小红点                                        | Boolean       | false |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+|     |                           |

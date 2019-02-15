@@ -87,3 +87,16 @@ It provides top navigation and side navigation, the top navigation provides glob
 | label    | content of label                                                       | ReactNode        | -   |
 | selectable | whether is selectable                                                       | Boolean          | false |
 | children | navigation item and sub navigation                                                    | ReactNode        | -   |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | navigate to previous item                          |
+| Down Arrow  | navigate to next item                          |
+| Right Arrow | open the submenu, navigate to the first item of the submenu; horizontal menu bar first level, navigate to the right one |
+| Left Arrow  | close the submenu, navigate to the parent menu; horizontal menu bar first level, navigation to the left one   |
+| Enter       | open submenu and navigate to the first item of the submenu                |
+| Esc         | close submenu and navigate to the parent menu item                  |
+
+

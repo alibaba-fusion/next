@@ -61,3 +61,14 @@
 ## 说明
 
 next-slider is forked from [react-slick](https://github.com/akiran/react-slick)
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | 导航到上一项                          |
+| Down Arrow  | 导航到下一项                          |
+| Right Arrow | 导航到右一项 |
+| Left Arrow  | 导航到左一项   |
+| Enter       | 控制轮播组件按钮                 |
+

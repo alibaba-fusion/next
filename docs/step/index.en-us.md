@@ -34,3 +34,12 @@
 | disabled       | disable step node  | Boolean   | -         |
 | itemRender     | custom node render function (it will overwirde Step's itemRender)<br>**Function signature**:<br>Function(index: Number, status: String) => Node        | Function | -         |
 | onClick        | the callback when click to step node <br><br>**Function signature**:<br>Function(index: Number) => void<br>**Parameters**:<br>_index_: {Number} node index | Function  | () => { } |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Right Arrow | navigate to the next step |
+| Left Arrow  | navigation to the previous step   |
+
+

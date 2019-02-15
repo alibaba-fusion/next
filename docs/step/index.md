@@ -33,3 +33,9 @@
 | percent    | 百分比                                                                                                                                                                                                      | Number    | -         |
 | disabled   | 是否禁用                                                                                                                                                                                                     | Boolean   | -         |
 | onClick    | 点击步骤时的回调<br><br>**签名**:<br>Function(index: Number) => void<br>**参数**:<br>_index_: {Number} 节点索引                                                                                                          | Function  | () => { } |
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Right Arrow | 导航到下一个step |
+| Left Arrow  | 导航到上一个step   |

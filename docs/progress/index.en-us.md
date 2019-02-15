@@ -32,3 +32,11 @@ If a task will take long time to complete, it could be use a `Progress` to show 
 | hasBorder   | Has border for progress line  | Boolean  | false                    |
 | textRender  | Text render <br><br>**signature**:<br>Function(percent: Number) => ReactNode<br>**parameter**:<br>_percent_: {Number} current percent<br>**return**:<br>{ReactNode} text node<br> | Function | percent => `${Math.floor(percent)}%` |
 | color       | progressbar color, priority: color > progressive > state                                                                                                       | String   | ''                                   |
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Right Arrow | navigate to the next one |
+| Left Arrow  | navigation to the previous one   |
+
+
