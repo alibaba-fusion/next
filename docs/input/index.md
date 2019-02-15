@@ -96,5 +96,5 @@
 ## ARIA and KeyBoard
 | 按键          | 说明                              |
 | :---------- | :------------------------------ |
-| Enter       | 获取onKeyDown事件                |
-| Any         | 获取onChange事件                |
+| Enter       | 触发onKeyDown事件                |
+| Any         | 触发onChange事件                |
