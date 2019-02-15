@@ -77,9 +77,10 @@ The custom attribute of item in the array is also transparently passed to the da
 
 | 按键          | 说明                              |
 | :---------- | :------------------------------ |
-| Left Arrow  | Get the previous item focus of the current item of same level            |
-| Right Arrow | Get the next item focus of the current item of same level          |
-| Esc         | Close the current directory and return to the previous directory   |
+| Up Arrow    | Get the previous item focus of the current item of same level   |
+| Down Arrow  | Get the next item focus of the current item of same level  |
+| Left Arrow  | Enter the child element of the current item and get the first child element as the focus |
+| Right Arrow | Returns the parent of the current item and gets the focus |
+| Esc         | Returns the parent of the current item and gets the focus   |
 | SPACE       | Select current item     |
-| Enter       | Select current item                          |
 
