@@ -48,4 +48,4 @@ search data in forms or pages.
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Tab       | Bind the onSearch event    |
+| Tab       | Trigger the onSearch event    |
