@@ -188,14 +188,22 @@ describe('Table', () => {
 
     it('should support expandedRowRender', (done) => {
         timeout({
-            expandedRowRender: (record) => record.name
+            expandedRowRender: (record, index) => record.name + index,
+            getExpandedColProps: (record, index) => {
+                assert(record.id == index + 1);
+            }
         }, () => {
-            let expandedCtrl = wrapper.find('.next-table-body .next-table-expanded-ctrl').first();
+            let expandedCtrl0 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(0);
+            expandedCtrl0.simulate('click');
+            let expandedRow0 = wrapper.find('.next-table-body .next-table-expanded-row').at(0);
 
-            expandedCtrl.simulate('click');
+            assert(expandedRow0.text().replace(/\s$|^\s/g, '') === 'test' + '0');
 
-            let expandedRow = wrapper.find('.next-table-body .next-table-expanded-row').first();
-            assert(expandedRow.text().replace(/\s$|^\s/g, '') === 'test');
+            let expandedCtrl1 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(1);
+            expandedCtrl1.simulate('click');
+            let expandedRow1 = wrapper.find('.next-table-body .next-table-expanded-row').at(1);
+
+            assert(expandedRow1.text().replace(/\s$|^\s/g, '') === 'test2' + '1');
 
         }).then(() => {
             return timeout({
