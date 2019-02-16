@@ -553,7 +553,11 @@ class Nav extends React.Component {
                                 {tabList}
                             </Animate>
                         ) : (
-                            <ul className={navCls} ref={this.navRefHandler}>
+                            <ul
+                                role="tablist"
+                                className={navCls}
+                                ref={this.navRefHandler}
+                            >
                                 {tabList}
                             </ul>
                         )}

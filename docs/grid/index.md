@@ -18,6 +18,17 @@
 响应式断点阈值为：xss(320px), xs(480px), s(720px), m(990px), l(1200px), xl(1500px)。<br />
 基于Flex实现，对 IE9 通过 `display:table;` 兼容实现，但 IE9 仅支持基本的响应式布局（详情请参考 API 和 DEMO 的说明）。
 
+### 无障碍
+
+默认 `<Row>` 和 `<Col>` 会加上 `role="row"` 和 `role="gridcell"`, 但是为了完美的无障碍实现, 开发者还应该在外部容器加上 `role="grid"`。示例代码如下:
+
+````
+<div role="grid">
+    <Row><Col span={6}>1</Col><Col span={6}>2</Col><Col span={6}>3</Col><Col span={6}>4</Col></Row>
+    <Row><Col span={6} offset={6}>1</Col><Col span={6} offset={6}>2</Col></Row>
+</div>
+````
+
 ## API
 
 ### Grid.Row
