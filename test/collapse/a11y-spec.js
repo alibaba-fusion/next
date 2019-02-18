@@ -3,13 +3,14 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Collapse from '../../src/collapse/index';
 import '../../src/collapse/style';
-import a11y from '../util/a11y/validate';
+import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 
 const Panel = Collapse.Panel;
 
+/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Collapse A11y', () => {
     let wrapper;
 
@@ -18,11 +19,11 @@ describe('Collapse A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11y.afterEach();
+        a11yAfterEach();
     });
 
-    it('should not have any violations for children rendered component', (done) => {
-        wrapper = a11y.testReact(<Collapse>
+    it('should not have any violations for children rendered component', async () => {
+        wrapper = await testReact(<Collapse>
             <Panel title="Pannel Title">
                 Pannel Content
             </Panel>
@@ -30,11 +31,11 @@ describe('Collapse A11y', () => {
                 Pannel Content
             </Panel>
             <div>others</div>
-        </Collapse>, done);
+        </Collapse>);
+        return wrapper;
     });
 
-    it('should not have any violations for data rendered component', (done) => {
-
+    it('should not have any violations for data rendered component', async () => {
         const list = [
             {
                 title: 'Well, hello there',
@@ -45,6 +46,7 @@ describe('Collapse A11y', () => {
                 content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.'
             }
         ];
-        wrapper = a11y.testReact(<Collapse dataSource={list} />, done, { incomplete: true });
+        wrapper = await testReact(<Collapse dataSource={list} />, { incomplete: true });
+        return wrapper;
     });
 });

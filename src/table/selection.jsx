@@ -104,13 +104,16 @@ export default function selection(BaseComponent) {
 
         renderSelectionHeader = () => {
             const onChange = this.selectAllRow, attrs = {},
-                { rowSelection, primaryKey, dataSource, locale } = this.props,
+                { rowSelection, primaryKey, dataSource, entireDataSource, locale } = this.props,
                 { selectedRowKeys } = this.state,
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple';
 
             let checked = !!selectedRowKeys.length;
             let indeterminate = false;
-            this.flatDataSource(dataSource)
+
+            const source = entireDataSource || dataSource;
+
+            this.flatDataSource(source)
                 .filter((record, index) => {
                     if (!rowSelection.getProps) {
                         return true;
