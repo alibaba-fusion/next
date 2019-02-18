@@ -110,7 +110,7 @@ export default function expanded(BaseComponent) {
                 switchNode = hasExpanded ?
                     <Icon type="minus" size="xs" /> : <Icon type="add" size="xs" />,
 
-                attrs = getExpandedColProps(record, index) || {};
+                attrs = getExpandedColProps(record, index / 2) || {};
             const cls = classnames({
                 [`${prefix}table-expanded-ctrl`]: true,
                 disabled: attrs.disabled,
