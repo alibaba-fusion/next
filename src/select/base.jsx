@@ -42,7 +42,7 @@ export default class Base extends React.Component {
          */
         label: PropTypes.node,
         /**
-         * 是否有清除按钮
+         * 是否有清除按钮（单选模式有效）
          */
         hasClear: PropTypes.bool,
         /**
@@ -117,7 +117,7 @@ export default class Base extends React.Component {
         mode: PropTypes.string,
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
@@ -133,7 +133,7 @@ export default class Base extends React.Component {
         itemRender: (item) => {
             return item.label || item.value;
         },
-        locale: zhCN.Select,
+        locale: zhCN.Select
     };
 
     constructor(props) {
@@ -160,7 +160,7 @@ export default class Base extends React.Component {
             'beforeOpen',
             'beforeClose',
             'afterClose',
-            'handleResize',
+            'handleResize'
         ]);
     }
 

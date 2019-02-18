@@ -48,6 +48,7 @@ module.exports = function(content) {
     return processJS(result.js, result.css, result.meta.desc, result.body, resourcePath, this.context, dir, options);
 };
 
+// eslint-disable-next-line max-params
 function processJS(js, css, desc, body, resourcePath, context, dir, options) {
     const { devA11y } = options;
     if (!js) {

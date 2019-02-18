@@ -44,7 +44,7 @@ const runRest = components => {
         server.start();
 
         server.on('run_complete', (brower, result) => {
-            const {error, failed, success, exitCode}  = result;
+            const {error, failed, success, exitCode} = result;
             failedNum += failed;
             successNum += success;
             if (error) {

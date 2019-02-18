@@ -104,8 +104,12 @@ class SplitButton extends React.Component {
          * 透传给 Menu 的属性
          */
         menuProps: PropTypes.object,
+        /**
+         * 透传给 左侧按钮 的属性
+         */
+        leftButtonProps: PropTypes.object,
         className: PropTypes.string,
-        children: PropTypes.any,
+        children: PropTypes.any
     };
 
     static defaultProps = {
@@ -119,13 +123,14 @@ class SplitButton extends React.Component {
         onSelect: func.noop,
         defaultSelectedKeys: [],
         menuProps: {},
+        leftButtonProps: {}
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
             selectedKeys: props.selectedKeys || props.defaultSelectedKeys,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
@@ -139,13 +144,13 @@ class SplitButton extends React.Component {
     componentWillReceiveProps(nextProps) {
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
 
         if ('selectedKeys' in nextProps) {
             this.setState({
-                selectedKeys: nextProps.selectedKeys,
+                selectedKeys: nextProps.selectedKeys
             });
         }
     }
@@ -153,7 +158,7 @@ class SplitButton extends React.Component {
     selectMenuItem = (keys, ...others) => {
         if (!('selectedKeys' in this.props)) {
             this.setState({
-                selectedKeys: keys,
+                selectedKeys: keys
             });
         }
         this.props.onSelect(keys, ...others);
@@ -167,7 +172,7 @@ class SplitButton extends React.Component {
     onPopupOpen = () => {
         if (this.props.autoWidth && this.wrapper && this.menu) {
             dom.setStyle(this.menu, {
-                width: this.wrapper.offsetWidth,
+                width: this.wrapper.offsetWidth
             });
         }
     }
@@ -175,7 +180,7 @@ class SplitButton extends React.Component {
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -213,6 +218,7 @@ class SplitButton extends React.Component {
             popupProps,
             selectMode,
             menuProps,
+            leftButtonProps,
             disabled,
             ...others
         } = this.props;
@@ -220,7 +226,7 @@ class SplitButton extends React.Component {
         const state = this.state;
 
         const classNames = classnames({
-            [`${prefix}split-btn`]: true,
+            [`${prefix}split-btn`]: true
         }, className);
 
         const sharedBtnProps = {
@@ -228,13 +234,13 @@ class SplitButton extends React.Component {
             size,
             component,
             ghost,
-            disabled,
+            disabled
         };
 
         const triggerClassNames = classnames({
             [`${prefix}split-btn-trigger`]: true,
             [`${prefix}expand`]: state.visible,
-            opened: state.visible,
+            opened: state.visible
         });
 
         const trigger = (<Button {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
@@ -243,7 +249,7 @@ class SplitButton extends React.Component {
 
         return (
             <Button.Group {...obj.pickOthers(SplitButton.propTypes, others)} className={classNames} style={style} size={size} ref={this._wrapperRefHandler}>
-                <Button {...sharedBtnProps}>{label}</Button>
+                <Button {...sharedBtnProps} {...leftButtonProps}>{label}</Button>
                 <Popup
                     {...popupProps}
                     visible={state.visible}

@@ -26,7 +26,7 @@ class YearPicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -111,8 +111,12 @@ class YearPicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -127,7 +131,7 @@ class YearPicker extends Component {
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
         onChange: func.noop,
-        onVisibleChange: func.noop,
+        onVisibleChange: func.noop
     }
 
     constructor(props, context) {
@@ -140,7 +144,7 @@ class YearPicker extends Component {
             value,
             dateInputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
@@ -148,14 +152,14 @@ class YearPicker extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
             this.setState({
-                value,
+                value
             });
             this.inputAsString = typeof nextProps.value === 'string';
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -177,7 +181,7 @@ class YearPicker extends Component {
 
     clearValue = () => {
         this.setState({
-            dateInputStr: '',
+            dateInputStr: ''
         });
 
         this.handleChange(null, this.state.value);
@@ -190,7 +194,7 @@ class YearPicker extends Component {
         } else {
             this.setState({
                 dateInputStr: inputStr,
-                inputing: true,
+                inputing: true
             });
         }
     }
@@ -203,7 +207,7 @@ class YearPicker extends Component {
 
             this.setState({
                 dateInputStr: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
@@ -227,14 +231,16 @@ class YearPicker extends Component {
 
         if (newValueOf !== preValueOf) {
             this.onValueChange(newValue);
-            typeof callback === 'function' && callback();
+            if (typeof callback === 'function') {
+                return callback();
+            }
         }
     }
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -261,22 +267,23 @@ class YearPicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
             ...others
         } = this.props;
 
         const { visible, value, dateInputStr, inputing } = this.state;
 
         const yearPickerCls = classnames({
-            [`${prefix}year-picker`]: true,
+            [`${prefix}year-picker`]: true
         }, className);
 
         const triggerInputCls = classnames({
             [`${prefix}year-picker-input`]: true,
-            [`${prefix}error`]: false,
+            [`${prefix}error`]: false
         });
 
         const panelBodyClassName = classnames({
-            [`${prefix}year-picker-body`]: true,
+            [`${prefix}year-picker-body`]: true
         });
 
         if (rtl) {
@@ -286,11 +293,12 @@ class YearPicker extends Component {
         const panelInputCls = `${prefix}year-picker-panel-input`;
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing ? dateInputStr : ((value && value.format(format)) || '');

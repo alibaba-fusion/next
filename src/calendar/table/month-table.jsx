@@ -30,7 +30,7 @@ class MonthTable extends PureComponent {
                     [`${prefix}calendar-cell`]: true,
                     [`${prefix}calendar-cell-current`]: isThisMonth,
                     [`${prefix}selected`]: isSelected,
-                    [`${prefix}disabled`]: isDisabled,
+                    [`${prefix}disabled`]: isDisabled
                 });
                 const localedMonth = monthLocale[counter];
                 const monthCellContent = monthCellRender ? monthCellRender(monthDate) : localedMonth;

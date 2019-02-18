@@ -26,7 +26,7 @@ class MonthPicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -116,8 +116,18 @@ class MonthPicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -132,7 +142,7 @@ class MonthPicker extends Component {
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
         onChange: func.noop,
-        onVisibleChange: func.noop,
+        onVisibleChange: func.noop
     }
 
     constructor(props, context) {
@@ -145,7 +155,7 @@ class MonthPicker extends Component {
             value,
             dateInputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: props.visible || props.defaultVisible
         };
     }
 
@@ -153,14 +163,14 @@ class MonthPicker extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
             this.setState({
-                value,
+                value
             });
             this.inputAsString = typeof nextProps.value === 'string';
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -182,7 +192,7 @@ class MonthPicker extends Component {
 
     clearValue = () => {
         this.setState({
-            dateInputStr: '',
+            dateInputStr: ''
         });
 
         this.handleChange(null, this.state.value);
@@ -195,7 +205,7 @@ class MonthPicker extends Component {
         } else {
             this.setState({
                 dateInputStr: inputStr,
-                inputing: true,
+                inputing: true
             });
         }
     }
@@ -208,7 +218,7 @@ class MonthPicker extends Component {
 
             this.setState({
                 dateInputStr: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
@@ -227,19 +237,21 @@ class MonthPicker extends Component {
 
         const { format } = this.props;
 
-        const newValueOf = newValue ? newValue.format(format)  : null;
+        const newValueOf = newValue ? newValue.format(format) : null;
         const preValueOf = prevValue ? prevValue.format(format) : null;
 
         if (newValueOf !== preValueOf) {
             this.onValueChange(newValue);
-            typeof callback === 'function' && callback();
+            if (typeof callback === 'function') {
+                return callback();
+            }
         }
     }
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -267,22 +279,24 @@ class MonthPicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
+            monthCellRender,
             ...others
         } = this.props;
 
         const { visible, value, dateInputStr, inputing } = this.state;
 
         const monthPickerCls = classnames({
-            [`${prefix}month-picker`]: true,
+            [`${prefix}month-picker`]: true
         }, className);
 
         const triggerInputCls = classnames({
             [`${prefix}month-picker-input`]: true,
-            [`${prefix}error`]: false,
+            [`${prefix}error`]: false
         });
 
         const panelBodyClassName = classnames({
-            [`${prefix}month-picker-body`]: true,
+            [`${prefix}month-picker-body`]: true
         });
 
         if (rtl) {
@@ -292,11 +306,12 @@ class MonthPicker extends Component {
         const panelInputCls = `${prefix}month-picker-panel-input`;
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing ? dateInputStr : ((value && value.format(format)) || '');
@@ -312,6 +327,7 @@ class MonthPicker extends Component {
         const datePanel = (<Calendar
             shape="panel"
             modes={['month', 'year']}
+            monthCellRender={monthCellRender}
             value={value}
             onSelect={this.onSelectCalendarPanel}
             defaultVisibleMonth={defaultVisibleYear}

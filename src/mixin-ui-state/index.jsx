@@ -35,7 +35,7 @@ class UIState extends Component {
     // 复原状态
     resetUIState() {
         this.setState({
-            focused: false,
+            focused: false
         });
     }
     _onUIFocus() {

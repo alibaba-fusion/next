@@ -22,7 +22,7 @@ import { Input, Icon } from '@alifd/next';
 
 class App extends React.Component {
     state = {
-        v: '',
+        v: ''
     };
 
     onChange = (v) => {
@@ -39,7 +39,7 @@ class App extends React.Component {
 
         return (<div>
             <Input
-                innerBefore={<Icon type="search" style={{margin: 4}}  onClick={this.onClick} />}
+                innerBefore={<Icon type="search" style={{margin: 4}} onClick={this.onClick} />}
                 placeholder="search"
                 value={this.state.v}
                 aria-label="input with config of innerBefore"

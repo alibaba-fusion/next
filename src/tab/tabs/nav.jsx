@@ -9,9 +9,9 @@ import Animate from '../../animate';
 import { events } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
-const noop = () => {};
-const floatRight = { float: 'right' };
-const floatLeft = { float: 'left' };
+const noop = () => { };
+const floatRight = { float: 'right', zIndex: 1 };
+const floatLeft = { float: 'left', zIndex: 1 };
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
@@ -31,7 +31,7 @@ class Nav extends React.Component {
         onKeyDown: PropTypes.func,
         onClose: PropTypes.func,
         style: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     constructor(props, context) {
@@ -39,7 +39,7 @@ class Nav extends React.Component {
         this.state = {
             next: false,
             prev: false,
-            dropdownTabs: [],
+            dropdownTabs: []
         };
         this.offset = 0;
     }
@@ -64,6 +64,9 @@ class Nav extends React.Component {
         ctx.slideTimer = setTimeout(() => {
             ctx.setSlideBtn();
         }, 200);
+        if (this.activeTab && findDOMNode(this).contains(document.activeElement)) {
+            this.activeTab.focus();
+        }
     }
 
     componentWillUnmount() {
@@ -106,17 +109,17 @@ class Nav extends React.Component {
             const canTransform = isTransformSupported(navStyle);
             if (tabPosition === 'left' || tabPosition === 'right') {
                 navOffset = canTransform ? {
-                    value: `translate3d(0, ${target}px, 0)`,
+                    value: `translate3d(0, ${target}px, 0)`
                 } : {
                     name: 'top',
-                    value: `${target}px`,
+                    value: `${target}px`
                 };
             } else {
                 navOffset = canTransform ? {
-                    value: `translate3d(${target}px, 0, 0)`,
+                    value: `translate3d(${target}px, 0, 0)`
                 } : {
                     name: 'left',
-                    value: `${target}px`,
+                    value: `${target}px`
                 };
             }
 
@@ -124,7 +127,7 @@ class Nav extends React.Component {
                 Object.assign(navStyle, {
                     transform: navOffset.value,
                     webkitTransform: navOffset.value,
-                    mozTransform: navOffset.value,
+                    mozTransform: navOffset.value
                 });
             } else {
                 navStyle[navOffset.name] = navOffset.value;
@@ -165,7 +168,7 @@ class Nav extends React.Component {
         if (next !== this.state.next || prev !== this.state.prev) {
             this.setState({
                 next,
-                prev,
+                prev
             });
         }
     }
@@ -190,7 +193,7 @@ class Nav extends React.Component {
         if (index > 1) {
             index = index - 1;
             this.setState({
-                dropdownTabs: tabs.slice(index),
+                dropdownTabs: tabs.slice(index)
             });
         }
     }
@@ -217,7 +220,7 @@ class Nav extends React.Component {
             const cls = classnames({
                 [`${prefix}tabs-tab`]: true,
                 disabled,
-                active,
+                active
             }, className);
 
             let events = {};
@@ -226,21 +229,22 @@ class Nav extends React.Component {
                 events = {
                     onClick: this.onNavItemClick.bind(this, child.key, onClick),
                     onMouseEnter: this.onNavItemMouseEnter.bind(this, child.key, onMouseEnter),
-                    onMouseLeave: this.onNavItemMouseLeave.bind(this, child.key, onMouseLeave),
+                    onMouseLeave: this.onNavItemMouseLeave.bind(this, child.key, onMouseLeave)
                 };
             }
 
             rst.push(
-                <div
+                <li
                     role="tab"
                     key={child.key}
                     ref={active ? this.activeTabRefHandler : null}
-                    aria-disabled={disabled ? 'true' : 'false'}
+                    aria-hidden={disabled ? 'true' : 'false'}
                     aria-selected={active ? 'true' : 'false'}
+                    tabIndex={active ? 0 : -1}
                     className={cls}
                     style={style}
                     {...events}>{tabTemplateFn(child.key, child.props)}
-                </div>
+                </li>
             );
         });
         return rst;
@@ -283,7 +287,7 @@ class Nav extends React.Component {
     onNavItemClick(key, callback, e) {
         this.props.onTriggerEvent(triggerEvents.CLICK, key);
         if (callback) {
-            callback(key, e);
+            return callback(key, e);
         }
     }
 
@@ -295,13 +299,13 @@ class Nav extends React.Component {
     onNavItemMouseEnter(key, callback, e) {
         this.props.onTriggerEvent(triggerEvents.HOVER, key);
         if (callback) {
-            callback(key, e);
+            return callback(key, e);
         }
     }
 
     onNavItemMouseLeave(key, callback, e) {
         if (callback) {
-            callback(key, e);
+            return callback(key, e);
         }
     }
 
@@ -338,7 +342,7 @@ class Nav extends React.Component {
                             events = {
                                 onClick: this.onNavItemClick.bind(this, tab.key, onClick),
                                 onMouseEnter: this.onNavItemMouseEnter.bind(this, tab.key, onMouseEnter),
-                                onMouseLeave: this.onNavItemMouseLeave.bind(this, tab.key, onMouseLeave),
+                                onMouseLeave: this.onNavItemMouseLeave.bind(this, tab.key, onMouseLeave)
                             };
                         }
                         return <Menu.Item key={tab.key} {...events}>{tab.props.title}</Menu.Item>;
@@ -381,11 +385,11 @@ class Nav extends React.Component {
         } else if (showNextPrev) {
             const prevBtnCls = classnames({
                 [`${prefix}tabs-btn-prev`]: 1,
-                disabled: !state.prev,
+                disabled: !state.prev
             });
             const nextBtnCls = classnames({
                 [`${prefix}tabs-btn-next`]: 1,
-                disabled: !state.next,
+                disabled: !state.next
             });
 
             prevButton = (
@@ -412,7 +416,7 @@ class Nav extends React.Component {
 
         const containerCls = classnames({
             [`${prefix}tabs-nav-container`]: true,
-            [`${prefix}tabs-nav-container-scrolling`]: showNextPrev,
+            [`${prefix}tabs-nav-container-scrolling`]: showNextPrev
         });
 
         const navCls = `${prefix}tabs-nav`;
@@ -424,8 +428,8 @@ class Nav extends React.Component {
                     <div className={`${prefix}tabs-nav-scroll`}>
                         {
                             animation ?
-                                <Animate className={navCls} animation={navCls} singleMode={false} ref={this.navRefHandler}>{tabList}</Animate> :
-                                <div className={navCls} ref={this.navRefHandler}>{tabList}</div>
+                                <Animate role="tablist" aria-multiselectable={false} component="ul" className={navCls} animation={navCls} singleMode={false} ref={this.navRefHandler}>{tabList}</Animate> :
+                                <ul className={navCls} ref={this.navRefHandler}>{tabList}</ul>
                         }
                     </div>
                 </div>
@@ -440,7 +444,7 @@ class Nav extends React.Component {
         if (extra) {
             const extraProps = {
                 className: `${prefix}tabs-nav-extra`,
-                key: 'nav-extra',
+                key: 'nav-extra'
             };
             if (tabPosition === 'top' || tabPosition === 'bottom') {
                 const style = rtl ? floatLeft : floatRight;
@@ -451,11 +455,11 @@ class Nav extends React.Component {
         }
 
         const navbarCls = classnames({
-            [`${prefix}tabs-bar`]: true,
+            [`${prefix}tabs-bar`]: true
         }, className);
 
         return (
-            <div role="tablist" className={navbarCls} style={style} onKeyDown={onKeyDown} tabIndex="0" ref={this.navbarRefHandler}>
+            <div className={navbarCls} style={style} onKeyDown={onKeyDown} ref={this.navbarRefHandler}>
                 {navChildren}
             </div>
         );

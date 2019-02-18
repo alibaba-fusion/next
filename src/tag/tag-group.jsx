@@ -7,12 +7,12 @@ class Group extends Component {
         prefix: PropTypes.string,
         className: PropTypes.any,
         children: PropTypes.node,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
         prefix: 'next-',
-        rtl: false,
+        rtl: false
     };
 
     render() {

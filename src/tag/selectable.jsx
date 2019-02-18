@@ -31,7 +31,7 @@ class Selectable extends Component {
          * 标签是否被禁用
          */
         disabled: PropTypes.bool,
-        className: PropTypes.any,
+        className: PropTypes.any
     };
 
     static defaultProps = {

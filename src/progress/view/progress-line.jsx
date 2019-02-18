@@ -13,6 +13,8 @@ export default class Line extends React.PureComponent {
         textRender: PropTypes.func,
         color: PropTypes.string,
         rtl: PropTypes.bool,
+        prefix: PropTypes.string,
+        className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     };
 
     render() {
@@ -21,6 +23,7 @@ export default class Line extends React.PureComponent {
             percent, progressive, hasBorder,
             textRender, className, rtl,
             ...others } = this.props;
+
 
         const suffixText = textRender(percent, {rtl});
 
@@ -36,13 +39,20 @@ export default class Line extends React.PureComponent {
             [`${prefix}progress-line-overlay-${state}`]: !color && !progressive && state,
             [`${prefix}progress-line-overlay-started`]: !color && progressive && percent <= 30,
             [`${prefix}progress-line-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-line-overlay-finishing`]: !color && progressive && percent >= 80,
+            [`${prefix}progress-line-overlay-finishing`]: !color && progressive && percent >= 80
         });
 
         const lineStyle = { width: `${percent}%`, backgroundColor: color };
 
         return (
-            <div {...others} className={wrapCls} dir={rtl ? 'rtl' : undefined}>
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                role="progressbar"
+                aria-valuenow={percent}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                className={wrapCls}
+                {...others}>
                 <div className={`${prefix}progress-line-container`}>
                     <div className={`${prefix}progress-line-underlay`}>
                         <div className={lineCls} style={lineStyle}></div>

@@ -25,7 +25,7 @@ export default class Mark extends React.Component {
     }
 
     _renderItems() {
-        const {min, max, value, prefix, marks, } = this.props;
+        const {min, max, value, prefix, marks } = this.props;
         const items = [];
 
         Object.keys(marks).forEach((mark, i) => {

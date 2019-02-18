@@ -23,7 +23,7 @@ export const CALENDAR_MODE_DATE = 'date';
 export const CALENDAR_MODES = [
     CALENDAR_MODE_DATE,
     CALENDAR_MODE_MONTH,
-    CALENDAR_MODE_YEAR,
+    CALENDAR_MODE_YEAR
 ];
 
 export function isDisabledDate(date, fn) {

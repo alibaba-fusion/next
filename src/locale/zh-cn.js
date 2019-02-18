@@ -2,11 +2,11 @@ export default {
     momentLocale: 'zh-cn',
     Timeline: {
         expand: '展开',
-        fold: '收起',
+        fold: '收起'
     },
     Card: {
         expand: '展开',
-        fold: '收起',
+        fold: '收起'
     },
     Calendar: {
         today: '今天',
@@ -20,7 +20,7 @@ export default {
         prevMonth: '上个月',
         nextMonth: '下个月',
         prevDecade: '上十年',
-        nextDecade: '后十年',
+        nextDecade: '后十年'
     },
     DatePicker: {
         placeholder: '请选择日期',
@@ -39,6 +39,7 @@ export default {
         second: '秒'
     },
     Dialog: {
+        close: '关闭',
         ok: '确认',
         cancel: '取消'
     },
@@ -48,6 +49,9 @@ export default {
         goTo: '到第',
         page: '页',
         go: '确定',
+        total: '第{current}页，共{total}页',
+        labelPrev: '上一页，当前第{current}页',
+        labelNext: '下一页，当前第{current}页',
         pageSize: '每页显示：'
     },
     Input: {
@@ -93,6 +97,9 @@ export default {
         }
     },
     Search: {
-        buttonText: '搜索',
+        buttonText: '搜索'
     },
+    Tag: {
+        delete: '删除'
+    }
 };

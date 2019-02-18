@@ -49,11 +49,11 @@ class App extends React.Component {
                     <FormItem label="Username" {...layout} >
                         <Input />
                     </FormItem>
-                    <FormItem label="Password"  {...layout} >
+                    <FormItem label="Password" {...layout} >
                         <Input htmlType="password" placeholder="please input"/>
                     </FormItem>
                     <FormItem label="Detail" {...layout} >
-                        <Input multiple  />
+                        <Input multiple />
                     </FormItem>
                 </Form>
             </Loading>

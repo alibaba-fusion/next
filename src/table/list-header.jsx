@@ -19,7 +19,7 @@ export default class ListHeader extends React.Component {
         /**
          * 是否在GroupHeader上面渲染selection
          */
-        hasSelection: PropTypes.bool,
+        hasSelection: PropTypes.bool
     }
 
     static defaultProps = {

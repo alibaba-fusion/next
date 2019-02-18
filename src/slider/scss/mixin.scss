@@ -27,7 +27,10 @@
     color: $icon-color;
     background: $icon-bg-color;
     opacity: $icon-bg-opacity;
+    padding: 0;
+    border: none;
 
+    &:focus,
     &:hover {
         color: $icon-color-hover;
         background: $icon-bg-color-hover;

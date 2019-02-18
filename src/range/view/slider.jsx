@@ -1,23 +1,28 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import {getPercent} from '../utils';
+import { getPercent } from '../utils';
 
-function _getStyle(min, max, value) {
+function _getProps(min, max, value) {
     return {
-        left: `${getPercent(min, max, value)}%`,
-        zIndex: 100
+        style: {
+            left: `${getPercent(min, max, value)}%`,
+            zIndex: 100
+        },
+        'aria-valuenow': value,
+        'aria-valuetext': value,
+        'aria-valuemin': min,
+        'aria-valuemax': max
     };
 }
 
-function Slider({prefix, hasMovingClass, min, max, value}) {
-
+function Slider({ prefix, hasMovingClass, min, max, value, onKeyDown}) {
     const classes = classNames({
         [`${prefix}range-slider`]: true,
         [`${prefix}range-slider-moving`]: hasMovingClass
     });
     return (
-        <div className={classes} style={_getStyle(min, max, value)}>
+        <div className={classes} onKeyDown={onKeyDown} role="slider" tabIndex={0} {..._getProps(min, max, value)}>
             <div className={`${prefix}range-slider-inner`}></div>
         </div>
     );

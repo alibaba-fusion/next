@@ -1,4 +1,6 @@
+/* eslint-disable valid-jsdoc */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -49,7 +51,7 @@ export default class Card extends React.Component {
         showTitleBullet: true,
         showHeadDivider: true,
         contentHeight: 120,
-        locale: locale.Card,
+        locale: locale.Card
     };
 
     constructor(props, context) {
@@ -58,7 +60,7 @@ export default class Card extends React.Component {
         this.state = {
             needMore: false,
             expand: false,
-            contentHeight: 'auto',
+            contentHeight: 'auto'
         };
     }
 
@@ -74,7 +76,7 @@ export default class Card extends React.Component {
     handleToggle = () => {
         this.setState(prevState => {
             return {
-                expand: !prevState.expand,
+                expand: !prevState.expand
             };
         });
     }
@@ -84,7 +86,7 @@ export default class Card extends React.Component {
         const { contentHeight } = this.props;
         const childrenHeight = this._getNodeChildrenHeight(this.content);
         this.setState({
-            needMore: contentHeight !== 'auto' && childrenHeight > contentHeight,
+            needMore: contentHeight !== 'auto' && childrenHeight > contentHeight
         });
     }
 
@@ -94,7 +96,14 @@ export default class Card extends React.Component {
             const childrenHeight = this._getNodeChildrenHeight(this.content);
             this.content.style.height = `${childrenHeight}px`; // get the real height
         } else {
-            this.content.style.height = `${this.props.contentHeight}px`;
+            const el = ReactDOM.findDOMNode(this.footer);
+            let height = this.props.contentHeight;
+
+            if (el) {
+                height = height - el.getBoundingClientRect().height;
+            }
+
+            this.content.style.height = `${height}px`;
         }
     }
 
@@ -119,19 +128,33 @@ export default class Card extends React.Component {
         this.content = ref;
     }
 
+    saveFooter = (ref) => {
+        this.footer = ref;
+    }
+
     render() {
-        const { prefix, className, title, subTitle, extra, showTitleBullet, showHeadDivider, children, locale } = this.props;
+        const {
+            prefix,
+            className,
+            title,
+            subTitle,
+            extra,
+            showTitleBullet,
+            showHeadDivider,
+            children,
+            locale
+        } = this.props;
         const { needMore, expand } = this.state;
 
         const cardCls = classNames({
             [`${prefix}card`]: true,
             [`${prefix}card-show-divider`]: showHeadDivider,
-            [`${prefix}card-hide-divider`]: !showHeadDivider,
+            [`${prefix}card-hide-divider`]: !showHeadDivider
         }, className);
 
         const headCls = classNames({
             [`${prefix}card-head`]: true,
-            [`${prefix}card-head-show-bullet`]: showTitleBullet,
+            [`${prefix}card-head-show-bullet`]: showTitleBullet
         });
 
         const others = pickOthers(Object.keys(Card.propTypes), this.props);
@@ -159,9 +182,10 @@ export default class Card extends React.Component {
                     </div>
                     {
                         needMore ?
-                            <div className={`${prefix}card-footer`} onClick={this.handleToggle}>
+                            <div className={`${prefix}card-footer`} ref={this.saveFooter} onClick={this.handleToggle}>
                                 <Button text type="primary">
-                                    {expand ? locale.fold : locale.expand} <Icon type="arrow-down" size="xs" className={expand ? 'expand' : ''} />
+                                    {expand ? locale.fold : locale.expand}
+                                    <Icon type="arrow-down" size="xs" className={expand ? 'expand' : ''} />
                                 </Button>
                             </div> :
                             null

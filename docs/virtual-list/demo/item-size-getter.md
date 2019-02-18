@@ -24,7 +24,7 @@ function generateLi(index) {
     if (index % 3 === 0) {
         return (<li key={`key-${index}`} style={{lineHeight: '30px', background: '#5f83ff', color: '#fff'}}>key-{index}</li>);
     } else {
-        return (<li key={`key-${index}`}  style={{lineHeight: '20px'}}>key-{index}</li>);
+        return (<li key={`key-${index}`} style={{lineHeight: '20px'}}>key-{index}</li>);
     }
 }
 function generateData(len) {
@@ -33,7 +33,7 @@ function generateData(len) {
     }
 }
 
-class App extends React.Component  {
+class App extends React.Component {
     state = {
         initial: 20,
         dataSource: generateData(1000)

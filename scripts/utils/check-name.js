@@ -35,7 +35,7 @@ module.exports = function (runtest = false, withOtherArgs = false) {
         }
 
         if (withOtherArgs) {
-            const newArgs =  argv._;
+            const newArgs = argv._;
             newArgs.splice(comIndex, 1);
             newArgs.unshift(componentName);
             return newArgs;

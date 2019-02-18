@@ -28,7 +28,7 @@ class Dragger extends React.Component {
         defaultValue: PropTypes.array,
         children: PropTypes.node,
         listType: PropTypes.string,
-        timeout: PropTypes.number,
+        timeout: PropTypes.number
     };
 
     static defaultProps = {
@@ -36,7 +36,7 @@ class Dragger extends React.Component {
         onDragOver: func.noop,
         onDragLeave: func.noop,
         onDrop: func.noop,
-        locale: zhCN.Upload,
+        locale: zhCN.Upload
     };
 
     state = {

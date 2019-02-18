@@ -111,7 +111,7 @@ export default function fixed(BaseComponent) {
                     [className]: className
                 });
             }
-            return (<BaseComponent  {...others} components={components} className={className} prefix={prefix} />);
+            return (<BaseComponent {...others} components={components} className={className} prefix={prefix} />);
         }
     }
     statics(FixedTable, BaseComponent);

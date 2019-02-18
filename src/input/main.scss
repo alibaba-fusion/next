@@ -42,7 +42,6 @@
         vertical-align: middle;
         background-color: transparent;
         color: $input-text-color;
-        @include input-placeholder($input-placeholder-color);
 
         &::-ms-clear {
             display: none;
@@ -202,6 +201,11 @@
 
     &-label {
         color: $input-label-color;
+    }
+
+    input,
+    textarea {
+        @include input-placeholder($input-placeholder-color);
     }
 
     &.#{$css-prefix}disabled {

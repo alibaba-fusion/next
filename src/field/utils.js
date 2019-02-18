@@ -51,7 +51,7 @@ export function getParams(ns, cb) {
     }
     return {
         names,
-        callback,
+        callback
     };
 }
 

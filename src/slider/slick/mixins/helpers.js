@@ -22,7 +22,7 @@ const helpers = {
         const listHeight = slideHeight * props.slidesToShow;
 
         const slidesToShow = props.slidesToShow || 1;
-        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1)  - props.defaultActiveIndex : props.defaultActiveIndex;
+        const currentSlide = props.rtl ? slideCount - 1 - (slidesToShow - 1) - props.defaultActiveIndex : props.defaultActiveIndex;
 
         this.setState({
             slideCount,
@@ -31,7 +31,7 @@ const helpers = {
             trackWidth,
             currentSlide,
             slideHeight,
-            listHeight,
+            listHeight
         }, () => {
 
             const targetLeft = getTrackLeft({
@@ -156,7 +156,7 @@ const helpers = {
                     }
                 } else {
                     // this.state.slideCount % this.props.slidesToScroll
-                    currentSlide =  this.state.slideCount + targetSlide;
+                    currentSlide = this.state.slideCount + targetSlide;
                 }
             } else if (targetSlide >= this.state.slideCount) {
                 if (this.props.infinite === false) {
@@ -267,7 +267,7 @@ const helpers = {
             this.setState({
                 animating: true,
                 currentSlide: currentSlide,
-                trackStyle: getTrackAnimateCSS({ left: targetLeft, ...this.props, ...this.state }),
+                trackStyle: getTrackAnimateCSS({ left: targetLeft, ...this.props, ...this.state })
             }, function() {
                 this.animationEndCallback = setTimeout(callback, this.props.speed + 20);
             });
@@ -300,7 +300,7 @@ const helpers = {
         this.setState({
             trackStyle: getTrackAnimateCSS({
                 left, ...this.props, ...this.state
-            }),
+            })
         });
     },
 

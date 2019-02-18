@@ -23,13 +23,13 @@ class Demo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            affixed: false,
+            affixed: false
         };
     }
 
     onAffix = (affixed) => {
         this.setState({
-            affixed,
+            affixed
         });
     }
 

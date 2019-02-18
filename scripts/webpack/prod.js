@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CssSplitWebpackPlugin = require('css-split-webpack-plugin').default;
@@ -7,6 +8,9 @@ const loaders = require('./loaders');
 
 module.exports = function(options = {}) {
     const minimize = options.minimize;
+    const packagePath = path.resolve('package.json');
+    const version = require(packagePath).version;
+
     const config = {
         output: {},
         resolve: {
@@ -32,12 +36,15 @@ module.exports = function(options = {}) {
             }]
         },
         plugins: [
+            new webpack.BannerPlugin(`@alifd/next@${version} (https://fusion.design)
+Copyright 2018-present Alibaba Group,
+Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)`),
             new CaseSensitivePathsPlugin(),
             new webpack.optimize.ModuleConcatenationPlugin(),
             // support ie 9
             new CssSplitWebpackPlugin({
                 size: 4000,
-                preserve: true,
+                preserve: true
             }),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': '"production"'

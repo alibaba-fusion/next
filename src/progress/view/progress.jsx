@@ -61,7 +61,7 @@ export default class Progress extends Component {
         percent: 0,
         progressive: false,
         hasBorder: false,
-        textRender: percent => `${Math.floor(percent)}%`,
+        textRender: percent => `${Math.floor(percent)}%`
     };
 
     static contextTypes = {

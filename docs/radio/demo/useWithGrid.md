@@ -25,7 +25,7 @@ class ControlApp extends React.Component {
 
         this.state = {
             value: 'orange',
-            other: 0,
+            other: 0
         };
 
         this.onChange = this.onChange.bind(this);

@@ -22,7 +22,7 @@ import { Button } from '@alifd/next';
 const props = {
     component: 'a',
     href: 'http://www.alibaba.com',
-    target: '_blank',
+    target: '_blank'
 };
 
 ReactDOM.render(<div>

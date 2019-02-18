@@ -63,6 +63,7 @@ export function loopMap(dataSource, callback) {
                 ...option, children
             });
         } else {
+            // eslint-disable-next-line callback-return
             const tmp = callback(option);
             tmp && result.push(tmp);
         }
@@ -231,7 +232,7 @@ function getKeyItemByValue(value, valueMap) {
     } else {
         item = valueMap[`${value}`] || {
             value,
-            label: value,
+            label: value
         };
     }
 

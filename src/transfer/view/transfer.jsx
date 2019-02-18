@@ -374,6 +374,7 @@ class Transfer extends Component {
         this.setValueState({}, rightValue, leftValue, movedValue, direction);
     }
 
+    // eslint-disable-next-line max-params
     setValueState(st, rightValue, leftValue, movedValue, direction) {
         const { dataSource } = this.props;
         const callback = () => {
@@ -401,6 +402,7 @@ class Transfer extends Component {
         if (Object.keys(st).length) {
             this.setState(st, callback);
         } else {
+            // eslint-disable-next-line callback-return
             callback();
         }
     }
@@ -415,7 +417,7 @@ class Transfer extends Component {
                     <Button key="l2r" className={`${prefix}transfer-operation`} type={leftCheckedValue.length ? 'primary' : 'normal'} disabled={leftDisabled || disabled || !leftCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'right')}>
                         {operations[0]}
                     </Button>,
-                    <Button key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'}  disabled={rightDisabled || disabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
+                    <Button key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'} disabled={rightDisabled || disabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
                         {operations[1]}
                     </Button>
                 ]}

@@ -21,8 +21,8 @@ import PropTypes from 'prop-types';
 const localeSettings = {
     momentLocale: 'fr-FR',
     CustomizedComponent: {
-        helloWorld: 'hello, world',
-    },
+        helloWorld: 'hello, world'
+    }
 };
 
 const App = ({ children }) => (
@@ -37,7 +37,7 @@ const App = ({ children }) => (
 );
 
 App.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.node
 };
 
 const Child = () => (

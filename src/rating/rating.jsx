@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
-import {func, obj} from '../util';
+import {func, KEYCODE, obj} from '../util';
 
 const {noop, bindCtx} = func;
+const {ENTER, LEFT, UP, RIGHT, DOWN} = KEYCODE;
+const supportKeys = [ENTER, LEFT, UP, RIGHT, DOWN];
 
 // 评分组件的大小与icon的大小映射关系
 const ICON_SIZE_MAP = {
@@ -55,11 +57,16 @@ export default class Rating extends Component {
          * 是否禁用
          */
         disabled: PropTypes.bool,
+        /**
+         * 传入id支持无障碍时，参数才有意义
+         */
+        readAs: PropTypes.func,
         // 实验属性: 自定义评分icon
         iconType: PropTypes.string,
         // 实验属性: 开启 `-webkit-text-stroke` 显示边框颜色，在IE中无效
         strokeMode: PropTypes.bool,
-        className: PropTypes.string
+        className: PropTypes.string,
+        id: PropTypes.string
     };
 
     static defaultProps = {
@@ -69,11 +76,21 @@ export default class Rating extends Component {
         count: 5,
         showGrade: false,
         defaultValue: 0,
+        readAs: val => val,
         allowHalf: false,
         iconType: 'favorites-filling',
         onChange: noop,
         onHoverChange: noop
     };
+
+    static currentValue(min, max, hoverValue, stateValue) {
+        let value = hoverValue ? hoverValue : stateValue;
+
+        value = value >= max ? max : value;
+        value = value <= min ? min : value;
+
+        return value || 0;
+    }
 
     constructor(props) {
         super(props);
@@ -83,14 +100,15 @@ export default class Rating extends Component {
             hoverValue: 0,
             iconSpace: 0,
             iconSize: 0,
-            clicked: false, // 标记组件是否被点击过
+            clicked: false // 标记组件是否被点击过
         };
         this.timer = null;
 
         bindCtx(this, [
             'handleClick',
             'handleHover',
-            'handleLeave'
+            'handleLeave',
+            'onKeyDown'
         ]);
     }
 
@@ -184,9 +202,54 @@ export default class Rating extends Component {
         });
     }
 
+    onKeyDown(e) {
+        const { disabled, onKeyDown, count } = this.props;
+        if (disabled || supportKeys.indexOf(e.keyCode) < 0) {
+            return !onKeyDown || onKeyDown(e);
+        }
+
+        const { hoverValue, value } = this.state;
+        let changingValue = hoverValue;
+        if (changingValue === 0) {
+            changingValue = value;
+        }
+
+        switch (e.keyCode) {
+            case DOWN:
+            case RIGHT:
+                if (changingValue < count) {
+                    changingValue += 1;
+                } else {
+                    changingValue = 1;
+                }
+                this.handleChecked(changingValue);
+                break;
+            case UP:
+            case LEFT:
+                if (changingValue > 1) {
+                    changingValue -= 1;
+                } else {
+                    changingValue = count;
+                }
+                this.handleChecked(changingValue);
+                break;
+            case ENTER:
+                this.props.onChange(changingValue);
+                this.setState({ value: changingValue, hoverValue: changingValue });
+                break;
+        }
+        return !onKeyDown || onKeyDown(e);
+    }
+
+    handleChecked(index) {
+        this.setState({hoverValue: index});
+    }
+
     handleClick(e) {
         const value = this.getValue(e);
-
+        if (value < 0) {
+            return;
+        }
         if (!('value' in this.props)) {
             this.setState({ value, clicked: true });
         }
@@ -198,15 +261,6 @@ export default class Rating extends Component {
         }, 100);
     }
 
-    currentValue(min, max, hoverValue, stateValue) {
-        let value = hoverValue ? hoverValue : stateValue;
-
-        value = value >= max ? max : value;
-        value = value <= min ? min : value;
-
-        return value || 0;
-    }
-
     getOverlayWidth() {
         const {hoverValue, iconSpace, iconSize} = this.state;
 
@@ -214,7 +268,7 @@ export default class Rating extends Component {
             return 'auto';
         }
 
-        const value = this.currentValue(0, this.props.count, hoverValue, this.state.value);
+        const value = Rating.currentValue(0, this.props.count, hoverValue, this.state.value);
 
         const floorValue = Math.floor(value);
 
@@ -230,13 +284,15 @@ export default class Rating extends Component {
     }
 
     render() {
-        const {prefix, className, showGrade, count, size, iconType, strokeMode, disabled} = this.props;
+        const { id, prefix, className, showGrade, count, size, iconType, strokeMode, disabled, readAs} = this.props;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const {hoverValue, clicked} = this.state;
         const underlay = [], overlay = [];
 
+        const enableA11y = !!id;
+
         // 获得Value
-        const value = this.currentValue(0, count, hoverValue, this.state.value);
+        const value = Rating.currentValue(0, count, hoverValue, this.state.value);
 
         // icon的sizeMap
         const sizeMap = ICON_SIZE_MAP[size];
@@ -245,7 +301,7 @@ export default class Rating extends Component {
             const isCurrent = Math.ceil(value - 1) === i;
             const iconCls = classNames({
                 hover: hoverValue > 0 && isCurrent,
-                clicked: clicked && isCurrent,
+                clicked: clicked && isCurrent
             });
             const iconNode = <Icon type={iconType} size={sizeMap} className={iconCls} />;
 
@@ -254,10 +310,27 @@ export default class Rating extends Component {
                     {iconNode}
                 </span>
             );
+            if (enableA11y) {
+                overlay.push(
+                    <input
+                        id={`${id}-${prefix}star${i + 1}`}
+                        key={`input-${i}`}
+                        className={`${prefix}visually-hidden`}
+                        aria-checked={(i + 1) === parseInt(hoverValue)}
+                        checked={(i + 1) === parseInt(hoverValue)}
+                        onChange={this.handleChecked.bind(this, i + 1)}
+                        type="radio"
+                        name="rating"
+                    />
+                );
+            }
+
             overlay.push(
-                <span key={`overlay-${i}`} className={`${prefix}rating-icon`}>
+                <label key={`overlay-${i}`}
+                    htmlFor={enableA11y ? `${id}-${prefix}star${i + 1}` : null} className={`${prefix}rating-icon`}>
                     {iconNode}
-                </span>
+                    {enableA11y ? <span className={`${prefix}visually-hidden`}>{readAs(i + 1)}</span> : null}
+                </label>
             );
         }
 
@@ -268,7 +341,7 @@ export default class Rating extends Component {
             [`${prefix}rating-grade-low`]: value <= count * 0.4,
             [`${prefix}rating-grade-high`]: value > count * 0.4,
             [`${prefix}rating-stroke-mode`]: strokeMode,
-            hover: hoverValue > 0,
+            hover: hoverValue > 0
         }, className);
 
         const baseCls = classNames(`${prefix}rating-base`, {
@@ -291,10 +364,14 @@ export default class Rating extends Component {
         };
 
         return (
-            <div {...others} className={ratingCls}>
+            <div id={id ? id : null} {...others} className={ratingCls} onKeyDown={this.onKeyDown} tabIndex="0">
                 <div className={baseCls} {...finalProps}>
                     <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)}>{underlay}</div>
-                    <div className={`${prefix}rating-overlay`} style={overlayStyle}>{overlay}</div>
+                    <div className={`${prefix}rating-overlay`} style={overlayStyle}>
+                        <form action="#">
+                            {overlay}
+                        </form>
+                    </div>
                 </div>
                 {
                     showGrade ? <div className={`${prefix}rating-info`} style={infoStyle}>{value}</div> : null

@@ -55,8 +55,8 @@ class CheckboxGroup extends Component {
          */
         itemDirection: PropTypes.oneOf([
             'hoz',
-            'ver',
-        ]),
+            'ver'
+        ])
     }
 
     static defaultProps = {
@@ -64,7 +64,7 @@ class CheckboxGroup extends Component {
         onChange: () => {
         },
         prefix: 'next-',
-        itemDirection: 'hoz',
+        itemDirection: 'hoz'
     }
 
     static childContextTypes = {
@@ -91,7 +91,7 @@ class CheckboxGroup extends Component {
             }
         }
         this.state = {
-            value: [...value],
+            value: [...value]
         };
 
         this.onChange = this.onChange.bind(this);

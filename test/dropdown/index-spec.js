@@ -6,6 +6,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Dropdown from '../../src/dropdown';
 import Menu from '../../src/menu';
+import { KEYCODE } from '../../src/util';
+import '../../src/menu/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -116,5 +118,103 @@ describe('Dropdown', () => {
         const item = document.querySelector('.next-menu-item');
         ReactTestUtils.Simulate.click(item);
         assert(triggered);
+    });
+
+    it('should only focus when triggered by keyboard', (done) => {
+        const mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+
+        ReactDOM.render(
+            <Dropdown defaultVisible trigger={<button className="trigger">Hello dropdown</button>} animation={false}>
+                <Menu>
+                    <Menu.Item>Option 1</Menu.Item>
+                    <Menu.Item>Option 2</Menu.Item>
+                    <Menu.Item>Option 3</Menu.Item>
+                    <Menu.Item>Option 4</Menu.Item>
+                </Menu>
+            </Dropdown>
+            , mountNode);
+
+        const trigger = document.querySelector('.trigger');
+
+        trigger.focus();
+        trigger.click();
+
+        setTimeout(() => {
+            assert(document.activeElement !== document.querySelectorAll('.next-menu-item')[0]);
+
+            ReactTestUtils.Simulate.keyDown(document.activeElement, { keyCode: KEYCODE.DOWN });
+
+            setTimeout(() => {
+                assert(document.activeElement === document.querySelectorAll('.next-menu-item')[0]);
+
+                ReactDOM.unmountComponentAtNode(mountNode);
+                document.body.removeChild(mountNode);
+
+                done();
+            }, 200);
+
+        }, 200);
+
+    });
+
+    it('autoFocus=false should not have any activeElement', (done) => {
+        const mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+
+        ReactDOM.render(
+            <Dropdown autoFocus={false} defaultVisible trigger={<button className="trigger">Hello dropdown</button>} animation={false}>
+                <Menu>
+                    <Menu.Item>Option 1</Menu.Item>
+                    <Menu.Item>Option 2</Menu.Item>
+                    <Menu.Item>Option 3</Menu.Item>
+                    <Menu.Item>Option 4</Menu.Item>
+                </Menu>
+            </Dropdown>
+            , mountNode);
+
+
+        const trigger = document.querySelector('.trigger');
+
+        trigger.focus();
+        ReactTestUtils.Simulate.keyDown(document.activeElement, { keyCode: KEYCODE.DOWN });
+
+        setTimeout(() => {
+            assert(document.activeElement !== document.querySelectorAll('.next-menu-item')[0]);
+
+            ReactDOM.unmountComponentAtNode(mountNode);
+            document.body.removeChild(mountNode);
+
+            done();
+        }, 200);
+    });
+
+    it('autoFocus=true should have any activeElement when triggered by keyboard', (done) => {
+        const mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+
+        ReactDOM.render(
+            <Dropdown autoFocus defaultVisible trigger={<button className="trigger">Hello dropdown</button>} animation={false}>
+                <Menu>
+                    <Menu.Item>Option 1</Menu.Item>
+                    <Menu.Item>Option 2</Menu.Item>
+                    <Menu.Item>Option 3</Menu.Item>
+                    <Menu.Item>Option 4</Menu.Item>
+                </Menu>
+            </Dropdown>
+            , mountNode);
+
+        const trigger = document.querySelector('.trigger');
+
+        trigger.click();
+
+        setTimeout(() => {
+            assert(document.activeElement === document.querySelectorAll('.next-menu-item')[0]);
+
+            ReactDOM.unmountComponentAtNode(mountNode);
+            document.body.removeChild(mountNode);
+
+            done();
+        }, 200);
     });
 });

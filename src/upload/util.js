@@ -22,7 +22,7 @@ export function fileToObject(file) {
         uid: file.uid,
         error: file.error,
         percent: 0,
-        originFileObj: file,
+        originFileObj: file
     };
 }
 
@@ -47,3 +47,10 @@ export function previewFile(file, callback) {
     reader.onloadend = () => callback(reader.result);
     reader.readAsDataURL(file);
 }
+
+
+export const errorCode = {
+    EXCEED_LIMIT: 'EXCEED_LIMIT',
+    BEFOREUPLOAD_REJECT: 'BEFOREUPLOAD_REJECT',
+    RESPONSE_FAIL: 'RESPONSE_FAIL'
+};

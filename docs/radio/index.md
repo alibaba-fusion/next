@@ -41,6 +41,7 @@
 | shape         | 可以设置成 button 展示形状<br><br>**可选值**:<br>'button'(按钮状)                                                                                                 | Enum                                | -         |
 | value         | radio group的选中项的值                                                                                                                                  | String/Number/Boolean               | -         |
 | defaultValue  | radio group的默认值                                                                                                                                    | String/Number/Boolean               | -         |
+| component     | 设置标签类型                                                                                                                                             | String/Function                     | 'div'     |
 | onChange      | 选中值改变时的事件<br><br>**签名**:<br>Function(value: String/Number, e: Event) => void<br>**参数**:<br>_value_: {String/Number} 选中项的值<br>_e_: {Event} Dom 事件对象 | Function                            | () => { } |
 | disabled      | 表示radio被禁用                                                                                                                                         | Boolean                             | -         |
 | dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`                                                                                     | Array&lt;any>                       | \[]       |

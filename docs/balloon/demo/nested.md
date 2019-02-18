@@ -31,7 +31,7 @@ const App = () => (
             } />
         </Balloon>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <Balloon type="primary"  trigger={innerButton} closable={false} triggerType="click">
+        <Balloon type="primary" trigger={innerButton} closable={false} triggerType="click">
             <Balloon trigger={<Button type="primary">please click</Button>} popupContainer={(trigger) => trigger.parentNode} triggerType="click">
                 nesting balloon content
             </Balloon>

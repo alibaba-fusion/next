@@ -7,13 +7,13 @@ class PanelFooter extends React.PureComponent {
 
     static defaultProps = {
         // onPanelChange: func.noop,
-        onOk: func.noop,
+        onOk: func.noop
     }
 
     changePanel = () => {
         const targetPanel = ({
             [PANEL.DATE]: PANEL.TIME,
-            [PANEL.TIME]: PANEL.DATE,
+            [PANEL.TIME]: PANEL.DATE
         })[this.props.panel];
         this.props.onPanelChange(targetPanel);
     }
@@ -22,13 +22,13 @@ class PanelFooter extends React.PureComponent {
         const { prefix, locale, panel, value, onPanelChange, onOk } = this.props;
         const panelBtnLabel = ({
             [PANEL.DATE]: locale.selectTime,
-            [PANEL.TIME]: locale.selectDate,
+            [PANEL.TIME]: locale.selectDate
         })[panel];
 
         const sharedBtnProps = {
             size: 'small',
             type: 'primary',
-            disabled: !value,
+            disabled: !value
         };
 
         return (<div className={`${prefix}date-picker-panel-footer`}>

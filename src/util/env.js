@@ -36,5 +36,5 @@ export const isProduction = () => {
 
 export default {
     ieVersion,
-    isProduction,
+    isProduction
 };

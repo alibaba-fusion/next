@@ -24,11 +24,11 @@ class Error extends React.Component {
          * 自定义错误渲染, 可以是 node 或者 function(errors, state)
          */
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-        prefix: PropTypes.string,
+        prefix: PropTypes.string
     };
 
     static defaultProps = {
-        prefix: 'next-',
+        prefix: 'next-'
     }
 
     static contextTypes = {

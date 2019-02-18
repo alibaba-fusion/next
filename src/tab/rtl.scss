@@ -14,4 +14,11 @@
             left: 0;
         }
     }
+
+    & > #{$tab-prefix}-bar {
+        #{$tab-prefix}-nav-extra {
+            right: auto;
+            left: 0;
+        }
+    }
 }

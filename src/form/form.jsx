@@ -89,7 +89,7 @@ export default class Form extends React.Component {
          * 设置标签类型
          */
         component: PropTypes.string,
-        fieldOptions: PropTypes.object,
+        fieldOptions: PropTypes.object
     };
 
     static defaultProps = {
@@ -99,7 +99,7 @@ export default class Form extends React.Component {
         labelAlign: 'left',
         onChange: func.noop,
         component: 'form',
-        saveField: func.noop,
+        saveField: func.noop
     };
 
     static childContextTypes = {
@@ -160,7 +160,7 @@ export default class Form extends React.Component {
         });
 
         return (
-            <Tag {...obj.pickOthers(Form.propTypes, this.props)}
+            <Tag role="grid" {...obj.pickOthers(Form.propTypes, this.props)}
                 className={formClassName}
                 style={style}
                 onSubmit={onSubmit}>
@@ -172,7 +172,7 @@ export default class Form extends React.Component {
                                 wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,
                                 labelAlign: child.props.labelAlign ? child.props.labelAlign : labelAlign,
                                 labelTextAlign: child.props.labelTextAlign ? child.props.labelTextAlign : labelTextAlign,
-                                size: child.props.size ? child.props.size : size,
+                                size: child.props.size ? child.props.size : size
                             };
                             return React.cloneElement(child, pickerDefined(childrenProps));
                         }

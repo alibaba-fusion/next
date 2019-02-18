@@ -36,7 +36,7 @@ ReactDOM.render(<div className="fusion-demo">
     <div className="fusion-demo-item">
         <Step current={2} animation={false} itemRender={itemRender}>
             {
-                steps.map(item => <Step.Item key={item} title={item}  />)
+                steps.map(item => <Step.Item key={item} title={item} />)
             }
         </Step>
     </div>
@@ -44,7 +44,7 @@ ReactDOM.render(<div className="fusion-demo">
     <div className="fusion-demo-item">
         <Step current={2} animation={false} itemRender={itemRender2}>
             {
-                steps.map(item => <Step.Item key={item} title={item}  />)
+                steps.map(item => <Step.Item key={item} title={item} />)
             }
         </Step>
     </div>

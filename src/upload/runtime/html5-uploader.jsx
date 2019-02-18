@@ -53,7 +53,8 @@ export default class Html5Uploader extends Component {
         /**
          * 上传方法
          */
-        method: PropTypes.oneOf(['post', 'put'])
+        method: PropTypes.oneOf(['post', 'put']),
+        request: PropTypes.func
     };
 
 
@@ -71,7 +72,7 @@ export default class Html5Uploader extends Component {
         onSuccess: func.noop,
         onError: func.noop,
         onAbort: func.noop,
-        method: 'post',
+        method: 'post'
     };
 
     componentDidMount() {
@@ -108,6 +109,7 @@ export default class Html5Uploader extends Component {
         withCredentials: props.withCredentials,
         headers: props.headers,
         data: props.data,
+        request: props.request
     });
 
     render() {

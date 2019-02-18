@@ -45,16 +45,17 @@ class Collapse extends React.Component {
          */
         accordion: PropTypes.bool,
         children: PropTypes.node,
+        id: PropTypes.string
     };
 
     static defaultProps = {
         accordion: false,
         prefix: 'next-',
-        onExpand: func.noop,
+        onExpand: func.noop
     };
 
     static contextTypes = {
-        prefix: PropTypes.string,
+        prefix: PropTypes.string
     };
 
     constructor(props) {
@@ -97,6 +98,18 @@ class Collapse extends React.Component {
         this.setExpandedKey(expandedKeys);
     }
 
+    genratePanelId(itemId, index) {
+        const {id: collapseId} = this.props;
+        let id;
+        if (itemId) {
+            // 优先用 item自带的id
+            id = itemId;
+        } else if (collapseId) {
+            // 其次用 collapseId 和 index 生成id
+            id = `${collapseId}-panel-${index}`;
+        }
+        return id;
+    }
     getProps(item, index, key) {
         const expandedKeys = this.state.expandedKeys;
         const {title} = item;
@@ -124,17 +137,19 @@ class Collapse extends React.Component {
             });
         }
 
+        const id = this.genratePanelId(item.id, index);
         return {
             key,
             title,
             isExpanded,
             disabled,
+            id,
             onClick: disabled ? null : () => {
                 this.onItemClick(key);
                 if ('onClick' in item) {
                     item.onClick(key);
                 }
-            },
+            }
         };
     }
 
@@ -146,7 +161,7 @@ class Collapse extends React.Component {
 
         return dataSource.map((item, index) => {
             // 传入过key就用item.key 没传入则统一使用index为key
-            const key = hasKeys ? item.key :  `${index}`;
+            const key = hasKeys ? item.key : `${index}`;
             return (<Panel {...this.getProps(item, index, key)} key={key}>
                 {item.content}
             </Panel>);
@@ -177,16 +192,16 @@ class Collapse extends React.Component {
     }
 
     render() {
-        const {prefix, className, style, disabled, dataSource} = this.props;
+        const {prefix, className, style, disabled, dataSource, id} = this.props;
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,
-            [className]: Boolean(className),
+            [className]: Boolean(className)
         });
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);
         return (
-            <div className={collapseClassName} style={style} {...others}>
+            <div id={id} className={collapseClassName} style={style} {...others} role="presentation">
                 {dataSource ? this.getItemsByDataSource() : this.getItemsByChildren()}
             </div>
         );

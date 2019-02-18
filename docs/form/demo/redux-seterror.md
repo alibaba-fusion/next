@@ -87,7 +87,7 @@ class FormDemo extends React.Component {
             type: 'save_fields',
             values: {
                 email: 'qq@gmail.com'
-            },
+            }
         });
     }
 
@@ -96,7 +96,7 @@ class FormDemo extends React.Component {
             type: 'save_fields',
             values: {
                 username: 'frank'
-            },
+            }
         });
     }
 
@@ -105,7 +105,7 @@ class FormDemo extends React.Component {
             type: 'set_errors',
             errors: {
                 email: 'Error message from remote'
-            },
+            }
         });
     }
 
@@ -115,7 +115,7 @@ class FormDemo extends React.Component {
             errors: {
                 email: 'A-Error message from remote',
                 username: 'B-Error message from remote'
-            },
+            }
         });
     }
 
@@ -142,12 +142,12 @@ class FormDemo extends React.Component {
 
 const ReduxFormDemo = connect((state) => {
     return {
-        formData: state.formReducer,
+        formData: state.formReducer
     };
 })(FormDemo);
 
 const store = createStore(combineReducers({
-    formReducer,
+    formReducer
 }));
 
 ReactDOM.render(<Provider store={store}>

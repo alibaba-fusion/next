@@ -1,7 +1,7 @@
 const remarkAbstract = require('remark');
 
 const remark = remarkAbstract();
-const logger  = require('./logger');
+const logger = require('./logger');
 
 const EN_DOC_REG = /:{3}lang=en-us((.|\r|\n)*):{3}/;
 

@@ -19,8 +19,8 @@ class StepItem extends Component {
          * 标题
          */
         title: PropTypes.node,
-        direction: PropTypes.oneOf(['horizontal', 'vertical']),
-        labelPlacement: PropTypes.oneOf(['horizontal', 'vertical']),
+        direction: PropTypes.oneOf(['hoz', 'ver']),
+        labelPlacement: PropTypes.oneOf(['hoz', 'ver']),
         shape: PropTypes.oneOf(['circle', 'arrow', 'dot']),
         /**
          * 图标
@@ -66,7 +66,7 @@ class StepItem extends Component {
         shape: 'circle',
         index: 0,
         total: 1,
-        onClick: () => { },
+        onClick: () => { }
     }
 
     constructor(props) {
@@ -82,11 +82,11 @@ class StepItem extends Component {
             return;
         }
 
-        if (direction === 'vertical') {
+        if (direction === 'vertical' || direction === 'ver') {
             this.resize();
             this.forceUpdate(); // 解决Step嵌套的情况下，嵌套节点宽度为0的问题
             this.eventHandler = events.on(window, 'resize', this.resize); // 调整垂直Step
-        } else if (direction === 'horizontal' && labelPlacement === 'horizontal' && index !== (total - 1)) { // 调整横向Content
+        } else if ((direction === 'horizontal' || direction === 'hoz') && (labelPlacement === 'horizontal' || labelPlacement === 'hoz') && index !== (total - 1)) { // 调整横向Content
             this.adjustTail();
         }
     }
@@ -97,15 +97,15 @@ class StepItem extends Component {
             return;
         }
 
-        if (direction === 'vertical') {
+        if (direction === 'vertical' || direction === 'ver') {
             this.resize();
-        } else if (direction === 'horizontal') {
+        } else if (direction === 'horizontal' || direction === 'hoz') {
             const pos = rtl ? 'right' : 'left';
             dom.setStyle(this.body, {
                 width: '',
                 [pos]: ''
             });
-        } else if (shape === 'circle' && labelPlacement === 'horizontal' && index !== (total - 1)) { // 调整横向Content
+        } else if (shape === 'circle' && (labelPlacement === 'horizontal' || labelPlacement === 'hoz') && index !== (total - 1)) { // 调整横向Content
             this.adjustTail();
         } else if (index !== (total - 1)) {
             dom.setStyle(this.tail, {
@@ -175,7 +175,7 @@ class StepItem extends Component {
             </div>
         );
 
-        if (!nodeElement) {  // 需要自定义子节点
+        if (!nodeElement) { // 需要自定义子节点
             finalNodeElement = (
                 <div className={`${prefix}step-item-container`} >
                     <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>
@@ -186,7 +186,7 @@ class StepItem extends Component {
         }
 
         return (
-            <div {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
+            <div tabIndex="0" aria-current={status === 'process' ? 'step' : null} {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
                 {finalNodeElement}
                 <div className={`${prefix}step-item-body`} ref={this._refHandlerCreator('body')}>
                     <div className={`${prefix}step-item-title`} ref={this._refHandlerCreator('title')}>{title}</div>
@@ -210,7 +210,7 @@ class StepItem extends Component {
                 width = Math.floor(parentWidth / total - parentHeight / 2 - parentHeight / 8);
             }
         }
-        if (shape !== 'arrow' && direction === 'horizontal') {
+        if (shape !== 'arrow' && (direction === 'horizontal' || direction === 'hoz')) {
             width = (total - 1) !== index ? `${Math.floor(100 / total)}%` : 'auto';
         }
         return {
@@ -269,7 +269,7 @@ class StepItem extends Component {
 
         const overlayCls = status === 'finish' ? { width: '100%' } : null;
         const arrowElement = (
-            <div {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
+            <div tabIndex="0" aria-current={status === 'process' ? 'step' : null} {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
                 <div className={`${prefix}step-item-container`}>
                     <div className={`${prefix}step-item-title`}>{title}</div>
                 </div>

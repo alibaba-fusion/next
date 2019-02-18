@@ -22,7 +22,7 @@ import { Button, Balloon } from '@alifd/next';
 
 const Tooltip = Balloon.Tooltip;
 
-const top = <Button  style={{margin: '5px'}} id="top" className="btrigger">top</Button>;
+const top = <Button style={{margin: '5px'}} id="top" className="btrigger">top</Button>;
 const right = <Button style={{margin: '5px'}}id="right" className="btrigger">right</Button>;
 const bottom = <Button style={{margin: '5px'}} id="bottom" className="btrigger">bottom</Button>;
 const left = <Button style={{margin: '5px'}} id="left" className="btrigger">left</Button>;

@@ -25,7 +25,7 @@ module.exports = function(config) {
         },
         reporters: ['spec', 'coverage'],
         preprocessors: {
-            [specPath]: ['webpack', 'sourcemap'],
+            [specPath]: ['webpack', 'sourcemap']
         },
         files: [
             path.join(__dirname, 'animation-polyfill.js'),
@@ -46,7 +46,7 @@ module.exports = function(config) {
         },
         client: {
             mocha: {
-                timeout: 4000,
+                timeout: 10000,
                 reporter: 'html',
                 ui: 'bdd'
             }

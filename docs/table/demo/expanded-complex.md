@@ -58,10 +58,10 @@ const dataSource = () => {
                 time: 2000 + i,
                 children: [{
                     title: `Sub title for Quotation ${3 + i}`,
-                    time: 2000 + i,
+                    time: 2000 + i
                 }, {
                     title: `Sub2 title for Quotation ${3 + i}`,
-                    time: 2000 + i,
+                    time: 2000 + i
                 }]
             });
         }
@@ -87,7 +87,7 @@ class App extends React.Component {
     onSort(dataIndex, order) {
         const dataSource = this.state.dataSource.sort(function(a, b) {
             const result = a[dataIndex] - b[dataIndex];
-            return  (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
+            return (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
         });
         this.setState({
             dataSource

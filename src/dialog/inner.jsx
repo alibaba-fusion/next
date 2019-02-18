@@ -27,7 +27,7 @@ export default class Inner extends Component {
         onClose: PropTypes.func,
         locale: PropTypes.object,
         role: PropTypes.string,
-        rtl: PropTypes.bool,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
@@ -52,7 +52,9 @@ export default class Inner extends Component {
         const { prefix, title } = this.props;
         if (title) {
             this.titleId = guid('dialog-title-');
-            return <div className={`${prefix}dialog-header`} id={this.titleId} ref={this.getNode.bind(this, 'headerNode')}>{title}</div>;
+            return (<div className={`${prefix}dialog-header`} id={this.titleId} ref={this.getNode.bind(this, 'headerNode')} role="heading" aria-level="1">
+                {title}
+            </div>);
         }
         return null;
     }
@@ -101,11 +103,11 @@ export default class Inner extends Component {
     }
 
     renderCloseLink() {
-        const { prefix, closeable, onClose } = this.props;
+        const { prefix, closeable, onClose, locale } = this.props;
 
         if (closeable) {
             return (
-                <a role="button" href="javascript:;" className={`${prefix}dialog-close`}
+                <a role="button" aria-label={locale.close} href="javascript:;" className={`${prefix}dialog-close`}
                     onClick={onClose}>
                     <Icon className={`${prefix}dialog-close-icon`} type="close" />
                 </a>

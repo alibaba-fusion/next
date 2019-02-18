@@ -106,7 +106,7 @@ class App extends React.Component {
                     <Table.GroupHeader cell={groupHeaderRender} hasChildrenSelection={this.state.hasSelection}/>
                     <Table.GroupFooter cell={groupHeaderRender}/>
                     <Table.Column cell={productRender} title="Product Details" dataIndex="product"/>
-                    <Table.Column cell={priceRender} title="Price" dataIndex="price"  width={120}/>
+                    <Table.Column cell={priceRender} title="Price" dataIndex="price" width={120}/>
                     <Table.Column cell={statusRender} title="Status" dataIndex="status" width={100}/>
                     <Table.Column cell={operRender} title="" width={100}/>
                 </Table>

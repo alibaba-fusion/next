@@ -1,19 +1,25 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import ConfigProvider from '../../config-provider';
-import { func, dom, obj } from '../../util';
+import { func, dom, obj, KEYCODE } from '../../util';
 import TreeNode from './tree-node';
-import { normalizeToArray, isDescendantOrSelf, isSiblingOrSelf, filterChildKey, filterParentKey, getAllCheckedKeys } from './util';
+import {
+    normalizeToArray,
+    isDescendantOrSelf,
+    isSiblingOrSelf,
+    filterChildKey,
+    filterParentKey,
+    getAllCheckedKeys
+} from './util';
 
-const { bindCtx } = func;
+const { bindCtx, noop } = func;
 const { getOffset } = dom;
 const { pickOthers, isPlainObject } = obj;
 
 /**
  * Tree
  */
-class Tree extends Component {
+export default class Tree extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -64,7 +70,7 @@ class Tree extends Component {
          */
         checkedKeys: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string),
-            PropTypes.object,
+            PropTypes.object
         ]),
         /**
          * （用于非受控）默认勾选复选框节点 key 的数组
@@ -214,7 +220,16 @@ class Tree extends Component {
         /**
          * 是否开启展开收起动画
          */
-        animation: PropTypes.bool
+        animation: PropTypes.bool,
+        /**
+         * 当前获得焦点的子菜单或菜单项 key 值
+         */
+        focusedKey: PropTypes.string,
+        focusable: PropTypes.bool,
+        autoFocus: PropTypes.bool,
+        onItemFocus: PropTypes.func,
+        onBlur: PropTypes.func,
+        onItemKeyDown: PropTypes.func
     };
 
     static defaultProps = {
@@ -233,21 +248,25 @@ class Tree extends Component {
         defaultExpandedKeys: [],
         defaultCheckedKeys: [],
         defaultSelectedKeys: [],
-        onExpand: () => {},
-        onCheck: () => {},
-        onSelect: () => {},
-        onDragStart: () => {},
-        onDragEnter: () => {},
-        onDragOver: () => {},
-        onDragLeave: () => {},
-        onDragEnd: () => {},
-        onDrop: () => {},
+        onExpand: noop,
+        onCheck: noop,
+        onSelect: noop,
+        onDragStart: noop,
+        onDragEnter: noop,
+        onDragOver: noop,
+        onDragLeave: noop,
+        onDragEnd: noop,
+        onDrop: noop,
         canDrop: () => true,
-        onEditFinish: () => {},
-        onRightClick: () => {},
+        onEditFinish: noop,
+        onRightClick: noop,
         isLabelBlock: false,
         isNodeBlock: false,
-        animation: true
+        animation: true,
+        focusable: true,
+        autoFocus: false,
+        onItemFocus: noop,
+        onItemKeyDown: noop
     };
 
     constructor(props) {
@@ -255,14 +274,21 @@ class Tree extends Component {
 
         this.updateCache(props);
 
+        const { focusable, autoFocus, focusedKey } = this.props;
+
+        if (focusable) {
+            this.tabbableKey = this.getFirstAvaliablelChildKey('0');
+        }
+
         this.indeterminateKeys = [];
         this.state = {
             expandedKeys: this.getExpandedKeys(props),
             selectedKeys: this.getSelectedKeys(props),
-            checkedKeys: this.getCheckedKeys(props)
+            checkedKeys: this.getCheckedKeys(props),
+            focusedKey: 'focusedKey' in this.props ? focusedKey : (focusable && autoFocus ? this.tabbableKey : null)
         };
 
-        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck']);
+        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur']);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -320,6 +346,13 @@ class Tree extends Component {
         }
     }
 
+    setFocusKey() {
+        const { selectedKeys = [] } = this.state;
+        this.setState({
+            focusedKey: selectedKeys.length > 0 ? selectedKeys[0] : this.getFirstAvaliablelChildKey('0')
+        });
+    }
+
     getExpandedKeys(props, willReceiveProps) {
         let expandedKeys;
 
@@ -367,6 +400,47 @@ class Tree extends Component {
         return expandedKeys;
     }
 
+    getAvailableKey(pos, prev) {
+        const ps = Object.keys(this._p2n).filter(p => this.isAvailablePos(pos, p));
+        if (ps.length > 1) {
+            const index = ps.indexOf(pos);
+            let targetIndex;
+            if (prev) {
+                targetIndex = index === 0 ? ps.length - 1 : index - 1;
+            } else {
+                targetIndex = index === ps.length - 1 ? 0 : index + 1;
+            }
+
+            return this._p2n[ps[targetIndex]].key;
+        }
+
+        return null;
+    }
+
+    getFirstAvaliablelChildKey(parentPos) {
+        const pos = Object.keys(this._p2n).find(p => this.isAvailablePos(`${parentPos}-0`, p));
+        return pos ? this._p2n[pos].key : null;
+    }
+
+    isAvailablePos(refPos, targetPos) {
+        const { disabled } = this._p2n[targetPos];
+
+        return this.isSibling(refPos, targetPos) && !disabled;
+    }
+
+    isSibling(currentPos, targetPos) {
+        const currentNums = currentPos.split('-').slice(0, -1);
+        const targetNums = targetPos.split('-').slice(0, -1);
+
+        return currentNums.length === targetNums.length && currentNums.every((num, index) => {
+            return num === targetNums[index];
+        });
+    }
+
+    getParentKey(pos) {
+        return this._p2n[pos.slice(0, pos.length - 2)].key;
+    }
+
     getSelectedKeys(props, willReceiveProps) {
         let selectedKeys = 'selectedKeys' in props ?
             props.selectedKeys :
@@ -410,10 +484,101 @@ class Tree extends Component {
         }
         return keys;
     }
+    /*eslint-disable max-statements*/
+    handleItemKeyDown(key, item, e) {
+        if ([
+            KEYCODE.UP, KEYCODE.DOWN, KEYCODE.RIGHT, KEYCODE.LEFT,
+            KEYCODE.ENTER, KEYCODE.ESC, KEYCODE.SPACE
+        ].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        let focusedKey = this.state.focusedKey;
+
+        const node = this._k2n[key];
+        const pos = this._k2n[key].pos;
+        const level = pos.split('-').length - 1;
+        switch (e.keyCode) {
+            case KEYCODE.UP: {
+                const avaliableKey = this.getAvailableKey(pos, true);
+                if (avaliableKey) {
+                    focusedKey = avaliableKey;
+                }
+                break;
+            }
+            case KEYCODE.DOWN: {
+                const avaliableKey = this.getAvailableKey(pos, false);
+                if (avaliableKey) {
+                    focusedKey = avaliableKey;
+                }
+                break;
+            }
+            case KEYCODE.RIGHT: {
+                this.handleExpand(true, key, node);
+                const avaliableKey = this.getFirstAvaliablelChildKey(pos);
+                if (avaliableKey) {
+                    focusedKey = avaliableKey;
+                }
+                break;
+            }
+            case KEYCODE.LEFT:
+            case KEYCODE.ESC: {
+                if (level === 1) {
+                    const avaliableKey = this.getAvailableKey(pos, true);
+                    if (avaliableKey) {
+                        focusedKey = avaliableKey;
+                    }
+                } else if (level > 1) {
+                    const parentKey = this.getParentKey(pos);
+                    this.handleExpand(false, parentKey, node);
+                    focusedKey = parentKey;
+                }
+                break;
+            }
+
+            case KEYCODE.ENTER:
+            case KEYCODE.SPACE: {
+                const checkable = item.props.checkable === true || this.props.checkable;
+                const selectable = item.props.selectable === true || this.props.selectable;
+
+                if (checkable) {
+                    this.handleCheck(!item.props.checked, key, node);
+                } else if (selectable) {
+                    this.handleSelect(!item.props.selected, key, node);
+                }
+                break;
+            }
+            case KEYCODE.TAB:
+                focusedKey = null;
+                break;
+            default:
+                break;
+        }
+
+        if (focusedKey !== this.state.focusedKey) {
+            if (!('focusedKey' in this.props)) {
+                this.setState({
+                    focusedKey
+                });
+            }
+        }
+
+        this.props.onItemKeyDown(focusedKey, item, e);
+        this.props.onItemFocus(focusedKey, e);
+    }
+
+    handleBlur(e) {
+        this.setState({
+            focusedKey: ''
+        });
+
+        this.props.onBlur && this.props.onBlur(e);
+    }
 
     handleExpand(expand, key, node) {
         const { onExpand, loadData } = this.props;
-        const expandedKeys = [...this.state.expandedKeys];
+        const expandedKeys = this.state.expandedKeys; // 由于setState 是异步操作，所以去掉 [...this.state.expandedKeys]
         this.processKey(expandedKeys, key, expand);
         const setExpandedState = () => {
             if (!('expandedKeys' in this.props)) {
@@ -450,6 +615,7 @@ class Tree extends Component {
         });
     }
 
+    // eslint-disable-next-line max-statements
     handleCheck(check, key, node) {
         const { checkStrictly, checkedStrategy, onCheck } = this.props;
         const checkedKeys = [...this.state.checkedKeys];
@@ -544,7 +710,7 @@ class Tree extends Component {
             checked: check
         });
     }
-
+    /*eslint-enable*/
     getNodeProps(key) {
         const { prefix } = this.props;
         const { expandedKeys, selectedKeys, checkedKeys, dragOverNodeKey } = this.state;
@@ -709,7 +875,8 @@ class Tree extends Component {
                 const { key = pos, children, ...others } = item;
                 const props = {
                     ...others,
-                    ...this.getNodeProps(`${key}`)
+                    ...this.getNodeProps(`${key}`),
+                    _key: key
                 };
                 if (children && children.length) {
                     props.children = loop(children, pos);
@@ -732,6 +899,8 @@ class Tree extends Component {
                 if (child.props.children) {
                     props.children = loop(child.props.children, pos);
                 }
+
+                props._key = key;
 
                 const node = cloneElement(child, props);
                 this._k2n[key].node = node;
@@ -756,11 +925,9 @@ class Tree extends Component {
         });
 
         return (
-            <ul className={newClassName} {...others}>
+            <ul role="tree" onBlur={this.handleBlur} className={newClassName} {...others}>
                 {dataSource ? this.renderByDataSource() : this.renderByChildren()}
             </ul>
         );
     }
 }
-
-export default ConfigProvider.config(Tree);

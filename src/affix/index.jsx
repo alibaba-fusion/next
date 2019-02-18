@@ -35,20 +35,20 @@ class Affix extends React.Component {
         useAbsolute: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
-        children: PropTypes.any,
+        children: PropTypes.any
     };
 
     static defaultProps = {
         prefix: 'next-',
         container: () => window,
-        onAffix: func.noop,
+        onAffix: func.noop
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
             style: null,
-            containerStyle: null,
+            containerStyle: null
         };
         this.affixMode = this._getAffixMode(props);
     }
@@ -99,9 +99,9 @@ class Affix extends React.Component {
         if (!affixContainer) {
             return false;
         }
-        const containerScrollTop = getScroll(affixContainer, true);    // 容器在垂直位置上的滚动 offset
+        const containerScrollTop = getScroll(affixContainer, true); // 容器在垂直位置上的滚动 offset
         const affixOffset = this._getOffset(this.affixNode, affixContainer); // 目标节点当前相对于容器的 offset
-        const containerHeight = getNodeHeight(affixContainer);         // 容器的高度
+        const containerHeight = getNodeHeight(affixContainer); // 容器的高度
         const affixHeight = this.affixNode.offsetHeight;
         const containerRect = getRect(affixContainer);
 
@@ -109,11 +109,11 @@ class Affix extends React.Component {
 
         const affixMode = this.affixMode;
         const affixStyle = {
-            width: affixOffset.width,
+            width: affixOffset.width
         };
         const containerStyle = {
             width: affixOffset.width,
-            height: affixChildHeight,
+            height: affixChildHeight
         };
 
         if (affixMode.top && containerScrollTop > affixOffset.top - affixMode.offset) {
@@ -152,7 +152,7 @@ class Affix extends React.Component {
         const affixMode = {
             top: false,
             bottom: false,
-            offset: 0,
+            offset: 0
         };
 
         if (typeof offsetTop !== 'number' && typeof offsetBottom !== 'number') {
@@ -175,7 +175,7 @@ class Affix extends React.Component {
         }
 
         this.setState({
-            style: affixStyle,
+            style: affixStyle
         });
 
         const { onAffix } = this.props;
@@ -195,7 +195,7 @@ class Affix extends React.Component {
     }
 
     _getOffset(affixNode, affixContainer) {
-        const affixRect = affixNode.getBoundingClientRect();  // affix 元素 相对浏览器窗口的位置
+        const affixRect = affixNode.getBoundingClientRect(); // affix 元素 相对浏览器窗口的位置
         const containerRect = getRect(affixContainer); // affix 容器 相对浏览器窗口的位置
         const containerScrollTop = getScroll(affixContainer, true);
         const containerScrollLeft = getScroll(affixContainer, false);
@@ -204,7 +204,7 @@ class Affix extends React.Component {
             top: affixRect.top - containerRect.top + containerScrollTop,
             left: affixRect.left - containerRect.left + containerScrollLeft,
             width: affixRect.width,
-            height: affixRect.height,
+            height: affixRect.height
         };
     }
 
@@ -223,7 +223,7 @@ class Affix extends React.Component {
             [`${prefix}affix`]: state.style,
             [`${prefix}affix-top`]: !state.style && this.affixMode.top,
             [`${prefix}affix-bottom`]: !state.style && this.affixMode.bottom,
-            [className]: className,
+            [className]: className
         });
         const combinedStyle = { ...state.containerStyle, ...style };
 

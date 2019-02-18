@@ -2,7 +2,7 @@ import React from 'react';
 
 export const triggerEvents = {
     CLICK: 'click',
-    HOVER: 'hover',
+    HOVER: 'hover'
 };
 
 export function getOffsetWH(node, tabPosition) {
@@ -32,7 +32,7 @@ export function toArray(children) {
     React.Children.forEach(children, (child, index) => {
         if (React.isValidElement(child)) {
             ret.push(React.cloneElement(child, {
-                key: child.key || index,
+                key: child.key || index
             }));
         }
     });

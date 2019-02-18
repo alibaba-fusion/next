@@ -55,7 +55,7 @@ class YearTable extends React.PureComponent {
                     [`${prefix}calendar-cell`]: true,
                     [`${prefix}calendar-cell-current`]: year === currentYear,
                     [`${prefix}selected`]: isSelected,
-                    [`${prefix}disabled`]: isDisabled,
+                    [`${prefix}disabled`]: isDisabled
                 });
 
                 rowElements.push(<td key={`${i}-${j}`} className={classNames} role="cell">

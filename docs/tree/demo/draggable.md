@@ -95,7 +95,7 @@ class Demo extends React.Component {
             }
         }
         this.setState({
-            gData: data,
+            gData: data
         });
     }
     render() {

@@ -25,7 +25,7 @@ const onChange = function(...args) {
         for (let i = 0; i < 5; i++) {
             result.push({
                 title: {
-                    name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`,
+                    name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`
                 },
                 id: 100306660940 + i,
                 time: 2000 + i

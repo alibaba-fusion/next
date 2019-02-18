@@ -154,8 +154,8 @@ describe('Overlay', () => {
             });
 
             yield delay(500);
-            assert(wrapper.find('.next-overlay-wrapper.opened'));
-            assert(wrapper.find('.next-overlay-inner .content'));
+            assert(document.querySelector('.next-overlay-wrapper.opened'));
+            assert(document.querySelector('.next-overlay-inner.content'));
 
             assert(!document.querySelector('.next-overlay-backdrop'));
 

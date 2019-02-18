@@ -6,7 +6,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import Select from '../select';
-import { KEYCODE } from '../util';
+import { KEYCODE, str } from '../util';
 import zhCN from '../locale/zh-cn.js';
 
 const { Option } = Select;
@@ -113,7 +113,8 @@ class Pagination extends Component {
         /**
          * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://xxx.com/{page}
          */
-        link: PropTypes.string
+        link: PropTypes.string,
+        selectPopupContiner: PropTypes.func
     };
 
     static defaultProps = {
@@ -136,7 +137,8 @@ class Pagination extends Component {
         pageShowCount: 5,
         hideOnlyOnePage: false,
         showJump: true,
-        pageNumberRender: index => index
+        pageNumberRender: index => index,
+        selectPopupContiner: node => node.parentNode
     };
 
     constructor(props, context) {
@@ -228,9 +230,10 @@ class Pagination extends Component {
     }
 
     renderPageItem(index) {
-        const { prefix, size, link, pageNumberRender } = this.props;
+        const { prefix, size, link, pageNumberRender, total, pageSize, locale } = this.props;
         const { current } = this.state;
 
+        const totalPage = this.getTotalPage(total, pageSize);
         const isCurrent = parseInt(index, 10) === current;
         const props = {
             size,
@@ -245,7 +248,14 @@ class Pagination extends Component {
             props.href = link.replace('{page}', index);
         }
 
-        return <Button {...props} key={index}>{pageNumberRender(index)}</Button>;
+        return (
+            <Button
+                aria-label={str.template(locale.total, { current: index, total: totalPage })}
+                {...props}
+                key={index}>
+                {pageNumberRender(index)}
+            </Button>
+        );
     }
 
     renderPageFirst(current) {
@@ -265,7 +275,7 @@ class Pagination extends Component {
         const icon = <Icon type="arrow-left" />;
 
         return (
-            <Button {...props}>
+            <Button {...props} aria-label={str.template(locale.labelPrev, { current })}>
                 {icon}
                 {shape === 'arrow-only' ||
                  shape === 'arrow-prev-only' ||
@@ -291,7 +301,7 @@ class Pagination extends Component {
         const icon = <Icon type="arrow-right" />;
 
         return (
-            <Button {...props}>
+            <Button {...props} aria-label={str.template(locale.labelNext, { current })}>
                 {shape === 'arrow-only' ||
                  shape === 'no-border' ? '' : locale.next}
                 {icon}
@@ -440,15 +450,13 @@ class Pagination extends Component {
     }
 
     renderPageSizeDropdown() {
-        const { prefix, size, pageSizeList } = this.props;
+        const { prefix, size, pageSizeList, selectPopupContiner } = this.props;
         const { currentPageSize } = this.state;
 
         return (
             <Select className={`${prefix}pagination-size-selector-dropdown`}
                 popupClassName={`${prefix}pagination-size-selector-popup`}
-                popupContainer={node => {
-                    return node.parentNode;
-                }}
+                popupContainer={selectPopupContiner}
                 autoWidth
                 size={size}
                 value={currentPageSize}
@@ -476,7 +484,7 @@ class Pagination extends Component {
             prefix, pure, rtl, type, size, shape, className, total, totalRender,
             pageSize, pageSizeSelector, pageSizeList, pageSizePosition, useFloatLayout, onPageSizeChange,
             hideOnlyOnePage, showJump, locale, current, defaultCurrent, pageShowCount, pageNumberRender,
-            link, onChange, ...others
+            link, onChange, selectPopupContiner, ...others
         } = this.props;
         /* eslint-enable */
         const { current: currentPage, currentPageSize } = this.state;

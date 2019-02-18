@@ -1,4 +1,5 @@
 import React, { Component, Children } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from '../../icon';
@@ -17,6 +18,7 @@ const isRoot = pos => /^0-(\d)+$/.test(pos);
  */
 export default class TreeNode extends Component {
     static propTypes = {
+        _key: PropTypes.string,
         prefix: PropTypes.string,
         className: PropTypes.string,
         /**
@@ -65,7 +67,8 @@ export default class TreeNode extends Component {
         dragOver: PropTypes.bool,
         dragOverGapTop: PropTypes.bool,
         dragOverGapBottom: PropTypes.bool,
-        parentNode: PropTypes.object
+        parentNode: PropTypes.object,
+        onKeyDown: PropTypes.func
     };
 
     static defaultProps = {
@@ -97,8 +100,14 @@ export default class TreeNode extends Component {
             'handleDragLeave',
             'handleDragEnd',
             'handleDrop',
-            'handleInputKeyDown'
+            'handleInputKeyDown',
+            'handleKeyDown'
         ]);
+    }
+
+    componentDidMount() {
+        this.itemNode = findDOMNode(this.refs.node);
+        this.setFocus();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -109,8 +118,31 @@ export default class TreeNode extends Component {
         }
     }
 
+    componentDidUpdate() {
+        this.setFocus();
+    }
+
     getParentNode() {
         return this.props.root.getParentNode(this.props.pos);
+    }
+
+    focusable() {
+        const { root, disabled } = this.props;
+        const { focusable } = root.props;
+        return focusable && !disabled;
+    }
+
+    getFocused() {
+        const { _key, root } = this.props;
+        const { focusedKey } = root.state;
+        return focusedKey === _key;
+    }
+
+    setFocus() {
+        const focused = this.getFocused();
+        if (focused && this.focusable()) {
+            this.itemNode.focus({ preventScroll: true });
+        }
     }
 
     handleExpand(e) {
@@ -226,10 +258,25 @@ export default class TreeNode extends Component {
         }
     }
 
+    handleKeyDown(e) {
+        const { _key, root, disabled } = this.props;
+        if (disabled) {
+            return;
+        }
+
+        if (this.focusable()) {
+            root.handleItemKeyDown(_key, this, e);
+        }
+
+        this.props.onKeyDown && this.props.onKeyDown(e);
+    }
+
     addCallbacks(props) {
         const { disabled, root } = this.props;
         if (!disabled) {
-            const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
+            const selectable = typeof this.props.selectable !== 'undefined' ?
+                this.props.selectable :
+                root.props.selectable;
             if (selectable) {
                 props.onClick = this.handleSelect;
             }
@@ -304,7 +351,14 @@ export default class TreeNode extends Component {
     renderCheckbox() {
         const { checked, indeterminate, disabled, checkboxDisabled } = this.props;
 
-        return <Checkbox checked={checked} indeterminate={indeterminate} disabled={disabled || checkboxDisabled} onChange={this.handleCheck} />;
+        return (
+            <Checkbox
+                checked={checked}
+                indeterminate={indeterminate}
+                disabled={disabled || checkboxDisabled}
+                onChange={this.handleCheck}
+            />
+        );
     }
 
     renderLabel() {
@@ -318,6 +372,7 @@ export default class TreeNode extends Component {
                 [`${prefix}tree-node-label-selectable`]: selectable && !disabled
             })
         };
+
         if (!isNodeBlock) {
             this.addCallbacks(labelProps);
         }
@@ -336,7 +391,12 @@ export default class TreeNode extends Component {
         const { label } = this.state;
         return (
             <div className={`${prefix}tree-node-label-wrapper`} ref="labelWrapper">
-                <TreeNodeInput prefix={prefix} defaultValue={label} onBlur={this.handleEditFinish} onKeyDown={this.handleInputKeyDown} />
+                <TreeNodeInput
+                    prefix={prefix}
+                    defaultValue={label}
+                    onBlur={this.handleEditFinish}
+                    onKeyDown={this.handleInputKeyDown}
+                />
             </div>
         );
     }
@@ -345,7 +405,9 @@ export default class TreeNode extends Component {
         const { prefix, children, expanded, root } = this.props;
         const { animation } = root.props;
 
-        let childTree = expanded && hasChildTree ? <ul className={`${prefix}tree-child-tree`}>{children}</ul> : null;
+        let childTree = expanded && hasChildTree ?
+            <ul role="group" className={`${prefix}tree-child-tree`}>{children}</ul> :
+            null;
         if (animation) {
             childTree = <Expand animationAppear={false}>{childTree}</Expand>;
         }
@@ -354,10 +416,25 @@ export default class TreeNode extends Component {
     }
 
     render() {
-        const { prefix, className, children, isLeaf, root, pos, selected, disabled, dragOver, dragOverGapTop, dragOverGapBottom } = this.props;
+        const {
+            prefix,
+            className,
+            children,
+            isLeaf,
+            root,
+            pos,
+            selected,
+            disabled,
+            expanded,
+            dragOver,
+            dragOverGapTop,
+            dragOverGapBottom,
+            _key
+        } = this.props;
         const { loadData, isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root.props;
         this.showLine = !isNodeBlock && showLine;
         const others = pickOthers(Object.keys(TreeNode.propTypes), this.props);
+
         if (rootDraggable) {
             others.onDragEnter = this.handleDragEnter;
             others.onDragOver = this.handleDragOver;
@@ -378,13 +455,15 @@ export default class TreeNode extends Component {
             [`${prefix}drag-over-gap-top`]: dragOverGapTop,
             [`${prefix}drag-over-gap-bottom`]: dragOverGapBottom
         });
+
         const defaultPaddingLeft = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.defaultPaddingLeft || 0) : 0;
         const indent = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.indent || 24) : 24;
         const level = pos.split('-').length - 2;
         const innerStyle = isNodeBlock ? { paddingLeft: `${indent * level + defaultPaddingLeft}px` } : null;
         const innerProps = {
             className: innerClassName,
-            style: innerStyle
+            style: innerStyle,
+            onKeyDown: this.handleKeyDown
         };
         if (isNodeBlock) {
             this.addCallbacks(innerProps);
@@ -395,9 +474,18 @@ export default class TreeNode extends Component {
         const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
         const { editing } = this.state;
 
+        innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
+
         return (
             <li className={newClassName} {...others}>
-                <div {...innerProps}>
+                <div
+                    ref="node"
+                    role="treeitem"
+                    aria-selected={selected}
+                    aria-disabled={disabled}
+                    aria-expanded={expanded && !!hasChildTree}
+                    {...innerProps}
+                >
                     {canExpand ? this.renderSwitcher() : this.renderNoopSwitcher()}
                     {checkable ? this.renderCheckbox() : null}
                     {editing ? this.renderInput() : this.renderLabel()}

@@ -28,7 +28,7 @@ export default class DatePicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -132,8 +132,24 @@ export default class DatePicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
+        /**
+         * 自定义日期渲染函数
+         * @param {Object} value 日期值（moment对象）
+         * @returns {ReactNode}
+         */
+        dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
         locale: PropTypes.object,
-        className: PropTypes.string,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -151,7 +167,7 @@ export default class DatePicker extends Component {
         locale: nextLocale.DatePicker,
         onChange: func.noop,
         onVisibleChange: func.noop,
-        onOk: func.noop,
+        onOk: func.noop
     }
 
     constructor(props, context) {
@@ -167,7 +183,7 @@ export default class DatePicker extends Component {
             timeInputStr: '',
             inputing: false, // 当前是否处于输入状态
             visible: props.visible || props.defaultVisible,
-            panel: PANEL.DATE,
+            panel: PANEL.DATE
         };
     }
 
@@ -180,14 +196,14 @@ export default class DatePicker extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value, this.dateTimeFormat);
             this.setState({
-                value,
+                value
             });
             this.inputAsString = typeof nextProps.value === 'string';
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible,
+                visible: nextProps.visible
             });
         }
     }
@@ -229,7 +245,7 @@ export default class DatePicker extends Component {
     clearValue = () => {
         this.setState({
             dateInputStr: '',
-            timeInputStr: '',
+            timeInputStr: ''
         });
 
         this.handleChange(null, this.state.value, {inputing: false});
@@ -242,7 +258,7 @@ export default class DatePicker extends Component {
         } else {
             this.setState({
                 dateInputStr: inputStr,
-                inputing: 'date',
+                inputing: 'date'
             });
         }
     }
@@ -250,7 +266,7 @@ export default class DatePicker extends Component {
     onTimeInputChange = (inputStr) => {
         this.setState({
             timeInputStr: inputStr,
-            inputing: 'time',
+            inputing: 'time'
         });
     }
 
@@ -262,7 +278,7 @@ export default class DatePicker extends Component {
 
             this.setState({
                 dateInputStr: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
@@ -278,7 +294,7 @@ export default class DatePicker extends Component {
 
             this.setState({
                 timeInputStr: '',
-                inputing: false,
+                inputing: false
             });
 
             if (parsed.isValid()) {
@@ -311,7 +327,7 @@ export default class DatePicker extends Component {
     onFoucsDateInput = () => {
         if (this.state.panel !== PANEL.DATE) {
             this.setState({
-                panel: PANEL.DATE,
+                panel: PANEL.DATE
             });
         }
     }
@@ -319,7 +335,7 @@ export default class DatePicker extends Component {
     onFoucsTimeInput = () => {
         if (this.state.panel !== PANEL.TIME) {
             this.setState({
-                panel: PANEL.TIME,
+                panel: PANEL.TIME
             });
         }
     }
@@ -327,7 +343,7 @@ export default class DatePicker extends Component {
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible,
+                visible
             });
         }
         this.props.onVisibleChange(visible, reason);
@@ -335,7 +351,7 @@ export default class DatePicker extends Component {
 
     changePanel = (panel) => {
         this.setState({
-            panel,
+            panel
         });
     }
 
@@ -367,28 +383,31 @@ export default class DatePicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
+            dateCellRender,
+            monthCellRender,
             ...others
         } = this.props;
 
         const { visible, value, dateInputStr, timeInputStr, panel, inputing } = this.state;
 
         const datePickerCls = classnames({
-            [`${prefix}date-picker`]: true,
+            [`${prefix}date-picker`]: true
         }, className);
 
         const triggerInputCls = classnames({
             [`${prefix}date-picker-input`]: true,
-            [`${prefix}error`]: false,
+            [`${prefix}error`]: false
         });
 
         const panelBodyClassName = classnames({
             [`${prefix}date-picker-body`]: true,
-            [`${prefix}date-picker-body-show-time`]: showTime,
+            [`${prefix}date-picker-body-show-time`]: showTime
         });
 
         const panelDateInputCls = classnames({
             [`${prefix}date-picker-panel-input`]: true,
-            [`${prefix}focus`]: panel === PANEL.DATE,
+            [`${prefix}focus`]: panel === PANEL.DATE
         });
 
         if (rtl) {
@@ -396,11 +415,12 @@ export default class DatePicker extends Component {
         }
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur,
+            onPressEnter: this.onDateInputBlur
         };
 
         const dateInputValue = inputing === 'date' ? dateInputStr : ((value && value.format(this.format)) || '');
@@ -417,6 +437,8 @@ export default class DatePicker extends Component {
             shape="panel"
             value={value}
             format={this.format}
+            dateCellRender={dateCellRender}
+            monthCellRender={monthCellRender}
             onSelect={this.onSelectCalendarPanel}
             defaultVisibleMonth={defaultVisibleMonth}
             onVisibleMonthChange={onVisibleMonthChange}
@@ -437,7 +459,7 @@ export default class DatePicker extends Component {
 
             const panelTimeInputCls = classnames({
                 [`${prefix}date-picker-panel-input`]: true,
-                [`${prefix}focus`]: panel === PANEL.TIME,
+                [`${prefix}focus`]: panel === PANEL.TIME
             });
 
             timeInput = (<Input
@@ -472,7 +494,7 @@ export default class DatePicker extends Component {
 
         const panelBody = ({
             [PANEL.DATE]: datePanel,
-            [PANEL.TIME]: timePanel,
+            [PANEL.TIME]: timePanel
         })[panel];
 
         const allowClear = value && hasClear;

@@ -21,7 +21,7 @@ export default class Group extends Component {
          * 菜单项
          */
         children: PropTypes.node,
-        parentMode: PropTypes.oneOf(['inline', 'popup']),
+        parentMode: PropTypes.oneOf(['inline', 'popup'])
     }
 
     render() {

@@ -83,7 +83,7 @@ class DateTable extends PureComponent {
                     [`${prefix}calendar-cell-current`]: isToday,
                     [`${prefix}inrange`]: isInRange,
                     [`${prefix}selected`]: isSelected,
-                    [`${prefix}disabled`]: cellContent && isDisabled,
+                    [`${prefix}disabled`]: cellContent && isDisabled
                 });
 
                 weekElements.push(<td

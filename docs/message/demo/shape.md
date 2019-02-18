@@ -51,7 +51,7 @@ class Demo extends React.Component {
         return (
             <div className="message-shape-demo">
                 <span className="demo-label">Select Shape：</span>
-                <Radio.Group defaultValue="inline"  dataSource={list} value={this.state.shape} onChange={this.handleSelect} />
+                <Radio.Group defaultValue="inline" dataSource={list} value={this.state.shape} onChange={this.handleSelect} />
 
 
                 {types.map(type => (

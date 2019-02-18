@@ -98,7 +98,7 @@ class Loading extends React.Component {
             const backgroundColor = color;
             const fusionReactorCls = classNames({
                 [`${prefix}loading-fusion-reactor`]: true,
-                [`${prefix}loading-medium-fusion-reactor`]: size === 'medium',
+                [`${prefix}loading-medium-fusion-reactor`]: size === 'medium'
             });
             indicatorDom = (<div className={fusionReactorCls}>
                 <span className={dotCls} style={{backgroundColor}}></span>
@@ -118,14 +118,14 @@ class Loading extends React.Component {
         const tipCls = classNames({
             [`${prefix}loading-tip`]: true,
             // 默认非 right就是 bottom
-            [`${prefix}loading-right-tip`]: tipAlign === 'right',
+            [`${prefix}loading-right-tip`]: tipAlign === 'right'
         });
 
         const others = obj.pickOthers(Loading.propTypes, this.props);
 
         const contentCls = classNames({
             [`${prefix}loading-component`]: visible,
-            [`${prefix}loading-wrap`]: true,
+            [`${prefix}loading-wrap`]: true
         });
 
         return fullScreen ?

@@ -75,7 +75,7 @@ export default class FixedSlider extends React.Component {
         onChange: noop,
         onProcess: noop,
         tipRender: value => value,
-        reverse: false,
+        reverse: false
     }
 
     constructor(props) {

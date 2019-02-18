@@ -9,7 +9,7 @@ export default class ExpandedRow extends React.Component {
     }
 
     static defaultProps = {
-        ...Row.defaultProps,
+        ...Row.defaultProps
     }
 
     static contextTypes = {
@@ -47,7 +47,7 @@ export default class ExpandedRow extends React.Component {
             }
             if (lockType) {
                 return (
-                    openRowKeys.indexOf(record[primaryKey]) > -1 ? <tr className={`${prefix}table-expanded-row`}  key={`expanded-${index}`}>
+                    openRowKeys.indexOf(record[primaryKey]) > -1 ? <tr className={`${prefix}table-expanded-row`} key={`expanded-${index}`}>
                         <td colSpan={colSpan} ref={(cell) => cellRef(index, 0, cell)}>&nbsp;</td>
                     </tr> : null
                 );

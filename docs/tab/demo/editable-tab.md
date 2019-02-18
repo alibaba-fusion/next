@@ -25,7 +25,7 @@ class EditableTabPane extends React.Component {
         super(props);
         this.state = {
             tabTitle: props.defaultTitle,
-            editable: false,
+            editable: false
         };
     }
 

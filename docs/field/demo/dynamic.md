@@ -31,7 +31,7 @@ class Demo extends React.Component {
 
         this.field = new Field(this, {
             parseName: true,
-            autoUnmount: true,
+            autoUnmount: true
         });
     }
 
@@ -43,7 +43,7 @@ class Demo extends React.Component {
     add = () => {
         const { tableSource } = this.state;
         tableSource.push({
-            id: ++this.idx,
+            id: ++this.idx
         });
 
         this.setState({ tableSource });
