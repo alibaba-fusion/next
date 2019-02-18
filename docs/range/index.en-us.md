@@ -47,6 +47,6 @@ Range Component is used to select a value in a range by dragging slider. Normall
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Control+Shift+Right Arrow    | control the slider to move to the right                         |
-| Control+Shift+Left Arrow    | control the slider to move to the left                         |
+| Right Arrow    | control the slider to move to the right                         |
+| Left Arrow    | control the slider to move to the left                         |
 | Tab       | switch to other slider                 |

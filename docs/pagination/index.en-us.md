@@ -43,10 +43,6 @@ When there is a lot of content to show when paged load processing is needed.
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Up Arrow    | navigate to previous item                          |
-| Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the right one |
-| Left Arrow  | navigation to the left one   |
-| Enter       | make sure to jump to the appropriate page                |
-
-
+| Tab | switch page |
+| Space | click the button |
+| Enter | click the button |

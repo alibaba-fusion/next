@@ -60,12 +60,3 @@ The Slider are independent of each other and there is no logical relationship be
 ## Other
 
 next-slider is forked from [react-slick](https://github.com/akiran/react-slick)
-
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Up Arrow    | navigate to previous item                          |
-| Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the right one |
-| Left Arrow  | navigation to the left one   |
-| Enter       | control component button                |
-

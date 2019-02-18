@@ -53,6 +53,5 @@ Disable animation with `animation={false}`
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Right Arrow | open the submenu, navigate to the first item of the submenu; horizontal menu bar first level, navigate to the right one |
-| Left Arrow  | close the submenu, navigate to the parent menu; horizontal menu bar first level, navigation to the left one   |
-| Space       | select the current tab                          |
+| Right Arrow | switch to previous Tab.Item |
+| Left Arrow  | switch to next Tab.Item     |

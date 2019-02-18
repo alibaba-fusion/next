@@ -36,5 +36,5 @@
 | :---------- | :------------------------------ |
 | Up Arrow    | 导航到上一项                          |
 | Down Arrow  | 导航到下一项                          |
-| Right Arrow | 导航到右一项 |
-| Left Arrow  | 导航到左一项   |
+| Right Arrow | 导航到下一项 |
+| Left Arrow  | 导航到上一项   |

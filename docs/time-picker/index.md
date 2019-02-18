@@ -52,14 +52,3 @@
 | popupProps       | 弹层属性                                                                                                                                                              | Object    | -          |
 | disabled         | 是否禁用                                                                                                                                                              | Boolean   | false      |
 | onChange         | 时间值改变时的回调<br><br>**签名**:<br>Function(value: Object/String) => void<br>**参数**:<br>_value_: {Object/String} 时间对象或时间字符串                                              | Function  | func.noop  |
-
-
-## ARIA and KeyBoard
-
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Up Arrow    | 导航到上一项                          |
-| Down Arrow  | 导航到下一项                          |
-| Right Arrow | 导航到右一项 |
-| Left Arrow  | 导航到左一项   |
-| Enter       | 确认输入时间，点击取消按钮取消输入时间                 |

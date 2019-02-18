@@ -32,8 +32,7 @@
 
 | 按键          | 说明                              |
 | :---------- | :------------------------------ |
-| Up Arrow    | 导航到上一项                          |
-| Down Arrow  | 导航到下一项                          |
-| Right Arrow | 导航到右一项 |
-| Left Arrow  | 导航到左一项   |
-| Space       | 选中星级等级                 |
+| Up Arrow | 增加星级评分 |
+| Down Arrow | 减少星级评分 |
+| Right Arrow | 增加星级评分 |
+| Left Arrow | 减少星级评分 |

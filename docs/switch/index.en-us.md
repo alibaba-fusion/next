@@ -43,9 +43,5 @@ The Switch Component toggles the state. The options in the switch, as well as it
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Up Arrow    | navigate to previous item                          |
-| Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the right one |
-| Left Arrow  | navigation to the left one   |
-| Enter       | toggle selected or checked                |
-| Space       | toggle selected or checked                          |
+| Enter       | toggle checked                |
+| Space       | toggle checked                |

@@ -48,10 +48,5 @@ Number input and auto correct data.
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Up Arrow    | navigate to previous item                          |
-| Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the right one |
-| Left Arrow  | navigation to the left one   |
-| Enter       | click the button of numberPicker component                |
-
-
+| Up Arrow    | increase the number                          |
+| Down Arrow  | decrease the number                          |

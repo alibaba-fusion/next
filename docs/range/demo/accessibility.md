@@ -2,14 +2,14 @@
 
 - order: 8
 
-组件已支持无障碍。
+通过Tab键或其他方式使滑块被聚焦之后，可以通过按下键盘的左右箭头来改变滑块的位置，目前只有单滑块支持无障碍。
 
 :::lang=en-us
 # Accessibility
 
 - order: 8
 
-Components already support accessibility.
+After the slider is focused by Tab or other approaches, you can change its position by pressing the left or right arrows on the keyboard. Currently, only a single slider supports accessibility.
 :::
 
 ---

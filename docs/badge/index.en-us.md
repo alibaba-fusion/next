@@ -28,9 +28,3 @@ You can add class as below, so that messages will not appear on pages, but can b
 | content       | customized node content                                               | ReactNode     | -     |
 | overflowCount | max number to display                                              | Number/String | 99    |
 | dot           | display a red dot, not a number                                        | Boolean       | false |
-
-## ARIA and KeyBoard
-
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-|     |                          |

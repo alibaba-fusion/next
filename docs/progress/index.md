@@ -33,9 +33,3 @@
 | textRender      | 文本渲染函数<br><br>**签名**:<br>Function(percent: Number, option: Object) => ReactNode<br>**参数**:<br>_percent_: {Number} 当前的进度信息<br>_option_: {Object} 额外的参数<br>**返回值**:<br>{ReactNode} 返回文本节点<br> | Function | percent => `${Math.floor(percent)}%` |
 | color           | 进度条颜色, 显示优先级: color > progressive > state                                                                                                                                                   | String   | -                                    |
 | backgroundColor | 背景色                                                                                                                                                                                         | String   | -                                    |
-## ARIA and KeyBoard
-
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Right Arrow | 导航到下一条进度条 |
-| Left Arrow  | 导航到上一条进度条   |

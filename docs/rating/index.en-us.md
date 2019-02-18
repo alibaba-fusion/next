@@ -32,9 +32,7 @@ Rating component is usually used for customer feedback.
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Up Arrow    | navigate to previous item                          |
-| Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the right one |
-| Left Arrow  | navigation to the left one   |
-| Space       | select star rating                          |
-
+| Up Arrow    | increase star rating                          |
+| Down Arrow  | decrease star rating                          |
+| Right Arrow | increase star rating |
+| Left Arrow  | decrease star rating |

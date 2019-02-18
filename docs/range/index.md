@@ -47,6 +47,6 @@
 
 | 按键          | 说明                              |
 | :---------- | :------------------------------ |
-| Control+Shift+Right Arrow | 控制滑块往右移动 |
-| Control+Shift+Left Arrow  | 控制滑块向左移动   |
+| Right Arrow | 控制滑块往右移动 |
+| Left Arrow  | 控制滑块向左移动   |
 | Tab       | 切换滑动条                 |

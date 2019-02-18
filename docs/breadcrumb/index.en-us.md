@@ -35,5 +35,5 @@ It is used to inform the user of the current position and the position of the cu
 | :---------- | :------------------------------ |
 | Up Arrow    | navigate to previous item                          |
 | Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the right one |
-| Left Arrow  | navigation to the left one   |
+| Right Arrow | navigate to the next one |
+| Left Arrow  | navigation to the previous one   |
