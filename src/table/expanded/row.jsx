@@ -52,7 +52,7 @@ export default class ExpandedRow extends React.Component {
                     </tr> : null
                 );
             }
-            content = expandedRowRender(record, (index - 1) / 2);
+            content = expandedRowRender(record, index);
             if (!React.isValidElement(content)) {
                 content = (
                     <div className={`${prefix}table-cell-wrapper`}>
