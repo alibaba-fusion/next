@@ -13,7 +13,7 @@
 
 `@alifd/next` usually used with [Fusion Design](https://fusion.design) to improving designer-developer collaboration and development efficiency. Designer can customize the UI of components and release an npm theme package. Developer can use this theme package directly, and don't need to care about the UI refactoring. It saves the workload of reductive degree review repeatedly with designers, and greatly improves the development efficiency.
 
-![](https://img.alicdn.com/tfs/TB1DrcbGQvoK1RjSZFwXXciCFXa-1300-488.png)
+![](https://img.alicdn.com/tfs/TB1gia.HkvoK1RjSZFDXXXY3pXa-1286-490.png)
 
 # Quick Start
 

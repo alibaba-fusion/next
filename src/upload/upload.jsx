@@ -47,6 +47,10 @@ class Upload extends Base {
         listType: PropTypes.oneOf(['text', 'image', 'card']),
         list: PropTypes.any,
         /**
+         * 文件名字段
+         */
+        name: PropTypes.string,
+        /**
          * 上传额外传参
          */
         data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
