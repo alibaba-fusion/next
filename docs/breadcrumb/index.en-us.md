@@ -33,7 +33,4 @@ It is used to inform the user of the current position and the position of the cu
 
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
-| Up Arrow    | navigate to previous item                          |
-| Down Arrow  | navigate to next item                          |
-| Right Arrow | navigate to the next one |
-| Left Arrow  | navigation to the previous one   |
+| Tab    | switch to next item                          |
