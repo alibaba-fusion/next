@@ -134,7 +134,7 @@ class Transfer extends Component {
         /**
          * 自定义国际化文案对象
          */
-        locale: PropTypes.object
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -159,18 +159,13 @@ class Transfer extends Component {
             };
             loop(data.label);
 
-            if (labelString.length >= searchedValue.length &&
-                labelString.indexOf(searchedValue) > -1) {
-                return true;
-            }
-
-            return false;
+            return labelString.length >= searchedValue.length &&
+                labelString.indexOf(searchedValue) > -1;
         },
         onSearch: () => {},
         notFoundContent: 'Not Found',
         titles: [],
-        // eslint-disable-next-line
-        operations: [<Icon type="arrow-right" />, <Icon type="arrow-left" />],
+        operations: [],
         defaultLeftChecked: [],
         defaultRightChecked: [],
         sortable: false,
@@ -181,8 +176,13 @@ class Transfer extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const { value, defaultValue, defaultLeftChecked, defaultRightChecked, dataSource } = props;
-
+        const { value, defaultValue, defaultLeftChecked, defaultRightChecked, dataSource, rtl, operations } = props;
+        if (operations.length === 0) {
+            const iconProp = rtl ? { dir: 'rtl'} : {};
+            // eslint-disable-next-line
+            operations.push(<Icon {...iconProp} type="arrow-right" />);
+            operations.push(<Icon {...iconProp} type="arrow-left" />);
+        }
         const { left, right } = this.filterCheckedValue(
             this.normalizeValue(defaultLeftChecked),
             this.normalizeValue(defaultRightChecked),
@@ -428,7 +428,7 @@ class Transfer extends Component {
     render() {
         const { prefix, mode, disabled, className, dataSource, locale, showSearch, filter, onSearch,
             leftDisabled, rightDisabled, searchPlaceholder, notFoundContent, titles, listClassName,
-            listStyle, itemRender, sortable } = this.props;
+            listStyle, itemRender, sortable, rtl } = this.props;
         const { value, leftCheckedValue, rightCheckedValue } = this.state;
         const itemValues = dataSource.map(item => item.value);
         const leftDatasource = this.groupDatasource(this.leftValue, itemValues, dataSource);
@@ -453,6 +453,9 @@ class Transfer extends Component {
         };
         const others = pickOthers(Object.keys(Transfer.propTypes), this.props);
 
+        if (rtl) {
+            others.dir = 'rtl';
+        }
         return (
             <div className={cx(`${prefix}transfer`, className)} {...others}>
                 <TransferPanel {...panelProps}

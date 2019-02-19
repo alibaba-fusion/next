@@ -65,7 +65,7 @@ describe('Transfer', () => {
 
     it('should render by defaultLeftChecked and defaultRightChecked', () => {
         wrapper = mount(<Transfer defaultValue={['1']} defaultLeftChecked={['2']}
-        defaultRightChecked={['1']} dataSource={dataSource} />);
+            defaultRightChecked={['1']} dataSource={dataSource} />);
 
         assert(findFooterCount(wrapper, 0) === '1/3');
         assert(findFooterCheckbox(wrapper, 0).hasClass('indeterminate'));
@@ -450,6 +450,12 @@ describe('Transfer', () => {
             assert(!hasClass(item.instance(), 'next-highlight'));
             done();
         }, 1000);
+    });
+
+    it('should support rtl prop', () => {
+        wrapper = mount(<Transfer rtl defaultLeftChecked={['0']} dataSource={[{ label: '0', value: '0' }]} />);
+        assert(wrapper.find('div').at(0).props().dir === 'rtl');
+
     });
 
     it('should support sorting items', () => {
