@@ -116,6 +116,7 @@ const renderSlides = (specProps) => {
             'data-index': index,
             className: cssClasses,
             tabIndex: '-1',
+            dir: specProps.rtl ? 'rtl' : 'ltr',
             // server-side render depend on elements of their own style
             style: !dom.hasDOM ? { outline: 'none', ...childStyle, ...child.props.style } : { outline: 'none', ...child.props.style, ...childStyle},
             onClick
