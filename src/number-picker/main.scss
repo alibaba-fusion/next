@@ -20,6 +20,7 @@
 
         .#{$css-prefix}input {
             width: 100%;
+
             input {
                 padding-right: 2px;
             }
@@ -31,6 +32,7 @@
             &:hover {
                 z-index: 1;
             }
+
             &:first-child {
                 border-right: none;
                 border-top: none;
@@ -39,6 +41,7 @@
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
             }
+
             &:last-child {
                 border-right: none;
                 border-bottom: none;
@@ -49,6 +52,7 @@
                 border-top-right-radius: 0;
             }
         }
+
         #{$number-picker-prefix}-handler {
             opacity: 0;
             transition: opacity .24s linear .1s;
@@ -67,43 +71,55 @@
             .#{$css-prefix}btn {
                 width: $number-picker-normal-m-button-width;
             }
+
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-normal-m-button-icon-size);
             }
         }
+
         &.#{$css-prefix}large {
             .#{$css-prefix}btn {
                 width: $number-picker-normal-l-button-width;
             }
+
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-normal-l-button-icon-size);
             }
         }
     }
+
     &-inline {
         input {
             text-align: center;
         }
+
         &.#{$css-prefix}medium {
             width: 100px;
+
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-m-button-icon-size);
             }
+
             .#{$css-prefix}btn:first-child {
                 margin-right: $number-picker-inline-m-button-margin;
             }
+
             .#{$css-prefix}btn:last-child {
                 margin-left: $number-picker-inline-m-button-margin;
             }
         }
+
         &.#{$css-prefix}large {
             width: 128px;
+
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-l-button-icon-size);
             }
+
             .#{$css-prefix}btn:first-child {
                 margin-right: $number-picker-inline-l-button-margin;
             }
+
             .#{$css-prefix}btn:last-child {
                 margin-left: $number-picker-inline-l-button-margin;
             }
@@ -113,9 +129,41 @@
             &.#{$css-prefix}medium {
                 width: $form-element-medium-height;
             }
+
             &.#{$css-prefix}large {
                 width: $form-element-large-height;
             }
         }
+    }
+}
+
+#{$number-picker-prefix}-normal[dir="rtl"] {
+    .#{$css-prefix}btn {
+        &:first-child {
+            border-right: 1px solid $color-line1-3;
+            border-left: 0;
+            border-top-left-radius: $form-element-medium-corner;
+            border-top-right-radius: 0;
+        }
+
+        &:last-child {
+            border-right: 1px solid $color-line1-3;
+            border-left: 0;
+            border-bottom-left-radius: $form-element-medium-corner;
+            border-bottom-right-radius: 0;
+        }
+    }
+}
+#{$number-picker-prefix}-inline[dir="rtl"] {
+    .#{$css-prefix}btn {
+        border-radius: 0;
+    }
+    .#{$css-prefix}before .#{$css-prefix}btn {
+        border-top-right-radius: $form-element-medium-corner !important;
+        border-bottom-right-radius: $form-element-medium-corner !important;
+    }
+    .#{$css-prefix}after .#{$css-prefix}btn {
+        border-top-left-radius: $form-element-medium-corner !important;
+        border-bottom-left-radius: $form-element-medium-corner !important;
     }
 }
