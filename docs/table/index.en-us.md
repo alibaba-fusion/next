@@ -157,8 +157,3 @@ ReactDOM.render(
 | ---- | ------ | ------------------------------- | -------- |
 | cell | cell rendering logic | ReactElement/ReactNode/Function | () => '' |
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> b996f7ca88e8497a6067a2a604c0d5840c26040f
