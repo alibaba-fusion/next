@@ -12,7 +12,7 @@
 
 ### 何时使用
 
-表单布局、校验、数据提交操作时用到。
+表单布局、校验、数据提交操作时用到。 组件的设计思想可以看这篇文章 <a href="https://zhuanlan.zhihu.com/p/56280821" target="_blank">https://zhuanlan.zhihu.com/p/56280821</a>
 
 ### 注意事项
 
