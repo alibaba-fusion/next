@@ -42,3 +42,17 @@
 | visible            | 自定义渲染的的下拉框                                                                                                                 | Boolean       | -         |
 | hasClear           | 是否显示清除按钮                                                                                                                   | Boolean       | false     |
 | disabled           | 是否禁用                                                                                                                       | Boolean       | false     |
+
+
+
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Enter       | 触发onSearch事件                |   |
+
+
+
+
+

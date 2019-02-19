@@ -91,3 +91,10 @@
 | ------------ | ---------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
 | getInputNode | 获取真正input节点                                                                                                                  | Function |     |
 | focus        | 获取焦点<br><br>**签名**:<br> Function(start:Number, end: Number)<br>**参数**:<br>_start_: {Number} 光标起始位置<br>_end_: {Number} 选择结束位置 | Function |     |
+
+
+## ARIA and KeyBoard
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Enter       | 触发onKeyDown事件                |
+| Any         | 触发onChange事件                |

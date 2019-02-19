@@ -71,3 +71,15 @@ DatePicker are used to select a single date for an input.
 | popupStyle          | Custom style of popup  | Object         | -            |
 | popupClassName      | Custom className of popup   | String         | -            |
 | popupProps          | Props of popup  | Object         | -            |
+
+
+
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                           |
+| :---------- | :------------------------------ |
+| number key    | Need to manual input  the date, the specified date format        |
+| Enter       | open the calendar or select date                           |
+| Esc         | close the calendar                  |
+ 
