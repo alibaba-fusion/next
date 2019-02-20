@@ -35,7 +35,7 @@ ReactDOM.render(
         <Input state="error"
             multiple
             placeholder="error"
-            size="small"
+            size="large"
             aria-live="assertive"
             aria-label="error" /><br/><br/>
 

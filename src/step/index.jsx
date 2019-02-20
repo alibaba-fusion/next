@@ -9,8 +9,10 @@ export default ConfigProvider.config(Step, {
         if ('type' in props) {
             deprecated('type', 'shape', 'Step');
 
-            const { type, ...others } = props;
-            props = { shape: type, ...others };
+            let { type, direction, labelPlacement, ...others } = props;
+            direction = direction === 'vertical' ? 'ver' : direction === 'horizontal' ? 'hoz' : direction;
+            labelPlacement = labelPlacement === 'vertical' ? 'ver' : labelPlacement === 'horizontal' ? 'hoz' : labelPlacement;
+            props = { shape: type, direction, labelPlacement, ...others };
         }
 
         return props;

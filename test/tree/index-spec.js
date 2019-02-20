@@ -532,6 +532,15 @@ describe('Tree', () => {
         assertAE(KEYCODE.DOWN, () => findRealItem(1, 0));
         assertAE(KEYCODE.LEFT, () => findRealItem(0, 0));
     });
+
+    it('should support rtl', () => {
+        ReactDOM.render(<Tree rtl dataSource={cloneData(dataSource, {
+            2: {
+                disabled: false
+            }
+        })} />, mountNode);
+        assert(document.querySelector('.next-tree').dir === 'rtl');
+    });
 });
 
 function assertTree(props, mountNode) {

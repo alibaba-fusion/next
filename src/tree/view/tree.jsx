@@ -1,7 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import ConfigProvider from '../../config-provider';
 import { func, dom, obj, KEYCODE } from '../../util';
 import TreeNode from './tree-node';
 import {
@@ -20,9 +19,10 @@ const { pickOthers, isPlainObject } = obj;
 /**
  * Tree
  */
-class Tree extends Component {
+export default class Tree extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         pure: PropTypes.bool,
         className: PropTypes.string,
         /**
@@ -235,6 +235,7 @@ class Tree extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         pure: false,
         showLine: false,
         selectable: true,
@@ -870,6 +871,7 @@ class Tree extends Component {
     }
 
     renderByDataSource() {
+        const { rtl } = this.props;
         const loop = (data, prefix = '0') => {
             return data.map((item, index) => {
                 const pos = `${prefix}-${index}`;
@@ -882,7 +884,7 @@ class Tree extends Component {
                 if (children && children.length) {
                     props.children = loop(children, pos);
                 }
-                const node = <TreeNode key={key} {...props} />;
+                const node = <TreeNode rtl={rtl} key={key} {...props} />;
                 this._k2n[key].node = node;
                 return node;
             });
@@ -892,6 +894,7 @@ class Tree extends Component {
     }
 
     renderByChildren() {
+        const { rtl } = this.props;
         const loop = (children, prefix = '0') => {
             return Children.map(children, (child, index) => {
                 const pos = `${prefix}-${index}`;
@@ -902,6 +905,7 @@ class Tree extends Component {
                 }
 
                 props._key = key;
+                props.rtl = rtl;
 
                 const node = cloneElement(child, props);
                 this._k2n[key].node = node;
@@ -913,8 +917,12 @@ class Tree extends Component {
     }
 
     render() {
-        const { prefix, className, dataSource, showLine, isNodeBlock, isLabelBlock } = this.props;
+        const { prefix, rtl, className, dataSource, showLine, isNodeBlock, isLabelBlock } = this.props;
         const others = pickOthers(Object.keys(Tree.propTypes), this.props);
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const newClassName = cx({
             [`${prefix}tree`]: true,
@@ -932,7 +940,3 @@ class Tree extends Component {
         );
     }
 }
-
-export default ConfigProvider.config(Tree, {
-    exportNames: ['setFocusKey']
-});

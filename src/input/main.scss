@@ -42,7 +42,6 @@
         vertical-align: middle;
         background-color: transparent;
         color: $input-text-color;
-        @include input-placeholder($input-placeholder-color);
 
         &::-ms-clear {
             display: none;
@@ -204,6 +203,11 @@
         color: $input-label-color;
     }
 
+    input,
+    textarea {
+        @include input-placeholder($input-placeholder-color);
+    }
+
     &.#{$css-prefix}disabled {
         @include input-disabled();
 
@@ -311,6 +315,7 @@
         &:first-child {
             border-bottom-right-radius: 0 !important;
             border-top-right-radius: 0 !important;
+            //TODO: removed in 2.x
             > * {
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
@@ -319,6 +324,7 @@
         &:last-child {
             border-bottom-left-radius: 0 !important;
             border-top-left-radius: 0 !important;
+            //TODO: removed in 2.x
             > * {
                 border-bottom-left-radius: 0 !important;
                 border-top-left-radius: 0 !important;

@@ -141,3 +141,27 @@
         display: table-cell;
     }
 }
+
+#{$form-prefix}[dir="rtl"] {
+    #{$form-prefix}-item-label {
+        text-align: left;
+        padding-left: $form-label-padding-r;
+        padding-right: 0;
+    }
+    &.#{$css-prefix}inline {
+        #{$form-prefix}-item {
+            &:not(:last-child) {
+                margin-left: $form-inline-m-item-margin-r;
+                margin-right: 0;
+            }
+            &.#{$css-prefix}large:not(:last-child) {
+                margin-left: $form-inline-l-item-margin-r;
+                margin-right: 0;
+            }
+            &.#{$css-prefix}small:not(:last-child) {
+                margin-left: $form-inline-s-item-margin-r;
+                margin-right: 0;
+            }
+        }
+    }
+}

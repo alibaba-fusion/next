@@ -108,7 +108,8 @@ class NumberPicker extends React.Component {
         /**
          * 减少按钮的props
          */
-        downBtnProps: PropTypes.object
+        downBtnProps: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -399,7 +400,7 @@ class NumberPicker extends React.Component {
     }
 
     render() {
-        const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state, upBtnProps, downBtnProps } = this.props;
+        const { type, prefix, rtl, disabled, style, className, size, max, min, autoFocus, editable, state, upBtnProps, downBtnProps } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -450,7 +451,7 @@ class NumberPicker extends React.Component {
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
 
-        return (<span className={cls} style={style} {...dataAttrs}>
+        return (<span className={cls} style={style} dir={rtl ? 'rtl' : undefined} {...dataAttrs}>
             <Input
                 {...others}
                 aria-valuemax={max !== Infinity ? max : undefined}
