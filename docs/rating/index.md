@@ -30,9 +30,9 @@
 
 ## ARIA and KeyBoard
 
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Up Arrow | 增加星级评分 |
-| Down Arrow | 减少星级评分 |
+| 按键          | 说明     |
+| :---------- | :----- |
+| Up Arrow    | 增加星级评分 |
+| Down Arrow  | 减少星级评分 |
 | Right Arrow | 增加星级评分 |
-| Left Arrow | 减少星级评分 |
+| Left Arrow  | 减少星级评分 |

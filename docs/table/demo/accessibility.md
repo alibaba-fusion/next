@@ -50,10 +50,10 @@ class Demo extends React.Component {
                 break;
             }
         }
-        result.splice(k, 1)
+        result.splice(k, 1);
     }
     getRow(item) {
-        this.setState({ id: item.id })
+        this.setState({ id: item.id });
     }
     render() {
         return (<div>
@@ -63,7 +63,7 @@ class Demo extends React.Component {
                 <Table.Column title="Time" dataIndex="time"/>
                 <Table.Column title="operate" cell={<a href="javascript:;" onClick={() => this.onclick(this.state.id)}>Remove</a>}/>
             </Table>
-        </div>)
+        </div>);
     }
 }
 ReactDOM.render(<Demo />, mountNode);

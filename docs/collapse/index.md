@@ -35,7 +35,7 @@
 
 ## ARIA and KeyBoard
 
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Tab  | 切换到下一个collapse panel  |
-| Space| 切换collapse的折叠状态 |
+| 按键    | 说明                   |
+| :---- | :------------------- |
+| Tab   | 切换到下一个collapse panel |
+| Space | 切换collapse的折叠状态      |

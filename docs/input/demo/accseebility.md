@@ -22,7 +22,7 @@ function onChange(v) {
     console.log(v);
 }
 function onkeyDown(v) {
-    console.log(v)
+    console.log(v);
 }
 ReactDOM.render(<div>
     <Input size="large" placeholder="please input" onChange={onChange} onKeyDown={onkeyDown} aria-label="please input" /><br /><br />

@@ -52,12 +52,8 @@
 | onChange       | 选中状态变化时触发的事件<br><br>**签名**:<br>Function(checked: Boolean, e: Event) => void<br>**参数**:<br>_checked_: {Boolean} 是否选中<br>_e_: {Event} Dom 事件对象 | Function | func.noop |
 | disabled       | 标签是否被禁用                                                                                                                                      | Boolean  | -         |
 
-
 ## ARIA and KeyBoard
 
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| SPACE       | 选择,取消或删除当前标签      |
- 
-
-
+| 按键    | 说明           |
+| :---- | :----------- |
+| SPACE | 选择,取消或删除当前标签 |
