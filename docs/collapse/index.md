@@ -32,3 +32,10 @@
 | -------- | -------- | --------- | --- |
 | disabled | 是否禁止用户操作 | Boolean   | -   |
 | title    | 标题       | ReactNode | -   |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Tab  | 切换到下一个collapse panel  |
+| Space| 切换collapse的折叠状态 |
