@@ -158,6 +158,7 @@
     .#{$css-prefix}btn {
         border-radius: 0;
     }
+    //TODO: remove !important in 2.x
     .#{$css-prefix}before .#{$css-prefix}btn {
         border-top-right-radius: $form-element-medium-corner !important;
         border-bottom-right-radius: $form-element-medium-corner !important;
