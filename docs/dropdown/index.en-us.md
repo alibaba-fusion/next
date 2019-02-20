@@ -34,3 +34,14 @@ You can storage operation command with dropdown component when there are too muc
 | hasMask         | display mask or not                                                                                                                                                                                          | Boolean        | false                                      |
 | cache           | reserve child element or not after hidden overlay                                                                                                                                                                                      | Boolean        | false                                      |
 | animation       | animation play mode, support object value: { in: 'enter-class', out: 'leave-class' }, there is no animation if set `false`                                                                                                                 | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | in vertical mode, at the same level navigation, navigate to previous item   |
+| Down Arrow  | in vertical mode, at the same level navigation, navigate to next item       |
+| Right Arrow | in vertical mode, open the submenu, navigate to the first item of the submenu; in horizontal mode, navigate at the same level, navigate to the next one |
+| Left Arrow  | in vertical mode, close the submenu, navigate to the parent menu; in horizontal mode, navigate at the same level, navigate to the previous one   |
+| Enter       | open submenu and navigate to the first item of the submenu                |
+| Esc         | close submenu and navigate to the parent menu item                  |
