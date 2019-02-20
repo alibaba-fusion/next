@@ -102,10 +102,12 @@ export default class Row extends React.Component {
                 this._getNotRenderCellIndex(colIndex, rowIndex, attrs.colSpan || 1, attrs.rowSpan || 1);
             }
 
+            const cellClass = attrs.className;
             const className = classnames({
                 first: lockType !== 'right' && colIndex === 0,
                 last: lockType !== 'left' && (colIndex === columns.length - 1 || colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
-                [child.className]: child.className
+                [child.className]: child.className,
+                [cellClass]: cellClass
             });
 
             return (<Cell key={colIndex}
