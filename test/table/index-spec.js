@@ -474,4 +474,16 @@ describe('Table', () => {
             }, 100)
         })
     });
+
+    it('should support rtl', () => {
+        timeout({
+            children: [
+                <Table.Column dataIndex='id' lock width={200}></Table.Column>,
+                <Table.Column dataIndex='name' width={200}></Table.Column>
+            ],
+            rtl: true
+        }, () => {
+            assert(wrapper.find('.next-table[dir="rtl"]').length === 3);
+        })
+    });
 });

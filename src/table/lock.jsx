@@ -265,10 +265,11 @@ export default function lock(BaseComponent) {
 
         onLockBodyScroll = () => {
             if (this.isLock()) {
+                const { rtl } = this.props;
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
-                    lockRightTable = this.getWrapperNode('right'),
-                    lockLeftTable = this.getWrapperNode('left'),
+                    lockRightTable = rtl ? this.getWrapperNode('left') : this.getWrapperNode('right'),
+                    lockLeftTable = rtl ? this.getWrapperNode('right') : this.getWrapperNode('left'),
                     shadowClassName = 'shadow';
 
                 const x = this.bodyNode.scrollLeft, y = this.bodyNode.scrollTop;
@@ -348,6 +349,7 @@ export default function lock(BaseComponent) {
 
         adjustBodySize() {
             if (this.isLock()) {
+                const { rtl } = this.props;
                 const body = this.bodyNode,
                     lockLeftBody = this.bodyLeftNode,
                     lockRightBody = this.bodyRightNode,
@@ -361,7 +363,8 @@ export default function lock(BaseComponent) {
 
                 lockLeftBody && dom.setStyle(lockLeftBody, 'max-height', lockBodyHeight);
                 lockRightBody && dom.setStyle(lockRightBody, 'max-height', lockBodyHeight);
-                lockRightBodyWrapper && dom.setStyle(lockRightBodyWrapper, 'right', width);
+
+                lockRightBodyWrapper && dom.setStyle(lockRightBodyWrapper, rtl ? 'left' : 'right', width);
             }
         }
 

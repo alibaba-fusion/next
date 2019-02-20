@@ -49,7 +49,7 @@ export default class Cell extends React.Component {
     render() {
         /* eslint-disable no-unused-vars */
         const {prefix, className, cell, value, resizable, colIndex, rowIndex, record, context, align, style = {}, component: Tag,
-            children, title, width, innerStyle, primaryKey, __normalized, filterMode, filters, sortable, lock, pure, locale, ...others} = this.props;
+            children, title, width, innerStyle, primaryKey, __normalized, filterMode, filters, sortable, lock, pure, locale, rtl, ...others} = this.props;
         const tagStyle = {...style};
         const cellProps = {value, index: rowIndex, record, context};
         let content = cell;
@@ -60,6 +60,9 @@ export default class Cell extends React.Component {
         }
         if (align) {
             tagStyle.textAlign = align;
+            if (rtl) {
+                tagStyle.textAlign = align === 'left' ? 'right' : align === 'right' ? 'left' : align;
+            }
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,

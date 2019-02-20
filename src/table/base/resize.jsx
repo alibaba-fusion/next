@@ -5,6 +5,7 @@ import { events, dom } from '../../util';
 class Resize extends React.Component {
     static propTypes = {
         prefix: T.string,
+        rtl: T.bool,
         onChange: T.func,
         dataIndex: T.string
     }
@@ -22,7 +23,12 @@ class Resize extends React.Component {
     }
     onMouseMove = (e) => {
         const pageX = e.pageX;
-        const changedPageX = pageX - this.lastPageX;
+        let changedPageX = pageX - this.lastPageX;
+
+        if (this.props.rtl) {
+            changedPageX = -changedPageX;
+        }
+
         this.props.onChange(this.props.dataIndex, changedPageX);
         this.lastPageX = pageX;
     }
