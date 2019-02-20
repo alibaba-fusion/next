@@ -52,6 +52,8 @@ export default {
         total: '第{current}頁，共{total}頁',
         labelPrev: '上一頁，當前第{current}頁',
         labelNext: '下一頁，當前第{current}頁',
+        inputAriaLabel: '請輸入跳轉到第幾頁',
+        selectAriaLabel: '請選擇每頁顯示幾條',
         pageSize: '每頁顯示：'
     },
     Input: {

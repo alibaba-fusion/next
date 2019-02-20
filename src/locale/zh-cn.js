@@ -52,6 +52,8 @@ export default {
         total: '第{current}页，共{total}页',
         labelPrev: '上一页，当前第{current}页',
         labelNext: '下一页，当前第{current}页',
+        inputAriaLabel: '请输入跳转到第几页',
+        selectAriaLabel: '请选择每页显示几条',
         pageSize: '每页显示：'
     },
     Input: {

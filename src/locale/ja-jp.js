@@ -52,6 +52,8 @@ export default {
         total: '第{current}ページ、{total}ページ',
         labelPrev: '前のページ、当面の第{current}ページ',
         labelNext: '次のページ、当面の第{current}ページ',
+        inputAriaLabel: '数ページまでジャンプしてください',
+        selectAriaLabel: 'ページごとに数本表示してください',
         pageSize: 'ページサイズ：'
     },
     Input: {

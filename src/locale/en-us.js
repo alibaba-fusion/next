@@ -52,6 +52,8 @@ export default {
         total: 'Page {current}, {total} pages',
         labelPrev: 'Previous page, current page {current}',
         labelNext: 'Next page, current page {current}',
+        inputAriaLabel: 'Please enter what page to skip to',
+        selectAriaLabel: 'Please select how many items are displayed on each page',
         pageSize: 'Items per page:'
     },
     Input: {
