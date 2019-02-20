@@ -421,6 +421,17 @@ describe('Cascader', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('should support rtl', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(<Cascader id="cascader-style" rtl defaultValue={['2975']} dataSource={ChinaArea} style={{ width: '700px' }} listStyle={{ width: '200px' }} />, div);
+
+        assert(document.getElementById('cascader-style').dir === 'rtl');
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
 });
 
 function compareDOMAndData(wrapper, value, expandedValue) {
