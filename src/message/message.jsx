@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import locale from '../locale/zh-cn';
 import Icon from '../icon';
 import Animate from '../animate';
 import ConfigProvider from '../config-provider';
@@ -74,6 +75,7 @@ class Message extends Component {
          * 是否开启展开收起动画
          */
         animation: PropTypes.bool,
+        locale: PropTypes.object,
         rtl: PropTypes.bool
     };
 
@@ -87,7 +89,8 @@ class Message extends Component {
         closeable: false,
         onClose: noop,
         afterClose: noop,
-        animation: true
+        animation: true,
+        locale: locale.Message
     };
 
     state = {
@@ -113,7 +116,7 @@ class Message extends Component {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { prefix, pure, className, type, shape, size, title, children, defaultVisible, visible: propsVisible, iconType: icon, closeable, onClose, afterClose, animation, rtl, ...others } = this.props;
+        const { prefix, pure, className, type, shape, size, title, children, defaultVisible, visible: propsVisible, iconType: icon, closeable, onClose, afterClose, animation, rtl, locale, ...others } = this.props;
         /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
@@ -131,7 +134,7 @@ class Message extends Component {
         const newChildren = visible ?
             (<div role="alert" {...others} className={classes} dir={rtl ? 'rtl' : undefined}>
                 {closeable ?
-                    <a role="button" href="javascript:;" className={`${messagePrefix}-close`} onClick={this.onClose}>
+                    <a role="button" aria-label={locale.closeAriaLabel} href="javascript:;" className={`${messagePrefix}-close`} onClick={this.onClose}>
                         <Icon type="close" />
                     </a> : null}
                 <Icon className={`${messagePrefix}-symbol`} type={iconType} />

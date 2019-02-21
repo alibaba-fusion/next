@@ -103,7 +103,6 @@ export default class CascaderMenuItem extends Component {
             menu,
             onKeyDown: this.handleKeyDown,
             role: 'option',
-            'aria-expanded': expanded,
             ...others
         };
         if (!disabled) {

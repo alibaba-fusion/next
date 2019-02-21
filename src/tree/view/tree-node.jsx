@@ -350,9 +350,11 @@ export default class TreeNode extends Component {
 
     renderCheckbox() {
         const { checked, indeterminate, disabled, checkboxDisabled } = this.props;
+        const { label } = this.state;
 
         return (
             <Checkbox
+                aria-label={label}
                 checked={checked}
                 indeterminate={indeterminate}
                 disabled={disabled || checkboxDisabled}
@@ -477,13 +479,15 @@ export default class TreeNode extends Component {
         innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
 
         return (
-            <li className={newClassName} {...others}>
+            <li
+                role="treeitem"
+                aria-selected={selected}
+                aria-disabled={disabled}
+                aria-expanded={expanded && !!hasChildTree}
+                className={newClassName} {...others}>
                 <div
                     ref="node"
-                    role="treeitem"
-                    aria-selected={selected}
-                    aria-disabled={disabled}
-                    aria-expanded={expanded && !!hasChildTree}
+
                     {...innerProps}
                 >
                     {canExpand ? this.renderSwitcher() : this.renderNoopSwitcher()}

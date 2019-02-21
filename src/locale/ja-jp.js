@@ -43,6 +43,9 @@ export default {
         ok: '確認',
         cancel: 'キャンセル'
     },
+    Message: {
+        closeAriaLabel: '閉鎖する'
+    },
     Pagination: {
         prev: '前のページ',
         next: '次のページ',
@@ -52,7 +55,11 @@ export default {
         total: '第{current}ページ、{total}ページ',
         labelPrev: '前のページ、当面の第{current}ページ',
         labelNext: '次のページ、当面の第{current}ページ',
-        pageSize: 'ページサイズ：'
+        inputAriaLabel: '数ページまでジャンプしてください',
+        selectAriaLabel: 'ページごとに数本表示してください',
+        pageSize: 'ページサイズ：',
+        yearSelectAriaLabel: '年を選んで',
+        monthSelectAriaLabel: '月を選択し'
     },
     Input: {
         clear: 'クリア'

@@ -6,7 +6,8 @@ import Radio from '../../radio';
 class CardHeader extends React.PureComponent {
 
     static propTypes = {
-        yearRangeOffset: PropTypes.number
+        yearRangeOffset: PropTypes.number,
+        locale: PropTypes.object
     }
 
     static defaultProps = {
@@ -18,7 +19,7 @@ class CardHeader extends React.PureComponent {
     }
 
     getYearSelect(year) {
-        const { prefix, yearRangeOffset } = this.props;
+        const { prefix, yearRangeOffset, locale } = this.props;
         const startYear = year - yearRangeOffset;
         const endYear = year + yearRangeOffset;
 
@@ -30,6 +31,7 @@ class CardHeader extends React.PureComponent {
         return (<Select
             prefix={prefix}
             value={year}
+            aria-label={locale.yearSelectAriaLabel}
             onChange={this.onYearChange}
             popupContainer={this.selectContainerHandler}>
             {options}
@@ -37,13 +39,14 @@ class CardHeader extends React.PureComponent {
     }
 
     getMonthSelect(month) {
-        const { prefix, momentLocale } = this.props;
+        const { prefix, momentLocale, locale } = this.props;
         const localeMonths = momentLocale.monthsShort();
         const options = [];
         for (let i = 0; i < 12; i++) {
             options.push(<Select.Option key={i} value={i}>{localeMonths[i]}</Select.Option>);
         }
         return (<Select
+            aria-label={locale.monthSelectAriaLabel}
             prefix={prefix}
             value={month}
             onChange={this.changeVisibleMonth}
