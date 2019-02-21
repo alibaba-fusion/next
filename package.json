@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.12.3",
+  "version": "1.13.0",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -72,7 +72,7 @@
     "@alifd/api-extractor": "^3.4.0",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
-    "@alifd/dts-generator": "^1.0.0",
+    "@alifd/dts-generator": "^1.0.3",
     "@alifd/eslint-config-next": "^2.0.0",
     "@alifd/stylelint-config-next": "^1.0.0",
     "@commitlint/cli": "^7.0.0",

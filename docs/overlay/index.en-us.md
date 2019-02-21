@@ -91,3 +91,9 @@ Popup is the wrapper of Overlay. It receives a node as a trigger node and pops u
 | canCloseByTrigger | whether the trigger element can close the overlay                                                                                                                                                                                    | Boolean      | true            |
 | target            | reference element for overlay positioning                                                                                                                                                                                       | any          | trigger element |
 | followTrigger     | follow trigger to scroll or not                                                                                                                                                                                 | Boolean      | false           |
+
+
+
+## ARIA and KeyBoard
+
+`Description`: This component needs to be used in conjunction with other components to be prompted. Refer to the above `overlay`

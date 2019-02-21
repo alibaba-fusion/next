@@ -352,7 +352,23 @@ describe('Select', () => {
         wrapper.find('div.next-tag .next-tag-close-btn').simulate('click');
     });
 
-    it('should support clear', (done) => {
+    it('should support mode=tag with visible=false', (done) => {
+        wrapper.setProps({
+            mode: 'tag',
+            visible: false,
+            value: ['yyy'],
+            onChange: function (value) {
+                assert(value.length === 2);
+                assert(value[1] === 'bbb');
+                done();
+            }
+        });
+
+        wrapper.find('input').simulate('change', {target: {value: 'bbb'}});
+        wrapper.find('input').simulate('keydown', {keyCode: 13});
+    });
+
+    it('should support mode=tag with hasClear', (done) => {
         wrapper.setProps({
             mode: 'tag',
             hasClear: true,

@@ -39,3 +39,11 @@
 | hideOnlyOnePage  | 当分页数为1时，是否隐藏分页器                                                                                                                                                               | Boolean                           | false          |
 | showJump         | type 设置为 normal 时，在页码数超过5页后，会显示跳转输入框与按钮，当设置 showJump 为 false 时，不再显示该跳转区域                                                                                                      | Boolean                           | true           |
 | link             | 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：<http://xxx.com/{page}>                                                                                                                  | String                            | -              |
+
+## ARIA and KeyBoard
+
+| 按键    | 说明   |
+| :---- | :--- |
+| Tab   | 切换页数 |
+| Space | 按下按钮 |
+| Enter | 按下按钮 |

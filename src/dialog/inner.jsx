@@ -52,7 +52,9 @@ export default class Inner extends Component {
         const { prefix, title } = this.props;
         if (title) {
             this.titleId = guid('dialog-title-');
-            return <div className={`${prefix}dialog-header`} id={this.titleId} ref={this.getNode.bind(this, 'headerNode')}>{title}</div>;
+            return (<div className={`${prefix}dialog-header`} id={this.titleId} ref={this.getNode.bind(this, 'headerNode')} role="heading" aria-level="1">
+                {title}
+            </div>);
         }
         return null;
     }

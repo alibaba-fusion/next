@@ -69,7 +69,6 @@ class FunctionDemo extends React.Component {
 
         const style = {
             lineHeight: 1.7,
-            fontSize: '14px',
             margin: 0
         };
 

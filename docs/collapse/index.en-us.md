@@ -31,3 +31,10 @@ When some earas may toggle between collapse state and expand state.
 | -------- | -------- | --------- | --- |
 | disabled | disable this panel | Boolean   | -   |
 | title    | panel title       | ReactNode | -   |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Tab       | navigate to the next collapse panel                |
+| Space       | toggle expanded                          |

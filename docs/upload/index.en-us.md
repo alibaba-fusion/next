@@ -209,3 +209,17 @@ Assume that your form page url domain：shop.taobao.com, while the file server u
         {"status":1,"type":"ajax","name":"54.png","url":".\/files\/54.png"}
 
 iframe upload will request with a param `_documentDomain`. You can set your domain
+
+
+
+
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Enter       | 1. When the component gets the focus, press `Enter` to select the file upload  2. Delete uploaded image       |
+ 
+
+ 
+ 

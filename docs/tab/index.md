@@ -60,3 +60,10 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | title     | 选项卡标题      | ReactNode | -     |
 | closeable | 单个选项卡是否可关闭 | Boolean   | false |
 | disabled  | 选项卡是否被禁用   | Boolean   | -     |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明             |
+| :---------- | :------------- |
+| Right Arrow | 切换至前一项Tab.Item |
+| Left Arrow  | 切换至后一项Tab.Item |

@@ -20,6 +20,7 @@
 - `Form`已经和`Field` 在`数据获取`和`自动校验提示`方面做了深度优化，建议在`Form`中使用`Field`, 请查看 Form demo。
 - initValue 类似组件的 defaultValue 只有在组件第一次render的时候才生效(ajax 异步调用设置 initValue 可能已经错过了第一次render)
 - autoUnmount 默认打开的，如果需要保留会 `自动卸载的组件` 数据请关闭此项
+- `parseName=true` 可以通过 `getValues` 获取到结构化的数据, 但是 getValue 还是必须传完整 key 值
 
 ### 基本使用
 

@@ -38,3 +38,11 @@ When there is a lot of content to show when paged load processing is needed.
 | hideOnlyOnePage  | Whether to hide the pager when the number of pages is 1                     | Boolean                           | false       |
 | showJump         | When the number of pagination is 1, if the hidden pager type is set to normal, after the page number exceeds 5 pages, the jump input box and button will be displayed. When showJump is set to false, the jump zone is no longer displayed.                                                                      | Boolean                           | true        |
 | link             | Set the jump link url of the page number button. Its value is a template string containing {page}, such as：<http://xxx.com/{page}>                                                                                  | String                            | -           |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Tab | switch page |
+| Space | click the button |
+| Enter | click the button |

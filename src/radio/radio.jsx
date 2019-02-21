@@ -167,6 +167,8 @@ class Radio extends UIState {
             {...obj.pickOthers(othersData, others)}
             name={name}
             id={id}
+            role="radio"
+            tabIndex={tabIndex}
             disabled={disabled}
             checked={checked}
             type="radio"
@@ -212,10 +214,8 @@ class Radio extends UIState {
         return (
             <label
                 {...othersData}
-                role="radio"
                 dir={rtl ? 'rtl' : 'ltr'}
                 style={style}
-                tabIndex={tabIndex}
                 aria-checked={checked}
                 aria-disabled={disabled}
                 className={clsWrapper}

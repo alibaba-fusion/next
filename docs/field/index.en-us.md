@@ -18,6 +18,7 @@ Fields can be used to manage data when it comes to form data manipulation and va
 - With Field `init` components, `value` `onChange` must be placed in init's third argument, otherwise it may be overridden by init.
 - `Form` has been deeply optimized with `Field` for `data acquisition` and `automatic verification prompt`. It is recommended to use `Field` in `Form`. Please check Form demo.
 - initValue The defaultValue of a similar component, which only takes effect when the component first renders (the ajax asynchronous invocation setting initValue may have missed the first render)
+- with `parseName=true` you could use `getValues` to get a struct value, but not work in `getValue` you still need pass complete key
 
 ### basic use
 

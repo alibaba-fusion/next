@@ -334,4 +334,22 @@ describe('Radio.Group', () => {
         });
     });
 
+    describe('Children over datasource', () => {
+        it('should render children over datasource', () => {
+            const wrapper = mount(<RadioGroup shape="button" dataSource={['apple', 'orange', 'pear']}>
+                <Radio rtl key="1">Apple</Radio>
+                <Radio tabIndex="0" key="2">Orange</Radio>
+            </RadioGroup>);
+            assert(wrapper.find('.next-radio-button').children().length === 2);
+        });
+        it('should support null children', () => {
+            const wrapper = mount(<RadioGroup dataSource={['apple', 'orange', 'pear']}>
+                {null}
+                <Radio tabIndex="0" key="2">Orange</Radio>
+                HelloWorld
+            </RadioGroup>);
+            assert(wrapper.find('label').length === 1);
+        });
+    });
+
 });

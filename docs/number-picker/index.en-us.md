@@ -43,3 +43,10 @@ Number input and auto correct data.
 | max          | maximum value                                                                                                       | Number        | Infinity  |
 | min          | minimum value                                                                                                        | Number        | -Infinity |
 | format       | format value for display<br><br>**signature**:<br>Function(value: Number) => String/Number<br>**params**:<br>_value_: {Number} current value<br>**return**:<br>{String/Number} formatted value<br> | Function      | -         |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | increase the number                          |
+| Down Arrow  | decrease the number                          |

@@ -48,3 +48,10 @@ Disable animation with `animation={false}`
 | title     | Title of tab   | ReactNode | -     |
 | closeable | If tab is closeable | Boolean   | false |
 | disabled  | If tab is disabled   | Boolean   | false     |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Right Arrow | switch to previous Tab.Item |
+| Left Arrow  | switch to next Tab.Item     |

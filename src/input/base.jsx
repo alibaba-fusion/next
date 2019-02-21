@@ -212,12 +212,13 @@ class Base extends React.Component {
     }
 
     getProps() {
-        const { placeholder, inputStyle, disabled, readOnly, cutString, maxLength } = this.props;
+        const { placeholder, inputStyle, disabled, readOnly, cutString, maxLength, name } = this.props;
         const props = {
             style: inputStyle,
             placeholder,
             disabled,
             readOnly,
+            name,
             maxLength: cutString ? maxLength : undefined,
             value: this.state.value,
             onChange: this.onChange.bind(this),

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -109,7 +109,7 @@ class RadioGroup extends Component {
         } else if ('defaultValue' in props) {
             value = props.defaultValue;
         }
-        this.state = {value};
+        this.state = { value };
         this.onChange = this.onChange.bind(this);
     }
 
@@ -124,7 +124,7 @@ class RadioGroup extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let {value} = nextProps;
+        let { value } = nextProps;
         if ('value' in nextProps) {
             if (value === undefined) {
                 value = '';
@@ -137,7 +137,7 @@ class RadioGroup extends Component {
 
     onChange(currentValue, e) {
         if (!('value' in this.props)) {
-            this.setState({value: currentValue});
+            this.setState({ value: currentValue });
         }
         if (currentValue !== this.state.value) {
             this.props.onChange(currentValue, e);
@@ -145,9 +145,8 @@ class RadioGroup extends Component {
     }
 
     render() {
-        const { rtl, className, shape, size, style, prefix, itemDirection, component } = this.props;
+        const { rtl, className, disabled, shape, size, style, prefix, itemDirection, component } = this.props;
         const others = pickOthers(Object.keys(RadioGroup.propTypes), this.props);
-        const disabled = this.props.disabled;
 
         if (rtl) {
             others.dir = 'rtl';
@@ -155,7 +154,17 @@ class RadioGroup extends Component {
 
         let children;
         if (this.props.children) {
-            children = this.props.children;
+            children = React.Children.map(this.props.children, (child, index) => {
+                if (!React.isValidElement(child)) {
+                    return child;
+                }
+                const checked = this.state.value === child.props.value;
+                const tabIndex = ((index === 0 && !this.state.value) || checked) ? 0 : -1;
+                return React.cloneElement(child, child.props.tabIndex === undefined ? {
+                    checked,
+                    tabIndex
+                } : { checked });
+            });
         } else {
             children = this.props.dataSource.map((item, index) => {
                 let option = item;

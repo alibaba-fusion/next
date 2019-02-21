@@ -12,7 +12,7 @@
 
 ### 何时使用
 
-用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。
+用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。组件的设计思想可以看这篇文章 <a href="https://zhuanlan.zhihu.com/p/56684600" target="_blank">https&#x3A;//zhuanlan.zhihu.com/p/56684600</a>
 
 ## API
 
@@ -42,6 +42,7 @@
 | timeout         | 设置上传超时,单位ms                                                                                                                                                                                                                                     | Number          | -         |
 | method          | 上传方法<br><br>**可选值**:<br>'post', 'put'                                                                                                                                                                                                           | Enum            | 'post'    |
 | request         | 自定义上传方法<br><br>**签名**:<br>Function(option: Object) => Object<br>**参数**:<br>_option_: {Object} null<br>**返回值**:<br>{Object} object with abort method<br>                                                                                         | Function        | -         |
+| name            | 文件名字段                                                                                                                                                                                                                                           | String          | -         |
 | onSelect        | 选择文件回调<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                     | Function        | func.noop |
 | onDrop          | 放文件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                        | Function        | func.noop |
 | defaultValue    | 默认文件列表                                                                                                                                                                                                                                          | Array           | -         |
@@ -213,3 +214,9 @@ Next Upload组件上传文件使用的`multipart/form-data`方式上传文件,�
         {"status":1,"type":"ajax","name":"54.png","url":".\/files\/54.png"}
 
 iframe上传会额外传递参数 `_documentDomain` 方便你设置域名
+
+## ARIA and KeyBoard
+
+| 按键    | 说明                                     |
+| :---- | :------------------------------------- |
+| Enter | 1.当组件获取焦点时，按下`Enter`就可以选择文件上传 2.删除上传图片 |

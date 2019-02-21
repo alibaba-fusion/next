@@ -379,12 +379,20 @@ describe('Cascader', () => {
     });
 
     it('should support listClassName and listStyle', () => {
-        wrapper = mount(<Cascader dataSource={ChinaArea} listStyle={{ width: '400px', height: '400px' }} listClassName="custom" />);
+        const div = document.createElement('div');
+        document.body.appendChild(div);
 
-        const list = wrapper.find('div.next-cascader-menu-wrapper');
-        assert(list.prop('style').width === '400px');
-        assert(list.prop('style').height === '400px');
-        assert(list.hasClass('custom'));
+        ReactDOM.render(<Cascader dataSource={ChinaArea} listStyle={{ width: '400px', height: '400px' }} listClassName="custom" />, div);
+
+        const list = div.querySelector('.next-cascader-menu-wrapper');
+        assert(list.style.width === '400px');
+        assert(list.style.height === '400px');
+        assert(window.getComputedStyle(list.querySelector('.next-cascader-menu')).width === '400px');
+        assert(window.getComputedStyle(list.querySelector('.next-cascader-menu')).height === '400px');
+        assert(list.className.indexOf('custom') !== -1);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
     });
 
     it('should support keyboard', () => {
