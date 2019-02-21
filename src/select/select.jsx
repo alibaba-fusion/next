@@ -681,13 +681,13 @@ class Select extends Base {
         const ret = [];
 
         if (hasArrow) {
-            ret.push(<span key="arrow" onClick={this.handleArrowClick} className={`${prefix}select-arrow`}><Icon
+            ret.push(<span key="arrow" aria-hidden onClick={this.handleArrowClick} className={`${prefix}select-arrow`}><Icon
                 type="arrow-down" /></span>);
         }
 
         // do not use this.hasClear() here, to make sure clear btn always exists, can not influenced by apis like `disabled` `readOnly`
         if (hasClear) {
-            ret.push(<span key="clear" onClick={this.handleClear} className={`${prefix}select-clear`}><Icon
+            ret.push(<span key="clear" aria-hidden onClick={this.handleClear} className={`${prefix}select-clear`}><Icon
                 type="delete-filling" /></span>);
         }
 
