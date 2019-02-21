@@ -1,4 +1,16 @@
-# Change Log
+# Change Log 
+
+<a name="1.12.6"></a>
+## [1.12.6](https://github.com/alibaba-fusion/next/compare/1.12.5...1.12.6) (2019-02-21)
+
+
+### Bug Fixes
+
+* **Cascader:** set listStyle height style error ([61ea4f7](https://github.com/alibaba-fusion/next/commit/61ea4f7))
+* **Input:** add name to input dom ([51d151f](https://github.com/alibaba-fusion/next/commit/51d151f))
+
+
+
 
 <a name="1.12.5"></a>
 ## [1.12.5](https://github.com/alibaba-fusion/next/compare/1.12.4...1.12.5) (2019-02-20)
