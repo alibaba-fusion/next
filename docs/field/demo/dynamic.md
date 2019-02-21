@@ -2,14 +2,14 @@
 
 - order: 6
 
-Input 的 name 必须全局唯一, 否则可能会出现串行的错误
+通过 `spliceArray` 可以删除数组格式 name (eg: name.{index}) 的数据, 并且自动订正其他 name 的 index - 1 问题
 
 :::lang=en-us
 # mix usage
 
 - order: 6
 
-name of Input must be unique
+by use `spliceArray` could delete array type keys (eg: name.{index}), and make larger keys auto -1
 :::
 ---
 
@@ -31,7 +31,6 @@ class Demo extends React.Component {
 
         this.field = new Field(this, {
             parseName: true,
-            autoUnmount: true
         });
     }
 
@@ -52,11 +51,11 @@ class Demo extends React.Component {
     removeItem(index) {
         const { tableSource } = this.state;
         tableSource.splice(index, 1);
+        this.field.spliceArray('name.{index}', index);
         this.setState({ tableSource });
     }
 
-    // name.${value} 全局唯一
-    input = (value) => <Input {...this.field.init(`name.${value}`, { initValue: value })} />;
+    input = (value, index) => <Input  {...this.field.init(`name.${index}`, { initValue: index })} />;
     delete = (value, index) => <Button warning onClick={this.removeItem.bind(this, index)}>delete</Button>;
 
     render() {
@@ -68,8 +67,8 @@ class Demo extends React.Component {
                     <Table.Column title="operation" cell={this.delete} width={100} />
                 </Table>
                 <div style={{ marginTop: 10 }}>
-                    <Button type="primary" onClick={this.getValues}>print</Button>
-                    <Button type="normal" onClick={this.add} style={{ marginLeft: 4 }}>Add</Button>
+                    <Button type="primary" onClick={this.getValues} >print</Button>
+                    <Button type="normal" onClick={this.add} style={{ marginLeft: 8 }}>Add</Button>
                 </div>
             </div>
         );
@@ -77,10 +76,4 @@ class Demo extends React.Component {
 }
 
 ReactDOM.render(<Demo />, mountNode);
-````
-
-````css
-.demo .next-btn {
-    margin-right: 5px;
-}
 ````

@@ -62,6 +62,13 @@ class Affix extends React.Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if ('offsetTop' in nextProps || 'offsetBottom' in nextProps) {
+            this.affixMode = this._getAffixMode(nextProps);
+            this._updateNodePosition();
+        }
+    }
+
     componentWillUnmount() {
         if (this.timeout) {
             clearTimeout(this.timeout);
@@ -90,7 +97,7 @@ class Affix extends React.Component {
 
     updatePosition = () => {
         this._updateNodePosition();
-    }
+    };
 
     _updateNodePosition = () => {
         const { container, useAbsolute } = this.props;
@@ -147,8 +154,9 @@ class Affix extends React.Component {
         }
     };
 
-    _getAffixMode() {
-        const { offsetTop, offsetBottom } = this.props;
+    _getAffixMode(nextProps) {
+        const props = nextProps || this.props;
+        const { offsetTop, offsetBottom } = props;
         const affixMode = {
             top: false,
             bottom: false,
@@ -160,9 +168,11 @@ class Affix extends React.Component {
             affixMode.top = true;
         } else if (typeof offsetTop === 'number') {
             affixMode.top = true;
+            affixMode.bottom = false;
             affixMode.offset = offsetTop;
         } else if (typeof offsetBottom === 'number') {
             affixMode.bottom = true;
+            affixMode.top = false;
             affixMode.offset = offsetBottom;
         }
 

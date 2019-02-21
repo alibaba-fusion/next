@@ -16,6 +16,7 @@ class Breadcrumb extends Component {
          * 样式类名的品牌前缀
          */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /*eslint-disable*/
         /**
          * 面包屑子节点，需传入 Breadcrumb.Item
@@ -46,7 +47,7 @@ class Breadcrumb extends Component {
     };
 
     render() {
-        const {prefix, className, maxNode, children, separator, ...others} = this.props;
+        const {prefix, rtl, className, maxNode, children, separator, ...others} = this.props;
         const clazz = classNames(`${prefix}breadcrumb`, className);
         let items;
         const length = Children.count(children);
@@ -97,6 +98,10 @@ class Breadcrumb extends Component {
                     key: i
                 });
             });
+        }
+
+        if (rtl) {
+            others.dir = 'rtl';
         }
 
         return <div aria-label="Breadcrumb" className={clazz} {...others}>{items}</div>;

@@ -16,11 +16,14 @@ export default class ExpandedRow extends React.Component {
         openRowKeys: PropTypes.array,
         expandedRowRender: PropTypes.func,
         expandedRowIndent: PropTypes.array,
+        expandedIndexSimulate: PropTypes.bool,
         lockType: PropTypes.oneOf(['left', 'right'])
     }
 
     renderExpandedRow(record, index, colSpan) {
-        const { expandedRowRender, expandedRowIndent, openRowKeys, lockType } = this.context;
+        const { expandedRowRender, expandedRowIndent, openRowKeys, lockType, expandedIndexSimulate } = this.context;
+
+        const expandedIndex = expandedIndexSimulate ? (index - 1) / 2 : index;
         const { columns, cellRef } = this.props;
         if (expandedRowRender) {
             const { primaryKey, prefix } = this.props,
@@ -52,7 +55,7 @@ export default class ExpandedRow extends React.Component {
                     </tr> : null
                 );
             }
-            content = expandedRowRender(record, index);
+            content = expandedRowRender(record, expandedIndex);
             if (!React.isValidElement(content)) {
                 content = (
                     <div className={`${prefix}table-cell-wrapper`}>

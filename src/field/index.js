@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import {log, func} from '../util';
+import { log, func } from '../util';
 import Validate from '../validate';
 
 import {
@@ -34,10 +34,11 @@ class Field {
             scrollToFirstError: true,
             first: false,
             onChange: func.noop,
-            autoUnmount: true
+            autoUnmount: true,
+            autoValidate: true,
         }, options);
 
-        ['init', 'getValue', 'getValues', 'setValue', 'setValues', 'getError', 'setError', 'setErrors', 'validate', 'getState', 'reset', 'resetToDefault', 'remove'].forEach((m) => {
+        ['init', 'getValue', 'getValues', 'setValue', 'setValues', 'getError', 'setError', 'setErrors', 'validate', 'getState', 'reset', 'resetToDefault', 'remove', 'spliceArray'].forEach((m) => {
             this[m] = this[m].bind(this);
         });
 
@@ -51,7 +52,7 @@ class Field {
     }
 
     /**
-     * Control Component
+     * Controlled Component
      * @param {String} name
      * @param {Object} fieldOption
      * @returns {Object} {value, onChange}
@@ -63,7 +64,8 @@ class Field {
             trigger = 'onChange',
             rules = [],
             props = {},
-            getValueFromEvent = null
+            getValueFromEvent = null,
+            autoValidate = true,
         } = fieldOption;
         const originalProps = Object.assign({}, props, rprops);
         const defaultValueName = `default${valueName[0].toUpperCase()}${valueName.slice(1)}`;
@@ -80,7 +82,7 @@ class Field {
             ref: originalProps.ref
         });
 
-        // Control Component
+        // Controlled Component
         if (valueName in originalProps) {
             field.value = originalProps[valueName];
         }
@@ -97,21 +99,25 @@ class Field {
             [valueName]: field.value
         };
 
-        // trigger map
-        const rulesMap = mapValidateRules(field.rules, trigger);
+        let rulesMap = {};
 
-        // validate hook
-        for (const action in rulesMap) {
-            if (action === trigger) {
-                continue;
+        if (this.options.autoValidate && autoValidate !== false) {
+            // trigger map
+            rulesMap = mapValidateRules(field.rules, trigger);
+
+            // validate hook
+            for (const action in rulesMap) {
+                if (action === trigger) {
+                    continue;
+                }
+
+                const actionRule = rulesMap[action];
+                inputProps[action] = (...args) => {
+                    this._validate(name, actionRule, action);
+                    this._callPropsEvent(action, originalProps, ...args);
+                    this._reRender();
+                };
             }
-
-            const actionRule = rulesMap[action];
-            inputProps[action] = (...args) => {
-                this._validate(name, actionRule, action);
-                this._callPropsEvent(action, originalProps, ...args);
-                this._reRender();
-            };
         }
 
         // onChange hack
@@ -143,6 +149,9 @@ class Field {
         return this.fieldsMeta[name];
     }
 
+    /**
+     * update field.value and validate
+     */
     _callOnChange(name, rule, trigger, ...others) {
         const e = others[0];
         const field = this._get(name);
@@ -154,6 +163,8 @@ class Field {
         field.value = field.getValueFromEvent ? field.getValueFromEvent.apply(this, others) : getValueFromEvent(e);
 
         this._resetError(name);
+
+        // validate while onChange
         rule && this._validate(name, rule, trigger);
     }
 
@@ -182,16 +193,19 @@ class Field {
     }
 
     /**
-     * saveRef is async function. it will be called after render
+     * NOTE: saveRef is async function. it will be called after render
      * @param {String} name name of component
      * @param {Function} component ref
      */
     _saveRef(name, component) {
         const key = `${name}_field`;
         const autoUnmount = this.options.autoUnmount;
+
         if (!component && autoUnmount) {
-            // component with same name(eg: type? <A name="n"/>:<B name="n"/>)
-            // while type change to true B will render before A unmount.
+            // component with same name (eg: type ? <A name="n"/>:<B name="n"/>)
+            // while type changed, B will render before A unmount. so we should cached value for B
+            // step: render -> B mount -> 1. _saveRef(A, null) -> 2. _saveRef(B, ref) -> render
+            // 1. _saveRef(A, null)
             const cache = this.fieldsMeta[name];
             this._setCache(name, key, cache);
             // after destroy, delete data
@@ -200,7 +214,7 @@ class Field {
             return;
         }
 
-        // after _saveRef(name, null) and before rerender. (eg: same name but different compoent may be here)
+        // 2. _saveRef(B, ref) (eg: same name but different compoent may be here)
         if (autoUnmount && !this.fieldsMeta[name]) {
             this.fieldsMeta[name] = this._getCache(name, key);
         }
@@ -235,7 +249,9 @@ class Field {
         let validate = this._getCache(name, trigger);
         validate && validate.abort();
 
-        validate = new Validate({[name]: rule});
+        validate = new Validate({
+            [name]: rule
+        });
         this._setCache(name, trigger, validate);
 
         validate.validate({
@@ -374,7 +390,7 @@ class Field {
      * @param {Function} cb callback after validate
      */
     validate(ns, cb) {
-        const {names, callback} = getParams(ns, cb);
+        const { names, callback } = getParams(ns, cb);
         const fieldNames = names || this.getNames();
 
         const descriptor = {};
@@ -405,7 +421,7 @@ class Field {
             return;
         }
 
-        const validate = new Validate(descriptor, {first: this.options.first});
+        const validate = new Validate(descriptor, { first: this.options.first });
 
         validate.validate(values, (errors) => {
             let errorsGroup = null;
@@ -540,6 +556,50 @@ class Field {
                 delete this.fieldsMeta[name];
             }
         });
+    }
+
+    /**
+     * splice in a Array
+     * @param {String} keyMatch like name.{index}
+     * @param {Number} startIndex index
+     */
+    spliceArray(keyMatch, startIndex) {
+        if (keyMatch.indexOf('{index}') === -1) {
+            log.warning('{index} not find in key');
+            return;
+        }
+
+        const reg = keyMatch.replace('{index}', '(\\d+)');
+        const keyReg = new RegExp(`^${reg}$`);
+
+        let list = [];
+        const names = this.getNames();
+        names.forEach(n => {
+            const ret = keyReg.exec(n);
+            if (ret) {
+                const index = parseInt(ret[1]);
+                if (index > startIndex) {
+                    list.push({
+                        index,
+                        name: n,
+                    });
+                }
+            }
+        });
+
+        list = list.sort((a, b) => a.index < b.index);
+
+        // should be continuous array
+        if (list.length > 0 && list[0].index === startIndex + 1) {
+            list.forEach(l => {
+                const n = keyMatch.replace('{index}', l.index - 1);
+                this.fieldsMeta[n] = this.fieldsMeta[l.name];
+            });
+
+            delete this.fieldsMeta[list[list.length - 1].name];
+
+            this._reRender();
+        }
     }
 
     _resetError(name) {

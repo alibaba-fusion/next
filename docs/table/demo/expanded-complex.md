@@ -2,7 +2,7 @@
 
 - order: 6
 
-可以通过 `expandedRowRender` 额外渲染行，但是会包含复杂的组件
+可以通过 `expandedRowRender` 额外渲染行，但是会包含复杂的组件, 可通过 `expandedIndexSimulate` 设置 index 类型
 
 :::lang=en-us
 # Expandable - Complex
@@ -43,7 +43,7 @@ class ExpandedApp extends React.Component {
                     <Table.Column title="Time" dataIndex="time" width={200}/>
                 </Table>
                 <p style={style}
-                    onClick={this.load.bind(this)}>Load more data.</p>
+                    onClick={this.load.bind(this)}>{this.props.index}: Load more data. </p>
             </div>
         );
     }
@@ -70,9 +70,9 @@ const dataSource = () => {
     render = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     },
-    expandedRowRender = (record) => {
+    expandedRowRender = (record, index) => {
         const children = record.children;
-        return <ExpandedApp dataSource={children}/>;
+        return <ExpandedApp dataSource={children} index={index}/>;
     };
 
 class App extends React.Component {
@@ -134,6 +134,7 @@ class App extends React.Component {
                 <p> <Button onClick={this.disabledExpandedCol.bind(this)}> disable fourth row </Button> &nbsp;
                     <Button onClick={this.toggleCol.bind(this)}> hide + </Button></p>
                 <Table dataSource={this.state.dataSource}
+                    expandedIndexSimulate
                     isZebra={this.state.isZebra}
                     hasBorder={this.state.hasBorder}
                     onSort={this.onSort.bind(this)}

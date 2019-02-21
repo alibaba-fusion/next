@@ -39,6 +39,15 @@ describe('Checkbox.Group', () => {
             const wrapper = mount(<CheckboxGroup value={['pear']} dataSource={list} />);
             assert(wrapper.find('.next-checkbox-group').children().length === 3);
         });
+
+        it('should support null child', ()=>{
+            const wrapper = mount(<CheckboxGroup>
+                <Checkbox>1</Checkbox>
+                <Checkbox>2</Checkbox>
+                {null}
+            </CheckboxGroup>);
+            assert(wrapper.find('.next-checkbox-group').children().length === 2);
+        });
     });
 
     describe('[render] uncontrol', () => {

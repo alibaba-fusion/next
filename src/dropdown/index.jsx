@@ -15,6 +15,7 @@ class Dropdown extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 弹层内容
@@ -141,13 +142,14 @@ class Dropdown extends Component {
             });
         }
 
-        const { trigger } = this.props;
+        const { trigger, rtl } = this.props;
         const newTrigger = React.cloneElement(trigger, {
             onKeyDown: makeChain(this.onTriggerKeyDown, trigger.props.onKeyDown)
         });
 
         return (
             <Popup {...this.props}
+                rtl={rtl}
                 autoFocus={this.state.autoFocus}
                 trigger={newTrigger}
                 visible={this.getVisible()}

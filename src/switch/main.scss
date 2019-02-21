@@ -3,6 +3,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/mixin";
 @import "scss/variable";
+@import "./rtl.scss";
 
 .#{$css-prefix}switch {
     @include box-sizing;

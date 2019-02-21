@@ -257,7 +257,11 @@ export default class Table extends React.Component {
         /**
          * 在内容区域滚动的时候触发的函数
          */
-        onBodyScroll: PropTypes.func
+        onBodyScroll: PropTypes.func,
+        /**
+         * 开启时，getExpandedColProps() 和 expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
+         */
+        expandedIndexSimulate: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -275,6 +279,7 @@ export default class Table extends React.Component {
         hasHeader: true,
         isZebra: false,
         loading: false,
+        expandedIndexSimulate: false,
         primaryKey: 'id',
         components: {},
         locale: zhCN.Table
@@ -487,7 +492,8 @@ export default class Table extends React.Component {
                 onRowClick,
                 onRowMouseEnter,
                 onRowMouseLeave,
-                pure
+                pure,
+                rtl
             } = this.props;
             const { sort } = this.state;
             const {
@@ -506,6 +512,7 @@ export default class Table extends React.Component {
                     {hasHeader ? (
                         <Header
                             prefix={prefix}
+                            rtl={rtl}
                             pure={pure}
                             affixRef={this.getAffixRef}
                             colGroup={colGroup}
@@ -523,6 +530,7 @@ export default class Table extends React.Component {
                     ) : null}
                     <Body
                         prefix={prefix}
+                        rtl={rtl}
                         pure={pure}
                         colGroup={colGroup}
                         className={`${prefix}table-body`}
@@ -615,11 +623,13 @@ export default class Table extends React.Component {
                 wrapperContent,
                 lockType,
                 locale,
+                expandedIndexSimulate,
                 refs,
                 pure,
                 rtl,
                 emptyContent,
                 filterParams,
+                columns,
                 loadingComponent: LoadingComponent = Loading,
                 ...others
             } = this.props,

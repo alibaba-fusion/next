@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {obj, func} from '../util';
+import { obj, func } from '../util';
 import Field from '../field';
 
 function pickerDefined(obj) {
@@ -83,13 +83,19 @@ export default class Form extends React.Component {
         value: PropTypes.object,
         /**
          * 表单变化回调
+         * @param {Object} values 表单数据
+         * @param {Object} item 详细
+         * @param {String} item.name 变化的组件名
+         * @param {String} item.value 变化的数据
+         * @param {Object} item.field field 实例
          */
         onChange: PropTypes.func,
         /**
          * 设置标签类型
          */
         component: PropTypes.string,
-        fieldOptions: PropTypes.object
+        fieldOptions: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -146,11 +152,11 @@ export default class Form extends React.Component {
     }
 
     onChange = (name, value) => {
-        this.props.onChange(this._formField.getValues(), {name, value, field: this._formField});
+        this.props.onChange(this._formField.getValues(), { name, value, field: this._formField });
     };
 
     render() {
-        const {className, inline, size, labelAlign, labelTextAlign, onSubmit, children, labelCol, wrapperCol, style, prefix, component: Tag} = this.props;
+        const { className, inline, size, labelAlign, labelTextAlign, onSubmit, children, labelCol, wrapperCol, style, prefix, rtl, component: Tag } = this.props;
 
         const formClassName = classNames({
             [`${prefix}form`]: true,
@@ -163,6 +169,7 @@ export default class Form extends React.Component {
             <Tag role="grid" {...obj.pickOthers(Form.propTypes, this.props)}
                 className={formClassName}
                 style={style}
+                dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}>
                 {
                     React.Children.map(children, (child) => {

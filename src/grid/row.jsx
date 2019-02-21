@@ -10,6 +10,7 @@ export default class Row extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         style: PropTypes.object,
         /**
@@ -67,7 +68,7 @@ export default class Row extends Component {
         /* eslint-disable no-unused-vars */
         const {
             prefix, pure, wrap, fixed, gutter, fixedWidth, align, justify,
-            hidden, className, component: Tag, children, ...others
+            hidden, className, component: Tag, children, rtl, ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
 
@@ -126,6 +127,7 @@ export default class Row extends Component {
 
         return (
             <Tag
+                dir={rtl ? 'rtl' : 'ltr'}
                 role="row"
                 className={newClassName}
                 {...others}

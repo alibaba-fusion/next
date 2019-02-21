@@ -8,6 +8,7 @@ import { setTimeout } from 'timers';
 import Rating from '../../src/rating/index';
 import '../../src/rating/style.js';
 import {KEYCODE} from '../../src/util';
+import Paragraph from "../../src/paragraph";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -297,6 +298,11 @@ describe('Rating', () => {
             });
 
             assert(ret === -1);
+        });
+
+        it('should support rtl', () => {
+            const wrapper = mount(<Rating rtl defaultValue={3} onChange={onChange} id="action-test-1" />);
+            assert(wrapper.find('.next-rating').props().dir === 'rtl');
         });
 
     });

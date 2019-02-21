@@ -19,10 +19,11 @@ class Paragraph extends React.Component {
          */
         type: PropTypes.oneOf(['long', 'short']),
         /**
-         * 组件大小。 
+         * 组件大小。
          * @enumdesc 中号, 小号
          */
         size: PropTypes.oneOf(['medium', 'small']),
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -32,7 +33,7 @@ class Paragraph extends React.Component {
     };
 
     render() {
-        const {prefix, className, type, size, ...others} = this.props;
+        const {prefix, className, type, size, rtl, ...others} = this.props;
 
         const cls = classNames(
             `${prefix}paragraph`,
@@ -40,6 +41,9 @@ class Paragraph extends React.Component {
             size === 'small' ? `${prefix}paragraph-small` : `${prefix}paragraph-medium`,
             className
         );
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         return (
             <div {...others} className={cls}>{this.props.children}</div>
