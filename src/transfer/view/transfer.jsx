@@ -103,6 +103,7 @@ class Transfer extends Component {
         titles: PropTypes.arrayOf(PropTypes.node),
         /**
          * 向右向左移动按钮显示内容
+         * @default [<Icon type="arrow-right" />, <Icon type="arrow-left" />]
          */
         operations: PropTypes.arrayOf(PropTypes.node),
         /**
@@ -178,10 +179,8 @@ class Transfer extends Component {
 
         const { value, defaultValue, defaultLeftChecked, defaultRightChecked, dataSource, rtl, operations } = props;
         if (operations.length === 0) {
-            const iconProp = rtl ? { dir: 'rtl'} : {};
-            // eslint-disable-next-line
-            operations.push(<Icon {...iconProp} type="arrow-right" />);
-            operations.push(<Icon {...iconProp} type="arrow-left" />);
+            operations.push(<Icon rtl={rtl} type="arrow-right" />);
+            operations.push(<Icon rtl={rtl} type="arrow-left" />);
         }
         const { left, right } = this.filterCheckedValue(
             this.normalizeValue(defaultLeftChecked),
