@@ -342,6 +342,14 @@ describe('Radio.Group', () => {
             </RadioGroup>);
             assert(wrapper.find('.next-radio-button').children().length === 2);
         });
+        it('should support null children', () => {
+            const wrapper = mount(<RadioGroup dataSource={['apple', 'orange', 'pear']}>
+                {null}
+                <Radio tabIndex="0" key="2">Orange</Radio>
+                HelloWorld
+            </RadioGroup>);
+            assert(wrapper.find('label').length === 1);
+        });
     });
 
 });

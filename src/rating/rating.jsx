@@ -323,6 +323,7 @@ export default class Rating extends Component {
                         onChange={this.handleChecked.bind(this, i + 1)}
                         type="radio"
                         name="rating"
+                        aria-labelledby={id}
                     />
                 );
             }
