@@ -69,6 +69,7 @@ export default function expanded(BaseComponent) {
         static childContextTypes = {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
+            expandedIndexSimulate: PropTypes.bool,
             expandedRowIndent: PropTypes.array
         }
 
@@ -80,6 +81,7 @@ export default function expanded(BaseComponent) {
             return {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
+                expandedIndexSimulate: this.props.expandedIndexSimulate,
                 expandedRowIndent: this.props.expandedRowIndent
             };
         }
@@ -103,14 +105,16 @@ export default function expanded(BaseComponent) {
         }
 
         renderExpandedCell = (value, index, record) => {
-            const { getExpandedColProps, prefix, locale } = this.props;
+            const { getExpandedColProps, prefix, locale, expandedIndexSimulate } = this.props;
+
+            const expandedIndex = expandedIndexSimulate ? index / 2 : index;
             const { openRowKeys } = this.state,
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
                 switchNode = hasExpanded ?
                     <Icon type="minus" size="xs" /> : <Icon type="add" size="xs" />,
 
-                attrs = getExpandedColProps(record, index) || {};
+                attrs = getExpandedColProps(record, expandedIndex) || {};
             const cls = classnames({
                 [`${prefix}table-expanded-ctrl`]: true,
                 disabled: attrs.disabled,
