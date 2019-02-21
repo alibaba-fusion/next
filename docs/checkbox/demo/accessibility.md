@@ -22,7 +22,7 @@ import { Checkbox } from '@alifd/next';
 const CheckboxGroup = () => (
     <div>
         <h4>Programming language：</h4>
-        <Checkbox.Group itemDirection="pl">
+        <Checkbox.Group aria-label="Please select a programming language">
             <Checkbox value="python">python</Checkbox>
             <Checkbox value="java">java</Checkbox>
             <Checkbox value="angular">angular</Checkbox>
