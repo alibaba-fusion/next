@@ -43,6 +43,9 @@ export default {
         ok: 'OK',
         cancel: 'Cancel'
     },
+    Message: {
+        closeAriaLabel: 'Close'
+    },
     Pagination: {
         prev: 'Previous',
         next: 'Next',

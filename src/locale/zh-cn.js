@@ -43,6 +43,9 @@ export default {
         ok: '确认',
         cancel: '取消'
     },
+    Message: {
+        closeAriaLabel: '关闭'
+    },
     Pagination: {
         prev: '上一页',
         next: '下一页',
