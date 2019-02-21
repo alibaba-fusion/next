@@ -49,9 +49,10 @@
 | format       | 格式化当前值<br><br>**签名**:<br>Function(value: Number) => String/Number<br>**参数**:<br>_value_: {Number} null<br>**返回值**:<br>{String/Number} null<br> | Function      | -         |
 | upBtnProps   | 增加按钮的props                                                                                                                                     | Object        | -         |
 | downBtnProps | 减少按钮的props                                                                                                                                     | Object        | -         |
+
 ## ARIA and KeyBoard
 
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Up Arrow    | 数字增加                          |
-| Down Arrow  | 数字减小                          |
+| 按键         | 说明   |
+| :--------- | :--- |
+| Up Arrow   | 数字增加 |
+| Down Arrow | 数字减小 |

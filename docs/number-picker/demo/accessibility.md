@@ -23,7 +23,7 @@ function onChange(value, e) {
 
 ReactDOM.render(
     <div>
-        <NumberPicker upBtnProps={{"aria-label":"increasing button"}} downBtnProps={{"aria-label":"decreasing button"}} defaultValue={0} type="inline" onChange={onChange}/>
+        <NumberPicker upBtnProps={{'aria-label':'increasing button'}} downBtnProps={{'aria-label':'decreasing button'}} defaultValue={0} type="inline" onChange={onChange}/>
     </div>,
     mountNode
 );

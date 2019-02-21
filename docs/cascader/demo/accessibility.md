@@ -57,7 +57,7 @@ const data = [{
     ],
     value: '0300',
     label: '梁羽生'
-}]
+}];
 
 class Demo extends React.Component {
     constructor(props) {

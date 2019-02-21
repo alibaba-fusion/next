@@ -39,12 +39,9 @@
 | ---- | ------------------- | ------ | -------- |
 | size | 统一设置 Button 组件的按钮大小 | String | 'medium' |
 
-
 ## ARIA and KeyBoard
-| 按键          | 说明                              |
-| :---------- | :------------------------------ |
-| Enter       | 触发onClick事件                |
-| SPACE       | 触发onClick事件                 |
 
-
- 
+| 按键    | 说明          |
+| :---- | :---------- |
+| Enter | 触发onClick事件 |
+| SPACE | 触发onClick事件 |
