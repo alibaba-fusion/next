@@ -26,9 +26,9 @@ const starMap = {
 };
 
 ReactDOM.render(
-    <Rating 
-        defaultValue={2} 
+    <Rating
+        defaultValue={2}
         showGrade
-        readAs={(val) => starMap[val]} 
+        readAs={(val) => starMap[val]}
     />, mountNode);
 ````

@@ -26,7 +26,7 @@ class App extends React.Component {
         super(props);
         this.state = {
             rtl: false
-        }
+        };
         this.handleDirectionChange = this.handleDirectionChange.bind(this);
     }
 
