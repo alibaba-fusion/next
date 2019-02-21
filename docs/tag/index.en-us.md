@@ -49,3 +49,11 @@ Tags are used to mark something for its atrribute, or to classify things
 | defaultChecked | tag is checked by default, under uncontrolled way                                                                                                                         | Boolean  | -         |
 | onChange       | callback when check state changes <br><br>**signatures**:<br>Function(checked: Boolean, e: Event) => void<br>**params**:<br>_checked_: {Boolean} whether tag is checked or not <br>_e_: {Event} Dom Event Object | Function | func.noop |
 | disabled       | disable tag                                                                                                                                      | Boolean  | -         |
+
+
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| SPACE       | Select,cancel or delete the current tag  |

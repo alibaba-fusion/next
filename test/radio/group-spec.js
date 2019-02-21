@@ -334,4 +334,14 @@ describe('Radio.Group', () => {
         });
     });
 
+    describe('Children over datasource', () => {
+        it('should render children over datasource', () => {
+            const wrapper = mount(<RadioGroup shape="button" dataSource={['apple', 'orange', 'pear']}>
+                <Radio rtl key="1">Apple</Radio>
+                <Radio tabIndex="0" key="2">Orange</Radio>
+            </RadioGroup>);
+            assert(wrapper.find('.next-radio-button').children().length === 2);
+        });
+    });
+
 });

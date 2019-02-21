@@ -87,3 +87,14 @@
 | label      | 标签内容                                                       | ReactNode        | -     |
 | selectable | 是否可选                                                       | Boolean          | false |
 | children   | 导航项和子导航                                                    | ReactNode        | -     |
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | 导航到上一项                          |
+| Down Arrow  | 导航到下一项                          |
+| Right Arrow | 打开子菜单，导航到子菜单第一项；横向菜单条第一层，导航到右一项 |
+| Left Arrow  | 关闭子菜单，导航到父级菜单；横向菜单条第一层，导航到左一项   |
+| Enter       | 打开子菜单，导航到子菜单第一项                 |
+| Esc         | 关闭子菜单，导航到父级菜单                   |

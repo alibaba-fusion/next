@@ -43,3 +43,9 @@
 | children      | 通过子元素方式设置内部 checkbox                                                                                                                                              | Array&lt;ReactElement> | -         |
 | onChange      | 选中值改变时的事件<br><br>**签名**:<br>Function(value: Array, e: Event) => void<br>**参数**:<br>_value_: {Array} 选中项列表<br>_e_: {Event} Dom 事件对象                                | Function               | () => { } |
 | itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                                  | Enum                   | 'hoz'     |
+
+## ARIA and KeyBoard
+
+| 按键    | 说明       |
+| :---- | :------- |
+| SPACE | 选择或取消当前项 |

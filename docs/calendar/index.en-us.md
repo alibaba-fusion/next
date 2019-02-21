@@ -41,3 +41,4 @@ moment.locale('zh-cn');
 | dateCellRender      | Render function for date cell<br><br>**signature**:<br>Function(value: Object) => ReactNode<br>**parameter**:<br>_value_: {Object} date object<br>**return**:<br>{ReactNode} null<br>                        | Function | (value) => value.date() |
 | monthCellRender     | Render function for month cell<br><br>**signature**:<br>Function(calendarDate: Object) => ReactNode<br>**parameter**:<br>_calendarDate_: {Object} current date object<br>**return**:<br>{ReactNode} null<br> | Function | -                       |
 | disabledDate        | Function to disable dates <br><br>**signature**:<br>Function(calendarDate: Object) => Boolean<br>**parameter**:<br>_calendarDate_: {Object} current date object<br>**return**:<br>{Boolean} null<br>       | Function | -                       |
+

@@ -68,3 +68,13 @@
 ## Known Issues
 
 -   For disabled elements, onMouseLeave can't be triggered in chrome, due to chrome's bug and can't be worked around at present.
+
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| SPACE       | When `triggerType=‘click’`, click will popup a prompt  |
+| Enter       | When `triggerType=‘click’`, click will popup a prompt  |
+
+

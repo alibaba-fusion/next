@@ -91,3 +91,7 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | canCloseByTrigger | 触发元素是否可以关闭弹层                                                                                                                                                                                    | Boolean      | true            |
 | target            | 弹层定位的参照元素                                                                                                                                                                                       | any          | target 属性，即触发元素 |
 | followTrigger     | 是否跟随trigger滚动                                                                                                                                                                                   | Boolean      | false           |
+
+## ARIA and KeyBoard
+
+`说明`： 此组件需要结合其他组件使用，会有提示。参考上文`无障碍`。
