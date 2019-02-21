@@ -18,6 +18,7 @@ export default class Item extends React.Component {
          * 样式前缀
          */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * label 标签的文本
          */
