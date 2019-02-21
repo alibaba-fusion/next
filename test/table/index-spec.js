@@ -486,4 +486,27 @@ describe('Table', () => {
             assert(wrapper.find('.next-table[dir="rtl"]').length === 3);
         })
     });
+
+    it('should support rtl resize', done => {
+        timeout({
+            children: [
+                <Table.Column dataIndex='id' resizable width={200}></Table.Column>,
+                <Table.Column dataIndex='name' width={200}></Table.Column>
+            ],
+            rtl: true,
+            onResizeChange: (dataIndex, value) => {
+                console.log(dataIndex, value)
+            }
+        }, () => {
+            wrapper.find('.next-table-resize-handler').simulate('mousedown', {pageX: 0});
+            assert(document.body.style.cursor === 'ew-resize');
+            document.dispatchEvent(new Event('mousemove', {pageX: 0}));
+            document.dispatchEvent(new Event('mouseup'));
+
+            setTimeout(()=> {
+                assert(document.body.style.cursor === '');
+                done();
+            }, 100)
+        })
+    });
 });
