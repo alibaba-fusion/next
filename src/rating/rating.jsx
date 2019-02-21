@@ -58,7 +58,7 @@ export default class Rating extends Component {
          */
         disabled: PropTypes.bool,
         /**
-         * 传入id支持无障碍时，参数才有意义
+         * 评分文案生成方法，传入id支持无障碍时，读屏软件可读
          */
         readAs: PropTypes.func,
         // 实验属性: 自定义评分icon
@@ -374,7 +374,7 @@ export default class Rating extends Component {
                     </div>
                 </div>
                 {
-                    showGrade ? <div className={`${prefix}rating-info`} style={infoStyle}>{value}</div> : null
+                    showGrade ? <div className={`${prefix}rating-info`} style={infoStyle}>{readAs(value)}</div> : null
                 }
             </div>
         );
