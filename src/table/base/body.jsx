@@ -62,7 +62,7 @@ export default class Body extends React.Component {
     render() {
         /*eslint-disable no-unused-vars */
         const { prefix, className, children, component: Tag, colGroup, loading, emptyContent, components, getCellProps,
-            primaryKey, getRowProps, dataSource, cellRef, columns, rowRef, onRowClick, onRowMouseEnter, onRowMouseLeave, locale, pure, ...others } = this.props;
+            primaryKey, getRowProps, dataSource, cellRef, columns, rowRef, onRowClick, onRowMouseEnter, onRowMouseLeave, locale, pure, expandedIndexSimulate, ...others } = this.props;
 
         const { Row = RowComponent, Cell = CellComponent } = components;
         const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;

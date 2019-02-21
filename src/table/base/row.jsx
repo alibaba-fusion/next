@@ -141,7 +141,7 @@ export default class Row extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, getCellProps, rowIndex, record, children, primaryKey, cellRef, colGroup, pure, locale, ...others } = this.props;
+        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, getCellProps, rowIndex, record, children, primaryKey, cellRef, colGroup, pure, locale, expandedIndexSimulate, ...others } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
             [className]: className
