@@ -45,7 +45,8 @@ class Collapse extends React.Component {
          */
         accordion: PropTypes.bool,
         children: PropTypes.node,
-        id: PropTypes.string
+        id: PropTypes.string,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -192,7 +193,7 @@ class Collapse extends React.Component {
     }
 
     render() {
-        const {prefix, className, style, disabled, dataSource, id} = this.props;
+        const {prefix, className, style, disabled, dataSource, id, rtl} = this.props;
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,
@@ -201,7 +202,7 @@ class Collapse extends React.Component {
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);
         return (
-            <div id={id} className={collapseClassName} style={style} {...others} role="presentation">
+            <div id={id} className={collapseClassName} style={style} {...others} role="presentation" dir={rtl ? 'rtl' : undefined} >
                 {dataSource ? this.getItemsByDataSource() : this.getItemsByChildren()}
             </div>
         );

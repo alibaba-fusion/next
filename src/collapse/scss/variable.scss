@@ -78,6 +78,10 @@ $collapse-icon-margin-r: $s-2 !default;
 /// @namespace size/icon
 $collapse-icon-margin-l: $s-3 !default;
 
+$collapse-icon-rotation-collapsed: 90deg;
+$collapse-icon-rotation-expanded: 180deg;
+$collapse-icon-rotation-collapsed-rtl: $collapse-icon-rotation-collapsed * 3;
+
 /// background
 /// @namespace statement/normal/content
 $collapse-content-bg-color: $color-white !default;

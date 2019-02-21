@@ -2,6 +2,7 @@
 @import "scss/variable";
 @import "scss/normalize";
 @import "scss/mixin";
+@import "rtl.scss";
 
 #{$card-prefix} {
     @include box-sizing;

@@ -492,7 +492,8 @@ export default class Table extends React.Component {
                 onRowClick,
                 onRowMouseEnter,
                 onRowMouseLeave,
-                pure
+                pure,
+                rtl
             } = this.props;
             const { sort } = this.state;
             const {
@@ -511,6 +512,7 @@ export default class Table extends React.Component {
                     {hasHeader ? (
                         <Header
                             prefix={prefix}
+                            rtl={rtl}
                             pure={pure}
                             affixRef={this.getAffixRef}
                             colGroup={colGroup}
@@ -528,6 +530,7 @@ export default class Table extends React.Component {
                     ) : null}
                     <Body
                         prefix={prefix}
+                        rtl={rtl}
                         pure={pure}
                         colGroup={colGroup}
                         className={`${prefix}table-body`}
@@ -626,6 +629,7 @@ export default class Table extends React.Component {
                 rtl,
                 emptyContent,
                 filterParams,
+                columns,
                 loadingComponent: LoadingComponent = Loading,
                 ...others
             } = this.props,

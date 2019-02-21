@@ -315,6 +315,7 @@
         &:first-child {
             border-bottom-right-radius: 0 !important;
             border-top-right-radius: 0 !important;
+            //TODO: removed in 2.x
             > * {
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
@@ -323,6 +324,7 @@
         &:last-child {
             border-bottom-left-radius: 0 !important;
             border-top-left-radius: 0 !important;
+            //TODO: removed in 2.x
             > * {
                 border-bottom-left-radius: 0 !important;
                 border-top-left-radius: 0 !important;

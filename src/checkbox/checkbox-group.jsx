@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -108,7 +108,7 @@ class CheckboxGroup extends Component {
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
-            let {value} = nextProps;
+            let { value } = nextProps;
             if (!Array.isArray(value)) {
                 if (value === null || value === undefined) {
                     value = [];
@@ -123,7 +123,7 @@ class CheckboxGroup extends Component {
     }
 
     onChange(currentValue, e) {
-        const {value} = this.state;
+        const { value } = this.state;
         const index = value.indexOf(currentValue);
         const valTemp = [...value];
 
@@ -134,19 +134,24 @@ class CheckboxGroup extends Component {
         }
 
         if (!('value' in this.props)) {
-            this.setState({value: valTemp});
+            this.setState({ value: valTemp });
         }
         this.props.onChange(valTemp, e);
     }
 
     render() {
-        const { className, style, prefix, disabled, itemDirection } = this.props;
+        const { className, style, prefix, disabled, itemDirection, rtl } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
         let children;
         if (this.props.children) {
-            children = this.props.children;
+            children = React.Children.map(this.props.children, (child) => {
+                if (!React.isValidElement(child)) {
+                    return child;
+                }
+                return React.cloneElement(child, child.props.rtl === undefined ? { rtl } : null);
+            });
         } else {
             children = this.props.dataSource.map((item, index) => {
                 let option = item;
@@ -163,6 +168,7 @@ class CheckboxGroup extends Component {
                     <Checkbox key={index}
                         value={option.value}
                         checked={checked}
+                        rtl={rtl}
                         disabled={disabled || option.disabled}
                         label={option.label}
                     />
@@ -177,7 +183,7 @@ class CheckboxGroup extends Component {
             disabled
         });
 
-        return <span {...others} className={cls} style={style}>{children}</span>;
+        return <span dir={rtl ? 'rtl' : undefined} {...others} className={cls} style={style}>{children}</span>;
     }
 }
 

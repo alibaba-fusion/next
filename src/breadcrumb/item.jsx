@@ -9,6 +9,7 @@ import ConfigProvider from '../config-provider';
 class Item extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * 面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`
          */
@@ -31,13 +32,13 @@ class Item extends Component {
     }
 
     render() {
-        const {prefix, className, children, link, activated, separator, ...others} = this.props;
+        const {prefix, rtl, className, children, link, activated, separator, ...others} = this.props;
         const clazz = classNames(`${prefix}breadcrumb-text`, className, {
             activated
         });
 
         return (
-            <div className={`${prefix}breadcrumb-item`}>
+            <div dir={rtl ? 'rtl' : null} className={`${prefix}breadcrumb-item`}>
                 {link ? <a href={link} className={clazz} {...others}>{children}</a> : <span className={clazz} {...others}>{children}</span>}
                 {activated ? null : Item.Separator({prefix, children: separator})}
             </div>
