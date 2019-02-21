@@ -18,7 +18,7 @@ describe('Locale', () => {
 function getKeys(object, parent = '') {
     const keys = [];
     for (const key in object) {
-        if (!object.hasOwnProperty(key)) return;
+        if (!object.hasOwnProperty(key) || key === 'momentLocale') return;
         const value = object[key];
         keys.push(parent ? `${parent}.${key}`: key);
 
