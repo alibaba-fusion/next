@@ -1,6 +1,7 @@
 @import "../core/index-noreset";
 @import "scss/variable";
 @import "scss/mixin";
+@import "./rtl.scss";
 
 #{$rating-prefix} {
     vertical-align: top;

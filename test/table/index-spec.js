@@ -509,4 +509,43 @@ describe('Table', () => {
             }, 100)
         })
     });
+
+    it('should support dataSource [] => [{},{}] => []', () => {
+        wrapper.setProps({
+            children: [<Table.Column dataIndex='id' lock width={200}></Table.Column>,
+            <Table.Column dataIndex='id' lock='right' width={200}></Table.Column>]
+        })
+        wrapper.debug();
+        assert(wrapper.find('div.next-table-lock-left').length === 1);
+        assert(wrapper.find('div.next-table-lock-right').length === 1);
+        assert(wrapper.find('div.next-table-empty').length === 0);
+
+        wrapper.setProps({
+            dataSource: []
+        });
+        assert(wrapper.find('div.next-table-empty').length !== 0);
+
+        wrapper.setProps({
+            dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }]
+        });
+
+        assert(wrapper.find('div.next-table-lock-left').length === 1);
+        assert(wrapper.find('div.next-table-lock-right').length === 1);
+        assert(wrapper.find('div.next-table-empty').length === 0);
+    })
+
+    it('should support lock scroll x', () => {
+        wrapper.setProps({
+            children: [<Table.Column dataIndex='id' lock width={200}></Table.Column>,
+            <Table.Column dataIndex='name' width={200}></Table.Column>,
+            <Table.Column dataIndex='id' lock='right' width={200}></Table.Column>]
+        })
+        wrapper.debug();
+        assert(wrapper.find('div.next-table-lock-left').length === 1);
+        assert(wrapper.find('div.next-table-lock-right').length === 1);
+
+        const body = wrapper.find('div.next-table-lock .next-table-body').at(1).props().onWheel({deltaY: 200, deltaX: 5})
+
+    })
+
 });

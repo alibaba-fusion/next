@@ -40,7 +40,7 @@ ReactDOM.render(<div>
     </Step>
 
     <h3>Circle(Horizontal content)</h3>
-    <Step current={1} shape="circle" labelPlacement="horizontal">
+    <Step current={1} shape="circle" labelPlacement="hoz">
         {steps}
     </Step>
 

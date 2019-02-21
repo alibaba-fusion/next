@@ -117,4 +117,8 @@
     &xxxl {
         @include icon-size($icon-xxxl);
     }
+
+    &inherit {
+        @include icon-size(inherit);
+    }
 }

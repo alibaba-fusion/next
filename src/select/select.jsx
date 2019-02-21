@@ -454,10 +454,33 @@ class Select extends Base {
         onKeyDown(e);
     }
 
+    chooseMultipleItem(key) {
+        const value = this.state.value || [];
+        const keys = value.map(v => {
+            return valueToSelectKey(v);
+        });
+
+        const index = keys.map(v => `${v}`).indexOf(key);
+
+        if (index > -1) { // unselect
+            keys.splice(index, 1);
+        } else { // select
+            keys.push(key);
+        }
+
+        this.handleMultipleSelect(keys, 'enter');
+    }
+
     // 回车 选择高亮的 item
     chooseHighlightItem(proxy, e) {
         const prevVisible = this.state.visible;
+        const { mode } = this.props;
+
         if (!prevVisible) {
+            // input tag by itself
+            if (mode === 'tag' && this.state.searchValue) {
+                this.chooseMultipleItem(this.state.searchValue);
+            }
             return false;
         }
 
@@ -468,22 +491,10 @@ class Select extends Base {
             return;
         }
 
-        const { mode } = this.props;
-
         if (mode === 'single') {
             this.handleSingleSelect(highlightKey, 'enter');
         } else {
-            const value = this.state.value || [];
-            const keys = value.map(v => {
-                return valueToSelectKey(v);
-            });
-            const index = keys.map(v => `${v}`).indexOf(highlightKey);
-            if (index > -1) { // 反选
-                keys.splice(index, 1);
-            } else { // 勾选
-                keys.push(highlightKey);
-            }
-            this.handleMultipleSelect(keys, 'enter');
+            this.chooseMultipleItem(highlightKey);
             // 阻止事件冒泡到最外层，让Popup 监听到触发弹层关闭
             e && e.stopPropagation();
         }
@@ -674,7 +685,7 @@ class Select extends Base {
                 type="arrow-down" /></span>);
         }
 
-        // 不能使用 this.hasClear() 方法判断，要保证 clear 按钮 dom 结构一直存在，防止其不能成为弹层的安全节点，导致弹层没有必要的显示或隐藏
+        // do not use this.hasClear() here, to make sure clear btn always exists, can not influenced by apis like `disabled` `readOnly`
         if (hasClear) {
             ret.push(<span key="clear" onClick={this.handleClear} className={`${prefix}select-clear`}><Icon
                 type="delete-filling" /></span>);

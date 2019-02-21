@@ -3,6 +3,7 @@ import assert from 'power-assert';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Breadcrumb from '../../src/breadcrumb';
+import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
 const {Item} = Breadcrumb;
@@ -73,6 +74,22 @@ describe('Breadcrumb', () => {
             </Breadcrumb>
         );
         assert(wrapper.find('.next-breadcrumb-item').at(2).find('.next-breadcrumb-separator').length === 0);
+        wrapper.unmount();
+    });
+
+    it('should support RTL', () => {
+        const wrapper = mount(
+            <ConfigProvider rtl>
+                <Breadcrumb>
+                    <Item>Home</Item>
+                    <Item>Whatever</Item>
+                    <Item>All Categories</Item>
+                </Breadcrumb>
+            </ConfigProvider>
+        );
+
+        assert(wrapper.find('.next-breadcrumb').props().dir === 'rtl');
+        assert(wrapper.find('.next-breadcrumb-item').at(0).props().dir === 'rtl');
         wrapper.unmount();
     });
 });
