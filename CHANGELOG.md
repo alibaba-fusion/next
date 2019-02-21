@@ -1,5 +1,11 @@
 # Change Log 
 
+<a name="1.12.8"></a>
+## [1.12.8](https://github.com/alibaba-fusion/next/compare/1.12.7...1.12.8) (2019-02-21)
+
+
+
+
 <a name="1.12.7"></a>
 ## [1.12.7](https://github.com/alibaba-fusion/next/compare/1.12.6...1.12.7) (2019-02-21)
 
