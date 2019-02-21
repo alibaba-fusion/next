@@ -191,6 +191,7 @@ let myfield = new Field(this [,options]);
 | forceUpdate | 仅建议PureComponent的组件打开此强制刷新功能，会带来性能问题(500个组件为例：打开的时候render花费700ms, 关闭时候render花费400ms) | Boolean  |false|
 | scrollToFirstError | field.validate的时候滚动到第一个出错的组件, 如果是整数会进行偏移 | Boolean/Number  |true|
 | autoUnmount | 自动删除Unmout元素，如果想保留数据可以设置为false | Boolean  |true|
+| autoValidate | 是否修改数据的时候就自动触发校验, 设为 false 后只能通过 validate() 来触发校验  | Boolean  |true|
 | values | 初始化数据 | Object ||
 
 #### API接口
@@ -213,7 +214,7 @@ let myfield = new Field(this [,options]);
 | getState  | 判断校验状态 | Function(name: String)| 'error' 'success' 'loading' '' | '' |
 | getNames  | 获取所有组件的key | Function()|  |  |
 | remove  | 删除某一个或者一组控件的数据，删除后与之相关的validate/value都会被清空 | Function(name: String/String[])|  |  |
-
+| spliceArray  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(keyMatch: String, index: Number)|  |  |
 
 #### init
 ```
@@ -229,6 +230,7 @@ init(name, options, props)
 | options.rules | 校验规则 | Array/Object | | | |
 | options.getValueFromEvent | 自定义从`onChange`事件中获取value的方式，一般不需要设置. 详细用法查看demo `自定义数据获取` | Function(value,...args) 参数顺序和组件是完全一致的 | | | |
 | props | 组件自定义的事件可以写在这里  | Object | | | |
+| autoValidate | 是否修改数据的时候自动触发校验单个组件的校验, 设为 false 后只能通过 validate() 来触发校验 | Boolean  |true|
 
 返回值
 ```

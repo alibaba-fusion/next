@@ -295,7 +295,7 @@ describe('field', () => {
             assert(field.getError('input') === null);
             assert(field.getError('input2')[0] === "error 2");
 
-            field.setError('input', < span > hello < /span>);
+            field.setError('input', <span>hello</span>);
             assert(React.isValidElement(field.getError('input')[0]) === true);
 
             done();
@@ -383,6 +383,25 @@ describe('field', () => {
             field.remove(['input', 'input2']);
             assert(field._get('input') === null);
             assert(field._get('input2') === null);
+
+            done();
+        });
+        it('spliceArray', (done) => {
+            let field = new Field();
+            field.init('input.0', {initValue: 0});
+            field.init('input.1', {initValue: 1});
+            field.init('input.2', {initValue: 2});
+
+            field.spliceArray('input.{index}', 1);
+
+            assert(field.getValue('input.0') === 0);
+            assert(field.getValue('input.1') === 2);
+            assert(field.getValue('input.2') === undefined);
+
+            field.spliceArray('input.{index}', 0);
+            assert(field.getValue('input.0') === 2);
+            assert(field.getValue('input.1') === undefined);
+            assert(field.getValue('input.2') === undefined);
 
             done();
         });

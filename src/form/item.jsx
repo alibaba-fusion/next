@@ -165,7 +165,11 @@ export default class Item extends React.Component {
         /**
          * validator 自定义触发方式
          */
-        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
+        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        /**
+         * 是否修改数据时自动触发校验
+         */
+        autoValidate: PropTypes.bool,
     };
 
     static defaultProps = {
