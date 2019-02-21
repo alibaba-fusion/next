@@ -20,7 +20,9 @@ export default {
         prevMonth: '上个月',
         nextMonth: '下个月',
         prevDecade: '上十年',
-        nextDecade: '后十年'
+        nextDecade: '后十年',
+        yearSelectAriaLabel: '選擇年份',
+        monthSelectAriaLabel: '選擇月份'
     },
     DatePicker: {
         placeholder: '請選擇日期',

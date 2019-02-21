@@ -57,7 +57,9 @@ export default {
         labelNext: '次のページ、当面の第{current}ページ',
         inputAriaLabel: '数ページまでジャンプしてください',
         selectAriaLabel: 'ページごとに数本表示してください',
-        pageSize: 'ページサイズ：'
+        pageSize: 'ページサイズ：',
+        yearSelectAriaLabel: '年を選んで',
+        monthSelectAriaLabel: '月を選択し'
     },
     Input: {
         clear: 'クリア'

@@ -44,7 +44,7 @@ describe('CascaderSelect A11y', () => {
 
     // TODO Select support a11y
     it.skip('should not have any violations when empty', async () => {
-        wrapper = await testReact(<CascaderSelect dataSource={ChinaArea} defaultExpandAll />);
+        wrapper = await testReact(<CascaderSelect aria-label="级联选择" dataSource={ChinaArea} defaultExpandAll />);
         return wrapper;
     });
 });

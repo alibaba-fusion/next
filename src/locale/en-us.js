@@ -20,7 +20,9 @@ export default {
         prevMonth: 'Previous Month',
         nextMonth: 'Next Month',
         prevDecade: 'Previous Decade',
-        nextDecade: 'Next Decade'
+        nextDecade: 'Next Decade',
+        yearSelectAriaLabel: 'Select Year',
+        monthSelectAriaLabel: 'Select Month'
     },
     DatePicker: {
         placeholder: 'Select Date',
