@@ -155,6 +155,7 @@ class RadioGroup extends Component {
         let children;
         if (this.props.children) {
             children = React.Children.map(this.props.children, (child, index) => {
+                if (!React.isValidElement(child)) return child;
                 const checked = this.state.value === child.props.value;
                 const tabIndex = ((index === 0 && !this.state.value) || checked) ? 0 : -1;
                 return React.cloneElement(child, child.props.tabIndex === undefined ? {
