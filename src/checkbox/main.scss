@@ -2,6 +2,7 @@
 
 @import '../core/index-noreset';
 @import 'scss/variable';
+@import './rtl.scss';
 
 /* stylelint-disable max-nesting-depth */
 
@@ -153,6 +154,7 @@
         #{$checkbox-prefix}-wrapper {
             display: block;
             margin-left: 0;
+            margin-right: 0;
             margin-bottom: 8px;
         }
     }
