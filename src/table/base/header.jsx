@@ -46,7 +46,7 @@ export default class Header extends React.Component {
     render() {
         /*eslint-disable no-unused-vars */
         const { prefix, className, children, component: Tag, colGroup, columns, locale, filterParams,
-            onFilter, components, affixRef, headerCellRef, onSort, sort, onResizeChange, pure, ...others
+            onFilter, components, affixRef, headerCellRef, onSort, sort, onResizeChange, pure, rtl, ...others
         } = this.props;
 
         const { Cell = CellComponent, Filter = FilterComponent, Sort = SortComponent, Resize = ResizeComponent } = components;
@@ -71,10 +71,11 @@ export default class Header extends React.Component {
                             dataIndex={dataIndex}
                             onSort={this.onSort}
                             sort={sort}
+                            rtl={rtl}
                             locale={locale}/>);
                     }
                     if (resizable) {
-                        resizeElement = <Resize prefix={prefix} dataIndex={dataIndex} onChange={onResizeChange}/>;
+                        resizeElement = <Resize prefix={prefix} rtl={rtl} dataIndex={dataIndex} onChange={onResizeChange}/>;
                     }
 
                     if (filters) {
@@ -83,6 +84,7 @@ export default class Header extends React.Component {
                                 filters={filters}
                                 prefix={prefix}
                                 locale={locale}
+                                rtl={rtl}
                                 filterParams={filterParams}
                                 filterMode={filterMode}
                                 onFilter={onFilter} />) : null;
@@ -93,6 +95,7 @@ export default class Header extends React.Component {
                     key={j}
                     prefix={prefix}
                     pure={pure}
+                    rtl={rtl}
                     cell={title}
                     component="th"
                     align={alignHeader ? alignHeader : align}

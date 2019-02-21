@@ -475,6 +475,41 @@ describe('Table', () => {
         })
     });
 
+    it('should support rtl', () => {
+        timeout({
+            children: [
+                <Table.Column dataIndex='id' lock width={200}></Table.Column>,
+                <Table.Column dataIndex='name' width={200}></Table.Column>
+            ],
+            rtl: true
+        }, () => {
+            assert(wrapper.find('.next-table[dir="rtl"]').length === 3);
+        })
+    });
+
+    it('should support rtl resize', done => {
+        timeout({
+            children: [
+                <Table.Column dataIndex='id' resizable width={200}></Table.Column>,
+                <Table.Column dataIndex='name' width={200}></Table.Column>
+            ],
+            rtl: true,
+            onResizeChange: (dataIndex, value) => {
+                console.log(dataIndex, value)
+            }
+        }, () => {
+            wrapper.find('.next-table-resize-handler').simulate('mousedown', {pageX: 0});
+            assert(document.body.style.cursor === 'ew-resize');
+            document.dispatchEvent(new Event('mousemove', {pageX: 0}));
+            document.dispatchEvent(new Event('mouseup'));
+
+            setTimeout(()=> {
+                assert(document.body.style.cursor === '');
+                done();
+            }, 100)
+        })
+    });
+
     it('should support dataSource [] => [{},{}] => []', () => {
         wrapper.setProps({
             children: [<Table.Column dataIndex='id' lock width={200}></Table.Column>,
@@ -512,4 +547,40 @@ describe('Table', () => {
         const body = wrapper.find('div.next-table-lock .next-table-body').at(1).props().onWheel({deltaY: 200, deltaX: 5})
 
     })
+
+    it('should support align alignHeader', () => {
+        wrapper.setProps({
+            children: [<Table.Column title="id" align="right" alignHeader="left" dataIndex='id' width={200}></Table.Column>,
+            <Table.Column title="name" align="left" dataIndex='name' width={200}></Table.Column>,
+            <Table.Column title="id" alignHeader="right" dataIndex='id' width={200}></Table.Column>]
+        })
+
+        assert(wrapper.find('thead tr th').at(0).props().style.textAlign === 'left');
+        assert(wrapper.find('thead tr th').at(1).props().style.textAlign === 'left');
+        assert(wrapper.find('thead tr th').at(2).props().style.textAlign === 'right');
+
+
+        assert(wrapper.find('tbody tr').at(0).find('td').at(0).props().style.textAlign === 'right');
+        assert(wrapper.find('tbody tr').at(0).find('td').at(1).props().style.textAlign === 'left');
+        assert(wrapper.find('tbody tr').at(0).find('td').at(2).props().style.textAlign === undefined);
+    })
+
+    it('should support align alignHeader rtl', () => {
+        wrapper.setProps({
+            children: [<Table.Column title="id" align="right" alignHeader="left" dataIndex='id' width={200}></Table.Column>,
+            <Table.Column title="name" align="left" dataIndex='name' width={200}></Table.Column>,
+            <Table.Column title="id" alignHeader="right" dataIndex='id' width={200}></Table.Column>],
+            rtl: true
+        })
+
+        assert(wrapper.find('thead tr th').at(0).props().style.textAlign === 'right');
+        assert(wrapper.find('thead tr th').at(1).props().style.textAlign === 'right');
+        assert(wrapper.find('thead tr th').at(2).props().style.textAlign === 'left');
+
+
+        assert(wrapper.find('tbody tr').at(0).find('td').at(0).props().style.textAlign === 'left');
+        assert(wrapper.find('tbody tr').at(0).find('td').at(1).props().style.textAlign === 'right');
+        assert(wrapper.find('tbody tr').at(0).find('td').at(2).props().style.textAlign === undefined);
+    })
+
 });

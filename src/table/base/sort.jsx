@@ -7,6 +7,7 @@ import { KEYCODE } from '../../util';
 export default class Sort extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         sort: PropTypes.object,
         onSort: PropTypes.func,
@@ -18,7 +19,7 @@ export default class Sort extends React.Component {
     }
     // 渲染排序
     renderSort() {
-        const {prefix, sort, dataIndex, locale} = this.props,
+        const { prefix, sort, dataIndex, locale, rtl } = this.props,
             sortStatus = sort[dataIndex],
             map = {
                 desc: 'descending',
@@ -30,7 +31,7 @@ export default class Sort extends React.Component {
                 <a href="javascript:;"
                     key={sortOrder}
                     className={sortStatus === sortOrder ? 'current' : ''}>
-                    <Icon type={map[sortOrder]} size="small"/>
+                    <Icon rtl={rtl} type={map[sortOrder]} size="small"/>
                 </a>
             );
         });
