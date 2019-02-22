@@ -96,6 +96,7 @@ class App extends React.Component {
     disabledExpandedCol() {
         this.setState({
             getExpandedColProps: (record, index) => {
+                console.log(index)
                 if (index === 3) {
                     return {
                         disabled: true
@@ -127,7 +128,7 @@ class App extends React.Component {
     }
     render() {
         const renderTitle = (value, index, record) => {
-            return <div>{value}<span onClick={this.toggleExpand.bind(this, record)}>+++++</span></div>;
+            return <div>{value}<span onClick={this.toggleExpand.bind(this, record)}>index:{index} +++++</span></div>;
         };
         return (
             <span>
