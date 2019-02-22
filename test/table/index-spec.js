@@ -187,13 +187,20 @@ describe('Table', () => {
     });
 
     it('should support expandedRowRender getExpandedColProps with expandedIndexSimulate', (done) => {
+        const arr = [];
         timeout({
+            children: [
+                <Table.Column dataIndex='id' width={200}></Table.Column>,
+                <Table.Column cell={(record, index) => {arr.push(index)}} width={200}></Table.Column>
+            ],
             expandedRowRender: (record, index) => record.name + index,
             getExpandedColProps: (record, index) => {
                 assert(record.id == index + 1);
             },
             expandedIndexSimulate: true
         }, () => {
+            assert(arr.toString() === '0,1');
+
             let expandedCtrl0 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(0);
             expandedCtrl0.simulate('click');
             let expandedRow0 = wrapper.find('.next-table-body .next-table-expanded-row').at(0);
@@ -205,7 +212,6 @@ describe('Table', () => {
             let expandedRow1 = wrapper.find('.next-table-body .next-table-expanded-row').at(1);
 
             assert(expandedRow1.text().replace(/\s$|^\s/g, '') === 'test2' + '1');
-
         }).then(() => {
             return timeout({
                 expandedRowIndent: [2, 1]
