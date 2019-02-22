@@ -30,7 +30,7 @@ You can customize your own DesignSystem via [Collaboration Platform](https://fus
 ![](https://img.alicdn.com/tfs/TB1gia.HkvoK1RjSZFDXXXY3pXa-1286-490.png)
 
 
-# 💻 浏览器支持
+# 💻 Browser Compatibility
 
 ![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![UC](https://raw.github.com/alrra/browser-logos/master/src/uc/uc_48x48.png)
 :---: | :---: | :---: | :---: | :---: | :---: | :---:
