@@ -782,7 +782,7 @@ export default class Tree extends Component {
     handleDragEnter(e, node) {
         const dragOverNodeKey = node.props.eventKey;
         this.dropPosition = this.getDropPosition(e, node);
-        if (this.dragNode.props.eventKey === dragOverNodeKey && this.dropPosition === 0) {
+        if (this.dragNode && this.dragNode.props.eventKey === dragOverNodeKey && this.dropPosition === 0) {
             this.setState({
                 dragOverNodeKey: null
             });
@@ -835,7 +835,7 @@ export default class Tree extends Component {
     }
 
     handleDrop(e, node) {
-        if (isDescendantOrSelf(this._k2n[this.dragNode.props.eventKey].pos, this._k2n[node.props.eventKey].pos)) {
+        if (this.dragNode && isDescendantOrSelf(this._k2n[this.dragNode.props.eventKey].pos, this._k2n[node.props.eventKey].pos)) {
             return;
         }
 
