@@ -110,10 +110,10 @@ export default class Position {
             }
         }
 
+        // This will only execute if `pinElement` could not be placed entirely in the Viewport
         const inViewportLeft = this._makeElementInViewport(pinElement, firstPositionResult.left, 'Left', isPinFixed);
         const inViewportTop = this._makeElementInViewport(pinElement, firstPositionResult.top, 'Top', isPinFixed);
-
-        this._setPinElementPostion(pinElement, {left: inViewportLeft, top: inViewportTop});
+        this._setPinElementPostion(pinElement, { left: inViewportLeft, right: inViewportTop }, this.offset);
         return expectedAlign[0];
     }
 
@@ -244,7 +244,6 @@ export default class Position {
     _getExpectedAlign() {
         const align = this.isRtl ? this._replaceAlignDir(this.align, /l|r/g, {l: 'r', r: 'l'}) : this.align;
         const expectedAlign = [align];
-
         if (this.needAdjust) {
             if (/t|b/g.test(align)) {
                 expectedAlign.push(this._replaceAlignDir(align, /t|b/g, {t: 'b', b: 't'}));
