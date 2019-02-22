@@ -96,7 +96,7 @@ class App extends React.Component {
     disabledExpandedCol() {
         this.setState({
             getExpandedColProps: (record, index) => {
-                console.log(index)
+                console.log(index);
                 if (index === 3) {
                     return {
                         disabled: true

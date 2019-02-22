@@ -1,5 +1,16 @@
 # Change Log 
 
+<a name="1.13.2"></a>
+## [1.13.2](https://github.com/alibaba-fusion/next/compare/1.13.1...1.13.2) (2019-02-22)
+
+
+### Bug Fixes
+
+* **Table:** correct cell(recored, index) when expandedIndexSimulate ([2ba1ba8](https://github.com/alibaba-fusion/next/commit/2ba1ba8))
+
+
+
+
 <a name="1.13.1"></a>
 ## [1.13.1](https://github.com/alibaba-fusion/next/compare/1.13.0...1.13.1) (2019-02-21)
 
