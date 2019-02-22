@@ -1,0 +1,122 @@
+{
+  "name": "ConfigProvider",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式类名的品牌前缀",
+      "docblock": "样式类名的品牌前缀"
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "国际化文案对象，属性为组件的 displayName",
+      "docblock": "国际化文案对象，属性为组件的 displayName",
+      "properties": []
+    },
+    "pure": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启 Pure Render 模式，会提高性能，但是也会带来副作用",
+      "docblock": "是否开启 Pure Render 模式，会提高性能，但是也会带来副作用"
+    },
+    "warning": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否在开发模式下显示组件属性被废弃的 warning 提示",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否在开发模式下显示组件属性被废弃的 warning 提示"
+    },
+    "rtl": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启 rtl 模式",
+      "docblock": "是否开启 rtl 模式"
+    },
+    "children": {
+      "type": {
+        "name": "element"
+      },
+      "required": false,
+      "description": "组件树",
+      "docblock": "组件树"
+    }
+  },
+  "methods": [
+    {
+      "name": "config",
+      "docblock": "传入组件，生成受 ConfigProvider 控制的 HOC 组件\n@param {Component} Component 组件类\n@param {Object} options 可选项\n@returns {Component} HOC",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "Component",
+          "description": "组件类",
+          "type": {
+            "name": "Component"
+          }
+        },
+        {
+          "name": "options",
+          "description": "可选项",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "HOC",
+        "type": {
+          "name": "Component"
+        }
+      },
+      "description": "传入组件，生成受 ConfigProvider 控制的 HOC 组件"
+    },
+    {
+      "name": "getContextProps",
+      "docblock": "传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件\n@param {Object} props 组件的 props\n@param {String} displayName 组件的 displayName\n@returns {Object} 新的 context props",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "组件的 props",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "displayName",
+          "description": "组件的 displayName",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": {
+        "description": "新的 context props",
+        "type": {
+          "name": "Object"
+        }
+      },
+      "description": "传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件"
+    }
+  ],
+  "propsExtends": false,
+  "subComponents": []
+}
