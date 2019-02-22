@@ -11,6 +11,7 @@ describe('Locale', () => {
         const jpKeys = getKeys(JP);
         const cnKeys = getKeys(CN);
         const twKeys = getKeys(TW);
+
         assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === twKeys);
     });
 });
@@ -18,7 +19,7 @@ describe('Locale', () => {
 function getKeys(object, parent = '') {
     const keys = [];
     for (const key in object) {
-        if (!object.hasOwnProperty(key) || key === 'momentLocale') return;
+        if (!object.hasOwnProperty(key) || key === 'momentLocale') continue;
         const value = object[key];
         keys.push(parent ? `${parent}.${key}`: key);
 
