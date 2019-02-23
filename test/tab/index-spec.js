@@ -1,9 +1,11 @@
 import React from 'react';
 import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import sinon from 'sinon';
 import assert from 'power-assert';
 import { KEYCODE } from '../../src/util';
 import Tab from '../../src/tab/index';
+import Nav from '../../src/tab/tabs/nav';
 import '../../src/tab/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -337,9 +339,17 @@ describe('Tab', () => {
                 .simulate('click');
             assert(wrapper.find('.next-tabs-tabpane').length === 1);
         });
+
+        it('should resize', () => {
+            const render = sinon.spy();
+            const ele = (<Tab defaultActiveKey={1} tabRender={render}><Tab.Item key={1} title="Item1"></Tab.Item></Tab>);
+            wrapper = mount(ele);
+            window.dispatchEvent(new Event('resize'));
+            assert(render.calledOnce);
+        });
     });
 
-    describe('slide mode', () => {
+    describe('excess mode', () => {
         let wrapper, target;
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <Tab.Item title={`tab item ${item}`} key={index} />
@@ -405,6 +415,13 @@ describe('Tab', () => {
                     .at(0)
                     .hasClass('next-selected')
             );
+        });
+
+        it('should not render dropdown if not excessed', () => {
+            wrapper = mount(<div style={boxStyle}><Tab excessMode="dropdown" shape="wrapped">
+                <Tab.Item title="item" key={1}></Tab.Item>
+            </Tab></div>, { attachTo: target });
+            assert(wrapper.find('.next-tabs-btn-down').length === 0);
         });
 
         it('should scrollToActiveTab', () => {

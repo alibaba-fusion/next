@@ -50,20 +50,21 @@ class Nav extends React.Component {
     }
 
     componentDidMount() {
-        this.setSlideBtn();
-        this.getDropdownItems(this.props);
+        const ctx = this;
+
+        ctx.setSlideBtn();
+        ctx.getDropdownItems(this.props);
+        // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
+        clearTimeout(ctx.scrollTimer);
+        ctx.scrollTimer = setTimeout(() => {
+            ctx.scrollToActiveTab();
+        }, 400);
 
         events.on(window, 'resize', this.onWindowResized);
     }
 
     componentDidUpdate() {
         const ctx = this;
-
-        // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
-        clearTimeout(ctx.scrollTimer);
-        ctx.scrollTimer = setTimeout(() => {
-            ctx.scrollToActiveTab();
-        }, 400);
 
         clearTimeout(ctx.slideTimer);
         ctx.slideTimer = setTimeout(() => {
@@ -210,10 +211,13 @@ class Nav extends React.Component {
             }
         }
 
-        if (index > 1) {
-            index = index - 1;
+        if (index === tabs.length) {
             this.setState({
-                dropdownTabs: tabs.slice(index),
+                dropdownTabs: [],
+            });
+        } else {
+            this.setState({
+                dropdownTabs: tabs,
             });
         }
     }
@@ -341,13 +345,13 @@ class Nav extends React.Component {
 
     onPrevClick = () => {
         const wrapperWH = getOffsetWH(this.wrapper);
-        this.setOffset(this.offset + wrapperWH);
-    };
+        this.setOffset(this.offset + wrapperWH, true, false);
+    }
 
     onNextClick = () => {
         const wrapperWH = getOffsetWH(this.wrapper);
-        this.setOffset(this.offset - wrapperWH);
-    };
+        this.setOffset(this.offset - wrapperWH, true, false);
+    }
 
     onNavItemClick(key, callback, e) {
         this.props.onTriggerEvent(triggerEvents.CLICK, key);
