@@ -1,7 +1,4 @@
 {
-    "extends": [
-        "@alifd/eslint-config-next"
-    ],
     "rules": {
         "react/prop-types": 1
     }
