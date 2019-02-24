@@ -1,7 +1,4 @@
 {
-    "extends": [
-        "@alifd/eslint-config-next"
-    ],
     "rules": {
         "eol-last": 0,
         "key-spacing": 0,
