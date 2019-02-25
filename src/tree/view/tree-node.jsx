@@ -20,6 +20,7 @@ export default class TreeNode extends Component {
     static propTypes = {
         _key: PropTypes.string,
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 树节点
@@ -73,6 +74,7 @@ export default class TreeNode extends Component {
 
     static defaultProps = {
         label: '---',
+        rtl: false,
         disabled: false,
         checkboxDisabled: false,
         isLeaf: false
@@ -420,6 +422,7 @@ export default class TreeNode extends Component {
     render() {
         const {
             prefix,
+            rtl,
             className,
             children,
             isLeaf,
@@ -461,7 +464,9 @@ export default class TreeNode extends Component {
         const defaultPaddingLeft = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.defaultPaddingLeft || 0) : 0;
         const indent = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.indent || 24) : 24;
         const level = pos.split('-').length - 2;
-        const innerStyle = isNodeBlock ? { paddingLeft: `${indent * level + defaultPaddingLeft}px` } : null;
+        const paddingLeftProp = rtl ? 'paddingRight' : 'paddingLeft';
+
+        const innerStyle = isNodeBlock ? { [paddingLeftProp]: `${indent * level + defaultPaddingLeft}px` } : null;
         const innerProps = {
             className: innerClassName,
             style: innerStyle,
@@ -477,6 +482,10 @@ export default class TreeNode extends Component {
         const { editing } = this.state;
 
         innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         return (
             <li

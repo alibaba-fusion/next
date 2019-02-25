@@ -2,6 +2,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/mixin";
 @import "scss/variable";
+@import "./rtl.scss";
 
 /* put your code here */
 #{$collapse-prefix} {
@@ -23,7 +24,7 @@
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0, 0, rotate(90deg));
+        @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-collapsed));
     }
 
     &-panel-title {
@@ -62,7 +63,7 @@
         }
 
         #{$collapse-prefix}-panel-icon {
-            @include icon-size($collapse-icon-size, 0, 0, rotate(180deg));
+            @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-expanded));
         }
     }
 

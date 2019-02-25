@@ -219,6 +219,7 @@ class Checkbox extends UIState {
                 {...othersData}
                 className={cls}
                 style={style}
+                dir={rtl ? 'rtl' : undefined}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >

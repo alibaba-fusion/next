@@ -80,6 +80,7 @@ Form layout, validation, data submission operations used.
 | formatMessage | custom error message for `format` | String | - |
 | formatTrigger | custom trigger mode for `format` | String/Array | - |
 | validator | [validation] custom validation function <br><br> **signature **:<br>Function() => void | Function | - |
+| autoValidate | validate while value changed | Boolean            | -     |
 
 ### Form.Reset
 

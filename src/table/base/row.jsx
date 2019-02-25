@@ -82,7 +82,7 @@ export default class Row extends React.Component {
     }
 
     renderCells(record) {
-        const { Cell, columns, getCellProps, cellRef, prefix, rowIndex, primaryKey, pure, locale } = this.props;
+        const { Cell, columns, getCellProps, cellRef, prefix, rowIndex, primaryKey, pure, locale, rtl } = this.props;
         const { lockType } = this.context;
         return columns.map((child, colIndex) => {
             /* eslint-disable no-unused-vars, prefer-const */
@@ -124,6 +124,7 @@ export default class Row extends React.Component {
                 rowIndex={rowIndex}
                 align={align}
                 locale={locale}
+                rtl={rtl}
                 width={width}
             />);
         });
@@ -143,7 +144,7 @@ export default class Row extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, getCellProps, rowIndex, record, children, primaryKey, cellRef, colGroup, pure, locale, ...others } = this.props;
+        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, getCellProps, rowIndex, record, children, primaryKey, cellRef, colGroup, pure, locale, expandedIndexSimulate, rtl, ...others } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
             [className]: className

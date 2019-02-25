@@ -6,7 +6,7 @@ import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
-import { events } from '../../util';
+import { events, KEYCODE } from '../../util';
 import { triggerEvents, getOffsetLT, getOffsetWH, isTransformSupported } from './utils';
 
 const noop = () => { };
@@ -203,8 +203,16 @@ class Nav extends React.Component {
         this.props.onClose(key);
     }
 
+    onCloseKeyDown = (key, e) => {
+        if (e.keyCode === KEYCODE.ENTER) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.props.onClose(key);
+        }
+    }
+
     defaultTabTemplateRender = (key, { prefix, title, closeable }) => {
-        const tail = closeable ? <Icon type="close" onClick={(e) => this.removeTab(key, e)} className={`${prefix}tabs-tab-close`} /> : null;
+        const tail = closeable ? <Icon type="close" tabIndex="0" onKeyDown={(e) => this.onCloseKeyDown(key, e)} onClick={(e) => this.removeTab(key, e)} className={`${prefix}tabs-tab-close`} /> : null;
         return <div className={`${this.props.prefix}tabs-tab-inner`}>{title}{tail}</div>;
     }
 

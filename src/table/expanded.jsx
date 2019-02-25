@@ -69,6 +69,7 @@ export default function expanded(BaseComponent) {
         static childContextTypes = {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
+            expandedIndexSimulate: PropTypes.bool,
             expandedRowIndent: PropTypes.array
         }
 
@@ -80,6 +81,7 @@ export default function expanded(BaseComponent) {
             return {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
+                expandedIndexSimulate: this.props.expandedIndexSimulate,
                 expandedRowIndent: this.props.expandedRowIndent
             };
         }
@@ -104,6 +106,7 @@ export default function expanded(BaseComponent) {
 
         renderExpandedCell = (value, index, record) => {
             const { getExpandedColProps, prefix, locale } = this.props;
+
             const { openRowKeys } = this.state,
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,

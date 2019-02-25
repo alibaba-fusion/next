@@ -4,6 +4,7 @@
 @import "../animate/scss/mixin.scss";
 @import "scss/mixin";
 @import "scss/variable";
+@import "./rtl.scss";
 
 /* put your code here */
 
@@ -82,6 +83,7 @@
         @include duration($loading-fusion-vector-seconds);
         @include count(infinite);
         @include function(linear);
+
         @include animation-name(nextVectorRoute);
 
         #{$loading-prefix}-dot {
@@ -152,31 +154,31 @@
 
 @include keyframes(nextVectorRoute) {
     0% {
-        @include transform(rotate(0deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 0));
     }
     5% {
-        @include transform(rotate(90deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 1));
     }
     25% {
-        @include transform(rotate(90deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 1));
     }
     30% {
-        @include transform(rotate(180deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 2));
     }
     50% {
-        @include transform(rotate(180deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 2));
     }
     55% {
-        @include transform(rotate(270deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 3));
     }
     75% {
-        @include transform(rotate(270deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 3));
     }
     80% {
-        @include transform(rotate(360deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 4));
     }
     100% {
-        @include transform(rotate(360deg));
+        @include transform(rotate($loading-fusion-vector-rotation-step * 4));
     }
 }
 

@@ -58,7 +58,7 @@ export default class Rating extends Component {
          */
         disabled: PropTypes.bool,
         /**
-         * 传入id支持无障碍时，参数才有意义
+         * 评分文案生成方法，传入id支持无障碍时，读屏软件可读
          */
         readAs: PropTypes.func,
         // 实验属性: 自定义评分icon
@@ -66,7 +66,8 @@ export default class Rating extends Component {
         // 实验属性: 开启 `-webkit-text-stroke` 显示边框颜色，在IE中无效
         strokeMode: PropTypes.bool,
         className: PropTypes.string,
-        id: PropTypes.string
+        id: PropTypes.string,
+        rtl: PropTypes.bool
     };
 
     static defaultProps = {
@@ -158,7 +159,7 @@ export default class Rating extends Component {
         // 如定位不准，优先纠正定位
         this.getRenderResult();
 
-        const { allowHalf, count } = this.props;
+        const { allowHalf, count, rtl } = this.props;
         const { iconSpace, iconSize } = this.state;
 
         const pos = e.pageX - this.underlayNode.getBoundingClientRect().left;
@@ -175,7 +176,7 @@ export default class Rating extends Component {
             value = Math.floor(value) + 1;
         }
 
-        return value;
+        return rtl ? count - value + 1 : value;
     }
 
     handleHover(e) {
@@ -284,7 +285,8 @@ export default class Rating extends Component {
     }
 
     render() {
-        const { id, prefix, className, showGrade, count, size, iconType, strokeMode, disabled, readAs} = this.props;
+        const { id, prefix, className, showGrade, count, size, iconType,
+            strokeMode, disabled, readAs, rtl} = this.props;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const {hoverValue, clicked} = this.state;
         const underlay = [], overlay = [];
@@ -321,6 +323,7 @@ export default class Rating extends Component {
                         onChange={this.handleChecked.bind(this, i + 1)}
                         type="radio"
                         name="rating"
+                        aria-labelledby={id}
                     />
                 );
             }
@@ -363,6 +366,10 @@ export default class Rating extends Component {
             onMouseLeave: this.handleLeave
         };
 
+        if (rtl) {
+            others.dir = 'rtl';
+        }
+
         return (
             <div id={id ? id : null} {...others} className={ratingCls} onKeyDown={this.onKeyDown} tabIndex="0">
                 <div className={baseCls} {...finalProps}>
@@ -374,7 +381,7 @@ export default class Rating extends Component {
                     </div>
                 </div>
                 {
-                    showGrade ? <div className={`${prefix}rating-info`} style={infoStyle}>{value}</div> : null
+                    showGrade ? <div className={`${prefix}rating-info`} style={infoStyle}>{readAs(value)}</div> : null
                 }
             </div>
         );

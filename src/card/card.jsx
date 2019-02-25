@@ -142,7 +142,8 @@ export default class Card extends React.Component {
             showTitleBullet,
             showHeadDivider,
             children,
-            locale
+            locale,
+            rtl,
         } = this.props;
         const { needMore, expand } = this.state;
 
@@ -158,6 +159,8 @@ export default class Card extends React.Component {
         });
 
         const others = pickOthers(Object.keys(Card.propTypes), this.props);
+
+        others.dir = rtl ? 'rtl' : undefined;
 
         const headExtra = extra ? <div className={`${prefix}card-extra`}>{extra}</div> : null;
 
