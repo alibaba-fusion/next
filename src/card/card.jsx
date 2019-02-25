@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
 import Button from '../button';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { obj } from '../util';
 
 const { pickOthers } = obj;
@@ -51,7 +51,7 @@ export default class Card extends React.Component {
         showTitleBullet: true,
         showHeadDivider: true,
         contentHeight: 120,
-        locale: locale.Card
+        locale: nextLocale.Card
     };
 
     constructor(props, context) {

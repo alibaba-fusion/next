@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { obj } from '../../util';
 import ConfigProvider from '../../config-provider';
-import locale from '../../locale/zh-cn';
+import nextLocale from '../../locale/zh-cn';
 
 /** Timeline */
 class Timeline extends Component {
@@ -30,7 +30,7 @@ class Timeline extends Component {
         prefix: 'next-',
         rtl: false,
         fold: [],
-        locale: locale.Timeline,
+        locale: nextLocale.Timeline,
         animation: true
     }
 

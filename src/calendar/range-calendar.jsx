@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { obj, func } from '../util';
 import RangePanelHeader from './head/range-panel-header';
 import MonthPanelHeader from './head/month-panel-header';
@@ -82,7 +82,7 @@ class RangeCalendar extends React.Component {
         dateCellRender: (value) => value.date(),
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
-        locale: locale.Calendar,
+        locale: nextLocale.Calendar,
         showOtherMonth: false
     };
 

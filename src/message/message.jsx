@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import Icon from '../icon';
 import Animate from '../animate';
 import ConfigProvider from '../config-provider';
@@ -90,7 +90,7 @@ class Message extends Component {
         onClose: noop,
         afterClose: noop,
         animation: true,
-        locale: locale.Message
+        locale: nextLocale.Message
     };
 
     state = {

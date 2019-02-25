@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classnames from 'classnames';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
 import CardHeader from './head/card-header';
 import DatePanelHeader from './head/date-panel-header';
@@ -92,7 +92,7 @@ class Calendar extends Component {
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
         dateCellRender: (value) => value.date(),
-        locale: locale.Calendar,
+        locale: nextLocale.Calendar,
         showOtherMonth: true
     }
 
