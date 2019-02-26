@@ -40,17 +40,18 @@ export default class TreeCell extends React.Component {
     }
 
     render() {
-        const { colIndex, record, prefix, primaryKey, locale } = this.props;
+        const { colIndex, record, prefix, primaryKey, locale, rtl } = this.props;
         const { openTreeRowKeys: openRowKeys, indent, isTree, rowSelection } = this.context;
         const treeArrowNodeIndex = rowSelection ? 1 : 0;
         let firstCellStyle, treeArrowNode;
         if (colIndex === treeArrowNodeIndex) {
             let treeArrowType;
             if (isTree) {
+                const paddingType = rtl ? 'paddingRight' : 'paddingLeft';
                 firstCellStyle = {
-                    paddingLeft: indent * (record.__level + 1)
+                    [paddingType]: indent * (record.__level + 1)
                 };
-                treeArrowNode = <Icon size="xs" className={`${prefix}table-tree-placeholder`} />;
+                treeArrowNode = <Icon size="xs" rtl={rtl} className={`${prefix}table-tree-placeholder`} />;
                 if (record.children && record.children.length) {
                     const hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1;
 
@@ -61,6 +62,7 @@ export default class TreeCell extends React.Component {
                             className={`${prefix}table-tree-arrow`}
                             type={treeArrowType}
                             size="xs"
+                            rtl={rtl}
                             onClick={e => this.onTreeNodeClick(record, e)}
                             onKeyDown={e => this.expandedKeydown(record, e)}
                             role="button"

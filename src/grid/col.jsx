@@ -14,6 +14,7 @@ export default class Col extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 列内容
@@ -83,7 +84,7 @@ export default class Col extends Component {
         /* eslint-disable no-unused-vars */
         const {
             prefix, pure, span, offset, fixedSpan, fixedOffset, hidden, align,
-            xxs, xs, s, m, l, xl, component: Tag, className, children, ...others
+            xxs, xs, s, m, l, xl, component: Tag, className, children, rtl, ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
 
@@ -127,6 +128,7 @@ export default class Col extends Component {
 
         return (
             <Tag
+                dir={rtl ? 'rtl' : 'ltr'}
                 role="gridcell"
                 className={classes}
                 {...others}

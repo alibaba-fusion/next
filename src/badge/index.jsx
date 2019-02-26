@@ -12,6 +12,7 @@ class Badge extends Component {
     static propTypes = {
         // 样式类名的品牌前缀
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         // 自定义类名
         className: PropTypes.string,
         // 自定义内联样式
@@ -47,7 +48,7 @@ class Badge extends Component {
 
     render() {
         const {
-            prefix, dot, className, children, content, style,
+            prefix, dot, className, children, content, style, rtl,
             count: originCount,
             overflowCount: originOverflowCount
         } = this.props;
@@ -65,7 +66,7 @@ class Badge extends Component {
         }, className);
 
         return (
-            <span className={classes} {...others}>
+            <span dir={rtl ? 'rtl' : undefined} className={classes} {...others}>
                 {children}
                 <Sup {...({prefix, content, count, overflowCount, dot, style})} />
             </span>

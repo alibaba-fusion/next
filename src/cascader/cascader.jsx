@@ -16,6 +16,7 @@ const { addClass, removeClass, setStyle, getStyle } = dom;
 export default class Cascader extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         pure: PropTypes.bool,
         className: PropTypes.string,
         /**
@@ -108,6 +109,7 @@ export default class Cascader extends Component {
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         pure: false,
         dataSource: [],
         defaultValue: null,
@@ -753,10 +755,14 @@ export default class Cascader extends Component {
     }
 
     render() {
-        const { prefix, className, expandTriggerType, multiple, dataSource,
+        const { prefix, rtl, className, expandTriggerType, multiple, dataSource,
             checkStrictly, canOnlyCheckLeaf, searchValue } = this.props;
         const others = pickOthers(Object.keys(Cascader.propTypes), this.props);
         const { value } = this.state;
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const props = {
             className: cx({

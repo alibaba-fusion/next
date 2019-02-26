@@ -15,7 +15,8 @@ export default class Filter extends React.Component {
         filterParams: PropTypes.object,
         locale: PropTypes.object,
         onFilter: PropTypes.func,
-        prefix: PropTypes.string
+        prefix: PropTypes.string,
+        rtl: PropTypes.bool
     }
 
     static defaultProps = {
@@ -111,7 +112,7 @@ export default class Filter extends React.Component {
     }
 
     render() {
-        const { filters, prefix, locale, filterMode } = this.props;
+        const { filters, prefix, locale, filterMode, rtl } = this.props;
         const { visible, selectedKeys } = this.state;
 
         function renderMenuItem(item) {
@@ -157,9 +158,11 @@ export default class Filter extends React.Component {
             triggerType="click"
             visible={visible}
             autoFocus
+            rtl={rtl}
             container={node => node.parentNode}
             onVisibleChange={this.onFilterVisible}>
                 <Menu footer={footer}
+                    rtl={rtl}
                     selectedKeys={selectedKeys}
                     selectMode={filterMode}
                     onSelect={this.onFilterSelect}>

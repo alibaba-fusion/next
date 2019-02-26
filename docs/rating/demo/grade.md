@@ -17,5 +17,18 @@ Rating component display grade tips when you set  `showGrade` attribute.
 ````jsx
 import { Rating } from '@alifd/next';
 
-ReactDOM.render(<Rating defaultValue={2} showGrade />, mountNode);
+const starMap = {
+    1: 'Bad',
+    2: 'OK',
+    3: 'Good',
+    4: 'Great',
+    5: 'Perfect'
+};
+
+ReactDOM.render(
+    <Rating
+        defaultValue={2}
+        showGrade
+        readAs={(val) => starMap[val]}
+    />, mountNode);
 ````

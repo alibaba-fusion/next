@@ -1,12 +1,13 @@
 {
-  "env": {
-    "es6": true,
-    "node": true
-  },
-  "extends": "@alifd/eslint-config-next",
-  "rules": {
-    "valid-jsdoc": "off",
-    "max-statements": "off",
-    "max-len": "off"
-  }
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": ["@alifd/eslint-config-next", "prettier"],
+    "rules": {
+        "valid-jsdoc": "off",
+        "max-statements": "off",
+        "max-len": "off",
+        "no-unused-vars": 1
+    }
 }

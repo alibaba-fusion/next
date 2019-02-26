@@ -25,21 +25,21 @@
 
 ### Form
 
-| 参数             | 说明                                                                                                                                   | 类型       | 默认值                                                    |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------------------------ |
-| inline         | 内联表单                                                                                                                                 | Boolean  | -                                                      |
-| size           | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large'(大)<br>'medium'(中)<br>'small'(小) | Enum     | 'medium'                                               |
-| labelAlign     | 标签的位置<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                                         | Enum     | 'left'                                                 |
-| labelTextAlign | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                                 | Enum     | -                                                      |
-| field          | 经 `new Field(this)` 初始化后，直接传给 Form 即可 用到表单校验则不可忽略此项                                                                                  | any      | -                                                      |
-| saveField      | 保存 Form 自动生成的 field 对象<br><br>**签名**:<br>Function() => void                                                                          | Function | func.noop                                              |
-| labelCol       | 控制第一级 Item 的 labelCol                                                                                                                | Object   | -                                                      |
-| wrapperCol     | 控制第一级 Item 的 wrapperCol                                                                                                              | Object   | -                                                      |
-| onSubmit       | form内有 `htmlType="submit"` 的元素的时候会触发<br><br>**签名**:<br>Function() => void                                                            | Function | function preventDefault(e) {     e.preventDefault(); } |
-| children       | 子元素                                                                                                                                  | any      | -                                                      |
-| value          | 表单数值                                                                                                                                 | Object   | -                                                      |
-| onChange       | 表单变化回调<br><br>**签名**:<br>Function() => void                                                                                          | Function | func.noop                                              |
-| component      | 设置标签类型                                                                                                                               | String   | 'form'                                                 |
+| 参数             | 说明                                                                                                                                                                                                                                      | 类型       | 默认值                                                    |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------ |
+| inline         | 内联表单                                                                                                                                                                                                                                    | Boolean  | -                                                      |
+| size           | 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。<br><br>**可选值**:<br>'large'(大)<br>'medium'(中)<br>'small'(小)                                                                                                    | Enum     | 'medium'                                               |
+| labelAlign     | 标签的位置<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                                                                                                                                            | Enum     | 'left'                                                 |
+| labelTextAlign | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                                                                                                                                    | Enum     | -                                                      |
+| field          | 经 `new Field(this)` 初始化后，直接传给 Form 即可 用到表单校验则不可忽略此项                                                                                                                                                                                     | any      | -                                                      |
+| saveField      | 保存 Form 自动生成的 field 对象<br><br>**签名**:<br>Function() => void                                                                                                                                                                             | Function | func.noop                                              |
+| labelCol       | 控制第一级 Item 的 labelCol                                                                                                                                                                                                                   | Object   | -                                                      |
+| wrapperCol     | 控制第一级 Item 的 wrapperCol                                                                                                                                                                                                                 | Object   | -                                                      |
+| onSubmit       | form内有 `htmlType="submit"` 的元素的时候会触发<br><br>**签名**:<br>Function() => void                                                                                                                                                               | Function | function preventDefault(e) {     e.preventDefault(); } |
+| children       | 子元素                                                                                                                                                                                                                                     | any      | -                                                      |
+| value          | 表单数值                                                                                                                                                                                                                                    | Object   | -                                                      |
+| onChange       | 表单变化回调<br><br>**签名**:<br>Function(values: Object, item: Object) => void<br>**参数**:<br>_values_: {Object} 表单数据<br>_item_: {Object} 详细<br>_item.name_: {String} 变化的组件名<br>_item.value_: {String} 变化的数据<br>_item.field_: {Object} field 实例 | Function | func.noop                                              |
+| component      | 设置标签类型                                                                                                                                                                                                                                  | String   | 'form'                                                 |
 
 ### Form.Item
 
@@ -81,6 +81,7 @@
 | formatTrigger       | format 自定义触发方式                                                                                                          | String/Array       | -     |
 | validator           | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function           | -     |
 | validatorTrigger    | validator 自定义触发方式                                                                                                       | String/Array       | -     |
+| autoValidate        | 是否修改数据时自动触发校验                                                                                                           | Boolean            | -     |
 
 ### Form.Submit
 

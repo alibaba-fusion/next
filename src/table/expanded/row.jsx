@@ -16,11 +16,13 @@ export default class ExpandedRow extends React.Component {
         openRowKeys: PropTypes.array,
         expandedRowRender: PropTypes.func,
         expandedRowIndent: PropTypes.array,
+        expandedIndexSimulate: PropTypes.bool,
         lockType: PropTypes.oneOf(['left', 'right'])
     }
 
     renderExpandedRow(record, index, colSpan) {
         const { expandedRowRender, expandedRowIndent, openRowKeys, lockType } = this.context;
+
         const { columns, cellRef } = this.props;
         if (expandedRowRender) {
             const { primaryKey, prefix } = this.props,
@@ -76,11 +78,16 @@ export default class ExpandedRow extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { record, rowIndex, columns } = this.props;
+        const { record, rowIndex, columns, ...others } = this.props;
+        const { expandedIndexSimulate } = this.context;
+
         if (record.__expanded) {
-            return this.renderExpandedRow(record, rowIndex, columns.length);
+            const expandedIndex = expandedIndexSimulate ? (rowIndex - 1) / 2 : rowIndex;
+            return this.renderExpandedRow(record, expandedIndex, columns.length);
         }
-        return (<Row {...this.props} />);
+
+        const newRowIndex = expandedIndexSimulate ? rowIndex / 2 : rowIndex;
+        return (<Row {...others} record={record} columns={columns} rowIndex={newRowIndex} />);
     }
 }
 
