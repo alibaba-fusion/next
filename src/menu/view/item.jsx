@@ -23,14 +23,14 @@ export default class Item extends Component {
         onClick: PropTypes.func,
         onKeyDown: PropTypes.func,
         needIndent: PropTypes.bool,
-        replaceClassName: PropTypes.bool
-    }
+        replaceClassName: PropTypes.bool,
+    };
 
     static defaultProps = {
         component: 'li',
         groupIndent: 0,
         replaceClassName: false,
-        needIndent: true
+        needIndent: true,
     };
 
     constructor(props) {
@@ -51,7 +51,9 @@ export default class Item extends Component {
             this.menuNode = findDOMNode(root);
             const { prefix, header, footer } = root.props;
             if (header || footer) {
-                this.menuNode = this.menuNode.querySelector(`.${prefix}menu-content`);
+                this.menuNode = this.menuNode.querySelector(
+                    `.${prefix}menu-content`
+                );
             }
         }
 
@@ -80,11 +82,17 @@ export default class Item extends Component {
             if (this.focusable()) {
                 this.itemNode.focus({ preventScroll: true });
             }
-            if (this.menuNode && this.menuNode.scrollHeight > this.menuNode.clientHeight) {
-                const scrollBottom = this.menuNode.clientHeight + this.menuNode.scrollTop;
-                const itemBottom = this.itemNode.offsetTop + this.itemNode.offsetHeight;
+            if (
+                this.menuNode &&
+                this.menuNode.scrollHeight > this.menuNode.clientHeight
+            ) {
+                const scrollBottom =
+                    this.menuNode.clientHeight + this.menuNode.scrollTop;
+                const itemBottom =
+                    this.itemNode.offsetTop + this.itemNode.offsetHeight;
                 if (itemBottom > scrollBottom) {
-                    this.menuNode.scrollTop = itemBottom - this.menuNode.clientHeight;
+                    this.menuNode.scrollTop =
+                        itemBottom - this.menuNode.clientHeight;
                 } else if (this.itemNode.offsetTop < this.menuNode.scrollTop) {
                     this.menuNode.scrollTop = this.itemNode.offsetTop;
                 }
@@ -120,7 +128,6 @@ export default class Item extends Component {
                     break;
                 }
             }
-
         }
 
         this.props.onKeyDown && this.props.onKeyDown(e);
@@ -156,43 +163,58 @@ export default class Item extends Component {
             children,
             needIndent,
             parentMode,
-            _key
+            _key,
         } = this.props;
         const others = pickOthers(Object.keys(Item.propTypes), this.props);
 
-        const { prefix, focusable, inlineIndent, itemClassName, rtl } = root.props;
+        const {
+            prefix,
+            focusable,
+            inlineIndent,
+            itemClassName,
+            rtl,
+        } = root.props;
         const focused = this.getFocused();
 
-        const newClassName = replaceClassName ? className : cx({
-            [`${prefix}menu-item`]: true,
-            [`${prefix}disabled`]: disabled,
-            [`${prefix}focused`]: !focusable && focused,
-            [itemClassName]: !!itemClassName,
-            [className]: !!className
-        });
+        const newClassName = replaceClassName
+            ? className
+            : cx({
+                  [`${prefix}menu-item`]: true,
+                  [`${prefix}disabled`]: disabled,
+                  [`${prefix}focused`]: !focusable && focused,
+                  [itemClassName]: !!itemClassName,
+                  [className]: !!className,
+              });
         if (disabled) {
             others['aria-disabled'] = true;
         }
 
         others.tabIndex = root.tabbableKey === _key ? '0' : '-1';
 
-
-        if (parentMode === 'inline' && level > 1 && inlineIndent > 0 && needIndent) {
+        if (
+            parentMode === 'inline' &&
+            level > 1 &&
+            inlineIndent > 0 &&
+            needIndent
+        ) {
             const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [paddingProp]: `${(level * inlineIndent) - ((groupIndent || 0) * 0.4 * inlineIndent)}px`
+                [paddingProp]: `${level * inlineIndent -
+                    (groupIndent || 0) * 0.4 * inlineIndent}px`,
             };
         }
         const TagName = component;
 
         return (
-            <TagName role="menuitem"
+            <TagName
+                role="menuitem"
                 title={this.getTitle(children)}
                 {...others}
                 className={newClassName}
                 onClick={this.handleClick}
-                onKeyDown={this.handleKeyDown}>
+                onKeyDown={this.handleKeyDown}
+            >
                 <div className={`${prefix}menu-item-inner`}>{children}</div>
             </TagName>
         );

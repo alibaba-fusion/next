@@ -37,17 +37,22 @@ export default class PopupItem extends Component {
         className: PropTypes.string,
         triggerType: PropTypes.oneOf(['click', 'hover']),
         align: PropTypes.oneOf(['outside', 'follow']),
-        autoWidth: PropTypes.bool
+        autoWidth: PropTypes.bool,
     };
 
     static defaultProps = {
-        selectable: false
+        selectable: false,
     };
 
     constructor(props) {
         super(props);
 
-        bindCtx(this, ['handleOpen', 'handlePopupOpen', 'handlePopupClose', 'getPopup']);
+        bindCtx(this, [
+            'handleOpen',
+            'handlePopupOpen',
+            'handlePopupClose',
+            'getPopup',
+        ]);
     }
 
     getPopup(ref) {
@@ -74,24 +79,38 @@ export default class PopupItem extends Component {
         root.handleOpen(_key, open, triggerType, e);
 
         const popupProps = this.popupProps;
-        popupProps.onVisibleChange && popupProps.onVisibleChange(open, triggerType, e);
+        popupProps.onVisibleChange &&
+            popupProps.onVisibleChange(open, triggerType, e);
     }
 
     handlePopupOpen() {
         const { root, level, align, autoWidth } = this.props;
-        const { popupAutoWidth: rootPopupAutoWidth, popupAlign: rootPopupAlign, direction } = root.props;
+        const {
+            popupAutoWidth: rootPopupAutoWidth,
+            popupAlign: rootPopupAlign,
+            direction,
+        } = root.props;
         const popupAlign = align || rootPopupAlign;
-        const popupAutoWidth = 'autoWidth' in this.props ? autoWidth : rootPopupAutoWidth;
+        const popupAutoWidth =
+            'autoWidth' in this.props ? autoWidth : rootPopupAutoWidth;
         const itemNode = findDOMNode(this);
         const menuNode = itemNode.parentNode;
-        this.popupNode = this.popup.getInstance().overlay.getInstance().getContentNode();
+        this.popupNode = this.popup
+            .getInstance()
+            .overlay.getInstance()
+            .getContentNode();
         root.popupNodes.push(this.popupNode);
 
         if (popupAutoWidth) {
-            const targetNode = direction === 'hoz' && level === 1 ? itemNode : menuNode;
+            const targetNode =
+                direction === 'hoz' && level === 1 ? itemNode : menuNode;
 
             if (targetNode.offsetWidth > this.popupNode.offsetWidth) {
-                setStyle(this.popupNode, 'width', `${targetNode.offsetWidth}px`);
+                setStyle(
+                    this.popupNode,
+                    'width',
+                    `${targetNode.offsetWidth}px`
+                );
             }
         }
         if (popupAlign === 'outside' && !(direction === 'hoz' && level === 1)) {
@@ -126,12 +145,12 @@ export default class PopupItem extends Component {
             _key,
             root,
             level,
-            type: 'submenu'
+            type: 'submenu',
         };
         if (open) {
             itemProps.className = cx({
                 [`${prefix}opened`]: true,
-                [className]: !!className
+                [className]: !!className,
             });
         } else {
             itemProps.className = className;
@@ -156,7 +175,8 @@ export default class PopupItem extends Component {
         }
 
         return (
-            <Popup ref={this.getPopup}
+            <Popup
+                ref={this.getPopup}
                 {...positionProps}
                 {...this.popupProps}
                 canCloseByEsc={false}
@@ -165,18 +185,38 @@ export default class PopupItem extends Component {
                 visible={open}
                 onVisibleChange={this.handleOpen}
                 onOpen={this.handlePopupOpen}
-                onClose={this.handlePopupClose}>
+                onClose={this.handlePopupClose}
+            >
                 {children}
             </Popup>
         );
     }
 
     render() {
-        const { root, level, hasSubMenu, selectable: selectableFromProps, children, triggerType, align, rtl } = this.props;
-        const others = obj.pickOthers(Object.keys(PopupItem.propTypes), this.props);
-        const { prefix, selectMode, direction, popupAlign: rootPopupAlign, triggerType: rootTriggerType } = root.props;
+        const {
+            root,
+            level,
+            hasSubMenu,
+            selectable: selectableFromProps,
+            children,
+            triggerType,
+            align,
+            rtl,
+        } = this.props;
+        const others = obj.pickOthers(
+            Object.keys(PopupItem.propTypes),
+            this.props
+        );
+        const {
+            prefix,
+            selectMode,
+            direction,
+            popupAlign: rootPopupAlign,
+            triggerType: rootTriggerType,
+        } = root.props;
         const popupAlign = align || rootPopupAlign;
-        const newTriggerType = triggerType || (hasSubMenu ? rootTriggerType : 'hover');
+        const newTriggerType =
+            triggerType || (hasSubMenu ? rootTriggerType : 'hover');
         const newChildren = Array.isArray(children) ? children[0] : children;
         // let newChildren = Array.isArray(children) ? children[0] : children;
         // newChildren = cloneElement(newChildren, {
@@ -201,8 +241,8 @@ export default class PopupItem extends Component {
                 type: 'arrow-down',
                 className: cx({
                     [`${prefix}menu-hoz-icon-arrow`]: true,
-                    [`${prefix}open`]: open
-                })
+                    [`${prefix}open`]: open,
+                }),
             };
         } else {
             if (popupAlign === 'outside') {
@@ -211,9 +251,9 @@ export default class PopupItem extends Component {
                 };
                 positionProps.align = 'tl tr';
 
-                rtl ?
-                    positionProps.offset = [-2, 0] :
-                    positionProps.offset = [2, 0];
+                rtl
+                    ? (positionProps.offset = [-2, 0])
+                    : (positionProps.offset = [2, 0]);
             } else {
                 if (triggerIsIcon) {
                     positionProps.target = () => {
@@ -222,20 +262,29 @@ export default class PopupItem extends Component {
                 }
                 positionProps.align = 'tl tr';
 
-                rtl ?
-                    positionProps.offset = [2, -8] :
-                    positionProps.offset = [-2, -8];
+                rtl
+                    ? (positionProps.offset = [2, -8])
+                    : (positionProps.offset = [-2, -8]);
             }
 
             arrowProps = {
                 type: 'arrow-right',
-                className: `${prefix}menu-icon-arrow`
+                className: `${prefix}menu-icon-arrow`,
             };
         }
 
         const arrow = <Icon {...arrowProps} />;
-        const trigger = triggerIsIcon ? arrow : this.renderItem(selectable, arrow, others);
-        const popup = this.renderPopup(trigger, newTriggerType, positionProps, newChildren);
-        return triggerIsIcon ? this.renderItem(selectable, popup, others) : popup;
+        const trigger = triggerIsIcon
+            ? arrow
+            : this.renderItem(selectable, arrow, others);
+        const popup = this.renderPopup(
+            trigger,
+            newTriggerType,
+            positionProps,
+            newChildren
+        );
+        return triggerIsIcon
+            ? this.renderItem(selectable, popup, others)
+            : popup;
     }
 }

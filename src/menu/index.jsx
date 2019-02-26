@@ -48,5 +48,5 @@ const transform = (props, deprecated) => {
 };
 
 export default ConfigProvider.config(Menu, {
-    transform
+    transform,
 });

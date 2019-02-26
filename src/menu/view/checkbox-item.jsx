@@ -37,7 +37,7 @@ export default class CheckboxItem extends Component {
          * 标签内容
          */
         children: PropTypes.node,
-        checkboxDisabled: PropTypes.bool
+        checkboxDisabled: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -45,11 +45,18 @@ export default class CheckboxItem extends Component {
         indeterminate: false,
         disabled: false,
         onChange: () => {},
-        checkboxDisabled: false
+        checkboxDisabled: false,
     };
 
     render() {
         const { checkboxDisabled, ...others } = this.props;
-        return <CheckableItem role="menuitemcheckbox" checkType="checkbox" checkDisabled={checkboxDisabled} {...others} />;
+        return (
+            <CheckableItem
+                role="menuitemcheckbox"
+                checkType="checkbox"
+                checkDisabled={checkboxDisabled}
+                {...others}
+            />
+        );
     }
 }

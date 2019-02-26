@@ -11,8 +11,8 @@ export default class Divider extends Component {
 
     static propTypes = {
         root: PropTypes.object,
-        className: PropTypes.string
-    }
+        className: PropTypes.string,
+    };
 
     render() {
         const { root, className, ...others } = this.props;
@@ -20,11 +20,9 @@ export default class Divider extends Component {
 
         const newClassName = cx({
             [`${prefix}menu-divider`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
 
-        return (
-            <li role="separator" className={newClassName} {...others}></li>
-        );
+        return <li role="separator" className={newClassName} {...others} />;
     }
 }
