@@ -3,19 +3,16 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Tag from '../../src/tag';
 import '../../src/tag/style.js';
-import { testReact, afterEach as a11yAfterEach } from '../util/a11y/validate';
+import { testReact, unmount } from '../util/a11y/validate';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach*/
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const {Selectable, Group, Closable} = Tag;
-
-
+const { Selectable, Group, Closable } = Tag;
 
 describe('Tag', () => {
-
     let wrapper;
 
     afterEach(() => {
@@ -23,7 +20,7 @@ describe('Tag', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     it('should not have any violations', async () => {
@@ -32,7 +29,9 @@ describe('Tag', () => {
     });
 
     it('should not have any violations when disabled', async () => {
-        wrapper = await testReact(<Tag disabled>Test</Tag>, { incomplete: true });
+        wrapper = await testReact(<Tag disabled>Test</Tag>, {
+            incomplete: true,
+        });
         return wrapper;
     });
 
@@ -62,7 +61,12 @@ describe('Tag', () => {
     });
 
     it('should not have any violations when group with child node', async () => {
-        wrapper = await testReact(<Group ><div>Hello World</div></Group>, { incomplete: true });
+        wrapper = await testReact(
+            <Group>
+                <div>Hello World</div>
+            </Group>,
+            { incomplete: true }
+        );
         return wrapper;
     });
 });

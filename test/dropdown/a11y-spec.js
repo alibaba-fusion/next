@@ -3,11 +3,17 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Dropdown from '../../src/dropdown/index';
 import '../../src/dropdown/style';
-import { afterEach as a11yAfterEach, test, mountReact } from '../util/a11y/validate';
+import {
+    unmount,
+    test,
+    createContainer,
+    testReact,
+} from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const wrapperClassName = 'js-a11y-test';
+const portalContainerId = 'a11y-portal-id';
+let portalContainer;
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Dropdown A11y', () => {
@@ -18,13 +24,25 @@ describe('Dropdown A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+
+        if (portalContainer) {
+            portalContainer.remove();
+        }
+
+        unmount();
     });
 
     it('should not have any violations', async () => {
-        wrapper = await mountReact(<Dropdown trigger={<a>Hello dropdown</a>} visible wrapperClassName={wrapperClassName}>
-            <div>dropdown</div>
-        </Dropdown>);
-        return test(`.${wrapperClassName}`);
+        portalContainer = createContainer(portalContainerId);
+        wrapper = await testReact(
+            <Dropdown
+                trigger={<a>Hello dropdown</a>}
+                visible
+                container={portalContainer}
+            >
+                <div>dropdown</div>
+            </Dropdown>
+        );
+        return test(portalContainer);
     });
 });

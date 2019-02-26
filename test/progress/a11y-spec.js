@@ -3,7 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Progress from '../../src/progress/index';
 import '../../src/progress/style.js';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import { unmount, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -16,16 +16,20 @@ describe('Progress A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     it('should not have any violations for Line Progress', async () => {
-        wrapper = await testReact(<Progress percent={30} />, { incomplete: true });
+        wrapper = await testReact(<Progress percent={30} />, {
+            incomplete: true,
+        });
         return wrapper;
     });
 
     it('should not have any violations for Circle Progress', async () => {
-        wrapper = await testReact(<Progress shape="circle" percent={30} />, { incomplete: true });
+        wrapper = await testReact(<Progress shape="circle" percent={30} />, {
+            incomplete: true,
+        });
         return wrapper;
     });
 });

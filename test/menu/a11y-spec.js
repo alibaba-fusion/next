@@ -3,12 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Menu from '../../src/menu/index';
 import '../../src/menu/style';
-import {
-    afterEach as a11yAfterEach,
-    test,
-    testReact,
-    mountReact,
-} from '../util/a11y/validate';
+import { unmount, test, testReact, mountReact } from '../util/a11y/validate';
 
 const { SubMenu, Item, Group, Divider } = Menu;
 Enzyme.configure({ adapter: new Adapter() });
@@ -22,7 +17,7 @@ describe.skip('Menu A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     // TODO: Fix `aria-allowed-attr` due to `aria-multiselectable=\"false\"`, `aria-selected=\"false\"`
