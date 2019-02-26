@@ -4,7 +4,6 @@ import { Children } from 'react';
  * util module
  */
 
-
 /**
  * 是否是单选模式
  * @param {string} mode
@@ -59,9 +58,11 @@ export function loopMap(dataSource, callback) {
     dataSource.forEach(option => {
         if (option.children) {
             const children = loopMap(option.children, callback);
-            children.length && result.push({
-                ...option, children
-            });
+            children.length &&
+                result.push({
+                    ...option,
+                    children,
+                });
         } else {
             // eslint-disable-next-line callback-return
             const tmp = callback(option);
@@ -82,16 +83,27 @@ export function parseDataSourceFromChildren(children, deep = 0) {
     const source = [];
 
     Children.forEach(children, (child, index) => {
+        if (!child) {
+            return;
+        }
         const { type, props: childProps } = child;
         const item2 = { deep };
 
         let isOption = false;
         let isOptionGroup = false;
 
-        if (typeof type === 'function' && type._typeMark === 'next_select_option' || type === 'option') {
+        if (
+            (typeof type === 'function' &&
+                type._typeMark === 'next_select_option') ||
+            type === 'option'
+        ) {
             isOption = true;
         }
-        if (typeof type === 'function' && type._typeMark === 'next_select_option_group' || type === 'optgroup') {
+        if (
+            (typeof type === 'function' &&
+                type._typeMark === 'next_select_option_group') ||
+            type === 'optgroup'
+        ) {
             isOptionGroup = true;
         }
 
@@ -99,24 +111,34 @@ export function parseDataSourceFromChildren(children, deep = 0) {
             return;
         }
 
-        if (isOption) { // option
+        if (isOption) {
+            // option
             // If children is a string, it can be used as value
             const isStrChild = typeof childProps.children === 'string';
             // value > key > string children > index
-            item2.value = 'value' in childProps ?
-                childProps.value : 'key' in childProps ?
-                    childProps.key : isStrChild ?
-                        childProps.children : `${index}`;
+            item2.value =
+                'value' in childProps
+                    ? childProps.value
+                    : 'key' in childProps
+                    ? childProps.key
+                    : isStrChild
+                    ? childProps.children
+                    : `${index}`;
 
-            item2.label = childProps.label || childProps.children || `${item2.value}`;
+            item2.label =
+                childProps.label || childProps.children || `${item2.value}`;
             item2.title = childProps.title;
             childProps.disabled === true && (item2.disabled = true);
             // You can put your extra data here, and use it in `itemRender` or `labelRender`
             Object.assign(item2, childProps['data-extra'] || {});
-        } else if (isOptionGroup && deep < 1) { // option group
+        } else if (isOptionGroup && deep < 1) {
+            // option group
             item2.label = childProps.label || 'Group';
             // parse children nodes
-            item2.children = parseDataSourceFromChildren(childProps.children, deep + 1);
+            item2.children = parseDataSourceFromChildren(
+                childProps.children,
+                deep + 1
+            );
         }
 
         source.push(item2);
@@ -124,7 +146,6 @@ export function parseDataSourceFromChildren(children, deep = 0) {
 
     return source;
 }
-
 
 /**
  * Normalize dataSource
@@ -173,7 +194,6 @@ export function normalizeDataSource(dataSource, deep = 0) {
     return source;
 }
 
-
 /**
  * Get flatten dataSource
  * @static
@@ -183,7 +203,7 @@ export function normalizeDataSource(dataSource, deep = 0) {
 export function flattingDataSource(dataSource) {
     const source = [];
 
-    dataSource.forEach((item) => {
+    dataSource.forEach(item => {
         if (Array.isArray(item.children)) {
             source.push(...flattingDataSource(item.children));
         } else {
@@ -202,7 +222,6 @@ export function filterDataSource(dataSource, key, filter, addonKey) {
         return [].concat(dataSource);
     }
 
-
     let addKey = true;
     const menuDataSource = loopMap(dataSource, option => {
         if (key === `${option.value}`) {
@@ -217,7 +236,7 @@ export function filterDataSource(dataSource, key, filter, addonKey) {
             value: key,
             label: key,
             title: key,
-            __isAddon: true
+            __isAddon: true,
         });
     }
 
@@ -232,7 +251,7 @@ function getKeyItemByValue(value, valueMap) {
     } else {
         item = valueMap[`${value}`] || {
             value,
-            label: value
+            label: value,
         };
     }
 
@@ -257,7 +276,7 @@ export function getValueDataSource(value, mapValueDS, mapMenuDS) {
     const _newMapDS = Object.assign({}, mapValueDS, mapMenuDS);
 
     if (Array.isArray(value)) {
-        value.forEach((v) => {
+        value.forEach(v => {
             const item = getKeyItemByValue(v, _newMapDS);
 
             newValueDS.push(item);
@@ -268,19 +287,17 @@ export function getValueDataSource(value, mapValueDS, mapMenuDS) {
         return {
             value: newValue, // [value]
             valueDS: newValueDS, // [{value,label}]
-            mapValueDS: newMapValueDS // {value: {value,label}}
+            mapValueDS: newMapValueDS, // {value: {value,label}}
         };
-
     } else {
-
         const item = getKeyItemByValue(value, _newMapDS);
 
         return {
             value: item.value,
             valueDS: item,
             mapValueDS: {
-                [`${item.value}`]: item
-            }
+                [`${item.value}`]: item,
+            },
         };
     }
 }
