@@ -24,23 +24,28 @@ class ContextMenu extends Component {
         afterClose: PropTypes.func,
         mode: PropTypes.oneOf(['inline', 'popup']),
         onOpen: PropTypes.func,
-        onItemClick: PropTypes.func
+        onItemClick: PropTypes.func,
     };
 
     static defaultProps = {
         prefix: 'next-',
         align: 'tl tl',
-        mode: 'popup'
+        mode: 'popup',
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            visible: true
+            visible: true,
         };
 
-        bindCtx(this, ['handleOverlayClose', 'handleOverlayOpen', 'handleItemClick', 'getOverlay']);
+        bindCtx(this, [
+            'handleOverlayClose',
+            'handleOverlayOpen',
+            'handleItemClick',
+            'getOverlay',
+        ]);
     }
 
     getOverlay(ref) {
@@ -49,13 +54,14 @@ class ContextMenu extends Component {
 
     close() {
         this.setState({
-            visible: false
+            visible: false,
         });
         menuInstance = null;
     }
 
     handleOverlayClose(triggerType, e, ...others) {
-        const clickedPopupMenu = triggerType === 'docClick' &&
+        const clickedPopupMenu =
+            triggerType === 'docClick' &&
             this.popupNodes.some(node => node.contains(e.target));
         if (!clickedPopupMenu) {
             this.close();
@@ -67,12 +73,14 @@ class ContextMenu extends Component {
     }
 
     handleOverlayOpen() {
-        this.popupNodes = this.overlay.getInstance().getContent().getInstance().popupNodes;
+        this.popupNodes = this.overlay
+            .getInstance()
+            .getContent()
+            .getInstance().popupNodes;
         const { overlayProps } = this.props;
         if (overlayProps && overlayProps.onOpen) {
             overlayProps.onOpen();
         }
-
     }
 
     handleItemClick(...args) {
@@ -82,7 +90,16 @@ class ContextMenu extends Component {
     }
 
     render() {
-        const { className, popupClassName, target, align, offset, afterClose, overlayProps = {}, ...others } = this.props;
+        const {
+            className,
+            popupClassName,
+            target,
+            align,
+            offset,
+            afterClose,
+            overlayProps = {},
+            ...others
+        } = this.props;
         const contextProps = getContextProps(this.props);
         const { prefix } = contextProps;
         const { visible } = this.state;
@@ -90,10 +107,14 @@ class ContextMenu extends Component {
         const newOverlayProps = {
             ...contextProps,
             ...overlayProps,
-            target, align, offset, afterClose, visible,
+            target,
+            align,
+            offset,
+            afterClose,
+            visible,
             onRequestClose: this.handleOverlayClose,
             onOpen: this.handleOverlayOpen,
-            ref: this.getOverlay
+            ref: this.getOverlay,
         };
         const menuProps = {
             ...contextProps,
@@ -101,13 +122,13 @@ class ContextMenu extends Component {
             ...others,
             className: cx({
                 [`${prefix}context`]: true,
-                [className]: !!className
+                [className]: !!className,
             }),
             popupClassName: cx({
                 [`${prefix}context`]: true,
-                [popupClassName]: !!popupClassName
+                [popupClassName]: !!popupClassName,
             }),
-            onItemClick: this.handleItemClick
+            onItemClick: this.handleItemClick,
         };
 
         newOverlayProps.rtl = false;
@@ -149,11 +170,15 @@ export default function create(props) {
     let menu;
     render(
         <ConfigProvider {...newContext}>
-            <ContextMenu ref={ref => {
-                menu = ref;
-            }} afterClose={closeChain} {...others} />
-        </ConfigProvider>
-        , div
+            <ContextMenu
+                ref={ref => {
+                    menu = ref;
+                }}
+                afterClose={closeChain}
+                {...others}
+            />
+        </ConfigProvider>,
+        div
     );
 
     menuInstance = {
@@ -161,7 +186,7 @@ export default function create(props) {
             if (menu) {
                 menu.close();
             }
-        }
+        },
     };
 
     return menuInstance;
