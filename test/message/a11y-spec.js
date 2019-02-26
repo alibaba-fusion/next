@@ -76,15 +76,13 @@ describe('Message A11y', () => {
         return wrapper;
     });
 
-    // TODO: fix close button
-    it.skip('should not have any violations when closable', async () => {
-        wrapper = await testReact(
-            <div>
-                <Message title="closable" closeable>
-                    Content Content Content Content
-                </Message>
-            </div>
-        );
+    it('should not have any violations when closable', async () => {
+        wrapper = await testReact(<div>
+            <Message title="closable" closeable>
+                Content Content Content Content
+            </Message>
+        </div>);
+
         return wrapper;
     });
 });

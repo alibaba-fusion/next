@@ -324,6 +324,7 @@ class Pagination extends Component {
             <Input
                 className={`${prefix}pagination-jump-input`}
                 type="text"
+                aria-label={locale.inputAriaLabel}
                 size={size}
                 onChange={this.onInputChange.bind(this)}
                 onKeyDown={(e) => {
@@ -450,13 +451,14 @@ class Pagination extends Component {
     }
 
     renderPageSizeDropdown() {
-        const { prefix, size, pageSizeList, selectPopupContiner } = this.props;
+        const { prefix, size, pageSizeList, selectPopupContiner, locale } = this.props;
         const { currentPageSize } = this.state;
 
         return (
             <Select className={`${prefix}pagination-size-selector-dropdown`}
                 popupClassName={`${prefix}pagination-size-selector-popup`}
                 popupContainer={selectPopupContiner}
+                aria-label={locale.selectAriaLabel}
                 autoWidth
                 size={size}
                 value={currentPageSize}

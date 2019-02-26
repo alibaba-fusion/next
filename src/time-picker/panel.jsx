@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { func } from '../util';
 import TimeMenu from './module/time-menu';
 import { checkMomentObj } from './utils';
@@ -74,7 +74,7 @@ class TimePickerPanel extends Component {
         disabledSeconds: noop,
         onSelect: noop,
         disabled: false,
-        locale: locale.TimePicker
+        locale: nextLocale.TimePicker
     }
 
     onSelectMenuItem = (index, type) => {
