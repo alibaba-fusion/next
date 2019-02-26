@@ -23,7 +23,7 @@ export default class CheckableItem extends Component {
         helper: PropTypes.node,
         children: PropTypes.node,
         onKeyDown: PropTypes.func,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -32,7 +32,7 @@ export default class CheckableItem extends Component {
         indeterminate: false,
         checkType: 'checkbox',
         checkDisabled: false,
-        onChange: noop
+        onChange: noop,
     };
 
     constructor(props) {
@@ -67,14 +67,22 @@ export default class CheckableItem extends Component {
     }
 
     renderCheck() {
-        const { root, checked, indeterminate, disabled, checkType, checkDisabled, onChange } = this.props;
+        const {
+            root,
+            checked,
+            indeterminate,
+            disabled,
+            checkType,
+            checkDisabled,
+            onChange,
+        } = this.props;
         const { labelToggleChecked } = root.props;
         const Check = checkType === 'radio' ? Radio : Checkbox;
 
         const checkProps = {
             tabIndex: '-1',
             checked,
-            disabled: disabled || checkDisabled
+            disabled: disabled || checkDisabled,
         };
         if (checkType === 'checkbox') {
             checkProps.indeterminate = indeterminate;
@@ -84,15 +92,24 @@ export default class CheckableItem extends Component {
             checkProps.onClick = this.stopPropagation;
         }
 
-        return (
-            <Check {...checkProps} />
-        );
+        return <Check {...checkProps} />;
     }
 
     render() {
-        const { _key, root, checked, disabled, onClick, helper, children } = this.props;
+        const {
+            _key,
+            root,
+            checked,
+            disabled,
+            onClick,
+            helper,
+            children,
+        } = this.props;
         const { prefix, labelToggleChecked } = root.props;
-        const others = pickOthers(Object.keys(CheckableItem.propTypes), this.props);
+        const others = pickOthers(
+            Object.keys(CheckableItem.propTypes),
+            this.props
+        );
 
         const newProps = {
             _key,
@@ -101,7 +118,7 @@ export default class CheckableItem extends Component {
             type: 'item',
             onClick,
             onKeyDown: this.handleKeyDown,
-            ...others
+            ...others,
         };
         if (labelToggleChecked && !disabled) {
             newProps.onClick = this.handleClick;
@@ -111,7 +128,9 @@ export default class CheckableItem extends Component {
             <Item aria-checked={checked} {...newProps}>
                 {this.renderCheck()}
                 <span className={`${prefix}menu-item-text`}>{children}</span>
-                {helper ? <div className={`${prefix}menu-item-helper`}>{helper}</div> : null}
+                {helper ? (
+                    <div className={`${prefix}menu-item-helper`}>{helper}</div>
+                ) : null}
             </Item>
         );
     }

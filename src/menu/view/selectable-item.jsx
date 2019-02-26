@@ -37,12 +37,12 @@ export default class SelectableItem extends Component {
         onKeyDown: PropTypes.func,
         onClick: PropTypes.func,
         needIndent: PropTypes.bool,
-        hasSelectedIcon: PropTypes.bool
+        hasSelectedIcon: PropTypes.bool,
     };
 
     static defaultProps = {
         disabled: false,
-        needIndent: true
+        needIndent: true,
     };
 
     constructor(props) {
@@ -85,17 +85,36 @@ export default class SelectableItem extends Component {
         const { root, inlineIndent, needIndent, hasSelectedIcon } = this.props;
         const { prefix, hasSelectedIcon: rootSelectedIcon } = root.props;
 
-        return (
-            ('hasSelectedIcon' in this.props ? hasSelectedIcon : rootSelectedIcon) && selected ?
-                <Icon style={needIndent && inlineIndent > 0 ? { left: `${inlineIndent}px` } : null} className={`${prefix}menu-icon-selected`} type="select" /> :
-                null
-        );
+        return ('hasSelectedIcon' in this.props
+            ? hasSelectedIcon
+            : rootSelectedIcon) && selected ? (
+            <Icon
+                style={
+                    needIndent && inlineIndent > 0
+                        ? { left: `${inlineIndent}px` }
+                        : null
+                }
+                className={`${prefix}menu-icon-selected`}
+                type="select"
+            />
+        ) : null;
     }
 
     render() {
-        const { _key, root, className, disabled, helper, children, needIndent } = this.props;
+        const {
+            _key,
+            root,
+            className,
+            disabled,
+            helper,
+            children,
+            needIndent,
+        } = this.props;
         const { prefix } = root.props;
-        const others = pickOthers(Object.keys(SelectableItem.propTypes), this.props);
+        const others = pickOthers(
+            Object.keys(SelectableItem.propTypes),
+            this.props
+        );
         const selected = this.getSelected();
 
         const newProps = {
@@ -105,20 +124,22 @@ export default class SelectableItem extends Component {
             type: 'item',
             className: cx({
                 [`${prefix}selected`]: selected,
-                [className]: !!className
+                [className]: !!className,
             }),
             onKeyDown: this.handleKeyDown,
             onClick: !disabled ? this.handleClick : this.props.onClick,
             needIndent,
             'aria-selected': selected,
-            ...others
+            ...others,
         };
 
         return (
             <Item {...newProps}>
                 {this.renderSelectedIcon(selected)}
                 <span className={`${prefix}menu-item-text`}>{children}</span>
-                {helper ? <div className={`${prefix}menu-item-helper`}>{helper}</div> : null}
+                {helper ? (
+                    <div className={`${prefix}menu-item-helper`}>{helper}</div>
+                ) : null}
             </Item>
         );
     }

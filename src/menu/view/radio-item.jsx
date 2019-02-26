@@ -32,16 +32,22 @@ export default class RadioItem extends Component {
         /**
          * 标签内容
          */
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
         checked: false,
         disabled: false,
-        onChange: () => {}
+        onChange: () => {},
     };
 
     render() {
-        return <CheckableItem role="menuitemradio" checkType="radio" {...this.props} />;
+        return (
+            <CheckableItem
+                role="menuitemradio"
+                checkType="radio"
+                {...this.props}
+            />
+        );
     }
 }

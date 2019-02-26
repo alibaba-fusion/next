@@ -14,12 +14,10 @@ import '../../src/menu/style.js';
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
 
-
 Enzyme.configure({ adapter: new Adapter() });
 const { Item, Divider, Group, SubMenu, CheckboxItem, RadioItem } = Menu;
 
 describe('Menu', () => {
-
     let wrapper;
 
     beforeEach(() => {
@@ -28,7 +26,7 @@ describe('Menu', () => {
             document.body.removeChild(dom);
         });
     });
-    
+
     afterEach(() => {
         if (wrapper) {
             wrapper.unmount();
@@ -51,7 +49,13 @@ describe('Menu', () => {
     it('should render menu item', () => {
         wrapper = mount(
             <Menu>
-                <Item helper="helper" className="custom" style={{ color: 'red' }}>item</Item>
+                <Item
+                    helper="helper"
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
+                    item
+                </Item>
             </Menu>
         );
         const item = wrapper.find('.next-menu-item');
@@ -64,24 +68,35 @@ describe('Menu', () => {
     });
 
     it('should pass className', () => {
-      wrapper = mount(
-          <Menu defaultOpenKeys="sub-menu" className="custom" style={{ color: 'red' }}>
-              <Item className="custom-className">item</Item>
-              <Group label="Group">
-                <Item className="custom-className" key="group-1">Group option 1</Item>
-              </Group>
-              <SubMenu key="sub-menu" label="Sub menu">
-                <Item className="custom-className" key="sub-1">Sub option 1</Item>
-            </SubMenu>
-          </Menu>
-      );
-      const menu = wrapper.find('.next-menu li.custom-className');
+        wrapper = mount(
+            <Menu
+                defaultOpenKeys="sub-menu"
+                className="custom"
+                style={{ color: 'red' }}
+            >
+                <Item className="custom-className">item</Item>
+                <Group label="Group">
+                    <Item className="custom-className" key="group-1">
+                        Group option 1
+                    </Item>
+                </Group>
+                <SubMenu key="sub-menu" label="Sub menu">
+                    <Item className="custom-className" key="sub-1">
+                        Sub option 1
+                    </Item>
+                </SubMenu>
+            </Menu>
+        );
+        const menu = wrapper.find('.next-menu li.custom-className');
 
-      assert(menu.length === 3);
+        assert(menu.length === 3);
     });
 
     it('should support onItemClick', () => {
-        let called = false, key, item, event;
+        let called = false,
+            key,
+            item,
+            event;
         const handleItemClick = (k, i, e) => {
             called = true;
             key = k;
@@ -133,7 +148,11 @@ describe('Menu', () => {
     it('should render menu group', () => {
         wrapper = mount(
             <Menu>
-                <Group label="Group" className="custom" style={{ color: 'red' }}>
+                <Group
+                    label="Group"
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </Group>
@@ -150,7 +169,12 @@ describe('Menu', () => {
     it('should render inline sub menu', () => {
         wrapper = mount(
             <Menu defaultOpenKeys={['sub']}>
-                <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
+                <SubMenu
+                    key="sub"
+                    label="Sub Menu"
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
@@ -171,19 +195,24 @@ describe('Menu', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render((
+        ReactDOM.render(
             <Menu triggerType="hover" expandAnimation={false}>
                 <SubMenu key="sub" label="Sub Menu">
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
-            </Menu>
-        ), div);
+            </Menu>,
+            div
+        );
 
-        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-menu-sub-menu-wrapper'));
+        ReactTestUtils.Simulate.mouseEnter(
+            document.querySelector('.next-menu-sub-menu-wrapper')
+        );
         assert(document.querySelector('.next-menu-sub-menu'));
 
-        ReactTestUtils.Simulate.mouseLeave(document.querySelector('.next-menu-sub-menu-wrapper'));
+        ReactTestUtils.Simulate.mouseLeave(
+            document.querySelector('.next-menu-sub-menu-wrapper')
+        );
         assert(!document.querySelector('.next-menu-sub-menu'));
 
         ReactDOM.unmountComponentAtNode(div);
@@ -191,7 +220,9 @@ describe('Menu', () => {
     });
 
     it('should support openKeys and onOpen under inline mode', () => {
-        let called = false, openKeys, extra;
+        let called = false,
+            openKeys,
+            extra;
         const handleOpen = (keys, ex) => {
             called = true;
             openKeys = keys;
@@ -217,18 +248,20 @@ describe('Menu', () => {
         assertInlineSubMenuOpen(firstWrapper);
         assertInlineSubMenuClose(secondWrapper);
 
-        const firstParentItem = firstWrapper.find('.next-menu-item.next-opened');
+        const firstParentItem = firstWrapper.find(
+            '.next-menu-item.next-opened'
+        );
         firstParentItem.simulate('click');
 
         assert(called);
         assert.deepEqual(openKeys, []);
         assert.deepEqual(extra, {
             open: false,
-            key: '0'
+            key: '0',
         });
 
         wrapper.setProps({
-            openKeys: []
+            openKeys: [],
         });
 
         const newsubMenuWrapper = wrapper.find('.next-menu-sub-menu-wrapper');
@@ -238,7 +271,11 @@ describe('Menu', () => {
 
     it('should support setting openMode to single under inline mode', () => {
         wrapper = mount(
-            <Menu openMode="single" expandAnimation={false} defaultOpenKeys={['0']}>
+            <Menu
+                openMode="single"
+                expandAnimation={false}
+                defaultOpenKeys={['0']}
+            >
                 <SubMenu key="0" label="0">
                     <Item key="0-0">0-0</Item>
                     <Item key="0-1">0-1</Item>
@@ -266,7 +303,12 @@ describe('Menu', () => {
 
         wrapper = mount(
             <Menu mode="popup" defaultOpenKeys={['sub']}>
-                <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
+                <SubMenu
+                    key="sub"
+                    label="Sub Menu"
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
@@ -291,19 +333,24 @@ describe('Menu', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render((
+        ReactDOM.render(
             <Menu mode="popup" triggerType="hover">
                 <SubMenu key="sub" label="Sub Menu">
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
-            </Menu>
-        ), div);
+            </Menu>,
+            div
+        );
 
-        ReactTestUtils.Simulate.mouseEnter(document.querySelector('.next-menu-item'));
+        ReactTestUtils.Simulate.mouseEnter(
+            document.querySelector('.next-menu-item')
+        );
 
         setTimeout(() => {
-            const subMenu = document.querySelector('.next-overlay-inner.next-menu');
+            const subMenu = document.querySelector(
+                '.next-overlay-inner.next-menu'
+            );
             assert(subMenu);
 
             ReactDOM.unmountComponentAtNode(div);
@@ -320,17 +367,31 @@ describe('Menu', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render((
-            <Menu mode="popup" popupAutoWidth popupAlign="outside" defaultOpenKeys={['sub']} style={{ width: '300px', height: '300px' }}>
-                <SubMenu key="sub" label="Sub Menu" className="custom" style={{ color: 'red' }}>
+        ReactDOM.render(
+            <Menu
+                mode="popup"
+                popupAutoWidth
+                popupAlign="outside"
+                defaultOpenKeys={['sub']}
+                style={{ width: '300px', height: '300px' }}
+            >
+                <SubMenu
+                    key="sub"
+                    label="Sub Menu"
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
                     <Item key="1">1</Item>
                     <Item key="2">2</Item>
                 </SubMenu>
-            </Menu>
-        ), div);
+            </Menu>,
+            div
+        );
 
         setTimeout(() => {
-            const subMenu = document.querySelector('.next-overlay-inner.next-menu');
+            const subMenu = document.querySelector(
+                '.next-overlay-inner.next-menu'
+            );
 
             assert(subMenu.style.width === '300px');
             assert(subMenu.style.height === '300px');
@@ -406,7 +467,10 @@ describe('Menu', () => {
     });
 
     it('should support selectedKeys and onSelect under inline mode', () => {
-        let called = false, selectedKeys, item, extra;
+        let called = false,
+            selectedKeys,
+            item,
+            extra;
         const handleSelect = (keys, it, ex) => {
             called = true;
             selectedKeys = keys;
@@ -415,7 +479,12 @@ describe('Menu', () => {
         };
 
         wrapper = mount(
-            <Menu selectMode="multiple" selectedKeys={['0']} defaultOpenKeys={['sub-menu']} onSelect={handleSelect}>
+            <Menu
+                selectMode="multiple"
+                selectedKeys={['0']}
+                defaultOpenKeys={['sub-menu']}
+                onSelect={handleSelect}
+            >
                 <Item key="0">0</Item>
                 <Item key="1">1</Item>
                 <SubMenu key="sub-menu" label="Sub menu">
@@ -425,7 +494,10 @@ describe('Menu', () => {
             </Menu>
         );
 
-        wrapper.find('.next-menu-sub-menu .next-menu-item').at(0).simulate('click');
+        wrapper
+            .find('.next-menu-sub-menu .next-menu-item')
+            .at(0)
+            .simulate('click');
         assert(called);
         assert.deepEqual(selectedKeys, ['0', '2']);
         assert(item.props._key === '2');
@@ -434,11 +506,11 @@ describe('Menu', () => {
             key: '2',
             label: '2',
             keyPath: ['sub-menu'],
-            labelPath: ['Sub menu']
+            labelPath: ['Sub menu'],
         });
 
         wrapper.setProps({
-            selectedKeys: ['0', '2']
+            selectedKeys: ['0', '2'],
         });
         wrapper.find('.next-menu-item').forEach(item => {
             if (['0', '2'].indexOf(item.text()) > -1) {
@@ -451,7 +523,10 @@ describe('Menu', () => {
 
     it('should select sub menu label if set selectable of SubMenu to true', () => {
         wrapper = mount(
-            <Menu selectMode="multiple" defaultSelectedKeys={['sub-1', 'sub-2']}>
+            <Menu
+                selectMode="multiple"
+                defaultSelectedKeys={['sub-1', 'sub-2']}
+            >
                 <SubMenu key="sub-1" selectable>
                     <Item key="0">0</Item>
                     <Item key="1">1</Item>
@@ -476,7 +551,11 @@ describe('Menu', () => {
 
     it('can not select sub menu item if set shallowSelect to true', () => {
         wrapper = mount(
-            <Menu selectMode="multiple" defaultOpenKeys={['sub-menu']} shallowSelect>
+            <Menu
+                selectMode="multiple"
+                defaultOpenKeys={['sub-menu']}
+                shallowSelect
+            >
                 <SubMenu key="sub-menu">
                     <Item key="2">2</Item>
                     <Item key="3">3</Item>
@@ -484,12 +563,18 @@ describe('Menu', () => {
             </Menu>
         );
 
-        wrapper.find('.next-menu-sub-menu .next-menu-item').at(0).simulate('click');
-        assertUnselected(wrapper.find('.next-menu-sub-menu .next-menu-item').at(0));
+        wrapper
+            .find('.next-menu-sub-menu .next-menu-item')
+            .at(0)
+            .simulate('click');
+        assertUnselected(
+            wrapper.find('.next-menu-sub-menu .next-menu-item').at(0)
+        );
     });
 
     it('should support pressing space to select item', () => {
-        let called = false, selectedKeys;
+        let called = false,
+            selectedKeys;
         const handleSelect = keys => {
             called = true;
             selectedKeys = keys;
@@ -497,9 +582,7 @@ describe('Menu', () => {
 
         wrapper = mount(
             <Menu selectMode="single" onSelect={handleSelect}>
-                <Item key="0">
-                    item
-                </Item>
+                <Item key="0">item</Item>
             </Menu>
         );
 
@@ -510,7 +593,8 @@ describe('Menu', () => {
     });
 
     it('should calling onSelect if you pass it to the item', () => {
-        let called = false, select;
+        let called = false,
+            select;
         const handleSelect = s => {
             called = true;
             select = s;
@@ -531,7 +615,9 @@ describe('Menu', () => {
     });
 
     it('should render checkbox menu item', () => {
-        let called = false, checked, event;
+        let called = false,
+            checked,
+            event;
         const handleChange = (c, e) => {
             called = true;
             checked = c;
@@ -540,7 +626,13 @@ describe('Menu', () => {
 
         wrapper = mount(
             <Menu>
-                <CheckboxItem checked onChange={handleChange} className="custom" style={{ color: 'red' }} helper="helper">
+                <CheckboxItem
+                    checked
+                    onChange={handleChange}
+                    className="custom"
+                    style={{ color: 'red' }}
+                    helper="helper"
+                >
                     checkbox
                 </CheckboxItem>
             </Menu>
@@ -559,7 +651,7 @@ describe('Menu', () => {
         assert('target' in event);
 
         wrapper.setProps({
-            labelToggleChecked: false
+            labelToggleChecked: false,
         });
 
         const itemText = wrapper.find('.next-menu-item .next-menu-item-text');
@@ -572,7 +664,9 @@ describe('Menu', () => {
     });
 
     it('should support pressing space to check item', () => {
-        let called = false, checked, event;
+        let called = false,
+            checked,
+            event;
         const handleChange = (c, e) => {
             called = true;
             checked = c;
@@ -581,9 +675,7 @@ describe('Menu', () => {
 
         wrapper = mount(
             <Menu>
-                <CheckboxItem onChange={handleChange}>
-                    checkbox
-                </CheckboxItem>
+                <CheckboxItem onChange={handleChange}>checkbox</CheckboxItem>
             </Menu>
         );
 
@@ -595,7 +687,10 @@ describe('Menu', () => {
     });
 
     it('should render radio menu item', () => {
-        let called = false, key, checked, event;
+        let called = false,
+            key,
+            checked,
+            event;
         const handleChange = (k, c, e) => {
             called = true;
             key = k;
@@ -605,7 +700,13 @@ describe('Menu', () => {
 
         wrapper = mount(
             <Menu>
-                <RadioItem key="1" checked onChange={handleChange.bind(null, '1')} className="custom" style={{ color: 'red' }}>
+                <RadioItem
+                    key="1"
+                    checked
+                    onChange={handleChange.bind(null, '1')}
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
                     1
                 </RadioItem>
                 <RadioItem key="2" onChange={handleChange.bind(null, '2')}>
@@ -634,17 +735,28 @@ describe('Menu', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render((
+        ReactDOM.render(
             <Menu id="menu-id" autoFocus expandAnimation={false}>
-                <Item disabled key="0">0</Item>
-                <Item className="i1" key="1">1</Item>
+                <Item disabled key="0">
+                    0
+                </Item>
+                <Item className="i1" key="1">
+                    1
+                </Item>
                 <SubMenu className="i2" key="2" label="2">
-                    <Item className="i2-0" key="2-0">2-0</Item>
-                    <Item className="i2-1" key="2-1">2-1</Item>
+                    <Item className="i2-0" key="2-0">
+                        2-0
+                    </Item>
+                    <Item className="i2-1" key="2-1">
+                        2-1
+                    </Item>
                 </SubMenu>
-                <Item className="i3" key="3">3</Item>
-            </Menu>
-        ), div);
+                <Item className="i3" key="3">
+                    3
+                </Item>
+            </Menu>,
+            div
+        );
 
         const menu = document.querySelector('#menu-id');
         assert(document.activeElement === menu.querySelector('.i1'));
@@ -666,13 +778,20 @@ describe('Menu', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render((
+        ReactDOM.render(
             <Menu autoFocus direction="hoz">
-                <Item className="i0" key="0">0</Item>
-                <Item className="i1" key="1">1</Item>
-                <Item className="i2" key="2">2</Item>
-            </Menu>
-        ), div);
+                <Item className="i0" key="0">
+                    0
+                </Item>
+                <Item className="i1" key="1">
+                    1
+                </Item>
+                <Item className="i2" key="2">
+                    2
+                </Item>
+            </Menu>,
+            div
+        );
 
         const menu = document.querySelector('.next-menu.next-hoz');
         const assertAE = assertActiveElement();
@@ -696,9 +815,9 @@ describe('Menu.create', () => {
                 <SubMenu className="parent-item" key="sub-menu">
                     <Item key="3">Option 3</Item>
                     <Item key="4">Option 4</Item>
-                </SubMenu>
+                </SubMenu>,
             ],
-            triggerType: 'click'
+            triggerType: 'click',
         });
 
         const menu = document.querySelector('#menu-create-id');
