@@ -20,7 +20,9 @@ export default {
         prevMonth: '前の月',
         nextMonth: '来月',
         prevDecade: '前の十年',
-        nextDecade: '次の十年'
+        nextDecade: '次の十年',
+        yearSelectAriaLabel: '年を選んで',
+        monthSelectAriaLabel: '月を選択し'
     },
     DatePicker: {
         placeholder: '日付けの選択',
@@ -43,6 +45,9 @@ export default {
         ok: '確認',
         cancel: 'キャンセル'
     },
+    Message: {
+        closeAriaLabel: '閉鎖する'
+    },
     Pagination: {
         prev: '前のページ',
         next: '次のページ',
@@ -52,6 +57,8 @@ export default {
         total: '第{current}ページ、{total}ページ',
         labelPrev: '前のページ、当面の第{current}ページ',
         labelNext: '次のページ、当面の第{current}ページ',
+        inputAriaLabel: '数ページまでジャンプしてください',
+        selectAriaLabel: 'ページごとに数本表示してください',
         pageSize: 'ページサイズ：'
     },
     Input: {

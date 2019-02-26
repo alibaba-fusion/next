@@ -20,7 +20,9 @@ export default {
         prevMonth: 'Previous Month',
         nextMonth: 'Next Month',
         prevDecade: 'Previous Decade',
-        nextDecade: 'Next Decade'
+        nextDecade: 'Next Decade',
+        yearSelectAriaLabel: 'Select Year',
+        monthSelectAriaLabel: 'Select Month'
     },
     DatePicker: {
         placeholder: 'Select Date',
@@ -43,6 +45,9 @@ export default {
         ok: 'OK',
         cancel: 'Cancel'
     },
+    Message: {
+        closeAriaLabel: 'Close'
+    },
     Pagination: {
         prev: 'Previous',
         next: 'Next',
@@ -52,6 +57,8 @@ export default {
         total: 'Page {current}, {total} pages',
         labelPrev: 'Previous page, current page {current}',
         labelNext: 'Next page, current page {current}',
+        inputAriaLabel: 'Please enter what page to skip to',
+        selectAriaLabel: 'Please select how many items are displayed on each page',
         pageSize: 'Items per page:'
     },
     Input: {

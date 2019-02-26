@@ -4,14 +4,14 @@ import classnames from 'classnames';
 import moment from 'moment';
 import Input from '../input';
 import Overlay from '../overlay';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
 import TimePickerPanel from './panel';
 import { checkDateValue, formatDateValue } from './utils';
 
 const { Popup } = Overlay;
 const { noop } = func;
-const timePickerLocale = locale.TimePicker;
+const timePickerLocale = nextLocale.TimePicker;
 
 /**
  * TimePicker

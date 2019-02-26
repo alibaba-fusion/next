@@ -20,7 +20,9 @@ export default {
         prevMonth: '上个月',
         nextMonth: '下个月',
         prevDecade: '上十年',
-        nextDecade: '后十年'
+        nextDecade: '后十年',
+        yearSelectAriaLabel: '選擇年份',
+        monthSelectAriaLabel: '選擇月份'
     },
     DatePicker: {
         placeholder: '請選擇日期',
@@ -43,6 +45,9 @@ export default {
         ok: '確認',
         cancel: '取消'
     },
+    Message: {
+        closeAriaLabel: '關閉'
+    },
     Pagination: {
         prev: '上一頁',
         next: '下一頁',
@@ -52,6 +57,8 @@ export default {
         total: '第{current}頁，共{total}頁',
         labelPrev: '上一頁，當前第{current}頁',
         labelNext: '下一頁，當前第{current}頁',
+        inputAriaLabel: '請輸入跳轉到第幾頁',
+        selectAriaLabel: '請選擇每頁顯示幾條',
         pageSize: '每頁顯示：'
     },
     Input: {
