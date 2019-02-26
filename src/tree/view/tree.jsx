@@ -9,7 +9,7 @@ import {
     isSiblingOrSelf,
     filterChildKey,
     filterParentKey,
-    getAllCheckedKeys
+    getAllCheckedKeys,
 } from './util';
 
 const { bindCtx, noop } = func;
@@ -71,7 +71,7 @@ export default class Tree extends Component {
          */
         checkedKeys: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string),
-            PropTypes.object
+            PropTypes.object,
         ]),
         /**
          * （用于非受控）默认勾选复选框节点 key 的数组
@@ -230,7 +230,7 @@ export default class Tree extends Component {
         autoFocus: PropTypes.bool,
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
-        onItemKeyDown: PropTypes.func
+        onItemKeyDown: PropTypes.func,
     };
 
     static defaultProps = {
@@ -268,7 +268,7 @@ export default class Tree extends Component {
         focusable: true,
         autoFocus: false,
         onItemFocus: noop,
-        onItemKeyDown: noop
+        onItemKeyDown: noop,
     };
 
     constructor(props) {
@@ -287,10 +287,20 @@ export default class Tree extends Component {
             expandedKeys: this.getExpandedKeys(props),
             selectedKeys: this.getSelectedKeys(props),
             checkedKeys: this.getCheckedKeys(props),
-            focusedKey: 'focusedKey' in this.props ? focusedKey : (focusable && autoFocus ? this.tabbableKey : null)
+            focusedKey:
+                'focusedKey' in this.props
+                    ? focusedKey
+                    : focusable && autoFocus
+                    ? this.tabbableKey
+                    : null,
         };
 
-        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur']);
+        bindCtx(this, [
+            'handleExpand',
+            'handleSelect',
+            'handleCheck',
+            'handleBlur',
+        ]);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -318,32 +328,38 @@ export default class Tree extends Component {
         this._p2n = {};
 
         if ('dataSource' in props) {
-            const loop = (data, prefix = '0') => data.forEach((item, index) => {
-                const pos = `${prefix}-${index}`;
-                let { key } = item;
-                key = key || pos;
-                const newItem = { ...item, key, pos };
-                const { children } = item;
-                if (children && children.length) {
-                    loop(children, pos);
-                }
-                this._k2n[key] = this._p2n[pos] = newItem;
-            });
+            const loop = (data, prefix = '0') =>
+                data.forEach((item, index) => {
+                    const pos = `${prefix}-${index}`;
+                    let { key } = item;
+                    key = key || pos;
+                    const newItem = { ...item, key, pos };
+                    const { children } = item;
+                    if (children && children.length) {
+                        loop(children, pos);
+                    }
+                    this._k2n[key] = this._p2n[pos] = newItem;
+                });
             loop(props.dataSource);
         } else if ('children' in props) {
-            const loop = (children, prefix = '0') => Children.map(children, (node, index) => {
-                const pos = `${prefix}-${index}`;
-                let { key } = node;
-                key = key || pos;
-                const newItem = { ...node.props, key, pos };
+            const loop = (children, prefix = '0') =>
+                Children.map(children, (node, index) => {
+                    if (!React.isValidElement(node)) {
+                        return;
+                    }
 
-                const { children } = node.props;
-                if (children && Children.count(children)) {
-                    newItem.children = loop(children, pos);
-                }
-                this._k2n[key] = this._p2n[pos] = newItem;
-                return newItem;
-            });
+                    const pos = `${prefix}-${index}`;
+                    let { key } = node;
+                    key = key || pos;
+                    const newItem = { ...node.props, key, pos };
+
+                    const { children } = node.props;
+                    if (children && Children.count(children)) {
+                        newItem.children = loop(children, pos);
+                    }
+                    this._k2n[key] = this._p2n[pos] = newItem;
+                    return newItem;
+                });
             loop(props.children);
         }
     }
@@ -351,7 +367,10 @@ export default class Tree extends Component {
     setFocusKey() {
         const { selectedKeys = [] } = this.state;
         this.setState({
-            focusedKey: selectedKeys.length > 0 ? selectedKeys[0] : this.getFirstAvaliablelChildKey('0')
+            focusedKey:
+                selectedKeys.length > 0
+                    ? selectedKeys[0]
+                    : this.getFirstAvaliablelChildKey('0'),
         });
     }
 
@@ -364,9 +383,12 @@ export default class Tree extends Component {
                 return children && children.length;
             });
         } else {
-            expandedKeys = 'expandedKeys' in props ?
-                props.expandedKeys :
-                willReceiveProps ? [] : props.defaultExpandedKeys;
+            expandedKeys =
+                'expandedKeys' in props
+                    ? props.expandedKeys
+                    : willReceiveProps
+                    ? []
+                    : props.defaultExpandedKeys;
             expandedKeys = normalizeToArray(expandedKeys);
 
             if (props.autoExpandParent) {
@@ -403,7 +425,9 @@ export default class Tree extends Component {
     }
 
     getAvailableKey(pos, prev) {
-        const ps = Object.keys(this._p2n).filter(p => this.isAvailablePos(pos, p));
+        const ps = Object.keys(this._p2n).filter(p =>
+            this.isAvailablePos(pos, p)
+        );
         if (ps.length > 1) {
             const index = ps.indexOf(pos);
             let targetIndex;
@@ -420,7 +444,9 @@ export default class Tree extends Component {
     }
 
     getFirstAvaliablelChildKey(parentPos) {
-        const pos = Object.keys(this._p2n).find(p => this.isAvailablePos(`${parentPos}-0`, p));
+        const pos = Object.keys(this._p2n).find(p =>
+            this.isAvailablePos(`${parentPos}-0`, p)
+        );
         return pos ? this._p2n[pos].key : null;
     }
 
@@ -434,9 +460,12 @@ export default class Tree extends Component {
         const currentNums = currentPos.split('-').slice(0, -1);
         const targetNums = targetPos.split('-').slice(0, -1);
 
-        return currentNums.length === targetNums.length && currentNums.every((num, index) => {
-            return num === targetNums[index];
-        });
+        return (
+            currentNums.length === targetNums.length &&
+            currentNums.every((num, index) => {
+                return num === targetNums[index];
+            })
+        );
     }
 
     getParentKey(pos) {
@@ -444,9 +473,12 @@ export default class Tree extends Component {
     }
 
     getSelectedKeys(props, willReceiveProps) {
-        let selectedKeys = 'selectedKeys' in props ?
-            props.selectedKeys :
-            willReceiveProps ? [] : props.defaultSelectedKeys;
+        let selectedKeys =
+            'selectedKeys' in props
+                ? props.selectedKeys
+                : willReceiveProps
+                ? []
+                : props.defaultSelectedKeys;
         selectedKeys = normalizeToArray(selectedKeys);
 
         const newSelectKeys = selectedKeys.filter(key => {
@@ -456,9 +488,12 @@ export default class Tree extends Component {
     }
 
     getCheckedKeys(props, willReceiveProps) {
-        let checkedKeys = 'checkedKeys' in props ?
-            props.checkedKeys :
-            willReceiveProps ? [] : props.defaultCheckedKeys;
+        let checkedKeys =
+            'checkedKeys' in props
+                ? props.checkedKeys
+                : willReceiveProps
+                ? []
+                : props.defaultCheckedKeys;
 
         const { checkStrictly } = this.props;
         if (checkStrictly) {
@@ -488,10 +523,17 @@ export default class Tree extends Component {
     }
     /*eslint-disable max-statements*/
     handleItemKeyDown(key, item, e) {
-        if ([
-            KEYCODE.UP, KEYCODE.DOWN, KEYCODE.RIGHT, KEYCODE.LEFT,
-            KEYCODE.ENTER, KEYCODE.ESC, KEYCODE.SPACE
-        ].indexOf(e.keyCode) > -1) {
+        if (
+            [
+                KEYCODE.UP,
+                KEYCODE.DOWN,
+                KEYCODE.RIGHT,
+                KEYCODE.LEFT,
+                KEYCODE.ENTER,
+                KEYCODE.ESC,
+                KEYCODE.SPACE,
+            ].indexOf(e.keyCode) > -1
+        ) {
             e.preventDefault();
             e.stopPropagation();
         }
@@ -541,8 +583,10 @@ export default class Tree extends Component {
 
             case KEYCODE.ENTER:
             case KEYCODE.SPACE: {
-                const checkable = item.props.checkable === true || this.props.checkable;
-                const selectable = item.props.selectable === true || this.props.selectable;
+                const checkable =
+                    item.props.checkable === true || this.props.checkable;
+                const selectable =
+                    item.props.selectable === true || this.props.selectable;
 
                 if (checkable) {
                     this.handleCheck(!item.props.checked, key, node);
@@ -561,7 +605,7 @@ export default class Tree extends Component {
         if (focusedKey !== this.state.focusedKey) {
             if (!('focusedKey' in this.props)) {
                 this.setState({
-                    focusedKey
+                    focusedKey,
                 });
             }
         }
@@ -572,7 +616,7 @@ export default class Tree extends Component {
 
     handleBlur(e) {
         this.setState({
-            focusedKey: ''
+            focusedKey: '',
         });
 
         this.props.onBlur && this.props.onBlur(e);
@@ -613,7 +657,7 @@ export default class Tree extends Component {
         onSelect(selectedKeys, {
             selectedNodes: this.getNodes(selectedKeys),
             node,
-            selected: select
+            selected: select,
         });
     }
 
@@ -624,10 +668,12 @@ export default class Tree extends Component {
 
         if (checkStrictly) {
             this.processKey(checkedKeys, key, check);
-            const newCheckedKeys = isPlainObject(this.props.checkedKeys) ? {
-                checked: checkedKeys,
-                indeterminate: this.indeterminateKeys
-            } : checkedKeys;
+            const newCheckedKeys = isPlainObject(this.props.checkedKeys)
+                ? {
+                      checked: checkedKeys,
+                      indeterminate: this.indeterminateKeys,
+                  }
+                : checkedKeys;
 
             onCheck(newCheckedKeys, {
                 checkedNodes: this.getNodes(checkedKeys),
@@ -637,7 +683,7 @@ export default class Tree extends Component {
                 }),
                 node,
                 indeterminateKeys: this.indeterminateKeys,
-                checked: check
+                checked: check,
             });
 
             return;
@@ -683,7 +729,7 @@ export default class Tree extends Component {
         const indeterminateKeys = this.getIndeterminateKeys(checkedKeys);
         if (!('checkedKeys' in this.props)) {
             this.setState({
-                checkedKeys
+                checkedKeys,
             });
             this.indeterminateKeys = indeterminateKeys;
         }
@@ -709,13 +755,18 @@ export default class Tree extends Component {
             }),
             node,
             indeterminateKeys,
-            checked: check
+            checked: check,
         });
     }
     /*eslint-enable*/
     getNodeProps(key) {
         const { prefix } = this.props;
-        const { expandedKeys, selectedKeys, checkedKeys, dragOverNodeKey } = this.state;
+        const {
+            expandedKeys,
+            selectedKeys,
+            checkedKeys,
+            dragOverNodeKey,
+        } = this.state;
         const pos = this._k2n[key].pos;
 
         return {
@@ -729,12 +780,16 @@ export default class Tree extends Component {
             indeterminate: this.indeterminateKeys.indexOf(key) > -1,
             dragOver: dragOverNodeKey === key && this.dropPosition === 0,
             dragOverGapTop: dragOverNodeKey === key && this.dropPosition === -1,
-            dragOverGapBottom: dragOverNodeKey === key && this.dropPosition === 1
+            dragOverGapBottom:
+                dragOverNodeKey === key && this.dropPosition === 1,
         };
     }
 
     getParentNode(pos) {
-        const parentPos = pos.split('-').slice(0, -1).join('-');
+        const parentPos = pos
+            .split('-')
+            .slice(0, -1)
+            .join('-');
         if (parentPos.length === 1) {
             return null;
         }
@@ -749,7 +804,9 @@ export default class Tree extends Component {
     getIndeterminateKeys(checkedKeys) {
         const indeterminateKeys = [];
 
-        const poss = filterChildKey(checkedKeys, this._k2n).map(key => this._k2n[key].pos);
+        const poss = filterChildKey(checkedKeys, this._k2n).map(
+            key => this._k2n[key].pos
+        );
         poss.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
@@ -768,39 +825,54 @@ export default class Tree extends Component {
         const dragNodeKey = node.props.eventKey;
         this.dragNode = node;
         this.dragNodesKeys = Object.keys(this._k2n).filter(k => {
-            return isDescendantOrSelf(this._k2n[dragNodeKey].pos, this._k2n[k].pos);
+            return isDescendantOrSelf(
+                this._k2n[dragNodeKey].pos,
+                this._k2n[k].pos
+            );
         });
 
-        const expandedKeys = this.processKey([...this.state.expandedKeys], dragNodeKey, false);
+        const expandedKeys = this.processKey(
+            [...this.state.expandedKeys],
+            dragNodeKey,
+            false
+        );
         this.setState({ expandedKeys });
 
         this.props.onDragStart({
             event: e,
             node,
-            expandedKeys
+            expandedKeys,
         });
     }
 
     handleDragEnter(e, node) {
         const dragOverNodeKey = node.props.eventKey;
         this.dropPosition = this.getDropPosition(e, node);
-        if (this.dragNode && this.dragNode.props.eventKey === dragOverNodeKey && this.dropPosition === 0) {
+        if (
+            this.dragNode &&
+            this.dragNode.props.eventKey === dragOverNodeKey &&
+            this.dropPosition === 0
+        ) {
             this.setState({
-                dragOverNodeKey: null
+                dragOverNodeKey: null,
             });
             return;
         }
 
-        const expandedKeys = this.processKey([...this.state.expandedKeys], dragOverNodeKey, true);
+        const expandedKeys = this.processKey(
+            [...this.state.expandedKeys],
+            dragOverNodeKey,
+            true
+        );
         this.setState({
             dragOverNodeKey,
-            expandedKeys
+            expandedKeys,
         });
 
         this.props.onDragEnter({
             event: e,
             node,
-            expandedKeys
+            expandedKeys,
         });
     }
 
@@ -830,25 +902,31 @@ export default class Tree extends Component {
 
     handleDragEnd(e, node) {
         this.setState({
-            dragOverNodeKey: null
+            dragOverNodeKey: null,
         });
 
         this.props.onDragEnd({ event: e, node: node });
     }
 
     handleDrop(e, node) {
-        if (this.dragNode && isDescendantOrSelf(this._k2n[this.dragNode.props.eventKey].pos, this._k2n[node.props.eventKey].pos)) {
+        if (
+            this.dragNode &&
+            isDescendantOrSelf(
+                this._k2n[this.dragNode.props.eventKey].pos,
+                this._k2n[node.props.eventKey].pos
+            )
+        ) {
             return;
         }
 
         this.setState({
-            dragOverNodeKey: null
+            dragOverNodeKey: null,
         });
 
         const params = this.generateDropParams(node);
         this.props.onDrop({
             event: e,
-            ...params
+            ...params,
         });
     }
 
@@ -862,7 +940,7 @@ export default class Tree extends Component {
             dragNode: this.dragNode,
             dragNodesKeys: [...this.dragNodesKeys],
             node,
-            dropPosition: this.dropPosition
+            dropPosition: this.dropPosition,
         };
     }
 
@@ -879,7 +957,7 @@ export default class Tree extends Component {
                 const props = {
                     ...others,
                     ...this.getNodeProps(`${key}`),
-                    _key: key
+                    _key: key,
                 };
                 if (children && children.length) {
                     props.children = loop(children, pos);
@@ -897,6 +975,9 @@ export default class Tree extends Component {
         const { rtl } = this.props;
         const loop = (children, prefix = '0') => {
             return Children.map(children, (child, index) => {
+                if (!React.isValidElement(child)) {
+                    return;
+                }
                 const pos = `${prefix}-${index}`;
                 const key = child.key || pos;
                 const props = this.getNodeProps(`${key}`);
@@ -917,7 +998,15 @@ export default class Tree extends Component {
     }
 
     render() {
-        const { prefix, rtl, className, dataSource, showLine, isNodeBlock, isLabelBlock } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            dataSource,
+            showLine,
+            isNodeBlock,
+            isLabelBlock,
+        } = this.props;
         const others = pickOthers(Object.keys(Tree.propTypes), this.props);
 
         if (rtl) {
@@ -930,12 +1019,19 @@ export default class Tree extends Component {
             [`${prefix}node-block`]: isNodeBlock,
             [`${prefix}node-indent`]: !isNodeBlock,
             [`${prefix}show-line`]: !isNodeBlock && showLine,
-            [className]: !!className
+            [className]: !!className,
         });
 
         return (
-            <ul role="tree" onBlur={this.handleBlur} className={newClassName} {...others}>
-                {dataSource ? this.renderByDataSource() : this.renderByChildren()}
+            <ul
+                role="tree"
+                onBlur={this.handleBlur}
+                className={newClassName}
+                {...others}
+            >
+                {dataSource
+                    ? this.renderByDataSource()
+                    : this.renderByChildren()}
             </ul>
         );
     }
