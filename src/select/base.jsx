@@ -421,6 +421,7 @@ export default class Base extends React.Component {
 
         const menuProps = {
             children,
+            role: 'listbox',
             style: autoWidth ? { width: this.width } : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
@@ -480,6 +481,7 @@ export default class Base extends React.Component {
                 );
             } else {
                 const itemProps = {
+                    role: 'option',
                     key: item.value,
                     className: `${prefix}select-menu-item`,
                     disabled: item.disabled

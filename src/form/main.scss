@@ -15,6 +15,7 @@
         }
 
         /* medium */
+        // TODO: REMOVE the lastchild's margin-bottom in 2.x version
         margin-bottom: $form-item-m-margin-b;
         #{$form-prefix}-item-label, #{$form-prefix}-text-align, p {
             line-height: $form-element-medium-height;

@@ -48,7 +48,7 @@ export default class Popup extends Component {
          */
         delay: PropTypes.number,
         /**
-         * 触发元素是否可以关闭弹层
+         * trigger 是否可以关闭弹层
          */
         canCloseByTrigger: PropTypes.bool,
         /**
