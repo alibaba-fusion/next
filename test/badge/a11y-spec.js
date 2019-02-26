@@ -3,10 +3,9 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Badge from '../../src/badge/index';
 import '../../src/badge/style';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import { unmount, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
-
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Badge A11y', () => {
@@ -17,7 +16,7 @@ describe('Badge A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     it('should not have any violations for count and no children', async () => {
@@ -31,9 +30,11 @@ describe('Badge A11y', () => {
     });
 
     it('should not have any violations for content', async () => {
-        wrapper = await testReact(<Badge content="hot">
-            <a href="#" aria-label="example"></a>
-        </Badge>);
+        wrapper = await testReact(
+            <Badge content="hot">
+                <a href="#" aria-label="example" />
+            </Badge>
+        );
         return wrapper;
     });
 });

@@ -3,10 +3,9 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Icon from '../../src/icon/index';
 import '../../src/icon/style';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import { unmount, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
-
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Icon A11y', () => {
@@ -17,11 +16,11 @@ describe('Icon A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     it('should not have any violations', async () => {
-        wrapper = await testReact(<Icon/>);
+        wrapper = await testReact(<Icon />);
         return wrapper;
     });
 });

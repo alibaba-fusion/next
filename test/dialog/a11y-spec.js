@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Dialog from '../../src/dialog/index';
 import '../../src/dialog/style.js';
-import { testReact, test, afterEach as a11yAfterEach } from '../util/a11y/validate';
+import { testReact, test, unmount } from '../util/a11y/validate';
 import { roleType, isHeading, isButton } from '../util/a11y/checks';
 
 /* eslint-disable react/jsx-filename-extension */
@@ -21,21 +21,23 @@ describe('Dialog A11y', () => {
                 wrapper.unmount();
                 wrapper = null;
             }
-            a11yAfterEach();
+            unmount();
         });
 
         it('should not have any violations', async () => {
-            wrapper = await testReact(<Dialog visible title="Accessible Header"/>);
+            wrapper = await testReact(
+                <Dialog visible title="Accessible Header" />
+            );
             return wrapper;
         });
 
         it('should have accessible header', () => {
-            wrapper = mount(<Dialog visible title="Accessible Header"/>);
+            wrapper = mount(<Dialog visible title="Accessible Header" />);
             assert(isHeading('.next-dialog-header', wrapper));
         });
 
         it('should have accessible close button', () => {
-            wrapper = mount(<Dialog visible title="Accessible Header"/>);
+            wrapper = mount(<Dialog visible title="Accessible Header" />);
             assert(isButton('.next-dialog-close', wrapper));
         });
     });
@@ -55,7 +57,7 @@ describe('Dialog A11y', () => {
                 title: 'Title',
                 content: 'Content',
                 animation: false,
-                className: 'dialog-a11y-tests'
+                className: 'dialog-a11y-tests',
             }).hide;
             return test('.dialog-a11y-tests');
         });
@@ -64,28 +66,33 @@ describe('Dialog A11y', () => {
             hide = Dialog.alert({
                 title: 'Title',
                 content: 'Content',
-                animation: false
+                animation: false,
             }).hide;
-            assert(roleType('alertdialog', document.querySelector('.next-dialog')));
+            assert(
+                roleType('alertdialog', document.querySelector('.next-dialog'))
+            );
         });
 
         it('should have role `alertdialog` for show dialog', () => {
             hide = Dialog.show({
                 title: 'Title',
                 content: 'Content',
-                animation: false
+                animation: false,
             }).hide;
-            assert(roleType('alertdialog', document.querySelector('.next-dialog')));
+            assert(
+                roleType('alertdialog', document.querySelector('.next-dialog'))
+            );
         });
 
         it('should have role `alertdialog` for confirm dialog', () => {
             hide = Dialog.confirm({
                 title: 'Title',
                 content: 'Content',
-                animation: false
+                animation: false,
             }).hide;
-            assert(roleType('alertdialog', document.querySelector('.next-dialog')));
+            assert(
+                roleType('alertdialog', document.querySelector('.next-dialog'))
+            );
         });
     });
 });
-

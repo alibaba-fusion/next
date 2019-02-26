@@ -3,11 +3,10 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Menu from '../../src/menu/index';
 import '../../src/menu/style';
-import { afterEach as a11yAfterEach, test, testReact, mountReact } from '../util/a11y/validate';
+import { unmount, test, testReact, mountReact } from '../util/a11y/validate';
 
 const { SubMenu, Item, Group, Divider } = Menu;
 Enzyme.configure({ adapter: new Adapter() });
-
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe.skip('Menu A11y', () => {
@@ -18,14 +17,18 @@ describe.skip('Menu A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     // TODO: Fix `aria-allowed-attr` due to `aria-multiselectable=\"false\"`, `aria-selected=\"false\"`
     it('should not have any violations for Item', async () => {
-        wrapper = await mountReact(<Menu>
-            <Item id="item" key="1">Option 1</Item>
-        </Menu>);
+        wrapper = await mountReact(
+            <Menu>
+                <Item id="item" key="1">
+                    Option 1
+                </Item>
+            </Menu>
+        );
         return test('#item');
     });
 
@@ -35,7 +38,9 @@ describe.skip('Menu A11y', () => {
             <Menu>
                 <Item key="1">Option 1</Item>
                 <Divider />
-                <Item disabled key="2">Disabled option 2</Item>
+                <Item disabled key="2">
+                    Disabled option 2
+                </Item>
             </Menu>
         );
         return wrapper;
