@@ -20,7 +20,7 @@ describe.skip('Menu A11y', () => {
         unmount();
     });
 
-    // TODO: Fix `aria-allowed-attr` due to `aria-multiselectable=\"false\"`, `aria-selected=\"false\"`
+    // Fix `aria-allowed-attr` due to `aria-multiselectable=\"false\"`, `aria-selected=\"false\"`
     it('should not have any violations for Item', async () => {
         wrapper = await mountReact(
             <Menu>
@@ -32,7 +32,7 @@ describe.skip('Menu A11y', () => {
         return test('#item');
     });
 
-    // TODO: Fix issue with Item
+    // Fix issue with Item
     it('should not have any violations for simple example', async () => {
         wrapper = await testReact(
             <Menu>
@@ -46,7 +46,7 @@ describe.skip('Menu A11y', () => {
         return wrapper;
     });
 
-    // TODO: Fix issue with Item
+    // Fix issue with Item
     it('should not have any violations for Group', async () => {
         wrapper = await testReact(
             <Menu>
@@ -59,9 +59,9 @@ describe.skip('Menu A11y', () => {
         return wrapper;
     });
 
-    // TODO: This throws a false error for `li` nested inside role="menu". This is a bug in axe-core. Issue was created (https://github.com/dequelabs/axe-core/issues/1365)
+    // This throws a false error for `li` nested inside role="menu". This is a bug in axe-core. Issue was created (https://github.com/dequelabs/axe-core/issues/1365)
     //       Follow up to resolve this bug.
-    it.skip('should not have any violations for SubMenu', async () => {
+    it('should not have any violations for SubMenu', async () => {
         wrapper = await testReact(
             <Menu className="my-menu" defaultOpenKeys="sub-menu">
                 <SubMenu id="submenu" key="sub-menu" label="Sub menu">

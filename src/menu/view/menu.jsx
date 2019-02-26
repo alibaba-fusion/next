@@ -729,7 +729,13 @@ export default class Menu extends Component {
             [className]: !!className,
         });
 
-        const role = direction === 'hoz' ? 'menubar' : 'menu';
+        let role = direction === 'hoz' ? 'menubar' : 'menu';
+        let ariaMultiselectable;
+        if ('selectMode' in this.props) {
+            role = 'listbox';
+            ariaMultiselectable = !!(selectMode === 'multiple');
+        }
+
         const headerElement = header ? (
             <li className={`${prefix}menu-header`}>{header}</li>
         ) : null;
@@ -754,7 +760,7 @@ export default class Menu extends Component {
                 onBlur={this.onBlur}
                 className={newClassName}
                 onKeyDown={this.handleEnter}
-                aria-multiselectable={selectMode === 'multiple'}
+                aria-multiselectable={ariaMultiselectable}
                 {...others}
             >
                 {headerElement}

@@ -200,9 +200,16 @@ export default class SubMenu extends Component {
             [subMenuContentClassName]: !!subMenuContentClassName,
         });
 
+        let roleMenu = 'menu',
+            roleItem = 'menuitem';
+        if ('selectMode' in root.props) {
+            roleMenu = 'listbox';
+            roleItem = 'listitem';
+        }
+
         const subMenu = open ? (
             <ul
-                role="menu"
+                role={roleMenu}
                 dir={rtl ? 'rtl' : undefined}
                 ref="subMenu"
                 className={newSubMenuContentClassName}
@@ -212,7 +219,7 @@ export default class SubMenu extends Component {
         ) : null;
 
         return (
-            <li {...others} {...liProps}>
+            <li role={roleItem} {...others} {...liProps}>
                 <NewItem {...itemProps}>
                     <span className={`${prefix}menu-item-text`}>{label}</span>
                     <Icon {...arrorProps} />
