@@ -91,7 +91,9 @@ export default {
         items: '项',
         item: '项',
         moveAll: '移动全部',
-        searchPlaceholder: '请输入'
+        searchPlaceholder: '请输入',
+        moveToLeft: '撤销选中元素',
+        moveToRight: '提交选中元素'
     },
     Upload: {
         card: {

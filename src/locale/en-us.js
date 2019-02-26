@@ -91,7 +91,9 @@ export default {
         items: 'items',
         item: 'item',
         moveAll: 'Move All',
-        searchPlaceholder: 'Please Input'
+        searchPlaceholder: 'Please Input',
+        moveToLeft: 'Uncheck Selected Elements',
+        moveToRight: 'Submit Selected Elements'
     },
     Upload: {
         card: {
