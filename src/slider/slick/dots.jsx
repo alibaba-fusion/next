@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {func} from '../../util';
+import { func } from '../../util';
 
 /**
  * slider dots
  * 导航锚点
  */
 
-
-const {noop} = func;
+const { noop } = func;
 
 export default class Dots extends React.Component {
     static propTypes = {
@@ -21,11 +20,11 @@ export default class Dots extends React.Component {
         slidesToScroll: PropTypes.number,
         dotsDirection: PropTypes.oneOf(['hoz', 'ver']),
         dotsRender: PropTypes.func,
-        triggerType: PropTypes.string
+        triggerType: PropTypes.string,
     };
 
     static defaultProps = {
-        changeSlide: noop
+        changeSlide: noop,
     };
 
     handleChangeSlide(options, e) {
@@ -34,10 +33,24 @@ export default class Dots extends React.Component {
         this.props.changeSlide(options);
     }
 
-    render () {
-        const {prefix, slideCount, slidesToScroll, currentSlide, dotsClass, dotsDirection, dotsRender, triggerType, rtl} = this.props;
+    render() {
+        const {
+            prefix,
+            slideCount,
+            slidesToScroll,
+            currentSlide,
+            dotsClass,
+            dotsDirection,
+            dotsRender,
+            triggerType,
+            rtl,
+        } = this.props;
 
-        const dotsClazz = classNames(`${prefix}slick-dots`, dotsDirection, dotsClass);
+        const dotsClazz = classNames(
+            `${prefix}slick-dots`,
+            dotsDirection,
+            dotsClass
+        );
         const dotCount = Math.ceil(slideCount / slidesToScroll);
         const children = [];
 
@@ -45,17 +58,19 @@ export default class Dots extends React.Component {
             const leftBound = i * slidesToScroll;
             const rightBound = leftBound + slidesToScroll - 1;
             const itemClazz = classNames(`${prefix}slick-dots-item`, {
-                active: (currentSlide >= leftBound) && (currentSlide <= rightBound)
+                active: currentSlide >= leftBound && currentSlide <= rightBound,
             });
             const dotOptions = {
                 message: 'dots',
                 index: i,
                 slidesToScroll,
-                currentSlide
+                currentSlide,
             };
             // 除非设置为hover，默认使用click触发
             const handleProp = {
-                [(triggerType.toLowerCase() === 'hover') ? 'onMouseEnter' : 'onClick']: this.handleChangeSlide.bind(this, dotOptions)
+                [triggerType.toLowerCase() === 'hover'
+                    ? 'onMouseEnter'
+                    : 'onClick']: this.handleChangeSlide.bind(this, dotOptions),
             };
 
             let docIndex = i;
@@ -66,18 +81,25 @@ export default class Dots extends React.Component {
             }
 
             children.push(
-                <li key={i} className={itemClazz} {...handleProp}>
-                    {
-                        (dotsRender instanceof Function) ?
-                            <span>
-                                {dotsRender(docIndex, currentSlideIndex)}
-                            </span> :
-                            <button />
-                    }
+                <li
+                    key={i}
+                    className={itemClazz}
+                    role="listitem"
+                    {...handleProp}
+                >
+                    {dotsRender instanceof Function ? (
+                        <span>{dotsRender(docIndex, currentSlideIndex)}</span>
+                    ) : (
+                        <button tabIndex="-1" />
+                    )}
                 </li>
             );
         }
 
-        return <ul className={dotsClazz}>{children}</ul>;
+        return (
+            <ul className={dotsClazz} aria-hidden="true">
+                {children}
+            </ul>
+        );
     }
 }
