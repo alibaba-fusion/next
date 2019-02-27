@@ -2,11 +2,14 @@ export default {
     momentLocale: 'zh-cn',
     Timeline: {
         expand: '展开',
-        fold: '收起'
+        fold: '收起',
+    },
+    Balloon: {
+        close: '关闭',
     },
     Card: {
         expand: '展开',
-        fold: '收起'
+        fold: '收起',
     },
     Calendar: {
         today: '今天',
@@ -22,7 +25,7 @@ export default {
         prevDecade: '上十年',
         nextDecade: '后十年',
         yearSelectAriaLabel: '选择年份',
-        monthSelectAriaLabel: '选择月份'
+        monthSelectAriaLabel: '选择月份',
     },
     DatePicker: {
         placeholder: '请选择日期',
@@ -38,15 +41,15 @@ export default {
         endPlaceholder: '结束日期',
         hour: '时',
         minute: '分',
-        second: '秒'
+        second: '秒',
     },
     Dialog: {
         close: '关闭',
         ok: '确认',
-        cancel: '取消'
+        cancel: '取消',
     },
     Message: {
-        closeAriaLabel: '关闭'
+        closeAriaLabel: '关闭',
     },
     Pagination: {
         prev: '上一页',
@@ -59,15 +62,15 @@ export default {
         labelNext: '下一页，当前第{current}页',
         inputAriaLabel: '请输入跳转到第几页',
         selectAriaLabel: '请选择每页显示几条',
-        pageSize: '每页显示：'
+        pageSize: '每页显示：',
     },
     Input: {
-        clear: '清除'
+        clear: '清除',
     },
     Select: {
         selectPlaceholder: '请选择',
         autoCompletePlaceholder: '请输入',
-        notFoundContent: '无选项'
+        notFoundContent: '无选项',
     },
     Table: {
         empty: '没有数据',
@@ -78,14 +81,14 @@ export default {
         expanded: '已展开',
         folded: '已折叠',
         filter: '筛选',
-        selectAll: '全选'
+        selectAll: '全选',
     },
     TimePicker: {
         placeholder: '请选择时间',
         clear: '清除',
         hour: '时',
         minute: '分',
-        second: '秒'
+        second: '秒',
     },
     Transfer: {
         items: '项',
@@ -93,22 +96,22 @@ export default {
         moveAll: '移动全部',
         searchPlaceholder: '请输入',
         moveToLeft: '撤销选中元素',
-        moveToRight: '提交选中元素'
+        moveToRight: '提交选中元素',
     },
     Upload: {
         card: {
             cancel: '取消',
-            addPhoto: '上传图片'
+            addPhoto: '上传图片',
         },
         drag: {
             text: '点击或者拖动文件到虚线框内上传',
-            hint: '支持 docx, xls, PDF, rar, zip, PNG, JPG 等类型的文件'
-        }
+            hint: '支持 docx, xls, PDF, rar, zip, PNG, JPG 等类型的文件',
+        },
     },
     Search: {
-        buttonText: '搜索'
+        buttonText: '搜索',
     },
     Tag: {
-        delete: '删除'
-    }
+        delete: '删除',
+    },
 };

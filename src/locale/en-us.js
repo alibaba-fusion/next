@@ -2,11 +2,14 @@ export default {
     momentLocale: 'en',
     Timeline: {
         expand: 'Expand',
-        fold: 'Fold'
+        fold: 'Fold',
+    },
+    Balloon: {
+        close: 'Close',
     },
     Card: {
         expand: 'Expand',
-        fold: 'Fold'
+        fold: 'Fold',
     },
     Calendar: {
         today: 'Today',
@@ -22,7 +25,7 @@ export default {
         prevDecade: 'Previous Decade',
         nextDecade: 'Next Decade',
         yearSelectAriaLabel: 'Select Year',
-        monthSelectAriaLabel: 'Select Month'
+        monthSelectAriaLabel: 'Select Month',
     },
     DatePicker: {
         placeholder: 'Select Date',
@@ -38,15 +41,15 @@ export default {
         endPlaceholder: 'End Date',
         hour: 'H',
         minute: 'M',
-        second: 'S'
+        second: 'S',
     },
     Dialog: {
         close: 'Close',
         ok: 'OK',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
     },
     Message: {
-        closeAriaLabel: 'Close'
+        closeAriaLabel: 'Close',
     },
     Pagination: {
         prev: 'Previous',
@@ -58,16 +61,17 @@ export default {
         labelPrev: 'Previous page, current page {current}',
         labelNext: 'Next page, current page {current}',
         inputAriaLabel: 'Please enter what page to skip to',
-        selectAriaLabel: 'Please select how many items are displayed on each page',
-        pageSize: 'Items per page:'
+        selectAriaLabel:
+            'Please select how many items are displayed on each page',
+        pageSize: 'Items per page:',
     },
     Input: {
-        clear: 'Clear'
+        clear: 'Clear',
     },
     Select: {
         selectPlaceholder: 'Please Select',
         autoCompletePlaceholder: 'Please Input',
-        notFoundContent: 'No Options'
+        notFoundContent: 'No Options',
     },
     Table: {
         empty: 'No Data',
@@ -78,14 +82,14 @@ export default {
         expanded: 'Expanded',
         folded: 'Folded',
         filter: 'Filter',
-        selectAll: 'Select All'
+        selectAll: 'Select All',
     },
     TimePicker: {
         placeholder: 'Select Time',
         clear: 'Clear',
         hour: 'H',
         minute: 'M',
-        second: 'S'
+        second: 'S',
     },
     Transfer: {
         items: 'items',
@@ -93,22 +97,23 @@ export default {
         moveAll: 'Move All',
         searchPlaceholder: 'Please Input',
         moveToLeft: 'Uncheck Selected Elements',
-        moveToRight: 'Submit Selected Elements'
+        moveToRight: 'Submit Selected Elements',
     },
     Upload: {
         card: {
             cancel: 'Cancel',
-            addPhoto: 'Add Picture'
+            addPhoto: 'Add Picture',
         },
         drag: {
             text: 'Click or Drag the file to this area to upload',
-            hint: 'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload'
-        }
+            hint:
+                'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload',
+        },
     },
     Search: {
-        buttonText: 'Search'
+        buttonText: 'Search',
     },
     Tag: {
-        delete: 'Delete'
-    }
+        delete: 'Delete',
+    },
 };
