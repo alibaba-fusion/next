@@ -3,7 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Cascader from '../../src/cascader/index';
 import '../../src/cascader/style';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import { unmount, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -39,7 +39,7 @@ describe('Cascader A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     it('should not have any violations when empty', async () => {
