@@ -3,9 +3,14 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import CascaderSelect from '../../src/cascader-select/index';
 import '../../src/cascader-select/style';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import {
+    unmount,
+    testReact
+} from '../util/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({
+    adapter: new Adapter()
+});
 
 const ChinaArea = [{
     value: '2973',
@@ -39,12 +44,14 @@ describe('CascaderSelect A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     // TODO Select support a11y
     it.skip('should not have any violations when empty', async () => {
-        wrapper = await testReact(<CascaderSelect aria-label="级联选择" dataSource={ChinaArea} defaultExpandAll />);
+        wrapper = await testReact(<CascaderSelect aria-label = "级联选择"
+            dataSource={ChinaArea}
+            defaultExpandAll /> );
         return wrapper;
     });
 });
