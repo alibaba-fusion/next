@@ -76,7 +76,16 @@ export default class Body extends React.Component {
         }
         if (dataSource.length) {
             rows = dataSource.map((record, index) => {
-                const rowProps = getRowProps(record, index) || {};
+                let rowProps = {};
+
+                if (expandedIndexSimulate) {
+                    rowProps = record.__expanded ? {} : getRowProps(record, index / 2);
+                } else {
+                    rowProps = getRowProps(record, index);
+                }
+
+                rowProps = rowProps || {};
+
                 const rowClass = rowProps.className;
                 const className = classnames({
                     first: index === 0,

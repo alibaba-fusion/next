@@ -194,6 +194,10 @@ describe('Table', () => {
                 <Table.Column cell={(record, index) => {arr.push(index)}} width={200}></Table.Column>
             ],
             expandedRowRender: (record, index) => record.name + index,
+            getRowProps: (record, index) => {
+                assert(record.id == index + 1);
+                return {className: `next-myclass-${index}`}
+            },
             getExpandedColProps: (record, index) => {
                 assert(record.id == index + 1);
             },
