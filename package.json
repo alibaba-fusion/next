@@ -51,8 +51,10 @@
         "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
     },
     "lint-staged": {
+        "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
+            "prettier --write"
+        ],
         "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [
-            "prettier --write",
             "eslint",
             "git add"
         ],

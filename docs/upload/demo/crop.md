@@ -109,7 +109,12 @@ class App extends React.Component {
                 >
                     <Button>Select file</Button>
                 </Upload.Selecter>
-                <Dialog visible={this.state.visible} onCancel={this.onCancel} onOk={this.onOk} isFullScreen>
+                <Dialog
+                    visible={this.state.visible}
+                    onCancel={this.onCancel}
+                    onOk={this.onOk}
+                    onClose={this.onCancel}
+                    isFullScreen>
                     <Cropper
                         ref={this.saveCropperrRef}
                         src={this.state.src}
