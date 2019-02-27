@@ -187,6 +187,7 @@ export default class Item extends Component {
               });
         if (disabled) {
             others['aria-disabled'] = true;
+            others['aria-hidden'] = true;
         }
 
         others.tabIndex = root.tabbableKey === _key ? '0' : '-1';
@@ -206,9 +207,14 @@ export default class Item extends Component {
         }
         const TagName = component;
 
+        let role = 'menuitem';
+        if ('selectMode' in root.props) {
+            role = 'listitem';
+        }
+
         return (
             <TagName
-                role="menuitem"
+                role={role}
                 title={this.getTitle(children)}
                 {...others}
                 className={newClassName}

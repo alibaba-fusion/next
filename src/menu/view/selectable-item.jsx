@@ -129,14 +129,21 @@ export default class SelectableItem extends Component {
             onKeyDown: this.handleKeyDown,
             onClick: !disabled ? this.handleClick : this.props.onClick,
             needIndent,
-            'aria-selected': selected,
             ...others,
         };
+
+        const textProps = {};
+
+        if ('selectMode' in root.props) {
+            textProps['aria-selected'] = selected;
+        }
 
         return (
             <Item {...newProps}>
                 {this.renderSelectedIcon(selected)}
-                <span className={`${prefix}menu-item-text`}>{children}</span>
+                <span className={`${prefix}menu-item-text`} {...textProps}>
+                    {children}
+                </span>
                 {helper ? (
                     <div className={`${prefix}menu-item-helper`}>{helper}</div>
                 ) : null}
