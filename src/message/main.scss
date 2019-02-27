@@ -9,11 +9,6 @@
     @include box-sizing;
     @include message-bounding();
 
-    .#{$css-prefix}message-wrapper {
-        position: fixed;
-        left: 50%;
-    }
-
     .#{$css-prefix}message-close {
         color: $message-close-icon-color;
         font-size: 0;

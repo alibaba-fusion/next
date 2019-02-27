@@ -27,7 +27,8 @@ function LowerSlider(props) {
             popupProps={{
                 visible: tooltipVisible,
                 onVisibleChange: onTooltipVisibleChange,
-                animation: tooltipAnimation
+                animation: tooltipAnimation,
+                needAdjust: false
             }}
             trigger={Slider({ ...props, value: value[0] })}
             align="t"
@@ -63,7 +64,8 @@ function UpperSlider(props) {
                 popupProps={{
                     visible: tooltipVisible,
                     onVisibleChange: onTooltipVisibleChange,
-                    animation: tooltipAnimation
+                    animation: tooltipAnimation,
+                    needAdjust: false
                 }}
                 trigger={Slider({ ...newprop, value: value[1] })}
                 align="t"
@@ -78,7 +80,8 @@ function UpperSlider(props) {
             popupProps={{
                 visible: tooltipVisible,
                 onVisibleChange: onTooltipVisibleChange,
-                animation: tooltipAnimation
+                animation: tooltipAnimation,
+                needAdjust: false
             }}
             animation={{
                 in: 'fadeInUp',
