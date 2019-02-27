@@ -3,9 +3,14 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Pagination from '../../src/pagination/index';
 import '../../src/pagination/style';
-import { afterEach as a11yAfterEach, testReact } from '../util/a11y/validate';
+import {
+    unmount,
+    testReact
+} from '../util/a11y/validate';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({
+    adapter: new Adapter()
+});
 
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
@@ -17,7 +22,7 @@ describe('Pagination A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
-        a11yAfterEach();
+        unmount();
     });
 
     it('should not have any violations when various types', async () => {
@@ -37,6 +42,4 @@ describe('Pagination A11y', () => {
         </div>);
         return wrapper;
     });
-
-
 });
