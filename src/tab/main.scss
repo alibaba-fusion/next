@@ -220,7 +220,7 @@
         }
     }
 
-    &-wrapped:before, &-wrapped:after, {
+    &-wrapped:before, &-wrapped:after {
         content: "";
         display: table;
     }
