@@ -256,14 +256,14 @@ class Search extends React.Component {
             });
             searchBtn = (
                 <Button
-                    {...buttonProps}
                     tabIndex="0"
                     aria-disabled={disabled}
                     aria-label={locale.buttonText}
                     className={cls}
+                    disabled={disabled}
+                    {...buttonProps}
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
-                    disabled={disabled}
                 >
                     {hasIcon ? <Icon type="search" /> : null}
                     {searchText ? (
