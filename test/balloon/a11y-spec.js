@@ -31,7 +31,6 @@ describe('Balloon A11y', () => {
         unmount();
     });
 
-    // fix `button-name` violation for close button
     it('should not have any violations', async () => {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
