@@ -214,6 +214,7 @@ class Search extends React.Component {
             popupContent,
             hasClear,
             visible,
+            locale,
             rtl,
             ...others
         } = this.props;
@@ -237,11 +238,12 @@ class Search extends React.Component {
             });
             searchIcon = (
                 <Icon
-                    {...buttonProps}
                     type="search"
                     tabIndex="0"
                     role="button"
                     aria-disabled={disabled}
+                    aira-label={locale.buttonText}
+                    {...buttonProps}
                     className={cls}
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
