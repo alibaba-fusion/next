@@ -128,7 +128,7 @@ class App extends React.Component {
     }
     getRowProps(record, index) {
         console.log('getRowProps', record, index);
-        return {className: `next-myclass-${index}`}
+        return {className: `next-myclass-${index}`};
     }
     onExpandedRowClick(record, index) {
         console.log('onExpandedRowClick', record, index);
