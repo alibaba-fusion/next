@@ -199,7 +199,10 @@ class Demo extends Component {
 class TestMoment extends Component {
     render() {
         return (
-            <ConfigProvider locale={this.props.locale}>
+            <ConfigProvider
+                disableAutoMomentLocale={this.props.disableAutoMomentLocale}
+                locale={this.props.locale}
+            >
                 <div />
             </ConfigProvider>
         );
@@ -319,6 +322,16 @@ describe('ConfigProvider', () => {
 
     it('should change moment locale', () => {
         wrapper = mount(<TestMoment locale={{ momentLocale: 'zh-cn' }} />);
+        assert(moment.locale() === 'zh-cn');
+    });
+
+    it('should support disableAutoMomentLocale', () => {
+        wrapper = mount(
+            <TestMoment
+                disableAutoMomentLocale
+                locale={{ momentLocale: 'zh-cn' }}
+            />
+        );
         assert(moment.locale() === 'zh-cn');
     });
 
