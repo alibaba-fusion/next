@@ -8,6 +8,7 @@ import NumberPicker from '../../src/number-picker/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+/* global describe it */
 describe('number-picker', () => {
     describe('render', () => {
         it('should accept defaultValue & value', () => {
@@ -382,6 +383,19 @@ describe('number-picker', () => {
                 .simulate('click');
 
             assert(wrapper.find('input').prop('value') === 0.141);
+
+            done();
+        });
+
+        it('should consider [。] as [.]', done => {
+            const wrapper = mount(
+                <NumberPicker defaultValue={1.2} step={0.01} precision={3} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '3。9' } });
+            assert(wrapper.find('input').prop('value') === 3.9);
 
             done();
         });
