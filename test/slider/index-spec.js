@@ -45,7 +45,7 @@ describe('slider', function() {
             assert(wrapper.find('.next-slick-dots').length === 0);
         });
 
-        it('should dots render', () => {
+        it('should render dots', () => {
             const wrapper = shallow(<Slider triggerType="hover" dotsRender={(index, current) => {
                 console.log('current', current);
                 return <a>{index}</a>;

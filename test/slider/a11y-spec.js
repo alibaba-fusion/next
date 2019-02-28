@@ -33,14 +33,12 @@ describe('Slider A11y', () => {
 
     it('should not have any violations', async () => {
         wrapper = await testReact(
-            <div>
-                <Slider>{slides}</Slider>
-            </div>
+            <Slider>{slides}</Slider>
         );
         return wrapper;
     });
 
-    it('should render single slider', async () => {
+    it('should not have any violations for single slider', async () => {
         wrapper = await testReact(
             <Slider>
                 <div>single slider</div>
@@ -49,7 +47,7 @@ describe('Slider A11y', () => {
         return wrapper;
     });
 
-    it('should render with lazyLoad', async () => {
+    it('should not have any violations with lazyLoad', async () => {
         wrapper = await testReact(
             <Slider lazyLoad infinite={false}>
                 {slides}
@@ -58,21 +56,21 @@ describe('Slider A11y', () => {
         return wrapper;
     });
 
-    it('using vertical deprecated', async () => {
+    it('should not have any violations in vertical mode', async () => {
         wrapper = await testReact(
             <Slider dotsDirection="ver">{slides}</Slider>
         );
         return wrapper;
     });
 
-    it('using slideDirection', async () => {
+    it('should not have any violations when set slideDirection', async () => {
         wrapper = await testReact(
             <Slider slideDirection="ver">{slides}</Slider>
         );
         return wrapper;
     });
 
-    it('should centerMode', async () => {
+    it('should not have any violations in centerMode', async () => {
         const settings = {
             className: 'custom-slide center',
             centerMode: true,
@@ -81,16 +79,6 @@ describe('Slider A11y', () => {
             arrowPosition: 'outer',
             centerPadding: '60px',
             slidesToShow: 3,
-        };
-        wrapper = await testReact(<Slider {...settings}>{multiSlides}</Slider>);
-        return wrapper;
-    });
-
-    it('too more slidesToShow ', async () => {
-        const settings = {
-            slidesToShow: 5,
-            slidesToScroll: 10,
-            autoplaySpeed: 200,
         };
         wrapper = await testReact(<Slider {...settings}>{multiSlides}</Slider>);
         return wrapper;

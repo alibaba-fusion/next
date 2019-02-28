@@ -81,15 +81,11 @@ export default class Dots extends React.Component {
             }
 
             children.push(
-                <li
-                    key={i}
-                    className={itemClazz}
-                    role="listitem"
-                    {...handleProp}
-                >
+                <li key={i} className={itemClazz} {...handleProp}>
                     {dotsRender instanceof Function ? (
                         <span>{dotsRender(docIndex, currentSlideIndex)}</span>
                     ) : (
+                        // Slider is navigated by right and left arrow buttons so the dots are not required functionality
                         <button tabIndex="-1" />
                     )}
                 </li>

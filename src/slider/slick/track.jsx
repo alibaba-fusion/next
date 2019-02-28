@@ -210,6 +210,7 @@ export default class Track extends Component {
         const slides = renderSlides(this.props);
         return (
             <div
+                role="list"
                 className={`${this.props.prefix}slick-track`}
                 style={this.props.trackStyle}
             >

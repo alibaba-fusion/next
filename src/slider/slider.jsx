@@ -245,7 +245,6 @@ export default class Slider extends Component {
         return (
             <ConfigProvider rtl={false}>
                 <div
-                    role="list"
                     dir="ltr"
                     className={clazz}
                     style={style}
