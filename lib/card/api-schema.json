@@ -1,0 +1,75 @@
+{
+  "name": "Card",
+  "props": {
+    "title": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "卡片的标题",
+      "docblock": "卡片的标题"
+    },
+    "subTitle": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "卡片的副标题",
+      "docblock": "卡片的副标题"
+    },
+    "showTitleBullet": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示标题的项目符号",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示标题的项目符号"
+    },
+    "showHeadDivider": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否展示头部的分隔线",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否展示头部的分隔线"
+    },
+    "contentHeight": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "内容区域的固定高度",
+      "defaultValue": {
+        "value": "120",
+        "computed": false
+      },
+      "docblock": "内容区域的固定高度"
+    },
+    "extra": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "标题区域的用户自定义内容",
+      "docblock": "标题区域的用户自定义内容"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
