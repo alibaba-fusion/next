@@ -258,6 +258,8 @@ class Search extends React.Component {
                 <Button
                     {...buttonProps}
                     tabIndex="0"
+                    aria-disabled={disabled}
+                    aria-label={locale.buttonText}
                     className={cls}
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
