@@ -3,7 +3,7 @@ import Slider from './slider';
 
 export default ConfigProvider.config(Slider, {
     exportNames: ['resize'],
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('fade' in props) {
             deprecated('fade', 'animation', 'Slider');
 
@@ -25,17 +25,27 @@ export default ConfigProvider.config(Slider, {
             const { arrowPos, ...others } = props;
             props = { arrowPosition: arrowPos, ...others };
         }
-        ['arrowDirection', 'dotsDirection', 'slideDirection'].forEach(propName => {
-            if (props[propName] === 'horizontal') {
-                deprecated(`${propName}=horizontal`, `${propName}=hoz`, 'Slider');
+        ['arrowDirection', 'dotsDirection', 'slideDirection'].forEach(
+            propName => {
+                if (props[propName] === 'horizontal') {
+                    deprecated(
+                        `${propName}=horizontal`,
+                        `${propName}=hoz`,
+                        'Slider'
+                    );
 
-                props[propName] = 'hoz';
-            } else if (props[propName] === 'vertical') {
-                deprecated(`${propName}=vertical`, `${propName}=ver`, 'Slider');
+                    props[propName] = 'hoz';
+                } else if (props[propName] === 'vertical') {
+                    deprecated(
+                        `${propName}=vertical`,
+                        `${propName}=ver`,
+                        'Slider'
+                    );
 
-                props[propName] = 'ver';
+                    props[propName] = 'ver';
+                }
             }
-        });
+        );
         if ('initialSlide' in props) {
             deprecated('initialSlide', 'defaultActiveIndex', 'Slider');
 
@@ -56,5 +66,5 @@ export default ConfigProvider.config(Slider, {
         }
 
         return props;
-    }
+    },
 });

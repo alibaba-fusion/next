@@ -45,6 +45,16 @@ describe('slider', function() {
             assert(wrapper.find('.next-slick-dots').length === 0);
         });
 
+        it('should render dots', () => {
+            const wrapper = mount(<Slider triggerType="hover" dotsRender={(index, current) => {
+                console.log('current', current);
+                return <a className="my-dots">{index}</a>;
+            }}>{slides}</Slider>);
+
+            assert(wrapper.find('.next-slick-dots'));
+            assert(wrapper.find('.my-dots').length === 4);
+        });
+
         it('should render with lazyLoad', () => {
             const wrapper = mount(<Slider lazyLoad infinite={false}>{slides}</Slider>);
             assert(wrapper.find('.custom-slick-item').length === 1);
