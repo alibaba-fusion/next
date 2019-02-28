@@ -259,7 +259,7 @@ export default class Table extends React.Component {
          */
         onBodyScroll: PropTypes.func,
         /**
-         * 开启时，getExpandedColProps() 和 expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
+         * 开启时，getExpandedColProps() / getRowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
          */
         expandedIndexSimulate: PropTypes.bool,
     };
@@ -492,6 +492,7 @@ export default class Table extends React.Component {
                 onRowClick,
                 onRowMouseEnter,
                 onRowMouseLeave,
+                expandedIndexSimulate,
                 pure,
                 rtl
             } = this.props;
@@ -544,6 +545,7 @@ export default class Table extends React.Component {
                         rowRef={this.getRowRef}
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
+                        expandedIndexSimulate={expandedIndexSimulate}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
