@@ -12,81 +12,109 @@ import '../../src/tree/style.js';
 const TreeNode = Tree.Node;
 const { hasClass, getOffset } = dom;
 
-const dataSource = [{
-    label: '服装',
-    key: '1',
-    children: [{
-        label: '男装',
-        key: '2',
-        disabled: true,
-        children: [{
-            label: '外套',
-            key: '4'
-        }, {
-            label: '夹克',
-            key: '5'
-        }]
-    }, {
-        label: '女装',
-        key: '3',
-        children: [{
-            label: '裙子',
-            key: '6'
-        }]
-    }]
-}];
+const dataSource = [
+    {
+        label: '服装',
+        key: '1',
+        children: [
+            {
+                label: '男装',
+                key: '2',
+                disabled: true,
+                children: [
+                    {
+                        label: '外套',
+                        key: '4',
+                    },
+                    {
+                        label: '夹克',
+                        key: '5',
+                    },
+                ],
+            },
+            {
+                label: '女装',
+                key: '3',
+                children: [
+                    {
+                        label: '裙子',
+                        key: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 const _k2n = createMap(dataSource);
 
 class ExpandDemo extends Component {
     state = {
-        expandedKeys: ['2']
+        expandedKeys: ['2'],
     };
 
     handleExpand = expandedKeys => {
         this.setState({
-            expandedKeys
+            expandedKeys,
         });
-    }
+    };
 
     render() {
         return (
-            <Tree expandedKeys={this.state.expandedKeys} dataSource={dataSource} onExpand={this.handleExpand} />
+            <Tree
+                expandedKeys={this.state.expandedKeys}
+                dataSource={dataSource}
+                onExpand={this.handleExpand}
+            />
         );
     }
 }
 
 class SelectDemo extends Component {
     state = {
-        selectedKeys: ['1']
+        selectedKeys: ['1'],
     };
 
     handleSelect = selectedKeys => {
         this.setState({
-            selectedKeys
+            selectedKeys,
         });
-    }
+    };
 
     render() {
         return (
-            <Tree defaultExpandAll multiple selectedKeys={this.state.selectedKeys} dataSource={dataSource} onSelect={this.handleSelect} {...this.props} />
+            <Tree
+                defaultExpandAll
+                multiple
+                selectedKeys={this.state.selectedKeys}
+                dataSource={dataSource}
+                onSelect={this.handleSelect}
+                {...this.props}
+            />
         );
     }
 }
 
 class CheckDemo extends Component {
     state = {
-        checkedKeys: ['4', '5', '6']
+        checkedKeys: ['4', '5', '6'],
     };
 
     handleCheck = checkedKeys => {
         this.setState({
-            checkedKeys
+            checkedKeys,
         });
-    }
+    };
 
     render() {
         return (
-            <Tree defaultExpandAll checkable checkedKeys={this.state.checkedKeys} dataSource={dataSource} onCheck={this.handleCheck} {...this.props} />
+            <Tree
+                defaultExpandAll
+                checkable
+                checkedKeys={this.state.checkedKeys}
+                dataSource={dataSource}
+                onCheck={this.handleCheck}
+                {...this.props}
+            />
         );
     }
 }
@@ -96,7 +124,7 @@ class DragDemo extends React.Component {
         super(props);
 
         this.state = {
-            gData: cloneData(dataSource)
+            gData: cloneData(dataSource),
         };
     }
 
@@ -121,7 +149,7 @@ class DragDemo extends React.Component {
             dragObj = item;
         });
         if (info.dropPosition === 0) {
-            loop(data, dropKey, (item) => {
+            loop(data, dropKey, item => {
                 item.children = item.children || [];
                 item.children.push(dragObj);
             });
@@ -144,32 +172,44 @@ class DragDemo extends React.Component {
     }
     render() {
         return (
-            <Tree draggable selectable={false} defaultExpandAll dataSource={this.state.gData} onDrop={this.onDrop.bind(this)} />
+            <Tree
+                draggable
+                selectable={false}
+                defaultExpandAll
+                dataSource={this.state.gData}
+                onDrop={this.onDrop.bind(this)}
+            />
         );
     }
 }
 
 class AsyncDemo extends Component {
     state = {
-        data: [{
-            label: '服装',
-            key: '1'
-        }]
-    }
+        data: [
+            {
+                label: '服装',
+                key: '1',
+            },
+        ],
+    };
 
     loadData = () => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             setTimeout(() => {
                 this.setState({
-                    data: [{
-                        label: '服装',
-                        key: '1',
-                        children: [{
-                            label: '男装',
-                            key: '2',
-                            isLeaf: true
-                        }]
-                    }]
+                    data: [
+                        {
+                            label: '服装',
+                            key: '1',
+                            children: [
+                                {
+                                    label: '男装',
+                                    key: '2',
+                                    isLeaf: true,
+                                },
+                            ],
+                        },
+                    ],
                 });
                 resolve();
             }, 200);
@@ -195,12 +235,47 @@ describe('Tree', () => {
     });
 
     it('should render by children', () => {
-        const loop = data => data.map(item => {
-            // eslint-disable-next-line
-            return <TreeNode {...item}>{item.children ? loop(item.children) : null}</TreeNode>;
-        });
+        const loop = data =>
+            data.map(item => {
+                // eslint-disable-next-line
+                return (
+                    <TreeNode {...item}>
+                        {item.children ? loop(item.children) : null}
+                    </TreeNode>
+                );
+            });
 
         assertTree({ children: loop(dataSource) }, mountNode);
+    });
+
+    it('should ignore children contain null or string', () => {
+        ReactDOM.render(
+            <Tree
+                checkable
+                editable
+                defaultExpandAll
+                defaultSelectedKeys={['1']}
+                defaultCheckedKeys={['3']}
+            >
+                <TreeNode key="1" label="Component">
+                    <TreeNode key="2" label="Form" selectable={false}>
+                        <TreeNode key="4" label="Input" />
+                        <TreeNode key="5" label="Select" disabled />
+                    </TreeNode>
+                    <TreeNode key="3" label="Display">
+                        <TreeNode key="6" label="Table" />
+                    </TreeNode>
+                </TreeNode>
+            </Tree>,
+            mountNode
+        );
+
+        assert(
+            hasClass(
+                findTreeNodeByKey('5').querySelector('.next-checkbox-wrapper'),
+                'disabled'
+            )
+        );
     });
 
     it('should render by dataSource', () => {
@@ -216,7 +291,14 @@ describe('Tree', () => {
             assert(extra.expanded);
         };
 
-        ReactDOM.render(<Tree defaultExpandedKeys={['2']} dataSource={dataSource} onExpand={handleExpand} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                defaultExpandedKeys={['2']}
+                dataSource={dataSource}
+                onExpand={handleExpand}
+            />,
+            mountNode
+        );
         assertExpanded('2', true);
         assertExpanded('3', false);
 
@@ -255,9 +337,17 @@ describe('Tree', () => {
         };
 
         const newDataSource = cloneData(dataSource, {
-            5: { selectable: false }
+            5: { selectable: false },
         });
-        ReactDOM.render(<Tree defaultExpandAll defaultSelectedKeys={['1']} dataSource={newDataSource} onSelect={handleSelect} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                defaultExpandAll
+                defaultSelectedKeys={['1']}
+                dataSource={newDataSource}
+                onSelect={handleSelect}
+            />,
+            mountNode
+        );
         assertSelected('1', true);
 
         selectTreeNode('2');
@@ -306,16 +396,34 @@ describe('Tree', () => {
 
         const newDataSource = cloneData(dataSource, {
             4: { checkboxDisabled: true },
-            5: { checkable: false }
+            5: { checkable: false },
         });
 
-        ReactDOM.render(<Tree checkable defaultExpandAll defaultCheckedKeys={['3']} dataSource={newDataSource} onCheck={handleCheck} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                checkable
+                defaultExpandAll
+                defaultCheckedKeys={['3']}
+                dataSource={newDataSource}
+                onCheck={handleCheck}
+            />,
+            mountNode
+        );
         assertChecked('3', true);
         assertChecked('6', true);
         assertChecked('1', false);
         assertIndeterminate('1', true);
-        assert(hasClass(findTreeNodeByKey('4').querySelector('.next-checkbox-wrapper'), 'disabled'));
-        assert(!findTreeNodeByKey('5').querySelector('.next-tree-node-inner').querySelector('.next-checkbox-wrapper'));
+        assert(
+            hasClass(
+                findTreeNodeByKey('4').querySelector('.next-checkbox-wrapper'),
+                'disabled'
+            )
+        );
+        assert(
+            !findTreeNodeByKey('5')
+                .querySelector('.next-tree-node-inner')
+                .querySelector('.next-checkbox-wrapper')
+        );
 
         checkTreeNode('2');
         assert(!called);
@@ -340,7 +448,15 @@ describe('Tree', () => {
             assert.deepEqual(checkedKeys, ['6', '3']);
         };
 
-        ReactDOM.render(<Tree checkable defaultExpandAll dataSource={dataSource} onCheck={handleCheck} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                checkable
+                defaultExpandAll
+                dataSource={dataSource}
+                onCheck={handleCheck}
+            />,
+            mountNode
+        );
 
         checkTreeNode('6');
         assert(called);
@@ -353,7 +469,16 @@ describe('Tree', () => {
             assert.deepEqual(checkedKeys, ['3']);
         };
 
-        ReactDOM.render(<Tree checkable checkedStrategy="parent" defaultExpandAll dataSource={dataSource} onCheck={handleCheck} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                checkable
+                checkedStrategy="parent"
+                defaultExpandAll
+                dataSource={dataSource}
+                onCheck={handleCheck}
+            />,
+            mountNode
+        );
 
         checkTreeNode('6');
         assert(called);
@@ -366,7 +491,16 @@ describe('Tree', () => {
             assert.deepEqual(checkedKeys, ['6']);
         };
 
-        ReactDOM.render(<Tree checkable checkedStrategy="child" defaultExpandAll dataSource={dataSource} onCheck={handleCheck} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                checkable
+                checkedStrategy="child"
+                defaultExpandAll
+                dataSource={dataSource}
+                onCheck={handleCheck}
+            />,
+            mountNode
+        );
 
         checkTreeNode('6');
         assert(called);
@@ -377,7 +511,9 @@ describe('Tree', () => {
         ['1', '2', '3', '4', '5', '6'].forEach(key => assertChecked(key, true));
 
         checkTreeNode('1');
-        ['1', '2', '3', '4', '5', '6'].forEach(key => assertChecked(key, false));
+        ['1', '2', '3', '4', '5', '6'].forEach(key =>
+            assertChecked(key, false)
+        );
 
         checkTreeNode('5');
         assertChecked('5', true);
@@ -425,10 +561,18 @@ describe('Tree', () => {
         };
 
         const newDataSource = cloneData(dataSource, {
-            5: { editable: false }
+            5: { editable: false },
         });
 
-        ReactDOM.render(<Tree defaultExpandAll editable dataSource={newDataSource} onEditFinish={handleEditFinish} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                defaultExpandAll
+                editable
+                dataSource={newDataSource}
+                onEditFinish={handleEditFinish}
+            />,
+            mountNode
+        );
         const treeNode3 = findTreeNodeByKey('3');
 
         editTreeNode('2');
@@ -444,7 +588,6 @@ describe('Tree', () => {
         ReactTestUtils.Simulate.keyDown(input, { keyCode: KEYCODE.ENTER });
         assert(called);
 
-
         editTreeNode('3');
         input = treeNode3.querySelector('.next-tree-node-input input');
         ReactTestUtils.Simulate.change(input, { target: { value: '童装' } });
@@ -459,7 +602,14 @@ describe('Tree', () => {
             assert(info.node.props.eventKey === '3');
         };
 
-        ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} onRightClick={handleRightClick} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                defaultExpandAll
+                dataSource={dataSource}
+                onRightClick={handleRightClick}
+            />,
+            mountNode
+        );
 
         rightClickTreeNode('2');
         assert(!called);
@@ -471,30 +621,52 @@ describe('Tree', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
         dragTreeNode('6', '2', 0);
-        assert(findChild(findTreeNodeByKey('2'), 'next-tree-child-tree').children[2].querySelector('.next-tree-node-label').textContent.trim() === '裙子');
+        assert(
+            findChild(findTreeNodeByKey('2'), 'next-tree-child-tree')
+                .children[2].querySelector('.next-tree-node-label')
+                .textContent.trim() === '裙子'
+        );
     });
 
     it('should support dragging node before drop mode', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
         dragTreeNode('6', '2', -1);
-        assert(findChild(findTreeNodeByKey('1'), 'next-tree-child-tree').children[0].querySelector('.next-tree-node-label').textContent.trim() === '裙子');
+        assert(
+            findChild(findTreeNodeByKey('1'), 'next-tree-child-tree')
+                .children[0].querySelector('.next-tree-node-label')
+                .textContent.trim() === '裙子'
+        );
     });
 
     it('should support dragging node after drop node', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
         dragTreeNode('6', '2', 1);
-        assert(findChild(findTreeNodeByKey('1'), 'next-tree-child-tree').children[1].querySelector('.next-tree-node-label').textContent.trim() === '裙子');
+        assert(
+            findChild(findTreeNodeByKey('1'), 'next-tree-child-tree')
+                .children[1].querySelector('.next-tree-node-label')
+                .textContent.trim() === '裙子'
+        );
     });
 
     it('should load data asynchronously', done => {
         ReactDOM.render(<AsyncDemo />, mountNode);
         expandChildTree('1');
-        assert(hasClass(findTreeNodeByKey('1').querySelector('.next-tree-switcher'), 'next-loading'));
+        assert(
+            hasClass(
+                findTreeNodeByKey('1').querySelector('.next-tree-switcher'),
+                'next-loading'
+            )
+        );
 
         setTimeout(() => {
-            assert(!hasClass(findTreeNodeByKey('1').querySelector('.next-tree-switcher'), 'next-loading'));
+            assert(
+                !hasClass(
+                    findTreeNodeByKey('1').querySelector('.next-tree-switcher'),
+                    'next-loading'
+                )
+            );
             assertExpanded('1', true);
             done();
         }, 500);
@@ -502,27 +674,47 @@ describe('Tree', () => {
 
     it('should support showLine', () => {
         ReactDOM.render(<Tree showLine dataSource={dataSource} />, mountNode);
-        assert(hasClass(document.querySelector('.next-tree'), 'next-show-line'));
+        assert(
+            hasClass(document.querySelector('.next-tree'), 'next-show-line')
+        );
     });
 
     it('should support isLabelBlock and isNodeBlock', () => {
-        ReactDOM.render(<Tree isLabelBlock isNodeBlock dataSource={dataSource} />, mountNode);
-        assert(hasClass(document.querySelector('.next-tree'), 'next-node-block'));
-        assert(hasClass(document.querySelector('.next-tree'), 'next-label-block'));
+        ReactDOM.render(
+            <Tree isLabelBlock isNodeBlock dataSource={dataSource} />,
+            mountNode
+        );
+        assert(
+            hasClass(document.querySelector('.next-tree'), 'next-node-block')
+        );
+        assert(
+            hasClass(document.querySelector('.next-tree'), 'next-label-block')
+        );
     });
 
     it('should support filterTreeNode', () => {
-        ReactDOM.render(<Tree dataSource={dataSource} filterTreeNode={node => node.props.label === '服装'} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                dataSource={dataSource}
+                filterTreeNode={node => node.props.label === '服装'}
+            />,
+            mountNode
+        );
 
         assert(hasClass(findTreeNodeByKey('1'), 'next-filtered'));
     });
 
     it('should support keyboard', () => {
-        ReactDOM.render(<Tree dataSource={cloneData(dataSource, {
-            2: {
-                disabled: false
-            }
-        })} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                dataSource={cloneData(dataSource, {
+                    2: {
+                        disabled: false,
+                    },
+                })}
+            />,
+            mountNode
+        );
         const item00 = findRealItem(0, 0);
         item00.focus();
         assert(document.activeElement === item00);
@@ -534,40 +726,55 @@ describe('Tree', () => {
     });
 
     it('should support rtl', () => {
-        ReactDOM.render(<Tree rtl dataSource={cloneData(dataSource, {
-            2: {
-                disabled: false
-            }
-        })} />, mountNode);
+        ReactDOM.render(
+            <Tree
+                rtl
+                dataSource={cloneData(dataSource, {
+                    2: {
+                        disabled: false,
+                    },
+                })}
+            />,
+            mountNode
+        );
         assert(document.querySelector('.next-tree').dir === 'rtl');
     });
 });
 
 function assertTree(props, mountNode) {
     ReactDOM.render(
-        <Tree checkable editable
+        <Tree
+            checkable
+            editable
             defaultExpandAll
             defaultSelectedKeys={['1']}
             defaultCheckedKeys={['3']}
-            {...props} />,
+            {...props}
+        />,
         mountNode
     );
 
     assertDataAndNodes(dataSource);
-    assert(hasClass(findTreeNodeByKey('2').querySelector('.next-tree-node-inner'), 'next-disabled'));
+    assert(
+        hasClass(
+            findTreeNodeByKey('2').querySelector('.next-tree-node-inner'),
+            'next-disabled'
+        )
+    );
 }
 
 function assertDataAndNodes(dataSource) {
-    const loop = (data, nodes) => data.forEach((item, index) => {
-        const node = nodes[index];
-        const labelElement = findChild(node, 'next-tree-node-inner');
-        assert(labelElement.textContent.trim() === item.label);
+    const loop = (data, nodes) =>
+        data.forEach((item, index) => {
+            const node = nodes[index];
+            const labelElement = findChild(node, 'next-tree-node-inner');
+            assert(labelElement.textContent.trim() === item.label);
 
-        if (item.children) {
-            const childTree = findChild(node, 'next-tree-child-tree');
-            loop(item.children, childTree.children);
-        }
-    });
+            if (item.children) {
+                const childTree = findChild(node, 'next-tree-child-tree');
+                loop(item.children, childTree.children);
+            }
+        });
     loop(dataSource, document.querySelector('.next-tree').children);
 }
 
@@ -581,9 +788,14 @@ function findChild(node, className) {
 }
 
 function findTreeNodeByPos(pos) {
-    return pos.split('-').slice(1).reduce((ret, num, i) => {
-        return ret.querySelector(i === 0 ? '.next-tree' : '.next-tree-child-tree').children[num];
-    }, document);
+    return pos
+        .split('-')
+        .slice(1)
+        .reduce((ret, num, i) => {
+            return ret.querySelector(
+                i === 0 ? '.next-tree' : '.next-tree-child-tree'
+            ).children[num];
+        }, document);
 }
 
 function findTreeNodeByKey(key) {
@@ -593,63 +805,79 @@ function findTreeNodeByKey(key) {
 function createMap(data) {
     const map = {};
 
-    const loop = (data, prefix = '0') => data.forEach((item, index) => {
-        const { key, children } = item;
-        const pos = `${prefix}-${index}`;
-        map[key] = { ...item, pos };
-        if (children && children.length) {
-            loop(children, pos);
-        }
-    });
+    const loop = (data, prefix = '0') =>
+        data.forEach((item, index) => {
+            const { key, children } = item;
+            const pos = `${prefix}-${index}`;
+            map[key] = { ...item, pos };
+            if (children && children.length) {
+                loop(children, pos);
+            }
+        });
     loop(data);
 
     return map;
 }
 
 function cloneData(data, keyMap = {}) {
-    const loop = data => data.map(item => {
-        let newItem;
+    const loop = data =>
+        data.map(item => {
+            let newItem;
 
-        if (item.key in keyMap) {
-            newItem = { ...item, ...keyMap[item.key] };
-        } else {
-            newItem = { ...item };
-        }
-        if (newItem.children) {
-            newItem.children = loop(newItem.children);
-        }
+            if (item.key in keyMap) {
+                newItem = { ...item, ...keyMap[item.key] };
+            } else {
+                newItem = { ...item };
+            }
+            if (newItem.children) {
+                newItem.children = loop(newItem.children);
+            }
 
-        return newItem;
-    });
+            return newItem;
+        });
 
     return loop(data);
 }
 
 function expandChildTree(key) {
-    ReactTestUtils.Simulate.click(findTreeNodeByKey(key).querySelector('.next-tree-switcher'));
+    ReactTestUtils.Simulate.click(
+        findTreeNodeByKey(key).querySelector('.next-tree-switcher')
+    );
 }
 
 function selectTreeNode(key) {
-    ReactTestUtils.Simulate.click(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
+    ReactTestUtils.Simulate.click(
+        findTreeNodeByKey(key).querySelector('.next-tree-node-label')
+    );
 }
 
 function checkTreeNode(key) {
     const input = findTreeNodeByKey(key).querySelector('.next-checkbox input');
-    ReactTestUtils.Simulate.change(input, { target: { checked: input.checked } });
+    ReactTestUtils.Simulate.change(input, {
+        target: { checked: input.checked },
+    });
 }
 
 function editTreeNode(key) {
-    ReactTestUtils.Simulate.doubleClick(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
+    ReactTestUtils.Simulate.doubleClick(
+        findTreeNodeByKey(key).querySelector('.next-tree-node-label')
+    );
 }
 
 function rightClickTreeNode(key) {
-    ReactTestUtils.Simulate.contextMenu(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
+    ReactTestUtils.Simulate.contextMenu(
+        findTreeNodeByKey(key).querySelector('.next-tree-node-label')
+    );
 }
 
 function dragTreeNode(dragKey, dropKey, dropPosition) {
-    const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector('.next-tree-node-label');
+    const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector(
+        '.next-tree-node-label'
+    );
     const dropNode = findTreeNodeByKey(dropKey);
-    const dropNodeLabelWrapper = dropNode.querySelector('.next-tree-node-label-wrapper');
+    const dropNodeLabelWrapper = dropNode.querySelector(
+        '.next-tree-node-label-wrapper'
+    );
     const extra = dropPosition === -1 ? 0 : dropPosition === 0 ? 12 : 24;
     const pageY = getOffset(dropNodeLabelWrapper).top + extra;
 
@@ -661,19 +889,37 @@ function dragTreeNode(dragKey, dropKey, dropPosition) {
 }
 
 function assertExpanded(key, expanded) {
-    assert(!!findTreeNodeByKey(key).querySelector('.next-tree-child-tree') === expanded);
+    assert(
+        !!findTreeNodeByKey(key).querySelector('.next-tree-child-tree') ===
+            expanded
+    );
 }
 
 function assertSelected(key, selected) {
-    assert(hasClass(findTreeNodeByKey(key).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
+    assert(
+        hasClass(
+            findTreeNodeByKey(key).querySelector('.next-tree-node-inner'),
+            'next-selected'
+        ) === selected
+    );
 }
 
 function assertChecked(key, checked) {
-    assert(hasClass(findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
+    assert(
+        hasClass(
+            findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'),
+            'checked'
+        ) === checked
+    );
 }
 
 function assertIndeterminate(key, indeterminate) {
-    assert(hasClass(findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'), 'indeterminate') === indeterminate);
+    assert(
+        hasClass(
+            findTreeNodeByKey(key).querySelector('.next-checkbox-wrapper'),
+            'indeterminate'
+        ) === indeterminate
+    );
 }
 
 function assertEditing(key, editing) {
@@ -682,12 +928,13 @@ function assertEditing(key, editing) {
 
     if (editing) {
         const input = treeNode.querySelector('.next-tree-node-input input');
-        assert(!!input && input.value === label && document.activeElement === input);
+        assert(
+            !!input && input.value === label && document.activeElement === input
+        );
     } else {
         assert(findTreeNodeByKey(key).querySelector('.next-tree-node-label'));
     }
 }
-
 
 function assertActiveElement() {
     let activeElement = document.activeElement;
@@ -705,9 +952,14 @@ function getTreePath(listIndex, path = '') {
         return `.next-tree ${path}`;
     }
 
-    return getTreePath(listIndex - 1, ` > .next-tree-node > .next-tree-child-tree ${path}`);
+    return getTreePath(
+        listIndex - 1,
+        ` > .next-tree-node > .next-tree-child-tree ${path}`
+    );
 }
 
 function findRealItem(listIndex, itemIndex) {
-    return document.querySelectorAll(`${getTreePath(listIndex)} > .next-tree-node > .next-tree-node-inner`)[itemIndex];
+    return document.querySelectorAll(
+        `${getTreePath(listIndex)} > .next-tree-node > .next-tree-node-inner`
+    )[itemIndex];
 }
