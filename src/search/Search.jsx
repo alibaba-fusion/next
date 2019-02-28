@@ -15,7 +15,6 @@ const AutoComplete = Select.AutoComplete;
  * @description 输入框部分继承 Select.AutoComplete 的能力，可以直接用AutoComplete 的 api
  */
 class Search extends React.Component {
-
     static propTypes = {
         /**
          * 样式前缀
@@ -114,8 +113,7 @@ class Search extends React.Component {
          */
         disabled: PropTypes.bool,
         locale: PropTypes.object,
-        rtl: PropTypes.bool
-
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -130,33 +128,40 @@ class Search extends React.Component {
         onSearch: func.noop,
         onFilterChange: func.noop,
         hasClear: false,
-        disabled: false
+        disabled: false,
     };
 
     constructor(props) {
         super(props);
 
         const value = 'value' in props ? props.value : props.defaultValue;
-        const filterValue = 'filterValue' in props ? props.filterValue : props.defaultFilterValue;
+        const filterValue =
+            'filterValue' in props
+                ? props.filterValue
+                : props.defaultFilterValue;
 
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
-            filterValue
+            filterValue,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         const state = {};
         if ('value' in nextProps) {
-            state.value = typeof nextProps.value === 'undefined' ? '' : nextProps.value;
+            state.value =
+                typeof nextProps.value === 'undefined' ? '' : nextProps.value;
         }
         if ('filterValue' in nextProps) {
-            state.filterValue = typeof nextProps.filterValue === 'undefined' ? '' : nextProps.filterValue;
+            state.filterValue =
+                typeof nextProps.filterValue === 'undefined'
+                    ? ''
+                    : nextProps.filterValue;
         }
         this.setState(state);
     }
 
-    onChange = (value) => {
+    onChange = value => {
         if (!('value' in this.props)) {
             this.setState({ value });
         }
@@ -171,7 +176,7 @@ class Search extends React.Component {
         this.props.onSearch(this.state.value, this.state.filterValue);
     };
 
-    onFilterChange = (filterValue) => {
+    onFilterChange = filterValue => {
         if (!('filterValue' in this.props)) {
             this.setState({ filterValue });
         }
@@ -179,7 +184,7 @@ class Search extends React.Component {
         this.props.onFilterChange(filterValue);
     };
 
-    onKeyDown = (e) => {
+    onKeyDown = e => {
         if (this.props.disabled) {
             return;
         }
@@ -187,41 +192,81 @@ class Search extends React.Component {
             return;
         }
         this.onSearch();
-    }
+    };
     render() {
         const {
-            shape, filter, hasIcon, disabled,
-            placeholder, type, className,
-            style, size, prefix, searchText,
-            dataSource, filterProps, buttonProps,
-            popupContent, hasClear, visible, rtl,
-            ...others } = this.props;
+            shape,
+            filter,
+            hasIcon,
+            disabled,
+            placeholder,
+            type,
+            className,
+            style,
+            size,
+            prefix,
+            searchText,
+            dataSource,
+            filterProps,
+            buttonProps,
+            popupContent,
+            hasClear,
+            visible,
+            rtl,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}search`]: true,
             [`${prefix}search-${shape}`]: true,
             [`${prefix}${type}`]: type,
             [`${prefix}${size}`]: size,
-            [className]: !!className
+            [className]: !!className,
         });
 
-        let searchIcon = null, filterSelect = null, searchBtn = null;
+        let searchIcon = null,
+            filterSelect = null,
+            searchBtn = null;
 
         if (shape === 'simple') {
             const cls = classNames({
                 [`${prefix}search-icon`]: true,
-                [buttonProps.className]: !!buttonProps.className
+                [buttonProps.className]: !!buttonProps.className,
             });
-            searchIcon = <Icon {...buttonProps} type="search" tabIndex="0" role="button" aria-disabled={disabled} className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown}/>;
+            searchIcon = (
+                <Icon
+                    {...buttonProps}
+                    type="search"
+                    tabIndex="0"
+                    role="button"
+                    aria-disabled={disabled}
+                    className={cls}
+                    onClick={this.onSearch}
+                    onKeyDown={this.onKeyDown}
+                />
+            );
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
-                [buttonProps.className]: !!buttonProps.className
+                [buttonProps.className]: !!buttonProps.className,
             });
-            searchBtn = (<Button {...buttonProps} tabIndex="0" className={cls} onClick={this.onSearch} onKeyDown={this.onKeyDown} disabled={disabled}>
-                {hasIcon ? <Icon type="search" /> : null}
-                {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
-            </Button>);
+            searchBtn = (
+                <Button
+                    {...buttonProps}
+                    tabIndex="0"
+                    className={cls}
+                    onClick={this.onSearch}
+                    onKeyDown={this.onKeyDown}
+                    disabled={disabled}
+                >
+                    {hasIcon ? <Icon type="search" /> : null}
+                    {searchText ? (
+                        <span className={`${prefix}search-btn-text`}>
+                            {searchText}
+                        </span>
+                    ) : null}
+                </Button>
+            );
         }
 
         if (filter.length > 0) {
@@ -244,28 +289,44 @@ class Search extends React.Component {
             othersAttributes.visible = Boolean(visible);
         }
         const dataAttr = obj.pickAttrsWith(others, 'data-');
-        const left = (<Group addonBefore={filterSelect}
-            className={`${prefix}search-left`}
-            addonBeforeClassName={`${prefix}search-left-addon`}>
-            <AutoComplete
-                {...othersAttributes}
-                hasClear={hasClear}
-                className={`${prefix}search-input`}
-                size={size}
-                placeholder={placeholder}
-                dataSource={dataSource}
-                innerAfter={searchIcon}
-                onPressEnter={this.onSearch}
-                value={this.state.value}
-                onChange={this.onChange}
-                popupContent={popupContent}
-                disabled={disabled}
-            />
-        </Group>);
+        const left = (
+            <Group
+                addonBefore={filterSelect}
+                className={`${prefix}search-left`}
+                addonBeforeClassName={`${prefix}search-left-addon`}
+            >
+                <AutoComplete
+                    {...othersAttributes}
+                    role="searchbox"
+                    hasClear={hasClear}
+                    className={`${prefix}search-input`}
+                    size={size}
+                    placeholder={placeholder}
+                    dataSource={dataSource}
+                    innerAfter={searchIcon}
+                    onPressEnter={this.onSearch}
+                    value={this.state.value}
+                    onChange={this.onChange}
+                    popupContent={popupContent}
+                    disabled={disabled}
+                />
+            </Group>
+        );
 
-        return (<span className={cls} style={style} {...dataAttr} dir={rtl ? 'rtl' : undefined}>
-            {searchBtn ? <Group addonAfter={searchBtn}>{left}</Group> : left}
-        </span>);
+        return (
+            <span
+                className={cls}
+                style={style}
+                {...dataAttr}
+                dir={rtl ? 'rtl' : undefined}
+            >
+                {searchBtn ? (
+                    <Group addonAfter={searchBtn}>{left}</Group>
+                ) : (
+                    left
+                )}
+            </span>
+        );
     }
 }
 
