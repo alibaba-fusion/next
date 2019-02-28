@@ -126,7 +126,7 @@ export default class Dialog extends Component {
          * @property {String} ok 确认按钮文案
          * @property {String} cancel 取消按钮文案
          */
-        locale: PropTypes.object
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -145,7 +145,7 @@ export default class Dialog extends Component {
         hasMask: true,
         animation: {
             in: 'fadeInDown',
-            out: 'fadeOutUp'
+            out: 'fadeOutUp',
         },
         autoFocus: false,
         align: 'cc cc',
@@ -153,7 +153,7 @@ export default class Dialog extends Component {
         shouldUpdatePosition: false,
         minMargin: 40,
         overlayProps: {},
-        locale: zhCN.Dialog
+        locale: zhCN.Dialog,
     };
 
     constructor(props, context) {
@@ -162,7 +162,7 @@ export default class Dialog extends Component {
             'onKeyDown',
             'beforePosition',
             'adjustPosition',
-            'getOverlayRef'
+            'getOverlayRef',
         ]);
     }
 
@@ -215,7 +215,8 @@ export default class Dialog extends Component {
                 }
 
                 const height = getStyle(node, 'height');
-                const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+                const viewportHeight =
+                    window.innerHeight || document.documentElement.clientHeight;
                 if (viewportHeight < height + top * 2) {
                     const expectHeight = viewportHeight - top * 2;
                     this.adjustSize(inner, node, expectHeight);
@@ -233,8 +234,10 @@ export default class Dialog extends Component {
 
         const headerHeight = headerNode ? getStyle(headerNode, 'height') : 0;
         const footerHeight = footerNode ? getStyle(footerNode, 'height') : 0;
-        const padding = getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
-        let maxBodyHeight = expectHeight - headerHeight - footerHeight - padding;
+        const padding =
+            getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
+        let maxBodyHeight =
+            expectHeight - headerHeight - footerHeight - padding;
         if (maxBodyHeight < 0) {
             maxBodyHeight = 1;
         }
@@ -244,21 +247,24 @@ export default class Dialog extends Component {
 
         setStyle(bodyNode, {
             'max-height': `${maxBodyHeight}px`,
-            'overflow-y': 'auto'
+            'overflow-y': 'auto',
         });
     }
 
     revertSize(bodyNode) {
         setStyle(bodyNode, {
             'max-height': this.dialogBodyStyleMaxHeight,
-            'overflow-y': this.dialogBodyStyleOverflowY
+            'overflow-y': this.dialogBodyStyleOverflowY,
         });
     }
 
     mapcloseableToConfig(closeable) {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
+            const value =
+                typeof closeable === 'boolean'
+                    ? closeable
+                    : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -284,15 +290,27 @@ export default class Dialog extends Component {
 
     renderInner(closeable) {
         const {
-            prefix, className, title,
-            children, footer, footerAlign,
-            footerActions, onOk, onCancel,
-            okProps, cancelProps, onClose,
-            locale, visible, rtl } = this.props;
+            prefix,
+            className,
+            title,
+            children,
+            footer,
+            footerAlign,
+            footerActions,
+            onOk,
+            onCancel,
+            okProps,
+            cancelProps,
+            onClose,
+            locale,
+            visible,
+            rtl,
+        } = this.props;
         const others = pickOthers(Object.keys(Dialog.propTypes), this.props);
 
         return (
-            <Inner prefix={prefix}
+            <Inner
+                prefix={prefix}
                 className={className}
                 title={title}
                 footer={footer}
@@ -306,7 +324,8 @@ export default class Dialog extends Component {
                 closeable={closeable}
                 rtl={rtl}
                 onClose={onClose.bind(this, 'closeClick')}
-                {...others}>
+                {...others}
+            >
                 {children}
             </Inner>
         );
@@ -314,14 +333,25 @@ export default class Dialog extends Component {
 
     render() {
         const {
-            prefix, visible, hasMask,
-            animation, autoFocus, closeable,
-            onClose, afterClose, shouldUpdatePosition,
-            align, overlayProps, rtl
+            prefix,
+            visible,
+            hasMask,
+            animation,
+            autoFocus,
+            closeable,
+            onClose,
+            afterClose,
+            shouldUpdatePosition,
+            align,
+            overlayProps,
+            rtl,
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
-        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(closeable);
+        const {
+            canCloseByCloseClick,
+            ...closeConfig
+        } = this.mapcloseableToConfig(closeable);
         const newOverlayProps = {
             ...overlayProps,
             prefix,
@@ -337,7 +367,7 @@ export default class Dialog extends Component {
             needAdjust: false,
             disableScroll: true,
             ref: this.getOverlayRef,
-            rtl
+            rtl,
         };
         if (!useCSS) {
             newOverlayProps.beforePosition = this.beforePosition;
@@ -349,11 +379,16 @@ export default class Dialog extends Component {
 
         return (
             <Overlay {...newOverlayProps}>
-                {useCSS ?
-                    <div className={`${prefix}dialog-container`} dir={rtl ? 'rtl' : undefined}>
+                {useCSS ? (
+                    <div
+                        className={`${prefix}dialog-container`}
+                        dir={rtl ? 'rtl' : undefined}
+                    >
                         {inner}
-                    </div> :
-                    inner}
+                    </div>
+                ) : (
+                    inner
+                )}
             </Overlay>
         );
     }
