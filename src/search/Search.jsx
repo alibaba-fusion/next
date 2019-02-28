@@ -6,6 +6,7 @@ import Select from '../select';
 import Button from '../button';
 import Icon from '../icon';
 import { obj, func, KEYCODE } from '../util';
+import zhCN from '../locale/zh-cn';
 
 const Group = Input.Group;
 const AutoComplete = Select.AutoComplete;
@@ -123,6 +124,7 @@ class Search extends React.Component {
         size: 'medium',
         hasIcon: true,
         filter: [],
+        locale: zhCN.Search,
         buttonProps: {},
         onChange: func.noop,
         onSearch: func.noop,
