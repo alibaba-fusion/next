@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 import Icon from '../icon';
-import {normalMap, edgeMap} from './alignMap';
+import zhCN from '../locale/zh-cn';
+import { normalMap, edgeMap } from './alignMap';
 
 /**
  * Created by xiachi on 17/2/10.
  */
 
-const {noop} = func;
+const { noop } = func;
 
 class BalloonInner extends React.Component {
     static contextTypes = {
-        prefix: PropTypes.string
-    }
+        prefix: PropTypes.string,
+    };
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -27,20 +28,36 @@ class BalloonInner extends React.Component {
         align: PropTypes.string,
         type: PropTypes.string,
         isTooltip: PropTypes.bool,
-        pure: PropTypes.bool
-    }
+        locale: PropTypes.object,
+        pure: PropTypes.bool,
+    };
     static defaultProps = {
         prefix: 'next-',
         closable: true,
         onClose: noop,
+        locale: zhCN.Balloon,
         align: 'b',
         type: 'normal',
         alignEdge: false,
-        pure: false
+        pure: false,
     };
 
     render() {
-        const {prefix, closable, className, style, isTooltip, align, type, onClose, alignEdge, children, rtl, ...others} = this.props;
+        const {
+            prefix,
+            closable,
+            className,
+            style,
+            isTooltip,
+            align,
+            type,
+            onClose,
+            alignEdge,
+            children,
+            rtl,
+            locale,
+            ...others
+        } = this.props;
 
         const alignMap = alignEdge ? edgeMap : normalMap;
         let _prefix = prefix;
@@ -57,18 +74,32 @@ class BalloonInner extends React.Component {
             [`${_prefix}-medium`]: true,
             [`${_prefix}-${alignMap[align].arrow}`]: alignMap[align],
             [`${_prefix}-closable`]: closable,
-            [className]: className
+            [className]: className,
         });
 
-        return (<div role="tooltip" dir={rtl ? 'rtl' : undefined} className={classes} style={style} {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}>
-            {
-                closable ?
-                    <a role="button" tabIndex="0" href="javascript:void(0);" className={`${_prefix}-close`}
-                        onClick={onClose}>
-                        <Icon type="close" size="small"/>
-                    </a> : null}
-            {children}
-        </div>);
+        return (
+            <div
+                role="tooltip"
+                dir={rtl ? 'rtl' : undefined}
+                className={classes}
+                style={style}
+                {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}
+            >
+                {closable ? (
+                    <a
+                        role="button"
+                        aria-label={locale.close}
+                        tabIndex="0"
+                        href="javascript:void(0);"
+                        className={`${_prefix}-close`}
+                        onClick={onClose}
+                    >
+                        <Icon type="close" size="small" />
+                    </a>
+                ) : null}
+                {children}
+            </div>
+        );
     }
 }
 

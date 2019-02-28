@@ -31,8 +31,7 @@ describe('Balloon A11y', () => {
         unmount();
     });
 
-    // TODO: fix `button-name` violation for close button
-    it.skip('should not have any violations', async () => {
+    it('should not have any violations', async () => {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
             <Balloon visible popupContainer={portalContainerId}>
