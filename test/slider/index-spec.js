@@ -46,13 +46,13 @@ describe('slider', function() {
         });
 
         it('should render dots', () => {
-            const wrapper = shallow(<Slider triggerType="hover" dotsRender={(index, current) => {
+            const wrapper = mount(<Slider triggerType="hover" dotsRender={(index, current) => {
                 console.log('current', current);
-                return <a>{index}</a>;
+                return <a className="my-dots">{index}</a>;
             }}>{slides}</Slider>);
-            assert(wrapper.props().arrowSize === 'medium');
-            assert(wrapper.props().arrowPosition === 'inner');
-            assert(wrapper.props().arrowDirection === 'hoz');
+
+            assert(wrapper.find('.next-slick-dots'));
+            assert(wrapper.find('.my-dots').length === 4);
         });
 
         it('should render with lazyLoad', () => {
