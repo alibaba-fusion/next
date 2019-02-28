@@ -12,7 +12,7 @@ const Dialog = ConfigProvider.config(dialog);
 const noop = () => {};
 const MESSAGE_TYPE = {
     alert: 'warning',
-    confirm: 'help'
+    confirm: 'help',
 };
 
 class Modal extends Component {
@@ -25,12 +25,27 @@ class Modal extends Component {
         content: PropTypes.node,
         messageProps: PropTypes.object,
         footerActions: PropTypes.array,
+        /**
+         * Callback function triggered when Ok button is clicked
+         * @param {Object} event click event object
+         * @returns {Promise} Optionally handles a Promise return object
+         */
         onOk: PropTypes.func,
+        /**
+         * Callback function triggered when Cancel button is clicked
+         * @param {Object} event click event object
+         * @returns {Promise} Optionally handles a Promise return object
+         */
         onCancel: PropTypes.func,
+        /**
+         * Callback function triggered when Close button is clicked
+         * @param {Object} event click event object
+         * @returns {Promise} Optionally handles a Promise return object
+         */
         onClose: PropTypes.func,
         okProps: PropTypes.object,
         locale: PropTypes.object,
-        needWrapper: PropTypes.bool
+        needWrapper: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -42,25 +57,25 @@ class Modal extends Component {
         onClose: noop,
         okProps: {},
         locale: zhCN.Dialog,
-        needWrapper: true
+        needWrapper: true,
     };
 
     state = {
         visible: true,
-        loading: false
+        loading: false,
     };
 
     close = () => {
         this.setState({
-            visible: false
+            visible: false,
         });
-    }
+    };
 
     loading = loading => {
         this.setState({
-            loading
+            loading,
         });
-    }
+    };
 
     wrapper(fn, callback) {
         return () => {
@@ -74,7 +89,7 @@ class Modal extends Component {
                     if (result !== false) {
                         return callback();
                     }
-                }).catch((e) => {
+                }).catch(e => {
                     this.loading(false);
                     throw e;
                 });
@@ -86,38 +101,55 @@ class Modal extends Component {
 
     render() {
         const {
-            prefix, type, title,
-            content, messageProps, footerActions,
-            onOk, onCancel, onClose,
-            okProps, needWrapper, rtl,
-            ...others } = this.props;
+            prefix,
+            type,
+            title,
+            content,
+            messageProps,
+            footerActions,
+            onOk,
+            onCancel,
+            onClose,
+            okProps,
+            needWrapper,
+            rtl,
+            ...others
+        } = this.props;
         const newTitle = needWrapper && type ? null : title;
 
-        const newContent = needWrapper && type ? (
-            <Message
-                size="large"
-                shape="addon"
-                type={MESSAGE_TYPE[type]}
-                {...messageProps}
-                title={title}
-                rtl={rtl}
-                className={cx(`${prefix}dialog-message`, messageProps.className)}>
-                {content}
-            </Message>
-        ) : content;
+        const newContent =
+            needWrapper && type ? (
+                <Message
+                    size="large"
+                    shape="addon"
+                    type={MESSAGE_TYPE[type]}
+                    {...messageProps}
+                    title={title}
+                    rtl={rtl}
+                    className={cx(
+                        `${prefix}dialog-message`,
+                        messageProps.className
+                    )}
+                >
+                    {content}
+                </Message>
+            ) : (
+                content
+            );
 
-        const newFooterActions = footerActions || (
-            type === 'alert' ? ['ok'] :
-                type === 'confirm' ? ['ok', 'cancel'] :
-                    undefined
-        );
+        const newFooterActions =
+            footerActions ||
+            (type === 'alert'
+                ? ['ok']
+                : type === 'confirm'
+                ? ['ok', 'cancel']
+                : undefined);
         const newOnOk = this.wrapper(onOk, this.close);
         const newOnCancel = this.wrapper(onCancel, this.close);
         const newOnClose = this.wrapper(onClose, this.close);
 
         const { visible, loading } = this.state;
         okProps.loading = loading;
-
 
         return (
             <Dialog
@@ -130,14 +162,15 @@ class Modal extends Component {
                 onOk={this.state.loading ? noop : newOnOk}
                 onCancel={newOnCancel}
                 onClose={newOnClose}
-                okProps={okProps}>
+                okProps={okProps}
+            >
                 {newContent}
             </Dialog>
         );
     }
 }
 
-const ConfigModal = ConfigProvider.config(Modal, {componentName: 'Dialog'});
+const ConfigModal = ConfigProvider.config(Modal, { componentName: 'Dialog' });
 
 /**
  * 创建对话框
@@ -162,18 +195,24 @@ export const show = (config = {}) => {
 
     ReactDOM.render(
         <ConfigProvider {...newContext}>
-            <ConfigModal {...config} afterClose={unmount} ref={ref => {
-                myRef = ref;
-            }}/>
-        </ConfigProvider>
-        , container, function() {
+            <ConfigModal
+                {...config}
+                afterClose={unmount}
+                ref={ref => {
+                    myRef = ref;
+                }}
+            />
+        </ConfigProvider>,
+        container,
+        function() {
             instance = myRef;
-        });
+        }
+    );
     return {
         hide: () => {
             const inc = instance && instance.getInstance();
             inc && inc.close();
-        }
+        },
     };
 };
 
