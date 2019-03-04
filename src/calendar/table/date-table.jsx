@@ -1,17 +1,24 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import DateTableHead from './date-table-head';
-import { isDisabledDate, DAYS_OF_WEEK, CALENDAR_TABLE_COL_COUNT, CALENDAR_TABLE_ROW_COUNT } from '../utils';
+import {
+    isDisabledDate,
+    DAYS_OF_WEEK,
+    CALENDAR_TABLE_COL_COUNT,
+    CALENDAR_TABLE_ROW_COUNT,
+} from '../utils';
 
 function isSameDay(a, b) {
     return a && b && a.isSame(b, 'day');
 }
 
 function isRangeDate(date, startDate, endDate) {
-    return date.format('L') !== startDate.format('L') &&
+    return (
+        date.format('L') !== startDate.format('L') &&
         date.format('L') !== endDate.format('L') &&
         date.valueOf() > startDate.valueOf() &&
-        date.valueOf() < endDate.valueOf();
+        date.valueOf() < endDate.valueOf()
+    );
 }
 
 function isLastMonthDate(date, target) {
@@ -29,9 +36,19 @@ function isNextMonthDate(date, target) {
 }
 
 class DateTable extends PureComponent {
-
     render() {
-        const { prefix, visibleMonth, showOtherMonth, endValue, format, today, momentLocale, dateCellRender, disabledDate, onSelectDate } = this.props;
+        const {
+            prefix,
+            visibleMonth,
+            showOtherMonth,
+            endValue,
+            format,
+            today,
+            momentLocale,
+            dateCellRender,
+            disabledDate,
+            onSelectDate,
+        } = this.props;
         const startValue = this.props.startValue || this.props.value;
 
         const firstDayOfMonth = visibleMonth.clone().startOf('month'); // 该月的 1 号
@@ -39,7 +56,9 @@ class DateTable extends PureComponent {
 
         const firstDayOfWeek = momentLocale.firstDayOfWeek();
 
-        const datesOfLastMonthCount = (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) % DAYS_OF_WEEK;
+        const datesOfLastMonthCount =
+            (firstDayOfMonthInWeek + DAYS_OF_WEEK - firstDayOfWeek) %
+            DAYS_OF_WEEK;
 
         const lastMonthDate = firstDayOfMonth.clone();
         lastMonthDate.add(0 - datesOfLastMonthCount, 'days');
@@ -70,11 +89,26 @@ class DateTable extends PureComponent {
                 const isCurrentMonth = !isLastMonth && !isNextMonth;
 
                 const isDisabled = isDisabledDate(currentDate, disabledDate);
-                const isToday = !isDisabled && isSameDay(currentDate, today) && isCurrentMonth;
-                const isSelected = !isDisabled && (isSameDay(currentDate, startValue) || isSameDay(currentDate, endValue)) && isCurrentMonth;
-                const isInRange = !isDisabled && startValue && endValue && isRangeDate(currentDate, startValue, endValue) && isCurrentMonth;
+                const isToday =
+                    !isDisabled &&
+                    isSameDay(currentDate, today) &&
+                    isCurrentMonth;
+                const isSelected =
+                    !isDisabled &&
+                    (isSameDay(currentDate, startValue) ||
+                        isSameDay(currentDate, endValue)) &&
+                    isCurrentMonth;
+                const isInRange =
+                    !isDisabled &&
+                    startValue &&
+                    endValue &&
+                    isRangeDate(currentDate, startValue, endValue) &&
+                    isCurrentMonth;
 
-                const cellContent = !showOtherMonth && !isCurrentMonth ? null : dateCellRender(currentDate);
+                const cellContent =
+                    !showOtherMonth && !isCurrentMonth
+                        ? null
+                        : dateCellRender(currentDate);
 
                 const elementCls = classNames({
                     [`${prefix}calendar-cell`]: true,
@@ -83,24 +117,35 @@ class DateTable extends PureComponent {
                     [`${prefix}calendar-cell-current`]: isToday,
                     [`${prefix}inrange`]: isInRange,
                     [`${prefix}selected`]: isSelected,
-                    [`${prefix}disabled`]: cellContent && isDisabled
+                    [`${prefix}disabled`]: cellContent && isDisabled,
                 });
 
-                weekElements.push(<td
-                    key={counter}
-                    title={currentDate.format(format)}
-                    onClick={isDisabled ? undefined : onSelectDate.bind(null, currentDate)}
-                    className={elementCls}
-                    role="cell"
-                    aria-disabled={isDisabled ? 'true' : 'false'}
-                    aria-selected={isSelected ? 'true' : 'false'}>
-                    <div className={`${prefix}calendar-date`}>
-                        {cellContent}
-                    </div>
-                </td>);
+                weekElements.push(
+                    <td
+                        key={counter}
+                        title={currentDate.format(format)}
+                        onClick={
+                            isDisabled
+                                ? undefined
+                                : onSelectDate.bind(null, currentDate)
+                        }
+                        className={elementCls}
+                        role="cell"
+                        aria-disabled={isDisabled ? 'true' : 'false'}
+                        aria-selected={isSelected ? 'true' : 'false'}
+                    >
+                        <div className={`${prefix}calendar-date`}>
+                            {cellContent}
+                        </div>
+                    </td>
+                );
                 counter++;
             }
-            monthElements.push(<tr key={i} role="row">{weekElements}</tr>);
+            monthElements.push(
+                <tr key={i} role="row">
+                    {weekElements}
+                </tr>
+            );
         }
 
         return (

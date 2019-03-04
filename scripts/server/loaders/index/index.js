@@ -23,20 +23,27 @@ module.exports = function(content) {
     const endIndex = lines.findIndex(line => /^-{3,}/.test(line));
     const newContent = lines.slice(endIndex + 1).join('\n');
 
-    ejs.renderFile(indexTplPath, {
-        links,
-        lang,
-        dir,
-        name: 'index',
-        readmeHTML: marked(newContent)
-    }, (err, html) => {
-        if (err) {
-            logger.error(`Render index.html failed: ${err}`);
-        } else {
-            const htmlPath = path.relative(path.join(process.cwd(), 'docs'), this.resourcePath.replace(/\.(en-us\.)?md$/, '.html'));
-            this.emitFile(htmlPath, html);
+    ejs.renderFile(
+        indexTplPath,
+        {
+            links,
+            lang,
+            dir,
+            name: 'index',
+            readmeHTML: marked(newContent),
+        },
+        (err, html) => {
+            if (err) {
+                logger.error(`Render index.html failed: ${err}`);
+            } else {
+                const htmlPath = path.relative(
+                    path.join(process.cwd(), 'docs'),
+                    this.resourcePath.replace(/\.(en-us\.)?md$/, '.html')
+                );
+                this.emitFile(htmlPath, html);
+            }
         }
-    });
+    );
 
     return '';
 };

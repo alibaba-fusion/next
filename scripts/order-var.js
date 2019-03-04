@@ -27,8 +27,8 @@ while ((nsMatched = nsReg.exec(varContent))) {
 }
 
 const nsNewMap = {};
-Object.keys(nsMap).forEach((ns) => {
-    const parts = ns.split('/').filter((_) => _);
+Object.keys(nsMap).forEach(ns => {
+    const parts = ns.split('/').filter(_ => _);
     parts.reduce((ret, part) => {
         ret[part] = ret[part] || {};
         return ret[part];

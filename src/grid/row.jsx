@@ -38,21 +38,37 @@ export default class Row extends Component {
          * （不支持IE9浏览器）多列垂直方向对齐方式
          * @enumdesc 顶部对齐, 居中对齐, 底部对齐, 按第一行文字基线对齐, 未设置高度或设为 auto，将占满整个容器的高度
          */
-        align: PropTypes.oneOf(['top', 'center', 'bottom', 'baseline', 'stretch']),
+        align: PropTypes.oneOf([
+            'top',
+            'center',
+            'bottom',
+            'baseline',
+            'stretch',
+        ]),
         /**
          * （不支持IE9浏览器）行内具有多余空间时的布局方式
          * @enumdesc 左对齐, 居中对齐, 右对齐, 两端对齐，列之间间距相等, 每列具有相同的左右间距，行两端间距是列间距的二分之一
          */
-        justify: PropTypes.oneOf(['start', 'center', 'end', 'space-between', 'space-around']),
+        justify: PropTypes.oneOf([
+            'start',
+            'center',
+            'end',
+            'space-between',
+            'space-around',
+        ]),
         /**
          * 行在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）
          */
-        hidden: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.array]),
+        hidden: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * 指定以何种元素渲染该节点
          * - 默认为 'div'
          */
-        component: PropTypes.string
+        component: PropTypes.string,
     };
 
     static defaultProps = {
@@ -61,14 +77,26 @@ export default class Row extends Component {
         fixed: false,
         gutter: 0,
         wrap: false,
-        component: 'div'
+        component: 'div',
     };
 
     render() {
         /* eslint-disable no-unused-vars */
         const {
-            prefix, pure, wrap, fixed, gutter, fixedWidth, align, justify,
-            hidden, className, component: Tag, children, rtl, ...others
+            prefix,
+            pure,
+            wrap,
+            fixed,
+            gutter,
+            fixedWidth,
+            align,
+            justify,
+            hidden,
+            className,
+            component: Tag,
+            children,
+            rtl,
+            ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
 
@@ -92,7 +120,7 @@ export default class Row extends Component {
             [`${prefix}row-justify-${justify}`]: !!justify,
             [`${prefix}row-align-${align}`]: !!align,
             ...hiddenClassObj,
-            [className]: !!className
+            [className]: !!className,
         });
 
         let newChildren = children;
@@ -102,7 +130,7 @@ export default class Row extends Component {
             others.style = {
                 marginLeft: `-${halfGutterString}`,
                 marginRight: `-${halfGutterString}`,
-                ...(others.style || {})
+                ...(others.style || {}),
             };
             newChildren = Children.map(children, child => {
                 if (
@@ -115,8 +143,8 @@ export default class Row extends Component {
                         style: {
                             paddingLeft: halfGutterString,
                             paddingRight: halfGutterString,
-                            ...(child.style || {})
-                        }
+                            ...(child.style || {}),
+                        },
                     });
                     return newChild;
                 }

@@ -8,7 +8,7 @@ export function format(...args) {
         return f(args.slice(1));
     }
     if (typeof f === 'string') {
-        const str = String(f).replace(formatRegExp, (x) => {
+        const str = String(f).replace(formatRegExp, x => {
             if (x === '%%') {
                 return '%';
             }
@@ -64,7 +64,7 @@ function asyncSerialArray(arr, func, callback) {
  */
 function flattenObjArr(objArr) {
     const ret = [];
-    Object.keys(objArr).forEach((k) => {
+    Object.keys(objArr).forEach(k => {
         Object.keys(objArr[k]).forEach(r => {
             ret.push(objArr[k][r]);
         });
@@ -90,28 +90,28 @@ export function asyncMap(objArr, option, func, callback) {
     const objArrLength = objArrKeys.length;
     let total = 0;
     const results = [];
-    const next = (errors) => {
+    const next = errors => {
         results.push(errors);
         total++;
         if (total === objArrLength) {
             return callback(results);
         }
     };
-    objArrKeys.forEach((key) => {
+    objArrKeys.forEach(key => {
         const arr = objArr[key];
         asyncSerialArray(arr, func, next);
     });
 }
 
 export function complementError(rule) {
-    return (oe) => {
+    return oe => {
         if (oe && oe.message) {
             oe.field = rule.field;
             return oe;
         }
         return {
             message: oe,
-            field: rule.field
+            field: rule.field,
         };
     };
 }

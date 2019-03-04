@@ -11,7 +11,12 @@ import * as util from '../util';
  *  @param options.messages The validation messages.
  */
 function required(rule, value, errors, options) {
-    if (value === undefined || value === null || value === '' || value.length === 0) {
+    if (
+        value === undefined ||
+        value === null ||
+        value === '' ||
+        value.length === 0
+    ) {
         errors.push(util.format(options.messages.required, rule.field));
     }
 }

@@ -4,19 +4,18 @@ import Select from '../../select';
 import Radio from '../../radio';
 
 class CardHeader extends React.PureComponent {
-
     static propTypes = {
         yearRangeOffset: PropTypes.number,
-        locale: PropTypes.object
-    }
+        locale: PropTypes.object,
+    };
 
     static defaultProps = {
-        yearRangeOffset: 10
-    }
+        yearRangeOffset: 10,
+    };
 
     selectContainerHandler = target => {
         return target.parentNode;
-    }
+    };
 
     getYearSelect(year) {
         const { prefix, yearRangeOffset, locale } = this.props;
@@ -25,17 +24,24 @@ class CardHeader extends React.PureComponent {
 
         const options = [];
         for (let i = startYear; i < endYear; i++) {
-            options.push(<Select.Option key={i} value={i}>{i}</Select.Option>);
+            options.push(
+                <Select.Option key={i} value={i}>
+                    {i}
+                </Select.Option>
+            );
         }
 
-        return (<Select
-            prefix={prefix}
-            value={year}
-            aria-label={locale.yearSelectAriaLabel}
-            onChange={this.onYearChange}
-            popupContainer={this.selectContainerHandler}>
-            {options}
-        </Select>);
+        return (
+            <Select
+                prefix={prefix}
+                value={year}
+                aria-label={locale.yearSelectAriaLabel}
+                onChange={this.onYearChange}
+                popupContainer={this.selectContainerHandler}
+            >
+                {options}
+            </Select>
+        );
     }
 
     getMonthSelect(month) {
@@ -43,47 +49,64 @@ class CardHeader extends React.PureComponent {
         const localeMonths = momentLocale.monthsShort();
         const options = [];
         for (let i = 0; i < 12; i++) {
-            options.push(<Select.Option key={i} value={i}>{localeMonths[i]}</Select.Option>);
+            options.push(
+                <Select.Option key={i} value={i}>
+                    {localeMonths[i]}
+                </Select.Option>
+            );
         }
-        return (<Select
-            aria-label={locale.monthSelectAriaLabel}
-            prefix={prefix}
-            value={month}
-            onChange={this.changeVisibleMonth}
-            popupContainer={this.selectContainerHandler}>
-            {options}
-        </Select>);
+        return (
+            <Select
+                aria-label={locale.monthSelectAriaLabel}
+                prefix={prefix}
+                value={month}
+                onChange={this.changeVisibleMonth}
+                popupContainer={this.selectContainerHandler}
+            >
+                {options}
+            </Select>
+        );
     }
 
-    onYearChange= (year) => {
+    onYearChange = year => {
         const { visibleMonth, changeVisibleMonth } = this.props;
         changeVisibleMonth(visibleMonth.clone().year(year), 'yearSelect');
-    }
+    };
 
-    changeVisibleMonth = (month) => {
+    changeVisibleMonth = month => {
         const { visibleMonth, changeVisibleMonth } = this.props;
         changeVisibleMonth(visibleMonth.clone().month(month), 'monthSelect');
-    }
+    };
 
-    onModePanelChange = (mode) => {
+    onModePanelChange = mode => {
         this.props.changeMode(mode);
-    }
+    };
 
     render() {
         const { prefix, mode, locale, visibleMonth } = this.props;
 
         const yearSelect = this.getYearSelect(visibleMonth.year());
-        const monthSelect = mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
-        const panelSelect = (<Radio.Group shape="button" size="medium" value={mode} onChange={this.onModePanelChange}>
-            <Radio value="date">{locale.month}</Radio>
-            <Radio value="month">{locale.year}</Radio>
-        </Radio.Group>);
+        const monthSelect =
+            mode === 'month' ? null : this.getMonthSelect(visibleMonth.month());
+        const panelSelect = (
+            <Radio.Group
+                shape="button"
+                size="medium"
+                value={mode}
+                onChange={this.onModePanelChange}
+            >
+                <Radio value="date">{locale.month}</Radio>
+                <Radio value="month">{locale.year}</Radio>
+            </Radio.Group>
+        );
 
-        return (<div className={`${prefix}calendar-header`}>
-            {yearSelect}
-            {monthSelect}
-            {panelSelect}
-        </div>);
+        return (
+            <div className={`${prefix}calendar-header`}>
+                {yearSelect}
+                {monthSelect}
+                {panelSelect}
+            </div>
+        );
     }
 }
 

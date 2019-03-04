@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 import Panel from './panel';
 
 /** Collapse */
@@ -52,11 +52,11 @@ class Collapse extends React.Component {
     static defaultProps = {
         accordion: false,
         prefix: 'next-',
-        onExpand: func.noop
+        onExpand: func.noop,
     };
 
     static contextTypes = {
-        prefix: PropTypes.string
+        prefix: PropTypes.string,
     };
 
     constructor(props) {
@@ -70,14 +70,18 @@ class Collapse extends React.Component {
         }
 
         this.state = {
-            expandedKeys: typeof expandedKeys === 'undefined' ? [] : expandedKeys
+            expandedKeys:
+                typeof expandedKeys === 'undefined' ? [] : expandedKeys,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if ('expandedKeys' in nextProps) {
             this.setState({
-                expandedKeys: typeof nextProps.expandedKeys === 'undefined' ? [] : nextProps.expandedKeys
+                expandedKeys:
+                    typeof nextProps.expandedKeys === 'undefined'
+                        ? []
+                        : nextProps.expandedKeys,
             });
         }
     }
@@ -100,7 +104,7 @@ class Collapse extends React.Component {
     }
 
     genratePanelId(itemId, index) {
-        const {id: collapseId} = this.props;
+        const { id: collapseId } = this.props;
         let id;
         if (itemId) {
             // 优先用 item自带的id
@@ -113,7 +117,7 @@ class Collapse extends React.Component {
     }
     getProps(item, index, key) {
         const expandedKeys = this.state.expandedKeys;
-        const {title} = item;
+        const { title } = item;
         let disabled = this.props.disabled;
 
         if (!disabled) {
@@ -122,16 +126,23 @@ class Collapse extends React.Component {
 
         let isExpanded = false;
 
-
         if (this.props.accordion) {
             isExpanded = expandedKeys[0] === key;
         } else {
             isExpanded = expandedKeys.some(expandedKey => {
-                if (expandedKey === null || expandedKey === undefined || key === null || key === undefined) {
+                if (
+                    expandedKey === null ||
+                    expandedKey === undefined ||
+                    key === null ||
+                    key === undefined
+                ) {
                     return false;
                 }
 
-                if (expandedKey === key || expandedKey.toString() === key.toString()) {
+                if (
+                    expandedKey === key ||
+                    expandedKey.toString() === key.toString()
+                ) {
                     return true;
                 }
                 return false;
@@ -145,40 +156,54 @@ class Collapse extends React.Component {
             isExpanded,
             disabled,
             id,
-            onClick: disabled ? null : () => {
-                this.onItemClick(key);
-                if ('onClick' in item) {
-                    item.onClick(key);
-                }
-            }
+            onClick: disabled
+                ? null
+                : () => {
+                      this.onItemClick(key);
+                      if ('onClick' in item) {
+                          item.onClick(key);
+                      }
+                  },
         };
     }
 
     getItemsByDataSource() {
-        const {props} = this;
-        const {dataSource} = props;
+        const { props } = this;
+        const { dataSource } = props;
         // 是否有dataSource.item传入过key
         const hasKeys = dataSource.some(item => 'key' in item);
 
         return dataSource.map((item, index) => {
             // 传入过key就用item.key 没传入则统一使用index为key
             const key = hasKeys ? item.key : `${index}`;
-            return (<Panel {...this.getProps(item, index, key)} key={key}>
-                {item.content}
-            </Panel>);
+            return (
+                <Panel {...this.getProps(item, index, key)} key={key}>
+                    {item.content}
+                </Panel>
+            );
         });
     }
 
     getItemsByChildren() {
         // 是否有child传入过key
-        const allKeys = React.Children.map(this.props.children, child => child.key);
+        const allKeys = React.Children.map(
+            this.props.children,
+            child => child.key
+        );
         const hasKeys = Boolean(allKeys.length);
 
         return React.Children.map(this.props.children, (child, index) => {
-            if (child && typeof child.type === 'function' && child.type.isNextPanel) {
+            if (
+                child &&
+                typeof child.type === 'function' &&
+                child.type.isNextPanel
+            ) {
                 // 传入过key就用child.key 没传入则统一使用index为key
                 const key = hasKeys ? child.key : `${index}`;
-                return React.cloneElement(child, this.getProps(child.props, index, key));
+                return React.cloneElement(
+                    child,
+                    this.getProps(child.props, index, key)
+                );
             } else {
                 return child;
             }
@@ -187,23 +212,42 @@ class Collapse extends React.Component {
 
     setExpandedKey(expandedKeys) {
         if (!('expandedKeys' in this.props)) {
-            this.setState({expandedKeys});
+            this.setState({ expandedKeys });
         }
-        this.props.onExpand(this.props.accordion ? expandedKeys[0] : expandedKeys);
+        this.props.onExpand(
+            this.props.accordion ? expandedKeys[0] : expandedKeys
+        );
     }
 
     render() {
-        const {prefix, className, style, disabled, dataSource, id, rtl} = this.props;
+        const {
+            prefix,
+            className,
+            style,
+            disabled,
+            dataSource,
+            id,
+            rtl,
+        } = this.props;
         const collapseClassName = classNames({
             [`${prefix}collapse`]: true,
             [`${prefix}collapse-disabled`]: disabled,
-            [className]: Boolean(className)
+            [className]: Boolean(className),
         });
 
         const others = obj.pickOthers(Collapse.propTypes, this.props);
         return (
-            <div id={id} className={collapseClassName} style={style} {...others} role="presentation" dir={rtl ? 'rtl' : undefined} >
-                {dataSource ? this.getItemsByDataSource() : this.getItemsByChildren()}
+            <div
+                id={id}
+                className={collapseClassName}
+                style={style}
+                {...others}
+                role="presentation"
+                dir={rtl ? 'rtl' : undefined}
+            >
+                {dataSource
+                    ? this.getItemsByDataSource()
+                    : this.getItemsByChildren()}
             </div>
         );
     }

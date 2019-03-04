@@ -1,16 +1,28 @@
 import React from 'react';
 import classnames from 'classnames';
 import Icon from '../../icon';
-import { isDisabledDate, YEAR_TABLE_COL_COUNT, YEAR_TABLE_ROW_COUNT } from '../utils';
+import {
+    isDisabledDate,
+    YEAR_TABLE_COL_COUNT,
+    YEAR_TABLE_ROW_COUNT,
+} from '../utils';
 
 class YearTable extends React.PureComponent {
-
-    onYearCellClick (date) {
+    onYearCellClick(date) {
         this.props.onSelectYear(date, 'month');
     }
 
     render() {
-        const { prefix, value, today, visibleMonth, locale, disabledDate, goPrevDecade, goNextDecade } = this.props;
+        const {
+            prefix,
+            value,
+            today,
+            visibleMonth,
+            locale,
+            disabledDate,
+            goPrevDecade,
+            goNextDecade,
+        } = this.props;
         const currentYear = today.year();
         const selectedYear = value ? value.year() : null;
         const visibleYear = visibleMonth.year();
@@ -46,7 +58,8 @@ class YearTable extends React.PureComponent {
                     const yearDate = visibleMonth.clone().year(year);
                     isDisabled = isDisabledDate(yearDate, disabledDate);
 
-                    !isDisabled && (onClick = this.onYearCellClick.bind(this, yearDate));
+                    !isDisabled &&
+                        (onClick = this.onYearCellClick.bind(this, yearDate));
                 }
 
                 const isSelected = year === selectedYear;
@@ -55,28 +68,36 @@ class YearTable extends React.PureComponent {
                     [`${prefix}calendar-cell`]: true,
                     [`${prefix}calendar-cell-current`]: year === currentYear,
                     [`${prefix}selected`]: isSelected,
-                    [`${prefix}disabled`]: isDisabled
+                    [`${prefix}disabled`]: isDisabled,
                 });
 
-                rowElements.push(<td key={`${i}-${j}`} className={classNames} role="cell">
-                    <div
-                        className={`${prefix}calendar-year`}
-                        onClick={onClick}
-                        title={title}
-                        aria-disabled={isDisabled ? 'true' : 'false'}
-                        aria-selected={isSelected ? 'true' : 'false'}>
-                        {content}
-                    </div>
-                </td>);
-
+                rowElements.push(
+                    <td key={`${i}-${j}`} className={classNames} role="cell">
+                        <div
+                            className={`${prefix}calendar-year`}
+                            onClick={onClick}
+                            title={title}
+                            aria-disabled={isDisabled ? 'true' : 'false'}
+                            aria-selected={isSelected ? 'true' : 'false'}
+                        >
+                            {content}
+                        </div>
+                    </td>
+                );
             }
-            yearElements.push(<tr key={i} role="row">{rowElements}</tr>);
+            yearElements.push(
+                <tr key={i} role="row">
+                    {rowElements}
+                </tr>
+            );
         }
-        return (<table className={`${prefix}calendar-table`} role="grid">
-            <tbody className={`${prefix}calendar-tbody`} role="rowgroup">
-                {yearElements}
-            </tbody>
-        </table>);
+        return (
+            <table className={`${prefix}calendar-table`} role="grid">
+                <tbody className={`${prefix}calendar-tbody`} role="rowgroup">
+                    {yearElements}
+                </tbody>
+            </table>
+        );
     }
 }
 

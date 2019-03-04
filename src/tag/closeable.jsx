@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tag from './tag';
 
@@ -33,36 +33,44 @@ class Closeable extends Component {
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         children: PropTypes.any,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
         disabled: false,
-        type: 'normal'
+        type: 'normal',
     };
 
     render() {
         const {
-            disabled, className,
-            closeArea, onClose,
-            afterClose, onClick,
-            type, size, children,
-            rtl
+            disabled,
+            className,
+            closeArea,
+            onClose,
+            afterClose,
+            onClick,
+            type,
+            size,
+            children,
+            rtl,
         } = this.props;
 
-        return (<Tag
-            rtl={rtl}
-            disabled={disabled}
-            className={className}
-            closeArea={closeArea}
-            onClose={onClose}
-            afterClose={afterClose}
-            onClick={onClick}
-            type={type}
-            size={size}
-            closable>
-            {children}
-        </Tag>);
+        return (
+            <Tag
+                rtl={rtl}
+                disabled={disabled}
+                className={className}
+                closeArea={closeArea}
+                onClose={onClose}
+                afterClose={afterClose}
+                onClick={onClick}
+                type={type}
+                size={size}
+                closable
+            >
+                {children}
+            </Tag>
+        );
     }
 }
 

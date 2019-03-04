@@ -7,7 +7,7 @@ export function inRange(value, range, min) {
 }
 
 export function getPercent(min, max, value) {
-    return (value - min) * 100 / (max - min);
+    return ((value - min) * 100) / (max - min);
 }
 
 export function getPrecision(step) {

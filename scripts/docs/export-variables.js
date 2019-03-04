@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 
 const cwd = process.cwd();
 
-module.exports = function* (options) {
+module.exports = function*(options) {
     const exportNextCorVars = [
         'lib/core/util/_mixin.scss',
         'lib/core/util/_function.scss',
@@ -17,7 +17,7 @@ module.exports = function* (options) {
         'lib/core/style/_icon.scss',
         'lib/core/utility/_form-element.scss',
         'lib/core/utility/_mask.scss',
-        'lib/core/utility/_popup.scss'
+        'lib/core/utility/_popup.scss',
     ];
     const exportVars = [].concat(exportNextCorVars);
     const possibleNames = ['variable.scss', 'variables.scss', '_variable.scss'];
@@ -27,7 +27,13 @@ module.exports = function* (options) {
         const entryName = entries[i].name;
         for (let j = 0; j < possibleNames.length; j++) {
             const possibleName = possibleNames[j];
-            const possiblePath = path.join(cwd, 'lib', entryName, 'scss', possibleName);
+            const possiblePath = path.join(
+                cwd,
+                'lib',
+                entryName,
+                'scss',
+                possibleName
+            );
             if (yield fs.exists(possiblePath)) {
                 exportVars.push(path.relative(cwd, possiblePath));
                 break;

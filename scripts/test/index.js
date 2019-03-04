@@ -7,16 +7,17 @@ const inquirer = require('inquirer');
 const { logger, checkComponentName } = require('../utils');
 
 let server = null;
-let failedNum = 0, successNum = 0;
+let failedNum = 0,
+    successNum = 0;
 
 const componentName = checkComponentName(true);
 const config = {
     configFile: join(__dirname, 'karma.js'),
     component: componentName,
-    runAll: false
+    runAll: false,
 };
 
-const coreTest = (cb) => {
+const coreTest = cb => {
     const mocha = new Mocha();
     mocha.addFile(join('test', 'core'));
 
@@ -44,7 +45,7 @@ const runRest = components => {
         server.start();
 
         server.on('run_complete', (brower, result) => {
-            const {error, failed, success, exitCode} = result;
+            const { error, failed, success, exitCode } = result;
             failedNum += failed;
             successNum += success;
             if (error) {
@@ -60,7 +61,6 @@ const runRest = components => {
         logger.success('Run all successfully!');
         process.exit(0);
     }
-
 };
 
 const runAllTest = () => {
@@ -72,23 +72,26 @@ const runAllTest = () => {
     server.start();
 };
 
-
 switch (componentName) {
     case 'core':
         coreTest();
         break;
     case 'all':
-        co(function* () {
+        co(function*() {
             if (process.env.TRAVIS) {
                 runAllTest();
             } else {
-                const allTest = yield inquirer.prompt([{
-                    name: 'runAllTest',
-                    type: 'list',
-                    choices: ['yes', 'no'],
-                    default: 1,
-                    message: logger.success('This will run ALL components test cases, are you sure to run all?')
-                }]);
+                const allTest = yield inquirer.prompt([
+                    {
+                        name: 'runAllTest',
+                        type: 'list',
+                        choices: ['yes', 'no'],
+                        default: 1,
+                        message: logger.success(
+                            'This will run ALL components test cases, are you sure to run all?'
+                        ),
+                    },
+                ]);
 
                 if (allTest.runAllTest === 'no') {
                     logger.success('quit');

@@ -12,5 +12,5 @@ export default {
     minLength: length,
     maxLength: length,
     length,
-    pattern
+    pattern,
 };

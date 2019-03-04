@@ -23,29 +23,29 @@ class Timeline extends Component {
         className: PropTypes.string,
         children: PropTypes.any,
         locale: PropTypes.object,
-        animation: PropTypes.bool
-    }
+        animation: PropTypes.bool,
+    };
 
     static defaultProps = {
         prefix: 'next-',
         rtl: false,
         fold: [],
         locale: nextLocale.Timeline,
-        animation: true
-    }
+        animation: true,
+    };
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            fold: props.fold
+            fold: props.fold,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if ('fold' in nextProps) {
             this.setState({
-                fold: nextProps.fold
+                fold: nextProps.fold,
             });
         }
     }
@@ -57,7 +57,10 @@ class Timeline extends Component {
             for (let i = 0; i < fold.length; i++) {
                 const { foldArea, foldShow } = fold[i];
 
-                if ((foldArea[1] && folderIndex === foldArea[1]) || (!foldArea[1] && folderIndex === total - 1)) {
+                if (
+                    (foldArea[1] && folderIndex === foldArea[1]) ||
+                    (!foldArea[1] && folderIndex === total - 1)
+                ) {
                     fold[i].foldShow = !foldShow;
                 }
             }
@@ -67,7 +70,15 @@ class Timeline extends Component {
     }
 
     render() {
-        const { prefix, rtl, className, children, locale, animation, ...others } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            children,
+            locale,
+            animation,
+            ...others
+        } = this.props;
         const { fold } = this.state;
 
         // 修改子节点属性
@@ -76,11 +87,14 @@ class Timeline extends Component {
             let folderIndex = null;
             let foldNodeShow = false;
 
-
-            fold.forEach((item) => {
+            fold.forEach(item => {
                 const { foldArea, foldShow } = item;
 
-                if (foldArea[0] && i >= foldArea[0] && (i <= foldArea[1] || !foldArea[1])) {
+                if (
+                    foldArea[0] &&
+                    i >= foldArea[0] &&
+                    (i <= foldArea[1] || !foldArea[1])
+                ) {
                     folderIndex = foldArea[1] || childrenCount - 1;
                     foldNodeShow = foldShow;
                 }
@@ -93,21 +107,30 @@ class Timeline extends Component {
                 index: i,
                 folderIndex: folderIndex,
                 foldShow: foldNodeShow,
-                toggleFold: folderIndex === i ? this.toggleFold.bind(this, folderIndex, childrenCount) : () => { },
-                animation: animation
+                toggleFold:
+                    folderIndex === i
+                        ? this.toggleFold.bind(this, folderIndex, childrenCount)
+                        : () => {},
+                animation: animation,
             });
         });
 
-        const timelineCls = classNames({
-            [`${prefix}timeline`]: true
-        }, className);
+        const timelineCls = classNames(
+            {
+                [`${prefix}timeline`]: true,
+            },
+            className
+        );
 
         if (rtl) {
             others.dir = 'rtl';
         }
 
         return (
-            <ul {...obj.pickOthers(Timeline.propTypes, others)} className={timelineCls}>
+            <ul
+                {...obj.pickOthers(Timeline.propTypes, others)}
+                className={timelineCls}
+            >
                 {cloneChildren}
             </ul>
         );

@@ -14,8 +14,7 @@ class Cache {
 
     get(key, defaultValue) {
         const res = this.has(key) ? this._store.get(key) : this.root();
-        return (typeof res === 'undefined' || res === null) ?
-            defaultValue : res;
+        return typeof res === 'undefined' || res === null ? defaultValue : res;
     }
 
     add(key, value) {

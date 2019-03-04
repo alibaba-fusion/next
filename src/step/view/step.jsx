@@ -46,8 +46,8 @@ export default class Step extends Component {
          * @param {String} status  节点状态
          * @returns {Node} 节点的渲染结果
          */
-        itemRender: PropTypes.func
-    }
+        itemRender: PropTypes.func,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -56,18 +56,18 @@ export default class Step extends Component {
         labelPlacement: 'ver',
         shape: 'circle',
         animation: true,
-        itemRender: null
-    }
+        itemRender: null,
+    };
 
     static contextTypes = {
-        prefix: PropTypes.string
+        prefix: PropTypes.string,
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
             parentWidth: 'auto',
-            parentHeight: 'auto'
+            parentHeight: 'auto',
         };
         this.resize = this.resize.bind(this);
     }
@@ -79,13 +79,12 @@ export default class Step extends Component {
             events.on(window, 'resize', this.resize);
         }
         this.adjustHeight();
-
     }
 
     componentWillReceiveProps(newProps) {
         if ('current' in newProps) {
             this.setState({
-                current: newProps.current
+                current: newProps.current,
             });
         }
     }
@@ -103,12 +102,24 @@ export default class Step extends Component {
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
-        if (shape !== 'arrow' && (direction === 'horizontal' || direction === 'hoz') && (labelPlacement === 'vertical' || labelPlacement === 'ver')) {
+        if (
+            shape !== 'arrow' &&
+            (direction === 'horizontal' || direction === 'hoz') &&
+            (labelPlacement === 'vertical' || labelPlacement === 'ver')
+        ) {
             const step = ReactDOM.findDOMNode(this.step);
-            const height = Array.prototype.slice.call(step.getElementsByClassName(`${prefix}step-item`)).reduce((ret, re) => {
-                const itemHeight = getHeight(re) + getHeight(re.getElementsByClassName(`${prefix}step-item-body`)[0]);
-                return Math.max(itemHeight, ret);
-            }, 0);
+            const height = Array.prototype.slice
+                .call(step.getElementsByClassName(`${prefix}step-item`))
+                .reduce((ret, re) => {
+                    const itemHeight =
+                        getHeight(re) +
+                        getHeight(
+                            re.getElementsByClassName(
+                                `${prefix}step-item-body`
+                            )[0]
+                        );
+                    return Math.max(itemHeight, ret);
+                }, 0);
             setHeight(step, height);
         }
     }
@@ -117,7 +128,7 @@ export default class Step extends Component {
         if (this.step) {
             this.setState({
                 parentWidth: this.step.offsetWidth || 0,
-                parentHeight: this.step.offsetHeight || 0
+                parentHeight: this.step.offsetHeight || 0,
             });
         }
     }
@@ -134,11 +145,25 @@ export default class Step extends Component {
 
     _stepRefHandler = ref => {
         this.step = ref;
-    }
+    };
 
     render() {
         // eslint-disable-next-line
-        let { prefix, locale, className, current, direction, labelPlacement, shape, children, readOnly, animation, itemRender, rtl, ...others } = this.props;
+        let {
+            prefix,
+            locale,
+            className,
+            current,
+            direction,
+            labelPlacement,
+            shape,
+            children,
+            readOnly,
+            animation,
+            itemRender,
+            rtl,
+            ...others
+        } = this.props;
         prefix = this.context.prefix || prefix;
         const { parentWidth, parentHeight } = this.state;
 
@@ -150,7 +175,12 @@ export default class Step extends Component {
 
         // 修改子节点属性
         const cloneChildren = Children.map(children, (child, index) => {
-            const status = index < current ? 'finish' : (index === current ? 'process' : 'wait');
+            const status =
+                index < current
+                    ? 'finish'
+                    : index === current
+                    ? 'process'
+                    : 'wait';
 
             return React.cloneElement(child, {
                 prefix,
@@ -165,18 +195,26 @@ export default class Step extends Component {
                 parentHeight,
                 readOnly,
                 animation,
-                itemRender: child.props.itemRender ? child.props.itemRender : itemRender // 优先使用Item的itemRender
+                itemRender: child.props.itemRender
+                    ? child.props.itemRender
+                    : itemRender, // 优先使用Item的itemRender
             });
         });
 
-        const _direction = direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
-        const _labelPlacement = labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
+        const _direction =
+            direction === 'ver' || direction === 'vertical'
+                ? 'vertical'
+                : 'horizontal';
+        const _labelPlacement =
+            labelPlacement === 'ver' || labelPlacement === 'vertical'
+                ? 'vertical'
+                : 'horizontal';
         const stepCls = classNames({
             [`${prefix}step`]: true,
             [`${prefix}step-${shape}`]: shape,
             [`${prefix}step-${_direction}`]: _direction,
             [`${prefix}step-label-${_labelPlacement}`]: _labelPlacement,
-            [className]: className
+            [className]: className,
         });
 
         if (rtl) {
@@ -189,5 +227,4 @@ export default class Step extends Component {
             </div>
         );
     }
-
 }

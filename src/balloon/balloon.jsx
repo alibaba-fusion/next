@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
-import {func, obj, log} from '../util';
+import { func, obj, log } from '../util';
 import BalloonInner from './inner';
-import {normalMap, edgeMap} from './alignMap';
+import { normalMap, edgeMap } from './alignMap';
 
-const {noop} = func;
-const {Popup} = Overlay;
+const { noop } = func;
+const { Popup } = Overlay;
 
 let alignMap = normalMap;
 
 /** Balloon */
 export default class Balloon extends React.Component {
     static contextTypes = {
-        prefix: PropTypes.string
-    }
+        prefix: PropTypes.string,
+    };
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -61,7 +61,20 @@ export default class Balloon extends React.Component {
          * 弹出层位置
          * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合
          */
-        align: PropTypes.oneOf(['t', 'r', 'b', 'l', 'tl', 'tr', 'bl', 'br', 'lt', 'lb', 'rt', 'rb']),
+        align: PropTypes.oneOf([
+            't',
+            'r',
+            'b',
+            'l',
+            'tl',
+            'tr',
+            'bl',
+            'br',
+            'lt',
+            'lb',
+            'rt',
+            'rb',
+        ]),
         /**
          * 弹层相对于trigger的定位的微调
          */
@@ -141,7 +154,7 @@ export default class Balloon extends React.Component {
         /**
          * 弹层id, 传入值才会支持无障碍
          */
-        id: PropTypes.string
+        id: PropTypes.string,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -153,7 +166,7 @@ export default class Balloon extends React.Component {
         alignEdge: false,
         align: 'b',
         offset: [0, 0],
-        trigger: <span></span>,
+        trigger: <span />,
         onClose: noop,
         afterClose: noop,
         onVisibleChange: noop,
@@ -164,19 +177,19 @@ export default class Balloon extends React.Component {
         autoFocus: false,
         animation: {
             in: 'zoomIn',
-            out: 'zoomOut'
+            out: 'zoomOut',
         },
         cache: false,
         popupStyle: {},
         popupClassName: '',
-        popupProps: {}
+        popupProps: {},
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
             align: props.align,
-            visible: 'visible' in props ? props.visible : props.defaultVisible
+            visible: 'visible' in props ? props.visible : props.defaultVisible,
         };
         this._onClose = this._onClose.bind(this);
         this._onPosition = this._onPosition.bind(this);
@@ -188,13 +201,13 @@ export default class Balloon extends React.Component {
     componentWillReceiveProps(nextProps) {
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
 
         if ('align' in nextProps) {
             this.setState({
-                align: nextProps.align
+                align: nextProps.align,
             });
         }
     }
@@ -203,7 +216,7 @@ export default class Balloon extends React.Component {
         // Not Controlled
         if (!('visible' in this.props)) {
             this.setState({
-                visible: visible
+                visible: visible,
             });
         }
 
@@ -243,17 +256,41 @@ export default class Balloon extends React.Component {
         resAlign = resAlign || this.state.align;
         if (resAlign !== this.state.align) {
             this.setState({
-                align: resAlign
+                align: resAlign,
             });
         }
     }
 
     render() {
-        const { type, prefix, className, alignEdge,
-            trigger, triggerType, children, closable,
-            shouldUpdatePosition, delay, needAdjust,
-            safeId, autoFocus, safeNode, onClick, onHover,
-            animation, offset, style, container, popupContainer, cache, popupStyle, popupClassName, popupProps, rtl, ...others } = this.props;
+        const {
+            type,
+            prefix,
+            className,
+            alignEdge,
+            trigger,
+            triggerType,
+            children,
+            closable,
+            shouldUpdatePosition,
+            delay,
+            needAdjust,
+            safeId,
+            autoFocus,
+            safeNode,
+            onClick,
+            onHover,
+            animation,
+            offset,
+            style,
+            container,
+            popupContainer,
+            cache,
+            popupStyle,
+            popupClassName,
+            popupProps,
+            rtl,
+            ...others
+        } = this.props;
 
         if (container) {
             log.deprecated('container', 'popupContainer', 'Balloon');
@@ -269,25 +306,30 @@ export default class Balloon extends React.Component {
             trOrigin = 'rtlTrOrigin';
         }
 
-        const _offset = [alignMap[align].offset[0] + offset[0], alignMap[align].offset[1] + offset[1]];
+        const _offset = [
+            alignMap[align].offset[0] + offset[0],
+            alignMap[align].offset[1] + offset[1],
+        ];
         const transformOrigin = alignMap[align][trOrigin];
-        const _style = {...{transformOrigin}, ...style};
+        const _style = { ...{ transformOrigin }, ...style };
 
-        const content = (<BalloonInner
-            {...obj.pickOthers(Object.keys(Balloon.propTypes), others)}
-            id={this._contentId}
-            prefix={_prefix}
-            closable={closable}
-            onClose={this._onClose}
-            className={className}
-            style={_style}
-            align={align}
-            type={type}
-            rtl={rtl}
-            alignEdge={alignEdge}
-        >
-            {children}
-        </BalloonInner>);
+        const content = (
+            <BalloonInner
+                {...obj.pickOthers(Object.keys(Balloon.propTypes), others)}
+                id={this._contentId}
+                prefix={_prefix}
+                closable={closable}
+                onClose={this._onClose}
+                className={className}
+                style={_style}
+                align={align}
+                type={type}
+                rtl={rtl}
+                alignEdge={alignEdge}
+            >
+                {children}
+            </BalloonInner>
+        );
 
         const triggerProps = {};
         triggerProps['aria-describedby'] = this._contentId;

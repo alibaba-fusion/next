@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Tab from './tab';
 
 export default ConfigProvider.config(Tab, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'shape', 'Tab');
             const { type, ...others } = props;
@@ -13,11 +13,19 @@ export default ConfigProvider.config(Tab, {
 
             let excessMode;
             if (resDirection === 'horizontal') {
-                deprecated('resDirection=horizontal', 'excessMode=slide', 'Tab');
+                deprecated(
+                    'resDirection=horizontal',
+                    'excessMode=slide',
+                    'Tab'
+                );
 
                 excessMode = 'slide';
             } else if (resDirection === 'vertical') {
-                deprecated('resDirection=vertical', 'excessMode=dropdown', 'Tab');
+                deprecated(
+                    'resDirection=vertical',
+                    'excessMode=dropdown',
+                    'Tab'
+                );
 
                 excessMode = 'dropdown';
             }
@@ -30,5 +38,5 @@ export default ConfigProvider.config(Tab, {
         }
 
         return props;
-    }
+    },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import zhCN from '../locale/zh-cn.js';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 import Base from './base';
 import List from './list';
 import Upload from './upload';
@@ -35,14 +35,14 @@ class Card extends Base {
         /**
          * 取消上传的回调
          */
-        onCancel: PropTypes.func
+        onCancel: PropTypes.func,
     };
 
     static defaultProps = {
         prefix: 'next-',
         locale: zhCN.Upload,
         onChange: func.noop,
-        onPreview: func.noop
+        onPreview: func.noop,
     };
 
     constructor(props) {
@@ -57,35 +57,40 @@ class Card extends Base {
         }
 
         this.state = {
-
-            value: typeof value === 'undefined' ? /* istanbul ignore next */[] : value,
-            uploaderRef: this.uploaderRef
+            value:
+                typeof value === 'undefined'
+                    ? /* istanbul ignore next */ []
+                    : value,
+            uploaderRef: this.uploaderRef,
         };
     }
     /* eslint react/no-did-mount-set-state: [0] */
     componentDidMount() {
-        this.setState({uploaderRef: this.uploaderRef});
+        this.setState({ uploaderRef: this.uploaderRef });
     }
 
     componentWillReceiveProps(nextProps) {
         /* istanbul ignore if */
         if ('value' in nextProps) {
             this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : nextProps.value
+                value:
+                    typeof nextProps.value === 'undefined'
+                        ? []
+                        : nextProps.value,
             });
         }
     }
 
-    onProgress = (value) => {
+    onProgress = value => {
         this.setState({
-            value
+            value,
         });
     };
 
     onChange = (value, file) => {
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
         this.props.onChange(value, file);
@@ -111,13 +116,13 @@ class Card extends Base {
             onPreview,
             onRemove,
             onCancel,
-            timeout
+            timeout,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
         const uploadButtonCls = classNames({
             [`${prefix}upload-list-item`]: true,
-            [`${prefix}hidden`]: isExceedLimit
+            [`${prefix}hidden`]: isExceedLimit,
         });
 
         const children = this.props.children || locale.card.addPhoto;
@@ -126,7 +131,8 @@ class Card extends Base {
         const othersForList = obj.pickOthers(Card.propTypes, this.props);
         const othersForUpload = obj.pickOthers(List.propTypes, othersForList);
         return (
-            <List className={className}
+            <List
+                className={className}
                 style={style}
                 listType="card"
                 closable

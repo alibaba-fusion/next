@@ -1,4 +1,4 @@
-import React, {Component, Children} from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -23,8 +23,16 @@ class Breadcrumb extends Component {
          */
         children: (props, propName) => {
             Children.forEach(props[propName], child => {
-                if (!(child && typeof child.type === 'function' && child.type._typeMark === 'breadcrumb_item')) {
-                    throw new Error('Breadcrumb\'s children must be Breadcrumb.Item!');
+                if (
+                    !(
+                        child &&
+                        typeof child.type === 'function' &&
+                        child.type._typeMark === 'breadcrumb_item'
+                    )
+                ) {
+                    throw new Error(
+                        "Breadcrumb's children must be Breadcrumb.Item!"
+                    );
                 }
             });
         },
@@ -37,17 +45,25 @@ class Breadcrumb extends Component {
          * 分隔符，可以是文本或 Icon
          */
         separator: PropTypes.node,
-        className: PropTypes.any
+        className: PropTypes.any,
     };
 
     static defaultProps = {
         prefix: 'next-',
         maxNode: 100,
-        separator: <Icon type="arrow-right" />
+        separator: <Icon type="arrow-right" />,
     };
 
     render() {
-        const {prefix, rtl, className, maxNode, children, separator, ...others} = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            maxNode,
+            children,
+            separator,
+            ...others
+        } = this.props;
         const clazz = classNames(`${prefix}breadcrumb`, className);
         let items;
         const length = Children.count(children);
@@ -64,22 +80,30 @@ class Breadcrumb extends Component {
                 }
 
                 if (i && i === breakpointer) {
-                    items.push(React.cloneElement(item, {
-                        separator,
-                        prefix,
-                        key: i,
-                        activated: i === length - 1,
-                        ...ariaProps,
-                        className: `${prefix}breadcrumb-text-ellipsis`
-                    }, '...'));
+                    items.push(
+                        React.cloneElement(
+                            item,
+                            {
+                                separator,
+                                prefix,
+                                key: i,
+                                activated: i === length - 1,
+                                ...ariaProps,
+                                className: `${prefix}breadcrumb-text-ellipsis`,
+                            },
+                            '...'
+                        )
+                    );
                 } else if (!i || i > breakpointer) {
-                    items.push(React.cloneElement(item, {
-                        separator,
-                        prefix,
-                        key: i,
-                        ...ariaProps,
-                        activated: i === length - 1
-                    }));
+                    items.push(
+                        React.cloneElement(item, {
+                            separator,
+                            prefix,
+                            key: i,
+                            ...ariaProps,
+                            activated: i === length - 1,
+                        })
+                    );
                 }
             });
         } else {
@@ -95,7 +119,7 @@ class Breadcrumb extends Component {
                     prefix,
                     activated: i === length - 1,
                     ...ariaProps,
-                    key: i
+                    key: i,
                 });
             });
         }
@@ -104,7 +128,11 @@ class Breadcrumb extends Component {
             others.dir = 'rtl';
         }
 
-        return <div aria-label="Breadcrumb" className={clazz} {...others}>{items}</div>;
+        return (
+            <div aria-label="Breadcrumb" className={clazz} {...others}>
+                {items}
+            </div>
+        );
     }
 }
 

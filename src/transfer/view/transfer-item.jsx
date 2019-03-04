@@ -30,29 +30,36 @@ export default class TransferItem extends Component {
         dragPosition: PropTypes.oneOf(['left', 'right']),
         dragValue: PropTypes.string,
         dragOverValue: PropTypes.string,
-        panelPosition: PropTypes.oneOf(['left', 'right'])
+        panelPosition: PropTypes.oneOf(['left', 'right']),
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            highlight: false
+            highlight: false,
         };
 
-        bindCtx(this, ['getItemDOM', 'handleClick', 'handleDragStart', 'handleDragOver', 'handleDragEnd', 'handleDrop']);
+        bindCtx(this, [
+            'getItemDOM',
+            'handleClick',
+            'handleDragStart',
+            'handleDragOver',
+            'handleDragEnd',
+            'handleDrop',
+        ]);
     }
 
     componentDidMount() {
         if (this.props.needHighlight) {
             this.addHighlightTimer = setTimeout(() => {
                 this.setState({
-                    highlight: true
+                    highlight: true,
                 });
             }, 1);
             this.removeHighlightTimer = setTimeout(() => {
                 this.setState({
-                    highlight: false
+                    highlight: false,
                 });
             }, 201);
         }
@@ -80,7 +87,9 @@ export default class TransferItem extends Component {
     getDragGap(e) {
         const referenceTop = getOffset(e.currentTarget).top;
         const referenceHeight = e.currentTarget.offsetHeight;
-        return e.pageY <= referenceTop + referenceHeight / 2 ? 'before' : 'after';
+        return e.pageY <= referenceTop + referenceHeight / 2
+            ? 'before'
+            : 'after';
     }
 
     handleDragOver(e) {
@@ -109,16 +118,32 @@ export default class TransferItem extends Component {
     }
 
     render() {
-        const { prefix, mode, checked, disabled, item, onCheck, itemRender, draggable, dragOverValue, panelPosition, dragPosition } = this.props;
-        const others = pickOthers(Object.keys(TransferItem.propTypes), this.props);
+        const {
+            prefix,
+            mode,
+            checked,
+            disabled,
+            item,
+            onCheck,
+            itemRender,
+            draggable,
+            dragOverValue,
+            panelPosition,
+            dragPosition,
+        } = this.props;
+        const others = pickOthers(
+            Object.keys(TransferItem.propTypes),
+            this.props
+        );
         const { highlight } = this.state;
         const isSimple = mode === 'simple';
 
         const classNames = cx({
             [`${prefix}transfer-panel-item`]: true,
-            [`${prefix}insert-${this.dragGap}`]: dragOverValue === item.value && panelPosition === dragPosition,
+            [`${prefix}insert-${this.dragGap}`]:
+                dragOverValue === item.value && panelPosition === dragPosition,
             [`${prefix}focused`]: highlight,
-            [`${prefix}simple`]: isSimple
+            [`${prefix}simple`]: isSimple,
         });
 
         const itemProps = {
@@ -131,21 +156,22 @@ export default class TransferItem extends Component {
             onDragOver: this.handleDragOver,
             onDragEnd: this.handleDragEnd,
             onDrop: this.handleDrop,
-            ...others
+            ...others,
         };
         if (isSimple) {
             if (!itemProps.disabled) {
                 itemProps.onClick = this.handleClick;
             }
 
-            return (
-                <Item {...itemProps} />
-            );
+            return <Item {...itemProps} />;
         }
 
         return (
-            <CheckboxItem checked={checked} onChange={onCheck.bind(this, item.value)} {...itemProps} />
+            <CheckboxItem
+                checked={checked}
+                onChange={onCheck.bind(this, item.value)}
+                {...itemProps}
+            />
         );
     }
 }
-

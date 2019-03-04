@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Cascader from './cascader';
 
 export default ConfigProvider.config(Cascader, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('expandTrigger' in props) {
             deprecated('expandTrigger', 'expandTriggerType', 'Cascader');
             const { expandTrigger, ...others } = props;
@@ -10,7 +10,11 @@ export default ConfigProvider.config(Cascader, {
         }
 
         if ('showItemCount' in props) {
-            deprecated('showItemCount', 'listStyle | listClassName', 'Cascader');
+            deprecated(
+                'showItemCount',
+                'listStyle | listClassName',
+                'Cascader'
+            );
         }
         if ('labelWidth' in props) {
             deprecated('labelWidth', 'listStyle | listClassName', 'Cascader');
@@ -18,5 +22,5 @@ export default ConfigProvider.config(Cascader, {
 
         return props;
     },
-    exportNames: ['setFocusValue']
+    exportNames: ['setFocusValue'],
 });

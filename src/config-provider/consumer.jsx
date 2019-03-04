@@ -52,7 +52,7 @@ const Consumer = ({ children }, context) =>
 Consumer.propTypes = {
     // Render context as function
     // Function(context: object): ReactElement
-    children: PropTypes.func
+    children: PropTypes.func,
 };
 
 /**
@@ -65,7 +65,7 @@ Consumer.contextTypes = {
     nextLocale: PropTypes.object,
     nextPure: PropTypes.bool,
     newRtl: PropTypes.bool,
-    nextWarning: PropTypes.bool
+    nextWarning: PropTypes.bool,
 };
 
 export default Consumer;

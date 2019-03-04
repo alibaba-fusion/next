@@ -9,7 +9,6 @@ const { pickOthers } = obj;
 
 /** Checkbox.Group */
 class CheckboxGroup extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -32,11 +31,19 @@ class CheckboxGroup extends Component {
         /**
          * 被选中的值列表
          */
-        value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
+        value: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.string,
+            PropTypes.number,
+        ]),
         /**
          * 默认被选中的值列表
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.string,
+            PropTypes.number,
+        ]),
         /**
          * 通过子元素方式设置内部 checkbox
          */
@@ -53,26 +60,22 @@ class CheckboxGroup extends Component {
          * - hoz: 水平排列 (default)
          * - ver: 垂直排列
          */
-        itemDirection: PropTypes.oneOf([
-            'hoz',
-            'ver'
-        ])
-    }
+        itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+    };
 
     static defaultProps = {
         dataSource: [],
-        onChange: () => {
-        },
+        onChange: () => {},
         prefix: 'next-',
-        itemDirection: 'hoz'
-    }
+        itemDirection: 'hoz',
+    };
 
     static childContextTypes = {
         onChange: PropTypes.func,
         __group__: PropTypes.bool,
         selectedValue: PropTypes.array,
-        disabled: PropTypes.bool
-    }
+        disabled: PropTypes.bool,
+    };
 
     constructor(props) {
         super(props);
@@ -91,7 +94,7 @@ class CheckboxGroup extends Component {
             }
         }
         this.state = {
-            value: [...value]
+            value: [...value],
         };
 
         this.onChange = this.onChange.bind(this);
@@ -102,7 +105,7 @@ class CheckboxGroup extends Component {
             __group__: true,
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: this.props.disabled
+            disabled: this.props.disabled,
         };
     }
 
@@ -117,7 +120,7 @@ class CheckboxGroup extends Component {
                 }
             }
             this.setState({
-                value
+                value,
             });
         }
     }
@@ -140,17 +143,27 @@ class CheckboxGroup extends Component {
     }
 
     render() {
-        const { className, style, prefix, disabled, itemDirection, rtl } = this.props;
+        const {
+            className,
+            style,
+            prefix,
+            disabled,
+            itemDirection,
+            rtl,
+        } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
         let children;
         if (this.props.children) {
-            children = React.Children.map(this.props.children, (child) => {
+            children = React.Children.map(this.props.children, child => {
                 if (!React.isValidElement(child)) {
                     return child;
                 }
-                return React.cloneElement(child, child.props.rtl === undefined ? { rtl } : null);
+                return React.cloneElement(
+                    child,
+                    child.props.rtl === undefined ? { rtl } : null
+                );
             });
         } else {
             children = this.props.dataSource.map((item, index) => {
@@ -159,13 +172,16 @@ class CheckboxGroup extends Component {
                     option = {
                         label: item,
                         value: item,
-                        disabled
+                        disabled,
                     };
                 }
-                const checked = this.state.value && this.state.value.indexOf(option.value) > -1;
+                const checked =
+                    this.state.value &&
+                    this.state.value.indexOf(option.value) > -1;
 
                 return (
-                    <Checkbox key={index}
+                    <Checkbox
+                        key={index}
                         value={option.value}
                         checked={checked}
                         rtl={rtl}
@@ -180,10 +196,19 @@ class CheckboxGroup extends Component {
             [`${prefix}checkbox-group`]: true,
             [`${prefix}checkbox-group-${itemDirection}`]: true,
             [className]: !!className,
-            disabled
+            disabled,
         });
 
-        return <span dir={rtl ? 'rtl' : undefined} {...others} className={cls} style={style}>{children}</span>;
+        return (
+            <span
+                dir={rtl ? 'rtl' : undefined}
+                {...others}
+                className={cls}
+                style={style}
+            >
+                {children}
+            </span>
+        );
     }
 }
 

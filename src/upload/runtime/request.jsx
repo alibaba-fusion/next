@@ -43,7 +43,7 @@ export default function upload(option) {
     if (option.onProgress && xhr.upload) {
         xhr.upload.onprogress = function progress(e) {
             if (e.total > 0) {
-                e.percent = e.loaded / e.total * 100;
+                e.percent = (e.loaded / e.total) * 100;
             }
             option.onProgress(e);
         };
@@ -73,7 +73,7 @@ export default function upload(option) {
         option.onSuccess(getBody(xhr), xhr);
     };
 
-    const {timeout} = option;
+    const { timeout } = option;
 
     if (typeof timeout === 'number' && timeout > 0) {
         xhr.timeout = timeout;
@@ -109,6 +109,6 @@ export default function upload(option) {
     return {
         abort() {
             xhr.abort();
-        }
+        },
     };
 }

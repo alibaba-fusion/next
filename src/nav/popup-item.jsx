@@ -27,37 +27,49 @@ class PopupItem extends Component {
         /**
          * 弹出内容
          */
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static contextTypes = {
         prefix: PropTypes.string,
         iconOnly: PropTypes.bool,
-        hasArrow: PropTypes.bool
+        hasArrow: PropTypes.bool,
     };
 
     render() {
-        const {prefix, iconOnly, hasArrow} = this.context;
-        const {className, icon, label, children, ...others} = this.props;
+        const { prefix, iconOnly, hasArrow } = this.context;
+        const { className, icon, label, children, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-popup-item`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
-        let iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
+        let iconEl =
+            typeof icon === 'string' ? (
+                <Icon className={`${prefix}nav-icon`} type={icon} />
+            ) : (
+                icon
+            );
         if (iconOnly) {
             if (hasArrow) {
-                iconEl = <Icon className={`${prefix}nav-icon-only-arrow`} type="arrow-right" />;
+                iconEl = (
+                    <Icon
+                        className={`${prefix}nav-icon-only-arrow`}
+                        type="arrow-right"
+                    />
+                );
             } else if (!iconEl) {
                 iconEl = <span className={`${prefix}nav-icon-placeholder`} />;
             }
         }
         const newLabel = [
             iconEl ? cloneElement(iconEl, { key: 'icon' }) : null,
-            <span key="label">{label}</span>
+            <span key="label">{label}</span>,
         ];
 
         return (
-            <Menu.PopupItem className={cls} label={newLabel} {...others}>{children}</Menu.PopupItem>
+            <Menu.PopupItem className={cls} label={newLabel} {...others}>
+                {children}
+            </Menu.PopupItem>
         );
     }
 }

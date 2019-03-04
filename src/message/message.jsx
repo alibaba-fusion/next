@@ -12,7 +12,7 @@ const TYPE_MAPS = {
     error: 'error',
     notice: 'prompt',
     help: 'help',
-    loading: 'loading'
+    loading: 'loading',
 };
 
 const noop = () => {};
@@ -21,7 +21,6 @@ const noop = () => {};
  * Message
  */
 class Message extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -30,7 +29,14 @@ class Message extends Component {
         /**
          * 反馈类型
          */
-        type: PropTypes.oneOf(['success', 'warning', 'error', 'notice', 'help', 'loading']),
+        type: PropTypes.oneOf([
+            'success',
+            'warning',
+            'error',
+            'notice',
+            'help',
+            'loading',
+        ]),
         /**
          * 反馈外观
          */
@@ -76,7 +82,7 @@ class Message extends Component {
          */
         animation: PropTypes.bool,
         locale: PropTypes.object,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -90,17 +96,20 @@ class Message extends Component {
         onClose: noop,
         afterClose: noop,
         animation: true,
-        locale: nextLocale.Message
+        locale: nextLocale.Message,
     };
 
     state = {
-        visible: typeof this.props.visible === 'undefined' ? this.props.defaultVisible : this.props.visible
-    }
+        visible:
+            typeof this.props.visible === 'undefined'
+                ? this.props.defaultVisible
+                : this.props.visible,
+    };
 
     componentWillReceiveProps(nextProps) {
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
     }
@@ -108,15 +117,34 @@ class Message extends Component {
     onClose = () => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible: false
+                visible: false,
             });
         }
         this.props.onClose(false);
-    }
+    };
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { prefix, pure, className, type, shape, size, title, children, defaultVisible, visible: propsVisible, iconType: icon, closeable, onClose, afterClose, animation, rtl, locale, ...others } = this.props;
+        const {
+            prefix,
+            pure,
+            className,
+            type,
+            shape,
+            size,
+            title,
+            children,
+            defaultVisible,
+            visible: propsVisible,
+            iconType: icon,
+            closeable,
+            onClose,
+            afterClose,
+            animation,
+            rtl,
+            locale,
+            ...others
+        } = this.props;
         /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
@@ -128,22 +156,43 @@ class Message extends Component {
             [`${prefix}${size}`]: size,
             [`${prefix}title-content`]: !!title,
             [`${prefix}only-content`]: !title && !!children,
-            [className]: className
+            [className]: className,
         });
 
-        const newChildren = visible ?
-            (<div role="alert" {...others} className={classes} dir={rtl ? 'rtl' : undefined}>
-                {closeable ?
-                    <a role="button" aria-label={locale.closeAriaLabel} href="javascript:;" className={`${messagePrefix}-close`} onClick={this.onClose}>
+        const newChildren = visible ? (
+            <div
+                role="alert"
+                {...others}
+                className={classes}
+                dir={rtl ? 'rtl' : undefined}
+            >
+                {closeable ? (
+                    <a
+                        role="button"
+                        aria-label={locale.closeAriaLabel}
+                        href="javascript:;"
+                        className={`${messagePrefix}-close`}
+                        onClick={this.onClose}
+                    >
                         <Icon type="close" />
-                    </a> : null}
+                    </a>
+                ) : null}
                 <Icon className={`${messagePrefix}-symbol`} type={iconType} />
-                {title ? <div className={`${messagePrefix}-title`}>{title}</div> : null}
-                {children ? <div className={`${messagePrefix}-content`}>{children}</div> : null}
-            </div>) : null;
+                {title ? (
+                    <div className={`${messagePrefix}-title`}>{title}</div>
+                ) : null}
+                {children ? (
+                    <div className={`${messagePrefix}-content`}>{children}</div>
+                ) : null}
+            </div>
+        ) : null;
 
         if (animation) {
-            return <Animate.Expand animationAppear={false} afterLeave={afterClose}>{newChildren}</Animate.Expand>;
+            return (
+                <Animate.Expand animationAppear={false} afterLeave={afterClose}>
+                    {newChildren}
+                </Animate.Expand>
+            );
         }
 
         return newChildren;

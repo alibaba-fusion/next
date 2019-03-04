@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {obj, func} from '../util';
+import { obj, func } from '../util';
 import Tag from './tag';
 
-const {noop, bindCtx} = func;
+const { noop, bindCtx } = func;
 
 /**
  * Tag.Selectable
@@ -31,23 +31,24 @@ class Selectable extends Component {
          * 标签是否被禁用
          */
         disabled: PropTypes.bool,
-        className: PropTypes.any
+        className: PropTypes.any,
     };
 
     static defaultProps = {
-        onChange: noop
+        onChange: noop,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            checked: 'checked' in props ? props.checked : (props.defaultChecked || false)
+            checked:
+                'checked' in props
+                    ? props.checked
+                    : props.defaultChecked || false,
         };
 
-        bindCtx(this, [
-            'handleClick'
-        ]);
+        bindCtx(this, ['handleClick']);
     }
 
     handleClick(e) {
@@ -58,7 +59,7 @@ class Selectable extends Component {
         }
 
         this.setState(prevState => ({
-            checked: !prevState.checked
+            checked: !prevState.checked,
         }));
 
         this.props.onChange(!this.props.checked, e);
@@ -66,17 +67,31 @@ class Selectable extends Component {
 
     render() {
         const attrFilterTarget = [
-            'checked', 'defaultChecked', 'onChange', 'className',
+            'checked',
+            'defaultChecked',
+            'onChange',
+            'className',
             // 防止这些额外的参数影响 tag 的类型
-            '_shape', 'closable'
+            '_shape',
+            'closable',
         ];
 
         const others = obj.pickOthers(attrFilterTarget, this.props);
-        const isChecked = 'checked' in this.props ? this.props.checked : this.state.checked;
+        const isChecked =
+            'checked' in this.props ? this.props.checked : this.state.checked;
         const clazz = classNames(this.props.className, {
-            checked: isChecked
+            checked: isChecked,
         });
-        return <Tag {...others} role="checkbox" _shape="checkable" aria-checked={isChecked} className={clazz} onClick={this.handleClick} />;
+        return (
+            <Tag
+                {...others}
+                role="checkbox"
+                _shape="checkable"
+                aria-checked={isChecked}
+                className={clazz}
+                onClick={this.handleClick}
+            />
+        );
     }
 }
 

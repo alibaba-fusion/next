@@ -11,7 +11,8 @@ import { statics } from './util';
 const { makeChain } = func;
 
 const unique = (arr, key = 'this') => {
-    const temp = {}, ret = [];
+    const temp = {},
+        ret = [];
     arr.forEach(item => {
         let value;
         if (key === 'this') {
@@ -33,56 +34,64 @@ export default function selection(BaseComponent) {
         static SelectionRow = SelectionRow;
         static propTypes = {
             /**
-            * 是否启用选择模式
-            * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
-            * @property {Function} onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。
-            * @property {Function} onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
-            * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
-            * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
-            * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
-            */
+             * 是否启用选择模式
+             * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
+             * @property {Function} onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。
+             * @property {Function} onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
+             * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
+             * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
+             * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
+             */
             rowSelection: PropTypes.object,
             primaryKey: PropTypes.string,
             dataSource: PropTypes.array,
             entireDataSource: PropTypes.array,
-            ...BaseComponent.propTypes
-        }
+            ...BaseComponent.propTypes,
+        };
 
         static defaultProps = {
             ...BaseComponent.defaultProps,
             locale: zhCN.Table,
             primaryKey: 'id',
-            prefix: 'next-'
-        }
+            prefix: 'next-',
+        };
 
         static contextTypes = {
-            listHeader: PropTypes.any
-        }
+            listHeader: PropTypes.any,
+        };
 
         static childContextTypes = {
             rowSelection: PropTypes.object,
-            selectedRowKeys: PropTypes.array
-        }
+            selectedRowKeys: PropTypes.array,
+        };
 
         constructor(props, context) {
             super(props, context);
             this.state = {
-                selectedRowKeys: props.rowSelection && 'selectedRowKeys' in props.rowSelection ? (props.rowSelection.selectedRowKeys || []) : []
+                selectedRowKeys:
+                    props.rowSelection &&
+                    'selectedRowKeys' in props.rowSelection
+                        ? props.rowSelection.selectedRowKeys || []
+                        : [],
             };
         }
 
         getChildContext() {
             return {
                 rowSelection: this.props.rowSelection,
-                selectedRowKeys: this.state.selectedRowKeys
+                selectedRowKeys: this.state.selectedRowKeys,
             };
         }
 
         componentWillReceiveProps(nextProps) {
-            if (nextProps.rowSelection && 'selectedRowKeys' in nextProps.rowSelection) {
-                const selectedRowKeys = nextProps.rowSelection.selectedRowKeys || [];
+            if (
+                nextProps.rowSelection &&
+                'selectedRowKeys' in nextProps.rowSelection
+            ) {
+                const selectedRowKeys =
+                    nextProps.rowSelection.selectedRowKeys || [];
                 this.setState({
-                    selectedRowKeys
+                    selectedRowKeys,
                 });
             }
         }
@@ -90,21 +99,36 @@ export default function selection(BaseComponent) {
         normalizeChildren(children) {
             const { prefix, rowSelection } = this.props;
             if (rowSelection) {
-                children = Children.map(children, (child, index) => React.cloneElement(child, {
-                    key: index
-                }));
-                children.unshift(<Col key="selection" title={this.renderSelectionHeader.bind(this)}
-                    cell={this.renderSelectionBody.bind(this)}
-                    width={50}
-                    className={`${prefix}table-selection`} __normalized />);
+                children = Children.map(children, (child, index) =>
+                    React.cloneElement(child, {
+                        key: index,
+                    })
+                );
+                children.unshift(
+                    <Col
+                        key="selection"
+                        title={this.renderSelectionHeader.bind(this)}
+                        cell={this.renderSelectionBody.bind(this)}
+                        width={50}
+                        className={`${prefix}table-selection`}
+                        __normalized
+                    />
+                );
                 return children;
             }
             return children;
         }
 
         renderSelectionHeader = () => {
-            const onChange = this.selectAllRow, attrs = {},
-                { rowSelection, primaryKey, dataSource, entireDataSource, locale } = this.props,
+            const onChange = this.selectAllRow,
+                attrs = {},
+                {
+                    rowSelection,
+                    primaryKey,
+                    dataSource,
+                    entireDataSource,
+                    locale,
+                } = this.props,
                 { selectedRowKeys } = this.state,
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple';
 
@@ -118,7 +142,8 @@ export default function selection(BaseComponent) {
                     if (!rowSelection.getProps) {
                         return true;
                     } else {
-                        return !(rowSelection.getProps(record, index) || {}).disabled;
+                        return !(rowSelection.getProps(record, index) || {})
+                            .disabled;
                     }
                 })
                 .map(record => record[primaryKey])
@@ -129,15 +154,23 @@ export default function selection(BaseComponent) {
                         indeterminate = true;
                     }
                 });
-            attrs.onClick = makeChain((e) => {
+            attrs.onClick = makeChain(e => {
                 e.stopPropagation();
             }, attrs.onClick);
 
             if (checked) {
                 indeterminate = false;
             }
-            return mode === 'multiple' ? <Checkbox indeterminate={indeterminate} aria-label={locale.selectAll} checked={checked} onChange={onChange} {...attrs} /> : null;
-        }
+            return mode === 'multiple' ? (
+                <Checkbox
+                    indeterminate={indeterminate}
+                    aria-label={locale.selectAll}
+                    checked={checked}
+                    onChange={onChange}
+                    {...attrs}
+                />
+            ) : null;
+        };
 
         renderSelectionBody = (value, index, record) => {
             const { rowSelection, primaryKey } = this.props;
@@ -145,21 +178,32 @@ export default function selection(BaseComponent) {
             const mode = rowSelection.mode ? rowSelection.mode : 'multiple';
             const checked = selectedRowKeys.indexOf(record[primaryKey]) > -1;
             const onChange = this.selectOneRow.bind(this, index, record);
-            const attrs = rowSelection.getProps ? (rowSelection.getProps(record, index) || {}) : {};
+            const attrs = rowSelection.getProps
+                ? rowSelection.getProps(record, index) || {}
+                : {};
 
-            attrs.onClick = makeChain((e) => {
+            attrs.onClick = makeChain(e => {
                 e.stopPropagation();
             }, attrs.onClick);
-            return mode === 'multiple' ? <Checkbox checked={checked} onChange={onChange} {...attrs} /> :
-                <Radio checked={checked} onChange={onChange} {...attrs} />;
-        }
+            return mode === 'multiple' ? (
+                <Checkbox checked={checked} onChange={onChange} {...attrs} />
+            ) : (
+                <Radio checked={checked} onChange={onChange} {...attrs} />
+            );
+        };
 
         selectAllRow = (checked, e) => {
             const ret = [...this.state.selectedRowKeys],
-                { rowSelection, primaryKey, dataSource, entireDataSource } = this.props,
+                {
+                    rowSelection,
+                    primaryKey,
+                    dataSource,
+                    entireDataSource,
+                } = this.props,
                 { selectedRowKeys } = this.state,
                 getProps = rowSelection.getProps;
-            let attrs = {}, records = [];
+            let attrs = {},
+                records = [];
 
             const source = entireDataSource ? entireDataSource : dataSource;
 
@@ -169,7 +213,10 @@ export default function selection(BaseComponent) {
                     attrs = getProps(record, index) || {};
                 }
                 // 反选和全选的时候不要丢弃禁用项的选中状态
-                if (checked && (!attrs.disabled || selectedRowKeys.indexOf(id) > -1)) {
+                if (
+                    checked &&
+                    (!attrs.disabled || selectedRowKeys.indexOf(id) > -1)
+                ) {
                     ret.push(id);
                     records.push(record);
                 } else if (attrs.disabled && selectedRowKeys.indexOf(id) > -1) {
@@ -187,15 +234,18 @@ export default function selection(BaseComponent) {
             }
             this.triggerSelection(rowSelection, unique(ret), records);
             e.stopPropagation();
-        }
+        };
 
         selectOneRow(index, record, checked, e) {
-            let selectedRowKeys = [...this.state.selectedRowKeys], i;
+            let selectedRowKeys = [...this.state.selectedRowKeys],
+                i;
             const { primaryKey, rowSelection, dataSource } = this.props,
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple',
                 id = record[primaryKey];
             if (!id) {
-                log.warning(`Can't get value from record using given ${primaryKey} as primaryKey.`);
+                log.warning(
+                    `Can't get value from record using given ${primaryKey} as primaryKey.`
+                );
             }
             if (mode === 'multiple') {
                 if (checked) {
@@ -207,7 +257,12 @@ export default function selection(BaseComponent) {
             } else if (checked) {
                 selectedRowKeys = [id];
             }
-            const records = unique(dataSource.filter(item => selectedRowKeys.indexOf(item[primaryKey]) > -1), primaryKey);
+            const records = unique(
+                dataSource.filter(
+                    item => selectedRowKeys.indexOf(item[primaryKey]) > -1
+                ),
+                primaryKey
+            );
             if (typeof rowSelection.onSelect === 'function') {
                 rowSelection.onSelect(checked, record, records);
             }
@@ -219,7 +274,7 @@ export default function selection(BaseComponent) {
         triggerSelection(rowSelection, selectedRowKeys, records) {
             if (!('selectedRowKeys' in rowSelection)) {
                 this.setState({
-                    selectedRowKeys
+                    selectedRowKeys,
                 });
             }
             if (typeof rowSelection.onChange === 'function') {
@@ -258,9 +313,11 @@ export default function selection(BaseComponent) {
                 components = { ...components };
                 components.Row = components.Row || SelectionRow;
             }
-            return (<BaseComponent {...others} components={components}>
-                {children}
-            </BaseComponent>);
+            return (
+                <BaseComponent {...others} components={components}>
+                    {children}
+                </BaseComponent>
+            );
         }
     }
     statics(SelectionTable, BaseComponent);

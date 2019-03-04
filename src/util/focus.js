@@ -1,10 +1,9 @@
 import KEYCODE from './keycode';
-import {each} from './object';
+import { each } from './object';
 
 /**
  * 用于切换页面元素的焦点
  */
-
 
 /**
  * 元素是否可见
@@ -17,7 +16,10 @@ function _isVisible(node) {
         if (node === document.body || node === document.documentElement) {
             break;
         }
-        if (node.style.display === 'none' || node.style.visibility === 'hidden') {
+        if (
+            node.style.display === 'none' ||
+            node.style.visibility === 'hidden'
+        ) {
             return false;
         }
         node = node.parentNode;
@@ -42,7 +44,7 @@ function _isFocusable(node) {
         } else if (['select', 'textarea', 'button'].indexOf(nodeName) > -1) {
             return !node.disabled;
         } else if (nodeName === 'a') {
-            return (node.getAttribute('href') || hasTabIndex);
+            return node.getAttribute('href') || hasTabIndex;
         } else {
             return hasTabIndex;
         }
@@ -61,7 +63,9 @@ export function getFocusNodeList(node) {
 
     each(nodeList, item => {
         if (_isFocusable(item)) {
-            const method = item.getAttribute('data-auto-focus') ? 'unshift' : 'push';
+            const method = item.getAttribute('data-auto-focus')
+                ? 'unshift'
+                : 'push';
             res[method](item);
         }
     });

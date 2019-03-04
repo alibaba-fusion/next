@@ -15,7 +15,6 @@ const { Popup } = Overlay;
  * DatePicker.MonthPicker
  */
 class MonthPicker extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -127,8 +126,8 @@ class MonthPicker extends Component {
          */
         monthCellRender: PropTypes.func,
         locale: PropTypes.object,
-        className: PropTypes.string
-    }
+        className: PropTypes.string,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -142,61 +141,81 @@ class MonthPicker extends Component {
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
         onChange: func.noop,
-        onVisibleChange: func.noop
-    }
+        onVisibleChange: func.noop,
+    };
 
     constructor(props, context) {
         super(props, context);
 
-        const value = formatDateValue(props.value || props.defaultValue, props.format);
+        const value = formatDateValue(
+            props.value || props.defaultValue,
+            props.format
+        );
 
-        this.inputAsString = (typeof (props.value || props.defaultValue) === 'string'); // 判断用户输入是否是字符串
+        this.inputAsString =
+            typeof (props.value || props.defaultValue) === 'string'; // 判断用户输入是否是字符串
         this.state = {
             value,
             dateInputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible
+            visible: props.visible || props.defaultVisible,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
-            const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
+            const value = formatDateValue(
+                nextProps.value,
+                nextProps.format || this.props.format
+            );
             this.setState({
-                value
+                value,
             });
             this.inputAsString = typeof nextProps.value === 'string';
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
     }
 
-    onValueChange = (newValue) => {
-        const ret = (this.inputAsString && newValue) ? newValue.format(this.props.format) : newValue;
+    onValueChange = newValue => {
+        const ret =
+            this.inputAsString && newValue
+                ? newValue.format(this.props.format)
+                : newValue;
         this.props.onChange(ret);
-    }
+    };
 
-    onSelectCalendarPanel = (value) => {
+    onSelectCalendarPanel = value => {
         // const { format } = this.props;
         const prevSelectedMonth = this.state.value;
-        const selectedMonth = value.clone().date(1).hour(0).minute(0).second(0);
+        const selectedMonth = value
+            .clone()
+            .date(1)
+            .hour(0)
+            .minute(0)
+            .second(0);
 
-        this.handleChange(selectedMonth, prevSelectedMonth, {inputing: false}, () => {
-            this.onVisibleChange(false, 'calendarSelect');
-        });
-    }
+        this.handleChange(
+            selectedMonth,
+            prevSelectedMonth,
+            { inputing: false },
+            () => {
+                this.onVisibleChange(false, 'calendarSelect');
+            }
+        );
+    };
 
     clearValue = () => {
         this.setState({
-            dateInputStr: ''
+            dateInputStr: '',
         });
 
         this.handleChange(null, this.state.value);
-    }
+    };
 
     onDateInputChange = (inputStr, e, eventType) => {
         if (eventType === 'clear' || !inputStr) {
@@ -205,10 +224,10 @@ class MonthPicker extends Component {
         } else {
             this.setState({
                 dateInputStr: inputStr,
-                inputing: true
+                inputing: true,
             });
         }
-    }
+    };
 
     onDateInputBlur = () => {
         const { dateInputStr } = this.state;
@@ -218,20 +237,20 @@ class MonthPicker extends Component {
 
             this.setState({
                 dateInputStr: '',
-                inputing: false
+                inputing: false,
             });
 
             if (parsed.isValid() && !disabledDate(parsed)) {
                 this.handleChange(parsed, this.state.value);
             }
         }
-    }
+    };
 
     handleChange = (newValue, prevValue, others = {}, callback) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
-                ...others
+                ...others,
             });
         }
 
@@ -246,16 +265,16 @@ class MonthPicker extends Component {
                 return callback();
             }
         }
-    }
+    };
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
         this.props.onVisibleChange(visible, reason);
-    }
+    };
 
     render() {
         const {
@@ -286,17 +305,20 @@ class MonthPicker extends Component {
 
         const { visible, value, dateInputStr, inputing } = this.state;
 
-        const monthPickerCls = classnames({
-            [`${prefix}month-picker`]: true
-        }, className);
+        const monthPickerCls = classnames(
+            {
+                [`${prefix}month-picker`]: true,
+            },
+            className
+        );
 
         const triggerInputCls = classnames({
             [`${prefix}month-picker-input`]: true,
-            [`${prefix}error`]: false
+            [`${prefix}error`]: false,
         });
 
         const panelBodyClassName = classnames({
-            [`${prefix}month-picker-body`]: true
+            [`${prefix}month-picker-body`]: true,
         });
 
         if (rtl) {
@@ -311,65 +333,82 @@ class MonthPicker extends Component {
             disabled,
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
-            onPressEnter: this.onDateInputBlur
+            onPressEnter: this.onDateInputBlur,
         };
 
-        const dateInputValue = inputing ? dateInputStr : ((value && value.format(format)) || '');
+        const dateInputValue = inputing
+            ? dateInputStr
+            : (value && value.format(format)) || '';
         const triggerInputValue = dateInputValue;
 
-        const dateInput = (<Input
-            {...sharedInputProps}
-            value={dateInputValue}
-            onFocus={this.onFoucsDateInput}
-            placeholder={format}
-            className={panelInputCls} />);
+        const dateInput = (
+            <Input
+                {...sharedInputProps}
+                value={dateInputValue}
+                onFocus={this.onFoucsDateInput}
+                placeholder={format}
+                className={panelInputCls}
+            />
+        );
 
-        const datePanel = (<Calendar
-            shape="panel"
-            modes={['month', 'year']}
-            monthCellRender={monthCellRender}
-            value={value}
-            onSelect={this.onSelectCalendarPanel}
-            defaultVisibleMonth={defaultVisibleYear}
-            disabledDate={disabledDate} />);
+        const datePanel = (
+            <Calendar
+                shape="panel"
+                modes={['month', 'year']}
+                monthCellRender={monthCellRender}
+                value={value}
+                onSelect={this.onSelectCalendarPanel}
+                defaultVisibleMonth={defaultVisibleYear}
+                disabledDate={disabledDate}
+            />
+        );
 
         const panelBody = datePanel;
         const panelFooter = footerRender();
 
         const allowClear = value && hasClear;
-        const trigger = (<div className={`${prefix}month-picker-trigger`}>
-            <Input
-                {...sharedInputProps}
-                label={label}
-                state={state}
-                value={triggerInputValue}
-                placeholder={placeholder || locale.monthPlaceholder}
-                hint="calendar"
-                hasClear={allowClear}
-                className={triggerInputCls} />
-        </div>);
-        return (<div {...obj.pickOthers(MonthPicker.propTypes, others)} className={monthPickerCls}>
-            <Popup
-                {...popupProps}
-                autoFocus
-                disabled={disabled}
-                visible={visible}
-                onVisibleChange={this.onVisibleChange}
-                align={popupAlign}
-                triggerType={popupTriggerType}
-                container={popupContainer}
-                style={popupStyle}
-                className={popupClassName}
-                trigger={trigger}>
-                <div className={panelBodyClassName} dir={others.dir}>
-                    <div className={`${prefix}month-picker-panel-header`}>
-                        {dateInput}
+        const trigger = (
+            <div className={`${prefix}month-picker-trigger`}>
+                <Input
+                    {...sharedInputProps}
+                    label={label}
+                    state={state}
+                    value={triggerInputValue}
+                    placeholder={placeholder || locale.monthPlaceholder}
+                    hint="calendar"
+                    hasClear={allowClear}
+                    className={triggerInputCls}
+                />
+            </div>
+        );
+        return (
+            <div
+                {...obj.pickOthers(MonthPicker.propTypes, others)}
+                className={monthPickerCls}
+            >
+                <Popup
+                    {...popupProps}
+                    autoFocus
+                    disabled={disabled}
+                    visible={visible}
+                    onVisibleChange={this.onVisibleChange}
+                    align={popupAlign}
+                    triggerType={popupTriggerType}
+                    container={popupContainer}
+                    style={popupStyle}
+                    className={popupClassName}
+                    trigger={trigger}
+                >
+                    <div className={panelBodyClassName} dir={others.dir}>
+                        <div className={`${prefix}month-picker-panel-header`}>
+                            {dateInput}
+                        </div>
+                        {panelBody}
+                        {panelFooter}
                     </div>
-                    {panelBody}
-                    {panelFooter}
-                </div>
-            </Popup>
-        </div>);
+                </Popup>
+            </div>
+        );
     }
 }
 

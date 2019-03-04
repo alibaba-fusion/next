@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import cx from 'classnames';
 import { findDOMNode } from 'react-dom';
 import { events } from '../util';
@@ -51,7 +51,7 @@ export default class VirtualList extends Component {
          * 设置跳转位置，需要设置 itemSizeGetter 才能生效, 不设置认为元素等高并取第一个元素高度作为默认高
          */
         jumpIndex: PropTypes.number,
-        className: PropTypes.string
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -60,14 +60,14 @@ export default class VirtualList extends Component {
         minSize: 1,
         pageSize: 10,
         jumpIndex: 0,
-        threshold: 100
+        threshold: 100,
     };
 
     constructor(props) {
         super(props);
         const { jumpIndex } = props;
         const { from, size } = this.constrain(jumpIndex, 0, props);
-        this.state = { from, size};
+        this.state = { from, size };
         this.cache = {};
         this.scrollTo = this.scrollTo.bind(this);
         this.cachedScroll = null;
@@ -78,7 +78,9 @@ export default class VirtualList extends Component {
     componentDidMount() {
         const { jumpIndex } = this.props;
 
-        this.updateFrameAndClearCache = this.updateFrameAndClearCache.bind(this);
+        this.updateFrameAndClearCache = this.updateFrameAndClearCache.bind(
+            this
+        );
 
         events.on(window, 'resize', this.updateFrameAndClearCache);
 
@@ -86,7 +88,7 @@ export default class VirtualList extends Component {
     }
 
     componentWillReceiveProps(next) {
-        const {from, size} = this.state;
+        const { from, size } = this.state;
 
         const oldIndex = this.props.jumpIndex;
         const newIndex = next.jumpIndex;
@@ -99,7 +101,6 @@ export default class VirtualList extends Component {
     }
 
     componentDidUpdate() {
-
         // If the list has reached an unstable state, prevent an infinite loop.
         if (this.unstable) {
             return;
@@ -127,7 +128,6 @@ export default class VirtualList extends Component {
     }
 
     maybeSetState(b, cb) {
-
         if (isEqualSubset(this.state, b)) {
             return cb();
         }
@@ -153,7 +153,11 @@ export default class VirtualList extends Component {
         el = el.parentElement;
 
         switch (window.getComputedStyle(el).overflowY) {
-            case 'auto': case 'scroll': case 'overlay': case 'visible': return el;
+            case 'auto':
+            case 'scroll':
+            case 'overlay':
+            case 'visible':
+                return el;
         }
 
         return window;
@@ -164,25 +168,28 @@ export default class VirtualList extends Component {
         // if (typeof this.cachedScroll === 'number') {
         //     return this.cachedScroll;
         // }
-        const {scrollParent} = this;
+        const { scrollParent } = this;
         const scrollKey = 'scrollTop';
-        const actual = scrollParent === window ?
-        // Firefox always returns document.body[scrollKey] as 0 and Chrome/Safari
-        // always return document.documentElement[scrollKey] as 0, so take
-        // whichever has a value.
-            document.body[scrollKey] || document.documentElement[scrollKey] :
-            scrollParent[scrollKey];
+        const actual =
+            scrollParent === window
+                ? // Firefox always returns document.body[scrollKey] as 0 and Chrome/Safari
+                  // always return document.documentElement[scrollKey] as 0, so take
+                  // whichever has a value.
+                  document.body[scrollKey] ||
+                  document.documentElement[scrollKey]
+                : scrollParent[scrollKey];
         const max = this.getScrollSize() - this.getViewportSize();
 
         const scroll = Math.max(0, Math.min(actual, max));
         const el = this.getEl();
-        this.cachedScroll = this.getOffset(scrollParent) + scroll - this.getOffset(el);
+        this.cachedScroll =
+            this.getOffset(scrollParent) + scroll - this.getOffset(el);
 
         return this.cachedScroll;
     }
 
     setScroll(offset) {
-        const {scrollParent} = this;
+        const { scrollParent } = this;
         offset += this.getOffset(this.getEl());
         if (scrollParent === window) {
             return window.scrollTo(0, offset);
@@ -193,19 +200,19 @@ export default class VirtualList extends Component {
     }
 
     getViewportSize() {
-        const {scrollParent} = this;
-        return scrollParent === window ?
-            window.innerHeight :
-            scrollParent.clientHeight;
+        const { scrollParent } = this;
+        return scrollParent === window
+            ? window.innerHeight
+            : scrollParent.clientHeight;
     }
 
     getScrollSize() {
-        const {scrollParent} = this;
-        const {body, documentElement} = document;
+        const { scrollParent } = this;
+        const { body, documentElement } = document;
         const key = 'scrollHeight';
-        return scrollParent === window ?
-            Math.max(body[key], documentElement[key]) :
-            scrollParent[key];
+        return scrollParent === window
+            ? Math.max(body[key], documentElement[key])
+            : scrollParent[key];
     }
 
     getStartAndEnd(threshold = this.props.threshold) {
@@ -215,7 +222,7 @@ export default class VirtualList extends Component {
         const start = Math.max(0, trueScroll - threshold);
         const end = trueScroll + this.getViewportSize() + threshold;
 
-        return {start, end};
+        return { start, end };
     }
 
     // Called by 'scroll' and 'resize' events, clears scroll position cache.
@@ -232,7 +239,6 @@ export default class VirtualList extends Component {
         }
 
         return this.updateVariableFrame(cb);
-
     }
 
     updateScrollParent() {
@@ -259,8 +265,8 @@ export default class VirtualList extends Component {
             this.cacheSizes();
         }
 
-        const {start, end} = this.getStartAndEnd();
-        const {pageSize, children} = this.props;
+        const { start, end } = this.getStartAndEnd();
+        const { pageSize, children } = this.props;
         const length = children.length;
         let space = 0;
         let from = 0;
@@ -269,7 +275,11 @@ export default class VirtualList extends Component {
 
         while (from < maxFrom) {
             const itemSize = this.getSizeOf(from);
-            if (itemSize === null || itemSize === undefined || space + itemSize > start) {
+            if (
+                itemSize === null ||
+                itemSize === undefined ||
+                space + itemSize > start
+            ) {
                 break;
             }
             space += itemSize;
@@ -288,11 +298,10 @@ export default class VirtualList extends Component {
             ++size;
         }
 
-        this.maybeSetState({from, size}, cb);
+        this.maybeSetState({ from, size }, cb);
     }
 
     getSpaceBefore(index, cache = {}) {
-
         if (!index) {
             return 0;
         }
@@ -302,7 +311,10 @@ export default class VirtualList extends Component {
 
         // Find the closest space to index there is a cached value for.
         let from = index;
-        while (from > 0 && (cache[from] === null || cache[from] === undefined)) {
+        while (
+            from > 0 &&
+            (cache[from] === null || cache[from] === undefined)
+        ) {
             from--;
         }
 
@@ -323,8 +335,8 @@ export default class VirtualList extends Component {
     }
 
     cacheSizes() {
-        const {cache} = this;
-        const {from} = this.state;
+        const { cache } = this;
+        const { from } = this.state;
         const { children, props = {} } = this.items;
         const itemEls = children || props.children || [];
         for (let i = 0, l = itemEls.length; i < l; ++i) {
@@ -358,7 +370,7 @@ export default class VirtualList extends Component {
         }
     }
 
-    constrain(from, size, {children, minSize}) {
+    constrain(from, size, { children, minSize }) {
         const length = children && children.length;
         size = Math.max(size, minSize);
         if (size > length) {
@@ -366,7 +378,7 @@ export default class VirtualList extends Component {
         }
         from = from ? Math.max(Math.min(from, length - size), 0) : 0;
 
-        return {from, size};
+        return { from, size };
     }
 
     scrollTo(index) {
@@ -375,7 +387,7 @@ export default class VirtualList extends Component {
 
     renderMenuItems() {
         const { children, itemsRenderer } = this.props;
-        const {from, size} = this.state;
+        const { from, size } = this.state;
         const items = [];
 
         for (let i = 0; i < size; ++i) {
@@ -391,10 +403,10 @@ export default class VirtualList extends Component {
     render() {
         const { children = [], prefix, className } = this.props;
         const length = children.length;
-        const {from} = this.state;
+        const { from } = this.state;
         const items = this.renderMenuItems();
 
-        const style = {position: 'relative'};
+        const style = { position: 'relative' };
         const cache = {};
 
         const size = this.getSpaceBefore(length, cache);
@@ -407,21 +419,23 @@ export default class VirtualList extends Component {
         const listStyle = {
             msTransform: transform,
             WebkitTransform: transform,
-            transform
+            transform,
         };
 
         const cls = cx({
             [`${prefix}virtual-list-wrapper`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
 
         return (
-            <div className={cls} style={style} ref={
-                c => {
+            <div
+                className={cls}
+                style={style}
+                ref={c => {
                     this.el = c;
                     return this.el;
-                }
-            }>
+                }}
+            >
                 <div style={listStyle}>{items}</div>
             </div>
         );

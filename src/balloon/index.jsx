@@ -4,7 +4,7 @@ import Tooltip from './tooltip';
 import Inner from './inner';
 
 Balloon.Tooltip = ConfigProvider.config(Tooltip, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('text' in props) {
             deprecated('text', 'children', 'Tooltip');
             const { text, ...others } = props;
@@ -12,12 +12,12 @@ Balloon.Tooltip = ConfigProvider.config(Tooltip, {
         }
 
         return props;
-    }
+    },
 });
 Balloon.Inner = Inner;
 
 export default ConfigProvider.config(Balloon, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if (props.alignment) {
             deprecated('alignment', 'alignEdge', 'Balloon');
             const { alignment, ...others } = props;
@@ -38,5 +38,5 @@ export default ConfigProvider.config(Balloon, {
         }
 
         return props;
-    }
+    },
 });

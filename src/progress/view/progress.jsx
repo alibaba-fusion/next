@@ -7,7 +7,6 @@ import Circle from './progress-circle';
  * Progress
  */
 export default class Progress extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -50,7 +49,7 @@ export default class Progress extends Component {
          * 背景色
          */
         backgroundColor: PropTypes.string,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -61,15 +60,19 @@ export default class Progress extends Component {
         percent: 0,
         progressive: false,
         hasBorder: false,
-        textRender: percent => `${Math.floor(percent)}%`
+        textRender: percent => `${Math.floor(percent)}%`,
     };
 
     static contextTypes = {
-        prefix: PropTypes.string
+        prefix: PropTypes.string,
     };
 
     render() {
         const { shape, hasBorder, ...others } = this.props;
-        return shape === 'circle' ? <Circle {...others} /> : <Line {...others} hasBorder={hasBorder} />;
+        return shape === 'circle' ? (
+            <Circle {...others} />
+        ) : (
+            <Line {...others} hasBorder={hasBorder} />
+        );
     }
 }

@@ -11,7 +11,6 @@ const noop = () => {};
 
 /** Tab */
 export default class Tab extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -22,7 +21,10 @@ export default class Tab extends Component {
         /**
          * 初始化时被激活的选项卡的 key
          */
-        defaultActiveKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        defaultActiveKey: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         /**
          * 外观形态
          */
@@ -97,7 +99,7 @@ export default class Tab extends Component {
          */
         tabRender: PropTypes.func,
         children: PropTypes.any,
-        className: PropTypes.string
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -112,20 +114,23 @@ export default class Tab extends Component {
         unmountInactiveTabs: false,
         onClick: noop,
         onChange: noop,
-        onClose: noop
+        onClose: noop,
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            activeKey: this.getDefaultActiveKey(props)
+            activeKey: this.getDefaultActiveKey(props),
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.activeKey && this.state.activeKey !== nextProps.activeKey) {
+        if (
+            nextProps.activeKey &&
+            this.state.activeKey !== nextProps.activeKey
+        ) {
             this.setState({
-                activeKey: nextProps.activeKey
+                activeKey: nextProps.activeKey,
             });
         }
     }
@@ -171,7 +176,6 @@ export default class Tab extends Component {
             }
         });
         return key;
-
     }
 
     setActiveKey(key) {
@@ -182,7 +186,7 @@ export default class Tab extends Component {
             return;
         }
         this.setState({
-            activeKey: key
+            activeKey: key,
         });
     }
 
@@ -195,9 +199,9 @@ export default class Tab extends Component {
                 onChange(key);
             }
         }
-    }
+    };
 
-    onNavKeyDown = (e) => {
+    onNavKeyDown = e => {
         const keyCode = e.keyCode;
         if (keyCode >= KEYCODE.LEFT && keyCode <= KEYCODE.DOWN) {
             e.preventDefault();
@@ -210,7 +214,7 @@ export default class Tab extends Component {
             newKey = this.getNextActiveKey(false);
             this.handleTriggerEvent(this.props.triggerType, newKey);
         }
-    }
+    };
 
     render() {
         const {
@@ -240,13 +244,18 @@ export default class Tab extends Component {
 
         const tabs = toArray(children);
 
-        const classNames = classnames({
-            [`${prefix}tabs`]: true,
-            [`${prefix}tabs-${shape}`]: shape,
-            [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
-            [`${prefix}tabs-${tabPosition}`]: shape === 'wrapped',
-            [`${prefix + size}`]: size
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}tabs`]: true,
+                [`${prefix}tabs-${shape}`]: shape,
+                [`${prefix}tabs-vertical`]:
+                    shape === 'wrapped' &&
+                    ['left', 'right'].indexOf(tabPosition) >= 0,
+                [`${prefix}tabs-${tabPosition}`]: shape === 'wrapped',
+                [`${prefix + size}`]: size,
+            },
+            className
+        );
 
         const navProps = {
             prefix,
@@ -264,7 +273,7 @@ export default class Tab extends Component {
             onTriggerEvent: this.handleTriggerEvent,
             onKeyDown: this.onNavKeyDown,
             style: navStyle,
-            className: navClassName
+            className: navClassName,
         };
 
         const contentProps = {
@@ -273,21 +282,29 @@ export default class Tab extends Component {
             lazyLoad,
             unmountInactiveTabs,
             style: contentStyle,
-            className: contentClassName
+            className: contentClassName,
         };
 
         const tabChildren = [
             <TabNav key="tab-nav" {...navProps} />,
-            <TabContent key="tab-content" {...contentProps}>{tabs}</TabContent>
+            <TabContent key="tab-content" {...contentProps}>
+                {tabs}
+            </TabContent>,
         ];
 
         if (tabPosition === 'bottom') {
             tabChildren.reverse();
         }
 
-        return (<div dir={rtl ? 'rtl' : undefined} className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
-            {tabChildren}
-        </div>);
+        return (
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                className={classNames}
+                {...obj.pickOthers(Tab.propTypes, others)}
+            >
+                {tabChildren}
+            </div>
+        );
     }
 }
 

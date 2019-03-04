@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {obj, env} from '../util';
+import { obj, env } from '../util';
 import Base from './base';
 
 function onNextFrame(cb) {
@@ -27,7 +27,7 @@ const hiddenStyle = {
     top: '-1000px',
     overflowY: 'hidden',
     left: 0,
-    right: 0
+    right: 0,
 };
 
 /**
@@ -49,13 +49,13 @@ export default class TextArea extends Base {
         /**
          * 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)
          */
-        rows: PropTypes.number
+        rows: PropTypes.number,
     };
 
     static defaultProps = {
         ...Base.defaultProps,
         rows: 4,
-        autoHeight: false
+        autoHeight: false,
     };
 
     constructor(props) {
@@ -69,7 +69,7 @@ export default class TextArea extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value
+            value: typeof value === 'undefined' ? '' : value,
         };
     }
 
@@ -78,11 +78,13 @@ export default class TextArea extends Base {
         if (autoHeight) {
             if (typeof autoHeight === 'object') {
                 /* eslint-disable react/no-did-mount-set-state */
-                this.setState(this._getMinMaxHeight(autoHeight, this.state.value));
+                this.setState(
+                    this._getMinMaxHeight(autoHeight, this.state.value)
+                );
             } else {
                 this.setState({
                     height: this._getHeight(this.state.value),
-                    overflowY: 'hidden'
+                    overflowY: 'hidden',
                 });
             }
         }
@@ -96,7 +98,7 @@ export default class TextArea extends Base {
         }
     }
 
-    _getMinMaxHeight({minRows, maxRows}, value) {
+    _getMinMaxHeight({ minRows, maxRows }, value) {
         const node = ReactDOM.findDOMNode(this.helpRef);
         node.setAttribute('rows', minRows);
         const minHeight = node.clientHeight;
@@ -111,7 +113,7 @@ export default class TextArea extends Base {
             minHeight,
             maxHeight,
             height,
-            overflowY: height <= maxHeight ? 'hidden' : undefined
+            overflowY: height <= maxHeight ? 'hidden' : undefined,
         };
     }
 
@@ -122,17 +124,19 @@ export default class TextArea extends Base {
         return node.scrollHeight;
     }
 
-    _resizeTextArea = (value) => {
+    _resizeTextArea = value => {
         if (this.nextFrameActionId) {
             clearNextFrameAction(this.nextFrameActionId);
         }
         this.nextFrameActionId = onNextFrame(() => {
             const height = this._getHeight(value);
-            const maxHeight = this.state.maxHeight ? this.state.maxHeight : Infinity;
+            const maxHeight = this.state.maxHeight
+                ? this.state.maxHeight
+                : Infinity;
 
             this.setState({
                 height: this._getHeight(value),
-                overflowY: height <= maxHeight ? 'hidden' : undefined
+                overflowY: height <= maxHeight ? 'hidden' : undefined,
             });
         });
     };
@@ -179,11 +183,11 @@ export default class TextArea extends Base {
     }
 
     render() {
-        const {rows, style, className, autoHeight, prefix, rtl} = this.props;
+        const { rows, style, className, autoHeight, prefix, rtl } = this.props;
 
         const cls = classNames(this.getClass(), {
             [`${prefix}input-textarea`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
 
         const props = this.getProps();
@@ -192,33 +196,52 @@ export default class TextArea extends Base {
         const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心node节点：input
-        const others = obj.pickOthers(Object.assign({}, dataProps, TextArea.propTypes), this.props);
+        const others = obj.pickOthers(
+            Object.assign({}, dataProps, TextArea.propTypes),
+            this.props
+        );
 
         const textareStyle = {
             ...props.style,
             height: this.state.height,
             minHeight: this.state.minHeight,
             maxHeight: this.state.maxHeight,
-            overflowY: this.state.overflowY
+            overflowY: this.state.overflowY,
         };
 
-        const wrapStyle = autoHeight ? {
-            ...style,
-            position: 'relative'
-        } : style;
+        const wrapStyle = autoHeight
+            ? {
+                  ...style,
+                  position: 'relative',
+              }
+            : style;
 
-        return (<span className={cls} style={wrapStyle} dir={rtl ? 'rtl' : undefined} {...dataProps}>
-            <textarea
-                {...others}
-                {...props}
-                data-real
-                rows={rows}
-                style={textareStyle}
-                ref={this.saveRef.bind(this)}
-                onKeyDown={this.onKeyDown.bind(this)}/>
-            {autoHeight ? <textarea data-fake ref={this.saveHelpRef.bind(this)} style={{...props.style, ...hiddenStyle}}
-                rows="1"/> : null}
-            {this.renderControl()}
-        </span>);
+        return (
+            <span
+                className={cls}
+                style={wrapStyle}
+                dir={rtl ? 'rtl' : undefined}
+                {...dataProps}
+            >
+                <textarea
+                    {...others}
+                    {...props}
+                    data-real
+                    rows={rows}
+                    style={textareStyle}
+                    ref={this.saveRef.bind(this)}
+                    onKeyDown={this.onKeyDown.bind(this)}
+                />
+                {autoHeight ? (
+                    <textarea
+                        data-fake
+                        ref={this.saveHelpRef.bind(this)}
+                        style={{ ...props.style, ...hiddenStyle }}
+                        rows="1"
+                    />
+                ) : null}
+                {this.renderControl()}
+            </span>
+        );
     }
 }

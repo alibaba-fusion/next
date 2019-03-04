@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
-import {func, KEYCODE, obj} from '../util';
+import { func, KEYCODE, obj } from '../util';
 
-const {noop, bindCtx} = func;
-const {ENTER, LEFT, UP, RIGHT, DOWN} = KEYCODE;
+const { noop, bindCtx } = func;
+const { ENTER, LEFT, UP, RIGHT, DOWN } = KEYCODE;
 const supportKeys = [ENTER, LEFT, UP, RIGHT, DOWN];
 
 // 评分组件的大小与icon的大小映射关系
 const ICON_SIZE_MAP = {
     small: 'xs',
     medium: 'small',
-    large: 'medium'
+    large: 'medium',
 };
 
 /** Rating */
@@ -67,7 +67,7 @@ export default class Rating extends Component {
         strokeMode: PropTypes.bool,
         className: PropTypes.string,
         id: PropTypes.string,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -81,7 +81,7 @@ export default class Rating extends Component {
         allowHalf: false,
         iconType: 'favorites-filling',
         onChange: noop,
-        onHoverChange: noop
+        onHoverChange: noop,
     };
 
     static currentValue(min, max, hoverValue, stateValue) {
@@ -101,7 +101,7 @@ export default class Rating extends Component {
             hoverValue: 0,
             iconSpace: 0,
             iconSize: 0,
-            clicked: false // 标记组件是否被点击过
+            clicked: false, // 标记组件是否被点击过
         };
         this.timer = null;
 
@@ -109,7 +109,7 @@ export default class Rating extends Component {
             'handleClick',
             'handleHover',
             'handleLeave',
-            'onKeyDown'
+            'onKeyDown',
         ]);
     }
 
@@ -120,7 +120,7 @@ export default class Rating extends Component {
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
             this.setState({
-                value: nextProps.value || 0
+                value: nextProps.value || 0,
             });
         }
     }
@@ -144,12 +144,14 @@ export default class Rating extends Component {
 
         if (icon && this.underlayNode) {
             const newIconSize = icon.offsetWidth;
-            const newIconSpace = (this.underlayNode.offsetWidth - count * newIconSize) / (count + 1);
+            const newIconSpace =
+                (this.underlayNode.offsetWidth - count * newIconSize) /
+                (count + 1);
 
             if (newIconSize !== iconSize || newIconSpace !== iconSpace) {
                 this.setState({
                     iconSpace: newIconSpace,
-                    iconSize: newIconSize
+                    iconSize: newIconSize,
                 });
             }
         }
@@ -171,7 +173,8 @@ export default class Rating extends Component {
             value = count;
         } else if (allowHalf) {
             const floorValue = Math.floor(value);
-            value = (value - 0.5) >= floorValue ? floorValue + 1 : floorValue + 0.5;
+            value =
+                value - 0.5 >= floorValue ? floorValue + 1 : floorValue + 0.5;
         } else {
             value = Math.floor(value) + 1;
         }
@@ -183,7 +186,6 @@ export default class Rating extends Component {
         const value = this.getValue(e);
         const { onHoverChange } = this.props;
         if (value !== this.state.hoverValue) {
-
             this.clearTimer();
 
             this.timer = setTimeout(() => {
@@ -195,11 +197,10 @@ export default class Rating extends Component {
     }
 
     handleLeave() {
-
         this.clearTimer();
 
         this.setState({
-            hoverValue: 0
+            hoverValue: 0,
         });
     }
 
@@ -236,14 +237,17 @@ export default class Rating extends Component {
                 break;
             case ENTER:
                 this.props.onChange(changingValue);
-                this.setState({ value: changingValue, hoverValue: changingValue });
+                this.setState({
+                    value: changingValue,
+                    hoverValue: changingValue,
+                });
                 break;
         }
         return !onKeyDown || onKeyDown(e);
     }
 
     handleChecked(index) {
-        this.setState({hoverValue: index});
+        this.setState({ hoverValue: index });
     }
 
     handleClick(e) {
@@ -263,13 +267,18 @@ export default class Rating extends Component {
     }
 
     getOverlayWidth() {
-        const {hoverValue, iconSpace, iconSize} = this.state;
+        const { hoverValue, iconSpace, iconSize } = this.state;
 
         if (!iconSpace || !iconSize) {
             return 'auto';
         }
 
-        const value = Rating.currentValue(0, this.props.count, hoverValue, this.state.value);
+        const value = Rating.currentValue(
+            0,
+            this.props.count,
+            hoverValue,
+            this.state.value
+        );
 
         const floorValue = Math.floor(value);
 
@@ -277,7 +286,7 @@ export default class Rating extends Component {
     }
 
     getInfoLeft() {
-        const {value, hoverValue, iconSpace, iconSize} = this.state;
+        const { value, hoverValue, iconSpace, iconSize } = this.state;
         const infoValue = hoverValue || value;
         const ceilValue = Math.ceil(infoValue);
 
@@ -285,16 +294,33 @@ export default class Rating extends Component {
     }
 
     render() {
-        const { id, prefix, className, showGrade, count, size, iconType,
-            strokeMode, disabled, readAs, rtl} = this.props;
+        const {
+            id,
+            prefix,
+            className,
+            showGrade,
+            count,
+            size,
+            iconType,
+            strokeMode,
+            disabled,
+            readAs,
+            rtl,
+        } = this.props;
         const others = obj.pickOthers(Rating.propTypes, this.props);
-        const {hoverValue, clicked} = this.state;
-        const underlay = [], overlay = [];
+        const { hoverValue, clicked } = this.state;
+        const underlay = [],
+            overlay = [];
 
         const enableA11y = !!id;
 
         // 获得Value
-        const value = Rating.currentValue(0, count, hoverValue, this.state.value);
+        const value = Rating.currentValue(
+            0,
+            count,
+            hoverValue,
+            this.state.value
+        );
 
         // icon的sizeMap
         const sizeMap = ICON_SIZE_MAP[size];
@@ -303,12 +329,18 @@ export default class Rating extends Component {
             const isCurrent = Math.ceil(value - 1) === i;
             const iconCls = classNames({
                 hover: hoverValue > 0 && isCurrent,
-                clicked: clicked && isCurrent
+                clicked: clicked && isCurrent,
             });
-            const iconNode = <Icon type={iconType} size={sizeMap} className={iconCls} />;
+            const iconNode = (
+                <Icon type={iconType} size={sizeMap} className={iconCls} />
+            );
 
             underlay.push(
-                <span ref={`rating-icon-${i}`} key={`underlay-${i}`} className={`${prefix}rating-icon`}>
+                <span
+                    ref={`rating-icon-${i}`}
+                    key={`underlay-${i}`}
+                    className={`${prefix}rating-icon`}
+                >
                     {iconNode}
                 </span>
             );
@@ -318,8 +350,8 @@ export default class Rating extends Component {
                         id={`${id}-${prefix}star${i + 1}`}
                         key={`input-${i}`}
                         className={`${prefix}visually-hidden`}
-                        aria-checked={(i + 1) === parseInt(hoverValue)}
-                        checked={(i + 1) === parseInt(hoverValue)}
+                        aria-checked={i + 1 === parseInt(hoverValue)}
+                        checked={i + 1 === parseInt(hoverValue)}
                         onChange={this.handleChecked.bind(this, i + 1)}
                         type="radio"
                         name="rating"
@@ -329,60 +361,84 @@ export default class Rating extends Component {
             }
 
             overlay.push(
-                <label key={`overlay-${i}`}
-                    htmlFor={enableA11y ? `${id}-${prefix}star${i + 1}` : null} className={`${prefix}rating-icon`}>
+                <label
+                    key={`overlay-${i}`}
+                    htmlFor={enableA11y ? `${id}-${prefix}star${i + 1}` : null}
+                    className={`${prefix}rating-icon`}
+                >
                     {iconNode}
-                    {enableA11y ? <span className={`${prefix}visually-hidden`}>{readAs(i + 1)}</span> : null}
+                    {enableA11y ? (
+                        <span className={`${prefix}visually-hidden`}>
+                            {readAs(i + 1)}
+                        </span>
+                    ) : null}
                 </label>
             );
         }
 
-        const ratingCls = classNames([
-            `${prefix}rating`,
-            `${prefix}rating-${size}`
-        ], {
-            [`${prefix}rating-grade-low`]: value <= count * 0.4,
-            [`${prefix}rating-grade-high`]: value > count * 0.4,
-            [`${prefix}rating-stroke-mode`]: strokeMode,
-            hover: hoverValue > 0
-        }, className);
+        const ratingCls = classNames(
+            [`${prefix}rating`, `${prefix}rating-${size}`],
+            {
+                [`${prefix}rating-grade-low`]: value <= count * 0.4,
+                [`${prefix}rating-grade-high`]: value > count * 0.4,
+                [`${prefix}rating-stroke-mode`]: strokeMode,
+                hover: hoverValue > 0,
+            },
+            className
+        );
 
         const baseCls = classNames(`${prefix}rating-base`, {
-            [`${prefix}rating-base-disabled`]: disabled
+            [`${prefix}rating-base-disabled`]: disabled,
         });
 
         const overlayStyle = {
-            width: this.getOverlayWidth()
+            width: this.getOverlayWidth(),
         };
         const infoStyle = {
             left: this.getInfoLeft(),
-            display: hoverValue ? 'block' : 'none'
+            display: hoverValue ? 'block' : 'none',
         };
 
-        const finalProps = disabled ? {} : {
-            onClick: this.handleClick,
-            onMouseOver: this.handleHover,
-            onMouseMove: this.handleHover,
-            onMouseLeave: this.handleLeave
-        };
+        const finalProps = disabled
+            ? {}
+            : {
+                  onClick: this.handleClick,
+                  onMouseOver: this.handleHover,
+                  onMouseMove: this.handleHover,
+                  onMouseLeave: this.handleLeave,
+              };
 
         if (rtl) {
             others.dir = 'rtl';
         }
 
         return (
-            <div id={id ? id : null} {...others} className={ratingCls} onKeyDown={this.onKeyDown} tabIndex="0">
+            <div
+                id={id ? id : null}
+                {...others}
+                className={ratingCls}
+                onKeyDown={this.onKeyDown}
+                tabIndex="0"
+            >
                 <div className={baseCls} {...finalProps}>
-                    <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)}>{underlay}</div>
-                    <div className={`${prefix}rating-overlay`} style={overlayStyle}>
-                        <form action="#">
-                            {overlay}
-                        </form>
+                    <div
+                        className={`${prefix}rating-underlay`}
+                        ref={n => (this.underlayNode = n)}
+                    >
+                        {underlay}
+                    </div>
+                    <div
+                        className={`${prefix}rating-overlay`}
+                        style={overlayStyle}
+                    >
+                        <form action="#">{overlay}</form>
                     </div>
                 </div>
-                {
-                    showGrade ? <div className={`${prefix}rating-info`} style={infoStyle}>{readAs(value)}</div> : null
-                }
+                {showGrade ? (
+                    <div className={`${prefix}rating-info`} style={infoStyle}>
+                        {readAs(value)}
+                    </div>
+                ) : null}
             </div>
         );
     }

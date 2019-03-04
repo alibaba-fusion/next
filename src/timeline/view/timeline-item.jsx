@@ -49,16 +49,15 @@ class TimelineItem extends Component {
         /**
          * 动画
          */
-        animation: PropTypes.bool
-
-    }
+        animation: PropTypes.bool,
+    };
 
     static defaultProps = {
         prefix: 'next-',
         state: 'done',
-        toggleFold: () => { },
-        animation: true
-    }
+        toggleFold: () => {},
+        animation: true,
+    };
 
     toggleFold(folderIndex) {
         this.props.toggleFold(folderIndex);
@@ -66,10 +65,10 @@ class TimelineItem extends Component {
 
     beforeEnter = () => {
         this['timeline-item'].style['min-height'] = 'auto';
-    }
+    };
     beforeLeave = () => {
         this['timeline-item'].style['min-height'] = '48px'; // timeleft 节点最小高度
-    }
+    };
     render() {
         const {
             prefix,
@@ -89,10 +88,15 @@ class TimelineItem extends Component {
             animation,
             ...others
         } = this.props;
-        const finalItemNode = dot ?
-            dot : icon ?
-                <span className={`${prefix}timeline-item-icon`}><Icon type={icon} size="xs" /></span> :
-                <span className={`${prefix}timeline-item-dot`}></span>;
+        const finalItemNode = dot ? (
+            dot
+        ) : icon ? (
+            <span className={`${prefix}timeline-item-icon`}>
+                <Icon type={icon} size="xs" />
+            </span>
+        ) : (
+            <span className={`${prefix}timeline-item-dot`} />
+        );
         const itemCls = classNames({
             [`${prefix}timeline-item`]: true,
             [`${prefix}timeline-item-first`]: index === 0,
@@ -101,70 +105,93 @@ class TimelineItem extends Component {
             [`${prefix}timeline-item-folded`]: folderIndex,
             [`${prefix}timeline-item-unfolded`]: foldShow,
             [`${prefix}timeline-item-has-left-content`]: timeLeft,
-            [className]: className
+            [className]: className,
         });
         const folderCls = classNames({
             [`${prefix}timeline-item-folder`]: true,
-            [`${prefix}timeline-item-has-left-content`]: timeLeft
+            [`${prefix}timeline-item-has-left-content`]: timeLeft,
         });
         const itemNodeCls = classNames({
             [`${prefix}timeline-item-node`]: true,
-            [`${prefix}timeline-item-node-custom`]: dot
+            [`${prefix}timeline-item-node-custom`]: dot,
         });
         const dotTailCls = classNames({
             [`${prefix}timeline-item-dot-tail`]: true,
             [`${prefix}timeline-item-dot-tail-solid`]: foldShow,
-            [`${prefix}timeline-hide`]: (index === total - 1) && foldShow
+            [`${prefix}timeline-hide`]: index === total - 1 && foldShow,
         });
 
         const buttonProps = {
             text: true,
             size: 'small',
             type: 'primary',
-            onClick: this.toggleFold.bind(this, folderIndex, total)
+            onClick: this.toggleFold.bind(this, folderIndex, total),
         };
-        const timelineNode = folderIndex && foldShow || !folderIndex ?
-            (<div {...obj.pickOthers(TimelineItem.propTypes, others)} className={itemCls} ref={e => {
-                this['timeline-item'] = e;
-            }}>
-                <div className={`${prefix}timeline-item-left-content`}>
-                    <p className={`${prefix}timeline-item-body`}>{timeLeft}</p>
-                </div>
-                <div className={`${prefix}timeline-item-timeline`}>
-                    <div className={`${prefix}timeline-item-tail`}><i></i></div>
-                    <div className={itemNodeCls}>
-                        {finalItemNode}
+        const timelineNode =
+            (folderIndex && foldShow) || !folderIndex ? (
+                <div
+                    {...obj.pickOthers(TimelineItem.propTypes, others)}
+                    className={itemCls}
+                    ref={e => {
+                        this['timeline-item'] = e;
+                    }}
+                >
+                    <div className={`${prefix}timeline-item-left-content`}>
+                        <p className={`${prefix}timeline-item-body`}>
+                            {timeLeft}
+                        </p>
+                    </div>
+                    <div className={`${prefix}timeline-item-timeline`}>
+                        <div className={`${prefix}timeline-item-tail`}>
+                            <i />
+                        </div>
+                        <div className={itemNodeCls}>{finalItemNode}</div>
+                    </div>
+                    <div className={`${prefix}timeline-item-content`}>
+                        <div className={`${prefix}timeline-item-title`}>
+                            {title}
+                        </div>
+                        <div className={`${prefix}timeline-item-body`}>
+                            {content}
+                        </div>
+                        <div className={`${prefix}timeline-item-time`}>
+                            {time}
+                        </div>
                     </div>
                 </div>
-                <div className={`${prefix}timeline-item-content`}>
-                    <div className={`${prefix}timeline-item-title`}>{title}</div>
-                    <div className={`${prefix}timeline-item-body`}>{content}</div>
-                    <div className={`${prefix}timeline-item-time`}>{time}</div>
-                </div>
-            </div>) : null;
-        return (<li tabIndex="0">
-            {
-                animation && folderIndex ? <Expand
-                    animationAppear={false}
-                    beforeEnter={this.beforeEnter}
-                    beforeLeave={this.beforeEnter}
-                    afterEnter={this.beforeLeave}>
-                    {timelineNode}
-                </Expand> : timelineNode
-            }
-            {
-                folderIndex === index ?
+            ) : null;
+        return (
+            <li tabIndex="0">
+                {animation && folderIndex ? (
+                    <Expand
+                        animationAppear={false}
+                        beforeEnter={this.beforeEnter}
+                        beforeLeave={this.beforeEnter}
+                        afterEnter={this.beforeLeave}
+                    >
+                        {timelineNode}
+                    </Expand>
+                ) : (
+                    timelineNode
+                )}
+                {folderIndex === index ? (
                     <div className={folderCls}>
-                        <div className={dotTailCls}></div>
-                        {
-                            foldShow ?
-                                <Button {...buttonProps}>{locale.fold}<Icon type="arrow-up" /></Button> :
-                                <Button {...buttonProps}>{locale.expand}<Icon type="arrow-down" /></Button>
-                        }
-                    </div> :
-                    null
-            }
-        </li>);
+                        <div className={dotTailCls} />
+                        {foldShow ? (
+                            <Button {...buttonProps}>
+                                {locale.fold}
+                                <Icon type="arrow-up" />
+                            </Button>
+                        ) : (
+                            <Button {...buttonProps}>
+                                {locale.expand}
+                                <Icon type="arrow-down" />
+                            </Button>
+                        )}
+                    </div>
+                ) : null}
+            </li>
+        );
     }
 }
 export default TimelineItem;

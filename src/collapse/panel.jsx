@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import {func, KEYCODE} from '../util';
+import { func, KEYCODE } from '../util';
 
 /** Collapse.Panel */
 class Panel extends React.Component {
@@ -31,44 +31,51 @@ class Panel extends React.Component {
          */
         className: PropTypes.string,
         onClick: PropTypes.func,
-        id: PropTypes.string
+        id: PropTypes.string,
     };
 
     static defaultProps = {
         prefix: 'next-',
         isExpanded: false,
-        onClick: func.noop
+        onClick: func.noop,
     };
 
     static isNextPanel = true; //
 
-    onKeyDown = (e) => {
-        const {keyCode} = e;
+    onKeyDown = e => {
+        const { keyCode } = e;
         if (keyCode === KEYCODE.SPACE) {
-            const {onClick} = this.props;
+            const { onClick } = this.props;
             e.preventDefault();
             onClick && onClick(e);
         }
-    }
+    };
     render() {
-        const { title, children, className, isExpanded, disabled, style, prefix, onClick, id, ...others} = this.props;
+        const {
+            title,
+            children,
+            className,
+            isExpanded,
+            disabled,
+            style,
+            prefix,
+            onClick,
+            id,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
             [`${prefix}collapse-panel-expanded`]: isExpanded,
             [`${prefix}collapse-panel-disabled`]: disabled,
-            [className]: className
+            [className]: className,
         });
 
         // 为了无障碍 需要添加两个id
         const headingId = id ? `${id}-heading` : undefined;
         const regionId = id ? `${id}-region` : undefined;
         return (
-            <div
-                className={cls}
-                style={style}
-                id={id}
-                {...others}>
+            <div className={cls} style={style} id={id} {...others}>
                 <div
                     id={headingId}
                     className={`${prefix}collapse-panel-title`}
@@ -78,14 +85,20 @@ class Panel extends React.Component {
                     aria-disabled={disabled}
                     aria-expanded={isExpanded}
                     aria-controls={regionId}
-                    role="button">
-                    <Icon type="arrow-up" className={`${prefix}collapse-panel-icon`} aria-hidden="true"/>
+                    role="button"
+                >
+                    <Icon
+                        type="arrow-up"
+                        className={`${prefix}collapse-panel-icon`}
+                        aria-hidden="true"
+                    />
                     {title}
                 </div>
                 <div
                     className={`${prefix}collapse-panel-content`}
                     role="region"
-                    id={regionId}>
+                    id={regionId}
+                >
                     {children}
                 </div>
             </div>
