@@ -21,27 +21,23 @@ class Output extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         locale: PropTypes.object,
-        pure: PropTypes.bool
+        pure: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         locale: {
-            hello: '你好'
+            hello: '你好',
         },
-        pure: false
+        pure: false,
     };
 
-    internalMethod() {
-
-    }
+    internalMethod() {}
 
     render() {
         const { prefix, locale } = this.props;
 
-        return (
-            <div className={`${prefix}output`}>{locale.hello}</div>
-        );
+        return <div className={`${prefix}output`}>{locale.hello}</div>;
     }
 }
 const NewOutput = config(Output);
@@ -49,11 +45,11 @@ const NewOutput = config(Output);
 class TestPure extends Component {
     static propTypes = {
         obj: PropTypes.object,
-        pure: PropTypes.bool
+        pure: PropTypes.bool,
     };
 
     static defaultProps = {
-        pure: false
+        pure: false,
     };
 
     render() {
@@ -65,55 +61,57 @@ const NewTestPure = config(TestPure);
 const locales = {
     'zh-cn': {
         ClickMe: {
-            clickMe: '点我！'
+            clickMe: '点我！',
         },
         Toast: {
-            close: '关闭'
-        }
+            close: '关闭',
+        },
     },
     'en-us': {
         ClickMe: {
-            clickMe: 'click me!'
+            clickMe: 'click me!',
         },
         Toast: {
-            close: 'close'
-        }
-    }
+            close: 'close',
+        },
+    },
 };
 class ClickMe extends Component {
     static propTypes = {
         locale: PropTypes.object,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
         locale: locales['zh-cn'].ClickMe,
-        onClick: () => {}
+        onClick: () => {},
     };
 
     render() {
         const { locale, onClick } = this.props;
         return (
-            <button className="click-me" onClick={onClick}>{locale.clickMe}</button>
+            <button className="click-me" onClick={onClick}>
+                {locale.clickMe}
+            </button>
         );
     }
 }
 class Toast extends Component {
     static propTypes = {
         locale: PropTypes.object,
-        afterClose: PropTypes.func
+        afterClose: PropTypes.func,
     };
 
     static defaultProps = {
         locale: locales['zh-cn'].Toast,
-        afterClose: () => {}
+        afterClose: () => {},
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            visible: false
+            visible: false,
         };
 
         this.handleClose = this.handleClose.bind(this);
@@ -121,7 +119,7 @@ class Toast extends Component {
 
     handleClose() {
         this.setState({
-            visible: false
+            visible: false,
         });
         this.props.afterClose();
     }
@@ -147,7 +145,10 @@ Toast.create = (props = {}) => {
 
     const newLocale = getContextProps(props, 'Toast').locale;
 
-    ReactDOM.render(<Toast afterClose={closeChain} locale={newLocale} />, mountNode);
+    ReactDOM.render(
+        <Toast afterClose={closeChain} locale={newLocale} />,
+        mountNode
+    );
 };
 const NewClickMe = config(ClickMe);
 const NewToast = config(Toast);
@@ -156,7 +157,7 @@ class Demo extends Component {
         super(props);
 
         this.state = {
-            language: 'zh-cn'
+            language: 'zh-cn',
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -169,7 +170,7 @@ class Demo extends Component {
 
     handleChangeLanguage(e) {
         this.setState({
-            language: e.target.value
+            language: e.target.value,
         });
     }
 
@@ -180,7 +181,10 @@ class Demo extends Component {
             <ConfigProvider locale={locales[language]}>
                 <div>
                     <div className="select-language">
-                        <select value={language} onChange={this.handleChangeLanguage}>
+                        <select
+                            value={language}
+                            onChange={this.handleChangeLanguage}
+                        >
                             <option value="zh-cn">zh-cn</option>
                             <option value="en-us">en-us</option>
                         </select>
@@ -238,7 +242,11 @@ describe('ConfigProvider', () => {
 
     it('should use context prop if wrapped by ConfigProvider', () => {
         wrapper = mount(
-            <ConfigProvider prefix="context-" locale={{ Output: { hello: 'context' } }} pure>
+            <ConfigProvider
+                prefix="context-"
+                locale={{ Output: { hello: 'context' } }}
+                pure
+            >
                 <NewOutput />
             </ConfigProvider>
         );
@@ -250,7 +258,11 @@ describe('ConfigProvider', () => {
 
     it('should use passed prop if pass custom prop', () => {
         wrapper = mount(
-            <ConfigProvider prefix="context-" locale={{ Output: { hello: 'context' } }} pure>
+            <ConfigProvider
+                prefix="context-"
+                locale={{ Output: { hello: 'context' } }}
+                pure
+            >
                 <NewOutput prefix="my-" locale={{ hello: 'my' }} pure={false} />
             </ConfigProvider>
         );
@@ -262,7 +274,10 @@ describe('ConfigProvider', () => {
 
     it('should expose getInstance method', () => {
         wrapper = mount(<NewOutput />);
-        assert(typeof wrapper.instance().getInstance().internalMethod === 'function');
+        assert(
+            typeof wrapper.instance().getInstance().internalMethod ===
+                'function'
+        );
     });
 
     it('should not pure render by default', () => {
@@ -270,7 +285,7 @@ describe('ConfigProvider', () => {
         wrapper = mount(<NewTestPure obj={obj} />);
         obj.text = '1';
         wrapper.setProps({
-            obj
+            obj,
         });
         assert(wrapper.find('div').text() === '1');
     });
@@ -280,7 +295,7 @@ describe('ConfigProvider', () => {
         wrapper = mount(<NewTestPure obj={obj} pure />);
         obj.text = '1';
         wrapper.setProps({
-            obj
+            obj,
         });
         assert(wrapper.find('div').text() === '0');
     });
@@ -315,25 +330,31 @@ describe('ConfigProvider', () => {
     it('should support setLanguage', () => {
         ConfigProvider.initLocales({
             'zh-cn': zhCN,
-            'en-us': enUS
+            'en-us': enUS,
         });
         ConfigProvider.setLanguage('en-us');
         wrapper = mount(<Select />);
-        assert(wrapper.find('span.next-select input').props().placeholder === enUS.Select.selectPlaceholder);
+        assert(
+            wrapper.find('span.next-select input').props().placeholder ===
+                enUS.Select.selectPlaceholder
+        );
     });
 
     it('should support setLocale', () => {
         ConfigProvider.initLocales({
             'zh-cn': zhCN,
-            'en-us': enUS
+            'en-us': enUS,
         });
         ConfigProvider.setLocale({
             Select: {
-                selectPlaceHolder: '哈哈'
-            }
+                selectPlaceHolder: '哈哈',
+            },
         });
         wrapper = mount(<Select />);
-        assert(wrapper.find('span.next-select input').props().placeholder === '哈哈');
+        assert(
+            wrapper.find('span.next-select input').props().placeholder ===
+                '哈哈'
+        );
     });
 });
 
@@ -361,26 +382,14 @@ describe('ConfigProvider.Consumer', () => {
         };
 
         const App = ({ children }) => (
-            <ConfigProvider {...contextState}>
-                {children}
-            </ConfigProvider>
+            <ConfigProvider {...contextState}>{children}</ConfigProvider>
         );
 
-        const ContextReader = (props) => (
-            <div>
-                {props.nextPrefix}
-            </div>
-        );
+        const ContextReader = props => <div>{props.nextPrefix}</div>;
 
         const Child = () => (
             <ConfigProvider.Consumer>
-                {
-                    context => (
-                        <ContextReader
-                            {...context}
-                        />
-                    )
-                }
+                {context => <ContextReader {...context} />}
             </ConfigProvider.Consumer>
         );
 

@@ -21,11 +21,11 @@ function getKeys(object, parent = '') {
     for (const key in object) {
         if (!object.hasOwnProperty(key) || key === 'momentLocale') continue;
         const value = object[key];
-        keys.push(parent ? `${parent}.${key}`: key);
+        keys.push(parent ? `${parent}.${key}` : key);
 
         if (Array.isArray(value)) {
-            keys.push(`${key}_length_${value.length}`)
-        }else if (typeof value === 'object') {
+            keys.push(`${key}_length_${value.length}`);
+        } else if (typeof value === 'object') {
             keys.push(getKeys(value, key));
         }
     }

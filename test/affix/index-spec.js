@@ -12,7 +12,6 @@ Enzyme.configure({ adapter: new Adapter() });
 /* global describe, it, beforeEach, afterEach */
 
 class AffixDemo extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -28,23 +27,35 @@ class AffixDemo extends React.Component {
         });
     }
 
-
     render() {
         const { offsetTop } = this.state;
-        return (<div className="affix-demo" ref={ref => {
-            this.container = ref;
-        }} style={{ height: 100, overflowY: 'scroll' }}>
-            <div className="affix-wrapper" style={{ padding: 60, height: 300, background: '#eee' }}>
-                <Affix id="affix" offsetTop={offsetTop} container={() => this.container} ref={
-                    ref => {
-                        this.affix = ref;
-                    }
-                }>
-                    <Button
-                        onClick={this.changeOffset.bind(this)}>hello world</Button>
-                </Affix>
+        return (
+            <div
+                className="affix-demo"
+                ref={ref => {
+                    this.container = ref;
+                }}
+                style={{ height: 100, overflowY: 'scroll' }}
+            >
+                <div
+                    className="affix-wrapper"
+                    style={{ padding: 60, height: 300, background: '#eee' }}
+                >
+                    <Affix
+                        id="affix"
+                        offsetTop={offsetTop}
+                        container={() => this.container}
+                        ref={ref => {
+                            this.affix = ref;
+                        }}
+                    >
+                        <Button onClick={this.changeOffset.bind(this)}>
+                            hello world
+                        </Button>
+                    </Affix>
+                </div>
             </div>
-        </div>);
+        );
     }
 }
 
@@ -68,36 +79,44 @@ describe('Affix', () => {
 
         it('should render', () => {
             const style = { padding: '40px 0' };
-            wrapper = mount(<div style={style}>
-                <Affix>
-                    <Button type="secondary"> Hello World </Button>
-                </Affix>
-            </div>);
+            wrapper = mount(
+                <div style={style}>
+                    <Affix>
+                        <Button type="secondary"> Hello World </Button>
+                    </Affix>
+                </div>
+            );
             assert(wrapper.find('div.next-affix').length === 0);
         });
 
         it('shoud render with affixTop', () => {
             const style = { padding: '40px 0' };
-            wrapper = mount(<div style={style}>
-                <Affix offsetTop={0}>
-                    <Button type="secondary"> Hello World </Button>
-                </Affix>
-            </div>);
+            wrapper = mount(
+                <div style={style}>
+                    <Affix offsetTop={0}>
+                        <Button type="secondary"> Hello World </Button>
+                    </Affix>
+                </div>
+            );
             assert(wrapper.find('.next-affix').length === 0);
         });
 
         it('shoud render with affixBottom', () => {
             const style = { padding: '40px 0' };
-            wrapper = mount(<div style={style}>
-                <Affix offsetBottom={0}>
-                    <Button type="secondary"> Hello World </Button>
-                </Affix>
-            </div>);
+            wrapper = mount(
+                <div style={style}>
+                    <Affix offsetBottom={0}>
+                        <Button type="secondary"> Hello World </Button>
+                    </Affix>
+                </div>
+            );
             assert(wrapper.find('.next-affix').length === 0);
         });
 
         it('should render with specified target', () => {
-            wrapper = mount(<AffixDemo />, { attachTo: document.getElementById('react-app')});
+            wrapper = mount(<AffixDemo />, {
+                attachTo: document.getElementById('react-app'),
+            });
             const affix = wrapper.find('div.next-affix');
             assert(affix.length === 0);
 
@@ -109,21 +128,23 @@ describe('Affix', () => {
         });
 
         it('should receive offset change', () => {
-            wrapper = mount(<AffixDemo />, { attachTo: document.getElementById('react-app')});
+            wrapper = mount(<AffixDemo />, {
+                attachTo: document.getElementById('react-app'),
+            });
             const affix = wrapper.find('div.next-affix');
             assert(affix.length === 0);
             const rect = document.querySelectorAll('.next-affix-top');
             ReactTestUtils.Simulate.click(rect[0].firstChild, {
                 pageX: rect.left,
-                pageY: rect.top
+                pageY: rect.top,
             });
             ReactTestUtils.Simulate.click(rect[0].firstChild, {
                 pageX: rect.left,
-                pageY: rect.top
+                pageY: rect.top,
             });
             ReactTestUtils.Simulate.click(rect[0].firstChild, {
                 pageX: rect.left,
-                pageY: rect.top
+                pageY: rect.top,
             });
             const affixDemo = wrapper.find('div.affix-demo');
 

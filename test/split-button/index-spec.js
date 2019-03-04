@@ -9,7 +9,9 @@ Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef,react/jsx-filename-extension */
 describe('SplitButton', () => {
-    const menu = ['a', 'b'].map(item => <SplitButton.Item key={item}>{item}</SplitButton.Item>);
+    const menu = ['a', 'b'].map(item => (
+        <SplitButton.Item key={item}>{item}</SplitButton.Item>
+    ));
 
     let wrapper;
 
@@ -22,18 +24,35 @@ describe('SplitButton', () => {
 
     describe('render', () => {
         it('should render', () => {
-            const wrapper = mount(<SplitButton label="hello world">{menu}</SplitButton>);
+            const wrapper = mount(
+                <SplitButton label="hello world">{menu}</SplitButton>
+            );
             assert(wrapper.find('div.next-split-btn').length === 1);
         });
 
         it('should controlled selectedkeys', () => {
-            const wrapper = mount(<SplitButton label="hello world" visible selectedKeys={['a']} selectMode="single">{menu}</SplitButton>);
+            const wrapper = mount(
+                <SplitButton
+                    label="hello world"
+                    visible
+                    selectedKeys={['a']}
+                    selectMode="single"
+                >
+                    {menu}
+                </SplitButton>
+            );
             wrapper.setProps({ selectedKeys: ['b'] });
-            assert(wrapper.find('li[title="b"][role="listitem"]').hasClass('next-selected'));
+            assert(
+                wrapper
+                    .find('li[title="b"][role="listitem"]')
+                    .hasClass('next-selected')
+            );
         });
 
         it('should controlled popup visible', () => {
-            const wrapper = mount(<SplitButton label="hello world">{menu}</SplitButton>);
+            const wrapper = mount(
+                <SplitButton label="hello world">{menu}</SplitButton>
+            );
             assert(wrapper.find('.next-menu').length === 0);
             wrapper.setProps({ visible: true });
             assert(wrapper.find('.next-menu').length === 1);
@@ -43,23 +62,50 @@ describe('SplitButton', () => {
     describe('action', () => {
         it('should click trigger to open the popup', () => {
             let visible;
-            const wrapper = mount(<SplitButton label="hello world" onVisibleChange={vis => visible = vis}>{menu}</SplitButton>);
+            const wrapper = mount(
+                <SplitButton
+                    label="hello world"
+                    onVisibleChange={vis => (visible = vis)}
+                >
+                    {menu}
+                </SplitButton>
+            );
             wrapper.find('button.next-split-btn-trigger').simulate('click');
             assert(wrapper.find('.next-menu').length === 1);
             assert(visible);
         });
 
         it('should select in uncontrolled mode', () => {
-            const wrapper = mount(<SplitButton label="hello world" visible selectMode="single">{menu}</SplitButton>);
+            const wrapper = mount(
+                <SplitButton label="hello world" visible selectMode="single">
+                    {menu}
+                </SplitButton>
+            );
             wrapper.find('li[title="b"][role="listitem"]').simulate('click');
-            assert(wrapper.find('li[title="b"][role="listitem"]').hasClass('next-selected'));
+            assert(
+                wrapper
+                    .find('li[title="b"][role="listitem"]')
+                    .hasClass('next-selected')
+            );
         });
 
         it('should select in controlled mode', () => {
-            const wrapper = mount(<SplitButton label="hello world" visible selectedKeys={['a']} selectMode="single">{menu}</SplitButton>);
+            const wrapper = mount(
+                <SplitButton
+                    label="hello world"
+                    visible
+                    selectedKeys={['a']}
+                    selectMode="single"
+                >
+                    {menu}
+                </SplitButton>
+            );
             wrapper.find('li[title="b"][role="listitem"]').simulate('click');
-            assert(wrapper.find('li[title="a"][role="listitem"]').hasClass('next-selected'));
+            assert(
+                wrapper
+                    .find('li[title="a"][role="listitem"]')
+                    .hasClass('next-selected')
+            );
         });
-
     });
 });

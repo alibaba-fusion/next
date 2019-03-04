@@ -8,7 +8,6 @@ import '../../src/select/style.js';
 
 /* eslint-disable react/no-multi-comp,no-undef */
 
-
 describe('issue in AutoComplete', () => {
     let div;
     beforeEach(() => {
@@ -68,31 +67,46 @@ describe('issue in AutoComplete', () => {
 
     it('should fix #93', () => {
         let clicked = false;
-        const onChange = (value) => {
+        const onChange = value => {
             clicked = true;
         };
         class App extends React.Component {
             state = {
-                value: 1
-            }
+                value: 1,
+            };
             render() {
-                const dataSource = [{
-                    value: 1,
-                    label: 'jack'
-                }, {
-                    value: 2,
-                    label: 'lucy'
-                }];
-                return <div><button id="btn_93" onClick={this.setValue}>set value</button><Select value={this.state.value} dataSource={dataSource} visible onChange={onChange}/></div>;
+                const dataSource = [
+                    {
+                        value: 1,
+                        label: 'jack',
+                    },
+                    {
+                        value: 2,
+                        label: 'lucy',
+                    },
+                ];
+                return (
+                    <div>
+                        <button id="btn_93" onClick={this.setValue}>
+                            set value
+                        </button>
+                        <Select
+                            value={this.state.value}
+                            dataSource={dataSource}
+                            visible
+                            onChange={onChange}
+                        />
+                    </div>
+                );
             }
 
             setValue = () => {
                 this.setState({
-                    value: 1
+                    value: 1,
                 });
-            }
+            };
         }
-        ReactDOM.render(<App/>, div);
+        ReactDOM.render(<App />, div);
         const node = document.body.querySelector('.next-menu-item');
         ReactTestUtils.Simulate.click(node);
         assert(clicked === false);
@@ -133,10 +147,18 @@ describe('issue in AutoComplete', () => {
 
     it('should escape special char when filter local', () => {
         const dataSource = [
-            {label: '[测试]文案11', value: '1'},
-            {label: '[tag]文案22', value: '2', }
+            { label: '[测试]文案11', value: '1' },
+            { label: '[tag]文案22', value: '2' },
         ];
-        ReactDOM.render(<Select dataSource={dataSource} showSearch visible style={{ width: '300px' }}/>, div);
+        ReactDOM.render(
+            <Select
+                dataSource={dataSource}
+                showSearch
+                visible
+                style={{ width: '300px' }}
+            />,
+            div
+        );
         const input = document.body.querySelector('.next-select input');
         input.value = 't';
         ReactTestUtils.Simulate.change(input);

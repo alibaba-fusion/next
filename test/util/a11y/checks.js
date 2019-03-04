@@ -29,11 +29,13 @@ const roleType = function(roleTypes, nodeOrSelector, rootNode) {
     }
 
     roleTypes = Array.isArray(roleTypes) ? roleTypes : [roleTypes];
-    return role && roleTypes.some(r => {
-        return role.toLocaleLowerCase() === r.toLocaleLowerCase();
-    });
+    return (
+        role &&
+        roleTypes.some(r => {
+            return role.toLocaleLowerCase() === r.toLocaleLowerCase();
+        })
+    );
 };
-
 
 /**
  * Test the HTML tag of a node
@@ -64,7 +66,6 @@ const tagName = function(names, nodeOrSelector, rootNode) {
     });
 };
 
-
 /**
  * Test if the node is an h* tag or has role=heading
  * @param { String || ReactWrapper || DOMComponent } nodeOrSelector - Either a component to query for the tag name, or a CSS selector to find the
@@ -74,9 +75,14 @@ const tagName = function(names, nodeOrSelector, rootNode) {
  * @returns { Boolean }
  */
 const isHeading = function(nodeOrSelector, rootNode) {
-    return tagName(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], nodeOrSelector, rootNode) || roleType('heading', nodeOrSelector, rootNode);
+    return (
+        tagName(
+            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            nodeOrSelector,
+            rootNode
+        ) || roleType('heading', nodeOrSelector, rootNode)
+    );
 };
-
 
 /**
  * Test if the node is a button tag or has role=button
@@ -87,13 +93,15 @@ const isHeading = function(nodeOrSelector, rootNode) {
  * @returns { Boolean }
  */
 const isButton = function(nodeOrSelector, rootNode) {
-    return tagName('button', nodeOrSelector, rootNode) || roleType('button', nodeOrSelector, rootNode);
+    return (
+        tagName('button', nodeOrSelector, rootNode) ||
+        roleType('button', nodeOrSelector, rootNode)
+    );
 };
-
 
 export default {
     roleType,
     tagName,
     isButton,
-    isHeading
+    isHeading,
 };

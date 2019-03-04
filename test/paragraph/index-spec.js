@@ -13,12 +13,20 @@ describe('Paragraph', () => {
     describe('render', () => {
         it('default class check', () => {
             const wrapper = mount(<Paragraph />);
-            assert(wrapper.find('.next-paragraph-medium.next-paragraph-long').exists());
+            assert(
+                wrapper
+                    .find('.next-paragraph-medium.next-paragraph-long')
+                    .exists()
+            );
         });
 
         it('props `type` & `size` must work', () => {
             const wrapper = mount(<Paragraph type="short" size="small" />);
-            assert(wrapper.find('.next-paragraph-small.next-paragraph-short').exists());
+            assert(
+                wrapper
+                    .find('.next-paragraph-small.next-paragraph-short')
+                    .exists()
+            );
         });
 
         it('props `rtl` should be ok', () => {

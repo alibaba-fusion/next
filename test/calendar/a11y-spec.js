@@ -26,11 +26,13 @@ describe('Calendar A11y', () => {
     });
     // TODO Select support a11y
     it.skip('should not have any violations when shape', async () => {
-        wrapper = await testReact(<div>
-            <Calendar shape="fullscreen"/>
-            <Calendar shape="card"/>
-            <Calendar shape="panel"/>
-        </div>);
+        wrapper = await testReact(
+            <div>
+                <Calendar shape="fullscreen" />
+                <Calendar shape="card" />
+                <Calendar shape="panel" />
+            </div>
+        );
         return wrapper;
     });
 });

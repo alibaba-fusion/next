@@ -7,8 +7,6 @@ import Search from '../../src/search/Search';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-
-
 describe('Search', () => {
     describe('render', () => {
         it('should accept type ', () => {
@@ -62,10 +60,16 @@ describe('Search', () => {
             const onBlur = sinon.spy();
 
             wrapper = mount(
-                <Search onChange={onChange} onSearch={onSearch} onBlur={onBlur} />
+                <Search
+                    onChange={onChange}
+                    onSearch={onSearch}
+                    onBlur={onBlur}
+                />
             );
 
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '20' } });
             assert(onChange.calledOnce);
             wrapper.find('button').simulate('click');
             assert(onSearch.calledOnce);
@@ -76,16 +80,18 @@ describe('Search', () => {
             wrapper.find('input').simulate('focus');
             // is this bug ? cant trigger blur
             //expect(onBlur.calledOnce).to.equal(true);
-
         });
-        it('should support defaultValue ', (done) => {
-
-            const onChange = (value) => {
+        it('should support defaultValue ', done => {
+            const onChange = value => {
                 assert(value === '20');
             };
-            wrapper = mount(<Search defaultValue={'123'} onChange={onChange} />);
+            wrapper = mount(
+                <Search defaultValue={'123'} onChange={onChange} />
+            );
 
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '20' } });
             assert(wrapper.find('input').prop('value') === '20');
 
             //  这里可以修改下 defauValue 确认下第二次修改是没有影响的
@@ -96,66 +102,85 @@ describe('Search', () => {
             done();
         });
 
-        it('should support onSearch ', (done) => {
-            const onSearch = (value) => {
+        it('should support onSearch ', done => {
+            const onSearch = value => {
                 assert(value === '123');
             };
-            wrapper = mount(<Search defaultValue={'123'} onSearch={onSearch} />);
+            wrapper = mount(
+                <Search defaultValue={'123'} onSearch={onSearch} />
+            );
 
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
 
             done();
         });
 
-        it('should support filter ', (done) => {
+        it('should support filter ', done => {
             let filter = [
                 {
                     text: 'Products',
-                    value: 'Products'
+                    value: 'Products',
                 },
                 {
                     text: 'Products1',
                     value: 'Products1',
-                    default: true
+                    default: true,
                 },
                 {
                     text: 'Products2',
-                    value: 'Products2'
-                }];
-
+                    value: 'Products2',
+                },
+            ];
 
             const FILTER_INDEX = 1;
-            const onFilterChange = (value) => {
+            const onFilterChange = value => {
                 assert(value === filter[FILTER_INDEX].value);
             };
 
-            wrapper = mount(<Search filter={filter} defaultValue={'123'}  onFilterChange={onFilterChange} />);
+            wrapper = mount(
+                <Search
+                    filter={filter}
+                    defaultValue={'123'}
+                    onFilterChange={onFilterChange}
+                />
+            );
             // 点击
-            wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
-            wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
+            wrapper
+                .find('.next-search-left-addon .next-select-single')
+                .simulate('click');
+            wrapper
+                .find('.next-menu-item')
+                .at(FILTER_INDEX)
+                .simulate('click');
 
             filter = [
                 {
                     text: 'Products',
-                    value: 'Products'
+                    value: 'Products',
                 },
                 {
                     text: 'newone',
                     value: 'newone',
-                    default: true
+                    default: true,
                 },
                 {
                     text: 'Products2',
-                    value: 'Products2'
-                }];
+                    value: 'Products2',
+                },
+            ];
             wrapper.setProps({ filter });
-            wrapper.find('.next-search-left-addon .next-select-single').simulate('click');
-            wrapper.find('.next-menu-item').at(FILTER_INDEX).simulate('click');
+            wrapper
+                .find('.next-search-left-addon .next-select-single')
+                .simulate('click');
+            wrapper
+                .find('.next-menu-item')
+                .at(FILTER_INDEX)
+                .simulate('click');
 
             done();
         });
 
-        it('should support filterValue', (done) => {
+        it('should support filterValue', done => {
             const FILTER_VALUE = 'Products1';
 
             const filter = [
@@ -169,25 +194,34 @@ describe('Search', () => {
                 },
                 {
                     text: 'Products2',
-                    value: 'Products2'
-                }
+                    value: 'Products2',
+                },
             ];
 
             const onSearch = (value, filterValue) => {
                 assert(filterValue === FILTER_VALUE);
                 done();
             };
-            wrapper = mount(<Search defaultValue={'123'} filter={filter} filterValue={FILTER_VALUE} onSearch={onSearch} />);
-            assert(wrapper.find('.next-select-values em').text() === FILTER_VALUE);
+            wrapper = mount(
+                <Search
+                    defaultValue={'123'}
+                    filter={filter}
+                    filterValue={FILTER_VALUE}
+                    onSearch={onSearch}
+                />
+            );
+            assert(
+                wrapper.find('.next-select-values em').text() === FILTER_VALUE
+            );
             wrapper.find('button').simulate('click');
         });
 
-        it('act in controlled way', (done) => {
+        it('act in controlled way', done => {
             const filter = [
                 {
                     text: 'Products',
                     value: 'Products',
-                    default: true
+                    default: true,
                 },
                 {
                     text: 'Products1',
@@ -195,8 +229,8 @@ describe('Search', () => {
                 },
                 {
                     text: 'Products2',
-                    value: 'Products2'
-                }
+                    value: 'Products2',
+                },
             ];
             const FILTER_INDEX = 2;
             const FILTER_VALUE = filter[FILTER_INDEX].value;
@@ -208,9 +242,7 @@ describe('Search', () => {
                 done();
             };
 
-            wrapper = mount(
-                <Search onSearch={onSearch} />
-            );
+            wrapper = mount(<Search onSearch={onSearch} />);
 
             wrapper.setProps({ value: VALUE, filterValue: FILTER_VALUE });
             wrapper.find('button').simulate('click');
@@ -218,45 +250,59 @@ describe('Search', () => {
         it('should support disabled', () => {
             const onSearch = sinon.spy();
             const onChange = sinon.spy();
-            wrapper = mount(<Search shape="simple" onSearch={onSearch} onChange={onChange} disabled/>);
+            wrapper = mount(
+                <Search
+                    shape="simple"
+                    onSearch={onSearch}
+                    onChange={onChange}
+                    disabled
+                />
+            );
             wrapper.find('.next-icon').simulate('click');
             assert(onSearch.notCalled);
-            wrapper.find('input').simulate('change', { target: { value: '20' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '20' } });
             assert(onChange.notCalled);
         });
         it('should support enter key', () => {
             const onSearch = sinon.spy();
-            wrapper = mount(<Search onSearch={onSearch} value="123"/>);
+            wrapper = mount(<Search onSearch={onSearch} value="123" />);
             // 支持enter
-            wrapper.find('button').simulate('keyDown', {keyCode: 13});
+            wrapper.find('button').simulate('keyDown', { keyCode: 13 });
             assert(onSearch.calledOnce);
             // 不支持非enter
-            wrapper.find('button').simulate('keyDown', {keyCode: 14});
+            wrapper.find('button').simulate('keyDown', { keyCode: 14 });
             assert(onSearch.calledOnce);
         });
         it('should support disable enter key', () => {
             const onSearch = sinon.spy();
-            wrapper = mount(<Search disabled shape="simple" onSearch={onSearch} value="123"/>);
+            wrapper = mount(
+                <Search
+                    disabled
+                    shape="simple"
+                    onSearch={onSearch}
+                    value="123"
+                />
+            );
             // 支持enter
-            wrapper.find('.next-icon').simulate('keyDown', {keyCode: 13});
+            wrapper.find('.next-icon').simulate('keyDown', { keyCode: 13 });
             assert(onSearch.notCalled);
         });
     });
-
 
     describe('CombobBox', () => {
         let wrapper;
         const dataSource = [
             {
                 label: 'xxx',
-                value: 'yyy'
+                value: 'yyy',
             },
             {
                 label: 'Recent',
-                value: 'Recent'
+                value: 'Recent',
             },
         ];
-
 
         beforeEach(() => {
             wrapper = mount(<Search dataSource={dataSource} />);
@@ -267,35 +313,56 @@ describe('Search', () => {
             wrapper = null;
         });
 
-        it('should support DataSource ', (done) => {
-
+        it('should support DataSource ', done => {
             wrapper.find('input').simulate('click');
-            assert(wrapper.find('.next-menu-item').length === dataSource.length);
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
+            assert(
+                wrapper.find('.next-menu-item').length === dataSource.length
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'y' } });
 
             const items = wrapper.find('.next-menu-item');
-            assert(items.length === 1 && items.at(0).find('.next-menu-item-text').text() === 'xxx');
+            assert(
+                items.length === 1 &&
+                    items
+                        .at(0)
+                        .find('.next-menu-item-text')
+                        .text() === 'xxx'
+            );
 
             items.at(0).simulate('click');
             assert(wrapper.find('input').prop('value') === 'yyy');
 
             done();
         });
-        it('should support dataSource filter ', (done) => {
-
+        it('should support dataSource filter ', done => {
             wrapper.find('input').simulate('click');
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'y' } });
 
             const items = wrapper.find('.next-menu-item');
-            assert(items.length === 1 && items.at(0).find('.next-menu-item-text').text() === dataSource[0].label);
+            assert(
+                items.length === 1 &&
+                    items
+                        .at(0)
+                        .find('.next-menu-item-text')
+                        .text() === dataSource[0].label
+            );
 
             done();
         });
-        it('should support dataSource value click ', (done) => {
+        it('should support dataSource value click ', done => {
             wrapper.find('input').simulate('click');
-            wrapper.find('input').simulate('change', { target: { value: 'y' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'y' } });
 
-            wrapper.find('.next-menu-item').at(0).simulate('click');
+            wrapper
+                .find('.next-menu-item')
+                .at(0)
+                .simulate('click');
             assert(wrapper.find('input').prop('value') === dataSource[0].value);
 
             done();

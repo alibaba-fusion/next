@@ -13,33 +13,60 @@ const Item = Timeline.Item;
 describe('Button', () => {
     describe('render', () => {
         it('should render a timeline', () => {
-            const wrapper = mount(<Timeline>
-                <Item content="2016-10-03" state="process" title="签收" />
-                <Item content="2016-10-02" title="发货" />
-                <Item content="2016-10-01" title="下单" />
-            </Timeline>);
+            const wrapper = mount(
+                <Timeline>
+                    <Item content="2016-10-03" state="process" title="签收" />
+                    <Item content="2016-10-02" title="发货" />
+                    <Item content="2016-10-01" title="下单" />
+                </Timeline>
+            );
             assert(wrapper.find('.next-timeline').length === 1);
         });
 
         it('should render a timeline with timeLeft', () => {
             // 涉及到子组件的渲染，不能用shallow，改用mount
-            const wrapper = mount(<Timeline>
-                <Item timeLeft="2017-10-23" content="2016-10-03" state="process" title="签收" />
-                <Item timeLeft="2017-10-23" content="2016-10-02" title="发货" />
-                <Item timeLeft="2017-10-23" content="2016-10-01" title="下单" />
-            </Timeline>);
-            assert(wrapper.find('.next-timeline-item-has-left-content').length === 3);
+            const wrapper = mount(
+                <Timeline>
+                    <Item
+                        timeLeft="2017-10-23"
+                        content="2016-10-03"
+                        state="process"
+                        title="签收"
+                    />
+                    <Item
+                        timeLeft="2017-10-23"
+                        content="2016-10-02"
+                        title="发货"
+                    />
+                    <Item
+                        timeLeft="2017-10-23"
+                        content="2016-10-01"
+                        title="下单"
+                    />
+                </Timeline>
+            );
+            assert(
+                wrapper.find('.next-timeline-item-has-left-content').length ===
+                    3
+            );
         });
 
         it('should render a fold timeline', () => {
-            const wrapper = mount(<Timeline fold={[{foldArea: [1, 2], foldShow: false}, {foldArea: [4], foldShow: false}]}>
-                <Item content="2016-10-06" state="process" />
-                <Item content="2016-10-05" />
-                <Item content="2016-10-04" />
-                <Item content="2016-10-03" />
-                <Item content="2016-10-02" />
-                <Item content="2016-10-01" />
-            </Timeline>);
+            const wrapper = mount(
+                <Timeline
+                    fold={[
+                        { foldArea: [1, 2], foldShow: false },
+                        { foldArea: [4], foldShow: false },
+                    ]}
+                >
+                    <Item content="2016-10-06" state="process" />
+                    <Item content="2016-10-05" />
+                    <Item content="2016-10-04" />
+                    <Item content="2016-10-03" />
+                    <Item content="2016-10-02" />
+                    <Item content="2016-10-01" />
+                </Timeline>
+            );
             assert(wrapper.find('.next-timeline-item-folder').length === 2);
         });
     });
@@ -60,14 +87,17 @@ describe('Button', () => {
         });
 
         it('should trigger fold', () => {
-            wrapper = mount(<Timeline fold={[{foldArea: [4], foldShow: false}]}>
-                <Item content="2016-10-06" state="process" />
-                <Item content="2016-10-05" />
-                <Item content="2016-10-04" />
-                <Item content="2016-10-03" />
-                <Item content="2016-10-02" />
-                <Item content="2016-10-01" />
-            </Timeline>, { attachTo: parent });
+            wrapper = mount(
+                <Timeline fold={[{ foldArea: [4], foldShow: false }]}>
+                    <Item content="2016-10-06" state="process" />
+                    <Item content="2016-10-05" />
+                    <Item content="2016-10-04" />
+                    <Item content="2016-10-03" />
+                    <Item content="2016-10-02" />
+                    <Item content="2016-10-01" />
+                </Timeline>,
+                { attachTo: parent }
+            );
 
             wrapper.find('.next-btn').simulate('click');
             assert(wrapper.find('.next-icon-arrow-up').length === 1);

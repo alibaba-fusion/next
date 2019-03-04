@@ -11,7 +11,6 @@ import '../../src/radio/style.js';
 /* eslint-disable */
 Enzyme.configure({ adapter: new Adapter() });
 
-
 const RadioGroup = Radio.Group;
 
 describe('Radio.Group', () => {
@@ -21,31 +20,37 @@ describe('Radio.Group', () => {
             {
                 value: 'apple',
                 label: '苹果',
-                disabled: true
-            }, {
+                disabled: true,
+            },
+            {
                 value: 'pear',
-                label: '梨'
-            }, {
+                label: '梨',
+            },
+            {
                 value: 'orange',
-                label: '橙子'
-            }
+                label: '橙子',
+            },
         ];
         numberList = [
             {
                 value: 0,
                 label: '0',
-                disabled: true
-            }, {
+                disabled: true,
+            },
+            {
                 value: 1,
-                label: '1'
-            }, {
+                label: '1',
+            },
+            {
                 value: 2,
-                label: '2'
-            }
-        ]
+                label: '2',
+            },
+        ];
     });
     describe('[render] control', () => {
-        const wrapper1 = shallow(<RadioGroup value={'apple'} dataSource={list} />);
+        const wrapper1 = shallow(
+            <RadioGroup value={'apple'} dataSource={list} />
+        );
 
         it('should contain `apple`', () => {
             assert(wrapper1.dive().state().value === 'apple');
@@ -60,20 +65,33 @@ describe('Radio.Group', () => {
 
     describe('[render] uncontrol', () => {
         it('should have three children with mock data', () => {
-            const wrapper = mount(<RadioGroup defaultValue={'pear'} dataSource={list} />);
-            wrapper.find('input').first().simulate('change', {
-                target: {checked: true}
-            });
+            const wrapper = mount(
+                <RadioGroup defaultValue={'pear'} dataSource={list} />
+            );
+            wrapper
+                .find('input')
+                .first()
+                .simulate('change', {
+                    target: { checked: true },
+                });
             assert(wrapper.find('.next-radio-group').children().length === 3);
         });
     });
 
     describe('[render] nest', () => {
-        const wrapper = shallow(<RadioGroup value="watermelon">
-                    <Radio id="apple" value="apple" className="apple">苹果</Radio>
-                    <Radio id="pear" value="pear">梨子</Radio>
-                    <Radio id="watermelon" value="watermelon">西瓜</Radio>
-                </RadioGroup>);
+        const wrapper = shallow(
+            <RadioGroup value="watermelon">
+                <Radio id="apple" value="apple" className="apple">
+                    苹果
+                </Radio>
+                <Radio id="pear" value="pear">
+                    梨子
+                </Radio>
+                <Radio id="watermelon" value="watermelon">
+                    西瓜
+                </Radio>
+            </RadioGroup>
+        );
 
         it('should contain `pear` and `watermelon`', () => {
             assert(wrapper.dive().state().value === 'watermelon');
@@ -82,9 +100,15 @@ describe('Radio.Group', () => {
         it('should have two children with nest <Radio />', () => {
             const wrapper = mount(
                 <RadioGroup value="watermelon">
-                    <Radio id="apple" value="apple" disabled>苹果</Radio>
-                    <Radio id="pear" value="pear">梨子</Radio>
-                    <Radio id="watermelon" value="watermelon">西瓜</Radio>
+                    <Radio id="apple" value="apple" disabled>
+                        苹果
+                    </Radio>
+                    <Radio id="pear" value="pear">
+                        梨子
+                    </Radio>
+                    <Radio id="watermelon" value="watermelon">
+                        西瓜
+                    </Radio>
                 </RadioGroup>
             );
             const target = wrapper.find('.next-radio-group');
@@ -99,9 +123,14 @@ describe('Radio.Group', () => {
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
-            before((done) => {
+            before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="small" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="small"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -109,7 +138,11 @@ describe('Radio.Group', () => {
                 );
             });
             it('should be 20px height', () => {
-                assert(container.querySelector('.next-radio-wrapper').getBoundingClientRect().height === 20);
+                assert(
+                    container
+                        .querySelector('.next-radio-wrapper')
+                        .getBoundingClientRect().height === 20
+                );
             });
         });
 
@@ -118,9 +151,14 @@ describe('Radio.Group', () => {
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
-            before((done) => {
+            before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="medium" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="medium"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -128,7 +166,11 @@ describe('Radio.Group', () => {
                 );
             });
             it('should be 28px height', () => {
-                assert(container.querySelector('.next-radio-wrapper').getBoundingClientRect().height === 28);
+                assert(
+                    container
+                        .querySelector('.next-radio-wrapper')
+                        .getBoundingClientRect().height === 28
+                );
             });
         });
 
@@ -137,9 +179,14 @@ describe('Radio.Group', () => {
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
-            before((done) => {
+            before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="large"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -147,7 +194,13 @@ describe('Radio.Group', () => {
                 );
             });
             it('should be 40px height', () => {
-                assert(Math.abs(container.querySelector('.next-radio-wrapper').getBoundingClientRect().height - 40) < 0.0001);
+                assert(
+                    Math.abs(
+                        container
+                            .querySelector('.next-radio-wrapper')
+                            .getBoundingClientRect().height - 40
+                    ) < 0.0001
+                );
             });
         });
 
@@ -156,9 +209,14 @@ describe('Radio.Group', () => {
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
-            before((done) => {
+            before(done => {
                 ReactDOM.render(
-                    <RadioGroup shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        shape="button"
+                        size="large"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -175,9 +233,15 @@ describe('Radio.Group', () => {
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
-            before((done) => {
+            before(done => {
                 ReactDOM.render(
-                    <RadioGroup component="footer" shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        component="footer"
+                        shape="button"
+                        size="large"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -194,10 +258,16 @@ describe('Radio.Group', () => {
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
-            const Footer = props => <div className="special-name" />
-            before((done) => {
+            const Footer = props => <div className="special-name" />;
+            before(done => {
                 ReactDOM.render(
-                    <RadioGroup component={Footer} shape="button" size="large" defaultValue={'apple'} dataSource={list} />,
+                    <RadioGroup
+                        component={Footer}
+                        shape="button"
+                        size="large"
+                        defaultValue={'apple'}
+                        dataSource={list}
+                    />,
                     container,
                     function init() {
                         done();
@@ -213,56 +283,69 @@ describe('Radio.Group', () => {
     describe('[events] simulate change', () => {
         it('should call `onChange`', () => {
             const onChange = sinon.spy();
-            const wrapper1 = mount(<RadioGroup onChange={onChange} value={'pear'} dataSource={list} />);
-            wrapper1.find('input').first().simulate('change');
+            const wrapper1 = mount(
+                <RadioGroup
+                    onChange={onChange}
+                    value={'pear'}
+                    dataSource={list}
+                />
+            );
+            wrapper1
+                .find('input')
+                .first()
+                .simulate('change');
             assert(onChange.calledOnce);
         });
     });
     describe('disabled && value === undefined', () => {
         it('should support disabled', () => {
-
-            const wrapper = mount(<RadioGroup defaultValue={0} dataSource={numberList} />);
+            const wrapper = mount(
+                <RadioGroup defaultValue={0} dataSource={numberList} />
+            );
             wrapper.setProps({
-                disabled: true
+                disabled: true,
             });
             assert(wrapper.find('.next-radio-group.disabled').length === 1);
-
         });
         it('should support value === undefined', () => {
-
-            const wrapper = shallow(<RadioGroup defaultValue={0} dataSource={numberList} />);
+            const wrapper = shallow(
+                <RadioGroup defaultValue={0} dataSource={numberList} />
+            );
             assert(wrapper.dive().state().value === 0);
             wrapper.setProps({
-                value: undefined
+                value: undefined,
             });
             assert(wrapper.dive().state().value === undefined);
-
         });
     });
     describe('[behavior] controlled', () => {
         it('should support controlled `value`', () => {
-            const wrapper = shallow(<RadioGroup value={'pear'} dataSource={list} />);
+            const wrapper = shallow(
+                <RadioGroup value={'pear'} dataSource={list} />
+            );
             assert(wrapper.dive().state().value === 'pear');
 
             wrapper.setProps({
-                value: 'apple'
+                value: 'apple',
             });
             assert(wrapper.dive().state().value === 'apple');
         });
 
         it('should support controlled `disabled`', () => {
-            const wrapper = mount(<RadioGroup disabled={false} value={'pear'} dataSource={list} />);
+            const wrapper = mount(
+                <RadioGroup disabled={false} value={'pear'} dataSource={list} />
+            );
             assert(!wrapper.props().disabled);
             assert(wrapper.find('.next-radio.disabled').length === 1);
 
             wrapper.setProps({
-                disabled: true
+                disabled: true,
             });
             assert(wrapper.props().disabled);
             assert(wrapper.find('.next-radio-group.disabled').length === 1);
             wrapper.setProps({
                 disabled: true,
-                value: undefined
+                value: undefined,
             });
             assert(wrapper.props().disabled);
             assert(wrapper.find('.next-radio-group.disabled').length === 1);
@@ -272,21 +355,30 @@ describe('Radio.Group', () => {
         it('change 3 times for react@15.6.1', () => {
             class NestApp extends React.Component {
                 state = {
-                    value: 'orange'
-                }
+                    value: 'orange',
+                };
 
-                onChange = (value) => {
+                onChange = value => {
                     this.setState({
-                        value
+                        value,
                     });
-                }
+                };
 
                 render() {
                     return (
-                        <RadioGroup value={this.state.value} onChange={this.onChange}>
-                            <Radio id="apple" value="apple">苹果</Radio>
-                            <Radio id="watermelon" value="watermelon">西瓜</Radio>
-                            <Radio id="orange" value="orange">橙子</Radio>
+                        <RadioGroup
+                            value={this.state.value}
+                            onChange={this.onChange}
+                        >
+                            <Radio id="apple" value="apple">
+                                苹果
+                            </Radio>
+                            <Radio id="watermelon" value="watermelon">
+                                西瓜
+                            </Radio>
+                            <Radio id="orange" value="orange">
+                                橙子
+                            </Radio>
                         </RadioGroup>
                     );
                 }
@@ -305,51 +397,73 @@ describe('Radio.Group', () => {
             wrapper.find('input#apple').simulate('change');
             assert(wrapper.find('input#apple').prop('checked'));
             assert(wrapper.state().value === 'apple');
-
         });
     });
 
     describe('value === 0', () => {
         it('should support value === 0', () => {
-
-            const wrapper = shallow(<RadioGroup defaultValue={0} dataSource={numberList} />).dive();
+            const wrapper = shallow(
+                <RadioGroup defaultValue={0} dataSource={numberList} />
+            ).dive();
             assert(wrapper.state().value === 0);
             wrapper.setProps({
-                value: 1
+                value: 1,
             });
             assert(wrapper.state().value === 1);
         });
     });
     describe('string array ', () => {
         it('should support string array', () => {
-            const wrapper = mount(<RadioGroup defaultValue={0} dataSource={['apple', 'orange', 'pear']}/>);
+            const wrapper = mount(
+                <RadioGroup
+                    defaultValue={0}
+                    dataSource={['apple', 'orange', 'pear']}
+                />
+            );
             assert(wrapper.find('.next-radio-group').children().length === 3);
         });
     });
 
     describe('Radio shape', () => {
         it('shape = button', () => {
-            const wrapper = mount(<RadioGroup shape="button" dataSource={['apple', 'orange', 'pear']}/>);
+            const wrapper = mount(
+                <RadioGroup
+                    shape="button"
+                    dataSource={['apple', 'orange', 'pear']}
+                />
+            );
             assert(wrapper.find('.next-radio-button').children().length === 3);
         });
     });
 
     describe('Children over datasource', () => {
         it('should render children over datasource', () => {
-            const wrapper = mount(<RadioGroup shape="button" dataSource={['apple', 'orange', 'pear']}>
-                <Radio rtl key="1">Apple</Radio>
-                <Radio tabIndex="0" key="2">Orange</Radio>
-            </RadioGroup>);
+            const wrapper = mount(
+                <RadioGroup
+                    shape="button"
+                    dataSource={['apple', 'orange', 'pear']}
+                >
+                    <Radio rtl key="1">
+                        Apple
+                    </Radio>
+                    <Radio tabIndex="0" key="2">
+                        Orange
+                    </Radio>
+                </RadioGroup>
+            );
             assert(wrapper.find('.next-radio-button').children().length === 2);
         });
         it('should support null children', () => {
-            const wrapper = mount(<RadioGroup dataSource={['apple', 'orange', 'pear']}>
-                {null}
-                <Radio tabIndex="0" key="2">Orange</Radio>
-                HelloWorld
-            </RadioGroup>);
+            const wrapper = mount(
+                <RadioGroup dataSource={['apple', 'orange', 'pear']}>
+                    {null}
+                    <Radio tabIndex="0" key="2">
+                        Orange
+                    </Radio>
+                    HelloWorld
+                </RadioGroup>
+            );
             assert(wrapper.find('label').length === 1);
         });
     });
-
 });

@@ -32,9 +32,7 @@ describe('Slider A11y', () => {
     });
 
     it('should not have any violations', async () => {
-        wrapper = await testReact(
-            <Slider>{slides}</Slider>
-        );
+        wrapper = await testReact(<Slider>{slides}</Slider>);
         return wrapper;
     });
 

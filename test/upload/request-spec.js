@@ -12,9 +12,9 @@ const option = {
     data: { a: 1, b: 2 },
     filename: 'a.png',
     file: {
-        name: 'a.png'
+        name: 'a.png',
     },
-    headers: { from: 'hello' }
+    headers: { from: 'hello' },
 };
 
 describe('request', () => {
@@ -92,15 +92,14 @@ describe('request', () => {
         } else {
             done();
         }
-
     });
 
     it('get headers', () => {
         if (typeof FormData !== 'undefined') {
             request(option);
             assert.deepEqual(requests[0].requestHeaders, {
-                "X-Requested-With":"XMLHttpRequest",
-                from: 'hello'
+                'X-Requested-With': 'XMLHttpRequest',
+                from: 'hello',
             });
         }
     });
