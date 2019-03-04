@@ -22,43 +22,53 @@ export default function sticky(BaseComponent) {
              */
             affixProps: PropTypes.object,
             components: PropTypes.object,
-            ...BaseComponent.propTypes
-        }
+            ...BaseComponent.propTypes,
+        };
 
         static defaultProps = {
             components: {},
-            ...BaseComponent.defaultProps
-        }
+            ...BaseComponent.defaultProps,
+        };
 
         static childContextTypes = {
             Header: PropTypes.any,
             offsetTop: PropTypes.number,
-            affixProps: PropTypes.object
-        }
+            affixProps: PropTypes.object,
+        };
 
         getChildContext() {
             return {
-                Header: (this.props.components.Header || Header),
+                Header: this.props.components.Header || Header,
                 offsetTop: this.props.offsetTop,
-                affixProps: this.props.affixProps
+                affixProps: this.props.affixProps,
             };
         }
 
         render() {
             /* eslint-disable no-unused-vars */
-            const { stickyHeader, offsetTop, affixProps, ...others } = this.props;
+            const {
+                stickyHeader,
+                offsetTop,
+                affixProps,
+                ...others
+            } = this.props;
             let { components, maxBodyHeight, fixedHeader } = this.props;
             if (stickyHeader) {
-                components = {...components};
+                components = { ...components };
                 components.Header = StickyHeader;
                 fixedHeader = true;
                 maxBodyHeight = Math.max(maxBodyHeight, 10000);
             }
-            return <BaseComponent {...others} components={components} fixedHeader={fixedHeader} maxBodyHeight={maxBodyHeight}/>;
+            return (
+                <BaseComponent
+                    {...others}
+                    components={components}
+                    fixedHeader={fixedHeader}
+                    maxBodyHeight={maxBodyHeight}
+                />
+            );
         }
     }
     statics(StickyTable, BaseComponent);
     return StickyTable;
 }
-
-

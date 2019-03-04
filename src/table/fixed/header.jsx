@@ -9,13 +9,13 @@ export default class FixedHeader extends React.Component {
         children: PropTypes.any,
         prefix: PropTypes.string,
         className: PropTypes.string,
-        colGroup: PropTypes.any
-    }
+        colGroup: PropTypes.any,
+    };
 
     static contextTypes = {
         getNode: PropTypes.func,
-        lockType: PropTypes.oneOf(['left', 'right'])
-    }
+        lockType: PropTypes.oneOf(['left', 'right']),
+    };
 
     componentDidMount() {
         this.context.getNode('header', findDOMNode(this));
@@ -23,14 +23,15 @@ export default class FixedHeader extends React.Component {
 
     render() {
         const { prefix, className, colGroup, ...others } = this.props;
-        return (<div className={className}>
-            <div className={`${prefix}table-header-inner`}>
-                <table>
-                    {colGroup}
-                    <HeaderComponent {...others} prefix={prefix}/>
-                </table>
+        return (
+            <div className={className}>
+                <div className={`${prefix}table-header-inner`}>
+                    <table>
+                        {colGroup}
+                        <HeaderComponent {...others} prefix={prefix} />
+                    </table>
+                </div>
             </div>
-        </div>);
+        );
     }
 }
-

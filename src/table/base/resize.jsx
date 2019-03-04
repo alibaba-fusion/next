@@ -7,21 +7,21 @@ class Resize extends React.Component {
         prefix: T.string,
         rtl: T.bool,
         onChange: T.func,
-        dataIndex: T.string
-    }
+        dataIndex: T.string,
+    };
     static defaultProps = {
-        onChange: () => {}
-    }
+        onChange: () => {},
+    };
     componentWillUnmount() {
         this.destory();
     }
-    onMouseDown = (e) => {
+    onMouseDown = e => {
         this.lastPageX = e.pageX;
         events.on(document, 'mousemove', this.onMouseMove);
         events.on(document, 'mouseup', this.onMouseUp);
         this.unSelect();
-    }
-    onMouseMove = (e) => {
+    };
+    onMouseMove = e => {
         const pageX = e.pageX;
         let changedPageX = pageX - this.lastPageX;
 
@@ -31,10 +31,10 @@ class Resize extends React.Component {
 
         this.props.onChange(this.props.dataIndex, changedPageX);
         this.lastPageX = pageX;
-    }
+    };
     onMouseUp = () => {
         this.destory();
-    }
+    };
     destory() {
         events.off(document, 'mousemove', this.onMouseMove);
         events.off(document, 'mouseup', this.onMouseMove);
@@ -43,20 +43,25 @@ class Resize extends React.Component {
     unSelect() {
         dom.setStyle(document.body, {
             userSelect: 'none',
-            cursor: 'ew-resize'
+            cursor: 'ew-resize',
         });
         document.body.setAttribute('unselectable', 'on');
     }
     select() {
         dom.setStyle(document.body, {
             userSelect: '',
-            cursor: ''
+            cursor: '',
         });
         document.body.removeAttribute('unselectable');
     }
     render() {
         const { prefix } = this.props;
-        return <a className={`${prefix}table-resize-handler`} onMouseDown={this.onMouseDown}></a>;
+        return (
+            <a
+                className={`${prefix}table-resize-handler`}
+                onMouseDown={this.onMouseDown}
+            />
+        );
     }
 }
 

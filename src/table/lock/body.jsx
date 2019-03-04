@@ -6,31 +6,40 @@ import FixedBody from '../fixed/body';
 /* eslint-disable react/prefer-stateless-function */
 export default class LockBody extends React.Component {
     static propTypes = {
-        ...FixedBody.propTypes
-    }
+        ...FixedBody.propTypes,
+    };
 
     static contextTypes = {
         ...FixedBody.contextTypes,
         getLockNode: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
         onLockBodyWheel: PropTypes.func,
-        lockType: PropTypes.oneOf(['left', 'right'])
-    }
+        lockType: PropTypes.oneOf(['left', 'right']),
+    };
 
     componentDidMount() {
-        this.context.getLockNode('body', findDOMNode(this), this.context.lockType);
+        this.context.getLockNode(
+            'body',
+            findDOMNode(this),
+            this.context.lockType
+        );
     }
 
     onBodyScroll = () => {
         this.context.onLockBodyScroll();
-    }
+    };
 
-    onBodyWheel = (e) => {
+    onBodyWheel = e => {
         this.context.onLockBodyWheel(e);
-    }
+    };
 
     render() {
-        return <FixedBody {...this.props} onScroll={this.onBodyScroll} onWheel={this.onBodyWheel} />;
+        return (
+            <FixedBody
+                {...this.props}
+                onScroll={this.onBodyScroll}
+                onWheel={this.onBodyWheel}
+            />
+        );
     }
 }
-

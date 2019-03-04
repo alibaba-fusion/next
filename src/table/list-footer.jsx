@@ -7,16 +7,19 @@ import PropTypes from 'prop-types';
  * @order 3
  **/
 export default class ListFooter extends React.Component {
-
     static propTypes = {
         /**
          * 行渲染的逻辑
          */
-        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func])
-    }
+        cell: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.node,
+            PropTypes.func,
+        ]),
+    };
 
     static defaultProps = {
-        cell: () => ''
+        cell: () => '',
     };
 
     static _typeMark = 'listFooter';
