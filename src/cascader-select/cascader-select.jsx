@@ -56,11 +56,17 @@ export default class CascaderSelect extends Component {
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.string),
+        ]),
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.string),
+        ]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -193,7 +199,7 @@ export default class CascaderSelect extends Component {
         /**
          * 透传到 Popup 的属性对象
          */
-        popupProps: PropTypes.object
+        popupProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -239,21 +245,34 @@ export default class CascaderSelect extends Component {
         notFoundContent: 'Not Found',
         defaultVisible: false,
         onVisibleChange: () => {},
-        popupProps: {}
+        popupProps: {},
     };
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            value: this.normalizeValue('value' in props ? props.value : props.defaultValue),
+            value: this.normalizeValue(
+                'value' in props ? props.value : props.defaultValue
+            ),
             searchValue: '',
-            visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible
+            visible:
+                typeof props.visible === 'undefined'
+                    ? props.defaultVisible
+                    : props.visible,
         };
 
         bindCtx(this, [
-            'handleVisibleChange', 'handleAfterOpen', 'handleChange', 'handleClear', 'handleRemove',
-            'handleSearch', 'getPopup', 'saveSelectRef', 'saveCascaderRef', 'handleKeyDown'
+            'handleVisibleChange',
+            'handleAfterOpen',
+            'handleChange',
+            'handleClear',
+            'handleRemove',
+            'handleSearch',
+            'getPopup',
+            'saveSelectRef',
+            'saveCascaderRef',
+            'handleKeyDown',
         ]);
     }
 
@@ -287,15 +306,16 @@ export default class CascaderSelect extends Component {
     updateCache(dataSource) {
         this._v2n = {};
         this._p2n = {};
-        const loop = (data, prefix = '0') => data.forEach((item, index) => {
-            const { value, children } = item;
-            const pos = `${prefix}-${index}`;
-            this._v2n[value] = this._p2n[pos] = { ...item, pos };
+        const loop = (data, prefix = '0') =>
+            data.forEach((item, index) => {
+                const { value, children } = item;
+                const pos = `${prefix}-${index}`;
+                this._v2n[value] = this._p2n[pos] = { ...item, pos };
 
-            if (children && children.length) {
-                loop(children, pos);
-            }
-        });
+                if (children && children.length) {
+                    loop(children, pos);
+                }
+            });
 
         loop(dataSource);
     }
@@ -314,7 +334,13 @@ export default class CascaderSelect extends Component {
 
         for (let i = 0; i < newValue.length; i++) {
             for (let j = 0; j < newValue.length; j++) {
-                if (i !== j && this.isDescendantOrSelf(this.getPos(newValue[i]), this.getPos(newValue[j]))) {
+                if (
+                    i !== j &&
+                    this.isDescendantOrSelf(
+                        this.getPos(newValue[i]),
+                        this.getPos(newValue[j])
+                    )
+                ) {
                     newValue.splice(j, 1);
                     j--;
                 }
@@ -332,9 +358,12 @@ export default class CascaderSelect extends Component {
         const currentNums = currentPos.split('-');
         const targetNums = targetPos.split('-');
 
-        return currentNums.length <= targetNums.length && currentNums.every((num, index) => {
-            return num === targetNums[index];
-        });
+        return (
+            currentNums.length <= targetNums.length &&
+            currentNums.every((num, index) => {
+                return num === targetNums[index];
+            })
+        );
     }
 
     getValue(pos) {
@@ -369,24 +398,27 @@ export default class CascaderSelect extends Component {
         }
 
         const labelPath = this.getLabelPath(data);
-        const displayRender = this.props.displayRender || (labels => labels.join(' / '));
+        const displayRender =
+            this.props.displayRender || (labels => labels.join(' / '));
 
         return {
             ...data,
-            label: displayRender(labelPath, data)
+            label: displayRender(labelPath, data),
         };
     }
 
     getMultipleData(value) {
         const { checkStrictly, canOnlyCheckLeaf, displayRender } = this.props;
-        let data = this.getData(checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value));
+        let data = this.getData(
+            checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value)
+        );
         if (displayRender) {
             data = data.map(item => {
                 const labelPath = this.getLabelPath(item);
 
                 return {
                     ...item,
-                    label: displayRender(labelPath, item)
+                    label: displayRender(labelPath, item),
                 };
             });
         }
@@ -441,13 +473,16 @@ export default class CascaderSelect extends Component {
     }
 
     isLeaf(data) {
-        return !(data.children && data.children.length || (!!this.props.loadData && !data.isLeaf));
+        return !(
+            (data.children && data.children.length) ||
+            (!!this.props.loadData && !data.isLeaf)
+        );
     }
 
     handleVisibleChange(visible, type) {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
 
@@ -476,7 +511,8 @@ export default class CascaderSelect extends Component {
                 this.cascader.setFocusValue();
                 e.preventDefault();
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -493,7 +529,10 @@ export default class CascaderSelect extends Component {
         }
 
         const { prefix, popupProps } = this.props;
-        const dropDownNode = this.popup.getInstance().overlay.getInstance().getContentNode();
+        const dropDownNode = this.popup
+            .getInstance()
+            .overlay.getInstance()
+            .getContentNode();
         const cascaderNode = dropDownNode.querySelector(`.${prefix}cascader`);
         if (cascaderNode) {
             this.cascaderHeight = getStyle(cascaderNode, 'height');
@@ -509,7 +548,10 @@ export default class CascaderSelect extends Component {
         const { visible, searchValue } = this.state;
 
         const st = {};
-        if (!multiple && (!changeOnSelect || this.isLeaf(data) || !!searchValue)) {
+        if (
+            !multiple &&
+            (!changeOnSelect || this.isLeaf(data) || !!searchValue)
+        ) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
         if (!('value' in this.props)) {
@@ -533,7 +575,7 @@ export default class CascaderSelect extends Component {
         if (hasClear && (!multiple || !treeCheckable)) {
             if (!('value' in this.props)) {
                 this.setState({
-                    value: []
+                    value: [],
                 });
             }
 
@@ -558,7 +600,7 @@ export default class CascaderSelect extends Component {
                     this.props.onChange(value, data, {
                         checked,
                         currentData,
-                        checkedData: data
+                        checkedData: data,
                     });
                 } else {
                     const checkedValue = this.completeValue(value);
@@ -569,7 +611,7 @@ export default class CascaderSelect extends Component {
                         checked,
                         currentData,
                         checkedData,
-                        indeterminateData
+                        indeterminateData,
                     });
                 }
             }
@@ -580,14 +622,14 @@ export default class CascaderSelect extends Component {
 
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
     }
 
     handleSearch(searchValue) {
         this.setState({
-            searchValue
+            searchValue,
         });
     }
 
@@ -608,11 +650,18 @@ export default class CascaderSelect extends Component {
     }
 
     filterItems() {
-        const { multiple, changeOnSelect, canOnlyCheckLeaf, filter } = this.props;
+        const {
+            multiple,
+            changeOnSelect,
+            canOnlyCheckLeaf,
+            filter,
+        } = this.props;
         const { searchValue } = this.state;
         let items = Object.keys(this._p2n).map(p => this._p2n[p]);
         if ((!multiple && !changeOnSelect) || (multiple && canOnlyCheckLeaf)) {
-            items = items.filter(item => !item.children || !item.children.length);
+            items = items.filter(
+                item => !item.children || !item.children.length
+            );
         }
 
         return items
@@ -660,7 +709,7 @@ export default class CascaderSelect extends Component {
             showSearch,
             resultRender,
             readOnly,
-            itemRender
+            itemRender,
         } = this.props;
         const { value } = this.state;
 
@@ -679,7 +728,7 @@ export default class CascaderSelect extends Component {
             listStyle,
             listClassName,
             loadData,
-            itemRender
+            itemRender,
         };
         if (!readOnly) {
             props.onChange = this.handleChange;
@@ -723,14 +772,13 @@ export default class CascaderSelect extends Component {
             popupStyle,
             popupClassName,
             popupContainer,
-            popupProps
+            popupProps,
         } = this.props;
-        const {
-            value,
-            searchValue,
-            visible
-        } = this.state;
-        const others = pickOthers(Object.keys(CascaderSelect.propTypes), this.props);
+        const { value, searchValue, visible } = this.state;
+        const others = pickOthers(
+            Object.keys(CascaderSelect.propTypes),
+            this.props
+        );
         const popupContent = this.renderPopupContent();
 
         this.updateCache(dataSource);
@@ -749,7 +797,9 @@ export default class CascaderSelect extends Component {
             ref: this.saveSelectRef,
             autoWidth: false,
             mode: multiple ? 'multiple' : 'single',
-            value: multiple ? this.getMultipleData(value) : this.getSignleData(value),
+            value: multiple
+                ? this.getMultipleData(value)
+                : this.getSignleData(value),
             onChange: this.handleClear,
             onRemove: this.handleRemove,
             visible,
@@ -762,14 +812,14 @@ export default class CascaderSelect extends Component {
             popupStyle,
             popupClassName,
             popupContainer,
-            popupProps
+            popupProps,
         };
 
         if (showSearch) {
             props.popupProps = {
                 ...popupProps,
                 ref: this.getPopup,
-                afterOpen: this.handleAfterOpen
+                afterOpen: this.handleAfterOpen,
             };
             props.autoWidth = showSearch && !!searchValue;
         }

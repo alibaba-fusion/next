@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 function mapIconSize(size) {
-    return ({
+    return {
         large: 'small',
         medium: 'xs',
-        small: 'xs'
-    })[size];
+        small: 'xs',
+    }[size];
 }
 
 /** Button */
@@ -26,7 +26,16 @@ export default class Button extends Component {
         /**
          * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
          */
-        iconSize: PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl']),
+        iconSize: PropTypes.oneOf([
+            'xxs',
+            'xs',
+            'small',
+            'medium',
+            'large',
+            'xl',
+            'xxl',
+            'xxxl',
+        ]),
         /**
          * 当 component = 'button' 时，设置 button 标签的 type 值
          */
@@ -62,7 +71,7 @@ export default class Button extends Component {
         onClick: PropTypes.func,
         className: PropTypes.string,
         onMouseUp: PropTypes.func,
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
@@ -76,10 +85,10 @@ export default class Button extends Component {
         text: false,
         warning: false,
         disabled: false,
-        onClick: () => {}
+        onClick: () => {},
     };
 
-    onMouseUp = (e) => {
+    onMouseUp = e => {
         this.button.blur();
 
         if (this.props.onMouseUp) {
@@ -87,13 +96,29 @@ export default class Button extends Component {
         }
     };
 
-    buttonRefHandler = (button) => {
+    buttonRefHandler = button => {
         this.button = button;
     };
 
     render() {
-        const { prefix, className, type, size, htmlType, loading, text, warning, ghost, component, iconSize, children, rtl, ...others } = this.props;
-        const ghostType = ['light', 'dark'].indexOf(ghost) >= 0 ? ghost : 'dark';
+        const {
+            prefix,
+            className,
+            type,
+            size,
+            htmlType,
+            loading,
+            text,
+            warning,
+            ghost,
+            component,
+            iconSize,
+            children,
+            rtl,
+            ...others
+        } = this.props;
+        const ghostType =
+            ['light', 'dark'].indexOf(ghost) >= 0 ? ghost : 'dark';
 
         const btnCls = classNames({
             [`${prefix}btn`]: true,
@@ -104,22 +129,26 @@ export default class Button extends Component {
             [`${prefix}btn-loading`]: loading,
             [`${prefix}btn-ghost`]: ghost,
             [`${prefix}btn-${ghostType}`]: ghost,
-            [className]: className
+            [className]: className,
         });
 
         const count = Children.count(children);
         const clonedChildren = Children.map(children, (child, index) => {
-            if (child && typeof child.type === 'function' && child.type._typeMark === 'icon') {
+            if (
+                child &&
+                typeof child.type === 'function' &&
+                child.type._typeMark === 'icon'
+            ) {
                 const iconCls = classNames({
                     [`${prefix}btn-icon`]: !iconSize, // 如果用户没有传 iconSize，则使用该样式标记 icon 为 button 预设尺寸
                     [`${prefix}icon-first`]: count > 1 && index === 0,
                     [`${prefix}icon-last`]: count > 1 && index === count - 1,
                     [`${prefix}icon-alone`]: count === 1,
-                    [child.props.className]: !!child.props.className
+                    [child.props.className]: !!child.props.className,
                 });
                 return React.cloneElement(child, {
                     className: iconCls,
-                    size: iconSize || mapIconSize(size)
+                    size: iconSize || mapIconSize(size),
                 });
             }
 
@@ -130,7 +159,7 @@ export default class Button extends Component {
         const tagAttrs = {
             ...others,
             type: htmlType,
-            className: btnCls
+            className: btnCls,
         };
 
         if (TagName === 'a') {
@@ -143,7 +172,13 @@ export default class Button extends Component {
         }
 
         return (
-            <TagName {...tagAttrs} dir={rtl ? 'rtl' : undefined} onMouseUp={this.onMouseUp} ref={this.buttonRefHandler} role="button">
+            <TagName
+                {...tagAttrs}
+                dir={rtl ? 'rtl' : undefined}
+                onMouseUp={this.onMouseUp}
+                ref={this.buttonRefHandler}
+                role="button"
+            >
                 {clonedChildren}
             </TagName>
         );

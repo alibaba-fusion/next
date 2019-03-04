@@ -6,12 +6,10 @@ import Balloon from '../../src/balloon/index';
 
 /* eslint-disable react/no-multi-comp */
 
-
 Enzyme.configure({ adapter: new Adapter() });
 const Inner = Balloon.Inner;
 
 describe('Tooltip', () => {
-
     it('balloon', () => {
         const wrapper = mount(<Inner>test</Inner>);
         assert(wrapper.find('.next-balloon').length === 1);
@@ -21,5 +19,4 @@ describe('Tooltip', () => {
         const wrapper = mount(<Inner isTooltip>test</Inner>);
         assert(wrapper.find('.next-balloon-tooltip').length === 1);
     });
-
 });

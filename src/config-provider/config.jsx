@@ -41,7 +41,7 @@ export function setLanguage(language) {
 export function setLocale(locale) {
     currentGlobalLocale = {
         ...(globalLocales ? globalLocales[currentGlobalLanguage] : {}),
-        ...locale
+        ...locale,
     };
 
     if (typeof currentGlobalRtl !== 'boolean') {
@@ -88,7 +88,7 @@ export function config(Component, options = {}) {
             prefix: PropTypes.string,
             locale: PropTypes.object,
             pure: PropTypes.bool,
-            rtl: PropTypes.bool
+            rtl: PropTypes.bool,
         };
         static contextTypes = {
             ...(Component.contextTypes || {}),
@@ -96,7 +96,7 @@ export function config(Component, options = {}) {
             nextLocale: PropTypes.object,
             nextPure: PropTypes.bool,
             nextRtl: PropTypes.bool,
-            nextWarning: PropTypes.bool
+            nextWarning: PropTypes.bool,
         };
 
         constructor(props, context) {
@@ -137,7 +137,7 @@ export function config(Component, options = {}) {
                 nextPrefix,
                 nextLocale = {},
                 nextPure,
-                nextRtl
+                nextRtl,
             } = this.context;
 
             const displayName =
@@ -148,8 +148,12 @@ export function config(Component, options = {}) {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
                     nextPure,
-                    nextRtl: typeof nextRtl === 'boolean' ? nextRtl :
-                        currentGlobalRtl === true ? true : undefined
+                    nextRtl:
+                        typeof nextRtl === 'boolean'
+                            ? nextRtl
+                            : currentGlobalRtl === true
+                            ? true
+                            : undefined,
                 },
                 displayName
             );
@@ -164,9 +168,9 @@ export function config(Component, options = {}) {
                 {}
             );
 
-            const newOthers = options.transform ?
-                options.transform(others, this._deprecated) :
-                others;
+            const newOthers = options.transform
+                ? options.transform(others, this._deprecated)
+                : others;
 
             return (
                 <Component

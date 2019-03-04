@@ -15,7 +15,7 @@ const overlayManager = {
         if (i > -1) {
             this.allOverlays.splice(i, 1);
         }
-    }
+    },
 };
 
 export default overlayManager;

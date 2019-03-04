@@ -25,30 +25,36 @@ describe('Card', () => {
         });
 
         it('should render card', () => {
-            wrapper = mount(<Card {...commonProps}>
-                Card content
-            </Card>);
+            wrapper = mount(<Card {...commonProps}>Card content</Card>);
             assert(wrapper.find('.next-card').length === 1);
             assert(wrapper.find('.next-card-head-show-bullet').length === 1);
             assert(wrapper.find('.next-card-head-show-underline').length === 0);
         });
 
         it('should render without title bullet', () => {
-            wrapper = mount(<Card {...commonProps} showTitleBullet={false}>
-                Card Content
-            </Card>);
+            wrapper = mount(
+                <Card {...commonProps} showTitleBullet={false}>
+                    Card Content
+                </Card>
+            );
             assert(wrapper.find('.next-card-head-show-bullet').length === 0);
         });
 
         it('should render without head underline', () => {
-            wrapper = mount(<Card {...commonProps} showHeadDivider={false}>Card Content</Card>);
+            wrapper = mount(
+                <Card {...commonProps} showHeadDivider={false}>
+                    Card Content
+                </Card>
+            );
             assert(wrapper.find('.next-card-head-show-underline').length === 0);
         });
 
         it('should render without head', () => {
-            wrapper = mount(<Card {...commonProps} title={null}>
-                Card Content
-            </Card>);
+            wrapper = mount(
+                <Card {...commonProps} title={null}>
+                    Card Content
+                </Card>
+            );
             assert(wrapper.find('.next-card-head').length === 0);
         });
     });
@@ -68,10 +74,13 @@ describe('Card', () => {
             wrapper = null;
         });
 
-        it('should expand card', (done) => {
-            wrapper = mount(<Card {...commonProps}>
-                <div style={{ height: 600 }}></div>
-            </Card>, { attachTo: parent });
+        it('should expand card', done => {
+            wrapper = mount(
+                <Card {...commonProps}>
+                    <div style={{ height: 600 }} />
+                </Card>,
+                { attachTo: parent }
+            );
             assert(wrapper.find('.next-icon-arrow-down.expand').length === 0);
             wrapper.find(Button).simulate('click');
             assert(wrapper.find('.next-icon-arrow-down.expand').length === 1);
@@ -79,4 +88,3 @@ describe('Card', () => {
         });
     });
 });
-

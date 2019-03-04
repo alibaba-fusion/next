@@ -22,7 +22,7 @@ export default class Position extends Component {
         needAdjust: PropTypes.bool,
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -33,7 +33,7 @@ export default class Position extends Component {
         needAdjust: true,
         needListenResize: true,
         shouldUpdatePosition: false,
-        rtl: false
+        rtl: false,
     };
 
     constructor(props) {
@@ -51,7 +51,10 @@ export default class Position extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ('align' in nextProps && nextProps.align !== this.props.align || nextProps.shouldUpdatePosition) {
+        if (
+            ('align' in nextProps && nextProps.align !== this.props.align) ||
+            nextProps.shouldUpdatePosition
+        ) {
             this.shouldUpdatePosition = true;
         }
     }
@@ -72,7 +75,14 @@ export default class Position extends Component {
     }
 
     setPosition() {
-        const { align, offset, beforePosition, onPosition, needAdjust, rtl } = this.props;
+        const {
+            align,
+            offset,
+            beforePosition,
+            onPosition,
+            needAdjust,
+            rtl,
+        } = this.props;
 
         beforePosition();
 
@@ -85,16 +95,19 @@ export default class Position extends Component {
                 align,
                 offset,
                 needAdjust,
-                isRtl: rtl
+                isRtl: rtl,
             });
             const top = getStyle(contentNode, 'top');
             const left = getStyle(contentNode, 'left');
 
-            onPosition({
-                align: resultAlign.split(' '),
-                top,
-                left
-            }, contentNode);
+            onPosition(
+                {
+                    align: resultAlign.split(' '),
+                    top,
+                    left,
+                },
+                contentNode
+            );
         }
     }
 
@@ -105,7 +118,9 @@ export default class Position extends Component {
     getTargetNode() {
         const { target } = this.props;
 
-        return target === position.VIEWPORT ? position.VIEWPORT : findNode(target, this.props);
+        return target === position.VIEWPORT
+            ? position.VIEWPORT
+            : findNode(target, this.props);
     }
 
     handleResize() {

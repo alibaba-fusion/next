@@ -11,7 +11,6 @@ import * as util from '../util';
  *  @param options.messages The validation messages.
  */
 function size(rule, value, errors, options) {
-
     let key = null;
     const isNum = typeof value === 'number';
     const isStr = typeof value === 'string';
@@ -35,9 +34,13 @@ function size(rule, value, errors, options) {
             val = Number(val);
         }
         if (val < min) {
-            errors.push(util.format(options.messages[key].min, rule.field, rule.min));
+            errors.push(
+                util.format(options.messages[key].min, rule.field, rule.min)
+            );
         } else if (val > max) {
-            errors.push(util.format(options.messages[key].max, rule.field, rule.max));
+            errors.push(
+                util.format(options.messages[key].max, rule.field, rule.max)
+            );
         }
     }
 }

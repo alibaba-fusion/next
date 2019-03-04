@@ -24,14 +24,14 @@ const TYPE_MAPS = {
     error: 'error',
     notice: 'prompt',
     help: 'help',
-    loading: 'loading'
+    loading: 'loading',
 };
 
 const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
+    ReactDOM.render(element, container, function() {
         inc = this;
     });
     return {
@@ -48,7 +48,7 @@ const render = element => {
         },
         find: selector => {
             return container.querySelectorAll(selector);
-        }
+        },
     };
 };
 
@@ -66,10 +66,19 @@ describe('Message', () => {
     });
 
     it('should have type class', () => {
-        const types = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+        const types = [
+            'success',
+            'warning',
+            'error',
+            'notice',
+            'help',
+            'loading',
+        ];
         types.forEach(type => {
             const wrapper = mount(<Message type={type} />);
-            assert(wrapper.find(`.next-message.next-message-${type}`).length === 1);
+            assert(
+                wrapper.find(`.next-message.next-message-${type}`).length === 1
+            );
             assert(wrapper.find(Icon).prop('type') === TYPE_MAPS[type]);
             wrapper.unmount();
         });
@@ -112,7 +121,9 @@ describe('Message', () => {
     });
 
     it('should show close link if set closeable to true', done => {
-        const wrapper = mount(<Message animation={false} title="title" closeable />);
+        const wrapper = mount(
+            <Message animation={false} title="title" closeable />
+        );
         const closeLink = wrapper.find('.next-message-close');
         assert(closeLink.length === 1);
         closeLink.simulate('click');
@@ -124,10 +135,17 @@ describe('Message', () => {
     });
 
     it('should show or hide under control', () => {
-        const wrapper = mount(<Message defaultVisible visible={false} animation={false} title="title" />);
+        const wrapper = mount(
+            <Message
+                defaultVisible
+                visible={false}
+                animation={false}
+                title="title"
+            />
+        );
         assert(wrapper.find('.next-message').length === 0);
         wrapper.setProps({
-            visible: true
+            visible: true,
         });
         assert(wrapper.find('.next-message').length === 1);
         wrapper.unmount();
@@ -137,7 +155,11 @@ describe('Message', () => {
 describe('toast', done => {
     it('should render message when only pass content string', () => {
         Message.show('content');
-        assert(document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() === 'content');
+        assert(
+            document
+                .querySelector('.next-overlay-wrapper .next-message')
+                .innerText.trim() === 'content'
+        );
 
         setTimeout(() => {
             Message.hide();
@@ -148,7 +170,11 @@ describe('toast', done => {
 
     it('should render message when only pass content react element', () => {
         Message.show(<i>content</i>);
-        assert(document.querySelector('.next-overlay-wrapper .next-message-title i').innerText.trim() === 'content');
+        assert(
+            document
+                .querySelector('.next-overlay-wrapper .next-message-title i')
+                .innerText.trim() === 'content'
+        );
 
         setTimeout(() => {
             Message.hide();
@@ -160,9 +186,15 @@ describe('toast', done => {
     it('should render message when pass config object', () => {
         Message.show({
             type: 'warning',
-            content: 'content'
+            content: 'content',
         });
-        assert(document.querySelector('.next-overlay-wrapper .next-message.next-message-warning').innerText.trim() === 'content');
+        assert(
+            document
+                .querySelector(
+                    '.next-overlay-wrapper .next-message.next-message-warning'
+                )
+                .innerText.trim() === 'content'
+        );
 
         setTimeout(() => {
             Message.hide();
@@ -179,10 +211,14 @@ describe('toast', done => {
             duration: 100,
             afterClose: () => {
                 called = true;
-            }
+            },
         });
         setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
+            assert(
+                document.querySelector(
+                    '.next-overlay-wrapper .next-message'
+                ) === null
+            );
             assert(called);
             done();
         }, 1000);
@@ -191,11 +227,15 @@ describe('toast', done => {
     it('should show message all the time when set duration to 0', done => {
         Message.show({
             content: 'content',
-            duration: 0
+            duration: 0,
         });
 
         setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message.next-message') !== null);
+            assert(
+                document.querySelector(
+                    '.next-overlay-wrapper .next-message.next-message'
+                ) !== null
+            );
             Message.hide();
         }, 500);
 
@@ -210,7 +250,7 @@ describe('toast', done => {
             duration: 100,
             afterClose: () => {
                 called = true;
-            }
+            },
         });
 
         setTimeout(() => {
@@ -218,7 +258,11 @@ describe('toast', done => {
         }, 500);
 
         setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
+            assert(
+                document.querySelector(
+                    '.next-overlay-wrapper .next-message'
+                ) === null
+            );
             assert(called);
             done();
         }, 1000);
@@ -234,7 +278,7 @@ describe('toast', done => {
         Message.show({
             content: 'content',
             duration: 0,
-            closeable: true
+            closeable: true,
         });
 
         setTimeout(() => {
@@ -243,7 +287,11 @@ describe('toast', done => {
         }, 500);
 
         setTimeout(() => {
-            assert(document.querySelector('.next-overlay-wrapper .next-message') === null);
+            assert(
+                document.querySelector(
+                    '.next-overlay-wrapper .next-message'
+                ) === null
+            );
             done();
         }, 1000);
     });
@@ -251,25 +299,43 @@ describe('toast', done => {
 
 describe('should support configProvider', () => {
     it('normal should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
-        const methods = ['success', 'warning', 'error', 'notice', 'help', 'loading'];
+        const methods = [
+            'success',
+            'warning',
+            'error',
+            'notice',
+            'help',
+            'loading',
+        ];
         const wrapper = render(
-            <ConfigProvider prefix="far-" locale={{
-                momentLocale: 'en',
-                Dialog: {
-                    ok: 'far ok',
-                    cancel: 'far cancel'
-                }
-            }}>
-                <ConfigProvider prefix="near-" locale={{
+            <ConfigProvider
+                prefix="far-"
+                locale={{
                     momentLocale: 'en',
                     Dialog: {
-                        ok: 'near ok',
-                        cancel: 'near cancel'
-                    }
-                }}>
+                        ok: 'far ok',
+                        cancel: 'far cancel',
+                    },
+                }}
+            >
+                <ConfigProvider
+                    prefix="near-"
+                    locale={{
+                        momentLocale: 'en',
+                        Dialog: {
+                            ok: 'near ok',
+                            cancel: 'near cancel',
+                        },
+                    }}
+                >
                     <div>
                         {methods.map(method => (
-                            <Message key={method} title="title" type={method} shape="inline">
+                            <Message
+                                key={method}
+                                title="title"
+                                type={method}
+                                shape="inline"
+                            >
                                 <Button type="primary">button-{method}</Button>
                             </Message>
                         ))}
@@ -277,7 +343,9 @@ describe('should support configProvider', () => {
                 </ConfigProvider>
             </ConfigProvider>
         );
-        const innerBtn = document.querySelectorAll('.near-message .near-message-content .near-btn-primary');
+        const innerBtn = document.querySelectorAll(
+            '.near-message .near-message-content .near-btn-primary'
+        );
         assert(innerBtn.length === methods.length);
         wrapper.unmount();
     });
@@ -347,9 +415,13 @@ describe('toast quick-calling', () => {
     ];
 
     for (const method of avaliableMethods) {
-        it(`render ${method}`, (done) => {
+        it(`render ${method}`, done => {
             Message.show('content');
-            assert(document.querySelector('.next-overlay-wrapper .next-message').innerText.trim() === 'content');
+            assert(
+                document
+                    .querySelector('.next-overlay-wrapper .next-message')
+                    .innerText.trim() === 'content'
+            );
             setTimeout(() => {
                 Message.hide();
                 done();

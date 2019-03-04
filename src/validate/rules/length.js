@@ -11,7 +11,6 @@ import * as util from '../util';
  *  @param options.messages The validation messages.
  */
 function length(rule, value, errors, options) {
-
     let key = null;
     const isNum = typeof value === 'number';
     const isStr = typeof value === 'string';
@@ -40,11 +39,29 @@ function length(rule, value, errors, options) {
         }
         val = val.length;
         if (length && val !== rule.length) {
-            errors.push(util.format(options.messages[key].length, rule.field, rule.length));
+            errors.push(
+                util.format(
+                    options.messages[key].length,
+                    rule.field,
+                    rule.length
+                )
+            );
         } else if (val < minLength) {
-            errors.push(util.format(options.messages[key].minLength, rule.field, rule.minLength));
+            errors.push(
+                util.format(
+                    options.messages[key].minLength,
+                    rule.field,
+                    rule.minLength
+                )
+            );
         } else if (val > maxLength) {
-            errors.push(util.format(options.messages[key].maxLength, rule.field, rule.maxLength));
+            errors.push(
+                util.format(
+                    options.messages[key].maxLength,
+                    rule.field,
+                    rule.maxLength
+                )
+            );
         }
     }
 }

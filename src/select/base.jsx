@@ -73,10 +73,7 @@ export default class Base extends React.Component {
         /**
          * 弹层挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.func
-        ]),
+        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
          * 弹层的 className
          */
@@ -117,7 +114,7 @@ export default class Base extends React.Component {
         mode: PropTypes.string,
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -130,10 +127,10 @@ export default class Base extends React.Component {
         popupProps: {},
         filterLocal: true,
         filter: filter,
-        itemRender: (item) => {
+        itemRender: item => {
             return item.label || item.value;
         },
-        locale: zhCN.Select
+        locale: zhCN.Select,
     };
 
     constructor(props) {
@@ -141,7 +138,7 @@ export default class Base extends React.Component {
 
         this.dataStore = new DataStore({
             filter: props.filter,
-            filterLocal: props.filterLocal
+            filterLocal: props.filterLocal,
         });
 
         this.state = {
@@ -150,7 +147,7 @@ export default class Base extends React.Component {
             dataSource: [],
             width: 100,
             // current highlight key
-            highlightKey: null
+            highlightKey: null,
         };
 
         bindCtx(this, [
@@ -160,13 +157,13 @@ export default class Base extends React.Component {
             'beforeOpen',
             'beforeClose',
             'afterClose',
-            'handleResize'
+            'handleResize',
         ]);
     }
 
     componentWillMount() {
         this.setState({
-            dataSource: this.setDataSource(this.props)
+            dataSource: this.setDataSource(this.props),
         });
     }
 
@@ -180,32 +177,38 @@ export default class Base extends React.Component {
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
             this.setState({
-                value: nextProps.value
+                value: nextProps.value,
             });
         }
 
         if ('visible' in nextProps) {
             // this.state.visible = nextProps.visible;
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
 
         this.dataStore.setOptions({
             filter: nextProps.filter,
-            filterLocal: nextProps.filterLocal
+            filterLocal: nextProps.filterLocal,
         });
 
-        if ((nextProps.children !== this.props.children || nextProps.dataSource !== this.props.dataSource)) {
+        if (
+            nextProps.children !== this.props.children ||
+            nextProps.dataSource !== this.props.dataSource
+        ) {
             const dataSource = this.setDataSource(nextProps);
             this.setState({
-                dataSource
+                dataSource,
             });
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if ((prevProps.label !== this.props.label || prevState.value !== this.state.value)) {
+        if (
+            prevProps.label !== this.props.label ||
+            prevState.value !== this.state.value
+        ) {
             this.syncWidth();
         }
     }
@@ -222,14 +225,21 @@ export default class Base extends React.Component {
     syncWidth() {
         const width = dom.getStyle(this.selectDOM, 'width');
 
-        if (width && (this.width !== width)) {
+        if (width && this.width !== width) {
             this.width = width;
 
             if (this.popupRef && this.props.autoWidth) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef && this.popupRef.getInstance().overlay) {
-                        dom.setStyle(this.popupRef.getInstance().overlay.getInstance().getContentNode(), 'width', this.width);
+                        dom.setStyle(
+                            this.popupRef
+                                .getInstance()
+                                .overlay.getInstance()
+                                .getContentNode(),
+                            'width',
+                            this.width
+                        );
                     }
                 }, 0);
             }
@@ -257,7 +267,6 @@ export default class Base extends React.Component {
         // children is higher priority then dataSource
         if (Children.count(children)) {
             return this.dataStore.updateByDS(children, true);
-
         } else if (Array.isArray(dataSource)) {
             return this.dataStore.updateByDS(dataSource, false);
         }
@@ -277,7 +286,7 @@ export default class Base extends React.Component {
 
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
 
@@ -286,9 +295,12 @@ export default class Base extends React.Component {
 
     setFirstHightLightKeyForMenu() {
         // 设置高亮 item key
-        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
+        if (
+            this.dataStore.getMenuDS().length &&
+            this.dataStore.getEnableDS().length
+        ) {
             this.setState({
-                highlightKey: `${this.dataStore.getEnableDS()[0].value}`
+                highlightKey: `${this.dataStore.getEnableDS()[0].value}`,
             });
         }
     }
@@ -297,7 +309,7 @@ export default class Base extends React.Component {
         // 非受控模式清空内部数据
         if (!('value' in this.props)) {
             this.setState({
-                value: value
+                value: value,
             });
         }
         this.props.onChange(value, ...args);
@@ -332,12 +344,13 @@ export default class Base extends React.Component {
         let highlightIndex = -1;
 
         // find previous highlight index
-        highlightKey !== null && this.dataStore.getEnableDS().some((item, index) => {
-            if (`${item.value}` === highlightKey) {
-                highlightIndex = index;
-            }
-            return highlightIndex > -1;
-        });
+        highlightKey !== null &&
+            this.dataStore.getEnableDS().some((item, index) => {
+                if (`${item.value}` === highlightKey) {
+                    highlightIndex = index;
+                }
+                return highlightIndex > -1;
+            });
 
         // toggle highlight index
         highlightIndex += dir;
@@ -367,7 +380,9 @@ export default class Base extends React.Component {
         this.highlightTimer = setTimeout(() => {
             try {
                 const menuNode = findDOMNode(this.menuRef);
-                const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);
+                const itemNode = menuNode.querySelector(
+                    `.${prefix}select-menu-item.${prefix}focused`
+                );
                 itemNode && itemNode.scrollIntoViewIfNeeded();
             } catch (ex) {
                 // I don't care...
@@ -383,9 +398,7 @@ export default class Base extends React.Component {
         return null;
     }
 
-    handleSelect() {
-
-    }
+    handleSelect() {}
 
     /**
      * render popup children
@@ -393,11 +406,17 @@ export default class Base extends React.Component {
      * @param {object} props
      */
     renderMenu() {
-        const { prefix, mode, autoWidth, locale, notFoundContent, useVirtual } = this.props;
+        const {
+            prefix,
+            mode,
+            autoWidth,
+            locale,
+            notFoundContent,
+            useVirtual,
+        } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
-
 
         if (isNull(value) || value.length === 0) {
             selectedKeys = [];
@@ -409,14 +428,17 @@ export default class Base extends React.Component {
 
         let children = this.renderMenuItem(dataSource);
 
-
         const menuClassName = classNames({
             [`${prefix}select-menu`]: true,
-            [`${prefix}select-menu-empty`]: !children || !children.length
+            [`${prefix}select-menu-empty`]: !children || !children.length,
         });
 
         if (!children || !children.length) {
-            children = <span className={`${prefix}select-menu-empty-content`}>{notFoundContent || locale.notFoundContent}</span>;
+            children = (
+                <span className={`${prefix}select-menu-empty-content`}>
+                    {notFoundContent || locale.notFoundContent}
+                </span>
+            );
         }
 
         const menuProps = {
@@ -432,23 +454,34 @@ export default class Base extends React.Component {
             header: this.renderMenuHeader(),
             onClick: this.handleMenuBodyClick,
             onMouseDown: preventDefault,
-            className: menuClassName
+            className: menuClassName,
         };
 
-        return (
-            useVirtual && children.length ?
-                <div className={`${prefix}select-menu-wrapper`} style={{position: 'relative'}}>
-                    <VirtualList
-                        itemsRenderer={(items, ref) => {
-                            return (<Menu ref={c => {
-                                ref(c);
-                                this.menuRef = c;
-                            }} {...menuProps}>{items}</Menu>);
-                        }}>
-                        {children}
-                    </VirtualList>
-                </div> :
-                <Menu {...menuProps} />
+        return useVirtual && children.length ? (
+            <div
+                className={`${prefix}select-menu-wrapper`}
+                style={{ position: 'relative' }}
+            >
+                <VirtualList
+                    itemsRenderer={(items, ref) => {
+                        return (
+                            <Menu
+                                ref={c => {
+                                    ref(c);
+                                    this.menuRef = c;
+                                }}
+                                {...menuProps}
+                            >
+                                {items}
+                            </Menu>
+                        );
+                    }}
+                >
+                    {children}
+                </VirtualList>
+            </div>
+        ) : (
+            <Menu {...menuProps} />
         );
     }
 
@@ -474,9 +507,8 @@ export default class Base extends React.Component {
             }
             if (Array.isArray(item.children)) {
                 return (
-                    <MenuGroup
-                        key={index}
-                        label={item.label}>{this.renderMenuItem(item.children)}
+                    <MenuGroup key={index} label={item.label}>
+                        {this.renderMenuItem(item.children)}
                     </MenuGroup>
                 );
             } else {
@@ -484,25 +516,26 @@ export default class Base extends React.Component {
                     role: 'option',
                     key: item.value,
                     className: `${prefix}select-menu-item`,
-                    disabled: item.disabled
+                    disabled: item.disabled,
                 };
                 if (item.title) {
                     itemProps.title = item.title;
                 }
 
                 return (
-                    <MenuItem {...itemProps}>{itemRender(item, searchKey)}
+                    <MenuItem {...itemProps}>
+                        {itemRender(item, searchKey)}
                     </MenuItem>
                 );
             }
         });
     }
 
-    saveSelectRef = (ref) => {
+    saveSelectRef = ref => {
         this.selectDOM = findDOMNode(ref);
     };
 
-    saveInputRef = (ref) => {
+    saveInputRef = ref => {
         if (ref && ref.getInstance()) {
             this.inputRef = ref.getInstance();
         }
@@ -524,28 +557,42 @@ export default class Base extends React.Component {
         this.syncWidth();
     }
 
-    beforeClose() {
+    beforeClose() {}
 
-    }
+    afterClose() {}
 
-    afterClose() {
-
-    }
-
-    savePopupRef = (ref) => {
+    savePopupRef = ref => {
         this.popupRef = ref;
-        if (this.props.popupProps && typeof this.props.popupProps.ref === 'function') {
+        if (
+            this.props.popupProps &&
+            typeof this.props.popupProps.ref === 'function'
+        ) {
             this.props.popupProps.ref(ref);
         }
-    }
+    };
 
     render(props) {
-        const { prefix, mode, popupProps, popupContainer, popupClassName, popupStyle, popupContent, autoWidth, canCloseByTrigger, cache } = props;
+        const {
+            prefix,
+            mode,
+            popupProps,
+            popupContainer,
+            popupClassName,
+            popupStyle,
+            popupContent,
+            autoWidth,
+            canCloseByTrigger,
+            cache,
+        } = props;
 
-        const cls = classNames({
-            [`${prefix}select-auto-complete-menu`]: !popupContent && this.isAutoComplete,
-            [`${prefix}select-${mode}-menu`]: !popupContent && !!mode
-        }, popupClassName || popupProps.className);
+        const cls = classNames(
+            {
+                [`${prefix}select-auto-complete-menu`]:
+                    !popupContent && this.isAutoComplete,
+                [`${prefix}select-${mode}-menu`]: !popupContent && !!mode,
+            },
+            popupClassName || popupProps.className
+        );
 
         const _props = {
             triggerType: 'click',
@@ -564,14 +611,26 @@ export default class Base extends React.Component {
             shouldUpdatePosition: true,
             container: popupContainer || popupProps.container,
             className: cls,
-            style: popupStyle || popupProps.style
+            style: popupStyle || popupProps.style,
         };
 
-        return (<Popup {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
-            {popupContent ?
-                <div className={`${prefix}select-popup-wrap`} style={autoWidth ? { width: this.width } : {}}>
-                    {popupContent}
-                </div> : this.renderMenu()}
-        </Popup>);
+        return (
+            <Popup
+                {..._props}
+                trigger={this.renderSelect()}
+                ref={this.savePopupRef}
+            >
+                {popupContent ? (
+                    <div
+                        className={`${prefix}select-popup-wrap`}
+                        style={autoWidth ? { width: this.width } : {}}
+                    >
+                        {popupContent}
+                    </div>
+                ) : (
+                    this.renderMenu()
+                )}
+            </Popup>
+        );
     }
 }

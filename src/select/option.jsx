@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 /* istanbul ignore file */
 
-
 /**
  * Select.Option
  */
@@ -17,8 +16,8 @@ export default class Option extends React.Component {
          * 是否禁用
          */
         disabled: PropTypes.bool,
-        children: PropTypes.any
-    }
+        children: PropTypes.any,
+    };
 
     static _typeMark = 'next_select_option';
 

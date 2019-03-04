@@ -9,7 +9,7 @@ import {
     setDirection,
     getLocale,
     getLanguage,
-    getDirection
+    getDirection,
 } from './config';
 import Consumer from './consumer';
 import Cache from './cache';
@@ -45,11 +45,11 @@ class ConfigProvider extends Component {
         /**
          * 组件树
          */
-        children: PropTypes.element
+        children: PropTypes.element,
     };
 
     static defaultProps = {
-        warning: true
+        warning: true,
     };
 
     static childContextTypes = {
@@ -57,7 +57,7 @@ class ConfigProvider extends Component {
         nextLocale: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
-        nextWarning: PropTypes.bool
+        nextWarning: PropTypes.bool,
     };
 
     /**
@@ -77,7 +77,11 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(props, childContextCache.root() || {}, displayName);
+        return getContextProps(
+            props,
+            childContextCache.root() || {},
+            displayName
+        );
     };
 
     static initLocales = initLocales;
@@ -90,14 +94,15 @@ class ConfigProvider extends Component {
     static Consumer = Consumer;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextRtl, nextWarning } = childContextCache.root() || {};
+        const { nextPrefix, nextLocale, nextPure, nextRtl, nextWarning } =
+            childContextCache.root() || {};
 
         return {
             prefix: nextPrefix,
             locale: nextLocale,
             pure: nextPure,
             rtl: nextRtl,
-            warning: nextWarning
+            warning: nextWarning,
         };
     };
 
@@ -105,7 +110,11 @@ class ConfigProvider extends Component {
         super(...args);
         childContextCache.add(
             this,
-            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+            Object.assign(
+                {},
+                childContextCache.get(this, {}),
+                this.getChildContext()
+            )
         );
     }
 
@@ -117,7 +126,7 @@ class ConfigProvider extends Component {
             nextLocale: locale,
             nextPure: pure,
             nextRtl: rtl,
-            nextWarning: warning
+            nextWarning: warning,
         };
     }
 
@@ -134,7 +143,11 @@ class ConfigProvider extends Component {
     componentDidUpdate() {
         childContextCache.add(
             this,
-            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+            Object.assign(
+                {},
+                childContextCache.get(this, {}),
+                this.getChildContext()
+            )
         );
     }
 

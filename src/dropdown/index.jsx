@@ -1,10 +1,10 @@
-import React, {Component, Children} from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
-import {func} from '../util';
+import { func } from '../util';
 
-const {noop, makeChain, bindCtx} = func;
+const { noop, makeChain, bindCtx } = func;
 const Popup = Overlay.Popup;
 
 /**
@@ -76,7 +76,7 @@ class Dropdown extends Component {
          * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画
          * @default { in: 'expandInDown', out: 'expandOutUp' }
          */
-        animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
+        animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     };
     static defaultProps = {
         prefix: 'next-',
@@ -90,22 +90,21 @@ class Dropdown extends Component {
         delay: 200,
         hasMask: false,
         cache: false,
-        onPosition: noop
+        onPosition: noop,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            visible: 'visible' in props ? props.visible : (props.defaultVisible || false),
-            autoFocus: 'autoFocus' in props ? props.autoFocus : false
+            visible:
+                'visible' in props
+                    ? props.visible
+                    : props.defaultVisible || false,
+            autoFocus: 'autoFocus' in props ? props.autoFocus : false,
         };
 
-        bindCtx(this, [
-            'onTriggerKeyDown',
-            'onMenuClick',
-            'onVisibleChange'
-        ]);
+        bindCtx(this, ['onTriggerKeyDown', 'onMenuClick', 'onVisibleChange']);
     }
 
     getVisible(props = this.props) {
@@ -117,7 +116,7 @@ class Dropdown extends Component {
     }
 
     onVisibleChange(visible, from) {
-        this.setState({visible});
+        this.setState({ visible });
 
         this.props.onVisibleChange(visible, from);
     }
@@ -130,7 +129,7 @@ class Dropdown extends Component {
         }
 
         this.setState({
-            autoFocus
+            autoFocus,
         });
     }
 
@@ -138,23 +137,33 @@ class Dropdown extends Component {
         let child = Children.only(this.props.children);
         if (typeof child.type === 'function' && child.type.isNextMenu) {
             child = React.cloneElement(child, {
-                onItemClick: makeChain(this.onMenuClick, child.props.onItemClick)
+                onItemClick: makeChain(
+                    this.onMenuClick,
+                    child.props.onItemClick
+                ),
             });
         }
 
         const { trigger, rtl } = this.props;
         const newTrigger = React.cloneElement(trigger, {
-            onKeyDown: makeChain(this.onTriggerKeyDown, trigger.props.onKeyDown)
+            onKeyDown: makeChain(
+                this.onTriggerKeyDown,
+                trigger.props.onKeyDown
+            ),
         });
 
         return (
-            <Popup {...this.props}
+            <Popup
+                {...this.props}
                 rtl={rtl}
                 autoFocus={this.state.autoFocus}
                 trigger={newTrigger}
                 visible={this.getVisible()}
                 onVisibleChange={this.onVisibleChange}
-                canCloseByOutSideClick>{child}</Popup>
+                canCloseByOutSideClick
+            >
+                {child}
+            </Popup>
         );
     }
 }

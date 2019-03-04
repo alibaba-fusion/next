@@ -26,7 +26,7 @@ const render = element => {
     const container = document.createElement('div');
     container.className = 'container';
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
+    ReactDOM.render(element, container, function() {
         inc = this;
     });
     return {
@@ -44,7 +44,7 @@ const render = element => {
         },
         find: selector => {
             return container.querySelectorAll(selector);
-        }
+        },
     };
 };
 
@@ -53,21 +53,21 @@ class OverlayControlDemo extends React.Component {
         super(props);
 
         this.state = {
-            visible: false
+            visible: false,
         };
     }
 
     onClick = () => {
         this.setState({
-            visible: !this.state.visible
+            visible: !this.state.visible,
         });
-    }
+    };
 
     onClose = () => {
         this.setState({
-            visible: false
+            visible: false,
         });
-    }
+    };
 
     render() {
         // eslint-disable-next-line
@@ -75,16 +75,21 @@ class OverlayControlDemo extends React.Component {
 
         return (
             <div>
-                <button onClick={this.onClick} ref={ref => {
-                    this.btn = ref;
-                }}>
+                <button
+                    onClick={this.onClick}
+                    ref={ref => {
+                        this.btn = ref;
+                    }}
+                >
                     Toggle visible
                 </button>
-                <Overlay visible={this.state.visible}
+                <Overlay
+                    visible={this.state.visible}
                     target={() => this.btn}
                     safeNode={() => this.btn}
                     onRequestClose={this.onClose}
-                    {...others}>
+                    {...others}
+                >
                     {children || (
                         <span className="overlay-demo">
                             Hello World From Overlay!
@@ -101,25 +106,25 @@ class PopupControlDemo extends React.Component {
         super(props);
 
         this.state = {
-            visible: false
+            visible: false,
         };
     }
 
     onVisibleChange = visible => {
         this.setState({
-            visible
+            visible,
         });
-    }
+    };
 
     render() {
         return (
-            <Popup trigger={<button>Open</button>}
+            <Popup
+                trigger={<button>Open</button>}
                 triggerType="click"
                 visible={this.state.visible}
-                onVisibleChange={this.onVisibleChange}>
-                <span className="overlay-demo">
-                    Hello World From Popup!
-                </span>
+                onVisibleChange={this.onVisibleChange}
+            >
+                <span className="overlay-demo">Hello World From Popup!</span>
             </Popup>
         );
     }
@@ -129,9 +134,11 @@ describe('Overlay', () => {
     let wrapper;
 
     beforeEach(() => {
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
+        const nodeListArr = [].slice.call(
+            document.querySelectorAll('.next-overlay-wrapper')
+        );
 
-        nodeListArr.forEach((node) => {
+        nodeListArr.forEach(node => {
             node.parentNode.removeChild(node);
         });
     });
@@ -144,13 +151,17 @@ describe('Overlay', () => {
     });
 
     it('should support rendering overlay and mask', () => {
-        return co(function* () {
-            wrapper = render(<Overlay><div className="content" /></Overlay>);
+        return co(function*() {
+            wrapper = render(
+                <Overlay>
+                    <div className="content" />
+                </Overlay>
+            );
             yield delay(500);
             assert(!document.querySelector('.next-overlay-wrapper'));
 
             wrapper.setProps({
-                visible: true
+                visible: true,
             });
 
             yield delay(500);
@@ -161,7 +172,7 @@ describe('Overlay', () => {
 
             wrapper.setProps({
                 visible: true,
-                hasMask: true
+                hasMask: true,
             });
             yield delay(500);
             assert(document.querySelector('.next-overlay-backdrop'));
@@ -169,19 +180,25 @@ describe('Overlay', () => {
     });
 
     it('should support setting animation to false', () => {
-        wrapper = render(<Overlay animation={false}><div className="content" /></Overlay>);
+        wrapper = render(
+            <Overlay animation={false}>
+                <div className="content" />
+            </Overlay>
+        );
         assert(!document.querySelector('.next-overlay-wrapper'));
 
         wrapper.setProps({
-            visible: true
+            visible: true,
         });
         assert(document.querySelector('.next-overlay-wrapper'));
-        assert(hasClass(document.querySelector('.next-overlay-inner'), 'content'));
+        assert(
+            hasClass(document.querySelector('.next-overlay-inner'), 'content')
+        );
         assert(!document.querySelector('.next-overlay-backdrop'));
 
         wrapper.setProps({
             visible: true,
-            hasMask: true
+            hasMask: true,
         });
         assert(document.querySelector('.next-overlay-backdrop'));
     });
@@ -204,7 +221,7 @@ describe('Overlay', () => {
         assert(!called);
 
         wrapper.setProps({
-            canCloseByEsc: true
+            canCloseByEsc: true,
         });
 
         simulateEvent.simulate(document, 'keydown', { keyCode: KEYCODE.ESC });
@@ -220,7 +237,11 @@ describe('Overlay', () => {
         };
 
         wrapper = render(
-            <Overlay visible canCloseByOutSideClick={false} onRequestClose={handleClose}>
+            <Overlay
+                visible
+                canCloseByOutSideClick={false}
+                onRequestClose={handleClose}
+            >
                 <div className="content" />
             </Overlay>
         );
@@ -229,7 +250,7 @@ describe('Overlay', () => {
         assert(!called);
 
         wrapper.setProps({
-            canCloseByOutSideClick: true
+            canCloseByOutSideClick: true,
         });
 
         simulateEvent.simulate(document, 'click');
@@ -245,25 +266,41 @@ describe('Overlay', () => {
         };
 
         wrapper = render(
-            <Overlay visible animation={false} hasMask canCloseByMask={false} onRequestClose={handleClose}>
+            <Overlay
+                visible
+                animation={false}
+                hasMask
+                canCloseByMask={false}
+                onRequestClose={handleClose}
+            >
                 <div className="content" />
             </Overlay>
         );
 
-        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
+        simulateEvent.simulate(
+            document.querySelector('.next-overlay-backdrop'),
+            'click'
+        );
         assert(!called);
 
         wrapper.setProps({
-            canCloseByMask: true
+            canCloseByMask: true,
         });
 
-        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
+        simulateEvent.simulate(
+            document.querySelector('.next-overlay-backdrop'),
+            'click'
+        );
         assert(called);
     });
 
     it('should support safeNode', () => {
-        return co(function* () {
-            wrapper = render(<OverlayControlDemo><span id="inner">123</span></OverlayControlDemo>);
+        return co(function*() {
+            wrapper = render(
+                <OverlayControlDemo>
+                    <span id="inner">123</span>
+                </OverlayControlDemo>
+            );
             let btn = document.querySelector('button');
 
             simulateEvent.simulate(btn, 'click');
@@ -279,7 +316,7 @@ describe('Overlay', () => {
             assert(!document.querySelector('.next-overlay-wrapper'));
 
             wrapper.setProps({
-                animation: false
+                animation: false,
             });
             btn = document.querySelector('button');
             simulateEvent.simulate(btn, 'click');
@@ -291,14 +328,16 @@ describe('Overlay', () => {
     });
 
     it('should support disableScroll', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(<OverlayControlDemo disableScroll />);
             const btn = document.querySelector('button');
 
             simulateEvent.simulate(btn, 'click');
             assert(document.body.style.overflowY === 'hidden');
             if (hasScroll()) {
-                assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
+                assert(
+                    document.body.style.paddingRight === `${scrollbarWidth}px`
+                );
             }
 
             simulateEvent.simulate(btn, 'click');
@@ -311,12 +350,16 @@ describe('Overlay', () => {
     });
 
     it('should support autoFocus', () => {
-        return co(function* () {
+        return co(function*() {
             const outerInput = document.createElement('input');
             outerInput.id = 'outer';
             document.body.appendChild(outerInput);
             outerInput.focus();
-            wrapper = render(<OverlayControlDemo autoFocus><input id="inner" /></OverlayControlDemo>);
+            wrapper = render(
+                <OverlayControlDemo autoFocus>
+                    <input id="inner" />
+                </OverlayControlDemo>
+            );
             const btn = document.querySelector('button');
 
             simulateEvent.simulate(btn, 'click');
@@ -327,7 +370,9 @@ describe('Overlay', () => {
             yield delay(500);
             // ie9/ie10 document.activeElement === document.body
             if (env.ieVersion > 10) {
-                assert(document.activeElement === document.querySelector('#outer'));
+                assert(
+                    document.activeElement === document.querySelector('#outer')
+                );
             }
 
             document.body.removeChild(outerInput);
@@ -335,8 +380,13 @@ describe('Overlay', () => {
     });
 
     it('should not destory overlay node if set cache to true', () => {
-        return co(function* () {
-            wrapper = render(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />);
+        return co(function*() {
+            wrapper = render(
+                <OverlayControlDemo
+                    cache
+                    wrapperClassName="overlay-cache-test"
+                />
+            );
             const btn = document.querySelector('button');
 
             simulateEvent.simulate(btn, 'click');
@@ -345,12 +395,20 @@ describe('Overlay', () => {
             simulateEvent.simulate(btn, 'click');
             yield delay(500);
 
-            assert(document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display === 'none');
+            assert(
+                document.querySelector(
+                    '.overlay-cache-test.next-overlay-wrapper'
+                ).style.display === 'none'
+            );
         });
     });
 
     it('should support getContent', () => {
-        wrapper = render(<Overlay visible><span>content</span></Overlay>);
+        wrapper = render(
+            <Overlay visible>
+                <span>content</span>
+            </Overlay>
+        );
         const overlay = wrapper.instance().getInstance();
         const content = overlay.getContent();
         assert(content.textContent.trim() === 'content');
@@ -368,9 +426,13 @@ describe('Popup', () => {
     });
 
     it('should support rendering trigger and overlay', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(
-                <Popup defaultVisible trigger={<button>Open</button>} triggerType="click">
+                <Popup
+                    defaultVisible
+                    trigger={<button>Open</button>}
+                    triggerType="click"
+                >
                     <span>Hello World From Popup!</span>
                 </Popup>
             );
@@ -385,7 +447,7 @@ describe('Popup', () => {
     });
 
     it('should support triggerType', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(
                 <Popup trigger={<button>Open</button>}>
                     <span className="content">Hello World From Popup!</span>
@@ -398,18 +460,22 @@ describe('Popup', () => {
             assert(document.querySelector('.next-overlay-wrapper'));
 
             ReactTestUtils.Simulate.mouseLeave(btn);
-            ReactTestUtils.Simulate.mouseEnter(document.querySelector('.content'));
+            ReactTestUtils.Simulate.mouseEnter(
+                document.querySelector('.content')
+            );
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.mouseLeave(document.querySelector('.content'));
+            ReactTestUtils.Simulate.mouseLeave(
+                document.querySelector('.content')
+            );
             yield delay(500);
             assert(!document.querySelector('.next-overlay-wrapper'));
         });
     });
 
     it('should support setting triggerType to click', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(
                 <Popup trigger={<button>Open</button>} triggerType="click">
                     <span className="content">Hello World From Popup!</span>
@@ -436,7 +502,7 @@ describe('Popup', () => {
     });
 
     it('should support setting triggerType to focus', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(
                 <Popup trigger={<button>Open</button>} triggerType="focus">
                     <span className="content">Hello World From Popup!</span>
@@ -448,7 +514,9 @@ describe('Popup', () => {
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.mouseDown(document.querySelector('.content'));
+            ReactTestUtils.Simulate.mouseDown(
+                document.querySelector('.content')
+            );
             ReactTestUtils.Simulate.blur(btn);
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
@@ -460,9 +528,13 @@ describe('Popup', () => {
     });
 
     it('should support setting canCloseByTrigger to false', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(
-                <Popup trigger={<button>Open</button>} triggerType="click" canCloseByTrigger={false}>
+                <Popup
+                    trigger={<button>Open</button>}
+                    triggerType="click"
+                    canCloseByTrigger={false}
+                >
                     <span className="content">Hello World From Popup!</span>
                 </Popup>
             );
@@ -479,7 +551,7 @@ describe('Popup', () => {
     });
 
     it('should support controling', () => {
-        return co(function* () {
+        return co(function*() {
             wrapper = render(<PopupControlDemo />);
             const btn = document.querySelector('button');
 

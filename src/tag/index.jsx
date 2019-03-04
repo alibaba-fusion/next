@@ -6,8 +6,8 @@ import Selectable from './selectable';
 import Closable from './closeable';
 
 const ConfigTag = ConfigProvider.config(Tag, {
-    transfrom: /* istanbul ignore next */(props, deprecated) => {
-        const {shape, type} = props;
+    transfrom: /* istanbul ignore next */ (props, deprecated) => {
+        const { shape, type } = props;
         if (shape === 'selectable') {
             deprecated('shape=selectable', 'Tag.Selectable', 'Tag');
         }
@@ -35,11 +35,15 @@ const ConfigTag = ConfigProvider.config(Tag, {
         });
 
         if ('selected' in props || 'defaultSelected' in props) {
-            log.warning('Warning: [ selected|defaultSelected  ] is deprecated at [ Tag ], use [ checked|defaultChecked ] at [ Tag.Selectable ] instead of it');
+            log.warning(
+                'Warning: [ selected|defaultSelected  ] is deprecated at [ Tag ], use [ checked|defaultChecked ] at [ Tag.Selectable ] instead of it'
+            );
         }
 
         if ('closed' in props) {
-            log.warning('Warning: [ closed  ] is deprecated at [ Tag ], use [ onClose ] at [ Tag.Closeable ] instead of it');
+            log.warning(
+                'Warning: [ closed  ] is deprecated at [ Tag ], use [ onClose ] at [ Tag.Closeable ] instead of it'
+            );
         }
 
         if ('onSelect' in props) {
@@ -47,13 +51,14 @@ const ConfigTag = ConfigProvider.config(Tag, {
         }
 
         if ('afterClose' in props) {
-            log.warning('Warning: [ afterClose  ] is deprecated at [ Tag ], use [ afterClose ] at [ Tag.Closeable ] instead of it');
+            log.warning(
+                'Warning: [ afterClose  ] is deprecated at [ Tag ], use [ afterClose ] at [ Tag.Closeable ] instead of it'
+            );
         }
 
         return props;
-    }
+    },
 });
-
 
 ConfigTag.Group = ConfigProvider.config(Group);
 

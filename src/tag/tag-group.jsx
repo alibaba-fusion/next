@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -7,20 +7,23 @@ class Group extends Component {
         prefix: PropTypes.string,
         className: PropTypes.any,
         children: PropTypes.node,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
-        rtl: false
+        rtl: false,
     };
 
     render() {
-
-        const {className, prefix, children, rtl, ...others} = this.props;
+        const { className, prefix, children, rtl, ...others } = this.props;
         const clazz = classNames(`${prefix || 'next-'}tag-group`, className);
 
-        return <div className={clazz} dir={rtl ? 'rtl' : undefined} {...others}>{children}</div>;
+        return (
+            <div className={clazz} dir={rtl ? 'rtl' : undefined} {...others}>
+                {children}
+            </div>
+        );
     }
 }
 

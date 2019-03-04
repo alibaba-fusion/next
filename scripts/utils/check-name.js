@@ -6,10 +6,10 @@ const logger = require('./logger');
 
 const cwd = process.cwd();
 
-module.exports = function (runtest = false, withOtherArgs = false) {
+module.exports = function(runtest = false, withOtherArgs = false) {
     const argv = minimist(process.argv.slice(2));
     const arr = argv._;
-    const comIndex = arr.findIndex((a) => a.indexOf('=') === -1);
+    const comIndex = arr.findIndex(a => a.indexOf('=') === -1);
 
     let componentName = arr[comIndex];
 
@@ -19,7 +19,7 @@ module.exports = function (runtest = false, withOtherArgs = false) {
         const file = runtest ? 'test' : 'docs';
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;
-        const valid = components.some((com) => {
+        const valid = components.some(com => {
             if (componentName.replace('-', '') === com.replace('-', '')) {
                 name = com;
                 return true;
@@ -29,7 +29,9 @@ module.exports = function (runtest = false, withOtherArgs = false) {
         });
 
         if (!valid) {
-            logger.error(`The input component name (${componentName}) is invalid, try again like: npm run [command] number-picker`);
+            logger.error(
+                `The input component name (${componentName}) is invalid, try again like: npm run [command] number-picker`
+            );
             process.exit(0);
             return false;
         }
@@ -41,13 +43,13 @@ module.exports = function (runtest = false, withOtherArgs = false) {
             return newArgs;
         }
         return name;
-
     } else if (runtest) {
         return 'all';
     } else {
-        logger.error('Please input the component name, like: npm run [command] number-picker');
+        logger.error(
+            'Please input the component name, like: npm run [command] number-picker'
+        );
         process.exit(0);
         return false;
     }
-
 };

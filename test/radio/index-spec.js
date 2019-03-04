@@ -22,7 +22,6 @@ describe('Radio', () => {
             const wrapper2 = mount(<Radio checked={false} />);
             assert(wrapper1.find('.next-radio.checked').length === 0);
             assert(wrapper2.find('.next-radio.checked').length === 0);
-
         });
         it('disabled', () => {
             const wrapper = mount(<Radio disabled />);
@@ -30,7 +29,9 @@ describe('Radio', () => {
         });
         it('should support className', () => {
             const wrapper = mount(<Radio className="custom-name" />);
-            assert(wrapper.find('.next-radio-wrapper.custom-name').length === 1);
+            assert(
+                wrapper.find('.next-radio-wrapper.custom-name').length === 1
+            );
         });
         it('should support name', () => {
             const wrapper = mount(<Radio name="customer" />);
@@ -45,7 +46,7 @@ describe('Radio', () => {
             container.style.display = 'none';
             document.body.appendChild(container);
 
-            before((done) => {
+            before(done => {
                 ReactDOM.render(<Radio />, container, function init() {
                     wrapper = this;
                     done();
@@ -53,7 +54,10 @@ describe('Radio', () => {
             });
             it('should checked after click', () => {
                 assert(!wrapper.state.checked);
-                ReactTestUtils.scryRenderedDOMComponentsWithTag(wrapper, 'input')[0].click();
+                ReactTestUtils.scryRenderedDOMComponentsWithTag(
+                    wrapper,
+                    'input'
+                )[0].click();
                 assert(!!wrapper.state.checked);
             });
             it('should call `onChange`', () => {
@@ -61,11 +65,12 @@ describe('Radio', () => {
                 const wrapper1 = mount(<Radio onChange={onChange} />);
 
                 assert(!wrapper.find('input').prop('checked'));
-                wrapper1.find('input').simulate('change', {target:{checked: true}});
+                wrapper1
+                    .find('input')
+                    .simulate('change', { target: { checked: true } });
 
                 assert(onChange.calledOnce);
                 assert(wrapper.find('input').prop('checked'));
-
             });
         });
         it('should support controlled `checked`', () => {
@@ -75,7 +80,7 @@ describe('Radio', () => {
             assert(wrapper.find('.checked').length !== 0);
 
             wrapper.setProps({
-                checked: false
+                checked: false,
             });
             assert(!wrapper.find('input').props().checked);
             assert(wrapper.find('.checked').length === 0);

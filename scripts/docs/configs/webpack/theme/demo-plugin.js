@@ -36,10 +36,13 @@ DemoPlugin.prototype.apply = function(compiler) {
 
             // add html
             const pathname = compilation.getPath(filename, {
-                chunk: chunk
+                chunk: chunk,
             });
             const files = chunk.files;
-            const js = this._cut(_.find(files, file => path.extname(file) === '.js'), assets);
+            const js = this._cut(
+                _.find(files, file => path.extname(file) === '.js'),
+                assets
+            );
 
             assets[pathname] = {
                 source: () => {
@@ -47,17 +50,17 @@ DemoPlugin.prototype.apply = function(compiler) {
                         commonJs: commons.js,
                         commonCss: commons.css,
                         js: js,
-                        component: name
+                        component: name,
                     });
                 },
                 size() {
                     return this.source().length;
-                }
+                },
             };
 
             // add deps.json
             const dPathname = compilation.getPath(depsname, {
-                chunk: chunk
+                chunk: chunk,
             });
 
             assets[dPathname] = {
@@ -66,7 +69,7 @@ DemoPlugin.prototype.apply = function(compiler) {
                 },
                 size() {
                     return this.source().length;
-                }
+                },
             };
         });
 

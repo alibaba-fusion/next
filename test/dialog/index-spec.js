@@ -13,13 +13,12 @@ import zhCN from '../../src/locale/zh-cn';
 /* global describe it afterEach */
 /* global describe it beforeEach */
 
-
 const { hasClass, getStyle } = dom;
 const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
+    ReactDOM.render(element, container, function() {
         inc = this;
     });
     return {
@@ -36,24 +35,24 @@ const render = element => {
         },
         find: selector => {
             return container.querySelectorAll(selector);
-        }
+        },
     };
 };
 
 class Demo extends React.Component {
     state = {
-        visible: false
+        visible: false,
     };
 
     onOpen = () => {
         this.setState({
-            visible: true
+            visible: true,
         });
     };
 
     onClose = () => {
         this.setState({
-            visible: false
+            visible: false,
         });
     };
 
@@ -63,12 +62,14 @@ class Demo extends React.Component {
                 <Button onClick={this.onOpen} type="primary">
                     打开对话框
                 </Button>
-                <Dialog title="欢迎来到 Alibaba.com"
+                <Dialog
+                    title="欢迎来到 Alibaba.com"
                     visible={this.state.visible}
                     onOk={this.onClose}
                     onCancel={this.onClose}
                     onClose={this.onClose}
-                    {...this.props}>
+                    {...this.props}
+                >
                     开启您的贸易生活从 Alibaba.com 开始
                 </Dialog>
             </div>
@@ -81,7 +82,7 @@ describe('inner', () => {
 
     beforeEach(() => {
         ConfigProvider.initLocales({
-            'zh-cn': zhCN
+            'zh-cn': zhCN,
         });
         ConfigProvider.setLanguage('zh-cn');
     });
@@ -100,12 +101,16 @@ describe('inner', () => {
         assert(document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
-        const okBtn = document.querySelector('.next-btn-primary.next-dialog-btn');
+        const okBtn = document.querySelector(
+            '.next-btn-primary.next-dialog-btn'
+        );
         ReactTestUtils.Simulate.click(okBtn);
         assert(!document.querySelector('.next-dialog'));
 
         ReactTestUtils.Simulate.click(btn);
-        const cancelBtn = document.querySelector('.next-btn-normal.next-dialog-btn');
+        const cancelBtn = document.querySelector(
+            '.next-btn-normal.next-dialog-btn'
+        );
         ReactTestUtils.Simulate.click(cancelBtn);
         assert(!document.querySelector('.next-dialog'));
 
@@ -117,16 +122,31 @@ describe('inner', () => {
 
     it('should support footerAlign', () => {
         wrapper = render(<Dialog visible />);
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-right'));
+        assert(
+            hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-align-right'
+            )
+        );
 
         wrapper.setProps({
-            footerAlign: 'center'
+            footerAlign: 'center',
         });
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-center'));
+        assert(
+            hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-align-center'
+            )
+        );
         wrapper.setProps({
-            footerAlign: 'left'
+            footerAlign: 'left',
         });
-        assert(hasClass(document.querySelector('.next-dialog-footer'), 'next-align-left'));
+        assert(
+            hasClass(
+                document.querySelector('.next-dialog-footer'),
+                'next-align-left'
+            )
+        );
     });
 
     it('should support footerActions', () => {
@@ -137,7 +157,7 @@ describe('inner', () => {
         assertCancelBtn(btns[1]);
 
         wrapper.setProps({
-            footerActions: ['cancel', 'ok']
+            footerActions: ['cancel', 'ok'],
         });
         btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 2);
@@ -145,14 +165,14 @@ describe('inner', () => {
         assertOkBtn(btns[1]);
 
         wrapper.setProps({
-            footerActions: ['ok']
+            footerActions: ['ok'],
         });
         btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 1);
         assertOkBtn(btns[0]);
 
         wrapper.setProps({
-            footerActions: ['cancel']
+            footerActions: ['cancel'],
         });
         btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 1);
@@ -164,18 +184,23 @@ describe('inner', () => {
         assert(!document.querySelector('.next-dialog-footer'));
 
         wrapper.setProps({
-            footer: <a className="custom">Link</a>
+            footer: <a className="custom">Link</a>,
         });
-        assert(document.querySelector('.next-dialog-footer a.custom').textContent.trim() === 'Link');
+        assert(
+            document
+                .querySelector('.next-dialog-footer a.custom')
+                .textContent.trim() === 'Link'
+        );
     });
 
-    it('should use css to position dialog if set isFullScreen to true and align to \'cc cc\'', () => {
+    it("should use css to position dialog if set isFullScreen to true and align to 'cc cc'", () => {
         wrapper = render(<Dialog visible isFullScreen />);
         assert(document.querySelector('.next-dialog-container'));
     });
 
     it('should adjust position and size if not use css to position', () => {
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        const viewportHeight =
+            window.innerHeight || document.documentElement.clientHeight;
         const dialogHeight = viewportHeight - 40 + 20;
         wrapper = render(<Demo style={{ height: dialogHeight }} />);
         const btn = document.querySelector('button');
@@ -196,12 +221,18 @@ describe('inner', () => {
             animation: false,
             afterClose: () => {
                 called = true;
-            }
+            },
         });
 
         assert(document.querySelector('.next-dialog'));
-        assert(document.querySelector('.next-dialog-header').textContent.trim() === 'Title');
-        assert(document.querySelector('.next-dialog-body').textContent.trim() === 'Content');
+        assert(
+            document.querySelector('.next-dialog-header').textContent.trim() ===
+                'Title'
+        );
+        assert(
+            document.querySelector('.next-dialog-body').textContent.trim() ===
+                'Content'
+        );
 
         hide();
         assert(!document.querySelector('.next-dialog'));
@@ -212,12 +243,26 @@ describe('inner', () => {
         const { hide } = Dialog.alert({
             title: 'Title',
             content: 'Content',
-            animation: false
+            animation: false,
         });
-        assert(hasClass(document.querySelector('.next-dialog-message.next-message.next-addon.next-large'), 'next-message-warning'));
+        assert(
+            hasClass(
+                document.querySelector(
+                    '.next-dialog-message.next-message.next-addon.next-large'
+                ),
+                'next-message-warning'
+            )
+        );
         assert(!document.querySelector('.next-dialog-header'));
-        assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
-        assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
+        assert(
+            document.querySelector('.next-message-title').textContent.trim() ===
+                'Title'
+        );
+        assert(
+            document
+                .querySelector('.next-message-content')
+                .textContent.trim() === 'Content'
+        );
         const btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 1);
         assertOkBtn(btns[0]);
@@ -229,11 +274,26 @@ describe('inner', () => {
         const { hide } = Dialog.confirm({
             title: 'Title',
             content: 'Content',
-            animation: false
+            animation: false,
         });
-        assert(hasClass(document.querySelector('.next-dialog-message.next-message.next-addon.next-large'), 'next-message-help')); assert(!document.querySelector('.next-dialog-header'));
-        assert(document.querySelector('.next-message-title').textContent.trim() === 'Title');
-        assert(document.querySelector('.next-message-content').textContent.trim() === 'Content');
+        assert(
+            hasClass(
+                document.querySelector(
+                    '.next-dialog-message.next-message.next-addon.next-large'
+                ),
+                'next-message-help'
+            )
+        );
+        assert(!document.querySelector('.next-dialog-header'));
+        assert(
+            document.querySelector('.next-message-title').textContent.trim() ===
+                'Title'
+        );
+        assert(
+            document
+                .querySelector('.next-message-content')
+                .textContent.trim() === 'Content'
+        );
         const btns = document.querySelectorAll('.next-dialog-btn');
         assert(btns.length === 2);
         assertOkBtn(btns[0]);
@@ -246,10 +306,12 @@ describe('inner', () => {
         Dialog.show({
             title: 'Title',
             content: 'Content',
-            animation: false
+            animation: false,
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+        ReactTestUtils.Simulate.click(
+            document.querySelector('.next-btn-primary')
+        );
         assert(!document.querySelector('.next-dialog'));
     });
 
@@ -258,10 +320,12 @@ describe('inner', () => {
             title: 'Title',
             content: 'Content',
             animation: false,
-            onOk: () => false
+            onOk: () => false,
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+        ReactTestUtils.Simulate.click(
+            document.querySelector('.next-btn-primary')
+        );
         assert(document.querySelector('.next-dialog'));
 
         hide();
@@ -276,12 +340,19 @@ describe('inner', () => {
                 return new Promise(resolve => {
                     setTimeout(resolve, 500);
                 });
-            }
+            },
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+        ReactTestUtils.Simulate.click(
+            document.querySelector('.next-btn-primary')
+        );
         assert(document.querySelector('.next-dialog'));
-        assert(hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
+        assert(
+            hasClass(
+                document.querySelector('.next-btn-primary'),
+                'next-btn-loading'
+            )
+        );
 
         setTimeout(() => {
             assert(!document.querySelector('.next-dialog'));
@@ -298,9 +369,11 @@ describe('inner', () => {
                 return new Promise(resolve => {
                     setTimeout(() => resolve(false), 500);
                 });
-            }
+            },
         });
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+        ReactTestUtils.Simulate.click(
+            document.querySelector('.next-btn-primary')
+        );
 
         setTimeout(() => {
             assert(document.querySelector('.next-dialog'));
@@ -318,13 +391,20 @@ describe('inner', () => {
                 return new Promise((resolve, reject) => {
                     setTimeout(reject, 500);
                 });
-            }
+            },
         });
 
-        ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+        ReactTestUtils.Simulate.click(
+            document.querySelector('.next-btn-primary')
+        );
 
         setTimeout(() => {
-            assert(!hasClass(document.querySelector('.next-btn-primary'), 'next-btn-loading'));
+            assert(
+                !hasClass(
+                    document.querySelector('.next-btn-primary'),
+                    'next-btn-loading'
+                )
+            );
             assert(document.querySelector('.next-dialog'));
             hide();
             done();
@@ -333,20 +413,26 @@ describe('inner', () => {
 
     it('should obey: self.locale > nearest ConfigProvider.locale > further ConfigProvider.locale', () => {
         wrapper = render(
-            <ConfigProvider prefix="far-" locale={{
-                momentLocale: 'en',
-                Dialog: {
-                    ok: 'far ok',
-                    cancel: 'far cancel'
-                }
-            }}>
-                <ConfigProvider prefix="near-" locale={{
+            <ConfigProvider
+                prefix="far-"
+                locale={{
                     momentLocale: 'en',
                     Dialog: {
-                        ok: 'near ok',
-                        cancel: 'near cancel'
-                    }
-                }}>
+                        ok: 'far ok',
+                        cancel: 'far cancel',
+                    },
+                }}
+            >
+                <ConfigProvider
+                    prefix="near-"
+                    locale={{
+                        momentLocale: 'en',
+                        Dialog: {
+                            ok: 'near ok',
+                            cancel: 'near cancel',
+                        },
+                    }}
+                >
                     <Demo locale={{ ok: 'my ok' }} animation={false} />
                 </ConfigProvider>
             </ConfigProvider>
@@ -364,32 +450,39 @@ describe('inner', () => {
         assert(cancel.innerHTML === 'near cancel');
     });
 
-    it('quick-calling should use root context\'s state if its exists', () => {
+    it("quick-calling should use root context's state if its exists", () => {
         wrapper = render(
-            <ConfigProvider prefix="far-" locale={{
-                momentLocale: 'en',
-                Dialog: {
-                    ok: 'far ok',
-                    cancel: 'far cancel'
-                }
-            }}>
-                <ConfigProvider prefix="near-" locale={{
+            <ConfigProvider
+                prefix="far-"
+                locale={{
                     momentLocale: 'en',
                     Dialog: {
-                        ok: 'near ok',
-                        cancel: 'near cancel'
-                    }
-                }}>
+                        ok: 'far ok',
+                        cancel: 'far cancel',
+                    },
+                }}
+            >
+                <ConfigProvider
+                    prefix="near-"
+                    locale={{
+                        momentLocale: 'en',
+                        Dialog: {
+                            ok: 'near ok',
+                            cancel: 'near cancel',
+                        },
+                    }}
+                >
                     <Button
                         type="primary"
                         onClick={() => {
                             Dialog.show({
                                 locale: {
-                                    cancel: 'my cancel'
+                                    cancel: 'my cancel',
                                 },
                                 content: <Button type="primary">test</Button>,
                             });
-                        }}>
+                        }}
+                    >
                         OK
                     </Button>
                 </ConfigProvider>
@@ -421,10 +514,12 @@ describe('inner', () => {
             content: 'Content',
             onOk: async () => {
                 throw Error();
-            }
+            },
         });
         try {
-            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+            ReactTestUtils.Simulate.click(
+                document.querySelector('.next-btn-primary')
+            );
             assert(false);
         } catch (e) {
             assert(true);
@@ -438,10 +533,12 @@ describe('inner', () => {
             content: 'Content',
             onOk: () => {
                 throw Error();
-            }
+            },
         });
         try {
-            ReactTestUtils.Simulate.click(document.querySelector('.next-btn-primary'));
+            ReactTestUtils.Simulate.click(
+                document.querySelector('.next-btn-primary')
+            );
             assert(false);
         } catch (e) {
             assert(true);

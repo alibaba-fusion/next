@@ -14,25 +14,42 @@ const sassRender = options => {
         });
     });
 };
-const scss2AST = scss => postcss().process(scss, { syntax: syntax }).result.root;
+const scss2AST = scss =>
+    postcss().process(scss, { syntax: syntax }).result.root;
 
-const PATTEN = /^import\s+['"](.+)style\.js['"];?/mg;
+const PATTEN = /^import\s+['"](.+)style\.js['"];?/gm;
 module.exports = function(options) {
     return function(req, res, next) {
-        co(function* () {
+        co(function*() {
             if (req.method === 'GET' && /\/rebuildScss.json/.test(req.url)) {
                 const { cwd } = options;
                 const { componentName } = req.query;
                 delete req.query.componentName;
 
-                const entryPath = path.join(cwd, 'src', componentName, 'main.scss');
-                const entryStylePath = path.join(cwd, 'src', componentName, 'style.js');
+                const entryPath = path.join(
+                    cwd,
+                    'src',
+                    componentName,
+                    'main.scss'
+                );
+                const entryStylePath = path.join(
+                    cwd,
+                    'src',
+                    componentName,
+                    'style.js'
+                );
                 const entryScss = yield fs.readFile(entryPath, 'utf8');
-                const entryStyleScss = yield fs.readFile(entryStylePath, 'utf8');
+                const entryStyleScss = yield fs.readFile(
+                    entryStylePath,
+                    'utf8'
+                );
                 let newEntryStyleScss = entryStyleScss.match(PATTEN).join('\n');
-                newEntryStyleScss = newEntryStyleScss.replace(PATTEN, (all, s1) => {
-                    return `@import "${s1}main.scss";`;
-                });
+                newEntryStyleScss = newEntryStyleScss.replace(
+                    PATTEN,
+                    (all, s1) => {
+                        return `@import "${s1}main.scss";`;
+                    }
+                );
 
                 const root = scss2AST(newEntryStyleScss + entryScss);
                 const varsScss = Object.keys(req.query).reduce((ret, key) => {
@@ -40,8 +57,10 @@ module.exports = function(options) {
                 }, '');
 
                 const varsRoot = scss2AST(varsScss);
-                const improtVarIndex = root.nodes.findIndex(node =>
-                    node.name === 'import' && /core\/index-noreset/.test(node.params)
+                const improtVarIndex = root.nodes.findIndex(
+                    node =>
+                        node.name === 'import' &&
+                        /core\/index-noreset/.test(node.params)
                 );
                 root.insertAfter(improtVarIndex, varsRoot);
                 const newEntryScss = root.toResult().css;
@@ -49,7 +68,7 @@ module.exports = function(options) {
                 const result = yield sassRender({
                     data: newEntryScss,
                     includePaths: [path.join(cwd, 'src', componentName)],
-                    importer: packageImporter({ cwd })
+                    importer: packageImporter({ cwd }),
                 });
 
                 res.json({ css: result.css.toString() });

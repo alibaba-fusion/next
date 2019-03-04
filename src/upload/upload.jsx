@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 import Icon from '../icon';
 import Base from './base';
 import Uploader from './runtime/index';
 import html5Uploader from './runtime/html5-uploader';
 import List from './list';
-import {fileToObject, getFileItem, errorCode} from './util';
+import { fileToObject, getFileItem, errorCode } from './util';
 
 const noop = func.noop;
 
@@ -151,7 +151,7 @@ class Upload extends Base {
         /**
          * 透传给Progress props
          */
-        progressProps: PropTypes.object
+        progressProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -168,7 +168,7 @@ class Upload extends Base {
         onError: noop,
         onDrop: noop,
         beforeUpload: noop,
-        afterSelect: noop
+        afterSelect: noop,
     };
 
     constructor(props) {
@@ -182,7 +182,7 @@ class Upload extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? [] : [].concat(value)
+            value: typeof value === 'undefined' ? [] : [].concat(value),
         };
 
         this.uploading = false;
@@ -191,13 +191,16 @@ class Upload extends Base {
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps && !this.uploading) {
             this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : [].concat(nextProps.value)
+                value:
+                    typeof nextProps.value === 'undefined'
+                        ? []
+                        : [].concat(nextProps.value),
             });
         }
     }
 
-    onSelect = (files) => {
-        const {autoUpload, afterSelect, onSelect, limit} = this.props;
+    onSelect = files => {
+        const { autoUpload, afterSelect, onSelect, limit } = this.props;
         // 总数
         const total = this.state.value.length + files.length;
         // 差额
@@ -227,7 +230,6 @@ class Upload extends Base {
         /* eslint-disable-next */
         this.state.value = value;
 
-
         if (autoUpload) {
             this.uploadFiles(uploadFiles);
         }
@@ -251,7 +253,7 @@ class Upload extends Base {
         }
     };
 
-    onDrop = (files) => {
+    onDrop = files => {
         this.onSelect(files);
     };
 
@@ -260,21 +262,25 @@ class Upload extends Base {
      * @param files
      */
     selectFiles(files) {
-        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
+        const filesArr = files.length
+            ? Array.prototype.slice.call(files)
+            : [files];
 
         this.onSelect(filesArr);
     }
 
     uploadFiles(files) {
-        const fileList = files.filter((file => {
-            if (file.state === 'selected') {
-                file.state = 'uploading';
-                return true;
-            }
-            return false;
-        })).map((file) => {
-            return file.originFileObj;
-        });
+        const fileList = files
+            .filter(file => {
+                if (file.state === 'selected') {
+                    file.state = 'uploading';
+                    return true;
+                }
+                return false;
+            })
+            .map(file => {
+                return file.originFileObj;
+            });
 
         fileList.length && this.uploaderRef.startUpload(fileList);
     }
@@ -312,11 +318,11 @@ class Upload extends Base {
 
         Object.assign(targetItem, {
             state: 'uploading',
-            percent: e.percent
+            percent: e.percent,
         });
 
         this.setState({
-            value
+            value,
         });
 
         this.props.onProgress(value, targetItem);
@@ -325,7 +331,7 @@ class Upload extends Base {
     onSuccess = (response, file) => {
         this.uploading = false;
 
-        const {formatter} = this.props;
+        const { formatter } = this.props;
 
         if (formatter) {
             response = formatter(response, file);
@@ -357,7 +363,7 @@ class Upload extends Base {
             state: 'done',
             response,
             url: response.url,
-            downloadURL: response.downloadURL || response.url // 下载地址(可选)
+            downloadURL: response.downloadURL || response.url, // 下载地址(可选)
         });
 
         if (!this.props.useDataURL) {
@@ -381,20 +387,19 @@ class Upload extends Base {
         Object.assign(targetItem, {
             state: 'error',
             error: err,
-            response
+            response,
         });
 
         this.props.onError(targetItem, value);
         this.onChange(value, targetItem);
     };
 
-
     /**
      * 删除文件
      * @param {File} file
      * @return {void}
      */
-    removeFile = (file) => {
+    removeFile = file => {
         file.state = 'removed';
         this.uploaderRef.abort(file); // 删除组件时调用组件的 `abort` 方法中断上传
 
@@ -412,7 +417,7 @@ class Upload extends Base {
      * @param {File} file
      * @return {void}
      */
-    abort = (file) => {
+    abort = file => {
         const fileList = this.state.value;
         const targetItem = getFileItem(file, fileList);
         const index = fileList.indexOf(targetItem);
@@ -425,7 +430,7 @@ class Upload extends Base {
 
     onChange = (value, file) => {
         this.setState({
-            value
+            value,
         });
         this.props.onChange(value, file);
     };
@@ -450,33 +455,40 @@ class Upload extends Base {
             list,
             extraRender,
             progressProps,
-            ...others} = this.props;
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}upload`]: true,
             [`${prefix}disabled`]: disabled,
             [`${prefix}readonly`]: readonly,
-            [className]: className
+            [className]: className,
         });
 
         const isExceedLimit = this.state.value.length >= limit;
         const innerCls = classNames({
             [`${prefix}upload-inner`]: true,
-            [`${prefix}hidden`]: isExceedLimit
+            [`${prefix}hidden`]: isExceedLimit,
         });
 
         let children = this.props.children;
         if (shape === 'card') {
             const cardCls = classNames({
                 [`${prefix}upload-card`]: true,
-                [`${prefix}disabled`]: disabled
+                [`${prefix}disabled`]: disabled,
             });
-            children = (<div className={cardCls}>
-                <Icon type="add" size="large"/>
-                <div tabIndex="0" role="button" className={`${prefix}upload-text`}>
-                    {children}
+            children = (
+                <div className={cardCls}>
+                    <Icon type="add" size="large" />
+                    <div
+                        tabIndex="0"
+                        role="button"
+                        className={`${prefix}upload-text`}
+                    >
+                        {children}
+                    </div>
                 </div>
-            </div>);
+            );
         }
 
         // disabled 状态下把 remove函数替换成禁止 remove的函数
@@ -499,11 +511,20 @@ class Upload extends Base {
                 >
                     {children}
                 </Uploader>
-                {listType || list ?
-                    <List useDataURL={useDataURL} uploader={this} listType={listType} value={this.state.value}
-                        closable={closable} onRemove={onRemoveFunc} progressProps={progressProps}
-                        onCancel={onCancel} onPreview={onPreview} extraRender={extraRender}/> :
-                    null}
+                {listType || list ? (
+                    <List
+                        useDataURL={useDataURL}
+                        uploader={this}
+                        listType={listType}
+                        value={this.state.value}
+                        closable={closable}
+                        onRemove={onRemoveFunc}
+                        progressProps={progressProps}
+                        onCancel={onCancel}
+                        onPreview={onPreview}
+                        extraRender={extraRender}
+                    />
+                ) : null}
             </div>
         );
     }

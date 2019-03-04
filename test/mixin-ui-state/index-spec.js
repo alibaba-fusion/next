@@ -15,7 +15,9 @@ class Test extends UIState {
         }
     }
     render() {
-        const input = <input type="radio" className={this.getStateClassName()}/>;
+        const input = (
+            <input type="radio" className={this.getStateClassName()} />
+        );
         return this.getStateElement(input);
     }
 }

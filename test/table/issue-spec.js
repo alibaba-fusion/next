@@ -14,85 +14,108 @@ const generateDataSource = j => {
     const result = [];
     for (let i = 0; i < j; i++) {
         result.push({
-            title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+            title: {
+                name: `Quotation for 1PCS Nano ${3 +
+                    i}.0 controller compatible`,
+            },
             id: `100306660940${i}`,
             time: 2000 + i,
-            index: i
+            index: i,
         });
     }
     return result;
-}
+};
 
 describe('Issue', () => {
     let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
-        table, timeout,
+        table,
+        timeout,
         wrapper;
 
     beforeEach(() => {
-        table = <Table dataSource={dataSource}>
-            <Table.Column dataIndex='id' />
-            <Table.Column dataIndex='name' />
-        </Table>
+        table = (
+            <Table dataSource={dataSource}>
+                <Table.Column dataIndex="id" />
+                <Table.Column dataIndex="name" />
+            </Table>
+        );
 
         wrapper = mount(table);
         timeout = (props, callback) => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 wrapper.setProps(props);
-                setTimeout(function () {
+                setTimeout(function() {
                     resolve();
                 }, 10);
             }).then(callback);
-        }
+        };
     });
 
     afterEach(() => {
         table = null;
     });
 
-    it('should support not display empty when table is Loading', (done) => {
-        wrapper.setProps({
-
-        });
-        timeout({
-            loading: true,
-            dataSource: []
-        }, () => {
-            assert(wrapper.find('.next-table-empty').text() === " ");
-        }).then(() => {
-            timeout({
-                loading: false
-            }, () => {
-                assert(wrapper.find('.next-table-empty').text() === '没有数据');
-                done();
-            });
+    it('should support not display empty when table is Loading', done => {
+        wrapper.setProps({});
+        timeout(
+            {
+                loading: true,
+                dataSource: [],
+            },
+            () => {
+                assert(wrapper.find('.next-table-empty').text() === ' ');
+            }
+        ).then(() => {
+            timeout(
+                {
+                    loading: false,
+                },
+                () => {
+                    assert(
+                        wrapper.find('.next-table-empty').text() === '没有数据'
+                    );
+                    done();
+                }
+            );
         });
     });
 
-    it('should fix onChange reRender bug', (done) => {
+    it('should fix onChange reRender bug', done => {
         const container = document.createElement('div');
         document.body.appendChild(container);
         class App extends React.Component {
             state = {
-                selected: []
-            }
+                selected: [],
+            };
             onSelectionChange = (ids, records) => {
                 this.setState({
-                    selected: records
-                })
-            }
+                    selected: records,
+                });
+            };
             render() {
-                return (<Table dataSource={dataSource} rowSelection={{ onChange: this.onSelectionChange }}>
-                    <Table.Column dataIndex='id' />
-                    <Table.Column dataIndex='name' />
-                </Table>)
+                return (
+                    <Table
+                        dataSource={dataSource}
+                        rowSelection={{ onChange: this.onSelectionChange }}
+                    >
+                        <Table.Column dataIndex="id" />
+                        <Table.Column dataIndex="name" />
+                    </Table>
+                );
             }
         }
 
-        ReactDOM.render(<App />, container, function () {
-            const input = container.querySelector('.next-table-header .next-checkbox input');
+        ReactDOM.render(<App />, container, function() {
+            const input = container.querySelector(
+                '.next-table-header .next-checkbox input'
+            );
             input.click();
             setTimeout(() => {
-                assert(document.querySelectorAll('.next-table-body .next-checkbox-wrapper.checked').length === 2);
+                assert(
+                    document.querySelectorAll(
+                        '.next-table-body .next-checkbox-wrapper.checked'
+                    ).length === 2
+                );
                 ReactDOM.unmountComponentAtNode(container);
                 document.body.removeChild(container);
                 done();
@@ -102,64 +125,80 @@ describe('Issue', () => {
 
     it('should support null child', () => {
         wrapper.setProps({
-            children: [null, <Table.Column dataIndex='id' />]
+            children: [null, <Table.Column dataIndex="id" />],
         });
         assert(wrapper.find('.next-table-body tr').length === 2);
     });
 
-    it('should support rowSelection & tree', (done) => {
-        timeout({
-            isTree: true,
-            rowSelection: {
-                onChange: () => { }
+    it('should support rowSelection & tree', done => {
+        timeout(
+            {
+                isTree: true,
+                rowSelection: {
+                    onChange: () => {},
+                },
+                dataSource: [
+                    {
+                        id: '1',
+                        name: 'test',
+                        children: [
+                            {
+                                id: '12',
+                                name: '12test',
+                            },
+                        ],
+                    },
+                    {
+                        id: '2',
+                        name: 'test2',
+                    },
+                ],
             },
-            dataSource: [{
-                id: '1',
-                name: 'test',
-                children: [{
-                    id: '12',
-                    name: '12test'
-                }]
-            }, {
-                id: '2',
-                name: 'test2'
-            }]
-        }, () => {
-
-            assert(wrapper.find('.next-table-row').find('.hidden').length === 1);
-            done();
-        });
+            () => {
+                assert(
+                    wrapper.find('.next-table-row').find('.hidden').length === 1
+                );
+                done();
+            }
+        );
     });
 
     it('should support rowSelection click', () => {
-
         const div = document.createElement('div');
         document.body.appendChild(div);
         const rowSelection = {
-            onChange: () => { }
+            onChange: () => {},
         };
 
         ReactDOM.render(
-        <Table dataSource={[{ id: 1 }, { id: 2 }]} rowSelection={rowSelection}>
-            <Table.Column dataIndex="id" style={{ 'textAlign': 'left' }} />
-        </Table>, div);
+            <Table
+                dataSource={[{ id: 1 }, { id: 2 }]}
+                rowSelection={rowSelection}
+            >
+                <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />
+            </Table>,
+            div
+        );
 
-        div.querySelectorAll('.next-checkbox-wrapper')[1].click()
-        assert(div.querySelectorAll('.next-checkbox-wrapper.checked').length === 1);
-        div.querySelectorAll('.next-checkbox-wrapper')[0].click()
-        assert(div.querySelectorAll('.next-checkbox-wrapper.checked').length === 3);
+        div.querySelectorAll('.next-checkbox-wrapper')[1].click();
+        assert(
+            div.querySelectorAll('.next-checkbox-wrapper.checked').length === 1
+        );
+        div.querySelectorAll('.next-checkbox-wrapper')[0].click();
+        assert(
+            div.querySelectorAll('.next-checkbox-wrapper.checked').length === 3
+        );
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
-
     });
 
     it('should ignore lock as `true` string', () => {
         wrapper.setProps({
             rowSelection: {
-                onChange: () => { }
+                onChange: () => {},
             },
-            children: <Table.Column dataIndex='id' lock="true" width={200}/>
+            children: <Table.Column dataIndex="id" lock="true" width={200} />,
         });
     });
 
@@ -191,26 +230,54 @@ describe('Issue', () => {
     //     }, 100);
     // });
 
-    it('should ignore lock when colWidth < tableWidth', (done) => {
+    it('should ignore lock when colWidth < tableWidth', done => {
         class App extends React.Component {
             state = {
-                cols: [<Table.Column cell={this.cellRender} dataIndex="id" lock width={300} key="id" />,
-                <Table.Column cell={this.cellRender} dataIndex="id" width={400} key="id1" />,
-                <Table.Column cell={this.cellRender} dataIndex="id" width={500} key="id2" />]
-            }
-            cellRender = (value) => {
+                cols: [
+                    <Table.Column
+                        cell={this.cellRender}
+                        dataIndex="id"
+                        lock
+                        width={300}
+                        key="id"
+                    />,
+                    <Table.Column
+                        cell={this.cellRender}
+                        dataIndex="id"
+                        width={400}
+                        key="id1"
+                    />,
+                    <Table.Column
+                        cell={this.cellRender}
+                        dataIndex="id"
+                        width={500}
+                        key="id2"
+                    />,
+                ],
+            };
+            cellRender = value => {
                 return value;
-            }
+            };
             render() {
-                return <div style={{ width: '400px' }}><Table dataSource={[{ id: 1 }]}>
-                    {this.state.cols}
-                </Table>
-                </div>
+                return (
+                    <div style={{ width: '400px' }}>
+                        <Table dataSource={[{ id: 1 }]}>
+                            {this.state.cols}
+                        </Table>
+                    </div>
+                );
             }
             componentDidMount() {
                 setTimeout(() => {
                     this.setState({
-                        cols: <Table.Column cell={this.cellRender} dataIndex="id" lock width={300} />
+                        cols: (
+                            <Table.Column
+                                cell={this.cellRender}
+                                dataIndex="id"
+                                lock
+                                width={300}
+                            />
+                        ),
                     });
                 }, 100);
             }
@@ -219,12 +286,24 @@ describe('Issue', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
-        assert(div.querySelectorAll('.next-table-lock-left')[0].children.length === 1);
-        assert(div.querySelectorAll('.next-table-lock-right')[0].children.length === 0);
+        assert(
+            div.querySelectorAll('.next-table-lock-left')[0].children.length ===
+                1
+        );
+        assert(
+            div.querySelectorAll('.next-table-lock-right')[0].children
+                .length === 0
+        );
 
         setTimeout(() => {
-            assert(div.querySelectorAll('.next-table-lock-left')[0].children.length === 0);
-            assert(div.querySelectorAll('.next-table-lock-right')[0].children.length === 0);
+            assert(
+                div.querySelectorAll('.next-table-lock-left')[0].children
+                    .length === 0
+            );
+            assert(
+                div.querySelectorAll('.next-table-lock-right')[0].children
+                    .length === 0
+            );
             ReactDOM.unmountComponentAtNode(div);
             document.body.removeChild(div);
             done();
@@ -234,10 +313,23 @@ describe('Issue', () => {
     it('should has border when set hasHeader as false', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
-        ReactDOM.render(<Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}><Table.Column dataIndex="id" /></Table>, div);
+        ReactDOM.render(
+            <Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}>
+                <Table.Column dataIndex="id" />
+            </Table>,
+            div
+        );
         //Hack firefox,IE10,IE11 render error;
-        div.querySelectorAll('.next-table table')[0].style.borderCollapse = 'separate';
-        assert(parseInt(window.getComputedStyle(div.querySelectorAll('.next-table tr:first-child td')[0]).borderTopWidth, 10) === 1);
+        div.querySelectorAll('.next-table table')[0].style.borderCollapse =
+            'separate';
+        assert(
+            parseInt(
+                window.getComputedStyle(
+                    div.querySelectorAll('.next-table tr:first-child td')[0]
+                ).borderTopWidth,
+                10
+            ) === 1
+        );
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -245,8 +337,16 @@ describe('Issue', () => {
     it('should support style config for Table.Column', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
-        ReactDOM.render(<Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}><Table.Column dataIndex="id" style={{ 'textAlign': 'left' }} /></Table>, div);
-        assert(div.querySelectorAll('.next-table table td')[0].style.textAlign === 'left');
+        ReactDOM.render(
+            <Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}>
+                <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />
+            </Table>,
+            div
+        );
+        assert(
+            div.querySelectorAll('.next-table table td')[0].style.textAlign ===
+                'left'
+        );
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -254,26 +354,45 @@ describe('Issue', () => {
     it('should support pass null to sort and any others', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
-        ReactDOM.render(<Table dataSource={[{ id: 1 }, { id: 2 }]}
-            hasHeader={false}
-            sort={null}
-            openRowKeys={null}
-            filterParams={null}
-            expandedRowKeys={null}><Table.Column dataIndex="id" /></Table>, div);
+        ReactDOM.render(
+            <Table
+                dataSource={[{ id: 1 }, { id: 2 }]}
+                hasHeader={false}
+                sort={null}
+                openRowKeys={null}
+                filterParams={null}
+                expandedRowKeys={null}
+            >
+                <Table.Column dataIndex="id" />
+            </Table>,
+            div
+        );
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
-    })
+    });
 
     it('should support virtual list', () => {
-
         class App extends React.Component {
             render() {
-                return <Table useVirtual dataSource={generateDataSource(100)} scrollToRow={20}>
-                    <Table.Column title="Id1" dataIndex="id" width={100}/>
-                    <Table.Column title="Index" dataIndex="index" width={200}/>
-                    <Table.Column title="Time" dataIndex="time" width={200}/>
-                </Table>
-
+                return (
+                    <Table
+                        useVirtual
+                        dataSource={generateDataSource(100)}
+                        scrollToRow={20}
+                    >
+                        <Table.Column title="Id1" dataIndex="id" width={100} />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                        <Table.Column
+                            title="Time"
+                            dataIndex="time"
+                            width={200}
+                        />
+                    </Table>
+                );
             }
         }
 
@@ -288,15 +407,29 @@ describe('Issue', () => {
     });
 
     it('sort should be singleton', () => {
-
         class App extends React.Component {
             render() {
-                return <Table dataSource={generateDataSource(10)} scrollToRow={20}>
-                    <Table.Column title="Id1" dataIndex="id" width={100} sortable/>
-                    <Table.Column title="Index" dataIndex="index" width={200}/>
-                    <Table.Column title="Time" dataIndex="time" width={200}sortable/>
-                </Table>
-
+                return (
+                    <Table dataSource={generateDataSource(10)} scrollToRow={20}>
+                        <Table.Column
+                            title="Id1"
+                            dataIndex="id"
+                            width={100}
+                            sortable
+                        />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                        <Table.Column
+                            title="Time"
+                            dataIndex="time"
+                            width={200}
+                            sortable
+                        />
+                    </Table>
+                );
             }
         }
 
@@ -304,7 +437,9 @@ describe('Issue', () => {
         document.body.appendChild(div);
         ReactDOM.render(<App />, div);
 
-        const sortBtn = div.querySelectorAll('.next-table-header .next-table-sort');
+        const sortBtn = div.querySelectorAll(
+            '.next-table-header .next-table-sort'
+        );
         sortBtn[0].click();
         sortBtn[1].click();
 

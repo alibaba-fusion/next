@@ -27,7 +27,7 @@ export function getValueFromEvent(e) {
 
 export function getErrorStrs(errors) {
     if (errors) {
-        return errors.map((e) => {
+        return errors.map(e => {
             if ('message' in e) {
                 const message = e.message;
                 // add key for jsx to ignore key warning
@@ -51,7 +51,7 @@ export function getParams(ns, cb) {
     }
     return {
         names,
-        callback
+        callback,
     };
 }
 
@@ -61,7 +61,12 @@ const setInWithPath = (state, value, path, pathIndex) => {
     }
 
     const first = path[pathIndex];
-    const next = setInWithPath(state && state[first], value, path, pathIndex + 1);
+    const next = setInWithPath(
+        state && state[first],
+        value,
+        path,
+        pathIndex + 1
+    );
 
     if (!state) {
         const initialized = isNaN(first) ? {} : [];
@@ -76,12 +81,20 @@ const setInWithPath = (state, value, path, pathIndex) => {
     }
 
     return Object.assign({}, state, {
-        [first]: next
+        [first]: next,
     });
 };
 
 export function setIn(state, name, value) {
-    return setInWithPath(state, value, name.replace(/\[/, '.').replace(/\]/, '').split('.'), 0);
+    return setInWithPath(
+        state,
+        value,
+        name
+            .replace(/\[/, '.')
+            .replace(/\]/, '')
+            .split('.'),
+        0
+    );
 }
 
 export function getIn(state, name) {
@@ -89,7 +102,10 @@ export function getIn(state, name) {
         return state;
     }
 
-    const path = name.replace(/\[/, '.').replace(/\]/, '').split('.');
+    const path = name
+        .replace(/\[/, '.')
+        .replace(/\]/, '')
+        .split('.');
     const length = path.length;
     if (!length) {
         return undefined;
@@ -136,7 +152,7 @@ function validateMap(rulesMap, rule, defaultTrigger) {
 export function mapValidateRules(rules, defaultTrigger) {
     const rulesMap = {};
 
-    rules.forEach((rule) => {
+    rules.forEach(rule => {
         validateMap(rulesMap, rule, defaultTrigger);
     });
 

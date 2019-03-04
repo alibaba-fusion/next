@@ -52,20 +52,19 @@ const transform = (props, deprecated) => {
     return newProps;
 };
 
-
 DatePicker.RangePicker = ConfigProvider.config(RangePicker, {
     componentName: 'DatePicker',
-    transform
+    transform,
 });
 DatePicker.MonthPicker = ConfigProvider.config(MonthPicker, {
     componentName: 'DatePicker',
-    transform
+    transform,
 });
 DatePicker.YearPicker = ConfigProvider.config(YearPicker, {
     componentName: 'DatePicker',
-    transform
+    transform,
 });
 
 export default ConfigProvider.config(DatePicker, {
-    transform
+    transform,
 });

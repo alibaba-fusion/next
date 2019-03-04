@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import { Component } from 'react';
 
 export default class Base extends Component {
     /* istanbul ignore next */
@@ -12,7 +12,7 @@ export default class Base extends Component {
         this.uploaderRef.startUpload();
     }
 
-    saveUploaderRef = (ref) => {
+    saveUploaderRef = ref => {
         /* istanbul ignore if */
         if (ref && typeof ref.getInstance === 'function') {
             this.uploaderRef = ref.getInstance();

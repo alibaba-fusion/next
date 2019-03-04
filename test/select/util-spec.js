@@ -2,10 +2,9 @@ import assert from 'power-assert';
 import { isSingle, isNull } from '../../src/select/util';
 
 /**
-* util spec test
-* @create 2017/11
-*/
-
+ * util spec test
+ * @create 2017/11
+ */
 
 describe('util.js', () => {
     it('#isSingle should works correct', () => {

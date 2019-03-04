@@ -17,7 +17,6 @@ const timePickerLocale = nextLocale.TimePicker;
  * TimePicker
  */
 export default class TimePicker extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -133,8 +132,8 @@ export default class TimePicker extends Component {
          * @param {Object|String} value 时间对象或时间字符串
          */
         onChange: PropTypes.func,
-        className: PropTypes.string
-    }
+        className: PropTypes.string,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -147,49 +146,59 @@ export default class TimePicker extends Component {
         popupAlign: 'tl tl',
         popupTriggerType: 'click',
         onChange: noop,
-        onVisibleChange: noop
-    }
+        onVisibleChange: noop,
+    };
 
     constructor(props, context) {
         super(props, context);
-        const value = formatDateValue(props.value || props.defaultValue, props.format);
-        this.inputAsString = (typeof (props.value || props.defaultValue) === 'string');
+        const value = formatDateValue(
+            props.value || props.defaultValue,
+            props.format
+        );
+        this.inputAsString =
+            typeof (props.value || props.defaultValue) === 'string';
         this.state = {
             value,
             inputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible
+            visible: props.visible || props.defaultVisible,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
-            const value = formatDateValue(nextProps.value, nextProps.format || this.props.format);
+            const value = formatDateValue(
+                nextProps.value,
+                nextProps.format || this.props.format
+            );
             this.setState({
-                value
+                value,
             });
         }
 
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
     }
 
     onValueChange(newValue) {
-        const ret = (this.inputAsString && newValue) ? newValue.format(this.props.format) : newValue;
+        const ret =
+            this.inputAsString && newValue
+                ? newValue.format(this.props.format)
+                : newValue;
         this.props.onChange(ret);
     }
 
     onClearValue = () => {
         this.setState({
-            value: null
+            value: null,
         });
         if (this.state.value) {
             this.onValueChange(null);
         }
-    }
+    };
 
     onInputChange = (inputValue, e, eventType) => {
         if (!('value' in this.props)) {
@@ -200,14 +209,14 @@ export default class TimePicker extends Component {
 
             this.setState({
                 inputStr: inputValue,
-                inputing: true
+                inputing: true,
             });
         } else if (eventType === 'clear') {
             // 受控状态下用户点击 clear
             e.stopPropagation();
             this.onValueChange(null);
         }
-    }
+    };
 
     onInputBlur = () => {
         const { value, inputStr } = this.state;
@@ -217,36 +226,39 @@ export default class TimePicker extends Component {
             if (parsed.isValid()) {
                 this.setState({
                     value: parsed,
-                    inputStr: ''
+                    inputStr: '',
                 });
                 this.onValueChange(parsed);
             }
             this.setState({
-                inputing: false
+                inputing: false,
             });
         }
-    }
+    };
 
-    onTimePanelSelect = (value) => {
+    onTimePanelSelect = value => {
         if (!('value' in this.props)) {
             this.setState({
                 value,
-                inputing: false
+                inputing: false,
             });
         }
-        if (!this.state.value || value.valueOf() !== this.state.value.valueOf()) {
+        if (
+            !this.state.value ||
+            value.valueOf() !== this.state.value.valueOf()
+        ) {
             this.onValueChange(value);
         }
-    }
+    };
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
         this.props.onVisibleChange(visible, reason);
-    }
+    };
 
     render() {
         const {
@@ -273,19 +285,22 @@ export default class TimePicker extends Component {
             className,
             locale,
             rtl,
-            ...others } = this.props;
+            ...others
+        } = this.props;
 
         const { value, inputStr, inputing, visible } = this.state;
 
         const triggerCls = classnames({
-            [`${prefix}time-picker-trigger`]: true
+            [`${prefix}time-picker-trigger`]: true,
         });
 
         if (rtl) {
             others.dir = 'rtl';
         }
 
-        const inputValue = inputing ? inputStr : (value && value.format(format) || '');
+        const inputValue = inputing
+            ? inputStr
+            : (value && value.format(format)) || '';
         const sharedInputProps = {
             size,
             disabled,
@@ -294,17 +309,20 @@ export default class TimePicker extends Component {
             onChange: this.onInputChange,
             onBlur: this.onInputBlur,
             onPressEnter: this.onInputBlur,
-            hint: 'clock'
+            hint: 'clock',
         };
 
-        const triggerInput = (<div className={triggerCls}>
-            <Input
-                {...sharedInputProps}
-                label={label}
-                state={state}
-                placeholder={placeholder || locale.placeholder}
-                className={`${prefix}time-picker-input`} />
-        </div>);
+        const triggerInput = (
+            <div className={triggerCls}>
+                <Input
+                    {...sharedInputProps}
+                    label={label}
+                    state={state}
+                    placeholder={placeholder || locale.placeholder}
+                    className={`${prefix}time-picker-input`}
+                />
+            </div>
+        );
 
         const panelProps = {
             prefix,
@@ -319,38 +337,51 @@ export default class TimePicker extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
-            onSelect: this.onTimePanelSelect
+            onSelect: this.onTimePanelSelect,
         };
 
-        const classNames = classnames({
-            [`${prefix}time-picker`]: true,
-            [`${prefix}time-picker-${size}`]: size,
-            [`${prefix}disabled`]: disabled
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}time-picker`]: true,
+                [`${prefix}time-picker-${size}`]: size,
+                [`${prefix}disabled`]: disabled,
+            },
+            className
+        );
 
-        return (<div {...obj.pickOthers(TimePicker.propTypes, others)} className={classNames}>
-            <Popup
-                {...popupProps}
-                autoFocus
-                visible={visible}
-                onVisibleChange={this.onVisibleChange}
-                trigger={triggerInput}
-                container={popupContainer}
-                disabled={disabled}
-                align={popupAlign}
-                triggerType={popupTriggerType}
-                style={popupStyle}
-                className={popupClassName}>
-                <div dir={others.dir} className={`${prefix}time-picker-body`}>
-                    <div className={`${prefix}time-picker-panel-header`}>
-                        <Input
-                            {...sharedInputProps}
-                            placeholder={format}
-                            className={`${prefix}time-picker-panel-input`} />
+        return (
+            <div
+                {...obj.pickOthers(TimePicker.propTypes, others)}
+                className={classNames}
+            >
+                <Popup
+                    {...popupProps}
+                    autoFocus
+                    visible={visible}
+                    onVisibleChange={this.onVisibleChange}
+                    trigger={triggerInput}
+                    container={popupContainer}
+                    disabled={disabled}
+                    align={popupAlign}
+                    triggerType={popupTriggerType}
+                    style={popupStyle}
+                    className={popupClassName}
+                >
+                    <div
+                        dir={others.dir}
+                        className={`${prefix}time-picker-body`}
+                    >
+                        <div className={`${prefix}time-picker-panel-header`}>
+                            <Input
+                                {...sharedInputProps}
+                                placeholder={format}
+                                className={`${prefix}time-picker-panel-input`}
+                            />
+                        </div>
+                        <TimePickerPanel {...panelProps} />
                     </div>
-                    <TimePickerPanel {...panelProps} />
-                </div>
-            </Popup>
-        </div>);
+                </Popup>
+            </div>
+        );
     }
 }

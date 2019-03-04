@@ -5,23 +5,28 @@ import Row from '../lock/row';
 
 export default class ExpandedRow extends React.Component {
     static propTypes = {
-        ...Row.propTypes
-    }
+        ...Row.propTypes,
+    };
 
     static defaultProps = {
-        ...Row.defaultProps
-    }
+        ...Row.defaultProps,
+    };
 
     static contextTypes = {
         openRowKeys: PropTypes.array,
         expandedRowRender: PropTypes.func,
         expandedRowIndent: PropTypes.array,
         expandedIndexSimulate: PropTypes.bool,
-        lockType: PropTypes.oneOf(['left', 'right'])
-    }
+        lockType: PropTypes.oneOf(['left', 'right']),
+    };
 
     renderExpandedRow(record, index, colSpan) {
-        const { expandedRowRender, expandedRowIndent, openRowKeys, lockType } = this.context;
+        const {
+            expandedRowRender,
+            expandedRowIndent,
+            openRowKeys,
+            lockType,
+        } = this.context;
 
         const { columns, cellRef } = this.props;
         if (expandedRowRender) {
@@ -29,30 +34,48 @@ export default class ExpandedRow extends React.Component {
                 leftIndent = expandedRowIndent[0],
                 rightIndent = expandedRowIndent[1],
                 totalIndent = leftIndent + rightIndent,
-                renderCols = (number) => {
+                renderCols = number => {
                     const ret = [];
                     for (let i = 0; i < number; i++) {
-                        ret.push(<td key={i} ref={(cell) => cellRef(index, i, cell)}>&nbsp;</td>);
+                        ret.push(
+                            <td key={i} ref={cell => cellRef(index, i, cell)}>
+                                &nbsp;
+                            </td>
+                        );
                     }
                     return ret;
                 };
             let content;
 
             if (totalIndent > colSpan && !lockType) {
-                log.warning('It\'s not allowed expandedRowIndent is more than the number of columns.');
+                log.warning(
+                    "It's not allowed expandedRowIndent is more than the number of columns."
+                );
             }
             if (leftIndent < columns.length && lockType === 'left') {
-                log.warning('expandedRowIndent left is less than the number of left lock columns.');
+                log.warning(
+                    'expandedRowIndent left is less than the number of left lock columns.'
+                );
             }
             if (rightIndent < columns.length && lockType === 'right') {
-                log.warning('expandedRowIndent right is less than the number of right lock columns.');
+                log.warning(
+                    'expandedRowIndent right is less than the number of right lock columns.'
+                );
             }
             if (lockType) {
-                return (
-                    openRowKeys.indexOf(record[primaryKey]) > -1 ? <tr className={`${prefix}table-expanded-row`} key={`expanded-${index}`}>
-                        <td colSpan={colSpan} ref={(cell) => cellRef(index, 0, cell)}>&nbsp;</td>
-                    </tr> : null
-                );
+                return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
+                    <tr
+                        className={`${prefix}table-expanded-row`}
+                        key={`expanded-${index}`}
+                    >
+                        <td
+                            colSpan={colSpan}
+                            ref={cell => cellRef(index, 0, cell)}
+                        >
+                            &nbsp;
+                        </td>
+                    </tr>
+                ) : null;
             }
             content = expandedRowRender(record, index);
             if (!React.isValidElement(content)) {
@@ -62,15 +85,16 @@ export default class ExpandedRow extends React.Component {
                     </div>
                 );
             }
-            return (
-                openRowKeys.indexOf(record[primaryKey]) > -1 ? <tr className={`${prefix}table-expanded-row`} key={`expanded-${record[primaryKey] || index}`}>
+            return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
+                <tr
+                    className={`${prefix}table-expanded-row`}
+                    key={`expanded-${record[primaryKey] || index}`}
+                >
                     {renderCols(leftIndent)}
-                    <td colSpan={colSpan - totalIndent}>
-                        {content}
-                    </td>
+                    <td colSpan={colSpan - totalIndent}>{content}</td>
                     {renderCols(rightIndent)}
-                </tr> : null
-            );
+                </tr>
+            ) : null;
         } else {
             return null;
         }
@@ -82,13 +106,24 @@ export default class ExpandedRow extends React.Component {
         const { expandedIndexSimulate } = this.context;
 
         if (record.__expanded) {
-            const expandedIndex = expandedIndexSimulate ? (rowIndex - 1) / 2 : rowIndex;
-            return this.renderExpandedRow(record, expandedIndex, columns.length);
+            const expandedIndex = expandedIndexSimulate
+                ? (rowIndex - 1) / 2
+                : rowIndex;
+            return this.renderExpandedRow(
+                record,
+                expandedIndex,
+                columns.length
+            );
         }
 
         const newRowIndex = expandedIndexSimulate ? rowIndex / 2 : rowIndex;
-        return (<Row {...others} record={record} columns={columns} rowIndex={newRowIndex} />);
+        return (
+            <Row
+                {...others}
+                record={record}
+                columns={columns}
+                rowIndex={newRowIndex}
+            />
+        );
     }
 }
-
-

@@ -11,7 +11,16 @@ import sticky from './sticky';
 import ListHeader from './list-header';
 import ListFooter from './list-footer';
 
-const ORDER_LIST = [fixed, lock, selection, expanded, tree, virtual, list, sticky];
+const ORDER_LIST = [
+    fixed,
+    lock,
+    selection,
+    expanded,
+    tree,
+    virtual,
+    list,
+    sticky,
+];
 const Table = ORDER_LIST.reduce((ret, current) => {
     ret = current(ret);
     return ret;
@@ -31,7 +40,7 @@ Table.GroupFooter = ListFooter;
 
 export default ConfigProvider.config(Table, {
     componentName: 'Table',
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('expandedRowKeys' in props) {
             deprecated('expandedRowKeys', 'openRowKeys', 'Table');
 
@@ -70,7 +79,7 @@ export default ConfigProvider.config(Table, {
                 const newGetRowProps = (...args) => {
                     return {
                         className: getRowClassName(...args),
-                        ...(getRowProps ? getRowProps(...args) : {})
+                        ...(getRowProps ? getRowProps(...args) : {}),
                     };
                 };
 
@@ -81,5 +90,5 @@ export default ConfigProvider.config(Table, {
         }
 
         return props;
-    }
+    },
 });

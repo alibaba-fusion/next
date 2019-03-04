@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Rating from './rating';
 
 export default ConfigProvider.config(Rating, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('type' in props) {
             deprecated('type', 'showGrade', 'Rating');
 
@@ -11,5 +11,5 @@ export default ConfigProvider.config(Rating, {
         }
 
         return props;
-    }
+    },
 });

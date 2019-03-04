@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {func} from '../../util';
+import { func } from '../../util';
 import Uploader from './uploader';
 import Selecter from './selecter';
 
@@ -54,9 +54,8 @@ export default class Html5Uploader extends Component {
          * 上传方法
          */
         method: PropTypes.oneOf(['post', 'put']),
-        request: PropTypes.func
+        request: PropTypes.func,
     };
-
 
     static defaultProps = {
         ...Selecter.defaultProps,
@@ -72,11 +71,11 @@ export default class Html5Uploader extends Component {
         onSuccess: func.noop,
         onError: func.noop,
         onAbort: func.noop,
-        method: 'post'
+        method: 'post',
     };
 
     componentDidMount() {
-        const {props} = this;
+        const { props } = this;
         const options = this.getUploadOptions(props);
         this.uploader = new Uploader(options);
     }
@@ -109,7 +108,7 @@ export default class Html5Uploader extends Component {
         withCredentials: props.withCredentials,
         headers: props.headers,
         data: props.data,
-        request: props.request
+        request: props.request,
     });
 
     render() {
@@ -126,7 +125,7 @@ export default class Html5Uploader extends Component {
             onDragOver,
             onDragLeave,
             onDrop,
-            name
+            name,
         } = this.props;
 
         return (
@@ -149,5 +148,3 @@ export default class Html5Uploader extends Component {
         );
     }
 }
-
-

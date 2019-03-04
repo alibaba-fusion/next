@@ -11,33 +11,40 @@ module.exports = function(options) {
     const entry = options.entry;
     const config = getConfig({
         minimize: true,
-        extractTextName: '[name]/build/index.css'
+        extractTextName: '[name]/build/index.css',
     });
 
-    config.entry = _.extend({
-        commons: path.join(__dirname, 'next-commons.js')
-    }, entry);
+    config.entry = _.extend(
+        {
+            commons: path.join(__dirname, 'next-commons.js'),
+        },
+        entry
+    );
     config.output = {
         path: target,
-        filename: '[name]/build/index.js'
+        filename: '[name]/build/index.js',
     };
 
     config.externals = {
         react: 'var window.React',
         'react-dom': 'var window.ReactDOM',
-        moment: 'var window.moment'
+        moment: 'var window.moment',
     };
-    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name: 'commons',
-        chunks: Object.keys(entry)
-    }));
-    config.plugins.push(new DemoPlugin({
-        commonName: 'commons',
-        filename: '[name]/index.html',
-        depsname: '[name]/deps.json',
-        deps: options.deps,
-        layout: require('./layout')
-    }));
+    config.plugins.push(
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'commons',
+            chunks: Object.keys(entry),
+        })
+    );
+    config.plugins.push(
+        new DemoPlugin({
+            commonName: 'commons',
+            filename: '[name]/index.html',
+            depsname: '[name]/deps.json',
+            deps: options.deps,
+            layout: require('./layout'),
+        })
+    );
 
     return config;
 };

@@ -19,20 +19,34 @@ function _isMultiple(slider, isFixedWidth) {
 }
 
 function LowerSlider(props) {
-    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = props;
+    const {
+        hasTip,
+        value,
+        tipRender,
+        slider,
+        tooltipVisible,
+        onTooltipVisibleChange,
+        tooltipAnimation,
+    } = props;
 
     if (_isMultiple(slider)) {
-        return hasTip ? (<Tooltip
-            popupContainer={target => target.parentNode}
-            popupProps={{
-                visible: tooltipVisible,
-                onVisibleChange: onTooltipVisibleChange,
-                animation: tooltipAnimation,
-                needAdjust: false
-            }}
-            trigger={Slider({ ...props, value: value[0] })}
-            align="t"
-        >{tipRender(`${value[0]}`)}</Tooltip>) : Slider({ ...props, value: value[0] });
+        return hasTip ? (
+            <Tooltip
+                popupContainer={target => target.parentNode}
+                popupProps={{
+                    visible: tooltipVisible,
+                    onVisibleChange: onTooltipVisibleChange,
+                    animation: tooltipAnimation,
+                    needAdjust: false,
+                }}
+                trigger={Slider({ ...props, value: value[0] })}
+                align="t"
+            >
+                {tipRender(`${value[0]}`)}
+            </Tooltip>
+        ) : (
+            Slider({ ...props, value: value[0] })
+        );
     }
     return null;
 }
@@ -41,74 +55,80 @@ LowerSlider.propTypes = {
     hasTip: PropTypes.bool,
     tooltipVisible: PropTypes.bool,
     onTooltipVisibleChange: PropTypes.func,
-    tooltipAnimation: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.object
-    ]),
+    tooltipAnimation: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     value: PropTypes.oneOfType([
         PropTypes.number,
-        PropTypes.arrayOf(PropTypes.number)
+        PropTypes.arrayOf(PropTypes.number),
     ]),
     tipRender: PropTypes.func,
-    slider: PropTypes.oneOf(['single', 'double'])
+    slider: PropTypes.oneOf(['single', 'double']),
 };
 
 function UpperSlider(props) {
     const newprop = Object.assign({}, props);
-    const { hasTip, value, tipRender, slider, tooltipVisible, onTooltipVisibleChange, tooltipAnimation } = newprop;
+    const {
+        hasTip,
+        value,
+        tipRender,
+        slider,
+        tooltipVisible,
+        onTooltipVisibleChange,
+        tooltipAnimation,
+    } = newprop;
     if (_isMultiple(slider)) {
         delete newprop.onKeyDown;
-        return hasTip ?
+        return hasTip ? (
             <Tooltip
                 popupContainer={target => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible,
                     onVisibleChange: onTooltipVisibleChange,
                     animation: tooltipAnimation,
-                    needAdjust: false
+                    needAdjust: false,
                 }}
                 trigger={Slider({ ...newprop, value: value[1] })}
                 align="t"
             >
                 {tipRender(value[1])}
-            </Tooltip> :
-            Slider({ ...newprop, value: value[1] });
+            </Tooltip>
+        ) : (
+            Slider({ ...newprop, value: value[1] })
+        );
     }
-    return hasTip ?
+    return hasTip ? (
         <Tooltip
             popupContainer={target => target.parentNode}
             popupProps={{
                 visible: tooltipVisible,
                 onVisibleChange: onTooltipVisibleChange,
                 animation: tooltipAnimation,
-                needAdjust: false
+                needAdjust: false,
             }}
             animation={{
                 in: 'fadeInUp',
-                out: 'fadeOutDown'
+                out: 'fadeOutDown',
             }}
             trigger={Slider(newprop)}
             align="t"
         >
             {tipRender(value)}
-        </Tooltip> :
-        Slider(newprop);
+        </Tooltip>
+    ) : (
+        Slider(newprop)
+    );
 }
 
 UpperSlider.propTypes = {
     hasTip: PropTypes.bool,
     tooltipVisible: PropTypes.bool,
     onTooltipVisibleChange: PropTypes.func,
-    tooltipAnimation: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.object
-    ]),
+    tooltipAnimation: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     value: PropTypes.oneOfType([
         PropTypes.number,
-        PropTypes.arrayOf(PropTypes.number)
+        PropTypes.arrayOf(PropTypes.number),
     ]),
     tipRender: PropTypes.func,
-    slider: PropTypes.oneOf(['single', 'double'])
+    slider: PropTypes.oneOf(['single', 'double']),
 };
 
 function pauseEvent(e) {
@@ -119,8 +139,8 @@ function pauseEvent(e) {
 /** Range */
 export default class Range extends React.Component {
     static contextTypes = {
-        prefix: PropTypes.string
-    }
+        prefix: PropTypes.string,
+    };
     static propTypes = {
         /**
          * 样式类名的品牌前缀
@@ -156,18 +176,18 @@ export default class Range extends React.Component {
          */
         value: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
+            PropTypes.arrayOf(PropTypes.number),
         ]),
         tempValue: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
+            PropTypes.arrayOf(PropTypes.number),
         ]),
         /**
          * 设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
          */
         defaultValue: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
+            PropTypes.arrayOf(PropTypes.number),
         ]),
         /**
          * 刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）
@@ -176,7 +196,7 @@ export default class Range extends React.Component {
             PropTypes.bool,
             PropTypes.number,
             PropTypes.arrayOf(PropTypes.number),
-            PropTypes.object
+            PropTypes.object,
         ]),
         /**
          * marks显示在上方('above')or下方('below')
@@ -222,8 +242,8 @@ export default class Range extends React.Component {
         /**
          * tooltip是否默认展示
          */
-        tooltipVisible: PropTypes.bool
-    }
+        tooltipVisible: PropTypes.bool,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -241,15 +261,16 @@ export default class Range extends React.Component {
         tipRender: value => value,
         reverse: false,
         pure: false,
-        marksPosition: 'above'
-    }
+        marksPosition: 'above',
+    };
 
     constructor(props) {
         super(props);
         const { min } = props;
         const initialValue = _isMultiple(props.slider) ? [min, min] : min;
-        const defaultValue = ('defaultValue' in props ? props.defaultValue : initialValue);
-        const value = (props.value !== undefined ? props.value : defaultValue);
+        const defaultValue =
+            'defaultValue' in props ? props.defaultValue : initialValue;
+        const value = props.value !== undefined ? props.value : defaultValue;
 
         this.state = {
             value: value,
@@ -257,10 +278,14 @@ export default class Range extends React.Component {
             hasMovingClass: false,
             lowerTooltipVisible: false,
             upperTooltipVisible: false,
-            tooltipAnimation: true
+            tooltipAnimation: true,
         };
 
-        bindCtx(this, ['handleLowerTooltipVisibleChange', 'handleUpperTooltipVisibleChange', 'onKeyDown']);
+        bindCtx(this, [
+            'handleLowerTooltipVisibleChange',
+            'handleUpperTooltipVisibleChange',
+            'onKeyDown',
+        ]);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -269,12 +294,13 @@ export default class Range extends React.Component {
         if ('value' in nextProps) {
             let value = nextProps.value;
 
-            if (value === undefined) { // value设置undefined,reset为初始值
+            if (value === undefined) {
+                // value设置undefined,reset为初始值
                 value = initialValue;
             }
             this.setState({
                 value: value,
-                tempValue: value
+                tempValue: value,
             });
         }
     }
@@ -291,7 +317,6 @@ export default class Range extends React.Component {
             result = marks;
         }
         return result;
-
     }
 
     _calcScales() {
@@ -350,7 +375,7 @@ export default class Range extends React.Component {
     _onMouseDown(e) {
         if (e.button === 0) {
             this.setState({
-                hasMovingClass: true
+                hasMovingClass: true,
             });
             this._start(e.pageX);
             this._addDocumentEvents();
@@ -359,7 +384,10 @@ export default class Range extends React.Component {
     }
 
     onKeyDown(e) {
-        if (e.keyCode === KEYCODE.LEFT_ARROW || e.keyCode === KEYCODE.RIGHT_ARROW) {
+        if (
+            e.keyCode === KEYCODE.LEFT_ARROW ||
+            e.keyCode === KEYCODE.RIGHT_ARROW
+        ) {
             e.stopPropagation();
             e.preventDefault();
             let newValue;
@@ -376,7 +404,7 @@ export default class Range extends React.Component {
             }
             if (newValue !== this.state.value) {
                 this.setState({
-                    value: newValue
+                    value: newValue,
                 });
                 this.props.onChange(newValue);
             }
@@ -401,7 +429,7 @@ export default class Range extends React.Component {
         this._moving = {
             start,
             end: start + width,
-            startValue: tempValue
+            startValue: tempValue,
         };
 
         // change on start
@@ -417,19 +445,19 @@ export default class Range extends React.Component {
             hasMovingClass: false,
             lowerTooltipVisible: false,
             upperTooltipVisible: false,
-            tooltipAnimation: true
+            tooltipAnimation: true,
         });
         if (!isEqual(tempValue, startValue)) {
             // Not Controlled
             if (!('value' in this.props)) {
                 this.setState({
-                    value: tempValue
+                    value: tempValue,
                 });
             } else {
                 this.setState({
                     // tooltipVisible: false,
                     tempValue: value,
-                    value: value
+                    value: value,
                 });
             }
             this.props.onChange(tempValue);
@@ -442,7 +470,7 @@ export default class Range extends React.Component {
 
     _onProcess(position, start) {
         const { tempValue } = this.state;
-        const current = this._positionToCurrent(position);//current 为当前click的value
+        const current = this._positionToCurrent(position); //current 为当前click的value
 
         if (this.isFixedWidth) {
             if (start) {
@@ -459,36 +487,55 @@ export default class Range extends React.Component {
             this.setState({
                 lowerTooltipVisible: this._moving.dragging === 'lower',
                 upperTooltipVisible: this._moving.dragging === 'upper',
-                tooltipAnimation: false
+                tooltipAnimation: false,
             });
-        } else if (this.oldDragging === 'lower' && this._moving.dragging === 'upper') {
+        } else if (
+            this.oldDragging === 'lower' &&
+            this._moving.dragging === 'upper'
+        ) {
             this.setState({
                 upperTooltipVisible: true,
-                lowerTooltipVisible: false
+                lowerTooltipVisible: false,
             });
-        } else if (this.oldDragging === 'upper' && this._moving.dragging === 'lower') {
+        } else if (
+            this.oldDragging === 'upper' &&
+            this._moving.dragging === 'lower'
+        ) {
             this.setState({
                 upperTooltipVisible: false,
-                lowerTooltipVisible: true
+                lowerTooltipVisible: true,
             });
         }
 
         this.oldDragging = this._moving.dragging;
 
-        const nextValue = this._currentToValue(current, tempValue, this.lastPosition, this.isFixedWidth);//计算range的新value,可能是数组,可能是单个值
+        const nextValue = this._currentToValue(
+            current,
+            tempValue,
+            this.lastPosition,
+            this.isFixedWidth
+        ); //计算range的新value,可能是数组,可能是单个值
         this.lastPosition = current;
 
         if (!isEqual(nextValue, tempValue)) {
             this.setState({
-                tempValue: nextValue
+                tempValue: nextValue,
             });
             this.props.onProcess(nextValue);
         }
     }
 
     _addDocumentEvents() {
-        this._onMouseMoveListener = events.on(document, 'mousemove', this._move.bind(this));
-        this._onMouseUpListener = events.on(document, 'mouseup', this._end.bind(this));
+        this._onMouseMoveListener = events.on(
+            document,
+            'mousemove',
+            this._move.bind(this)
+        );
+        this._onMouseUpListener = events.on(
+            document,
+            'mouseup',
+            this._end.bind(this)
+        );
     }
 
     _removeDocumentEvents() {
@@ -516,7 +563,11 @@ export default class Range extends React.Component {
         const percent = getPercent(start, end, position);
 
         // reset by step
-        const newValue = parseFloat((Math.round(percent / 100 * (max - min) / step) * step).toFixed(getPrecision(step)));
+        const newValue = parseFloat(
+            (Math.round(((percent / 100) * (max - min)) / step) * step).toFixed(
+                getPrecision(step)
+            )
+        );
 
         return min + newValue;
     }
@@ -535,8 +586,12 @@ export default class Range extends React.Component {
             const newLeft = +(+preValue[0] + diff).toFixed(precision);
             const newRight = +(+preValue[1] + diff).toFixed(precision);
 
-            const newMaxLeft = +(max - preValue[1] + preValue[0]).toFixed(precision);
-            const newMinRight = +(min + preValue[1] - preValue[0]).toFixed(precision);
+            const newMaxLeft = +(max - preValue[1] + preValue[0]).toFixed(
+                precision
+            );
+            const newMinRight = +(min + preValue[1] - preValue[0]).toFixed(
+                precision
+            );
 
             if (isFixedWidth) {
                 if (newLeft < min) {
@@ -571,7 +626,7 @@ export default class Range extends React.Component {
             return;
         }
         this.setState({
-            lowerTooltipVisible: visible
+            lowerTooltipVisible: visible,
         });
     }
 
@@ -580,19 +635,35 @@ export default class Range extends React.Component {
             return;
         }
         this.setState({
-            upperTooltipVisible: visible
+            upperTooltipVisible: visible,
         });
     }
 
     render() {
-
         let value = this._moving ? this.state.tempValue : this.state.value;
 
-        const { prefix, min, max, disabled, style, id, slider, reverse, className, marks, marksPosition, hasTip, tipRender, fixedWidth, defaultValue, tooltipVisible } = this.props;
+        const {
+            prefix,
+            min,
+            max,
+            disabled,
+            style,
+            id,
+            slider,
+            reverse,
+            className,
+            marks,
+            marksPosition,
+            hasTip,
+            tipRender,
+            fixedWidth,
+            defaultValue,
+            tooltipVisible,
+        } = this.props;
         const classes = classNames({
             [`${prefix}range`]: true,
             disabled: disabled,
-            [className]: className
+            [className]: className,
         });
 
         if (Array.isArray(value)) {
@@ -617,54 +688,91 @@ export default class Range extends React.Component {
             marksPosition,
             tooltipVisible,
             hasMovingClass: this.state.hasMovingClass,
-            disabled
+            disabled,
         };
 
-        this.isFixedWidth = fixedWidth &&
-            (value ?
-                Array.isArray(value) :
-                defaultValue ?
-                    Array.isArray(defaultValue) :
-                    false
-            );
+        this.isFixedWidth =
+            fixedWidth &&
+            (value
+                ? Array.isArray(value)
+                : defaultValue
+                ? Array.isArray(defaultValue)
+                : false);
 
         return (
-            <div ref={(dom) => {
-                this.dom = dom;
-            }} style={style} className={classes} id={id} onMouseDown={disabled ? noop : this._onMouseDown.bind(this)}>
-                {
-                    marks !== false && marksPosition === 'above' ?
-                        <Mark {...commonProps} marks={this._calcMarks()} /> :
-                        null
-                }
+            <div
+                ref={dom => {
+                    this.dom = dom;
+                }}
+                style={style}
+                className={classes}
+                id={id}
+                onMouseDown={disabled ? noop : this._onMouseDown.bind(this)}
+            >
+                {marks !== false && marksPosition === 'above' ? (
+                    <Mark {...commonProps} marks={this._calcMarks()} />
+                ) : null}
                 <div className={`${prefix}range-inner`}>
                     <Scale {...commonProps} scales={this._calcScales()} />
                     <Track {...commonProps} />
-                    {
-                        this.isFixedWidth ?
-                            <FixedSlider {...commonProps} /> :
-                            <div>
-                                <Selected {...commonProps} />
-                                <LowerSlider {...commonProps}
-                                    hasMovingClass={this.state.hasMovingClass && this._moving && this._moving.dragging === 'lower'}
-                                    tooltipVisible={tooltipVisible || this.state.lowerTooltipVisible}
-                                    onTooltipVisibleChange={this.handleLowerTooltipVisibleChange}
-                                    tooltipAnimation={this.state.tooltipAnimation ? { in: 'expandInUp', out: 'expandOutDown' } : false} />
-                                <UpperSlider {...commonProps}
-                                    onKeyDown={this.onKeyDown}
-                                    hasMovingClass={this.state.hasMovingClass && this._moving && this._moving.dragging === 'upper'}
-                                    tooltipVisible={tooltipVisible || this.state.upperTooltipVisible}
-                                    onTooltipVisibleChange={this.handleUpperTooltipVisibleChange}
-                                    tooltipAnimation={this.state.tooltipAnimation ? { in: 'expandInUp', out: 'expandOutDown' } : false} />
-                            </div>
-
-                    }
+                    {this.isFixedWidth ? (
+                        <FixedSlider {...commonProps} />
+                    ) : (
+                        <div>
+                            <Selected {...commonProps} />
+                            <LowerSlider
+                                {...commonProps}
+                                hasMovingClass={
+                                    this.state.hasMovingClass &&
+                                    this._moving &&
+                                    this._moving.dragging === 'lower'
+                                }
+                                tooltipVisible={
+                                    tooltipVisible ||
+                                    this.state.lowerTooltipVisible
+                                }
+                                onTooltipVisibleChange={
+                                    this.handleLowerTooltipVisibleChange
+                                }
+                                tooltipAnimation={
+                                    this.state.tooltipAnimation
+                                        ? {
+                                              in: 'expandInUp',
+                                              out: 'expandOutDown',
+                                          }
+                                        : false
+                                }
+                            />
+                            <UpperSlider
+                                {...commonProps}
+                                onKeyDown={this.onKeyDown}
+                                hasMovingClass={
+                                    this.state.hasMovingClass &&
+                                    this._moving &&
+                                    this._moving.dragging === 'upper'
+                                }
+                                tooltipVisible={
+                                    tooltipVisible ||
+                                    this.state.upperTooltipVisible
+                                }
+                                onTooltipVisibleChange={
+                                    this.handleUpperTooltipVisibleChange
+                                }
+                                tooltipAnimation={
+                                    this.state.tooltipAnimation
+                                        ? {
+                                              in: 'expandInUp',
+                                              out: 'expandOutDown',
+                                          }
+                                        : false
+                                }
+                            />
+                        </div>
+                    )}
                 </div>
-                {
-                    marks !== false && marksPosition === 'below' ?
-                        <Mark {...commonProps} marks={this._calcMarks()} /> :
-                        null
-                }
+                {marks !== false && marksPosition === 'below' ? (
+                    <Mark {...commonProps} marks={this._calcMarks()} />
+                ) : null}
             </div>
         );
     }

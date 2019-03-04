@@ -77,11 +77,13 @@ describe('Message A11y', () => {
     });
 
     it('should not have any violations when closable', async () => {
-        wrapper = await testReact(<div>
-            <Message title="closable" closeable>
-                Content Content Content Content
-            </Message>
-        </div>);
+        wrapper = await testReact(
+            <div>
+                <Message title="closable" closeable>
+                    Content Content Content Content
+                </Message>
+            </div>
+        );
 
         return wrapper;
     });

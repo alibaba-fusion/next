@@ -21,16 +21,22 @@ class TabItem extends React.Component {
         active: PropTypes.bool,
         lazyLoad: PropTypes.bool,
         unmountInactiveTabs: PropTypes.bool,
-        children: PropTypes.any
-    }
+        children: PropTypes.any,
+    };
 
     static defaultProps = {
         prefix: 'next-',
-        closeable: false
-    }
+        closeable: false,
+    };
 
     render() {
-        const { prefix, active, lazyLoad, unmountInactiveTabs, children } = this.props;
+        const {
+            prefix,
+            active,
+            lazyLoad,
+            unmountInactiveTabs,
+            children,
+        } = this.props;
 
         this._actived = this._actived || active;
         if (lazyLoad && !this._actived) {
@@ -43,11 +49,15 @@ class TabItem extends React.Component {
 
         const cls = classnames({
             [`${prefix}tabs-tabpane`]: true,
-            [`${active ? 'active' : 'hidden'}`]: true
+            [`${active ? 'active' : 'hidden'}`]: true,
         });
 
         return (
-            <div role="tabpanel" aria-hidden={active ? 'false' : 'true'} className={cls}>
+            <div
+                role="tabpanel"
+                aria-hidden={active ? 'false' : 'true'}
+                className={cls}
+            >
                 {children}
             </div>
         );

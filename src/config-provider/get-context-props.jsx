@@ -26,6 +26,6 @@ export default function getContextProps(props, context, displayName) {
         locale: newLocale,
         pure: newPure,
         rtl: newRtl,
-        warning: nextWarning
+        warning: nextWarning,
     };
 }

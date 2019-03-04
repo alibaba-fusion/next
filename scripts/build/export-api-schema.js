@@ -15,11 +15,11 @@ Object.keys(parentMap).forEach(child => {
 
     parentPathMap[child] = {
         name: parent,
-        path: path.join(cwd, 'src', component)
+        path: path.join(cwd, 'src', component),
     };
 });
 
-module.exports = function (options) {
+module.exports = function(options) {
     const libPath = path.join(cwd, 'lib');
     const entriesPath = path.join(libPath, 'index.d.ts');
     const entries = [];
@@ -27,13 +27,26 @@ module.exports = function (options) {
     options.entries.forEach(entry => {
         const shortName = entry.name;
 
-        if (['core', 'field', 'locale', 'mixin-ui-state', 'util', 'validate'].indexOf(shortName) > -1) {
+        if (
+            [
+                'core',
+                'field',
+                'locale',
+                'mixin-ui-state',
+                'util',
+                'validate',
+            ].indexOf(shortName) > -1
+        ) {
             return false;
         }
 
         const srcComponentPath = path.join(cwd, 'src', shortName);
         const libComponentPath = path.join(cwd, 'lib', shortName);
-        const apiInfo = apiExtractor.extract(srcComponentPath, {}, parentPathMap);
+        const apiInfo = apiExtractor.extract(
+            srcComponentPath,
+            {},
+            parentPathMap
+        );
 
         const apiPath = path.join(libComponentPath, 'api-schema.json');
         const exportDTSPath = path.join(libComponentPath, 'index.d.ts');
@@ -41,7 +54,9 @@ module.exports = function (options) {
         if (apiInfo) {
             const apiString = JSON.stringify(apiInfo, null, 2);
 
-            entries.push(`export { default as ${apiInfo.name} } from './${shortName}';\n`);
+            entries.push(
+                `export { default as ${apiInfo.name} } from './${shortName}';\n`
+            );
 
             fs.writeFileSync(apiPath, apiString);
             tsgen(apiInfo).then(apiData => {
@@ -50,7 +65,6 @@ module.exports = function (options) {
         } else {
             logger.warn(`Can not generate ${apiPath}`);
         }
-
     });
 
     // hack Field

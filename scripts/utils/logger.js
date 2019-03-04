@@ -5,12 +5,15 @@ const level2Color = {
     debug: 'cyanBright',
     success: 'greenBright',
     warn: 'yellowBright',
-    error: 'redBright'
+    error: 'redBright',
 };
 
 module.exports = Object.keys(level2Color).reduce((ret, level) => {
     const color = level2Color[level];
-    // eslint-disable-next-line
-  ret[level] = color ? (...args) => console.log(chalk[color](...args)) : console.log;
+    /* eslint-disable */
+    ret[level] = color
+        ? (...args) => console.log(chalk[color](...args))
+        : console.log;
+    /* eslint-enable */
     return ret;
 }, {});

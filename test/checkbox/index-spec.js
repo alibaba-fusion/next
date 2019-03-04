@@ -58,7 +58,9 @@ describe('Checkbox', () => {
         it('should has className `cumstom-name`', () => {
             const wrapper = mount(<Checkbox className="cumstom-name" />);
             assert(wrapper.props().className === 'cumstom-name');
-            assert(wrapper.find('.next-checkbox-wrapper.cumstom-name').length === 1);
+            assert(
+                wrapper.find('.next-checkbox-wrapper.cumstom-name').length === 1
+            );
         });
     });
 
@@ -66,7 +68,9 @@ describe('Checkbox', () => {
         const wrapper = mount(<Checkbox />);
 
         it('should checked after click', () => {
-            wrapper.find('input').simulate('change', {target:{checked: true}});
+            wrapper
+                .find('input')
+                .simulate('change', { target: { checked: true } });
             assert(wrapper.find('input').prop('checked'));
         });
         it('should call `onChange`', () => {
@@ -105,6 +109,5 @@ describe('Checkbox', () => {
             });
             assert(wrapper.find('.indeterminate').length === 1);
         });
-
     });
 });
