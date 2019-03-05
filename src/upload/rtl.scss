@@ -1,0 +1,15 @@
+
+#{$upload-prefix}-list[dir=rtl] {
+    &#{$upload-prefix}-list-text {
+        #{$upload-prefix}-list-item {
+            // top-bottom s-1  left $upload-text-list-padding-left-right
+            padding: $s-1 $upload-text-list-padding-left-right;
+            // righrt: icon size + icon paddinng left-right
+            padding-left: $upload-text-list-close-icon-right * 2 + $upload-text-list-close-icon-size;
+        }
+        .#{$css-prefix}icon {
+            left: $upload-text-list-close-icon-right;
+            right: auto;
+        }
+    }
+}
