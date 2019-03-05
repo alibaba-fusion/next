@@ -433,7 +433,7 @@ class List extends Component {
         const { listType, children, prefix, rtl } = this.props;
         const prefixCls = `${prefix}upload`;
 
-        const list = this.props.value.map(file => {
+        let list = this.props.value.map(file => {
             if (listType === 'text') {
                 return this.getTextList(file);
             } else if (listType === 'image') {
@@ -443,6 +443,10 @@ class List extends Component {
             }
             return null;
         });
+
+        if (rtl && listType === 'card' && Array.isArray(list)) {
+            list = list.reverse();
+        }
         const listclassNames = classNames({
             [`${prefixCls}-list`]: true,
             [`${prefixCls}-list-${this.props.listType}`]: true,
@@ -455,8 +459,8 @@ class List extends Component {
                 className={listclassNames}
                 dir={rtl ? 'rtl' : undefined}
             >
-                {list}
-                {children}
+                {rtl ? children : list}
+                {rtl ? list : children}
             </div>
         );
     }
