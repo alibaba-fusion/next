@@ -347,31 +347,61 @@ export default function lock(BaseComponent) {
             }
         }
 
+        removeLockTable() {
+            const lockLeftLen = this.lockLeftChildren.length;
+            const lockRightLen = this.lockRightChildren.length;
+
+            if (lockLeftLen) {
+                this._notNeedAdjustLockLeft = true;
+            }
+            if (lockRightLen) {
+                this._notNeedAdjustLockRight = true;
+            }
+            if (lockRightLen || lockLeftLen) {
+                this.forceUpdate();
+                return true;
+            }
+        }
+
         adjustIfTableNotNeedLock() {
-            if (this.isOriginLock() && this.tableInc.props.dataSource.length) {
-                const configWidths = this.tableInc.flatChildren
+            if (this.isOriginLock()) {
+                const widthObj = this.tableInc.flatChildren
                     .map((item, index) => {
-                        const row = this.getCellNode(0, index);
-                        return (row && row.clientWidth) || 0;
+                        const cell = this.getCellNode(0, index) || {};
+                        const headerCell =
+                            this.getHeaderCellNode(0, index) || {};
+
+                        return {
+                            cellWidths: cell.clientWidth || 0,
+                            headerWidths: headerCell.clientWidth || 0,
+                        };
                     })
-                    .reduce((a, b) => a + b, 0);
+                    .reduce(
+                        (a, b) => {
+                            return {
+                                cellWidths: a.cellWidths + b.cellWidths,
+                                headerWidths: a.headerWidths + b.headerWidths,
+                            };
+                        },
+                        {
+                            cellWidths: 0,
+                            headerWidths: 0,
+                        }
+                    );
 
                 const node = findDOMNode(this);
                 const width = node.clientWidth;
-                const lockLeftLen = this.lockLeftChildren.length;
-                const lockRightLen = this.lockRightChildren.length;
+
+                // if the table doesn't exist, there is no need to adjust
+                if (width === 0) {
+                    return true;
+                }
+
+                const configWidths =
+                    widthObj.cellWidths || widthObj.headerWidths;
 
                 if (configWidths <= width && configWidths > 0) {
-                    if (lockLeftLen) {
-                        this._notNeedAdjustLockLeft = true;
-                    }
-                    if (lockRightLen) {
-                        this._notNeedAdjustLockRight = true;
-                    }
-                    if (lockRightLen || lockLeftLen) {
-                        this.forceUpdate();
-                        return true;
-                    }
+                    this.removeLockTable();
                 } else if (
                     this._notNeedAdjustLockLeft ||
                     this._notNeedAdjustLockRight

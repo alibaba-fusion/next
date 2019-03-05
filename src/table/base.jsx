@@ -130,7 +130,8 @@ export default class Table extends React.Component {
         loading: PropTypes.bool,
         /**
          * 自定义 Loading 组件
-         * @type {Function}
+         * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
+         * @param {Object} props 当前点击行的key
          */
         loadingComponent: PropTypes.func,
         /**
