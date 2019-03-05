@@ -12,4 +12,27 @@
             right: auto;
         }
     }
+    &#{$upload-prefix}-list-image {
+        .#{$css-prefix}icon-close {
+            float: left;
+            margin-left: $upload-image-list-close-icon-right;
+            margin-right: 0;
+        }
+
+        $thumbnail-margin-right: $s-2 !default;
+        @if ($upload-image-list-item-padding > $s-2) {
+            $thumbnail-margin-right: $upload-image-list-item-padding;
+        }
+
+        #{$upload-prefix}-list-item-thumbnail {
+            float: right;
+            margin-left: $thumbnail-margin-right;
+            margin-right: 0;
+        }
+
+        #{$upload-prefix}-list-item-progress {
+            margin-right: $upload-image-list-item-picture-size + $thumbnail-margin-right;
+            margin-left: $upload-image-list-close-icon-size + $upload-image-list-close-icon-right * 2;
+        }
+    }
 }

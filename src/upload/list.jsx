@@ -229,7 +229,7 @@ class List extends Component {
     }
 
     getImageList(file) {
-        const { extraRender, progressProps } = this.props;
+        const { extraRender, progressProps, rtl } = this.props;
 
         const {
             prefixCls,
@@ -292,7 +292,10 @@ class List extends Component {
                 >
                     <span>{file.name}</span>
                     {!!size && (
-                        <span className={`${prefixCls}-list-item-size`}>
+                        <span
+                            className={`${prefixCls}-list-item-size`}
+                            dir={rtl ? 'rtl' : undefined}
+                        >
                             ({size})
                         </span>
                     )}
