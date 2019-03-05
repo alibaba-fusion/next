@@ -5,6 +5,28 @@ import { mount } from 'enzyme';
 export const A11Y_ROOT_ID = 'A11Y-ROOT-ID';
 
 /**
+ * Format the results of axe-core violations for easier debugging
+ * @param {Array} violations - violations from results.violations returned from running axe-core
+ * @param {Boolean} verbose - should only the most important data be printed?
+ */
+function formatViolations(violations, verbose = false) {
+    if (!verbose) {
+        violations = violations.map(v => {
+            return {
+                id: v.id,
+                description: v.description,
+                helpUrl: v.helpUrl,
+                nodes: v.nodes.map(node => ({
+                    html: node.html,
+                    failureSummary: node.failureSummary,
+                })),
+            };
+        });
+    }
+    return JSON.stringify(violations, null, 2);
+}
+
+/**
  * Run Axe-core tests on a dom node
  *
  * @param {String || DOM Node} selector - css selector for element to test
@@ -29,9 +51,15 @@ export const test = function(selector, options = {}) {
             assert(!error);
         })
         .then(results => {
+            if (options.debug) {
+                // eslint-disable-next-line no-console
+                console.error(formatViolations(results.violations, true));
+                return;
+            }
+
             if (results.violations.length) {
                 // eslint-disable-next-line no-console
-                console.error(JSON.stringify(results.violations));
+                console.error(formatViolations(results.violations));
             }
 
             assert(results.violations.length === 0);
@@ -39,7 +67,7 @@ export const test = function(selector, options = {}) {
             if (options.incomplete) {
                 if (results.incomplete.length) {
                     // eslint-disable-next-line no-console
-                    console.error(results.incomplete);
+                    console.error(formatViolations(results.incomplete));
                 }
                 assert(results.incomplete.length === 0);
             }
