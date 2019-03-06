@@ -48,8 +48,9 @@ class App extends React.Component {
                     action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
                     autoUpload={false}
                     ref={this.saveUploaderRef}
-                    listType="text"
+                    listType="card"
                     beforeUpload={this.beforeUpload}
+                    useDataURL
                 >
                     <Button>Upload</Button>
                 </Upload>

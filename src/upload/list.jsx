@@ -50,6 +50,9 @@ class List extends Component {
         progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
+        /**
+         * 可选参数，是否本地预览
+         */
         useDataURL: PropTypes.bool,
     };
 
