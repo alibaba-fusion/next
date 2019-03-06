@@ -433,9 +433,12 @@ export default class Rating extends Component {
                     >
                         <form action="#">
                             {enableA11y ? (
-                                <div role="group" aria-labelledby={id}>
-                                    {' '}
-                                    overlay{' '}
+                                <div
+                                    role="group"
+                                    aria-labelledby={id}
+                                    aria-label="Rating Options"
+                                >
+                                    {overlay}
                                 </div>
                             ) : (
                                 overlay
