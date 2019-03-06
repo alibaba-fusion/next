@@ -23,6 +23,7 @@ class PanelFooter extends React.PureComponent {
             locale,
             panel,
             value,
+            disabledOk,
             onPanelChange,
             onOk,
         } = this.props;
@@ -44,7 +45,11 @@ class PanelFooter extends React.PureComponent {
                         {panelBtnLabel}
                     </Button>
                 ) : null}
-                <Button {...sharedBtnProps} onClick={onOk}>
+                <Button
+                    {...sharedBtnProps}
+                    disabled={disabledOk || !value}
+                    onClick={onOk}
+                >
                     {locale.ok}
                 </Button>
             </div>

@@ -804,6 +804,11 @@ export default class RangePicker extends Component {
             <PanelFooter
                 prefix={prefix}
                 value={state.startValue && state.endValue}
+                disabledOk={
+                    !state.startValue ||
+                    !state.endValue ||
+                    state.startValue.valueOf() > state.endValue.valueOf()
+                }
                 locale={locale}
                 panel={state.panel}
                 onPanelChange={showTime ? this.changePanel : null}
