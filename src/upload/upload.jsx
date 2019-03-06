@@ -73,6 +73,9 @@ class Upload extends Base {
          */
         dragable: PropTypes.bool,
         closable: PropTypes.bool,
+        /**
+         * 可选参数，是否本地预览
+         */
         useDataURL: PropTypes.bool,
         /**
          * 可选参数，是否禁用上传功能
