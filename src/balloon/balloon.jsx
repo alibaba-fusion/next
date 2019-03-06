@@ -194,8 +194,6 @@ export default class Balloon extends React.Component {
         this._onClose = this._onClose.bind(this);
         this._onPosition = this._onPosition.bind(this);
         this._onVisibleChange = this._onVisibleChange.bind(this);
-
-        this._contentId = props.id;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -263,6 +261,7 @@ export default class Balloon extends React.Component {
 
     render() {
         const {
+            id,
             type,
             prefix,
             className,
@@ -316,7 +315,7 @@ export default class Balloon extends React.Component {
         const content = (
             <BalloonInner
                 {...obj.pickOthers(Object.keys(Balloon.propTypes), others)}
-                id={this._contentId}
+                id={id}
                 prefix={_prefix}
                 closable={closable}
                 onClose={this._onClose}
@@ -332,7 +331,7 @@ export default class Balloon extends React.Component {
         );
 
         const triggerProps = {};
-        triggerProps['aria-describedby'] = this._contentId;
+        triggerProps['aria-describedby'] = id;
         triggerProps.tabIndex = '0';
 
         const newTrigger = React.cloneElement(trigger, triggerProps);
@@ -340,7 +339,7 @@ export default class Balloon extends React.Component {
         return (
             <Popup
                 {...popupProps}
-                trigger={this._contentId ? newTrigger : trigger}
+                trigger={id ? newTrigger : trigger}
                 cache={cache}
                 safeId={safeId}
                 triggerType={triggerType}
