@@ -71,6 +71,11 @@ class Panel extends React.Component {
             [className]: className,
         });
 
+        const iconCls = classNames({
+            [`${prefix}collapse-panel-icon`]: true,
+            [`${prefix}collapse-panel-icon-expanded`]: isExpanded,
+        });
+
         // 为了无障碍 需要添加两个id
         const headingId = id ? `${id}-heading` : undefined;
         const regionId = id ? `${id}-region` : undefined;
@@ -89,7 +94,7 @@ class Panel extends React.Component {
                 >
                     <Icon
                         type="arrow-up"
-                        className={`${prefix}collapse-panel-icon`}
+                        className={iconCls}
                         aria-hidden="true"
                     />
                     {title}
