@@ -431,7 +431,16 @@ export default class Rating extends Component {
                         className={`${prefix}rating-overlay`}
                         style={overlayStyle}
                     >
-                        <form action="#">{overlay}</form>
+                        <form action="#">
+                            {enableA11y ? (
+                                <div role="group" aria-labelledby={id}>
+                                    {' '}
+                                    overlay{' '}
+                                </div>
+                            ) : (
+                                overlay
+                            )}
+                        </form>
                     </div>
                 </div>
                 {showGrade ? (
