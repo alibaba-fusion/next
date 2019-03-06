@@ -447,4 +447,44 @@ describe('Issue', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('sort should have only one empty when datasorce=[] && enough width', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table
+                        style={{ width: '600px' }}
+                        dataSource={[]}
+                        scrollToRow={20}
+                    >
+                        <Table.Column
+                            title="Id1"
+                            lock
+                            dataIndex="id"
+                            width={100}
+                        />
+                        <Table.Column
+                            title="Index"
+                            dataIndex="index"
+                            width={200}
+                        />
+                        <Table.Column
+                            title="Time"
+                            dataIndex="time"
+                            lock="right"
+                            width={200}
+                        />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        assert(document.querySelectorAll('div.next-table-empty').length === 1);
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
 });
