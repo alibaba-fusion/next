@@ -24,7 +24,7 @@ Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` A
 ````jsx
 import { Upload, Button } from '@alifd/next';
 
-ReactDOM.render((
+ReactDOM.render(
     <Upload
         listType="image"
         action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
@@ -65,8 +65,7 @@ ReactDOM.render((
         }]}
     >
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
-    </Upload>
-), mountNode);
+    </Upload>, mountNode);
 
 function beforeUpload(info) {
     console.log('beforeUpload callback : ', info);

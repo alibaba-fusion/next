@@ -155,6 +155,7 @@ class Upload extends Base {
          * 透传给Progress props
          */
         progressProps: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -458,6 +459,7 @@ class Upload extends Base {
             list,
             extraRender,
             progressProps,
+            rtl,
             ...others
         } = this.props;
 
@@ -526,6 +528,7 @@ class Upload extends Base {
                         onCancel={onCancel}
                         onPreview={onPreview}
                         extraRender={extraRender}
+                        rtl={rtl}
                     />
                 ) : null}
             </div>
