@@ -273,7 +273,15 @@ describe('Step', () => {
             );
 
             assert(wrapper.find('.next-step-label-vertical').length === 1);
-            wrapper.setProps({ labelPlacement: 'horizontal' });
+            wrapper.setProps({ labelPlacement: 'horizontal' }, () => {
+                // 横向模式下会调整 next-step-item-tail 的宽度值
+                const $tail = wrapper.find('.next-step-item-tail');
+                assert(
+                    $tail.length === 3 && 
+                    $tail.at(0).instance().style.width !== "" &&
+                    $tail.at(2).instance().style.width === ""
+                );
+            });
             assert(wrapper.find('.next-step-label-horizontal').length === 1);
         });
 
