@@ -117,13 +117,14 @@ class StepItem extends Component {
                 width: '',
                 [pos]: '',
             });
-        } else if (
-            shape === 'circle' &&
-            (labelPlacement === 'horizontal' || labelPlacement === 'hoz') &&
-            index !== total - 1
-        ) {
-            // 调整横向Content
-            this.adjustTail();
+            if (
+                shape === 'circle' &&
+                (labelPlacement === 'horizontal' || labelPlacement === 'hoz') &&
+                index !== total - 1
+            ) {
+                // 调整横向Content
+                this.adjustTail();
+            }
         } else if (index !== total - 1) {
             dom.setStyle(this.tail, {
                 width: '',
