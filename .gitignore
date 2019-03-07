@@ -60,6 +60,9 @@ typings/
 # next.js build output
 .next
 
+# special demo file for locally reappear issue
+docs/**/demo/issues.md
+
 precss.css
 .sass-cache/
 scripts/server-remote

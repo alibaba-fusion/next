@@ -36,47 +36,65 @@ describe('Radio A11y', () => {
         unmount();
     });
 
-    it.skip('should not have any violations for different states', async () => {
+    it('should not have any violations for different states', async () => {
         wrapper = await testReact(
             <div>
-                <Radio defaultChecked>test 1</Radio>&nbsp;
-                <Radio checked>test 1</Radio>&nbsp;
-                <Radio disabled>test 1</Radio>&nbsp;
-                <Radio checked disabled>
+                <Radio defaultChecked label="test1">
                     test 1
                 </Radio>
                 &nbsp;
-                <Radio />
-            </div>
-        );
-        return wrapper;
-    });
-
-    it.skip('should not have any violations for various label methods', async () => {
-        wrapper = await testReact(
-            <div>
-                <Radio id="apple">Apple</Radio>&nbsp;
-                <Radio id="banana" />
-                <label htmlFor="banana" className="next-radio-label">
-                    Banana
-                </label>
+                <Radio checked label="test2">
+                    test 1
+                </Radio>
                 &nbsp;
-                <Radio id="apple2" label="Apple" className="testClassname" />
+                <Radio disabled label="test3">
+                    test 1
+                </Radio>
+                &nbsp;
+                <Radio checked disabled label="test4">
+                    test 1
+                </Radio>
+                &nbsp;
             </div>
         );
         return wrapper;
     });
 
-    it.skip('should not have any violations for group', async () => {
+    it('should not have any violations for Radio Group with children', async () => {
         wrapper = await testReact(
-            <div>
-                <Radio.Group
-                    dataSource={list}
-                    shape="button"
-                    size="small"
-                    value="apple"
-                />
-            </div>
+            <Radio.Group value="watermelon">
+                <Radio id="apple" value="apple" disabled>
+                    苹果
+                </Radio>
+                <Radio id="pear" value="pear">
+                    梨子
+                </Radio>
+                <Radio id="watermelon" value="watermelon">
+                    西瓜
+                </Radio>
+            </Radio.Group>
+        );
+        return wrapper;
+    });
+
+    it('should not have any violations for Radio Group with datasource', async () => {
+        const list = [
+            {
+                value: 'apple',
+                label: '苹果',
+                disabled: true,
+            },
+            {
+                value: 'pear',
+                label: '梨',
+            },
+            {
+                value: 'orange',
+                label: '橙子',
+            },
+        ];
+        wrapper = await testReact(
+            <Radio.Group value={'apple'} dataSource={list} />
         );
         return wrapper;
     });

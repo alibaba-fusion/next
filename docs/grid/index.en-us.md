@@ -14,6 +14,17 @@
 
 This grid system provides response rules for almost all mainstream resolution scenes such as 320, 480, 720, 990, 1200, and 1500. The responsive grids are implemented using a 24-column and a 5-point to meet 2, 3, 4, 5, and 6 ratio layouts. The fixed grid uses a 20px width as the unit, it is recommended to use 9, 10, 12, 14, 16, 18, 24, but all from 1 to 30 are also available. You can also customize the fixed grid columns according to your requirements. The breakpoint are: xss(320px), xs(480px), s(720px), m(990px), l(1200px), xl(1500px). Based on the Flex implementation, IE9 is compatible with `display:table;`, but IE9 only supports basic responsive layouts (see API and DEMO for details).
 
+### Accessibility
+
+Though we have build-in support of a11y by adding `<Row>` and `<Col>` with `role="row"` and `role="gridcell"` respectively, in order to achieve more a11y compliance, developers are also expected to add `role="grid"` in the outer wrapper element, as this:
+
+````
+<div role="grid">
+    <Row><Col span={6}>1</Col><Col span={6}>2</Col><Col span={6}>3</Col><Col span={6}>4</Col></Row>
+    <Row><Col span={6} offset={6}>1</Col><Col span={6} offset={6}>2</Col></Row>
+</div>
+````
+
 ## API
 
 ### Grid.Row
