@@ -37,6 +37,20 @@ export default ConfigProvider.config(Balloon, {
             props = { onVisibleChange: newOnVisibleChange, ...others };
         }
 
+        if ('triggerType' in props) {
+            const triggerType = Array.isArray(props.triggerType)
+                ? [...props.triggerType]
+                : [props.triggerType];
+
+            if (triggerType.indexOf('focus') > -1) {
+                deprecated(
+                    'triggerType[focus]',
+                    'triggerType[hover, click]',
+                    'Balloon'
+                );
+            }
+        }
+
         return props;
     },
 });

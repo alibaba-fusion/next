@@ -49,7 +49,7 @@ export default class Tooltip extends React.Component {
         trigger: PropTypes.any,
         /**
          * 触发行为
-         * 鼠标悬浮, 获取到焦点, 鼠标点击('hover'，'focus'，'click')或者它们组成的数组，如 ['hover', 'focus']
+         * 鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件
          */
         triggerType: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -133,12 +133,18 @@ export default class Tooltip extends React.Component {
         triggerProps.tabIndex = '0';
 
         const newTrigger = React.cloneElement(trigger, triggerProps);
+        let newTriggerType = triggerType;
+
+        if (triggerType === 'hover' && id) {
+            newTriggerType = ['focus', 'hover'];
+        }
 
         return (
             <Popup
+                role="tooltip"
                 container={popupContainer}
                 trigger={id ? newTrigger : trigger}
-                triggerType={triggerType}
+                triggerType={newTriggerType}
                 align={alignMap[align].align}
                 offset={_offset}
                 delay={0}

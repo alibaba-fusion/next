@@ -85,7 +85,7 @@ export default class Balloon extends React.Component {
         trigger: PropTypes.any,
         /**
          * 触发行为
-         * 鼠标悬浮, 获取到焦点, 鼠标点击('hover'，'focus'，'click')或者它们组成的数组，如 ['hover', 'focus']
+         * 鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click
          */
         triggerType: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
@@ -174,7 +174,7 @@ export default class Balloon extends React.Component {
         triggerType: 'hover',
         safeNode: undefined,
         safeId: null,
-        autoFocus: false,
+        autoFocus: true,
         animation: {
             in: 'zoomIn',
             out: 'zoomOut',
