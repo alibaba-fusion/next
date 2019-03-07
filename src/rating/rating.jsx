@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
 import { func, KEYCODE, obj } from '../util';
+import zhCN from '../locale/zh-cn';
 
 const { noop, bindCtx } = func;
 const { ENTER, LEFT, UP, RIGHT, DOWN } = KEYCODE;
@@ -68,6 +69,10 @@ export default class Rating extends Component {
         className: PropTypes.string,
         id: PropTypes.string,
         rtl: PropTypes.bool,
+        /**
+         * 自定义国际化文案对象
+         */
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -82,6 +87,7 @@ export default class Rating extends Component {
         iconType: 'favorites-filling',
         onChange: noop,
         onHoverChange: noop,
+        locale: zhCN.Rating,
     };
 
     static currentValue(min, max, hoverValue, stateValue) {
@@ -306,6 +312,7 @@ export default class Rating extends Component {
             disabled,
             readAs,
             rtl,
+            locale,
         } = this.props;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const { hoverValue, clicked } = this.state;
@@ -419,6 +426,8 @@ export default class Rating extends Component {
                 className={ratingCls}
                 onKeyDown={this.onKeyDown}
                 tabIndex="0"
+                role="group"
+                aria-label={locale.description}
             >
                 <div className={baseCls} {...finalProps}>
                     <div
@@ -431,19 +440,7 @@ export default class Rating extends Component {
                         className={`${prefix}rating-overlay`}
                         style={overlayStyle}
                     >
-                        <form action="#">
-                            {enableA11y ? (
-                                <div
-                                    role="group"
-                                    aria-labelledby={id}
-                                    aria-label="Rating Options"
-                                >
-                                    {overlay}
-                                </div>
-                            ) : (
-                                overlay
-                            )}
-                        </form>
+                        <form action="#">{overlay}</form>
                     </div>
                 </div>
                 {showGrade ? (
