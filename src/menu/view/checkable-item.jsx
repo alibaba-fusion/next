@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from '../../checkbox';
 import Radio from '../../radio';
-import { func, obj, KEYCODE } from '../../util';
+import { func, obj, KEYCODE, htmlId } from '../../util';
 import Item from './item';
 
 const noop = {};
@@ -24,6 +24,7 @@ export default class CheckableItem extends Component {
         children: PropTypes.node,
         onKeyDown: PropTypes.func,
         onClick: PropTypes.func,
+        id: PropTypes.string,
     };
 
     static defaultProps = {
@@ -39,6 +40,9 @@ export default class CheckableItem extends Component {
         super(props);
 
         bindCtx(this, ['stopPropagation', 'handleKeyDown', 'handleClick']);
+        this.id = htmlId.escapeForId(
+            `checkable-item-${props.id || props._key}`
+        );
     }
 
     stopPropagation(e) {
@@ -92,7 +96,7 @@ export default class CheckableItem extends Component {
             checkProps.onClick = this.stopPropagation;
         }
 
-        return <Check {...checkProps} />;
+        return <Check aria-labelledby={this.id} {...checkProps} />;
     }
 
     render() {
@@ -127,7 +131,9 @@ export default class CheckableItem extends Component {
         return (
             <Item aria-checked={checked} {...newProps}>
                 {this.renderCheck()}
-                <span className={`${prefix}menu-item-text`}>{children}</span>
+                <span className={`${prefix}menu-item-text`} id={this.id}>
+                    {children}
+                </span>
                 {helper ? (
                     <div className={`${prefix}menu-item-helper`}>{helper}</div>
                 ) : null}

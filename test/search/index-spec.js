@@ -1,12 +1,15 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
-import Search from '../../src/search/Search';
+import Search from '../../src/search/index';
+import zhCN from '../../src/locale/zh-cn';
+import enUS from '../../src/locale/en-us';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Search', () => {
     describe('render', () => {
         it('should accept type ', () => {
@@ -27,7 +30,6 @@ describe('Search', () => {
             assert(wrapper.find('input').props().value === '');
         });
         it('should accept simple icon ', () => {
-            const VALUE = undefined;
             const wrapper = mount(<Search shape="simple" />);
 
             assert(wrapper.find('button').length === 0);
@@ -44,6 +46,21 @@ describe('Search', () => {
 
             assert(wrapper.find('.next-search-btn-text').length === 1);
             assert(wrapper.find('.next-search-btn-text').text() === text);
+        });
+        it('should set default aria-label to locale.buttonText', () => {
+            const wrapper = shallow(<Search />);
+            assert(wrapper.dive().find(`[aria-label="${zhCN.Search.buttonText}"]`).length === 1);
+        });
+
+        it('should set aria-label to locale.buttonText', () => {
+            const wrapper = shallow(<Search locale={enUS.Search}/>);
+            assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 1);
+        });
+
+        it('should override aria-label with prop', () => {
+            const wrapper = shallow(<Search locale={enUS.Search} aria-label="a11y search"/>);
+            assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 0);
+            assert(wrapper.dive().find(`[aria-label="a11y search"]`).length === 1);
         });
     });
 

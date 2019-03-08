@@ -168,7 +168,7 @@ export default class Step extends Component {
         const { parentWidth, parentHeight } = this.state;
 
         // type不同对应的direction不同
-        direction = shape === 'arrow' ? 'horizontal' : direction;
+        direction = shape === 'arrow' ? 'hoz' : direction;
 
         // children去除null
         children = this._getValidChildren(children);

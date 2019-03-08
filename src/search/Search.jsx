@@ -295,6 +295,7 @@ class Search extends React.Component {
             othersAttributes.visible = Boolean(visible);
         }
         const dataAttr = obj.pickAttrsWith(others, 'data-');
+
         const left = (
             <Group
                 addonBefore={filterSelect}
@@ -302,6 +303,7 @@ class Search extends React.Component {
                 addonBeforeClassName={`${prefix}search-left-addon`}
             >
                 <AutoComplete
+                    aria-label={locale.buttonText}
                     {...othersAttributes}
                     role="searchbox"
                     hasClear={hasClear}

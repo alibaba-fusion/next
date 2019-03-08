@@ -5,11 +5,11 @@ import Menu from '../../src/menu/index';
 import '../../src/menu/style';
 import { unmount, test, testReact, mountReact } from '../util/a11y/validate';
 
-const { SubMenu, Item, Group, Divider } = Menu;
+const { SubMenu, Item, Group, Divider, CheckboxItem, RadioItem } = Menu;
 Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
-describe.skip('Menu A11y', () => {
+describe('Menu A11y', () => {
     let wrapper;
 
     afterEach(() => {
@@ -20,7 +20,6 @@ describe.skip('Menu A11y', () => {
         unmount();
     });
 
-    // Fix `aria-allowed-attr` due to `aria-multiselectable=\"false\"`, `aria-selected=\"false\"`
     it('should not have any violations for Item', async () => {
         wrapper = await mountReact(
             <Menu>
@@ -30,6 +29,35 @@ describe.skip('Menu A11y', () => {
             </Menu>
         );
         return test('#item');
+    });
+
+    it('should not have any violations for `selectMode: single`', async () => {
+        wrapper = await testReact(
+            <Menu selectMode="single">
+                <Item id="item1" key="1">
+                    Option 1
+                </Item>
+                <Item id="item2" key="2">
+                    Option 2
+                </Item>
+            </Menu>
+        );
+        return wrapper;
+    });
+
+    it('should not have any violations for `selectMode: multiple`', async () => {
+        wrapper = await testReact(
+            <Menu selectMode="multiple">
+                <Item id="item1" key="1">
+                    Option 1
+                </Item>
+                <Item id="item2" key="2">
+                    Option 2
+                </Item>
+            </Menu>
+        );
+
+        return wrapper;
     });
 
     // Fix issue with Item
@@ -59,8 +87,6 @@ describe.skip('Menu A11y', () => {
         return wrapper;
     });
 
-    // This throws a false error for `li` nested inside role="menu". This is a bug in axe-core. Issue was created (https://github.com/dequelabs/axe-core/issues/1365)
-    //       Follow up to resolve this bug.
     it('should not have any violations for SubMenu', async () => {
         wrapper = await testReact(
             <Menu className="my-menu" defaultOpenKeys="sub-menu">
@@ -68,6 +94,61 @@ describe.skip('Menu A11y', () => {
                     <Item key="sub-1">Sub option 1</Item>
                     <Item key="sub-2">Sub option 2</Item>
                 </SubMenu>
+            </Menu>
+        );
+        return wrapper;
+    });
+
+    it('should not have any violations for popup', async () => {
+        wrapper = await testReact(
+            <Menu className="my-menu" mode="popup">
+                <Item key="1">Option 1</Item>
+                <Item key="2">Option 2</Item>
+                <Item key="3">Option 3</Item>
+                <Divider key="divider" />
+                <SubMenu key="sub-1" label="Popup menu 1">
+                    <Item key="popup-1-1">Popup option 1</Item>
+                    <Item key="popup-1-2">Popup option 2</Item>
+                </SubMenu>
+                <SubMenu key="sub-2" label="Popup menu 2">
+                    <Item key="popup-2-1">Popup option 1</Item>
+                    <Item key="popup-2-2">Popup option 2</Item>
+                </SubMenu>
+            </Menu>
+        );
+        return wrapper;
+    });
+
+    it('should not have any violations for Checkbox Item', async () => {
+        wrapper = await testReact(
+            <Menu className="my-menu" mode="popup">
+                <CheckboxItem
+                    checked
+                    className="custom"
+                    style={{ color: 'red' }}
+                    helper="helper"
+                >
+                    checkbox
+                </CheckboxItem>
+            </Menu>
+        );
+        return wrapper;
+    });
+
+    it('should not have any violations for Radio Item', async () => {
+        wrapper = await testReact(
+            <Menu className="my-menu" mode="popup">
+                <RadioItem
+                    key="1"
+                    checked
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
+                    1
+                </RadioItem>
+                <RadioItem key="2">
+                    2
+                </RadioItem>
             </Menu>
         );
         return wrapper;

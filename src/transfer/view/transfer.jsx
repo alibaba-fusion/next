@@ -136,6 +136,10 @@ class Transfer extends Component {
          * 自定义国际化文案对象
          */
         locale: PropTypes.object,
+        /**
+         * unique id to make component accessible
+         */
+        id: PropTypes.string,
     };
 
     static defaultProps = {
@@ -530,6 +534,7 @@ class Transfer extends Component {
             itemRender,
             sortable,
             rtl,
+            id,
         } = this.props;
         const { value, leftCheckedValue, rightCheckedValue } = this.state;
         const itemValues = dataSource.map(item => item.value);
@@ -560,6 +565,7 @@ class Transfer extends Component {
             onChange: this.handlePanelChange,
             sortable,
             onSort: this.handlePanelSort,
+            baseId: id,
         };
         const others = pickOthers(Object.keys(Transfer.propTypes), this.props);
 
@@ -567,7 +573,11 @@ class Transfer extends Component {
             others.dir = 'rtl';
         }
         return (
-            <div className={cx(`${prefix}transfer`, className)} {...others}>
+            <div
+                className={cx(`${prefix}transfer`, className)}
+                id={id}
+                {...others}
+            >
                 <TransferPanel
                     {...panelProps}
                     position="left"
