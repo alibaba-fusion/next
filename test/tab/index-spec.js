@@ -342,7 +342,11 @@ describe('Tab', () => {
 
         it('should resize', () => {
             const render = sinon.spy();
-            const ele = (<Tab defaultActiveKey={1} tabRender={render}><Tab.Item key={1} title="Item1"></Tab.Item></Tab>);
+            const ele = (
+                <Tab defaultActiveKey={1} tabRender={render}>
+                    <Tab.Item key={1} title="Item1" />
+                </Tab>
+            );
             wrapper = mount(ele);
             window.dispatchEvent(new Event('resize'));
             assert(render.calledOnce);
@@ -418,9 +422,14 @@ describe('Tab', () => {
         });
 
         it('should not render dropdown if not excessed', () => {
-            wrapper = mount(<div style={boxStyle}><Tab excessMode="dropdown" shape="wrapped">
-                <Tab.Item title="item" key={1}></Tab.Item>
-            </Tab></div>, { attachTo: target });
+            wrapper = mount(
+                <div style={boxStyle}>
+                    <Tab excessMode="dropdown" shape="wrapped">
+                        <Tab.Item title="item" key={1} />
+                    </Tab>
+                </div>,
+                { attachTo: target }
+            );
             assert(wrapper.find('.next-tabs-btn-down').length === 0);
         });
 
