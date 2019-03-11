@@ -34,7 +34,7 @@ class Demo extends React.Component {
     onsearch() {
         console.log(this.state.name);
     }
-    ender() {
+    render() {
         return (<div>
             <Search key="3" onChange={this.onchange} placeholder="请输入搜索文字" onSearch={this.onsearch} searchText={<span>search</span>} style={{width: '400px'}}/>
         </div>);
