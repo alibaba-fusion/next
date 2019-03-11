@@ -110,8 +110,10 @@ export const mountReact = async function(node, id = A11Y_ROOT_ID) {
  */
 // TODO: resolve issue where failing tests do not pass wrapper and so cannot be cleaned up correctly
 export const testReact = async function(node, options = {}) {
-    const wrapper = mountReact(node, A11Y_ROOT_ID);
-    await test(`#${A11Y_ROOT_ID}`, options);
+    const wrapper = await mountReact(node, A11Y_ROOT_ID);
+    setTimeout(async () => {
+        await test(`#${A11Y_ROOT_ID}`, options);
+    }, 100);
     return wrapper;
 };
 
