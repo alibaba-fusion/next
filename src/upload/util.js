@@ -1,4 +1,4 @@
-let now = +(new Date());
+let now = +new Date();
 
 /**
  * 生成唯一的id
@@ -22,7 +22,7 @@ export function fileToObject(file) {
         uid: file.uid,
         error: file.error,
         percent: 0,
-        originFileObj: file
+        originFileObj: file,
     };
 }
 
@@ -40,7 +40,6 @@ export function removeFileItem(file, fileList) {
     return removed;
 }
 
-
 // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
 export function previewFile(file, callback) {
     const reader = new FileReader();
@@ -48,9 +47,8 @@ export function previewFile(file, callback) {
     reader.readAsDataURL(file);
 }
 
-
 export const errorCode = {
     EXCEED_LIMIT: 'EXCEED_LIMIT',
     BEFOREUPLOAD_REJECT: 'BEFOREUPLOAD_REJECT',
-    RESPONSE_FAIL: 'RESPONSE_FAIL'
+    RESPONSE_FAIL: 'RESPONSE_FAIL',
 };

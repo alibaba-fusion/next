@@ -31,7 +31,7 @@ export default class AnimateChild extends Component {
         onEntered: PropTypes.func,
         onExit: PropTypes.func,
         onExiting: PropTypes.func,
-        onExited: PropTypes.func
+        onExited: PropTypes.func,
     };
 
     static defaultProps = {
@@ -43,19 +43,23 @@ export default class AnimateChild extends Component {
         onEntered: noop,
         onExit: noop,
         onExiting: noop,
-        onExited: noop
+        onExited: noop,
     };
 
     constructor(props) {
         super(props);
         func.bindCtx(this, [
-            'handleEnter', 'handleEntering', 'handleEntered',
-            'handleExit', 'handleExiting', 'handleExited',
-            'addEndListener'
+            'handleEnter',
+            'handleEntering',
+            'handleEntered',
+            'handleExit',
+            'handleExiting',
+            'handleExited',
+            'addEndListener',
         ]);
         this.endListeners = {
             transitionend: [],
-            animationend: []
+            animationend: [],
         };
         this.timeoutMap = {};
     }
@@ -68,14 +72,13 @@ export default class AnimateChild extends Component {
         });
         this.endListeners = {
             transitionend: [],
-            animationend: []
+            animationend: [],
         };
     }
 
     generateEndListener(node, done, eventName, id) {
         const _this = this;
         return function endListener(e) {
-
             if (e && e.target === node) {
                 if (_this.timeoutMap[id]) {
                     clearTimeout(_this.timeoutMap[id]);
@@ -97,29 +100,47 @@ export default class AnimateChild extends Component {
 
             this.node = node;
             if (support.transition) {
-                const transitionEndListener = this.generateEndListener(node, done, 'transitionend', id);
+                const transitionEndListener = this.generateEndListener(
+                    node,
+                    done,
+                    'transitionend',
+                    id
+                );
                 on(node, 'transitionend', transitionEndListener);
                 this.endListeners.transitionend.push(transitionEndListener);
             }
             if (support.animation) {
-                const animationEndListener = this.generateEndListener(node, done, 'animationend', id);
+                const animationEndListener = this.generateEndListener(
+                    node,
+                    done,
+                    'animationend',
+                    id
+                );
                 on(node, 'animationend', animationEndListener);
                 this.endListeners.animationend.push(animationEndListener);
             }
 
             setTimeout(() => {
-                const transitionDelay = parseFloat(getStyleProperty(node, 'transition-delay')) || 0;
-                const transitionDuration = parseFloat(getStyleProperty(node, 'transition-duration')) || 0;
-                const animationDelay = parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
-                const animationDuration = parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
-                const time = Math.max(transitionDuration + transitionDelay, animationDuration + animationDelay);
+                const transitionDelay =
+                    parseFloat(getStyleProperty(node, 'transition-delay')) || 0;
+                const transitionDuration =
+                    parseFloat(getStyleProperty(node, 'transition-duration')) ||
+                    0;
+                const animationDelay =
+                    parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
+                const animationDuration =
+                    parseFloat(getStyleProperty(node, 'animation-duration')) ||
+                    0;
+                const time = Math.max(
+                    transitionDuration + transitionDelay,
+                    animationDuration + animationDelay
+                );
                 if (time) {
                     this.timeoutMap[id] = setTimeout(() => {
                         done();
                     }, time * 1000 + 200);
                 }
             }, 15);
-
         } else {
             done();
         }
@@ -156,7 +177,9 @@ export default class AnimateChild extends Component {
                 addClass(node, names[className]);
             }
 
-            const hook = isAppearing ? this.props.onAppearing : this.props.onEntering;
+            const hook = isAppearing
+                ? this.props.onAppearing
+                : this.props.onEntering;
             hook(node);
         }, 10);
     }
@@ -164,9 +187,9 @@ export default class AnimateChild extends Component {
     handleEntered(node, isAppearing) {
         const { names } = this.props;
         if (names) {
-            const classNames = isAppearing ?
-                [names.appear, names.appearActive] :
-                [names.enter, names.enterActive];
+            const classNames = isAppearing
+                ? [names.appear, names.appearActive]
+                : [names.enter, names.enterActive];
             classNames.forEach(className => {
                 removeClass(node, className);
             });
@@ -209,23 +232,32 @@ export default class AnimateChild extends Component {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { names,
-            onAppear, onAppeared, onAppearing,
-            onEnter, onEntering, onEntered,
-            onExit, onExiting, onExited,
+        const {
+            names,
+            onAppear,
+            onAppeared,
+            onAppearing,
+            onEnter,
+            onEntering,
+            onEntered,
+            onExit,
+            onExiting,
+            onExited,
             ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
 
         return (
-            <Transition {...others}
+            <Transition
+                {...others}
                 onEnter={this.handleEnter}
                 onEntering={this.handleEntering}
                 onEntered={this.handleEntered}
                 onExit={this.handleExit}
                 onExiting={this.handleExiting}
                 onExited={this.handleExited}
-                addEndListener={this.addEndListener} />
+                addEndListener={this.addEndListener}
+            />
         );
     }
 }

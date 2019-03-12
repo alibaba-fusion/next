@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import BalloonInner from './inner';
-import {normalMap as alignMap} from './alignMap';
+import { normalMap as alignMap } from './alignMap';
 
-const {Popup} = Overlay;
+const { Popup } = Overlay;
 
 /** Balloon.Tooltip */
 export default class Tooltip extends React.Component {
@@ -29,7 +29,20 @@ export default class Tooltip extends React.Component {
          * 弹出层位置
          * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合
          */
-        align: PropTypes.oneOf(['t', 'r', 'b', 'l', 'tl', 'tr', 'bl', 'br', 'lt', 'lb', 'rt', 'rb']),
+        align: PropTypes.oneOf([
+            't',
+            'r',
+            'b',
+            'l',
+            'tl',
+            'tr',
+            'bl',
+            'br',
+            'lt',
+            'lb',
+            'rt',
+            'rb',
+        ]),
         /**
          * 触发元素
          */
@@ -62,13 +75,13 @@ export default class Tooltip extends React.Component {
         /**
          * 弹层id, 传入值才会支持无障碍
          */
-        id: PropTypes.string
+        id: PropTypes.string,
     };
     static defaultProps = {
         triggerType: 'hover',
         prefix: 'next-',
         align: 'b',
-        trigger: <span></span>
+        trigger: <span />,
     };
 
     constructor(props, context) {
@@ -78,8 +91,21 @@ export default class Tooltip extends React.Component {
     }
 
     render() {
-        const { className, align, style, prefix, trigger, children, popupContainer,
-            popupProps, popupClassName, popupStyle, triggerType, rtl, ...others} = this.props;
+        const {
+            className,
+            align,
+            style,
+            prefix,
+            trigger,
+            children,
+            popupContainer,
+            popupProps,
+            popupClassName,
+            popupStyle,
+            triggerType,
+            rtl,
+            ...others
+        } = this.props;
 
         let trOrigin = 'trOrigin';
         if (rtl) {
@@ -89,21 +115,23 @@ export default class Tooltip extends React.Component {
 
         const transformOrigin = alignMap[align][trOrigin];
         const _offset = alignMap[align].offset;
-        const _style = {transformOrigin, ...style};
+        const _style = { transformOrigin, ...style };
 
-        const content = (<BalloonInner
-            {...others}
-            id={this._contentId}
-            prefix={prefix}
-            closable={false}
-            isTooltip
-            className={className}
-            style={_style}
-            align={align}
-            rtl={rtl}
-        >
-            {children}
-        </BalloonInner>);
+        const content = (
+            <BalloonInner
+                {...others}
+                id={this._contentId}
+                prefix={prefix}
+                closable={false}
+                isTooltip
+                className={className}
+                style={_style}
+                align={align}
+                rtl={rtl}
+            >
+                {children}
+            </BalloonInner>
+        );
 
         const triggerProps = {};
         triggerProps['aria-describedby'] = this._contentId;

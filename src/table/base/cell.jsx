@@ -16,7 +16,11 @@ export default class Cell extends React.Component {
         title: PropTypes.any,
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         context: PropTypes.any,
-        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
+        cell: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.node,
+            PropTypes.func,
+        ]),
         align: PropTypes.oneOf(['left', 'center', 'right']),
         component: PropTypes.oneOf(['td', 'th', 'div']),
         children: PropTypes.any,
@@ -28,15 +32,15 @@ export default class Cell extends React.Component {
         lock: PropTypes.any,
         type: PropTypes.oneOf(['header', 'body']),
         resizable: PropTypes.bool,
-        __normalized: PropTypes.bool
-    }
+        __normalized: PropTypes.bool,
+    };
 
     static defaultProps = {
         component: 'td',
         type: 'body',
-        cell: (value) => value,
-        prefix: 'next-'
-    }
+        cell: value => value,
+        prefix: 'next-',
+    };
 
     shouldComponentUpdate(nextProps) {
         if (nextProps.pure) {
@@ -48,10 +52,37 @@ export default class Cell extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const {prefix, className, cell, value, resizable, colIndex, rowIndex, record, context, align, style = {}, component: Tag,
-            children, title, width, innerStyle, primaryKey, __normalized, filterMode, filters, sortable, lock, pure, locale, expandedIndexSimulate, rtl, ...others} = this.props;
-        const tagStyle = {...style};
-        const cellProps = {value, index: rowIndex, record, context};
+        const {
+            prefix,
+            className,
+            cell,
+            value,
+            resizable,
+            colIndex,
+            rowIndex,
+            record,
+            context,
+            align,
+            style = {},
+            component: Tag,
+            children,
+            title,
+            width,
+            innerStyle,
+            primaryKey,
+            __normalized,
+            filterMode,
+            filters,
+            sortable,
+            lock,
+            pure,
+            locale,
+            expandedIndexSimulate,
+            rtl,
+            ...others
+        } = this.props;
+        const tagStyle = { ...style };
+        const cellProps = { value, index: rowIndex, record, context };
         let content = cell;
         if (React.isValidElement(content)) {
             content = React.cloneElement(content, cellProps);
@@ -61,19 +92,29 @@ export default class Cell extends React.Component {
         if (align) {
             tagStyle.textAlign = align;
             if (rtl) {
-                tagStyle.textAlign = align === 'left' ? 'right' : align === 'right' ? 'left' : align;
+                tagStyle.textAlign =
+                    align === 'left'
+                        ? 'right'
+                        : align === 'right'
+                        ? 'left'
+                        : align;
             }
         }
         const cls = classnames({
             [`${prefix}table-cell`]: true,
-            [className]: className
+            [className]: className,
         });
 
-        return (<Tag {...others} className={cls} style={tagStyle} role="gridcell">
-            <div className={`${prefix}table-cell-wrapper`} style={innerStyle}>
-                {content}
-                {children}
-            </div>
-        </Tag>);
+        return (
+            <Tag {...others} className={cls} style={tagStyle} role="gridcell">
+                <div
+                    className={`${prefix}table-cell-wrapper`}
+                    style={innerStyle}
+                >
+                    {content}
+                    {children}
+                </div>
+            </Tag>
+        );
     }
 }

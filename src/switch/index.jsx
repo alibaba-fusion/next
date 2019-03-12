@@ -7,8 +7,8 @@ import ConfigProvider from '../config-provider';
 /** Switch*/
 class Switch extends React.Component {
     static contextTypes = {
-        prefix: PropTypes.string
-    }
+        prefix: PropTypes.string,
+    };
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -61,14 +61,13 @@ class Switch extends React.Component {
          * 键盘按键事件
          * @param {Event} e DOM事件对象
          */
-        onKeyDown: PropTypes.func
+        onKeyDown: PropTypes.func,
     };
     static defaultProps = {
         prefix: 'next-',
         disabled: false,
         size: 'medium',
-        onChange: () => {
-        }
+        onChange: () => {},
     };
 
     constructor(props, context) {
@@ -78,7 +77,7 @@ class Switch extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.state = {
-            checked
+            checked,
         };
     }
 
@@ -89,7 +88,7 @@ class Switch extends React.Component {
                 checked = false;
             }
             this.setState({
-                checked: checked
+                checked: checked,
             });
         }
     }
@@ -99,7 +98,7 @@ class Switch extends React.Component {
 
         if (!('checked' in this.props)) {
             this.setState({
-                checked
+                checked,
             });
         }
         this.props.onChange(checked, ev);
@@ -115,9 +114,20 @@ class Switch extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const {prefix, className, disabled, size, checkedChildren, unCheckedChildren, rtl, ...others } = this.props,
+        const {
+                prefix,
+                className,
+                disabled,
+                size,
+                checkedChildren,
+                unCheckedChildren,
+                rtl,
+                ...others
+            } = this.props,
             status = this.state.checked ? 'on' : 'off';
-        const children = this.state.checked ? checkedChildren : unCheckedChildren;
+        const children = this.state.checked
+            ? checkedChildren
+            : unCheckedChildren;
 
         let _size = size;
         if (_size !== 'small' && _size !== 'medium') {
@@ -128,7 +138,7 @@ class Switch extends React.Component {
             [`${prefix}switch`]: true,
             [`${prefix}switch-${status}`]: true,
             [`${prefix}switch-${_size}`]: true,
-            [className]: className
+            [className]: className,
         });
         let attrs;
 
@@ -137,17 +147,27 @@ class Switch extends React.Component {
                 onClick: this.onChange,
                 tabIndex: 0,
                 onKeyDown: this.onKeyDown,
-                disabled: disabled
+                disabled: disabled,
             };
         } else {
             attrs = {
-                disabled: disabled
+                disabled: disabled,
             };
         }
 
         return (
-            <div role="switch" dir={rtl ? 'rtl' : undefined} tabIndex="0" {...others} className={classes} {...attrs} aria-checked={this.state.checked}>
-                <div className={`${this.props.prefix}switch-children`}>{children}</div>
+            <div
+                role="switch"
+                dir={rtl ? 'rtl' : undefined}
+                tabIndex="0"
+                {...others}
+                className={classes}
+                {...attrs}
+                aria-checked={this.state.checked}
+            >
+                <div className={`${this.props.prefix}switch-children`}>
+                    {children}
+                </div>
             </div>
         );
     }

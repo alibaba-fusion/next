@@ -25,8 +25,8 @@ const argv = parseArgs(process.argv.slice(2), {
         silent: false,
         'disable-animation': false,
         lang: 'zh',
-        dir: 'ltr'
-    }
+        dir: 'ltr',
+    },
 });
 
 const { host, silent, lang, dir } = argv;
@@ -55,7 +55,7 @@ function run(port) {
         disableAnimation,
         lang,
         dir,
-        devA11y
+        devA11y,
     });
     const compiler = webpack(config);
 
@@ -89,7 +89,7 @@ function run(port) {
             app.use(rebuildScss({ cwd }));
             app.use(changeLang());
             app.use(changeDir());
-        }
+        },
     });
 
     if (host === '127.0.0.1') {
@@ -102,9 +102,12 @@ function run(port) {
         setTimeout(() => {
             openBrowser(url);
 
-            const watcher = chokidar.watch(path.join(cwd, 'docs', componentName, 'demo', '*.md'), {
-                ignoreInitial: true
-            });
+            const watcher = chokidar.watch(
+                path.join(cwd, 'docs', componentName, 'demo', '*.md'),
+                {
+                    ignoreInitial: true,
+                }
+            );
             const handler = () => {
                 logger.warn('Demo md added or removed, try to restart server');
                 server.close();

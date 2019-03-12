@@ -65,14 +65,14 @@ class Tag extends Component {
         _shape: 'default',
         disabled: false,
         rtl: false,
-        locale: zhCN.Tag
+        locale: zhCN.Tag,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            visible: true
+            visible: true,
         };
 
         bindCtx(this, [
@@ -80,7 +80,7 @@ class Tag extends Component {
             'handleTailClick',
             'handleAnimationInit',
             'handleAnimationEnd',
-            'renderTailNode'
+            'renderTailNode',
         ]);
     }
 
@@ -99,7 +99,7 @@ class Tag extends Component {
         if (result !== false && !this.__destroyed) {
             this.setState(
                 {
-                    visible: false
+                    visible: false,
                 },
                 () => {
                     // 如果没有动画，则直接执行 afterClose
@@ -137,7 +137,6 @@ class Tag extends Component {
         } else {
             typeof onClick === 'function' && onClick(e);
         }
-
     };
 
     handleTailClick(e) {
@@ -197,7 +196,7 @@ class Tag extends Component {
             children,
             animation,
             disabled,
-            rtl
+            rtl,
         } = this.props;
         const { visible } = this.state;
         const others = obj.pickOthers(Tag.propTypes, this.props);
@@ -207,11 +206,11 @@ class Tag extends Component {
                 `${prefix}tag`,
                 `${prefix}tag-${shape}`,
                 `${prefix}tag-level-${type}`,
-                `${prefix}tag-${size}`
+                `${prefix}tag-${size}`,
             ],
             {
                 [`${prefix}tag-closable`]: closable,
-                [`${prefix}tag-body-pointer`]: closable && closeArea === 'tag'
+                [`${prefix}tag-body-pointer`]: closable && closeArea === 'tag',
             },
             className
         );

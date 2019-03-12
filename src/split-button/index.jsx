@@ -109,7 +109,7 @@ class SplitButton extends React.Component {
          */
         leftButtonProps: PropTypes.object,
         className: PropTypes.string,
-        children: PropTypes.any
+        children: PropTypes.any,
     };
 
     static defaultProps = {
@@ -123,14 +123,14 @@ class SplitButton extends React.Component {
         onSelect: func.noop,
         defaultSelectedKeys: [],
         menuProps: {},
-        leftButtonProps: {}
+        leftButtonProps: {},
     };
 
     constructor(props, context) {
         super(props, context);
         this.state = {
             selectedKeys: props.selectedKeys || props.defaultSelectedKeys,
-            visible: props.visible || props.defaultVisible
+            visible: props.visible || props.defaultVisible,
         };
     }
 
@@ -144,13 +144,13 @@ class SplitButton extends React.Component {
     componentWillReceiveProps(nextProps) {
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
 
         if ('selectedKeys' in nextProps) {
             this.setState({
-                selectedKeys: nextProps.selectedKeys
+                selectedKeys: nextProps.selectedKeys,
             });
         }
     }
@@ -158,33 +158,33 @@ class SplitButton extends React.Component {
     selectMenuItem = (keys, ...others) => {
         if (!('selectedKeys' in this.props)) {
             this.setState({
-                selectedKeys: keys
+                selectedKeys: keys,
             });
         }
         this.props.onSelect(keys, ...others);
-    }
+    };
 
     clickMenuItem = (key, ...others) => {
         this.props.onItemClick(key, ...others);
         this.onVisibleChange(false, 'menuSelect');
-    }
+    };
 
     onPopupOpen = () => {
         if (this.props.autoWidth && this.wrapper && this.menu) {
             dom.setStyle(this.menu, {
-                width: this.wrapper.offsetWidth
+                width: this.wrapper.offsetWidth,
             });
         }
-    }
+    };
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
         this.props.onVisibleChange(visible, reason);
-    }
+    };
 
     _menuRefHandler = ref => {
         this.menu = findDOMNode(ref);
@@ -193,11 +193,11 @@ class SplitButton extends React.Component {
         if (typeof refFn === 'function') {
             refFn(ref);
         }
-    }
+    };
 
     _wrapperRefHandler = ref => {
         this.wrapper = findDOMNode(ref);
-    }
+    };
 
     render() {
         const {
@@ -225,31 +225,48 @@ class SplitButton extends React.Component {
 
         const state = this.state;
 
-        const classNames = classnames({
-            [`${prefix}split-btn`]: true
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}split-btn`]: true,
+            },
+            className
+        );
 
         const sharedBtnProps = {
             type,
             size,
             component,
             ghost,
-            disabled
+            disabled,
         };
 
         const triggerClassNames = classnames({
             [`${prefix}split-btn-trigger`]: true,
             [`${prefix}expand`]: state.visible,
-            opened: state.visible
+            opened: state.visible,
         });
 
-        const trigger = (<Button {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
-            <Icon type="arrow-down" />
-        </Button>);
+        const trigger = (
+            <Button
+                {...triggerProps}
+                {...sharedBtnProps}
+                className={triggerClassNames}
+            >
+                <Icon type="arrow-down" />
+            </Button>
+        );
 
         return (
-            <Button.Group {...obj.pickOthers(SplitButton.propTypes, others)} className={classNames} style={style} size={size} ref={this._wrapperRefHandler}>
-                <Button {...sharedBtnProps} {...leftButtonProps}>{label}</Button>
+            <Button.Group
+                {...obj.pickOthers(SplitButton.propTypes, others)}
+                className={classNames}
+                style={style}
+                size={size}
+                ref={this._wrapperRefHandler}
+            >
+                <Button {...sharedBtnProps} {...leftButtonProps}>
+                    {label}
+                </Button>
                 <Popup
                     {...popupProps}
                     visible={state.visible}
@@ -261,14 +278,16 @@ class SplitButton extends React.Component {
                     style={popupStyle}
                     shouldUpdatePosition
                     className={popupClassName}
-                    onOpen={this.onPopupOpen}>
+                    onOpen={this.onPopupOpen}
+                >
                     <Menu
                         {...menuProps}
                         selectMode={selectMode}
                         selectedKeys={state.selectedKeys}
                         onSelect={this.selectMenuItem}
                         onItemClick={this.clickMenuItem}
-                        ref={this._menuRefHandler}>
+                        ref={this._menuRefHandler}
+                    >
                         {children}
                     </Menu>
                 </Popup>

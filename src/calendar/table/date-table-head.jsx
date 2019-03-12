@@ -19,9 +19,7 @@ class DateTableHead extends PureComponent {
 
         return (
             <thead className={`${prefix}calendar-thead`} role="rowgroup">
-                <tr role="row">
-                    {elements}
-                </tr>
+                <tr role="row">{elements}</tr>
             </thead>
         );
     }

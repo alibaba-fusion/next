@@ -31,42 +31,54 @@ class SubNav extends Component {
         /**
          * 导航项和子导航
          */
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
-        selectable: false
+        selectable: false,
     };
 
     static contextTypes = {
         prefix: PropTypes.string,
         mode: PropTypes.string,
         iconOnly: PropTypes.bool,
-        hasArrow: PropTypes.bool
+        hasArrow: PropTypes.bool,
     };
 
     render() {
-        const {prefix, iconOnly, hasArrow, mode} = this.context;
-        const {className, icon, label, children, ...others} = this.props;
+        const { prefix, iconOnly, hasArrow, mode } = this.context;
+        const { className, icon, label, children, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-sub-nav-item`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
-        let iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
+        let iconEl =
+            typeof icon === 'string' ? (
+                <Icon className={`${prefix}nav-icon`} type={icon} />
+            ) : (
+                icon
+            );
         if (iconOnly) {
             if (hasArrow) {
-                iconEl = <Icon className={`${prefix}nav-icon-only-arrow`} type={mode === 'popup' ? 'arrow-right' : 'arrow-down'} />;
+                iconEl = (
+                    <Icon
+                        className={`${prefix}nav-icon-only-arrow`}
+                        type={mode === 'popup' ? 'arrow-right' : 'arrow-down'}
+                    />
+                );
             } else if (!iconEl) {
                 iconEl = <span className={`${prefix}nav-icon-placeholder`} />;
             }
         }
         const newLabel = [
             iconEl ? cloneElement(iconEl, { key: 'icon' }) : null,
-            <span key="label">{label}</span>
+            <span key="label">{label}</span>,
         ];
 
         return (
-            <Menu.SubMenu className={cls} label={newLabel} {...others}>{children}</Menu.SubMenu>
+            <Menu.SubMenu className={cls} label={newLabel} {...others}>
+                {children}
+            </Menu.SubMenu>
         );
     }
 }

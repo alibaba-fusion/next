@@ -31,9 +31,9 @@ function convertArrayToObject(demoFunction) {
 
                     return {
                         label: label,
-                        value: e
+                        value: e,
                     };
-                })
+                }),
             };
         });
         return objDemoFunction;
@@ -51,7 +51,7 @@ function convertObjectToArray(demoFunction) {
             value: demo.value,
             enum: demo.enum.map(e => {
                 return e.value;
-            })
+            }),
         });
     });
     return arrayDemo;
@@ -68,7 +68,8 @@ function deCamelize(str) {
         // return str.toLowerCase();
         return str;
     }
-    return matches.toString()
+    return matches
+        .toString()
         .replace(',', '-')
         .toLowerCase();
 }
@@ -82,11 +83,14 @@ function formatTitle(str) {
     if (!str || typeof str !== 'string') {
         return;
     }
-    return str.split(' ').map(deCamelize).join(' ');
+    return str
+        .split(' ')
+        .map(deCamelize)
+        .join(' ');
 }
 
 class Demo extends Component {
-    static displayName = 'Demo'
+    static displayName = 'Demo';
 
     static propTypes = {
         parentDisplayName: PropTypes.string,
@@ -104,15 +108,14 @@ class Demo extends Component {
         switchBackground: PropTypes.bool,
         demoFunction: PropTypes.object,
         onFunctionChange: PropTypes.func,
-        style: PropTypes.object
-    }
+        style: PropTypes.object,
+    };
 
     static defaultProps = {
         defaultBackground: 'light',
         block: false,
-        onFunctionChange: () => {
-        }
-    }
+        onFunctionChange: () => {},
+    };
 
     constructor(props) {
         super(props);
@@ -122,7 +125,7 @@ class Demo extends Component {
             demoItems: props.demoItems || demoItems,
             showType: props.showType || showType,
             background: props.defaultBackground,
-            initDate: new Date().getTime()
+            initDate: new Date().getTime(),
         };
 
         if (!props.demoIndex) {
@@ -133,7 +136,7 @@ class Demo extends Component {
     componentWillReceiveProps(nextProps) {
         if ('defaultBackground' in nextProps) {
             this.setState({
-                background: nextProps.defaultBackground
+                background: nextProps.defaultBackground,
             });
         }
     }
@@ -161,7 +164,9 @@ class Demo extends Component {
         }
 
         const { hidden = false } = demoItems[demoIndex];
-        const childKeys = Object.keys(demoItems).filter(key => new RegExp(`^${demoIndex.replace(/\*/, '(\\*|\\d+)')}`).test(key));
+        const childKeys = Object.keys(demoItems).filter(key =>
+            new RegExp(`^${demoIndex.replace(/\*/, '(\\*|\\d+)')}`).test(key)
+        );
 
         // TIP: 更新当前控制器
         demoItems[demoIndex].hidden = !hidden;
@@ -174,7 +179,11 @@ class Demo extends Component {
         // TIP: 更新 DEMO
         childKeys.forEach(key => {
             if (key.indexOf('*') < 0) {
-                demoItems[key].hidden = (demoItems[key.replace(/\d+$/, '*')] || {}).hidden || (demoItems[key.replace(/\d+-(\d+)$/, '*-$1')] || {}).hidden || !hidden;
+                demoItems[key].hidden =
+                    (demoItems[key.replace(/\d+$/, '*')] || {}).hidden ||
+                    (demoItems[key.replace(/\d+-(\d+)$/, '*-$1')] || {})
+                        .hidden ||
+                    !hidden;
             }
         });
         // TIP: 同步上级控制器
@@ -182,7 +191,7 @@ class Demo extends Component {
 
         sendMessage(window.compName, 'displayed', {
             demoIndex,
-            demoItems
+            demoItems,
         });
     }
 
@@ -190,7 +199,9 @@ class Demo extends Component {
         let index = demoIndex.replace(/(-(\*|\d+)){2}$/, '-\\d+-\\d+');
 
         if (index !== demoIndex) {
-            const itemKeys = Object.keys(demoItems).filter(key => new RegExp(`^${index}`).test(key) && key.indexOf('*') < 0);
+            const itemKeys = Object.keys(demoItems).filter(
+                key => new RegExp(`^${index}`).test(key) && key.indexOf('*') < 0
+            );
             const hidden = demoItems[itemKeys[0] || demoIndex].hidden;
             let sameValue = true;
 
@@ -202,7 +213,7 @@ class Demo extends Component {
 
             index = demoIndex.replace(/-(\*|\d+)-(\*|\d+)$/, '-*');
 
-            demoItems[index].hidden = sameValue && hidden || false;
+            demoItems[index].hidden = (sameValue && hidden) || false;
 
             this.syncVisible(index, demoItems);
         }
@@ -212,7 +223,7 @@ class Demo extends Component {
         const background = this.state.background === 'light' ? 'dark' : 'light';
 
         this.setState({
-            background: background
+            background: background,
         });
     }
 
@@ -223,7 +234,7 @@ class Demo extends Component {
         const demoFunction = convertArrayToObject(this.props.demoFunction);
 
         let nextDemoFunction = {};
-        Object.keys(demoFunction).forEach((funcName) => {
+        Object.keys(demoFunction).forEach(funcName => {
             const func = demoFunction[funcName];
 
             if (funcName === name) {
@@ -250,7 +261,9 @@ class Demo extends Component {
         const index = this.props.demoIndex || this.state.demoIndex;
         const demoItems = this.props.demoItems || this.state.demoItems;
         const demoScope = this.props.demoScope || this;
-        const demoTitle = this.props.demoTitle ? `${this.props.demoTitle} -> ${this.props.title || TITLE}` : (this.props.title || TITLE);
+        const demoTitle = this.props.demoTitle
+            ? `${this.props.demoTitle} -> ${this.props.title || TITLE}`
+            : this.props.title || TITLE;
         const showType = this.props.showType || this.state.showType;
         const switchVisible = this.props.switchVisible || this.switchVisible;
         const { background, initDate } = this.state;
@@ -273,7 +286,7 @@ class Demo extends Component {
         // 注入 demoFunction 到 window.COOL
         if (isDemoShape && this.props.title && demoFunction) {
             FUN[this.props.title] = {};
-            Object.keys(demoFunction).forEach((funcName) => {
+            Object.keys(demoFunction).forEach(funcName => {
                 const func = demoFunction[funcName];
                 func.name = funcName;
                 FUN[this.props.title][funcName] = func;
@@ -293,15 +306,13 @@ class Demo extends Component {
                     demoTitle,
                     demoShapeLevel,
                     showType,
-                    switchVisible
+                    switchVisible,
                 });
             });
 
             children = (
                 <table className={block}>
-                    <tbody>
-                        {body}
-                    </tbody>
+                    <tbody>{body}</tbody>
                 </table>
             );
         } else {
@@ -315,7 +326,7 @@ class Demo extends Component {
                     demoTitle,
                     demoFunction,
                     showType,
-                    switchVisible
+                    switchVisible,
                 });
             });
         }
@@ -332,7 +343,17 @@ class Demo extends Component {
 
                     tmpRadio.push(
                         <label key={j}>
-                            <input type="radio" name={name} data-func={funcName} value={enumObj.value.toString()} onChange={this.onFunctionChange.bind(this, funcName)} defaultChecked={checked} />
+                            <input
+                                type="radio"
+                                name={name}
+                                data-func={funcName}
+                                value={enumObj.value.toString()}
+                                onChange={this.onFunctionChange.bind(
+                                    this,
+                                    funcName
+                                )}
+                                defaultChecked={checked}
+                            />
                             {enumObj.label.toString()}
                         </label>
                     );
@@ -354,23 +375,22 @@ class Demo extends Component {
             if (!demoItems[demoIndex]) {
                 demoItems[demoIndex] = {
                     hidden: false,
-                    title: demoTitle
+                    title: demoTitle,
                 };
             } else {
                 demoItems[demoIndex].title = demoTitle;
             }
             demoItems[demoIndex].existed = true;
 
-
             const wrapCls = classNames({
                 'demo pc': true,
                 [`demo-${background}`]: background,
-                [className]: className
+                [className]: className,
             });
             const switchCls = classNames({
                 'demo-switch': true,
                 'demo-switch-on': background === 'dark',
-                'demo-switch-off': background === 'light'
+                'demo-switch-off': background === 'light',
             });
 
             const customProps = {};
@@ -383,19 +403,34 @@ class Demo extends Component {
                 <div className={wrapCls} style={style} {...customProps}>
                     <div className="demo-header">
                         <span>{this.props.title || TITLE}</span>
-                        {showType === 'hidden' && <DisplaySwitch hidden={hidden} onClick={switchVisible.bind(demoScope, demoIndex)} />}
-                        {isDemoShape && switchBackground ? <div className="demo-switch-wrapper">
-                            <span>背景颜色</span>
-                            <div className={switchCls} onClick={this.switchBackground.bind(this)}>
-                                <div className="demo-switch-trigger"></div>
-                                <div className="demo-switch-children">{background === 'light' ? '深' : '浅'}</div>
+                        {showType === 'hidden' && (
+                            <DisplaySwitch
+                                hidden={hidden}
+                                onClick={switchVisible.bind(
+                                    demoScope,
+                                    demoIndex
+                                )}
+                            />
+                        )}
+                        {isDemoShape && switchBackground ? (
+                            <div className="demo-switch-wrapper">
+                                <span>背景颜色</span>
+                                <div
+                                    className={switchCls}
+                                    onClick={this.switchBackground.bind(this)}
+                                >
+                                    <div className="demo-switch-trigger" />
+                                    <div className="demo-switch-children">
+                                        {background === 'light' ? '深' : '浅'}
+                                    </div>
+                                </div>
                             </div>
-                        </div> : null}
+                        ) : null}
                     </div>
-                    {isDemoShape && demoFunction ? <ul className="demo-select">{functionSelect}</ul> : null}
-                    <div className="demo-body">
-                        {children}
-                    </div>
+                    {isDemoShape && demoFunction ? (
+                        <ul className="demo-select">{functionSelect}</ul>
+                    ) : null}
+                    <div className="demo-body">{children}</div>
                 </div>
             );
         } else {
@@ -406,7 +441,7 @@ class Demo extends Component {
 
 /* eslint-disable react/no-multi-comp */
 class DemoGroup extends Component {
-    static displayName = 'DemoGroup'
+    static displayName = 'DemoGroup';
 
     static propTypes = {
         label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -420,18 +455,25 @@ class DemoGroup extends Component {
         demoTitle: PropTypes.string,
         demoShapeLevel: PropTypes.string,
         showType: PropTypes.string,
-        switchVisible: PropTypes.func
-    }
+        switchVisible: PropTypes.func,
+    };
 
     static defaultProps = {
         block: false,
-        height: ''
-    }
+        height: '',
+    };
 
     render() {
-        const { demoIndex: index, demoItems = {}, demoScope = this, showType, switchVisible = () => { } } = this.props;
+        const {
+            demoIndex: index,
+            demoItems = {},
+            demoScope = this,
+            showType,
+            switchVisible = () => {},
+        } = this.props;
         const demoIndex = `${index}-*`;
-        const demoTitle = `${this.props.demoTitle} -> ${this.props.label || LABEL}`;
+        const demoTitle = `${this.props.demoTitle} -> ${this.props.label ||
+            LABEL}`;
         const demoShapeLevel = this.props.demoShapeLevel;
         const { hidden = false } = demoItems[demoIndex] || {};
 
@@ -452,7 +494,7 @@ class DemoGroup extends Component {
                 if (!ret) {
                     COOL[demoShapeLevel].push({
                         name: 'statement',
-                        enum: [this.props.label]
+                        enum: [this.props.label],
                     });
                 }
             }
@@ -463,23 +505,28 @@ class DemoGroup extends Component {
         defaultCool.title = this.props.demoTitle;
         defaultCool.shape = demoShapeLevel;
         defaultCool.statement = this.props.label;
-        COOL[demoShapeLevel].forEach((item) => {
+        COOL[demoShapeLevel].forEach(item => {
             if (item.value) {
                 defaultCool[item.name] = item.value;
             }
         });
 
         const children = React.Children.map(this.props.children, (child, i) => {
-            const { demoIndex: index, demoItems = {}, showType, block } = this.props;
+            const {
+                demoIndex: index,
+                demoItems = {},
+                showType,
+                block,
+            } = this.props;
             const demoIndex = `${index}-${i}`;
             const { hidden = false } = demoItems[demoIndex] || {};
             const classes = classNames({
                 'demo-item': !hidden,
                 'demo-item-hidden': hidden,
-                block: block
+                block: block,
             });
 
-            COOL[demoShapeLevel].forEach((item) => {
+            COOL[demoShapeLevel].forEach(item => {
                 if (item.name === 'size') {
                     defaultCool.size = item.enum[i];
                 }
@@ -488,17 +535,20 @@ class DemoGroup extends Component {
             if (showType === 'hidden' || !hidden) {
                 if (!demoItems[demoIndex]) {
                     demoItems[demoIndex] = {
-                        hidden: false
+                        hidden: false,
                     };
                 }
                 demoItems[demoIndex].existed = true;
 
                 const cloneChild = React.cloneElement(child, {
-                    'data-cool': JSON.stringify(defaultCool)
+                    'data-cool': JSON.stringify(defaultCool),
                 });
 
                 return (
-                    <td className="wrap" style={{ height: this.props.height || null }}>
+                    <td
+                        className="wrap"
+                        style={{ height: this.props.height || null }}
+                    >
                         <div className={classes} key={i}>
                             {cloneChild}
                         </div>
@@ -513,7 +563,7 @@ class DemoGroup extends Component {
             if (!demoItems[demoIndex]) {
                 demoItems[demoIndex] = {
                     hidden: false,
-                    title: demoTitle
+                    title: demoTitle,
                 };
             } else {
                 demoItems[demoIndex].title = demoTitle;
@@ -522,11 +572,23 @@ class DemoGroup extends Component {
 
             return (
                 <tr className="demo-group">
-                    {this.props.label === false ? null :
-                        <td className="label" style={{ height: this.props.height || null }}>
+                    {this.props.label === false ? null : (
+                        <td
+                            className="label"
+                            style={{ height: this.props.height || null }}
+                        >
                             <span>{this.props.label || LABEL}</span>
-                            {showType === 'hidden' && <DisplaySwitch hidden={hidden} onClick={switchVisible.bind(demoScope, demoIndex)} />}
-                        </td>}
+                            {showType === 'hidden' && (
+                                <DisplaySwitch
+                                    hidden={hidden}
+                                    onClick={switchVisible.bind(
+                                        demoScope,
+                                        demoIndex
+                                    )}
+                                />
+                            )}
+                        </td>
+                    )}
                     {children}
                 </tr>
             );
@@ -537,7 +599,7 @@ class DemoGroup extends Component {
 }
 
 class DemoHead extends Component {
-    static displayName = 'DemoHead'
+    static displayName = 'DemoHead';
 
     static propTypes = {
         cols: PropTypes.array,
@@ -548,16 +610,22 @@ class DemoHead extends Component {
         demoTitle: PropTypes.string,
         demoShapeLevel: PropTypes.string,
         showType: PropTypes.string,
-        switchVisible: PropTypes.func
-    }
+        switchVisible: PropTypes.func,
+    };
 
     static defaultProps = {
-        cols: []
-    }
+        cols: [],
+    };
 
     render() {
         const cols = this.props.cols.map((col, i) => {
-            const { demoIndex: index, demoItems = {}, demoScope = this, showType, switchVisible = () => { } } = this.props;
+            const {
+                demoIndex: index,
+                demoItems = {},
+                demoScope = this,
+                showType,
+                switchVisible = () => {},
+            } = this.props;
             const demoIndex = `${index.replace(/-\d+$/, '-*')}-${i}`;
             const demoTitle = `${this.props.demoTitle} -> ${col || COL}`;
             const demoShapeLevel = this.props.demoShapeLevel;
@@ -580,7 +648,7 @@ class DemoHead extends Component {
                     if (!ret) {
                         COOL[demoShapeLevel].push({
                             name: 'size',
-                            enum: [col]
+                            enum: [col],
                         });
                     }
                 }
@@ -590,7 +658,7 @@ class DemoHead extends Component {
                 if (!demoItems[demoIndex]) {
                     demoItems[demoIndex] = {
                         hidden: false,
-                        title: demoTitle
+                        title: demoTitle,
                     };
                 } else {
                     demoItems[demoIndex].title = demoTitle;
@@ -600,7 +668,15 @@ class DemoHead extends Component {
                 return (
                     <td key={i}>
                         {col || COL}
-                        {showType === 'hidden' && <DisplaySwitch hidden={hidden} onClick={switchVisible.bind(demoScope, demoIndex)} />}
+                        {showType === 'hidden' && (
+                            <DisplaySwitch
+                                hidden={hidden}
+                                onClick={switchVisible.bind(
+                                    demoScope,
+                                    demoIndex
+                                )}
+                            />
+                        )}
                     </td>
                 );
             } else {
@@ -620,19 +696,21 @@ class DemoHead extends Component {
 class DisplaySwitch extends Component {
     static propTypes = {
         onClick: PropTypes.func,
-        hidden: PropTypes.bool
-    }
+        hidden: PropTypes.bool,
+    };
 
     static defaultProps = {
-        onClick: () => {
-        }
+        onClick: () => {},
     };
 
     render() {
         const status = this.props.hidden ? 'hide' : 'browse';
 
         return (
-            <i className={`demo-icon demo-icon-${status}`} onClick={this.props.onClick}></i>
+            <i
+                className={`demo-icon demo-icon-${status}`}
+                onClick={this.props.onClick}
+            />
         );
     }
 }
@@ -640,7 +718,11 @@ class DisplaySwitch extends Component {
 if (window.addEventListener) {
     window.addEventListener('message', event => {
         const data = event.data;
-        if ((event.origin !== location.origin) || !data || data.from !== 'config') {
+        if (
+            event.origin !== location.origin ||
+            !data ||
+            data.from !== 'config'
+        ) {
             return;
         }
 
@@ -656,12 +738,15 @@ function sendMessage(compName, type, body) {
     const parent = window.parent;
 
     if (parent !== window) {
-        parent.postMessage({
-            from: 'demo',
-            type: type,
-            body: body,
-            compName: compName
-        }, '*');
+        parent.postMessage(
+            {
+                from: 'demo',
+                type: type,
+                body: body,
+                compName: compName,
+            },
+            '*'
+        );
     }
 }
 
@@ -670,13 +755,14 @@ function initDemo(compName) {
 
     // 追加信息到页面
     const info = document.createElement('script', {
-        id: 'fusion-cool'
+        id: 'fusion-cool',
     });
-    info.innerHTML = `window.COOL = {'${compName}': ${JSON.stringify(COOL)}, 'functions': ${JSON.stringify(FUN)}}`;
+    info.innerHTML = `window.COOL = {'${compName}': ${JSON.stringify(
+        COOL
+    )}, 'functions': ${JSON.stringify(FUN)}}`;
     document.body.appendChild(info);
 
     sendMessage(compName, 'loaded');
 }
-
 
 export { Demo, DemoHead, DemoGroup, initDemo };

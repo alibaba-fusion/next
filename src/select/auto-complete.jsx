@@ -32,15 +32,17 @@ class AutoComplete extends Base {
         /**
          * 传入的数据源，可以动态渲染子项
          */
-        dataSource: PropTypes.arrayOf(PropTypes.oneOfType([
-            PropTypes.shape({
-                value: PropTypes.string,
-                label: PropTypes.any,
-                disabled: PropTypes.bool,
-                children: PropTypes.array
-            }),
-            PropTypes.string
-        ])),
+        dataSource: PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.shape({
+                    value: PropTypes.string,
+                    label: PropTypes.any,
+                    disabled: PropTypes.bool,
+                    children: PropTypes.array,
+                }),
+                PropTypes.string,
+            ])
+        ),
         /**
          * 填充到选择框里的值的 key，默认是 value
          */
@@ -55,13 +57,13 @@ class AutoComplete extends Base {
         onKeyDown: PropTypes.func,
         // 是否将当前高亮的选项作为 placeholder
         highlightHolder: PropTypes.bool,
-        style: PropTypes.object
+        style: PropTypes.object,
     };
 
     static defaultProps = {
         ...Base.defaultProps,
         onKeyDown: noop,
-        fillProps: 'value'
+        fillProps: 'value',
     };
 
     constructor(props) {
@@ -73,7 +75,7 @@ class AutoComplete extends Base {
         bindCtx(this, [
             'handleTriggerKeyDown',
             'handleMenuSelect',
-            'handleItemClick'
+            'handleItemClick',
         ]);
     }
 
@@ -105,20 +107,22 @@ class AutoComplete extends Base {
         if (this.hasClear()) {
             const inputNode = ReactDOM.findDOMNode(this.inputRef);
             if (inputNode) {
-                this.clearNode = inputNode.querySelector(`.${this.props.prefix}input-control`);
+                this.clearNode = inputNode.querySelector(
+                    `.${this.props.prefix}input-control`
+                );
             }
         }
     }
 
     shouldControlPopup(props = this.props, type) {
-        const hasPopup = props.popupContent || this.dataStore.getMenuDS().length;
+        const hasPopup =
+            props.popupContent || this.dataStore.getMenuDS().length;
         if (hasPopup) {
             this.setVisible(true, type);
         } else {
             this.setVisible(false, type);
         }
     }
-
 
     handleMenuSelect(keys) {
         const key = keys[0];
@@ -139,7 +143,7 @@ class AutoComplete extends Base {
     }
 
     handleSelectEvent(key, item, triggerType) {
-        const value = item && item[this.props.fillProps] || key;
+        const value = (item && item[this.props.fillProps]) || key;
 
         if (triggerType === 'itemClick' || triggerType === 'enter') {
             // 点击 item 的时候不会触发关闭，需要手动关闭，其它类型比如 keyDown 等都会有其它事件句柄处理
@@ -162,7 +166,7 @@ class AutoComplete extends Base {
 
         if (filterLocal) {
             this.setState({
-                dataSource: this.dataStore.updateByKey(value)
+                dataSource: this.dataStore.updateByKey(value),
             });
 
             this.shouldControlPopup(this.props, actionType);
@@ -172,7 +176,7 @@ class AutoComplete extends Base {
         // 非受控模式清空内部数据
         if (!('value' in this.props)) {
             this.setState({
-                value: value
+                value: value,
             });
         }
 
@@ -182,10 +186,15 @@ class AutoComplete extends Base {
             // 点击 item 的时候不会触发关闭，需要手动关闭，其它类型比如 keyDown 等都会有其它事件句柄处理
             this.setVisible(false, actionType);
         }
-    }
+    };
 
     handleVisibleChange(visible, type) {
-        if (!('visible' in this.props) && visible && !this.props.popupContent && !this.dataStore.getMenuDS().length) {
+        if (
+            !('visible' in this.props) &&
+            visible &&
+            !this.props.popupContent &&
+            !this.dataStore.getMenuDS().length
+        ) {
             return;
         }
 
@@ -201,7 +210,6 @@ class AutoComplete extends Base {
      * @param {Event} e
      */
     handleTriggerKeyDown(e) {
-
         const { popupContent, onToggleHighlightItem, onKeyDown } = this.props;
         if (popupContent) {
             return onKeyDown(e);
@@ -258,14 +266,27 @@ class AutoComplete extends Base {
         return value && hasClear && !readOnly && !disabled;
     }
 
-
     /**
      * 选择器
      * @override
      * @param {object} props
      */
     renderSelect(props = this.props) {
-        const { placeholder, size, prefix, className, style, label, readOnly, disabled, highlightHolder, locale, hasClear, state, rtl } = props;
+        const {
+            placeholder,
+            size,
+            prefix,
+            className,
+            style,
+            label,
+            readOnly,
+            disabled,
+            highlightHolder,
+            locale,
+            hasClear,
+            state,
+            rtl,
+        } = props;
         const others = obj.pickOthers(AutoComplete.propTypes, props);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
@@ -279,19 +300,25 @@ class AutoComplete extends Base {
         // });
 
         // trigger className
-        const triggerClazz = classNames([
-            `${prefix}select`,
-            `${prefix}select-auto-complete`,
-            `${prefix}size-${size}`,
-            className
-        ], {
-            [`${prefix}active`]: visible,
-            [`${prefix}disabled`]: disabled
-        });
+        const triggerClazz = classNames(
+            [
+                `${prefix}select`,
+                `${prefix}select-auto-complete`,
+                `${prefix}size-${size}`,
+                className,
+            ],
+            {
+                [`${prefix}active`]: visible,
+                [`${prefix}disabled`]: disabled,
+            }
+        );
 
         // highlightKey into placeholder
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
-        let _placeholder = placeholder || locale.autoCompletePlaceholder || locale.autoCompletePlaceHolder;
+        let _placeholder =
+            placeholder ||
+            locale.autoCompletePlaceholder ||
+            locale.autoCompletePlaceHolder;
         if (highlightHolder && visible) {
             _placeholder = this.state.highlightKey || _placeholder;
         }
@@ -310,22 +337,25 @@ class AutoComplete extends Base {
             label,
             // extra: arrowNode,
             onChange: this.handleChange,
-            onKeyDown: this.handleTriggerKeyDown
+            onKeyDown: this.handleTriggerKeyDown,
         };
 
         return (
-            <span {...othersData}
+            <span
+                {...othersData}
                 className={triggerClazz}
                 style={style}
                 dir={rtl ? 'rtl' : undefined}
                 ref={this.saveSelectRef}
-                onClick={this.focusInput}>
+                onClick={this.focusInput}
+            >
                 <Input
-                    {..._inputProps}
                     role="combobox"
                     aria-autocomplete="list"
                     aria-disabled={disabled}
-                    aria-expanded={this.state.visible} />
+                    aria-expanded={this.state.visible}
+                    {..._inputProps}
+                />
             </span>
         );
     }
@@ -339,7 +369,9 @@ class AutoComplete extends Base {
             this.props.popupProps.safeNode = safeNodes;
         }
 
-        return super.render(Object.assign({}, this.props, { canCloseByTrigger: false }));
+        return super.render(
+            Object.assign({}, this.props, { canCloseByTrigger: false })
+        );
     }
 }
 

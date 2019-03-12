@@ -10,11 +10,11 @@ export default class Gateway extends Component {
     static propTypes = {
         children: PropTypes.node,
         container: PropTypes.any,
-        target: PropTypes.any
+        target: PropTypes.any,
     };
 
     static defaultProps = {
-        container: () => document.body
+        container: () => document.body,
     };
 
     componentDidMount() {
@@ -37,7 +37,7 @@ export default class Gateway extends Component {
 
     saveChildRef = ref => {
         this.child = ref;
-    }
+    };
 
     render() {
         if (!this.containerNode) {
@@ -51,10 +51,12 @@ export default class Gateway extends Component {
         }
 
         if (typeof child.ref === 'string') {
-            throw new Error('Can not set ref by string in Gateway, use function instead.');
+            throw new Error(
+                'Can not set ref by string in Gateway, use function instead.'
+            );
         }
         child = React.cloneElement(child, {
-            ref: makeChain(this.saveChildRef, child.ref)
+            ref: makeChain(this.saveChildRef, child.ref),
         });
 
         return createPortal(child, this.containerNode);

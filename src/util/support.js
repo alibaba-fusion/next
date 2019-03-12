@@ -1,16 +1,16 @@
-import {hasDOM} from './dom';
-import {each} from './object';
+import { hasDOM } from './dom';
+import { each } from './object';
 
 const animationEndEventNames = {
     WebkitAnimation: 'webkitAnimationEnd',
     OAnimation: 'oAnimationEnd',
-    animation: 'animationend'
+    animation: 'animationend',
 };
 
 const transitionEventNames = {
     WebkitTransition: 'webkitTransitionEnd',
     OTransition: 'oTransitionEnd',
-    transition: 'transitionend'
+    transition: 'transitionend',
 };
 
 /**
@@ -19,7 +19,7 @@ const transitionEventNames = {
  * @param  {Object<String>} names
  * @return {Object|false}
  */
-function _supportEnd (names) {
+function _supportEnd(names) {
     /* istanbul ignore if */
     if (!hasDOM) {
         return false;
@@ -31,7 +31,7 @@ function _supportEnd (names) {
     each(names, (val, key) => {
         /* istanbul ignore else */
         if (el.style[key] !== undefined) {
-            ret = {end: val};
+            ret = { end: val };
             return false;
         }
     });
@@ -45,7 +45,7 @@ function _supportEnd (names) {
  * @param  {Object<Array<String>>} names
  * @return {Boolean}       is support
  */
-function _supportCSS (names) {
+function _supportCSS(names) {
     /* istanbul ignore if */
     if (!hasDOM) {
         return false;
@@ -90,5 +90,5 @@ export const transition = _supportEnd(transitionEventNames);
  * @type {Boolean}
  */
 export const flex = _supportCSS({
-    display: ['flex', '-webkit-flex', '-moz-flex', '-ms-flexbox']
+    display: ['flex', '-webkit-flex', '-moz-flex', '-ms-flexbox'],
 });

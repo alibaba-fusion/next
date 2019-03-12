@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import CascaderSelect from './cascader-select';
 
 export default ConfigProvider.config(CascaderSelect, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('shape' in props) {
             deprecated('shape', 'hasBorder', 'CascaderSelect');
             const { shape, ...others } = props;
@@ -22,13 +22,20 @@ export default ConfigProvider.config(CascaderSelect, {
         }
 
         if ('showItemCount' in props) {
-            deprecated('showItemCount', 'listStyle | listClassName', 'CascaderSelect');
+            deprecated(
+                'showItemCount',
+                'listStyle | listClassName',
+                'CascaderSelect'
+            );
         }
         if ('labelWidth' in props) {
-            deprecated('labelWidth', 'listStyle | listClassName', 'CascaderSelect');
+            deprecated(
+                'labelWidth',
+                'listStyle | listClassName',
+                'CascaderSelect'
+            );
         }
 
         return props;
-    }
+    },
 });
-

@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export const PANEL = {
     TIME: 'time-panel',
-    DATE: 'date-panel'
+    DATE: 'date-panel',
 };
 
 export const DEFAULT_TIME_FORMAT = 'HH:mm:ss';
@@ -20,11 +20,16 @@ export function resetValueTime(source, target) {
     if (!moment.isMoment(source) || !moment.isMoment(target)) {
         return source;
     }
-    return source.clone().hour(target.hour()).minute(target.minute()).second(target.second());
+    return source
+        .clone()
+        .hour(target.hour())
+        .minute(target.minute())
+        .second(target.second());
 }
 
 export function formatDateValue(value, format) {
-    const val = typeof value === 'string' ? moment(value, format, false) : value;
+    const val =
+        typeof value === 'string' ? moment(value, format, false) : value;
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
     }
@@ -34,18 +39,24 @@ export function formatDateValue(value, format) {
 
 export function checkDateValue(props, propName, componentName) {
     // 支持传入 moment 对象或字符串，字符串不检测是否为日期字符串
-    if (props[propName] && (!moment.isMoment(props[propName])) && typeof props[propName] !== 'string') {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Required a moment object or format date string!`);
+    if (
+        props[propName] &&
+        !moment.isMoment(props[propName]) &&
+        typeof props[propName] !== 'string'
+    ) {
+        return new Error(
+            `Invalid prop ${propName} supplied to ${componentName}. Required a moment object or format date string!`
+        );
     }
 }
 
 export function getDateTimeFormat(format, showTime) {
-    const timeFormat = showTime ? (showTime.format || DEFAULT_TIME_FORMAT) : '';
+    const timeFormat = showTime ? showTime.format || DEFAULT_TIME_FORMAT : '';
     const dateTimeFormat = timeFormat ? `${format} ${timeFormat}` : format;
     return {
         format,
         timeFormat,
-        dateTimeFormat
+        dateTimeFormat,
     };
 }
 

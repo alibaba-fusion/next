@@ -3,15 +3,11 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Pagination from '../../src/pagination/index';
 import '../../src/pagination/style';
-import {
-    unmount,
-    testReact
-} from '../util/a11y/validate';
+import { unmount, testReact } from '../util/a11y/validate';
 
 Enzyme.configure({
-    adapter: new Adapter()
+    adapter: new Adapter(),
 });
-
 
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Pagination A11y', () => {
@@ -26,20 +22,24 @@ describe('Pagination A11y', () => {
     });
 
     it('should not have any violations when various types', async () => {
-        wrapper = await testReact(<div>
-            <Pagination />
-            <Pagination type="simple" />
-            <Pagination type="mini" />
-        </div>);
+        wrapper = await testReact(
+            <div>
+                <Pagination />
+                <Pagination type="simple" />
+                <Pagination type="mini" />
+            </div>
+        );
         return wrapper;
     });
 
     // TODO select support
     it.skip('should not have any violations when various pageSizeSelector', async () => {
-        wrapper = await testReact(<div>
-            <Pagination pageSizeSelector="filter" />
-            <Pagination pageSizeSelector="dropdown" />
-        </div>);
+        wrapper = await testReact(
+            <div>
+                <Pagination pageSizeSelector="filter" />
+                <Pagination pageSizeSelector="dropdown" />
+            </div>
+        );
         return wrapper;
     });
 });

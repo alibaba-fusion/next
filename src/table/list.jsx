@@ -16,29 +16,29 @@ export default function list(BaseComponent) {
         static ListRow = RowComponent;
         static ListBody = BodyComponent;
         static propTypes = {
-            ...BaseComponent.propTypes
-        }
+            ...BaseComponent.propTypes,
+        };
         static defaultProps = {
-            ...BaseComponent.defaultProps
-        }
+            ...BaseComponent.defaultProps,
+        };
 
         static childContextTypes = {
             listHeader: PropTypes.any,
             listFooter: PropTypes.any,
-            rowSelection: PropTypes.object
-        }
+            rowSelection: PropTypes.object,
+        };
 
         getChildContext() {
             return {
                 listHeader: this.listHeader,
                 listFooter: this.listFooter,
-                rowSelection: this.rowSelection
+                rowSelection: this.rowSelection,
             };
         }
 
         normalizeDataSource(dataSource) {
             const ret = [];
-            const loop = function (dataSource, level) {
+            const loop = function(dataSource, level) {
                 dataSource.forEach(item => {
                     item.__level = level;
                     ret.push(item);
@@ -54,8 +54,15 @@ export default function list(BaseComponent) {
 
         render() {
             /* eslint-disable prefer-const */
-            let { components, children, className, prefix, ...others } = this.props;
-            let isList = false, ret = [];
+            let {
+                components,
+                children,
+                className,
+                prefix,
+                ...others
+            } = this.props;
+            let isList = false,
+                ret = [];
             Children.forEach(children, child => {
                 if (child) {
                     if (typeof child.type === 'function') {
@@ -81,10 +88,18 @@ export default function list(BaseComponent) {
                 components.Wrapper = components.Wrapper || WrapperComponent;
                 className = classnames({
                     [`${prefix}table-group`]: true,
-                    [className]: className
+                    [className]: className,
                 });
             }
-            return (<BaseComponent {...others} components={components} children={ret} className={className} prefix={prefix}/>);
+            return (
+                <BaseComponent
+                    {...others}
+                    components={components}
+                    children={ret}
+                    className={className}
+                    prefix={prefix}
+                />
+            );
         }
     }
     statics(ListTable, BaseComponent);

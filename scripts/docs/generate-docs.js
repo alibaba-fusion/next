@@ -10,7 +10,7 @@ const COMPILED_FOLDER = 'compiled_docs';
 
 const cwd = process.cwd();
 
-module.exports = function* () {
+module.exports = function*() {
     const srcDir = path.join(cwd, SRC_FOLDER);
     const targetDir = path.join(cwd, LANGDOC_FOLDER);
     fs.removeSync(targetDir);
@@ -117,7 +117,7 @@ function* buildCompiledDocs(cwd) {
             componentList.push({
                 english: apiMdParsed.meta.title,
                 chinese: apiMdParsed.meta.chinese,
-                family: apiMdParsed.meta.family
+                family: apiMdParsed.meta.family,
             });
             yield fs.writeFile(apiTo, apiMdRendered, 'utf8');
         } else {
@@ -215,7 +215,7 @@ function mutliLangHandler(orginData = '') {
     const enVersrionText = enDocs ? `${enDocs}\n\n---\n\n${jsxCode}` : '';
     return {
         cn: cnDocs + jsxCode,
-        en: enVersrionText
+        en: enVersrionText,
     };
 }
 
@@ -229,6 +229,6 @@ function* compileApiFrom(apiFrom, docParser) {
     const [meta, api] = html.split('<split></split>');
     return {
         apiMdParsed,
-        apiMdRendered: JSON.stringify({ meta, api })
+        apiMdRendered: JSON.stringify({ meta, api }),
     };
 }

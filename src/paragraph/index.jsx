@@ -29,16 +29,20 @@ class Paragraph extends React.Component {
     static defaultProps = {
         prefix: 'next-',
         type: 'long',
-        size: 'medium'
+        size: 'medium',
     };
 
     render() {
-        const {prefix, className, type, size, rtl, ...others} = this.props;
+        const { prefix, className, type, size, rtl, ...others } = this.props;
 
         const cls = classNames(
             `${prefix}paragraph`,
-            type === 'short' ? `${prefix}paragraph-short` : `${prefix}paragraph-long`,
-            size === 'small' ? `${prefix}paragraph-small` : `${prefix}paragraph-medium`,
+            type === 'short'
+                ? `${prefix}paragraph-short`
+                : `${prefix}paragraph-long`,
+            size === 'small'
+                ? `${prefix}paragraph-small`
+                : `${prefix}paragraph-medium`,
             className
         );
         if (rtl) {
@@ -46,7 +50,9 @@ class Paragraph extends React.Component {
         }
 
         return (
-            <div {...others} className={cls}>{this.props.children}</div>
+            <div {...others} className={cls}>
+                {this.props.children}
+            </div>
         );
     }
 }

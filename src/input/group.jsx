@@ -34,45 +34,57 @@ class Group extends React.Component {
         /**
          * rtl
          */
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
-        prefix: 'next-'
+        prefix: 'next-',
     };
 
     render() {
-        const {className, style, children, prefix, addonBefore, addonAfter, addonBeforeClassName, addonAfterClassName, rtl, ...others} = this.props;
+        const {
+            className,
+            style,
+            children,
+            prefix,
+            addonBefore,
+            addonAfter,
+            addonBeforeClassName,
+            addonAfterClassName,
+            rtl,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}input-group`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
 
         const addonCls = `${prefix}input-group-addon`;
         const beforeCls = classNames(addonCls, {
             [`${prefix}before`]: true,
-            [addonBeforeClassName]: addonBeforeClassName
+            [addonBeforeClassName]: addonBeforeClassName,
         });
         const afterCls = classNames(addonCls, {
             [`${prefix}after`]: true,
-            [addonAfterClassName]: addonAfterClassName
+            [addonAfterClassName]: addonAfterClassName,
         });
 
         const before = addonBefore ? (
-            <span className={beforeCls}>
-                {addonBefore}
-            </span>
+            <span className={beforeCls}>{addonBefore}</span>
         ) : null;
 
         const after = addonAfter ? (
-            <span className={afterCls}>
-                {addonAfter}
-            </span>
+            <span className={afterCls}>{addonAfter}</span>
         ) : null;
 
         return (
-            <span {...others} dir={rtl ? 'rtl' : undefined} className={cls} style={style}>
+            <span
+                {...others}
+                dir={rtl ? 'rtl' : undefined}
+                className={cls}
+                style={style}
+            >
                 {before}
                 {children}
                 {after}

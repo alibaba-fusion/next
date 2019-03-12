@@ -9,13 +9,11 @@ import Field from '../../src/field/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-
 const FormItem = Form.Item;
 
 describe('field', () => {
     describe('render', () => {
-        it('should support Form', (done) => {
-
+        it('should support Form', done => {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -24,42 +22,65 @@ describe('field', () => {
 
                 render() {
                     const init = this.field.init;
-                    return <Form field={this.field}>
-                        <FormItem >
-                            <Input {...init('input', { rules: [{ required: true, message: 'cant be null' }, {pattern: /hi/, message: 'cant be null'}] }, {defaultValue: "3"})}/>
-                        </FormItem>
-                        <button onClick={() => {
-                            assert(this.field.getValue('input') === "3");
-                            this.field.setValue('b', 2);
-                            this.field.reset();
-                        }}>click
-                        </button>
-                    </Form>;
+                    return (
+                        <Form field={this.field}>
+                            <FormItem>
+                                <Input
+                                    {...init(
+                                        'input',
+                                        {
+                                            rules: [
+                                                {
+                                                    required: true,
+                                                    message: 'cant be null',
+                                                },
+                                                {
+                                                    pattern: /hi/,
+                                                    message: 'cant be null',
+                                                },
+                                            ],
+                                        },
+                                        { defaultValue: '3' }
+                                    )}
+                                />
+                            </FormItem>
+                            <button
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === '3'
+                                    );
+                                    this.field.setValue('b', 2);
+                                    this.field.reset();
+                                }}
+                            >
+                                click
+                            </button>
+                        </Form>
+                    );
                 }
             }
-            const wrapper = mount(<Demo/>);
+            const wrapper = mount(<Demo />);
             wrapper.find('button').simulate('click');
 
             done();
         });
-        it('should support PureComponent', (done) => {
-
+        it('should support PureComponent', done => {
             class Demo extends React.PureComponent {
                 constructor(props) {
                     super(props);
-                    this.field = new Field(this, {forceUpdate: true});
+                    this.field = new Field(this, { forceUpdate: true });
                 }
 
                 render() {
                     const init = this.field.init;
-                    return <Input {...init('input')}/>
+                    return <Input {...init('input')} />;
                 }
             }
-            const wrapper = mount(<Demo/>);
+            const wrapper = mount(<Demo />);
             wrapper.find('input').simulate('change', {
                 target: {
-                    value: "test"
-                }
+                    value: 'test',
+                },
             });
             assert(wrapper.find('input').prop('value') === 'test');
 
@@ -67,15 +88,14 @@ describe('field', () => {
             // so you should use this.fourceUpdate
             wrapper.find('input').simulate('change', {
                 target: {
-                    value: "test2"
-                }
+                    value: 'test2',
+                },
             });
             assert(wrapper.find('input').prop('value') === 'test2');
             done();
         });
-        
-        it('should support origin input/checkbox/radio', (done) => {
 
+        it('should support origin input/checkbox/radio', done => {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -84,34 +104,58 @@ describe('field', () => {
 
                 render() {
                     const init = this.field.init;
-                    return <Form field={this.field}>
-                        <FormItem >
-                            <input {...init('input',{initValue:'3'})}/>
-                        </FormItem>
-                        <FormItem >
-                            <input type="checkbox" {...init('checkbox', { rules: [{ required: true, message: 'cant be null' }, {pattern: /hi/, message: 'cant be null'}] })}/>
-                        </FormItem>
-                        <FormItem >
-                            <input type="radio" {...init('radio', {valueName: 'checked' })}/>
-                        </FormItem>
-                        <button onClick={() => {
-                            assert(this.field.getValue('input') === "3");
-                            this.field.getValues();
-                        }}>click
-                        </button>
-                    </Form>;
+                    return (
+                        <Form field={this.field}>
+                            <FormItem>
+                                <input {...init('input', { initValue: '3' })} />
+                            </FormItem>
+                            <FormItem>
+                                <input
+                                    type="checkbox"
+                                    {...init('checkbox', {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: 'cant be null',
+                                            },
+                                            {
+                                                pattern: /hi/,
+                                                message: 'cant be null',
+                                            },
+                                        ],
+                                    })}
+                                />
+                            </FormItem>
+                            <FormItem>
+                                <input
+                                    type="radio"
+                                    {...init('radio', { valueName: 'checked' })}
+                                />
+                            </FormItem>
+                            <button
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === '3'
+                                    );
+                                    this.field.getValues();
+                                }}
+                            >
+                                click
+                            </button>
+                        </Form>
+                    );
                 }
             }
-            const wrapper = mount(<Demo/>);
+            const wrapper = mount(<Demo />);
             wrapper.find('button').simulate('click');
             wrapper.find('input[type="checkbox"]').simulate('change');
             wrapper.find('input[type="radio"]').simulate('change');
 
             done();
         });
-    })
+    });
     describe('init', () => {
-        it('init(input)', (done) => {
+        it('init(input)', done => {
             let field = new Field();
             let inited = field.init('input');
 
@@ -123,9 +167,9 @@ describe('field', () => {
             field.init('input', {
                 rules: [
                     {
-                        required: true
-                    }
-                ]
+                        required: true,
+                    },
+                ],
             });
 
             field.init('input');
@@ -133,38 +177,38 @@ describe('field', () => {
 
             done();
         });
-        it('initValue', (done) => {
+        it('initValue', done => {
             let field = new Field();
-            let inited = field.init('input', {initValue: 2});
+            let inited = field.init('input', { initValue: 2 });
 
             assert(inited.value === 2);
-            field.init('input', {initValue: 24});
+            field.init('input', { initValue: 24 });
             assert(inited.value === 2);
 
-            assert(field.init('input2', {initValue: ''}).value === '');
+            assert(field.init('input2', { initValue: '' }).value === '');
 
             done();
         });
-        it('valueName', (done) => {
+        it('valueName', done => {
             let field = new Field();
             let inited = field.init('input', {
                 initValue: true,
-                valueName: 'checked'
+                valueName: 'checked',
             });
             assert(inited.checked === true);
 
             done();
         });
 
-        it('props', (done) => {
+        it('props', done => {
             let field = new Field();
             let inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
                 props: {
                     a: 1,
-                    defaultChecked: false
-                }
+                    defaultChecked: false,
+                },
             });
             assert(inited.a === 1);
             assert(inited.checked === true);
@@ -172,18 +216,20 @@ describe('field', () => {
             done();
         });
 
-        it('custom Event: onChange', (done) => {
+        it('custom Event: onChange', done => {
             const onChange = sinon.spy();
-            let field = new Field(null, {onChange});
-            let inited = field.init('input', {props: {
-                    onChange
-                }});
+            let field = new Field(null, { onChange });
+            let inited = field.init('input', {
+                props: {
+                    onChange,
+                },
+            });
 
-            const wrapper = mount(<Input {...inited}/>);
+            const wrapper = mount(<Input {...inited} />);
             wrapper.find('input').simulate('change', {
                 target: {
-                    value: "test"
-                }
+                    value: 'test',
+                },
             });
             assert(field.getValue('input') === 'test');
             assert(onChange.callCount === 2);
@@ -191,38 +237,48 @@ describe('field', () => {
             let field2 = new Field(null, {
                 onChange: (name, value) => {
                     assert(value === 'test');
-                }
+                },
             });
-            const wrapper2 = mount(<Input {...field2.init('input', { props: { onChange(value) { assert(value === 'test'); } } })}/>);
+            const wrapper2 = mount(
+                <Input
+                    {...field2.init('input', {
+                        props: {
+                            onChange(value) {
+                                assert(value === 'test');
+                            },
+                        },
+                    })}
+                />
+            );
             wrapper2.find('input').simulate('change', {
                 target: {
-                    value: "test"
-                }
+                    value: 'test',
+                },
             });
             assert(field2.getValue('input') === 'test');
 
             done();
         });
 
-        it('getValueFromEvent', (done) => {
+        it('getValueFromEvent', done => {
             let field = new Field(null, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
-                }
+                },
             });
 
             let inited = field.init('input', {
-                getValueFromEvent: (a) => {
+                getValueFromEvent: a => {
                     assert(a === 'test');
                     return a + '!';
-                }
+                },
             });
 
-            const wrapper = mount(<Input {...inited}/>);
+            const wrapper = mount(<Input {...inited} />);
             wrapper.find('input').simulate('change', {
                 target: {
-                    value: "test"
-                }
+                    value: 'test',
+                },
             });
 
             assert(field.getValue('input') === 'test!');
@@ -230,22 +286,22 @@ describe('field', () => {
             done();
         });
 
-        it('rules', (done) => {
+        it('rules', done => {
             let field = new Field();
             field.init('input', {
                 rules: [
                     {
-                        required: true
-                    }
-                ]
+                        required: true,
+                    },
+                ],
             });
 
             assert(field._get('input').rules.length === 1);
 
             field.init('input2', {
                 rules: {
-                    required: true
-                }
+                    required: true,
+                },
             });
 
             assert(field._get('input2').rules.length === 1);
@@ -255,11 +311,11 @@ describe('field', () => {
     });
 
     describe('behaviour', () => {
-        it('getValue & getValues & setValue & setValues', (done) => {
+        it('getValue & getValues & setValue & setValues', done => {
             let field = new Field();
-            field.init('input', {initValue: 1});
-            field.init('input2', {initValue: 2});
-            field.init('input3.name', {initValue: 3});
+            field.init('input', { initValue: 1 });
+            field.init('input2', { initValue: 2 });
+            field.init('input3.name', { initValue: 3 });
 
             field.setValue('input', 2);
             assert(field.getValue('input') === 2);
@@ -267,7 +323,7 @@ describe('field', () => {
             assert(Object.keys(field.getValues()).length === 3);
             assert(field.getValues().input === 2);
 
-            field.setValues({input: 3, input2: 4});
+            field.setValues({ input: 3, input2: 4 });
 
             assert(field.getValue('input') === 3);
             assert(field.getValue('input2') === 4);
@@ -275,37 +331,37 @@ describe('field', () => {
             done();
         });
 
-        it('setError & setErrors & getError & getErrors', (done) => {
+        it('setError & setErrors & getError & getErrors', done => {
             let field = new Field();
-            field.setError('input', "error1");
+            field.setError('input', 'error1');
 
             field.init('input');
             field.init('input2');
 
-            field.setError('input', "error1");
-            assert(field.getError('input')[0] === "error1");
-            assert(field.getErrors(['input'])['input'][0] === "error1");
+            field.setError('input', 'error1');
+            assert(field.getError('input')[0] === 'error1');
+            assert(field.getErrors(['input'])['input'][0] === 'error1');
 
-            field.setError('input2', ["error2"]);
-            assert(field.getError('input2')[0] === "error2");
+            field.setError('input2', ['error2']);
+            assert(field.getError('input2')[0] === 'error2');
 
-            field.setErrors({input: "error 1", input2: "error 2"});
-            field.setError('input', "");
+            field.setErrors({ input: 'error 1', input2: 'error 2' });
+            field.setError('input', '');
 
             assert(field.getError('input') === null);
-            assert(field.getError('input2')[0] === "error 2");
+            assert(field.getError('input2')[0] === 'error 2');
 
             field.setError('input', <span>hello</span>);
             assert(React.isValidElement(field.getError('input')[0]) === true);
 
             done();
         });
-        it('getState', (done) => {
+        it('getState', done => {
             let field = new Field();
 
             field.init('input');
 
-            field.setError('input', "error1");
+            field.setError('input', 'error1');
 
             assert(field.getState('input') === 'error');
             assert(field.getState('') === '');
@@ -313,15 +369,17 @@ describe('field', () => {
             done();
         });
 
-        it('validate', (done) => {
+        it('validate', done => {
             let field = new Field();
-            let inited = field.init('input', {rules: [{required: true, message: 'cant be null'}]});
+            let inited = field.init('input', {
+                rules: [{ required: true, message: 'cant be null' }],
+            });
 
-            const wrapper = mount(<Input {...inited} / >);
+            const wrapper = mount(<Input {...inited} />);
             wrapper.find('input').simulate('change', {
                 target: {
-                    value: ""
-                }
+                    value: '',
+                },
             });
 
             field.validate((error, value, cb) => {
@@ -332,20 +390,20 @@ describe('field', () => {
             });
             field.validate(['input'], (error, value, cb) => {
                 assert(error['input']['errors'][0] === 'cant be null');
-            })
+            });
 
             field.init('input2', {
                 initValue: 123,
                 rules: [
                     {
                         required: true,
-                        message: 'cant be 0'
-                    }
-                ]
+                        message: 'cant be 0',
+                    },
+                ],
             });
             field.validate(['input2'], (error, value, cb) => {
                 assert(error === null);
-            })
+            });
 
             // field.init('input3', {initValue:0, rules: [{required: true, message:'cant be 0' }]});
             // field.validate(['input3'], (error, value, cb)=> {
@@ -355,26 +413,26 @@ describe('field', () => {
             done();
         });
 
-        it('reset', (done) => {
+        it('reset', done => {
             let field = new Field();
-            field.init('input', {initValue: "1"});
+            field.init('input', { initValue: '1' });
 
             field.reset();
             assert(field.getValue('input') === undefined);
 
-            field.init('input2', {initValue: "4"});
-            field.setValue('input2', "33");
+            field.init('input2', { initValue: '4' });
+            field.setValue('input2', '33');
 
             field.resetToDefault();
             assert(field.getValue('input2') === '4');
 
             done();
         });
-        it('remove', (done) => {
+        it('remove', done => {
             let field = new Field();
-            field.init('input', {initValue: 1});
-            field.init('input2', {initValue: 1});
-            field.init('input3', {initValue: 1});
+            field.init('input', { initValue: 1 });
+            field.init('input2', { initValue: 1 });
+            field.init('input3', { initValue: 1 });
 
             field.remove('input');
             assert(field._get('input') === null);
@@ -386,11 +444,11 @@ describe('field', () => {
 
             done();
         });
-        it('spliceArray', (done) => {
+        it('spliceArray', done => {
             let field = new Field();
-            field.init('input.0', {initValue: 0});
-            field.init('input.1', {initValue: 1});
-            field.init('input.2', {initValue: 2});
+            field.init('input.0', { initValue: 0 });
+            field.init('input.1', { initValue: 1 });
+            field.init('input.2', { initValue: 2 });
 
             field.spliceArray('input.{index}', 1);
 
@@ -405,7 +463,5 @@ describe('field', () => {
 
             done();
         });
-    })
-
-
+    });
 });

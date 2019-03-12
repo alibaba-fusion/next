@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {func} from '../util';
+import { func } from '../util';
 import zhCN from '../locale/zh-cn';
 
 class Base extends React.Component {
@@ -88,7 +88,7 @@ class Base extends React.Component {
         name: PropTypes.string,
         rtl: PropTypes.bool,
         state: PropTypes.oneOf(['error', 'loading', 'success']),
-        locale: PropTypes.object
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -104,13 +104,16 @@ class Base extends React.Component {
         onChange: func.noop,
         onKeyDown: func.noop,
         getValueLength: func.noop,
-        locale: zhCN.Input
+        locale: zhCN.Input,
     };
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
             this.setState({
-                value: typeof nextProps.value === 'undefined' ? '' : nextProps.value
+                value:
+                    typeof nextProps.value === 'undefined'
+                        ? ''
+                        : nextProps.value,
             });
         }
     }
@@ -131,7 +134,7 @@ class Base extends React.Component {
         // not controlled
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
 
@@ -155,9 +158,13 @@ class Base extends React.Component {
         }
 
         // has defined maxLength and has over max length and has not input backspace and delete
-        if (maxLength > 0 && (len > maxLength + 1 ||
-                ((len === maxLength || len === maxLength + 1) && e.keyCode !== 8 && e.keyCode !== 46)
-        )) {
+        if (
+            maxLength > 0 &&
+            (len > maxLength + 1 ||
+                ((len === maxLength || len === maxLength + 1) &&
+                    e.keyCode !== 8 &&
+                    e.keyCode !== 46))
+        ) {
             opts.overMaxLength = true;
         }
 
@@ -166,38 +173,45 @@ class Base extends React.Component {
 
     onFocus(e) {
         this.setState({
-            focus: true
+            focus: true,
         });
         this.props.onFocus(e);
     }
 
     onBlur(e) {
         this.setState({
-            focus: false
+            focus: false,
         });
         this.props.onBlur(e);
     }
 
     renderLength() {
         const { maxLength, hasLimitHint, prefix, rtl } = this.props;
-        const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
+        const len =
+            maxLength > 0 && this.state.value
+                ? this.getValueLength(this.state.value)
+                : 0;
 
         const classesLenWrap = classNames({
             [`${prefix}input-len`]: true,
-            [`${prefix}error`]: len > maxLength
+            [`${prefix}error`]: len > maxLength,
         });
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
 
-        return maxLength && hasLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
+        return maxLength && hasLimitHint ? (
+            <span className={classesLenWrap}>{content}</span>
+        ) : null;
     }
 
     renderControl() {
         const lenWrap = this.renderLength();
 
-        return lenWrap ? <span className={`${this.props.prefix}input-control`}>
-            {lenWrap}
-        </span> : null;
+        return lenWrap ? (
+            <span className={`${this.props.prefix}input-control`}>
+                {lenWrap}
+            </span>
+        ) : null;
     }
 
     getClass() {
@@ -207,12 +221,20 @@ class Base extends React.Component {
             [`${prefix}input`]: true,
             [`${prefix}disabled`]: !!disabled,
             [`${prefix}error`]: state === 'error',
-            [`${prefix}focus`]: this.state.focus
+            [`${prefix}focus`]: this.state.focus,
         });
     }
 
     getProps() {
-        const { placeholder, inputStyle, disabled, readOnly, cutString, maxLength, name } = this.props;
+        const {
+            placeholder,
+            inputStyle,
+            disabled,
+            readOnly,
+            cutString,
+            maxLength,
+            name,
+        } = this.props;
         const props = {
             style: inputStyle,
             placeholder,
@@ -223,7 +245,7 @@ class Base extends React.Component {
             value: this.state.value,
             onChange: this.onChange.bind(this),
             onBlur: this.onBlur.bind(this),
-            onFocus: this.onFocus.bind(this)
+            onFocus: this.onFocus.bind(this),
         };
 
         // fix accessibility：auto process status of aria disabled
@@ -234,7 +256,7 @@ class Base extends React.Component {
         return props;
     }
 
-    saveRef = (input) => {
+    saveRef = input => {
         this.inputRef = input;
     };
 

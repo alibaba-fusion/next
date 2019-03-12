@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
  * @order 0
  **/
 export default class Column extends React.Component {
-
     static propTypes = {
         /**
          * 指定列对应的字段，支持`a.b`形式的快速取值
@@ -17,12 +16,20 @@ export default class Column extends React.Component {
          * value, rowIndex, record, context四个属性只可读不可被更改
          * Function(value, index, record) => Element
          */
-        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
+        cell: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.node,
+            PropTypes.func,
+        ]),
         /**
          * 表头显示的内容
          * value, rowIndex, record, context四个属性只可读不可被更改
          */
-        title: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
+        title: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.node,
+            PropTypes.func,
+        ]),
         /**
          * 是否支持排序
          */
@@ -42,10 +49,12 @@ export default class Column extends React.Component {
         /**
          * 生成标题过滤的菜单, 格式为`[{label:'xxx', value:'xxx'}]`
          */
-        filters: PropTypes.arrayOf(PropTypes.shape({
-            label: PropTypes.string,
-            value: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
-        })),
+        filters: PropTypes.arrayOf(
+            PropTypes.shape({
+                label: PropTypes.string,
+                value: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            })
+        ),
         /**
          * 过滤的模式是单选还是多选
          */
@@ -57,18 +66,18 @@ export default class Column extends React.Component {
         /**
          * 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.
          */
-        resizable: PropTypes.bool
-    }
+        resizable: PropTypes.bool,
+    };
 
     static contextTypes = {
-        parent: PropTypes.any
-    }
+        parent: PropTypes.any,
+    };
 
     static defaultProps = {
-        cell: (value) => value,
+        cell: value => value,
         filterMode: 'multiple',
-        resizable: false
-    }
+        resizable: false,
+    };
 
     static _typeMark = 'column';
 

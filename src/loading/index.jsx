@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
-import {obj, func} from '../util';
+import { obj, func } from '../util';
 
 /* eslint-disable react/prefer-stateless-function */
 
@@ -72,7 +72,7 @@ class Loading extends React.Component {
         animate: null,
         tipAlign: 'bottom',
         size: 'large',
-        inline: true
+        inline: true,
     };
 
     render() {
@@ -90,7 +90,7 @@ class Loading extends React.Component {
             tipAlign,
             size,
             inline,
-            rtl
+            rtl,
         } = this.props;
 
         let indicatorDom = null;
@@ -102,44 +102,51 @@ class Loading extends React.Component {
             const backgroundColor = color;
             const fusionReactorCls = classNames({
                 [`${prefix}loading-fusion-reactor`]: true,
-                [`${prefix}loading-medium-fusion-reactor`]: size === 'medium'
+                [`${prefix}loading-medium-fusion-reactor`]: size === 'medium',
             });
-            indicatorDom = (<div className={fusionReactorCls} dir={rtl ? 'rtl' : undefined}>
-                <span className={dotCls} style={{backgroundColor}}></span>
-                <span className={dotCls} style={{backgroundColor}}></span>
-                <span className={dotCls} style={{backgroundColor}}></span>
-                <span className={dotCls} style={{backgroundColor}}></span>
-            </div>);
+            indicatorDom = (
+                <div className={fusionReactorCls} dir={rtl ? 'rtl' : undefined}>
+                    <span className={dotCls} style={{ backgroundColor }} />
+                    <span className={dotCls} style={{ backgroundColor }} />
+                    <span className={dotCls} style={{ backgroundColor }} />
+                    <span className={dotCls} style={{ backgroundColor }} />
+                </div>
+            );
         }
 
         const loadingCls = classNames({
             [`${prefix}loading`]: true,
             [`${prefix}open`]: visible,
             [`${prefix}loading-inline`]: inline,
-            [className]: className
+            [className]: className,
         });
 
         const tipCls = classNames({
             [`${prefix}loading-tip`]: true,
             // 默认非 right就是 bottom
-            [`${prefix}loading-right-tip`]: tipAlign === 'right'
+            [`${prefix}loading-right-tip`]: tipAlign === 'right',
         });
 
         const others = obj.pickOthers(Loading.propTypes, this.props);
 
         const contentCls = classNames({
             [`${prefix}loading-component`]: visible,
-            [`${prefix}loading-wrap`]: true
+            [`${prefix}loading-wrap`]: true,
         });
 
-        return fullScreen ?
+        return fullScreen ? (
             [
                 children,
-                <Overlay key="overlay" hasMask align="cc cc" {...others}
+                <Overlay
+                    key="overlay"
+                    hasMask
+                    align="cc cc"
+                    {...others}
                     className={className}
                     style={style}
                     visible={visible}
-                    onRequestClose={onVisibleChange}>
+                    onRequestClose={onVisibleChange}
+                >
                     <div className={tipCls}>
                         <div className={`${prefix}loading-indicator`}>
                             {indicatorDom}
@@ -152,28 +159,31 @@ class Loading extends React.Component {
                             {tip}
                         </div>
                     </div>
-                </Overlay>
-            ] : (
-                <div className={loadingCls} style={style} {...others}>
-                    {visible ?
-                        (<div className={tipCls}>
-                            <div className={`${prefix}loading-indicator`}>
-                                {indicatorDom}
-                            </div>
-                            <div className={`${prefix}loading-tip-content`}>
-                                {tip}
-                            </div>
-                            <div className={`${prefix}loading-tip-placeholder`}>
-                                {tip}
-                            </div>
-                        </div>) : null
-                    }
-                    <div className={contentCls}>
-                        {visible ? <div className={`${prefix}loading-masker`}></div> : null}
-                        {children}
+                </Overlay>,
+            ]
+        ) : (
+            <div className={loadingCls} style={style} {...others}>
+                {visible ? (
+                    <div className={tipCls}>
+                        <div className={`${prefix}loading-indicator`}>
+                            {indicatorDom}
+                        </div>
+                        <div className={`${prefix}loading-tip-content`}>
+                            {tip}
+                        </div>
+                        <div className={`${prefix}loading-tip-placeholder`}>
+                            {tip}
+                        </div>
                     </div>
+                ) : null}
+                <div className={contentCls}>
+                    {visible ? (
+                        <div className={`${prefix}loading-masker`} />
+                    ) : null}
+                    {children}
                 </div>
-            );
+            </div>
+        );
     }
 }
 

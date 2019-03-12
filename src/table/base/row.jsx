@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { obj, dom } from '../../util';
 import { fetchDataByPath } from '../util';
 
-const noop = () => { };
+const noop = () => {};
 
 export default class Row extends React.Component {
     static propTypes = {
@@ -24,8 +24,8 @@ export default class Row extends React.Component {
         children: PropTypes.any,
         cellRef: PropTypes.func,
         colGroup: PropTypes.object,
-        locale: PropTypes.object
-    }
+        locale: PropTypes.object,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -37,13 +37,13 @@ export default class Row extends React.Component {
         onMouseEnter: noop,
         onMouseLeave: noop,
         cellRef: noop,
-        colGroup: {}
-    }
+        colGroup: {},
+    };
 
     static contextTypes = {
         notRenderCellIndex: PropTypes.array,
-        lockType: PropTypes.oneOf(['left', 'right'])
-    }
+        lockType: PropTypes.oneOf(['left', 'right']),
+    };
 
     shouldComponentUpdate(nextProps) {
         if (nextProps.pure) {
@@ -54,20 +54,20 @@ export default class Row extends React.Component {
         return true;
     }
 
-    onClick = (e) => {
+    onClick = e => {
         const { record, rowIndex } = this.props;
         this.props.onClick(record, rowIndex, e);
-    }
+    };
 
-    onMouseEnter = (e) => {
+    onMouseEnter = e => {
         const { record, rowIndex } = this.props;
         this.onRowHover(record, rowIndex, true, e);
-    }
+    };
 
-    onMouseLeave = (e) => {
+    onMouseLeave = e => {
         const { record, rowIndex } = this.props;
         this.onRowHover(record, rowIndex, false, e);
-    }
+    };
 
     onRowHover(record, index, isEnter, e) {
         const { onMouseEnter, onMouseLeave } = this.props,
@@ -82,51 +82,79 @@ export default class Row extends React.Component {
     }
 
     renderCells(record) {
-        const { Cell, columns, getCellProps, cellRef, prefix, rowIndex, primaryKey, pure, locale, rtl } = this.props;
+        const {
+            Cell,
+            columns,
+            getCellProps,
+            cellRef,
+            prefix,
+            rowIndex,
+            primaryKey,
+            pure,
+            locale,
+            rtl,
+        } = this.props;
         const { lockType } = this.context;
         return columns.map((child, colIndex) => {
             /* eslint-disable no-unused-vars, prefer-const */
             const { dataIndex, align, alignHeader, width, ...others } = child;
 
             const value = fetchDataByPath(record, dataIndex);
-            const attrs = getCellProps(rowIndex, colIndex, dataIndex, record) || {};
+            const attrs =
+                getCellProps(rowIndex, colIndex, dataIndex, record) || {};
 
             if (this.context.notRenderCellIndex) {
-                const matchCellIndex = this.context.notRenderCellIndex.map(cellIndex => cellIndex.toString()).indexOf([rowIndex, colIndex].toString());
+                const matchCellIndex = this.context.notRenderCellIndex
+                    .map(cellIndex => cellIndex.toString())
+                    .indexOf([rowIndex, colIndex].toString());
                 if (matchCellIndex > -1) {
                     this.context.notRenderCellIndex.splice(matchCellIndex, 1);
                     return null;
                 }
             }
-            if (attrs.colSpan && attrs.colSpan > 1 || attrs.rowSpan && attrs.rowSpan > 1) {
-                this._getNotRenderCellIndex(colIndex, rowIndex, attrs.colSpan || 1, attrs.rowSpan || 1);
+            if (
+                (attrs.colSpan && attrs.colSpan > 1) ||
+                (attrs.rowSpan && attrs.rowSpan > 1)
+            ) {
+                this._getNotRenderCellIndex(
+                    colIndex,
+                    rowIndex,
+                    attrs.colSpan || 1,
+                    attrs.rowSpan || 1
+                );
             }
 
             const cellClass = attrs.className;
             const className = classnames({
                 first: lockType !== 'right' && colIndex === 0,
-                last: lockType !== 'left' && (colIndex === columns.length - 1 || colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
+                last:
+                    lockType !== 'left' &&
+                    (colIndex === columns.length - 1 ||
+                        colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
                 [child.className]: child.className,
-                [cellClass]: cellClass
+                [cellClass]: cellClass,
             });
 
-            return (<Cell key={colIndex}
-                {...others}
-                {...attrs}
-                ref={(cell) => cellRef(rowIndex, colIndex, cell)}
-                prefix={prefix}
-                pure={pure}
-                primaryKey={primaryKey}
-                record={record}
-                className={className}
-                value={value}
-                colIndex={colIndex}
-                rowIndex={rowIndex}
-                align={align}
-                locale={locale}
-                rtl={rtl}
-                width={width}
-            />);
+            return (
+                <Cell
+                    key={colIndex}
+                    {...others}
+                    {...attrs}
+                    ref={cell => cellRef(rowIndex, colIndex, cell)}
+                    prefix={prefix}
+                    pure={pure}
+                    primaryKey={primaryKey}
+                    record={record}
+                    className={className}
+                    value={value}
+                    colIndex={colIndex}
+                    rowIndex={rowIndex}
+                    align={align}
+                    locale={locale}
+                    rtl={rtl}
+                    width={width}
+                />
+            );
         });
     }
 
@@ -144,15 +172,43 @@ export default class Row extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, getCellProps, rowIndex, record, children, primaryKey, cellRef, colGroup, pure, locale, expandedIndexSimulate, rtl, ...others } = this.props;
+        const {
+            prefix,
+            className,
+            onClick,
+            onMouseEnter,
+            onMouseLeave,
+            columns,
+            Cell,
+            getCellProps,
+            rowIndex,
+            record,
+            children,
+            primaryKey,
+            cellRef,
+            colGroup,
+            pure,
+            locale,
+            expandedIndexSimulate,
+            rtl,
+            ...others
+        } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
-            [className]: className
+            [className]: className,
         });
-        return (<tr className={cls} role="row" {...others}
-            onClick={this.onClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-            {this.renderCells(record)}
-            {children}
-        </tr>);
+        return (
+            <tr
+                className={cls}
+                role="row"
+                {...others}
+                onClick={this.onClick}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+            >
+                {this.renderCells(record)}
+                {children}
+            </tr>
+        );
     }
 }

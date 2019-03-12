@@ -9,7 +9,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe('Switch', () => {
     it('on', () => {
-        const wrapper = mount(<Switch checked/>);
+        const wrapper = mount(<Switch checked />);
         assert(wrapper.find('.next-switch-on').length === 1);
     });
     it('off', () => {
@@ -21,7 +21,7 @@ describe('Switch', () => {
         assert(wrapper.find('.next-switch-small').length === 1);
     });
     it('defaultChecked and disabled', () => {
-        const wrapper = mount(<Switch defaultChecked disabled/>);
+        const wrapper = mount(<Switch defaultChecked disabled />);
         assert(wrapper.find('.next-switch-on').length === 1);
         wrapper.find('.next-switch').simulate('click');
         assert(wrapper.find('.next-switch-on').length === 1);
@@ -31,20 +31,26 @@ describe('Switch', () => {
             constructor(props) {
                 super(props);
                 this.state = {
-                    checked: false
+                    checked: false,
                 };
                 this.onChange = this.onChange.bind(this);
             }
 
             render() {
-                return (<div>
-                        <Switch checkedChildren="开"  unCheckedChildren="关"
-                                checked={this.state.checked} onChange={this.onChange} />
-                </div>);
+                return (
+                    <div>
+                        <Switch
+                            checkedChildren="开"
+                            unCheckedChildren="关"
+                            checked={this.state.checked}
+                            onChange={this.onChange}
+                        />
+                    </div>
+                );
             }
 
             onChange(checked) {
-                this.setState({checked});
+                this.setState({ checked });
             }
         }
         const wrapper = mount(<App />);
@@ -53,7 +59,13 @@ describe('Switch', () => {
         assert(wrapper.find('.next-switch-children').text() === '开');
         //非受控的onChange
         const onChange = sinon.spy();
-        const wrapper1 = mount(<Switch checkedChildren="开"  unCheckedChildren="关" onChange={onChange}></Switch>);
+        const wrapper1 = mount(
+            <Switch
+                checkedChildren="开"
+                unCheckedChildren="关"
+                onChange={onChange}
+            />
+        );
         assert(wrapper1.find('.next-switch-children').text() === '关');
         wrapper1.find('.next-switch').simulate('click');
         assert(wrapper1.find('.next-switch-children').text() === '开');
@@ -64,40 +76,45 @@ describe('Switch', () => {
             constructor(props) {
                 super(props);
                 this.state = {
-                    checked: false
+                    checked: false,
                 };
                 this.onChange = this.onChange.bind(this);
             }
             render() {
-                return (<div>
-                    <Switch checkedChildren="开"  unCheckedChildren="关"
-                            checked={this.state.checked} onChange={this.onChange}
+                return (
+                    <div>
+                        <Switch
+                            checkedChildren="开"
+                            unCheckedChildren="关"
+                            checked={this.state.checked}
+                            onChange={this.onChange}
                             onClick={this.props.clickCallback}
-                    />
-                </div>);
+                        />
+                    </div>
+                );
             }
 
             onChange(checked) {
-                this.setState({checked});
+                this.setState({ checked });
             }
         }
         const onClick = sinon.spy();
-        const wrapper = mount(<App clickCallback={onClick}/>);
+        const wrapper = mount(<App clickCallback={onClick} />);
         wrapper.find('.next-switch').simulate('click');
         assert(onClick.called);
     });
 
     it('onKeydown', () => {
-        const wrapper = mount(<Switch defaultChecked={false}></Switch>);
+        const wrapper = mount(<Switch defaultChecked={false} />);
         wrapper.simulate('keydown', {
-            keyCode: 13
+            keyCode: 13,
         });
         assert(wrapper.find('.next-switch-on').length === 1);
     });
     it('checked === undefined', () => {
-        const wrapper = mount(<Switch checked></Switch>);
+        const wrapper = mount(<Switch checked />);
         wrapper.setProps({
-            checked: undefined
+            checked: undefined,
         });
         assert(wrapper.find('.next-switch-off').length === 1);
     });

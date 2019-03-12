@@ -12,7 +12,7 @@ const render = element => {
     let inc;
     const container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(element, container, function () {
+    ReactDOM.render(element, container, function() {
         inc = this;
     });
     return {
@@ -29,22 +29,25 @@ const render = element => {
         },
         find: selector => {
             return container.querySelectorAll(selector);
-        }
+        },
     };
 };
 
-const generateData = (len) => {
+const generateData = len => {
     const dataSource = [];
 
     for (let i = 0; i < len; i++) {
-        dataSource.push(<li key={`${i}-test`} style={{lineHeight: '20px'}}>{i}</li>);
+        dataSource.push(
+            <li key={`${i}-test`} style={{ lineHeight: '20px' }}>
+                {i}
+            </li>
+        );
     }
 
     return dataSource;
 };
 
 describe('VirtualList', () => {
-
     let wrapper;
 
     afterEach(() => {
@@ -54,17 +57,17 @@ describe('VirtualList', () => {
         }
     });
 
-
     it('should render', () => {
         function App() {
             return (
-                <div style={{
-                    height: '200px',
-                    width: '200px',
-                    overflow: 'auto'}}>
-                    <VirtualList>
-                        {generateData(10)}
-                    </VirtualList>
+                <div
+                    style={{
+                        height: '200px',
+                        width: '200px',
+                        overflow: 'auto',
+                    }}
+                >
+                    <VirtualList>{generateData(10)}</VirtualList>
                 </div>
             );
         }
@@ -76,13 +79,14 @@ describe('VirtualList', () => {
     it('should render much more', () => {
         function App() {
             return (
-                <div style={{
-                    height: '200px',
-                    width: '200px',
-                    overflow: 'auto'}}>
-                    <VirtualList>
-                        {generateData(100)}
-                    </VirtualList>
+                <div
+                    style={{
+                        height: '200px',
+                        width: '200px',
+                        overflow: 'auto',
+                    }}
+                >
+                    <VirtualList>{generateData(100)}</VirtualList>
                 </div>
             );
         }
@@ -91,16 +95,22 @@ describe('VirtualList', () => {
         assert(wrapper.find('li').length < 20);
     });
 
-    it('should support jumpIndex', (done) => {
+    it('should support jumpIndex', done => {
         function App() {
             return (
-                <div style={{
-                    height: '200px',
-                    width: '200px',
-                    overflow: 'auto'}}>
-                    <VirtualList jumpIndex={50} itemSizeGetter={() => {
-                        return 20;
-                    }}>
+                <div
+                    style={{
+                        height: '200px',
+                        width: '200px',
+                        overflow: 'auto',
+                    }}
+                >
+                    <VirtualList
+                        jumpIndex={50}
+                        itemSizeGetter={() => {
+                            return 20;
+                        }}
+                    >
                         {generateData(100)}
                     </VirtualList>
                 </div>
@@ -113,5 +123,4 @@ describe('VirtualList', () => {
             done();
         }, 100);
     });
-
 });

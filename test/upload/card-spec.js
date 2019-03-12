@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import sinon from 'sinon';
 import Upload from '../../src/upload/index';
-import request from '../../src/upload/runtime/request'
+import request from '../../src/upload/runtime/request';
 import { func } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -18,8 +18,9 @@ const defaultValue = [
         name: 'IMG.png',
         state: 'done',
         size: 1024,
-        url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-    }
+        url:
+            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    },
 ];
 
 function fixBinary(bin) {
@@ -33,7 +34,8 @@ function fixBinary(bin) {
 }
 
 function buildFile(filename = 'test') {
-    const base64 = 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggkFBTzlUWEwwWTRPSHdBQUFBQkpSVTVFcmtKZ2dnPT0=';
+    const base64 =
+        'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggkFBTzlUWEwwWTRPSHdBQUFBQkpSVTVFcmtKZ2dnPT0=';
     const binary = fixBinary(atob(base64));
     const blob = new Blob([binary], { type: 'image/png' });
     const file = new File([blob], `${filename}.png`, { type: 'image/png' });
@@ -41,7 +43,11 @@ function buildFile(filename = 'test') {
 }
 
 function triggerUploadEvent(wrapper, done, callback) {
-    if (typeof atob === 'function' && typeof Blob === 'function' && typeof File === 'function') {
+    if (
+        typeof atob === 'function' &&
+        typeof Blob === 'function' &&
+        typeof File === 'function'
+    ) {
         // 模拟文件上传
         const file = buildFile();
         wrapper.find('input').simulate('change', { target: { files: [file] } });
@@ -65,22 +71,23 @@ describe('CardUpload', () => {
         xhr.restore();
     });
 
-
     describe('[behavior]', () => {
         it('should support controlled `value`', () => {
-            const wrapper = mount(
-                <CardUpload value={[]} />
-            );
+            const wrapper = mount(<CardUpload value={[]} />);
             assert(wrapper.props().value.length === 0);
             assert(wrapper.find('div.next-upload-list-item').length === 1);
 
             wrapper.setProps({
-                value: [{
-                    name: 'IMG_20140109_121958.jpg',
-                    state: 'uploading',
-                    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-                }]
+                value: [
+                    {
+                        name: 'IMG_20140109_121958.jpg',
+                        state: 'uploading',
+                        url:
+                            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        imgURL:
+                            'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                    },
+                ],
             });
 
             assert(wrapper.props().value.length === 1);
@@ -88,91 +95,144 @@ describe('CardUpload', () => {
         });
     });
 
-
     describe('[request]', () => {
         it('should support header', done => {
-
             const formatter = res => {
                 assert(res.test === 123);
                 done();
-            }
-            const wrapper = mount(<CardUpload autoUplod={false} data={{ 'test-data': 'test-data' }} headers={{ 'test-head': 'test-head' }} formatter={formatter} />);
+            };
+            const wrapper = mount(
+                <CardUpload
+                    autoUplod={false}
+                    data={{ 'test-data': 'test-data' }}
+                    headers={{ 'test-head': 'test-head' }}
+                    formatter={formatter}
+                />
+            );
             triggerUploadEvent(wrapper, done, () => {
                 const request = requests[0];
 
                 assert(request.requestHeaders['test-head'] === 'test-head');
                 assert(request.requestBody.get('test-data') === 'test-data');
 
-                requests[0].respond(200, {}, '{"success": true, "url":"https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg", "test": 123}');
+                requests[0].respond(
+                    200,
+                    {},
+                    '{"success": true, "url":"https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg", "test": 123}'
+                );
             });
         });
-        it('should support onChange/onRemove events', (done) => {
+        it('should support onChange/onRemove events', done => {
             const onChange = sinon.spy();
             const onRemove = sinon.spy();
-            const wrapper = mount(<CardUpload defaultValue={[{
-                uid: '0',
-                name: 'IMG.png',
-                state: 'done',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }, {
-                uid: '1',
-                name: 'IMG.png',
-                percent: 50,
-                state: 'uploading',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }, {
-                uid: '2',
-                name: 'IMG.png',
-                state: 'error',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }]} onChange={onChange} onRemove={onRemove} />);
+            const wrapper = mount(
+                <CardUpload
+                    defaultValue={[
+                        {
+                            uid: '0',
+                            name: 'IMG.png',
+                            state: 'done',
+                            url:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                        {
+                            uid: '1',
+                            name: 'IMG.png',
+                            percent: 50,
+                            state: 'uploading',
+                            url:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                        {
+                            uid: '2',
+                            name: 'IMG.png',
+                            state: 'error',
+                            url:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                    ]}
+                    onChange={onChange}
+                    onRemove={onRemove}
+                />
+            );
 
-            wrapper.find('i.next-icon-ashbin').at(0).simulate('click');
+            wrapper
+                .find('i.next-icon-ashbin')
+                .at(0)
+                .simulate('click');
             assert(onRemove.calledOnce);
             assert(onChange.calledOnce);
             assert(wrapper.find('.next-upload-list-item-wrapper').length === 2);
             done();
         });
-        it('should support onChange/onCancel events', (done) => {
+        it('should support onChange/onCancel events', done => {
             const onChange = sinon.spy();
             const onCancel = sinon.spy();
-            const wrapper = mount(<CardUpload defaultValue={[{
-                uid: '0',
-                name: 'IMG.png',
-                state: 'done',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }, {
-                uid: '1',
-                name: 'IMG.png',
-                percent: 50,
-                state: 'uploading',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }, {
-                uid: '2',
-                name: 'IMG.png',
-                state: 'error',
-                url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-                imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-            }]} onChange={onChange} onCancel={onCancel} />);
+            const wrapper = mount(
+                <CardUpload
+                    defaultValue={[
+                        {
+                            uid: '0',
+                            name: 'IMG.png',
+                            state: 'done',
+                            url:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                        {
+                            uid: '1',
+                            name: 'IMG.png',
+                            percent: 50,
+                            state: 'uploading',
+                            url:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                        {
+                            uid: '2',
+                            name: 'IMG.png',
+                            state: 'error',
+                            url:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            downloadURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                            imgURL:
+                                'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                        },
+                    ]}
+                    onChange={onChange}
+                    onCancel={onCancel}
+                />
+            );
 
-            wrapper.find('.next-upload-list-item-handler .next-btn').at(0).simulate('click');
+            wrapper
+                .find('.next-upload-list-item-handler .next-btn')
+                .at(0)
+                .simulate('click');
             assert(onCancel.calledOnce);
             assert(onChange.calledOnce);
             assert(wrapper.find('.next-upload-list-item-wrapper').length === 2);
             done();
         });
-        it('should support change Data/Action/Headers in BeforeUpload', (done) => {
+        it('should support change Data/Action/Headers in BeforeUpload', done => {
             class App extends React.Component {
                 constructor() {
                     super();
@@ -189,11 +249,17 @@ describe('CardUpload', () => {
                         data: { 'test-data': 'beforeUpload' },
                         headers: { 'test-head': 'beforeUpload' },
                     };
-                }
+                };
                 render() {
-                    return <CardUpload autoUplod={false} beforeUpload={this.beforeUpload} {...this.state} />;
+                    return (
+                        <CardUpload
+                            autoUplod={false}
+                            beforeUpload={this.beforeUpload}
+                            {...this.state}
+                        />
+                    );
                 }
-            };
+            }
             const wrapper = mount(<App />);
 
             triggerUploadEvent(wrapper, done, () => {

@@ -35,14 +35,26 @@ function processProps(props, deprecated) {
         props = { closeable: closable, ...others };
     }
 
-    const overlayPropNames = ['target', 'offset', 'beforeOpen', 'onOpen', 'afterOpen', 'beforePosition', 'onPosition', 'cache', 'safeNode', 'wrapperClassName', 'container'];
+    const overlayPropNames = [
+        'target',
+        'offset',
+        'beforeOpen',
+        'onOpen',
+        'afterOpen',
+        'beforePosition',
+        'onPosition',
+        'cache',
+        'safeNode',
+        'wrapperClassName',
+        'container',
+    ];
     overlayPropNames.forEach(name => {
         if (name in props) {
             deprecated(name, `overlayProps.${name}`, 'Dialog');
             const { overlayProps, ...others } = props;
             const newOverlayProps = {
                 [name]: props[name],
-                ...(overlayProps || {})
+                ...(overlayProps || {}),
             };
             delete others[name];
             props = { overlayProps: newOverlayProps, ...others };
@@ -55,5 +67,5 @@ function processProps(props, deprecated) {
 export default ConfigProvider.config(Dialog, {
     transform: (props, deprecated) => {
         return processProps(props, deprecated);
-    }
+    },
 });

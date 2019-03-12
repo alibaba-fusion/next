@@ -21,7 +21,7 @@ const runCommond = function(cmd) {
     });
 };
 
-co(function* () {
+co(function*() {
     checkTags();
 
     yield pushMaster();
@@ -124,8 +124,8 @@ function* publishToNpm() {
                     return false;
                 }
             },
-            message: 'Are you sure to publish to npmjs.com ? (yes | no)'
-        }
+            message: 'Are you sure to publish to npmjs.com ? (yes | no)',
+        },
     ]);
     if (pubNpm.pub.toLowerCase() === 'yes') {
         logger.success('publishing ...');
@@ -141,13 +141,13 @@ function* getGithubInfo() {
         {
             name: 'uname',
             type: 'input',
-            message: '请输入github用户名:'
+            message: '请输入github用户名:',
         },
         {
             name: 'pwd',
             type: 'password',
-            message: '请输入github密码:'
-        }
+            message: '请输入github密码:',
+        },
     ]);
 }
 
@@ -167,7 +167,7 @@ function* triggerRelease() {
             Github.authenticate({
                 type: 'basic',
                 username: hubInfo.uname,
-                password: hubInfo.pwd
+                password: hubInfo.pwd,
             });
         });
 
@@ -177,12 +177,12 @@ function* triggerRelease() {
                 repo: 'next',
                 /* eslint-disable */
                 tag_name: buildTag,
-                target_commitish: "platform-docs",
+                target_commitish: 'platform-docs',
                 /* eslint-enable */
                 name: buildTag,
                 body: latestLog,
                 draft: false,
-                prerelease: false
+                prerelease: false,
             })
             .then(() => {
                 logger.success('Create release success');

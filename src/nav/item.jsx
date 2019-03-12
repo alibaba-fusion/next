@@ -22,19 +22,24 @@ class Item extends Component {
          * 导航内容
          */
         children: PropTypes.node,
-        parentMode: PropTypes.oneOf(['inline', 'popup'])
+        parentMode: PropTypes.oneOf(['inline', 'popup']),
     };
 
     static contextTypes = {
         prefix: PropTypes.string,
         iconOnly: PropTypes.bool,
-        hasTooltip: PropTypes.bool
+        hasTooltip: PropTypes.bool,
     };
 
     render() {
-        const {prefix, iconOnly, hasTooltip} = this.context;
-        const {icon, children, ...others} = this.props;
-        let iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
+        const { prefix, iconOnly, hasTooltip } = this.context;
+        const { icon, children, ...others } = this.props;
+        let iconEl =
+            typeof icon === 'string' ? (
+                <Icon className={`${prefix}nav-icon`} type={icon} />
+            ) : (
+                icon
+            );
         if (iconOnly && !iconEl) {
             iconEl = <span className={`${prefix}nav-icon-placeholder`} />;
         }
@@ -47,7 +52,11 @@ class Item extends Component {
         );
 
         if (iconOnly && hasTooltip && others.parentMode !== 'popup') {
-            return <Tooltip align="r" trigger={item}>{children}</Tooltip>;
+            return (
+                <Tooltip align="r" trigger={item}>
+                    {children}
+                </Tooltip>
+            );
         }
 
         return item;

@@ -22,34 +22,36 @@ class Group extends Component {
         /**
          * 导航项和子导航
          */
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static contextTypes = {
         prefix: PropTypes.string,
-        iconOnly: PropTypes.bool
+        iconOnly: PropTypes.bool,
     };
 
     render() {
-        const {prefix, iconOnly} = this.context;
-        const {className, children, label, ...others} = this.props;
+        const { prefix, iconOnly } = this.context;
+        const { className, children, label, ...others } = this.props;
 
         let newLabel = label;
         if (iconOnly) {
             // TODO: add a group icon ?
             newLabel = [
                 <span key="icon" className={`${prefix}nav-icon-placeholder`} />,
-                <span key="label">{label}</span>
+                <span key="label">{label}</span>,
             ];
         }
 
         const cls = classNames({
             [`${prefix}nav-group-label`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
 
         return (
-            <Menu.Group className={cls} label={newLabel} {...others}>{children}</Menu.Group>
+            <Menu.Group className={cls} label={newLabel} {...others}>
+                {children}
+            </Menu.Group>
         );
     }
 }

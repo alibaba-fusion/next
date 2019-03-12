@@ -18,7 +18,7 @@ export default class Circle extends Component {
         prefix: PropTypes.string,
         className: PropTypes.string,
         color: PropTypes.string,
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool,
     };
 
     constructor(props) {
@@ -26,7 +26,7 @@ export default class Circle extends Component {
 
         this.state = {
             underlayStrokeWidth: DEFAULT_STROKE_WIDTH,
-            overlayStrokeWidth: DEFAULT_STROKE_WIDTH
+            overlayStrokeWidth: DEFAULT_STROKE_WIDTH,
         };
     }
 
@@ -34,8 +34,12 @@ export default class Circle extends Component {
         if (this.underlay && this.overlay) {
             // eslint-disable-next-line
             this.setState({
-                underlayStrokeWidth: this._getCssValue(this.underlay, 'stroke-width') || DEFAULT_STROKE_WIDTH,
-                overlayStrokeWidth: this._getCssValue(this.overlay, 'stroke-width') || DEFAULT_STROKE_WIDTH
+                underlayStrokeWidth:
+                    this._getCssValue(this.underlay, 'stroke-width') ||
+                    DEFAULT_STROKE_WIDTH,
+                overlayStrokeWidth:
+                    this._getCssValue(this.overlay, 'stroke-width') ||
+                    DEFAULT_STROKE_WIDTH,
             });
         }
     }
@@ -48,27 +52,44 @@ export default class Circle extends Component {
         return Array.isArray(result) ? Number(result[1]) : 0;
     }
 
-    _underlayRefHandler = (ref) => {
+    _underlayRefHandler = ref => {
         this.underlay = ref;
-    }
+    };
 
-    _overlayRefHandler = (ref) => {
+    _overlayRefHandler = ref => {
         this.overlay = ref;
-    }
+    };
 
     _computeOverlayStrokeDashOffset() {
         const { underlayStrokeWidth, overlayStrokeWidth } = this.state;
-        const overlayRadius = HALF_VIEWBOX_WIDTH - overlayStrokeWidth / 2 - (underlayStrokeWidth - overlayStrokeWidth) / 2;
+        const overlayRadius =
+            HALF_VIEWBOX_WIDTH -
+            overlayStrokeWidth / 2 -
+            (underlayStrokeWidth - overlayStrokeWidth) / 2;
         const overlayLen = Math.PI * 2 * overlayRadius;
-        return ((VIEWBOX_WIDTH - this.props.percent) / VIEWBOX_WIDTH * overlayLen);
+        return (
+            ((VIEWBOX_WIDTH - this.props.percent) / VIEWBOX_WIDTH) * overlayLen
+        );
     }
 
     _getPath(radius) {
-        return `M ${HALF_VIEWBOX_WIDTH},${HALF_VIEWBOX_WIDTH} m 0,-${radius} a ${radius},${radius} 0 1 1 0,${2 * radius} a ${radius},${radius} 0 1 1 0,-${2 * radius}`;
+        return `M ${HALF_VIEWBOX_WIDTH},${HALF_VIEWBOX_WIDTH} m 0,-${radius} a ${radius},${radius} 0 1 1 0,${2 *
+            radius} a ${radius},${radius} 0 1 1 0,-${2 * radius}`;
     }
 
     render() {
-        const { prefix, size, state, percent, className, textRender, progressive, color, rtl, ...others } = this.props;
+        const {
+            prefix,
+            size,
+            state,
+            percent,
+            className,
+            textRender,
+            progressive,
+            color,
+            rtl,
+            ...others
+        } = this.props;
         const { underlayStrokeWidth, overlayStrokeWidth } = this.state;
 
         // underlay path
@@ -76,27 +97,34 @@ export default class Circle extends Component {
         const underlayPath = this._getPath(underlayRadius);
 
         // overlay path (为居中，减去相对于underlay的宽度)
-        const overlayRadius = HALF_VIEWBOX_WIDTH - overlayStrokeWidth / 2 - (underlayStrokeWidth - overlayStrokeWidth) / 2;
+        const overlayRadius =
+            HALF_VIEWBOX_WIDTH -
+            overlayStrokeWidth / 2 -
+            (underlayStrokeWidth - overlayStrokeWidth) / 2;
         const overlayPath = this._getPath(overlayRadius);
         const overlayLen = Math.PI * 2 * overlayRadius;
         const overlayStrokeDasharray = `${overlayLen}px ${overlayLen}px`;
         const overlayStrokeDashoffset = `${this._computeOverlayStrokeDashOffset()}px`;
 
-        const suffixText = textRender(percent, {rtl});
+        const suffixText = textRender(percent, { rtl });
 
         const wrapCls = classNames({
             [`${prefix}progress-circle`]: true,
             [`${prefix}progress-circle-show-info`]: suffixText,
             [`${prefix + size}`]: size,
-            [className]: className
+            [className]: className,
         });
 
         const pathCls = classNames({
             [`${prefix}progress-circle-overlay`]: true,
-            [`${prefix}progress-circle-overlay-${state}`]: !color && !progressive && state,
-            [`${prefix}progress-circle-overlay-started`]: !color && progressive && percent <= 30,
-            [`${prefix}progress-circle-overlay-middle`]: !color && progressive && percent > 30 && percent < 80,
-            [`${prefix}progress-circle-overlay-finishing`]: !color && progressive && percent >= 80
+            [`${prefix}progress-circle-overlay-${state}`]:
+                !color && !progressive && state,
+            [`${prefix}progress-circle-overlay-started`]:
+                !color && progressive && percent <= 30,
+            [`${prefix}progress-circle-overlay-middle`]:
+                !color && progressive && percent > 30 && percent < 80,
+            [`${prefix}progress-circle-overlay-finishing`]:
+                !color && progressive && percent >= 80,
         });
 
         return (
@@ -107,9 +135,18 @@ export default class Circle extends Component {
                 aria-valuenow={percent}
                 aria-valuemin="0"
                 aria-valuemax="100"
-                {...others}>
-                <svg className={`${prefix}progress-circle-container`} viewBox={viewBox}>
-                    <path className={`${prefix}progress-circle-underlay`} d={underlayPath} fillOpacity="0" ref={this._underlayRefHandler} />
+                {...others}
+            >
+                <svg
+                    className={`${prefix}progress-circle-container`}
+                    viewBox={viewBox}
+                >
+                    <path
+                        className={`${prefix}progress-circle-underlay`}
+                        d={underlayPath}
+                        fillOpacity="0"
+                        ref={this._underlayRefHandler}
+                    />
                     <path
                         className={pathCls}
                         d={overlayPath}
@@ -120,7 +157,11 @@ export default class Circle extends Component {
                         stroke={color}
                     />
                 </svg>
-                {suffixText ? <div className={`${prefix}progress-circle-text`}>{suffixText}</div> : null}
+                {suffixText ? (
+                    <div className={`${prefix}progress-circle-text`}>
+                        {suffixText}
+                    </div>
+                ) : null}
             </div>
         );
     }

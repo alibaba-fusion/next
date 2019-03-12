@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
-import {obj, func} from '../util';
+import { obj, func } from '../util';
 import Base from './base';
 import Group from './group';
 
@@ -87,7 +87,7 @@ export default class Input extends Base {
         inputRender: PropTypes.func,
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
-        innerAfterClassName: PropTypes.string
+        innerAfterClassName: PropTypes.string,
     };
 
     static defaultProps = {
@@ -96,7 +96,7 @@ export default class Input extends Base {
         autoComplete: 'off',
         hasBorder: true,
         onPressEnter: func.noop,
-        inputRender: (el) => el
+        inputRender: el => el,
     };
 
     constructor(props) {
@@ -110,7 +110,7 @@ export default class Input extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value
+            value: typeof value === 'undefined' ? '' : value,
         };
     }
 
@@ -127,61 +127,96 @@ export default class Input extends Base {
     }
 
     renderControl() {
-        const {hasClear, readOnly, state, prefix, hint, extra, locale} = this.props;
+        const {
+            hasClear,
+            readOnly,
+            state,
+            prefix,
+            hint,
+            extra,
+            locale,
+        } = this.props;
 
         const lenWrap = this.renderLength();
 
         let stateWrap = null;
         if (state === 'success') {
-            stateWrap = <Icon type="success-filling"/>;
+            stateWrap = <Icon type="success-filling" />;
         } else if (state === 'loading') {
-            stateWrap = <Icon type="loading"/>;
+            stateWrap = <Icon type="loading" />;
         }
 
         let clearWrap = null;
-        const showClear = hasClear && !readOnly && !!(`${this.state.value}`);
+        const showClear = hasClear && !readOnly && !!`${this.state.value}`;
 
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon = <Icon type={hint} className={`${prefix}input-hint`}/>;
+                hintIcon = (
+                    <Icon type={hint} className={`${prefix}input-hint`} />
+                );
             } else {
-                hintIcon = (<Icon type="delete-filling" role="button" tabIndex="0" className={`${prefix}input-hint`} aria-label={locale.clear}
-                    onClick={this.onClear.bind(this)}
-                    onMouseDown={preventDefault}
-                    onKeyDown={this.handleKeyDownFromClear} />);
+                hintIcon = (
+                    <Icon
+                        type="delete-filling"
+                        role="button"
+                        tabIndex="0"
+                        className={`${prefix}input-hint`}
+                        aria-label={locale.clear}
+                        onClick={this.onClear.bind(this)}
+                        onMouseDown={preventDefault}
+                        onKeyDown={this.handleKeyDownFromClear}
+                    />
+                );
             }
 
-            clearWrap = (<span className={`${prefix}input-hint-wrap`}>
-                {hasClear && hint ? <Icon type="delete-filling" role="button" tabIndex="0" className={`${prefix}input-clear`} aria-label={locale.clear}
-                    onClick={this.onClear.bind(this)}
-                    onMouseDown={preventDefault}
-                    onKeyDown={this.handleKeyDownFromClear} /> : null}
-                {hintIcon}
-            </span>);
+            clearWrap = (
+                <span className={`${prefix}input-hint-wrap`}>
+                    {hasClear && hint ? (
+                        <Icon
+                            type="delete-filling"
+                            role="button"
+                            tabIndex="0"
+                            className={`${prefix}input-clear`}
+                            aria-label={locale.clear}
+                            onClick={this.onClear.bind(this)}
+                            onMouseDown={preventDefault}
+                            onKeyDown={this.handleKeyDownFromClear}
+                        />
+                    ) : null}
+                    {hintIcon}
+                </span>
+            );
         }
 
         if (state === 'loading') {
             clearWrap = null;
         }
 
-        return clearWrap || lenWrap || stateWrap || extra ? <span className={`${prefix}input-control`}>
-            {clearWrap}{lenWrap}{stateWrap}{extra}
-        </span> : null;
+        return clearWrap || lenWrap || stateWrap || extra ? (
+            <span className={`${prefix}input-control`}>
+                {clearWrap}
+                {lenWrap}
+                {stateWrap}
+                {extra}
+            </span>
+        ) : null;
     }
 
     renderLabel() {
-        const {label, prefix, id} = this.props;
-        return label ? <label className={`${prefix}input-label`} htmlFor={id}>
-            {label}
-        </label> : null;
+        const { label, prefix, id } = this.props;
+        return label ? (
+            <label className={`${prefix}input-label`} htmlFor={id}>
+                {label}
+            </label>
+        ) : null;
     }
 
     renderInner(inner, cls) {
         return inner ? <span className={cls}>{inner}</span> : null;
     }
 
-    handleKeyDown = (e) => {
+    handleKeyDown = e => {
         if (e.keyCode === 13) {
             this.props.onPressEnter(e);
         }
@@ -189,7 +224,7 @@ export default class Input extends Base {
         this.onKeyDown(e);
     };
 
-    handleKeyDownFromClear = (e) => {
+    handleKeyDownFromClear = e => {
         if (e.keyCode === 13) {
             this.onClear(e);
         }
@@ -203,7 +238,7 @@ export default class Input extends Base {
         // 非受控模式清空内部数据
         if (!('value' in this.props)) {
             this.setState({
-                value: ''
+                value: '',
             });
         }
         this.props.onChange('', e, 'clear');
@@ -211,27 +246,49 @@ export default class Input extends Base {
     }
 
     render() {
-        const {size, htmlType, htmlSize, autoComplete, autoFocus, disabled, style, innerBefore, innerAfter, innerBeforeClassName, innerAfterClassName, className, hasBorder, prefix, addonBefore, addonAfter, addonTextBefore, addonTextAfter, inputRender, rtl} = this.props;
+        const {
+            size,
+            htmlType,
+            htmlSize,
+            autoComplete,
+            autoFocus,
+            disabled,
+            style,
+            innerBefore,
+            innerAfter,
+            innerBeforeClassName,
+            innerAfterClassName,
+            className,
+            hasBorder,
+            prefix,
+            addonBefore,
+            addonAfter,
+            addonTextBefore,
+            addonTextAfter,
+            inputRender,
+            rtl,
+        } = this.props;
 
-        const hasAddon = addonBefore || addonAfter || addonTextBefore || addonTextAfter;
+        const hasAddon =
+            addonBefore || addonAfter || addonTextBefore || addonTextAfter;
         const cls = classNames(this.getClass(), {
             [`${prefix}${size}`]: true,
             [`${prefix}hidden`]: this.props.htmlType === 'hidden',
             [`${prefix}noborder`]: !hasBorder || this.props.htmlType === 'file',
             [`${prefix}input-group-auto-width`]: hasAddon,
-            [className]: !!className && !hasAddon
+            [className]: !!className && !hasAddon,
         });
 
         const innerCls = `${prefix}input-inner`;
         const innerBeforeCls = classNames({
             [innerCls]: true,
             [`${prefix}before`]: true,
-            [innerBeforeClassName]: innerBeforeClassName
+            [innerBeforeClassName]: innerBeforeClassName,
         });
         const innerAfterCls = classNames({
             [innerCls]: true,
             [`${prefix}after`]: true,
-            [innerAfterClassName]: innerAfterClassName
+            [innerAfterClassName]: innerAfterClassName,
         });
 
         const props = this.getProps();
@@ -240,52 +297,67 @@ export default class Input extends Base {
         const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心node节点：input
-        const others = obj.pickOthers(Object.assign({}, dataProps, Input.propTypes), this.props);
+        const others = obj.pickOthers(
+            Object.assign({}, dataProps, Input.propTypes),
+            this.props
+        );
 
-        const inputEl = (<input
-            {...others}
-            {...props}
-            height="100%"
-            type={htmlType}
-            size={htmlSize}
-            autoFocus={autoFocus}
-            autoComplete={autoComplete}
-            onKeyDown={this.handleKeyDown}
-            ref={this.saveRef}
-        />);
+        const inputEl = (
+            <input
+                {...others}
+                {...props}
+                height="100%"
+                type={htmlType}
+                size={htmlSize}
+                autoFocus={autoFocus}
+                autoComplete={autoComplete}
+                onKeyDown={this.handleKeyDown}
+                ref={this.saveRef}
+            />
+        );
 
-        const inputWrap = (<span {...dataProps} dir={rtl ? 'rtl' : undefined} className={cls} style={hasAddon ? undefined : style}>
-            {this.renderInner(innerBefore, innerBeforeCls)}
-            {this.renderLabel()}
-            {inputRender(inputEl)}
-            {this.renderControl()}
-            {this.renderInner(innerAfter, innerAfterCls)}
-        </span>);
+        const inputWrap = (
+            <span
+                {...dataProps}
+                dir={rtl ? 'rtl' : undefined}
+                className={cls}
+                style={hasAddon ? undefined : style}
+            >
+                {this.renderInner(innerBefore, innerBeforeCls)}
+                {this.renderLabel()}
+                {inputRender(inputEl)}
+                {this.renderControl()}
+                {this.renderInner(innerAfter, innerAfterCls)}
+            </span>
+        );
 
         const groupCls = classNames({
             [`${prefix}input-group-text`]: true,
             [`${prefix}${size}`]: !!size,
-            [`${prefix}disabled`]: disabled
+            [`${prefix}disabled`]: disabled,
         });
 
         const addonBeforeCls = classNames({
-            [groupCls]: addonTextBefore
+            [groupCls]: addonTextBefore,
         });
         const addonAfterCls = classNames({
-            [groupCls]: addonTextAfter
+            [groupCls]: addonTextAfter,
         });
 
         if (hasAddon) {
-            return (<Group
-                {...dataProps}
-                className={className}
-                style={style}
-                addonBefore={addonBefore || addonTextBefore}
-                addonBeforeClassName={addonBeforeCls}
-                addonAfter={addonAfter || addonTextAfter}
-                addonAfterClassName={addonAfterCls}>
-                {inputWrap}
-            </Group>);
+            return (
+                <Group
+                    {...dataProps}
+                    className={className}
+                    style={style}
+                    addonBefore={addonBefore || addonTextBefore}
+                    addonBeforeClassName={addonBeforeCls}
+                    addonAfter={addonAfter || addonTextAfter}
+                    addonAfterClassName={addonAfterCls}
+                >
+                    {inputWrap}
+                </Group>
+            );
         }
 
         return inputWrap;

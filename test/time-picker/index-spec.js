@@ -12,7 +12,6 @@ const defaultValue = moment('11:12:13', 'HH:mm:ss', true);
 /* eslint-disable */
 describe('TimePicker', () => {
     describe('render', () => {
-
         let wrapper;
 
         afterEach(() => {
@@ -27,31 +26,65 @@ describe('TimePicker', () => {
 
         it('should render with defaultValue', () => {
             wrapper = mount(<TimePicker defaultValue={defaultValue} />);
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '11:12:13');
+            assert(
+                wrapper.find('.next-time-picker-input input').instance()
+                    .value === '11:12:13'
+            );
         });
 
         it('should render with defaultValue as string', () => {
             wrapper = mount(<TimePicker defaultValue="11:11:11" />);
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '11:11:11');
+            assert(
+                wrapper.find('.next-time-picker-input input').instance()
+                    .value === '11:11:11'
+            );
         });
 
         it('should render with format', () => {
-            wrapper = mount(<TimePicker defaultValue="10:1:1" format="H:m:s" />);
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '10:1:1');
+            wrapper = mount(
+                <TimePicker defaultValue="10:1:1" format="H:m:s" />
+            );
+            assert(
+                wrapper.find('.next-time-picker-input input').instance()
+                    .value === '10:1:1'
+            );
         });
 
         it('should render with defaultVisible', () => {
-            wrapper = mount(<TimePicker defaultValue={defaultValue} defaultVisible />);
-            assert(wrapper.find('.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected').instance().title === '11');
-            assert(wrapper.find('.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected').instance().title === '12');
-            assert(wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item.next-selected').instance().title === '13');
-        })
+            wrapper = mount(
+                <TimePicker defaultValue={defaultValue} defaultVisible />
+            );
+            assert(
+                wrapper
+                    .find(
+                        '.next-time-picker-menu-hour .next-time-picker-menu-item.next-selected'
+                    )
+                    .instance().title === '11'
+            );
+            assert(
+                wrapper
+                    .find(
+                        '.next-time-picker-menu-minute .next-time-picker-menu-item.next-selected'
+                    )
+                    .instance().title === '12'
+            );
+            assert(
+                wrapper
+                    .find(
+                        '.next-time-picker-menu-second .next-time-picker-menu-item.next-selected'
+                    )
+                    .instance().title === '13'
+            );
+        });
 
         it('should render with value controlled', () => {
             wrapper = mount(<TimePicker value={defaultValue} />);
             const newValue = moment('12:22:22', 'HH:mm:ss', true);
             wrapper.setProps({ value: newValue });
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '12:22:22');
+            assert(
+                wrapper.find('.next-time-picker-input input').instance()
+                    .value === '12:22:22'
+            );
         });
 
         it('should render with visisble controlled', () => {
@@ -63,7 +96,11 @@ describe('TimePicker', () => {
 
         it('should render with step', () => {
             wrapper = mount(<TimePicker defaultVisible secondStep={5} />);
-            assert(wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item').length === 12);
+            assert(
+                wrapper.find(
+                    '.next-time-picker-menu-second .next-time-picker-menu-item'
+                ).length === 12
+            );
         });
     });
 
@@ -77,10 +114,16 @@ describe('TimePicker', () => {
             ret = null;
         });
 
-
         it('should reset value', () => {
             ret = 'hello';
-            wrapper = mount(<TimePicker defaultValue={defaultValue} onChange={val => { ret = val; }} />);
+            wrapper = mount(
+                <TimePicker
+                    defaultValue={defaultValue}
+                    onChange={val => {
+                        ret = val;
+                    }}
+                />
+            );
             wrapper.find('.next-icon-delete-filling').simulate('click');
             assert(ret === null);
         });
@@ -98,29 +141,72 @@ describe('TimePicker', () => {
         });
 
         it('should input value in picker', () => {
-            wrapper = mount(<TimePicker onChange={val => { ret = val.format('HH:mm:ss'); }} />);
-            wrapper.find('.next-time-picker-input input').simulate('change', { target: { value: '20:00:00' } });
+            wrapper = mount(
+                <TimePicker
+                    onChange={val => {
+                        ret = val.format('HH:mm:ss');
+                    }}
+                />
+            );
+            wrapper
+                .find('.next-time-picker-input input')
+                .simulate('change', { target: { value: '20:00:00' } });
             wrapper.find('.next-time-picker-input input').simulate('blur');
-            assert(wrapper.find('.next-time-picker-input input').instance().value === '20:00:00');
+            assert(
+                wrapper.find('.next-time-picker-input input').instance()
+                    .value === '20:00:00'
+            );
             assert(ret === '20:00:00');
         });
 
         it('should input value in panel', () => {
-            wrapper = mount(<TimePicker onChange={val => { ret = val.format('HH:mm:ss'); }} />);
+            wrapper = mount(
+                <TimePicker
+                    onChange={val => {
+                        ret = val.format('HH:mm:ss');
+                    }}
+                />
+            );
             wrapper.find('.next-time-picker-input input').simulate('click');
-            wrapper.find('.next-time-picker-panel-input input').simulate('change', { target: { value: '20:00:00' } });
-            wrapper.find('.next-time-picker-panel-input input').simulate('blur');
-            assert(wrapper.find('.next-time-picker-panel-input input').instance().value === '20:00:00');
+            wrapper
+                .find('.next-time-picker-panel-input input')
+                .simulate('change', { target: { value: '20:00:00' } });
+            wrapper
+                .find('.next-time-picker-panel-input input')
+                .simulate('blur');
+            assert(
+                wrapper.find('.next-time-picker-panel-input input').instance()
+                    .value === '20:00:00'
+            );
         });
 
         it('should select time-picker panel', () => {
-            wrapper = mount(<TimePicker onChange={val => { ret = val.format('HH:mm:ss'); }} />);
+            wrapper = mount(
+                <TimePicker
+                    onChange={val => {
+                        ret = val.format('HH:mm:ss');
+                    }}
+                />
+            );
             wrapper.find('.next-time-picker-input input').simulate('click');
-            wrapper.find('.next-time-picker-menu-hour .next-time-picker-menu-item').at(2).simulate('click');
+            wrapper
+                .find('.next-time-picker-menu-hour .next-time-picker-menu-item')
+                .at(2)
+                .simulate('click');
             assert(ret === '02:00:00');
-            wrapper.find('.next-time-picker-menu-minute .next-time-picker-menu-item').at(2).simulate('click');
+            wrapper
+                .find(
+                    '.next-time-picker-menu-minute .next-time-picker-menu-item'
+                )
+                .at(2)
+                .simulate('click');
             assert(ret === '02:02:00');
-            wrapper.find('.next-time-picker-menu-second .next-time-picker-menu-item').at(2).simulate('click');
+            wrapper
+                .find(
+                    '.next-time-picker-menu-second .next-time-picker-menu-item'
+                )
+                .at(2)
+                .simulate('click');
             assert(ret === '02:02:02');
         });
     });

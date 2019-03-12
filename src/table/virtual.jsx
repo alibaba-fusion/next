@@ -5,7 +5,7 @@ import { dom } from '../util';
 import VirtualBody from './virtual/body';
 import { statics } from './util';
 
-const noop = () => { };
+const noop = () => {};
 export default function virtual(BaseComponent) {
     class VirtualTable extends React.Component {
         static VirtualBody = VirtualBody;
@@ -18,15 +18,18 @@ export default function virtual(BaseComponent) {
              * 设置行高
              */
             rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            maxBodyHeight: PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.string,
+            ]),
             primaryKey: PropTypes.string,
             dataSource: PropTypes.array,
             /**
              * 在内容区域滚动的时候触发的函数
              */
             onBodyScroll: PropTypes.func,
-            ...BaseComponent.propTypes
-        }
+            ...BaseComponent.propTypes,
+        };
 
         static defaultProps = {
             ...BaseComponent.defaultProps,
@@ -35,8 +38,8 @@ export default function virtual(BaseComponent) {
             maxBodyHeight: 200,
             components: {},
             prefix: 'next-',
-            onBodyScroll: noop
-        }
+            onBodyScroll: noop,
+        };
 
         static childContextTypes = {
             onVirtualScroll: PropTypes.func,
@@ -44,14 +47,14 @@ export default function virtual(BaseComponent) {
             innerTop: PropTypes.number,
             getBodyNode: PropTypes.func,
             getTableInstanceForVirtual: PropTypes.func,
-            rowSelection: PropTypes.object
-        }
+            rowSelection: PropTypes.object,
+        };
 
         state = {
             rowHeight: this.props.rowHeight,
             scrollToRow: this.props.scrollToRow,
-            height: this.props.maxBodyHeight
-        }
+            height: this.props.maxBodyHeight,
+        };
 
         getChildContext() {
             return {
@@ -60,18 +63,18 @@ export default function virtual(BaseComponent) {
                 innerTop: this.computeInnerTop(),
                 getBodyNode: this.getBodyNode,
                 getTableInstanceForVirtual: this.getTableInstance,
-                rowSelection: this.rowSelection
+                rowSelection: this.rowSelection,
             };
         }
 
         componentWillMount() {
             const { useVirtual, dataSource } = this.props;
 
-            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData =
+                useVirtual && dataSource && dataSource.length > 0;
         }
 
         componentDidMount() {
-
             if (this.hasVirtualData) {
                 this.lastScrollTop = this.bodyNode.scrollTop;
             }
@@ -84,32 +87,35 @@ export default function virtual(BaseComponent) {
         componentWillReceiveProps(nextProps) {
             const { useVirtual, dataSource } = nextProps;
 
-            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData =
+                useVirtual && dataSource && dataSource.length > 0;
 
             if ('maxBodyHeight' in nextProps) {
                 if (this.state.height !== nextProps.maxBodyHeight) {
                     this.setState({
-                        height: nextProps.maxBodyHeight
+                        height: nextProps.maxBodyHeight,
                     });
                 }
             }
 
             if ('scrollToRow' in nextProps) {
                 this.setState({
-                    scrollToRow: nextProps.scrollToRow
+                    scrollToRow: nextProps.scrollToRow,
                 });
             }
 
             if (this.state.rowHeight && 'rowHeight' in nextProps) {
                 const row = this.getRowNode();
                 const rowClientHeight = row && row.clientHeight;
-                if (rowClientHeight && rowClientHeight !== this.state.rowHeight) {
+                if (
+                    rowClientHeight &&
+                    rowClientHeight !== this.state.rowHeight
+                ) {
                     this.setState({
-                        rowHeight: rowClientHeight
+                        rowHeight: rowClientHeight,
                     });
                 }
             }
-
         }
 
         componentDidUpdate() {
@@ -125,7 +131,7 @@ export default function virtual(BaseComponent) {
                 const rowClientHeight = row && row.clientHeight;
                 if (rowClientHeight !== this.state.rowHeight) {
                     this.setState({
-                        rowHeight: rowClientHeight
+                        rowHeight: rowClientHeight,
                     });
                 }
             }
@@ -145,14 +151,15 @@ export default function virtual(BaseComponent) {
             if (typeof rowHeight === 'function') {
                 return 0;
             }
-            return (this.start * rowHeight);
+            return this.start * rowHeight;
         }
 
         getVisibleRange(ExpectStart) {
             const { height, rowHeight } = this.state;
             const len = this.props.dataSource.length;
 
-            let end, visibleCount = 0;
+            let end,
+                visibleCount = 0;
             let start = 0;
             if (typeof rowHeight === 'function') {
                 // try get cell height;
@@ -170,13 +177,15 @@ export default function virtual(BaseComponent) {
             this.visibleCount = visibleCount;
             return {
                 start,
-                end
+                end,
             };
         }
 
         adjustScrollTop() {
             if (this.hasVirtualData) {
-                this.bodyNode.scrollTop = this.lastScrollTop % this.state.rowHeight + this.state.rowHeight * this.state.scrollToRow;
+                this.bodyNode.scrollTop =
+                    (this.lastScrollTop % this.state.rowHeight) +
+                    this.state.rowHeight * this.state.scrollToRow;
             }
         }
 
@@ -189,21 +198,28 @@ export default function virtual(BaseComponent) {
                 const tableInc = this.tableInc;
                 const tableNode = findDOMNode(tableInc);
                 const { prefix } = this.props;
-                const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
+                const headerNode = tableNode.querySelector(
+                    `.${prefix}table-header table`
+                );
                 const headerClientWidth = headerNode && headerNode.clientWidth;
 
                 if (clientWidth < headerClientWidth) {
-                    dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
+                    dom.setStyle(
+                        virtualScrollNode,
+                        'min-width',
+                        headerClientWidth
+                    );
                     const leftNode = this.bodyLeftNode;
                     const rightNode = this.bodyRightNode;
-                    leftNode && dom.setStyle(leftNode, 'max-height', clientHeight);
-                    rightNode && dom.setStyle(rightNode, 'max-height', clientHeight);
+                    leftNode &&
+                        dom.setStyle(leftNode, 'max-height', clientHeight);
+                    rightNode &&
+                        dom.setStyle(rightNode, 'max-height', clientHeight);
                     this.hasScrollbar = true;
                 } else {
                     this.hasScrollbar = false;
                 }
             }
-
         }
 
         onScroll = () => {
@@ -215,12 +231,12 @@ export default function virtual(BaseComponent) {
             const start = this.computeScrollToRow(scrollTop);
             if (!('scrollToRow' in this.props)) {
                 this.setState({
-                    scrollToRow: start
+                    scrollToRow: start,
                 });
             }
             this.props.onBodyScroll(start);
             this.lastScrollTop = scrollTop;
-        }
+        };
 
         computeScrollToRow(offset) {
             const { rowHeight } = this.state;
@@ -230,14 +246,16 @@ export default function virtual(BaseComponent) {
         }
 
         getBodyNode = (node, lockType) => {
-            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
+            lockType = lockType
+                ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
+                : '';
             this[`body${lockType}Node`] = node;
-        }
+        };
 
         getTableInstance = (type, instance) => {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
             this[`table${type}Inc`] = instance;
-        }
+        };
 
         getRowNode() {
             try {
@@ -252,14 +270,25 @@ export default function virtual(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { useVirtual, components, dataSource, fixedHeader, rowHeight, scrollToRow, onBodyScroll, ...others } = this.props;
+            let {
+                useVirtual,
+                components,
+                dataSource,
+                fixedHeader,
+                rowHeight,
+                scrollToRow,
+                onBodyScroll,
+                ...others
+            } = this.props;
 
             const entireDataSource = dataSource;
 
             this.rowSelection = this.props.rowSelection;
             if (this.hasVirtualData) {
                 components = { ...components };
-                const { start, end } = this.getVisibleRange(this.state.scrollToRow);
+                const { start, end } = this.getVisibleRange(
+                    this.state.scrollToRow
+                );
                 dataSource = dataSource.slice(start, end);
 
                 if (!components.Body) {
@@ -268,7 +297,15 @@ export default function virtual(BaseComponent) {
                 fixedHeader = true;
             }
 
-            return (<BaseComponent {...others} dataSource={dataSource} entireDataSource={entireDataSource} components={components} fixedHeader={fixedHeader} />);
+            return (
+                <BaseComponent
+                    {...others}
+                    dataSource={dataSource}
+                    entireDataSource={entireDataSource}
+                    components={components}
+                    fixedHeader={fixedHeader}
+                />
+            );
         }
     }
     statics(VirtualTable, BaseComponent);

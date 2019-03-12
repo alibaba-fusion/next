@@ -2,6 +2,7 @@
 
 @import "../core/index-noreset";
 @import "scss/variable";
+@import "./rtl.scss";
 
 .#{$css-prefix}upload-list-item-name {
     text-decoration: none;

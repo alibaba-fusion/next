@@ -11,7 +11,16 @@ import YearPanelHeader from './head/year-panel-header';
 import DateTable from './table/date-table';
 import MonthTable from './table/month-table';
 import YearTable from './table/year-table';
-import { checkMomentObj, formatDateValue, getVisibleMonth, isSameYearMonth, CALENDAR_MODES, CALENDAR_MODE_DATE, CALENDAR_MODE_MONTH, CALENDAR_MODE_YEAR } from './utils';
+import {
+    checkMomentObj,
+    formatDateValue,
+    getVisibleMonth,
+    isSameYearMonth,
+    CALENDAR_MODES,
+    CALENDAR_MODE_DATE,
+    CALENDAR_MODE_MONTH,
+    CALENDAR_MODE_YEAR,
+} from './utils';
 
 /** Calendar */
 class Calendar extends Component {
@@ -80,8 +89,8 @@ class Calendar extends Component {
         /**
          * 国际化配置
          */
-        locale: PropTypes.object
-    }
+        locale: PropTypes.object,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -91,10 +100,10 @@ class Calendar extends Component {
         format: 'YYYY-MM-DD',
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
-        dateCellRender: (value) => value.date(),
+        dateCellRender: value => value.date(),
         locale: nextLocale.Calendar,
-        showOtherMonth: true
-    }
+        showOtherMonth: true,
+    };
 
     constructor(props, context) {
         super(props, context);
@@ -106,7 +115,7 @@ class Calendar extends Component {
         this.state = {
             value,
             mode: props.mode || this.MODES[0],
-            visibleMonth
+            visibleMonth,
         };
     }
 
@@ -114,19 +123,19 @@ class Calendar extends Component {
         if ('value' in nextProps) {
             const value = formatDateValue(nextProps.value);
             this.setState({
-                value
+                value,
             });
 
             if (value) {
                 this.setState({
-                    visibleMonth: value
+                    visibleMonth: value,
                 });
             }
         }
 
         if (nextProps.mode && this.MODES.indexOf(nextProps.mode) > -1) {
             this.setState({
-                mode: nextProps.mode
+                mode: nextProps.mode,
             });
         }
     }
@@ -139,20 +148,24 @@ class Calendar extends Component {
             this.props.onSelect(date);
         }
         this.changeMode(nextMode);
-    }
+    };
 
-    changeMode = (nextMode) => {
-        if (nextMode && this.MODES.indexOf(nextMode) > -1 && nextMode !== this.state.mode) {
+    changeMode = nextMode => {
+        if (
+            nextMode &&
+            this.MODES.indexOf(nextMode) > -1 &&
+            nextMode !== this.state.mode
+        ) {
             this.setState({ mode: nextMode });
         }
-    }
+    };
 
     changeVisibleMonth = (date, reason) => {
         if (!isSameYearMonth(date, this.state.visibleMonth)) {
             this.setState({ visibleMonth: date });
             this.props.onVisibleMonthChange(date, reason);
         }
-    }
+    };
 
     /**
      * 根据日期偏移量设置当前展示的月份
@@ -167,36 +180,51 @@ class Calendar extends Component {
 
     goPrevDecade = () => {
         this.changeVisibleMonthByOffset(-10, 'years');
-    }
+    };
 
     goNextDecade = () => {
         this.changeVisibleMonthByOffset(10, 'years');
-    }
+    };
 
     goPrevYear = () => {
         this.changeVisibleMonthByOffset(-1, 'years');
-    }
+    };
 
     goNextYear = () => {
         this.changeVisibleMonthByOffset(1, 'years');
-    }
+    };
 
     goPrevMonth = () => {
         this.changeVisibleMonthByOffset(-1, 'months');
-    }
+    };
 
     goNextMonth = () => {
         this.changeVisibleMonthByOffset(1, 'months');
-    }
+    };
 
     render() {
-        const { prefix, rtl, className, shape, showOtherMonth, format, locale, dateCellRender, monthCellRender, disabledDate, ...others } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            shape,
+            showOtherMonth,
+            format,
+            locale,
+            dateCellRender,
+            monthCellRender,
+            disabledDate,
+            ...others
+        } = this.props;
         const state = this.state;
 
-        const classNames = classnames({
-            [`${prefix}calendar`]: true,
-            [`${prefix}calendar-${shape}`]: shape
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}calendar`]: true,
+                [`${prefix}calendar-${shape}`]: shape,
+            },
+            className
+        );
 
         if (rtl) {
             others.dir = 'rtl';
@@ -227,7 +255,7 @@ class Calendar extends Component {
             goNextMonth: this.goNextMonth,
             goPrevDecade: this.goPrevDecade,
             goPrevYear: this.goPrevYear,
-            goPrevMonth: this.goPrevMonth
+            goPrevMonth: this.goPrevMonth,
         };
 
         const tableProps = {
@@ -243,26 +271,45 @@ class Calendar extends Component {
             momentLocale: localeData,
             today: this.today,
             goPrevDecade: this.goPrevDecade,
-            goNextDecade: this.goNextDecade
+            goNextDecade: this.goNextDecade,
         };
 
         const tables = {
-            [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
-            [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
-            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />
+            [CALENDAR_MODE_DATE]: (
+                <DateTable
+                    format={format}
+                    {...tableProps}
+                    onSelectDate={this.onSelectCell}
+                />
+            ),
+            [CALENDAR_MODE_MONTH]: (
+                <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />
+            ),
+            [CALENDAR_MODE_YEAR]: (
+                <YearTable
+                    {...tableProps}
+                    rtl={rtl}
+                    onSelectYear={this.onSelectCell}
+                />
+            ),
         };
 
         const panelHeaders = {
             [CALENDAR_MODE_DATE]: <DatePanelHeader {...headerProps} />,
             [CALENDAR_MODE_MONTH]: <MonthPanelHeader {...headerProps} />,
-            [CALENDAR_MODE_YEAR]: <YearPanelHeader {...headerProps} />
+            [CALENDAR_MODE_YEAR]: <YearPanelHeader {...headerProps} />,
         };
 
         return (
-            <div {...obj.pickOthers(Calendar.propTypes, others)} className={classNames}>
-                {
-                    shape === 'panel' ? panelHeaders[state.mode] : <CardHeader {...headerProps} />
-                }
+            <div
+                {...obj.pickOthers(Calendar.propTypes, others)}
+                className={classNames}
+            >
+                {shape === 'panel' ? (
+                    panelHeaders[state.mode]
+                ) : (
+                    <CardHeader {...headerProps} />
+                )}
                 {tables[state.mode]}
             </div>
         );

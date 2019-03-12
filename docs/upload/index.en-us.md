@@ -49,6 +49,9 @@ When user want to upload some file to server side or cloud storage, upload compo
 | request         | custom reuqest method <br><br>**signaure**:<br>Function(option: Object) => Object<br>**params**:<br>_option_: {Object} null<br>**returns**:<br>{Object} object with abort method<br>                                                                                       | Function        | -         |
 | progressProps   | Progress props                                                                                                                                                                                                                               | Object          | -         |
 |
+| useDataURL      | use dataurl for local preview                                                                                                                                                                                                                                   | Boolean         | -         |
+
+
 ### Upload.Card
 
 > Inherit from Upload API
@@ -219,7 +222,6 @@ iframe upload will request with a param `_documentDomain`. You can set your doma
 | KeyBoard          | Descripiton                              |
 | :---------- | :------------------------------ |
 | Enter       | 1. When the component gets the focus, press `Enter` to select the file upload  2. Delete uploaded image       |
- 
 
- 
- 
+
+
