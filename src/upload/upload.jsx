@@ -374,8 +374,8 @@ class Upload extends Base {
             targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
         }
 
-        this.props.onSuccess(targetItem, value);
         this.onChange(value, targetItem);
+        this.props.onSuccess(targetItem, value);
     };
 
     onError = (err, response, file) => {
@@ -394,8 +394,8 @@ class Upload extends Base {
             response,
         });
 
-        this.props.onError(targetItem, value);
         this.onChange(value, targetItem);
+        this.props.onError(targetItem, value);
     };
 
     /**
