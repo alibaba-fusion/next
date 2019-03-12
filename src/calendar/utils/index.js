@@ -26,8 +26,8 @@ export const CALENDAR_MODES = [
     CALENDAR_MODE_YEAR,
 ];
 
-export function isDisabledDate(date, fn) {
-    if (typeof fn === 'function' && fn(date)) {
+export function isDisabledDate(date, fn, view) {
+    if (typeof fn === 'function' && fn(date, view)) {
         return true;
     }
     return false;
