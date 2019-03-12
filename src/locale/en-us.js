@@ -116,4 +116,7 @@ export default {
     Tag: {
         delete: 'Delete',
     },
+    Rating: {
+        description: 'Rating Options',
+    },
 };

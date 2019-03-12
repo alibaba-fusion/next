@@ -346,12 +346,12 @@ class Nav extends React.Component {
     onPrevClick = () => {
         const wrapperWH = getOffsetWH(this.wrapper);
         this.setOffset(this.offset + wrapperWH, true, false);
-    }
+    };
 
     onNextClick = () => {
         const wrapperWH = getOffsetWH(this.wrapper);
         this.setOffset(this.offset - wrapperWH, true, false);
-    }
+    };
 
     onNavItemClick(key, callback, e) {
         this.props.onTriggerEvent(triggerEvents.CLICK, key);
