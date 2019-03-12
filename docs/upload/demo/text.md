@@ -59,7 +59,7 @@ const defaultValue = [{
     imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
 }];
 
-ReactDOM.render((
+ReactDOM.render(
     <Upload
         action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
         beforeUpload={beforeUpload}
@@ -68,8 +68,7 @@ ReactDOM.render((
         listType="text"
         defaultValue={defaultValue}>
         <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
-    </Upload>
-), mountNode);
+    </Upload>, mountNode);
 
 function beforeUpload(info) {
     console.log('beforeUpload : ', info);

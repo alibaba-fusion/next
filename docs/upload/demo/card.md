@@ -25,7 +25,7 @@ Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` A
 ````jsx
 import { Upload } from '@alifd/next';
 
-ReactDOM.render((
+ReactDOM.render(
     <Upload.Card
         listType="card"
         action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
@@ -57,8 +57,7 @@ ReactDOM.render((
             downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
         }]}
-    />
-), mountNode);
+    />, mountNode);
 
 function onPreview(info) {
     console.log('onPreview callback : ', info);

@@ -1,6 +1,13 @@
 export default function getContextProps(props, context, displayName) {
-    const { prefix, locale, pure, rtl } = props;
-    const { nextPrefix, nextLocale, nextPure, nextWarning, nextRtl } = context;
+    const { prefix, locale, pure, rtl, errorBoundary } = props;
+    const {
+        nextPrefix,
+        nextLocale,
+        nextPure,
+        nextWarning,
+        nextRtl,
+        nextErrorBoundary,
+    } = context;
 
     const newPrefix = prefix || nextPrefix;
 
@@ -21,11 +28,28 @@ export default function getContextProps(props, context, displayName) {
     const newPure = typeof pure === 'boolean' ? pure : nextPure;
     const newRtl = typeof rtl === 'boolean' ? rtl : nextRtl;
 
+    // ProtoType of [nextE|e]rrorBoundary can be one of [boolean, object]
+    // but typeof newErrorBoundary === 'object'
+    // newErrorBoundary should always have the key 'open', which indicates ErrorBoundary on or off
+    const newErrorBoundary = {
+        ...(typeof nextErrorBoundary === 'boolean'
+            ? { open: nextErrorBoundary }
+            : nextErrorBoundary),
+        ...(typeof errorBoundary === 'boolean'
+            ? { open: errorBoundary }
+            : errorBoundary),
+    };
+
+    if (!('open' in newErrorBoundary)) {
+        newErrorBoundary.open = false;
+    }
+
     return {
         prefix: newPrefix,
         locale: newLocale,
         pure: newPure,
         rtl: newRtl,
         warning: nextWarning,
+        errorBoundary: newErrorBoundary,
     };
 }

@@ -1,14 +1,14 @@
 import React from 'react';
-import Enzyme from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import sinon from 'sinon';
+import assert from 'power-assert';
+import Switch from '../../src/switch/index';
 import { unmount, testReact } from '../util/a11y/validate';
-import Rating from '../../src/rating';
-import '../../src/rating/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-/* eslint-disable no-undef, react/jsx-filename-extension */
-describe('Rating A11y', () => {
+describe('Switch A11y', () => {
     let wrapper;
 
     afterEach(() => {
@@ -18,11 +18,11 @@ describe('Rating A11y', () => {
         }
         unmount();
     });
-
-    it('should not have any violations', async () => {
+    it('should not have any violations for different states', async () => {
         wrapper = await testReact(
             <div>
-                <Rating defaultValue={3.3} id="action-test-1" />
+                <Switch checked />
+                <Switch defaultChecked={false} size="small" />
             </div>
         );
         return wrapper;

@@ -8,7 +8,6 @@ import { setTimeout } from 'timers';
 import Rating from '../../src/rating/index';
 import '../../src/rating/style.js';
 import { KEYCODE } from '../../src/util';
-import Paragraph from '../../src/paragraph';
 
 Enzyme.configure({ adapter: new Adapter() });
 

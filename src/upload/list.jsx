@@ -50,7 +50,11 @@ class List extends Component {
         progressProps: PropTypes.object,
         children: PropTypes.node,
         uploader: PropTypes.any,
+        /**
+         * 可选参数，是否本地预览
+         */
         useDataURL: PropTypes.bool,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -162,7 +166,7 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const { extraRender, progressProps } = this.props;
+        const { extraRender, progressProps, rtl } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
         const onClick = () =>
@@ -185,7 +189,10 @@ class List extends Component {
                     >
                         <span>{file.name}</span>
                         {!!size && (
-                            <span className={`${prefixCls}-list-item-size`}>
+                            <span
+                                className={`${prefixCls}-list-item-size`}
+                                dir={rtl ? 'rtl' : undefined}
+                            >
                                 ({size})
                             </span>
                         )}
@@ -200,6 +207,7 @@ class List extends Component {
                             size="medium"
                             percent={file.percent}
                             textRender={func.noop}
+                            rtl={rtl}
                             {...progressProps}
                         />
                     </div>
@@ -224,7 +232,7 @@ class List extends Component {
     }
 
     getImageList(file) {
-        const { extraRender, progressProps } = this.props;
+        const { extraRender, progressProps, rtl } = this.props;
 
         const {
             prefixCls,
@@ -287,7 +295,10 @@ class List extends Component {
                 >
                     <span>{file.name}</span>
                     {!!size && (
-                        <span className={`${prefixCls}-list-item-size`}>
+                        <span
+                            className={`${prefixCls}-list-item-size`}
+                            dir={rtl ? 'rtl' : undefined}
+                        >
                             ({size})
                         </span>
                     )}
@@ -422,10 +433,10 @@ class List extends Component {
     }
 
     render() {
-        const { listType, children, prefix } = this.props;
+        const { listType, children, prefix, rtl } = this.props;
         const prefixCls = `${prefix}upload`;
 
-        const list = this.props.value.map(file => {
+        let list = this.props.value.map(file => {
             if (listType === 'text') {
                 return this.getTextList(file);
             } else if (listType === 'image') {
@@ -435,6 +446,10 @@ class List extends Component {
             }
             return null;
         });
+
+        if (rtl && listType === 'card' && Array.isArray(list)) {
+            list = list.reverse();
+        }
         const listclassNames = classNames({
             [`${prefixCls}-list`]: true,
             [`${prefixCls}-list-${this.props.listType}`]: true,
@@ -442,9 +457,13 @@ class List extends Component {
 
         const others = obj.pickAttrsWith(this.props, 'data-');
         return (
-            <div {...others} className={listclassNames}>
-                {list}
-                {children}
+            <div
+                {...others}
+                className={listclassNames}
+                dir={rtl ? 'rtl' : undefined}
+            >
+                {rtl ? children : list}
+                {rtl ? list : children}
             </div>
         );
     }

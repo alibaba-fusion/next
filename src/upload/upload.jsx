@@ -73,6 +73,9 @@ class Upload extends Base {
          */
         dragable: PropTypes.bool,
         closable: PropTypes.bool,
+        /**
+         * 可选参数，是否本地预览
+         */
         useDataURL: PropTypes.bool,
         /**
          * 可选参数，是否禁用上传功能
@@ -152,6 +155,7 @@ class Upload extends Base {
          * 透传给Progress props
          */
         progressProps: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -370,8 +374,8 @@ class Upload extends Base {
             targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
         }
 
-        this.props.onSuccess(targetItem, value);
         this.onChange(value, targetItem);
+        this.props.onSuccess(targetItem, value);
     };
 
     onError = (err, response, file) => {
@@ -390,8 +394,8 @@ class Upload extends Base {
             response,
         });
 
-        this.props.onError(targetItem, value);
         this.onChange(value, targetItem);
+        this.props.onError(targetItem, value);
     };
 
     /**
@@ -455,6 +459,7 @@ class Upload extends Base {
             list,
             extraRender,
             progressProps,
+            rtl,
             ...others
         } = this.props;
 
@@ -523,6 +528,7 @@ class Upload extends Base {
                         onCancel={onCancel}
                         onPreview={onPreview}
                         extraRender={extraRender}
+                        rtl={rtl}
                     />
                 ) : null}
             </div>

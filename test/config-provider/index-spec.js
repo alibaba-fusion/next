@@ -6,6 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import moment from 'moment';
 import assert from 'power-assert';
 import Select from '../../src/select';
+import Button from '../../src/button';
 import enUS from '../../src/locale/en-us';
 import zhCN from '../../src/locale/zh-cn';
 import ConfigProvider from '../../src/config-provider';
@@ -15,7 +16,7 @@ import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const { config, getContextProps } = ConfigProvider;
+const { config, getContextProps, ErrorBoundary } = ConfigProvider;
 
 class Output extends Component {
     static propTypes = {
@@ -406,5 +407,43 @@ describe('ConfigProvider.Consumer', () => {
         assert.equal(output.prop('locale'), contextState.locale);
         assert(output.prop('pure') === contextState.pure);
         assert(output.prop('warning') === contextState.warning);
+    });
+});
+
+describe('ConfigProvider.ErrorBoundary', () => {
+    let wrapper;
+
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
+    });
+
+    it('should catch errors with componentDidCatch', () => {
+        const Something = () => null;
+
+        wrapper = mount(
+            <ErrorBoundary>
+                <Something />
+            </ErrorBoundary>
+        );
+        const error = new Error('test');
+
+        wrapper.find(Something).simulateError(error);
+    });
+
+    it('should catch errors with componentDidCatch as to basic component', () => {
+        const Something = () => null;
+        wrapper = mount(
+            <ConfigProvider errorBoundary>
+                <Button>
+                    <Something />
+                </Button>
+            </ConfigProvider>
+        );
+        const error = new Error('test');
+
+        wrapper.find(Something).simulateError(error);
     });
 });
