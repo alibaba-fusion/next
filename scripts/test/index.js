@@ -15,6 +15,7 @@ const config = {
     configFile: join(__dirname, 'karma.js'),
     component: componentName,
     runAll: false,
+    // a11y: process.argv
 };
 
 const coreTest = cb => {
@@ -63,11 +64,12 @@ const runRest = components => {
     }
 };
 
-const runAllTest = () => {
+const runAllTest = (a11y = false) => {
     // const components = fs.readdirSync(join(process.cwd(), 'test'));
     // runRest(components);
 
     config.runAll = true;
+    config.a11y = a11y;
     server = new Server(config);
     server.start();
 };
