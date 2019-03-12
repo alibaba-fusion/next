@@ -34,7 +34,7 @@ describe('Balloon A11y', () => {
     it('should not have any violations', async () => {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
-            <Balloon visible popupContainer={portalContainerId}>
+            <Balloon id="balloon-1" visible popupContainer={portalContainerId}>
                 I am balloon content
             </Balloon>
         );
@@ -45,6 +45,7 @@ describe('Balloon A11y', () => {
         portalContainer = createContainer(portalContainerId);
         wrapper = await testReact(
             <Balloon
+                id="balloon-2"
                 visible
                 closable={false}
                 popupContainer={portalContainerId}
@@ -60,7 +61,11 @@ describe('Balloon A11y', () => {
         portalContainer = createContainer(portalContainerId);
 
         wrapper = await testReact(
-            <Balloon.Tooltip visible popupContainer={portalContainerId}>
+            <Balloon.Tooltip
+                id="tooltip-1"
+                visible
+                popupContainer={portalContainerId}
+            >
                 I am balloon content
             </Balloon.Tooltip>
         );

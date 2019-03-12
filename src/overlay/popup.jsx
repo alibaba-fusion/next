@@ -221,6 +221,10 @@ export default class Popup extends Component {
             'aria-expanded': this.state.visible,
         };
 
+        if (!this.state.visible) {
+            props['aria-describedby'] = undefined;
+        }
+
         if (!disabled) {
             const { triggerType } = this.props;
             const triggerTypes = Array.isArray(triggerType)
