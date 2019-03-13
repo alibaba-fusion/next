@@ -21,9 +21,13 @@ const { ErrorBoundary, config } = ConfigProvider;
 
 class Demo extends React.Component {
     render() {
-        return (
-            <span>{this.props.locale.ok}</span>
-        );
+        if (this.props.throwError) {
+            throw Error('There is something going wrong!');
+        } else {
+            return (
+                <span>normal</span>
+            );
+        }
     }
 }
 
@@ -31,31 +35,29 @@ const NewDemo = config(Demo);
 
 const fallbackUI = (props) => {
     const { error, errorInfo } = props;
-    return <span style={{color: 'red'}}>Error: {error.toString()}</span>;
+    return <span style={{color: 'red'}}>{error.toString()}</span>;
 };
 
 export default class App extends React.Component {
     state = {
-        locale: {
-            ok: 'ok'
-        }
+        throwError: false
     };
 
     onClick = () => {
         this.setState({
-            locale: undefined
+            throwError: true
         });
     };
 
     render() {
         return (<div>
-            Pass undefined to locale which will cause an error: <Button type="primary" onClick={this.onClick}>trigger error</Button>
+            Click to throw an error <Button type="primary" onClick={this.onClick}>trigger error</Button>
             <br/>
             <br/>
             Default fallback UI:
             <hr />
             <ConfigProvider errorBoundary>
-                <NewDemo locale={this.state.locale}/>
+                <NewDemo throwError={this.state.throwError}/>
             </ConfigProvider>
             <br/>
             <br/>
@@ -70,7 +72,7 @@ export default class App extends React.Component {
                     console.log('catching');
                 }
             }}>
-                <NewDemo locale={this.state.locale}/>
+                <NewDemo throwError={this.state.throwError}/>
             </ConfigProvider>
         </div>);
     }
