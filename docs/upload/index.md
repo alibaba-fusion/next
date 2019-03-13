@@ -155,6 +155,7 @@ request需要返回一个包含abort方法的对象,用于中断上传
           url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
           imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg', // 头像(可选)
           downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'   // 下载(可选)
+          errorMsg: '错误信息', // 错误信息(可选) state=error生效 接口response.message
         }
 
 ### 接口 response 返回数据格式要求

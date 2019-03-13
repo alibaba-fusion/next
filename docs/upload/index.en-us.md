@@ -155,6 +155,7 @@ All the ErrorCode in `Upload.ErrorCode`.
           url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
           imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg', //optional
           downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg' // optional
+          errorMsg: 'error msg', // optional, if state = error, it comes from response.message
         }
 
 ### API Response Data Schema
