@@ -23,8 +23,16 @@ const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 const currentDate = moment();
 
 // Disable all dates before today
-const disabledDate = function (date) {
-    return date.valueOf() <= currentDate.valueOf();
+const disabledDate = function (date, view) {
+    switch (view) {
+        case 'date':
+            return date.valueOf() <= currentDate.valueOf();
+        case 'year':
+            return date.year() < currentDate.year();
+        case 'month':
+            return date.year() * 100 + date.month() < currentDate.year() * 100 + currentDate.month();
+        default: return false;
+    }
 };
 
 ReactDOM.render(<div>

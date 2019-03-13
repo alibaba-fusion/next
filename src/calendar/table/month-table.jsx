@@ -38,7 +38,11 @@ class MonthTable extends PureComponent {
             const rowList = [];
             for (let j = 0; j < MONTH_TABLE_COL_COUNT; j++) {
                 const monthDate = visibleMonth.clone().month(counter);
-                const isDisabled = isDisabledDate(monthDate, disabledDate);
+                const isDisabled = isDisabledDate(
+                    monthDate,
+                    disabledDate,
+                    'month'
+                );
                 const isSelected = isSameMonth(monthDate, value);
                 const isThisMonth = isSameMonth(monthDate, today);
                 const elementCls = classnames({

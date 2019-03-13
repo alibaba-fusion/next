@@ -88,7 +88,11 @@ class DateTable extends PureComponent {
                 const isNextMonth = isNextMonthDate(currentDate, visibleMonth);
                 const isCurrentMonth = !isLastMonth && !isNextMonth;
 
-                const isDisabled = isDisabledDate(currentDate, disabledDate);
+                const isDisabled = isDisabledDate(
+                    currentDate,
+                    disabledDate,
+                    'date'
+                );
                 const isToday =
                     !isDisabled &&
                     isSameDay(currentDate, today) &&

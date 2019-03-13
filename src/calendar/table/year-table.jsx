@@ -56,7 +56,7 @@ class YearTable extends React.PureComponent {
                     content = year;
                     title = year;
                     const yearDate = visibleMonth.clone().year(year);
-                    isDisabled = isDisabledDate(yearDate, disabledDate);
+                    isDisabled = isDisabledDate(yearDate, disabledDate, 'year');
 
                     !isDisabled &&
                         (onClick = this.onYearCellClick.bind(this, yearDate));

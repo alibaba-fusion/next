@@ -85,7 +85,10 @@ describe('Calendar', () => {
         });
 
         it('should render with disabled dates', () => {
-            const disabledDate = date => date.valueOf() > defaultVal.valueOf();
+            const disabledDate = (date, view) => {
+                assert(view === 'date');
+                return date.valueOf() > defaultVal.valueOf();
+            };
             wrapper = mount(
                 <Calendar
                     defaultVisibleMonth={() => defaultVal}

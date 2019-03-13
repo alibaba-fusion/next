@@ -27,7 +27,7 @@ DatePicker are used to select a single date for an input.
 | format              | Format of date value (it will also effect user input) | String         | 'YYYY-MM-DD' |
 | showTime            | Enable time-picker, pass object like `{ defaultValue, format, ... }`       | Object/Boolean | false        |
 | resetTime           | If reset time for every re-select | Boolean        | false        |
-| disabledDate        | Function to disable date <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>**return**:<br>{Boolean} if disable current date<br>                     | Function       | () => false  |
+| disabledDate        | Function to disable date <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>_view_: {Enum} current view type: 'year', 'month', 'date'<br>**return**:<br>{Boolean} if disable current date<br>                     | Function       | () => false  |
 | footerRender        | Template render for custom footer<br><br>**signature**:<br>Function() => Node<br>**return**:<br>{Node} Custom footer<br>   | Function       | () => null   |
 | onChange            | Callback when date changes <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} dateValue<br> | Function       | func.noop    |
 | onOk                | Callback when click the ok button<br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} dateValue<br>                                                                  | Function       | func.noop    |
@@ -54,7 +54,7 @@ DatePicker are used to select a single date for an input.
 | format              | Date format    | String         | 'YYYY-MM-DD' |
 | showTime            | Enable time picker  | Object/Boolean | false        |
 | resetTime           | If reset time for every select     | Boolean        | false        |
-| disabledDate        | Function to disable dates <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>**return**:<br>{Boolean} if disabled<br>                     | Function       | () => false  |
+| disabledDate        | Function to disable dates <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>_view_: {Enum} current view type: 'year', 'month', 'date'<br>**return**:<br>{Boolean} if disabled<br>                     | Function       | () => false  |
 | footerRender        | Template render for footer<br><br>**signature**:<br>Function() => Node<br>**return**:<br>{Node} custom footer<br>                                                                              | Function       | () => null   |
 | onChange            | Callback when date changes <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} range values<br>                                                                 | Function       | func.noop    |
 | onOk                | Callback when click ok button <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} range values<br>                                                                  | Function       | func.noop    |
@@ -82,4 +82,3 @@ DatePicker are used to select a single date for an input.
 | number key    | Need to manual input  the date, the specified date format        |
 | Enter       | open the calendar or select date                           |
 | Esc         | close the calendar                  |
- 
