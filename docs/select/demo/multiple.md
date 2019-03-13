@@ -32,5 +32,11 @@ function handleChange(value) {
     console.log(value);
 }
 
-ReactDOM.render(<Select mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 300}} />, mountNode);
+ReactDOM.render(
+    <div>
+        <Select mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Select hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
+    </div>
+, mountNode);
 ````
