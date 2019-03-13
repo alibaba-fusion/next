@@ -153,6 +153,7 @@ export default config(Component);
 | pure     | whether enable the Pure Render mode, it will improve performance, but it will also have side effects | Boolean      | -   |
 | warning  | whether to display the warning prompt for component properties being deprecated in development mode        | Boolean      | true  |
 | children | component tree                                 | ReactElement | -   |
+| disableSetMomentLocale | disable setting  moment locale for ConfigProvider children                                                                                                                                                                | Boolean        | false |
 
 <!-- api-extra-start -->
 

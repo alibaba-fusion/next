@@ -55,10 +55,15 @@ class ConfigProvider extends Component {
          * 组件树
          */
         children: PropTypes.element,
+        /**
+         * 组件树
+         */
+        disableAutoMomentLocale: PropTypes.bool,
     };
 
     static defaultProps = {
         warning: true,
+        disableAutoMomentLocale: false,
         errorBoundary: false,
     };
 
@@ -161,11 +166,18 @@ class ConfigProvider extends Component {
     }
 
     componentWillMount() {
-        this.setMomentLocale(this.props.locale);
+        const { disableAutoMomentLocale } = this.props;
+
+        if (!disableAutoMomentLocale) {
+            this.setMomentLocale(this.props.locale);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.locale !== nextProps.locale) {
+        if (
+            !nextProps.disableAutoMomentLocale &&
+            this.props.locale !== nextProps.locale
+        ) {
             this.setMomentLocale(nextProps.locale);
         }
     }
