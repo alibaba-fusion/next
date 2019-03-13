@@ -109,15 +109,17 @@ class Nav extends React.Component {
             const wrapperOffset = getOffsetLT(this.wrapper);
 
             if (
+                // active tab partially in visible zone
                 wrapperOffset + wrapperWH < activeTabOffset + activeTabWH &&
                 activeTabOffset < wrapperOffset + wrapperWH
             ) {
-                target -=
+                target -= // Move more to make active tab totally in visible zone
                     activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH);
             }
         }
 
         if (this.offset !== target) {
+            // needs move
             this.offset = target;
 
             let navOffset = {};
@@ -133,13 +135,22 @@ class Nav extends React.Component {
                           name: 'top',
                           value: `${target}px`,
                       };
-            } else {
+            } else if (!this.props.rtl) {
                 navOffset = canTransform
                     ? {
                           value: `translate3d(${target}px, 0, 0)`,
                       }
                     : {
                           name: 'left',
+                          value: `${target}px`,
+                      };
+            } else {
+                navOffset = canTransform
+                    ? {
+                          value: `translate3d(${-target}px, 0, 0)`,
+                      }
+                    : {
+                          name: 'right',
                           value: `${target}px`,
                       };
             }
@@ -394,7 +405,7 @@ class Nav extends React.Component {
             return null;
         }
 
-        const { prefix, activeKey, triggerType, popupProps } = this.props;
+        const { prefix, activeKey, triggerType, popupProps, rtl } = this.props;
         const trigger = (
             <button className={`${prefix}tabs-btn-down`}>
                 <Icon type="arrow-down" />
@@ -403,12 +414,14 @@ class Nav extends React.Component {
 
         return (
             <Popup
+                rtl={rtl}
                 triggerType={triggerType}
                 trigger={trigger}
                 container={target => target.parentNode}
                 {...popupProps}
             >
                 <Menu
+                    rtl={rtl}
                     selectedKeys={[activeKey]}
                     onSelect={this.onSelectMenuItem}
                     selectMode="single"
@@ -510,7 +523,7 @@ class Nav extends React.Component {
                     onClick={state.prev ? this.onPrevClick : noop}
                     className={prevBtnCls}
                 >
-                    <Icon type="arrow-left" />
+                    <Icon rtl={rtl} type="arrow-left" />
                 </button>
             );
 
@@ -519,7 +532,7 @@ class Nav extends React.Component {
                     onClick={state.next ? this.onNextClick : noop}
                     className={nextBtnCls}
                 >
-                    <Icon type="arrow-right" />
+                    <Icon rtl={rtl} type="arrow-right" />
                 </button>
             );
             restButton = null;

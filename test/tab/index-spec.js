@@ -452,4 +452,72 @@ describe('Tab', () => {
             );
         });
     });
+    describe('rtl mode', () => {
+        let wrapper, target;
+        const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
+            <Tab.Item title={`tab item ${item}`} key={index} />
+        ));
+        const boxStyle = { width: '200px' };
+
+        beforeEach(() => {
+            target = document.createElement('div');
+            document.body.appendChild(target);
+        });
+
+        afterEach(() => {
+            document.body.removeChild(target);
+            wrapper.unmount();
+            wrapper = null;
+            target = null;
+        });
+        it('should render extra content in left', () => {
+            wrapper = mount(
+                <Tab rtl extra={<span id="test-extra">hello</span>}>
+                    <Tab.Item title="Home" key="1">
+                        Home content
+                    </Tab.Item>
+                    <Tab.Item title="Documentation" key="2">
+                        Doc content
+                    </Tab.Item>
+                    <Tab.Item title="Help" key="3">
+                        Help Content
+                    </Tab.Item>
+                </Tab>,
+                { attachTo: target }
+            );
+            const el = wrapper.find('#test-extra').getDOMNode().parentElement;
+            assert(el.style.getPropertyValue('float') === 'left');
+        });
+        it('should slide', () => {
+            const boxStyle = { width: '200px' };
+            wrapper = mount(
+                <div style={boxStyle}>
+                    <Tab rtl excessMode="slide">
+                        {panes}
+                    </Tab>
+                </div>,
+                { attachTo: target }
+            );
+            assert(wrapper.find('.next-tabs-btn-prev').hasClass('disabled'));
+            assert(wrapper.find('.next-tabs-btn-next').length === 1);
+        });
+        it('should slide', (done) => {
+            const boxStyle = { width: '200px' };
+            wrapper = mount(
+                <div style={boxStyle}>
+                    <Tab rtl excessMode="slide">
+                        {panes}
+                    </Tab>
+                </div>,
+                { attachTo: target }
+            );
+            const prev = wrapper.find(".next-tabs-nav").at(0).getDOMNode().getBoundingClientRect().left;
+            wrapper.find('.next-tabs-btn-next').simulate('click');
+            setTimeout(()=>{
+                const newpos = wrapper.find(".next-tabs-nav").at(0).getDOMNode().getBoundingClientRect().left;
+                assert(newpos>prev);
+                done();
+            }, 500);
+        });
+    });
 });

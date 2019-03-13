@@ -243,7 +243,10 @@ export default class Tab extends Component {
         const { activeKey } = this.state;
 
         const tabs = toArray(children);
-
+        let newPosition = tabPosition;
+        if (rtl && ['left', 'right'].indexOf(tabPosition) >= 0) {
+            newPosition = tabPosition === 'left' ? 'right' : 'left';
+        }
         const classNames = classnames(
             {
                 [`${prefix}tabs`]: true,
@@ -251,7 +254,7 @@ export default class Tab extends Component {
                 [`${prefix}tabs-vertical`]:
                     shape === 'wrapped' &&
                     ['left', 'right'].indexOf(tabPosition) >= 0,
-                [`${prefix}tabs-${tabPosition}`]: shape === 'wrapped',
+                [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
                 [`${prefix + size}`]: size,
             },
             className
