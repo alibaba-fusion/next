@@ -392,6 +392,7 @@ class Upload extends Base {
             state: 'error',
             error: err,
             response,
+            errorMsg: response && response.message,
         });
 
         this.onChange(value, targetItem);
