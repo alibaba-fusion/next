@@ -28,9 +28,7 @@ class Demo extends React.Component {
             visible: true
         });
     };
-    onClose = reason => {
-        console.log(reason);
-
+    onClose = () => {
         this.setState({
             visible: false
         });
@@ -44,6 +42,7 @@ class Demo extends React.Component {
                 <Dialog
                     title="Welcome to Alibaba.com"
                     visible={this.state.visible}
+                    autoFocus
                     onOk={this.onClose.bind(this, 'okClick')}
                     onCancel={this.onClose.bind(this, 'cancelClick')}
                     onClose={this.onClose}

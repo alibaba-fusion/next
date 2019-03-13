@@ -259,6 +259,7 @@ class Upload extends Base {
 
     onDrop = files => {
         this.onSelect(files);
+        this.props.onDrop(files);
     };
 
     /**

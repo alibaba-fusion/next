@@ -595,7 +595,14 @@ class Select extends Base {
      */
     handleSelectAll(e) {
         e && e.preventDefault();
-        const nextValues = this.dataStore.getEnableDS().map(item => item.value);
+        let nextValues;
+
+        if (this.selectAllYet) {
+            nextValues = [];
+        } else {
+            nextValues = this.dataStore.getEnableDS().map(item => item.value);
+        }
+
         // 直接传 values，减少 toString 操作
         this.handleMultipleSelect(nextValues, 'selectAll');
     }
@@ -913,13 +920,34 @@ class Select extends Base {
         const text =
             typeof hasSelectAll === 'boolean' ? 'Select All' : hasSelectAll;
 
+        const selectAllYet = this.selectAllYet;
+
+        const cls = classNames({
+            [`${prefix}select-all`]: true,
+            [`${prefix}selected`]: selectAllYet,
+        });
+
+        const clsInner = classNames({
+            [`${prefix}select-all-inner`]: true,
+        });
+
+        // remove style={{'lineHeight': 'unset'}} in next Y
+        // remove style={{'display': 'none'}} in next Y
         return (
             <div
                 key="all"
                 onClick={this.handleSelectAll}
-                className={`${prefix}select-all`}
+                className={cls}
+                style={{ lineHeight: 'unset' }}
             >
-                <span>{text}</span>
+                {selectAllYet ? (
+                    <Icon
+                        className={`${prefix}menu-icon-selected`}
+                        style={{ display: 'none' }}
+                        type="select"
+                    />
+                ) : null}
+                <span className={clsInner}>{text}</span>
             </div>
         );
     }

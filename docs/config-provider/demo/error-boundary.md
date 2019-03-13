@@ -48,7 +48,7 @@ export default class App extends React.Component {
     };
 
     render() {
-        return <div>
+        return (<div>
             Pass undefined to locale which will cause an error: <Button type="primary" onClick={this.onClick}>trigger error</Button>
             <br/>
             <br/>
@@ -72,7 +72,7 @@ export default class App extends React.Component {
             }}>
                 <NewDemo locale={this.state.locale}/>
             </ConfigProvider>
-        </div>
+        </div>);
     }
 }
 

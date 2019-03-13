@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.13.5",
+  "version": "1.13.7",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -42,6 +42,7 @@
     "pack": "node ./scripts/pack.js",
     "release": "node ./scripts/release/index.js",
     "test": "node --max_old_space_size=8192 ./scripts/test/index.js",
+    "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
     "order-var": "node ./scripts/order-var.js",
     "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
@@ -104,7 +105,7 @@
     "css-split-webpack-plugin": "^0.2.5",
     "ejs": "^2.5.9",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-adapter-react-16": "~1.10.0",
     "es5-shim": "^4.5.9",
     "es6-promise-polyfill": "^1.2.0",
     "eslint": "^4.19.1",

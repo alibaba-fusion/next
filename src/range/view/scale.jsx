@@ -13,6 +13,7 @@ export default class Scale extends React.Component {
         ]),
         prefix: PropTypes.string,
         scales: PropTypes.arrayOf(PropTypes.number),
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -20,10 +21,11 @@ export default class Scale extends React.Component {
         min: 0,
         max: 100,
         value: 0,
+        rtl: false,
     };
 
     _renderItems() {
-        const { min, max, value, prefix, scales } = this.props;
+        const { min, max, value, prefix, scales, rtl } = this.props;
         const items = [];
 
         scales.forEach((scale, i) => {
@@ -31,11 +33,22 @@ export default class Scale extends React.Component {
                 [`${prefix}range-scale-item`]: true,
                 activated: inRange(scale, value, min),
             });
-            const left = `${getPercent(min, max, scale)}%`;
+            let style;
+            if (rtl) {
+                style = {
+                    right: `${getPercent(min, max, scale)}%`,
+                    left: 'auto',
+                };
+            } else {
+                style = {
+                    left: `${getPercent(min, max, scale)}%`,
+                    right: 'auto',
+                };
+            }
 
             items.push(
                 // "key" is for https://fb.me/react-warning-keys
-                <span className={classes} style={{ left: left }} key={i} />
+                <span className={classes} style={style} key={i} />
             );
         });
 

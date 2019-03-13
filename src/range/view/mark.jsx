@@ -14,6 +14,7 @@ export default class Mark extends React.Component {
         prefix: PropTypes.string,
         marks: PropTypes.object,
         marksPosition: PropTypes.string,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -22,10 +23,11 @@ export default class Mark extends React.Component {
         max: 100,
         value: 0,
         marksPosition: '',
+        rtl: false,
     };
 
     _renderItems() {
-        const { min, max, value, prefix, marks } = this.props;
+        const { min, max, value, prefix, marks, rtl } = this.props;
         const items = [];
 
         Object.keys(marks).forEach((mark, i) => {
@@ -33,11 +35,22 @@ export default class Mark extends React.Component {
                 [`${prefix}range-mark-text`]: true,
                 activated: inRange(mark, value, min),
             });
-            const left = `${getPercent(min, max, mark)}%`;
+            let style;
+            if (rtl) {
+                style = {
+                    right: `${getPercent(min, max, mark)}%`,
+                    left: 'auto',
+                };
+            } else {
+                style = {
+                    left: `${getPercent(min, max, mark)}%`,
+                    right: 'auto',
+                };
+            }
 
             items.push(
                 // "key" is for https://fb.me/react-warning-keys
-                <span className={classes} style={{ left: left }} key={i}>
+                <span className={classes} style={style} key={i}>
                     {marks[mark]}
                 </span>
             );
