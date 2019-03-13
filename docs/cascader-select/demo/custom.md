@@ -33,8 +33,17 @@ class Demo extends React.Component {
         console.log(value, data, extra);
     }
 
+    valueRender = (item) => {
+        if (item.label) {
+            return item.label; // 正常的item
+        }
+
+        // value在 dataSouce里不存在时渲染。
+        return item.value === '432988' ? '不存在的' : item.value;
+    };
+
     render() {
-        return <CascaderSelect multiple valueRender={(item) => item.label ? item.label : item.value === '4326' ? '哈哈哈哈' : item.value} defaultValue="4326" style={{ width: '302px' }} dataSource={this.state.data} onChange={this.handleChange} />;
+        return <CascaderSelect valueRender={this.valueRender} defaultValue="432988" style={{ width: '302px' }} dataSource={this.state.data} onChange={this.handleChange} />;
     }
 }
 ReactDOM.render(<Demo />, mountNode)

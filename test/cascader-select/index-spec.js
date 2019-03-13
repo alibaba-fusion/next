@@ -416,6 +416,30 @@ describe('CascaderSelect', () => {
             done();
         }, 2000);
     });
+
+    it('should support signle value not in dataSource', () => {
+        const VALUE = '222333';
+        let called = false;
+        const valueRender = (item) => {
+            assert(!item.label);
+            assert(item.value === VALUE);
+            called = true;
+        }
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} defaultValue={VALUE} valueRender={valueRender} />);
+        assert(called);
+    });
+
+    it('should support multiple value not in dataSource', () => {
+        const VALUE = '222333';
+        let called = false;
+        const valueRender = (item) => {
+            assert(!item.label);
+            assert(item.value === VALUE);
+            called = true;
+        }
+        wrapper = mount(<CascaderSelect multiple dataSource={ChinaArea} defaultValue={VALUE} valueRender={valueRender} />);
+        assert(called);
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
