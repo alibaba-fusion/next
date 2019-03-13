@@ -317,12 +317,14 @@ export default class Base extends React.Component {
                     .map(item => item.value);
 
                 if (selectAllValues.length <= value.length) {
+                    this.selectAllYet = true;
+
                     selectAllValues.forEach(val => {
                         if (value.indexOf(val) === -1) {
+                            this.selectAllYet = false;
                             return;
                         }
                     });
-                    this.selectAllYet = true;
                 }
             }
 

@@ -208,6 +208,7 @@
             text-align: center;
             overflow: hidden;
             box-sizing: border-box;
+
             img {
                 width: 100%;
                 height: 100%;
@@ -291,6 +292,9 @@
             img {
                 width: 100%;
                 height: 100%;
+                &:focus {
+                    outline: 0;
+                }
             }
 
             .#{$css-prefix}icon {
