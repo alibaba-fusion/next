@@ -105,7 +105,7 @@
     "css-split-webpack-plugin": "^0.2.5",
     "ejs": "^2.5.9",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-adapter-react-16": "^1.10.0",
     "es5-shim": "^4.5.9",
     "es6-promise-polyfill": "^1.2.0",
     "eslint": "^4.19.1",
