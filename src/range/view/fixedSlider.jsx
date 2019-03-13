@@ -7,7 +7,13 @@ import { getPercent } from '../utils';
 const Tooltip = Balloon.Tooltip;
 const { noop } = func;
 
-function _getStyle(min, max, value) {
+function _getStyle(min, max, value, rtl) {
+    if (rtl) {
+        return {
+            left: `${getPercent(min, max, max + min - value[1])}%`,
+            right: `${getPercent(min, max, value[0])}%`,
+        };
+    }
     return {
         left: `${getPercent(min, max, value[0])}%`,
         right: `${100 - getPercent(min, max, value[1])}%`,
@@ -24,6 +30,7 @@ function sliderFrag(props) {
         onMouseEnter,
         onMouseLeave,
         onMouseDown,
+        rtl,
     } = props;
 
     const activeClass =
@@ -32,7 +39,7 @@ function sliderFrag(props) {
     return (
         <div
             className={`${prefix}range-frag ${activeClass}`}
-            style={_getStyle(min, max, value)}
+            style={_getStyle(min, max, value, rtl)}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onMouseDown={onMouseDown}
@@ -59,6 +66,7 @@ sliderFrag.propTypes = {
     onMouseDown: PropTypes.func,
     value: PropTypes.arrayOf(PropTypes.number),
     disabled: PropTypes.bool,
+    rtl: PropTypes.bool,
 };
 
 export default class FixedSlider extends React.Component {
@@ -77,6 +85,7 @@ export default class FixedSlider extends React.Component {
         tipRender: PropTypes.func,
         disabled: PropTypes.bool,
         hasMovingClass: PropTypes.bool,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -86,6 +95,7 @@ export default class FixedSlider extends React.Component {
         onProcess: noop,
         tipRender: value => value,
         reverse: false,
+        rtl: false,
     };
 
     constructor(props) {

@@ -14,6 +14,7 @@ export default class Selected extends React.Component {
         ]),
         prefix: PropTypes.string,
         reverse: PropTypes.bool,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -23,10 +24,11 @@ export default class Selected extends React.Component {
         max: 100,
         value: 0,
         reverse: false,
+        rtl: false,
     };
 
     _getStyle() {
-        const { min, max, reverse } = this.props;
+        const { min, max, reverse, rtl } = this.props;
         let { value } = this.props;
 
         if (!Array.isArray(value)) {
@@ -34,21 +36,39 @@ export default class Selected extends React.Component {
         }
         const width = ((value[1] - value[0]) * 100) / (max - min);
 
-        let style = {
-            width: `${width}%`,
-            left: `${getPercent(min, max, value[0])}%`,
-        };
-        if (reverse) {
+        let style;
+
+        if (!rtl && !reverse) {
+            // normal select
+            style = {
+                width: `${width}%`,
+                left: `${getPercent(min, max, value[0])}%`,
+            };
+        } else if (rtl && !reverse) {
+            // select in rtl mode
+            style = {
+                width: `${width}%`,
+                left: `${getPercent(min, max, max + min - value[1])}%`,
+            };
+        } else if (!rtl && reverse) {
+            // select in reverse mode
             style = {
                 width: `${100 - width}%`,
                 left: `${getPercent(min, max, value[0]) + width}%`,
             };
+        } else {
+            // select in rtl & reverse mode
+            style = {
+                width: `${100 - width}%`,
+                left: `${getPercent(min, max, value[0])}%`,
+            };
         }
+
         return style;
     }
 
     _getStyleLeft() {
-        const { min, max } = this.props;
+        const { min, max, rtl } = this.props;
         let { value } = this.props;
 
         if (!Array.isArray(value)) {
@@ -59,11 +79,14 @@ export default class Selected extends React.Component {
             width: `${getPercent(min, max, value[0])}%`,
             left: 0,
         };
+        if (rtl) {
+            style.width = `${100 - getPercent(min, max, value[1])}%`;
+        }
         return style;
     }
 
     _getStyleRight() {
-        const { min, max } = this.props;
+        const { min, max, rtl } = this.props;
         let { value } = this.props;
 
         if (!Array.isArray(value)) {
@@ -71,15 +94,22 @@ export default class Selected extends React.Component {
         }
         const width = ((value[1] - value[0]) * 100) / (max - min);
 
-        const style = {
+        let style = {
             width: `${100 - getPercent(min, max, value[0]) - width}%`,
             left: `${getPercent(min, max, value[0]) + width}%`,
         };
+
+        if (rtl) {
+            style = {
+                width: `${getPercent(min, max, value[0])}%`,
+                left: `${100 - getPercent(min, max, value[0])}%`,
+            };
+        }
         return style;
     }
 
     render() {
-        const { prefix, slider, reverse } = this.props;
+        const { prefix, slider, reverse, rtl } = this.props;
         const classes = classNames({
             [`${prefix}range-selected`]: true,
         });

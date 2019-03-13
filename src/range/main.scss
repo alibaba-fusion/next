@@ -54,4 +54,18 @@
             );
         }
     }
+
+    &range[dir=rtl] {
+        .#{$css-prefix}range-mark {
+            position: relative;
+            cursor: auto;
+            .#{$css-prefix}range-mark-text {
+                position: absolute;
+                right: 0;
+                transform: translateX(50%);
+                padding-right: 2px;
+                text-align: center;
+            }
+        }
+    }
 }
