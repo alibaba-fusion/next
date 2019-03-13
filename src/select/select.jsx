@@ -924,19 +924,30 @@ class Select extends Base {
 
         const cls = classNames({
             [`${prefix}select-all`]: true,
-            [`${prefix}menu-item`]: true,
             [`${prefix}selected`]: selectAllYet,
         });
 
+        const clsInner = classNames({
+            [`${prefix}select-all-inner`]: true,
+        });
+
+        // remove style={{'lineHeight': 'unset'}} in next Y
+        // remove style={{'display': 'none'}} in next Y
         return (
-            <div key="all" onClick={this.handleSelectAll} className={cls}>
+            <div
+                key="all"
+                onClick={this.handleSelectAll}
+                className={cls}
+                style={{ lineHeight: 'unset' }}
+            >
                 {selectAllYet ? (
                     <Icon
                         className={`${prefix}menu-icon-selected`}
+                        style={{ display: 'none' }}
                         type="select"
                     />
                 ) : null}
-                <span>{text}</span>
+                <span className={clsInner}>{text}</span>
             </div>
         );
     }
