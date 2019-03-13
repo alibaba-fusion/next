@@ -42,6 +42,7 @@
     "pack": "node ./scripts/pack.js",
     "release": "node ./scripts/release/index.js",
     "test": "node --max_old_space_size=8192 ./scripts/test/index.js",
+    "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
     "order-var": "node ./scripts/order-var.js",
     "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
