@@ -21,24 +21,20 @@ import { Overlay } from '@alifd/next';
 class Demo extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             visible: false
         };
-    }
-
+    };
     onClick = () => {
         this.setState({
             visible: !this.state.visible
         });
-    }
-
+    };
     onClose = () => {
         this.setState({
             visible: false
         });
-    }
-
+    };
     render() {
         return (
             <div>
@@ -48,6 +44,7 @@ class Demo extends React.Component {
                     overlay accessibility
                 </button>
                 <Overlay visible={this.state.visible}
+                    autoFocus
                     target={() => this.btn}
                     safeNode={() => this.btn}
                     onRequestClose={this.onClose}>
