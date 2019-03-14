@@ -24,11 +24,12 @@ export function deprecated(props, instead, component) {
 
 /**
  * 控制台警告日志
- * @param  {String} msg
+ * @param {String} msg
+ * @return {Console<Error> | void}
  */
 export function warning(msg) {
     /* istanbul ignore else */
-    if (typeof console !== 'undefined' && console.error) {
+    if (!isProduction() && typeof console !== 'undefined' && console.error) {
         return console.error(`Warning: ${msg}`);
     }
 }
