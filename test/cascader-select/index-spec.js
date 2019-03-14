@@ -437,7 +437,10 @@ describe('CascaderSelect', () => {
             assert(item.value === VALUE);
             called = true;
         }
-        wrapper = mount(<CascaderSelect multiple dataSource={ChinaArea} defaultValue={VALUE} valueRender={valueRender} />);
+        wrapper = mount(<CascaderSelect multiple displayRender={(displayPath, item) => item.label || ''} dataSource={ChinaArea} valueRender={valueRender} />);
+        wrapper.setProps({
+            value: VALUE,
+        });
         assert(called);
     });
 });
