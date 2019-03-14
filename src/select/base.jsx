@@ -176,8 +176,6 @@ export default class Base extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
-            this.updateSelectAllYet(nextProps.value);
-
             this.setState({
                 value: nextProps.value,
             });
@@ -307,31 +305,7 @@ export default class Base extends React.Component {
         }
     }
 
-    updateSelectAllYet(value) {
-        // multiple mode
-        // is current state select all or not
-        this.selectAllYet = false;
-        if (Array.isArray(value)) {
-            const selectAllValues = this.dataStore
-                .getEnableDS()
-                .map(item => item.value);
-
-            if (selectAllValues.length <= value.length) {
-                this.selectAllYet = true;
-
-                selectAllValues.forEach(val => {
-                    if (value.indexOf(val) === -1) {
-                        this.selectAllYet = false;
-                        return;
-                    }
-                });
-            }
-        }
-    }
-
     handleChange(value, ...args) {
-        this.updateSelectAllYet(value);
-
         // 非受控模式清空内部数据
         if (!('value' in this.props)) {
             this.setState({
