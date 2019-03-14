@@ -154,7 +154,7 @@ export function config(Component, options = {}) {
                 nextLocale = {},
                 nextPure,
                 nextRtl,
-                nextErrorBoundary = {},
+                nextErrorBoundary,
             } = this.context;
 
             const displayName =

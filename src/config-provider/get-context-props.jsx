@@ -1,3 +1,21 @@
+/**
+ *
+ * @param {Object|Boolean} input
+ * @returns {Object} typeof obj.open === 'boolean'
+ */
+const parseBoundary = input => {
+    let obj;
+    if (input === undefined || input === null) {
+        return {};
+    } else if (typeof input === 'boolean') {
+        obj = { open: input };
+    } else {
+        obj = { open: true, ...input };
+    }
+
+    return obj;
+};
+
 export default function getContextProps(props, context, displayName) {
     const { prefix, locale, pure, rtl, errorBoundary } = props;
     const {
@@ -32,12 +50,8 @@ export default function getContextProps(props, context, displayName) {
     // but typeof newErrorBoundary === 'object'
     // newErrorBoundary should always have the key 'open', which indicates ErrorBoundary on or off
     const newErrorBoundary = {
-        ...(typeof nextErrorBoundary === 'boolean'
-            ? { open: nextErrorBoundary }
-            : nextErrorBoundary),
-        ...(typeof errorBoundary === 'boolean'
-            ? { open: errorBoundary }
-            : errorBoundary),
+        ...parseBoundary(nextErrorBoundary),
+        ...parseBoundary(errorBoundary),
     };
 
     if (!('open' in newErrorBoundary)) {
