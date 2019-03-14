@@ -38,7 +38,7 @@ const fallbackUI = (props) => {
     return <span style={{color: 'red'}}>{error.toString()}</span>;
 };
 
-export default class App extends React.Component {
+class App extends React.Component {
     state = {
         throwError: false
     };

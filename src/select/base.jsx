@@ -308,26 +308,6 @@ export default class Base extends React.Component {
     handleChange(value, ...args) {
         // 非受控模式清空内部数据
         if (!('value' in this.props)) {
-            // multiple mode
-            // is current state select all or not
-            this.selectAllYet = false;
-            if (Array.isArray(value)) {
-                const selectAllValues = this.dataStore
-                    .getEnableDS()
-                    .map(item => item.value);
-
-                if (selectAllValues.length <= value.length) {
-                    this.selectAllYet = true;
-
-                    selectAllValues.forEach(val => {
-                        if (value.indexOf(val) === -1) {
-                            this.selectAllYet = false;
-                            return;
-                        }
-                    });
-                }
-            }
-
             this.setState({
                 value: value,
             });

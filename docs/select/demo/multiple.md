@@ -32,11 +32,33 @@ function handleChange(value) {
     console.log(value);
 }
 
+
+class Demo extends React.Component{
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: []
+    }
+  }
+
+  handleChange = (value) => {
+    this.setState({value})
+  }
+
+  render() {
+    return (
+    <Select hasSelectAll value={this.state.value}  mode="multiple" onChange={this.handleChange} dataSource={dataSource} style={{width: 200}} />)
+  }
+}
+
+
 ReactDOM.render(
     <div>
         <Select mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
         &nbsp;&nbsp;&nbsp;&nbsp;
         <Select hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Demo />
     </div>
 , mountNode);
 ````
