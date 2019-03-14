@@ -6,7 +6,7 @@ import Icon from '../../icon';
 import Overlay from '../../overlay';
 import Menu from '../../menu';
 import Animate from '../../animate';
-import { events, KEYCODE } from '../../util';
+import { events, KEYCODE, dom } from '../../util';
 import {
     triggerEvents,
     getOffsetLT,
@@ -42,8 +42,7 @@ class Nav extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            next: false,
-            prev: false,
+            showBtn: false,
             dropdownTabs: [],
         };
         this.offset = 0;
@@ -54,22 +53,17 @@ class Nav extends React.Component {
 
         ctx.setSlideBtn();
         ctx.getDropdownItems(this.props);
-        // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
-        clearTimeout(ctx.scrollTimer);
-        ctx.scrollTimer = setTimeout(() => {
-            ctx.scrollToActiveTab();
-        }, 400);
-
         events.on(window, 'resize', this.onWindowResized);
     }
 
     componentDidUpdate() {
         const ctx = this;
-
-        clearTimeout(ctx.slideTimer);
-        ctx.slideTimer = setTimeout(() => {
-            ctx.setSlideBtn();
-        }, 200);
+        // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
+        clearTimeout(ctx.scrollTimer);
+        ctx.scrollTimer = setTimeout(() => {
+            ctx.scrollToActiveTab();
+        }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
+        ctx.setSlideBtn();
         if (
             this.activeTab &&
             findDOMNode(this).contains(document.activeElement)
@@ -89,7 +83,7 @@ class Nav extends React.Component {
      * @param {bool} setActive need to check the active status or not
      */
     setOffset(target, checkSlideBtn = true, setActive = true) {
-        const { tabPosition } = this.props;
+        const { tabPosition, rtl } = this.props;
         const navWH = getOffsetWH(this.nav, tabPosition);
         const wrapperWH = getOffsetWH(this.wrapper);
 
@@ -107,15 +101,14 @@ class Nav extends React.Component {
             const activeTabOffset =
                 getOffsetLT(this.activeTab) + relativeOffset;
             const wrapperOffset = getOffsetLT(this.wrapper);
-
-            if (
-                // active tab partially in visible zone
-                wrapperOffset + wrapperWH < activeTabOffset + activeTabWH &&
-                activeTabOffset < wrapperOffset + wrapperWH
-            ) {
-                target -= // Move more to make active tab totally in visible zone
-                    activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH);
-            }
+            target = this._adjustTarget(
+                wrapperOffset,
+                wrapperWH,
+                activeTabWH,
+                activeTabOffset,
+                rtl,
+                target
+            );
         }
 
         if (this.offset !== target) {
@@ -171,6 +164,65 @@ class Nav extends React.Component {
         }
     }
 
+    _adjustTarget(
+        wrapperOffset,
+        wrapperWH,
+        activeTabWH,
+        activeTabOffset,
+        rtl,
+        target
+    ) {
+        if (
+            // active tab covers wrapper right edge
+            wrapperOffset + wrapperWH < activeTabOffset + activeTabWH &&
+            activeTabOffset < wrapperOffset + wrapperWH
+        ) {
+            if (rtl) {
+                target += // Move more to make active tab totally in visible zone
+                    activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH);
+            } else {
+                target -=
+                    activeTabOffset +
+                    activeTabWH -
+                    (wrapperOffset + wrapperWH) +
+                    1;
+            }
+
+            return target;
+        }
+        if (
+            // active tab covers wrapper left edge
+            wrapperOffset < activeTabOffset + activeTabWH &&
+            activeTabOffset < wrapperOffset
+        ) {
+            if (rtl) {
+                target -= wrapperOffset - activeTabOffset + 1;
+            } else {
+                target += wrapperOffset - activeTabOffset;
+            }
+            return target;
+        }
+        return target;
+    }
+
+    _setBtnStyle(prev, next) {
+        if (this.prevBtn && this.nextBtn) {
+            const cls = 'disabled';
+            this.prevBtn.disabled = !prev;
+            this.nextBtn.disabled = !next;
+            if (prev) {
+                dom.removeClass(this.prevBtn, cls);
+            } else {
+                dom.addClass(this.prevBtn, cls);
+            }
+            if (next) {
+                dom.removeClass(this.nextBtn, cls);
+            } else {
+                dom.addClass(this.nextBtn, cls);
+            }
+        }
+    }
+
     setSlideBtn() {
         const { tabPosition } = this.props;
 
@@ -185,7 +237,6 @@ class Nav extends React.Component {
         if (minOffset >= 0 || navWH <= navbarWH) {
             next = false;
             prev = false;
-            this.setOffset(0, false); // no need to check slide again since this call is invoked from inside setSlideBtn
         } else if (this.offset < 0 && this.offset <= minOffset) {
             prev = true;
             next = false;
@@ -196,12 +247,12 @@ class Nav extends React.Component {
             prev = true;
             next = true;
         }
-
-        if (next !== this.state.next || prev !== this.state.prev) {
+        if ((prev || next) !== this.state.showBtn) {
             this.setState({
-                next,
-                prev,
+                showBtn: prev || next,
             });
+        } else {
+            this._setBtnStyle(prev, next);
         }
     }
 
@@ -343,15 +394,7 @@ class Nav extends React.Component {
         ) {
             return;
         }
-        // if (activeTabOffset < wrapperOffset) {
-        //     target += wrapperOffset - activeTabOffset;
-        //     this.setOffset(target);
-        // }
-        if (wrapperOffset + wrapperWH < activeTabOffset + activeTabWH) {
-            target -=
-                activeTabOffset + activeTabWH - (wrapperOffset + wrapperWH);
-            this.setOffset(target, true, false);
-        }
+        this.setOffset(target, true, true);
     };
 
     onPrevClick = () => {
@@ -480,6 +523,14 @@ class Nav extends React.Component {
         this.activeTab = ref;
     };
 
+    prevBtnHandler = ref => {
+        this.prevBtn = findDOMNode(ref);
+    };
+
+    nextBtnHandler = ref => {
+        this.nextBtn = findDOMNode(ref);
+    };
+
     render() {
         const {
             prefix,
@@ -498,30 +549,22 @@ class Nav extends React.Component {
         let prevButton;
         let restButton;
 
-        const showNextPrev = state.prev || state.next;
+        const showNextPrev = state.showBtn;
 
         if (
             excessMode === 'dropdown' &&
-            state.next &&
+            showNextPrev &&
             state.dropdownTabs.length
         ) {
             restButton = this.renderDropdownTabs(state.dropdownTabs);
             prevButton = null;
             nextButton = null;
         } else if (showNextPrev) {
-            const prevBtnCls = classnames({
-                [`${prefix}tabs-btn-prev`]: 1,
-                disabled: !state.prev,
-            });
-            const nextBtnCls = classnames({
-                [`${prefix}tabs-btn-next`]: 1,
-                disabled: !state.next,
-            });
-
             prevButton = (
                 <button
-                    onClick={state.prev ? this.onPrevClick : noop}
-                    className={prevBtnCls}
+                    onClick={this.onPrevClick}
+                    className={`${prefix}tabs-btn-prev`}
+                    ref={this.prevBtnHandler}
                 >
                     <Icon rtl={rtl} type="arrow-left" />
                 </button>
@@ -529,8 +572,9 @@ class Nav extends React.Component {
 
             nextButton = (
                 <button
-                    onClick={state.next ? this.onNextClick : noop}
-                    className={nextBtnCls}
+                    onClick={this.onNextClick}
+                    className={`${prefix}tabs-btn-next`}
+                    ref={this.nextBtnHandler}
                 >
                     <Icon rtl={rtl} type="arrow-right" />
                 </button>

@@ -43,7 +43,7 @@ function onClick(key) {
 
 ReactDOM.render(<div className="fusion-demo" style={{ maxWidth: '520px' }}>
     <div className="demo-item-title">Dropdown mode</div>
-    <Tab excessMode="dropdown">
+    <Tab excessMode="dropdown" popupProps={{style: {maxHeight: 400, overflowY: 'scroll'}}}>
         {
             tabs.map(item => <Tab.Item key={item.key} title={item.tab} onClick={onClick}>{item.tab} content, content, content</Tab.Item>)
         }
