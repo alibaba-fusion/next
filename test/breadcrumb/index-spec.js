@@ -92,6 +92,23 @@ describe('Breadcrumb', () => {
         wrapper.unmount();
     });
 
+    it('should be set component to change element tag', () => {
+        const wrapper = mount(
+            <Breadcrumb>
+                <Item>Home</Item>
+                <Item>Whatever</Item>
+                <Item>All Categories</Item>
+            </Breadcrumb>
+        );
+
+        assert(wrapper.getDOMNode().tagName.toUpperCase() === 'NAV'); // default nav
+
+        wrapper.setProps({
+            component: 'div'
+        });
+        assert(wrapper.getDOMNode().tagName.toUpperCase() === 'DIV');
+    })
+
     it('should support RTL', () => {
         const wrapper = mount(
             <ConfigProvider rtl>

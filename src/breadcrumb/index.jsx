@@ -45,6 +45,10 @@ class Breadcrumb extends Component {
          * 分隔符，可以是文本或 Icon
          */
         separator: PropTypes.node,
+        /**
+         * 设置标签类型
+         */
+        component: PropTypes.elementType,
         className: PropTypes.any,
     };
 
@@ -52,6 +56,7 @@ class Breadcrumb extends Component {
         prefix: 'next-',
         maxNode: 100,
         separator: <Icon type="arrow-right" />,
+        component: 'nav',
     };
 
     render() {
@@ -62,6 +67,7 @@ class Breadcrumb extends Component {
             maxNode,
             children,
             separator,
+            component,
             ...others
         } = this.props;
         const clazz = classNames(`${prefix}breadcrumb`, className);
@@ -128,10 +134,17 @@ class Breadcrumb extends Component {
             others.dir = 'rtl';
         }
 
+        const BreadcrumbComponent = component;
+
         return (
-            <div aria-label="Breadcrumb" className={clazz} {...others}>
+            <BreadcrumbComponent
+                role="navigation"
+                aria-label="Breadcrumb"
+                className={clazz}
+                {...others}
+            >
                 {items}
-            </div>
+            </BreadcrumbComponent>
         );
     }
 }
