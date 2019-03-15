@@ -48,7 +48,7 @@ class Breadcrumb extends Component {
         /**
          * 设置标签类型
          */
-        component: PropTypes.elementType,
+        component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         className: PropTypes.any,
     };
 
