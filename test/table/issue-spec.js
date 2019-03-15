@@ -487,4 +487,34 @@ describe('Issue', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('fix #466, stickHeader + lock with enough space', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table stickyHeader dataSource={[]}>
+                        <Table.Column
+                            title="Time"
+                            dataIndex="name"
+                            width={200}
+                        />
+                        <Table.Column
+                            title="Time"
+                            dataIndex="time"
+                            width={200}
+                            lock="right"
+                        />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        assert(document.querySelectorAll('div.next-table-empty').length === 1);
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
 });
