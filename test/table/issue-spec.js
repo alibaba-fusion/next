@@ -497,6 +497,7 @@ describe('Issue', () => {
                             title="Time"
                             dataIndex="name"
                             width={200}
+                            lock
                         />
                         <Table.Column
                             title="Time"

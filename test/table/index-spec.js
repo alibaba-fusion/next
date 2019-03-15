@@ -731,7 +731,7 @@ describe('Table', () => {
         );
     });
 
-    it('should support rtl', () => {
+    it('should support rtl', done => {
         timeout(
             {
                 children: [
@@ -742,6 +742,7 @@ describe('Table', () => {
             },
             () => {
                 assert(wrapper.find('.next-table[dir="rtl"]').length === 3);
+                done();
             }
         );
     });
