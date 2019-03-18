@@ -10,7 +10,7 @@ import TreeNodeInput from './tree-node-input';
 
 const { Expand } = Animate;
 const { bindCtx } = func;
-const { isPromise, pickOthers } = obj;
+const { isPromise, pickOthers, pickAttrsWith } = obj;
 const isRoot = pos => /^0-(\d)+$/.test(pos);
 
 /**
@@ -70,6 +70,7 @@ export default class TreeNode extends Component {
         dragOverGapBottom: PropTypes.bool,
         parentNode: PropTypes.object,
         onKeyDown: PropTypes.func,
+        size: PropTypes.number,
     };
 
     static defaultProps = {
@@ -78,6 +79,7 @@ export default class TreeNode extends Component {
         disabled: false,
         checkboxDisabled: false,
         isLeaf: false,
+        size: 1,
     };
 
     constructor(props) {
@@ -378,6 +380,7 @@ export default class TreeNode extends Component {
             <Checkbox
                 aria-label={typeof label === 'string' ? label : null}
                 checked={checked}
+                tabIndex={-1}
                 indeterminate={indeterminate}
                 disabled={disabled || checkboxDisabled}
                 onChange={this.handleCheck}
@@ -460,12 +463,14 @@ export default class TreeNode extends Component {
             root,
             pos,
             selected,
+            checked,
             disabled,
             expanded,
             dragOver,
             dragOverGapTop,
             dragOverGapBottom,
             _key,
+            size,
         } = this.props;
         const {
             loadData,
@@ -474,8 +479,21 @@ export default class TreeNode extends Component {
             draggable: rootDraggable,
             filterTreeNode,
         } = root.props;
+        const { label } = this.state;
+
         this.showLine = !isNodeBlock && showLine;
+        const indexArr = pos.split('-');
+
+        const ARIA_PREFIX = 'aria-';
+        const ariaProps = pickAttrsWith(this.props, ARIA_PREFIX);
         const others = pickOthers(Object.keys(TreeNode.propTypes), this.props);
+
+        // remove aria keys
+        Object.keys(others).forEach(key => {
+            if (key.match(ARIA_PREFIX)) {
+                delete others[key];
+            }
+        });
 
         if (rootDraggable) {
             others.onDragEnter = this.handleDragEnter;
@@ -507,16 +525,18 @@ export default class TreeNode extends Component {
             typeof isNodeBlock === 'object'
                 ? parseInt(isNodeBlock.indent || 24)
                 : 24;
-        const level = pos.split('-').length - 2;
+        const level = indexArr.length - 2;
         const paddingLeftProp = rtl ? 'paddingRight' : 'paddingLeft';
 
         const innerStyle = isNodeBlock
             ? { [paddingLeftProp]: `${indent * level + defaultPaddingLeft}px` }
             : null;
+
         const innerProps = {
             className: innerClassName,
             style: innerStyle,
             onKeyDown: this.handleKeyDown,
+            ...ariaProps,
         };
         if (isNodeBlock) {
             this.addCallbacks(innerProps);
@@ -537,15 +557,20 @@ export default class TreeNode extends Component {
         }
 
         return (
-            <li
-                role="treeitem"
-                aria-selected={selected}
-                aria-disabled={disabled}
-                aria-expanded={expanded && !!hasChildTree}
-                className={newClassName}
-                {...others}
-            >
-                <div ref="node" {...innerProps}>
+            <li role="presentation" className={newClassName} {...others}>
+                <div
+                    ref="node"
+                    role="treeitem"
+                    aria-selected={selected}
+                    aria-disabled={disabled}
+                    aria-checked={checked}
+                    aria-expanded={expanded && !!hasChildTree}
+                    aria-label={typeof label === 'string' ? label : null}
+                    aria-level={level + 1}
+                    aria-posinset={Number(indexArr[indexArr.length - 1]) + 1}
+                    aria-setsize={size}
+                    {...innerProps}
+                >
                     {canExpand
                         ? this.renderSwitcher()
                         : this.renderNoopSwitcher()}
