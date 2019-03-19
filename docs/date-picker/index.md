@@ -225,7 +225,7 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 | Enter | 打开日期选择框或输入日期     |
 | Esc   | 关闭日期选择框          |
 | Up | 输入上一天（Month Picker 则是上一个月， Year Picker 则是上一年） |
-| Down | 输入下一天（Month Picker 则是下一个月， Year Picker 则是下一年）
+| Down | 输入下一天（Month Picker 则是下一个月， Year Picker 则是下一年） |
 | Page Up | 输入上一月 |
 | Page Down |  输入下一月 |
 | Alt + Page Up | 输入上一年 |

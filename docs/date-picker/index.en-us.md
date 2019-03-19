@@ -88,9 +88,9 @@ When the `Date Picker` is focused, press `enter` will open popup to input date o
 | number key    | Need to manual input  the date, the specified date format        |
 | Enter       | open the calendar or select date                           |
 | Esc         | close the calendar                  |
-| Up | 输入上一天（Month Picker 则是上一个月， Year Picker 则是上一年） |
-| Down | 输入下一天（Month Picker 则是下一个月， Year Picker 则是下一年）
-| Page Up | 输入上一月 |
-| Page Down |  输入下一月 |
-| Alt + Page Up | 输入上一年 |
-| Alt + Page Down | 输入下一年 |
+| Up | Input previous day（Month Picker is previous month， Year Picker is previous year） |
+| Down | Input next day（Month Picker is next month， Year Picker is next year）
+| Page Up | Input previous month |
+| Page Down |  Input next month |
+| Alt + Page Up | Input previous year |
+| Alt + Page Down | Input next year |

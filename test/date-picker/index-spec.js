@@ -344,6 +344,8 @@ describe('YearPicker', () => {
             wrapper.setProps({ visible: true });
             assert(wrapper.find('.next-year-picker-body').length === 1);
         });
+
+        it()
     });
 
     describe('action', () => {
