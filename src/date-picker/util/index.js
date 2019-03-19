@@ -151,7 +151,10 @@ export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
     } else if (value) {
         time = value.clone();
     } else {
-        time = moment();
+        time = moment()
+            .hours(0)
+            .minutes(0)
+            .seconds(0);
     }
 
     e.preventDefault();

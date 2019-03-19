@@ -5,6 +5,7 @@ import assert from 'power-assert';
 import moment from 'moment';
 import TimePicker from '../../src/time-picker/index';
 import '../../src/time-picker/style.js';
+import { KEYCODE } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 const defaultValue = moment('11:12:13', 'HH:mm:ss', true);
@@ -208,6 +209,33 @@ describe('TimePicker', () => {
                 .at(2)
                 .simulate('click');
             assert(ret === '02:02:02');
+        });
+        it('should keyboard date time input', () => {
+            wrapper = mount(
+                <TimePicker />
+            );
+
+            const timeInput = wrapper.find('.next-time-picker-input input');
+            const instance = wrapper.instance().getInstance();
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.inputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.inputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.inputStr === ('00:00:01'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.inputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.inputStr === ('00:01:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.inputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.inputStr === ('01:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.inputStr === ('00:00:00'));
         });
     });
 });
