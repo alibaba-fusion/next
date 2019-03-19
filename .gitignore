@@ -4,7 +4,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+
 # Runtime data
 pids
 *.pid
@@ -60,20 +60,11 @@ typings/
 # next.js build output
 .next
 
-# special demo file for locally reappear issue
-docs/**/demo/issues.md
 
 precss.css
 .sass-cache/
-scripts/server-remote
-__html/
-dist/
-es/
-lib/
 test/coverage/
 test/**/coverage/
-compiled_docs/
-demos/
 platform-docs/
 coverage/
 docs-lang/
