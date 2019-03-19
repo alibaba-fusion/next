@@ -4,6 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import moment from 'moment';
 import DatePicker from '../../src/date-picker/index';
+import { KEYCODE } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
@@ -76,6 +77,13 @@ describe('DatePicker', () => {
                 <DatePicker defaultVisible showTime={{ format: 'HH:mm' }} />
             );
             assert(!wrapper.find('.next-time-picker-menu-hour').length);
+        });
+
+        it('should render dateInputAriaLabel & timeInputAriaLabel', () => {
+            wrapper = mount(<DatePicker dateInputAriaLabel="Ho Ho Ho!" timeInputAriaLabel="Ho Ho Ho!" defaultVisible showTime={{ format: 'HH:mm' }} />);
+
+            assert(wrapper.find('.next-date-picker-panel-input input').at(0).prop('aria-label') === 'Ho Ho Ho!');
+            assert(wrapper.find('.next-date-picker-panel-input input').at(1).prop('aria-label') === 'Ho Ho Ho!');
         });
     });
 
@@ -249,6 +257,63 @@ describe('DatePicker', () => {
                 .simulate('click');
             assert(ret.format('YYYY-MM-DD HH:mm:ss') === '2017-11-11 09:00:00');
         });
+
+        it('should keyboard date input', () => {
+            wrapper = mount(
+                <DatePicker defaultVisible />
+            );
+            const input = wrapper.find('.next-date-picker-panel-input input').at(0);
+            const instance = wrapper.instance().getInstance();
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.dateInputStr === moment().add(1, 'day').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.dateInputStr === moment().add(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.dateInputStr === moment().add(1, 'year').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+        });
+
+        it('should keyboard date time input', () => {
+            wrapper = mount(
+                <DatePicker showTime={{ format: 'HH:mm:ss' }} defaultVisible defaultValue={moment().hours(0).minutes(0).seconds(0)}/>
+            );
+
+            const dateInput = wrapper.find('.next-date-picker-panel-input input').at(0);
+            const timeInput = wrapper.find('.next-date-picker-panel-input input').at(1);
+            const instance = wrapper.instance().getInstance();
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.timeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.timeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.timeInputStr === ('00:00:01'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.timeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.timeInputStr === ('00:01:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.timeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.timeInputStr === ('01:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.timeInputStr === ('00:00:00'));
+        });
     });
 
     describe('with date string', () => {
@@ -345,7 +410,11 @@ describe('YearPicker', () => {
             assert(wrapper.find('.next-year-picker-body').length === 1);
         });
 
-        it()
+        it('should render dateInputAriaLabel', () => {
+            wrapper = mount(<YearPicker popupClassName="test-aria" visible={true} dateInputAriaLabel="Ho Ho Ho!" />);
+
+            assert(wrapper.find('.test-aria .next-year-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
+        });
     });
 
     describe('action', () => {
@@ -402,6 +471,30 @@ describe('YearPicker', () => {
                 .find('.next-year-picker-panel-input input')
                 .simulate('blur');
             assert(!ret);
+        });
+
+        it('should keyboard input', () => {
+            wrapper = mount(
+                <YearPicker
+                    onChange={val => (ret = val)}
+                    disabledDate={disabledDate}
+                    defaultVisible
+                />
+            );
+            const input = wrapper.find('.next-year-picker-panel-input input');
+            const instance = wrapper.instance().getInstance();
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.dateInputStr === moment().format('YYYY'));
+            input.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            assert(instance.state.dateInputStr === moment().format('YYYY'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.dateInputStr === moment().format('YYYY'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.dateInputStr === moment().add(1, 'year').format('YYYY'));
+            input.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.dateInputStr === moment().format('YYYY'));
         });
     });
 
@@ -478,6 +571,12 @@ describe('MonthPicker', () => {
             wrapper.setProps({ visible: true });
             assert(wrapper.find('.next-month-picker-body').length === 1);
         });
+
+        it('should render dateInputAriaLabel', () => {
+            wrapper = mount(<MonthPicker popupClassName="test-aria" visible={true} dateInputAriaLabel="Ho Ho Ho!" />);
+
+            assert(wrapper.find('.test-aria .next-month-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
+        });
     });
 
     describe('action', () => {
@@ -538,6 +637,38 @@ describe('MonthPicker', () => {
                 .find('.next-month-picker-panel-input input')
                 .simulate('blur');
             assert(!ret);
+        });
+
+        it('should keyboard input', () => {
+            wrapper = mount(
+                <MonthPicker
+                    onChange={val => (ret = val)}
+                    disabledDate={disabledDate}
+                    defaultVisible
+                />
+            );
+            const input = wrapper.find('.next-month-picker-panel-input input');
+            const instance = wrapper.instance().getInstance();
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.dateInputStr === moment().add(1, 'month').format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.dateInputStr === moment().add(1, 'month').format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.dateInputStr === moment().add(1, 'year').format('YYYY-MM'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
         });
     });
 
