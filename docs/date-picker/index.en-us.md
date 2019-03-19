@@ -42,6 +42,7 @@ DatePicker are used to select a single date for an input.
 | popupStyle          | Custom style of popup | Object         | -            |
 | popupClassName      | Custom className of popup  | String         | -            |
 | popupProps          | Props of popup    | Object         | -            |
+| dateInputAriaLabel | Date input aria-label attr                                                                                                                                                                                           | String    | -           |
 
 ### DatePicker.RangePicker
 
@@ -71,14 +72,25 @@ DatePicker are used to select a single date for an input.
 | popupStyle          | Custom style of popup  | Object         | -            |
 | popupClassName      | Custom className of popup   | String         | -            |
 | popupProps          | Props of popup  | Object         | -            |
-
+| startDateInputAriaLabel | Start date input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
+| startTimeInputAriaLabel | Start time input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
+| endDateInputAriaLabel   | End date input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
+| endTimeInputAriaLabel   | End time input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
 
 
 
 ## ARIA and KeyBoard
+
+When the `Date Picker` is focused, press `enter` will open popup to input date or time.
 
 | 按键          | 说明                           |
 | :---------- | :------------------------------ |
 | number key    | Need to manual input  the date, the specified date format        |
 | Enter       | open the calendar or select date                           |
 | Esc         | close the calendar                  |
+| Up | 输入上一天（Month Picker 则是上一个月， Year Picker 则是上一年） |
+| Down | 输入下一天（Month Picker 则是下一个月， Year Picker 则是下一年）
+| Page Up | 输入上一月 |
+| Page Down |  输入下一月 |
+| Alt + Page Up | 输入上一年 |
+| Alt + Page Down | 输入下一年 |
