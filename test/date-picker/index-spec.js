@@ -776,6 +776,15 @@ describe('RangePicker', () => {
             );
             assert(!wrapper.find('.next-time-picker-menu-hour').length);
         });
+
+        it('should render dateInputAriaLabel & timeInputAriaLabel', () => {
+            wrapper = mount(<RangePicker startDateInputAriaLabel="Ho Ho Ho1!" startTimeInputAriaLabel="Ho Ho Ho2!" endDateInputAriaLabel="Ho Ho Ho3!" endTimeInputAriaLabel="Ho Ho Ho4!" defaultVisible showTime={{ format: 'HH:mm' }} />);
+
+            assert(wrapper.find('.next-range-picker-panel-input-start-date input').prop('aria-label') === 'Ho Ho Ho1!');
+            assert(wrapper.find('.next-range-picker-panel-input-start-time input').prop('aria-label') === 'Ho Ho Ho2!');
+            assert(wrapper.find('.next-range-picker-panel-input-end-date input').prop('aria-label') === 'Ho Ho Ho3!');
+            assert(wrapper.find('.next-range-picker-panel-input-end-time input').prop('aria-label') === 'Ho Ho Ho4!');
+        });
     });
 
     describe('action', () => {
@@ -1217,6 +1226,64 @@ describe('RangePicker', () => {
             assert(
                 ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-11-11 00:00:00'
             );
+        });
+
+        it('should keyboard date input', () => {
+            wrapper = mount(
+                <RangePicker defaultVisible />
+            );
+            const input = wrapper.find('.next-range-picker-panel-input-start-date input').at(0);
+            const instance = wrapper.instance().getInstance();
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.startDateInputStr === moment().add(1, 'day').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.startDateInputStr === moment().add(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.startDateInputStr === moment().add(1, 'year').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+        });
+
+        it('should keyboard date time input', () => {
+            wrapper = mount(
+                <RangePicker showTime={{ format: 'HH:mm:ss' }} defaultVisible value={[moment().hours(0).minutes(0).seconds(0), moment().hours(0).minutes(0).seconds(0).add(1, 'month')]}/>
+            );
+
+            const timeInput = wrapper.find('.next-range-picker-panel-input-start-time input');
+            const instance = wrapper.instance().getInstance();
+
+            instance.state.activeDateInput = 'startTime';
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.startTimeInputStr === ('00:00:01'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.startTimeInputStr === ('00:01:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.startTimeInputStr === ('01:00:00'));
+            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.startTimeInputStr === ('00:00:00'));
         });
     });
 

@@ -426,12 +426,13 @@ export default class RangePicker extends Component {
     };
 
     onDateInputKeyDown = e => {
-        const stateName = mapInputStateName(this.state.activeDateInput);
+        const { activeDateInput } = this.state;
+        const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
         const dateStr = onDateKeydown(
             e,
             this.props,
-            { value: this.state.val, dateInputStr },
+            { value: this.state[activeDateInput], dateInputStr },
             'day'
         );
         if (!dateStr) return;
@@ -529,7 +530,8 @@ export default class RangePicker extends Component {
 
     onTimeInputKeyDown = e => {
         const { showTime } = this.props;
-        const stateName = mapInputStateName(this.state.activeDateInput);
+        const { activeDateInput } = this.state;
+        const stateName = mapInputStateName(activeDateInput);
         const timeInputStr = this.state[stateName];
         const {
             disabledMinutes,
@@ -549,7 +551,9 @@ export default class RangePicker extends Component {
             {
                 format: this.timeFormat,
                 timeInputStr,
-                value: this.state.value,
+                value: this.state[
+                    activeDateInput.indexOf('start') ? 'startValue' : 'endValue'
+                ],
                 steps: {
                     hour: hourStep,
                     minute: minuteStep,
