@@ -7,7 +7,7 @@ import Input from '../input';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
-import { checkDateValue, formatDateValue } from './util';
+import { checkDateValue, formatDateValue, onDateKeydown } from './util';
 
 const { Popup } = Overlay;
 
@@ -126,6 +126,10 @@ class MonthPicker extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        /**
+         * 日期输入框的 aria-label 属性
+         */
+        dateInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -247,6 +251,12 @@ class MonthPicker extends Component {
         }
     };
 
+    onKeyDown = e => {
+        const dateStr = onDateKeydown(e, this.props, this.state, 'month');
+        if (!dateStr) return;
+        this.onDateInputChange(dateStr);
+    };
+
     handleChange = (newValue, prevValue, others = {}, callback) => {
         if (!('value' in this.props)) {
             this.setState({
@@ -301,6 +311,7 @@ class MonthPicker extends Component {
             className,
             inputProps,
             monthCellRender,
+            dateInputAriaLabel,
             ...others
         } = this.props;
 
@@ -335,6 +346,7 @@ class MonthPicker extends Component {
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
             onPressEnter: this.onDateInputBlur,
+            onKeyDown: this.onKeyDown,
         };
 
         const dateInputValue = inputing
@@ -346,6 +358,7 @@ class MonthPicker extends Component {
             <Input
                 {...sharedInputProps}
                 value={dateInputValue}
+                aria-label={dateInputAriaLabel}
                 onFocus={this.onFoucsDateInput}
                 placeholder={format}
                 className={panelInputCls}
@@ -374,6 +387,7 @@ class MonthPicker extends Component {
                     {...sharedInputProps}
                     label={label}
                     state={state}
+                    readOnly
                     value={triggerInputValue}
                     placeholder={placeholder || locale.monthPlaceholder}
                     hint="calendar"
@@ -390,6 +404,8 @@ class MonthPicker extends Component {
                 <Popup
                     {...popupProps}
                     autoFocus
+                    role="combobox"
+                    aria-expanded={visible}
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

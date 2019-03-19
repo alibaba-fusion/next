@@ -13,6 +13,8 @@ export default {
     UP: 38,
     RIGHT: 39,
     DOWN: 40,
+    PAGE_UP: 33,
+    PAGE_DOWN: 34,
 
     // version 0.x
     ESCAPE: 27,

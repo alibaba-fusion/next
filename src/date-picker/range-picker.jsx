@@ -15,6 +15,8 @@ import {
     extend,
     getDateTimeFormat,
     isFunction,
+    onDateKeydown,
+    onTimeKeydown,
 } from './util';
 import PanelFooter from './module/panel-footer';
 
@@ -169,6 +171,22 @@ export default class RangePicker extends Component {
          * 自定义日期单元格渲染
          */
         dateCellRender: PropTypes.func,
+        /**
+         * 开始日期输入框的 aria-label 属性
+         */
+        startDateInputAriaLabel: PropTypes.string,
+        /**
+         * 开始时间输入框的 aria-label 属性
+         */
+        startTimeInputAriaLabel: PropTypes.string,
+        /**
+         * 结束日期输入框的 aria-label 属性
+         */
+        endDateInputAriaLabel: PropTypes.string,
+        /**
+         * 结束时间输入框的 aria-label 属性
+         */
+        endTimeInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -407,6 +425,20 @@ export default class RangePicker extends Component {
         }
     };
 
+    onDateInputKeyDown = e => {
+        const stateName = mapInputStateName(this.state.activeDateInput);
+        const dateInputStr = this.state[stateName];
+        const dateStr = onDateKeydown(
+            e,
+            this.props,
+            { value: this.state.val, dateInputStr },
+            'day'
+        );
+        if (!dateStr) return;
+
+        return this.onDateInputChange(dateStr);
+    };
+
     onFocusDateInput = type => {
         if (type !== this.state.activeDateInput) {
             this.setState({
@@ -493,6 +525,43 @@ export default class RangePicker extends Component {
                 this.handleChange(valueName, newValue);
             }
         }
+    };
+
+    onTimeInputKeyDown = e => {
+        const { showTime } = this.props;
+        const stateName = mapInputStateName(this.state.activeDateInput);
+        const timeInputStr = this.state[stateName];
+        const {
+            disabledMinutes,
+            disabledSeconds,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+        } = typeof showTime === 'object' ? showTime : {};
+        let unit = 'second';
+
+        if (disabledSeconds) {
+            unit = disabledMinutes ? 'hour' : 'minute';
+        }
+
+        const timeStr = onTimeKeydown(
+            e,
+            {
+                format: this.timeFormat,
+                timeInputStr,
+                value: this.state.value,
+                steps: {
+                    hour: hourStep,
+                    minute: minuteStep,
+                    second: secondStep,
+                },
+            },
+            unit
+        );
+
+        if (!timeStr) return;
+
+        this.onTimeInputChange(timeStr);
     };
 
     handleChange = (valueName, newValue) => {
@@ -609,6 +678,10 @@ export default class RangePicker extends Component {
             locale,
             inputProps,
             dateCellRender,
+            startDateInputAriaLabel,
+            startTimeInputAriaLabel,
+            endDateInputAriaLabel,
+            endTimeInputAriaLabel,
             ...others
         } = this.props;
 
@@ -667,11 +740,13 @@ export default class RangePicker extends Component {
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
             onPressEnter: this.onDateInputBlur,
+            onKeyDown: this.onDateInputKeyDown,
         };
 
         const startDateInput = (
             <Input
                 {...sharedInputProps}
+                aria-label={startDateInputAriaLabel}
                 placeholder={this.format}
                 value={startDateInputValue}
                 onFocus={() => this.onFocusDateInput('startValue')}
@@ -682,6 +757,7 @@ export default class RangePicker extends Component {
         const endDateInput = (
             <Input
                 {...sharedInputProps}
+                aria-label={endDateInputAriaLabel}
                 placeholder={this.format}
                 value={endDateInputValue}
                 onFocus={() => this.onFocusDateInput('endValue')}
@@ -738,6 +814,7 @@ export default class RangePicker extends Component {
                 onBlur: this.onTimeInputBlur,
                 onPressEnter: this.onTimeInputBlur,
                 onChange: this.onTimeInputChange,
+                onKeyDown: this.onTimeInputKeyDown,
             };
 
             const startTimeInputCls = classnames({
@@ -749,6 +826,7 @@ export default class RangePicker extends Component {
                 <Input
                     {...sharedTimeInputProps}
                     value={startTimeInputValue}
+                    aria-label={startTimeInputAriaLabel}
                     disabled={disabled || !state.startValue || !state.endValue}
                     onFocus={() => this.onFocusTimeInput('startTime')}
                     className={startTimeInputCls}
@@ -764,6 +842,7 @@ export default class RangePicker extends Component {
                 <Input
                     {...sharedTimeInputProps}
                     value={endTimeInputValue}
+                    aria-label={endTimeInputAriaLabel}
                     disabled={disabled || !state.endValue || !state.startValue}
                     onFocus={() => this.onFocusTimeInput('endTime')}
                     className={endTimeInputCls}
@@ -827,6 +906,9 @@ export default class RangePicker extends Component {
             <div className={triggerCls}>
                 <Input
                     {...sharedInputProps}
+                    readOnly
+                    role="combobox"
+                    aria-expanded={state.visible}
                     label={label}
                     placeholder={locale.startPlaceholder}
                     value={startTriggerValue}
@@ -839,6 +921,9 @@ export default class RangePicker extends Component {
                 </span>
                 <Input
                     {...sharedInputProps}
+                    readOnly
+                    role="combobox"
+                    aria-expanded={state.visible}
                     placeholder={locale.endPlaceholder}
                     value={endTriggerValue}
                     hasBorder={false}
@@ -857,7 +942,7 @@ export default class RangePicker extends Component {
             >
                 <Popup
                     {...popupProps}
-                    autoFoucs
+                    autoFocus
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
