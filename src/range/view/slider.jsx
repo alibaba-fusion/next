@@ -3,10 +3,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { getPercent } from '../utils';
 
-function _getProps(min, max, value) {
+function _getProps(min, max, value, rtl) {
     return {
         style: {
-            left: `${getPercent(min, max, value)}%`,
+            left: rtl
+                ? `${100 - getPercent(min, max, value)}%`
+                : `${getPercent(min, max, value)}%`,
             zIndex: 100,
         },
         'aria-valuenow': value,
@@ -16,7 +18,7 @@ function _getProps(min, max, value) {
     };
 }
 
-function Slider({ prefix, hasMovingClass, min, max, value, onKeyDown }) {
+function Slider({ prefix, hasMovingClass, min, max, value, onKeyDown, rtl }) {
     const classes = classNames({
         [`${prefix}range-slider`]: true,
         [`${prefix}range-slider-moving`]: hasMovingClass,
@@ -27,7 +29,7 @@ function Slider({ prefix, hasMovingClass, min, max, value, onKeyDown }) {
             onKeyDown={onKeyDown}
             role="slider"
             tabIndex={0}
-            {..._getProps(min, max, value)}
+            {..._getProps(min, max, value, rtl)}
         >
             <div className={`${prefix}range-slider-inner`} />
         </div>
@@ -40,6 +42,7 @@ Slider.propTypes = {
     value: PropTypes.number,
     prefix: PropTypes.string,
     hasMovingClass: PropTypes.bool,
+    rtl: PropTypes.bool,
 };
 
 Slider.defaultProps = {
@@ -48,6 +51,7 @@ Slider.defaultProps = {
     max: 100,
     value: 0,
     hasMovingClass: false,
+    rtl: false,
 };
 
 export default Slider;

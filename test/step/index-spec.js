@@ -273,8 +273,23 @@ describe('Step', () => {
             );
 
             assert(wrapper.find('.next-step-label-vertical').length === 1);
-            wrapper.setProps({ labelPlacement: 'horizontal' });
-            assert(wrapper.find('.next-step-label-horizontal').length === 1);
+            wrapper.setProps({ labelPlacement: 'horizontal' }, () => {
+                assert(wrapper.find('.next-step-label-horizontal').length === 1);
+                // 横向模式下会调整 next-step-item-tail 的宽度值
+                const $tail = wrapper.find('.next-step-item-tail');
+                assert(
+                    $tail.length === 3 && 
+                    $tail.at(0).instance().style.width !== "" &&
+                    $tail.at(2).instance().style.width === ""
+                );
+                // 重新设置为垂直居中 应该去掉 next-step-item-tail 的宽度值
+                wrapper.setProps({labelPlacement: 'ver'}, () => {
+                    assert(
+                        $tail.length === 3 && 
+                        $tail.at(0).instance().style.width === ""
+                    );
+                });
+            });
         });
 
         it('should trigger click event', () => {

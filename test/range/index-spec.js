@@ -137,32 +137,23 @@ describe('Range ', () => {
 
         assert(wrapper.find('.next-range-scale-item').length === 4);
         assert(wrapper.find('.next-range-scale-item.activated').length === 2);
-        assert.deepEqual(
+        assert(
             wrapper
                 .find('.next-range-scale-item')
                 .first()
-                .props().style,
-            {
-                left: '3%',
-            }
+                .props().style.left === '3%'
         );
-        assert.deepEqual(
+        assert(
             wrapper
                 .find('.next-range-scale-item')
                 .at(1)
-                .props().style,
-            {
-                left: '26%',
-            }
+                .props().style.left === '26%'
         );
-        assert.deepEqual(
+        assert(
             wrapper
                 .find('.next-range-scale-item')
                 .at(2)
-                .props().style,
-            {
-                left: '37%',
-            }
+                .props().style.left === '37%'
         );
         assert(wrapper2.find('.next-range-scale-item').length === 11);
         assert(wrapper3.find('.next-range-scale-item').length === 4);
@@ -471,5 +462,36 @@ describe('Range ', () => {
 
         wrapper.find('.next-range-slider').simulate('keyDown', { keyCode: 39 });
         assert(!aSpy.called);
+    });
+
+    it('rtl', () => {
+        const wrapperSingle = mount(<Range rtl value={10} />);
+        const wrapperDouble = mount(<Range rtl value={[10, 30]} />);
+        assert.deepEqual(
+            wrapperSingle.find('.next-range-selected').props().style,
+            { width: '10%', left: '90%' }
+        );
+        assert.deepEqual(
+            wrapperDouble.find('.next-range-selected').props().style,
+            { width: '20%', left: '70%' }
+        );
+    });
+
+    it('rtl & reverse', () => {
+        const wrapperSingle = mount(<Range rtl reverse value={10} />);
+        const wrapperDouble = mount(
+            <Range rtl reverse slider="double" value={[10, 30]} />
+        );
+        assert.deepEqual(
+            wrapperSingle.find('.next-range-selected').props().style,
+            { width: '90%', left: '0%' }
+        );
+        assert.deepEqual(
+            wrapperDouble
+                .find('.next-range-selected')
+                .at(0)
+                .props().style,
+            { width: '70%', left: 0 }
+        );
     });
 });

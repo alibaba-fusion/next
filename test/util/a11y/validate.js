@@ -26,6 +26,13 @@ function formatViolations(violations, verbose = false) {
     return JSON.stringify(violations, null, 2);
 }
 
+
+function delay(duration) {
+    return new Promise((res) => {
+        setTimeout(res, duration)
+    });
+}
+
 /**
  * Run Axe-core tests on a dom node
  *
@@ -110,7 +117,9 @@ export const mountReact = async function(node, id = A11Y_ROOT_ID) {
  */
 // TODO: resolve issue where failing tests do not pass wrapper and so cannot be cleaned up correctly
 export const testReact = async function(node, options = {}) {
-    const wrapper = mountReact(node, A11Y_ROOT_ID);
+    const wrapper = await mountReact(node, A11Y_ROOT_ID);
+
+    await delay(options.delay || 200);
     await test(`#${A11Y_ROOT_ID}`, options);
     return wrapper;
 };

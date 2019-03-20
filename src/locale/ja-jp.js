@@ -114,4 +114,7 @@ export default {
     Tag: {
         delete: 'デリート',
     },
+    Rating: {
+        description: '評価オプション',
+    },
 };

@@ -34,15 +34,15 @@
 
 ### Checkbox.Group
 
-| 参数            | 说明                                                                                                                                                                | 类型                     | 默认值       |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | --------- |
-| disabled      | 整体禁用                                                                                                                                                              | Boolean                | -         |
-| dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]` | Array&lt;any>          | \[]       |
-| value         | 被选中的值列表                                                                                                                                                           | Array/String/Number    | -         |
-| defaultValue  | 默认被选中的值列表                                                                                                                                                         | Array/String/Number    | -         |
-| children      | 通过子元素方式设置内部 checkbox                                                                                                                                              | Array&lt;ReactElement> | -         |
-| onChange      | 选中值改变时的事件<br><br>**签名**:<br>Function(value: Array, e: Event) => void<br>**参数**:<br>_value_: {Array} 选中项列表<br>_e_: {Event} Dom 事件对象                                | Function               | () => { } |
-| itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                                  | Enum                   | 'hoz'     |
+| 参数            | 说明                                                                                                                                                                | 类型                     | 默认值      |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
+| disabled      | 整体禁用                                                                                                                                                              | Boolean                | -        |
+| dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]` | Array&lt;any>          | \[]      |
+| value         | 被选中的值列表                                                                                                                                                           | Array/String/Number    | -        |
+| defaultValue  | 默认被选中的值列表                                                                                                                                                         | Array/String/Number    | -        |
+| children      | 通过子元素方式设置内部 checkbox                                                                                                                                              | Array&lt;ReactElement> | -        |
+| onChange      | 选中值改变时的事件<br><br>**签名**:<br>Function(value: Array, e: Event) => void<br>**参数**:<br>_value_: {Array} 选中项列表<br>_e_: {Event} Dom 事件对象                                | Function               | () => {} |
+| itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                                  | Enum                   | 'hoz'    |
 
 ## ARIA and KeyBoard
 

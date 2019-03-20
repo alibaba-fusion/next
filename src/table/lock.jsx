@@ -477,10 +477,13 @@ export default function lock(BaseComponent) {
                         );
 
                         setTimeout(() => {
-                            this.tableRightInc.affixRef &&
-                                this.tableRightInc.affixRef
-                                    .getInstance()
-                                    .updatePosition();
+                            const affixRef = this.tableRightInc.affixRef;
+                            // if rendered then update postion of affix
+                            return (
+                                affixRef &&
+                                affixRef.getInstance() &&
+                                affixRef.getInstance().updatePosition()
+                            );
                         });
                     }
 
@@ -494,10 +497,13 @@ export default function lock(BaseComponent) {
                         );
 
                         setTimeout(() => {
-                            this.tableLeftInc.affixRef &&
-                                this.tableLeftInc.affixRef
-                                    .getInstance()
-                                    .updatePosition();
+                            const affixRef = this.tableLeftInc.affixRef;
+                            // if rendered then update postion of affix
+                            return (
+                                affixRef &&
+                                affixRef.getInstance() &&
+                                affixRef.getInstance().updatePosition()
+                            );
                         });
                     }
                 });

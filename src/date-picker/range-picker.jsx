@@ -82,6 +82,7 @@ export default class RangePicker extends Component {
         /**
          * 禁用日期函数
          * @param {MomentObject} 日期值
+         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
          * @return {Boolean} 是否禁用
          */
         disabledDate: PropTypes.func,
@@ -397,7 +398,7 @@ export default class RangePicker extends Component {
                 inputing: false,
             });
 
-            if (parsed.isValid() && !disabledDate(parsed)) {
+            if (parsed.isValid() && !disabledDate(parsed, 'date')) {
                 const valueName = this.state.activeDateInput;
                 const newValue = parsed;
 

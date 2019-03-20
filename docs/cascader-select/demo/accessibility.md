@@ -1,6 +1,6 @@
 # 无障碍
 
-- order: 8
+- order: 9
 
 请参考`ARIA and KeyBoard`。
 

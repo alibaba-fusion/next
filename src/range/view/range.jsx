@@ -243,6 +243,10 @@ export default class Range extends React.Component {
          * tooltip是否默认展示
          */
         tooltipVisible: PropTypes.bool,
+        /**
+         * 是否已rtl模式展示
+         */
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -262,6 +266,7 @@ export default class Range extends React.Component {
         reverse: false,
         pure: false,
         marksPosition: 'above',
+        rtl: false,
     };
 
     constructor(props) {
@@ -553,15 +558,15 @@ export default class Range extends React.Component {
     // position => current (value type)
     _positionToCurrent(position) {
         const { start, end } = this._moving;
-        const { step, min, max } = this.props;
+        const { step, min, max, rtl } = this.props;
 
         if (position < start) {
             position = start;
         } else if (position > end) {
             position = end;
         }
-        const percent = getPercent(start, end, position);
-
+        let percent = getPercent(start, end, position);
+        percent = rtl ? 100 - percent : percent;
         // reset by step
         const newValue = parseFloat(
             (Math.round(((percent / 100) * (max - min)) / step) * step).toFixed(
@@ -574,12 +579,12 @@ export default class Range extends React.Component {
 
     _currentToValue(current, preValue, lastPosition, isFixedWidth) {
         const { dragging } = this._moving;
+        const { min, max } = this.props;
 
         if (!_isMultiple(this.props.slider, isFixedWidth)) {
             return current;
         } else {
             let result;
-            const { min, max } = this.props;
 
             const precision = getPrecision(this.props.step);
             const diff = current - lastPosition;
@@ -659,6 +664,7 @@ export default class Range extends React.Component {
             fixedWidth,
             defaultValue,
             tooltipVisible,
+            rtl,
         } = this.props;
         const classes = classNames({
             [`${prefix}range`]: true,
@@ -689,6 +695,7 @@ export default class Range extends React.Component {
             tooltipVisible,
             hasMovingClass: this.state.hasMovingClass,
             disabled,
+            rtl,
         };
 
         this.isFixedWidth =
@@ -707,6 +714,7 @@ export default class Range extends React.Component {
                 style={style}
                 className={classes}
                 id={id}
+                dir={rtl ? 'rtl' : 'ltr'}
                 onMouseDown={disabled ? noop : this._onMouseDown.bind(this)}
             >
                 {marks !== false && marksPosition === 'above' ? (

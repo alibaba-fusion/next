@@ -648,6 +648,50 @@ describe('Select', () => {
         wrapper.find('input').simulate('change');
         assert(/测试/.test(input.value));
     });
+
+    it('should support select all and unselect all', () => {
+        const dataSource = [
+            { label: 'xxx', value: 123 },
+            { label: 'empty', value: false },
+        ];
+        wrapper.setProps({
+            dataSource,
+            visible: true,
+            mode: 'multiple',
+            hasSelectAll: true,
+        });
+
+        ReactTestUtils.Simulate.click(
+            document.querySelectorAll('.next-select-all')[0]
+        );
+        assert(
+            document.querySelectorAll('.next-menu-icon-selected').length === 3
+        );
+
+        ReactTestUtils.Simulate.click(
+            document.querySelectorAll('.next-select-menu-item')[0]
+        );
+
+        assert(
+            document.querySelectorAll('.next-menu-icon-selected').length === 1
+        );
+
+        ReactTestUtils.Simulate.click(
+            document.querySelectorAll('.next-select-all')[0]
+        );
+
+        assert(
+            document.querySelectorAll('.next-menu-icon-selected').length === 3
+        );
+
+        ReactTestUtils.Simulate.click(
+            document.querySelectorAll('.next-select-all')[0]
+        );
+
+        assert(
+            document.querySelectorAll('.next-menu-icon-selected').length === 0
+        );
+    });
 });
 
 describe('Select Controlled', () => {

@@ -20,7 +20,7 @@
     line-height: $height - $borderWidth * 2;
     font-size: 0;
 
-    $_marginLeft: $height / 4 - 1px;
+    $_marginLeft: $iconSize;
 
     > .#{$css-prefix}tag-body {
         font-size: $fontSize;

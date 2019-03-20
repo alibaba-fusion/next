@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import moment from 'moment';
 import assert from 'power-assert';
 import Select from '../../src/select';
+import Button from '../../src/button';
 import enUS from '../../src/locale/en-us';
 import zhCN from '../../src/locale/zh-cn';
 import ConfigProvider from '../../src/config-provider';
@@ -15,7 +16,7 @@ import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const { config, getContextProps } = ConfigProvider;
+const { config, getContextProps, ErrorBoundary } = ConfigProvider;
 
 class Output extends Component {
     static propTypes = {
@@ -406,5 +407,133 @@ describe('ConfigProvider.Consumer', () => {
         assert.equal(output.prop('locale'), contextState.locale);
         assert(output.prop('pure') === contextState.pure);
         assert(output.prop('warning') === contextState.warning);
+    });
+});
+
+describe('ConfigProvider.ErrorBoundary', () => {
+    let wrapper;
+
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
+    });
+
+    it('should catch errors with componentDidCatch', () => {
+        const Something = () => null;
+
+        wrapper = mount(
+            <ErrorBoundary>
+                <Something />
+            </ErrorBoundary>
+        );
+        const error = new Error('test');
+
+        wrapper.find(Something).simulateError(error);
+    });
+
+    it('should catch errors with componentDidCatch as to basic component', () => {
+        const Something = () => null;
+        wrapper = mount(
+            <ConfigProvider errorBoundary>
+                <Button>
+                    <Something />
+                </Button>
+            </ConfigProvider>
+        );
+        const error = new Error('test');
+
+        wrapper.find(Something).simulateError(error);
+    });
+
+    it('should on: errorBoundary should work', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary>
+                <Button />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'ErrorBoundary');
+    });
+
+    it('should on: errorBoundary={{}} should work', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={{}}>
+                <Button />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'ErrorBoundary');
+    });
+
+    it('should off: errorBoundary={false} should work', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={false}>
+                <Button />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'Button');
+    });
+
+    it('should on: errorBoundary={{open: true}} should work', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={{ open: true }}>
+                <Button />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'ErrorBoundary');
+    });
+
+    it('should off: errorBoundary={{open: false}} should work', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={{ open: false }}>
+                <Button />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'Button');
+    });
+
+    it('should off: config on component iteself >  on ConfigProvider 1', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={{}}>
+                <Button errorBoundary={false} />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'Button');
+    });
+
+    it('should on: config on component iteself >  on ConfigProvider 2', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={false}>
+                <Button errorBoundary={{}} />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'ErrorBoundary');
+    });
+
+    it('should on: config on component iteself >  on ConfigProvider 3', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={{ open: false }}>
+                <Button errorBoundary />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'ErrorBoundary');
+    });
+
+    it('should off: config on component iteself >  on ConfigProvider 4', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary>
+                <Button errorBoundary={{ open: false }} />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'Button');
+    });
+
+    it('should on: config on component iteself >  on ConfigProvider 5', () => {
+        wrapper = shallow(
+            <ConfigProvider errorBoundary={{ open: false }}>
+                <Button errorBoundary={{ open: true }} />
+            </ConfigProvider>
+        );
+        assert(wrapper.dive().name() === 'ErrorBoundary');
     });
 });

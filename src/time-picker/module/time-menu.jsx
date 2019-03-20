@@ -96,7 +96,6 @@ class TimeMenu extends React.Component {
                 list.push(
                     <li
                         role="option"
-                        tabIndex="0"
                         aria-selected={String(i === activeIndex)}
                         key={i}
                         title={i}

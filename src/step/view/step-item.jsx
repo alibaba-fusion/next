@@ -108,6 +108,13 @@ class StepItem extends Component {
         if (shape === 'arrow') {
             return;
         }
+        const resetTailStyle = () => {
+            dom.setStyle(this.tail, {
+                width: '',
+                // eslint-disable-next-line
+                top: '',
+            });
+        };
 
         if (direction === 'vertical' || direction === 'ver') {
             this.resize();
@@ -117,19 +124,18 @@ class StepItem extends Component {
                 width: '',
                 [pos]: '',
             });
-        } else if (
-            shape === 'circle' &&
-            (labelPlacement === 'horizontal' || labelPlacement === 'hoz') &&
-            index !== total - 1
-        ) {
-            // 调整横向Content
-            this.adjustTail();
+            if (
+                shape === 'circle' &&
+                (labelPlacement === 'horizontal' || labelPlacement === 'hoz') &&
+                index !== total - 1
+            ) {
+                // 调整横向Content
+                this.adjustTail();
+            } else {
+                resetTailStyle();
+            }
         } else if (index !== total - 1) {
-            dom.setStyle(this.tail, {
-                width: '',
-                // eslint-disable-next-line
-                top: '',
-            });
+            resetTailStyle();
         }
     }
 

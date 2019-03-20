@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.13.4](https://github.com/alibaba-fusion/next/compare/1.13.3...1.13.4) (2019-02-28)
+## [1.13.8](https://github.com/alibaba-fusion/next/compare/1.13.7...1.13.8) (2019-03-14)
 
 
-### Features
+### Bug Fixes
 
-* **NumberPicker:** consider [。] as [.] ([8369b4a](https://github.com/alibaba-fusion/next/commit/8369b4a))
+* **ConfigProvider:** config on components should take higher priority ([87917c8](https://github.com/alibaba-fusion/next/commit/87917c8))
 
 

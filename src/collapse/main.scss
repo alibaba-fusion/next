@@ -11,6 +11,11 @@
     border: $collapse-border-width solid $collapse-border-color;
     border-radius: $collapse-border-corner;
     overflow: hidden;
+    &:focus,
+    & *:focus {
+        outline: 0;
+    }
+
     &-panel {
         &:not(:first-child) {
             border-top: $collapse-title-border-width solid $collapse-panel-border-color;

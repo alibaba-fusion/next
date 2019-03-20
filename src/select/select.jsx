@@ -232,6 +232,7 @@ class Select extends Base {
                 this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
+            this.updateSelectAllYet(this.valueDataSource.value);
         } else if (
             'defaultValue' in nextProps &&
             nextProps.defaultValue === this.valueDataSource.value &&
@@ -375,12 +376,36 @@ class Select extends Base {
             this.handleChange(itemObj.value, triggerType, itemObj.valueDS);
         }
 
+        this.updateSelectAllYet(itemObj.value);
+
         // 清空搜索
         if (!('searchValue' in this.props) && this.state.searchValue) {
             // 因为 SearchValue 被 clear 后会重新渲染 Menu，所以在 Overlay 检测 safeNode 的时候 e.target 可能会找不到导致弹窗关闭
             setTimeout(() => {
                 this.handleSearchClear(triggerType);
             });
+        }
+    }
+
+    updateSelectAllYet(value) {
+        // multiple mode
+        // is current state select all or not
+        this.selectAllYet = false;
+        if (this.props.hasSelectAll && Array.isArray(value)) {
+            const selectAllValues = this.dataStore
+                .getEnableDS()
+                .map(item => item.value);
+
+            if (selectAllValues.length <= value.length) {
+                this.selectAllYet = true;
+
+                selectAllValues.forEach(val => {
+                    if (value.indexOf(val) === -1) {
+                        this.selectAllYet = false;
+                        return;
+                    }
+                });
+            }
         }
     }
 
@@ -595,7 +620,14 @@ class Select extends Base {
      */
     handleSelectAll(e) {
         e && e.preventDefault();
-        const nextValues = this.dataStore.getEnableDS().map(item => item.value);
+        let nextValues;
+
+        if (this.selectAllYet) {
+            nextValues = [];
+        } else {
+            nextValues = this.dataStore.getEnableDS().map(item => item.value);
+        }
+
         // 直接传 values，减少 toString 操作
         this.handleMultipleSelect(nextValues, 'selectAll');
     }
@@ -913,13 +945,34 @@ class Select extends Base {
         const text =
             typeof hasSelectAll === 'boolean' ? 'Select All' : hasSelectAll;
 
+        const selectAllYet = this.selectAllYet;
+
+        const cls = classNames({
+            [`${prefix}select-all`]: true,
+            [`${prefix}selected`]: selectAllYet,
+        });
+
+        const clsInner = classNames({
+            [`${prefix}select-all-inner`]: true,
+        });
+
+        // remove style={{'lineHeight': 'unset'}} in next Y
+        // remove style={{'display': 'none'}} in next Y
         return (
             <div
                 key="all"
                 onClick={this.handleSelectAll}
-                className={`${prefix}select-all`}
+                className={cls}
+                style={{ lineHeight: 'unset' }}
             >
-                <span>{text}</span>
+                {selectAllYet ? (
+                    <Icon
+                        className={`${prefix}menu-icon-selected`}
+                        style={{ display: 'none' }}
+                        type="select"
+                    />
+                ) : null}
+                <span className={clsInner}>{text}</span>
             </div>
         );
     }

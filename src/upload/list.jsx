@@ -433,7 +433,7 @@ class List extends Component {
     }
 
     render() {
-        const { listType, children, prefix, rtl } = this.props;
+        const { listType, children, prefix, rtl, className } = this.props;
         const prefixCls = `${prefix}upload`;
 
         let list = this.props.value.map(file => {
@@ -450,10 +450,13 @@ class List extends Component {
         if (rtl && listType === 'card' && Array.isArray(list)) {
             list = list.reverse();
         }
-        const listclassNames = classNames({
-            [`${prefixCls}-list`]: true,
-            [`${prefixCls}-list-${this.props.listType}`]: true,
-        });
+        const listclassNames = classNames(
+            {
+                [`${prefixCls}-list`]: true,
+                [`${prefixCls}-list-${this.props.listType}`]: true,
+            },
+            className
+        );
 
         const others = obj.pickAttrsWith(this.props, 'data-');
         return (
