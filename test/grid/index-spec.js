@@ -18,7 +18,6 @@ describe('Row', () => {
         wrapper = mount(<Row />);
     });
 
-
     afterEach(() => {
         wrapper.unmount();
         wrapper = null;
@@ -33,26 +32,29 @@ describe('Row', () => {
             align: 'center',
         });
         const row = wrapper.find('.next-row');
-        assert(row.hasClass('next-row-wrap') &&
-               row.hasClass('next-row-fixed') &&
-               row.hasClass('next-row-fixed-xxs') &&
-               row.hasClass('next-row-justify-end') &&
-               row.hasClass('next-row-align-center'));
+        assert(
+            row.hasClass('next-row-wrap') &&
+                row.hasClass('next-row-fixed') &&
+                row.hasClass('next-row-fixed-xxs') &&
+                row.hasClass('next-row-justify-end') &&
+                row.hasClass('next-row-align-center')
+        );
     });
 
     it('should apply gutter', () => {
         wrapper.setProps({
             gutter: 16,
-            children: [
-                <Col key="1" span="12" />,
-                <Col key="2" span="12" />
-            ]
+            children: [<Col key="1" span="12" />, <Col key="2" span="12" />],
         });
         const rowStyle = wrapper.find('.next-row').props().style;
-        assert(rowStyle.marginLeft === '-8px' && rowStyle.marginRight === '-8px');
+        assert(
+            rowStyle.marginLeft === '-8px' && rowStyle.marginRight === '-8px'
+        );
 
         const colStyle = wrapper.find('.next-col').getElements()[0].props.style;
-        assert(colStyle.paddingLeft === '8px' && colStyle.paddingRight === '8px');
+        assert(
+            colStyle.paddingLeft === '8px' && colStyle.paddingRight === '8px'
+        );
     });
 
     it('should receive className prop', () => {
@@ -73,7 +75,9 @@ describe('Row', () => {
         assert(wrapper.find('.next-row').hasClass('next-row-s-hidden'));
 
         wrapper.setProps({ hidden: ['s', 'm'] });
-        assert(wrapper.find('.next-row-s-hidden').hasClass('next-row-m-hidden'));
+        assert(
+            wrapper.find('.next-row-s-hidden').hasClass('next-row-m-hidden')
+        );
     });
 
     it('should rendered as custom element type', () => {
@@ -89,7 +93,6 @@ describe('Col', () => {
         wrapper = mount(<Col />);
     });
 
-
     afterEach(() => {
         wrapper.unmount();
         wrapper = null;
@@ -101,15 +104,17 @@ describe('Col', () => {
             fixedSpan: 2,
             offset: 3,
             fixedOffset: 4,
-            align: 'center'
+            align: 'center',
         });
 
         const col = wrapper.find('.next-col');
-        assert(col.hasClass('next-col-1') &&
-               col.hasClass('next-col-fixed-2') &&
-               col.hasClass('next-col-offset-3') &&
-               col.hasClass('next-col-offset-fixed-4') &&
-               col.hasClass('next-col-center'));
+        assert(
+            col.hasClass('next-col-1') &&
+                col.hasClass('next-col-fixed-2') &&
+                col.hasClass('next-col-offset-3') &&
+                col.hasClass('next-col-offset-fixed-4') &&
+                col.hasClass('next-col-center')
+        );
     });
 
     it('should have break point class', () => {
@@ -128,7 +133,9 @@ describe('Col', () => {
         assert(wrapper.find('.next-col').hasClass('next-col-s-hidden'));
 
         wrapper.setProps({ hidden: ['s', 'm'] });
-        assert(wrapper.find('.next-col-s-hidden').hasClass('next-col-m-hidden'));
+        assert(
+            wrapper.find('.next-col-s-hidden').hasClass('next-col-m-hidden')
+        );
     });
 
     it('should receive className prop', () => {

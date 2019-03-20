@@ -6,7 +6,7 @@ import SortComponent from './sort';
 import CellComponent from './cell';
 import ResizeComponent from './resize';
 
-const noop = () => { };
+const noop = () => {};
 export default class Header extends React.Component {
     static propTypes = {
         children: PropTypes.any,
@@ -23,8 +23,8 @@ export default class Header extends React.Component {
         components: PropTypes.object,
         sort: PropTypes.object,
         onSort: PropTypes.func,
-        onResizeChange: PropTypes.func
-    }
+        onResizeChange: PropTypes.func,
+    };
     static defaultProps = {
         component: 'thead',
         columns: [],
@@ -32,83 +32,148 @@ export default class Header extends React.Component {
         onFilter: noop,
         components: {},
         onSort: noop,
-        onResizeChange: noop
-    }
+        onResizeChange: noop,
+    };
 
     getCellRef = (i, j, cell) => {
         this.props.headerCellRef(i, j, cell);
-    }
+    };
 
     onSort = (dataIndex, order, sort) => {
         this.props.onSort(dataIndex, order, sort);
-    }
+    };
 
     render() {
         /*eslint-disable no-unused-vars */
-        const { prefix, className, children, component: Tag, colGroup, columns, locale, filterParams,
-            onFilter, components, affixRef, headerCellRef, onSort, sort, onResizeChange, pure, ...others
+        const {
+            prefix,
+            className,
+            children,
+            component: Tag,
+            colGroup,
+            columns,
+            locale,
+            filterParams,
+            onFilter,
+            components,
+            affixRef,
+            headerCellRef,
+            onSort,
+            sort,
+            onResizeChange,
+            pure,
+            rtl,
+            ...others
         } = this.props;
 
-        const { Cell = CellComponent, Filter = FilterComponent, Sort = SortComponent, Resize = ResizeComponent } = components;
+        const {
+            Cell = CellComponent,
+            Filter = FilterComponent,
+            Sort = SortComponent,
+            Resize = ResizeComponent,
+        } = components;
         const rowSpan = columns.length;
 
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
                 /* eslint-disable no-unused-vars, prefer-const */
-                let { title, colSpan, sortable, resizable, dataIndex, filters, filterMode, width, align, className, __normalized, lock, ...others } = col;
+                let {
+                    title,
+                    colSpan,
+                    sortable,
+                    resizable,
+                    dataIndex,
+                    filters,
+                    filterMode,
+                    width,
+                    align,
+                    alignHeader,
+                    className,
+                    __normalized,
+                    lock,
+                    ...others
+                } = col;
 
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
                     [`${prefix}table-header-resizable`]: resizable,
-                    [className]: className
+                    [className]: className,
                 });
-                let attrs = {}, sortElement, filterElement, resizeElement;
+                let attrs = {},
+                    sortElement,
+                    filterElement,
+                    resizeElement;
                 if (col.children && col.children.length) {
                     attrs.colSpan = colSpan;
                 } else {
                     if (sortable) {
-                        sortElement = (<Sort prefix={prefix}
-                            dataIndex={dataIndex}
-                            onSort={this.onSort}
-                            sort={sort}
-                            locale={locale}/>);
+                        sortElement = (
+                            <Sort
+                                prefix={prefix}
+                                dataIndex={dataIndex}
+                                onSort={this.onSort}
+                                sort={sort}
+                                rtl={rtl}
+                                locale={locale}
+                            />
+                        );
                     }
                     if (resizable) {
-                        resizeElement = <Resize prefix={prefix} dataIndex={dataIndex} onChange={onResizeChange}/>;
+                        resizeElement = (
+                            <Resize
+                                prefix={prefix}
+                                rtl={rtl}
+                                dataIndex={dataIndex}
+                                onChange={onResizeChange}
+                            />
+                        );
                     }
 
                     if (filters) {
-                        filterElement = filters.length ?
-                            (<Filter dataIndex={dataIndex}
+                        filterElement = filters.length ? (
+                            <Filter
+                                dataIndex={dataIndex}
                                 filters={filters}
                                 prefix={prefix}
                                 locale={locale}
+                                rtl={rtl}
                                 filterParams={filterParams}
                                 filterMode={filterMode}
-                                onFilter={onFilter} />) : null;
+                                onFilter={onFilter}
+                            />
+                        ) : null;
                     }
                     attrs.rowSpan = rowSpan - index;
                 }
-                return (<Cell {...others} {...attrs}
-                    key={j}
-                    prefix={prefix}
-                    pure={pure}
-                    cell={title}
-                    component="th"
-                    align={align}
-                    className={className}
-                    ref={this.getCellRef.bind(this, index, j)}
-                    type="header">
-                    {sortElement}{filterElement}{resizeElement}
-                </Cell>);
+                return (
+                    <Cell
+                        {...others}
+                        {...attrs}
+                        key={j}
+                        prefix={prefix}
+                        pure={pure}
+                        rtl={rtl}
+                        cell={title}
+                        component="th"
+                        align={alignHeader ? alignHeader : align}
+                        className={className}
+                        ref={this.getCellRef.bind(this, index, j)}
+                        type="header"
+                    >
+                        {sortElement}
+                        {filterElement}
+                        {resizeElement}
+                    </Cell>
+                );
             });
             return <tr key={index}>{col}</tr>;
         });
 
-        return (<Tag className={className} {...others}>
-            {header}
-            {children}
-        </Tag>);
+        return (
+            <Tag className={className} {...others}>
+                {header}
+                {children}
+            </Tag>
+        );
     }
 }
-

@@ -5,35 +5,63 @@ import { log } from '../../util';
 import Row from '../base/row';
 
 export default class GroupListRow extends Row {
-
     static contextTypes = {
         listHeader: PropTypes.any,
         listFooter: PropTypes.any,
         rowSelection: PropTypes.object,
         notRenderCellIndex: PropTypes.array,
-        lockType: PropTypes.oneOf(['left', 'right'])
-    }
+        lockType: PropTypes.oneOf(['left', 'right']),
+    };
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, className, onClick, onMouseEnter, onMouseLeave, columns, Cell, rowIndex, record, children, primaryKey, colGroup, cellRef, getCellProps, ...others } = this.props;
+        const {
+            prefix,
+            className,
+            onClick,
+            onMouseEnter,
+            onMouseLeave,
+            columns,
+            Cell,
+            rowIndex,
+            record,
+            children,
+            primaryKey,
+            colGroup,
+            cellRef,
+            getCellProps,
+            locale,
+            rtl,
+            ...others
+        } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
-            [className]: className
+            [className]: className,
         });
-        return (<table className={cls} role="row" {...others}
-            onClick={this.onClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-            {colGroup}
-            <tbody>
-                {this.renderContent('header')}
-                {this.renderChildren()}
-                {this.renderContent('footer')}
-            </tbody>
-        </table>);
+        return (
+            <table
+                className={cls}
+                role="row"
+                {...others}
+                onClick={this.onClick}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+            >
+                {colGroup}
+                <tbody>
+                    {this.renderContent('header')}
+                    {this.renderChildren()}
+                    {this.renderContent('footer')}
+                </tbody>
+            </table>
+        );
     }
 
     isChildrenSelection() {
-        return this.context.listHeader && this.context.listHeader.hasChildrenSelection;
+        return (
+            this.context.listHeader &&
+            this.context.listHeader.hasChildrenSelection
+        );
     }
 
     isSelection() {
@@ -48,7 +76,9 @@ export default class GroupListRow extends Row {
                 const cells = this.renderCells(child);
                 if (this.isChildrenSelection()) {
                     if (!child[primaryKey]) {
-                        log.warning('record.children should contains primaryKey when childrenSelection is true.');
+                        log.warning(
+                            'record.children should contains primaryKey when childrenSelection is true.'
+                        );
                     }
                     return <tr key={child[primaryKey]}>{cells}</tr>;
                 }
@@ -56,7 +86,7 @@ export default class GroupListRow extends Row {
                     cells.shift();
                     cells[0] = React.cloneElement(cells[0], {
                         colSpan: 2,
-                        ...cells[0].props
+                        ...cells[0].props,
                     });
                 }
                 return <tr key={index}>{cells}</tr>;
@@ -71,13 +101,20 @@ export default class GroupListRow extends Row {
         let listNode;
         if (list) {
             if (React.isValidElement(list.cell)) {
-                listNode = React.cloneElement(list.cell, { record, index: rowIndex });
+                listNode = React.cloneElement(list.cell, {
+                    record,
+                    index: rowIndex,
+                });
             } else if (typeof list.cell === 'function') {
                 listNode = list.cell(record, rowIndex);
             }
             if (listNode) {
                 let cells = this.renderCells(record);
-                if (type === 'header' && this.context.rowSelection && this.isSelection()) {
+                if (
+                    type === 'header' &&
+                    this.context.rowSelection &&
+                    this.isSelection()
+                ) {
                     cells = cells.slice(0, 1);
                     cells.push(
                         <td colSpan={columns.length - 1} key="listNode">
@@ -92,13 +129,15 @@ export default class GroupListRow extends Row {
                         </tr>
                     );
                 } else {
-                    listNode = (<tr className={`${prefix}table-group-${type}`}>
-                        <td colSpan={columns.length}>
-                            <div className={`${prefix}table-cell-wrapper`}>
-                                {listNode}
-                            </div>
-                        </td>
-                    </tr>);
+                    listNode = (
+                        <tr className={`${prefix}table-group-${type}`}>
+                            <td colSpan={columns.length}>
+                                <div className={`${prefix}table-cell-wrapper`}>
+                                    {listNode}
+                                </div>
+                            </td>
+                        </tr>
+                    );
                 }
             }
         }

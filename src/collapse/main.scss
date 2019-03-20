@@ -2,6 +2,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/mixin";
 @import "scss/variable";
+@import "./rtl.scss";
 
 /* put your code here */
 #{$collapse-prefix} {
@@ -10,6 +11,11 @@
     border: $collapse-border-width solid $collapse-border-color;
     border-radius: $collapse-border-corner;
     overflow: hidden;
+    &:focus,
+    & *:focus {
+        outline: 0;
+    }
+
     &-panel {
         &:not(:first-child) {
             border-top: $collapse-title-border-width solid $collapse-panel-border-color;
@@ -23,7 +29,7 @@
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0, 0, rotate(90deg));
+        @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-collapsed));
     }
 
     &-panel-title {
@@ -60,9 +66,11 @@
             height: auto;
             opacity: 1;
         }
+    }
 
-        #{$collapse-prefix}-panel-icon {
-            @include icon-size($collapse-icon-size, 0, 0, rotate(180deg));
+    #{$collapse-prefix}-panel-icon {
+        &#{$collapse-prefix}-panel-icon-expanded {
+            @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-expanded));
         }
     }
 

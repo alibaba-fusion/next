@@ -10,7 +10,7 @@ function getRule(ruleName, props) {
     return {
         [ruleName]: props[ruleName],
         message: getCfgFromProps(props, `${ruleName}Message`),
-        trigger: getCfgFromProps(props, `${ruleName}Trigger`)
+        trigger: getCfgFromProps(props, `${ruleName}Trigger`),
     };
 }
 
@@ -21,7 +21,9 @@ function getValueName(props, displayName) {
 
     if (typeof displayName === 'string') {
         // Next Components are all wrappered by configProvider
-        const componentName = displayName.replace(/Config\(/, '').replace(')', '');
+        const componentName = displayName
+            .replace(/Config\(/, '')
+            .replace(')', '');
         if (['Switch', 'Checkbox', 'Radio'].indexOf(componentName) !== -1) {
             return 'checked';
         }
@@ -45,8 +47,14 @@ export function getRules(props) {
             minLength,
             maxLength,
             // minLengthMessage maxLengthMessage had been deprected, please use minmaxLength. TODO: removed in 2.0
-            message: getCfgFromProps(props, 'minmaxLengthMessage') || getCfgFromProps(props, 'minLengthMessage') || getCfgFromProps(props, 'maxLengthMessage'),
-            trigger: getCfgFromProps(props, 'minmaxLengthTrigger') || getCfgFromProps(props, 'minLengthTrigger') || getCfgFromProps(props, 'maxLengthTrigger'),
+            message:
+                getCfgFromProps(props, 'minmaxLengthMessage') ||
+                getCfgFromProps(props, 'minLengthMessage') ||
+                getCfgFromProps(props, 'maxLengthMessage'),
+            trigger:
+                getCfgFromProps(props, 'minmaxLengthTrigger') ||
+                getCfgFromProps(props, 'minLengthTrigger') ||
+                getCfgFromProps(props, 'maxLengthTrigger'),
         });
     }
 
@@ -73,8 +81,14 @@ export function getRules(props) {
             min,
             max,
             // minMessage maxMessage had been deprected, please use minmaxLength. TODO: removed in 2.0
-            message: getCfgFromProps(props, 'minmaxMessage') || getCfgFromProps(props, 'minMessage') || getCfgFromProps(props, 'maxMessage'),
-            trigger: getCfgFromProps(props, 'minmaxTrigger') || getCfgFromProps(props, 'minTrigger') || getCfgFromProps(props, 'maxTrigger'),
+            message:
+                getCfgFromProps(props, 'minmaxMessage') ||
+                getCfgFromProps(props, 'minMessage') ||
+                getCfgFromProps(props, 'maxMessage'),
+            trigger:
+                getCfgFromProps(props, 'minmaxTrigger') ||
+                getCfgFromProps(props, 'minTrigger') ||
+                getCfgFromProps(props, 'maxTrigger'),
         });
     }
 
@@ -92,6 +106,7 @@ export function getFieldInitCfg(props, displayName) {
     return {
         valueName: getValueName(props, displayName),
         trigger: props.trigger ? props.trigger : 'onChange',
-        rules: getRules(props)
+        autoValidate: props.autoValidate,
+        rules: getRules(props),
     };
 }

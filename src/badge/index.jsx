@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
-import {obj} from '../util';
+import { obj } from '../util';
 import Sup from './sup';
 
 /**
@@ -12,6 +12,7 @@ class Badge extends Component {
     static propTypes = {
         // 样式类名的品牌前缀
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         // 自定义类名
         className: PropTypes.string,
         // 自定义内联样式
@@ -31,25 +32,34 @@ class Badge extends Component {
         /**
          * 展示的封顶的数字
          */
-        overflowCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        overflowCount: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         /**
          * 不展示数字，只展示一个小红点
          */
-        dot: PropTypes.bool
+        dot: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         count: 0,
         overflowCount: 99,
-        dot: false
+        dot: false,
     };
 
     render() {
         const {
-            prefix, dot, className, children, content, style,
+            prefix,
+            dot,
+            className,
+            children,
+            content,
+            style,
+            rtl,
             count: originCount,
-            overflowCount: originOverflowCount
+            overflowCount: originOverflowCount,
         } = this.props;
         const count = parseInt(originCount, 10);
         const overflowCount = parseInt(originOverflowCount, 10);
@@ -60,14 +70,20 @@ class Badge extends Component {
             others.title = others.title || `${count}`;
         }
 
-        const classes = classNames(`${prefix}badge`, {
-            [`${prefix}badge-not-a-wrapper`]: !children,
-        }, className);
+        const classes = classNames(
+            `${prefix}badge`,
+            {
+                [`${prefix}badge-not-a-wrapper`]: !children,
+            },
+            className
+        );
 
         return (
-            <span className={classes} {...others}>
+            <span dir={rtl ? 'rtl' : undefined} className={classes} {...others}>
                 {children}
-                <Sup {...({prefix, content, count, overflowCount, dot, style})} />
+                <Sup
+                    {...{ prefix, content, count, overflowCount, dot, style }}
+                />
             </span>
         );
     }

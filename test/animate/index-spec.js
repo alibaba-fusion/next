@@ -10,7 +10,6 @@ import './index-spec.scss';
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp, react/prop-types, react/prefer-stateless-function */
 /* global describe, it, beforeEach, afterEach */
 
-
 const { hasClass, getStyle } = dom;
 const { ieVersion } = env;
 
@@ -22,7 +21,7 @@ class Demo extends React.Component {
 
     static defaultProps = {
         visible: false,
-        expand: false
+        expand: false,
     };
 
     constructor(props) {
@@ -33,7 +32,7 @@ class Demo extends React.Component {
 
     handleToggle() {
         this.setState({
-            visible: !this.state.visible
+            visible: !this.state.visible,
         });
     }
 
@@ -43,14 +42,14 @@ class Demo extends React.Component {
         const A = expand ? Animate.Expand : Animate;
 
         return (
-        <div>
-            <button onClick={this.handleToggle}>Toggle visible</button>
-            <A animation="my-zoom" {...others}>
-                {this.state.visible ?
-                    <div className="basic-demo">Next Animate</div> :
-                    null}
-            </A>
-        </div>
+            <div>
+                <button onClick={this.handleToggle}>Toggle visible</button>
+                <A animation="my-zoom" {...others}>
+                    {this.state.visible ? (
+                        <div className="basic-demo">Next Animate</div>
+                    ) : null}
+                </A>
+            </div>
         );
     }
 }
@@ -58,7 +57,6 @@ class Demo extends React.Component {
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 describe('Animate', () => {
-
     let mountNode;
 
     beforeEach(() => {
@@ -86,7 +84,7 @@ describe('Animate', () => {
     }
 
     it('should play appear animation', () => {
-        return co(function* () {
+        return co(function*() {
             ReactDOM.render(<Demo visible />, mountNode);
             const demo = document.querySelector('.basic-demo');
             assert(hasClass(demo, 'my-zoom-appear'));
@@ -99,8 +97,11 @@ describe('Animate', () => {
     });
 
     it('should not play appear animation if set animationAppear to false', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible animationAppear={false} />, mountNode);
+        return co(function*() {
+            ReactDOM.render(
+                <Demo visible animationAppear={false} />,
+                mountNode
+            );
             const demo = document.querySelector('.basic-demo');
             assert(!hasClass(demo, 'my-zoom-appear'));
             yield delay(15);
@@ -109,7 +110,7 @@ describe('Animate', () => {
     });
 
     it('should play enter animation', () => {
-        return co(function* () {
+        return co(function*() {
             ReactDOM.render(<Demo />, mountNode);
             const btn = document.querySelector('button');
             btn.click();
@@ -124,8 +125,11 @@ describe('Animate', () => {
     });
 
     it('should play leave animation', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible animationAppear={false} />, mountNode);
+        return co(function*() {
+            ReactDOM.render(
+                <Demo visible animationAppear={false} />,
+                mountNode
+            );
             const btn = document.querySelector('button');
             btn.click();
             const demo = document.querySelector('.basic-demo');
@@ -138,11 +142,16 @@ describe('Animate', () => {
     });
 
     it('should support passing object to animation property', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo animation={{
-                enter: 'my-zoom-in',
-                leave: 'my-zoom-out'
-            }} />, mountNode);
+        return co(function*() {
+            ReactDOM.render(
+                <Demo
+                    animation={{
+                        enter: 'my-zoom-in',
+                        leave: 'my-zoom-out',
+                    }}
+                />,
+                mountNode
+            );
             const btn = document.querySelector('button');
             btn.click();
             const demo = document.querySelector('.basic-demo');
@@ -163,8 +172,11 @@ describe('Animate', () => {
     });
 
     it('should play expand animation', () => {
-        return co(function* () {
-            ReactDOM.render(<Demo visible={false} expand animation="expand" />, mountNode);
+        return co(function*() {
+            ReactDOM.render(
+                <Demo visible={false} expand animation="expand" />,
+                mountNode
+            );
             const btn = document.querySelector('button');
             btn.click();
             const demo = document.querySelector('.basic-demo');

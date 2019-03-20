@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import RowComponent from './row';
 import CellComponent from './cell';
 
-const noop = () => { };
+const noop = () => {};
 
 export default class Body extends React.Component {
     static propTypes = {
@@ -27,8 +27,8 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
-        locale: PropTypes.object
-    }
+        locale: PropTypes.object,
+    };
     static defaultProps = {
         loading: false,
         prefix: 'next-',
@@ -40,75 +40,124 @@ export default class Body extends React.Component {
         rowRef: noop,
         dataSource: [],
         component: 'tbody',
-        columns: []
-    }
+        columns: [],
+    };
 
     getRowRef = (i, row) => {
         this.props.rowRef(i, row);
-    }
+    };
 
     onRowClick = (record, index, e) => {
         this.props.onRowClick(record, index, e);
-    }
+    };
 
     onRowMouseEnter = (record, index, e) => {
         this.props.onRowMouseEnter(record, index, e);
-    }
+    };
 
     onRowMouseLeave = (record, index, e) => {
         this.props.onRowMouseLeave(record, index, e);
-    }
+    };
 
     render() {
         /*eslint-disable no-unused-vars */
-        const { prefix, className, children, component: Tag, colGroup, loading, emptyContent, components, getCellProps,
-            primaryKey, getRowProps, dataSource, cellRef, columns, rowRef, onRowClick, onRowMouseEnter, onRowMouseLeave, locale, pure, ...others } = this.props;
+        const {
+            prefix,
+            className,
+            children,
+            component: Tag,
+            colGroup,
+            loading,
+            emptyContent,
+            components,
+            getCellProps,
+            primaryKey,
+            getRowProps,
+            dataSource,
+            cellRef,
+            columns,
+            rowRef,
+            onRowClick,
+            onRowMouseEnter,
+            onRowMouseLeave,
+            locale,
+            pure,
+            expandedIndexSimulate,
+            rtl,
+            ...others
+        } = this.props;
 
         const { Row = RowComponent, Cell = CellComponent } = components;
-        const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;
-        let rows = (<tr>
-            <td colSpan={columns.length}>
-                <div className={`${prefix}table-empty`}>{empty}</div>
-            </td>
-        </tr>);
+        const empty = loading ? (
+            <span>&nbsp;</span>
+        ) : (
+            emptyContent || locale.empty
+        );
+        let rows = (
+            <tr>
+                <td colSpan={columns.length}>
+                    <div className={`${prefix}table-empty`}>{empty}</div>
+                </td>
+            </tr>
+        );
         if (Tag === 'div') {
-            rows = (<table role="table"><tbody>{rows}</tbody></table>);
+            rows = (
+                <table role="table">
+                    <tbody>{rows}</tbody>
+                </table>
+            );
         }
         if (dataSource.length) {
             rows = dataSource.map((record, index) => {
-                const rowProps = getRowProps(record, index) || {};
+                let rowProps = {};
+
+                if (expandedIndexSimulate) {
+                    rowProps = record.__expanded
+                        ? {}
+                        : getRowProps(record, index / 2);
+                } else {
+                    rowProps = getRowProps(record, index);
+                }
+
+                rowProps = rowProps || {};
+
                 const rowClass = rowProps.className;
                 const className = classnames({
                     first: index === 0,
                     last: index === dataSource.length - 1,
-                    [rowClass]: rowClass
+                    [rowClass]: rowClass,
                 });
                 const expanded = record.__expanded ? 'expanded' : '';
-                return (<Row key={`${record[primaryKey] || index}${expanded}`}
-                    {...rowProps}
-                    ref={this.getRowRef.bind(this, index)}
-                    colGroup={colGroup}
-                    columns={columns}
-                    primaryKey={primaryKey}
-                    record={record}
-                    rowIndex={index}
-                    prefix={prefix}
-                    pure={pure}
-                    cellRef={cellRef}
-                    getCellProps={getCellProps}
-                    className={className}
-                    Cell={Cell}
-                    onClick={this.onRowClick}
-                    locale={locale}
-                    onMouseEnter={this.onRowMouseEnter}
-                    onMouseLeave={this.onRowMouseLeave}
-                />);
+                return (
+                    <Row
+                        key={`${record[primaryKey] || index}${expanded}`}
+                        {...rowProps}
+                        ref={this.getRowRef.bind(this, index)}
+                        colGroup={colGroup}
+                        rtl={rtl}
+                        columns={columns}
+                        primaryKey={primaryKey}
+                        record={record}
+                        rowIndex={index}
+                        prefix={prefix}
+                        pure={pure}
+                        cellRef={cellRef}
+                        getCellProps={getCellProps}
+                        className={className}
+                        Cell={Cell}
+                        onClick={this.onRowClick}
+                        locale={locale}
+                        onMouseEnter={this.onRowMouseEnter}
+                        onMouseLeave={this.onRowMouseLeave}
+                    />
+                );
             });
         }
-        return (<Tag className={className} {...others}>
-            {rows}
-            {children}
-        </Tag>);
+        return (
+            <Tag className={className} {...others}>
+                {rows}
+                {children}
+            </Tag>
+        );
     }
 }
-

@@ -58,7 +58,7 @@ class Demo extends React.Component {
             type: 'save_fields',
             payload: {
                 email: 'qq@gmail.com'
-            },
+            }
         });
     }
 
@@ -71,7 +71,7 @@ class Demo extends React.Component {
         return (<div>
             <Input {...init('email', { initValue: this.props.email }, {
                 rules: [
-                    {required: true, type: 'email', message: 'at least 5 chars'},
+                    {required: true, type: 'email', message: 'at least 5 chars'}
                 ]
             })} />
             now length is:{newLen.value}
@@ -84,13 +84,13 @@ class Demo extends React.Component {
 
 const ReduxDemo = connect((state) => {
     return {
-        email: state.formReducer.email,
+        email: state.formReducer.email
     };
 })(Demo);
 
 
 const store = createStore(combineReducers({
-    formReducer,
+    formReducer
 }));
 
 ReactDOM.render((<Provider store={store}>

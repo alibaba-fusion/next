@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import Range from './view/range';
 
 export default ConfigProvider.config(Range, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         if ('hasTips' in props) {
             deprecated('hasTips', 'hasTip', 'Range');
 
@@ -18,5 +18,5 @@ export default ConfigProvider.config(Range, {
         }
 
         return props;
-    }
+    },
 });

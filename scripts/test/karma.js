@@ -3,16 +3,25 @@ const _ = require('lodash');
 const getWebpackConfig = require('./webpack');
 
 module.exports = function(config) {
-    const { runAll } = config;
-    const componentName = config.component ? _.kebabCase(config.component) : config.component;
+    const { runAll, a11y } = config;
+    const componentName = config.component
+        ? _.kebabCase(config.component)
+        : config.component;
     const singleRun = runAll;
     const coveragePath = resolveCwd('coverage');
     // const componentArray = config.componentArray;
     // 'table' or 'table|tree|tree-select'
     // const componentList = componentArray ? componentArray.join('|') : componentName;
 
-    const specPath = runAll ? resolveCwd('scripts/test/allinone.js') : resolveCwd('test', `@(${componentName})/*-spec.js`);
+    let specPath;
 
+    if (runAll && a11y) {
+        specPath = resolveCwd('scripts/test/a11y-allinone.js');
+    } else if (runAll) {
+        specPath = resolveCwd('scripts/test/allinone.js');
+    } else {
+        specPath = resolveCwd('test', `@(${componentName})/*-spec.js`);
+    }
 
     const options = {
         frameworks: ['mocha'],
@@ -20,8 +29,8 @@ module.exports = function(config) {
         customLaunchers: {
             ChromeTravis: {
                 base: 'ChromeHeadless',
-                flags: ['--no-sandbox']
-            }
+                flags: ['--no-sandbox'],
+            },
         },
         reporters: ['spec', 'coverage'],
         preprocessors: {
@@ -34,22 +43,22 @@ module.exports = function(config) {
             require.resolve('es5-shim/es5-shim.js'),
             require.resolve('es5-shim/es5-sham.js'),
             require.resolve('html5shiv/dist/html5shiv.js'),
-            specPath
+            specPath,
         ],
         coverageReporter: {
             dir: coveragePath,
             reporters: [
                 { type: 'lcov', subdir: '.' },
-                { type: 'json', subdir: '.'},
-                { type: 'text-summary', subdir: '.', file: 'coverage.txt' }
-            ]
+                { type: 'json', subdir: '.' },
+                { type: 'text-summary', subdir: '.', file: 'coverage.txt' },
+            ],
         },
         client: {
             mocha: {
-                timeout: 4000,
+                timeout: 10000,
                 reporter: 'html',
-                ui: 'bdd'
-            }
+                ui: 'bdd',
+            },
         },
         hostname: 'localhost',
         browserNoActivityTimeout: 100000,
@@ -60,7 +69,7 @@ module.exports = function(config) {
         concurrency: Infinity,
         webpack: getWebpackConfig(componentName, runAll),
         webpackMiddleware: {
-            stats: 'errors-only'
+            stats: 'errors-only',
         },
         plugins: [
             'karma-chrome-launcher',
@@ -68,8 +77,8 @@ module.exports = function(config) {
             'karma-webpack',
             'karma-spec-reporter',
             'karma-sourcemap-loader',
-            'karma-coverage'
-        ]
+            'karma-coverage',
+        ],
     };
 
     if (process.env.TRAVIS) {

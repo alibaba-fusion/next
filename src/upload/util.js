@@ -1,4 +1,4 @@
-let now = +(new Date());
+let now = +new Date();
 
 /**
  * 生成唯一的id
@@ -40,10 +40,15 @@ export function removeFileItem(file, fileList) {
     return removed;
 }
 
-
 // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
 export function previewFile(file, callback) {
     const reader = new FileReader();
     reader.onloadend = () => callback(reader.result);
     reader.readAsDataURL(file);
 }
+
+export const errorCode = {
+    EXCEED_LIMIT: 'EXCEED_LIMIT',
+    BEFOREUPLOAD_REJECT: 'BEFOREUPLOAD_REJECT',
+    RESPONSE_FAIL: 'RESPONSE_FAIL',
+};

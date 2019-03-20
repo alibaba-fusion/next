@@ -24,7 +24,7 @@ const dataSource = [
     {label: 'Special Group', children: [
         {value: -1, label: 'FALSE'},
         {value: 0, label: 'ZERO'}
-    ]},
+    ]}
 ];
 
 function handleChange(value) {

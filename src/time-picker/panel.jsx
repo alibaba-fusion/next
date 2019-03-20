@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { func } from '../util';
 import TimeMenu from './module/time-menu';
 import { checkMomentObj } from './utils';
@@ -10,7 +10,6 @@ import { checkMomentObj } from './utils';
 const { noop } = func;
 
 class TimePickerPanel extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -63,7 +62,7 @@ class TimePickerPanel extends Component {
         locale: PropTypes.object,
         disabled: PropTypes.bool,
         className: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -74,12 +73,14 @@ class TimePickerPanel extends Component {
         disabledSeconds: noop,
         onSelect: noop,
         disabled: false,
-        locale: locale.TimePicker,
-    }
+        locale: nextLocale.TimePicker,
+    };
 
     onSelectMenuItem = (index, type) => {
         const { value } = this.props;
-        const clonedValue = value ? value.clone() : moment('00:00:00', 'HH:mm:ss', true);
+        const clonedValue = value
+            ? value.clone()
+            : moment('00:00:00', 'HH:mm:ss', true);
         switch (type) {
             case 'hour':
                 clonedValue.hour(index);
@@ -92,7 +93,7 @@ class TimePickerPanel extends Component {
                 break;
         }
         this.props.onSelect(clonedValue);
-    }
+    };
 
     render() {
         const {
@@ -109,13 +110,17 @@ class TimePickerPanel extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
-            ...others } = this.props;
+            ...others
+        } = this.props;
 
-        const classNames = classnames({
-            [`${prefix}time-picker-panel`]: true,
-            [`${prefix}time-picker-panel-col-3`]: showHour && showSecond,
-            [`${prefix}time-picker-panel-col-2`]: !showHour || !showSecond,
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}time-picker-panel`]: true,
+                [`${prefix}time-picker-panel-col-3`]: showHour && showSecond,
+                [`${prefix}time-picker-panel-col-2`]: !showHour || !showSecond,
+            },
+            className
+        );
 
         const commonProps = {
             prefix,
@@ -133,11 +138,38 @@ class TimePickerPanel extends Component {
             activeSecond = value.second();
         }
 
-        return (<div {...others} className={classNames}>
-            {showHour ? <TimeMenu {...commonProps} activeIndex={activeHour} title={locale.hour} mode="hour" step={hourStep} disabledItems={disabledHours} /> : null}
-            <TimeMenu {...commonProps} activeIndex={activeMinute} title={locale.minute} mode="minute" step={minuteStep} disabledItems={disabledMinutes} />
-            {showSecond ? <TimeMenu {...commonProps} activeIndex={activeSecond} title={locale.second} step={secondStep} mode="second" disabledItems={disabledSeconds} /> : null}
-        </div>);
+        return (
+            <div {...others} className={classNames}>
+                {showHour ? (
+                    <TimeMenu
+                        {...commonProps}
+                        activeIndex={activeHour}
+                        title={locale.hour}
+                        mode="hour"
+                        step={hourStep}
+                        disabledItems={disabledHours}
+                    />
+                ) : null}
+                <TimeMenu
+                    {...commonProps}
+                    activeIndex={activeMinute}
+                    title={locale.minute}
+                    mode="minute"
+                    step={minuteStep}
+                    disabledItems={disabledMinutes}
+                />
+                {showSecond ? (
+                    <TimeMenu
+                        {...commonProps}
+                        activeIndex={activeSecond}
+                        title={locale.second}
+                        step={secondStep}
+                        mode="second"
+                        disabledItems={disabledSeconds}
+                    />
+                ) : null}
+            </div>
+        );
     }
 }
 

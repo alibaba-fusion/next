@@ -11,7 +11,6 @@ const noop = () => {};
 
 /** Tab */
 export default class Tab extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -22,7 +21,10 @@ export default class Tab extends Component {
         /**
          * 初始化时被激活的选项卡的 key
          */
-        defaultActiveKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        defaultActiveKey: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         /**
          * 外观形态
          */
@@ -123,7 +125,10 @@ export default class Tab extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.activeKey && this.state.activeKey !== nextProps.activeKey) {
+        if (
+            nextProps.activeKey &&
+            this.state.activeKey !== nextProps.activeKey
+        ) {
             this.setState({
                 activeKey: nextProps.activeKey,
             });
@@ -171,7 +176,6 @@ export default class Tab extends Component {
             }
         });
         return key;
-
     }
 
     setActiveKey(key) {
@@ -195,9 +199,9 @@ export default class Tab extends Component {
                 onChange(key);
             }
         }
-    }
+    };
 
-    onNavKeyDown = (e) => {
+    onNavKeyDown = e => {
         const keyCode = e.keyCode;
         if (keyCode >= KEYCODE.LEFT && keyCode <= KEYCODE.DOWN) {
             e.preventDefault();
@@ -210,7 +214,7 @@ export default class Tab extends Component {
             newKey = this.getNextActiveKey(false);
             this.handleTriggerEvent(this.props.triggerType, newKey);
         }
-    }
+    };
 
     render() {
         const {
@@ -239,14 +243,22 @@ export default class Tab extends Component {
         const { activeKey } = this.state;
 
         const tabs = toArray(children);
-
-        const classNames = classnames({
-            [`${prefix}tabs`]: true,
-            [`${prefix}tabs-${shape}`]: shape,
-            [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
-            [`${prefix}tabs-${tabPosition}`]: shape === 'wrapped',
-            [`${prefix + size}`]: size,
-        }, className);
+        let newPosition = tabPosition;
+        if (rtl && ['left', 'right'].indexOf(tabPosition) >= 0) {
+            newPosition = tabPosition === 'left' ? 'right' : 'left';
+        }
+        const classNames = classnames(
+            {
+                [`${prefix}tabs`]: true,
+                [`${prefix}tabs-${shape}`]: shape,
+                [`${prefix}tabs-vertical`]:
+                    shape === 'wrapped' &&
+                    ['left', 'right'].indexOf(tabPosition) >= 0,
+                [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
+                [`${prefix + size}`]: size,
+            },
+            className
+        );
 
         const navProps = {
             prefix,
@@ -278,16 +290,24 @@ export default class Tab extends Component {
 
         const tabChildren = [
             <TabNav key="tab-nav" {...navProps} />,
-            <TabContent key="tab-content" {...contentProps}>{tabs}</TabContent>
+            <TabContent key="tab-content" {...contentProps}>
+                {tabs}
+            </TabContent>,
         ];
 
         if (tabPosition === 'bottom') {
             tabChildren.reverse();
         }
 
-        return (<div dir={rtl ? 'rtl' : undefined} className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
-            {tabChildren}
-        </div>);
+        return (
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                className={classNames}
+                {...obj.pickOthers(Tab.propTypes, others)}
+            >
+                {tabChildren}
+            </div>
+        );
     }
 }
 

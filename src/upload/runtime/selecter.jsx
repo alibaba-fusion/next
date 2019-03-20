@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {func} from '../../util';
-import {uid} from '../util';
+import { func } from '../../util';
+import { uid } from '../util';
 
-const {noop} = func;
+const { noop } = func;
 
 /**
  * Upload.Selecter
@@ -50,19 +50,20 @@ export default class Selecter extends React.Component {
         name: PropTypes.string,
     };
 
-
     static defaultProps = {
         name: 'file',
         multiple: false,
         onSelect: noop,
         onDragOver: noop,
         onDragLeave: noop,
-        onDrop: noop
+        onDrop: noop,
     };
 
-    onSelect = (e) => {
+    onSelect = e => {
         const files = e.target.files;
-        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
+        const filesArr = files.length
+            ? Array.prototype.slice.call(files)
+            : [files];
 
         filesArr.forEach(file => {
             file.uid = uid();
@@ -89,7 +90,7 @@ export default class Selecter extends React.Component {
      * @param  {SyntheticEvent} e
      * @return {void}
      */
-    onKeyDown = (e) => {
+    onKeyDown = e => {
         if (e.key === 'Enter') {
             this.onClick();
         }
@@ -100,7 +101,7 @@ export default class Selecter extends React.Component {
      * @param  {SyntheticEvent} e
      * @return {void}
      */
-    onDrop = (e) => {
+    onDrop = e => {
         e.preventDefault();
 
         const files = e.dataTransfer.files;
@@ -109,12 +110,12 @@ export default class Selecter extends React.Component {
         this.props.onDrop(filesArr);
     };
 
-    onDragOver = (e) => {
+    onDragOver = e => {
         e.preventDefault();
         this.props.onDragOver(e);
     };
 
-    saveFileRef = (ref) => {
+    saveFileRef = ref => {
         this.fileRef = ref;
     };
 
@@ -128,34 +129,35 @@ export default class Selecter extends React.Component {
             dragable,
             style,
             className,
-            name
+            name,
         } = this.props;
 
         let events = {};
         if (!disabled) {
-            events = Object.assign({
-                onClick: this.onClick,
-                onKeyDown: this.onKeyDown,
-                tabIndex: '0',
-            }, dragable ? {
-                onDrop: this.onDrop,
-                onDragOver: this.onDragOver,
-                onDragLeave: this.props.onDragLeave,
-            } : {});
+            events = Object.assign(
+                {
+                    onClick: this.onClick,
+                    onKeyDown: this.onKeyDown,
+                    tabIndex: '0',
+                },
+                dragable
+                    ? {
+                          onDrop: this.onDrop,
+                          onDragOver: this.onDragOver,
+                          onDragLeave: this.props.onDragLeave,
+                      }
+                    : {}
+            );
         }
 
         return (
-            <div
-                role="upload"
-                style={style}
-                className={className}
-                {...events}
-            >
-                <input type="file"
+            <div role="upload" style={style} className={className} {...events}>
+                <input
+                    type="file"
                     name={name}
                     id={id}
                     ref={this.saveFileRef}
-                    style={{display: 'none'}}
+                    style={{ display: 'none' }}
                     accept={accept}
                     aria-hidden
                     multiple={multiple}

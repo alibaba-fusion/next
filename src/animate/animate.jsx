@@ -33,7 +33,10 @@ class Animate extends Component {
         /**
          * 子元素
          */
-        children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
+        children: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.arrayOf(PropTypes.element),
+        ]),
         /**
          * 执行第一次挂载动画前触发的回调函数
          */
@@ -77,7 +80,7 @@ class Animate extends Component {
          * 执行完离场动画后触发的回调函数
          * @param {HTMLElement} node 执行动画的 dom 元素
          */
-        afterLeave: PropTypes.func
+        afterLeave: PropTypes.func,
     };
 
     static defaultProps = {
@@ -92,7 +95,7 @@ class Animate extends Component {
         afterEnter: noop,
         beforeLeave: noop,
         onLeave: noop,
-        afterLeave: noop
+        afterLeave: noop,
     };
 
     normalizeNames(names) {
@@ -103,7 +106,7 @@ class Animate extends Component {
                 enter: `${names}-enter`,
                 enterActive: `${names}-enter-active`,
                 leave: `${names}-leave`,
-                leaveActive: `${names}-leave-active`
+                leaveActive: `${names}-leave-active`,
             };
         }
         if (typeof names === 'object') {
@@ -118,20 +121,31 @@ class Animate extends Component {
         }
     }
 
-
     render() {
         /* eslint-disable no-unused-vars */
-        const { animation, children, animationAppear, singleMode, component,
-            beforeAppear, onAppear, afterAppear,
-            beforeEnter, onEnter, afterEnter,
-            beforeLeave, onLeave, afterLeave,
+        const {
+            animation,
+            children,
+            animationAppear,
+            singleMode,
+            component,
+            beforeAppear,
+            onAppear,
+            afterAppear,
+            beforeEnter,
+            onEnter,
+            afterEnter,
+            beforeLeave,
+            onLeave,
+            afterLeave,
             ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
 
         const animateChildren = Children.map(children, child => {
             return (
-                <AnimateChild key={child.key}
+                <AnimateChild
+                    key={child.key}
                     names={this.normalizeNames(animation)}
                     onAppear={beforeAppear}
                     onAppearing={onAppear}
@@ -141,14 +155,19 @@ class Animate extends Component {
                     onEntered={afterEnter}
                     onExit={beforeLeave}
                     onExiting={onLeave}
-                    onExited={afterLeave}>
+                    onExited={afterLeave}
+                >
                     {child}
                 </AnimateChild>
             );
         });
 
         return (
-            <TransitionGroup appear={animationAppear} component={singleMode ? FirstChild : component} {...others}>
+            <TransitionGroup
+                appear={animationAppear}
+                component={singleMode ? FirstChild : component}
+                {...others}
+            >
                 {animateChildren}
             </TransitionGroup>
         );

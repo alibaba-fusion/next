@@ -14,6 +14,7 @@ export default class Col extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 列内容
@@ -38,35 +39,69 @@ export default class Col extends Component {
         /**
          * （不支持IE9浏览器）多列垂直方向对齐方式，可覆盖Row的align属性
          */
-        align: PropTypes.oneOf(['top', 'center', 'bottom', 'baseline', 'stretch']),
+        align: PropTypes.oneOf([
+            'top',
+            'center',
+            'bottom',
+            'baseline',
+            'stretch',
+        ]),
         /**
          * 列在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）
          */
-        hidden: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.array]),
+        hidden: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * >=320px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
          */
-        xxs: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+        xxs: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object,
+        ]),
         /**
          * >=480px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
          */
-        xs: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+        xs: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object,
+        ]),
         /**
          * >=720px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
          */
-        s: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+        s: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object,
+        ]),
         /**
          * >=990px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
          */
-        m: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+        m: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object,
+        ]),
         /**
          * >=1200px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
          */
-        l: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+        l: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object,
+        ]),
         /**
          * >=1500px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象
          */
-        xl: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+        xl: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object,
+        ]),
         /**
          * 指定以何种元素渲染该节点，默认为 'div'
          */
@@ -82,8 +117,25 @@ export default class Col extends Component {
     render() {
         /* eslint-disable no-unused-vars */
         const {
-            prefix, pure, span, offset, fixedSpan, fixedOffset, hidden, align,
-            xxs, xs, s, m, l, xl, component: Tag, className, children, ...others
+            prefix,
+            pure,
+            span,
+            offset,
+            fixedSpan,
+            fixedOffset,
+            hidden,
+            align,
+            xxs,
+            xs,
+            s,
+            m,
+            l,
+            xl,
+            component: Tag,
+            className,
+            children,
+            rtl,
+            ...others
         } = this.props;
         /* eslint-enable no-unused-vars */
 
@@ -96,7 +148,9 @@ export default class Col extends Component {
             }
 
             ret[`${prefix}col-${point}-${pointProps.span}`] = !!pointProps.span;
-            ret[`${prefix}col-${point}-offset-${pointProps.offset}`] = !!pointProps.offset;
+            ret[
+                `${prefix}col-${point}-offset-${pointProps.offset}`
+            ] = !!pointProps.offset;
 
             return ret;
         }, {});
@@ -122,11 +176,12 @@ export default class Col extends Component {
             [`${prefix}col-${align}`]: !!align,
             ...pointClassObj,
             ...hiddenClassObj,
-            [className]: className
+            [className]: className,
         });
 
         return (
             <Tag
+                dir={rtl ? 'rtl' : 'ltr'}
                 role="gridcell"
                 className={classes}
                 {...others}

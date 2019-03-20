@@ -21,15 +21,14 @@ class UIState extends Component {
         const { onFocus, onBlur } = this.props;
         return React.cloneElement(base, {
             onFocus: makeChain(this._onUIFocus, onFocus),
-            onBlur: makeChain(this._onUIBlur, onBlur)
+            onBlur: makeChain(this._onUIBlur, onBlur),
         });
-
     }
     // 获取状态classname
     getStateClassName() {
         const { focused } = this.state;
         return classnames({
-            focused
+            focused,
         });
     }
     // 复原状态
@@ -40,12 +39,12 @@ class UIState extends Component {
     }
     _onUIFocus() {
         this.setState({
-            focused: true
+            focused: true,
         });
     }
     _onUIBlur() {
         this.setState({
-            focused: false
+            focused: false,
         });
     }
 }

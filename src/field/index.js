@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import {log, func} from '../util';
+import { log, func } from '../util';
 import Validate from '../validate';
 
 import {
@@ -8,19 +8,21 @@ import {
     getParams,
     setIn,
     getIn,
-    mapValidateRules
+    mapValidateRules,
 } from './utils';
 
 const initMeta = {
     state: '',
     valueName: 'value',
-    trigger: 'onChange'
+    trigger: 'onChange',
 };
 
 class Field {
     constructor(com, options = {}) {
         if (!com) {
-            log.warning('`this` is missing in `Field`, you should use like `new Field(this)`');
+            log.warning(
+                '`this` is missing in `Field`, you should use like `new Field(this)`'
+            );
         }
 
         this.com = com;
@@ -28,16 +30,35 @@ class Field {
         this.cachedBind = {};
         this.instance = {};
 
-        this.options = Object.assign({
-            parseName: false,
-            forceUpdate: false,
-            scrollToFirstError: true,
-            first: false,
-            onChange: func.noop,
-            autoUnmount: true,
-        }, options);
+        this.options = Object.assign(
+            {
+                parseName: false,
+                forceUpdate: false,
+                scrollToFirstError: true,
+                first: false,
+                onChange: func.noop,
+                autoUnmount: true,
+                autoValidate: true,
+            },
+            options
+        );
 
-        ['init', 'getValue', 'getValues', 'setValue', 'setValues', 'getError', 'setError', 'setErrors', 'validate', 'getState', 'reset', 'resetToDefault', 'remove'].forEach((m) => {
+        [
+            'init',
+            'getValue',
+            'getValues',
+            'setValue',
+            'setValues',
+            'getError',
+            'setError',
+            'setErrors',
+            'validate',
+            'getState',
+            'reset',
+            'resetToDefault',
+            'remove',
+            'spliceArray',
+        ].forEach(m => {
             this[m] = this[m].bind(this);
         });
 
@@ -51,7 +72,7 @@ class Field {
     }
 
     /**
-     * Control Component
+     * Controlled Component
      * @param {String} name
      * @param {Object} fieldOption
      * @returns {Object} {value, onChange}
@@ -63,24 +84,31 @@ class Field {
             trigger = 'onChange',
             rules = [],
             props = {},
-            getValueFromEvent = null
+            getValueFromEvent = null,
+            autoValidate = true,
         } = fieldOption;
         const originalProps = Object.assign({}, props, rprops);
-        const defaultValueName = `default${valueName[0].toUpperCase()}${valueName.slice(1)}`;
+        const defaultValueName = `default${valueName[0].toUpperCase()}${valueName.slice(
+            1
+        )}`;
 
         const field = this._getInitMeta(name);
-        const defaultValue = typeof initValue !== 'undefined' ? initValue : originalProps[defaultValueName];
+        const defaultValue =
+            typeof initValue !== 'undefined'
+                ? initValue
+                : originalProps[defaultValueName];
 
         Object.assign(field, {
             valueName,
             initValue: defaultValue,
-            disabled: 'disabled' in originalProps ? originalProps.disabled : false,
+            disabled:
+                'disabled' in originalProps ? originalProps.disabled : false,
             getValueFromEvent,
             rules: Array.isArray(rules) ? rules : [rules],
-            ref: originalProps.ref
+            ref: originalProps.ref,
         });
 
-        // Control Component
+        // Controlled Component
         if (valueName in originalProps) {
             field.value = originalProps[valueName];
         }
@@ -94,24 +122,28 @@ class Field {
             'data-meta': 'Field',
             id: name,
             ref: this._getCacheBind(name, `${name}__ref`, this._saveRef),
-            [valueName]: field.value
+            [valueName]: field.value,
         };
 
-        // trigger map
-        const rulesMap = mapValidateRules(field.rules, trigger);
+        let rulesMap = {};
 
-        // validate hook
-        for (const action in rulesMap) {
-            if (action === trigger) {
-                continue;
+        if (this.options.autoValidate && autoValidate !== false) {
+            // trigger map
+            rulesMap = mapValidateRules(field.rules, trigger);
+
+            // validate hook
+            for (const action in rulesMap) {
+                if (action === trigger) {
+                    continue;
+                }
+
+                const actionRule = rulesMap[action];
+                inputProps[action] = (...args) => {
+                    this._validate(name, actionRule, action);
+                    this._callPropsEvent(action, originalProps, ...args);
+                    this._reRender();
+                };
             }
-
-            const actionRule = rulesMap[action];
-            inputProps[action] = (...args) => {
-                this._validate(name, actionRule, action);
-                this._callPropsEvent(action, originalProps, ...args);
-                this._reRender();
-            };
         }
 
         // onChange hack
@@ -132,7 +164,9 @@ class Field {
      * props.onChange props.onBlur
      */
     _callPropsEvent(action, props, ...args) {
-        (action in props) && typeof props[action] === 'function' && props[action](...args);
+        action in props &&
+            typeof props[action] === 'function' &&
+            props[action](...args);
     }
 
     _getInitMeta(name) {
@@ -143,6 +177,9 @@ class Field {
         return this.fieldsMeta[name];
     }
 
+    /**
+     * update field.value and validate
+     */
     _callOnChange(name, rule, trigger, ...others) {
         const e = others[0];
         const field = this._get(name);
@@ -151,9 +188,13 @@ class Field {
             return;
         }
 
-        field.value = field.getValueFromEvent ? field.getValueFromEvent.apply(this, others) : getValueFromEvent(e);
+        field.value = field.getValueFromEvent
+            ? field.getValueFromEvent.apply(this, others)
+            : getValueFromEvent(e);
 
         this._resetError(name);
+
+        // validate while onChange
         rule && this._validate(name, rule, trigger);
     }
 
@@ -164,7 +205,7 @@ class Field {
      * @param {Function} fn saveRef
      */
     _getCacheBind(name, action, fn) {
-        const cache = this.cachedBind[name] = this.cachedBind[name] || {};
+        const cache = (this.cachedBind[name] = this.cachedBind[name] || {});
         if (!cache[action]) {
             cache[action] = fn.bind(this, name);
         }
@@ -172,7 +213,7 @@ class Field {
     }
 
     _setCache(name, action, hander) {
-        const cache = this.cachedBind[name] = this.cachedBind[name] || {};
+        const cache = (this.cachedBind[name] = this.cachedBind[name] || {});
         cache[action] = hander;
     }
 
@@ -182,16 +223,19 @@ class Field {
     }
 
     /**
-     * saveRef is async function. it will be called after render
+     * NOTE: saveRef is async function. it will be called after render
      * @param {String} name name of component
      * @param {Function} component ref
      */
     _saveRef(name, component) {
         const key = `${name}_field`;
         const autoUnmount = this.options.autoUnmount;
+
         if (!component && autoUnmount) {
-            // component with same name(eg: type? <A name="n"/>:<B name="n"/>)
-            // while type change to true B will render before A unmount.
+            // component with same name (eg: type ? <A name="n"/>:<B name="n"/>)
+            // while type changed, B will render before A unmount. so we should cached value for B
+            // step: render -> B mount -> 1. _saveRef(A, null) -> 2. _saveRef(B, ref) -> render
+            // 1. _saveRef(A, null)
             const cache = this.fieldsMeta[name];
             this._setCache(name, key, cache);
             // after destroy, delete data
@@ -200,7 +244,7 @@ class Field {
             return;
         }
 
-        // after _saveRef(name, null) and before rerender. (eg: same name but different compoent may be here)
+        // 2. _saveRef(B, ref) (eg: same name but different compoent may be here)
         if (autoUnmount && !this.fieldsMeta[name]) {
             this.fieldsMeta[name] = this._getCache(name, key);
         }
@@ -235,23 +279,27 @@ class Field {
         let validate = this._getCache(name, trigger);
         validate && validate.abort();
 
-        validate = new Validate({[name]: rule});
+        validate = new Validate({
+            [name]: rule,
+        });
         this._setCache(name, trigger, validate);
 
-        validate.validate({
-            [name]: value
-        }, (errors) => {
+        validate.validate(
+            {
+                [name]: value,
+            },
+            errors => {
+                if (errors && errors.length) {
+                    field.errors = getErrorStrs(errors);
+                    field.state = 'error';
+                } else {
+                    field.errors = [];
+                    field.state = 'success';
+                }
 
-            if (errors && errors.length) {
-                field.errors = getErrorStrs(errors);
-                field.state = 'error';
-            } else {
-                field.errors = [];
-                field.state = 'success';
+                this._reRender();
             }
-
-            this._reRender();
-        });
+        );
     }
 
     getValue(name) {
@@ -273,7 +321,7 @@ class Field {
         const fields = names || this.getNames();
         let allValues = {};
 
-        fields.forEach((f) => {
+        fields.forEach(f => {
             if (f.disabled) {
                 return;
             }
@@ -292,7 +340,7 @@ class Field {
         } else {
             // if not exist, then new one
             this.fieldsMeta[name] = {
-                value
+                value,
             };
         }
         reRender && this._reRender();
@@ -300,12 +348,12 @@ class Field {
 
     setValues(fieldsValue = {}, reRender = true) {
         if (!this.options.parseName) {
-            Object.keys(fieldsValue).forEach((name) => {
+            Object.keys(fieldsValue).forEach(name => {
                 this.setValue(name, fieldsValue[name], false);
             });
         } else {
             const fields = this.getNames();
-            fields.forEach((name) => {
+            fields.forEach(name => {
                 const value = getIn(fieldsValue, name);
                 if (value !== undefined) {
                     this.setValue(name, value, false);
@@ -316,16 +364,19 @@ class Field {
     }
 
     setError(name, errors) {
-        const err = Array.isArray(errors) ? errors : (errors ? [errors] : []);
+        const err = Array.isArray(errors) ? errors : errors ? [errors] : [];
         if (name in this.fieldsMeta) {
             this.fieldsMeta[name].errors = err;
         } else {
             this.fieldsMeta[name] = {
-                errors: err
+                errors: err,
             };
         }
 
-        if (this.fieldsMeta[name].errors && this.fieldsMeta[name].errors.length > 0) {
+        if (
+            this.fieldsMeta[name].errors &&
+            this.fieldsMeta[name].errors.length > 0
+        ) {
             this.fieldsMeta[name].state = 'error';
         } else {
             this.fieldsMeta[name].state = '';
@@ -335,7 +386,7 @@ class Field {
     }
 
     setErrors(fieldsErrors = {}) {
-        Object.keys(fieldsErrors).forEach((name) => {
+        Object.keys(fieldsErrors).forEach(name => {
             this.setError(name, fieldsErrors[name]);
         });
     }
@@ -352,7 +403,7 @@ class Field {
     getErrors(names) {
         const fields = names || this.getNames();
         const allErrors = {};
-        fields.forEach((f) => {
+        fields.forEach(f => {
             allErrors[f] = this.getError(f);
         });
         return allErrors;
@@ -374,7 +425,7 @@ class Field {
      * @param {Function} cb callback after validate
      */
     validate(ns, cb) {
-        const {names, callback} = getParams(ns, cb);
+        const { names, callback } = getParams(ns, cb);
         const fieldNames = names || this.getNames();
 
         const descriptor = {};
@@ -405,17 +456,19 @@ class Field {
             return;
         }
 
-        const validate = new Validate(descriptor, {first: this.options.first});
+        const validate = new Validate(descriptor, {
+            first: this.options.first,
+        });
 
-        validate.validate(values, (errors) => {
+        validate.validate(values, errors => {
             let errorsGroup = null;
             if (errors && errors.length) {
                 errorsGroup = {};
-                errors.forEach((e) => {
+                errors.forEach(e => {
                     const fieldName = e.field;
                     if (!errorsGroup[fieldName]) {
                         errorsGroup[fieldName] = {
-                            errors: []
+                            errors: [],
                         };
                     }
                     const fieldErrors = errorsGroup[fieldName].errors;
@@ -440,6 +493,7 @@ class Field {
                 }
             }
 
+            // eslint-disable-next-line callback-return
             callback && callback(errorsGroup, this.getValues(fieldNames));
             this._reRender();
 
@@ -462,9 +516,21 @@ class Field {
                 }
 
                 if (firstNode) {
-                    if (typeof this.options.scrollToFirstError === 'number' && window && typeof window.scrollTo === 'function') {
-                        const offsetLeft = document && document.body && document.body.offsetLeft ? document.body.offsetLeft : 0;
-                        window.scrollTo(offsetLeft, firstTop + this.options.scrollToFirstError);
+                    if (
+                        typeof this.options.scrollToFirstError === 'number' &&
+                        window &&
+                        typeof window.scrollTo === 'function'
+                    ) {
+                        const offsetLeft =
+                            document &&
+                            document.body &&
+                            document.body.offsetLeft
+                                ? document.body.offsetLeft
+                                : 0;
+                        window.scrollTo(
+                            offsetLeft,
+                            firstTop + this.options.scrollToFirstError
+                        );
                     } else if (firstNode.scrollIntoViewIfNeeded) {
                         firstNode.scrollIntoViewIfNeeded(true);
                     }
@@ -480,7 +546,7 @@ class Field {
         let changed = false;
 
         const names = ns || Object.keys(this.fieldsMeta);
-        names.forEach((name) => {
+        names.forEach(name => {
             const field = this._get(name);
             this.getValue(name);
             if (field) {
@@ -524,9 +590,11 @@ class Field {
 
     getNames() {
         const fieldsMeta = this.fieldsMeta;
-        return fieldsMeta ? Object.keys(fieldsMeta).filter(() => {
-            return true;
-        }) : [];
+        return fieldsMeta
+            ? Object.keys(fieldsMeta).filter(() => {
+                  return true;
+              })
+            : [];
     }
 
     remove(ns) {
@@ -534,11 +602,55 @@ class Field {
             ns = [ns];
         }
         const names = ns || Object.keys(this.fieldsMeta);
-        names.forEach((name) => {
+        names.forEach(name => {
             if (name in this.fieldsMeta) {
                 delete this.fieldsMeta[name];
             }
         });
+    }
+
+    /**
+     * splice in a Array
+     * @param {String} keyMatch like name.{index}
+     * @param {Number} startIndex index
+     */
+    spliceArray(keyMatch, startIndex) {
+        if (keyMatch.indexOf('{index}') === -1) {
+            log.warning('{index} not find in key');
+            return;
+        }
+
+        const reg = keyMatch.replace('{index}', '(\\d+)');
+        const keyReg = new RegExp(`^${reg}$`);
+
+        let list = [];
+        const names = this.getNames();
+        names.forEach(n => {
+            const ret = keyReg.exec(n);
+            if (ret) {
+                const index = parseInt(ret[1]);
+                if (index > startIndex) {
+                    list.push({
+                        index,
+                        name: n,
+                    });
+                }
+            }
+        });
+
+        list = list.sort((a, b) => a.index < b.index);
+
+        // should be continuous array
+        if (list.length > 0 && list[0].index === startIndex + 1) {
+            list.forEach(l => {
+                const n = keyMatch.replace('{index}', l.index - 1);
+                this.fieldsMeta[n] = this.fieldsMeta[l.name];
+            });
+
+            delete this.fieldsMeta[list[list.length - 1].name];
+
+            this._reRender();
+        }
     }
 
     _resetError(name) {
@@ -559,7 +671,7 @@ class Field {
     }
 
     _get(name) {
-        return (name in this.fieldsMeta) ? this.fieldsMeta[name] : null;
+        return name in this.fieldsMeta ? this.fieldsMeta[name] : null;
     }
 }
 

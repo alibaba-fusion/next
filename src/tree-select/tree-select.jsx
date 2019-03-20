@@ -1,9 +1,20 @@
-import React, { Component, Children, isValidElement, cloneElement } from 'react';
+import React, {
+    Component,
+    Children,
+    isValidElement,
+    cloneElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import Select from '../select';
 import Tree from '../tree';
-import { normalizeToArray, getAllCheckedKeys, filterChildKey, filterParentKey, isDescendantOrSelf } from '../tree/view/util';
-import { func, obj } from '../util';
+import {
+    normalizeToArray,
+    getAllCheckedKeys,
+    filterChildKey,
+    filterParentKey,
+    isDescendantOrSelf,
+} from '../tree/view/util';
+import { func, obj, KEYCODE } from '../util';
 
 const noop = () => {};
 const { Node: TreeNode } = Tree;
@@ -65,11 +76,17 @@ export default class TreeSelect extends Component {
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.string),
+        ]),
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.string),
+        ]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -153,7 +170,7 @@ export default class TreeSelect extends Component {
         /**
          * 透传到 Popup 的属性对象
          */
-        popupProps: PropTypes.object
+        popupProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -179,7 +196,7 @@ export default class TreeSelect extends Component {
         treeDefaultExpandedKeys: [],
         treeProps: {},
         defaultVisible: false,
-        onVisibleChange: noop
+        onVisibleChange: noop,
     };
 
     constructor(props, context) {
@@ -188,13 +205,27 @@ export default class TreeSelect extends Component {
         const { defaultVisible, visible, defaultValue, value } = props;
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
-            value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
+            value: normalizeToArray(
+                typeof value === 'undefined' ? defaultValue : value
+            ),
             searchedValue: '',
             expandedKeys: [],
-            autoExpandParent: false
+            autoExpandParent: false,
         };
 
-        bindCtx(this, ['handleSelect', 'handleCheck', 'handleSearch', 'handleSearchClear', 'handleVisibleChange', 'handleChange', 'handleRemove', 'handleExpand']);
+        bindCtx(this, [
+            'handleSelect',
+            'handleCheck',
+            'handleSearch',
+            'handleSearchClear',
+            'handleVisibleChange',
+            'handleChange',
+            'handleRemove',
+            'handleExpand',
+            'handleKeyDown',
+            'saveTreeRef',
+            'saveSelectRef',
+        ]);
 
         this.updateCache(props);
     }
@@ -221,32 +252,42 @@ export default class TreeSelect extends Component {
         this._v2n = {};
 
         if ('dataSource' in props) {
-            const loop = (data, prefix = '0') => data.map((item, index) => {
-                const { value, children } = item;
-                const pos = `${prefix}-${index}`;
-                const key = item.key || pos;
-                const newItem = { ...item, key, pos };
-                if (children && children.length) {
-                    newItem.children = loop(children, pos);
-                }
+            const loop = (data, prefix = '0') =>
+                data.map((item, index) => {
+                    const { value, children } = item;
+                    const pos = `${prefix}-${index}`;
+                    const key = item.key || pos;
+                    const newItem = { ...item, key, pos };
+                    if (children && children.length) {
+                        newItem.children = loop(children, pos);
+                    }
 
-                this._k2n[key] = this._p2n[pos] = this._v2n[value] = newItem;
-                return newItem;
-            });
+                    this._k2n[key] = this._p2n[pos] = this._v2n[
+                        value
+                    ] = newItem;
+                    return newItem;
+                });
             loop(props.dataSource);
         } else if ('children' in props) {
-            const loop = (children, prefix = '0') => Children.map(children, (node, index) => {
-                const { value, children } = node.props;
-                const pos = `${prefix}-${index}`;
-                const key = node.key || pos;
-                const newItem = { ...node.props, key, pos };
-                if (children && Children.count(children)) {
-                    newItem.children = loop(children, pos);
-                }
+            const loop = (children, prefix = '0') =>
+                Children.map(children, (node, index) => {
+                    if (!React.isValidElement(node)) {
+                        return;
+                    }
 
-                this._k2n[key] = this._p2n[pos] = this._v2n[value] = newItem;
-                return newItem;
-            });
+                    const { value, children } = node.props;
+                    const pos = `${prefix}-${index}`;
+                    const key = node.key || pos;
+                    const newItem = { ...node.props, key, pos };
+                    if (children && Children.count(children)) {
+                        newItem.children = loop(children, pos);
+                    }
+
+                    this._k2n[key] = this._p2n[pos] = this._v2n[
+                        value
+                    ] = newItem;
+                    return newItem;
+                });
             loop(props.children);
         }
     }
@@ -294,7 +335,7 @@ export default class TreeSelect extends Component {
                 const d = {
                     value: v,
                     label,
-                    pos
+                    pos,
                 };
                 if (forSelect) {
                     d.disabled = disabled || checkboxDisabled;
@@ -308,11 +349,23 @@ export default class TreeSelect extends Component {
         }, []);
     }
 
+    saveTreeRef(ref) {
+        this.tree = ref;
+    }
+
+    saveSelectRef(ref) {
+        this.select = ref;
+    }
+
     handleVisibleChange(visible, type) {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
+        }
+
+        if (['fromTree', 'keyboard'].indexOf(type) !== -1 && !visible) {
+            this.select.focusInput();
         }
 
         this.props.onVisibleChange(visible, type);
@@ -326,7 +379,7 @@ export default class TreeSelect extends Component {
             const value = this.getValueByKeys(selectedKeys);
             if (!('value' in this.props)) {
                 this.setState({
-                    value
+                    value,
                 });
             }
             if (!multiple) {
@@ -334,9 +387,7 @@ export default class TreeSelect extends Component {
             }
 
             const data = this.getData(value);
-            multiple ?
-                onChange(value, data) :
-                onChange(value[0], data[0]);
+            multiple ? onChange(value, data) : onChange(value[0], data[0]);
         } else {
             this.handleVisibleChange(false, 'fromTree');
         }
@@ -348,7 +399,7 @@ export default class TreeSelect extends Component {
         const value = this.getValueByKeys(checkedKeys);
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
 
@@ -357,12 +408,21 @@ export default class TreeSelect extends Component {
 
     handleRemove(removedItem) {
         const { value: removedValue } = removedItem;
-        const { treeCheckable, treeCheckStrictly, treeCheckedStrategy, onChange } = this.props;
+        const {
+            treeCheckable,
+            treeCheckStrictly,
+            treeCheckedStrategy,
+            onChange,
+        } = this.props;
 
         let value;
-        if (treeCheckable && !treeCheckStrictly && treeCheckedStrategy === 'all') {
+        if (
+            treeCheckable &&
+            !treeCheckStrictly &&
+            treeCheckedStrategy === 'all'
+        ) {
             const removedPos = this._v2n[removedValue].pos;
-            value  = this.state.value.filter(v => {
+            value = this.state.value.filter(v => {
                 const p = this._v2n[v].pos;
                 return !isDescendantOrSelf(removedPos, p);
             });
@@ -382,10 +442,9 @@ export default class TreeSelect extends Component {
             value = this.state.value.filter(v => v !== removedValue);
         }
 
-
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
 
@@ -416,7 +475,7 @@ export default class TreeSelect extends Component {
         this.setState({
             searchedValue,
             expandedKeys: searchedKeys,
-            autoExpandParent: true
+            autoExpandParent: true,
         });
         this.searchedKeys = searchedKeys;
         this.retainedKeys = retainedKeys;
@@ -427,7 +486,7 @@ export default class TreeSelect extends Component {
     handleSearchClear(triggerType) {
         this.setState({
             searchedValue: '',
-            expandedKeys: []
+            expandedKeys: [],
         });
         this.props.onSearchClear(triggerType);
     }
@@ -435,8 +494,31 @@ export default class TreeSelect extends Component {
     handleExpand(expandedKeys) {
         this.setState({
             expandedKeys,
-            autoExpandParent: false
+            autoExpandParent: false,
         });
+    }
+
+    handleKeyDown(e) {
+        const { onKeyDown } = this.props;
+        const { visible } = this.state;
+
+        if (onKeyDown) {
+            onKeyDown(e);
+        }
+
+        if (!visible) {
+            return;
+        }
+
+        switch (e.keyCode) {
+            case KEYCODE.UP:
+            case KEYCODE.DOWN:
+                this.tree.setFocusKey();
+                e.preventDefault();
+                break;
+            default:
+                break;
+        }
     }
 
     handleChange() {
@@ -445,7 +527,7 @@ export default class TreeSelect extends Component {
         if (hasClear && (!multiple || !treeCheckable)) {
             if (!('value' in this.props)) {
                 this.setState({
-                    value: []
+                    value: [],
                 });
             }
 
@@ -464,8 +546,10 @@ export default class TreeSelect extends Component {
         };
         loop(label);
 
-        if (labelString.length >= searchedValue.length &&
-            labelString.indexOf(searchedValue) > -1) {
+        if (
+            labelString.length >= searchedValue.length &&
+            labelString.indexOf(searchedValue) > -1
+        ) {
             return true;
         }
 
@@ -479,12 +563,14 @@ export default class TreeSelect extends Component {
                 if (this.searchedKeys.indexOf(child.key) > -1) {
                     retainedNodes.push(child);
                 } else if (this.retainedKeys.indexOf(child.key) > -1) {
-                    const retainedNode = child.props.children ?
-                        cloneElement(child, {}, loop(child.props.children)) :
-                        child;
+                    const retainedNode = child.props.children
+                        ? cloneElement(child, {}, loop(child.props.children))
+                        : child;
                     retainedNodes.push(retainedNode);
                 } else {
-                    const hideNode = cloneElement(child, { style: { display: 'none' } });
+                    const hideNode = cloneElement(child, {
+                        style: { display: 'none' },
+                    });
                     retainedNodes.push(hideNode);
                 }
             });
@@ -506,15 +592,20 @@ export default class TreeSelect extends Component {
                     if (hide) {
                         others.style = { display: 'none' };
                     }
-                    retainedNodes.push((
+                    retainedNodes.push(
                         <TreeNode {...others} key={key}>
-                            {children && children.length ? loop(children, isParentMatched, pos) : null}
+                            {children && children.length
+                                ? loop(children, isParentMatched, pos)
+                                : null}
                         </TreeNode>
-                    ));
+                    );
                 };
 
                 if (searching) {
-                    if (this.searchedKeys.indexOf(key) > -1 || isParentMatched) {
+                    if (
+                        this.searchedKeys.indexOf(key) > -1 ||
+                        isParentMatched
+                    ) {
                         addNode(true);
                     } else if (this.retainedKeys.indexOf(key) > -1) {
                         addNode(false);
@@ -531,7 +622,7 @@ export default class TreeSelect extends Component {
 
         return loop(data, false);
     }
-
+    /*eslint-disable max-statements*/
     renderPopupContent() {
         const prefix = this.props.prefix;
         const treeSelectPrefix = `${prefix}tree-select-`;
@@ -553,17 +644,18 @@ export default class TreeSelect extends Component {
             dataSource,
             children,
             readOnly,
-            notFoundContent
+            notFoundContent,
         } = this.props;
         const {
             value,
             searchedValue,
             expandedKeys,
-            autoExpandParent
+            autoExpandParent,
         } = this.state;
 
         const treeProps = {
             multiple,
+            ref: this.saveTreeRef,
             loadData: treeLoadData,
             defaultExpandAll: treeDefaultExpandAll,
             defaultExpandedKeys: treeDefaultExpandedKeys,
@@ -573,7 +665,9 @@ export default class TreeSelect extends Component {
         if (treeCheckable) {
             treeProps.checkable = treeCheckable;
             treeProps.checkStrictly = treeCheckStrictly;
-            treeProps.checkedStrategy = treeCheckStrictly ? 'all' : treeCheckedStrategy;
+            treeProps.checkedStrategy = treeCheckStrictly
+                ? 'all'
+                : treeCheckedStrategy;
             treeProps.checkedKeys = keys;
             if (!readOnly) {
                 treeProps.onCheck = this.handleCheck;
@@ -596,9 +690,9 @@ export default class TreeSelect extends Component {
             };
 
             if (this.searchedKeys.length) {
-                newChildren = dataSource ?
-                    this.createNodesByData(dataSource, true) :
-                    this.searchNodes(children);
+                newChildren = dataSource
+                    ? this.createNodesByData(dataSource, true)
+                    : this.searchNodes(children);
             } else {
                 notFound = true;
             }
@@ -622,15 +716,19 @@ export default class TreeSelect extends Component {
 
         return (
             <div className={`${treeSelectPrefix}dropdown`}>
-                {notFound ?
-                    <div className={`${treeSelectPrefix}not-found`}>{notFoundContent}</div> :
+                {notFound ? (
+                    <div className={`${treeSelectPrefix}not-found`}>
+                        {notFoundContent}
+                    </div>
+                ) : (
                     <Tree {...customTreeProps} {...treeProps}>
                         {newChildren}
-                    </Tree>}
+                    </Tree>
+                )}
             </div>
         );
     }
-
+    /*eslint-enable*/
     render() {
         const {
             prefix,
@@ -653,20 +751,24 @@ export default class TreeSelect extends Component {
             popupContainer,
             popupProps,
         } = this.props;
-        const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
-        const {
-            value,
-            visible
-        } = this.state;
+        const others = pickOthers(
+            Object.keys(TreeSelect.propTypes),
+            this.props
+        );
+        const { value, visible } = this.state;
 
-        const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
+        const valueForSelect =
+            treeCheckable && !treeCheckStrictly
+                ? this.getValueForSelect(value)
+                : value;
         let data = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
             data = data[0];
         }
 
         return (
-            <Select prefix={prefix}
+            <Select
+                prefix={prefix}
                 className={className}
                 size={size}
                 hasBorder={hasBorder}
@@ -677,6 +779,7 @@ export default class TreeSelect extends Component {
                 autoWidth={autoWidth}
                 label={label}
                 readOnly={readOnly}
+                ref={this.saveSelectRef}
                 mode={treeCheckable || multiple ? 'multiple' : 'single'}
                 value={data}
                 onRemove={this.handleRemove}
@@ -686,12 +789,14 @@ export default class TreeSelect extends Component {
                 showSearch={showSearch}
                 onSearch={this.handleSearch}
                 onSearchClear={this.handleSearchClear}
+                onKeyDown={this.handleKeyDown}
                 popupContent={this.renderPopupContent()}
                 popupContainer={popupContainer}
                 popupStyle={popupStyle}
                 popupClassName={popupClassName}
                 popupProps={popupProps}
-                {...others} />
+                {...others}
+            />
         );
     }
 }

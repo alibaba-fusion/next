@@ -1,17 +1,46 @@
-# Next Components
+[English](./README.md) | 简体中文
+<p align="center">
+  <a href="https://fusion.design/">
+    <img alt="Fusion" src="https://img.alicdn.com/tfs/TB1YsoiHVzqK1RjSZFCXXbbxVXa-159-99.svg" width="200">
+  </a>
+</p>
 
-`@alifd/next` 是 Fusion Design 中的面向 PC 端可配置组件库，基于 React 实现，支持所有现代浏览器和 IE9+。
 
-[English README](./README.md)
+<p align="center">一套企业级中后台UI的解决方案，致力于解决设计师与前端在工作协同、产品体验一致性、开发效率方面的问题</p>
 
-[![npm package](https://img.shields.io/npm/v/@alifd/next.svg?style=flat-square)](https://www.npmjs.org/package/@alifd/next)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![Build Status](https://travis-ci.com/alibaba-fusion/next.svg?token=KAYresHL1UPaaLzUYyx6&branch=master)](https://travis-ci.com/alibaba-fusion/next)
-[![codecov](https://codecov.io/gh/alibaba-fusion/next/branch/master/graph/badge.svg?token=FSufKVDhmT)](https://codecov.io/gh/alibaba-fusion/next)
+---
 
-# 快速开始
+<p align="center">
+  <a href="https://www.npmjs.org/package/@alifd/next"><img src="https://img.shields.io/npm/v/@alifd/next.svg"></a>
+  <a href="https://www.npmjs.org/package/@alifd/next"><img src="https://img.shields.io/npm/dm/@alifd/next.svg"></a>
+  <a href="https://codecov.io/gh/alibaba-fusion/next"><img src="https://codecov.io/gh/alibaba-fusion/next/branch/master/graph/badge.svg?token=FSufKVDhmT"></a>
+  <a href="https://travis-ci.com/alibaba-fusion/next"><img src="https://travis-ci.com/alibaba-fusion/next.svg?token=KAYresHL1UPaaLzUYyx6&branch=master"></a>
+  <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+  <a href="https://github.com/alibaba-fusion/next/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"></a>
+</p>
 
-## 安装
+你可以通过[一站式协作平台](https://fusion.design)灵活地定制自己的DesignSystem，生成设计物料与代码分片到设计师的工具端 [FusionCool](https://fusion.design/tool?from=github) 及开发者的工具端 [Iceworks](https://fusion.design/tool?from=github)，同时保证代码和视觉稿之间的一致性
+
+![howtouse](https://img.alicdn.com/tfs/TB1dF3BH4TpK1RjSZFMXXbG_VXa-1280-720.gif)
+
+
+# 🤔 为什么用
+
+`@alifd/next` 配合 [Fusion Design](https://fusion.design) 解决在页面开发时设计师和前端协同的问题。通过这套体系设计师可以自由的定制组件的 UI 并产出一个 npm 主题包，前端可以直接使用这个主题包不需要关注组件的还原度问题。省去了和设计师反复的去做还原度 Review 的工作量，大幅度的提高了开发效率。
+
+![](https://img.alicdn.com/tfs/TB1MDP6GSzqK1RjSZFpXXakSXXa-1278-458.png)
+
+# 💻 浏览器支持
+
+![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![UC](https://raw.github.com/alrra/browser-logos/master/src/uc/uc_48x48.png)
+:---: | :---: | :---: | :---: | :---: | :---: | :---:
+ ✔ |  ✔ |  ✔ |  9+ ✔ |  ✔ |  ✔ | ✔
+
+
+
+# 🚀 快速开始
+
+## 🛠 安装
 
 ### 1.使用 npm 安装(推荐)
 
@@ -35,12 +64,12 @@ npm install @alifd/next --save
 <script src="../build/public/@alifd/next.js"></script>
 ```
 
-## 依赖
+## ☔️ 依赖
 
 * `@alifd/next` 基于 `react@16` 开发，目前并不兼容 `react@16` 以下的版本，且将 react/react-dom 作为 peerDependencies，需要用户手动提前安装或引入。
 * `@alifd/next` 在处理日期时间相关组件逻辑时，使用了 [moment](https://github.com/moment/moment) 库，且将 moment 作为 peerDependencies，需要用户手动提前安装或引入。
 
-## 引入
+## 🎯 引入
 
 ### 全量引入
 
@@ -93,15 +122,15 @@ babel配置：
 
 
 
-## 高级用法
+## 🔗 高级用法
 -   [使用主题包](./site/zh-cn/theme.md)
 -   [国际化](./site/zh-cn/i18n.md)
 -   [字体文件私有化部署](./site/zh-cn/font-deploy.md)
 
-## 贡献代码
+## 🌈 贡献代码
 -   [贡献代码](./site/zh-cn/contributing.md)
 
-## 加入社区
+## 📣 加入社区
 
 扫码*钉钉群* 加入即刻交流与反馈：
 

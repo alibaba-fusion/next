@@ -46,20 +46,23 @@ export default class SubMenu extends Component {
         subMenuContentClassName: PropTypes.string,
         triggerType: PropTypes.oneOf(['click', 'hover']),
         align: PropTypes.oneOf(['outside', 'follow']),
-        parentMode: PropTypes.oneOf(['inline', 'popup'])
+        parentMode: PropTypes.oneOf(['inline', 'popup']),
     };
 
     static defaultProps = {
         groupIndent: 0,
-        selectable: false
+        selectable: false,
     };
 
     constructor(props) {
         super(props);
 
         bindCtx(this, [
-            'handleMouseEnter', 'handleMouseLeave', 'handleClick',
-            'handleOpen', 'afterLeave'
+            'handleMouseEnter',
+            'handleMouseLeave',
+            'handleClick',
+            'handleOpen',
+            'afterLeave',
         ]);
     }
 
@@ -116,23 +119,44 @@ export default class SubMenu extends Component {
         return Children.map(children, child => {
             return cloneElement(child, {
                 parent: this,
-                parentMode: mode || root.props.mode
+                parentMode: mode || root.props.mode,
             });
         });
     }
 
     renderInline() {
-        const { _key, level, root, className, selectable: selectableFromProps, label, children, subMenuContentClassName, triggerType: propsTriggerType, parentMode } = this.props;
-        const { prefix, selectMode, triggerType: rootTriggerType, inlineArrowDirection, expandAnimation, rtl } = root.props;
+        const {
+            _key,
+            level,
+            root,
+            className,
+            selectable: selectableFromProps,
+            label,
+            children,
+            subMenuContentClassName,
+            triggerType: propsTriggerType,
+            parentMode,
+        } = this.props;
+        const {
+            prefix,
+            selectMode,
+            triggerType: rootTriggerType,
+            inlineArrowDirection,
+            expandAnimation,
+            rtl,
+        } = root.props;
         const triggerType = propsTriggerType || rootTriggerType;
         const open = this.getOpen();
-        const others = obj.pickOthers(Object.keys(SubMenu.propTypes), this.props);
+        const others = obj.pickOthers(
+            Object.keys(SubMenu.propTypes),
+            this.props
+        );
 
         const liProps = {
             className: cx({
                 [`${prefix}menu-sub-menu-wrapper`]: true,
-                [className]: !!className
-            })
+                [className]: !!className,
+            }),
         };
         const itemProps = {
             'aria-expanded': open,
@@ -141,16 +165,19 @@ export default class SubMenu extends Component {
             root,
             type: 'submenu',
             component: 'div',
-            parentMode
+            parentMode,
         };
         const arrorProps = {
-            type: inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
+            type:
+                inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
             className: cx({
                 [`${prefix}menu-icon-arrow`]: true,
-                [`${prefix}menu-icon-arrow-down`]: inlineArrowDirection === 'down',
-                [`${prefix}menu-icon-arrow-right`]: inlineArrowDirection === 'right',
-                [`${prefix}open`]: open
-            })
+                [`${prefix}menu-icon-arrow-down`]:
+                    inlineArrowDirection === 'down',
+                [`${prefix}menu-icon-arrow-right`]:
+                    inlineArrowDirection === 'right',
+                [`${prefix}open`]: open,
+            }),
         };
 
         const selectable = !!selectMode && selectableFromProps;
@@ -170,27 +197,43 @@ export default class SubMenu extends Component {
 
         const newSubMenuContentClassName = cx({
             [`${prefix}menu-sub-menu`]: true,
-            [subMenuContentClassName]: !!subMenuContentClassName
+            [subMenuContentClassName]: !!subMenuContentClassName,
         });
 
+        let roleMenu = 'menu',
+            roleItem = 'menuitem';
+        if ('selectMode' in root.props) {
+            roleMenu = 'listbox';
+            roleItem = 'listitem';
+        }
+
         const subMenu = open ? (
-            <ul role="menu" dir={rtl ? 'rtl' : undefined} ref="subMenu" className={newSubMenuContentClassName}>
+            <ul
+                role={roleMenu}
+                dir={rtl ? 'rtl' : undefined}
+                ref="subMenu"
+                className={newSubMenuContentClassName}
+            >
                 {this.passParentToChildren(children)}
             </ul>
         ) : null;
 
         return (
-            <li {...others} {...liProps}>
+            <li role={roleItem} {...others} {...liProps}>
                 <NewItem {...itemProps}>
                     <span className={`${prefix}menu-item-text`}>{label}</span>
                     <Icon {...arrorProps} />
                 </NewItem>
                 {expandAnimation ? (
-                    <Expand animationAppear={false} afterLeave={this.afterLeave}>
+                    <Expand
+                        animationAppear={false}
+                        afterLeave={this.afterLeave}
+                    >
                         {subMenu}
                     </Expand>
-                ) : subMenu}
-
+                ) : (
+                    subMenu
+                )}
             </li>
         );
     }
@@ -204,14 +247,19 @@ export default class SubMenu extends Component {
             [`${prefix}menu`]: true,
             [`${prefix}ver`]: true,
             [popupClassName]: !!popupClassName,
-            [subMenuContentClassName]: !!subMenuContentClassName
+            [subMenuContentClassName]: !!subMenuContentClassName,
         });
 
         others.rtl = rtl;
 
         return (
             <PopupItem {...others} hasSubMenu>
-                <ul role="menu" dir={rtl ? 'rtl' : undefined} className={newClassName} style={popupStyle}>
+                <ul
+                    role="menu"
+                    dir={rtl ? 'rtl' : undefined}
+                    className={newClassName}
+                    style={popupStyle}
+                >
                     {this.passParentToChildren(children)}
                 </ul>
             </PopupItem>
@@ -222,8 +270,6 @@ export default class SubMenu extends Component {
         const { mode, root } = this.props;
         const newMode = mode || root.props.mode;
 
-        return newMode === 'popup' ?
-            this.renderPopup() :
-            this.renderInline();
+        return newMode === 'popup' ? this.renderPopup() : this.renderInline();
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import zhCN from '../locale/zh-cn.js';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 import Base from './base';
 import List from './list';
 import Upload from './upload';
@@ -57,35 +57,40 @@ class Card extends Base {
         }
 
         this.state = {
-
-            value: typeof value === 'undefined' ? /* istanbul ignore next */[] : value,
+            value:
+                typeof value === 'undefined'
+                    ? /* istanbul ignore next */ []
+                    : value,
             uploaderRef: this.uploaderRef,
         };
     }
     /* eslint react/no-did-mount-set-state: [0] */
     componentDidMount() {
-        this.setState({uploaderRef: this.uploaderRef});
+        this.setState({ uploaderRef: this.uploaderRef });
     }
 
     componentWillReceiveProps(nextProps) {
         /* istanbul ignore if */
         if ('value' in nextProps) {
             this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : nextProps.value
+                value:
+                    typeof nextProps.value === 'undefined'
+                        ? []
+                        : nextProps.value,
             });
         }
     }
 
-    onProgress = (value) => {
+    onProgress = value => {
         this.setState({
-            value
+            value,
         });
     };
 
     onChange = (value, file) => {
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
         this.props.onChange(value, file);
@@ -122,16 +127,18 @@ class Card extends Base {
 
         const children = this.props.children || locale.card.addPhoto;
 
+        const onRemoveFunc = disabled ? func.prevent : onRemove;
         const othersForList = obj.pickOthers(Card.propTypes, this.props);
         const othersForUpload = obj.pickOthers(List.propTypes, othersForList);
         return (
-            <List className={className}
+            <List
+                className={className}
                 style={style}
                 listType="card"
                 closable
                 locale={locale}
                 value={this.state.value}
-                onRemove={onRemove}
+                onRemove={onRemoveFunc}
                 onCancel={onCancel}
                 onPreview={onPreview}
                 uploader={this.state.uploaderRef}
@@ -140,7 +147,7 @@ class Card extends Base {
                 <Upload
                     {...othersForUpload}
                     shape="card"
-                    disabled={disabled || isExceedLimit}
+                    disabled={disabled}
                     action={action}
                     timeout={timeout}
                     value={this.state.value}

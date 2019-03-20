@@ -24,19 +24,19 @@ const menu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => <Item key={ite
 class CompositeSplitButton extends React.Component {
     state = {
         visible: false,
-        label: 'Choose Action',
+        label: 'Choose Action'
     }
 
     onSelect = val => {
         this.setState({
             visible: false,
-            label: val,
+            label: val
         });
     }
 
     changeVisible = visible => {
         this.setState({
-            visible,
+            visible
         });
     }
 

@@ -21,7 +21,7 @@ import { Tab } from '@alifd/next';
 const tabs = [
     { tab: 'Home', key: 0, content: 'This is home page' },
     { tab: 'Document', key: 1, content: 'This is document page' },
-    { tab: 'API', key: 2, content: 'This is api page' },
+    { tab: 'API', key: 2, content: 'This is api page' }
 ];
 
 function onChange(key) {

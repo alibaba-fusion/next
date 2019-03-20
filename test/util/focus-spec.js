@@ -1,12 +1,12 @@
 import assert from 'power-assert';
 import * as focus from '../../src/util/focus';
 
-describe('src/focus.js', function () {
-  let wrapper;
+describe('src/focus.js', function() {
+    let wrapper;
 
-  beforeEach(function () {
-    wrapper = document.createElement('div');
-    wrapper.innerHTML = `
+    beforeEach(function() {
+        wrapper = document.createElement('div');
+        wrapper.innerHTML = `
 <span class="form-title">Hello, World</span>
 <div class="form-item">
   <label>Username</label>
@@ -33,50 +33,54 @@ describe('src/focus.js', function () {
   <span class="hidden-text" style="display:none">Hi~</span>
 </footer>
     `;
-    document.body.appendChild(wrapper);
-  });
-
-  afterEach(function () {
-    document.body.removeChild(wrapper);
-  });
-
-  describe('#getFocusNodeList', function () {
-    const tabEvent = {keyCode: 9, preventDefault: () => undefined};
-    const tabEventWithShift = {keyCode: 9, preventDefault: () => undefined, shiftKey: true};
-
-    it('getFocusNodeList should return a list', function () {
-      const list = focus.getFocusNodeList(wrapper);
-      assert(Array.isArray(list));
-      assert(list.length === 6);
+        document.body.appendChild(wrapper);
     });
 
-    it('data-auto-focus should works', function () {
-      const list = focus.getFocusNodeList(wrapper);
-      assert(!!list[0].getAttribute('data-auto-focus'));
+    afterEach(function() {
+        document.body.removeChild(wrapper);
     });
 
-    it('limitTabRange should works', function () {
-      wrapper.querySelector('.foo-password').focus();
-      focus.limitTabRange(wrapper, tabEvent);
-      assert(document.activeElement.className === 'foo-select');
+    describe('#getFocusNodeList', function() {
+        const tabEvent = { keyCode: 9, preventDefault: () => undefined };
+        const tabEventWithShift = {
+            keyCode: 9,
+            preventDefault: () => undefined,
+            shiftKey: true,
+        };
 
-      focus.limitTabRange(wrapper, tabEvent);
-      assert(document.activeElement.className === 'foo-btn');
+        it('getFocusNodeList should return a list', function() {
+            const list = focus.getFocusNodeList(wrapper);
+            assert(Array.isArray(list));
+            assert(list.length === 6);
+        });
 
-      focus.limitTabRange(wrapper, tabEventWithShift);
-      assert(document.activeElement.className === 'foo-select');
+        it('data-auto-focus should works', function() {
+            const list = focus.getFocusNodeList(wrapper);
+            assert(!!list[0].getAttribute('data-auto-focus'));
+        });
+
+        it('limitTabRange should works', function() {
+            wrapper.querySelector('.foo-password').focus();
+            focus.limitTabRange(wrapper, tabEvent);
+            assert(document.activeElement.className === 'foo-select');
+
+            focus.limitTabRange(wrapper, tabEvent);
+            assert(document.activeElement.className === 'foo-btn');
+
+            focus.limitTabRange(wrapper, tabEventWithShift);
+            assert(document.activeElement.className === 'foo-select');
+        });
+
+        it('backLastFocusNode should works', function() {
+            wrapper.querySelector('.foo-select').focus();
+            focus.saveLastFocusNode();
+            focus.limitTabRange(wrapper, tabEventWithShift);
+            focus.limitTabRange(wrapper, tabEventWithShift);
+            focus.limitTabRange(wrapper, tabEventWithShift);
+
+            focus.backLastFocusNode();
+            assert(document.activeElement.className === 'foo-select');
+            focus.clearLastFocusNode();
+        });
     });
-
-    it('backLastFocusNode should works', function () {
-      wrapper.querySelector('.foo-select').focus();
-      focus.saveLastFocusNode();
-      focus.limitTabRange(wrapper, tabEventWithShift);
-      focus.limitTabRange(wrapper, tabEventWithShift);
-      focus.limitTabRange(wrapper, tabEventWithShift);
-
-      focus.backLastFocusNode();
-      assert(document.activeElement.className === 'foo-select');
-      focus.clearLastFocusNode();
-    });
-  });
 });

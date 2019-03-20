@@ -3,7 +3,9 @@ import Input from './input';
 import TextArea from './textarea';
 import Group from './group';
 
-Input.TextArea = ConfigProvider.config(TextArea, {exportNames: ['getInputNode', 'focus']});
+Input.TextArea = ConfigProvider.config(TextArea, {
+    exportNames: ['getInputNode', 'focus'],
+});
 Input.Group = Group;
 
 // 用来自动生成文档的工具底层依赖的 react-docgen，无法解析生成 HOC 的方法中存在第二个参数的情况

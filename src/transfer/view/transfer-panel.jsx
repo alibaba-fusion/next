@@ -31,7 +31,7 @@ export default class TransferPanel extends Component {
         listStyle: PropTypes.object,
         itemRender: PropTypes.func,
         sortable: PropTypes.bool,
-        onSort: PropTypes.func
+        onSort: PropTypes.func,
     };
 
     constructor(props, context) {
@@ -40,13 +40,18 @@ export default class TransferPanel extends Component {
         this.state = {
             searchedValue: '',
             dragValue: null,
-            dragOverValue: null
+            dragOverValue: null,
         };
 
         bindCtx(this, [
-            'handleCheck', 'handleAllCheck', 'handleSearch',
-            'handleItemDragStart', 'handleItemDragOver', 'handleItemDragEnd', 'handleItemDrop',
-            'getListDOM'
+            'handleCheck',
+            'handleAllCheck',
+            'handleSearch',
+            'handleItemDragStart',
+            'handleItemDragOver',
+            'handleItemDragEnd',
+            'handleItemDrop',
+            'getListDOM',
         ]);
         this.firstRender = true;
     }
@@ -56,7 +61,10 @@ export default class TransferPanel extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.dataSource.length !== this.props.dataSource.length && this.list) {
+        if (
+            prevProps.dataSource.length !== this.props.dataSource.length &&
+            this.list
+        ) {
             if (this.list.scrollTop > 0) {
                 this.list.scrollTop = 0;
             }
@@ -98,7 +106,7 @@ export default class TransferPanel extends Component {
 
     handleSearch(searchedValue) {
         this.setState({
-            searchedValue
+            searchedValue,
         });
         this.searched = true;
 
@@ -109,25 +117,25 @@ export default class TransferPanel extends Component {
     handleItemDragStart(position, value) {
         this.setState({
             dragPosition: position,
-            dragValue: value
+            dragValue: value,
         });
     }
 
     handleItemDragOver(value) {
         this.setState({
-            dragOverValue: value
+            dragOverValue: value,
         });
     }
 
     handleItemDragEnd() {
         this.setState({
-            dragOverValue: null
+            dragOverValue: null,
         });
     }
 
     handleItemDrop(...args) {
         this.setState({
-            dragOverValue: null
+            dragOverValue: null,
         });
 
         this.props.onSort(...args);
@@ -142,23 +150,43 @@ export default class TransferPanel extends Component {
     renderSearch() {
         const { prefix, searchPlaceholder, locale } = this.props;
         return (
-            <Search shape="simple" className={`${prefix}transfer-panel-search`} placeholder={searchPlaceholder || locale.searchPlaceholder} onChange={this.handleSearch} />
+            <Search
+                shape="simple"
+                className={`${prefix}transfer-panel-search`}
+                placeholder={searchPlaceholder || locale.searchPlaceholder}
+                onChange={this.handleSearch}
+            />
         );
     }
 
     renderList(dataSource) {
-        const { prefix, position, mode, value, onMove, disabled, listClassName, listStyle, itemRender,
-            sortable } = this.props;
+        const {
+            prefix,
+            position,
+            mode,
+            value,
+            onMove,
+            disabled,
+            listClassName,
+            listStyle,
+            itemRender,
+            sortable,
+        } = this.props;
         const { dragPosition, dragValue, dragOverValue } = this.state;
         const newClassName = cx({
             [`${prefix}transfer-panel-list`]: true,
-            [listClassName]: !!listClassName
+            [listClassName]: !!listClassName,
         });
 
         return dataSource.length ? (
-            <Menu className={newClassName} style={listStyle} ref={this.getListDOM}>
+            <Menu
+                className={newClassName}
+                style={listStyle}
+                ref={this.getListDOM}
+            >
                 {dataSource.map(item => (
-                    <TransferItem key={item.value}
+                    <TransferItem
+                        key={item.value}
                         prefix={prefix}
                         mode={mode}
                         checked={value.indexOf(item.value) > -1}
@@ -176,7 +204,8 @@ export default class TransferPanel extends Component {
                         dragPosition={dragPosition}
                         dragValue={dragValue}
                         dragOverValue={dragOverValue}
-                        panelPosition={position} />
+                        panelPosition={position}
+                    />
                 ))}
             </Menu>
         ) : (
@@ -204,11 +233,17 @@ export default class TransferPanel extends Component {
             const { onMoveAll } = this.props;
             const classNames = cx({
                 [`${prefix}transfer-panel-move-all`]: true,
-                [`${prefix}disabled`]: disabled
+                [`${prefix}disabled`]: disabled,
             });
             return (
                 <div className={`${prefix}transfer-panel-footer`}>
-                    <a className={classNames} onClick={onMoveAll.bind(this, position === 'left' ? 'right' : 'left')}>
+                    <a
+                        className={classNames}
+                        onClick={onMoveAll.bind(
+                            this,
+                            position === 'left' ? 'right' : 'left'
+                        )}
+                    >
                         {locale.moveAll}
                     </a>
                 </div>
@@ -220,14 +255,25 @@ export default class TransferPanel extends Component {
         const totalCount = dataSource.length;
         const totalEnabledCount = this.enabledDatasource.length;
         const checked = checkedCount > 0 && checkedCount >= totalEnabledCount;
-        const indeterminate = checkedCount > 0 && checkedCount < totalEnabledCount;
+        const indeterminate =
+            checkedCount > 0 && checkedCount < totalEnabledCount;
         const items = totalCount > 1 ? locale.items : locale.item;
-        const countLabel = checkedCount === 0 ? `${totalCount} ${items}` : `${checkedCount}/${totalCount} ${items}`;
+        const countLabel =
+            checkedCount === 0
+                ? `${totalCount} ${items}`
+                : `${checkedCount}/${totalCount} ${items}`;
 
         return (
             <div className={`${prefix}transfer-panel-footer`}>
-                <Checkbox disabled={disabled} checked={checked} indeterminate={indeterminate} onChange={this.handleAllCheck} />
-                <span className={`${prefix}transfer-panel-count`}>{countLabel}</span>
+                <Checkbox
+                    disabled={disabled}
+                    checked={checked}
+                    indeterminate={indeterminate}
+                    onChange={this.handleAllCheck}
+                />
+                <span className={`${prefix}transfer-panel-count`}>
+                    {countLabel}
+                </span>
             </div>
         );
     }

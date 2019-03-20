@@ -12,7 +12,7 @@ module.exports = {
         'Nav.SubMenu': 'Menu.SubMenu',
         Search: 'Select.AutoComplete',
         'Upload.Card': 'Upload',
-        'Upload.Drager': 'Upload'
+        'Upload.Drager': 'Upload',
     },
     components: [
         'affix',
@@ -69,6 +69,6 @@ module.exports = {
         'util',
         'upload',
         'validate',
-        'virtual-list'
-    ]
+        'virtual-list',
+    ],
 };

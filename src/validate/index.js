@@ -1,9 +1,9 @@
-import {complementError, asyncMap} from './util';
-import {getValidationMethod} from './validator';
+/* eslint-disable callback-return */
+import { complementError, asyncMap } from './util';
+import { getValidationMethod } from './validator';
 import defaultMessages from './messages';
 
-function noop() {
-}
+function noop() {}
 
 class Schema {
     constructor(rules, options = {}) {
@@ -12,8 +12,8 @@ class Schema {
             ...options,
             messages: {
                 ...defaultMessages,
-                ...options.messages
-            }
+                ...options.messages,
+            },
         };
         this.complete = [];
     }
@@ -25,11 +25,14 @@ class Schema {
     }
 
     messages(messages) {
-        this._options.messages = Object.assign({}, this._options.messages, messages);
+        this._options.messages = Object.assign(
+            {},
+            this._options.messages,
+            messages
+        );
     }
 
     validate(source, callback) {
-
         if (!this._rules || Object.keys(this._rules).length === 0) {
             if (callback) {
                 callback(null);
@@ -42,7 +45,7 @@ class Schema {
         let value;
         const series = {};
         const names = Object.keys(this._rules);
-        names.forEach((name) => {
+        names.forEach(name => {
             arr = this._rules[name];
             value = source[name];
 
@@ -50,14 +53,14 @@ class Schema {
                 arr = [arr];
             }
 
-            arr.forEach((rule) => {
+            arr.forEach(rule => {
                 rule.validator = getValidationMethod(rule);
                 rule.field = name;
                 if (!rule.validator) {
                     return;
                 }
                 series[name] = series[name] || [];
-                series[name].push({rule, value, source, field: name});
+                series[name].push({ rule, value, source, field: name });
             });
         });
 
@@ -100,33 +103,38 @@ class Schema {
         const idx = this.complete.length;
 
         // async validate
-        asyncMap(series, this._options, (data, doIt) => {
-            const rule = data.rule;
-            rule.field = data.field;
+        asyncMap(
+            series,
+            this._options,
+            (data, doIt) => {
+                const rule = data.rule;
+                rule.field = data.field;
 
-            function cb(e = []) {
-                let errors = e;
-                if (!Array.isArray(errors)) {
-                    errors = [errors];
+                function cb(e = []) {
+                    let errors = e;
+                    if (!Array.isArray(errors)) {
+                        errors = [errors];
+                    }
+
+                    // 自定义错误
+                    if (errors.length && rule.message) {
+                        errors = [].concat(rule.message);
+                    }
+
+                    errors = errors.map(complementError(rule));
+
+                    doIt(errors);
                 }
 
-                // 自定义错误
-                if (errors.length && rule.message) {
-                    errors = [].concat(rule.message);
+                const res = rule.validator(rule, data.value, cb, this._options);
+                if (res && res.then) {
+                    res.then(() => cb(), e => cb(e));
                 }
-
-                errors = errors.map(complementError(rule));
-
-                doIt(errors);
+            },
+            results => {
+                this.complete[idx - 1](results);
             }
-
-            const res = rule.validator(rule, data.value, cb, this._options);
-            if (res && res.then) {
-                res.then(() => cb(), e => cb(e));
-            }
-        }, (results) => {
-            this.complete[idx - 1](results);
-        });
+        );
     }
 }
 

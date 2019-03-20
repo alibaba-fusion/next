@@ -8,7 +8,7 @@
  * typeOf() === 'Undefined'
  * typeOf(1) === 'Number'
  */
-export function typeOf (obj) {
+export function typeOf(obj) {
     return Object.prototype.toString.call(obj).replace(/\[object\s|]/g, '');
 }
 
@@ -22,12 +22,15 @@ export function typeOf (obj) {
  * isArrayLike(arguments) === true
  * isArrayLike(this.props.children) === true
  */
-export function isArrayLike (obj) {
+export function isArrayLike(obj) {
     const length = !!obj && 'length' in obj && obj.length;
     const type = typeOf(obj);
 
-    return type === 'Array' || length === 0 ||
-        (typeof length === 'number' && length > 0 && (length - 1) in obj);
+    return (
+        type === 'Array' ||
+        length === 0 ||
+        (typeof length === 'number' && length > 0 && length - 1 in obj)
+    );
 }
 
 /**
@@ -35,8 +38,12 @@ export function isArrayLike (obj) {
  * @param  {*}  obj
  * @return {Boolean}
  */
-export function isPromise (obj) {
-    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+export function isPromise(obj) {
+    return (
+        !!obj &&
+        (typeof obj === 'object' || typeof obj === 'function') &&
+        typeof obj.then === 'function'
+    );
 }
 
 /**
@@ -45,7 +52,7 @@ export function isPromise (obj) {
  * @return {Boolean}
  * @reference https://github.com/jonschlinkert/is-plain-object
  */
-export function isPlainObject (obj) {
+export function isPlainObject(obj) {
     if (typeOf(obj) !== 'Object') {
         return false;
     }
@@ -79,13 +86,13 @@ export function isPlainObject (obj) {
  * @example
  * object.shallowEqual({a: 100}, {a: 100}); // true
  */
-export function shallowEqual (objA, objB, compare) {
+export function shallowEqual(objA, objB, compare) {
     if (objA === objB) {
         return true;
     }
 
     // 其中一个不是object，则不相等
-    if (!objA || !objB || (typeof objA + typeof objB !== 'objectobject')) {
+    if (!objA || !objB || typeof objA + typeof objB !== 'objectobject') {
         return false;
     }
 
@@ -112,7 +119,7 @@ export function shallowEqual (objA, objB, compare) {
 
         const ret = hasCallback ? compare(valA, valB, key) : void 0;
 
-        if (ret === false || ret === void 0 && valA !== valB) {
+        if (ret === false || (ret === void 0 && valA !== valB)) {
             return false;
         }
     }
@@ -137,7 +144,7 @@ export function shallowEqual (objA, objB, compare) {
  * // 遍历arguments
  * object.each(arguments, (arg, i) => console.log(arg));
  */
-export function each (obj, callback, direction) {
+export function each(obj, callback, direction) {
     const reversed = direction === -1;
     const length = obj.length;
     let value,
@@ -168,7 +175,8 @@ export function each (obj, callback, direction) {
 }
 
 // @private 判断key是否在数组或对象中
-const _isInObj = (key, obj, isArray) => isArray ? (obj.indexOf(key) > -1)  : (key in obj);
+const _isInObj = (key, obj, isArray) =>
+    isArray ? obj.indexOf(key) > -1 : key in obj;
 
 /**
  * 过滤出其它属性
@@ -180,7 +188,7 @@ const _isInObj = (key, obj, isArray) => isArray ? (obj.indexOf(key) > -1)  : (ke
  * object.pickOthers(FooComponent.propTypes, this.props);
  * object.pickOthers(['className', 'onChange'], this.props);
  */
-export function pickOthers (holdProps, props) {
+export function pickOthers(holdProps, props) {
     const others = {};
     const isArray = typeOf(holdProps) === 'Array';
 
@@ -202,7 +210,7 @@ export function pickOthers (holdProps, props) {
  * @example
  * object.pickAttrsWith(FooComponent.propTypes, 'data-');
  */
-export function pickAttrsWith (holdProps, prefix) {
+export function pickAttrsWith(holdProps, prefix) {
     const others = {};
 
     for (const key in holdProps) {

@@ -38,3 +38,10 @@ The Switch Component toggles the state. The options in the switch, as well as it
 ## Keyboard Support
 
 -   press enter to switch when focused
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Enter       | toggle checked                |
+| Space       | toggle checked                |

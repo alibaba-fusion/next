@@ -9,7 +9,7 @@ const normalMap = {
         arrow: 'bottom',
         trOrigin: 'bottom',
         rtlTrOrigin: 'bottom',
-        offset: [0, -12]
+        offset: [0, -12],
     },
     r: {
         align: 'cl cr',
@@ -17,7 +17,7 @@ const normalMap = {
         arrow: 'left',
         trOrigin: 'left',
         rtlTrOrigin: 'right',
-        offset: [12, 0]
+        offset: [12, 0],
     },
     b: {
         align: 'tc bc',
@@ -25,7 +25,7 @@ const normalMap = {
         arrow: 'top',
         trOrigin: 'top',
         rtlTrOrigin: 'top',
-        offset: [0, 12]
+        offset: [0, 12],
     },
     l: {
         align: 'cr cl',
@@ -33,7 +33,7 @@ const normalMap = {
         arrow: 'right',
         trOrigin: 'right',
         rtlTrOrigin: 'left',
-        offset: [-12, 0]
+        offset: [-12, 0],
     },
     tl: {
         align: 'br tc',
@@ -41,7 +41,7 @@ const normalMap = {
         arrow: 'bottom-right',
         trOrigin: 'bottom right',
         rtlTrOrigin: 'bottom left',
-        offset: [20, -12]
+        offset: [20, -12],
     },
     tr: {
         align: 'bl tc',
@@ -49,7 +49,7 @@ const normalMap = {
         arrow: 'bottom-left',
         trOrigin: 'bottom left',
         rtlTrOrigin: 'bottom right',
-        offset: [-20, -12]
+        offset: [-20, -12],
     },
     rt: {
         align: 'bl cr',
@@ -57,7 +57,7 @@ const normalMap = {
         arrow: 'left-bottom',
         trOrigin: 'bottom left',
         rtlTrOrigin: 'bottom right',
-        offset: [12, 20]
+        offset: [12, 20],
     },
     rb: {
         align: 'tl cr',
@@ -65,7 +65,7 @@ const normalMap = {
         arrow: 'left-top',
         trOrigin: 'top left',
         rtlTrOrigin: 'top right',
-        offset: [12, -20]
+        offset: [12, -20],
     },
     bl: {
         align: 'tr bc',
@@ -73,7 +73,7 @@ const normalMap = {
         arrow: 'top-right',
         trOrigin: 'top right',
         rtlTrOrigin: 'top left',
-        offset: [20, 12]
+        offset: [20, 12],
     },
     br: {
         align: 'tl bc',
@@ -81,7 +81,7 @@ const normalMap = {
         arrow: 'top-left',
         trOrigin: 'top left',
         rtlTrOrigin: 'top right',
-        offset: [-20, 12]
+        offset: [-20, 12],
     },
     lt: {
         align: 'br cl',
@@ -89,7 +89,7 @@ const normalMap = {
         arrow: 'right-bottom',
         trOrigin: 'bottom right',
         rtlTrOrigin: 'bottom left',
-        offset: [-12, 20]
+        offset: [-12, 20],
     },
     lb: {
         align: 'tr cl',
@@ -97,8 +97,8 @@ const normalMap = {
         arrow: 'right-top',
         trOrigin: 'top right',
         rtlTrOrigin: 'top left',
-        offset: [-12, -20]
-    }
+        offset: [-12, -20],
+    },
 };
 const edgeMap = {
     t: {
@@ -107,7 +107,7 @@ const edgeMap = {
         arrow: 'bottom',
         trOrigin: 'bottom',
         rtlTrOrigin: 'bottom',
-        offset: [0, -12]
+        offset: [0, -12],
     },
     r: {
         align: 'cl cr',
@@ -115,7 +115,7 @@ const edgeMap = {
         arrow: 'left',
         trOrigin: 'left',
         rtlTrOrigin: 'right',
-        offset: [12, 0]
+        offset: [12, 0],
     },
     b: {
         align: 'tc bc',
@@ -123,7 +123,7 @@ const edgeMap = {
         arrow: 'top',
         trOrigin: 'top',
         rtlTrOrigin: 'top',
-        offset: [0, 12]
+        offset: [0, 12],
     },
     l: {
         align: 'cr cl',
@@ -131,7 +131,7 @@ const edgeMap = {
         arrow: 'right',
         trOrigin: 'right',
         rtlTrOrigin: 'left',
-        offset: [-12, 0]
+        offset: [-12, 0],
     },
     tl: {
         align: 'bl tl',
@@ -139,7 +139,7 @@ const edgeMap = {
         arrow: 'bottom-left',
         trOrigin: 'bottom left',
         rtlTrOrigin: 'bottom right',
-        offset: [0, -12]
+        offset: [0, -12],
     },
     tr: {
         align: 'br tr',
@@ -147,7 +147,7 @@ const edgeMap = {
         arrow: 'bottom-right',
         trOrigin: 'bottom right',
         rtlTrOrigin: 'bottom left',
-        offset: [0, -12]
+        offset: [0, -12],
     },
     rt: {
         align: 'tl tr',
@@ -155,7 +155,7 @@ const edgeMap = {
         arrow: 'left-top',
         trOrigin: 'top left',
         rtlTrOrigin: 'top right',
-        offset: [12, 0]
+        offset: [12, 0],
     },
     rb: {
         align: 'bl br',
@@ -163,7 +163,7 @@ const edgeMap = {
         arrow: 'left-bottom',
         trOrigin: 'bottom left',
         rtlTrOrigin: 'bottom right',
-        offset: [12, 0]
+        offset: [12, 0],
     },
     bl: {
         align: 'tl bl',
@@ -171,7 +171,7 @@ const edgeMap = {
         arrow: 'top-left',
         trOrigin: 'top left',
         rtlTrOrigin: 'top right',
-        offset: [0, 12]
+        offset: [0, 12],
     },
     br: {
         align: 'tr br',
@@ -179,7 +179,7 @@ const edgeMap = {
         arrow: 'top-right',
         trOrigin: 'top right',
         rtlTrOrigin: 'top left',
-        offset: [0, 12]
+        offset: [0, 12],
     },
     lt: {
         align: 'tr tl',
@@ -187,7 +187,7 @@ const edgeMap = {
         arrow: 'right-top',
         trOrigin: 'top right',
         rtlTrOrigin: 'top left',
-        offset: [-12, 0]
+        offset: [-12, 0],
     },
     lb: {
         align: 'br bl',
@@ -195,11 +195,8 @@ const edgeMap = {
         arrow: 'right-bottom',
         trOrigin: 'bottom right',
         rtlTrOrigin: 'bottom left',
-        offset: [-12, 0]
-    }
+        offset: [-12, 0],
+    },
 };
 
-export {
-    normalMap,
-    edgeMap
-};
+export { normalMap, edgeMap };

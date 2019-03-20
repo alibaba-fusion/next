@@ -16,6 +16,7 @@ const { addClass, removeClass, setStyle, getStyle } = dom;
 export default class Cascader extends Component {
     static propTypes = {
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         pure: PropTypes.bool,
         className: PropTypes.string,
         /**
@@ -25,11 +26,17 @@ export default class Cascader extends Component {
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.string),
+        ]),
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.string),
+        ]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -103,11 +110,12 @@ export default class Cascader extends Component {
         onBlur: PropTypes.func,
         filteredPaths: PropTypes.array,
         filteredListStyle: PropTypes.object,
-        resultRender: PropTypes.func
+        resultRender: PropTypes.func,
     };
 
     static defaultProps = {
         prefix: 'next-',
+        rtl: false,
         pure: false,
         dataSource: [],
         defaultValue: null,
@@ -117,29 +125,42 @@ export default class Cascader extends Component {
         multiple: false,
         useVirtual: false,
         checkStrictly: false,
-        itemRender: item => item.label
+        itemRender: item => item.label,
     };
 
     constructor(props, context) {
         super(props, context);
 
-        const { defaultValue, value, defaultExpandedValue, expandedValue, dataSource, multiple, checkStrictly, canOnlyCheckLeaf, loadData } = props;
+        const {
+            defaultValue,
+            value,
+            defaultExpandedValue,
+            expandedValue,
+            dataSource,
+            multiple,
+            checkStrictly,
+            canOnlyCheckLeaf,
+            loadData,
+        } = props;
 
         this.updateCache(dataSource);
 
-        let normalizedValue = this.normalizeValue(typeof value === 'undefined' ? defaultValue : value);
+        let normalizedValue = this.normalizeValue(
+            typeof value === 'undefined' ? defaultValue : value
+        );
         if (!loadData) {
             normalizedValue = normalizedValue.filter(v => this._v2n[v]);
         }
         // TODO loadData
-        const realExpandedValue = typeof expandedValue === 'undefined' ?
-            (
-                typeof defaultExpandedValue === 'undefined' ? this.getExpandedValue(normalizedValue[0]) : this.normalizeValue(defaultExpandedValue)
-            ) :
-            this.normalizeValue(expandedValue);
+        const realExpandedValue =
+            typeof expandedValue === 'undefined'
+                ? typeof defaultExpandedValue === 'undefined'
+                    ? this.getExpandedValue(normalizedValue[0])
+                    : this.normalizeValue(defaultExpandedValue)
+                : this.normalizeValue(expandedValue);
         const st = {
             value: normalizedValue,
-            expandedValue: realExpandedValue
+            expandedValue: realExpandedValue,
         };
         if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
             st.value = this.completeValue(props.dataSource, st.value);
@@ -149,7 +170,13 @@ export default class Cascader extends Component {
 
         this.lastExpandedValue = [...this.state.expandedValue];
 
-        bindCtx(this, ['handleMouseLeave', 'handleFocus', 'handleFold', 'getCascaderNode', 'onBlur']);
+        bindCtx(this, [
+            'handleMouseLeave',
+            'handleFocus',
+            'handleFold',
+            'getCascaderNode',
+            'onBlur',
+        ]);
     }
 
     componentDidMount() {
@@ -168,9 +195,15 @@ export default class Cascader extends Component {
 
             const { multiple, checkStrictly, canOnlyCheckLeaf } = nextProps;
             if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
-                state.value = this.completeValue(nextProps.dataSource, state.value);
+                state.value = this.completeValue(
+                    nextProps.dataSource,
+                    state.value
+                );
             }
-            if (!this.state.expandedValue.length && !('expandedValue' in nextProps)) {
+            if (
+                !this.state.expandedValue.length &&
+                !('expandedValue' in nextProps)
+            ) {
                 state.expandedValue = this.getExpandedValue(state.value[0]);
             }
         }
@@ -189,7 +222,9 @@ export default class Cascader extends Component {
     getCascaderNode(ref) {
         this.cascader = ref;
         if (this.cascader) {
-            this.cascaderInner = this.cascader.querySelector(`.${this.props.prefix}cascader-inner`);
+            this.cascaderInner = this.cascader.querySelector(
+                `.${this.props.prefix}cascader-inner`
+            );
         }
     }
 
@@ -197,14 +232,20 @@ export default class Cascader extends Component {
         if (!this.cascaderInner) {
             return;
         }
-        const menus = [].slice.call(this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu-wrapper`));
+        const menus = [].slice.call(
+            this.cascaderInner.querySelectorAll(
+                `.${this.props.prefix}cascader-menu-wrapper`
+            )
+        );
         if (menus.length === 0) {
             return;
         }
 
-        const menusWidth = Math.ceil(menus.reduce((ret, menu) => {
-            return ret + menu.offsetWidth;
-        }, 0));
+        const menusWidth = Math.ceil(
+            menus.reduce((ret, menu) => {
+                return ret + menu.offsetWidth;
+            }, 0)
+        );
         if (getStyle(this.cascaderInner, 'width') !== menusWidth) {
             setStyle(this.cascaderInner, 'width', menusWidth);
         }
@@ -224,7 +265,11 @@ export default class Cascader extends Component {
             const pos = `${prefix}-${index}`;
             const newValue = String(value);
             item.value = newValue;
-            this._v2n[newValue] = this._p2n[pos] = { ...item, pos, _source: item };
+            this._v2n[newValue] = this._p2n[pos] = {
+                ...item,
+                pos,
+                _source: item,
+            };
 
             if (children && children.length) {
                 this.setCache(children, pos);
@@ -268,17 +313,24 @@ export default class Cascader extends Component {
         });
 
         return Object.keys(expandedMap).sort((prev, next) => {
-            return expandedMap[prev].split('-').length - expandedMap[next].split('-').length;
+            return (
+                expandedMap[prev].split('-').length -
+                expandedMap[next].split('-').length
+            );
         });
     }
-
+    /*eslint-disable max-statements*/
     completeValue(dataSource, value) {
-        const filterValue = value.filter(v => typeof this._v2n[v] !== 'undefined');
-        let flatValue = this.flatValue(filterValue);
+        const filterValue = value.filter(
+            v => typeof this._v2n[v] !== 'undefined'
+        );
+        const flatValue = this.flatValue(filterValue);
 
         const childChecked = child => flatValue.indexOf(child.value) > -1;
-        const removeValue = child => flatValue.splice(flatValue.indexOf(child.value), 1);
-        const addParentValue = (i, parent) => flatValue.splice(i, 0, parent.value);
+        const removeValue = child =>
+            flatValue.splice(flatValue.indexOf(child.value), 1);
+        const addParentValue = (i, parent) =>
+            flatValue.splice(i, 0, parent.value);
         for (let i = 0; i < flatValue.length; i++) {
             const pos = this.getPos(flatValue[i]);
             const nums = pos.split('-');
@@ -286,7 +338,11 @@ export default class Cascader extends Component {
                 break;
             }
             for (let j = nums.length - 2; j > 0; j--) {
-                const parent = nums.slice(1, j + 1).reduce((ret, num) => ret.children[num], { children: dataSource });
+                const parent = nums
+                    .slice(1, j + 1)
+                    .reduce((ret, num) => ret.children[num], {
+                        children: dataSource,
+                    });
                 const parentChecked = parent.children.every(childChecked);
                 if (parentChecked) {
                     parent.children.forEach(removeValue);
@@ -299,7 +355,7 @@ export default class Cascader extends Component {
 
         const newValue = [];
         if (flatValue.length) {
-            flatValue = flatValue.reverse();
+            // flatValue = flatValue.reverse(); TODO 后续检测大数据性能问题
             const ps = Object.keys(this._p2n);
             for (let i = 0; i < flatValue.length; i++) {
                 const pos = this.getPos(flatValue[i]);
@@ -315,7 +371,7 @@ export default class Cascader extends Component {
 
         return newValue;
     }
-
+    /*eslint-enable*/
     flatValue(value) {
         const getDepth = v => this.getPos(v).split('-').length;
         const newValue = value.slice(0).sort((prev, next) => {
@@ -324,7 +380,13 @@ export default class Cascader extends Component {
 
         for (let i = 0; i < newValue.length; i++) {
             for (let j = 0; j < newValue.length; j++) {
-                if (i !== j && this.isDescendantOrSelf(this.getPos(newValue[i]), this.getPos(newValue[j]))) {
+                if (
+                    i !== j &&
+                    this.isDescendantOrSelf(
+                        this.getPos(newValue[i]),
+                        this.getPos(newValue[j])
+                    )
+                ) {
                     newValue.splice(j, 1);
                     j--;
                 }
@@ -354,18 +416,24 @@ export default class Cascader extends Component {
         const currentNums = currentPos.split('-');
         const targetNums = targetPos.split('-');
 
-        return currentNums.length <= targetNums.length && currentNums.every((num, index) => {
-            return num === targetNums[index];
-        });
+        return (
+            currentNums.length <= targetNums.length &&
+            currentNums.every((num, index) => {
+                return num === targetNums[index];
+            })
+        );
     }
 
     isSiblingOrSelf(currentPos, targetPos) {
         const currentNums = currentPos.split('-').slice(0, -1);
         const targetNums = targetPos.split('-').slice(0, -1);
 
-        return currentNums.length === targetNums.length && currentNums.every((num, index) => {
-            return num === targetNums[index];
-        });
+        return (
+            currentNums.length === targetNums.length &&
+            currentNums.every((num, index) => {
+                return num === targetNums[index];
+            })
+        );
     }
 
     processValue(value, v, checked) {
@@ -378,10 +446,13 @@ export default class Cascader extends Component {
     }
 
     handleSelect(v, canExpand) {
-        if (!(this.props.canOnlySelectLeaf && canExpand) && this.state.value[0] !== v) {
+        if (
+            !(this.props.canOnlySelectLeaf && canExpand) &&
+            this.state.value[0] !== v
+        ) {
             if (!('value' in this.props)) {
                 this.setState({
-                    value: [v]
+                    value: [v],
                 });
             }
 
@@ -395,7 +466,7 @@ export default class Cascader extends Component {
                 }, []);
 
                 this.props.onChange(v, data, {
-                    selectedPath
+                    selectedPath,
                 });
             }
         }
@@ -408,7 +479,7 @@ export default class Cascader extends Component {
             this.lastExpandedValue = [...this.state.expandedValue];
         }
     }
-
+    /*eslint-disable max-statements*/
     handleCheck(v, checked) {
         const { checkStrictly, canOnlyCheckLeaf } = this.props;
         const value = [...this.state.value];
@@ -431,16 +502,21 @@ export default class Cascader extends Component {
                 let parentChecked = true;
                 for (let j = 0; j < ps.length; j++) {
                     const p = ps[j];
-                    if (this.isSiblingOrSelf(currentPos, p)) {
-                        const v = this.getValue(p);
-                        if (value.indexOf(v) === -1) {
-                            parentChecked = false;
-                            break;
-                        }
+                    if (!this.isSiblingOrSelf(currentPos, p)) {
+                        continue;
+                    }
+                    const v = this.getValue(p);
+                    if (value.indexOf(v) === -1) {
+                        parentChecked = false;
+                        break;
                     }
                 }
                 const parentPos = nums.slice(0, i - 1).join('-');
-                this.processValue(value, this.getValue(parentPos), parentChecked);
+                this.processValue(
+                    value,
+                    this.getValue(parentPos),
+                    parentChecked
+                );
 
                 currentPos = parentPos;
             }
@@ -448,7 +524,7 @@ export default class Cascader extends Component {
 
         if (!('value' in this.props)) {
             this.setState({
-                value
+                value,
             });
         }
 
@@ -458,7 +534,7 @@ export default class Cascader extends Component {
                 this.props.onChange(value, data, {
                     checked,
                     currentData: this._v2n[v],
-                    checkedData: data
+                    checkedData: data,
                 });
             } else {
                 const flatValue = this.flatValue(value);
@@ -470,7 +546,7 @@ export default class Cascader extends Component {
                     checked,
                     currentData: this._v2n[v],
                     checkedData,
-                    indeterminateData
+                    indeterminateData,
                 });
             }
         }
@@ -483,7 +559,11 @@ export default class Cascader extends Component {
 
         if (canExpand || expandedValue.length > level) {
             if (canExpand) {
-                expandedValue.splice(level, expandedValue.length - level, value);
+                expandedValue.splice(
+                    level,
+                    expandedValue.length - level,
+                    value
+                );
             } else {
                 expandedValue.splice(level);
             }
@@ -492,9 +572,11 @@ export default class Cascader extends Component {
                 this.setExpandValue(expandedValue);
 
                 if (focusedFirstChild) {
-                    const endExpandedValue = expandedValue[expandedValue.length - 1];
+                    const endExpandedValue =
+                        expandedValue[expandedValue.length - 1];
                     this.setState({
-                        focusedValue: this._v2n[endExpandedValue].children[0].value
+                        focusedValue: this._v2n[endExpandedValue].children[0]
+                            .value,
                     });
                 }
             };
@@ -504,7 +586,7 @@ export default class Cascader extends Component {
                 const data = this._v2n[value];
                 return loadData(data, data._source).then(callback);
             } else {
-                callback();
+                return callback();
             }
         }
     }
@@ -516,7 +598,7 @@ export default class Cascader extends Component {
     setExpandValue(expandedValue) {
         if (!('expandedValue' in this.props)) {
             this.setState({
-                expandedValue
+                expandedValue,
             });
         }
 
@@ -525,9 +607,53 @@ export default class Cascader extends Component {
         }
     }
 
+    getFirstFocusKeyByDataSource(dataSource) {
+        if (!dataSource || dataSource.length === 0) {
+            return '';
+        }
+
+        for (let i = 0; i < dataSource.length; i++) {
+            if (dataSource[i] && !dataSource[i].disabled) {
+                return dataSource[i].value;
+            }
+        }
+
+        return '';
+    }
+
+    getFirstFocusKeyByFilteredPaths(filteredPaths) {
+        if (!filteredPaths || filteredPaths.length === 0) {
+            return '';
+        }
+
+        for (let i = 0; i < filteredPaths.length; i++) {
+            const path = filteredPaths[i];
+            if (!path.some(item => item.disabled)) {
+                const lastItem = path[path.length - 1];
+                return lastItem.value;
+            }
+        }
+
+        return '';
+    }
+
+    getFirstFocusKey() {
+        const { dataSource, searchValue, filteredPaths } = this.props;
+
+        return !searchValue
+            ? this.getFirstFocusKeyByDataSource(dataSource)
+            : this.getFirstFocusKeyByFilteredPaths(filteredPaths);
+    }
+
+    setFocusValue() {
+        this.setState({
+            focusedValue: this.getFirstFocusKey(),
+        });
+    }
+
     handleFocus(focusedValue) {
         this.setState({
-            focusedValue
+            focusedValue,
         });
     }
 
@@ -538,14 +664,16 @@ export default class Cascader extends Component {
         }
 
         this.setState({
-            focusedValue: expandedValue[expandedValue.length - 1]
+            focusedValue: expandedValue[expandedValue.length - 1],
         });
     }
 
     getIndeterminate(value) {
         const indeterminate = [];
 
-        const positions = this.flatValue(value).map(::this.getPos);
+        const positions = this.flatValue(value).map(value =>
+            this.getPos(value)
+        );
         positions.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
@@ -562,22 +690,44 @@ export default class Cascader extends Component {
 
     onBlur(e) {
         this.setState({
-            focusedValue: ''
+            focusedValue: '',
         });
 
         this.props.onBlur && this.props.onBlur(e);
     }
 
     renderMenu(data, level) {
-        const { prefix, multiple, useVirtual, checkStrictly, expandTriggerType, loadData,
-            canOnlyCheckLeaf, listClassName, listStyle, itemRender } = this.props;
+        const {
+            prefix,
+            multiple,
+            useVirtual,
+            checkStrictly,
+            expandTriggerType,
+            loadData,
+            canOnlyCheckLeaf,
+            listClassName,
+            listStyle,
+            itemRender,
+        } = this.props;
         const { value, expandedValue, focusedValue } = this.state;
 
         return (
-            <CascaderMenu key={level} prefix={prefix} useVirtual={useVirtual} className={listClassName} style={listStyle} focusedKey={focusedValue} onItemFocus={this.handleFocus} onBlur={this.onBlur}>
+            <CascaderMenu
+                key={level}
+                prefix={prefix}
+                useVirtual={useVirtual}
+                className={listClassName}
+                style={listStyle}
+                ref={this.saveMenuRef}
+                focusedKey={focusedValue}
+                onItemFocus={this.handleFocus}
+                onBlur={this.onBlur}
+            >
                 {data.map(item => {
                     const disabled = !!item.disabled;
-                    const canExpand = (!!item.children && !!item.children.length) || (!!loadData && !item.isLeaf);
+                    const canExpand =
+                        (!!item.children && !!item.children.length) ||
+                        (!!loadData && !item.isLeaf);
                     const expanded = expandedValue[level] === item.value;
                     const props = {
                         prefix,
@@ -585,19 +735,31 @@ export default class Cascader extends Component {
                         canExpand,
                         expanded,
                         expandTriggerType,
-                        onExpand: this.handleExpand.bind(this, item.value, level, canExpand),
-                        onFold: this.handleFold
+                        onExpand: this.handleExpand.bind(
+                            this,
+                            item.value,
+                            level,
+                            canExpand
+                        ),
+                        onFold: this.handleFold,
                     };
 
                     if (multiple) {
                         props.checkable = !(canOnlyCheckLeaf && canExpand);
                         props.checked = value.indexOf(item.value) > -1;
-                        props.indeterminate = (checkStrictly || canOnlyCheckLeaf) ? false : this.indeterminate.indexOf(item.value) > -1;
+                        props.indeterminate =
+                            checkStrictly || canOnlyCheckLeaf
+                                ? false
+                                : this.indeterminate.indexOf(item.value) > -1;
                         props.checkboxDisabled = !!item.checkboxDisabled;
                         props.onCheck = this.handleCheck.bind(this, item.value);
                     } else {
                         props.selected = value[0] === item.value;
-                        props.onSelect = this.handleSelect.bind(this, item.value, canExpand);
+                        props.onSelect = this.handleSelect.bind(
+                            this,
+                            item.value,
+                            canExpand
+                        );
                     }
 
                     return (
@@ -647,20 +809,27 @@ export default class Cascader extends Component {
             key: lastItem.value,
             className: `${prefix}cascader-filtered-item`,
             disabled: path.some(item => item.disabled),
-            children: resultRender(searchValue, path)
+            children: resultRender(searchValue, path),
         };
 
         if (multiple) {
             Item = Menu.CheckboxItem;
             const { checkStrictly, canOnlyCheckLeaf } = this.props;
             props.checked = value.indexOf(lastItem.value) > -1;
-            props.indeterminate = !checkStrictly && !canOnlyCheckLeaf && this.indeterminate.indexOf(lastItem.value) > -1;
+            props.indeterminate =
+                !checkStrictly &&
+                !canOnlyCheckLeaf &&
+                this.indeterminate.indexOf(lastItem.value) > -1;
             props.checkboxDisabled = lastItem.checkboxDisabled;
             props.onChange = this.handleCheck.bind(this, lastItem.value);
         } else {
             Item = Menu.Item;
             props.selected = value[0] === lastItem.value;
-            props.onSelect = this.handleSelect.bind(this, lastItem.value, false);
+            props.onSelect = this.handleSelect.bind(
+                this,
+                lastItem.value,
+                false
+            );
         }
 
         return <Item {...props} />;
@@ -668,27 +837,46 @@ export default class Cascader extends Component {
 
     renderFilteredList() {
         const { prefix, filteredListStyle, filteredPaths } = this.props;
+        const { focusedValue } = this.state;
         return (
-            <Menu className={`${prefix}cascader-filtered-list`} style={filteredListStyle}>
+            <Menu
+                focusedKey={focusedValue}
+                onItemFocus={this.handleFocus}
+                className={`${prefix}cascader-filtered-list`}
+                style={filteredListStyle}
+            >
                 {filteredPaths.map(path => this.renderFilteredItem(path))}
             </Menu>
         );
     }
 
     render() {
-        const { prefix, className, expandTriggerType, multiple, dataSource,
-            checkStrictly, canOnlyCheckLeaf, searchValue } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            expandTriggerType,
+            multiple,
+            dataSource,
+            checkStrictly,
+            canOnlyCheckLeaf,
+            searchValue,
+        } = this.props;
         const others = pickOthers(Object.keys(Cascader.propTypes), this.props);
         const { value } = this.state;
+
+        if (rtl) {
+            others.dir = 'rtl';
+        }
 
         const props = {
             className: cx({
                 [`${prefix}cascader`]: true,
                 multiple,
-                [className]: !!className
+                [className]: !!className,
             }),
             ref: 'cascader',
-            ...others
+            ...others,
         };
         if (expandTriggerType === 'hover') {
             props.onMouseLeave = this.handleMouseLeave;
@@ -700,12 +888,15 @@ export default class Cascader extends Component {
 
         return (
             <div {...props} ref={this.getCascaderNode}>
-                {!searchValue ?
+                {!searchValue ? (
                     <div className={`${prefix}cascader-inner`}>
-                        {dataSource && dataSource.length ? this.renderMenus() : null}
-                    </div> :
+                        {dataSource && dataSource.length
+                            ? this.renderMenus()
+                            : null}
+                    </div>
+                ) : (
                     this.renderFilteredList()
-                }
+                )}
             </div>
         );
     }

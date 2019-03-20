@@ -14,12 +14,26 @@ function pattern(rule, value, errors, options) {
     if (rule.pattern) {
         if (rule.pattern instanceof RegExp) {
             if (!rule.pattern.test(value)) {
-                errors.push(util.format(options.messages.pattern, rule.field, value, rule.pattern));
+                errors.push(
+                    util.format(
+                        options.messages.pattern,
+                        rule.field,
+                        value,
+                        rule.pattern
+                    )
+                );
             }
         } else if (typeof rule.pattern === 'string') {
             const _pattern = new RegExp(rule.pattern);
             if (!_pattern.test(value)) {
-                errors.push(util.format(options.messages.pattern, rule.field, value, rule.pattern));
+                errors.push(
+                    util.format(
+                        options.messages.pattern,
+                        rule.field,
+                        value,
+                        rule.pattern
+                    )
+                );
             }
         }
     }

@@ -75,7 +75,7 @@ class App extends React.Component {
         const { init, setValue, reset } = this.field;
 
         return (<div className="demo">
-            <Custom  {...init('custom', {initValue: ['test']})}  />
+            <Custom {...init('custom', {initValue: ['test']})} />
 
             <br/><br/>
 

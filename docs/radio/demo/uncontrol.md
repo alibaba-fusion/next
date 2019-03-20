@@ -30,8 +30,8 @@ const list = [
         disabled: true
     }, {
         value: 'orange',
-        label: 'Orange',
-    },
+        label: 'Orange'
+    }
 ];
 
 const UnControlApp = () => {

@@ -29,20 +29,28 @@ class Error extends React.Component {
 
     static defaultProps = {
         prefix: 'next-',
-    }
+    };
 
     static contextTypes = {
-        _formField: PropTypes.object
+        _formField: PropTypes.object,
     };
 
     static _typeMark = 'form_error';
 
-    itemRender = (errors) => {
+    itemRender = errors => {
         return errors.length ? errors : null;
-    }
+    };
 
     render() {
-        const { children, name, prefix, style, className, field: _field, ...others } = this.props;
+        const {
+            children,
+            name,
+            prefix,
+            style,
+            className,
+            field: _field,
+            ...others
+        } = this.props;
 
         if (children && typeof children !== 'function') {
             return <div className={`${prefix}form-item-help`}>{children}</div>;
@@ -70,7 +78,10 @@ class Error extends React.Component {
 
         let result = null;
         if (typeof children === 'function') {
-            result = children(errorArr, isSingle ? field.getState(name) : undefined);
+            result = children(
+                errorArr,
+                isSingle ? field.getState(name) : undefined
+            );
         } else {
             result = this.itemRender(errorArr);
         }
@@ -81,11 +92,13 @@ class Error extends React.Component {
 
         const cls = classNames({
             [`${prefix}form-item-help`]: true,
-            [className]: className
+            [className]: className,
         });
 
         return (
-            <div {...others} className={cls} style={style}>{result}</div>
+            <div {...others} className={cls} style={style}>
+                {result}
+            </div>
         );
     }
 }

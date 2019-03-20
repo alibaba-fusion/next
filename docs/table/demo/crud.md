@@ -40,7 +40,7 @@ class App extends React.Component {
         const {dataSource} = this.state;
         dataSource.push({
             title: {
-                name: 'Quotation for 1PCS Nano controller compatible',
+                name: 'Quotation for 1PCS Nano controller compatible'
             },
             id: Date.now(),
             time: 2000

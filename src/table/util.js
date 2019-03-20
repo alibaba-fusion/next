@@ -1,4 +1,10 @@
-const blackList = ['defaultProps', 'propTypes', 'contextTypes', 'childContextTypes', 'displayName'];
+const blackList = [
+    'defaultProps',
+    'propTypes',
+    'contextTypes',
+    'childContextTypes',
+    'displayName',
+];
 
 export const statics = (Target, Component) => {
     Object.keys(Component).forEach(property => {

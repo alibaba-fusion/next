@@ -10,7 +10,7 @@ const COMPILED_FOLDER = 'compiled_docs';
 
 const cwd = process.cwd();
 
-module.exports = function* () {
+module.exports = function*() {
     const srcDir = path.join(cwd, SRC_FOLDER);
     const targetDir = path.join(cwd, LANGDOC_FOLDER);
     fs.removeSync(targetDir);

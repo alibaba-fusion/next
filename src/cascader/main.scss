@@ -32,7 +32,7 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
         border-radius: 0;
         box-shadow: none;
         min-width: auto;
-        min-height: $s-8 * 6;
+        min-height: 100%;
         &.#{$css-prefix}has-right-border {
             border-right: $cascader-menu-border;
         }
@@ -88,3 +88,5 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
         font-style: normal;
     }
 }
+
+@import './rtl.scss';

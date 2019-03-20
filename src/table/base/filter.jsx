@@ -15,12 +15,13 @@ export default class Filter extends React.Component {
         filterParams: PropTypes.object,
         locale: PropTypes.object,
         onFilter: PropTypes.func,
-        prefix: PropTypes.string
-    }
+        prefix: PropTypes.string,
+        rtl: PropTypes.bool,
+    };
 
     static defaultProps = {
-        onFilter: () => {}
-    }
+        onFilter: () => {},
+    };
 
     constructor(props) {
         super(props);
@@ -28,19 +29,22 @@ export default class Filter extends React.Component {
         const filterConfig = filterParams[props.dataIndex] || {};
         this.state = {
             visible: filterConfig.visible || false,
-            selectedKeys: filterConfig.selectedKeys || []
+            selectedKeys: filterConfig.selectedKeys || [],
         };
         this._selectedKeys = [...this.state.selectedKeys];
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.hasOwnProperty('filterParams') && typeof nextProps.filterParams !== 'undefined') {
+        if (
+            nextProps.hasOwnProperty('filterParams') &&
+            typeof nextProps.filterParams !== 'undefined'
+        ) {
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
             const selectedKeys = filterConfig.selectedKeys || [];
             this.setState({
-                selectedKeys
+                selectedKeys,
             });
             this._selectedKeys = [...selectedKeys];
         }
@@ -52,66 +56,68 @@ export default class Filter extends React.Component {
 
         if (e.keyCode === KEYCODE.ENTER) {
             this.setState({
-                visible: !this.state.visible
+                visible: !this.state.visible,
             });
         }
-    }
+    };
 
-    onFilterVisible = (visible) => {
+    onFilterVisible = visible => {
         this.setState({
-            visible
+            visible,
         });
 
         if (!visible) {
             const selectedKeys = [...this._selectedKeys];
 
             this.setState({
-                selectedKeys
+                selectedKeys,
             });
         }
-    }
+    };
 
-    onFilterSelect = (selectedKeys) => {
+    onFilterSelect = selectedKeys => {
         this.setState({
             visible: true,
-            selectedKeys
+            selectedKeys,
         });
-    }
+    };
 
     onFilterConfirm = () => {
         const selectedKeys = this.state.selectedKeys;
-        const filterParams = {}, { dataIndex } = this.props;
+        const filterParams = {},
+            { dataIndex } = this.props;
 
         filterParams[dataIndex] = {
             visible: false,
-            selectedKeys: selectedKeys
+            selectedKeys: selectedKeys,
         };
         this._selectedKeys = [...selectedKeys];
         this.setState({
-            visible: false
+            visible: false,
         });
         // 兼容之前的格式
         this.props.onFilter(filterParams);
-    }
+    };
 
     onFilterClear = () => {
-        const filterParams = {}, { dataIndex } = this.props;
+        const filterParams = {},
+            { dataIndex } = this.props;
 
         filterParams[dataIndex] = {
             visible: false,
-            selectedKeys: []
+            selectedKeys: [],
         };
         this._selectedKeys = [];
         this.setState({
             selectedKeys: [],
-            visible: false
+            visible: false,
         });
         // 兼容之前的格式
         this.props.onFilter(filterParams);
-    }
+    };
 
     render() {
-        const { filters, prefix, locale, filterMode } = this.props;
+        const { filters, prefix, locale, filterMode, rtl } = this.props;
         const { visible, selectedKeys } = this.state;
 
         function renderMenuItem(item) {
@@ -120,7 +126,11 @@ export default class Filter extends React.Component {
 
         function renderSubMenu(parent, children) {
             return (
-                <Menu.SubMenu label={parent.label} key={parent.value} selectable={false}>
+                <Menu.SubMenu
+                    label={parent.label}
+                    key={parent.value}
+                    selectable={false}
+                >
                     {renderMenuContent(children)}
                 </Menu.SubMenu>
             );
@@ -139,30 +149,40 @@ export default class Filter extends React.Component {
         const content = renderMenuContent(filters),
             footer = (
                 <div className={`${prefix}table-filter-footer`}>
-                    <Button type="primary" onClick={this.onFilterConfirm}>{locale.ok}</Button>
+                    <Button type="primary" onClick={this.onFilterConfirm}>
+                        {locale.ok}
+                    </Button>
                     <Button onClick={this.onFilterClear}>{locale.reset}</Button>
                 </div>
             );
 
         return (
-            <Dropdown trigger={
-                <span role="button"
-                    aria-label={locale.filter}
-                    onKeyDown={this.filterKeydown}
-                    tabIndex="0"
-                    className={`${prefix}table-filter`}>
-                    <Icon type="filter" size="small" />
-                </span>
-            }
-            triggerType="click"
-            visible={visible}
-            autoFocus
-            container={node => node.parentNode}
-            onVisibleChange={this.onFilterVisible}>
-                <Menu footer={footer}
+            <Dropdown
+                trigger={
+                    <span
+                        role="button"
+                        aria-label={locale.filter}
+                        onKeyDown={this.filterKeydown}
+                        tabIndex="0"
+                        className={`${prefix}table-filter`}
+                    >
+                        <Icon type="filter" size="small" />
+                    </span>
+                }
+                triggerType="click"
+                visible={visible}
+                autoFocus
+                rtl={rtl}
+                container={node => node.parentNode}
+                onVisibleChange={this.onFilterVisible}
+            >
+                <Menu
+                    footer={footer}
+                    rtl={rtl}
                     selectedKeys={selectedKeys}
                     selectMode={filterMode}
-                    onSelect={this.onFilterSelect}>
+                    onSelect={this.onFilterSelect}
+                >
                     {content}
                 </Menu>
             </Dropdown>

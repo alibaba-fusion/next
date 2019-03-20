@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {obj, func} from '../util';
+import { obj, func } from '../util';
 import Field from '../field';
 
 function pickerDefined(obj) {
@@ -20,7 +20,6 @@ function preventDefault(e) {
 
 /** Form */
 export default class Form extends React.Component {
-
     static propTypes = {
         /**
          * 样式前缀
@@ -83,6 +82,11 @@ export default class Form extends React.Component {
         value: PropTypes.object,
         /**
          * 表单变化回调
+         * @param {Object} values 表单数据
+         * @param {Object} item 详细
+         * @param {String} item.name 变化的组件名
+         * @param {String} item.value 变化的数据
+         * @param {Object} item.field field 实例
          */
         onChange: PropTypes.func,
         /**
@@ -90,6 +94,7 @@ export default class Form extends React.Component {
          */
         component: PropTypes.string,
         fieldOptions: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -104,14 +109,14 @@ export default class Form extends React.Component {
 
     static childContextTypes = {
         _formField: PropTypes.object,
-        _formSize: PropTypes.string
+        _formSize: PropTypes.string,
     };
 
     constructor(props) {
         super(props);
         const options = {
             ...props.fieldOptions,
-            onChange: this.onChange
+            onChange: this.onChange,
         };
 
         if (props.field) {
@@ -132,7 +137,7 @@ export default class Form extends React.Component {
     getChildContext() {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
-            _formSize: this.props.size
+            _formSize: this.props.size,
         };
     }
 
@@ -146,39 +151,74 @@ export default class Form extends React.Component {
     }
 
     onChange = (name, value) => {
-        this.props.onChange(this._formField.getValues(), {name, value, field: this._formField});
+        this.props.onChange(this._formField.getValues(), {
+            name,
+            value,
+            field: this._formField,
+        });
     };
 
     render() {
-        const {className, inline, size, labelAlign, labelTextAlign, onSubmit, children, labelCol, wrapperCol, style, prefix, component: Tag} = this.props;
+        const {
+            className,
+            inline,
+            size,
+            labelAlign,
+            labelTextAlign,
+            onSubmit,
+            children,
+            labelCol,
+            wrapperCol,
+            style,
+            prefix,
+            rtl,
+            component: Tag,
+        } = this.props;
 
         const formClassName = classNames({
             [`${prefix}form`]: true,
             [`${prefix}inline`]: inline, // 内联
             [`${prefix}${size}`]: size,
-            [className]: !!className
+            [className]: !!className,
         });
 
         return (
-            <Tag {...obj.pickOthers(Form.propTypes, this.props)}
+            <Tag
+                role="grid"
+                {...obj.pickOthers(Form.propTypes, this.props)}
                 className={formClassName}
                 style={style}
-                onSubmit={onSubmit}>
-                {
-                    React.Children.map(children, (child) => {
-                        if (child && typeof child.type === 'function' && child.type._typeMark === 'form_item') {
-                            const childrenProps = {
-                                labelCol: child.props.labelCol ? child.props.labelCol : labelCol,
-                                wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,
-                                labelAlign: child.props.labelAlign ? child.props.labelAlign : labelAlign,
-                                labelTextAlign: child.props.labelTextAlign ? child.props.labelTextAlign : labelTextAlign,
-                                size: child.props.size ? child.props.size : size,
-                            };
-                            return React.cloneElement(child, pickerDefined(childrenProps));
-                        }
-                        return child;
-                    })
-                }
+                dir={rtl ? 'rtl' : undefined}
+                onSubmit={onSubmit}
+            >
+                {React.Children.map(children, child => {
+                    if (
+                        child &&
+                        typeof child.type === 'function' &&
+                        child.type._typeMark === 'form_item'
+                    ) {
+                        const childrenProps = {
+                            labelCol: child.props.labelCol
+                                ? child.props.labelCol
+                                : labelCol,
+                            wrapperCol: child.props.wrapperCol
+                                ? child.props.wrapperCol
+                                : wrapperCol,
+                            labelAlign: child.props.labelAlign
+                                ? child.props.labelAlign
+                                : labelAlign,
+                            labelTextAlign: child.props.labelTextAlign
+                                ? child.props.labelTextAlign
+                                : labelTextAlign,
+                            size: child.props.size ? child.props.size : size,
+                        };
+                        return React.cloneElement(
+                            child,
+                            pickerDefined(childrenProps)
+                        );
+                    }
+                    return child;
+                })}
             </Tag>
         );
     }

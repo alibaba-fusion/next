@@ -24,7 +24,6 @@ function run() {
     logger.info('> export-api-schema...');
     exportApiSchema(options);
 
-
     const cwd = process.cwd();
     const libPath = path.join(cwd, 'lib');
     const esPath = path.join(cwd, 'es');

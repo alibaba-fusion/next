@@ -7,7 +7,7 @@ import RowComponent from './expanded/row';
 import Col from './column';
 import { statics } from './util';
 
-const noop = () => { };
+const noop = () => {};
 
 export default function expanded(BaseComponent) {
     /** Table */
@@ -53,7 +53,7 @@ export default function expanded(BaseComponent) {
              */
             onExpandedRowClick: PropTypes.func,
             locale: PropTypes.object,
-            ...BaseComponent.propTypes
+            ...BaseComponent.propTypes,
         };
 
         static defaultProps = {
@@ -63,24 +63,26 @@ export default function expanded(BaseComponent) {
             hasExpandedRowCtrl: true,
             components: {},
             expandedRowIndent: [1, 0],
-            prefix: 'next-'
+            prefix: 'next-',
         };
 
         static childContextTypes = {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
-            expandedRowIndent: PropTypes.array
-        }
+            expandedIndexSimulate: PropTypes.bool,
+            expandedRowIndent: PropTypes.array,
+        };
 
         state = {
-            openRowKeys: this.props.openRowKeys || []
+            openRowKeys: this.props.openRowKeys || [],
         };
 
         getChildContext() {
             return {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
-                expandedRowIndent: this.props.expandedRowIndent
+                expandedIndexSimulate: this.props.expandedIndexSimulate,
+                expandedRowIndent: this.props.expandedRowIndent,
             };
         }
 
@@ -88,7 +90,7 @@ export default function expanded(BaseComponent) {
             if ('openRowKeys' in nextProps) {
                 const { openRowKeys } = nextProps;
                 this.setState({
-                    openRowKeys
+                    openRowKeys,
                 });
             }
         }
@@ -100,38 +102,53 @@ export default function expanded(BaseComponent) {
             if (e.keyCode === KEYCODE.ENTER) {
                 this.onExpandedClick(value, record, index, e);
             }
-        }
+        };
 
         renderExpandedCell = (value, index, record) => {
             const { getExpandedColProps, prefix, locale } = this.props;
+
             const { openRowKeys } = this.state,
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
-                switchNode = hasExpanded ?
-                    <Icon type="minus" size="xs" /> : <Icon type="add" size="xs" />,
-
+                switchNode = hasExpanded ? (
+                    <Icon type="minus" size="xs" />
+                ) : (
+                    <Icon type="add" size="xs" />
+                ),
                 attrs = getExpandedColProps(record, index) || {};
             const cls = classnames({
                 [`${prefix}table-expanded-ctrl`]: true,
                 disabled: attrs.disabled,
-                [attrs.className]: attrs.className
+                [attrs.className]: attrs.className,
             });
 
             if (!attrs.disabled) {
-                attrs.onClick = this.onExpandedClick.bind(this, value, record, index);
+                attrs.onClick = this.onExpandedClick.bind(
+                    this,
+                    value,
+                    record,
+                    index
+                );
             }
             return (
-                <span {...attrs}
+                <span
+                    {...attrs}
                     role="button"
                     tabIndex="0"
-                    onKeyDown={this.expandedKeydown.bind(this, value, record, index)}
+                    onKeyDown={this.expandedKeydown.bind(
+                        this,
+                        value,
+                        record,
+                        index
+                    )}
                     aria-label={hasExpanded ? locale.expanded : locale.folded}
                     aria-expanded={hasExpanded}
-                    className={cls}>
+                    className={cls}
+                >
                     {switchNode}
                 </span>
             );
-        }
+        };
 
         onExpandedClick(value, record, i, e) {
             const openRowKeys = [...this.state.openRowKeys],
@@ -145,7 +162,7 @@ export default function expanded(BaseComponent) {
             }
             if (!('openRowKeys' in this.props)) {
                 this.setState({
-                    openRowKeys: openRowKeys
+                    openRowKeys: openRowKeys,
                 });
             }
             this.props.onRowOpen(openRowKeys, id, index === -1, record);
@@ -153,11 +170,22 @@ export default function expanded(BaseComponent) {
         }
 
         normalizeChildren(children) {
-            const toArrayChildren = Children.map(children, (child, index) => React.cloneElement(child, {
-                key: index
-            }));
-            const {prefix} = this.props;
-            toArrayChildren.unshift(<Col title="" key="expanded" cell={this.renderExpandedCell.bind(this)} width={50} className={`${prefix}table-expanded`} __normalized/>);
+            const toArrayChildren = Children.map(children, (child, index) =>
+                React.cloneElement(child, {
+                    key: index,
+                })
+            );
+            const { prefix } = this.props;
+            toArrayChildren.unshift(
+                <Col
+                    title=""
+                    key="expanded"
+                    cell={this.renderExpandedCell.bind(this)}
+                    width={50}
+                    className={`${prefix}table-expanded`}
+                    __normalized
+                />
+            );
             return toArrayChildren;
         }
 
@@ -173,9 +201,21 @@ export default function expanded(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { components, openRowKeys, expandedRowRender, hasExpandedRowCtrl, children, dataSource, getExpandedColProps, expandedRowIndent, onRowOpen, onExpandedRowClick, ...others } = this.props;
+            let {
+                components,
+                openRowKeys,
+                expandedRowRender,
+                hasExpandedRowCtrl,
+                children,
+                dataSource,
+                getExpandedColProps,
+                expandedRowIndent,
+                onRowOpen,
+                onExpandedRowClick,
+                ...others
+            } = this.props;
             if (expandedRowRender && !components.Row) {
-                components = {...components};
+                components = { ...components };
                 components.Row = RowComponent;
                 dataSource = this.normalizeDataSource(dataSource);
             }
@@ -183,9 +223,15 @@ export default function expanded(BaseComponent) {
                 children = this.normalizeChildren(children);
             }
 
-            return (<BaseComponent {...others} dataSource={dataSource}  components={components}>
-                {children}
-            </BaseComponent>);
+            return (
+                <BaseComponent
+                    {...others}
+                    dataSource={dataSource}
+                    components={components}
+                >
+                    {children}
+                </BaseComponent>
+            );
         }
     }
     statics(ExpandedTable, BaseComponent);

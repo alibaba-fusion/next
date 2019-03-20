@@ -38,7 +38,7 @@ class Demo extends React.Component {
     renderCloseAreaTags () {
         return ['tag', 'tail'].reduce((prev, curr) => prev.concat([
             <CloseableTag key={`tag-${curr}-1`} closeArea={curr}>closeArea {curr}</CloseableTag>,
-            <CloseableTag key={`tag-${curr}-2`} type="primary" closeArea={curr}>closeArea {curr}</CloseableTag>,
+            <CloseableTag key={`tag-${curr}-2`} type="primary" closeArea={curr}>closeArea {curr}</CloseableTag>
         ]), []);
     }
     render() {

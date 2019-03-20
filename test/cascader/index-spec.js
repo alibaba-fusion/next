@@ -11,31 +11,36 @@ import '../../src/cascader/style.js';
 /* eslint-disable react/jsx-filename-extension, no-unused-expressions  */
 /* global describe it afterEach */
 
-
 Enzyme.configure({ adapter: new Adapter() });
 
-const ChinaArea = [{
-    value: '2973',
-    label: '陕西',
-    children: [{
-        value: '2974',
-        label: '西安',
+const ChinaArea = [
+    {
+        value: '2973',
+        label: '陕西',
         children: [
-            { value: '2975', label: '西安市' },
-            { value: '2976', label: '高陵县' }
-        ]
-    }, {
-        value: '2980',
-        label: '铜川',
-        children: [
-            { value: '2981', label: '铜川市' },
-            { value: '2982', label: '宜君县' }
-        ]
-    }]
-}, {
-    value: '3078',
-    label: '四川'
-}];
+            {
+                value: '2974',
+                label: '西安',
+                children: [
+                    { value: '2975', label: '西安市' },
+                    { value: '2976', label: '高陵县' },
+                ],
+            },
+            {
+                value: '2980',
+                label: '铜川',
+                children: [
+                    { value: '2981', label: '铜川市' },
+                    { value: '2982', label: '宜君县' },
+                ],
+            },
+        ],
+    },
+    {
+        value: '3078',
+        label: '四川',
+    },
+];
 
 describe('Cascader', () => {
     let wrapper;
@@ -64,29 +69,40 @@ describe('Cascader', () => {
             assert.deepEqual(d, {
                 value: '2980',
                 label: '铜川',
-                pos: '0-0-1'
+                pos: '0-0-1',
             });
             e.selectedPath.forEach(d => {
                 delete d.children;
                 delete d._source;
             });
             assert.deepEqual(e, {
-                selectedPath: [{
-                    value: '2973',
-                    label: '陕西',
-                    pos: '0-0'
-                }, {
-                    value: '2980',
-                    label: '铜川',
-                    pos: '0-0-1'
-                }]
+                selectedPath: [
+                    {
+                        value: '2973',
+                        label: '陕西',
+                        pos: '0-0',
+                    },
+                    {
+                        value: '2980',
+                        label: '铜川',
+                        pos: '0-0-1',
+                    },
+                ],
             });
         };
         const handleExpand = ev => {
             expandCalled = true;
             assert.deepEqual(ev, ['2973', '2980']);
         };
-        wrapper = mount(<Cascader defaultValue={defaultValue} defaultExpandedValue={defaultExpandedValue} dataSource={ChinaArea} onChange={handleChange} onExpand={handleExpand} />);
+        wrapper = mount(
+            <Cascader
+                defaultValue={defaultValue}
+                defaultExpandedValue={defaultExpandedValue}
+                dataSource={ChinaArea}
+                onChange={handleChange}
+                onExpand={handleExpand}
+            />
+        );
         compareDOMAndData(wrapper, defaultValue, defaultExpandedValue);
 
         findItem(wrapper, 1, 1).simulate('click');
@@ -108,22 +124,25 @@ describe('Cascader', () => {
             assert.deepEqual(d, {
                 value: '2980',
                 label: '铜川',
-                pos: '0-0-1'
+                pos: '0-0-1',
             });
             e.selectedPath.forEach(d => {
                 delete d.children;
                 delete d._source;
             });
             assert.deepEqual(e, {
-                selectedPath: [{
-                    value: '2973',
-                    label: '陕西',
-                    pos: '0-0'
-                }, {
-                    value: '2980',
-                    label: '铜川',
-                    pos: '0-0-1'
-                }]
+                selectedPath: [
+                    {
+                        value: '2973',
+                        label: '陕西',
+                        pos: '0-0',
+                    },
+                    {
+                        value: '2980',
+                        label: '铜川',
+                        pos: '0-0-1',
+                    },
+                ],
             });
             value = v;
             wrapper.setProps({ value });
@@ -135,7 +154,16 @@ describe('Cascader', () => {
             expandedValue = ev;
             wrapper.setProps({ value, expandedValue });
         };
-        wrapper = mount(<Cascader defaultValue="2973" defaultExpandedValue={['2973']} value={value} expandedValue={expandedValue} onChange={handleChange} onExpand={handleExpand} />);
+        wrapper = mount(
+            <Cascader
+                defaultValue="2973"
+                defaultExpandedValue={['2973']}
+                value={value}
+                expandedValue={expandedValue}
+                onChange={handleChange}
+                onExpand={handleExpand}
+            />
+        );
         compareDOMAndData(wrapper, value, expandedValue);
 
         wrapper.setProps({ dataSource: ChinaArea });
@@ -147,7 +175,7 @@ describe('Cascader', () => {
 
         wrapper.setProps({
             defaultValue: '2974',
-            defaultExpandedValue: ['2973', '2974']
+            defaultExpandedValue: ['2973', '2974'],
         });
         compareDOMAndData(wrapper, value, expandedValue);
     });
@@ -156,7 +184,14 @@ describe('Cascader', () => {
         const handleChange = () => {
             assert(false);
         };
-        wrapper = mount(<Cascader defaultValue="2980" defaultExpandedValue={['2973', '2980']} dataSource={ChinaArea} onChange={handleChange} />);
+        wrapper = mount(
+            <Cascader
+                defaultValue="2980"
+                defaultExpandedValue={['2973', '2980']}
+                dataSource={ChinaArea}
+                onChange={handleChange}
+            />
+        );
         findItem(wrapper, 1, 1).simulate('click');
     });
 
@@ -164,13 +199,29 @@ describe('Cascader', () => {
         const handleChange = () => {
             assert(false);
         };
-        wrapper = mount(<Cascader defaultExpandedValue={['2973', '2974']} canOnlySelectLeaf dataSource={ChinaArea} onChange={handleChange} />);
+        wrapper = mount(
+            <Cascader
+                defaultExpandedValue={['2973', '2974']}
+                canOnlySelectLeaf
+                dataSource={ChinaArea}
+                onChange={handleChange}
+            />
+        );
         findItem(wrapper, 1, 1).simulate('click');
     });
 
     it('could only check checkbox of leaf item when set canOnlyCheckLeaf to true', () => {
-        wrapper = mount(<Cascader multiple defaultExpandedValue={['2973', '2974']} canOnlyCheckLeaf dataSource={ChinaArea} />);
-        assert(findItem(wrapper, 0, 0).find('label.next-checkbox').length === 0);
+        wrapper = mount(
+            <Cascader
+                multiple
+                defaultExpandedValue={['2973', '2974']}
+                canOnlyCheckLeaf
+                dataSource={ChinaArea}
+            />
+        );
+        assert(
+            findItem(wrapper, 0, 0).find('label.next-checkbox').length === 0
+        );
     });
 
     it('should expand menu by hover when set expandTriggerType to hover', () => {
@@ -180,7 +231,15 @@ describe('Cascader', () => {
             expandCalled = true;
             assert.deepEqual(expandedValue, value);
         };
-        wrapper = mount(<Cascader defaultValue="2975" defaultExpandedValue={['2973', '2974']} expandTriggerType="hover" dataSource={ChinaArea} onExpand={handleExpand} />);
+        wrapper = mount(
+            <Cascader
+                defaultValue="2975"
+                defaultExpandedValue={['2973', '2974']}
+                expandTriggerType="hover"
+                dataSource={ChinaArea}
+                onExpand={handleExpand}
+            />
+        );
         expandedValue = ['2973', '2980'];
         findItem(wrapper, 1, 1).simulate('mouseenter');
         assert(expandCalled);
@@ -193,24 +252,32 @@ describe('Cascader', () => {
     });
 
     it('should render multiple cascader', () => {
-        const dataSource = [{
-            value: '2973',
-            label: '陕西',
-            children: [{
-                value: '2974',
-                label: '西安',
-                children: [{
-                    value: '2975',
-                    label: '西安市',
-                }, {
-                    value: '2976',
-                    label: '高陵县',
-                }]
-            }, {
-                value: '2980',
-                label: '铜川',
-            }]
-        }];
+        const dataSource = [
+            {
+                value: '2973',
+                label: '陕西',
+                children: [
+                    {
+                        value: '2974',
+                        label: '西安',
+                        children: [
+                            {
+                                value: '2975',
+                                label: '西安市',
+                            },
+                            {
+                                value: '2976',
+                                label: '高陵县',
+                            },
+                        ],
+                    },
+                    {
+                        value: '2980',
+                        label: '铜川',
+                    },
+                ],
+            },
+        ];
         let changeCalled = false;
         let value;
         let data;
@@ -225,7 +292,15 @@ describe('Cascader', () => {
             assert.deepEqual(extra, e);
             changeCalled = true;
         };
-        wrapper = mount(<Cascader multiple defaultValue={['2975']} defaultExpandedValue={['2973', '2974']} dataSource={dataSource} onChange={handleChange} />);
+        wrapper = mount(
+            <Cascader
+                multiple
+                defaultValue={['2975']}
+                defaultExpandedValue={['2973', '2974']}
+                dataSource={dataSource}
+                onChange={handleChange}
+            />
+        );
 
         const item00 = findItem(wrapper, 0, 0);
         const item10 = findItem(wrapper, 1, 0);
@@ -234,8 +309,8 @@ describe('Cascader', () => {
         compareIndeterminate(item10);
         compareChecked(item20);
 
-        value = ['2973'],
-        data = [{ value: '2973', label: '陕西', pos: '0-0' }];
+        (value = ['2973']),
+            (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
         extra = {
             checked: true,
             currentData: { value: '2973', label: '陕西', pos: '0-0' },
@@ -244,9 +319,9 @@ describe('Cascader', () => {
                 { value: '2974', label: '西安', pos: '0-0-0' },
                 { value: '2975', label: '西安市', pos: '0-0-0-0' },
                 { value: '2976', label: '高陵县', pos: '0-0-0-1' },
-                { value: '2980', label: '铜川', pos: '0-0-1' }
+                { value: '2980', label: '铜川', pos: '0-0-1' },
             ],
-            indeterminateData: []
+            indeterminateData: [],
         };
         checkItem(item00, true);
         compareChecked(findItem(wrapper, 0, 0));
@@ -255,17 +330,13 @@ describe('Cascader', () => {
         assert(changeCalled);
         changeCalled = false;
 
-        value = ['2980'],
-        data = [{ value: '2980', label: '铜川', pos: '0-0-1' }];
+        (value = ['2980']),
+            (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
         extra = {
             checked: false,
             currentData: { value: '2974', label: '西安', pos: '0-0-0' },
-            checkedData: [
-                { value: '2980', label: '铜川', pos: '0-0-1' }
-            ],
-            indeterminateData: [
-                { value: '2973', label: '陕西', pos: '0-0' }
-            ]
+            checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
+            indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
         };
         checkItem(findItem(wrapper, 1, 0), false);
         compareIndeterminate(findItem(wrapper, 0, 0));
@@ -288,36 +359,45 @@ describe('Cascader', () => {
             assert.deepEqual(extra, e);
             changeCalled = true;
         };
-        wrapper = mount(<Cascader checkStrictly multiple defaultValue={['2975']} defaultExpandedValue={['2973', '2974']} dataSource={ChinaArea} onChange={handleChange} />);
+        wrapper = mount(
+            <Cascader
+                checkStrictly
+                multiple
+                defaultValue={['2975']}
+                defaultExpandedValue={['2973', '2974']}
+                dataSource={ChinaArea}
+                onChange={handleChange}
+            />
+        );
 
         const item00 = findItem(wrapper, 0, 0);
         const item20 = findItem(wrapper, 2, 0);
         compareChecked(item20);
 
-        value = ['2973', '2975'],
-        data = [
-            { value: '2973', label: '陕西', pos: '0-0' },
-            { value: '2975', label: '西安市', pos: '0-0-0-0' }
-        ];
+        (value = ['2973', '2975']),
+            (data = [
+                { value: '2973', label: '陕西', pos: '0-0' },
+                { value: '2975', label: '西安市', pos: '0-0-0-0' },
+            ]);
         extra = {
             checked: true,
             currentData: { value: '2973', label: '陕西', pos: '0-0' },
             checkedData: [
                 { value: '2973', label: '陕西', pos: '0-0' },
-                { value: '2975', label: '西安市', pos: '0-0-0-0' }
-            ]
+                { value: '2975', label: '西安市', pos: '0-0-0-0' },
+            ],
         };
         checkItem(item00, true);
         compareChecked(findItem(wrapper, 0, 0));
         assert(changeCalled);
         changeCalled = false;
 
-        value = ['2973'],
-        data = [{ value: '2973', label: '陕西', pos: '0-0' }];
+        (value = ['2973']),
+            (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
         extra = {
             checked: false,
             currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
-            checkedData: [{ value: '2973', label: '陕西', pos: '0-0' }]
+            checkedData: [{ value: '2973', label: '陕西', pos: '0-0' }],
         };
         checkItem(findItem(wrapper, 2, 0), false);
         compareNotChecked(findItem(wrapper, 2, 0));
@@ -325,7 +405,9 @@ describe('Cascader', () => {
     });
 
     it('should compute expanded value auto if set value but not set expanded value', () => {
-        wrapper = mount(<Cascader defaultValue={['2975']} dataSource={ChinaArea} />);
+        wrapper = mount(
+            <Cascader defaultValue={['2975']} dataSource={ChinaArea} />
+        );
         const item00 = findItem(wrapper, 0, 0);
         assert(item00.hasClass('next-cascader-menu-item'));
         const item10 = findItem(wrapper, 1, 0);
@@ -333,58 +415,121 @@ describe('Cascader', () => {
     });
 
     it('should load data asynchronously when set loadData', done => {
-        const newWrapper = mount(<Cascader dataSource={[{
-            value: '2973',
-            label: '陕西',
-            isLeaf: false
-        }]} loadData={onLoadData} />);
+        const newWrapper = mount(
+            <Cascader
+                dataSource={[
+                    {
+                        value: '2973',
+                        label: '陕西',
+                        isLeaf: false,
+                    },
+                ]}
+                loadData={onLoadData}
+            />
+        );
 
         function onLoadData() {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    newWrapper.setProps({
-                        dataSource: [{
-                            value: '2973',
-                            label: '陕西',
-                            children: [{
-                                value: '2974',
-                                label: '西安',
-                                children: [
-                                    { value: '2975', label: '西安市', isLeaf: true },
-                                    { value: '2976', label: '高陵县', isLeaf: true }
-                                ]
-                            }, {
-                                value: '2980',
-                                label: '铜川',
-                                children: [
-                                    { value: '2981', label: '铜川市', isLeaf: true },
-                                    { value: '2982', label: '宜君县', isLeaf: true }
-                                ]
-                            }]
-                        }]
-                    }, resolve);
+                    newWrapper.setProps(
+                        {
+                            dataSource: [
+                                {
+                                    value: '2973',
+                                    label: '陕西',
+                                    children: [
+                                        {
+                                            value: '2974',
+                                            label: '西安',
+                                            children: [
+                                                {
+                                                    value: '2975',
+                                                    label: '西安市',
+                                                    isLeaf: true,
+                                                },
+                                                {
+                                                    value: '2976',
+                                                    label: '高陵县',
+                                                    isLeaf: true,
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            value: '2980',
+                                            label: '铜川',
+                                            children: [
+                                                {
+                                                    value: '2981',
+                                                    label: '铜川市',
+                                                    isLeaf: true,
+                                                },
+                                                {
+                                                    value: '2982',
+                                                    label: '宜君县',
+                                                    isLeaf: true,
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        resolve
+                    );
                 }, 500);
             });
         }
 
         const item00 = findItem(newWrapper, 0, 0);
         item00.simulate('click');
-        assert(findItem(newWrapper, 0, 0).find('.next-cascader-menu-icon-loading').length > 0);
+        assert(
+            findItem(newWrapper, 0, 0).find('.next-cascader-menu-icon-loading')
+                .length > 0
+        );
 
         setTimeout(() => {
-            assert(findItem(newWrapper, 1, 0).text().trim() === '西安');
-            assert(findItem(newWrapper, 1, 1).text().trim() === '铜川');
+            assert(
+                findItem(newWrapper, 1, 0)
+                    .text()
+                    .trim() === '西安'
+            );
+            assert(
+                findItem(newWrapper, 1, 1)
+                    .text()
+                    .trim() === '铜川'
+            );
             done();
         }, 1000);
     });
 
     it('should support listClassName and listStyle', () => {
-        wrapper = mount(<Cascader dataSource={ChinaArea} listStyle={{ width: '400px', height: '400px' }} listClassName="custom" />);
+        const div = document.createElement('div');
+        document.body.appendChild(div);
 
-        const list = wrapper.find('div.next-cascader-menu-wrapper');
-        assert(list.prop('style').width === '400px');
-        assert(list.prop('style').height === '400px');
-        assert(list.hasClass('custom'));
+        ReactDOM.render(
+            <Cascader
+                dataSource={ChinaArea}
+                listStyle={{ width: '400px', height: '400px' }}
+                listClassName="custom"
+            />,
+            div
+        );
+
+        const list = div.querySelector('.next-cascader-menu-wrapper');
+        assert(list.style.width === '400px');
+        assert(list.style.height === '400px');
+        assert(
+            window.getComputedStyle(list.querySelector('.next-cascader-menu'))
+                .width === '400px'
+        );
+        assert(
+            window.getComputedStyle(list.querySelector('.next-cascader-menu'))
+                .height === '400px'
+        );
+        assert(list.className.indexOf('custom') !== -1);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
     });
 
     it('should support keyboard', () => {
@@ -411,13 +556,48 @@ describe('Cascader', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
 
-        ReactDOM.render(<Cascader id="cascader-style" defaultValue={['2975']} dataSource={ChinaArea} style={{ width: '700px' }} listStyle={{ width: '200px' }} />, div);
+        ReactDOM.render(
+            <Cascader
+                id="cascader-style"
+                defaultValue={['2975']}
+                dataSource={ChinaArea}
+                style={{ width: '700px' }}
+                listStyle={{ width: '200px' }}
+            />,
+            div
+        );
 
-        const inner = document.querySelector('#cascader-style .next-cascader-inner');
+        const inner = document.querySelector(
+            '#cascader-style .next-cascader-inner'
+        );
         assert(inner.style.width === '600px');
         const lists = document.querySelectorAll('.next-cascader-menu-wrapper');
-        assert(lists[lists.length - 1].className.indexOf('next-has-right-border') > -1);
+        assert(
+            lists[lists.length - 1].className.indexOf('next-has-right-border') >
+                -1
+        );
 
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
+    it('should support rtl', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Cascader
+                id="cascader-style"
+                rtl
+                defaultValue={['2975']}
+                dataSource={ChinaArea}
+                style={{ width: '700px' }}
+                listStyle={{ width: '200px' }}
+            />,
+            div
+        );
+
+        assert(document.getElementById('cascader-style').dir === 'rtl');
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
@@ -446,7 +626,11 @@ function compareDOMAndData(wrapper, value, expandedValue) {
 }
 
 function findItem(wrapper, menuIndex, itemIndex) {
-    return wrapper.find('ul.next-cascader-menu').at(menuIndex).find('li.next-cascader-menu-item').at(itemIndex);
+    return wrapper
+        .find('ul.next-cascader-menu')
+        .at(menuIndex)
+        .find('li.next-cascader-menu-item')
+        .at(itemIndex);
 }
 
 function checkItem(item, check) {
@@ -498,5 +682,7 @@ function assertActiveElement() {
 }
 
 function findRealItem(listIndex, itemIndex) {
-    return document.querySelectorAll('.next-cascader-menu')[listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
+    return document
+        .querySelectorAll('.next-cascader-menu')
+        [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
 }

@@ -25,7 +25,7 @@ class CustomRangePicker extends React.Component {
         this.state = {
             startValue: null,
             endValue: null,
-            endOpen: false,
+            endOpen: false
         };
     }
 
@@ -47,7 +47,7 @@ class CustomRangePicker extends React.Component {
 
     onChange = (stateName, value) => {
         this.setState({
-            [stateName]: value,
+            [stateName]: value
         });
     }
 

@@ -8,7 +8,14 @@ import Calendar from '../calendar';
 import TimePickerPanel from '../time-picker/panel';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
-import { PANEL, resetValueTime, checkDateValue, formatDateValue, getDateTimeFormat, extend } from './util';
+import {
+    PANEL,
+    resetValueTime,
+    checkDateValue,
+    formatDateValue,
+    getDateTimeFormat,
+    extend,
+} from './util';
 import PanelFooter from './module/panel-footer';
 
 const { Popup } = Overlay;
@@ -17,7 +24,6 @@ const { Popup } = Overlay;
  * DatePicker
  */
 export default class DatePicker extends Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -28,7 +34,7 @@ export default class DatePicker extends Component {
         /**
          * 输入框状态
          */
-        state: PropTypes.oneOf(['success', 'error']),
+        state: PropTypes.oneOf(['success', 'loading', 'error']),
         /**
          * 输入提示
          */
@@ -62,6 +68,7 @@ export default class DatePicker extends Component {
         /**
          * 禁用日期函数
          * @param {MomentObject} 日期值
+         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
          * @return {Boolean} 是否禁用
          */
         disabledDate: PropTypes.func,
@@ -132,9 +139,25 @@ export default class DatePicker extends Component {
          * 弹层其他属性
          */
         popupProps: PropTypes.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PropTypes.object,
+        /**
+         * 自定义日期渲染函数
+         * @param {Object} value 日期值（moment对象）
+         * @returns {ReactNode}
+         */
+        dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -152,15 +175,19 @@ export default class DatePicker extends Component {
         onChange: func.noop,
         onVisibleChange: func.noop,
         onOk: func.noop,
-    }
+    };
 
     constructor(props, context) {
         super(props, context);
         const dateTimeFormat = getDateTimeFormat(props.format, props.showTime);
         extend(dateTimeFormat, this);
 
-        const value = formatDateValue(props.value || props.defaultValue, this.dateTimeFormat);
-        this.inputAsString = (typeof (props.value || props.defaultValue) === 'string'); // 判断用户输入是否是字符串
+        const value = formatDateValue(
+            props.value || props.defaultValue,
+            this.dateTimeFormat
+        );
+        this.inputAsString =
+            typeof (props.value || props.defaultValue) === 'string'; // 判断用户输入是否是字符串
         this.state = {
             value,
             dateInputStr: '',
@@ -173,7 +200,10 @@ export default class DatePicker extends Component {
 
     componentWillReceiveProps(nextProps) {
         if ('showTime' in nextProps) {
-            const dateTimeFormat = getDateTimeFormat(nextProps.format || this.props.format, nextProps.showTime);
+            const dateTimeFormat = getDateTimeFormat(
+                nextProps.format || this.props.format,
+                nextProps.showTime
+            );
             extend(dateTimeFormat, this);
         }
 
@@ -193,11 +223,14 @@ export default class DatePicker extends Component {
     }
 
     onValueChange = (newValue, handler = 'onChange') => {
-        const ret = (this.inputAsString && newValue) ? newValue.format(this.dateTimeFormat) : newValue;
+        const ret =
+            this.inputAsString && newValue
+                ? newValue.format(this.dateTimeFormat)
+                : newValue;
         this.props[handler](ret);
-    }
+    };
 
-    onSelectCalendarPanel = (value) => {
+    onSelectCalendarPanel = value => {
         const { showTime, resetTime } = this.props;
 
         const prevValue = this.state.value;
@@ -206,7 +239,10 @@ export default class DatePicker extends Component {
             if (!prevValue) {
                 // 第一次选择日期值时，如果设置了默认时间，则使用该默认时间
                 if (showTime.defaultValue) {
-                    const defaultTimeValue = formatDateValue(showTime.defaultValue, this.timeFormat);
+                    const defaultTimeValue = formatDateValue(
+                        showTime.defaultValue,
+                        this.timeFormat
+                    );
                     newValue = resetValueTime(value, defaultTimeValue);
                 }
             } else if (!resetTime) {
@@ -215,16 +251,16 @@ export default class DatePicker extends Component {
             }
         }
 
-        this.handleChange(newValue, prevValue, {inputing: false});
+        this.handleChange(newValue, prevValue, { inputing: false });
 
         if (!showTime) {
             this.onVisibleChange(false, 'calendarSelect');
         }
-    }
+    };
 
-    onSelectTimePanel = (value) => {
-        this.handleChange(value, this.state.value, {inputing: false});
-    }
+    onSelectTimePanel = value => {
+        this.handleChange(value, this.state.value, { inputing: false });
+    };
 
     clearValue = () => {
         this.setState({
@@ -232,8 +268,8 @@ export default class DatePicker extends Component {
             timeInputStr: '',
         });
 
-        this.handleChange(null, this.state.value, {inputing: false});
-    }
+        this.handleChange(null, this.state.value, { inputing: false });
+    };
 
     onDateInputChange = (inputStr, e, eventType) => {
         if (eventType === 'clear' || !inputStr) {
@@ -245,14 +281,14 @@ export default class DatePicker extends Component {
                 inputing: 'date',
             });
         }
-    }
+    };
 
-    onTimeInputChange = (inputStr) => {
+    onTimeInputChange = inputStr => {
         this.setState({
             timeInputStr: inputStr,
             inputing: 'time',
         });
-    }
+    };
 
     onDateInputBlur = () => {
         const { dateInputStr } = this.state;
@@ -265,11 +301,11 @@ export default class DatePicker extends Component {
                 inputing: false,
             });
 
-            if (parsed.isValid() && !disabledDate(parsed)) {
+            if (parsed.isValid() && !disabledDate(parsed, 'date')) {
                 this.handleChange(parsed, this.state.value);
             }
         }
-    }
+    };
 
     onTimeInputBlur = () => {
         const { value, timeInputStr } = this.state;
@@ -285,18 +321,22 @@ export default class DatePicker extends Component {
                 const hour = parsed.hour();
                 const minute = parsed.minute();
                 const second = parsed.second();
-                const newValue = value.clone().hour(hour).minute(minute).second(second);
+                const newValue = value
+                    .clone()
+                    .hour(hour)
+                    .minute(minute)
+                    .second(second);
 
                 this.handleChange(newValue, this.state.value);
             }
         }
-    }
+    };
 
     handleChange = (newValue, prevValue, others = {}) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
-                ...others
+                ...others,
             });
         }
 
@@ -306,7 +346,7 @@ export default class DatePicker extends Component {
         if (newValueOf !== preValueOf) {
             this.onValueChange(newValue);
         }
-    }
+    };
 
     onFoucsDateInput = () => {
         if (this.state.panel !== PANEL.DATE) {
@@ -314,7 +354,7 @@ export default class DatePicker extends Component {
                 panel: PANEL.DATE,
             });
         }
-    }
+    };
 
     onFoucsTimeInput = () => {
         if (this.state.panel !== PANEL.TIME) {
@@ -322,7 +362,7 @@ export default class DatePicker extends Component {
                 panel: PANEL.TIME,
             });
         }
-    }
+    };
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
@@ -331,18 +371,18 @@ export default class DatePicker extends Component {
             });
         }
         this.props.onVisibleChange(visible, reason);
-    }
+    };
 
-    changePanel = (panel) => {
+    changePanel = panel => {
         this.setState({
             panel,
         });
-    }
+    };
 
     onOk = () => {
         this.onVisibleChange(false, 'okBtnClick');
         this.onValueChange(this.state.value, 'onOk');
-    }
+    };
 
     render() {
         const {
@@ -367,14 +407,27 @@ export default class DatePicker extends Component {
             popupClassName,
             popupProps,
             className,
+            inputProps,
+            dateCellRender,
+            monthCellRender,
             ...others
         } = this.props;
 
-        const { visible, value, dateInputStr, timeInputStr, panel, inputing } = this.state;
+        const {
+            visible,
+            value,
+            dateInputStr,
+            timeInputStr,
+            panel,
+            inputing,
+        } = this.state;
 
-        const datePickerCls = classnames({
-            [`${prefix}date-picker`]: true,
-        }, className);
+        const datePickerCls = classnames(
+            {
+                [`${prefix}date-picker`]: true,
+            },
+            className
+        );
 
         const triggerInputCls = classnames({
             [`${prefix}date-picker-input`]: true,
@@ -396,6 +449,7 @@ export default class DatePicker extends Component {
         }
 
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             onChange: this.onDateInputChange,
@@ -403,24 +457,35 @@ export default class DatePicker extends Component {
             onPressEnter: this.onDateInputBlur,
         };
 
-        const dateInputValue = inputing === 'date' ? dateInputStr : ((value && value.format(this.format)) || '');
+        const dateInputValue =
+            inputing === 'date'
+                ? dateInputStr
+                : (value && value.format(this.format)) || '';
         let triggerInputValue = dateInputValue;
 
-        const dateInput = (<Input
-            {...sharedInputProps}
-            value={dateInputValue}
-            onFocus={this.onFoucsDateInput}
-            placeholder={this.format}
-            className={panelDateInputCls} />);
+        const dateInput = (
+            <Input
+                {...sharedInputProps}
+                value={dateInputValue}
+                onFocus={this.onFoucsDateInput}
+                placeholder={this.format}
+                className={panelDateInputCls}
+            />
+        );
 
-        const datePanel = (<Calendar
-            shape="panel"
-            value={value}
-            format={this.format}
-            onSelect={this.onSelectCalendarPanel}
-            defaultVisibleMonth={defaultVisibleMonth}
-            onVisibleMonthChange={onVisibleMonthChange}
-            disabledDate={disabledDate} />);
+        const datePanel = (
+            <Calendar
+                shape="panel"
+                value={value}
+                format={this.format}
+                dateCellRender={dateCellRender}
+                monthCellRender={monthCellRender}
+                onSelect={this.onSelectCalendarPanel}
+                defaultVisibleMonth={defaultVisibleMonth}
+                onVisibleMonthChange={onVisibleMonthChange}
+                disabledDate={disabledDate}
+            />
+        );
 
         let panelFooter = footerRender();
 
@@ -428,8 +493,12 @@ export default class DatePicker extends Component {
         let timePanel = null;
 
         if (showTime) {
-            const timeInputValue = inputing === 'time' ? timeInputStr : ((value && value.format(this.timeFormat)) || '');
-            triggerInputValue = value && value.format(this.dateTimeFormat) || '';
+            const timeInputValue =
+                inputing === 'time'
+                    ? timeInputStr
+                    : (value && value.format(this.timeFormat)) || '';
+            triggerInputValue =
+                (value && value.format(this.dateTimeFormat)) || '';
 
             const timePanelProps = typeof showTime === 'object' ? showTime : {};
 
@@ -440,74 +509,97 @@ export default class DatePicker extends Component {
                 [`${prefix}focus`]: panel === PANEL.TIME,
             });
 
-            timeInput = (<Input
-                placeholder={this.timeFormat}
-                value={timeInputValue}
-                size={size}
-                disabled={disabled || !value}
-                onChange={this.onTimeInputChange}
-                onFocus={this.onFoucsTimeInput}
-                onBlur={this.onTimeInputBlur}
-                onPressEnter={this.onTimeInputBlur}
-                className={panelTimeInputCls} />);
+            timeInput = (
+                <Input
+                    placeholder={this.timeFormat}
+                    value={timeInputValue}
+                    size={size}
+                    disabled={disabled || !value}
+                    onChange={this.onTimeInputChange}
+                    onFocus={this.onFoucsTimeInput}
+                    onBlur={this.onTimeInputBlur}
+                    onPressEnter={this.onTimeInputBlur}
+                    className={panelTimeInputCls}
+                />
+            );
 
-            timePanel = (<TimePickerPanel
-                {...timePanelProps}
-                locale={locale}
-                className={`${prefix}date-picker-panel-time`}
-                showSecond={showSecond}
-                disabled={disabled}
-                prefix={prefix}
-                value={value}
-                onSelect={this.onSelectTimePanel} />);
+            timePanel = (
+                <TimePickerPanel
+                    {...timePanelProps}
+                    locale={locale}
+                    className={`${prefix}date-picker-panel-time`}
+                    showSecond={showSecond}
+                    disabled={disabled}
+                    prefix={prefix}
+                    value={value}
+                    onSelect={this.onSelectTimePanel}
+                />
+            );
 
-            panelFooter = panelFooter || (<PanelFooter
-                prefix={prefix}
-                locale={locale}
-                value={value}
-                panel={panel}
-                onPanelChange={this.changePanel}
-                onOk={this.onOk} />);
+            panelFooter = panelFooter || (
+                <PanelFooter
+                    prefix={prefix}
+                    locale={locale}
+                    value={value}
+                    panel={panel}
+                    onPanelChange={this.changePanel}
+                    onOk={this.onOk}
+                />
+            );
         }
 
-        const panelBody = ({
+        const panelBody = {
             [PANEL.DATE]: datePanel,
             [PANEL.TIME]: timePanel,
-        })[panel];
+        }[panel];
 
         const allowClear = value && hasClear;
-        const trigger = (<div className={`${prefix}date-picker-trigger`}>
-            <Input
-                {...sharedInputProps}
-                label={label}
-                state={state}
-                value={triggerInputValue}
-                placeholder={placeholder || (showTime ? locale.datetimePlaceholder : locale.placeholder)}
-                hint="calendar"
-                hasClear={allowClear}
-                className={triggerInputCls} />
-        </div>);
-        return (<div {...obj.pickOthers(DatePicker.propTypes, others)} className={datePickerCls}>
-            <Popup
-                {...popupProps}
-                disabled={disabled}
-                visible={visible}
-                onVisibleChange={this.onVisibleChange}
-                align={popupAlign}
-                triggerType={popupTriggerType}
-                container={popupContainer}
-                style={popupStyle}
-                className={popupClassName}
-                trigger={trigger}>
-                <div dir={others.dir} className={panelBodyClassName}>
-                    <div className={`${prefix}date-picker-panel-header`}>
-                        {dateInput}
-                        {timeInput}
+        const trigger = (
+            <div className={`${prefix}date-picker-trigger`}>
+                <Input
+                    {...sharedInputProps}
+                    label={label}
+                    state={state}
+                    value={triggerInputValue}
+                    placeholder={
+                        placeholder ||
+                        (showTime
+                            ? locale.datetimePlaceholder
+                            : locale.placeholder)
+                    }
+                    hint="calendar"
+                    hasClear={allowClear}
+                    className={triggerInputCls}
+                />
+            </div>
+        );
+        return (
+            <div
+                {...obj.pickOthers(DatePicker.propTypes, others)}
+                className={datePickerCls}
+            >
+                <Popup
+                    {...popupProps}
+                    disabled={disabled}
+                    visible={visible}
+                    onVisibleChange={this.onVisibleChange}
+                    align={popupAlign}
+                    triggerType={popupTriggerType}
+                    container={popupContainer}
+                    style={popupStyle}
+                    className={popupClassName}
+                    trigger={trigger}
+                >
+                    <div dir={others.dir} className={panelBodyClassName}>
+                        <div className={`${prefix}date-picker-panel-header`}>
+                            {dateInput}
+                            {timeInput}
+                        </div>
+                        {panelBody}
+                        {panelFooter}
                     </div>
-                    {panelBody}
-                    {panelFooter}
-                </div>
-            </Popup>
-        </div>);
+                </Popup>
+            </div>
+        );
     }
 }

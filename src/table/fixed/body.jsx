@@ -10,19 +10,22 @@ export default class FixedBody extends React.Component {
         prefix: PropTypes.string,
         className: PropTypes.string,
         colGroup: PropTypes.any,
-        onScroll: PropTypes.func
-    }
+        onScroll: PropTypes.func,
+    };
 
     static defaultProps = {
-        onScroll: () => {}
-    }
+        onScroll: () => {},
+    };
 
     static contextTypes = {
         fixedHeader: PropTypes.bool,
-        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        maxBodyHeight: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         onBodyScroll: PropTypes.func,
         getNode: PropTypes.func,
-    }
+    };
 
     componentDidMount() {
         const { getNode } = this.context;
@@ -33,7 +36,7 @@ export default class FixedBody extends React.Component {
         const { onBodyScroll } = this.context;
         onBodyScroll && onBodyScroll();
         this.props.onScroll();
-    }
+    };
 
     render() {
         const { className, colGroup, ...others } = this.props;
@@ -42,12 +45,17 @@ export default class FixedBody extends React.Component {
         if (fixedHeader) {
             style.maxHeight = maxBodyHeight;
         }
-        return (<div style={style} className={className} onScroll={this.onBodyScroll}>
-            <table>
-                {colGroup}
-                <BodyComponent {...others} colGroup={colGroup}/>
-            </table>
-        </div>);
+        return (
+            <div
+                style={style}
+                className={className}
+                onScroll={this.onBodyScroll}
+            >
+                <table>
+                    {colGroup}
+                    <BodyComponent {...others} colGroup={colGroup} />
+                </table>
+            </div>
+        );
     }
 }
-

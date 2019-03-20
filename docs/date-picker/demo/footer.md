@@ -26,7 +26,7 @@ function footerRender() {
 }
 
 ReactDOM.render(<div>
-    <DatePicker footerRender={footerRender}  />&nbsp;&nbsp;
+    <DatePicker footerRender={footerRender} />&nbsp;&nbsp;
     <RangePicker footerRender={footerRender} />
 </div>, mountNode);
 ````

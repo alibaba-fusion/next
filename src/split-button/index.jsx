@@ -104,6 +104,10 @@ class SplitButton extends React.Component {
          * 透传给 Menu 的属性
          */
         menuProps: PropTypes.object,
+        /**
+         * 透传给 左侧按钮 的属性
+         */
+        leftButtonProps: PropTypes.object,
         className: PropTypes.string,
         children: PropTypes.any,
     };
@@ -119,6 +123,7 @@ class SplitButton extends React.Component {
         onSelect: func.noop,
         defaultSelectedKeys: [],
         menuProps: {},
+        leftButtonProps: {},
     };
 
     constructor(props, context) {
@@ -157,12 +162,12 @@ class SplitButton extends React.Component {
             });
         }
         this.props.onSelect(keys, ...others);
-    }
+    };
 
     clickMenuItem = (key, ...others) => {
         this.props.onItemClick(key, ...others);
         this.onVisibleChange(false, 'menuSelect');
-    }
+    };
 
     onPopupOpen = () => {
         if (this.props.autoWidth && this.wrapper && this.menu) {
@@ -170,7 +175,7 @@ class SplitButton extends React.Component {
                 width: this.wrapper.offsetWidth,
             });
         }
-    }
+    };
 
     onVisibleChange = (visible, reason) => {
         if (!('visible' in this.props)) {
@@ -179,7 +184,7 @@ class SplitButton extends React.Component {
             });
         }
         this.props.onVisibleChange(visible, reason);
-    }
+    };
 
     _menuRefHandler = ref => {
         this.menu = findDOMNode(ref);
@@ -188,11 +193,11 @@ class SplitButton extends React.Component {
         if (typeof refFn === 'function') {
             refFn(ref);
         }
-    }
+    };
 
     _wrapperRefHandler = ref => {
         this.wrapper = findDOMNode(ref);
-    }
+    };
 
     render() {
         const {
@@ -213,15 +218,19 @@ class SplitButton extends React.Component {
             popupProps,
             selectMode,
             menuProps,
+            leftButtonProps,
             disabled,
             ...others
         } = this.props;
 
         const state = this.state;
 
-        const classNames = classnames({
-            [`${prefix}split-btn`]: true,
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}split-btn`]: true,
+            },
+            className
+        );
 
         const sharedBtnProps = {
             type,
@@ -237,13 +246,27 @@ class SplitButton extends React.Component {
             opened: state.visible,
         });
 
-        const trigger = (<Button {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
-            <Icon type="arrow-down" />
-        </Button>);
+        const trigger = (
+            <Button
+                {...triggerProps}
+                {...sharedBtnProps}
+                className={triggerClassNames}
+            >
+                <Icon type="arrow-down" />
+            </Button>
+        );
 
         return (
-            <Button.Group {...obj.pickOthers(SplitButton.propTypes, others)} className={classNames} style={style} size={size} ref={this._wrapperRefHandler}>
-                <Button {...sharedBtnProps}>{label}</Button>
+            <Button.Group
+                {...obj.pickOthers(SplitButton.propTypes, others)}
+                className={classNames}
+                style={style}
+                size={size}
+                ref={this._wrapperRefHandler}
+            >
+                <Button {...sharedBtnProps} {...leftButtonProps}>
+                    {label}
+                </Button>
                 <Popup
                     {...popupProps}
                     visible={state.visible}
@@ -255,14 +278,16 @@ class SplitButton extends React.Component {
                     style={popupStyle}
                     shouldUpdatePosition
                     className={popupClassName}
-                    onOpen={this.onPopupOpen}>
+                    onOpen={this.onPopupOpen}
+                >
                     <Menu
                         {...menuProps}
                         selectMode={selectMode}
                         selectedKeys={state.selectedKeys}
                         onSelect={this.selectMenuItem}
                         onItemClick={this.clickMenuItem}
-                        ref={this._menuRefHandler}>
+                        ref={this._menuRefHandler}
+                    >
                         {children}
                     </Menu>
                 </Popup>

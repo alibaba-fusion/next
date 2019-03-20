@@ -16,18 +16,8 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# package.json
-[package.json]
-indent_size = 2
-indent_style = space
-
 # .commitlintrc
 [.commitlintrc]
-indent_size = 2
-indent_style = space
-
-# .eslintrc
-[.eslintrc]
 indent_size = 2
 indent_style = space
 

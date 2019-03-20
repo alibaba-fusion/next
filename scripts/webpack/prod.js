@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CssSplitWebpackPlugin = require('css-split-webpack-plugin').default;
@@ -7,31 +8,41 @@ const loaders = require('./loaders');
 
 module.exports = function(options = {}) {
     const minimize = options.minimize;
+    const packagePath = path.resolve('package.json');
+    const version = require(packagePath).version;
+
     const config = {
         output: {},
         resolve: {
-            extensions: ['.js', '.jsx']
+            extensions: ['.js', '.jsx'],
         },
         module: {
-            rules: [{
-                test: /\.jsx?$/,
-                use: loaders.js(),
-                exclude: /node_modules/
-            }, {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: loaders.css({ minimize }).slice(1)
-                })
-            }, {
-                test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: loaders.scss({ minimize }).slice(1)
-                })
-            }]
+            rules: [
+                {
+                    test: /\.jsx?$/,
+                    use: loaders.js(),
+                    exclude: /node_modules/,
+                },
+                {
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: loaders.css({ minimize }).slice(1),
+                    }),
+                },
+                {
+                    test: /\.scss$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: loaders.scss({ minimize }).slice(1),
+                    }),
+                },
+            ],
         },
         plugins: [
+            new webpack.BannerPlugin(`@alifd/next@${version} (https://fusion.design)
+Copyright 2018-present Alibaba Group,
+Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)`),
             new CaseSensitivePathsPlugin(),
             new webpack.optimize.ModuleConcatenationPlugin(),
             // support ie 9
@@ -40,10 +51,10 @@ module.exports = function(options = {}) {
                 preserve: true,
             }),
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': '"production"'
+                'process.env.NODE_ENV': '"production"',
             }),
-            new webpack.ProgressPlugin()
-        ]
+            new webpack.ProgressPlugin(),
+        ],
     };
 
     if (minimize) {
@@ -52,8 +63,8 @@ module.exports = function(options = {}) {
             new ExtractTextPlugin(options.extractTextName || '[name].min.css'),
             new webpack.optimize.UglifyJsPlugin({
                 output: {
-                  ascii_only: true // eslint-disable-line
-                }
+                    ascii_only: true, // eslint-disable-line
+                },
             })
         );
     } else {

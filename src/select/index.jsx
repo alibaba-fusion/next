@@ -5,7 +5,7 @@ import Option from './option';
 import OptionGroup from './option-group';
 
 Select.AutoComplete = ConfigProvider.config(AutoComplete, {
-    componentName: 'Select'
+    componentName: 'Select',
 });
 
 Select.Option = Option;
@@ -14,7 +14,16 @@ Select.OptionGroup = OptionGroup;
 // compatible with 0.x version
 /* istanbul ignore next */
 function transform(props, deprecated) {
-    const { shape, container, multiple, filterBy, overlay, safeNode, noFoundContent, ...others } = props;
+    const {
+        shape,
+        container,
+        multiple,
+        filterBy,
+        overlay,
+        safeNode,
+        noFoundContent,
+        ...others
+    } = props;
 
     const newprops = others;
     if (shape === 'arrow-only') {
@@ -47,7 +56,7 @@ function transform(props, deprecated) {
     if (safeNode) {
         deprecated('safeNode', 'popupProps={safeNode}', 'Select');
         newprops.popupProps = {
-            safeNode
+            safeNode,
         };
     }
 
@@ -56,7 +65,7 @@ function transform(props, deprecated) {
 
 // compatible with 0.x version: Select.Combobox
 Select.Combobox = ConfigProvider.config(Select, {
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         deprecated('Select.Combobox', '<Select showSearch={true}/>', 'Select');
 
         const newprops = transform(props, deprecated);
@@ -65,9 +74,10 @@ Select.Combobox = ConfigProvider.config(Select, {
             newprops.showSearch = true;
         }
         return newprops;
-    }
+    },
 });
 
 export default ConfigProvider.config(Select, {
-    transform
+    transform,
+    exportNames: ['focusInput'],
 });

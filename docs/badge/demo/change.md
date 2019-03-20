@@ -59,13 +59,13 @@ class Demo extends React.Component {
             <div>
                 <div className="change-count">
                     <Badge count={this.state.count}>
-                        <a href="#" className="head-example"></a>
+                        <a href="#" className="head-example"><span className="next-visually-hidden">unread messages</span></a>
                     </Badge>
                     <ButtonGroup>
-                        <Button onClick={this.increase}>
+                        <Button aria-label="add" onClick={this.increase}>
                             <Icon type="add"/>
                         </Button>
-                        <Button onClick={this.decrease}>
+                        <Button aria-label="minus" onClick={this.decrease}>
                             <Icon type="minus"/>
                         </Button>
                     </ButtonGroup>

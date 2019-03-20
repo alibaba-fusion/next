@@ -19,8 +19,8 @@ import { Input, Button, Field } from '@alifd/next';
 
 
 
-class App extends React.PureComponent {
-    field = new Field(this, {forceUpdate: true});
+class App extends React.Component {
+    field = new Field(this);
 
     onGetValue() {
         console.log(this.field.getValue('input'));
@@ -30,7 +30,7 @@ class App extends React.PureComponent {
         const { init, setValue, reset } = this.field;
 
         return (<div className="demo">
-            <Input  {...init('input', {initValue: 'test'})}  />
+            <Input {...init('input', {initValue: 'test'})} />
             <br/><br/>
             <Button type="primary" onClick={this.onGetValue.bind(this)}>getValue</Button>
             <Button type="primary" onClick={() => setValue('input', 'set me by click')}>setValue</Button>

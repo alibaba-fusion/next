@@ -2,8 +2,8 @@ import ConfigProvider from '../config-provider';
 import Search from './Search';
 
 export default ConfigProvider.config(Search, {
-    transfrom: /* istanbul ignore next */(props, deprecated) => {
-        const {onInputFocus, overlayVisible, combox, ...others} = this.props;
+    transfrom: /* istanbul ignore next */ (props, deprecated) => {
+        const { onInputFocus, overlayVisible, combox, ...others } = this.props;
 
         const newprops = others;
 
@@ -21,5 +21,5 @@ export default ConfigProvider.config(Search, {
         }
 
         return newprops;
-    }
+    },
 });

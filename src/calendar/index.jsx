@@ -4,7 +4,14 @@ import Calendar from './calendar';
 
 /* istanbul ignore next */
 const transform = (props, deprecated) => {
-    const { type, onChange, base, disabledMonth, disabledYear, ...others } = props;
+    const {
+        type,
+        onChange,
+        base,
+        disabledMonth,
+        disabledYear,
+        ...others
+    } = props;
     const newProps = others;
 
     if ('type' in props) {
@@ -34,8 +41,8 @@ const transform = (props, deprecated) => {
     if ('onChange' in props && typeof onChange === 'function') {
         deprecated('onChange', 'onSelect', 'Calendar');
 
-        const newOnSelect = (date) => {
-            onChange({mode: others.mode, value: date});
+        const newOnSelect = date => {
+            onChange({ mode: others.mode, value: date });
 
             if ('onSelect' in props) {
                 props.onSelect(date);
@@ -54,7 +61,11 @@ const transform = (props, deprecated) => {
     }
 
     if ('yearCellRender' in props) {
-        deprecated('yearCellRender', 'monthCellRender/dateCellRender', 'Calendar');
+        deprecated(
+            'yearCellRender',
+            'monthCellRender/dateCellRender',
+            'Calendar'
+        );
     }
 
     if ('language' in props) {
@@ -65,5 +76,5 @@ const transform = (props, deprecated) => {
 };
 
 export default ConfigProvider.config(Calendar, {
-    transform
+    transform,
 });

@@ -1,11 +1,14 @@
-import {camelcase, hyphenate} from './string';
-import {each} from './object';
+import { camelcase, hyphenate } from './string';
+import { each } from './object';
 
 /**
  * 是否能使用 DOM 方法
  * @type {Boolean}
  */
-export const hasDOM = typeof window !== 'undefined' && !!window.document && !!document.createElement;
+export const hasDOM =
+    typeof window !== 'undefined' &&
+    !!window.document &&
+    !!document.createElement;
 
 /**
  * 节点是否包含指定 className
@@ -16,7 +19,7 @@ export const hasDOM = typeof window !== 'undefined' && !!window.document && !!do
  * @example
  * dom.hasClass(document.body, 'foo');
  */
-export function hasClass (node, className) {
+export function hasClass(node, className) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return false;
@@ -37,7 +40,7 @@ export function hasClass (node, className) {
  * @example
  * dom.addClass(document.body, 'foo');
  */
-export function addClass (node, className, _force) {
+export function addClass(node, className, _force) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return;
@@ -58,7 +61,7 @@ export function addClass (node, className, _force) {
  * @example
  * dom.removeClass(document.body, 'foo');
  */
-export function removeClass (node, className, _force) {
+export function removeClass(node, className, _force) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return;
@@ -67,7 +70,10 @@ export function removeClass (node, className, _force) {
     if (node.classList) {
         node.classList.remove(className);
     } else if (_force === true || hasClass(node, className)) {
-        node.className = node.className.replace(className, '').replace(/\s+/g, ' ').trim();
+        node.className = node.className
+            .replace(className, '')
+            .replace(/\s+/g, ' ')
+            .trim();
     }
 }
 
@@ -80,7 +86,7 @@ export function removeClass (node, className, _force) {
  * @example
  * dom.toggleClass(document.body, 'foo');
  */
-export function toggleClass (node, className) {
+export function toggleClass(node, className) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return false;
@@ -90,7 +96,9 @@ export function toggleClass (node, className) {
         return node.classList.toggle(className);
     } else {
         const flag = hasClass(node, className);
-        flag ? removeClass(node, className, true) : addClass(node, className, true);
+        flag
+            ? removeClass(node, className, true)
+            : addClass(node, className, true);
 
         return !flag;
     }
@@ -105,25 +113,30 @@ export function toggleClass (node, className) {
  * @example
  * dom.matches(mountNode, '.container'); // boolean
  */
-export const matches = function () {
+export const matches = (function() {
     let matchesFn = null;
     /* istanbul ignore else */
     if (hasDOM) {
         const _body = document.body || document.head;
-        matchesFn = _body.matches ? 'matches' :
-            _body.webkitMatchesSelector ? 'webkitMatchesSelector' :
-                _body.msMatchesSelector ? 'msMatchesSelector' :
-                    _body.mozMatchesSelector ? 'mozMatchesSelector' : null;
+        matchesFn = _body.matches
+            ? 'matches'
+            : _body.webkitMatchesSelector
+            ? 'webkitMatchesSelector'
+            : _body.msMatchesSelector
+            ? 'msMatchesSelector'
+            : _body.mozMatchesSelector
+            ? 'mozMatchesSelector'
+            : null;
     }
 
-    return function (node, selector) {
+    return function(node, selector) {
         if (!hasDOM || !node) {
             return false;
         }
 
         return matchesFn ? node[matchesFn](selector) : false;
     };
-}();
+})();
 
 /**
  * 获取元素计算后的样式
@@ -131,12 +144,14 @@ export const matches = function () {
  * @param  {Element} node
  * @return {Object}
  */
-function _getComputedStyle (node) {
-    return node && node.nodeType === 1 ? window.getComputedStyle(node, null) : {};
+function _getComputedStyle(node) {
+    return node && node.nodeType === 1
+        ? window.getComputedStyle(node, null)
+        : {};
 }
 
 const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size/i;
-const removePixel = {left: 1, top: 1, right: 1, bottom: 1};
+const removePixel = { left: 1, top: 1, right: 1, bottom: 1 };
 
 /**
  * 校验并修正元素的样式属性值
@@ -145,7 +160,7 @@ const removePixel = {left: 1, top: 1, right: 1, bottom: 1};
  * @param  {String} type
  * @param  {Number} value
  */
-function _getStyleValue (node, type, value) {
+function _getStyleValue(node, type, value) {
     type = type.toLowerCase();
 
     if (value === 'auto') {
@@ -162,10 +177,10 @@ function _getStyleValue (node, type, value) {
         removePixel[type] = PIXEL_PATTERN.test(type);
     }
 
-    return removePixel[type] ? (parseFloat(value) || 0) : value;
+    return removePixel[type] ? parseFloat(value) || 0 : value;
 }
 
-const floatMap = {cssFloat: 1, styleFloat: 1, float: 1};
+const floatMap = { cssFloat: 1, styleFloat: 1, float: 1 };
 
 /**
  * 获取元素计算后的样式
@@ -173,7 +188,7 @@ const floatMap = {cssFloat: 1, styleFloat: 1, float: 1};
  * @param  {String} name 属性名
  * @return {Number|Object}
  */
-export function getStyle (node, name) {
+export function getStyle(node, name) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return null;
@@ -186,9 +201,17 @@ export function getStyle (node, name) {
         return style;
     }
 
-    name = floatMap[name] ? 'cssFloat' in node.style ? 'cssFloat' : 'styleFloat' : name;
+    name = floatMap[name]
+        ? 'cssFloat' in node.style
+            ? 'cssFloat'
+            : 'styleFloat'
+        : name;
 
-    return _getStyleValue(node, name, style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]);
+    return _getStyleValue(
+        node,
+        name,
+        style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]
+    );
 }
 
 /**
@@ -206,7 +229,7 @@ export function getStyle (node, name) {
  *     height: 200
  * });
  */
-export function setStyle (node, name, value) {
+export function setStyle(node, name, value) {
     /* istanbul ignore if */
     if (!hasDOM || !node) {
         return false;
@@ -216,7 +239,11 @@ export function setStyle (node, name, value) {
     if (typeof name === 'object' && arguments.length === 2) {
         each(name, (val, key) => setStyle(node, key, val));
     } else {
-        name = floatMap[name] ? 'cssFloat' in node.style ? 'cssFloat' : 'styleFloat' : name;
+        name = floatMap[name]
+            ? 'cssFloat' in node.style
+                ? 'cssFloat'
+                : 'styleFloat'
+            : name;
         if (typeof value === 'number' && PIXEL_PATTERN.test(name)) {
             value = `${value}px`;
         }
@@ -228,7 +255,7 @@ export function setStyle (node, name, value) {
  * 获取默认的滚动条大小
  * @return {Object} width, height
  */
-export function scrollbar () {
+export function scrollbar() {
     const scrollDiv = document.createElement('div');
 
     setStyle(scrollDiv, {
@@ -236,7 +263,7 @@ export function scrollbar () {
         width: '100px',
         height: '100px',
         overflow: 'scroll',
-        top: '-9999px'
+        top: '-9999px',
     });
     document.body.appendChild(scrollDiv);
     const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
@@ -245,7 +272,7 @@ export function scrollbar () {
 
     return {
         width: scrollbarWidth,
-        height: scrollbarHeight
+        height: scrollbarHeight,
     };
 }
 
@@ -253,11 +280,11 @@ export function scrollbar () {
  * 获取元素距离视口顶部和左边的偏移距离
  * @return {Object} top, left
  */
-export function getOffset (node) {
+export function getOffset(node) {
     const rect = node.getBoundingClientRect();
     const win = node.ownerDocument.defaultView;
     return {
         top: rect.top + win.pageYOffset,
-        left: rect.left + win.pageXOffset
+        left: rect.left + win.pageXOffset,
     };
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {events, func, obj} from '../../util';
+import { events, func, obj } from '../../util';
 import EventHandlersMixin from './mixins/event-handlers';
 import HelpersMixin from './mixins/helpers';
 import Arrow from './arrow';
@@ -11,8 +11,7 @@ import Dots from './dots';
  * Slider inner
  */
 
-
-const {noop} = func;
+const { noop } = func;
 
 class InnerSlider extends React.Component {
     static propTypes = {
@@ -44,14 +43,14 @@ class InnerSlider extends React.Component {
         prevArrow: PropTypes.element,
         nextArrow: PropTypes.element,
         dotsRender: PropTypes.func,
-        triggerType: PropTypes.string
-    }
+        triggerType: PropTypes.string,
+    };
 
     static defaultProps = {
         prefix: 'next-',
         arrowDirection: 'hoz',
         triggerType: 'click',
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -62,7 +61,10 @@ class InnerSlider extends React.Component {
             autoPlayTimer: null,
             currentDirection: 0,
             currentLeft: null,
-            currentSlide: 'activeIndex' in props ? props.activeIndex : props.defaultActiveIndex,
+            currentSlide:
+                'activeIndex' in props
+                    ? props.activeIndex
+                    : props.defaultActiveIndex,
             direction: 1,
             listWidth: null,
             listHeight: null,
@@ -74,7 +76,7 @@ class InnerSlider extends React.Component {
                 startX: 0,
                 startY: 0,
                 curX: 0,
-                curY: 0
+                curY: 0,
             },
 
             lazyLoadedList: [],
@@ -104,8 +106,8 @@ class InnerSlider extends React.Component {
     componentWillMount() {
         this.hasMounted = true;
 
-        const {lazyLoad, children, slidesToShow} = this.props;
-        const {currentSlide} = this.state;
+        const { lazyLoad, children, slidesToShow } = this.props;
+        const { currentSlide } = this.state;
         const lazyLoadedList = [];
 
         if (lazyLoad) {
@@ -117,7 +119,7 @@ class InnerSlider extends React.Component {
 
             if (this.state.lazyLoadedList.length === 0) {
                 this.setState({
-                    lazyLoadedList
+                    lazyLoadedList,
                 });
             }
         }
@@ -157,7 +159,10 @@ class InnerSlider extends React.Component {
             });
         } else {
             const others = ['children'];
-            const update = !obj.shallowEqual(obj.pickOthers(others, this.props), obj.pickOthers(others, nextProps));
+            const update = !obj.shallowEqual(
+                obj.pickOthers(others, this.props),
+                obj.pickOthers(others, nextProps)
+            );
             if (update) {
                 this.update(nextProps);
             }
@@ -189,11 +194,12 @@ class InnerSlider extends React.Component {
     }
 
     slickGoTo(slide) {
-        typeof slide === 'number' && this.changeSlide({
-            message: 'index',
-            index: slide,
-            currentSlide: this.state.currentSlide,
-        });
+        typeof slide === 'number' &&
+            this.changeSlide({
+                message: 'index',
+                index: slide,
+                currentSlide: this.state.currentSlide,
+            });
     }
 
     onEnterArrow(msg) {
@@ -210,16 +216,42 @@ class InnerSlider extends React.Component {
 
     render() {
         const {
-            prefix, animation, arrows, arrowSize, arrowPosition, arrowDirection,
-            dots, dotsClass, cssEase, speed, infinite, centerMode, centerPadding,
-            lazyLoad, dotsDirection, rtl, slidesToShow, slidesToScroll,
-            variableWidth, vertical, verticalSwiping, focusOnSelect, children, dotsRender, triggerType
+            prefix,
+            animation,
+            arrows,
+            arrowSize,
+            arrowPosition,
+            arrowDirection,
+            dots,
+            dotsClass,
+            cssEase,
+            speed,
+            infinite,
+            centerMode,
+            centerPadding,
+            lazyLoad,
+            dotsDirection,
+            rtl,
+            slidesToShow,
+            slidesToScroll,
+            variableWidth,
+            vertical,
+            verticalSwiping,
+            focusOnSelect,
+            children,
+            dotsRender,
+            triggerType,
         } = this.props;
 
         const {
-            currentSlide, lazyLoadedList, slideCount,
-            slideWidth, slideHeight, trackStyle, listHeight,
-            dragging
+            currentSlide,
+            lazyLoadedList,
+            slideCount,
+            slideWidth,
+            slideHeight,
+            trackStyle,
+            listHeight,
+            dragging,
         } = this.state;
 
         // TODO 需要精简一下
@@ -244,7 +276,7 @@ class InnerSlider extends React.Component {
             variableWidth,
             vertical,
             verticalSwiping,
-            triggerType
+            triggerType,
             // clickHandler: this.changeSlide, unused
         };
 
@@ -262,7 +294,7 @@ class InnerSlider extends React.Component {
                 dotsDirection,
                 changeSlide: this.changeSlide,
                 dotsRender,
-                triggerType
+                triggerType,
             };
 
             dotsEle = <Dots {...dotProps} />;
@@ -281,38 +313,56 @@ class InnerSlider extends React.Component {
             currentSlide,
             slideCount,
             slidesToShow,
-            clickHandler: this.changeSlide
+            clickHandler: this.changeSlide,
         };
 
         if (arrows) {
             prevArrow = (
-                <Arrow {...arrowProps}
+                <Arrow
+                    {...arrowProps}
                     type="prev"
+                    aria-label="Previous"
                     ref={this._instanceRefHandler.bind(this, 'pArrow')}
-                    onMouseEnter={animation ? this.onEnterArrow.bind(this, 'prev') : noop}
-                    onMouseLeave={animation ? this.onLeaveArrow.bind(this, 'prev') : noop}
-                >{this.props.prevArrow}</Arrow>
+                    onMouseEnter={
+                        animation ? this.onEnterArrow.bind(this, 'prev') : noop
+                    }
+                    onMouseLeave={
+                        animation ? this.onLeaveArrow.bind(this, 'prev') : noop
+                    }
+                >
+                    {this.props.prevArrow}
+                </Arrow>
             );
 
             nextArrow = (
-                <Arrow {...arrowProps}
+                <Arrow
+                    {...arrowProps}
                     type="next"
+                    aria-label="Next"
                     ref={this._instanceRefHandler.bind(this, 'nArrow')}
-                    onMouseEnter={animation ? this.onEnterArrow.bind(this, 'next') : noop}
-                    onMouseLeave={animation ? this.onLeaveArrow.bind(this, 'next') : noop}
-                >{this.props.nextArrow}</Arrow>
+                    onMouseEnter={
+                        animation ? this.onEnterArrow.bind(this, 'next') : noop
+                    }
+                    onMouseLeave={
+                        animation ? this.onLeaveArrow.bind(this, 'next') : noop
+                    }
+                >
+                    {this.props.nextArrow}
+                </Arrow>
             );
         }
 
-        const verticalHeightStyle = vertical ? {
-            height: listHeight,
-        } : null;
+        const verticalHeightStyle = vertical
+            ? {
+                  height: listHeight,
+              }
+            : null;
 
         let centerPaddingStyle;
         if (centerMode) {
-            centerPaddingStyle = vertical ?
-                { padding: (`${centerPadding} 0px`) } :
-                { padding: (`0px ${centerPadding}`) };
+            centerPaddingStyle = vertical
+                ? { padding: `${centerPadding} 0px` }
+                : { padding: `0px ${centerPadding}` };
         }
 
         return (
@@ -332,8 +382,12 @@ class InnerSlider extends React.Component {
                     onMouseMove={dragging ? this.swipeMove : null}
                     onMouseLeave={dragging ? this.swipeEnd : null}
                     onTouchMove={dragging ? this.swipeMove : null}
-                    onTouchCancel={dragging ? this.swipeEnd : null} >
-                    <Track ref={this._instanceRefHandler.bind(this, 'track')} {...trackProps}>
+                    onTouchCancel={dragging ? this.swipeEnd : null}
+                >
+                    <Track
+                        ref={this._instanceRefHandler.bind(this, 'track')}
+                        {...trackProps}
+                    >
                         {children}
                     </Track>
                 </div>

@@ -2,7 +2,7 @@
 
 - order: 6
 
-可以通过 `expandedRowRender` 额外渲染行，但是会包含复杂的组件
+可以通过 `expandedRowRender` 额外渲染行，但是会包含复杂的组件, 可通过 `expandedIndexSimulate` 设置 index 类型
 
 :::lang=en-us
 # Expandable - Complex
@@ -43,7 +43,7 @@ class ExpandedApp extends React.Component {
                     <Table.Column title="Time" dataIndex="time" width={200}/>
                 </Table>
                 <p style={style}
-                    onClick={this.load.bind(this)}>Load more data.</p>
+                    onClick={this.load.bind(this)}>{this.props.index}: Load more data. </p>
             </div>
         );
     }
@@ -58,10 +58,10 @@ const dataSource = () => {
                 time: 2000 + i,
                 children: [{
                     title: `Sub title for Quotation ${3 + i}`,
-                    time: 2000 + i,
+                    time: 2000 + i
                 }, {
                     title: `Sub2 title for Quotation ${3 + i}`,
-                    time: 2000 + i,
+                    time: 2000 + i
                 }]
             });
         }
@@ -70,9 +70,9 @@ const dataSource = () => {
     render = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     },
-    expandedRowRender = (record) => {
+    expandedRowRender = (record, index) => {
         const children = record.children;
-        return <ExpandedApp dataSource={children}/>;
+        return <ExpandedApp dataSource={children} index={index}/>;
     };
 
 class App extends React.Component {
@@ -87,7 +87,7 @@ class App extends React.Component {
     onSort(dataIndex, order) {
         const dataSource = this.state.dataSource.sort(function(a, b) {
             const result = a[dataIndex] - b[dataIndex];
-            return  (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
+            return (order === 'asc') ? (result > 0 ? 1 : -1) : (result > 0 ? -1 : 1);
         });
         this.setState({
             dataSource
@@ -96,6 +96,7 @@ class App extends React.Component {
     disabledExpandedCol() {
         this.setState({
             getExpandedColProps: (record, index) => {
+                console.log(index);
                 if (index === 3) {
                     return {
                         disabled: true
@@ -125,15 +126,23 @@ class App extends React.Component {
             openRowKeys: openRowKeys
         });
     }
+    getRowProps(record, index) {
+        console.log('getRowProps', record, index);
+        return {className: `next-myclass-${index}`};
+    }
+    onExpandedRowClick(record, index) {
+        console.log('onExpandedRowClick', record, index);
+    }
     render() {
         const renderTitle = (value, index, record) => {
-            return <div>{value}<span onClick={this.toggleExpand.bind(this, record)}>+++++</span></div>;
+            return <div>{value}<span onClick={this.toggleExpand.bind(this, record)}>index:{index} +++++</span></div>;
         };
         return (
             <span>
                 <p> <Button onClick={this.disabledExpandedCol.bind(this)}> disable fourth row </Button> &nbsp;
                     <Button onClick={this.toggleCol.bind(this)}> hide + </Button></p>
                 <Table dataSource={this.state.dataSource}
+                    expandedIndexSimulate
                     isZebra={this.state.isZebra}
                     hasBorder={this.state.hasBorder}
                     onSort={this.onSort.bind(this)}
@@ -143,6 +152,8 @@ class App extends React.Component {
                     getExpandedColProps={this.state.getExpandedColProps}
                     hasExpandedRowCtrl={this.state.hasExpandedRowCtrl}
                     onRowOpen={this.onRowOpen.bind(this)}
+                    getRowProps={this.getRowProps.bind(this)}
+                    onExpandedRowClick={this.onExpandedRowClick.bind(this)}
                 >
                     <Table.Column title="Id" dataIndex="id" sortable/>
                     <Table.Column title="Title" dataIndex="title" cell={renderTitle}/>

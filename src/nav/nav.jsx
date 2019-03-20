@@ -38,7 +38,13 @@ class Nav extends Component {
          * @enumdesc 无, 上, 下, 左, 右
          * @default 当 direction 为 'hoz' 时，默认值为 'bottom'，当 direction 为 'ver' 时，默认值为 'left'
          */
-        activeDirection: PropTypes.oneOf([null, 'top', 'bottom', 'left', 'right']),
+        activeDirection: PropTypes.oneOf([
+            null,
+            'top',
+            'bottom',
+            'left',
+            'right',
+        ]),
         /**
          * 子导航打开的模式（水平导航只支持弹出）
          * @eumdesc 行内, 弹出
@@ -68,7 +74,10 @@ class Nav extends Component {
         /**
          * 初始选中导航项的 key 值
          */
-        defaultSelectedKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        defaultSelectedKeys: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * 选中或取消选中导航项触发的回调函数
          * @param {Array} selectedKeys 选中的所有导航项的 key
@@ -109,7 +118,7 @@ class Nav extends Component {
          * 自定义导航尾部
          */
         footer: PropTypes.node,
-        popupProps: PropTypes.object
+        popupProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -127,7 +136,7 @@ class Nav extends Component {
         popupAlign: 'follow',
         hasTooltip: false,
         hasArrow: true,
-        popupProps: {}
+        popupProps: {},
     };
 
     static childContextTypes = {
@@ -135,7 +144,7 @@ class Nav extends Component {
         mode: PropTypes.string,
         iconOnly: PropTypes.bool,
         hasTooltip: PropTypes.bool,
-        hasArrow: PropTypes.bool
+        hasArrow: PropTypes.bool,
     };
 
     constructor(props) {
@@ -145,14 +154,21 @@ class Nav extends Component {
     }
 
     getChildContext() {
-        const {prefix, direction, mode, iconOnly, hasTooltip, hasArrow} = this.props;
+        const {
+            prefix,
+            direction,
+            mode,
+            iconOnly,
+            hasTooltip,
+            hasArrow,
+        } = this.props;
 
         return {
             prefix,
             mode: direction === 'hoz' ? 'popup' : mode,
             iconOnly,
             hasTooltip,
-            hasArrow
+            hasArrow,
         };
     }
 
@@ -162,17 +178,48 @@ class Nav extends Component {
 
     render() {
         // eslint-disable-next-line
-        const {prefix, className, style, children, type, direction, activeDirection, mode, triggerType, inlineIndent, openMode, popupAlign, popupClassName, iconOnly, hasArrow, hasTooltip, popupProps, rtl, ...others} = this.props;
+        const {
+            prefix,
+            className,
+            style,
+            children,
+            type,
+            direction,
+            activeDirection,
+            mode,
+            triggerType,
+            inlineIndent,
+            openMode,
+            popupAlign,
+            popupClassName,
+            iconOnly,
+            hasArrow,
+            hasTooltip,
+            popupProps,
+            rtl,
+            ...others
+        } = this.props;
 
         let realActiveDirection = activeDirection;
-        if (realActiveDirection &&
-            ((direction === 'hoz' && (realActiveDirection === 'left' || realActiveDirection === 'right')) ||
-            (direction === 'ver' && (realActiveDirection === 'top' || realActiveDirection === 'bottom')))) {
+        if (
+            realActiveDirection &&
+            ((direction === 'hoz' &&
+                (realActiveDirection === 'left' ||
+                    realActiveDirection === 'right')) ||
+                (direction === 'ver' &&
+                    (realActiveDirection === 'top' ||
+                        realActiveDirection === 'bottom')))
+        ) {
             realActiveDirection = null;
         }
 
         if (!iconOnly && realActiveDirection === undefined) {
-            realActiveDirection = direction === 'hoz' ? 'bottom' : (type === 'line' ? 'right' : 'left');
+            realActiveDirection =
+                direction === 'hoz'
+                    ? 'bottom'
+                    : type === 'line'
+                    ? 'right'
+                    : 'left';
         }
 
         const cls = classNames({
@@ -182,7 +229,7 @@ class Nav extends Component {
             [`${prefix}${realActiveDirection}`]: realActiveDirection,
             [`${prefix}icon-only`]: iconOnly,
             [`${prefix}no-arrow`]: !hasArrow,
-            [className]: !!className
+            [className]: !!className,
         });
         const newStyle = iconOnly ? { ...style, width: '60px' } : style;
 
@@ -201,18 +248,27 @@ class Nav extends Component {
             popupClassName: classNames({
                 [cls.replace(`${prefix}icon-only`, '')]: mode === 'popup',
                 [`${prefix}icon-only`]: iconOnly && mode === 'inline',
-                [popupClassName]: !!popupClassName
+                [popupClassName]: !!popupClassName,
             }),
             popupProps: popupItemProps => {
                 return {
-                    offset: direction === 'hoz' && popupItemProps.level === 1 ? [0, 2] : [-2, 0],
-                    ...popupProps
+                    offset:
+                        direction === 'hoz' && popupItemProps.level === 1
+                            ? [0, 2]
+                            : [-2, 0],
+                    ...popupProps,
                 };
-            }
+            },
         };
 
         return (
-            <Menu className={cls} style={newStyle} {...props} {...others} ref={this.getMenuRef}>
+            <Menu
+                className={cls}
+                style={newStyle}
+                {...props}
+                {...others}
+                ref={this.getMenuRef}
+            >
                 {children}
             </Menu>
         );

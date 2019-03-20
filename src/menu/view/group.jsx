@@ -22,27 +22,34 @@ export default class Group extends Component {
          */
         children: PropTypes.node,
         parentMode: PropTypes.oneOf(['inline', 'popup']),
-    }
+    };
 
     render() {
-        const { root, className, label, children, parentMode, ...others } = this.props;
+        const {
+            root,
+            className,
+            label,
+            children,
+            parentMode,
+            ...others
+        } = this.props;
         const { prefix } = root.props;
 
         const newClassName = cx({
             [`${prefix}menu-group-label`]: true,
-            [className]: !!className
+            [className]: !!className,
         });
 
         const newChildren = children.map(child => {
             const { className } = child.props;
             const newChildClassName = cx({
                 [`${prefix}menu-group-item`]: true,
-                [className]: !!className
+                [className]: !!className,
             });
 
             return cloneElement(child, {
                 parentMode,
-                className: newChildClassName
+                className: newChildClassName,
             });
         });
 
@@ -53,8 +60,11 @@ export default class Group extends Component {
                 replaceClassName
                 root={root}
                 parentMode={parentMode}
-                {...others}>{label}</Item>,
-            ...newChildren
+                {...others}
+            >
+                {label}
+            </Item>,
+            ...newChildren,
         ];
     }
 }

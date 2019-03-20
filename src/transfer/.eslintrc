@@ -1,7 +1,4 @@
 {
-    "extends": [
-        "@alifd/eslint-config-next"
-    ],
     "rules": {
         "react/no-did-mount-set-state": 1
     }

@@ -57,6 +57,9 @@ class Demo extends React.Component {
     }
 
     onDrop(info) {
+        if (!info.dragNode) {
+            return;
+        }
         const dragKey = info.dragNode.props.eventKey;
         const dropKey = info.node.props.eventKey;
         const dropPosition = info.dropPosition;
@@ -95,7 +98,7 @@ class Demo extends React.Component {
             }
         }
         this.setState({
-            gData: data,
+            gData: data
         });
     }
     render() {

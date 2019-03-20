@@ -130,7 +130,8 @@ export default class Table extends React.Component {
         loading: PropTypes.bool,
         /**
          * 自定义 Loading 组件
-         * @type {Function}
+         * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
+         * @param {Object} props 当前点击行的key
          */
         loadingComponent: PropTypes.func,
         /**
@@ -215,7 +216,10 @@ export default class Table extends React.Component {
         /**
          * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
          */
-        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        maxBodyHeight: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         /**
          * 是否启用选择模式
          * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
@@ -257,7 +261,11 @@ export default class Table extends React.Component {
         /**
          * 在内容区域滚动的时候触发的函数
          */
-        onBodyScroll: PropTypes.func
+        onBodyScroll: PropTypes.func,
+        /**
+         * 开启时，getExpandedColProps() / getRowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
+         */
+        expandedIndexSimulate: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -275,19 +283,20 @@ export default class Table extends React.Component {
         hasHeader: true,
         isZebra: false,
         loading: false,
+        expandedIndexSimulate: false,
         primaryKey: 'id',
         components: {},
-        locale: zhCN.Table
+        locale: zhCN.Table,
     };
 
     static childContextTypes = {
         notRenderCellIndex: PropTypes.array,
-        lockType: PropTypes.oneOf(['left', 'right'])
+        lockType: PropTypes.oneOf(['left', 'right']),
     };
 
     static contextTypes = {
         getTableInstance: PropTypes.func,
-        getTableInstanceForVirtual: PropTypes.func
+        getTableInstanceForVirtual: PropTypes.func,
     };
 
     constructor(props, context) {
@@ -300,20 +309,20 @@ export default class Table extends React.Component {
     }
 
     state = {
-        sort: this.props.sort || {}
+        sort: this.props.sort || {},
     };
 
     getChildContext() {
         return {
             notRenderCellIndex: this.notRenderCellIndex,
-            lockType: this.props.lockType
+            lockType: this.props.lockType,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if (typeof this.props.sort !== 'undefined') {
             this.setState({
-                sort: nextProps.sort
+                sort: nextProps.sort,
             });
         }
     }
@@ -423,7 +432,7 @@ export default class Table extends React.Component {
         return {
             flatChildren,
             groupChildren,
-            hasGroupHeader
+            hasGroupHeader,
         };
     }
 
@@ -433,7 +442,7 @@ export default class Table extends React.Component {
             let style = {};
             if (width) {
                 style = {
-                    width: width
+                    width: width,
                 };
             }
 
@@ -446,7 +455,7 @@ export default class Table extends React.Component {
         if (typeof this.props.sort === 'undefined') {
             this.setState(
                 {
-                    sort: sort
+                    sort: sort,
                 },
                 () => {
                     this.props.onSort(dataIndex, order, sort);
@@ -487,13 +496,15 @@ export default class Table extends React.Component {
                 onRowClick,
                 onRowMouseEnter,
                 onRowMouseLeave,
-                pure
+                expandedIndexSimulate,
+                pure,
+                rtl,
             } = this.props;
             const { sort } = this.state;
             const {
                 Header = HeaderComponent,
                 Wrapper = WrapperComponent,
-                Body = BodyComponent
+                Body = BodyComponent,
             } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
@@ -506,6 +517,7 @@ export default class Table extends React.Component {
                     {hasHeader ? (
                         <Header
                             prefix={prefix}
+                            rtl={rtl}
                             pure={pure}
                             affixRef={this.getAffixRef}
                             colGroup={colGroup}
@@ -523,6 +535,7 @@ export default class Table extends React.Component {
                     ) : null}
                     <Body
                         prefix={prefix}
+                        rtl={rtl}
                         pure={pure}
                         colGroup={colGroup}
                         className={`${prefix}table-body`}
@@ -536,6 +549,7 @@ export default class Table extends React.Component {
                         rowRef={this.getRowRef}
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
+                        expandedIndexSimulate={expandedIndexSimulate}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
@@ -556,7 +570,7 @@ export default class Table extends React.Component {
         this.wrapper = wrapper;
     };
 
-    getAffixRef = (affixRef) => {
+    getAffixRef = affixRef => {
         if (!affixRef) {
             return this.affixRef;
         }
@@ -615,11 +629,13 @@ export default class Table extends React.Component {
                 wrapperContent,
                 lockType,
                 locale,
+                expandedIndexSimulate,
                 refs,
                 pure,
                 rtl,
                 emptyContent,
                 filterParams,
+                columns,
                 loadingComponent: LoadingComponent = Loading,
                 ...others
             } = this.props,
@@ -628,7 +644,7 @@ export default class Table extends React.Component {
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,
-                [className]: className
+                [className]: className,
             });
 
         if (rtl) {

@@ -307,13 +307,19 @@
     &-all {
         display: block;
         cursor: pointer;
-        line-height: $select-menu-item-height;
-        padding: $s-1 $s-2;
+        padding: 0 $s-2;
         margin: 0 $s-3 $s-2;
         border-bottom: 1px solid $color-line1-2;
 
         &:hover {
             color: $color-link-3;
+        }
+
+        .#{$css-prefix}menu-icon-selected.#{$css-prefix}icon {
+            // remove display: inline-block !important; in next Y
+            display: inline-block !important;
+            top: initial;
+            color: $select-menu-icon-color;
         }
     }
 

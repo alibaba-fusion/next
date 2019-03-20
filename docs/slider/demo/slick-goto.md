@@ -19,14 +19,14 @@ const slides = [
     { url: 'https://img.alicdn.com/tps/TB1bewbNVXXXXc5XXXXXXXXXXXX-1000-300.png', text: 'Tape Player Skin Design Competition' },
     { url: 'https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg', text: 'Mobile Phone Taobao Skin Call' },
     { url: 'https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg', text: 'Design Enabling Public Welfare' },
-    { url: 'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg', text: 'Amoy Doll Design Competition' },
+    { url: 'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg', text: 'Amoy Doll Design Competition' }
 ];
 
 class SlickGoTo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            index: 0, // The initial value here need to be set to 0 for `activeIndex`. If you want the initial as 0 , you can use the `defaultIndex` property to set.
+            index: 0 // The initial value here need to be set to 0 for `activeIndex`. If you want the initial as 0 , you can use the `defaultActiveIndex` property to set.
         };
         this.changeHandler = this.changeHandler.bind(this);
     }
@@ -39,7 +39,7 @@ class SlickGoTo extends React.Component {
         const settings = {
             dots: false,
             infinite: true,
-            activeIndex: this.state.index,
+            activeIndex: this.state.index
         };
         return (
             <div>

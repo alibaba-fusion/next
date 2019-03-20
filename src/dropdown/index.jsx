@@ -1,10 +1,10 @@
-import React, {Component, Children} from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import ConfigProvider from '../config-provider';
-import {func} from '../util';
+import { func } from '../util';
 
-const {noop, makeChain, bindCtx} = func;
+const { noop, makeChain, bindCtx } = func;
 const Popup = Overlay.Popup;
 
 /**
@@ -15,6 +15,7 @@ class Dropdown extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
+        rtl: PropTypes.bool,
         className: PropTypes.string,
         /**
          * 弹层内容
@@ -87,23 +88,23 @@ class Dropdown extends Component {
         align: 'tl bl',
         offset: [0, 0],
         delay: 200,
-        autoFocus: true,
         hasMask: false,
         cache: false,
-        onPosition: noop
+        onPosition: noop,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            visible: 'visible' in props ? props.visible : (props.defaultVisible || false)
+            visible:
+                'visible' in props
+                    ? props.visible
+                    : props.defaultVisible || false,
+            autoFocus: 'autoFocus' in props ? props.autoFocus : false,
         };
 
-        bindCtx(this, [
-            'onMenuClick',
-            'onVisibleChange'
-        ]);
+        bindCtx(this, ['onTriggerKeyDown', 'onMenuClick', 'onVisibleChange']);
     }
 
     getVisible(props = this.props) {
@@ -115,24 +116,54 @@ class Dropdown extends Component {
     }
 
     onVisibleChange(visible, from) {
-        this.setState({visible});
+        this.setState({ visible });
 
         this.props.onVisibleChange(visible, from);
+    }
+
+    onTriggerKeyDown() {
+        let autoFocus = true;
+
+        if ('autoFocus' in this.props) {
+            autoFocus = this.props.autoFocus;
+        }
+
+        this.setState({
+            autoFocus,
+        });
     }
 
     render() {
         let child = Children.only(this.props.children);
         if (typeof child.type === 'function' && child.type.isNextMenu) {
             child = React.cloneElement(child, {
-                onItemClick: makeChain(this.onMenuClick, child.props.onItemClick)
+                onItemClick: makeChain(
+                    this.onMenuClick,
+                    child.props.onItemClick
+                ),
             });
         }
 
+        const { trigger, rtl } = this.props;
+        const newTrigger = React.cloneElement(trigger, {
+            onKeyDown: makeChain(
+                this.onTriggerKeyDown,
+                trigger.props.onKeyDown
+            ),
+        });
+
         return (
-            <Popup {...this.props}
+            <Popup
+                {...this.props}
+                rtl={rtl}
+                autoFocus={this.state.autoFocus}
+                trigger={newTrigger}
                 visible={this.getVisible()}
                 onVisibleChange={this.onVisibleChange}
-                canCloseByOutSideClick>{child}</Popup>
+                canCloseByOutSideClick
+            >
+                {child}
+            </Popup>
         );
     }
 }

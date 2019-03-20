@@ -33,7 +33,9 @@
         display: inline-block;
         position: relative;
         transition: all .4s $ease-out-quint;
-
+        list-style: none;
+        padding: 0;
+        margin: 0;
         &-enter,
         &-appear {
             animation: fadeInLeft .4s cubic-bezier(.78, .14, .15, .86);
@@ -73,6 +75,9 @@
             $tab-close-icon-color-selected,
             $tab-close-icon-color-disabled
         );
+    }
+    &-tab:focus {
+        outline: none;
     }
 
     &-tabpane {
@@ -215,7 +220,7 @@
         }
     }
 
-    &-wrapped:before, &-wrapped:after, {
+    &-wrapped:before, &-wrapped:after {
         content: "";
         display: table;
     }
@@ -383,6 +388,36 @@
                 height: $tab-text-item-sep-height;
                 background-color: $tab-text-item-sep-color;
             }
+        }
+    }
+
+    &-pure > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+    }
+
+    &-capsule > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+    }
+
+    &-text > #{$tab-prefix}-bar {
+        position: relative;
+        #{$tab-prefix}-nav-extra {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
         }
     }
 }

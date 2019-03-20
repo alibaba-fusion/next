@@ -14,7 +14,6 @@ const { Popup } = Overlay;
  * MenuButton
  */
 class MenuButton extends React.Component {
-
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -122,7 +121,7 @@ class MenuButton extends React.Component {
     clickMenuItem = (key, ...others) => {
         this.props.onItemClick(key, ...others);
         this.onPopupVisibleChange(false, 'menuSelect');
-    }
+    };
 
     selectMenu = (keys, ...others) => {
         if (!('selectedKeys' in this.props)) {
@@ -131,32 +130,32 @@ class MenuButton extends React.Component {
             });
         }
         this.props.onSelect(keys, ...others);
-    }
+    };
 
     onPopupOpen = () => {
         const button = findDOMNode(this);
         if (this.props.autoWidth && button && this.menu) {
             this.menu.style.width = `${button.offsetWidth}px`;
         }
-    }
+    };
 
     onPopupVisibleChange = (visible, type) => {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
         this.props.onVisibleChange(visible, type);
-    }
+    };
 
-    _menuRefHandler = (ref) => {
+    _menuRefHandler = ref => {
         this.menu = findDOMNode(ref);
 
         const refFn = this.props.menuProps.ref;
         if (typeof refFn === 'function') {
             refFn(ref);
         }
-    }
+    };
 
     render() {
         const {
@@ -177,19 +176,32 @@ class MenuButton extends React.Component {
 
         const state = this.state;
 
-        const classNames = classnames({
-            [`${prefix}menu-btn`]: true,
-            [`${prefix}expand`]: state.visible,
-            opened: state.visible,
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}menu-btn`]: true,
+                [`${prefix}expand`]: state.visible,
+                opened: state.visible,
+            },
+            className
+        );
 
-        const popupClassNames = classnames({
-            [`${prefix}menu-btn-popup`]: true,
-        }, popupClassName);
+        const popupClassNames = classnames(
+            {
+                [`${prefix}menu-btn-popup`]: true,
+            },
+            popupClassName
+        );
 
-        const trigger = (<Button style={style} className={classNames} {...obj.pickOthers(MenuButton.propTypes, others)}>
-            {label} <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
-        </Button>);
+        const trigger = (
+            <Button
+                style={style}
+                className={classNames}
+                {...obj.pickOthers(MenuButton.propTypes, others)}
+            >
+                {label}{' '}
+                <Icon type="arrow-down" className={`${prefix}menu-btn-arrow`} />
+            </Button>
+        );
 
         return (
             <Popup
@@ -209,10 +221,12 @@ class MenuButton extends React.Component {
                     selectedKeys={state.selectedKeys}
                     selectMode={selectMode}
                     onSelect={this.selectMenu}
-                    onItemClick={this.clickMenuItem}>
+                    onItemClick={this.clickMenuItem}
+                >
                     {children}
                 </Menu>
-            </Popup>);
+            </Popup>
+        );
     }
 }
 

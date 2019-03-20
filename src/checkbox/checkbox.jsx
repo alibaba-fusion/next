@@ -71,7 +71,7 @@ class Checkbox extends UIState {
          * @param {Event} e Dom 事件对象
          */
         onMouseLeave: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
         defaultChecked: false,
@@ -80,7 +80,7 @@ class Checkbox extends UIState {
         onMouseEnter: noop,
         onMouseLeave: noop,
         prefix: 'next-',
-    }
+    };
 
     static contextTypes = {
         onChange: PropTypes.func,
@@ -88,35 +88,35 @@ class Checkbox extends UIState {
         selectedValue: PropTypes.array,
         disabled: PropTypes.bool,
         prefix: PropTypes.string,
-    }
+    };
 
     constructor(props, context) {
         super(props);
 
         let checked, indeterminate;
-        if (context.__group__) {
-            indeterminate = false;
-            checked = isChecked(context.selectedValue, props.value);
-        } else {
-            if ('checked' in props) {
-                checked = props.checked;
-            } else {
-                checked = props.defaultChecked;
-            }
 
-            if ('indeterminate' in props) {
-                indeterminate = props.indeterminate;
-            } else {
-                indeterminate = props.defaultIndeterminate;
-            }
+        if ('checked' in props) {
+            checked = props.checked;
+        } else {
+            checked = props.defaultChecked;
         }
 
+        if ('indeterminate' in props) {
+            indeterminate = props.indeterminate;
+        } else {
+            indeterminate = props.defaultIndeterminate;
+        }
+        if (context.__group__) {
+            checked = isChecked(context.selectedValue, props.value);
+        }
         this.state = {
             checked,
             indeterminate,
         };
 
-        this.disabled =  props.disabled || (context.__group__ && ('disabled' in context) && context.disabled);
+        this.disabled =
+            props.disabled ||
+            (context.__group__ && 'disabled' in context && context.disabled);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -124,22 +124,24 @@ class Checkbox extends UIState {
         if (nextContext.__group__) {
             if ('selectedValue' in nextContext) {
                 this.setState({
-                    checked: isChecked(nextContext.selectedValue, nextProps.value)
+                    checked: isChecked(
+                        nextContext.selectedValue,
+                        nextProps.value
+                    ),
                 });
             }
-            this.disabled = nextProps.disabled || (
-                'disabled' in nextContext &&
-                nextContext.disabled
-            );
+            this.disabled =
+                nextProps.disabled ||
+                ('disabled' in nextContext && nextContext.disabled);
         } else {
             if ('checked' in nextProps) {
                 this.setState({
-                    checked: nextProps.checked
+                    checked: nextProps.checked,
                 });
             }
             if ('indeterminate' in nextProps) {
                 this.setState({
-                    indeterminate: nextProps.indeterminate
+                    indeterminate: nextProps.indeterminate,
                 });
             }
             this.disabled = nextProps.disabled;
@@ -147,9 +149,11 @@ class Checkbox extends UIState {
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         const { shallowEqual } = obj;
-        return !shallowEqual(this.props, nextProps) ||
+        return (
+            !shallowEqual(this.props, nextProps) ||
             !shallowEqual(this.state, nextState) ||
-            !shallowEqual(this.context, nextContext);
+            !shallowEqual(this.context, nextContext)
+        );
     }
 
     onChange(e) {
@@ -163,13 +167,13 @@ class Checkbox extends UIState {
         } else {
             if (!('checked' in this.props)) {
                 this.setState({
-                    checked: checked
+                    checked: checked,
                 });
             }
 
             if (!('indeterminate' in this.props)) {
                 this.setState({
-                    indeterminate: false
+                    indeterminate: false,
                 });
             }
             this.props.onChange(checked, e);
@@ -178,8 +182,17 @@ class Checkbox extends UIState {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { id, className, children, style, label, onMouseEnter, onMouseLeave, rtl,
-            ...otherProps } = this.props;
+        const {
+            id,
+            className,
+            children,
+            style,
+            label,
+            onMouseEnter,
+            onMouseLeave,
+            rtl,
+            ...otherProps
+        } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
         const indeterminate = !!this.state.indeterminate;
@@ -188,18 +201,18 @@ class Checkbox extends UIState {
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
-
-
-        let childInput = (<input
-            {...obj.pickOthers(Checkbox.propTypes, otherProps)}
-            id={id}
-            disabled={disabled}
-            checked={checked}
-            type="checkbox"
-            onChange={this.onChange}
-            aria-checked={indeterminate ? 'mixed' : checked}
-            className={`${prefix}checkbox-input`}
-        />);
+        let childInput = (
+            <input
+                {...obj.pickOthers(Checkbox.propTypes, otherProps)}
+                id={id}
+                disabled={disabled}
+                checked={checked}
+                type="checkbox"
+                onChange={this.onChange}
+                aria-checked={indeterminate ? 'mixed' : checked}
+                className={`${prefix}checkbox-input`}
+            />
+        );
 
         // disable 无状态操作
         if (!disabled) {
@@ -211,7 +224,7 @@ class Checkbox extends UIState {
             checked,
             disabled,
             indeterminate,
-            [this.getStateClassName()]: true
+            [this.getStateClassName()]: true,
         });
         const labelCls = `${prefix}checkbox-label`;
         const type = indeterminate ? 'semi-select' : 'select';
@@ -221,17 +234,29 @@ class Checkbox extends UIState {
                 {...othersData}
                 className={cls}
                 style={style}
+                dir={rtl ? 'rtl' : undefined}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
                 <span className={`${prefix}checkbox`}>
                     <span className={`${prefix}checkbox-inner`}>
-                        <Icon type={type} size="xs" className={indeterminate ? 'zoomIn' : ''} />
+                        <Icon
+                            type={type}
+                            size="xs"
+                            className={indeterminate ? 'zoomIn' : ''}
+                        />
                     </span>
                     {childInput}
                 </span>
-                {[label, children].map((item, i) => (item ? <span key={i} className={labelCls}>{item}</span> : null))}
-            </label>);
+                {[label, children].map((item, i) =>
+                    item ? (
+                        <span key={i} className={labelCls}>
+                            {item}
+                        </span>
+                    ) : null
+                )}
+            </label>
+        );
     }
 }
 

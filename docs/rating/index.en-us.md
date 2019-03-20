@@ -26,3 +26,13 @@ Rating component is usually used for customer feedback.
 | onChange     | callback function on click star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
 | onHoverChange     | callback function on hover star<br><br>**signatures**:<br>Function(value: String) => void<br>**params**:<br>_value_: {String} score | Function | func.noop |
 | disabled     | disabled rate or not                                                                                               | Boolean  | false     |
+| readAs        | custom display of grade<br><br>**signatures**:<br>Function() => void                                                | Function | val => val |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | increase star rating                          |
+| Down Arrow  | decrease star rating                          |
+| Right Arrow | increase star rating |
+| Left Arrow  | decrease star rating |

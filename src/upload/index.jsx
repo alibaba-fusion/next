@@ -1,6 +1,7 @@
 import React from 'react';
 import ConfigProvider from '../config-provider';
 import { log } from '../util';
+import { errorCode } from './util';
 import Upload from './upload';
 import List from './list';
 import Card from './card';
@@ -12,7 +13,7 @@ Upload.Card = ConfigProvider.config(Card, { componentName: 'Upload' });
 Upload.Dragger = ConfigProvider.config(Dragger, { componentName: 'Upload' });
 Upload.Selecter = Selecter;
 Upload.Uploader = Uploader;
-
+Upload.ErrorCode = errorCode;
 // compatible with 0.x version
 /* istanbul ignore next */
 function transform(props, deprecated) {
@@ -45,29 +46,29 @@ function transform(props, deprecated) {
 // compatible with 0.x version
 Upload.ImageUpload = ConfigProvider.config(Card, {
     componentName: 'Upload',
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         deprecated('Upload.ImageUpload', 'Upload.Card', 'Upload');
-        const newprops = transform(props, () => { });
+        const newprops = transform(props, () => {});
         if (newprops.locale && newprops.locale.image) {
             newprops.locale.card = newprops.locale.image;
         }
 
         return newprops;
-    }
+    },
 });
 
 // compatible with 0.x version
 Upload.DragUpload = ConfigProvider.config(Dragger, {
     componentName: 'Upload',
-    transform: /* istanbul ignore next */(props, deprecated) => {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
         deprecated('Upload.DragUpload', 'Upload.Dragger', 'Upload');
-        const newprops = transform(props, () => { });
+        const newprops = transform(props, () => {});
         if (!newprops.listType) {
             newprops.listType = 'card';
         }
 
         return newprops;
-    }
+    },
 });
 
 // compatible with 0.x version
@@ -76,7 +77,18 @@ Upload.Core = class Core extends React.Component {
     constructor(props) {
         super(props);
         // eslint-disable-next-line
-        const { action, name, method, beforeUpload, onProgress, onError, withCredentials, headers, data, onSuccess } = this.props;
+        const {
+            action,
+            name,
+            method,
+            beforeUpload,
+            onProgress,
+            onError,
+            withCredentials,
+            headers,
+            data,
+            onSuccess,
+        } = this.props;
 
         this.uploader = new Uploader({
             action,
@@ -88,7 +100,7 @@ Upload.Core = class Core extends React.Component {
             withCredentials,
             headers,
             data,
-            onSuccess
+            onSuccess,
         });
     }
 
@@ -96,26 +108,47 @@ Upload.Core = class Core extends React.Component {
         this.uploader.abort();
     }
 
-    handleSelect = (files) => {
+    handleSelect = files => {
         this.uploader.startUpload(files);
-    }
+    };
 
     render() {
-        log.deprecated('Upload.Core', 'Upload.Selecter and Upload.Uploader', 'Upload');
+        log.deprecated(
+            'Upload.Core',
+            'Upload.Selecter and Upload.Uploader',
+            'Upload'
+        );
 
         // eslint-disable-next-line
-        const { action, name, method, beforeUpload, onProgress, onError, withCredentials, headers, data, onSuccess, ...others } = this.props;
+        const {
+            action,
+            name,
+            method,
+            beforeUpload,
+            onProgress,
+            onError,
+            withCredentials,
+            headers,
+            data,
+            onSuccess,
+            ...others
+        } = this.props;
 
         const props = others;
 
-        return <Selecter {...transform(props, () => { })} onSelect={this.handleSelect} />;
+        return (
+            <Selecter
+                {...transform(props, () => {})}
+                onSelect={this.handleSelect}
+            />
+        );
     }
 };
 
 // compatible with 0.x version
 Upload.List = ConfigProvider.config(List, {
     componentName: 'Upload',
-    transform
+    transform,
 });
 
 // compatible with 0.x version
@@ -126,5 +159,5 @@ Upload.CropUpload = function() {
 };
 
 export default ConfigProvider.config(Upload, {
-    transform
+    transform,
 });

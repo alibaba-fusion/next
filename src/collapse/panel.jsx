@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import {func} from '../util';
+import { func, KEYCODE } from '../util';
 
 /** Collapse.Panel */
 class Panel extends React.Component {
@@ -31,6 +31,7 @@ class Panel extends React.Component {
          */
         className: PropTypes.string,
         onClick: PropTypes.func,
+        id: PropTypes.string,
     };
 
     static defaultProps = {
@@ -41,8 +42,27 @@ class Panel extends React.Component {
 
     static isNextPanel = true; //
 
+    onKeyDown = e => {
+        const { keyCode } = e;
+        if (keyCode === KEYCODE.SPACE) {
+            const { onClick } = this.props;
+            e.preventDefault();
+            onClick && onClick(e);
+        }
+    };
     render() {
-        const { title, children, className, isExpanded, disabled, style, prefix, onClick, ...others} = this.props;
+        const {
+            title,
+            children,
+            className,
+            isExpanded,
+            disabled,
+            style,
+            prefix,
+            onClick,
+            id,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}collapse-panel`]: true,
@@ -51,13 +71,39 @@ class Panel extends React.Component {
             [className]: className,
         });
 
+        const iconCls = classNames({
+            [`${prefix}collapse-panel-icon`]: true,
+            [`${prefix}collapse-panel-icon-expanded`]: isExpanded,
+        });
+
+        // 为了无障碍 需要添加两个id
+        const headingId = id ? `${id}-heading` : undefined;
+        const regionId = id ? `${id}-region` : undefined;
         return (
-            <div className={cls} style={style} {...others}>
-                <div className={`${prefix}collapse-panel-title`} onClick={onClick}>
-                    <Icon type="arrow-up" className={`${prefix}collapse-panel-icon`} />
+            <div className={cls} style={style} id={id} {...others}>
+                <div
+                    id={headingId}
+                    className={`${prefix}collapse-panel-title`}
+                    onClick={onClick}
+                    onKeyDown={this.onKeyDown}
+                    tabIndex="0"
+                    aria-disabled={disabled}
+                    aria-expanded={isExpanded}
+                    aria-controls={regionId}
+                    role="button"
+                >
+                    <Icon
+                        type="arrow-up"
+                        className={iconCls}
+                        aria-hidden="true"
+                    />
                     {title}
                 </div>
-                <div className={`${prefix}collapse-panel-content`}>
+                <div
+                    className={`${prefix}collapse-panel-content`}
+                    role="region"
+                    id={regionId}
+                >
                     {children}
                 </div>
             </div>

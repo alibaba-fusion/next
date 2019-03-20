@@ -5,7 +5,7 @@ export default {
         number: '%s 不是合法的数字',
         email: '%s 不是合法的 email 地址',
         url: '%s 不是合法的 URL 地址',
-        tel: '%s 不是合法的电话号码'
+        tel: '%s 不是合法的电话号码',
     },
     number: {
         length: '%s 长度必须是 %s',
@@ -24,7 +24,7 @@ export default {
     array: {
         length: '%s 个数必须是 %s',
         minLength: '%s 个数不得少于 %s',
-        maxLength: '%s 个数不得超过 %s'
+        maxLength: '%s 个数不得超过 %s',
     },
     pattern: '%s 字段数值 %s 不匹配正则 %s',
 };

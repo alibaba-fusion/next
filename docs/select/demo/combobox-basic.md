@@ -58,7 +58,7 @@ class Demo extends React.Component {
             value: null,
             size: undefined,
             disabled: undefined,
-            hasClear: undefined,
+            hasClear: undefined
         };
 
         this.handleChange = this.handleChange.bind(this);

@@ -23,7 +23,7 @@ class CustomProgress extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            percent: 0,
+            percent: 0
         };
     }
 

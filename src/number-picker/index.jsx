@@ -9,7 +9,6 @@ import { func, obj } from '../util';
 
 /** NumberPicker */
 class NumberPicker extends React.Component {
-
     static propTypes = {
         /**
          * 样式前缀
@@ -39,10 +38,7 @@ class NumberPicker extends React.Component {
         /**
          * 步长
          */
-        step: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 保留小数点后位数
          */
@@ -95,13 +91,21 @@ class NumberPicker extends React.Component {
          */
         style: PropTypes.object,
         state: PropTypes.oneOf(['error']),
-
         /**
          * 格式化当前值
          * @param {Number} value
          * @return {String|Number}
          */
         format: PropTypes.func,
+        /**
+         * 增加按钮的props
+         */
+        upBtnProps: PropTypes.object,
+        /**
+         * 减少按钮的props
+         */
+        downBtnProps: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -147,6 +151,8 @@ class NumberPicker extends React.Component {
     onChange(value, e) {
         if (this.props.editable === true) {
             value = value.trim();
+            // Compatible Chinese Input Method
+            value = value.replace('。', '.');
             // ignore space
             if (this.state.value === value) {
                 return;
@@ -157,7 +163,7 @@ class NumberPicker extends React.Component {
                 // ignore when input start form '-'
                 if (value === '-' || this.state.value === '-') {
                     this.setState({
-                        value
+                        value,
                     });
                     return;
                 }
@@ -166,14 +172,14 @@ class NumberPicker extends React.Component {
                 // but take care of Number('')=0;
                 if (Number(this.state.value) === Number(value)) {
                     this.setState({
-                        value
+                        value,
                     });
                     return;
                 }
                 // ignore when value < min (because number is inputted one by one)
                 if (!isNaN(value) && Number(value) < this.props.min) {
                     this.setState({
-                        value
+                        value,
                     });
                     return;
                 }
@@ -190,7 +196,7 @@ class NumberPicker extends React.Component {
     onCorrect(currentValue, oldValue) {
         this.props.onCorrect({
             currentValue,
-            oldValue
+            oldValue,
         });
     }
 
@@ -240,7 +246,6 @@ class NumberPicker extends React.Component {
             if (pointPos !== -1 && strValue.length > cutPos) {
                 val = Number(strValue.substr(0, cutPos));
             }
-
         } else {
             val = this.state.value;
         }
@@ -259,7 +264,10 @@ class NumberPicker extends React.Component {
             });
         }
 
-        this.props.onChange(isNaN(v) || v === '' ? undefined : v, { ...e, triggerType });
+        this.props.onChange(isNaN(v) || v === '' ? undefined : v, {
+            ...e,
+            triggerType,
+        });
     }
 
     setInputValue(v, e) {
@@ -303,7 +311,9 @@ class NumberPicker extends React.Component {
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
-            result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
+            result =
+                (precisionFactor * val + precisionFactor * step) /
+                precisionFactor;
 
             result = this.hackChrome(result);
         } else {
@@ -317,7 +327,9 @@ class NumberPicker extends React.Component {
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
-            result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
+            result =
+                (precisionFactor * val - precisionFactor * step) /
+                precisionFactor;
 
             result = this.hackChrome(result);
         } else {
@@ -376,7 +388,9 @@ class NumberPicker extends React.Component {
     renderValue() {
         const { value, hasFocused } = this.state;
         const { format } = this.props;
-        return (typeof format === 'function' && !hasFocused) ? format(value) : value;
+        return typeof format === 'function' && !hasFocused
+            ? format(value)
+            : value;
     }
 
     focus() {
@@ -387,8 +401,27 @@ class NumberPicker extends React.Component {
         this.inputRef = ref;
     }
 
+    handleMouseDown(e) {
+        e.preventDefault();
+    }
+
     render() {
-        const { type, prefix, disabled, style, className, size, max, min, autoFocus, editable, state } = this.props;
+        const {
+            type,
+            prefix,
+            rtl,
+            disabled,
+            style,
+            className,
+            size,
+            max,
+            min,
+            autoFocus,
+            editable,
+            state,
+            upBtnProps,
+            downBtnProps,
+        } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -412,25 +445,50 @@ class NumberPicker extends React.Component {
             }
         }
 
-        let innerAfter = null, innerAfterClassName = null, addonBefore = null, addonAfter = null;
+        let innerAfter = null,
+            innerAfterClassName = null,
+            addonBefore = null,
+            addonAfter = null;
         if (type === 'normal') {
-            innerAfter = ([
-                <Button disabled={disabled || upDisabled} onClick={this.up.bind(this)} key="0">
+            innerAfter = [
+                <Button
+                    {...upBtnProps}
+                    onMouseDown={this.handleMouseDown}
+                    disabled={disabled || upDisabled}
+                    onClick={this.up.bind(this)}
+                    key="0"
+                >
                     <Icon size="xxs" type="arrow-up" />
                 </Button>,
-                <Button disabled={disabled || downDisabled} onClick={this.down.bind(this)} key="1">
+                <Button
+                    {...downBtnProps}
+                    onMouseDown={this.handleMouseDown}
+                    disabled={disabled || downDisabled}
+                    onClick={this.down.bind(this)}
+                    key="1"
+                >
                     <Icon size="xxs" type="arrow-down" />
-                </Button>
-            ]);
+                </Button>,
+            ];
             innerAfterClassName = `${prefixCls}-handler`;
         } else {
             addonBefore = (
-                <Button size={size} disabled={disabled || downDisabled} onClick={this.down.bind(this)}>
+                <Button
+                    {...downBtnProps}
+                    size={size}
+                    disabled={disabled || downDisabled}
+                    onClick={this.down.bind(this)}
+                >
                     <Icon type="minus" size="xs" />
                 </Button>
             );
             addonAfter = (
-                <Button size={size} disabled={disabled || upDisabled} onClick={this.up.bind(this)}>
+                <Button
+                    {...upBtnProps}
+                    size={size}
+                    disabled={disabled || upDisabled}
+                    onClick={this.up.bind(this)}
+                >
                     <Icon type="add" size="xs" />
                 </Button>
             );
@@ -438,26 +496,36 @@ class NumberPicker extends React.Component {
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
-        return (<span className={cls} style={style} {...dataAttrs}>
-            <Input
-                {...others}
-                state={state === 'error' ? 'error' : null}
-                onBlur={this.onBlur.bind(this)}
-                onFocus={this.onFocus.bind(this)}
-                onKeyDown={this.onKeyDown.bind(this)}
-                autoFocus={autoFocus}
-                readOnly={!editable}
-                value={this.renderValue()}
-                disabled={disabled}
-                size={size}
-                onChange={this.onChange.bind(this)}
-                ref={this.saveInputRef.bind(this)}
-                innerAfter={innerAfter}
-                innerAfterClassName={innerAfterClassName}
-                addonBefore={addonBefore}
-                addonAfter={addonAfter}
-            />
-        </span>);
+
+        return (
+            <span
+                className={cls}
+                style={style}
+                dir={rtl ? 'rtl' : undefined}
+                {...dataAttrs}
+            >
+                <Input
+                    {...others}
+                    aria-valuemax={max !== Infinity ? max : undefined}
+                    aria-valuemin={min !== -Infinity ? min : undefined}
+                    state={state === 'error' ? 'error' : null}
+                    onBlur={this.onBlur.bind(this)}
+                    onFocus={this.onFocus.bind(this)}
+                    onKeyDown={this.onKeyDown.bind(this)}
+                    autoFocus={autoFocus}
+                    readOnly={!editable}
+                    value={this.renderValue()}
+                    disabled={disabled}
+                    size={size}
+                    onChange={this.onChange.bind(this)}
+                    ref={this.saveInputRef.bind(this)}
+                    innerAfter={innerAfter}
+                    innerAfterClassName={innerAfterClassName}
+                    addonBefore={addonBefore}
+                    addonAfter={addonAfter}
+                />
+            </span>
+        );
     }
 }
 

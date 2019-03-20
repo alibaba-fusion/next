@@ -9,9 +9,10 @@ import {
     setDirection,
     getLocale,
     getLanguage,
-    getDirection
+    getDirection,
 } from './config';
 import Consumer from './consumer';
+import ErrorBoundary from './error-boundary';
 import Cache from './cache';
 
 const childContextCache = new Cache();
@@ -31,6 +32,14 @@ class ConfigProvider extends Component {
          */
         locale: PropTypes.object,
         /**
+         * 是否开启错误捕捉 errorBoundary
+         * 如需自定义参数，请传入对象 对象接受参数列表如下：
+         *
+         * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
+         * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传
+         */
+        errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+        /**
          * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用
          */
         pure: PropTypes.bool,
@@ -45,11 +54,12 @@ class ConfigProvider extends Component {
         /**
          * 组件树
          */
-        children: PropTypes.element
+        children: PropTypes.element,
     };
 
     static defaultProps = {
-        warning: true
+        warning: true,
+        errorBoundary: false,
     };
 
     static childContextTypes = {
@@ -57,7 +67,11 @@ class ConfigProvider extends Component {
         nextLocale: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
-        nextWarning: PropTypes.bool
+        nextWarning: PropTypes.bool,
+        nextErrorBoundary: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.object,
+        ]),
     };
 
     /**
@@ -77,7 +91,11 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(props, childContextCache.root() || {}, displayName);
+        return getContextProps(
+            props,
+            childContextCache.root() || {},
+            displayName
+        );
     };
 
     static initLocales = initLocales;
@@ -88,16 +106,25 @@ class ConfigProvider extends Component {
     static getLocale = getLocale;
     static getDirection = getDirection;
     static Consumer = Consumer;
+    static ErrorBoundary = ErrorBoundary;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextRtl, nextWarning } = childContextCache.root() || {};
+        const {
+            nextPrefix,
+            nextLocale,
+            nextPure,
+            nextRtl,
+            nextWarning,
+            nextErrorBoundary,
+        } = childContextCache.root() || {};
 
         return {
             prefix: nextPrefix,
             locale: nextLocale,
             pure: nextPure,
             rtl: nextRtl,
-            warning: nextWarning
+            warning: nextWarning,
+            errorBoundary: nextErrorBoundary,
         };
     };
 
@@ -105,19 +132,31 @@ class ConfigProvider extends Component {
         super(...args);
         childContextCache.add(
             this,
-            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+            Object.assign(
+                {},
+                childContextCache.get(this, {}),
+                this.getChildContext()
+            )
         );
     }
 
     getChildContext() {
-        const { prefix, locale, pure, warning, rtl } = this.props;
+        const {
+            prefix,
+            locale,
+            pure,
+            warning,
+            rtl,
+            errorBoundary,
+        } = this.props;
 
         return {
             nextPrefix: prefix,
             nextLocale: locale,
             nextPure: pure,
             nextRtl: rtl,
-            nextWarning: warning
+            nextWarning: warning,
+            nextErrorBoundary: errorBoundary,
         };
     }
 
@@ -134,7 +173,11 @@ class ConfigProvider extends Component {
     componentDidUpdate() {
         childContextCache.add(
             this,
-            Object.assign({}, childContextCache.get(this, {}), this.getChildContext())
+            Object.assign(
+                {},
+                childContextCache.get(this, {}),
+                this.getChildContext()
+            )
         );
     }
 

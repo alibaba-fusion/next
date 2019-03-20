@@ -26,7 +26,7 @@ const data = [{
         key: 11,
         name: 'b',
         age: 33,
-        address: 'bb',
+        address: 'bb'
     }, {
         key: 12,
         name: 'c',
@@ -36,8 +36,8 @@ const data = [{
             key: 121,
             name: 'd',
             age: 33,
-            address: 'dd',
-        }],
+            address: 'dd'
+        }]
     }, {
         key: 13,
         name: 'e',
@@ -52,15 +52,15 @@ const data = [{
                 key: 1311,
                 name: 'g',
                 age: 33,
-                address: 'gg',
+                address: 'gg'
             }, {
                 key: 1312,
                 name: 'h',
                 age: 33,
-                address: 'hh',
-            }],
-        }],
-    }],
+                address: 'hh'
+            }]
+        }]
+    }]
 }, {
     key: 2,
     name: 'i',

@@ -1,9 +1,14 @@
-import {isPromise} from './object';
+import { isPromise } from './object';
 
 /**
  * 一个空方法，返回入参本身或空对象
  */
 export const noop = () => {};
+
+/**
+ * 一个空方法，返回false
+ */
+export const prevent = () => false;
 
 /**
  * 将N个方法合并为一个链式调用的方法
@@ -13,12 +18,12 @@ export const noop = () => {};
  * @example
  * func.makeChain(this.handleChange, this.props.onChange);
  */
-export function makeChain (...fns) {
+export function makeChain(...fns) {
     if (fns.length === 1) {
         return fns[0];
     }
 
-    return function chainedFunction (...args) {
+    return function chainedFunction(...args) {
         for (let i = 0, j = fns.length; i < j; i++) {
             if (fns[i] && fns[i].apply) {
                 fns[i].apply(this, args);
@@ -37,7 +42,7 @@ export function makeChain (...fns) {
  * @example
  * func.bindCtx(this, ['handleClick', 'handleChange']);
  */
-export function bindCtx (ctx, fns, ns) {
+export function bindCtx(ctx, fns, ns) {
     if (typeof fns === 'string') {
         fns = [fns];
     }
@@ -57,15 +62,17 @@ export function bindCtx (ctx, fns, ns) {
  * @param  {Function} success 执行结果返回非false的回调
  * @param  {Function} [failure=noop] 执行结果返回false的回调
  */
-export function promiseCall (ret, success, failure = noop) {
+export function promiseCall(ret, success, failure = noop) {
     if (isPromise(ret)) {
-        return ret.then(result => {
-            success(result);
-            return result;
-        }).catch(e => {
-            failure(e);
-            // throw e;
-        });
+        return ret
+            .then(result => {
+                success(result);
+                return result;
+            })
+            .catch(e => {
+                failure(e);
+                // throw e;
+            });
     }
 
     return ret !== false ? success(ret) : failure(ret);

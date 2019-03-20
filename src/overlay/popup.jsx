@@ -48,7 +48,7 @@ export default class Popup extends Component {
          */
         delay: PropTypes.number,
         /**
-         * 触发元素是否可以关闭弹层
+         * trigger 是否可以关闭弹层
          */
         canCloseByTrigger: PropTypes.bool,
         /**
@@ -83,23 +83,32 @@ export default class Popup extends Component {
         super(props);
 
         this.state = {
-            visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible
+            visible:
+                typeof props.visible === 'undefined'
+                    ? props.defaultVisible
+                    : props.visible,
         };
 
         bindCtx(this, [
-            'handleTriggerClick', 'handleTriggerKeyDown',
-            'handleTriggerMouseEnter', 'handleTriggerMouseLeave',
-            'handleTriggerFocus', 'handleTriggerBlur',
-            'handleContentMouseEnter', 'handleContentMouseLeave',
-            'handleContentMouseDown', 'handleRequestClose',
-            'handleMaskMouseEnter', 'handleMaskMouseLeave'
+            'handleTriggerClick',
+            'handleTriggerKeyDown',
+            'handleTriggerMouseEnter',
+            'handleTriggerMouseLeave',
+            'handleTriggerFocus',
+            'handleTriggerBlur',
+            'handleContentMouseEnter',
+            'handleContentMouseLeave',
+            'handleContentMouseDown',
+            'handleRequestClose',
+            'handleMaskMouseEnter',
+            'handleMaskMouseLeave',
         ]);
     }
 
     componentWillReceiveProps(nextProps) {
         if ('visible' in nextProps) {
             this.setState({
-                visible: nextProps.visible
+                visible: nextProps.visible,
             });
         }
     }
@@ -113,7 +122,7 @@ export default class Popup extends Component {
     handleVisibleChange(visible, type, e) {
         if (!('visible' in this.props)) {
             this.setState({
-                visible
+                visible,
             });
         }
 
@@ -209,26 +218,53 @@ export default class Popup extends Component {
         const props = {
             key: 'trigger',
             'aria-haspopup': true,
-            'aria-expanded': this.state.visible
+            'aria-expanded': this.state.visible,
         };
 
         if (!disabled) {
             const { triggerType } = this.props;
-            const triggerTypes = Array.isArray(triggerType) ? triggerType : [triggerType];
-            const { onClick, onKeyDown, onMouseEnter, onMouseLeave, onFocus, onBlur } = trigger.props;
+            const triggerTypes = Array.isArray(triggerType)
+                ? triggerType
+                : [triggerType];
+            const {
+                onClick,
+                onKeyDown,
+                onMouseEnter,
+                onMouseLeave,
+                onFocus,
+                onBlur,
+            } = trigger.props;
             triggerTypes.forEach(triggerType => {
                 switch (triggerType) {
                     case 'click':
-                        props.onClick = makeChain(this.handleTriggerClick, onClick);
-                        props.onKeyDown = makeChain(this.handleTriggerKeyDown, onKeyDown);
+                        props.onClick = makeChain(
+                            this.handleTriggerClick,
+                            onClick
+                        );
+                        props.onKeyDown = makeChain(
+                            this.handleTriggerKeyDown,
+                            onKeyDown
+                        );
                         break;
-                    case 'hover' :
-                        props.onMouseEnter = makeChain(this.handleTriggerMouseEnter, onMouseEnter);
-                        props.onMouseLeave = makeChain(this.handleTriggerMouseLeave, onMouseLeave);
+                    case 'hover':
+                        props.onMouseEnter = makeChain(
+                            this.handleTriggerMouseEnter,
+                            onMouseEnter
+                        );
+                        props.onMouseLeave = makeChain(
+                            this.handleTriggerMouseLeave,
+                            onMouseLeave
+                        );
                         break;
                     case 'focus':
-                        props.onFocus = makeChain(this.handleTriggerFocus, onFocus);
-                        props.onBlur = makeChain(this.handleTriggerBlur, onBlur);
+                        props.onFocus = makeChain(
+                            this.handleTriggerFocus,
+                            onFocus
+                        );
+                        props.onBlur = makeChain(
+                            this.handleTriggerBlur,
+                            onBlur
+                        );
                         break;
                     default:
                         break;
@@ -241,21 +277,32 @@ export default class Popup extends Component {
 
     renderContent() {
         const { children, triggerType } = this.props;
-        const triggerTypes = Array.isArray(triggerType) ? triggerType : [triggerType];
+        const triggerTypes = Array.isArray(triggerType)
+            ? triggerType
+            : [triggerType];
         const content = Children.only(children);
         const { onMouseDown, onMouseEnter, onMouseLeave } = content.props;
         const props = {
-            key: 'portal'
+            key: 'portal',
         };
 
         triggerTypes.forEach(triggerType => {
             switch (triggerType) {
                 case 'focus':
-                    props.onMouseDown = makeChain(this.handleContentMouseDown, onMouseDown);
+                    props.onMouseDown = makeChain(
+                        this.handleContentMouseDown,
+                        onMouseDown
+                    );
                     break;
                 case 'hover':
-                    props.onMouseEnter = makeChain(this.handleContentMouseEnter, onMouseEnter);
-                    props.onMouseLeave = makeChain(this.handleContentMouseLeave, onMouseLeave);
+                    props.onMouseEnter = makeChain(
+                        this.handleContentMouseEnter,
+                        onMouseEnter
+                    );
+                    props.onMouseLeave = makeChain(
+                        this.handleContentMouseLeave,
+                        onMouseLeave
+                    );
                     break;
                 default:
                     break;
@@ -266,9 +313,17 @@ export default class Popup extends Component {
     }
 
     renderPortal() {
-        const { target, safeNode, followTrigger, triggerType, hasMask, wrapperStyle, ...others } = this.props;
-        let {container} = this.props;
-        const findTriggerNode = () => (findDOMNode(this) || {});
+        const {
+            target,
+            safeNode,
+            followTrigger,
+            triggerType,
+            hasMask,
+            wrapperStyle,
+            ...others
+        } = this.props;
+        let { container } = this.props;
+        const findTriggerNode = () => findDOMNode(this) || {};
         const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
         safeNodes.unshift(findTriggerNode);
 
@@ -285,7 +340,8 @@ export default class Popup extends Component {
         }
 
         return (
-            <Overlay {...others}
+            <Overlay
+                {...others}
                 key="overlay"
                 ref={overlay => (this.overlay = overlay)}
                 visible={this.state.visible}
@@ -295,16 +351,14 @@ export default class Popup extends Component {
                 wrapperStyle={newWrapperStyle}
                 triggerType={triggerType}
                 hasMask={hasMask}
-                onRequestClose={this.handleRequestClose}>
+                onRequestClose={this.handleRequestClose}
+            >
                 {this.renderContent()}
             </Overlay>
         );
     }
 
     render() {
-        return [
-            this.renderTrigger(),
-            this.renderPortal()
-        ];
+        return [this.renderTrigger(), this.renderPortal()];
     }
 }

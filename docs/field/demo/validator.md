@@ -43,9 +43,9 @@ class App extends React.Component {
 
     isChecked(rule, value, callback) {
         if (!value) {
-            callback('consent agreement not checked ');
+            return callback('consent agreement not checked ');
         } else {
-            callback();
+            return callback();
         }
     }
 
@@ -95,7 +95,7 @@ class App extends React.Component {
             <br/>
 
             agreement:
-            <Checkbox  {...init('checkbox', {
+            <Checkbox {...init('checkbox', {
                 valueName: 'checked',
                 rules: [{validator: this.isChecked}]
             })} />
@@ -105,11 +105,11 @@ class App extends React.Component {
             <br/>
             <br/>
 
-            <Input multiple maxLength={10} defaultValue=">3 and <10" {...init('textarea', {
+            <Input.TextArea placeholder=">3 and <10" {...init('textarea', {
                 rules: [{
                     required: true,
-                    min: 3,
-                    max: 10
+                    minLength: 3,
+                    maxLength: 10
                 }]
             })} />
             {this.field.getError('textarea') ?
@@ -120,7 +120,7 @@ class App extends React.Component {
 
             {this.state.checkboxStatus ? <div>
                 Array validate：
-                <CheckboxGroup dataSource={list}  {...init('checkboxgroup', {
+                <CheckboxGroup dataSource={list} {...init('checkboxgroup', {
                     rules: [{
                         required: true,
                         type: 'array',

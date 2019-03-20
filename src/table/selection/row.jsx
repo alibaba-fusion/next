@@ -6,16 +6,16 @@ import Row from '../expanded/row';
 /* eslint-disable react/prefer-stateless-function */
 export default class SelectionRow extends React.Component {
     static propTypes = {
-        ...Row.propTypes
-    }
+        ...Row.propTypes,
+    };
 
     static defaultProps = {
-        ...Row.defaultProps
-    }
+        ...Row.defaultProps,
+    };
 
     static contextTypes = {
         selectedRowKeys: PropTypes.array,
-    }
+    };
 
     render() {
         /* eslint-disable no-unused-vars*/
@@ -23,10 +23,8 @@ export default class SelectionRow extends React.Component {
         const { selectedRowKeys } = this.context;
         const cls = classnames({
             selected: selectedRowKeys.indexOf(record[primaryKey]) > -1,
-            [className]: className
+            [className]: className,
         });
-        return (<Row {...this.props} className={cls} />);
+        return <Row {...this.props} className={cls} />;
     }
 }
-
-

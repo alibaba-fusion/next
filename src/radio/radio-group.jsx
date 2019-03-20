@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -12,7 +12,6 @@ const { pickOthers } = obj;
  * @order 2
  */
 class RadioGroup extends Component {
-
     static propTypes = {
         /**
          * 样式类名的品牌前缀
@@ -34,11 +33,23 @@ class RadioGroup extends Component {
         /**
          * radio group的选中项的值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         /**
          * radio group的默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
+        /**
+         * 设置标签类型
+         */
+        component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
          * 选中值改变时的事件
          * @param {String/Number} value 选中项的值
@@ -66,35 +77,39 @@ class RadioGroup extends Component {
         /**
          * 通过子元素方式设置内部radio
          */
-        children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element]),
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.element),
+            PropTypes.element,
+        ]),
 
         /**
          * 子项目的排列方式
          * - hoz: 水平排列 (default)
          * - ver: 垂直排列
          */
-        itemDirection: PropTypes.oneOf([
-            'hoz',
-            'ver',
-        ]),
-    }
+        itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+    };
 
     static defaultProps = {
         dataSource: [],
         size: 'medium',
-        onChange: () => {
-        },
+        onChange: () => {},
         prefix: 'next-',
+        component: 'div',
         itemDirection: 'hoz',
-    }
+    };
 
     static childContextTypes = {
         onChange: PropTypes.func,
         __group__: PropTypes.bool,
         isButton: PropTypes.bool,
-        selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-        disabled: PropTypes.bool
-    }
+        selectedValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
+        disabled: PropTypes.bool,
+    };
 
     constructor(props) {
         super(props);
@@ -104,7 +119,7 @@ class RadioGroup extends Component {
         } else if ('defaultValue' in props) {
             value = props.defaultValue;
         }
-        this.state = {value};
+        this.state = { value };
         this.onChange = this.onChange.bind(this);
     }
 
@@ -114,25 +129,25 @@ class RadioGroup extends Component {
             isButton: this.props.shape === 'button',
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: this.props.disabled
+            disabled: this.props.disabled,
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        let {value} = nextProps;
+        let { value } = nextProps;
         if ('value' in nextProps) {
             if (value === undefined) {
                 value = '';
             }
             this.setState({
-                value
+                value,
             });
         }
     }
 
     onChange(currentValue, e) {
         if (!('value' in this.props)) {
-            this.setState({value: currentValue});
+            this.setState({ value: currentValue });
         }
         if (currentValue !== this.state.value) {
             this.props.onChange(currentValue, e);
@@ -140,9 +155,21 @@ class RadioGroup extends Component {
     }
 
     render() {
-        const { rtl, className, shape, size, style, prefix, itemDirection } = this.props;
-        const others = pickOthers(Object.keys(RadioGroup.propTypes), this.props);
-        const disabled = this.props.disabled;
+        const {
+            rtl,
+            className,
+            disabled,
+            shape,
+            size,
+            style,
+            prefix,
+            itemDirection,
+            component,
+        } = this.props;
+        const others = pickOthers(
+            Object.keys(RadioGroup.propTypes),
+            this.props
+        );
 
         if (rtl) {
             others.dir = 'rtl';
@@ -150,7 +177,29 @@ class RadioGroup extends Component {
 
         let children;
         if (this.props.children) {
-            children = this.props.children;
+            children = React.Children.map(
+                this.props.children,
+                (child, index) => {
+                    if (!React.isValidElement(child)) {
+                        return child;
+                    }
+                    const checked = this.state.value === child.props.value;
+                    const tabIndex =
+                        (index === 0 && !this.state.value) || checked ? 0 : -1;
+                    const childrtl =
+                        child.props.rtl === undefined ? rtl : child.props.rtl;
+                    return React.cloneElement(
+                        child,
+                        child.props.tabIndex === undefined
+                            ? {
+                                  checked,
+                                  tabIndex,
+                                  rtl: childrtl,
+                              }
+                            : { checked, rtl: childrtl }
+                    );
+                }
+            );
         } else {
             children = this.props.dataSource.map((item, index) => {
                 let option = item;
@@ -158,18 +207,24 @@ class RadioGroup extends Component {
                     option = {
                         label: item,
                         value: item,
-                        disabled
+                        disabled,
                     };
                 }
                 const checked = this.state.value === option.value;
-                return (<Radio
-                    key={index}
-                    tabIndex={((index === 0 && !this.state.value) || checked) ? 0 : -1}
-                    value={option.value}
-                    checked={checked}
-                    label={option.label}
-                    disabled={disabled || option.disabled}
-                />);
+                return (
+                    <Radio
+                        key={index}
+                        tabIndex={
+                            (index === 0 && !this.state.value) || checked
+                                ? 0
+                                : -1
+                        }
+                        value={option.value}
+                        checked={checked}
+                        label={option.label}
+                        disabled={disabled || option.disabled}
+                    />
+                );
             });
         }
 
@@ -181,10 +236,21 @@ class RadioGroup extends Component {
             [`${prefix}radio-button`]: isButtonShape,
             [`${prefix}radio-button-${size}`]: isButtonShape,
             [className]: !!className,
-            disabled
+            disabled,
         });
 
-        return <div {...others} aria-disabled={disabled} role="radiogroup" className={cls} style={style}>{children}</div>;
+        const TagName = component;
+        return (
+            <TagName
+                {...others}
+                aria-disabled={disabled}
+                role="radiogroup"
+                className={cls}
+                style={style}
+            >
+                {children}
+            </TagName>
+        );
     }
 }
 

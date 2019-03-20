@@ -58,8 +58,8 @@ class App extends React.Component {
     }
     reduceCol = () => {
         this.setState({
-            cols: [ <Table.Column title="Title" dataIndex="title.name" width={400} key="name1" lock/>,
-                <Table.Column title="Time" dataIndex="time" width={100} key="time"/> ]
+            cols: [<Table.Column title="Title" dataIndex="title.name" width={400} key="name1" lock/>,
+                <Table.Column title="Time" dataIndex="time" width={100} key="time"/>]
         });
     }
     render() {

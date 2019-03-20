@@ -11,22 +11,35 @@ class TabContent extends PureComponent {
     };
 
     render() {
-        const { prefix, activeKey, lazyLoad, unmountInactiveTabs, children, className, ...others } = this.props;
+        const {
+            prefix,
+            activeKey,
+            lazyLoad,
+            unmountInactiveTabs,
+            children,
+            className,
+            ...others
+        } = this.props;
         const formatChildren = [];
         React.Children.forEach(children, child => {
             /* eslint-disable eqeqeq */
-            const active = (activeKey == child.key);
-            formatChildren.push(React.cloneElement(child, {
-                prefix,
-                active,
-                lazyLoad,
-                unmountInactiveTabs,
-            }));
+            const active = activeKey == child.key;
+            formatChildren.push(
+                React.cloneElement(child, {
+                    prefix,
+                    active,
+                    lazyLoad,
+                    unmountInactiveTabs,
+                })
+            );
         });
 
-        const classNames = classnames({
-            [`${prefix}tabs-content`]: true,
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}tabs-content`]: true,
+            },
+            className
+        );
 
         return (
             <div {...others} className={classNames}>

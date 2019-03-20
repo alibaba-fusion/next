@@ -1,39 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {events, func} from '../../util';
+import { events, func } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent } from '../utils';
 
 const Tooltip = Balloon.Tooltip;
 const { noop } = func;
 
-function _getStyle(min, max, value) {
+function _getStyle(min, max, value, rtl) {
+    if (rtl) {
+        return {
+            left: `${getPercent(min, max, max + min - value[1])}%`,
+            right: `${getPercent(min, max, value[0])}%`,
+        };
+    }
     return {
         left: `${getPercent(min, max, value[0])}%`,
-        right: `${100 - getPercent(min, max, value[1])}%`
+        right: `${100 - getPercent(min, max, value[1])}%`,
     };
 }
 
 function sliderFrag(props) {
-    const {prefix, min, max, value, disabled, onMouseEnter, onMouseLeave, onMouseDown} = props;
+    const {
+        prefix,
+        min,
+        max,
+        value,
+        disabled,
+        onMouseEnter,
+        onMouseLeave,
+        onMouseDown,
+        rtl,
+    } = props;
 
-    const activeClass = !disabled && props.hasMovingClass ? `${prefix}range-active` : '';
+    const activeClass =
+        !disabled && props.hasMovingClass ? `${prefix}range-active` : '';
 
     return (
         <div
             className={`${prefix}range-frag ${activeClass}`}
-            style={_getStyle(min, max, value)}
+            style={_getStyle(min, max, value, rtl)}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            onMouseDown={onMouseDown} >
-
-            <div className={`${prefix}range-selected`}></div>
+            onMouseDown={onMouseDown}
+        >
+            <div className={`${prefix}range-selected`} />
 
             <div className={`${prefix}range-slider`}>
-                <div className={`${prefix}range-slider-inner`}></div>
+                <div className={`${prefix}range-slider-inner`} />
             </div>
             <div className={`${prefix}range-slider`}>
-                <div className={`${prefix}range-slider-inner`}></div>
+                <div className={`${prefix}range-slider-inner`} />
             </div>
         </div>
     );
@@ -48,7 +65,8 @@ sliderFrag.propTypes = {
     onMouseLeave: PropTypes.func,
     onMouseDown: PropTypes.func,
     value: PropTypes.arrayOf(PropTypes.number),
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    rtl: PropTypes.bool,
 };
 
 export default class FixedSlider extends React.Component {
@@ -58,16 +76,17 @@ export default class FixedSlider extends React.Component {
         onTooltipVisibleChange: PropTypes.func,
         tooltipAnimation: PropTypes.oneOfType([
             PropTypes.bool,
-            PropTypes.object
+            PropTypes.object,
         ]),
         value: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
+            PropTypes.arrayOf(PropTypes.number),
         ]),
         tipRender: PropTypes.func,
         disabled: PropTypes.bool,
-        hasMovingClass: PropTypes.bool
-    }
+        hasMovingClass: PropTypes.bool,
+        rtl: PropTypes.bool,
+    };
 
     static defaultProps = {
         disabled: false,
@@ -76,7 +95,8 @@ export default class FixedSlider extends React.Component {
         onProcess: noop,
         tipRender: value => value,
         reverse: false,
-    }
+        rtl: false,
+    };
 
     constructor(props) {
         super(props);
@@ -84,9 +104,8 @@ export default class FixedSlider extends React.Component {
         this.state = {
             hasMovingClass: false,
             onTooltipVisibleChange: false,
-            tooltipAnimation: true
+            tooltipAnimation: true,
         };
-
     }
 
     _onMouseEnter() {
@@ -94,14 +113,14 @@ export default class FixedSlider extends React.Component {
             this.keyState = 'enter';
         }
         this.setState({
-            hasMovingClass: true
+            hasMovingClass: true,
         });
     }
 
     _onMouseLeave() {
         if (this.keyState === 'enter') {
             this.setState({
-                hasMovingClass: false
+                hasMovingClass: false,
             });
         }
     }
@@ -109,7 +128,7 @@ export default class FixedSlider extends React.Component {
     _onMouseDown() {
         this.keyState = 'down';
         this.setState({
-            hasMovingClass: true
+            hasMovingClass: true,
         });
         this._addDocumentEvents();
     }
@@ -119,13 +138,17 @@ export default class FixedSlider extends React.Component {
             this.keyState = '';
             this._removeDocumentEvents();
             this.setState({
-                hasMovingClass: false
+                hasMovingClass: false,
             });
         }
     }
 
     _addDocumentEvents() {
-        this._onMouseUpListener = events.on(document, 'mouseup', this._onMouseUp.bind(this));
+        this._onMouseUpListener = events.on(
+            document,
+            'mouseup',
+            this._onMouseUp.bind(this)
+        );
     }
 
     _removeDocumentEvents() {
@@ -136,27 +159,37 @@ export default class FixedSlider extends React.Component {
     }
 
     render() {
-        const {hasTip, value, tipRender, tooltipVisible, hasMovingClass} = this.props;
+        const {
+            hasTip,
+            value,
+            tipRender,
+            tooltipVisible,
+            hasMovingClass,
+        } = this.props;
 
         const addedProps = {
             hasMovingClass: hasMovingClass || this.state.hasMovingClass,
             onMouseEnter: this._onMouseEnter.bind(this),
             onMouseLeave: this._onMouseLeave.bind(this),
-            onMouseDown: this._onMouseDown.bind(this)
+            onMouseDown: this._onMouseDown.bind(this),
         };
 
-        return hasTip ?
+        return hasTip ? (
             <Tooltip
                 popupContainer={target => target.parentNode}
                 popupProps={{
                     visible: tooltipVisible || hasMovingClass,
-                    animation: this.state.tooltipAnimation ? { in: 'expandInUp', out: 'expandOutDown' } : false
+                    animation: this.state.tooltipAnimation
+                        ? { in: 'expandInUp', out: 'expandOutDown' }
+                        : false,
                 }}
-                trigger={sliderFrag({...this.props, ...addedProps})}
+                trigger={sliderFrag({ ...this.props, ...addedProps })}
                 align="t"
             >
                 {tipRender(`${value[0]}-${value[1]}`)}
-            </Tooltip> :
-            sliderFrag({...this.props, ...addedProps});
+            </Tooltip>
+        ) : (
+            sliderFrag({ ...this.props, ...addedProps })
+        );
     }
 }

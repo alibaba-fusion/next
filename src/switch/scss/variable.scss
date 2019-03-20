@@ -191,3 +191,6 @@ $switch-hover-off-border-color: $color-line1-3 !default;
 /// @level off
 /// @namespace statement/normal/bounding
 $switch-off-shadow: $shadow-1 !default;
+
+/// rtl shadow
+$switch-rtl-on-shadow: $shadow-1-left !default;

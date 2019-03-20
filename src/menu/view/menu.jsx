@@ -37,7 +37,10 @@ export default class Menu extends Component {
         /**
          * 初始打开的子菜单的 key 值
          */
-        defaultOpenKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        defaultOpenKeys: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * 初始展开所有的子菜单，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效，优先级高于 defaultOpenKeys
          */
@@ -94,7 +97,10 @@ export default class Menu extends Component {
         /**
          * 初始选中菜单项的 key 值
          */
-        defaultSelectedKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        defaultSelectedKeys: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * 选中或取消选中菜单项触发的回调函数
          * @param {Array} selectedKeys 选中的所有菜单项的值
@@ -148,7 +154,7 @@ export default class Menu extends Component {
         onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
-        itemClassName: PropTypes.string
+        itemClassName: PropTypes.string,
     };
 
     static defaultProps = {
@@ -177,13 +183,20 @@ export default class Menu extends Component {
         onItemFocus: noop,
         onItemKeyDown: noop,
         onItemClick: noop,
-        expandAnimation: true
+        expandAnimation: true,
     };
 
     constructor(props) {
         super(props);
 
-        const { children, selectedKeys, defaultSelectedKeys, focusedKey, focusable, autoFocus } = this.props;
+        const {
+            children,
+            selectedKeys,
+            defaultSelectedKeys,
+            focusedKey,
+            focusable,
+            autoFocus,
+        } = this.props;
 
         this.newChildren = this.getNewChildren(children);
 
@@ -192,11 +205,24 @@ export default class Menu extends Component {
         }
         this.state = {
             openKeys: this.getInitOpenKeys(props),
-            selectedKeys: this.normalizeToArray(selectedKeys || defaultSelectedKeys),
-            focusedKey: 'focusedKey' in this.props ? focusedKey : (focusable && autoFocus ? this.tabbableKey : null)
+            selectedKeys: this.normalizeToArray(
+                selectedKeys || defaultSelectedKeys
+            ),
+            focusedKey:
+                'focusedKey' in this.props
+                    ? focusedKey
+                    : focusable && autoFocus
+                    ? this.tabbableKey
+                    : null,
         };
 
-        bindCtx(this, ['handleOpen', 'handleSelect', 'handleItemClick', 'handleItemKeyDown', 'onBlur']);
+        bindCtx(this, [
+            'handleOpen',
+            'handleSelect',
+            'handleItemClick',
+            'handleItemKeyDown',
+            'onBlur',
+        ]);
 
         this.popupNodes = [];
     }
@@ -238,7 +264,7 @@ export default class Menu extends Component {
 
     onBlur(e) {
         this.setState({
-            focusedKey: ''
+            focusedKey: '',
         });
 
         this.props.onBlur && this.props.onBlur(e);
@@ -247,10 +273,20 @@ export default class Menu extends Component {
     getInitOpenKeys(props) {
         let initOpenKeys;
 
-        const { openKeys, defaultOpenKeys, defaultOpenAll, mode, openMode } = props;
+        const {
+            openKeys,
+            defaultOpenKeys,
+            defaultOpenAll,
+            mode,
+            openMode,
+        } = props;
         if (openKeys) {
             initOpenKeys = openKeys;
-        } else if (defaultOpenAll && mode === 'inline' && openMode === 'multiple') {
+        } else if (
+            defaultOpenAll &&
+            mode === 'inline' &&
+            openMode === 'multiple'
+        ) {
             initOpenKeys = Object.keys(this.k2n).filter(key => {
                 return this.k2n[key].type === 'submenu';
             });
@@ -266,35 +302,57 @@ export default class Menu extends Component {
         this.p2n = {};
         const loop = (children, posPrefix, indexWrapper = { index: 0 }) => {
             return Children.map(children, child => {
-                if (child && typeof child.type === 'function' && ('menuChildType' in child.type)) {
+                if (
+                    child &&
+                    typeof child.type === 'function' &&
+                    'menuChildType' in child.type
+                ) {
                     let newChild;
 
                     let pos;
                     const props = { root: this };
 
-                    if (['item', 'submenu', 'group'].indexOf(child.type.menuChildType) > -1) {
+                    if (
+                        ['item', 'submenu', 'group'].indexOf(
+                            child.type.menuChildType
+                        ) > -1
+                    ) {
                         pos = `${posPrefix}-${indexWrapper.index++}`;
-                        const key = typeof child.key === 'string' ? child.key : pos;
+                        const key =
+                            typeof child.key === 'string' ? child.key : pos;
                         const level = pos.split('-').length - 1;
                         this.k2n[key] = this.p2n[pos] = {
                             key,
                             pos,
                             type: child.type.menuChildType,
                             disabled: child.props.disabled,
-                            label: child.props.label || child.props.children
+                            label: child.props.label || child.props.children,
                         };
 
                         props._key = key;
                         props.level = level;
-                        props.groupIndent = child.type.menuChildType === 'group' ? 1 : 0;
+                        props.groupIndent =
+                            child.type.menuChildType === 'group' ? 1 : 0;
                     }
 
                     switch (child.type.menuChildType) {
                         case 'submenu':
-                            newChild = cloneElement(child, props, loop(child.props.children, pos));
+                            newChild = cloneElement(
+                                child,
+                                props,
+                                loop(child.props.children, pos)
+                            );
                             break;
                         case 'group':
-                            newChild = cloneElement(child, props, loop(child.props.children, posPrefix, indexWrapper));
+                            newChild = cloneElement(
+                                child,
+                                props,
+                                loop(
+                                    child.props.children,
+                                    posPrefix,
+                                    indexWrapper
+                                )
+                            );
                             break;
                         case 'item':
                         case 'divider':
@@ -330,18 +388,24 @@ export default class Menu extends Component {
         const currentNums = currentPos.split('-').slice(0, -1);
         const targetNums = targetPos.split('-').slice(0, -1);
 
-        return currentNums.length === targetNums.length && currentNums.every((num, index) => {
-            return num === targetNums[index];
-        });
+        return (
+            currentNums.length === targetNums.length &&
+            currentNums.every((num, index) => {
+                return num === targetNums[index];
+            })
+        );
     }
 
     isAncestor(currentPos, targetPos) {
         const currentNums = currentPos.split('-');
         const targetNums = targetPos.split('-');
 
-        return currentNums.length > targetNums.length && targetNums.every((num, index) => {
-            return num === currentNums[index];
-        });
+        return (
+            currentNums.length > targetNums.length &&
+            targetNums.every((num, index) => {
+                return num === currentNums[index];
+            })
+        );
     }
 
     handleOpen(key, open, triggerType, e) {
@@ -353,7 +417,9 @@ export default class Menu extends Component {
         if (open && index === -1) {
             if (mode === 'inline') {
                 if (openMode === 'single') {
-                    newOpenKeys = openKeys.filter(k => !this.isSibling(this.k2n[key].pos, this.k2n[k].pos));
+                    newOpenKeys = openKeys.filter(
+                        k => !this.isSibling(this.k2n[key].pos, this.k2n[k].pos)
+                    );
                     newOpenKeys.push(key);
                 } else {
                     newOpenKeys = openKeys.concat(key);
@@ -368,15 +434,22 @@ export default class Menu extends Component {
             if (mode === 'inline') {
                 newOpenKeys = [
                     ...openKeys.slice(0, index),
-                    ...openKeys.slice(index + 1)
+                    ...openKeys.slice(index + 1),
                 ];
             } else if (triggerType === 'docClick') {
-                if (!this.popupNodes.concat(this.menuNode).some(node => node.contains(e.target))) {
+                if (
+                    !this.popupNodes
+                        .concat(this.menuNode)
+                        .some(node => node.contains(e.target))
+                ) {
                     newOpenKeys = [];
                 }
             } else {
                 newOpenKeys = openKeys.filter(k => {
-                    return k !== key && !this.isAncestor(this.k2n[k].pos, this.k2n[key].pos);
+                    return (
+                        k !== key &&
+                        !this.isAncestor(this.k2n[k].pos, this.k2n[key].pos)
+                    );
                 });
             }
         }
@@ -384,13 +457,13 @@ export default class Menu extends Component {
         if (newOpenKeys) {
             if (!('openKeys' in this.props)) {
                 this.setState({
-                    openKeys: newOpenKeys
+                    openKeys: newOpenKeys,
                 });
             }
 
             this.props.onOpen(newOpenKeys, {
                 key,
-                open
+                open,
             });
         }
     }
@@ -411,7 +484,7 @@ export default class Menu extends Component {
 
         return {
             keyPath,
-            labelPath
+            labelPath,
         };
     }
 
@@ -436,14 +509,14 @@ export default class Menu extends Component {
         } else if (!select && index > -1 && selectMode === 'multiple') {
             newSelectedKeys = [
                 ...selectedKeys.slice(0, index),
-                ...selectedKeys.slice(index + 1)
+                ...selectedKeys.slice(index + 1),
             ];
         }
 
         if (newSelectedKeys) {
             if (!('selectedKeys' in this.props)) {
                 this.setState({
-                    selectedKeys: newSelectedKeys
+                    selectedKeys: newSelectedKeys,
                 });
             }
 
@@ -451,7 +524,7 @@ export default class Menu extends Component {
                 key,
                 select,
                 label: this.k2n[key].label,
-                ...this.getPath(key)
+                ...this.getPath(key),
             });
         }
     }
@@ -460,7 +533,7 @@ export default class Menu extends Component {
         if (this.props.focusable) {
             if (!('focusedKey' in this.props)) {
                 this.setState({
-                    focusedKey: key
+                    focusedKey: key,
                 });
             }
 
@@ -468,16 +541,23 @@ export default class Menu extends Component {
         }
 
         if (item.props.type === 'item') {
-            if (item.props.parentMode === 'popup' && this.state.openKeys.length) {
+            if (
+                item.props.parentMode === 'popup' &&
+                this.state.openKeys.length
+            ) {
                 if (!('openKeys' in this.props)) {
                     this.setState({
-                        openKeys: []
+                        openKeys: [],
                     });
                 }
 
                 this.props.onOpen([], {
-                    key: this.state.openKeys.sort((prevKey, nextKey) => this.k2n[nextKey].pos.split('-').length - this.k2n[prevKey].pos.split('-').length)[0],
-                    open: false
+                    key: this.state.openKeys.sort(
+                        (prevKey, nextKey) =>
+                            this.k2n[nextKey].pos.split('-').length -
+                            this.k2n[prevKey].pos.split('-').length
+                    )[0],
+                    open: false,
                 });
             }
 
@@ -488,12 +568,16 @@ export default class Menu extends Component {
     isAvailablePos(refPos, targetPos) {
         const { type, disabled } = this.p2n[targetPos];
 
-        return this.isSibling(refPos, targetPos) &&
-            (type === 'item' && !disabled || type === 'submenu');
+        return (
+            this.isSibling(refPos, targetPos) &&
+            ((type === 'item' && !disabled) || type === 'submenu')
+        );
     }
 
     getAvailableKey(pos, prev) {
-        const ps = Object.keys(this.p2n).filter(p => this.isAvailablePos(pos, p));
+        const ps = Object.keys(this.p2n).filter(p =>
+            this.isAvailablePos(pos, p)
+        );
         if (ps.length > 1) {
             const index = ps.indexOf(pos);
             let targetIndex;
@@ -510,7 +594,9 @@ export default class Menu extends Component {
     }
 
     getFirstAvaliablelChildKey(parentPos) {
-        const pos = Object.keys(this.p2n).find(p => this.isAvailablePos(`${parentPos}-0`, p));
+        const pos = Object.keys(this.p2n).find(p =>
+            this.isAvailablePos(`${parentPos}-0`, p)
+        );
         return pos ? this.p2n[pos].key : null;
     }
 
@@ -519,10 +605,17 @@ export default class Menu extends Component {
     }
 
     handleItemKeyDown(key, type, item, e) {
-        if ([
-            KEYCODE.UP, KEYCODE.DOWN, KEYCODE.RIGHT, KEYCODE.LEFT,
-            KEYCODE.ENTER, KEYCODE.ESC, KEYCODE.SPACE
-        ].indexOf(e.keyCode) > -1) {
+        if (
+            [
+                KEYCODE.UP,
+                KEYCODE.DOWN,
+                KEYCODE.RIGHT,
+                KEYCODE.LEFT,
+                KEYCODE.ENTER,
+                KEYCODE.ESC,
+                KEYCODE.SPACE,
+            ].indexOf(e.keyCode) > -1
+        ) {
             e.preventDefault();
             e.stopPropagation();
         }
@@ -607,7 +700,7 @@ export default class Menu extends Component {
         if (focusedKey !== this.state.focusedKey) {
             if (!('focusedKey' in this.props)) {
                 this.setState({
-                    focusedKey
+                    focusedKey,
                 });
             }
 
@@ -617,20 +710,44 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { prefix, className, direction, hozAlign, header, footer, selectMode, rtl } = this.props;
+        const {
+            prefix,
+            className,
+            direction,
+            hozAlign,
+            header,
+            footer,
+            selectMode,
+            rtl,
+        } = this.props;
         const others = pickOthers(Object.keys(Menu.propTypes), this.props);
 
         const newClassName = cx({
             [`${prefix}menu`]: true,
             [`${prefix}ver`]: direction === 'ver',
             [`${prefix}hoz`]: direction === 'hoz',
-            [className]: !!className
+            [className]: !!className,
         });
 
-        const role = direction === 'hoz' ? 'menubar' : 'menu';
-        const headerElement = header ? <li className={`${prefix}menu-header`}>{header}</li> : null;
-        const itemsElement = header || footer ?  <ul className={`${prefix}menu-content`}>{this.newChildren}</ul> : this.newChildren;
-        const footerElement = footer ? <li className={`${prefix}menu-footer`}>{footer}</li> : null;
+        let role = direction === 'hoz' ? 'menubar' : 'menu';
+        let ariaMultiselectable;
+        if ('selectMode' in this.props) {
+            role = 'listbox';
+            ariaMultiselectable = !!(selectMode === 'multiple');
+        }
+
+        const headerElement = header ? (
+            <li className={`${prefix}menu-header`}>{header}</li>
+        ) : null;
+        const itemsElement =
+            header || footer ? (
+                <ul className={`${prefix}menu-content`}>{this.newChildren}</ul>
+            ) : (
+                this.newChildren
+            );
+        const footerElement = footer ? (
+            <li className={`${prefix}menu-footer`}>{footer}</li>
+        ) : null;
         const shouldWrapItemsAndFooter = hozAlign === 'right' && !!header;
 
         if (rtl) {
@@ -638,14 +755,21 @@ export default class Menu extends Component {
         }
 
         return (
-            <ul role={role} onBlur={this.onBlur} className={newClassName} onKeyDown={this.handleEnter} aria-multiselectable={selectMode === 'multiple'} {...others}>
+            <ul
+                role={role}
+                onBlur={this.onBlur}
+                className={newClassName}
+                onKeyDown={this.handleEnter}
+                aria-multiselectable={ariaMultiselectable}
+                {...others}
+            >
                 {headerElement}
-                {shouldWrapItemsAndFooter ?
+                {shouldWrapItemsAndFooter ? (
                     <div className={`${prefix}menu-hoz-right`}>
                         {itemsElement}
                         {footerElement}
-                    </div> : null
-                }
+                    </div>
+                ) : null}
                 {!shouldWrapItemsAndFooter ? itemsElement : null}
                 {!shouldWrapItemsAndFooter ? footerElement : null}
             </ul>

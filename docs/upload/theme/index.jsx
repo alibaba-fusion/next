@@ -36,6 +36,11 @@ const demo1 = {
         label: '附件大小',
         value: 'true',
         enum: [{label: '显示', value: 'true'}, {label: '隐藏', value: 'false'}]
+    },
+    errMsg: {
+        label: '错误提示',
+        value: 'true',
+        enum: [{label: '显示', value: 'true'}, {label: '隐藏', value: 'false'}]
     }
 };
 
@@ -47,6 +52,11 @@ const demo2 = {
     },
     size: {
         label: '附件大小',
+        value: 'true',
+        enum: [{label: '显示', value: 'true'}, {label: '隐藏', value: 'false'}]
+    },
+    errMsg: {
+        label: '错误提示',
         value: 'true',
         enum: [{label: '显示', value: 'true'}, {label: '隐藏', value: 'false'}]
     }
@@ -110,7 +120,7 @@ class FunctionDemo extends React.Component {
                         limit={1}
                         listType="text"
                         closable={getValue('demo1').closeable.value === 'true'}
-                        value={[Object.assign({}, list, { state: 'error' })]}
+                        value={[Object.assign({}, list, { state: 'error', errorMsg: getValue('demo1').errMsg.value === 'true' ? 'Error Messgae' : undefined })]}
                         style={style}
                     />
                 </DemoGroup>
@@ -156,10 +166,11 @@ class FunctionDemo extends React.Component {
                             listType="image"
                             limit={1}
                             closable={getValue('demo2').closeable.value === 'true'}
-                            defaultValue={[{
+                            value={[{
                                 name: 'IMG_20140109_121958.jpg',
                                 state: 'error',
                                 url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+                                errorMsg: getValue('demo2').errMsg.value === 'true' ? 'Error Messgae' : undefined,
                             }]}
                             style={style}
                         />

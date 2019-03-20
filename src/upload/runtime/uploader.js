@@ -1,6 +1,6 @@
-import {func, obj} from '../../util';
-import {uid} from '../util';
-import request from './request';
+import { func, obj } from '../../util';
+import { uid, errorCode } from '../util';
+import defaultRequest from './request';
 
 const noop = func.noop;
 
@@ -14,7 +14,7 @@ export default class Uploader {
             data: {},
             name: 'file',
             method: 'post',
-            ...options
+            ...options,
         };
         this.reqs = {};
     }
@@ -24,15 +24,17 @@ export default class Uploader {
     }
 
     startUpload(files) {
-        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
-        filesArr.forEach((file) => {
+        const filesArr = files.length
+            ? Array.prototype.slice.call(files)
+            : [files];
+        filesArr.forEach(file => {
             file.uid = file.uid || uid();
             this.upload(file);
         });
     }
 
     abort(file) {
-        const {reqs} = this;
+        const { reqs } = this;
         if (file) {
             let uid = file;
             if (file && file.uid) {
@@ -42,9 +44,8 @@ export default class Uploader {
                 reqs[uid].abort();
                 delete reqs[uid];
             }
-
         } else {
-            Object.keys(reqs).forEach((uid) => {
+            Object.keys(reqs).forEach(uid => {
                 if (reqs[uid]) {
                     reqs[uid].abort();
                 }
@@ -64,28 +65,33 @@ export default class Uploader {
             method,
             data,
         } = this.options;
-        const before = beforeUpload(
-            file,
-            {
-                action,
-                name,
-                headers,
-                timeout,
-                withCredentials,
-                method,
-                data,
+        const before = beforeUpload(file, {
+            action,
+            name,
+            headers,
+            timeout,
+            withCredentials,
+            method,
+            data,
+        });
+
+        func.promiseCall(
+            before,
+            options => {
+                if (options === false) {
+                    const err = new Error(errorCode.BEFOREUPLOAD_REJECT);
+                    err.code = errorCode.BEFOREUPLOAD_REJECT;
+                    return this.options.onError(err, null, file);
+                }
+                this.post(
+                    file,
+                    obj.isPlainObject(options) ? options : undefined
+                );
+            },
+            error => {
+                this.options.onError(error, null, file);
             }
         );
-
-        func.promiseCall(before, (options) => {
-            if (options === false) {
-                this.options.onError(null, null, file);
-                return;
-            }
-            this.post(file, obj.isPlainObject(options) ? options : undefined);
-        }, () => {
-            this.options.onError(null, null, file);
-        });
     }
 
     post(file, options = {}) {
@@ -102,7 +108,7 @@ export default class Uploader {
             onProgress,
             onSuccess,
             onError,
-            method
+            method,
         } = requestOptions;
 
         let data = requestOptions.data;
@@ -110,8 +116,12 @@ export default class Uploader {
             data = data(file);
         }
 
-        const {uid} = file;
+        const { uid } = file;
 
+        const request =
+            typeof requestOptions.request === 'function'
+                ? requestOptions.request
+                : defaultRequest;
         this.reqs[uid] = request({
             action,
             filename: name,
@@ -131,8 +141,7 @@ export default class Uploader {
             onError: (err, ret) => {
                 delete this.reqs[uid];
                 onError(err, ret, file);
-            }
+            },
         });
     }
-
 }

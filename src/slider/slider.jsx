@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import {obj} from '../util';
+import { obj } from '../util';
 import InnerSlider from './slick/inner-slider';
 import ConfigProvider from '../config-provider';
 
 /**
  * Slider
-*/
+ */
 export default class Slider extends Component {
     static propTypes = {
         prefix: PropTypes.string,
@@ -146,7 +146,7 @@ export default class Slider extends Component {
         variableWidth: PropTypes.bool, // used
         waitForAnimate: PropTypes.bool,
         edgeEvent: PropTypes.any,
-        swipeEvent: PropTypes.any
+        swipeEvent: PropTypes.any,
     };
 
     static defaultProps = {
@@ -193,18 +193,28 @@ export default class Slider extends Component {
         prevArrow: null,
         style: null,
         dotsRender: null,
-        triggerType: 'click'
+        triggerType: 'click',
     };
 
     resize = () => {
         // export api
         this.innerSlider.onWindowResized();
-    }
+    };
 
-    render () {
-        const {prefix, arrowPosition, slideDirection, style, className, children} = this.props;
+    render() {
+        const {
+            prefix,
+            arrowPosition,
+            slideDirection,
+            style,
+            className,
+            children,
+        } = this.props;
 
-        const sliderProps = obj.pickOthers(['className', 'style', 'slideDirection'], this.props);
+        const sliderProps = obj.pickOthers(
+            ['className', 'style', 'slideDirection'],
+            this.props
+        );
         const slideCount = React.Children.count(children);
 
         if (slideCount === 0) {
@@ -217,11 +227,14 @@ export default class Slider extends Component {
             sliderProps.draggable = false;
         }
 
-        const clazz = classNames([
-            `${prefix}slick`,
-            `${prefix}slick-${arrowPosition}`,
-            `${prefix}slick-${slideDirection}`
-        ], className);
+        const clazz = classNames(
+            [
+                `${prefix}slick`,
+                `${prefix}slick-${arrowPosition}`,
+                `${prefix}slick-${slideDirection}`,
+            ],
+            className
+        );
 
         if (slideDirection === 'ver') {
             // 向下传递时使用 vertical 属性
@@ -231,11 +244,21 @@ export default class Slider extends Component {
 
         return (
             <ConfigProvider rtl={false}>
-                <div dir="ltr" className={clazz} style={style} {...obj.pickOthers({...Slider.propTypes, ...InnerSlider.propTypes}, sliderProps)}>
-                    <InnerSlider ref={InnerSlider => (this.innerSlider = InnerSlider)} {...sliderProps} />
+                <div
+                    dir="ltr"
+                    className={clazz}
+                    style={style}
+                    {...obj.pickOthers(
+                        { ...Slider.propTypes, ...InnerSlider.propTypes },
+                        sliderProps
+                    )}
+                >
+                    <InnerSlider
+                        ref={InnerSlider => (this.innerSlider = InnerSlider)}
+                        {...sliderProps}
+                    />
                 </div>
             </ConfigProvider>
         );
     }
 }
-

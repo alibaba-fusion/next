@@ -18,6 +18,7 @@
 
     &-node-inner {
         font-size: 0;
+        outline: none;
     }
 
     &-node-label-wrapper {
@@ -166,6 +167,7 @@
         #{$tree-prefix}-node-inner {
             display: flex;
             align-items: center;
+            outline: none;
         }
 
         #{$tree-prefix}-node-label-wrapper {
@@ -182,6 +184,11 @@
         #{$tree-prefix}-node-inner {
             padding-top: $tree-node-padding / 2;
             padding-bottom: $tree-node-padding / 2;
+            &:focus {
+                #{$tree-prefix}-node-label {
+                    @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
+                }
+            }
         }
 
         #{$tree-prefix}-node-label-wrapper {
@@ -235,7 +242,8 @@
         cursor: pointer;
         @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
 
-        &:hover {
+        &:hover,
+        &:focus {
             @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);
         }
 
@@ -264,3 +272,5 @@
         }
     }
 }
+
+@import './rtl.scss';

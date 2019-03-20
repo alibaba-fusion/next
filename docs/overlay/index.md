@@ -88,6 +88,10 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 | onVisibleChange   | 弹层显示或隐藏时触发的回调函数<br><br>**签名**:<br>Function(visible: Boolean, type: String, e: Object) => void<br>**参数**:<br>_visible_: {Boolean} 弹层是否显示<br>_type_: {String} 触发弹层显示或隐藏的来源<br>_e_: {Object} DOM事件 | Function     | func.noop       |
 | disabled          | 设置此属性，弹层无法显示或隐藏                                                                                                                                                                                 | Boolean      | false           |
 | delay             | 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效                                                                                                                                               | Number       | 200             |
-| canCloseByTrigger | 触发元素是否可以关闭弹层                                                                                                                                                                                    | Boolean      | true            |
+| canCloseByTrigger | trigger 是否可以关闭弹层                                                                                                                                                                                | Boolean      | true            |
 | target            | 弹层定位的参照元素                                                                                                                                                                                       | any          | target 属性，即触发元素 |
 | followTrigger     | 是否跟随trigger滚动                                                                                                                                                                                   | Boolean      | false           |
+
+## ARIA and KeyBoard
+
+`说明`： 此组件需要结合其他组件使用，会有提示。参考上文`无障碍`。

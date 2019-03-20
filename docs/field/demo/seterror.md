@@ -25,13 +25,13 @@ class App extends React.Component {
     render() {
         const { init, getError, setError, setErrors } = this.field;
         return (<div className="demo">
-            <Input  {...init('input', {
+            <Input {...init('input', {
                 rules: [{
                     required: true,
                     pattern: /hello/,
                     message: 'must be hello'
                 }]
-            })}  /><br/>
+            })} /><br/>
             <span style={{color: 'red'}}>{getError('input')}</span>
 
             <br/>
@@ -48,7 +48,7 @@ class App extends React.Component {
             }}>clear</Button>
 
             <br/><br/>
-            <Input  {...init('input2')}  /><br/>
+            <Input {...init('input2')} /><br/>
             <span style={{color: 'red'}}>{getError('input2')}</span><br/>
 
             <Button onClick={() => {

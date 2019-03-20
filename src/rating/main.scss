@@ -1,6 +1,7 @@
 @import "../core/index-noreset";
 @import "scss/variable";
 @import "scss/mixin";
+@import "./rtl.scss";
 
 #{$rating-prefix} {
     vertical-align: top;
@@ -106,7 +107,9 @@
         }
     }
 
+    &:focus,
     &.hover {
+        outline: none;
         #{$rating-prefix}-overlay {
             @include rating-state($rating-normal-overlay-hover-color);
         }

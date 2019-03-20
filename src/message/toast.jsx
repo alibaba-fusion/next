@@ -13,7 +13,7 @@ const timeouts = {};
 
 class Mask extends React.Component {
     static contextTypes = {
-        prefix: PropTypes.string
+        prefix: PropTypes.string,
     };
 
     static propTypes = {
@@ -25,13 +25,10 @@ class Mask extends React.Component {
         offset: PropTypes.array,
         hasMask: PropTypes.bool,
         afterClose: PropTypes.func,
-        animation: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.bool,
-        ]),
+        animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         overlayProps: PropTypes.object,
         onClose: PropTypes.func,
-        timeoutId: PropTypes.string
+        timeoutId: PropTypes.string,
     };
 
     static defaultProps = {
@@ -41,12 +38,12 @@ class Mask extends React.Component {
         hasMask: false,
         animation: {
             in: 'pulse',
-            out: 'zoomOut'
-        }
+            out: 'zoomOut',
+        },
     };
 
     state = {
-        visible: true
+        visible: true,
     };
 
     componentWillUnmount() {
@@ -61,22 +58,53 @@ class Mask extends React.Component {
 
     handleClose = (silent = false) => {
         this.setState({
-            visible: false
+            visible: false,
         });
 
         if (!silent) {
             this.props.onClose && this.props.onClose();
         }
-    }
+    };
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { prefix, type, title, content, align, offset, hasMask, afterClose, animation, overlayProps, timeoutId, ...others } = this.props;
+        const {
+            prefix,
+            type,
+            title,
+            content,
+            align,
+            offset,
+            hasMask,
+            afterClose,
+            animation,
+            overlayProps,
+            timeoutId,
+            ...others
+        } = this.props;
         /* eslint-enable */
         const { visible } = this.state;
         return (
-            <Overlay {...overlayProps} prefix={prefix} animation={animation} visible={visible} align={align} offset={offset} hasMask={hasMask} afterClose={afterClose}>
-                <Message {...others} prefix={prefix} visible type={type} shape="toast" title={title} className={`${prefix}message-wrapper`} onClose={this.handleClose}>
+            <Overlay
+                {...overlayProps}
+                prefix={prefix}
+                animation={animation}
+                visible={visible}
+                align={align}
+                offset={offset}
+                hasMask={hasMask}
+                afterClose={afterClose}
+            >
+                <Message
+                    {...others}
+                    prefix={prefix}
+                    visible
+                    type={type}
+                    shape="toast"
+                    title={title}
+                    className={`${prefix}message-wrapper`}
+                    onClose={this.handleClose}
+                >
                     {content}
                 </Message>
             </Overlay>
@@ -101,7 +129,9 @@ const create = props => {
 
     const newContext = ConfigProvider.getContext();
 
-    let mask, myRef, destroyed = false;
+    let mask,
+        myRef,
+        destroyed = false;
     const destroy = () => {
         const inc = mask && mask.getInstance();
         inc && inc.handleClose(true);
@@ -110,20 +140,26 @@ const create = props => {
 
     ReactDOM.render(
         <ConfigProvider {...newContext}>
-            <NewMask afterClose={closeChain} {...others} ref={ref => {
-                myRef = ref;
-            }}/>
-        </ConfigProvider>
-        , div, function() {
+            <NewMask
+                afterClose={closeChain}
+                {...others}
+                ref={ref => {
+                    myRef = ref;
+                }}
+            />
+        </ConfigProvider>,
+        div,
+        function() {
             mask = myRef;
             if (mask && destroyed) {
                 destroy();
             }
-        });
+        }
+    );
 
     return {
         component: mask,
-        destroy
+        destroy,
     };
 };
 
@@ -153,7 +189,7 @@ function open(config, type) {
     close();
     config = handleConfig(config, type);
     const timeoutId = guid();
-    instance = create({...config, timeoutId});
+    instance = create({ ...config, timeoutId });
 
     if (config.duration > 0) {
         const timeout = setTimeout(close, config.duration);
@@ -247,5 +283,5 @@ export default {
     error,
     help,
     loading,
-    notice
+    notice,
 };

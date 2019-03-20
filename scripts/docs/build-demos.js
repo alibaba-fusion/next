@@ -16,7 +16,7 @@ const cwd = process.cwd();
  * demos/xxxx/build/index.css
  *
  */
-module.exports = function* (options) {
+module.exports = function*(options) {
     const entries = options.entries;
     const webpackEntry = {};
     const deps = {};
@@ -43,7 +43,7 @@ module.exports = function* (options) {
     const config = getWebpackConfig({
         entry: webpackEntry,
         target: cwd,
-        deps: deps
+        deps: deps,
     });
     // build
     const compiler = webpack(config);
@@ -53,11 +53,13 @@ module.exports = function* (options) {
             if (err) {
                 reject(err);
             } else if (stats.hasErrors()) {
-                logger.info(stats.toString({
-                    colors: true,
-                    profile: true,
-                    chunkModules: false
-                }));
+                logger.info(
+                    stats.toString({
+                        colors: true,
+                        profile: true,
+                        chunkModules: false,
+                    })
+                );
                 reject();
             } else {
                 resolve();

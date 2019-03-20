@@ -35,19 +35,19 @@ function dateCellRender(date) {
         case 1:
             eventList = [
                 { type: 'primary', content: 'Event 1' },
-                { type: 'normal', content: 'Event 2' },
+                { type: 'normal', content: 'Event 2' }
             ];
             break;
         case 10:
             eventList = [
                 { type: 'normal', content: 'Event 3' },
-                { type: 'normal', content: 'Event 4' },
+                { type: 'normal', content: 'Event 4' }
             ];
             break;
         case 11:
             eventList = [
                 { type: 'primary', content: 'Event 5' },
-                { type: 'primary', content: 'Event 6' },
+                { type: 'primary', content: 'Event 6' }
             ];
             break;
         default:

@@ -3,9 +3,10 @@ import assert from 'power-assert';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Breadcrumb from '../../src/breadcrumb';
+import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
-const {Item} = Breadcrumb;
+const { Item } = Breadcrumb;
 
 describe('Item', () => {
     it('should has item class', () => {
@@ -15,7 +16,9 @@ describe('Item', () => {
     });
 
     it('should has an a tag if you pass the link property', () => {
-        const wrapper = mount(<Item link="https://www.alibaba.com/">Item</Item>);
+        const wrapper = mount(
+            <Item link="https://www.alibaba.com/">Item</Item>
+        );
         assert(wrapper.find('a').length === 1);
         assert(wrapper.find('a').props().href === 'https://www.alibaba.com/');
         wrapper.unmount();
@@ -29,7 +32,11 @@ describe('Item', () => {
     });
 
     it('should has an activated class if you pass it', () => {
-        const wrapper1 = mount(<Item activated link="https://www.alibaba.com/">Item</Item>);
+        const wrapper1 = mount(
+            <Item activated link="https://www.alibaba.com/">
+                Item
+            </Item>
+        );
         assert(wrapper1.find('a').hasClass('activated'));
         wrapper1.unmount();
         const wrapper2 = mount(<Item activated>Item</Item>);
@@ -39,11 +46,13 @@ describe('Item', () => {
 });
 
 describe('Breadcrumb', () => {
-    it('should throw error if you don\'t pass Item as children', () => {
+    it("should throw error if you don't pass Item as children", () => {
         try {
             shallow(<Breadcrumb>Breadcrumb</Breadcrumb>);
         } catch (e) {
-            assert(e.message === 'Breadcrumb\'s children must be Breadcrumb.Item!');
+            assert(
+                e.message === "Breadcrumb's children must be Breadcrumb.Item!"
+            );
         }
     });
 
@@ -60,7 +69,9 @@ describe('Breadcrumb', () => {
         );
         const ellipsisItem = wrapper.find('.next-breadcrumb-text').at(1);
         assert(ellipsisItem.text() === '...');
-        assert(ellipsisItem.find('span').hasClass('next-breadcrumb-text-ellipsis'));
+        assert(
+            ellipsisItem.find('span').hasClass('next-breadcrumb-text-ellipsis')
+        );
         wrapper.unmount();
     });
 
@@ -72,7 +83,33 @@ describe('Breadcrumb', () => {
                 <Item>All Categories</Item>
             </Breadcrumb>
         );
-        assert(wrapper.find('.next-breadcrumb-item').at(2).find('.next-breadcrumb-separator').length === 0);
+        assert(
+            wrapper
+                .find('.next-breadcrumb-item')
+                .at(2)
+                .find('.next-breadcrumb-separator').length === 0
+        );
+        wrapper.unmount();
+    });
+
+    it('should support RTL', () => {
+        const wrapper = mount(
+            <ConfigProvider rtl>
+                <Breadcrumb>
+                    <Item>Home</Item>
+                    <Item>Whatever</Item>
+                    <Item>All Categories</Item>
+                </Breadcrumb>
+            </ConfigProvider>
+        );
+
+        assert(wrapper.find('.next-breadcrumb').props().dir === 'rtl');
+        assert(
+            wrapper
+                .find('.next-breadcrumb-item')
+                .at(0)
+                .props().dir === 'rtl'
+        );
         wrapper.unmount();
     });
 });

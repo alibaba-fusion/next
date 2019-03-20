@@ -6,6 +6,12 @@
 
 ---
 
+## 开发指南
+
+### 何时使用
+
+主要用于解决大数据情况下的渲染速度问题。组件的设计思想可以看这篇文章 <a href="https://zhuanlan.zhihu.com/p/55329238" target="_blank">https&#x3A;//zhuanlan.zhihu.com/p/55329238</a>
+
 ## API
 
 ### VirtualList

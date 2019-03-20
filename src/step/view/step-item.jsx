@@ -19,8 +19,8 @@ class StepItem extends Component {
          * 标题
          */
         title: PropTypes.node,
-        direction: PropTypes.oneOf(['horizontal', 'vertical']),
-        labelPlacement: PropTypes.oneOf(['horizontal', 'vertical']),
+        direction: PropTypes.oneOf(['hoz', 'ver']),
+        labelPlacement: PropTypes.oneOf(['hoz', 'ver']),
         shape: PropTypes.oneOf(['circle', 'arrow', 'dot']),
         /**
          * 图标
@@ -38,8 +38,8 @@ class StepItem extends Component {
          */
         itemRender: PropTypes.func,
         /**
-        * 百分比
-        */
+         * 百分比
+         */
         percent: PropTypes.number,
         index: PropTypes.number,
         total: PropTypes.number,
@@ -59,15 +59,15 @@ class StepItem extends Component {
          * 自定义样式
          */
         className: PropTypes.string,
-        readOnly: PropTypes.bool
-    }
+        readOnly: PropTypes.bool,
+    };
 
     static defaultProps = {
         shape: 'circle',
         index: 0,
         total: 1,
-        onClick: () => { },
-    }
+        onClick: () => {},
+    };
 
     constructor(props) {
         super(props);
@@ -82,37 +82,60 @@ class StepItem extends Component {
             return;
         }
 
-        if (direction === 'vertical') {
+        if (direction === 'vertical' || direction === 'ver') {
             this.resize();
             this.forceUpdate(); // 解决Step嵌套的情况下，嵌套节点宽度为0的问题
             this.eventHandler = events.on(window, 'resize', this.resize); // 调整垂直Step
-        } else if (direction === 'horizontal' && labelPlacement === 'horizontal' && index !== (total - 1)) { // 调整横向Content
+        } else if (
+            (direction === 'horizontal' || direction === 'hoz') &&
+            (labelPlacement === 'horizontal' || labelPlacement === 'hoz') &&
+            index !== total - 1
+        ) {
+            // 调整横向Content
             this.adjustTail();
         }
     }
 
     componentDidUpdate() {
-        const { shape, direction, labelPlacement, index, total, rtl } = this.props;
+        const {
+            shape,
+            direction,
+            labelPlacement,
+            index,
+            total,
+            rtl,
+        } = this.props;
         if (shape === 'arrow') {
             return;
         }
-
-        if (direction === 'vertical') {
-            this.resize();
-        } else if (direction === 'horizontal') {
-            const pos = rtl ? 'right' : 'left';
-            dom.setStyle(this.body, {
-                width: '',
-                [pos]: ''
-            });
-        } else if (shape === 'circle' && labelPlacement === 'horizontal' && index !== (total - 1)) { // 调整横向Content
-            this.adjustTail();
-        } else if (index !== (total - 1)) {
+        const resetTailStyle = () => {
             dom.setStyle(this.tail, {
                 width: '',
                 // eslint-disable-next-line
-                'top': ''
+                top: '',
             });
+        };
+
+        if (direction === 'vertical' || direction === 'ver') {
+            this.resize();
+        } else if (direction === 'horizontal' || direction === 'hoz') {
+            const pos = rtl ? 'right' : 'left';
+            dom.setStyle(this.body, {
+                width: '',
+                [pos]: '',
+            });
+            if (
+                shape === 'circle' &&
+                (labelPlacement === 'horizontal' || labelPlacement === 'hoz') &&
+                index !== total - 1
+            ) {
+                // 调整横向Content
+                this.adjustTail();
+            } else {
+                resetTailStyle();
+            }
+        } else if (index !== total - 1) {
+            resetTailStyle();
         }
     }
 
@@ -124,7 +147,7 @@ class StepItem extends Component {
         const width = this.container.offsetWidth + this.title.offsetWidth;
         dom.setStyle(this.tail, {
             width: `calc(100% - ${width}px)`,
-            top: `${dom.getStyle(this.container, 'height') / 2}px`
+            top: `${dom.getStyle(this.container, 'height') / 2}px`,
         });
     }
 
@@ -132,28 +155,61 @@ class StepItem extends Component {
         const stepWidth = dom.getStyle(this.step, 'width');
         const { rtl } = this.props;
 
-        rtl ?
-            this.body.style.right = `${stepWidth}px` :
-            this.body.style.left = `${stepWidth}px`;
+        rtl
+            ? (this.body.style.right = `${stepWidth}px`)
+            : (this.body.style.left = `${stepWidth}px`);
         dom.setStyle(this.body, {
-            width: dom.getStyle(this.step.parentNode.parentNode, 'width') - stepWidth
+            width:
+                dom.getStyle(this.step.parentNode.parentNode, 'width') -
+                stepWidth,
         });
-        dom.setStyle(this.tail, 'height', dom.getStyle(this.body, 'height') - dom.getStyle(this.container, 'height'));
+        dom.setStyle(
+            this.tail,
+            'height',
+            dom.getStyle(this.body, 'height') -
+                dom.getStyle(this.container, 'height')
+        );
     }
 
     _getNode() {
-        const { prefix, index, status, icon, shape, percent, itemRender } = this.props;
+        const {
+            prefix,
+            index,
+            status,
+            icon,
+            shape,
+            percent,
+            itemRender,
+        } = this.props;
         let nodeElement = icon;
         if (shape === 'dot') {
-            nodeElement = icon ? <Icon type={icon} /> : <div className={`${prefix}step-item-node-circle`}> </div>;
+            nodeElement = icon ? (
+                <Icon type={icon} />
+            ) : (
+                <div className={`${prefix}step-item-node-circle`}> </div>
+            );
         } else if (shape === 'circle' && percent) {
-            nodeElement = <Progress shape="circle" percent={percent} className={`${prefix}step-item-progress`} />;
-        } else if (shape === 'circle' && !!itemRender && typeof itemRender === 'function') {
+            nodeElement = (
+                <Progress
+                    shape="circle"
+                    percent={percent}
+                    className={`${prefix}step-item-progress`}
+                />
+            );
+        } else if (
+            shape === 'circle' &&
+            !!itemRender &&
+            typeof itemRender === 'function'
+        ) {
             nodeElement = null; // 如果是需要自定义节点，则不处理，返回空
         } else {
             nodeElement = (
                 <div className={`${prefix}step-item-node-circle`}>
-                    {icon ? <Icon type={icon} /> : this._itemRender(index, status)}
+                    {icon ? (
+                        <Icon type={icon} />
+                    ) : (
+                        this._itemRender(index, status)
+                    )}
                 </div>
             );
         }
@@ -161,24 +217,44 @@ class StepItem extends Component {
         return nodeElement;
     }
     getNode(args) {
-        const { prefix, itemRender, index, status, title, content } = this.props;
+        const {
+            prefix,
+            itemRender,
+            index,
+            status,
+            title,
+            content,
+        } = this.props;
         const { others, stepCls, overlayCls } = args;
         const nodeElement = this._getNode();
         let finalNodeElement = (
-            <div className={`${prefix}step-item-container`} ref={this._refHandlerCreator('container')}>
-                <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>
+            <div
+                className={`${prefix}step-item-container`}
+                ref={this._refHandlerCreator('container')}
+            >
+                <div
+                    className={`${prefix}step-item-node-placeholder`}
+                    onClick={this.onClick}
+                >
                     <div
                         className={`${prefix}step-item-node`}
                         ref={this._refHandlerCreator('stepNode')}
-                        onTransitionEnd={this.removeClickedCls}>{nodeElement}</div>
+                        onTransitionEnd={this.removeClickedCls}
+                    >
+                        {nodeElement}
+                    </div>
                 </div>
             </div>
         );
 
-        if (!nodeElement) {  // 需要自定义子节点
+        if (!nodeElement) {
+            // 需要自定义子节点
             finalNodeElement = (
-                <div className={`${prefix}step-item-container`} >
-                    <div className={`${prefix}step-item-node-placeholder`} onClick={this.onClick}>
+                <div className={`${prefix}step-item-container`}>
+                    <div
+                        className={`${prefix}step-item-node-placeholder`}
+                        onClick={this.onClick}
+                    >
                         {itemRender(index, status, title, content)}
                     </div>
                 </div>
@@ -186,15 +262,38 @@ class StepItem extends Component {
         }
 
         return (
-            <div {...others} style={this.getStyle()} className={stepCls} ref={this._refHandlerCreator('step')}>
+            <div
+                tabIndex="0"
+                aria-current={status === 'process' ? 'step' : null}
+                {...others}
+                style={this.getStyle()}
+                className={stepCls}
+                ref={this._refHandlerCreator('step')}
+            >
                 {finalNodeElement}
-                <div className={`${prefix}step-item-body`} ref={this._refHandlerCreator('body')}>
-                    <div className={`${prefix}step-item-title`} ref={this._refHandlerCreator('title')}>{title}</div>
-                    <div className={`${prefix}step-item-content`}>{content}</div>
+                <div
+                    className={`${prefix}step-item-body`}
+                    ref={this._refHandlerCreator('body')}
+                >
+                    <div
+                        className={`${prefix}step-item-title`}
+                        ref={this._refHandlerCreator('title')}
+                    >
+                        {title}
+                    </div>
+                    <div className={`${prefix}step-item-content`}>
+                        {content}
+                    </div>
                 </div>
-                <div className={`${prefix}step-item-tail`} ref={this._refHandlerCreator('tail')}>
+                <div
+                    className={`${prefix}step-item-tail`}
+                    ref={this._refHandlerCreator('tail')}
+                >
                     <div className={`${prefix}step-item-tail-underlay`}>
-                        <div className={`${prefix}step-item-tail-overlay`} style={overlayCls}></div>
+                        <div
+                            className={`${prefix}step-item-tail-overlay`}
+                            style={overlayCls}
+                        />
                     </div>
                 </div>
             </div>
@@ -202,19 +301,32 @@ class StepItem extends Component {
     }
 
     getStyle() {
-        const { parentWidth, parentHeight, direction, total, index, shape } = this.props;
+        const {
+            parentWidth,
+            parentHeight,
+            direction,
+            total,
+            index,
+            shape,
+        } = this.props;
         let width = 'auto';
 
         if (Number(parentWidth) && Number(parentHeight)) {
             if (!support.flex && shape === 'arrow') {
-                width = Math.floor(parentWidth / total - parentHeight / 2 - parentHeight / 8);
+                width = Math.floor(
+                    parentWidth / total - parentHeight / 2 - parentHeight / 8
+                );
             }
         }
-        if (shape !== 'arrow' && direction === 'horizontal') {
-            width = (total - 1) !== index ? `${Math.floor(100 / total)}%` : 'auto';
+        if (
+            shape !== 'arrow' &&
+            (direction === 'horizontal' || direction === 'hoz')
+        ) {
+            width =
+                total - 1 !== index ? `${Math.floor(100 / total)}%` : 'auto';
         }
         return {
-            width: width
+            width: width,
         };
     }
 
@@ -225,14 +337,20 @@ class StepItem extends Component {
         }
 
         if (animation && this.stepNode) {
-            dom.hasClass(this.stepNode, 'clicked') ? dom.removeClass(this.stepNode, 'clicked') : dom.addClass(this.stepNode, 'clicked');
+            dom.hasClass(this.stepNode, 'clicked')
+                ? dom.removeClass(this.stepNode, 'clicked')
+                : dom.addClass(this.stepNode, 'clicked');
         }
         this.props.onClick(index);
-    }
+    };
 
     removeClickedCls() {
         const { animation } = this.props;
-        if (animation && this.stepNode && dom.hasClass(this.stepNode, 'clicked')) {
+        if (
+            animation &&
+            this.stepNode &&
+            dom.hasClass(this.stepNode, 'clicked')
+        ) {
             dom.removeClass(this.stepNode, 'clicked');
         }
     }
@@ -248,14 +366,36 @@ class StepItem extends Component {
 
     _refHandlerCreator(refName) {
         const self = this;
-        return function (ref) {
+        return function(ref) {
             self[refName] = ref;
         };
     }
 
     render() {
         // eslint-disable-next-line
-        const { prefix, locale, className, status, title, icon, index, total, shape, content, direction, disabled, onClick, readOnly, animation, parentHeight, itemRender, parentWidth, labelPlacement, rtl, ...others } = this.props;
+        const {
+            prefix,
+            locale,
+            className,
+            status,
+            title,
+            icon,
+            index,
+            total,
+            shape,
+            content,
+            direction,
+            disabled,
+            onClick,
+            readOnly,
+            animation,
+            parentHeight,
+            itemRender,
+            parentWidth,
+            labelPlacement,
+            rtl,
+            ...others
+        } = this.props;
 
         const stepCls = classNames({
             [`${prefix}step-item`]: true,
@@ -264,12 +404,19 @@ class StepItem extends Component {
             [`${prefix}step-item-last`]: index === total - 1,
             [`${prefix}step-item-disabled`]: disabled,
             [`${prefix}step-item-read-only`]: readOnly,
-            [className]: className
+            [className]: className,
         });
 
         const overlayCls = status === 'finish' ? { width: '100%' } : null;
         const arrowElement = (
-            <div {...others} style={this.getStyle()} className={stepCls} onClick={this.onClick}>
+            <div
+                tabIndex="0"
+                aria-current={status === 'process' ? 'step' : null}
+                {...others}
+                style={this.getStyle()}
+                className={stepCls}
+                onClick={this.onClick}
+            >
                 <div className={`${prefix}step-item-container`}>
                     <div className={`${prefix}step-item-title`}>{title}</div>
                 </div>
@@ -279,7 +426,5 @@ class StepItem extends Component {
 
         return shape === 'arrow' ? arrowElement : otherElement;
     }
-
 }
 export default ConfigProvider.config(StepItem);
-

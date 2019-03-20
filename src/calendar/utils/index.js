@@ -26,8 +26,8 @@ export const CALENDAR_MODES = [
     CALENDAR_MODE_YEAR,
 ];
 
-export function isDisabledDate(date, fn) {
-    if (typeof fn === 'function' && fn(date)) {
+export function isDisabledDate(date, fn, view) {
+    if (typeof fn === 'function' && fn(date, view)) {
         return true;
     }
     return false;
@@ -35,7 +35,9 @@ export function isDisabledDate(date, fn) {
 
 export function checkMomentObj(props, propName, componentName) {
     if (props[propName] && !moment.isMoment(props[propName])) {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Required a moment object`);
+        return new Error(
+            `Invalid prop ${propName} supplied to ${componentName}. Required a moment object`
+        );
     }
 }
 
@@ -64,7 +66,8 @@ export function isSameYearMonth(dateA, dateB) {
 }
 
 export function preFormatDateValue(value, format) {
-    const val = typeof value === 'string' ? moment(value, format, false) : value;
+    const val =
+        typeof value === 'string' ? moment(value, format, false) : value;
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
     }

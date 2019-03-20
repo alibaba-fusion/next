@@ -33,7 +33,7 @@ describe('Nav', () => {
         );
         ['normal', 'primary', 'secondary', 'line'].forEach(type => {
             wrapper.setProps({
-                type
+                type,
             });
             assert(wrapper.find('ul.next-nav').hasClass(`next-${type}`));
         });
@@ -48,7 +48,7 @@ describe('Nav', () => {
         );
         ['hoz', 'ver'].forEach(direction => {
             wrapper.setProps({
-                direction
+                direction,
             });
             assert(wrapper.find('ul.next-nav').hasClass(`next-${direction}`));
         });
@@ -63,30 +63,34 @@ describe('Nav', () => {
         );
         ['left', 'right'].forEach(activeDirection => {
             wrapper.setProps({
-                activeDirection
+                activeDirection,
             });
             assert(wrapper.find('ul.next-nav').hasClass('next-active'));
-            assert(wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`));
+            assert(
+                wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`)
+            );
         });
         ['top', 'bottom'].forEach(activeDirection => {
             wrapper.setProps({
-                activeDirection
+                activeDirection,
             });
             assert(!wrapper.find('ul.next-nav').hasClass('next-active'));
         });
         wrapper.setProps({
-            direction: 'hoz'
+            direction: 'hoz',
         });
         ['top', 'bottom'].forEach(activeDirection => {
             wrapper.setProps({
-                activeDirection
+                activeDirection,
             });
             assert(wrapper.find('ul.next-nav').hasClass('next-active'));
-            assert(wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`));
+            assert(
+                wrapper.find('ul.next-nav').hasClass(`next-${activeDirection}`)
+            );
         });
         ['left', 'right'].forEach(activeDirection => {
             wrapper.setProps({
-                activeDirection
+                activeDirection,
             });
             assert(!wrapper.find('ul.next-nav').hasClass('next-active'));
         });
@@ -96,15 +100,29 @@ describe('Nav', () => {
         wrapper = mount(
             <Nav>
                 <Item key="1">First</Item>
-                <Item icon="account" key="2">Second</Item>
-                <Item icon={<Icon type="atm" />} key="3">Third</Item>
+                <Item icon="account" key="2">
+                    Second
+                </Item>
+                <Item icon={<Icon type="atm" />} key="3">
+                    Third
+                </Item>
             </Nav>
         );
 
         const items = wrapper.find('li.next-nav-item');
         assert(items.length === 3);
-        assert(items.at(1).find('i.next-nav-icon').hasClass('next-icon-account'));
-        assert(items.at(2).find('i.next-icon').hasClass('next-icon-atm'));
+        assert(
+            items
+                .at(1)
+                .find('i.next-nav-icon')
+                .hasClass('next-icon-account')
+        );
+        assert(
+            items
+                .at(2)
+                .find('i.next-icon')
+                .hasClass('next-icon-atm')
+        );
     });
 
     it('should render sub nav', () => {
@@ -118,7 +136,10 @@ describe('Nav', () => {
                     <Item key="2-1">First</Item>
                     <Item key="2-2">Second</Item>
                 </SubNav>
-                <SubNav key="3" icon={<Icon className="custom-icon" type="atm" />}>
+                <SubNav
+                    key="3"
+                    icon={<Icon className="custom-icon" type="atm" />}
+                >
                     <Item key="3-1">First</Item>
                     <Item key="3-2">Second</Item>
                 </SubNav>
@@ -127,8 +148,18 @@ describe('Nav', () => {
 
         const subNavItems = wrapper.find('li.next-nav-sub-nav-item');
         assert(subNavItems.length === 3);
-        assert(subNavItems.at(1).find('i.next-nav-icon').hasClass('next-icon-account'));
-        assert(subNavItems.at(2).find('i.custom-icon').hasClass('next-icon-atm'));
+        assert(
+            subNavItems
+                .at(1)
+                .find('i.next-nav-icon')
+                .hasClass('next-icon-account')
+        );
+        assert(
+            subNavItems
+                .at(2)
+                .find('i.custom-icon')
+                .hasClass('next-icon-atm')
+        );
     });
 
     it('should render popup item', () => {
@@ -140,7 +171,10 @@ describe('Nav', () => {
                 <PopupItem key="2" icon="account">
                     <div>Custom</div>
                 </PopupItem>
-                <PopupItem key="3" icon={<Icon className="custom-icon" type="atm" />}>
+                <PopupItem
+                    key="3"
+                    icon={<Icon className="custom-icon" type="atm" />}
+                >
                     <div>Custom</div>
                 </PopupItem>
             </Nav>
@@ -148,8 +182,18 @@ describe('Nav', () => {
 
         const popupItems = wrapper.find('li.next-nav-popup-item');
         assert(popupItems.length === 3);
-        assert(popupItems.at(1).find('i.next-nav-icon').hasClass('next-icon-account'));
-        assert(popupItems.at(2).find('i.custom-icon').hasClass('next-icon-atm'));
+        assert(
+            popupItems
+                .at(1)
+                .find('i.next-nav-icon')
+                .hasClass('next-icon-account')
+        );
+        assert(
+            popupItems
+                .at(2)
+                .find('i.custom-icon')
+                .hasClass('next-icon-atm')
+        );
     });
 
     it('should render group', () => {
@@ -168,27 +212,49 @@ describe('Nav', () => {
     it('should support iconOnly', done => {
         wrapper = mount(
             <Nav iconOnly style={{ width: '200px' }}>
-                <Item icon="account" key="1">First</Item>
+                <Item icon="account" key="1">
+                    First
+                </Item>
                 <Item key="2">Second</Item>
                 <SubNav icon="account" label="SubNav label">
-                    <Item icon="account" key="1">First</Item>
-                    <Item icon="account" key="2">Second</Item>
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
                 </SubNav>
                 <SubNav label="SubNav label">
-                    <Item icon="account" key="1">First</Item>
-                    <Item icon="account" key="2">Second</Item>
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
                 </SubNav>
                 <PopupItem icon="account" label="PopupItem label">
-                    <Item icon="account" key="1">First</Item>
-                    <Item icon="account" key="2">Second</Item>
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
                 </PopupItem>
                 <PopupItem label="PopupItem label">
-                    <Item icon="account" key="1">First</Item>
-                    <Item icon="account" key="2">Second</Item>
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
                 </PopupItem>
                 <Group icon="account" label="Group label">
-                    <Item icon="account" key="1">First</Item>
-                    <Item icon="account" key="2">Second</Item>
+                    <Item icon="account" key="1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2">
+                        Second
+                    </Item>
                 </Group>
             </Nav>
         );
@@ -202,41 +268,75 @@ describe('Nav', () => {
         assert(items.at(1).find('span.next-nav-icon-placeholder').length === 1);
 
         let subNavItems = nav.find('li.next-nav-sub-nav-item');
-        assert(subNavItems.at(0).find('i.next-icon-arrow-down.next-nav-icon-only-arrow').length === 1);
-        assert(subNavItems.at(1).find('i.next-icon-arrow-down.next-nav-icon-only-arrow').length === 1);
+        assert(
+            subNavItems
+                .at(0)
+                .find('i.next-icon-arrow-down.next-nav-icon-only-arrow')
+                .length === 1
+        );
+        assert(
+            subNavItems
+                .at(1)
+                .find('i.next-icon-arrow-down.next-nav-icon-only-arrow')
+                .length === 1
+        );
 
         let popupItems = nav.find('li.next-nav-popup-item');
-        assert(popupItems.at(0).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
-        assert(popupItems.at(0).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
+        assert(
+            popupItems
+                .at(0)
+                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
+                .length === 1
+        );
+        assert(
+            popupItems
+                .at(0)
+                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
+                .length === 1
+        );
 
         const groupLabel = nav.find('li.next-nav-group-label');
         assert(groupLabel.find('span.next-nav-icon-placeholder').length === 1);
 
         wrapper.setProps({
-            mode: 'popup'
+            mode: 'popup',
         });
         nav = wrapper.find('ul.next-nav');
         subNavItems = nav.find('li.next-nav-sub-nav-item');
-        assert(subNavItems.at(0).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
-        assert(subNavItems.at(1).find('i.next-icon-arrow-right.next-nav-icon-only-arrow').length === 1);
+        assert(
+            subNavItems
+                .at(0)
+                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
+                .length === 1
+        );
+        assert(
+            subNavItems
+                .at(1)
+                .find('i.next-icon-arrow-right.next-nav-icon-only-arrow')
+                .length === 1
+        );
 
         wrapper.setProps({
             hasArrow: false,
-            hasTooltip: true
+            hasTooltip: true,
         });
         nav = wrapper.find('ul.next-nav');
         subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(subNavItems.at(0).find('i.next-nav-icon').length === 1);
-        assert(subNavItems.at(1).find('span.next-nav-icon-placeholder').length === 1);
+        assert(
+            subNavItems.at(1).find('span.next-nav-icon-placeholder').length ===
+                1
+        );
         popupItems = nav.find('li.next-nav-popup-item');
         assert(popupItems.at(0).find('i.next-nav-icon').length === 1);
-        assert(popupItems.at(1).find('span.next-nav-icon-placeholder').length === 1);
+        assert(
+            popupItems.at(1).find('span.next-nav-icon-placeholder').length === 1
+        );
         items = nav.find('li.next-nav-item');
         items.at(0).simulate('mouseenter');
         setTimeout(() => {
             assert(wrapper.find(Tooltip).length);
             done();
         }, 500);
-
     });
 });

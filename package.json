@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.11.11",
+  "version": "1.13.9",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -42,8 +42,10 @@
     "pack": "node ./scripts/pack.js",
     "release": "node ./scripts/release/index.js",
     "test": "node --max_old_space_size=8192 ./scripts/test/index.js",
+    "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
     "order-var": "node ./scripts/order-var.js",
-    "eslint": "eslint --fix '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
+    "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
+    "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
@@ -51,6 +53,9 @@
     "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
   },
   "lint-staged": {
+    "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
+      "prettier --write"
+    ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [
       "eslint",
       "git add"
@@ -72,7 +77,7 @@
     "@alifd/api-extractor": "^3.4.0",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
-    "@alifd/dts-generator": "^1.0.0",
+    "@alifd/dts-generator": "^1.0.3",
     "@alifd/eslint-config-next": "^2.0.0",
     "@alifd/stylelint-config-next": "^1.0.0",
     "@commitlint/cli": "^7.0.0",
@@ -81,7 +86,7 @@
     "@no-repeat/sassdoc-parser": "^0.0.11",
     "@octokit/rest": "^15.15.1",
     "autoprefixer": "^7.1.4",
-    "axe-core": "^3.1.2",
+    "axe-core": "^3.2.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.0.0",
@@ -100,10 +105,12 @@
     "css-split-webpack-plugin": "^0.2.5",
     "ejs": "^2.5.9",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-adapter-react-16": "~1.10.0",
     "es5-shim": "^4.5.9",
     "es6-promise-polyfill": "^1.2.0",
     "eslint": "^4.19.1",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-html": "^5.0.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-markdown": "^1.0.0-beta.6",
     "eslint-plugin-react": "7.11.1",
@@ -138,6 +145,7 @@
     "postcss-loader": "^2.0.6",
     "postcss-scss": "1.0.2",
     "power-assert": "^1.5.0",
+    "prettier": "1.16.4",
     "promise-polyfill": "^8.1.0",
     "react": "^16.0.0",
     "react-axe": "^3.0.2",

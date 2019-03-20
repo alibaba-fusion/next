@@ -15,6 +15,7 @@ before_script:
 script:
   - npm run eslint
   - npm run stylelint
+  - npm run test:a11y
   - npm test
   - codecov
 

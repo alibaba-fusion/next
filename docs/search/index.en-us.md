@@ -41,3 +41,11 @@ search data in forms or pages.
 | visible            | popupContent is displayed                                                                                                                 | Boolean       | -         |
 | hasClear           | show clear text button                                                                                                                   | Boolean       | false     |
 | disabled           | disabled or not                                                                                                                   | Boolean       | false     |
+
+
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Tab       | Trigger the onSearch event    |

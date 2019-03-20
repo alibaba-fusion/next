@@ -8,7 +8,9 @@ export function getScroll(node, isVertical) {
 }
 
 export function getRect(node) {
-    return node !== window ? node.getBoundingClientRect() : { top: 0, left: 0, bottom: 0 };
+    return node !== window
+        ? node.getBoundingClientRect()
+        : { top: 0, left: 0, bottom: 0 };
 }
 
 export function getNodeHeight(node) {

@@ -43,7 +43,7 @@ const panes = [
 
 const detachedContentStyle = {
     border: '1px solid #DCDEE3',
-    padding: '20px',
+    padding: '20px'
 };
 
 ReactDOM.render(<div className="fusion-demo">

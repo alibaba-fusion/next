@@ -1,5 +1,5 @@
 import React from 'react';
-import { findDOMNode }  from  'react-dom';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import BodyComponent from '../base/body';
 
@@ -9,11 +9,14 @@ export default class VirtualBody extends React.Component {
         children: PropTypes.any,
         prefix: PropTypes.string,
         className: PropTypes.string,
-        colGroup: PropTypes.any
-    }
+        colGroup: PropTypes.any,
+    };
 
     static contextTypes = {
-        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        maxBodyHeight: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         onBodyScroll: PropTypes.func,
         onVirtualScroll: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
@@ -22,8 +25,8 @@ export default class VirtualBody extends React.Component {
         getNode: PropTypes.func,
         getBodyNode: PropTypes.func,
         getLockNode: PropTypes.func,
-        lockType: PropTypes.oneOf(['left', 'right'])
-    }
+        lockType: PropTypes.oneOf(['left', 'right']),
+    };
 
     componentDidMount() {
         const bodyNode = findDOMNode(this);
@@ -35,13 +38,13 @@ export default class VirtualBody extends React.Component {
         this.context.getLockNode('body', bodyNode, this.context.lockType);
     }
 
-    tableRef = (table) => {
+    tableRef = table => {
         this.tableNode = table;
-    }
+    };
 
-    virtualScrollRef = (virtualScroll) => {
+    virtualScrollRef = virtualScroll => {
         this.virtualScrollNode = virtualScroll;
-    }
+    };
 
     onScroll = () => {
         // for fixed
@@ -50,21 +53,39 @@ export default class VirtualBody extends React.Component {
         this.context.onLockBodyScroll();
         // for virtual
         this.context.onVirtualScroll();
-    }
+    };
 
     render() {
         const { prefix, className, colGroup, ...others } = this.props;
-        const {maxBodyHeight, bodyHeight, innerTop} = this.context;
-        return (<div style={{maxHeight: maxBodyHeight}} className={className} onScroll={this.onScroll}>
-            <div style={{height: bodyHeight, overflow: 'hidden', position: 'relative'}} ref={this.virtualScrollRef}>
-                <div style={{height: '100%', position: 'relative', transform: `translateY(${innerTop}px)`}}>
-                    <table ref={this.tableRef}>
-                        {colGroup}
-                        <BodyComponent {...others} prefix={prefix}/>
-                    </table>
+        const { maxBodyHeight, bodyHeight, innerTop } = this.context;
+        return (
+            <div
+                style={{ maxHeight: maxBodyHeight }}
+                className={className}
+                onScroll={this.onScroll}
+            >
+                <div
+                    style={{
+                        height: bodyHeight,
+                        overflow: 'hidden',
+                        position: 'relative',
+                    }}
+                    ref={this.virtualScrollRef}
+                >
+                    <div
+                        style={{
+                            height: '100%',
+                            position: 'relative',
+                            transform: `translateY(${innerTop}px)`,
+                        }}
+                    >
+                        <table ref={this.tableRef}>
+                            {colGroup}
+                            <BodyComponent {...others} prefix={prefix} />
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>);
+        );
     }
 }
-

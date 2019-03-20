@@ -18,6 +18,7 @@ export default class Item extends React.Component {
          * 样式前缀
          */
         prefix: PropTypes.string,
+        rtl: PropTypes.bool,
         /**
          * label 标签的文本
          */
@@ -89,7 +90,10 @@ export default class Item extends React.Component {
         /**
          * required 自定义触发方式
          */
-        requiredTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        requiredTrigger: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * [表单校验] 最小值
          */
@@ -121,7 +125,10 @@ export default class Item extends React.Component {
         /**
          * minLength/maxLength 自定义触发方式
          */
-        minmaxLengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        minmaxLengthTrigger: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * [表单校验] 字符串精确长度 / 数组精确个数
          */
@@ -145,7 +152,10 @@ export default class Item extends React.Component {
         /**
          * pattern 自定义触发方式
          */
-        patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        patternTrigger: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
         /**
          * [表单校验] 四种常用的 pattern
          */
@@ -165,7 +175,14 @@ export default class Item extends React.Component {
         /**
          * validator 自定义触发方式
          */
-        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+        validatorTrigger: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array,
+        ]),
+        /**
+         * 是否修改数据时自动触发校验
+         */
+        autoValidate: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -185,18 +202,27 @@ export default class Item extends React.Component {
      */
     getNames() {
         const children = React.Children.toArray(this.props.children);
-        return children.filter(c => {
-            return c.props && ('name' in c.props || 'data-meta' in c.props);
-        }).map(c => {
-            return c.props.name || c.props.id;
-        });
+        return children
+            .filter(c => {
+                return c.props && ('name' in c.props || 'data-meta' in c.props);
+            })
+            .map(c => {
+                return c.props.name || c.props.id;
+            });
     }
 
     getHelper() {
         const help = this.props.help;
         const _formField = this.context._formField;
 
-        return <Error name={help === undefined ? this.getNames() : undefined} field={_formField}>{help}</Error>;
+        return (
+            <Error
+                name={help === undefined ? this.getNames() : undefined}
+                field={_formField}
+            >
+                {help}
+            </Error>
+        );
     }
 
     getState() {
@@ -224,15 +250,31 @@ export default class Item extends React.Component {
     }
 
     getItemLabel() {
-        const { id, required, asterisk = required, label, labelCol, wrapperCol, prefix, labelAlign, labelTextAlign } = this.props;
+        const {
+            id,
+            required,
+            asterisk = required,
+            label,
+            labelCol,
+            wrapperCol,
+            prefix,
+            labelAlign,
+            labelTextAlign,
+        } = this.props;
 
         if (!label) {
             return null;
         }
 
-        const ele = (<label htmlFor={id || this.getNames()[0]} required={asterisk} key="label">
-            {label}
-        </label>);
+        const ele = (
+            <label
+                htmlFor={id || this.getNames()[0]}
+                required={asterisk}
+                key="label"
+            >
+                {label}
+            </label>
+        );
 
         const cls = classNames({
             [`${prefix}form-item-label`]: true,
@@ -240,14 +282,26 @@ export default class Item extends React.Component {
         });
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
-            return <Col {...labelCol} className={cls}>{ele}</Col>;
+            return (
+                <Col {...labelCol} className={cls}>
+                    {ele}
+                </Col>
+            );
         }
 
         return <div className={cls}>{ele}</div>;
     }
 
     getItemWrapper() {
-        const { hasFeedback, labelCol, wrapperCol, children, extra, labelAlign, prefix } = this.props;
+        const {
+            hasFeedback,
+            labelCol,
+            wrapperCol,
+            children,
+            extra,
+            labelAlign,
+            prefix,
+        } = this.props;
 
         const state = this.getState();
 
@@ -265,14 +319,30 @@ export default class Item extends React.Component {
             childrenNode = children(this.context._formField.getValues());
         }
 
-        const ele = React.Children.map(childrenNode, (child) => {
-            if (child && typeof child.type === 'function' && child.type._typeMark !== 'form_item' && child.type._typeMark !== 'form_error') {
+        const ele = React.Children.map(childrenNode, child => {
+            if (
+                child &&
+                typeof child.type === 'function' &&
+                child.type._typeMark !== 'form_item' &&
+                child.type._typeMark !== 'form_error'
+            ) {
                 let extraProps = childrenProps;
-                if (this.context._formField && 'name' in child.props && !('data-meta' in child.props)) {
-                    extraProps = this.context._formField.init(child.props.name, {
-                        ...getFieldInitCfg(this.props, child.type.displayName),
-                        props: child.props
-                    }, childrenProps);
+                if (
+                    this.context._formField &&
+                    'name' in child.props &&
+                    !('data-meta' in child.props)
+                ) {
+                    extraProps = this.context._formField.init(
+                        child.props.name,
+                        {
+                            ...getFieldInitCfg(
+                                this.props,
+                                child.type.displayName
+                            ),
+                            props: child.props,
+                        },
+                        childrenProps
+                    );
                 } else {
                     extraProps = Object.assign({}, child.props, extraProps);
                 }
@@ -287,20 +357,32 @@ export default class Item extends React.Component {
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
-                <Col {...wrapperCol} className={`${prefix}form-item-control`} key="item">
+                <Col
+                    {...wrapperCol}
+                    className={`${prefix}form-item-control`}
+                    key="item"
+                >
                     {ele} {help} {extra}
                 </Col>
             );
         }
 
-        return (<div className={`${prefix}form-item-control`}>
-            {ele} {help} {extra}
-        </div>);
+        return (
+            <div className={`${prefix}form-item-control`}>
+                {ele} {help} {extra}
+            </div>
+        );
     }
 
     render() {
-
-        const { className, labelAlign, style, prefix, wrapperCol, labelCol } = this.props;
+        const {
+            className,
+            labelAlign,
+            style,
+            prefix,
+            wrapperCol,
+            labelCol,
+        } = this.props;
         const state = this.getState();
         const size = this.getSize();
 
@@ -313,11 +395,16 @@ export default class Item extends React.Component {
         });
 
         // 垂直模式并且左对齐才用到
-        const Tag = (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
+        const Tag =
+            (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
         const label = labelAlign === 'inset' ? null : this.getItemLabel();
 
         return (
-            <Tag  {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
+            <Tag
+                {...obj.pickOthers(Item.propTypes, this.props)}
+                className={itemClassName}
+                style={style}
+            >
                 {label}
                 {this.getItemWrapper()}
             </Tag>

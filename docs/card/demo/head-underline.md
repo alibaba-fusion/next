@@ -22,7 +22,7 @@ const commonProps = {
     title: 'Title',
     style: { width: 300 },
     subTitle: 'Sub-title',
-    extra: 'Link',
+    extra: 'Link'
 };
 
 ReactDOM.render(<div>

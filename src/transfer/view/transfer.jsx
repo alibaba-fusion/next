@@ -17,7 +17,7 @@ const { pickOthers } = obj;
  */
 class Transfer extends Component {
     static contextTypes = {
-        prefix: PropTypes.string
+        prefix: PropTypes.string,
     };
 
     static propTypes = {
@@ -103,6 +103,7 @@ class Transfer extends Component {
         titles: PropTypes.arrayOf(PropTypes.node),
         /**
          * 向右向左移动按钮显示内容
+         * @default [<Icon type="arrow-right" />, <Icon type="arrow-left" />]
          */
         operations: PropTypes.arrayOf(PropTypes.node),
         /**
@@ -134,7 +135,7 @@ class Transfer extends Component {
         /**
          * 自定义国际化文案对象
          */
-        locale: PropTypes.object
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -159,30 +160,38 @@ class Transfer extends Component {
             };
             loop(data.label);
 
-            if (labelString.length >= searchedValue.length &&
-                labelString.indexOf(searchedValue) > -1) {
-                return true;
-            }
-
-            return false;
+            return (
+                labelString.length >= searchedValue.length &&
+                labelString.indexOf(searchedValue) > -1
+            );
         },
         onSearch: () => {},
         notFoundContent: 'Not Found',
         titles: [],
-        // eslint-disable-next-line
-        operations: [<Icon type="arrow-right" />, <Icon type="arrow-left" />],
+        operations: [],
         defaultLeftChecked: [],
         defaultRightChecked: [],
         sortable: false,
         onSort: () => {},
-        locale: zhCN.Transfer
+        locale: zhCN.Transfer,
     };
 
     constructor(props, context) {
         super(props, context);
 
-        const { value, defaultValue, defaultLeftChecked, defaultRightChecked, dataSource } = props;
-
+        const {
+            value,
+            defaultValue,
+            defaultLeftChecked,
+            defaultRightChecked,
+            dataSource,
+            rtl,
+            operations,
+        } = props;
+        if (operations.length === 0) {
+            operations.push(<Icon rtl={rtl} type="arrow-right" />);
+            operations.push(<Icon rtl={rtl} type="arrow-left" />);
+        }
         const { left, right } = this.filterCheckedValue(
             this.normalizeValue(defaultLeftChecked),
             this.normalizeValue(defaultRightChecked),
@@ -192,14 +201,17 @@ class Transfer extends Component {
         this.state = {
             value: this.normalizeValue('value' in props ? value : defaultValue),
             leftCheckedValue: left,
-            rightCheckedValue: right
+            rightCheckedValue: right,
         };
 
         this.leftValue = this.getLeftValue(dataSource, this.state.value);
 
         bindCtx(this, [
-            'handlePanelChange', 'handlePanelSort',
-            'handleMoveItem', 'handleSimpleMove', 'handleSimpleMoveAll'
+            'handlePanelChange',
+            'handlePanelSort',
+            'handleMoveItem',
+            'handleSimpleMove',
+            'handleSimpleMoveAll',
         ]);
     }
 
@@ -242,7 +254,7 @@ class Transfer extends Component {
     filterCheckedValue(left, right, dataSource) {
         const result = {
             left: [],
-            right: []
+            right: [],
         };
 
         if (left.length || right.length) {
@@ -260,9 +272,11 @@ class Transfer extends Component {
     }
 
     getLeftValue(dataSource, rightValue) {
-        return dataSource.map(item => item.value).filter(itemValue => {
-            return rightValue.indexOf(itemValue) === -1;
-        });
+        return dataSource
+            .map(item => item.value)
+            .filter(itemValue => {
+                return rightValue.indexOf(itemValue) === -1;
+            });
     }
 
     groupDatasource(value, itemValues, dataSource) {
@@ -276,9 +290,10 @@ class Transfer extends Component {
     }
 
     handlePanelChange(position, value) {
-        const valuePropName = position === 'left' ? 'leftCheckedValue' : 'rightCheckedValue';
+        const valuePropName =
+            position === 'left' ? 'leftCheckedValue' : 'rightCheckedValue';
         this.setState({
-            [valuePropName]: value
+            [valuePropName]: value,
         });
     }
 
@@ -286,7 +301,8 @@ class Transfer extends Component {
         const value = position === 'right' ? this.state.value : this.leftValue;
         const currentIndex = value.indexOf(dragValue);
         const referenceIndex = value.indexOf(referenceValue);
-        let expectIndex = dragGap === 'before' ? referenceIndex : referenceIndex + 1;
+        let expectIndex =
+            dragGap === 'before' ? referenceIndex : referenceIndex + 1;
         if (currentIndex === expectIndex) {
             return;
         }
@@ -297,11 +313,14 @@ class Transfer extends Component {
         }
         value.splice(expectIndex, 0, dragValue);
 
-        this.setState({
-            value: this.state.value
-        }, () => {
-            this.props.onSort(value, position);
-        });
+        this.setState(
+            {
+                value: this.state.value,
+            },
+            () => {
+                this.props.onSort(value, position);
+            }
+        );
     }
 
     handleMoveItem(direction) {
@@ -314,11 +333,15 @@ class Transfer extends Component {
 
         if (direction === 'right') {
             rightValue = leftCheckedValue.concat(value);
-            leftValue = this.leftValue.filter(itemValue => leftCheckedValue.indexOf(itemValue) === -1);
+            leftValue = this.leftValue.filter(
+                itemValue => leftCheckedValue.indexOf(itemValue) === -1
+            );
             movedValue = leftCheckedValue;
             valuePropName = 'leftCheckedValue';
         } else {
-            rightValue = value.filter(itemValue => rightCheckedValue.indexOf(itemValue) === -1);
+            rightValue = value.filter(
+                itemValue => rightCheckedValue.indexOf(itemValue) === -1
+            );
             leftValue = rightCheckedValue.concat(this.leftValue);
             movedValue = rightCheckedValue;
             valuePropName = 'rightCheckedValue';
@@ -362,33 +385,54 @@ class Transfer extends Component {
         }, []);
 
         if (direction === 'right') {
-            movedValue = this.leftValue.filter(itemValue => disabledValue.indexOf(itemValue) === -1);
+            movedValue = this.leftValue.filter(
+                itemValue => disabledValue.indexOf(itemValue) === -1
+            );
             rightValue = movedValue.concat(value);
-            leftValue = this.leftValue.filter(itemValue => disabledValue.indexOf(itemValue) > -1);
+            leftValue = this.leftValue.filter(
+                itemValue => disabledValue.indexOf(itemValue) > -1
+            );
         } else {
-            movedValue = value.filter(itemValue => disabledValue.indexOf(itemValue) === -1);
-            rightValue = value.filter(itemValue => disabledValue.indexOf(itemValue) > -1);
+            movedValue = value.filter(
+                itemValue => disabledValue.indexOf(itemValue) === -1
+            );
+            rightValue = value.filter(
+                itemValue => disabledValue.indexOf(itemValue) > -1
+            );
             leftValue = movedValue.concat(this.leftValue);
         }
 
         this.setValueState({}, rightValue, leftValue, movedValue, direction);
     }
 
+    // eslint-disable-next-line max-params
     setValueState(st, rightValue, leftValue, movedValue, direction) {
         const { dataSource } = this.props;
         const callback = () => {
             if ('onChange' in this.props) {
                 const itemValues = dataSource.map(item => item.value);
-                const rightData = this.groupDatasource(rightValue, itemValues, dataSource);
-                const leftData = this.groupDatasource(leftValue, itemValues, dataSource);
-                const movedData = this.groupDatasource(movedValue, itemValues, dataSource);
+                const rightData = this.groupDatasource(
+                    rightValue,
+                    itemValues,
+                    dataSource
+                );
+                const leftData = this.groupDatasource(
+                    leftValue,
+                    itemValues,
+                    dataSource
+                );
+                const movedData = this.groupDatasource(
+                    movedValue,
+                    itemValues,
+                    dataSource
+                );
 
                 this.props.onChange(rightValue, rightData, {
                     leftValue,
                     leftData,
                     movedValue,
                     movedData,
-                    direction
+                    direction,
                 });
             }
         };
@@ -401,36 +445,104 @@ class Transfer extends Component {
         if (Object.keys(st).length) {
             this.setState(st, callback);
         } else {
+            // eslint-disable-next-line callback-return
             callback();
         }
     }
 
     renderCenter() {
-        const { prefix, mode, operations, disabled, leftDisabled, rightDisabled } = this.props;
+        const {
+            prefix,
+            mode,
+            operations,
+            disabled,
+            leftDisabled,
+            rightDisabled,
+            locale,
+        } = this.props;
         const { leftCheckedValue, rightCheckedValue } = this.state;
-
         return (
             <div className={`${prefix}transfer-operations`}>
-                {mode === 'simple' ? <Icon className={`${prefix}transfer-move`} size="large" type="switch" /> : [
-                    <Button key="l2r" className={`${prefix}transfer-operation`} type={leftCheckedValue.length ? 'primary' : 'normal'} disabled={leftDisabled || disabled || !leftCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'right')}>
-                        {operations[0]}
-                    </Button>,
-                    <Button key="r2l" className={`${prefix}transfer-operation`} type={rightCheckedValue.length ? 'primary' : 'normal'}  disabled={rightDisabled || disabled || !rightCheckedValue.length} onClick={this.handleMoveItem.bind(this, 'left')}>
-                        {operations[1]}
-                    </Button>
-                ]}
+                {mode === 'simple' ? (
+                    <Icon
+                        className={`${prefix}transfer-move`}
+                        size="large"
+                        type="switch"
+                    />
+                ) : (
+                    [
+                        <Button
+                            aria-label={locale.moveToRight}
+                            key="l2r"
+                            className={`${prefix}transfer-operation`}
+                            type={
+                                leftCheckedValue.length ? 'primary' : 'normal'
+                            }
+                            disabled={
+                                leftDisabled ||
+                                disabled ||
+                                !leftCheckedValue.length
+                            }
+                            onClick={this.handleMoveItem.bind(this, 'right')}
+                        >
+                            {operations[0]}
+                        </Button>,
+                        <Button
+                            aria-label={locale.moveToLeft}
+                            key="r2l"
+                            className={`${prefix}transfer-operation`}
+                            type={
+                                rightCheckedValue.length ? 'primary' : 'normal'
+                            }
+                            disabled={
+                                rightDisabled ||
+                                disabled ||
+                                !rightCheckedValue.length
+                            }
+                            onClick={this.handleMoveItem.bind(this, 'left')}
+                        >
+                            {operations[1]}
+                        </Button>,
+                    ]
+                )}
             </div>
         );
     }
 
     render() {
-        const { prefix, mode, disabled, className, dataSource, locale, showSearch, filter, onSearch,
-            leftDisabled, rightDisabled, searchPlaceholder, notFoundContent, titles, listClassName,
-            listStyle, itemRender, sortable } = this.props;
+        const {
+            prefix,
+            mode,
+            disabled,
+            className,
+            dataSource,
+            locale,
+            showSearch,
+            filter,
+            onSearch,
+            leftDisabled,
+            rightDisabled,
+            searchPlaceholder,
+            notFoundContent,
+            titles,
+            listClassName,
+            listStyle,
+            itemRender,
+            sortable,
+            rtl,
+        } = this.props;
         const { value, leftCheckedValue, rightCheckedValue } = this.state;
         const itemValues = dataSource.map(item => item.value);
-        const leftDatasource = this.groupDatasource(this.leftValue, itemValues, dataSource);
-        const rightDatasource = this.groupDatasource(value, itemValues, dataSource);
+        const leftDatasource = this.groupDatasource(
+            this.leftValue,
+            itemValues,
+            dataSource
+        );
+        const rightDatasource = this.groupDatasource(
+            value,
+            itemValues,
+            dataSource
+        );
         const panelProps = {
             prefix,
             mode,
@@ -447,25 +559,32 @@ class Transfer extends Component {
             onMoveAll: this.handleSimpleMoveAll,
             onChange: this.handlePanelChange,
             sortable,
-            onSort: this.handlePanelSort
+            onSort: this.handlePanelSort,
         };
         const others = pickOthers(Object.keys(Transfer.propTypes), this.props);
 
+        if (rtl) {
+            others.dir = 'rtl';
+        }
         return (
             <div className={cx(`${prefix}transfer`, className)} {...others}>
-                <TransferPanel {...panelProps}
+                <TransferPanel
+                    {...panelProps}
                     position="left"
                     dataSource={leftDatasource}
                     disabled={leftDisabled || disabled}
                     value={leftCheckedValue}
-                    title={titles[0]} />
+                    title={titles[0]}
+                />
                 {this.renderCenter()}
-                <TransferPanel {...panelProps}
+                <TransferPanel
+                    {...panelProps}
                     position="right"
                     dataSource={rightDatasource}
                     disabled={rightDisabled || disabled}
                     value={rightCheckedValue}
-                    title={titles[1]} />
+                    title={titles[1]}
+                />
             </div>
         );
     }

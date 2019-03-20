@@ -22,13 +22,13 @@ const FormItem = Form.Item;
 
 const formItemLayout = {
     labelCol: { fixedSpan: 3 },
-    wrapperCol: { span: 20 },
+    wrapperCol: { span: 20 }
 };
 
 class Demo extends React.Component {
     state = {
         code: '',
-        second: 60,
+        second: 60
     }
 
     handleSubmit = (values, errors) => {

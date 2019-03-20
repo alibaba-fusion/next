@@ -303,6 +303,9 @@
     cursor: pointer;
     width: 20px;
     display: inline-block;
+    &:focus {
+        outline: 0;
+    }
     .#{$css-prefix}icon {
         @include icon-size($table-filter-icon-size);
         color: $table-sort-color;
@@ -317,3 +320,5 @@
         @include icon-size($table-expanded-icon-size);
     }
 }
+
+@import "./rtl.scss";

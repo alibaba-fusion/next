@@ -6,21 +6,30 @@ import Balloon from '../../src/balloon/index';
 
 /* eslint-disable react/no-multi-comp */
 
-
 // import Button from '../../src/button';
 
 Enzyme.configure({ adapter: new Adapter() });
 const Tooltip = Balloon.Tooltip;
-const trigger = <span className="trigger" onMouseEnter={() => {}}>xiachi</span>;
+const trigger = (
+    <span className="trigger" onMouseEnter={() => {}}>
+        xiachi
+    </span>
+);
 describe('Tooltip', () => {
     let defaultWrapper = {};
 
     beforeEach(function() {
-        defaultWrapper = mount(<Tooltip trigger={trigger} triggetType="hover">i am tooltip content</Tooltip>);
+        defaultWrapper = mount(
+            <Tooltip trigger={trigger} triggetType="hover">
+                i am tooltip content
+            </Tooltip>
+        );
     });
     afterEach(function() {
         defaultWrapper.unmount();
-        const nodeListArr = [].slice.call(document.querySelectorAll('.next-balloon-tooltip'));
+        const nodeListArr = [].slice.call(
+            document.querySelectorAll('.next-balloon-tooltip')
+        );
         nodeListArr.forEach((node, index) => {
             node.parentNode.removeChild(node);
         });
@@ -44,15 +53,12 @@ describe('Tooltip', () => {
     });
 
     it('text not string should throw an error', () => {
-
         try {
             defaultWrapper.setProps({
-                text: 2
+                text: 2,
             });
         } catch (e) {
             assert(e instanceof Error);
         }
-
     });
-
 });

@@ -62,28 +62,36 @@ class Radio extends UIState {
         /**
          * radio 的value
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         /**
          * name
          */
         name: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         onChange: noop,
         onMouseLeave: noop,
         onMouseEnter: noop,
         tabIndex: 0,
-        prefix: 'next-'
-    }
+        prefix: 'next-',
+    };
 
     static contextTypes = {
         onChange: PropTypes.func,
         __group__: PropTypes.bool,
         isButton: PropTypes.bool,
-        selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        selectedValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         disabled: PropTypes.bool,
-    }
+    };
 
     constructor(props, context) {
         super(props);
@@ -100,8 +108,9 @@ class Radio extends UIState {
         this.state = { checked };
 
         this.onChange = this.onChange.bind(this);
-        this.disabled = props.disabled ||  (context.__group__ && ('disabled' in context) && context.disabled);
-
+        this.disabled =
+            props.disabled ||
+            (context.__group__ && 'disabled' in context && context.disabled);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -114,11 +123,15 @@ class Radio extends UIState {
             }
         } else if ('checked' in nextProps) {
             this.setState({
-                checked: nextProps.checked
+                checked: nextProps.checked,
             });
         }
 
-        this.disabled = nextProps.disabled ||  (nextContext.__group__ && ('disabled' in nextContext) && nextContext.disabled);
+        this.disabled =
+            nextProps.disabled ||
+            (nextContext.__group__ &&
+                'disabled' in nextContext &&
+                nextContext.disabled);
 
         // when disabled, reset UIState
         if (this.disabled) {
@@ -129,9 +142,11 @@ class Radio extends UIState {
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         const { shallowEqual } = obj;
-        return !shallowEqual(this.props, nextProps) ||
+        return (
+            !shallowEqual(this.props, nextProps) ||
             !shallowEqual(this.state, nextState) ||
-            !shallowEqual(this.nextContext, nextContext);
+            !shallowEqual(this.nextContext, nextContext)
+        );
     }
 
     onChange(e) {
@@ -143,7 +158,7 @@ class Radio extends UIState {
         } else if (this.state.checked !== checked) {
             if (!('checked' in this.props)) {
                 this.setState({
-                    checked: checked
+                    checked: checked,
                 });
             }
             this.props.onChange(checked, e);
@@ -152,8 +167,19 @@ class Radio extends UIState {
 
     render() {
         /* eslint-disable no-unused-vars */
-        const { id, className, children, style, label, onMouseEnter, onMouseLeave, tabIndex, rtl,
-            ...otherProps } = this.props;
+        const {
+            id,
+            className,
+            children,
+            style,
+            label,
+            onMouseEnter,
+            onMouseLeave,
+            tabIndex,
+            rtl,
+            name,
+            ...otherProps
+        } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
         const isButton = this.context.isButton;
@@ -162,17 +188,21 @@ class Radio extends UIState {
         const others = obj.pickOthers(Radio.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
-
-        let input = (<input
-            {...obj.pickOthers(othersData, others)}
-            id={id}
-            disabled={disabled}
-            checked={checked}
-            type="radio"
-            onChange={this.onChange}
-            aria-checked={checked}
-            className={`${prefix}radio-input`}
-        />);
+        let input = (
+            <input
+                {...obj.pickOthers(othersData, others)}
+                name={name}
+                id={id}
+                role="radio"
+                tabIndex={tabIndex}
+                disabled={disabled}
+                checked={checked}
+                type="radio"
+                onChange={this.onChange}
+                aria-checked={checked}
+                className={`${prefix}radio-input`}
+            />
+        );
 
         // disabled do not hove focus state
         if (!disabled) {
@@ -183,47 +213,58 @@ class Radio extends UIState {
             [`${prefix}radio`]: true,
             checked,
             disabled,
-            [this.getStateClassName()]: true
+            [this.getStateClassName()]: true,
         });
         const clsInner = classnames({
             [`${prefix}radio-inner`]: true,
             press: checked,
-            unpress: !checked
+            unpress: !checked,
         });
         const clsWrapper = classnames({
             [`${prefix}radio-wrapper`]: true,
             [className]: !!className,
             checked,
             disabled,
-            [this.getStateClassName()]: true
+            [this.getStateClassName()]: true,
         });
         const childrenCls = `${prefix}radio-label`;
 
-        const radioComp = !isButton ?
-            (<span className={cls}>
-                <span className={clsInner}></span>
+        const radioComp = !isButton ? (
+            <span className={cls}>
+                <span className={clsInner} />
                 {input}
-            </span>) :
-            (<span className={`${prefix}radio-single-input`}>
-                {input}
-            </span>);
+            </span>
+        ) : (
+            <span className={`${prefix}radio-single-input`}>{input}</span>
+        );
 
         return (
             <label
                 {...othersData}
-                role="radio"
                 dir={rtl ? 'rtl' : 'ltr'}
                 style={style}
-                tabIndex={tabIndex}
                 aria-checked={checked}
                 aria-disabled={disabled}
                 className={clsWrapper}
-                onMouseEnter={disabled ? onMouseEnter : makeChain(this._onUIMouseEnter, onMouseEnter)}
-                onMouseLeave={disabled ? onMouseLeave : makeChain(this._onUIMouseLeave, onMouseLeave)}
+                onMouseEnter={
+                    disabled
+                        ? onMouseEnter
+                        : makeChain(this._onUIMouseEnter, onMouseEnter)
+                }
+                onMouseLeave={
+                    disabled
+                        ? onMouseLeave
+                        : makeChain(this._onUIMouseLeave, onMouseLeave)
+                }
             >
                 {radioComp}
-                {[children, label].map((d, i) => d !== undefined ?
-                    <span key={i} className={childrenCls}>{d}</span> : null)}
+                {[children, label].map((d, i) =>
+                    d !== undefined ? (
+                        <span key={i} className={childrenCls}>
+                            {d}
+                        </span>
+                    ) : null
+                )}
             </label>
         );
     }

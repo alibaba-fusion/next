@@ -27,7 +27,7 @@ function CustomTabItem({ title, desc }) {
 
 const panes = [
     { key: 'e-checking', title: 'Alipay', desc: 'The fee to be paid is $15' },
-    { key: 'brand-card', title: 'Bank Card', desc: 'The fee to be paid is $17' },
+    { key: 'brand-card', title: 'Bank Card', desc: 'The fee to be paid is $17' }
 ];
 
 ReactDOM.render(

@@ -15,7 +15,7 @@ class ButtonGroup extends Component {
          */
         size: PropTypes.string,
         className: PropTypes.string,
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
@@ -24,17 +24,24 @@ class ButtonGroup extends Component {
     };
 
     render() {
-        const { prefix, className, size, children, rtl, ...others } = this.props;
+        const {
+            prefix,
+            className,
+            size,
+            children,
+            rtl,
+            ...others
+        } = this.props;
 
         const groupCls = classNames({
             [`${prefix}btn-group`]: true,
-            [className]: className
+            [className]: className,
         });
 
-        const cloneChildren = Children.map(children, (child) => {
+        const cloneChildren = Children.map(children, child => {
             if (child) {
                 return React.cloneElement(child, {
-                    size: size
+                    size: size,
                 });
             }
         });

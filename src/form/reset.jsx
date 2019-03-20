@@ -26,15 +26,15 @@ class Reset extends React.Component {
          * 自定义 field (在 Form 内不需要设置)
          */
         field: PropTypes.object,
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
-        onClick: func.noop
+        onClick: func.noop,
     };
 
     static contextTypes = {
-        _formField: PropTypes.object
+        _formField: PropTypes.object,
     };
 
     handleClick = () => {
@@ -60,7 +60,12 @@ class Reset extends React.Component {
         const { children } = this.props;
 
         return (
-            <Button {...obj.pickOthers(Reset.propTypes, this.props)} onClick={this.handleClick}>{children}</Button>
+            <Button
+                {...obj.pickOthers(Reset.propTypes, this.props)}
+                onClick={this.handleClick}
+            >
+                {children}
+            </Button>
         );
     }
 }

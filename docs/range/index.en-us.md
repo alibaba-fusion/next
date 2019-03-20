@@ -42,3 +42,11 @@ Range Component is used to select a value in a range by dragging slider. Normall
 | pure          | pure render or not                                                                                                                                                             | Boolean                                | false          |
 | fixedWidth    | drag a line with fixed width. It considers `slider` as `double`, and `defaultValue` must be a interval.                                                                                                                                                                 | Boolean                                | false          |
 | tooltipVisible| tooltip always be visible or not                                                                                                                                                              | Boolean                                | false          |
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton                              |
+| :---------- | :------------------------------ |
+| Right Arrow    | control the slider to move to the right                         |
+| Left Arrow    | control the slider to move to the left                         |
+| Tab       | switch to other slider                 |

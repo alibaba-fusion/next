@@ -19,6 +19,7 @@ export default class CascaderMenuItem extends Component {
         onSelect: PropTypes.func,
         expanded: PropTypes.bool,
         canExpand: PropTypes.bool,
+        menu: PropTypes.any,
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
         onExpand: PropTypes.func,
         onFold: PropTypes.func,
@@ -27,34 +28,39 @@ export default class CascaderMenuItem extends Component {
         indeterminate: PropTypes.bool,
         checkboxDisabled: PropTypes.bool,
         onCheck: PropTypes.func,
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            loading: false
+            loading: false,
         };
 
-        bindCtx(this, ['handleExpand', 'handleClick', 'handleMouseEnter', 'handleKeyDown', 'removeLoading']);
+        bindCtx(this, [
+            'handleExpand',
+            'handleClick',
+            'handleMouseEnter',
+            'handleKeyDown',
+            'removeLoading',
+        ]);
     }
 
     addLoading() {
         this.setState({
-            loading: true
+            loading: true,
         });
     }
 
     removeLoading() {
         this.setState({
-            loading: false
+            loading: false,
         });
     }
 
     setLoadingIfNeed(p) {
         if (p && typeof p.then === 'function') {
-
             this.addLoading();
             p.then(this.removeLoading).catch(this.removeLoading);
         }
@@ -74,11 +80,14 @@ export default class CascaderMenuItem extends Component {
 
     handleKeyDown(e) {
         if (!this.props.disabled) {
-            if (e.keyCode === KEYCODE.RIGHT || e.keyCODE === KEYCODE.ENTER) {
+            if (e.keyCode === KEYCODE.RIGHT || e.keyCode === KEYCODE.ENTER) {
                 if (this.props.canExpand) {
                     this.handleExpand(true);
                 }
-            } else if (e.keyCode === KEYCODE.LEFT || e.keyCode === KEYCODE.ESC) {
+            } else if (
+                e.keyCode === KEYCODE.LEFT ||
+                e.keyCode === KEYCODE.ESC
+            ) {
                 this.props.onFold();
             } else if (e.keyCode === KEYCODE.SPACE) {
                 this.handleExpand(false);
@@ -87,22 +96,40 @@ export default class CascaderMenuItem extends Component {
     }
 
     render() {
-        const { prefix, className, disabled, selected, onSelect, expanded, canExpand, expandTriggerType,
-            checkable, checked, indeterminate, checkboxDisabled, onCheck, children } = this.props;
-        const others = pickOthers(Object.keys(CascaderMenuItem.propTypes), this.props);
+        const {
+            prefix,
+            className,
+            menu,
+            disabled,
+            selected,
+            onSelect,
+            expanded,
+            canExpand,
+            expandTriggerType,
+            checkable,
+            checked,
+            indeterminate,
+            checkboxDisabled,
+            onCheck,
+            children,
+        } = this.props;
+        const others = pickOthers(
+            Object.keys(CascaderMenuItem.propTypes),
+            this.props
+        );
         const { loading } = this.state;
 
         const itemProps = {
             className: cx({
                 [`${prefix}cascader-menu-item`]: true,
                 [`${prefix}expanded`]: expanded,
-                [className]: !!className
+                [className]: !!className,
             }),
             disabled,
+            menu,
             onKeyDown: this.handleKeyDown,
             role: 'option',
-            'aria-expanded': expanded,
-            ...others
+            ...others,
         };
         if (!disabled) {
             if (expandTriggerType === 'hover') {
@@ -129,10 +156,18 @@ export default class CascaderMenuItem extends Component {
             <Item {...itemProps}>
                 {children}
                 {canExpand ? (
-                    loading ?
-                        <Icon className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-loading`} type="loading" /> :
-                        <Icon className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-expand`} type="arrow-right" />) :
-                    null}
+                    loading ? (
+                        <Icon
+                            className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-loading`}
+                            type="loading"
+                        />
+                    ) : (
+                        <Icon
+                            className={`${prefix}cascader-menu-icon-right ${prefix}cascader-menu-icon-expand`}
+                            type="arrow-right"
+                        />
+                    )
+                ) : null}
             </Item>
         );
     }

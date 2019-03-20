@@ -51,22 +51,22 @@ class App extends React.Component {
 
         return (
             <div>
-                <DatePicker {...init('date', { rules: [ {
+                <DatePicker {...init('date', { rules: [{
                     required: true,
-                    message: '请选择日期',
-                } ] })} />{this.printError('date')}<br /><br />
-                <MonthPicker {...init('month', { rules: [ {
+                    message: '请选择日期'
+                }] })} />{this.printError('date')}<br /><br />
+                <MonthPicker {...init('month', { rules: [{
                     required: true,
-                    message: '请选择月份',
-                } ]  })} />{this.printError('month')}<br /><br />
-                <YearPicker {...init('year', { rules: [ {
+                    message: '请选择月份'
+                }] })} />{this.printError('month')}<br /><br />
+                <YearPicker {...init('year', { rules: [{
                     required: true,
-                    message: '请选择年份',
-                } ]  })} />{this.printError('year')}<br /><br />
-                <RangePicker {...init('range', { rules: [ {
+                    message: '请选择年份'
+                }] })} />{this.printError('year')}<br /><br />
+                <RangePicker {...init('range', { rules: [{
                     required: true,
-                    message: '请选择日期范围',
-                } ]  })} />{this.printError('range')}<br /><br />
+                    message: '请选择日期范围'
+                }] })} />{this.printError('range')}<br /><br />
                 <Button onClick={this.printData}>Print to Console</Button>
             </div>
         );

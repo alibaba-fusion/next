@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RowComponent from './tree/row';
 import CellComponent from './tree/cell';
-import {statics} from './util';
+import { statics } from './util';
 
-const noop = () => { };
+const noop = () => {};
 
 export default function tree(BaseComponent) {
     class TreeTable extends React.Component {
@@ -37,28 +37,28 @@ export default function tree(BaseComponent) {
             isTree: PropTypes.bool,
             locale: PropTypes.object,
             ...BaseComponent.propTypes,
-        }
+        };
 
         static defaultProps = {
             ...BaseComponent.defaultProps,
             primaryKey: 'id',
             onRowOpen: noop,
             components: {},
-            indent: 12
-        }
+            indent: 12,
+        };
 
         static childContextTypes = {
             openTreeRowKeys: PropTypes.array,
             indent: PropTypes.number,
             treeStatus: PropTypes.array,
             onTreeNodeClick: PropTypes.func,
-            isTree: PropTypes.bool
-        }
+            isTree: PropTypes.bool,
+        };
 
         constructor(props, context) {
             super(props, context);
             this.state = {
-                openRowKeys: props.openRowKeys || []
+                openRowKeys: props.openRowKeys || [],
             };
         }
 
@@ -68,7 +68,7 @@ export default function tree(BaseComponent) {
                 indent: this.props.indent,
                 treeStatus: this.getTreeNodeStatus(this.ds),
                 onTreeNodeClick: this.onTreeNodeClick,
-                isTree: this.props.isTree
+                isTree: this.props.isTree,
             };
         }
 
@@ -76,14 +76,14 @@ export default function tree(BaseComponent) {
             if ('openRowKeys' in nextProps) {
                 const { openRowKeys } = nextProps;
                 this.setState({
-                    openRowKeys
+                    openRowKeys,
                 });
             }
         }
 
         normalizeDataSource(dataSource) {
             const ret = [],
-                loop = function (dataSource, level) {
+                loop = function(dataSource, level) {
                     dataSource.forEach(item => {
                         item.__level = level;
                         ret.push(item);
@@ -116,15 +116,15 @@ export default function tree(BaseComponent) {
             return ret;
         }
 
-        onTreeNodeClick = (record) => {
+        onTreeNodeClick = record => {
             const { primaryKey } = this.props,
                 id = record[primaryKey],
                 dataSource = this.ds,
                 openRowKeys = [...this.state.openRowKeys],
                 index = openRowKeys.indexOf(id),
-                getChildrenKeyById = function (id) {
+                getChildrenKeyById = function(id) {
                     const ret = [id];
-                    const loop = (data) => {
+                    const loop = data => {
                         data.forEach(item => {
                             ret.push(item[primaryKey]);
                             if (item.children) {
@@ -157,18 +157,24 @@ export default function tree(BaseComponent) {
 
             if (!('openRowKeys' in this.props)) {
                 this.setState({
-                    openRowKeys
+                    openRowKeys,
                 });
             }
             this.props.onRowOpen(openRowKeys, id, index === -1, record);
-        }
+        };
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { components, isTree, dataSource, indent, ...others } = this.props;
+            let {
+                components,
+                isTree,
+                dataSource,
+                indent,
+                ...others
+            } = this.props;
 
             if (isTree) {
-                components = {...components};
+                components = { ...components };
                 if (!components.Row) {
                     components.Row = RowComponent;
                 }
@@ -178,7 +184,13 @@ export default function tree(BaseComponent) {
 
                 dataSource = this.normalizeDataSource(dataSource);
             }
-            return (<BaseComponent {...others} dataSource={dataSource} components={components} />);
+            return (
+                <BaseComponent
+                    {...others}
+                    dataSource={dataSource}
+                    components={components}
+                />
+            );
         }
     }
     statics(TreeTable, BaseComponent);

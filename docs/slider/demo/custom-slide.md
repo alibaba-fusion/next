@@ -30,7 +30,7 @@ function Inner({ children, ...others }) {
 }
 
 Inner.propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.any
 };
 
 const slider = (<Slider>

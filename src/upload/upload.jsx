@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {func, obj} from '../util';
+import { func, obj } from '../util';
 import Icon from '../icon';
 import Base from './base';
 import Uploader from './runtime/index';
 import html5Uploader from './runtime/html5-uploader';
 import List from './list';
-import {fileToObject, getFileItem} from './util';
+import { fileToObject, getFileItem, errorCode } from './util';
 
 const noop = func.noop;
 
@@ -47,6 +47,10 @@ class Upload extends Base {
         listType: PropTypes.oneOf(['text', 'image', 'card']),
         list: PropTypes.any,
         /**
+         * 文件名字段
+         */
+        name: PropTypes.string,
+        /**
          * 上传额外传参
          */
         data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
@@ -69,6 +73,9 @@ class Upload extends Base {
          */
         dragable: PropTypes.bool,
         closable: PropTypes.bool,
+        /**
+         * 可选参数，是否本地预览
+         */
         useDataURL: PropTypes.bool,
         /**
          * 可选参数，是否禁用上传功能
@@ -89,21 +96,33 @@ class Upload extends Base {
         onChange: PropTypes.func,
         /**
          * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
+         * @param {Object} file 文件
+         * @param {Array<Object>} value 值
          */
         onSuccess: PropTypes.func,
         /**
-         * 移除文件回调函数，详见 [onRemove](#onRemove)
+         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
+         * @param {Object} file
+         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
+         */
+        afterSelect: PropTypes.func,
+        /**
+         * 移除文件回调函数
+         * @param {Object} file 文件
+         * @returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除
          */
         onRemove: PropTypes.func,
         /**
          * 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件
+         * @param {Object} file 出错的文件
+         * @param {Array} value 当前值
          */
         onError: PropTypes.func,
         /**
          * 可选参数, 详见 [beforeUpload](#beforeUpload)
-         * @param {Object} files
-         * @param {Object} options
-         * @returns {Boolean|Object|Promise}
+         * @param {Object} file 所有文件
+         * @param {Object} options 参数
+         * @returns {Boolean|Object|Promise} 返回值作用见demo
          */
         beforeUpload: PropTypes.func,
         /**
@@ -127,11 +146,16 @@ class Upload extends Base {
          */
         autoUpload: PropTypes.bool,
         /**
-         * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
-         * @param {Object} file
-         * @returns {Boolean} 返回false会阻止上传,其他则表示正常
+         * 自定义上传方法
+         * @param {Object} option
+         * @return {Object} object with abort method
          */
-        afterSelect: PropTypes.func,
+        request: PropTypes.func,
+        /**
+         * 透传给Progress props
+         */
+        progressProps: PropTypes.object,
+        rtl: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -162,7 +186,7 @@ class Upload extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? [] : [].concat(value)
+            value: typeof value === 'undefined' ? [] : [].concat(value),
         };
 
         this.uploading = false;
@@ -171,13 +195,24 @@ class Upload extends Base {
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps && !this.uploading) {
             this.setState({
-                value: typeof nextProps.value === 'undefined' ? [] : [].concat(nextProps.value)
+                value:
+                    typeof nextProps.value === 'undefined'
+                        ? []
+                        : [].concat(nextProps.value),
             });
         }
     }
 
-    onSelect = (files) => {
-        const {autoUpload, afterSelect, onSelect, limit} = this.props;
+    onSelect = files => {
+        const { autoUpload, afterSelect, onSelect, limit } = this.props;
+        // 总数
+        const total = this.state.value.length + files.length;
+        // 差额
+        const less = limit - this.state.value.length;
+        if (less <= 0) {
+            // 差额不足 则不上传
+            return;
+        }
 
         const fileList = files.map(file => {
             const objFile = fileToObject(file);
@@ -185,11 +220,13 @@ class Upload extends Base {
             return objFile;
         });
 
-        const total = this.state.value.length + fileList.length;
-
+        // 默认全量上传
+        let uploadFiles = fileList;
+        let discardFiles = [];
         if (total > limit) {
-            const more = total - limit;
-            fileList.splice(fileList.length - more, more);
+            // 全量上传总数会超过limit 但是 还有差额
+            uploadFiles = fileList.slice(0, less);
+            discardFiles = fileList.slice(less);
         }
 
         const value = this.state.value.concat(fileList);
@@ -197,26 +234,32 @@ class Upload extends Base {
         /* eslint-disable-next */
         this.state.value = value;
 
-
         if (autoUpload) {
-            this.uploadFiles(fileList);
+            this.uploadFiles(uploadFiles);
         }
 
-        onSelect(fileList, value);
+        onSelect(uploadFiles, value);
+        discardFiles.forEach(file => {
+            // 丢弃的文件
+            const err = new Error(errorCode.EXCEED_LIMIT);
+            err.code = errorCode.EXCEED_LIMIT;
+            this.onError(err, null, file);
+        });
 
         if (!autoUpload) {
-            fileList.forEach(file => {
+            uploadFiles.forEach(file => {
                 const isPassed = afterSelect(file);
                 func.promiseCall(isPassed, func.noop, error => {
-                    this.onError(error, null, file); //TODO: handle error message
+                    this.onError(error, null, file); // TODO: handle error message
                 });
             });
-            this.onChange(value, fileList);
+            this.onChange(value, uploadFiles);
         }
     };
 
-    onDrop = (files) => {
+    onDrop = files => {
         this.onSelect(files);
+        this.props.onDrop(files);
     };
 
     /**
@@ -224,21 +267,25 @@ class Upload extends Base {
      * @param files
      */
     selectFiles(files) {
-        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
+        const filesArr = files.length
+            ? Array.prototype.slice.call(files)
+            : [files];
 
         this.onSelect(filesArr);
     }
 
     uploadFiles(files) {
-        const fileList = files.filter((file => {
-            if (file.state === 'selected') {
-                file.state = 'uploading';
-                return true;
-            }
-            return false;
-        })).map((file) => {
-            return file.originFileObj;
-        });
+        const fileList = files
+            .filter(file => {
+                if (file.state === 'selected') {
+                    file.state = 'uploading';
+                    return true;
+                }
+                return false;
+            })
+            .map(file => {
+                return file.originFileObj;
+            });
 
         fileList.length && this.uploaderRef.startUpload(fileList);
     }
@@ -276,7 +323,7 @@ class Upload extends Base {
 
         Object.assign(targetItem, {
             state: 'uploading',
-            percent: e.percent
+            percent: e.percent,
         });
 
         this.setState({
@@ -289,7 +336,7 @@ class Upload extends Base {
     onSuccess = (response, file) => {
         this.uploading = false;
 
-        const {formatter} = this.props;
+        const { formatter } = this.props;
 
         if (formatter) {
             response = formatter(response, file);
@@ -300,12 +347,14 @@ class Upload extends Base {
                 response = JSON.parse(response);
             }
         } catch (e) {
-            this.onError(e, response, file);
-            return;
+            e.code = errorCode.RESPONSE_FAIL;
+            return this.onError(e, response, file);
         }
 
         if (response.success === false) {
-            return this.onError(response.message, response, file);
+            const err = new Error(response.message || errorCode.RESPONSE_FAIL);
+            err.code = errorCode.RESPONSE_FAIL;
+            return this.onError(err, response, file);
         }
 
         const value = this.state.value;
@@ -319,15 +368,15 @@ class Upload extends Base {
             state: 'done',
             response,
             url: response.url,
-            downloadURL: response.downloadURL || response.url,      // 下载地址(可选)
+            downloadURL: response.downloadURL || response.url, // 下载地址(可选)
         });
 
         if (!this.props.useDataURL) {
-            targetItem.imgURL = response.imgURL || response.url;     // 缩略图地址(可选)
+            targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
         }
 
-        this.props.onSuccess(targetItem, value);
         this.onChange(value, targetItem);
+        this.props.onSuccess(targetItem, value);
     };
 
     onError = (err, response, file) => {
@@ -346,19 +395,18 @@ class Upload extends Base {
             response,
         });
 
-        this.props.onError(targetItem, value);
         this.onChange(value, targetItem);
+        this.props.onError(targetItem, value);
     };
-
 
     /**
      * 删除文件
      * @param {File} file
      * @return {void}
      */
-    removeFile = (file) => {
+    removeFile = file => {
         file.state = 'removed';
-        this.uploaderRef.abort(file);     // 删除组件时调用组件的 `abort` 方法中断上传
+        this.uploaderRef.abort(file); // 删除组件时调用组件的 `abort` 方法中断上传
 
         const fileList = this.state.value;
         const targetItem = getFileItem(file, fileList);
@@ -374,7 +422,7 @@ class Upload extends Base {
      * @param {File} file
      * @return {void}
      */
-    abort = (file) => {
+    abort = file => {
         const fileList = this.state.value;
         const targetItem = getFileItem(file, fileList);
         const index = fileList.indexOf(targetItem);
@@ -382,18 +430,12 @@ class Upload extends Base {
             fileList.splice(index, 1);
             this.onChange(fileList, targetItem);
         }
-        this.uploaderRef.abort(file);     // 取消上传时调用组件的 `abort` 方法中断上传
+        this.uploaderRef.abort(file); // 取消上传时调用组件的 `abort` 方法中断上传
     };
 
     onChange = (value, file) => {
-        // not controlled
-        // if (!('value' in this.props)) {
-        //     this.setState({
-        //         value
-        //     });
-        // }
         this.setState({
-            value
+            value,
         });
         this.props.onChange(value, file);
     };
@@ -417,19 +459,22 @@ class Upload extends Base {
             onPreview,
             list,
             extraRender,
-            ...others} = this.props;
+            progressProps,
+            rtl,
+            ...others
+        } = this.props;
 
         const cls = classNames({
             [`${prefix}upload`]: true,
             [`${prefix}disabled`]: disabled,
             [`${prefix}readonly`]: readonly,
-            [className]: className
+            [className]: className,
         });
 
-        const hidden = this.state.value.length >= limit;
+        const isExceedLimit = this.state.value.length >= limit;
         const innerCls = classNames({
             [`${prefix}upload-inner`]: true,
-            [`${prefix}hidden`]: hidden,
+            [`${prefix}hidden`]: isExceedLimit,
         });
 
         let children = this.props.children;
@@ -438,14 +483,22 @@ class Upload extends Base {
                 [`${prefix}upload-card`]: true,
                 [`${prefix}disabled`]: disabled,
             });
-            children = (<div className={cardCls}>
-                <Icon type="add" size="large"/>
-                <div tabIndex="0" role="button" className={`${prefix}upload-text`}>
-                    {children}
+            children = (
+                <div className={cardCls}>
+                    <Icon type="add" size="large" />
+                    <div
+                        tabIndex="0"
+                        role="button"
+                        className={`${prefix}upload-text`}
+                    >
+                        {children}
+                    </div>
                 </div>
-            </div>);
+            );
         }
 
+        // disabled 状态下把 remove函数替换成禁止 remove的函数
+        const onRemoveFunc = disabled ? func.prevent : onRemove;
         const otherAttributes = obj.pickAttrsWith(this.props, 'data-');
         return (
             <div className={cls} style={style} {...otherAttributes}>
@@ -453,7 +506,7 @@ class Upload extends Base {
                     {...others}
                     beforeUpload={beforeUpload}
                     dragable={dragable}
-                    disabled={disabled}
+                    disabled={disabled || isExceedLimit}
                     className={innerCls}
                     onSelect={this.onSelect}
                     onDrop={this.onDrop}
@@ -464,11 +517,21 @@ class Upload extends Base {
                 >
                     {children}
                 </Uploader>
-                {listType || list ?
-                    <List useDataURL={useDataURL} uploader={this} listType={listType} value={this.state.value}
-                        closable={closable} onRemove={onRemove}
-                        onCancel={onCancel} onPreview={onPreview} extraRender={extraRender}/> :
-                    null}
+                {listType || list ? (
+                    <List
+                        useDataURL={useDataURL}
+                        uploader={this}
+                        listType={listType}
+                        value={this.state.value}
+                        closable={closable}
+                        onRemove={onRemoveFunc}
+                        progressProps={progressProps}
+                        onCancel={onCancel}
+                        onPreview={onPreview}
+                        extraRender={extraRender}
+                        rtl={rtl}
+                    />
+                ) : null}
             </div>
         );
     }

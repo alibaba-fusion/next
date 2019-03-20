@@ -25,7 +25,7 @@ class Submit extends React.Component {
          * 自定义 field (在 Form 内不需要设置)
          */
         field: PropTypes.object,
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
@@ -33,7 +33,7 @@ class Submit extends React.Component {
     };
 
     static contextTypes = {
-        _formField: PropTypes.object
+        _formField: PropTypes.object,
     };
 
     handleClick = () => {
@@ -47,11 +47,11 @@ class Submit extends React.Component {
         }
 
         if (validate === true) {
-            field.validate((errors) => {
+            field.validate(errors => {
                 onClick(field.getValues(), errors, field);
             });
         } else if (Array.isArray(validate)) {
-            field.validate(validate, (errors) => {
+            field.validate(validate, errors => {
                 onClick(field.getValues(), errors, field);
             });
         } else {
@@ -63,7 +63,12 @@ class Submit extends React.Component {
         const { children } = this.props;
 
         return (
-            <Button {...obj.pickOthers(Submit.propTypes, this.props)} onClick={this.handleClick}>{children}</Button>
+            <Button
+                {...obj.pickOthers(Submit.propTypes, this.props)}
+                onClick={this.handleClick}
+            >
+                {children}
+            </Button>
         );
     }
 }

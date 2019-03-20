@@ -22,14 +22,15 @@ class Demo extends React.Component {
     state = {
         visible: false,
         footerActions: ['ok', 'cancel'],
-        footerAlign: 'right'
+        footerAlign: 'right',
+        loading: false
     };
 
     onOpen = () => {
         this.setState({
             visible: true
         });
-    };
+    }
 
     onClose = () => {
         this.setState({
@@ -49,8 +50,17 @@ class Demo extends React.Component {
         });
     };
 
+    toggleOkLoader = loading => {
+        this.setState({
+            loading
+        });
+    }
+
     render() {
-        const { visible, footerActions, footerAlign } = this.state;
+        const { visible, footerActions, footerAlign, loading } = this.state;
+        const okProps = {
+            loading
+        };
 
         return (
             <div>
@@ -63,7 +73,9 @@ class Demo extends React.Component {
                     footerAlign={footerAlign}
                     onOk={this.onClose}
                     onCancel={this.onClose}
-                    onClose={this.onClose}>
+                    onClose={this.onClose}
+                    okProps={okProps}
+                    >
                     <div className="demo-content">
                         <Radio.Group className="demo-radio-group" shape="button" value={footerActions.join(',')} onChange={this.toggleFooterActions}>
                             <Radio value="ok,cancel">ok is left</Radio>
@@ -75,6 +87,10 @@ class Demo extends React.Component {
                             <Radio value="left">left</Radio>
                             <Radio value="center">center</Radio>
                             <Radio value="right">right</Radio>
+                        </Radio.Group>
+                        <Radio.Group  className="demo-radio-group" shape="button" value={loading} onChange={this.toggleOkLoader}>
+                            <Radio value={false}>Loading Off</Radio>
+                            <Radio value>Loading On</Radio>
                         </Radio.Group>
                     </div>
                 </Dialog>

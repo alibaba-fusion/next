@@ -24,7 +24,7 @@ const dataSource = [
         {value: new Date(), label: 'new Date()'},
         {value: false, label: 'FALSE'},
         {value: 0, label: 'ZERO'}
-    ]},
+    ]}
 ];
 
 const ctrlDataSources = {
@@ -33,7 +33,7 @@ const ctrlDataSources = {
     showSearch: [true, false],
     hasArrow: [true, false],
     hasBorder: [true, false],
-    hasClear: [true, false],
+    hasClear: [true, false]
 };
 
 class Demo extends React.Component {
@@ -47,7 +47,7 @@ class Demo extends React.Component {
             hasArrow: undefined,
             hasBorder: undefined,
             showSearch: undefined,
-            hasClear: undefined,
+            hasClear: undefined
         };
 
         this.handleChange = this.handleChange.bind(this);

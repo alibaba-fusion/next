@@ -23,11 +23,11 @@ const {Row, Col} = Grid;
 
 const formItemLayout = {
     labelCol: {span: 4},
-    wrapperCol: {span: 14},
+    wrapperCol: {span: 14}
 };
 
 const insetLayout = {
-    labelCol: {fixedSpan: 3},
+    labelCol: {fixedSpan: 3}
 };
 
 ReactDOM.render(<Form {...formItemLayout}>
@@ -35,12 +35,12 @@ ReactDOM.render(<Form {...formItemLayout}>
         <Row gutter="4">
             <Col>
                 <FormItem label="Nest" labelAlign="inset" {...insetLayout} required requiredTrigger="onBlur" asterisk={false}>
-                    <Input placeholder="Please enter..."  name="firstname"/>
+                    <Input placeholder="Please enter..." name="firstname"/>
                 </FormItem>
             </Col>
             <Col>
                 <FormItem label="Nest" labelAlign="inset" {...insetLayout} required asterisk={false}>
-                    <Input placeholder="need onChange"  name="secondname" />
+                    <Input placeholder="need onChange" name="secondname" />
                 </FormItem>
             </Col>
         </Row>

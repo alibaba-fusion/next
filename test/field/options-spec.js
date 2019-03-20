@@ -1,138 +1,167 @@
 import React from 'react';
-import Enzyme, {mount} from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Input from '../../src/input';
 import Field from '../../src/field/index';
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('options', () => {
-    it('should support autoUnmount', (done) => {
-
+    it('should support autoUnmount', done => {
         class Demo extends React.Component {
             state = {
-                show: true
-            }
+                show: true,
+            };
             field = new Field(this);
 
             render() {
                 const init = this.field.init;
                 return (
                     <div>
-                        <Input {...init('input')}/> {this.state.show
-                        ? < Input { ...init('input2')
-                                  } /> : null}
-                        <button onClick={() => {
-                            assert('input2' in this.field.getValues() === false);
-                            done();
-                        }}>click
+                        <Input {...init('input')} />{' '}
+                        {this.state.show ? <Input {...init('input2')} /> : null}
+                        <button
+                            onClick={() => {
+                                assert(
+                                    'input2' in this.field.getValues() === false
+                                );
+                                done();
+                            }}
+                        >
+                            click
                         </button>
                     </div>
                 );
             }
         }
-        const wrapper = mount(<Demo/>);
-        wrapper.setState({show: false});
+        const wrapper = mount(<Demo />);
+        wrapper.setState({ show: false });
         wrapper.update();
         wrapper.find('button').simulate('click');
     });
 
-    it('should support autoUnmount with same name', (done) => {
-
+    it('should support autoUnmount with same name', done => {
         class Demo extends React.Component {
             state = {
-                show: true
-            }
+                show: true,
+            };
             field = new Field(this);
 
             render() {
                 const init = this.field.init;
                 return (
                     <div>
-                        {this.state.show
-                        ? < Input { ...init('input') } key="1"/> : <Input {...init('input')} key="2"/>}
-                        <button onClick={() => {
-                            assert('input' in this.field.getValues() === true);
-                        }}>click
+                        {this.state.show ? (
+                            <Input {...init('input')} key="1" />
+                        ) : (
+                            <Input {...init('input')} key="2" />
+                        )}
+                        <button
+                            onClick={() => {
+                                assert(
+                                    'input' in this.field.getValues() === true
+                                );
+                            }}
+                        >
+                            click
                         </button>
                     </div>
                 );
             }
         }
-        const wrapper = mount(<Demo/>);
-        wrapper.setState({show: false});
+        const wrapper = mount(<Demo />);
+        wrapper.setState({ show: false });
         wrapper.find('button').simulate('click');
 
         done();
     });
-    
-    it('should support autoUnmount=false', (done) => {
 
+    it('should support autoUnmount=false', done => {
         class Demo extends React.Component {
             state = {
-                show: true
-            }
-            field = new Field(this, {autoUnmount:false});
+                show: true,
+            };
+            field = new Field(this, { autoUnmount: false });
 
             render() {
                 const init = this.field.init;
                 return (
                     <div>
-                        <Input {...init('input')}/>
-                        {this.state.show ? < Input {...init('input2', {initValue: 'test2'})} /> : null}
-                        <button onClick={() => {
-                            console.log(this.field)
-                            assert(this.field.getValue('input2') === 'test2');
-                        }}>click
+                        <Input {...init('input')} />
+                        {this.state.show ? (
+                            <Input
+                                {...init('input2', { initValue: 'test2' })}
+                            />
+                        ) : null}
+                        <button
+                            onClick={() => {
+                                console.log(this.field);
+                                assert(
+                                    this.field.getValue('input2') === 'test2'
+                                );
+                            }}
+                        >
+                            click
                         </button>
                     </div>
                 );
             }
         }
-        const wrapper = mount(<Demo/>);
-        wrapper.setState({show: false});
+        const wrapper = mount(<Demo />);
+        wrapper.setState({ show: false });
         wrapper.find('button').simulate('click');
 
         done();
     });
 
-    it('scrollToFirstError', (done) => {
+    it('scrollToFirstError', done => {
         class Demo extends React.Component {
             constructor(props) {
                 super(props);
-                this.field = new Field(this, {scrollToFirstError: true});
+                this.field = new Field(this, { scrollToFirstError: true });
             }
 
             render() {
                 const init = this.field.init;
                 return (
                     <div>
-                        <Input {...init('input', {rules: [{required: true, message: 'cant be null'}]})}/>
-                        <button onClick={() => {
-                            this.field.validate((error, value, cb) => {
-                                assert(error['input']['errors'][0] === 'cant be null');
-                            });
-                        }}>click
+                        <Input
+                            {...init('input', {
+                                rules: [
+                                    { required: true, message: 'cant be null' },
+                                ],
+                            })}
+                        />
+                        <button
+                            onClick={() => {
+                                this.field.validate((error, value, cb) => {
+                                    assert(
+                                        error.input.errors[0] === 'cant be null'
+                                    );
+                                });
+                            }}
+                        >
+                            click
                         </button>
                     </div>
                 );
             }
         }
-        const wrapper = mount(<Demo/>);
+        const wrapper = mount(<Demo />);
         wrapper.find('button').simulate('click');
 
         done();
     });
 
-    it('values', (done) => {
+    it('values', done => {
         class Demo extends React.Component {
             constructor(props) {
                 super(props);
                 this.field = new Field(this, {
                     values: {
-                        input: 'ttt'
-                    }
+                        input: 'ttt',
+                    },
                 });
             }
 
@@ -140,30 +169,33 @@ describe('options', () => {
                 const init = this.field.init;
                 return (
                     <div>
-                        <Input {...init('input')}/>
-                        <button onClick={() => {
-                            assert(this.field.getValue('input') === 'ttt');
-                        }}>click
+                        <Input {...init('input')} />
+                        <button
+                            onClick={() => {
+                                assert(this.field.getValue('input') === 'ttt');
+                            }}
+                        >
+                            click
                         </button>
                     </div>
                 );
             }
         }
-        const wrapper = mount(<Demo/>);
+        const wrapper = mount(<Demo />);
         wrapper.find('button').simulate('click');
 
         done();
     });
 
     describe('should support parseName', () => {
-        it('getValues', (done) => {
-            let field = new Field(null, {parseName: true});
-            field.init('user.name', {initValue: 'frankqian'});
-            field.init('user.pwd', {initValue: 12345});
-            field.init('option[0]', {initValue: 'option1'});
-            field.init('option[1]', {initValue: 'option2'});
+        it('getValues', done => {
+            const field = new Field(null, { parseName: true });
+            field.init('user.name', { initValue: 'frankqian' });
+            field.init('user.pwd', { initValue: 12345 });
+            field.init('option[0]', { initValue: 'option1' });
+            field.init('option[1]', { initValue: 'option2' });
 
-            let values = field.getValues();
+            const values = field.getValues();
 
             assert(Object.keys(values).length === 2);
             assert(values.user.name === 'frankqian');
@@ -174,27 +206,84 @@ describe('options', () => {
 
             done();
         });
-        it('setValues', (done) => {
-            let field = new Field(null, {parseName: true});
-            field.init('user.name', {initValue: 'frankqian'});
-            field.init('user.pwd', {initValue: 12345});
-            field.init('option[0]', {initValue: 'option1'});
-            field.init('option[1]', {initValue: 'option2'});
+        it('setValues', done => {
+            const field = new Field(null, { parseName: true });
+            field.init('user.name', { initValue: 'frankqian' });
+            field.init('user.pwd', { initValue: 12345 });
+            field.init('option[0]', { initValue: 'option1' });
+            field.init('option[1]', { initValue: 'option2' });
 
             field.setValues({
                 user: {
-                    pwd: 'helloworld'
+                    pwd: 'helloworld',
                 },
-                option: ['test1', 'test2']
+                option: ['test1', 'test2'],
             });
 
-            let values = field.getValues();
+            const values = field.getValues();
 
             assert(Object.keys(values).length === 2);
 
             assert(values.user.name === 'frankqian');
             assert(values.user.pwd === 'helloworld');
             assert(values.option[0] === 'test1');
+
+            done();
+        });
+    });
+
+    describe('should support autoValidate=false', () => {
+        it('options.autoValidate=true', done => {
+            const field = new Field(null, { autoValidate: true });
+            const inited = field.init('input', { rules: [{ minLength: 10 }] });
+
+            const wrapper = mount(<Input {...inited} />);
+            wrapper.find('input').simulate('change', {
+                target: {
+                    value: 'test',
+                },
+            });
+
+            assert(field.getError('input') !== null);
+
+            done();
+        });
+        it('options.autoValidate=false', done => {
+            const field = new Field(null, { autoValidate: false });
+            const inited = field.init('input', { rules: [{ minLength: 10 }] });
+
+            const wrapper = mount(<Input {...inited} />);
+            wrapper.find('input').simulate('change', {
+                target: {
+                    value: 'test',
+                },
+            });
+
+            assert(field.getError('input') === null);
+
+            field.validate('input');
+            assert(field.getError('input') !== null);
+
+            done();
+        });
+        it('props.autoValidate=false', done => {
+            const field = new Field(null);
+            const inited = field.init('input', {
+                autoValidate: false,
+                rules: [{ minLength: 10 }],
+            });
+
+            const wrapper = mount(<Input {...inited} />);
+            wrapper.find('input').simulate('change', {
+                target: {
+                    value: 'test',
+                },
+            });
+
+            assert(field.getError('input') === null);
+
+            field.validate('input');
+            assert(field.getError('input') !== null);
 
             done();
         });

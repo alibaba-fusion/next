@@ -1,5 +1,6 @@
+/* eslint-disable valid-jsdoc */
 export function normalizeToArray(keys) {
-    if (keys) {
+    if (keys !== undefined && keys !== null) {
         if (Array.isArray(keys)) {
             return [...keys];
         }
@@ -21,7 +22,10 @@ export function filterChildKey(keys, _k2n) {
 
     for (let i = 0; i < newKeys.length; i++) {
         for (let j = 0; j < newKeys.length; j++) {
-            if (i !== j && isDescendantOrSelf(_k2n[newKeys[i]].pos, _k2n[newKeys[j]].pos)) {
+            if (
+                i !== j &&
+                isDescendantOrSelf(_k2n[newKeys[i]].pos, _k2n[newKeys[j]].pos)
+            ) {
                 newKeys.splice(j, 1);
                 j--;
             }
@@ -38,7 +42,10 @@ export function filterParentKey(keys, _k2n) {
 
     for (let i = 0; i < newKeys.length; i++) {
         for (let j = 0; j < newKeys.length; j++) {
-            if (i !== j && isDescendantOrSelf(_k2n[newKeys[j]].pos, _k2n[newKeys[i]].pos)) {
+            if (
+                i !== j &&
+                isDescendantOrSelf(_k2n[newKeys[j]].pos, _k2n[newKeys[i]].pos)
+            ) {
                 newKeys.splice(j, 1);
                 j--;
             }
@@ -56,20 +63,27 @@ export function isDescendantOrSelf(currentPos, targetPos) {
     const currentNums = currentPos.split('-');
     const targetNums = targetPos.split('-');
 
-    return currentNums.length <= targetNums.length && currentNums.every((num, index) => {
-        return num === targetNums[index];
-    });
+    return (
+        currentNums.length <= targetNums.length &&
+        currentNums.every((num, index) => {
+            return num === targetNums[index];
+        })
+    );
 }
 
 export function isSiblingOrSelf(currentPos, targetPos) {
     const currentNums = currentPos.split('-').slice(0, -1);
     const targetNums = targetPos.split('-').slice(0, -1);
 
-    return currentNums.length === targetNums.length && currentNums.every((num, index) => {
-        return num === targetNums[index];
-    });
+    return (
+        currentNums.length === targetNums.length &&
+        currentNums.every((num, index) => {
+            return num === targetNums[index];
+        })
+    );
 }
 
+// eslint-disable-next-line max-statements
 export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     checkedKeys = normalizeToArray(checkedKeys);
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);

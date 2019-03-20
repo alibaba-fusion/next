@@ -41,7 +41,7 @@ export default class Inner extends Component {
         closeable: true,
         onClose: noop,
         locale: zhCN.Dialog,
-        role: 'dialog'
+        role: 'dialog',
     };
 
     getNode(name, ref) {
@@ -52,7 +52,17 @@ export default class Inner extends Component {
         const { prefix, title } = this.props;
         if (title) {
             this.titleId = guid('dialog-title-');
-            return <div className={`${prefix}dialog-header`} id={this.titleId} ref={this.getNode.bind(this, 'headerNode')}>{title}</div>;
+            return (
+                <div
+                    className={`${prefix}dialog-header`}
+                    id={this.titleId}
+                    ref={this.getNode.bind(this, 'headerNode')}
+                    role="heading"
+                    aria-level="1"
+                >
+                    {title}
+                </div>
+            );
         }
         return null;
     }
@@ -60,13 +70,26 @@ export default class Inner extends Component {
     renderBody() {
         const { prefix, children } = this.props;
         if (children) {
-            return <div className={`${prefix}dialog-body`} ref={this.getNode.bind(this, 'bodyNode')}>{children}</div>;
+            return (
+                <div
+                    className={`${prefix}dialog-body`}
+                    ref={this.getNode.bind(this, 'bodyNode')}
+                >
+                    {children}
+                </div>
+            );
         }
         return null;
     }
 
     renderFooter() {
-        const { prefix, footer, footerAlign, footerActions, locale } = this.props;
+        const {
+            prefix,
+            footer,
+            footerAlign,
+            footerActions,
+            locale,
+        } = this.props;
 
         if (footer === false) {
             return null;
@@ -74,40 +97,62 @@ export default class Inner extends Component {
 
         const newClassName = cx({
             [`${prefix}dialog-footer`]: true,
-            [`${prefix}align-${footerAlign}`]: true
+            [`${prefix}align-${footerAlign}`]: true,
         });
-        const footerContent = footer === true || !footer ?
-            footerActions.map(action => {
-                const btnProps = this.props[`${action}Props`];
-                const newBtnProps = {
-                    ...btnProps,
-                    prefix,
-                    className: cx(`${prefix}dialog-btn`, btnProps.className),
-                    onClick: makeChain(this.props[`on${action[0].toUpperCase() + action.slice(1)}`], btnProps.onClick),
-                    children: btnProps.children || locale[action]
-                };
-                if (action === 'ok') {
-                    newBtnProps.type = 'primary';
-                }
+        const footerContent =
+            footer === true || !footer
+                ? footerActions.map(action => {
+                      const btnProps = this.props[`${action}Props`];
+                      const newBtnProps = {
+                          ...btnProps,
+                          prefix,
+                          className: cx(
+                              `${prefix}dialog-btn`,
+                              btnProps.className
+                          ),
+                          onClick: makeChain(
+                              this.props[
+                                  `on${action[0].toUpperCase() +
+                                      action.slice(1)}`
+                              ],
+                              btnProps.onClick
+                          ),
+                          children: btnProps.children || locale[action],
+                      };
+                      if (action === 'ok') {
+                          newBtnProps.type = 'primary';
+                      }
 
-                return <Button key={action} {...newBtnProps} />;
-            }) : footer;
+                      return <Button key={action} {...newBtnProps} />;
+                  })
+                : footer;
 
         return (
-            <div className={newClassName} ref={this.getNode.bind(this, 'footerNode')}>
+            <div
+                className={newClassName}
+                ref={this.getNode.bind(this, 'footerNode')}
+            >
                 {footerContent}
             </div>
         );
     }
 
     renderCloseLink() {
-        const { prefix, closeable, onClose } = this.props;
+        const { prefix, closeable, onClose, locale } = this.props;
 
         if (closeable) {
             return (
-                <a role="button" href="javascript:;" className={`${prefix}dialog-close`}
-                    onClick={onClose}>
-                    <Icon className={`${prefix}dialog-close-icon`} type="close" />
+                <a
+                    role="button"
+                    aria-label={locale.close}
+                    href="javascript:;"
+                    className={`${prefix}dialog-close`}
+                    onClick={onClose}
+                >
+                    <Icon
+                        className={`${prefix}dialog-close-icon`}
+                        type="close"
+                    />
                 </a>
             );
         }
@@ -121,7 +166,7 @@ export default class Inner extends Component {
         const newClassName = cx({
             [`${prefix}dialog`]: true,
             [`${prefix}closeable`]: closeable,
-            [className]: !!className
+            [className]: !!className,
         });
 
         const header = this.renderHeader();
@@ -131,14 +176,19 @@ export default class Inner extends Component {
 
         const ariaProps = {
             role,
-            'aria-modal': 'true'
+            'aria-modal': 'true',
         };
         if (title) {
             ariaProps['aria-labelledby'] = this.titleId;
         }
 
         return (
-            <div {...ariaProps} className={newClassName} {...others} dir={rtl ? 'rtl' : undefined}>
+            <div
+                {...ariaProps}
+                className={newClassName}
+                {...others}
+                dir={rtl ? 'rtl' : undefined}
+            >
                 {header}
                 {body}
                 {footer}

@@ -14,7 +14,7 @@ export default class Expand extends Component {
         afterEnter: PropTypes.func,
         beforeLeave: PropTypes.func,
         onLeave: PropTypes.func,
-        afterLeave: PropTypes.func
+        afterLeave: PropTypes.func,
     };
 
     static defaultProps = {
@@ -23,14 +23,18 @@ export default class Expand extends Component {
         afterEnter: noop,
         beforeLeave: noop,
         onLeave: noop,
-        afterLeave: noop
+        afterLeave: noop,
     };
 
     constructor(props) {
         super(props);
         func.bindCtx(this, [
-            'beforeEnter', 'onEnter', 'afterEnter',
-            'beforeLeave', 'onLeave', 'afterLeave'
+            'beforeEnter',
+            'onEnter',
+            'afterEnter',
+            'beforeLeave',
+            'onLeave',
+            'afterLeave',
         ]);
     }
 
@@ -127,14 +131,16 @@ export default class Expand extends Component {
         const newAnimation = animation || 'expand';
 
         return (
-            <Animate {...others}
+            <Animate
+                {...others}
                 animation={newAnimation}
                 beforeEnter={this.beforeEnter}
                 onEnter={this.onEnter}
                 afterEnter={this.afterEnter}
                 beforeLeave={this.beforeLeave}
                 onLeave={this.onLeave}
-                afterLeave={this.afterLeave} />
+                afterLeave={this.afterLeave}
+            />
         );
     }
 }

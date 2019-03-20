@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classnames from 'classnames';
-import locale from '../locale/zh-cn';
+import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
 import CardHeader from './head/card-header';
 import DatePanelHeader from './head/date-panel-header';
@@ -11,7 +11,16 @@ import YearPanelHeader from './head/year-panel-header';
 import DateTable from './table/date-table';
 import MonthTable from './table/month-table';
 import YearTable from './table/year-table';
-import { checkMomentObj, formatDateValue, getVisibleMonth, isSameYearMonth, CALENDAR_MODES, CALENDAR_MODE_DATE, CALENDAR_MODE_MONTH, CALENDAR_MODE_YEAR } from './utils';
+import {
+    checkMomentObj,
+    formatDateValue,
+    getVisibleMonth,
+    isSameYearMonth,
+    CALENDAR_MODES,
+    CALENDAR_MODE_DATE,
+    CALENDAR_MODE_MONTH,
+    CALENDAR_MODE_YEAR,
+} from './utils';
 
 /** Calendar */
 class Calendar extends Component {
@@ -74,14 +83,15 @@ class Calendar extends Component {
         /**
          * 不可选择的日期
          * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
          * @returns {Boolean}
          */
         disabledDate: PropTypes.func,
         /**
          * 国际化配置
          */
-        locale: PropTypes.object
-    }
+        locale: PropTypes.object,
+    };
 
     static defaultProps = {
         prefix: 'next-',
@@ -91,10 +101,10 @@ class Calendar extends Component {
         format: 'YYYY-MM-DD',
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
-        dateCellRender: (value) => value.date(),
-        locale: locale.Calendar,
+        dateCellRender: value => value.date(),
+        locale: nextLocale.Calendar,
         showOtherMonth: true,
-    }
+    };
 
     constructor(props, context) {
         super(props, context);
@@ -126,7 +136,7 @@ class Calendar extends Component {
 
         if (nextProps.mode && this.MODES.indexOf(nextProps.mode) > -1) {
             this.setState({
-                mode: nextProps.mode
+                mode: nextProps.mode,
             });
         }
     }
@@ -139,20 +149,24 @@ class Calendar extends Component {
             this.props.onSelect(date);
         }
         this.changeMode(nextMode);
-    }
+    };
 
-    changeMode = (nextMode) => {
-        if (nextMode && this.MODES.indexOf(nextMode) > -1 && nextMode !== this.state.mode) {
+    changeMode = nextMode => {
+        if (
+            nextMode &&
+            this.MODES.indexOf(nextMode) > -1 &&
+            nextMode !== this.state.mode
+        ) {
             this.setState({ mode: nextMode });
         }
-    }
+    };
 
     changeVisibleMonth = (date, reason) => {
         if (!isSameYearMonth(date, this.state.visibleMonth)) {
             this.setState({ visibleMonth: date });
             this.props.onVisibleMonthChange(date, reason);
         }
-    }
+    };
 
     /**
      * 根据日期偏移量设置当前展示的月份
@@ -167,36 +181,51 @@ class Calendar extends Component {
 
     goPrevDecade = () => {
         this.changeVisibleMonthByOffset(-10, 'years');
-    }
+    };
 
     goNextDecade = () => {
         this.changeVisibleMonthByOffset(10, 'years');
-    }
+    };
 
     goPrevYear = () => {
         this.changeVisibleMonthByOffset(-1, 'years');
-    }
+    };
 
     goNextYear = () => {
         this.changeVisibleMonthByOffset(1, 'years');
-    }
+    };
 
     goPrevMonth = () => {
         this.changeVisibleMonthByOffset(-1, 'months');
-    }
+    };
 
     goNextMonth = () => {
         this.changeVisibleMonthByOffset(1, 'months');
-    }
+    };
 
     render() {
-        const { prefix, rtl, className, shape, showOtherMonth, format, locale, dateCellRender, monthCellRender, disabledDate, ...others } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            shape,
+            showOtherMonth,
+            format,
+            locale,
+            dateCellRender,
+            monthCellRender,
+            disabledDate,
+            ...others
+        } = this.props;
         const state = this.state;
 
-        const classNames = classnames({
-            [`${prefix}calendar`]: true,
-            [`${prefix}calendar-${shape}`]: shape,
-        }, className);
+        const classNames = classnames(
+            {
+                [`${prefix}calendar`]: true,
+                [`${prefix}calendar-${shape}`]: shape,
+            },
+            className
+        );
 
         if (rtl) {
             others.dir = 'rtl';
@@ -247,9 +276,23 @@ class Calendar extends Component {
         };
 
         const tables = {
-            [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
-            [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
-            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />,
+            [CALENDAR_MODE_DATE]: (
+                <DateTable
+                    format={format}
+                    {...tableProps}
+                    onSelectDate={this.onSelectCell}
+                />
+            ),
+            [CALENDAR_MODE_MONTH]: (
+                <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />
+            ),
+            [CALENDAR_MODE_YEAR]: (
+                <YearTable
+                    {...tableProps}
+                    rtl={rtl}
+                    onSelectYear={this.onSelectCell}
+                />
+            ),
         };
 
         const panelHeaders = {
@@ -259,10 +302,15 @@ class Calendar extends Component {
         };
 
         return (
-            <div {...obj.pickOthers(Calendar.propTypes, others)} className={classNames}>
-                {
-                    shape === 'panel' ? panelHeaders[state.mode] : <CardHeader {...headerProps} />
-                }
+            <div
+                {...obj.pickOthers(Calendar.propTypes, others)}
+                className={classNames}
+            >
+                {shape === 'panel' ? (
+                    panelHeaders[state.mode]
+                ) : (
+                    <CardHeader {...headerProps} />
+                )}
                 {tables[state.mode]}
             </div>
         );

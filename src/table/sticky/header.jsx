@@ -7,16 +7,16 @@ import Affix from '../../affix';
 export default class StickHeader extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
-    }
+    };
     static contextTypes = {
         Header: PropTypes.any,
         offsetTop: PropTypes.number,
-        affixProps: PropTypes.object
-    }
+        affixProps: PropTypes.object,
+    };
 
-    getAffixRef = (ref) => {
+    getAffixRef = ref => {
         this.props.affixRef && this.props.affixRef(ref);
-    }
+    };
 
     render() {
         const { prefix } = this.props;
@@ -26,11 +26,18 @@ export default class StickHeader extends React.Component {
         const { className, ...others } = newAffixProps;
         const cls = classnames({
             [`${prefix}table-affix`]: true,
-            className
+            className,
         });
 
-        return (<Affix ref={this.getAffixRef} {...others} className={cls} offsetTop={offsetTop}>
-            <Header {...this.props}/>
-        </Affix>);
+        return (
+            <Affix
+                ref={this.getAffixRef}
+                {...others}
+                className={cls}
+                offsetTop={offsetTop}
+            >
+                <Header {...this.props} />
+            </Affix>
+        );
     }
 }

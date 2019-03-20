@@ -22,18 +22,22 @@ export function getOffsetLT(node, tabPosition) {
 }
 
 export function isTransformSupported(style) {
-    return 'transform' in style ||
+    return (
+        'transform' in style ||
         'webkitTransform' in style ||
-        'MozTransform' in style;
+        'MozTransform' in style
+    );
 }
 
 export function toArray(children) {
     const ret = [];
     React.Children.forEach(children, (child, index) => {
         if (React.isValidElement(child)) {
-            ret.push(React.cloneElement(child, {
-                key: child.key || index,
-            }));
+            ret.push(
+                React.cloneElement(child, {
+                    key: child.key || index,
+                })
+            );
         }
     });
     return ret;
