@@ -150,7 +150,7 @@ export default class Position {
         );
         this._setPinElementPostion(
             pinElement,
-            { left: inViewportLeft, right: inViewportTop },
+            { left: inViewportLeft, top: inViewportTop },
             this.offset
         );
         return expectedAlign[0];

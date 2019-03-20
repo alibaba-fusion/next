@@ -1,20 +1,15 @@
-# Latest Log
+# Latest Log 
 
-## [1.13.5](https://github.com/alibaba-fusion/next/compare/1.13.3...1.13.5) (2019-03-07)
+## [1.13.9](https://github.com/alibaba-fusion/next/compare/1.13.8...1.13.9) (2019-03-19)
 
 
 ### Bug Fixes
 
-* **Collapse:** fix nested collapse icon ([7a6842a](https://github.com/alibaba-fusion/next/commit/7a6842a))
-* **DatePicker:** date range picker select time error ([59eaa9c](https://github.com/alibaba-fusion/next/commit/59eaa9c))
-* **Step:** step-item param of labelPlacement change update bug ([f0939af](https://github.com/alibaba-fusion/next/commit/f0939af))
-* **Tab:** can't scroll when active item is inside view ([a8f4d18](https://github.com/alibaba-fusion/next/commit/a8f4d18))
-* **Table:** extra lock columns when enough space && dataSource=[], close[#364](https://github.com/alibaba-fusion/next/issues/364) ([b9c2328](https://github.com/alibaba-fusion/next/commit/b9c2328))
-
-
-### Features
-
-* **NumberPicker:** consider [。] as [.] ([8369b4a](https://github.com/alibaba-fusion/next/commit/8369b4a))
-* **Upload:** add rtl support ([5505d6d](https://github.com/alibaba-fusion/next/commit/5505d6d))
+* **CascaderSelect:** support value not in data ([93e4227](https://github.com/alibaba-fusion/next/commit/93e4227))
+* **Overlay:** fix position typo ([71bf7d2](https://github.com/alibaba-fusion/next/commit/71bf7d2))
+* **Select:** hasSelectAll bug under controled ([fd5faf4](https://github.com/alibaba-fusion/next/commit/fd5faf4))
+* **Select:** select all doesn't work under control mode ([a1519d2](https://github.com/alibaba-fusion/next/commit/a1519d2))
+* **Table:** warning when stickyHeader + lock with enough space ([46a38f6](https://github.com/alibaba-fusion/next/commit/46a38f6))
+* **Util:** Prevent warning on production ([0fcde5a](https://github.com/alibaba-fusion/next/commit/0fcde5a))
 
 

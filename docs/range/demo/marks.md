@@ -23,8 +23,7 @@ const style = {
     marginTop: '20px'
 };
 
-ReactDOM.render((
-    <div style={{width: '400px', margin: '50px'}}>
+ReactDOM.render(<div style={{width: '400px', margin: '50px'}}>
         <p>With minimal and maximal value</p>
         <Range defaultValue={0} marks={[0, 100]} style={style} />
         <Range slider={'double'} defaultValue={[20, 40]} scales={[0, 100]} marks={[0, 100]} style={style} />
@@ -41,6 +40,5 @@ ReactDOM.render((
         <Range defaultValue={30} marks={[0, 26, 37, 100]} style={style} />
         <Range slider={'double'} defaultValue={[20, 40]} marks={[0, 26, 37, 100]} style={style} hasTip={false}/>
         <Range defaultValue={30} marks={{0: '0°C', 26: '26°C', 37: '37°C', 100: '100°C'}} style={style} />
-    </div>
-), mountNode);
+    </div>, mountNode);
 ````

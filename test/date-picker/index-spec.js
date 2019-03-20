@@ -13,7 +13,8 @@ const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
 
 // 禁止选择 startValue 之前的所有日期
-const disabledDate = function(date) {
+const disabledDate = function(date, view) {
+    if (!view) return true;
     return date.valueOf() < startValue.valueOf();
 };
 

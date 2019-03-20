@@ -149,6 +149,7 @@ export default config(Component);
 
 | Param           | Description                                | Type       | Default Value          |
 | -------- | ----------------------------------- | ------------ | --- |
+| errorBoundary | turn errorBoundary on or not<br>If you pass object, properties：<br><br>fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` <br>afterCatch `Function(error?: {}, errorInfo?: {})` after being catched, e.g. send data to server for data statistics | Boolean/Object | false |
 | pure     | whether enable the Pure Render mode, it will improve performance, but it will also have side effects | Boolean      | -   |
 | warning  | whether to display the warning prompt for component properties being deprecated in development mode        | Boolean      | true  |
 | children | component tree                                 | ReactElement | -   |

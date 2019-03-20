@@ -12,6 +12,7 @@ import {
     getDirection,
 } from './config';
 import Consumer from './consumer';
+import ErrorBoundary from './error-boundary';
 import Cache from './cache';
 
 const childContextCache = new Cache();
@@ -30,6 +31,14 @@ class ConfigProvider extends Component {
          * 国际化文案对象，属性为组件的 displayName
          */
         locale: PropTypes.object,
+        /**
+         * 是否开启错误捕捉 errorBoundary
+         * 如需自定义参数，请传入对象 对象接受参数列表如下：
+         *
+         * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
+         * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传
+         */
+        errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         /**
          * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用
          */
@@ -50,6 +59,7 @@ class ConfigProvider extends Component {
 
     static defaultProps = {
         warning: true,
+        errorBoundary: false,
     };
 
     static childContextTypes = {
@@ -58,6 +68,10 @@ class ConfigProvider extends Component {
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
+        nextErrorBoundary: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.object,
+        ]),
     };
 
     /**
@@ -92,10 +106,17 @@ class ConfigProvider extends Component {
     static getLocale = getLocale;
     static getDirection = getDirection;
     static Consumer = Consumer;
+    static ErrorBoundary = ErrorBoundary;
 
     static getContext = () => {
-        const { nextPrefix, nextLocale, nextPure, nextRtl, nextWarning } =
-            childContextCache.root() || {};
+        const {
+            nextPrefix,
+            nextLocale,
+            nextPure,
+            nextRtl,
+            nextWarning,
+            nextErrorBoundary,
+        } = childContextCache.root() || {};
 
         return {
             prefix: nextPrefix,
@@ -103,6 +124,7 @@ class ConfigProvider extends Component {
             pure: nextPure,
             rtl: nextRtl,
             warning: nextWarning,
+            errorBoundary: nextErrorBoundary,
         };
     };
 
@@ -119,7 +141,14 @@ class ConfigProvider extends Component {
     }
 
     getChildContext() {
-        const { prefix, locale, pure, warning, rtl } = this.props;
+        const {
+            prefix,
+            locale,
+            pure,
+            warning,
+            rtl,
+            errorBoundary,
+        } = this.props;
 
         return {
             nextPrefix: prefix,
@@ -127,6 +156,7 @@ class ConfigProvider extends Component {
             nextPure: pure,
             nextRtl: rtl,
             nextWarning: warning,
+            nextErrorBoundary: errorBoundary,
         };
     }
 

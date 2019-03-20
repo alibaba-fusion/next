@@ -66,6 +66,7 @@ class RangeCalendar extends React.Component {
         /**
          * 不可选择的日期
          * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
          * @returns {Boolean}
          */
         disabledDate: PropTypes.func,

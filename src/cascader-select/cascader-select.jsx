@@ -392,9 +392,13 @@ export default class CascaderSelect extends Component {
             return null;
         }
 
+        if (Array.isArray(value)) value = value[0];
+
         const data = this._v2n[value];
         if (!data) {
-            return null;
+            return {
+                value,
+            };
         }
 
         const labelPath = this.getLabelPath(data);
@@ -408,12 +412,21 @@ export default class CascaderSelect extends Component {
     }
 
     getMultipleData(value) {
+        if (!value.length) {
+            return null;
+        }
+
         const { checkStrictly, canOnlyCheckLeaf, displayRender } = this.props;
-        let data = this.getData(
-            checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value)
-        );
+        let data = (checkStrictly || canOnlyCheckLeaf
+            ? value
+            : this.flatValue(value)
+        ).map(v => this._v2n[v] || { value: v });
+
         if (displayRender) {
             data = data.map(item => {
+                if (!item.pos) {
+                    return item;
+                }
                 const labelPath = this.getLabelPath(item);
 
                 return {

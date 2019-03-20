@@ -114,4 +114,7 @@ export default {
     Tag: {
         delete: '删除',
     },
+    Rating: {
+        description: '评分选项',
+    },
 };

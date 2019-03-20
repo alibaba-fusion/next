@@ -3,7 +3,7 @@ const _ = require('lodash');
 const getWebpackConfig = require('./webpack');
 
 module.exports = function(config) {
-    const { runAll } = config;
+    const { runAll, a11y } = config;
     const componentName = config.component
         ? _.kebabCase(config.component)
         : config.component;
@@ -13,9 +13,15 @@ module.exports = function(config) {
     // 'table' or 'table|tree|tree-select'
     // const componentList = componentArray ? componentArray.join('|') : componentName;
 
-    const specPath = runAll
-        ? resolveCwd('scripts/test/allinone.js')
-        : resolveCwd('test', `@(${componentName})/*-spec.js`);
+    let specPath;
+
+    if (runAll && a11y) {
+        specPath = resolveCwd('scripts/test/a11y-allinone.js');
+    } else if (runAll) {
+        specPath = resolveCwd('scripts/test/allinone.js');
+    } else {
+        specPath = resolveCwd('test', `@(${componentName})/*-spec.js`);
+    }
 
     const options = {
         frameworks: ['mocha'],

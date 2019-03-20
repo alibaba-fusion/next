@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import { obj, log } from '../util';
 import getContextProps from './get-context-props';
+import ErrorBoundary from './error-boundary';
 
 const { shallowEqual } = obj;
 
@@ -89,6 +90,10 @@ export function config(Component, options = {}) {
             locale: PropTypes.object,
             pure: PropTypes.bool,
             rtl: PropTypes.bool,
+            errorBoundary: PropTypes.oneOfType([
+                PropTypes.bool,
+                PropTypes.object,
+            ]),
         };
         static contextTypes = {
             ...(Component.contextTypes || {}),
@@ -97,6 +102,10 @@ export function config(Component, options = {}) {
             nextPure: PropTypes.bool,
             nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool,
+            nextErrorBoundary: PropTypes.oneOfType([
+                PropTypes.bool,
+                PropTypes.object,
+            ]),
         };
 
         constructor(props, context) {
@@ -132,18 +141,26 @@ export function config(Component, options = {}) {
         }
 
         render() {
-            const { prefix, locale, pure, rtl, ...others } = this.props;
+            const {
+                prefix,
+                locale,
+                pure,
+                rtl,
+                errorBoundary,
+                ...others
+            } = this.props;
             const {
                 nextPrefix,
                 nextLocale = {},
                 nextPure,
                 nextRtl,
+                nextErrorBoundary,
             } = this.context;
 
             const displayName =
                 options.componentName || getDisplayName(Component);
             const contextProps = getContextProps(
-                { prefix, locale, pure, rtl },
+                { prefix, locale, pure, rtl, errorBoundary },
                 {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
@@ -154,10 +171,12 @@ export function config(Component, options = {}) {
                             : currentGlobalRtl === true
                             ? true
                             : undefined,
+                    nextErrorBoundary,
                 },
                 displayName
             );
 
+            // errorBoundary is only for <ErrorBoundary>
             const newContextProps = ['prefix', 'locale', 'pure', 'rtl'].reduce(
                 (ret, name) => {
                     if (typeof contextProps[name] !== 'undefined') {
@@ -172,12 +191,20 @@ export function config(Component, options = {}) {
                 ? options.transform(others, this._deprecated)
                 : others;
 
-            return (
+            const content = (
                 <Component
                     {...newOthers}
                     {...newContextProps}
                     ref={this._getInstance}
                 />
+            );
+
+            const { open, ...othersBoundary } = contextProps.errorBoundary;
+
+            return open ? (
+                <ErrorBoundary {...othersBoundary}>{content}</ErrorBoundary>
+            ) : (
+                content
             );
         }
     }
