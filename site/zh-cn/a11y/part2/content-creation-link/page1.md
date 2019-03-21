@@ -3,7 +3,7 @@
 
 - [正常页面（即anchor可用的页面）](#正常页面即anchor可用的页面)
 - [单页应用](#单页应用)
-- [参考](#参考)
+- [参考资料](#参考资料)
 
 <!-- /TOC -->
 
@@ -95,6 +95,6 @@ document.querySelector("div").focus();		// not work
 document.querySelector("footer").focus();	// worked
 ```
 
-# 参考
+# 参考资料
 - https://www.bignerdranch.com/blog/web-accessibility-skip-navigation-links/
 - https://bitsofco.de/how-and-when-to-use-the-tabindex-attribute/

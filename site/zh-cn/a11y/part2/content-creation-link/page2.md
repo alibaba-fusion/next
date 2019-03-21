@@ -1,5 +1,18 @@
 <button>[回到页面内容指引](../content-creation.md)</button>
+<!-- TOC -->
 
+- [元素的隐藏](#元素的隐藏)
+- [隐藏元素的方法及其差异](#隐藏元素的方法及其差异)
+  - [1. Text Indent 文本缩进](#1-text-indent-文本缩进)
+  - [2. Position Absolute and Collapsed 绝对定位+高度塌陷](#2-position-absolute-and-collapsed-绝对定位高度塌陷)
+  - [3. Position Absolute and Offscreen 绝对定位+远离屏幕](#3-position-absolute-and-offscreen-绝对定位远离屏幕)
+  - [4. hidden属性](#4-hidden属性)
+  - [5. aria-hidden="true"](#5-aria-hiddentrue)
+  - [6. display:none](#6-displaynone)
+  - [7. visibility:hidden](#7-visibilityhidden)
+- [参考资料](#参考资料)
+
+<!-- /TOC -->
 # 元素的隐藏
 
 我们可以将元素的隐藏分为以下两类：
