@@ -110,6 +110,10 @@ class Search extends React.Component {
          */
         hasClear: PropTypes.bool,
         /**
+         * 是否显示搜索按钮
+         */
+        hasIcon: PropTypes.bool,
+        /**
          * 是否禁用
          */
         disabled: PropTypes.bool,
