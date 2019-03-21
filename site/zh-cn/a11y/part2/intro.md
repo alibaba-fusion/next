@@ -12,4 +12,4 @@
 
 > 上述的改造过程，就如同用石头填满一个玻璃瓶，一开始我们用大的石块装满这个瓶子，但是还有较大的空间；然后我们将小石子继续塞进去填满这些空间，但是仍然有一些小空隙；最后我们倒入沙子，终于填满了这个瓶子。
 
-<div align=center><img width=100 src="../img/rock.jpg" alt="the img of rock"></div>
+<div align=center><img width=100 src="https://img.alicdn.com/tfs/TB1Nv4eNkPoK1RjSZKbXXX1IXXa-550-816.jpg" alt="the img of rock"></div>
