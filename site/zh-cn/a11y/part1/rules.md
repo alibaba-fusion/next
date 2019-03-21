@@ -1,3 +1,4 @@
+<button>[回到首页](../index.md)</button>
 
 # 无障碍标准介绍
 
