@@ -4,6 +4,4 @@
 
 - [跳过多个页面重复出现的导航栏](./content-creation-link/page1.md)
 - [隐藏元素的处理与差异](./content-creation-link/page2.md)
-- [焦点管理](./content-creation-link/page3.md)
-- [如何实现异步内容的更新与提醒](./content-creation-link/page4.md)
 - [设计建议](./content-creation-link/page5.md)
