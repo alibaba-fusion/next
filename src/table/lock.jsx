@@ -441,7 +441,7 @@ export default function lock(BaseComponent) {
                     dom.setStyle(
                         lockRightBodyWrapper,
                         rtl ? 'left' : 'right',
-                        width
+                        `${width}px`
                     );
             }
         }
