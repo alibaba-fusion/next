@@ -301,6 +301,7 @@ export default class Menu extends Component {
         this.k2n = {};
         this.p2n = {};
         const loop = (children, posPrefix, indexWrapper = { index: 0 }) => {
+            const keyArray = [];
             return Children.map(children, child => {
                 if (
                     child &&
@@ -320,6 +321,14 @@ export default class Menu extends Component {
                         pos = `${posPrefix}-${indexWrapper.index++}`;
                         const key =
                             typeof child.key === 'string' ? child.key : pos;
+
+                        // filter out duplicate keys
+                        if (keyArray.indexOf(key) > -1) {
+                            return;
+                        }
+
+                        keyArray.push(key);
+
                         const level = pos.split('-').length - 1;
                         this.k2n[key] = this.p2n[pos] = {
                             key,

@@ -67,6 +67,23 @@ describe('Menu', () => {
         assert(item.find('.next-menu-item-helper').text() === 'helper');
     });
 
+    it('should filter duplicate keys', () => {
+        wrapper = mount(
+            <Menu>
+                <Item key="1">item1</Item>
+                <Item key="2">item2</Item>
+                <Item key="2">item2</Item>
+                <Item key="2">item2</Item>
+                <Item>item</Item>
+            </Menu>
+        );
+        const item = wrapper.find('.next-menu-item');
+        assert(item.length === 3);
+        assert(item.at(0).props().title === 'item1');
+        assert(item.at(1).props().title === 'item2');
+        assert(item.at(2).props().title === 'item');
+    });
+
     it('should pass className', () => {
         wrapper = mount(
             <Menu
