@@ -98,7 +98,6 @@
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused:hover,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus:hover,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}focused,
-        &:not(.#{$css-prefix}disabled):focus,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus {
             @include menu-item-state(
