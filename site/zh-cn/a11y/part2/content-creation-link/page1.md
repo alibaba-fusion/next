@@ -1,12 +1,13 @@
 <button>[回到页面内容指引](../content-creation.md)</button>
 
-# 跳过多个页面重复出现的导航栏
+# 1. 跳过多个页面重复出现的导航栏
 
 <!-- TOC -->
 
--   [正常页面（即 anchor 可用的页面）](#正常页面即anchor可用的页面)
--   [单页应用](#单页应用)
--   [参考资料](#参考资料)
+- [1. 跳过多个页面重复出现的导航栏](#1-%E8%B7%B3%E8%BF%87%E5%A4%9A%E4%B8%AA%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E5%AF%BC%E8%88%AA%E6%A0%8F)
+  - [1.1 正常页面（即 anchor 可用的页面）](#11-%E6%AD%A3%E5%B8%B8%E9%A1%B5%E9%9D%A2%E5%8D%B3-anchor-%E5%8F%AF%E7%94%A8%E7%9A%84%E9%A1%B5%E9%9D%A2)
+  - [1.2 单页应用](#12-%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8)
+- [2. 参考资料](#2-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- /TOC -->
 
@@ -19,7 +20,7 @@
 -   正常页面
 -   单页面应用
 
-## 正常页面（即 anchor 可用的页面）
+## 1.1 正常页面（即 anchor 可用的页面）
 
 这种情况下，我们可以用 HTML+Css 的方式，简单实现该功能。
 
@@ -58,7 +59,7 @@ a.skip:hover {
 
 当我们第一次按下 Tab 键时，这个超链接它会获得焦点，:focus 状态生效，因此出现在了页面的左上角。在包含正文内容信息的 div 中，我们会对其标注上 id="content" 。
 
-## 单页应用
+## 1.2 单页应用
 
 单页面应用（SinglePage Web Application，SPA）是一种从 Web 服务器加载的富客户端，单页面跳转仅刷新局部资源 ，公共资源(js、css 等)仅需加载一次，因此页面片段间的切换快，用户体验良好。但是由于单页面的 url 模式不同于多页面的 url 模式，对`'domain.com/#content'`进行了拦截，上述采用`<a>`标签锚点的方式的跳转部分会失效，我们可以通过 Js 的方式来解决。
 
@@ -103,7 +104,7 @@ document.querySelector("div").focus();		// not work
 document.querySelector("footer").focus();	// worked
 ```
 
-# 参考资料
+# 2. 参考资料
 
 -   https://www.bignerdranch.com/blog/web-accessibility-skip-navigation-links/
 -   https://bitsofco.de/how-and-when-to-use-the-tabindex-attribute/
