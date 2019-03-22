@@ -1,10 +1,9 @@
 <button>[回到页面内容指引](../content-creation.md)</button>
 <!-- TOC -->
 
-- [1. 应当慎重设计既可hover又可click的元素](#1-应当慎重设计既可hover又可click的元素)
-- [2. 尽量使用文本而不是文本图片](#2-尽量使用文本而不是文本图片)
-- [3. 其他建议](#3-其他建议)
-- [参考资料](#参考资料)
+- [1. 应当慎重设计既可hover又可click的元素](#1-%E5%BA%94%E5%BD%93%E6%85%8E%E9%87%8D%E8%AE%BE%E8%AE%A1%E6%97%A2%E5%8F%AFhover%E5%8F%88%E5%8F%AFclick%E7%9A%84%E5%85%83%E7%B4%A0)
+- [2. 尽量使用文本而不是文本图片](#2-%E5%B0%BD%E9%87%8F%E4%BD%BF%E7%94%A8%E6%96%87%E6%9C%AC%E8%80%8C%E4%B8%8D%E6%98%AF%E6%96%87%E6%9C%AC%E5%9B%BE%E7%89%87)
+- [3. 参考资料](#3-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- /TOC -->
 本文章主要指出一些我们应当避免的设计，并总结一些设计建议。
@@ -32,15 +31,7 @@
 
 因此`图片+alt`的方式只适用于少量文本，大量的文字内容还是需要放在文本的位置处。
 
-# 3. 其他建议
-- 合理使用aria-label，对于不能描述的，可以通过aria-label来加强描述
-- input标签和textarea内使用placeholder作为默认提示语
-- 对于“，”可以使语句朗读过程中出现停顿的效果，这样盲人体验更好
-- 列表结构尽量使用ul、ol、dl结构组织内容，读屏软件可提示给用户该结构是由列表内容组成
-
-
-
 不断补充中……
-# 参考资料
+# 3. 参考资料
 - [Alternative Text](https://webaim.org/techniques/alttext/)
 - [移动端h5无障碍优化](http://site.alibaba.net/accessibility/docs/demo/h5/list.html)

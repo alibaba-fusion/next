@@ -1,19 +1,19 @@
 <button>[回到页面内容指引](../content-creation.md)</button>
 <!-- TOC -->
 
-- [元素的隐藏](#元素的隐藏)
-- [隐藏元素的方法及其差异](#隐藏元素的方法及其差异)
-  - [1. Text Indent 文本缩进](#1-text-indent-文本缩进)
-  - [2. Position Absolute and Collapsed 绝对定位+高度塌陷](#2-position-absolute-and-collapsed-绝对定位高度塌陷)
-  - [3. Position Absolute and Offscreen 绝对定位+远离屏幕](#3-position-absolute-and-offscreen-绝对定位远离屏幕)
-  - [4. hidden属性](#4-hidden属性)
-  - [5. aria-hidden="true"](#5-aria-hiddentrue)
-  - [6. display:none](#6-displaynone)
-  - [7. visibility:hidden](#7-visibilityhidden)
-- [参考资料](#参考资料)
+- [1. 元素的隐藏](#1-%E5%85%83%E7%B4%A0%E7%9A%84%E9%9A%90%E8%97%8F)
+- [2. 隐藏元素的方法及其差异](#2-%E9%9A%90%E8%97%8F%E5%85%83%E7%B4%A0%E7%9A%84%E6%96%B9%E6%B3%95%E5%8F%8A%E5%85%B6%E5%B7%AE%E5%BC%82)
+  - [2.1. Text Indent 文本缩进](#21-text-indent-%E6%96%87%E6%9C%AC%E7%BC%A9%E8%BF%9B)
+  - [2.2. Position Absolute and Collapsed 绝对定位+高度塌陷](#22-position-absolute-and-collapsed-%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E9%AB%98%E5%BA%A6%E5%A1%8C%E9%99%B7)
+  - [2.3. Position Absolute and Offscreen 绝对定位+远离屏幕](#23-position-absolute-and-offscreen-%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E8%BF%9C%E7%A6%BB%E5%B1%8F%E5%B9%95)
+  - [2.4. hidden属性](#24-hidden%E5%B1%9E%E6%80%A7)
+  - [2.5. aria-hidden="true"](#25-aria-hidden%22true%22)
+  - [2.6. display:none](#26-displaynone)
+  - [2.7. visibility:hidden](#27-visibilityhidden)
+- [3. 参考资料](#3-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- /TOC -->
-# 元素的隐藏
+# 1. 元素的隐藏
 
 我们可以将元素的隐藏分为以下两类：
 - 对正常用户不可见
@@ -27,7 +27,7 @@
 
 综上，在考虑元素的隐藏问题时，需要考虑两个方面：是否对正常用户隐藏？是否对读屏软件隐藏？接下来，我们将从这两个方面介绍一些隐藏元素的方法与他们之间的差异。
 
-# 隐藏元素的方法及其差异
+# 2. 隐藏元素的方法及其差异
 
 下表罗列了我们将要介绍的几种隐藏元素的方法及其差异。
 
@@ -45,7 +45,7 @@
 
 下面详细介绍一下表中罗列的几种隐藏元素的实现方法以及一些需要注意的事项。
 
-## 1. Text Indent 文本缩进
+## 2.1. Text Indent 文本缩进
 
 ```
 .element-invisible {
@@ -55,7 +55,7 @@
 ```
 这种方法无法用在RTL(Right to Left)语言中。
 
-## 2. Position Absolute and Collapsed 绝对定位+高度塌陷
+## 2.2. Position Absolute and Collapsed 绝对定位+高度塌陷
 
 ```
 .element-invisible {
@@ -65,7 +65,7 @@
 }
 ```
 
-## 3. Position Absolute and Offscreen 绝对定位+远离屏幕
+## 2.3. Position Absolute and Offscreen 绝对定位+远离屏幕
 
 ```
 .element-invisible {
@@ -78,7 +78,7 @@
 }
 ```
 
-## 4. hidden属性
+## 2.4. hidden属性
 
 ```
 <p hidden> hello a11y </p> // you can't see this, screen reader can't see this 
@@ -86,7 +86,7 @@
 ```
 在使用hidden属性时，所有用户都看不见当前的元素。
 
-## 5. aria-hidden="true"
+## 2.5. aria-hidden="true"
 
 ```
 <p aria-hidden="true"> hello a11y </p> // you can see this, screen reader can't see this
@@ -96,7 +96,7 @@ aria-hidden对我们的无障碍页面优化很重要的一个特性，对于我
 
 可以用来优化广告信息，或者对于盲人无用的信息。
 
-## 6. display:none
+## 2.6. display:none
 
 ```
 .element-invisible {
@@ -106,7 +106,7 @@ aria-hidden对我们的无障碍页面优化很重要的一个特性，对于我
 
 使用display:none可以隐藏元素，这个元素同时也不能被读屏器访问，且隐藏后不占据空间。
 
-## 7. visibility:hidden
+## 2.7. visibility:hidden
 
 ```
 .element-invisible {
@@ -117,7 +117,7 @@ aria-hidden对我们的无障碍页面优化很重要的一个特性，对于我
 使用visibility: hidden也可以隐藏元素，这个元素同时也不能被读屏器访问，但是与display: none不同的是，前者隐藏后占据空间。另外display: none和visibility: hidden可以对屏幕外的内容进行焦点管理，这部分内容的详细介绍在[焦点管理](https://yuque.antfin-inc.com/fusion-design-system/a11y/dn24ez)一文中详细介绍。
 
 
-# 参考资料
+# 3. 参考资料
 - [HTML5 Accessibility Chops: hidden and aria-hidden](https://developer.paciellogroup.com/blog/2012/05/html5-accessibility-chops-hidden-and-aria-hidden/)
 - [无障碍开发系列之隐藏内容访问](https://blog.csdn.net/yc123h/article/details/51337398)
 - [Hiding Content for Accessibility](https://snook.ca/archives/html_and_css/hiding-content-for-accessibility)
