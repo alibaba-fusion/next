@@ -126,7 +126,7 @@
                 padding: 0;
                 height: $slick-dots-diameter;
                 width: $slick-dots-diameter;
-                border-radius: 50%;
+                border-radius: $slick-dots-border-radius;
                 background: rgba($slick-dots-background-color-normal, $slick-dots-background-opacity-normal);
 
                 &:hover {
