@@ -67,26 +67,11 @@
 
 `aria-*`往往是搭配`role`进行使用的。
 
-我们会根据`role`的值，添加强制要求（`Required`）的`aira-*`，并添加可选择（`Optional`）的`aria-*`。
+在学习如何搭配`role`与`aria-*`时，我们可以将`aria-*`分为`required properties`与`supported properties`进行学习。比如对于`role=button`，它有两个`supported properties`：`aria-expanded`与`aria-pressed`，我们可以选择加或者不加这两个属性；再比如对于`role=checkbox`，它有一个`required properties`：`aria-checked`，与`supported properties`不同，这个属性是必须使用的。
 
-比如对于`role=region`，我们必须添加以下`Required`的`aria-*`：
--   `aria-labelledby`
--   `aria-label`
+关于这些搭配的具体方式，我们可以[点击此处](https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties)找到详细说明。
 
-而对于`role=button`，我们选择性的添加`Optional`的`aria-*`：
--   `aria-labelledby`
--   `aria-label`
--   `aria-pressed`
--   `aria-disabled`
--   `aria-haspopup`
--   `aria-describedby`
--   `aria-expanded`
-
-不同`role`有着哪些强制要求的`aria-*`，而哪些`aria-*`又是可供选择的，这部分的内容我们可以在这张[表格](http://whatsock.com/training/matrices/)中找到详细说明。
-
-而有的`aria-*`可以被运用在所有的主语言元素上，即使此时`role`没有被使用。我们将这些`aira-*`被称作全局状态或属性。实际上，它们是被应用在一个名为`roletype`的`role`上，`roletype`属于`base role`，能被所有的`role`继承。
-
-这些全局状态或属性的`aria-*`的取值可参见下表，也可以点击[此处](https://w3c.github.io/aria/#global_states)获取详细信息：
+另外，我们还可以发现，有的`aria-*`可以被运用在所有的主语言元素上，即使此时`role`没有被使用。我们将这些`aira-*`被称作`global states and properties`，即全局状态或属性（实际上，看似`role`没有被使用，其实它们是被应用在一个名为`roletype`的`role`上，`roletype`属于`base role`，能被所有的`role`继承）。这些全局状态或属性的`aria-*`的取值可参见下表，也可以点击[此处](https://w3c.github.io/aria/#global_states)获取详细信息：
 
 | | | | |
 |-|-|-|-|
