@@ -2,25 +2,25 @@
 
 <!-- TOC -->
 
-- [1. 什么是 WAI-ARIA](#1-什么是-wai-aria)
-- [2. WAI-ARIA 的组成与使用规范](#2-wai-aria-的组成与使用规范)
-    - [2.1 ARIA 的组成](#21-aria-的组成)
-        - [`role`](#role)
-        - [`aria-*`](#aria-)
-    - [2.2 ARIA 的使用规范](#22-aria-的使用规范)
-        - [`role`必须使用有效的值](#role必须使用有效的值)
-        - [`role`的特定嵌套关系](#role的特定嵌套关系)
-        - [`role`的使用不能改变原生语义](#role的使用不能改变原生语义)
-        - [`role`的使用不能产生冗余](#role的使用不能产生冗余)
-        - [`aria-*`必须符合有效的名称](#aria-必须符合有效的名称)
-        - [`aria-*`必须使用有效的值](#aria-必须使用有效的值)
-        - [`aria-*`必需值需要被提供](#aria-必需值需要被提供)
-        - [`aria-labelledby`属性应引用存在于DOM中的元素](#aria-labelledby属性应引用存在于dom中的元素)
-        - [`role=application`需谨慎使用](#roleapplication需谨慎使用)
-        - [`role="presentation"`或`aria-hidden="true"`不能用在可聚焦元素上](#rolepresentation或aria-hiddentrue不能用在可聚焦元素上)
-        - [`ARIA`中使用的`id`必须唯一](#aria中使用的id必须唯一)
-- [3. WAI-ARIA总结](#3-wai-aria总结)
-- [4. 参考资料](#4-参考资料)
+- [1. 什么是 WAI-ARIA](#1-%E4%BB%80%E4%B9%88%E6%98%AF-wai-aria)
+- [2. WAI-ARIA 的组成与使用规范](#2-wai-aria-%E7%9A%84%E7%BB%84%E6%88%90%E4%B8%8E%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
+  - [2.1 ARIA 的组成](#21-aria-%E7%9A%84%E7%BB%84%E6%88%90)
+    - [`role`](#role)
+    - [`aria-*`](#aria)
+  - [2.2 ARIA 的使用规范](#22-aria-%E7%9A%84%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
+    - [1. `role`必须使用有效的值](#1-role%E5%BF%85%E9%A1%BB%E4%BD%BF%E7%94%A8%E6%9C%89%E6%95%88%E7%9A%84%E5%80%BC)
+    - [2. `role`的特定嵌套关系](#2-role%E7%9A%84%E7%89%B9%E5%AE%9A%E5%B5%8C%E5%A5%97%E5%85%B3%E7%B3%BB)
+    - [3. `role`的使用不能改变原生语义](#3-role%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8D%E8%83%BD%E6%94%B9%E5%8F%98%E5%8E%9F%E7%94%9F%E8%AF%AD%E4%B9%89)
+    - [4. `role`的使用不能产生冗余](#4-role%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8D%E8%83%BD%E4%BA%A7%E7%94%9F%E5%86%97%E4%BD%99)
+    - [5. `aria-*`必须符合有效的名称](#5-aria-%E5%BF%85%E9%A1%BB%E7%AC%A6%E5%90%88%E6%9C%89%E6%95%88%E7%9A%84%E5%90%8D%E7%A7%B0)
+    - [6. `aria-*`必须使用有效的值](#6-aria-%E5%BF%85%E9%A1%BB%E4%BD%BF%E7%94%A8%E6%9C%89%E6%95%88%E7%9A%84%E5%80%BC)
+    - [7. `aria-*`必需值需要被提供](#7-aria-%E5%BF%85%E9%9C%80%E5%80%BC%E9%9C%80%E8%A6%81%E8%A2%AB%E6%8F%90%E4%BE%9B)
+    - [8. `aria-labelledby`属性应引用存在于DOM中的元素](#8-aria-labelledby%E5%B1%9E%E6%80%A7%E5%BA%94%E5%BC%95%E7%94%A8%E5%AD%98%E5%9C%A8%E4%BA%8Edom%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0)
+    - [9. `role=application`需谨慎使用](#9-roleapplication%E9%9C%80%E8%B0%A8%E6%85%8E%E4%BD%BF%E7%94%A8)
+    - [10. `role="presentation"`或`aria-hidden="true"`不能用在可聚焦元素上](#10-role%22presentation%22%E6%88%96aria-hidden%22true%22%E4%B8%8D%E8%83%BD%E7%94%A8%E5%9C%A8%E5%8F%AF%E8%81%9A%E7%84%A6%E5%85%83%E7%B4%A0%E4%B8%8A)
+    - [11. `ARIA`中使用的`id`必须唯一](#11-aria%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%9A%84id%E5%BF%85%E9%A1%BB%E5%94%AF%E4%B8%80)
+- [3. WAI-ARIA总结](#3-wai-aria%E6%80%BB%E7%BB%93)
+- [4. 参考资料](#4-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- /TOC -->
 
@@ -50,10 +50,11 @@
     -   标记元素的属性、状态
 
 ### `role`
+
 关于`role`，我们需要知道它的取值不是随意的，而且大部分是为了补充HTML的语义，这些`role`的值可参阅下表，也可以[点击此处](http://whatsock.com/training/matrices/)获得完整的`role`分类与介绍：
 
-| | | | | |
-|-|-|-|-|-|
+| role | role | role | role |
+|-|-|-|-|
 |alert|alertdialog|application|directory|
 |document|feed|grid|gridcell|
 |group|log|marquee|menu|
@@ -65,16 +66,16 @@
 
 ### `aria-*`
 
-`aria-*`往往是搭配`role`进行使用的。
+`aria-*`往往是搭配`role`进行使用的。为了更方便读者理解如何进行搭配，我们有两种对`aria-*`进行分类的方式：
 
-在学习如何搭配`role`与`aria-*`时，我们可以将`aria-*`分为`required properties`与`supported properties`进行学习。比如对于`role=button`，它有两个`supported properties`：`aria-expanded`与`aria-pressed`，我们可以选择加或者不加这两个属性；再比如对于`role=checkbox`，它有一个`required properties`：`aria-checked`，与`supported properties`不同，这个属性是必须使用的。
+-   按照`全局属性`和`私有属性`分类
 
-关于这些搭配的具体方式，我们可以[点击此处](https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties)找到详细说明。
+我们可以发现，有的`aria-*`可以被运用在所有的主语言元素上，即使此时`role`没有被使用。我们将这些`aira-*`被称作`global states and properties`，即全局状态或属性。
 
-另外，我们还可以发现，有的`aria-*`可以被运用在所有的主语言元素上，即使此时`role`没有被使用。我们将这些`aira-*`被称作`global states and properties`，即全局状态或属性（实际上，看似`role`没有被使用，其实它们是被应用在一个名为`roletype`的`role`上，`roletype`属于`base role`，能被所有的`role`继承）。这些全局状态或属性的`aria-*`的取值可参见下表，也可以点击[此处](https://w3c.github.io/aria/#global_states)获取详细信息：
+实际上，看似`role`没有被使用，其实它们是被应用在一个名为`roletype`的`role`上，`roletype`属于`base role`，能被所有的`role`继承。这些全局状态或属性的`aria-*`的取值可参见下表，也可以点击[此处](https://w3c.github.io/aria/#global_states)获取详细信息：
 
-| | | | |
-|-|-|-|-|
+| aria-* | aria-* | aria-* |
+|-|-|-|
 | aria-atomic | aria-busy (state) | aria-controls
 | aria-current (state) | aria-describedby | aria-details
 | aria-disabled (state) | aria-dropeffect | aria-errormessage
@@ -83,11 +84,21 @@
 | aria-label | aria-labelledby | aria-live 
 | aria-owns | aria-relevant | aria-roledescription
 
-另外并不是说在 HTML 中使用了 ARIA，Web 页面就提高了可访问性了，就无障碍化了，如果 ARIA 没有用好，反而会把你带到另一个坑中，使你的页面可访问性更差。因此在使用 ARIA 时，我们需要仔细理解 ARIA 的使用规范。
+除`全局属性`之外的其他属性，就不能随心所欲的混合搭配，比如`aria-expanded`就不能用在`role=button`上，这需要遵守一定的规范，可以[点击此处](https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties)找到详细说明。
+
+-   按照`required`和`supported`分类
+
+我们可以将`aria-*`分为`required properties`与`supported properties`。
+
+比如对于`role=button`，它有两个`supported properties`：`aria-expanded`与`aria-pressed`，我们可以选择添加或者不添加这两个属性。
+
+比如对于`role=checkbox`，它有一个`required properties`：`aria-checked`，与`supported properties`不同，这个属性是必须添加的。
+
+关于这些搭配的具体方式，我们可以[点击此处](https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties)找到详细说明。另外并不是说在 HTML 中使用了 ARIA，Web 页面就提高了可访问性了，就无障碍化了，如果 ARIA 没有用好，反而会把你带到另一个坑中，使你的页面可访问性更差。因此在使用 ARIA 时，我们需要仔细理解 ARIA 的使用规范。
 
 ## 2.2 ARIA 的使用规范
 
-### `role`必须使用有效的值
+### 1. `role`必须使用有效的值
 
 开发者需要确保所有的`role`的取值都是有效的，有效的`role`取值可[参见上文内容](#211-role)，比如：
 
@@ -96,7 +107,7 @@
 <div role="bigbutton">I'm a big button</div>     // 错误使用案例，"bigbutton"不是一个 ARIA role
 ```
 
-### `role`的特定嵌套关系
+### 2. `role`的特定嵌套关系
 
 开发者在使用role的过程中需要注意，一些`role`必须被包含在特定的父元素中，一些`role`必须包含特定的子元素。比如：
 
@@ -118,7 +129,7 @@
 </div>
 ```
 
-### `role`的使用不能改变原生语义
+### 3. `role`的使用不能改变原生语义
 
 比如开发者想构建一个标签，可以按如下方式构建：
 
@@ -132,7 +143,7 @@
 <h2 role=tab>heading tab</h2>    // 错误案例，改变了原生语义
 ```
 
-### `role`的使用不能产生冗余
+### 4. `role`的使用不能产生冗余
 
 比如下面添加了`role`是无用的，会带来信息的冗余：
 
@@ -140,7 +151,7 @@
 <button role="button">press me</button>
 ```
 
-### `aria-*`必须符合有效的名称
+### 5. `aria-*`必须符合有效的名称
 
 开发者不能使用一个不存在或者错误拼写的`aria-*`，比如：
 
@@ -159,7 +170,7 @@ aria-hudden="true"      // 错误使用案例，错误拼写了"hidden"
 -   [WAI-ARIA Attributes Module](https://www.w3.org/TR/wai-aria-1.1/#xhtml_mod)
 -   [WAI-ARIA Attributes XML Schema Module](https://www.w3.org/TR/wai-aria-1.1/#xhtml_schema_mod)
 
-### `aria-*`必须使用有效的值
+### 6. `aria-*`必须使用有效的值
 
 开发者在使用`aria-*`时，需要对其赋予有效的值，比如：
 
@@ -172,7 +183,7 @@ aria-hidden="yes"       // 错误使用案例，aria-hidden的可选值中无"ye
 -   [W3C WAI-ARIA 1.1 Supported States and Properties](https://www.w3.org/TR/wai-aria-1.1/#state_prop_values)
     -   提供了ARIA状态和属性的允许取值
 
-### `aria-*`必需值需要被提供
+### 7. `aria-*`必需值需要被提供
 
 开发者需要检查`role`是否含有必须提供的`aria-*`。
 
@@ -183,7 +194,7 @@ aria-hidden="yes"       // 错误使用案例，aria-hidden的可选值中无"ye
 <div role="heading" >I'm a heading</div>                  // 错误使用案例，未提供必需的aria-level属性
 ```
 
-### `aria-labelledby`属性应引用存在于DOM中的元素
+### 8. `aria-labelledby`属性应引用存在于DOM中的元素
 
 开发者在给`aria-labelledby`属性赋值时，应注意与DOM元素中的id值对应，比如：
 
@@ -193,11 +204,12 @@ aria-hidden="yes"       // 错误使用案例，aria-hidden的可选值中无"ye
 <input type="text" aria-labelledby="test_one"></input>    // 正确使用案例
 <input type="text" aria-labelledby="test_two"></input>    // 错误使用案例，文档中没有对应的id="test_two"
 ```
-### `role=application`需谨慎使用
+
+### 9. `role=application`需谨慎使用
 
 简而言之，真正会使用`role=application`的场景是非常罕见的，除非需要模拟真实的桌面应用程序，因为当使用`role=application`时，屏幕阅读器会停止拦截击键，并将所有击键直接传递给浏览器，这会使得用户无法轻松浏览页面，更具体的介绍请[参考此处](https://www.w3.org/TR/using-aria/#using-application)。
 
-### `role="presentation"`或`aria-hidden="true"`不能用在可聚焦元素上
+### 10. `role="presentation"`或`aria-hidden="true"`不能用在可聚焦元素上
 
 `role=presentation`或其同义词`role=none`，表示在它所在的元素中删除语义，在可聚焦元素上使用`role="presentation"`或`aria-hidden="true"`会导致该元素失去焦点，比如：
 
@@ -206,7 +218,7 @@ aria-hidden="yes"       // 错误使用案例，aria-hidden的可选值中无"ye
 <button aria-hidden="true">press me</button>    // 错误使用案例
 ```
 
-### `ARIA`中使用的`id`必须唯一
+### 11. `ARIA`中使用的`id`必须唯一
 
 重复的`id`是非常常见的一个错误，分配相同的`id`值会导致辅助技术忽略第二个实例，破坏内容的可访问性。
 
