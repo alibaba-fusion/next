@@ -73,8 +73,8 @@ class FunctionDemo extends React.Component {
                 },
                 contentPos: {
                     label: '内容位置',
-                    value: 'vertical',
-                    enum: [{ value: 'vertical', label: '节点下方' }, { value: 'horizontal', label: '节点右侧' }],
+                    value: 'ver',
+                    enum: [{ value: 'ver', label: '节点下方' }, { value: 'hoz', label: '节点右侧' }],
                 }
             },
             dotDemoFunction: {
@@ -162,14 +162,14 @@ class FunctionDemo extends React.Component {
                 </Demo>
                 <Demo title={i18n.verticalGroup} block>
                     <DemoGroup label={i18n.horizontal}>
-                        <Step current={1} shape={shape} direction="vertical"  >
+                        <Step current={1} shape={shape} direction="ver"  >
                             {
                                 itemData.horizontal.map((v, index) => this.itemRender({ flag, index, ...v }))
                             }
                         </Step>
                     </DemoGroup>
                     <DemoGroup label={i18n.disabled}>
-                        <Step current={2} shape={shape} direction="vertical" >
+                        <Step current={2} shape={shape} direction="ver" >
                             {
                                 itemData.disabled.map((v, index) => this.itemRender({ flag, index, ...v }))
                             }
@@ -204,21 +204,21 @@ class FunctionDemo extends React.Component {
                 </Demo>
                 <Demo title={i18n.verticalGroup} block>
                     <DemoGroup label={i18n.horizontal}>
-                        <Step current={1} shape={shape} direction="vertical"  >
+                        <Step current={1} shape={shape} direction="ver"  >
                             {
                                 itemData.horizontal.map((v, index) => this.itemRender({ flag, index, ...v }))
                             }
                         </Step>
                     </DemoGroup>
                     <DemoGroup label={i18n.percent}>
-                        <Step current={2} shape={shape} direction="vertical" >
+                        <Step current={2} shape={shape} direction="ver" >
                             {
                                 itemData.percent.map((v, index) => this.itemRender({ flag, index, ...v }))
                             }
                         </Step>
                     </DemoGroup>
                     <DemoGroup label={i18n.disabled}>
-                        <Step current={2} shape={shape} direction="vertical" >
+                        <Step current={2} shape={shape} direction="ver" >
                             {
                                 itemData.disabled.map((v, index) => this.itemRender({ flag, index, ...v }))
                             }

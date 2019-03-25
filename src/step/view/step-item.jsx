@@ -224,6 +224,7 @@ class StepItem extends Component {
             status,
             title,
             content,
+            shape,
         } = this.props;
         const { others, stepCls, overlayCls } = args;
         const nodeElement = this._getNode();
@@ -260,11 +261,13 @@ class StepItem extends Component {
                 </div>
             );
         }
+        if (shape !== 'arrow') {
+            delete others.tabIndex;
+            delete others['aria-current'];
+        }
 
         return (
-            <div
-                tabIndex="0"
-                aria-current={status === 'process' ? 'step' : null}
+            <li
                 {...others}
                 style={this.getStyle()}
                 className={stepCls}
@@ -274,6 +277,8 @@ class StepItem extends Component {
                 <div
                     className={`${prefix}step-item-body`}
                     ref={this._refHandlerCreator('body')}
+                    tabIndex={this.props.tabIndex}
+                    aria-current={this.props['aria-current']}
                 >
                     <div
                         className={`${prefix}step-item-title`}
@@ -296,7 +301,7 @@ class StepItem extends Component {
                         />
                     </div>
                 </div>
-            </div>
+            </li>
         );
     }
 
@@ -409,9 +414,7 @@ class StepItem extends Component {
 
         const overlayCls = status === 'finish' ? { width: '100%' } : null;
         const arrowElement = (
-            <div
-                tabIndex="0"
-                aria-current={status === 'process' ? 'step' : null}
+            <li
                 {...others}
                 style={this.getStyle()}
                 className={stepCls}
@@ -420,7 +423,7 @@ class StepItem extends Component {
                 <div className={`${prefix}step-item-container`}>
                     <div className={`${prefix}step-item-title`}>{title}</div>
                 </div>
-            </div>
+            </li>
         );
         const otherElement = this.getNode({ others, stepCls, overlayCls });
 
