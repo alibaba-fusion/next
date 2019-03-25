@@ -15,7 +15,7 @@ Demo the customize style usage.
 ---
 
 ````jsx
-import { Transfer } from '@alifd/next';
+import { Transfer, Button } from '@alifd/next';
 
 const dataSource = (() => {
     const dataSource = [];
@@ -43,7 +43,16 @@ class Demo extends React.Component {
     }
 
     render() {
-        return <Transfer defaultValue={['3']} dataSource={dataSource} listStyle={{ width: '200px', height: '192px' }} defaultLeftChecked={['1']} onChange={this.handleChange} titles={['Source', 'Target']} operations={['>>', '<<']} />;
+        return (
+            <Transfer 
+                defaultValue={['3']} 
+                dataSource={dataSource} 
+                listStyle={{ width: '200px', height: '192px' }} 
+                defaultLeftChecked={['1']} 
+                onChange={this.handleChange} 
+                titles={[<Button key='left' type='primary'>Source</Button>, 'Target']} 
+                operations={['>>', '<<']} />
+        );
     }
 }
 

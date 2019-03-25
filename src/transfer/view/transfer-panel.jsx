@@ -21,7 +21,7 @@ export default class TransferPanel extends Component {
         onMoveAll: PropTypes.func,
         disabled: PropTypes.bool,
         locale: PropTypes.object,
-        title: PropTypes.string,
+        title: PropTypes.node,
         showSearch: PropTypes.bool,
         filter: PropTypes.func,
         onSearch: PropTypes.func,
