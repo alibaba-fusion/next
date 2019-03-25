@@ -329,7 +329,7 @@ class AutoComplete extends Base {
             state: state,
             ref: this.saveInputRef,
             hasClear: hasClear,
-            value: value || '',
+            value,
             size,
             disabled,
             readOnly,
