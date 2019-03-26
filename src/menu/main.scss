@@ -171,6 +171,10 @@
         position: absolute;
         top: 0;
         @include icon-size($menu-icon-selected-size, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
+
+        &#{$menu-prefix}-icon-right {
+            right: $menu-icon-selected-right;
+        }
     }
 
     & &-icon-arrow.#{$css-prefix}icon {

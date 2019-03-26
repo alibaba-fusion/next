@@ -27,12 +27,13 @@ class Demo extends React.Component {
             multiple: false,
             subMenuSelectable: false,
             shallowSelect: false,
+            isSelectIconRight: false,
             selectedKeys: ['1']
         };
 
         [
             'handleMultipleChange', 'handleSubMenuSelectableChange',
-            'handleShallowSelectChange', 'handleSelect'
+            'handleShallowSelectChange', 'handleSelect', 'handleIconDirectionChange'
         ].forEach(method => {
             this[method] = this[method].bind(this);
         });
@@ -41,6 +42,13 @@ class Demo extends React.Component {
     handleMultipleChange() {
         this.setState({
             multiple: !this.state.multiple,
+            selectedKeys: []
+        });
+    }
+
+    handleIconDirectionChange() {
+        this.setState({
+            isSelectIconRight: !this.state.isSelectIconRight,
             selectedKeys: []
         });
     }
@@ -68,7 +76,7 @@ class Demo extends React.Component {
     }
 
     render() {
-        const { multiple, subMenuSelectable, shallowSelect, selectedKeys } = this.state;
+        const { multiple, subMenuSelectable, shallowSelect, selectedKeys, isSelectIconRight } = this.state;
         const selectMode = multiple ? 'multiple' : 'single';
 
         return (
@@ -78,6 +86,10 @@ class Demo extends React.Component {
                     <Switch value={multiple} onChange={this.handleMultipleChange} />
                 </div>
                 <div>
+                    <span className="my-switch-label">isSelectIconRight </span>
+                    <Switch value={multiple} onChange={this.handleIconDirectionChange} />
+                </div>
+                <div>
                     <span className="my-switch-label">Label of submenu selectable </span>
                     <Switch value={multiple} onChange={this.handleSubMenuSelectableChange} />
                 </div>
@@ -85,7 +97,7 @@ class Demo extends React.Component {
                     <span className="my-switch-label">Only first level selectable </span>
                     <Switch value={multiple} onChange={this.handleShallowSelectChange} />
                 </div>
-                <Menu className="my-select-menu" defaultOpenKeys={['sub']} selectMode={selectMode} selectedKeys={selectedKeys} shallowSelect={shallowSelect} onSelect={this.handleSelect}>
+                <Menu isSelectIconRight={isSelectIconRight} className="my-select-menu" defaultOpenKeys={['sub']} selectMode={selectMode} selectedKeys={selectedKeys} shallowSelect={shallowSelect} onSelect={this.handleSelect}>
                     <Item key="1">Option 1</Item>
                     <Item disabled key="2">Disabled option 2</Item>
                     <SubMenu key="sub" label="Sub menu" selectable={subMenuSelectable}>
