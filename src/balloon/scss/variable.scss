@@ -148,6 +148,10 @@ $balloon-primary-color-close-hover: $color-text1-4 !default;
 /// @namespace statement/normal/bounding
 $balloon-tooltip-color-bg: $color-fill1-2 !default;
 
+/// shadow
+/// @namespace statement/normal/bounding
+$balloon-tooltip-shadow: $shadow-zero !default;
+
 /// border
 /// @namespace statement/normal/bounding
 $balloon-tooltip-color-border: $color-line1-2 !default;
@@ -160,7 +164,6 @@ $balloon-tooltip-border-style: $line-solid !default;
 /// @namespace statement/normal/content
 $balloon-tooltip-color: $color-text1-4 !default;
 
-$balloon-tooltip-shadow: none;
 $balloon-shadow-top: shadow-maker($shadow-sides-base, 1, rgba($shadow-color-sd1, .1), -1, -1);
 $balloon-shadow-right: shadow-maker($shadow-sides-base, 1, rgba($shadow-color-sd1, .1), 1, -1);
 $balloon-shadow-bottom: shadow-maker($shadow-sides-base, 1, rgba($shadow-color-sd1, .1), 1, 1);

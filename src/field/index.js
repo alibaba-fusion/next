@@ -50,6 +50,7 @@ class Field {
             'setValue',
             'setValues',
             'getError',
+            'getErrors',
             'setError',
             'setErrors',
             'validate',

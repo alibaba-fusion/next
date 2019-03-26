@@ -126,6 +126,11 @@ export default class Menu extends Component {
         hasSelectedIcon: PropTypes.bool,
         labelToggleChecked: PropTypes.bool,
         /**
+         * 是否将选中图标居右，仅当 hasSelectedIcon 为true 时生效。
+         * 注意：SubMenu 上的选中图标一直居左，不受此API控制
+         */
+        isSelectIconRight: PropTypes.bool,
+        /**
          * 菜单第一层展示方向
          */
         direction: PropTypes.oneOf(['ver', 'hoz']),
@@ -175,6 +180,7 @@ export default class Menu extends Component {
         onSelect: noop,
         shallowSelect: false,
         hasSelectedIcon: true,
+        isSelectIconRight: false,
         labelToggleChecked: true,
         direction: 'ver',
         hozAlign: 'left',

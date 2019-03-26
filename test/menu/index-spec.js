@@ -46,6 +46,23 @@ describe('Menu', () => {
         assert(menu.prop('style').color === 'red');
     });
 
+    it('should support isSelectIconRight', () => {
+        wrapper = mount(
+            <Menu
+                isSelectIconRight
+                selectMode="multiple"
+                selectedKeys={['1', '2', '3']}
+            >
+                <Item key="1">item</Item>
+                <Item key="2">item</Item>
+                <Item key="3" isSelectIconRight={false}>
+                    item
+                </Item>
+            </Menu>
+        );
+        assert(wrapper.find('i.next-menu-icon-right').length === 2);
+    });
+
     it('should render menu item', () => {
         wrapper = mount(
             <Menu>

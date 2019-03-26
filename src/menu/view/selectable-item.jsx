@@ -38,6 +38,7 @@ export default class SelectableItem extends Component {
         onClick: PropTypes.func,
         needIndent: PropTypes.bool,
         hasSelectedIcon: PropTypes.bool,
+        isSelectIconRight: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -82,8 +83,27 @@ export default class SelectableItem extends Component {
     }
 
     renderSelectedIcon(selected) {
-        const { root, inlineIndent, needIndent, hasSelectedIcon } = this.props;
-        const { prefix, hasSelectedIcon: rootSelectedIcon } = root.props;
+        const {
+            root,
+            inlineIndent,
+            needIndent,
+            hasSelectedIcon,
+            isSelectIconRight,
+            type,
+        } = this.props;
+        const {
+            prefix,
+            hasSelectedIcon: rootSelectedIcon,
+            isSelectIconRight: rootSelectIconRight,
+        } = root.props;
+
+        const cls = cx({
+            [`${prefix}menu-icon-selected`]: true,
+            [`${prefix}menu-icon-right`]:
+                ('isSelectIconRight' in this.props
+                    ? isSelectIconRight
+                    : rootSelectIconRight) && type !== 'submenu',
+        });
 
         return ('hasSelectedIcon' in this.props
             ? hasSelectedIcon
@@ -94,7 +114,7 @@ export default class SelectableItem extends Component {
                         ? { left: `${inlineIndent}px` }
                         : null
                 }
-                className={`${prefix}menu-icon-selected`}
+                className={cls}
                 type="select"
             />
         ) : null;

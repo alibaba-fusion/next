@@ -46,5 +46,5 @@ class Demo extends React.Component {
         return <CascaderSelect valueRender={this.valueRender} defaultValue="432988" style={{ width: '302px' }} dataSource={this.state.data} onChange={this.handleChange} />;
     }
 }
-ReactDOM.render(<Demo />, mountNode)
+ReactDOM.render(<Demo />, mountNode);
 ```

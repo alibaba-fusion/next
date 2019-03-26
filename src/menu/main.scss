@@ -98,7 +98,6 @@
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused:hover,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus:hover,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}focused,
-        &:not(.#{$css-prefix}disabled):focus,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus {
             @include menu-item-state(
@@ -172,6 +171,10 @@
         position: absolute;
         top: 0;
         @include icon-size($menu-icon-selected-size, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
+
+        &#{$menu-prefix}-icon-right {
+            right: $menu-icon-selected-right;
+        }
     }
 
     & &-icon-arrow.#{$css-prefix}icon {

@@ -342,6 +342,7 @@
 
             &.active {
                 margin-right: -$tab-capsule-tab-border-line-width;
+                border-right: $tab-capsule-tab-border;
                 border-color: $tab-capsule-tab-border-line-color-active;
             }
 
