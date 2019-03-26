@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ConfigProvider from '../config-provider';
 import Progress from '../progress';
 import Icon from '../icon';
 import Button from '../button';
 import { func, obj, KEYCODE } from '../util';
 import zhCN from '../locale/zh-cn.js';
 import { previewFile } from './util';
+import transform from './transform';
 
 class List extends Component {
     static propTypes = {
@@ -472,4 +474,10 @@ class List extends Component {
     }
 }
 
-export default List;
+// Wrap <List> with <ConfigProvider> to avoid context missing if it is
+// referenced by other internal modules.
+// https://github.com/alibaba-fusion/next/blob/build/1.13.9/src/upload/upload.jsx#L521
+export default ConfigProvider.config(List, {
+    componentName: 'Upload',
+    transform,
+});
