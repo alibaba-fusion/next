@@ -52,3 +52,16 @@ By default, TimePicker using moment instance as input value, which is the sugges
 | popupProps       | Props of popup  | Object    | -          |
 | disabled         | Disable the picker  | Boolean   | false      |
 | onChange         | Callback when date changes<br><br>**signature**:<br>Function(value: Object/String) => void<br>**paramter**:<br>_value_: {Object/String} date value                                                                  | Function  | func.noop  |
+
+## ARIA and KeyBoard
+
+| 按键    | 说明               |
+| :---- | :--------------- |
+| Enter | Open time select popup    |
+| Esc   | Close time select popup |
+| Up | Input previous seconds （if `disabledMinutes={true}` is previous minutes or previous hours） |
+| Down | Input next seconds （if `disabledMinutes={true}`  is next minutes or next hours） |
+| Page Up | Input previous minutes |
+| Page Down |  Input next minutes |
+| Alt + Page Up | Input previous hours |
+| Alt + Page Down | Input next hours |

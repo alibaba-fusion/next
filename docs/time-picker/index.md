@@ -52,3 +52,16 @@
 | popupProps       | 弹层属性                                                                                                                                                              | Object    | -          |
 | disabled         | 是否禁用                                                                                                                                                              | Boolean   | false      |
 | onChange         | 时间值改变时的回调<br><br>**签名**:<br>Function(value: Object/String) => void<br>**参数**:<br>_value_: {Object/String} 时间对象或时间字符串                                              | Function  | func.noop  |
+
+## ARIA and KeyBoard
+
+| 按键    | 说明               |
+| :---- | :--------------- |
+| Enter | 打开时间选择框    |
+| Esc   | 关闭时间选择框  |
+| Up | 输入上一秒的时间 （如果 `disabledMinutes={true}` 则可能是上一分钟或者上一小时） |
+| Down | 输入下一秒的时间 （如果 `disabledMinutes={true}` 则可能是下一分钟或者下一小时） |
+| Page Up | 输入上一分钟的时间 |
+| Page Down |  输入下一分钟的时间 |
+| Alt + Page Up | 输入上一小时的时间 |
+| Alt + Page Down | 输入下一小时的时间 |

@@ -962,7 +962,14 @@ export default class Tree extends Component {
                 if (children && children.length) {
                     props.children = loop(children, pos);
                 }
-                const node = <TreeNode rtl={rtl} key={key} {...props} />;
+                const node = (
+                    <TreeNode
+                        rtl={rtl}
+                        key={key}
+                        size={data.length}
+                        {...props}
+                    />
+                );
                 this._k2n[key].node = node;
                 return node;
             });
@@ -987,6 +994,7 @@ export default class Tree extends Component {
 
                 props._key = key;
                 props.rtl = rtl;
+                props.size = Children.count(children);
 
                 const node = cloneElement(child, props);
                 this._k2n[key].node = node;
@@ -1006,6 +1014,7 @@ export default class Tree extends Component {
             showLine,
             isNodeBlock,
             isLabelBlock,
+            multiple,
         } = this.props;
         const others = pickOthers(Object.keys(Tree.propTypes), this.props);
 
@@ -1025,6 +1034,7 @@ export default class Tree extends Component {
         return (
             <ul
                 role="tree"
+                aria-multiselectable={multiple}
                 onBlur={this.handleBlur}
                 className={newClassName}
                 {...others}
