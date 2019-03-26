@@ -55,7 +55,7 @@ class FuncDemo extends React.Component {
         return (
             <Nav defaultOpenAll type={type} direction={direction} activeDirection={activeDirection} iconOnly={iconOnly} defaultSelectedKeys={selectedKeys}>
                 {hasGroup ? <Group label={i18n.group}>{items}</Group> : items}
-                <SubNav style={itemStyle} key="5" icon={hasIcons && 'account'} label={`${i18n.item}5`}>
+                <SubNav key="5" icon={hasIcons && 'account'} label={`${i18n.item}5`}>
                     {subItems}
                 </SubNav>
             </Nav>

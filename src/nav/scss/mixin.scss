@@ -111,7 +111,6 @@
         color: $textColor;
 
         &.#{$css-prefix}focused,
-        &:focus,
         &:hover {
             background-color: $hoverBgColor;
             color: $hoverColor;
@@ -160,7 +159,6 @@
         font-weight: $textWeight;
 
         &.#{$css-prefix}focused,
-        &:focus,
         &:hover {
             background-color: $hoverBgColor;
             color: $hoverColor;
