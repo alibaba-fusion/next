@@ -50,7 +50,7 @@ export default class Tab extends Component {
          */
         triggerType: PropTypes.oneOf(['hover', 'click']),
         /**
-         * 是否提前渲染好所有 TabPane 的内容
+         * 是否延迟加载 TabPane 的内容, 默认开启, 即不提前渲染
          */
         lazyLoad: PropTypes.bool,
         /**
