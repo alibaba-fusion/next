@@ -1,30 +1,33 @@
 <button>[回到首页](../index.md)</button>
 
--   [2.1.1 组件的分类](#211-组件的分类)
-    -   [2.1.1.1 数据展示类](#2111-数据展示类)
-    -   [2.1.1.2 即时反馈类](#2112-即时反馈类)
-    -   [2.1.1.3 菜单与导航类](#2113-菜单与导航类)
-    -   [2.1.1.4 表单类](#2114-表单类)
--   [2.2 参考文献](#22-参考文献)
 
-# 2.1 Funion 组件使用
 
-Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式。我们致力于对无障碍的支持，其中 Fusion 基础组件已提供无障碍支持，开发者可以进行测试和使用，并提供[Fusion](https://fusion.design/component)无障碍说明文档和使用。所有非组件 API 属性都可以透传至 DOM 元素(我们可以传递参数，改变 aria 和 role 属性)。
+- [1. 使用无障碍的Fusion组件](#1-使用无障碍的Fusion组件)
+- [2. 组件的分类](#2-组件的分类)
+    -   [2.1 数据展示类](#21-数据展示类)
+    -   [2.2 即时反馈类](#22-即时反馈类)
+    -   [2.3 菜单与导航类](#23-菜单与导航类)
+    -   [2.4 表单类](#24-表单类)
+- [3. 参考文献](#3-参考文献)
 
-经过上一章节的学习，对无障碍有初步的认识，如何进行改造呢，下面我们给我一些指引：
+## 1. 使用无障碍的Fusion组件
 
--   对于组件，我们为开发者内置 role 和一些 aria-*属性，开发者也可以对非组件 API 属性都可以透传至 DOM 元素，进行修改 role 和 aria-*参数，但是要注意对应关系，请[参考](../part1/WAI-ARIA.md)
--   对一些特殊的组件传递参数才能支持无障碍，设置`id`,`autoFocus`和传参数，如下：
-    -   id - `Balloon`,`Rating`
-    -   autoFocus - 弹层自动聚焦，例如`Dialog`,`Overlay`,`Dropdown`
-    -   传参数 - 有些组件需要根据具体的业务，实现不同的可访问性，这里为开发者内置一些参数，想使用无障碍的时候，用户只需要根据现有的需求，选择对应的内置参数，例如设置 aria-label,以下组件需要用户传参数才支持无障碍组件如下：`NumberPicker`、`Transfer`
+Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式。我们致力于对无障碍的支持，其中 Fusion 基础组件已提供无障碍支持，开发者可以进行测试和使用，并提供[Fusion](https://fusion.design/component)无障碍使用和说明文档。所有非组件 API 属性都可以透传至 DOM 元素(我们可以传递参数，修改aria和role属性)。
+
+经过上一章节的学习，对无障碍有初步的认识，如何进行改造呢，下面给出一些指引：
+
+-   对于组件，我们为开发者内置role和特定aria-*属性，开发者也可以对非组件 API 属性都可以透传至 DOM 元素，进行修改 role 和 aria-*参数，但是要注意对应关系，请[参考](../part1/WAI-ARIA.md)
+-   对一些特殊的组件传递参数才能支持无障碍，设置`id`，`autoFocus`和传参数，如下：
+    -   id - `Balloon`，`Rating`
+    -   autoFocus - 弹层自动聚焦，例如`Dialog`，`Overlay`，`Dropdown`
+    -   传参数 - 有些组件需要根据具体的业务，实现不同的可访问性，这里为开发者内置一些参数，想使用无障碍的时候，用户只需要根据现有的需求，选择对应的内置参数，例如设置 aria-label，以下组件需要用户传参数才支持无障碍组件如下：`NumberPicker`、`Transfer`
 -   我们为开发者提供无障碍的使用文档，请[参考](https://fusion.design/component)组件 API 中`ARIA and KeyBoard`
 
-## 2.1.1 组件的分类
+## 2. 组件的分类
 
-本部分我们会为开发者介绍具体如何对组件改造，使开发者更好的使用组件,分如下四类：
+本部分介绍具体如何对组件改造，让开发者更好的使用组件可访问性，分如下四类：
 
-### 2.1.1.1 数据展示类
+### 2.1 数据展示类
 
 -   `Icon`
     -   图标类元素
@@ -38,9 +41,9 @@ Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式
     -   默认为纯数据展示的表格 - 若作为布局使用复杂功能，需自定义 role 等属性，[参考文档](https://fusion.design/component/table)
 -   `Tag`
     -   删除类标签，删除按钮默认朗读为“删除”，可自定义文案，自定义方式参考[国际化语言包的设置](https://fusion.design/component/config-provider)
--   `Paragraph`, `Progress`, `Timeline`, `Collapse`
+-   `Paragraph`、`Progress`、`Timeline`、`Collapse`
 
-### 2.1.1.2 即时反馈类
+### 2.2 即时反馈类
 
 -   `Message`
     -   默认 role="alert"，当出现在 document 中时，屏幕阅读器会优先朗读它的内容。 
@@ -58,14 +61,14 @@ Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式
     -   可通过`autoFocus`开启默认聚焦，焦点为弹层内容上第一个可聚焦元素 `<Overlay autoFocus />` 
     - 请务必设置可聚焦的 trigger 元素
 
-### 2.1.1.3 菜单与导航类
+### 2.3 菜单与导航类
 
 -   菜单
 
     -   `Menu`
         -   支持键盘导航
         -   默认 role="menu"，子元素为"menuitem"，菜单自定义单选子元素为"menuitemradio"，菜单自定义多选子元素为"menuitemcheckbox"
-        -   使用`selectMode`API 改变组件可选状态后，默认 role="listbox"，跟是否多选改变`aria-multiselectable`的值，子元素为“listitem”
+        -   使用`selectMode`属性 改变组件可选状态后，默认 role="listbox"，根节点是否多选改变`aria-multiselectable`的值，子元素为“listitem”
         -   请根据实际需求覆盖默认 role `<Menu role="listbox" />` `<Menu.Item role="listitem" />`
     -   `Nav`
         -   默认 role="listbox"，子元素为"listitem"
@@ -82,9 +85,8 @@ Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式
         -   朗读格式默认为“上一页，当前\${i}页”，可自定义文案，自定义方式参考[国际化语言包的设置](https://fusion.design/component/config-provider)
     -   `Step`、`Breadcrumb`
         -   默认`aria-current`标记当前步骤
-    -
 
-### 2.1.1.4 表单类
+### 2.4 表单类
 
 -   推荐： Form Field Input CheckBox Radio Switch Select NumberPicker Button Range Rating DatePicker TimePicker Upload
 -   不推荐：TreeSelect CascaderSelect Transfer
@@ -104,39 +106,39 @@ Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式
     -   `Button` `SplitButton` `MenuButton`
 
         -   默认使用`<button>`标签来渲染，可自定义标签类型`<Button component="a">`
-        -   可通过配置设置自动聚焦，<MenuButton menuProps={{autoFocus: true}} /> <SplitButton menuProps={{autoFocus: true}} />
+        -   可通过配置设置自动聚焦，`<MenuButton menuProps={{autoFocus: true}} /> <SplitButton menuProps={{autoFocus: true}} />`
 
     -   `NumberPicker`
         -   支持键盘上下按键，增加、减少数字。
-        -   开发者可通过传递`upBtnProps` `downBtnProps`参数，自定义增加减少按钮的`aria-label`文案，[参考文档](https://fusion.design/component/number-picker)。
+        -   开发者可通过传递`upBtnProps` `downBtnProps`参数，自定义增加减少按钮的`aria-label`文案，[参考文档](https://fusion.design/component/number-picker)
 
     -   `Range` 
-        - 使用左右方向键去改变数值。
-        -   默认 role=“slider”，滑动更新以下值`aira-valuenow`(定义当前值),`aria-valuetext`(可读的替代文本),`aria-valuemax`(最大值),`aria-valuemin`(最小值)
+        - 使用左右方向键去改变数值
+        -   默认 role=“slider”，滑动更新以下值`aira-valuenow`(定义当前值)，`aria-valuetext`(可读的替代文本)，`aria-valuemax`(最大值)，`aria-valuemin`(最小值)
     -   `Rating`
-        -   传入 id 支持无障碍。
+        -   传入 id 支持无障碍
         -   支持键盘操作
-        -   通过 readAs 函数自定义展示/朗读的文案。
+        -   通过 readAs 函数自定义展示/朗读的文案
     -   `DatePicker`
-        -   使用 role 为 grid,rowgroup,row 和 cell,并设置`aria-disabled`(是否为禁选择状态)与`aria-selected`(是否被选择)。
+        -   使用 role 为 grid，rowgroup，row 和 cell，并设置`aria-disabled`(是否为禁选择状态)与`aria-selected`(是否被选择)。
         -   建议给予充分的`aria-label`提示，鼓励用户按照指定格式手动输入日期
     -   `TimePicker` 
         - 建议给予充分的`aria-label`提示，鼓励用户按照指定格式手动输入日期
-        -   使用 role 为 listbox 和 option,设置 aria-selected,tabIndex。
+        -   使用 role 为 listbox 和 option，设置 aria-selected，tabIndex
     -   `Upload`
-        -   设置 role 为 upload 和在 input 中设置 aria-hidden，不让屏幕阅读器读取。
+        -   设置 role 为 upload 和在 input 中设置 aria-hidden，不让屏幕阅读器读取
         -   建议至少保留一种点击上传的途径
     -   `Transfer`
-        -   使用 role 为 menu，menuitemcheckbox 和 aria-checked，tabIndex 属性。
-        -   可自定义文案，自定义方式参考[国际化语言包的设置](https://fusion.design/component/config-provider)
+        -   使用 role 为 menu，menuitemcheckbox 和 aria-checked，tabIndex 属性
+        -   可自定义文案，自定义方式参考[国际化语言包的设置](https://fusion.design/component/config-provider)。
         -   无障碍设计中，请尽可能地避免这一组件的使用
     
     
-    *   `TreeSelect` `CascaderSelect` `Cascader` 
+    -   `TreeSelect` `CascaderSelect` `Cascader` 
         -   均支持方向键操作，上下按键为同级内容切换，左右按键为父子级切换.
         -   无障碍设计中，请尽可能地避免这些组件的使用
 
-## 2.2 参考文献
+## 3. 参考文献
 
 -   [WAI-ARIA 1.1](https://www.w3.org/TR/wai-aria-1.1/#region)
 -   [WCAG 2.0](https://www.w3.org/TR/WCAG20/)
