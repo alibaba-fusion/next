@@ -712,7 +712,10 @@ class Select extends Base {
      * @returns
      */
     handleWrapClick = e => {
-        e.preventDefault();
+        // ignore click on input to choose text
+        if (e.target.nodeName !== 'INPUT') {
+            e.preventDefault();
+        }
         this.focusInput();
     };
 
