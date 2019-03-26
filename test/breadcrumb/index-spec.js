@@ -120,7 +120,7 @@ describe('Breadcrumb', () => {
             </ConfigProvider>
         );
 
-        assert(wrapper.find('.next-breadcrumb').props().dir === 'rtl');
+        assert(wrapper.find('nav').props().dir === 'rtl');
         assert(
             wrapper
                 .find('.next-breadcrumb-item')
