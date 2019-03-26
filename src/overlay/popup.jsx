@@ -25,6 +25,14 @@ export default class Popup extends Component {
          */
         triggerType: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
+         * 当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码
+         */
+
+        triggerClickKeycode: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.array,
+        ]),
+        /**
          * 弹层当前是否显示
          */
         visible: PropTypes.bool,
@@ -69,6 +77,7 @@ export default class Popup extends Component {
 
     static defaultProps = {
         triggerType: 'hover',
+        triggerClickKeycode: [KEYCODE.SPACE, KEYCODE.ENTER],
         defaultVisible: false,
         onVisibleChange: noop,
         disabled: false,
@@ -138,7 +147,11 @@ export default class Popup extends Component {
     }
 
     handleTriggerKeyDown(e) {
-        if (e.keyCode === KEYCODE.SPACE || e.keyCode === KEYCODE.ENTER) {
+        const { triggerClickKeycode } = this.props;
+        const keycodes = Array.isArray(triggerClickKeycode)
+            ? triggerClickKeycode
+            : [triggerClickKeycode];
+        if (keycodes.includes(e.keyCode)) {
             e.preventDefault();
             this.handleTriggerClick(e);
         }
