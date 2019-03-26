@@ -15,4 +15,5 @@
 
 <!-- -   1. [DEVELOPING](./part3/develop.md) -->
 
-1. [检验及测试](./part3/testing.md)
+1. [开发辅助工具](./part3/develop.md)
+2. [整体测试](./part3/testing.md)
