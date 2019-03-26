@@ -343,7 +343,13 @@ export default class DatePicker extends Component {
     };
 
     onKeyDown = e => {
-        const dateStr = onDateKeydown(e, this.props, this.state, 'day');
+        const { format } = this.props;
+        const { dateInputStr, value } = this.state;
+        const dateStr = onDateKeydown(
+            e,
+            { format, dateInputStr, value },
+            'day'
+        );
         if (!dateStr) return;
         this.onDateInputChange(dateStr);
     };

@@ -252,7 +252,13 @@ class MonthPicker extends Component {
     };
 
     onKeyDown = e => {
-        const dateStr = onDateKeydown(e, this.props, this.state, 'month');
+        const { format } = this.props;
+        const { dateInputStr, value } = this.state;
+        const dateStr = onDateKeydown(
+            e,
+            { format, dateInputStr, value },
+            'month'
+        );
         if (!dateStr) return;
         this.onDateInputChange(dateStr);
     };

@@ -429,10 +429,10 @@ export default class RangePicker extends Component {
         const { activeDateInput } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
+        const { format } = this.props;
         const dateStr = onDateKeydown(
             e,
-            this.props,
-            { value: this.state[activeDateInput], dateInputStr },
+            { format, value: this.state[activeDateInput], dateInputStr },
             'day'
         );
         if (!dateStr) return;

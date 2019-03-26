@@ -70,23 +70,30 @@ export function extend(source, target) {
     return target;
 }
 
-export function onDateKeydown(e, props, state, type) {
+/**
+ * 监听键盘事件，操作日期字符串
+ * @param {KeyboardEvent} e 事件对象
+ * @param {Object} param1
+ * @param {String} type 类型 year month day
+ */
+export function onDateKeydown(e, { format, dateInputStr, value }, type) {
     if (
         [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(
             e.keyCode
         ) === -1
-    )
+    ) {
         return;
+    }
+
     if (
         (e.altKey &&
             [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
         e.controlKey ||
         e.shiftKey
-    )
+    ) {
         return;
+    }
 
-    const { format } = props;
-    const { dateInputStr, value } = state;
     let date = moment(dateInputStr, format, true);
 
     if (date.isValid()) {
@@ -115,6 +122,12 @@ export function onDateKeydown(e, props, state, type) {
     return date.format(format);
 }
 
+/**
+ * 监听键盘事件，操作时间
+ * @param {KeyboardEvent} e
+ * @param {Object} param1
+ * @param {String} type second hour minute
+ */
 export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
     if (
         [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(
