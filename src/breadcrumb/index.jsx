@@ -138,7 +138,6 @@ class Breadcrumb extends Component {
 
         return (
             <BreadcrumbComponent
-                role="navigation"
                 aria-label="Breadcrumb"
                 className={clazz}
                 {...others}
