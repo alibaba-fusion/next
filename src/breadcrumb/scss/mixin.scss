@@ -5,6 +5,8 @@
 
 @mixin breadcrumb-bounding() {
     display: block;
+    margin: 0;
+    padding: 0;
 
     .#{$css-prefix}breadcrumb-item {
         display: inline-block;

@@ -70,7 +70,7 @@ class Breadcrumb extends Component {
             component,
             ...others
         } = this.props;
-        const clazz = classNames(`${prefix}breadcrumb`, className);
+        // const clazz = classNames(``, className);
         let items;
         const length = Children.count(children);
 
@@ -139,10 +139,10 @@ class Breadcrumb extends Component {
         return (
             <BreadcrumbComponent
                 aria-label="Breadcrumb"
-                className={clazz}
+                className={className}
                 {...others}
             >
-                {items}
+                <ul className={`${prefix}breadcrumb`}>{items}</ul>
             </BreadcrumbComponent>
         );
     }
