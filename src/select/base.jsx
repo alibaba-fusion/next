@@ -148,6 +148,7 @@ export default class Base extends React.Component {
             width: 100,
             // current highlight key
             highlightKey: null,
+            srReader: '',
         };
 
         bindCtx(this, [
@@ -365,7 +366,7 @@ export default class Base extends React.Component {
         const highlightItem = this.dataStore.getEnableDS()[highlightIndex];
         highlightKey = highlightItem ? `${highlightItem.value}` : null;
 
-        this.setState({ highlightKey });
+        this.setState({ highlightKey, srReader: highlightItem.label });
 
         this.scrollMenuIntoView();
 
