@@ -85,6 +85,9 @@ $radio-disabled-circle-color: $color-text1-1 !default;
 /// text
 /// @namespace statement/checked hover/icon
 $radio-checked-hovered-circle-color: $color-white !default;
+/// border
+/// @namespace statement/checked disabled/bounding
+$radio-checked-disabled-border-color: $color-line1-1 !default;
 
 /// text
 /// @namespace statement/normal/label

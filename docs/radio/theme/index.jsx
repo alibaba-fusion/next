@@ -93,22 +93,34 @@ class RadioDefaultDemo extends React.Component {
             })}>
                 <Demo title="Basic">
                     <DemoGroup label="Normal">
-                        <Radio checked={false}>{label}</Radio>
+                        <RadioGroup>
+                            <Radio checked={false}>{label}</Radio>
+                        </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Hover">
-                        <Radio checked={false} className="hovered" >{label}</Radio>
+                        <RadioGroup>
+                            <Radio checked={false} className="hovered" >{label}</Radio>
+                        </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Radio checked >{label}</Radio>
+                        <RadioGroup>
+                            <Radio checked >{label}</Radio>
+                        </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Selected & Hover">
-                        <Radio checked className="hovered" >{label}</Radio>
+                        <RadioGroup>
+                            <Radio checked className="hovered" >{label}</Radio>
+                        </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Disabled & Normal">
-                        <Radio disabled >{label}</Radio>
+                        <RadioGroup>
+                            <Radio disabled >{label}</Radio>
+                        </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Disabled & Selected">
-                        <Radio disabled checked >{label}</Radio>
+                        <RadioGroup value={1}>
+                            <Radio disabled checked value={1}>{label}</Radio>
+                        </RadioGroup>
                     </DemoGroup>
                 </Demo>
             </Demo>
