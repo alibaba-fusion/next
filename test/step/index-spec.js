@@ -1,5 +1,5 @@
 import React from 'react';
-import Enzyme, { mount, shallow } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Icon from '../../src/icon';
@@ -81,21 +81,21 @@ describe('Step', () => {
 
         it('should render with diffrent directions', () => {
             const wrapper = mount(
-                <Step current={1} direction="vertical">
+                <Step current={1} direction="ver">
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
                 </Step>
             );
             const wrapper2 = mount(
-                <Step current={1} shape="dot" direction="vertical">
+                <Step current={1} shape="dot" direction="ver">
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
                 </Step>
             );
             const wrapper3 = mount(
-                <Step current={1} shape="arrow" direction="vertical">
+                <Step current={1} shape="arrow" direction="ver">
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
@@ -109,14 +109,14 @@ describe('Step', () => {
 
         it('should render with labelPlacement', () => {
             const wrapper = mount(
-                <Step current={1} labelPlacement="vertical">
+                <Step current={1} labelPlacement="ver">
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
                 </Step>
             );
             const wrapper2 = mount(
-                <Step current={1} shape="dot" labelPlacement="horizontal">
+                <Step current={1} shape="dot" labelPlacement="hoz">
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
@@ -252,7 +252,7 @@ describe('Step', () => {
 
         it('should change current step', () => {
             const wrapper = mount(
-                <Step current={1} direction="vertical">
+                <Step current={1} direction="ver">
                     <StepItem title="步骤1" />
                     <StepItem title="步骤2" />
                     <StepItem title="步骤3" />
@@ -273,14 +273,14 @@ describe('Step', () => {
             );
 
             assert(wrapper.find('.next-step-label-vertical').length === 1);
-            wrapper.setProps({ labelPlacement: 'horizontal' }, () => {
+            wrapper.setProps({ labelPlacement: 'hoz' }, () => {
                 assert(wrapper.find('.next-step-label-horizontal').length === 1);
                 // 横向模式下会调整 next-step-item-tail 的宽度值
                 const $tail = wrapper.find('.next-step-item-tail');
                 assert(
-                    $tail.length === 3 && 
-                    $tail.at(0).instance().style.width !== "" &&
-                    $tail.at(2).instance().style.width === ""
+                    $tail.length === 3 &&
+                        $tail.at(0).instance().style.width !== '' &&
+                        $tail.at(2).instance().style.width === ''
                 );
                 // 重新设置为垂直居中 应该去掉 next-step-item-tail 的宽度值
                 wrapper.setProps({labelPlacement: 'ver'}, () => {
@@ -313,7 +313,7 @@ describe('Step', () => {
 
             let ret_2 = -1;
             const wrapper2 = mount(
-                <Step current={1} direction="vertical">
+                <Step current={1} direction="ver">
                     <StepItem
                         title="步骤1"
                         onClick={index => (ret_2 = index)}

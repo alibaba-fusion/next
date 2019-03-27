@@ -56,7 +56,7 @@ describe('CascaderSelect A11y', () => {
             <CascaderSelect
                 aria-label="级联选择"
                 dataSource={ChinaArea}
-                defaultExpandAll
+                defaultVisible
             />
         );
         return wrapper;
