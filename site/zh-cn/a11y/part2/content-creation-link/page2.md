@@ -1,16 +1,17 @@
 <button>[回到页面内容指引](../content-creation.md)</button>
 <!-- TOC -->
 
-- [1. 元素的隐藏](#1-%E5%85%83%E7%B4%A0%E7%9A%84%E9%9A%90%E8%97%8F)
-- [2. 隐藏元素的方法及其差异](#2-%E9%9A%90%E8%97%8F%E5%85%83%E7%B4%A0%E7%9A%84%E6%96%B9%E6%B3%95%E5%8F%8A%E5%85%B6%E5%B7%AE%E5%BC%82)
-  - [2.1. Text Indent 文本缩进](#21-text-indent-%E6%96%87%E6%9C%AC%E7%BC%A9%E8%BF%9B)
-  - [2.2. Position Absolute and Collapsed 绝对定位+高度塌陷](#22-position-absolute-and-collapsed-%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E9%AB%98%E5%BA%A6%E5%A1%8C%E9%99%B7)
-  - [2.3. Position Absolute and Offscreen 绝对定位+远离屏幕](#23-position-absolute-and-offscreen-%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E8%BF%9C%E7%A6%BB%E5%B1%8F%E5%B9%95)
-  - [2.4. hidden属性](#24-hidden%E5%B1%9E%E6%80%A7)
-  - [2.5. aria-hidden="true"](#25-aria-hidden%22true%22)
+- [1. 元素的隐藏](#1-元素的隐藏)
+- [2. 隐藏元素的方法及其差异](#2-隐藏元素的方法及其差异)
+  - [2.1. Text Indent 文本缩进](#21-text-indent-文本缩进)
+  - [2.2. Position Absolute and Collapsed 绝对定位+高度塌陷](#22-position-absolute-and-collapsed-绝对定位高度塌陷)
+  - [2.3. Position Absolute and Offscreen 绝对定位+远离屏幕](#23-position-absolute-and-offscreen-绝对定位远离屏幕)
+  - [2.4. hidden属性](#24-hidden属性)
+  - [2.5. aria-hidden="true"](#25-aria-hiddentrue)
   - [2.6. display:none](#26-displaynone)
   - [2.7. visibility:hidden](#27-visibilityhidden)
-- [3. 参考资料](#3-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
+  - [2.8. 小结](#28-小结)
+- [3. 参考资料](#3-参考资料)
 
 <!-- /TOC -->
 # 1. 元素的隐藏
@@ -115,6 +116,10 @@ aria-hidden对我们的无障碍页面优化很重要的一个特性，对于我
 ```
 
 使用visibility: hidden也可以隐藏元素，这个元素同时也不能被读屏器访问，但是与display: none不同的是，前者隐藏后占据空间。另外display: none和visibility: hidden可以对屏幕外的内容进行焦点管理，这部分内容的详细介绍在[焦点管理](https://yuque.antfin-inc.com/fusion-design-system/a11y/dn24ez)一文中详细介绍。
+
+## 2.8. 小结
+
+在上面罗列的7种隐藏元素的方法中，我们应该如何进行选择呢？其实非常简单，开发者可以直接根据`是否对正常用户可见`以及`是否对读屏软件可见`进行判断，从而在第2节开始的表格中直接选出适用的方法。
 
 
 # 3. 参考资料
