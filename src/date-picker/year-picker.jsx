@@ -7,7 +7,7 @@ import Input from '../input';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
-import { checkDateValue, formatDateValue } from './util';
+import { checkDateValue, formatDateValue, onDateKeydown } from './util';
 
 const { Popup } = Overlay;
 
@@ -115,6 +115,10 @@ class YearPicker extends Component {
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
+        /**
+         * 日期输入框的 aria-label 属性
+         */
+        dateInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -237,6 +241,18 @@ class YearPicker extends Component {
         }
     };
 
+    onKeyDown = e => {
+        const { format } = this.props;
+        const { dateInputStr, value } = this.state;
+        const dateStr = onDateKeydown(
+            e,
+            { format, dateInputStr, value },
+            'year'
+        );
+        if (!dateStr) return;
+        this.onDateInputChange(dateStr);
+    };
+
     handleChange = (newValue, prevValue, others = {}, callback) => {
         if (!('value' in this.props)) {
             this.setState({
@@ -289,6 +305,7 @@ class YearPicker extends Component {
             popupProps,
             className,
             inputProps,
+            dateInputAriaLabel,
             ...others
         } = this.props;
 
@@ -323,6 +340,7 @@ class YearPicker extends Component {
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
             onPressEnter: this.onDateInputBlur,
+            onKeyDown: this.onKeyDown,
         };
 
         const dateInputValue = inputing
@@ -333,8 +351,8 @@ class YearPicker extends Component {
         const dateInput = (
             <Input
                 {...sharedInputProps}
+                aria-label={dateInputAriaLabel}
                 value={dateInputValue}
-                onFocus={this.onFoucsDateInput}
                 placeholder={format}
                 className={panelInputCls}
             />
@@ -361,6 +379,9 @@ class YearPicker extends Component {
                     label={label}
                     state={state}
                     value={triggerInputValue}
+                    role="combobox"
+                    aria-expanded={visible}
+                    readOnly
                     placeholder={placeholder || locale.yearPlaceholder}
                     hint="calendar"
                     hasClear={allowClear}

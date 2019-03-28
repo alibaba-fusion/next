@@ -20,7 +20,9 @@ id of popup. only when you set value, balloon will support accessibility.
 import { Button, Balloon, Input } from '@alifd/next';
 import moment from 'moment';
 
+const { Tooltip } = Balloon;
 const innerButton = <Button className="btrigger">Fill in form</Button>;
+const triggerTooltip = <Button style={{margin: '5px'}}>show tooltip</Button>;
 
 const App = () => (
     <div className="container nested">
@@ -28,6 +30,7 @@ const App = () => (
             please input your age:
             <Input placeholder="Age" size="small" label="Age :" id="balloon-input-1" /><br /><br />
         </Balloon>
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
         <Balloon id="a11y-balloon" type="primary" autoFocus trigger={innerButton} triggerType="click">
@@ -39,6 +42,12 @@ const App = () => (
             please input your name:
             <Input placeholder="Name" size="small" label="Name :" id="balloon-input-3" /><br /><br />
         </Balloon>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <Tooltip trigger={triggerTooltip} id="aria-tooltip">
+            <p>This is content for tooltip.</p>
+        </Tooltip>
     </div>
 );
 
@@ -46,10 +55,8 @@ ReactDOM.render(<App />, mountNode);
 ````
 
 ```css
-
 .container.nested {
     margin-left: 100px;
     margin-bottom: 50px;
 }
-
 ```

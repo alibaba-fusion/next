@@ -527,6 +527,41 @@ describe('Popup', () => {
         });
     });
 
+    it('should support setting triggerType to click with custom triggerClickKeycode', () => {
+        return co(function*() {
+            wrapper = render(
+                <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
+                    <span className="content">Hello World From Popup!</span>
+                </Popup>
+            );
+            const btn = document.querySelector('button');
+
+            ReactTestUtils.Simulate.click(btn);
+            yield delay(300);
+            assert(document.querySelector('.next-overlay-wrapper'));
+
+            ReactTestUtils.Simulate.click(btn);
+            yield delay(300);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.DOWN_ARROW });
+            yield delay(300);
+            assert(document.querySelector('.next-overlay-wrapper'));
+
+            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.DOWN_ARROW });
+            yield delay(300);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.ENTER });
+            yield delay(300);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.SPACE });
+            yield delay(300);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+        });
+    });
+
     it('should support setting canCloseByTrigger to false', () => {
         return co(function*() {
             wrapper = render(

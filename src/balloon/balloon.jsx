@@ -85,7 +85,7 @@ export default class Balloon extends React.Component {
         trigger: PropTypes.any,
         /**
          * 触发行为
-         * 鼠标悬浮, 获取到焦点, 鼠标点击('hover'，'focus'，'click')或者它们组成的数组，如 ['hover', 'focus']
+         * 鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click
          */
         triggerType: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
@@ -174,7 +174,7 @@ export default class Balloon extends React.Component {
         triggerType: 'hover',
         safeNode: undefined,
         safeId: null,
-        autoFocus: false,
+        autoFocus: true,
         animation: {
             in: 'zoomIn',
             out: 'zoomOut',
@@ -194,8 +194,6 @@ export default class Balloon extends React.Component {
         this._onClose = this._onClose.bind(this);
         this._onPosition = this._onPosition.bind(this);
         this._onVisibleChange = this._onVisibleChange.bind(this);
-
-        this._contentId = props.id;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -263,6 +261,7 @@ export default class Balloon extends React.Component {
 
     render() {
         const {
+            id,
             type,
             prefix,
             className,
@@ -316,7 +315,7 @@ export default class Balloon extends React.Component {
         const content = (
             <BalloonInner
                 {...obj.pickOthers(Object.keys(Balloon.propTypes), others)}
-                id={this._contentId}
+                id={id}
                 prefix={_prefix}
                 closable={closable}
                 onClose={this._onClose}
@@ -332,7 +331,7 @@ export default class Balloon extends React.Component {
         );
 
         const triggerProps = {};
-        triggerProps['aria-describedby'] = this._contentId;
+        triggerProps['aria-describedby'] = id;
         triggerProps.tabIndex = '0';
 
         const newTrigger = React.cloneElement(trigger, triggerProps);
@@ -340,7 +339,7 @@ export default class Balloon extends React.Component {
         return (
             <Popup
                 {...popupProps}
-                trigger={this._contentId ? newTrigger : trigger}
+                trigger={id ? newTrigger : trigger}
                 cache={cache}
                 safeId={safeId}
                 triggerType={triggerType}

@@ -1,53 +1,51 @@
 <% include partials/header %>
 
-  <style>
+<style>
     #mount-node {
-      min-height: 500px;
+        min-height: 500px;
     }
     code {
-      padding: 2px 4px;
-      font-size: 90%;
-      color: #c7254e;
-      background-color: #f9f2f4;
-      border-radius: 2px;
+        padding: 2px 4px;
+        font-size: 90%;
+        color: #c7254e;
+        background-color: #f9f2f4;
+        border-radius: 2px;
     }
-  </style>
-  <div class="next-demo-section">
-    <div id="mount-node"></div>
+</style>
+<div class="next-demo-section">
+    <div id="mount-node" role="main"></div>
     <div id="next-demo-reloading">Reloading....</div>
-  </div>
-  <div class="next-demo-section">
+</div>
+<div class="next-demo-section">
     <div id="component-desc"></div>
-  </div>
-  <div class="next-demo-section">
+</div>
+<div class="next-demo-section">
     <div id="component-body"></div>
-  </div>
-  <% if (disableAnimation) { %>
-  <style>
+</div>
+<% if (disableAnimation) { %>
+<style>
     *,
     *:before,
     *:after {
-      transition: none !important;
-      animation: none !important;
+        transition: none !important;
+        animation: none !important;
     }
-  </style>
-  <% } %>
-  <script>
+</style>
+<% } %>
+<script>
     if (!window.requestAnimationFrame) {
-      window.requestAnimationFrame = function(callback) {
-        setTimeout(callback, 0);
-      };
+        window.requestAnimationFrame = function(callback) {
+            setTimeout(callback, 0);
+        };
     }
-  </script>
-  <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
-  <script src="//shadow.elemecdn.com/npm/react@16.8.3/umd/react.development.js"></script>
-  <script src="//shadow.elemecdn.com/npm/react-dom@16.8.3/umd/react-dom.development.js"></script>
-  <script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
-  <script>
+</script>
+<script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+<script src="//shadow.elemecdn.com/npm/react@16.8.3/umd/react.development.js"></script>
+<script src="//shadow.elemecdn.com/npm/react-dom@16.8.3/umd/react-dom.development.js"></script>
+<script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
+<script>
     window.mountNode = document.getElementById('mount-node');
-  </script>
+</script>
 <% scripts.forEach(function(src) { %>
-  <script src="<%= src %>"></script>
-<% })%>
-
-<% include partials/footer %>
+<script src="<%= src %>"></script>
+<% })%> <% include partials/footer %>

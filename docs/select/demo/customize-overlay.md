@@ -78,6 +78,9 @@ class Demo extends React.Component {
 
     render() {
         const popupContent = <Menu onChange={this.handleSelect} onMouseDown={preventDefault}/>;
+        const popupProps = {
+            triggerClickKeycode: [13, 32, 40] // space, enter, down-arrow
+        }
 
         return (
             <div className="demo-container">
@@ -86,6 +89,7 @@ class Demo extends React.Component {
                     visible={this.state.visible}
                     onVisibleChange={this.onVisibleChange}
                     value={this.state.value}
+                    popupProps={popupProps}
                     popupContent={popupContent} />
             </div>
         );

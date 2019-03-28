@@ -19,6 +19,7 @@
 ### 使用注意
 
 -   对于trigger是自定义的React Component的情况，自定义的React Component 需要透传onMouseEnter/onMouseLeave/onClick 事件。
+-   若要使用无障碍的气泡提示，请传入id。推荐简单提示使用`<Tooltip>`、复杂交互使用`<Balloon triggerType="click">` 。 triggerType="focus"作为辅助状态用于组件内部，请用户不要直接使用此值。
 
 ## API
 

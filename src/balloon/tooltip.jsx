@@ -49,7 +49,7 @@ export default class Tooltip extends React.Component {
         trigger: PropTypes.any,
         /**
          * 触发行为
-         * 鼠标悬浮, 获取到焦点, 鼠标点击('hover'，'focus'，'click')或者它们组成的数组，如 ['hover', 'focus']
+         * 鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件
          */
         triggerType: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -84,14 +84,9 @@ export default class Tooltip extends React.Component {
         trigger: <span />,
     };
 
-    constructor(props, context) {
-        super(props, context);
-
-        this._contentId = props.id;
-    }
-
     render() {
         const {
+            id,
             className,
             align,
             style,
@@ -120,7 +115,7 @@ export default class Tooltip extends React.Component {
         const content = (
             <BalloonInner
                 {...others}
-                id={this._contentId}
+                id={id}
                 prefix={prefix}
                 closable={false}
                 isTooltip
@@ -134,17 +129,22 @@ export default class Tooltip extends React.Component {
         );
 
         const triggerProps = {};
-        triggerProps['aria-describedby'] = this._contentId;
+        triggerProps['aria-describedby'] = id;
         triggerProps.tabIndex = '0';
 
         const newTrigger = React.cloneElement(trigger, triggerProps);
+        let newTriggerType = triggerType;
+
+        if (triggerType === 'hover' && id) {
+            newTriggerType = ['focus', 'hover'];
+        }
 
         return (
             <Popup
-                {...popupProps}
+                role="tooltip"
                 container={popupContainer}
-                trigger={this._contentId ? newTrigger : trigger}
-                triggerType={triggerType}
+                trigger={id ? newTrigger : trigger}
+                triggerType={newTriggerType}
                 align={alignMap[align].align}
                 offset={_offset}
                 delay={0}
@@ -152,6 +152,7 @@ export default class Tooltip extends React.Component {
                 style={popupStyle}
                 rtl={rtl}
                 shouldUpdatePosition
+                {...popupProps}
             >
                 {content}
             </Popup>
