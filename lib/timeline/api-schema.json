@@ -1,0 +1,39 @@
+{
+  "name": "Timeline",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式的品牌前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式的品牌前缀"
+    },
+    "fold": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]`",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "自定义折叠选项 示例`[{foldArea: [startIndex, endIndex], foldShow: boolean}]`"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
