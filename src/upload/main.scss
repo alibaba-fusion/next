@@ -17,6 +17,11 @@
         outline: 0;
         display: inline-block;
     }
+    &#{$upload-prefix}-dragable {
+        #{$upload-prefix}-inner {
+            display: block;
+        }
+    }
 
     &-list {
         overflow: hidden;
