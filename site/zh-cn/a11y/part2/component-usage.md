@@ -1,14 +1,4 @@
-<button>[回到首页](../index.md)</button>
-
-
-
-- [1. 使用无障碍的Fusion组件](#1-使用无障碍的Fusion组件)
-- [2. 组件的分类](#2-组件的分类)
-    -   [2.1 数据展示类](#21-数据展示类)
-    -   [2.2 即时反馈类](#22-即时反馈类)
-    -   [2.3 菜单与导航类](#23-菜单与导航类)
-    -   [2.4 表单类](#24-表单类)
-- [3. 参考文献](#3-参考文献)
+ 
 
 ## 1. 使用无障碍的Fusion组件
 
@@ -106,7 +96,7 @@ Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式
     -   `Button` `SplitButton` `MenuButton`
 
         -   默认使用`<button>`标签来渲染，可自定义标签类型`<Button component="a">`
-        -   可通过配置设置自动聚焦，`<MenuButton menuProps={{autoFocus: true}} /> <SplitButton menuProps={{autoFocus: true}} />`
+        -   可通过配置设置自动聚焦，MenuButton与SplitButton组件设置menuProps属性，其中参数为对象`{autoFocus: true}`
 
     -   `NumberPicker`
         -   支持键盘上下按键，增加、减少数字。
@@ -132,7 +122,6 @@ Fusion 是一种旨在提升设计与开发之间 UI 构建效率的工作方式
         -   使用 role 为 menu，menuitemcheckbox 和 aria-checked，tabIndex 属性
         -   可自定义文案，自定义方式参考[国际化语言包的设置](https://fusion.design/component/config-provider)。
         -   无障碍设计中，请尽可能地避免这一组件的使用
-    
     
     -   `TreeSelect` `CascaderSelect` `Cascader` 
         -   均支持方向键操作，上下按键为同级内容切换，左右按键为父子级切换.
