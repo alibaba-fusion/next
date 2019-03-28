@@ -1,30 +1,10 @@
-<button>[回到首页](../index.md)</button>
 
-<!-- TOC -->
 
-- [1. 什么是`WAI-ARIA`](#1-什么是wai-aria)
-- [2. `WAI-ARIA`的组成与使用规范](#2-wai-aria的组成与使用规范)
-  - [2.1 `ARIA`的组成](#21-aria的组成)
-    - [`role`](#role)
-    - [`aria-*`](#aria-)
-    - [`ARIA`组成小结](#aria组成小结)
-  - [2.2 `ARIA`的使用规范](#22-aria的使用规范)
-    - [1. `role`必须使用有效的值](#1-role必须使用有效的值)
-    - [2. `role`的特定嵌套关系](#2-role的特定嵌套关系)
-    - [3. `role`的使用不能改变原生语义](#3-role的使用不能改变原生语义)
-    - [4. `role`的使用不能产生冗余](#4-role的使用不能产生冗余)
-    - [5. `aria-*`必须符合有效的名称](#5-aria-必须符合有效的名称)
-    - [6. `aria-*`必须使用有效的值](#6-aria-必须使用有效的值)
-    - [7. `aria-*`的`required properties`必须提供](#7-aria-的required-properties必须提供)
-    - [8. `aria-labelledby`属性应引用存在于DOM中的元素](#8-aria-labelledby属性应引用存在于dom中的元素)
-    - [9. `role=application`需谨慎使用](#9-roleapplication需谨慎使用)
-    - [10. `role="presentation"`或`aria-hidden="true"`不能用在可聚焦元素上](#10-rolepresentation或aria-hiddentrue不能用在可聚焦元素上)
-    - [11. `ARIA`中使用的`id`必须唯一](#11-aria中使用的id必须唯一)
-- [3. WAI-ARIA总结](#3-wai-aria总结)
-- [4. 参考资料](#4-参考资料)
 
-<!-- /TOC -->
 
+
+# WAI-ARIA
+ 
 # 1. 什么是`WAI-ARIA`
 
 [ARIA](https://www.w3.org/TR/wai-aria-1.1/)是"Accessible Rich Internet Applications"的缩写。它是 W3C 的 Web 无障碍推进组织(Web Accessibility Initiative / WAI)在 2014 年 3 月 20 日发布的可访问富互联网应用实现指南。它定义了一组可用于其他元素的 HTML 特性，用于提供额外的语义化以及改善缺乏的可访问性。

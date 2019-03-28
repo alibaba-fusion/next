@@ -1,19 +1,4 @@
-<button>[回到页面内容指引](../content-creation.md)</button>
-<!-- TOC -->
 
-- [1. 元素的隐藏](#1-元素的隐藏)
-- [2. 隐藏元素的方法及其差异](#2-隐藏元素的方法及其差异)
-  - [2.1. Text Indent 文本缩进](#21-text-indent-文本缩进)
-  - [2.2. Position Absolute and Collapsed 绝对定位+高度塌陷](#22-position-absolute-and-collapsed-绝对定位高度塌陷)
-  - [2.3. Position Absolute and Offscreen 绝对定位+远离屏幕](#23-position-absolute-and-offscreen-绝对定位远离屏幕)
-  - [2.4. hidden属性](#24-hidden属性)
-  - [2.5. aria-hidden="true"](#25-aria-hiddentrue)
-  - [2.6. display:none](#26-displaynone)
-  - [2.7. visibility:hidden](#27-visibilityhidden)
-  - [2.8. 小结](#28-小结)
-- [3. 参考资料](#3-参考资料)
-
-<!-- /TOC -->
 # 1. 元素的隐藏
 
 我们可以将元素的隐藏分为以下两类：
