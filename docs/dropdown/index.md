@@ -13,6 +13,10 @@
 
 当页面上的操作命令过多时，用此组件可以收纳操作元素。点击或移入触点，会出现一个下拉菜单。可在列表中进行选择，并执行相应的命令。
 
+### 使用注意
+
+-   若要使用无障碍的Dropdown，推荐使用`<Dropdown triggerType={["click", "hover"]}>` (请勿使用triggerType="focus")。我们认为，菜单类元素需要由用户确认后再展开才是一种无障碍友好的实践。
+
 ## API
 
 ### Dropdown
@@ -26,7 +30,7 @@
 | defaultVisible  | 弹层默认是否显示                                                                                                                                                                                        | Boolean        | false                                      |
 | onVisibleChange | 弹层显示或隐藏时触发的回调函数<br><br>**签名**:<br>Function(visible: Boolean, type: String, e: Object) => void<br>**参数**:<br>_visible_: {Boolean} 弹层是否显示<br>_type_: {String} 触发弹层显示或隐藏的来源<br>_e_: {Object} DOM事件 | Function       | func.noop                                  |
 | trigger         | 触发弹层显示或者隐藏的元素                                                                                                                                                                                   | ReactNode      | -                                          |
-| triggerType     | 触发弹层显示或隐藏的操作类型<br><br>**可选值**:<br>'hover', 'click', 'focus'                                                                                                                                     | Enum           | 'hover'                                    |
+| triggerType     | 触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，或者它们组成的数组，如 ['hover', 'click']                                                                                                                               | String/Array   | ['hover']                                  |
 | disabled        | 设置此属性，弹层无法显示或隐藏                                                                                                                                                                                 | Boolean        | false                                      |
 | align           | 弹层相对于触发元素的定位, 详见 Overlay 的定位部分                                                                                                                                                                  | String         | 'tl bl'                                    |
 | offset          | 弹层相对于触发元素定位的微调                                                                                                                                                                                  | Array          | [0, 0]                                     |
