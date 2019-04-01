@@ -5,6 +5,7 @@
     * [1. 无障碍背景](./part1/basics.md)
     * [2. WAI-ARIA](./part1/WAI-ARIA.md)
     * [3. 无障碍的标准](./part1/rules.md)
+    * [4. All-in-One 网页无障碍指导手册](./part1/FusionAccessibilityGuide.md)
 
 * 二、 无障碍改造
 
