@@ -33,7 +33,7 @@
 
 ## 2.1. Text Indent 文本缩进
 
-```
+```css
 .element-invisible {
   text-indent: -9999em;
   outline: 0;
@@ -43,7 +43,7 @@
 
 ## 2.2. Position Absolute and Collapsed 绝对定位+高度塌陷
 
-```
+```css
 .element-invisible {
   height: 0;
   overflow: hidden;
@@ -53,7 +53,7 @@
 
 ## 2.3. Position Absolute and Offscreen 绝对定位+远离屏幕
 
-```
+```css
 .element-invisible {
   position: absolute;
   top: -999999em;
@@ -66,7 +66,7 @@
 
 ## 2.4. hidden属性
 
-```
+```html
 <p hidden> hello a11y </p> // you can't see this, screen reader can't see this 
 <p> hello alibaba </p>     // you can see this
 ```
@@ -74,7 +74,7 @@
 
 ## 2.5. aria-hidden="true"
 
-```
+```html
 <p aria-hidden="true"> hello a11y </p> // you can see this, screen reader can't see this
 ```
 
@@ -84,7 +84,7 @@ aria-hidden对我们的无障碍页面优化很重要的一个特性，对于我
 
 ## 2.6. display:none
 
-```
+```css
 .element-invisible {
   display: none;
 }
@@ -94,7 +94,7 @@ aria-hidden对我们的无障碍页面优化很重要的一个特性，对于我
 
 ## 2.7. visibility:hidden
 
-```
+```css
 .element-invisible {
   visibility: hidden;
 }
