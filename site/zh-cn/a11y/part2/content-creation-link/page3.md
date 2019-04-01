@@ -4,7 +4,7 @@
 
 考虑到无需重新加载页面即可更新的动态内容，通常是一个区域，为了能让这些内容的更新被使用读屏软件的用户知晓，我们将这些区域标记为`live region`。在实际应用中，`live region`一般用作消息提醒，比如打开Twitter，右键页面审查元素，你会发现：
 
-```
+```html
 <div id="sr-event-log" class="visuallyhidden" aria-live="polite">
     <p>有新的推文，按 . 以查看它们。</p>
 </div>
@@ -28,7 +28,7 @@
 
 `aria-live=assertive`常用在一些错误提示的场景，有时也用于即时反馈信息，比如在阿联酋航空的[购票官网](https://www.emirates.com/cn/chinese/)上，有如下代码：
 
-```
+```html
 <div aria-live="assertive" 
     class="screen-reader-text" 
     id="search-flight-departure">
@@ -40,7 +40,7 @@
 
 另外需要开发者注意的是，屏幕阅读器在阅读多条信息更新时，会根据不同的`aria-live`设定值做出不同的反馈，比如下面的字数统计场景：
 
-```
+```html
 <p aria-atomic="true" aria-live="polite">
   There is <span id="num">0</span> characters.
 <p>
@@ -69,7 +69,7 @@ There is 3 characters.
 
 当`aria-atomic=true`时，`live region`更新后，辅助技术将把整个`live region`作为整体进行通报；若`aria-atomic=false`时，辅助技术只通报`live region`中更改的部分，比如我们可以在Safari浏览器中测试：
 
-```
+```html
 <p aria-atomic="true" aria-live="polite">
   Today is <span id="day">Monday</span>
 <p>
@@ -83,7 +83,7 @@ There is 3 characters.
 
 `aria-busy`也是`live region`的非必要属性，它的取值可以是`true`或者`false`。`aria-busy=true`时，区块的更新不会马上通知使用者，当`aria-busy`被置为`false`时，这些更新才会被通知给使用者。比如以下场景，`ul`有多个地方需要修改：
 
-```
+```html
 <ul aria-atomic="true" 
     aria-busy="true" 
     aria-live="polite">
@@ -103,7 +103,7 @@ There is 3 characters.
 | all                   | 上面的所有变化                     |
 
 比如在下面的例子中，只有在`live region`区块中增加节点时，辅助技术才会告诉使用者，如果是移除节点或文字内容的变化，就不会告诉使用者：
-```
+```html
 <ul aria-relevant="additions"
 	aria-atomic="true"
 	aria-live="polite">
@@ -112,7 +112,7 @@ There is 3 characters.
 
 在这一节我们将结合Fusion Design的组件来说明如何实现异步内容更新的提醒，[点击此处](https://codesandbox.io/s/k010p7wy2v)浏览完整代码与页面demo。
 
-```
+```html
 <Form>
     <FormItem label="输入内容:">
         <Input.TextArea

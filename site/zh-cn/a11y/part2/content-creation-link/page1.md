@@ -22,7 +22,7 @@
 
 但是我们并不希望这个提示始终显示在页面的左上角，因此我们通过 CSS 对其进行隐藏：
 
-```
+```html
 <style>
 .skip {
     position: absolute;
@@ -57,7 +57,7 @@ a.skip:hover {
 
 对于单页面应用的解决方案，可以参考[我们的支持 fusion 主题配置的无障碍模板](https://fusion.design/template/62)，具体代码可见[此链接](https://github.com/alibaba-fusion/materials/blob/master/scaffolds/next-single-page-a11y/src/components/skip-to/index.jsx)。
 
-```
+```js
 <a
     tabIndex="1"
     className="skip-to-main"
@@ -86,7 +86,7 @@ a.skip:hover {
 -   `<select>` elements
 -   `<textarea>` elements
 
-```
+```js
 <a href="#main">jump to main</a>
 <div>main<div>
 <footer tabindex="-1">main<footer>
