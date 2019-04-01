@@ -1,26 +1,22 @@
-
-
-# 无障碍的标准
-
- 
+# 3. 无障碍的标准
 
 通过前面的介绍，我们知道了如何使用 WAI-ARIA 来使得网页更具无障碍性，但是在进行无障碍开发与检测时，我们还需要了解相应的标准规范，才能具体知道哪些无障碍改造是必须要做的，哪些改造是视情况而定的，这有利于各位开发者根据需求，高效的完成改造的过程。
 
 ## 1. WCAG
 
-在 Web 无障碍领域，有一份由 WAI (Web Accessibility Initiative) Web 可访问性和 W3C (World Wide Web Consortium) 万维网联盟发布的创建可访问性网站的权威指南`WCAG` (Web Content Accessibility Guidelines) Web 内容可访问性指南，来约束不同用户代理（浏览器，屏幕阅读器）的行为。WCAG 目前的最新版本是版本 2.1，可以在[官网](https://www.w3.org/TR/WCAG21/)找到。
+在 Web 无障碍领域，有一份由 WAI \(Web Accessibility Initiative\) Web 可访问性和 W3C \(World Wide Web Consortium\) 万维网联盟发布的创建可访问性网站的权威指南`WCAG` \(Web Content Accessibility Guidelines\) Web 内容可访问性指南，来约束不同用户代理（浏览器，屏幕阅读器）的行为。WCAG 目前的最新版本是版本 2.1，可以在[官网](https://www.w3.org/TR/WCAG21/)找到。
 
 WCAG 实际上可以当做是一个`方法论`，比如说这个产品要满足哪些点，对比度要达到什么样的要求，错误提示应该给出一种什么样的形式。它里面可以分为四块，像一个方法论，可以用来检查自己的产品在信息无障碍这块做得怎么样：
 
--   可感知性
--   可操作性
--   可理解性
--   鲁棒性
+* 可感知性
+* 可操作性
+* 可理解性
+* 鲁棒性
 
 在 WCAG 中，规定了系统可访问性必须遵循的规则。主要分为 A、AA、AAA 三个等级：
 
--   A 是最低一致性要求，往往对设计影响很小，对于那些不使用辅助技术的人来说可能看不到
--   AA 和 AAA 标准的限制越来越严格，满足每个标准可能是不现实的，WCAG 官方也不建议将 AAA 级合规性作为整个网站的一般策略
+* A 是最低一致性要求，往往对设计影响很小，对于那些不使用辅助技术的人来说可能看不到
+* AA 和 AAA 标准的限制越来越严格，满足每个标准可能是不现实的，WCAG 官方也不建议将 AAA 级合规性作为整个网站的一般策略
 
 因此，我们推荐**网站至少满足 A 级标准，对于部分页面、功能再渐进增强满足更高标准的要求**，比如 AA 甚至 AAA。
 
@@ -36,8 +32,9 @@ WCAG 实际上可以当做是一个`方法论`，比如说这个产品要满足�
 
 ## 4. 参考文献
 
--   [WCAG 2.1 标准](https://www.w3.org/TR/WCAG21/)
--   [中文版 WCAG 2.1 标准](https://w3c.github.io/WCAG21-zh/index.html)
--   [一致性要求](https://www.w3.org/TR/WCAG20/#conformance-reqs)
--   [相关国家和地区无障碍法规](http://www.cdpf.org.cn/special/wzajstl/xggjhdqwzafg/)
--   [信息无障碍产品联盟技术专家刘彪：前端信息无障碍技术与框架](http://news.51cto.com/art/201712/559685.htm)
+* [WCAG 2.1 标准](https://www.w3.org/TR/WCAG21/)
+* [中文版 WCAG 2.1 标准](https://w3c.github.io/WCAG21-zh/index.html)
+* [一致性要求](https://www.w3.org/TR/WCAG20/#conformance-reqs)
+* [相关国家和地区无障碍法规](http://www.cdpf.org.cn/special/wzajstl/xggjhdqwzafg/)
+* [信息无障碍产品联盟技术专家刘彪：前端信息无障碍技术与框架](http://news.51cto.com/art/201712/559685.htm)
+
