@@ -1,4 +1,4 @@
-
+# 1. 开发辅助工具
 
 ## 1. 开发辅助工具
 
@@ -22,15 +22,17 @@
 * 在控制台选择axe，就可以对网站进行测试，并列出不符合无障碍问题并给出解决方案。
 
 ### 1.3 视觉测试工具
+
 在全球范围内，存在很多视觉障碍的用户，比如红绿色盲，在设计和开发的过程中需要考虑到他们的使用体验，因此这里为开发者提供[I want to see like the colour blind](https://chrome.google.com/webstore/detail/i-want-to-see-like-the-co/jebeedfnielkcjlcokhiobodkjjpbjia)，介绍如下：
 
 * 在浏览器运行，对视觉进行测试。
 * 与前面两个工具相比，此工具只能在视觉方面进行测试。需要开发者根据选择不同类型的视觉用户进行测试。
 * Chrome插件，开启可模拟红、绿、蓝、全色盲、色弱等用户眼中的站点，直接发现站点中存在的可辨别性问题。
 
-##  2. 参考文献
+## 2. 参考文献
 
 * [Development Testing](https://en.wikipedia.org/wiki/Development_testing)
 * [无障碍访问工具](https://www.w3cschool.cn/front_end_handbook_2017/front_end_handbook_2017-jtqp26ec.html)
 * [Static code Analysis plugin](https://github.com/evcohen/eslint-plugin-jsx-a11y)
 * [Visual plugin](https://websitecreationworkshop.com/blog/design-tips/see-like-color-blind/)
+
