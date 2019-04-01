@@ -319,3 +319,14 @@
     }
 }
 
+.#{$css-prefix}search-simple {
+
+    .#{$css-prefix}select.#{$css-prefix}large {
+        height: $form-element-large-height - 2;
+    }
+
+    .#{$css-prefix}select.#{$css-prefix}medium {
+        height: $form-element-medium-height - 2;
+    }
+}
+
