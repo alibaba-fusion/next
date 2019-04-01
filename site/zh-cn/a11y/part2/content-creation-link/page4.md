@@ -18,7 +18,7 @@
 
 其他元素例如`div`、`span`等是无法通过`tab`键获得焦点的，那么怎么样才能获得焦点呢？我们可以为标签加入`tabindex`属性来使这些元素获得焦点：
 
-```
+```html
 <div tabindex="0">这是能获得焦点的div</div>
 ```
 
@@ -30,7 +30,7 @@
 | 0（tabindex="0"）        | 可以，获取顺序对应于文档中的位置 |
 | 正数（比如tabindex="2"） | 可以，数值越小越先获取           |
 
-```
+```html
 <span tabindex="0"> hello </span>                   // 鼠标点击与键盘控制均能获得焦点
 <span> world ! </span>                              // 鼠标点击和键盘控制都不能获得焦点
 <span tabindex="-1"> fusion design </span>          // 鼠标点击可以获取焦点，但是键盘控制不能获取焦点
@@ -72,7 +72,7 @@
 
 焦点返回是个常用的操作，比如弹出一个对话框，关闭这个对话框后，我们需要焦点返回到之前触发的dom元素上，这样才能有一个良好的体验。这个方案的实现关键就是使用上面提到的`document.activeElement`：
 
-```
+```js
 // 获得当前的焦点位置
 var lastfocus = document.activeElement;
 
@@ -88,7 +88,7 @@ dialog.hide(function(){
 
 比如说我们在页面跳转后，总是希望能让焦点处于我们新页面的搜索框上，这个时候我们可以设置我们的搜索框的`autofocus`属性为`true`即可。
 
-```
+```html
 <input type="search" autofocus="true" placeholder="enter your question" > 
 ```
 
@@ -96,7 +96,7 @@ dialog.hide(function(){
 
 当页面跳转后，用户不知道焦点处于什么位置时，我们可以提供键盘快捷键的方式让用户快速聚焦到某一特定的元素上，这可以通过`accesskey`属性来实现。主菜单与导航菜单使用`accesskey`，通常是不错的选择。
 
-```
+```html
 <a href="http://webaim.org/" accesskey="w">WebAIM.org</a> 
 ```
 
