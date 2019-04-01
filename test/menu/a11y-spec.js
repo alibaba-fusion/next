@@ -8,6 +8,9 @@ import { unmount, test, testReact, mountReact } from '../util/a11y/validate';
 const { SubMenu, Item, Group, Divider, CheckboxItem, RadioItem } = Menu;
 Enzyme.configure({ adapter: new Adapter() });
 
+const portalContainerId = 'a11y-portal-id';
+let portalContainer;
+
 /* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Menu A11y', () => {
     let wrapper;
@@ -17,6 +20,11 @@ describe('Menu A11y', () => {
             wrapper.unmount();
             wrapper = null;
         }
+
+        if (portalContainer) {
+            portalContainer.remove();
+        }
+
         unmount();
     });
 
@@ -101,7 +109,7 @@ describe('Menu A11y', () => {
 
     it('should not have any violations for popup', async () => {
         wrapper = await testReact(
-            <Menu className="my-menu" mode="popup">
+            <Menu className="my-menu" mode="popup" defaultOpenKeys={['sub-1']}>
                 <Item key="1">Option 1</Item>
                 <Item key="2">Option 2</Item>
                 <Item key="3">Option 3</Item>
@@ -116,12 +124,12 @@ describe('Menu A11y', () => {
                 </SubMenu>
             </Menu>
         );
-        return wrapper;
+        return test(".next-overlay-wrapper");
     });
 
     it('should not have any violations for Checkbox Item', async () => {
         wrapper = await testReact(
-            <Menu className="my-menu" mode="popup">
+            <Menu className="my-menu">
                 <CheckboxItem
                     checked
                     className="custom"
@@ -137,7 +145,7 @@ describe('Menu A11y', () => {
 
     it('should not have any violations for Radio Item', async () => {
         wrapper = await testReact(
-            <Menu className="my-menu" mode="popup">
+            <Menu className="my-menu">
                 <RadioItem
                     key="1"
                     checked
