@@ -2,6 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
+import Button from '../../src/button';
 import Balloon from '../../src/balloon/index';
 
 /* eslint-disable react/no-multi-comp */
@@ -60,5 +61,44 @@ describe('Tooltip', () => {
         } catch (e) {
             assert(e instanceof Error);
         }
+    });
+
+    it('trigger is disabled button, hover enter and leave, popup should resolve', done => {
+        defaultWrapper.setProps({
+            trigger: (
+                <Button
+                    disabled
+                    id="balloon-btn"
+                    style={{ color: 'red', display: 'inline' }}
+                >
+                    button
+                </Button>
+            ),
+        });
+        // hover on the <span> which is specially added for disabled pattern
+        defaultWrapper.find('span').simulate('mouseenter');
+        setTimeout(function() {
+            assert(document.querySelector('.next-balloon-tooltip') !== null);
+
+            defaultWrapper.find('span').simulate('mouseleave');
+
+            setTimeout(function() {
+                assert(
+                    document.querySelector('.next-balloon-tooltip') === null
+                );
+                done();
+            }, 600);
+        }, 300);
+    });
+
+    it('trigger can be string', done => {
+        defaultWrapper.setProps({
+            trigger: 'trigger',
+        });
+        defaultWrapper.find('span').simulate('mouseenter');
+        setTimeout(function() {
+            assert(document.querySelector('.next-balloon-tooltip') !== null);
+            done();
+        }, 300);
     });
 });
