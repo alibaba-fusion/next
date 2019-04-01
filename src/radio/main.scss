@@ -92,6 +92,7 @@
         }
         &.checked {
             #{$radio-prefix}-inner {
+                border-color: $radio-checked-disabled-border-color;
                 &:after {
                     background: $radio-disabled-circle-color;
                 }
