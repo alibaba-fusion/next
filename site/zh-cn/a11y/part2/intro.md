@@ -1,4 +1,3 @@
-<button>[回到首页](../index.md)</button>
 
 # 改造综述
 

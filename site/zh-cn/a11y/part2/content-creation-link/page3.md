@@ -1,15 +1,4 @@
-<button>[回到页面内容指引](../content-creation.md)</button>
-<!-- TOC -->
 
-- [1. live region区块](#1-live-region区块)
-    - [`aria-live`属性](#aria-live属性)
-    - [`aria-atomic`属性](#aria-atomic属性)
-    - [`aria-busy`属性](#aria-busy属性)
-    - [`aria-relevant`屬性](#aria-relevant屬性)
-- [2. 实践例子](#2-实践例子)
-- [3. 参考资料](#3-参考资料)
-
-<!-- /TOC -->
 
 使用JavaScript，可以动态地更改页面的某些部分，而不需要重新加载整个页面，这些更改对于视觉正常的用户通常是可视的，但是对于使用读屏软件的用户来说，这一视觉上的变化并不能直接通过读屏软件传达。
 
