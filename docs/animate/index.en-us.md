@@ -32,3 +32,17 @@ Need to customize animation.
 | beforeLeave     | triggered before performing the leave animation<br><br>**signatures**:<br>Function(node: HTMLElement) => void<br>**params**:<br>_node_: {HTMLElement} animated dom element                            | Function                            | () => {} |
 | onLeave         | triggered after adding the xxx-leave-active class name<br><br>**signatures**:<br>Function(node: HTMLElement) => void<br>**params**:<br>_node_: {HTMLElement} animated dom element     | Function                            | () => {} |
 | afterLeave      | triggered after performing the leave animation<br><br>**signatures**:<br>Function(node: HTMLElement) => void<br>**params**:<br>_node_: {HTMLElement} animated dom element                           | Function                            | () => {} |
+
+## Animation List
+
+| In            | Out                 |
+| ------------- | ------------------- |
+| fadeIn        | fadeOut |
+| fadeInDown    | fadeOutDown |
+| fadeInLeft    | fadeOutLeft |
+| fadeInRight   | fadeOutRight |
+| fadeInUp      | fadeOutUp |
+| zoomIn        | zoomOut |
+| expandInDown  | expandOutUp |
+| expandInUp    | expandOutDown |
+| pulse | |
