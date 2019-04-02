@@ -45,6 +45,12 @@
 
         &:hover {
             background: $collapse-title-hover-bg-color;
+            color: $collapse-title-hover-font-color;
+            font-weight: $collapse-title-hover-font-weight;
+
+            #{$collapse-prefix}-panel-icon {
+                color: $collapse-icon-hover-color;
+            }
         }
     }
 
@@ -92,6 +98,14 @@
 
         #{$collapse-prefix}-panel-icon {
             color: $collapse-title-font-disabled-color;
+        }
+
+        #{$collapse-prefix}-panel-title:hover {
+            font-weight: $collapse-title-font-weight;
+
+            #{$collapse-prefix}-panel-icon {
+                color: $collapse-title-font-disabled-color;
+            }
         }
 
         &:hover {
