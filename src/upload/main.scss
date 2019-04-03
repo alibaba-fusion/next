@@ -419,29 +419,37 @@
     }
 }
 
-#{$upload-prefix}-drag {
-    border: 1px dashed $upload-drag-zone-border-color;
-    transition: border-color .3s ease;
-    cursor: pointer;
-    border-radius: $upload-drag-zone-corner;
-    text-align: center;
-    margin-bottom: $s-1;
-    padding: 0 $s-1;
-    &-icon {
-        margin: $s-5 0 0;
-        color: $color-text1-3;
+#{$upload-prefix}-dragable {
+    #{$upload-prefix}-inner {
+        display: block;
     }
-    &-text {
-        margin: $s-3 0 0;
-        font-size: $upload-drag-zone-font-size;
-        color: $color-text1-3;
-    }
-    &-hint {
-        margin: $s-1 0 $s-5;
-        font-size: $upload-drag-zone-hint-font-size;
-        color: $color-text1-2;
-    }
-    &-over {
-        border-color: $upload-drag-zone-over-border-color;
+
+    #{$upload-prefix}-drag {
+        border: 1px dashed $upload-drag-zone-border-color;
+        transition: border-color .3s ease;
+        cursor: pointer;
+        border-radius: $upload-drag-zone-corner;
+        background-color: $upload-drag-zone-bg-color;
+        text-align: center;
+        margin-bottom: $s-1;
+
+        &-icon {
+            margin: $s-5 0 0;
+            color: $color-text1-3;
+        }
+        &-text {
+            margin: $s-3 0 0;
+            font-size: $upload-drag-zone-font-size;
+            color: $color-text1-3;
+        }
+        &-hint {
+            margin: $s-1 0 $s-5;
+            font-size: $upload-drag-zone-hint-font-size;
+            color: $color-text1-2;
+        }
+        &-over {
+            border-color: $upload-drag-zone-over-border-color;
+        }
     }
 }
+
