@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import BalloonInner from './inner';
 import { normalMap as alignMap } from './alignMap';
+import { getDisabledCompatibleTrigger } from './util';
 
 const { Popup } = Overlay;
 
@@ -137,13 +138,23 @@ export default class Tooltip extends React.Component {
         triggerProps['aria-describedby'] = this._contentId;
         triggerProps.tabIndex = '0';
 
-        const newTrigger = React.cloneElement(trigger, triggerProps);
+        const ariaTrigger = this._contentId
+            ? React.cloneElement(trigger, triggerProps)
+            : trigger;
+
+        const newTrigger = getDisabledCompatibleTrigger(
+            React.isValidElement(ariaTrigger) ? (
+                ariaTrigger
+            ) : (
+                <span>{ariaTrigger}</span>
+            )
+        );
 
         return (
             <Popup
                 {...popupProps}
                 container={popupContainer}
-                trigger={this._contentId ? newTrigger : trigger}
+                trigger={newTrigger}
                 triggerType={triggerType}
                 align={alignMap[align].align}
                 offset={_offset}

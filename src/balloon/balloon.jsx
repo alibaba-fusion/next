@@ -4,6 +4,7 @@ import Overlay from '../overlay';
 import { func, obj, log } from '../util';
 import BalloonInner from './inner';
 import { normalMap, edgeMap } from './alignMap';
+import { getDisabledCompatibleTrigger } from './util';
 
 const { noop } = func;
 const { Popup } = Overlay;
@@ -337,12 +338,22 @@ export default class Balloon extends React.Component {
         triggerProps['aria-describedby'] = this._contentId;
         triggerProps.tabIndex = '0';
 
-        const newTrigger = React.cloneElement(trigger, triggerProps);
+        const ariaTrigger = this._contentId
+            ? React.cloneElement(trigger, triggerProps)
+            : trigger;
+
+        const newTrigger = getDisabledCompatibleTrigger(
+            React.isValidElement(ariaTrigger) ? (
+                ariaTrigger
+            ) : (
+                <span>{ariaTrigger}</span>
+            )
+        );
 
         return (
             <Popup
                 {...popupProps}
-                trigger={this._contentId ? newTrigger : trigger}
+                trigger={newTrigger}
                 cache={cache}
                 safeId={safeId}
                 triggerType={triggerType}
