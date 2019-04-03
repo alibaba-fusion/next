@@ -65,6 +65,18 @@ $tag-size-m-text-size: $font-size-body-2 !default;
 /// @namespace size/content
 $tag-size-s-text-size: $font-size-caption !default;
 
+/// min width
+/// @namespace size/content
+$tag-size-s-content-min-width: $s-7 !default;
+
+/// min width
+/// @namespace size/content
+$tag-size-m-content-min-width: $s-10 !default;
+
+/// min width
+/// @namespace size/content
+$tag-size-l-content-min-width: $s-12 !default;
+
 /// icon size
 /// @namespace size/tail
 $tag-size-l-icon-font: $icon-xs !default;
@@ -100,6 +112,8 @@ $tag-size-m-tick-icon-bg-size: $s-7 !default;
 /// background size
 /// @namespace size/tick
 $tag-size-s-tick-icon-bg-size: $s-5 !default;
+
+
 
 // Unconfigurable for size
 // -------------------
@@ -497,3 +511,5 @@ $tag-checkable-secondary-icon-color-selected-hover: $color-white !default;
 /// text
 /// @namespace statement/selected-disabled/tick
 $tag-checkable-secondary-icon-color-selected-disabled: $color-white !default;
+
+
