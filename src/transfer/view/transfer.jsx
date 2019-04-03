@@ -137,7 +137,7 @@ class Transfer extends Component {
          */
         locale: PropTypes.object,
         /**
-         * unique id to make component accessible
+         * 请设置 id 以保证transfer的可访问性
          */
         id: PropTypes.string,
     };

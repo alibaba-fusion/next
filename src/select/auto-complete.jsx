@@ -212,6 +212,7 @@ class AutoComplete extends Base {
     handleTriggerKeyDown(e) {
         const { popupContent, onToggleHighlightItem, onKeyDown } = this.props;
         if (popupContent) {
+            e.stopPropagation(); //stopPropagation can make use onChange triggerd while typing space('') in Input
             return onKeyDown(e);
         }
 
@@ -229,7 +230,7 @@ class AutoComplete extends Base {
                 this.chooseHighlightItem(e);
                 break;
             case KEYCODE.SPACE:
-                // 防止 Popup 监听到 space key 触发 onVisibleChange
+                // stopPropagation can make use onChange triggerd while typing space('') in Input
                 e.stopPropagation();
                 break;
             case KEYCODE.ESC:

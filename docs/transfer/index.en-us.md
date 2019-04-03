@@ -41,7 +41,7 @@ Move the items in two panels in an intuitive way to select.
 | disabled            | disable operations on transfer                                                                                                                                                                                                                                                                                                                                                                | Boolean            | false                                                              |
 | leftDisabled        | disable left panel                                                                                                                                                                                                                                                                                                                                                                            | Boolean            | false                                                              |
 | rightDisabled       | disable right panel                                                                                                                                                                                                                                                                                                                                                                           | Boolean            | false                                                              |
-
+| id                  | unique id to make component accessible                                                                                                                                                                                                                                                                                                                                                                      | String              | -                                                                     |
 
 ## ARIA and KeyBoard
 
@@ -53,5 +53,4 @@ Move the items in two panels in an intuitive way to select.
 | Space       | Select or cancel the current item or the item selected in the current list to move to another list    |
 
 
- 
- 
+

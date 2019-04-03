@@ -8,6 +8,21 @@ import { normalMap, edgeMap } from './alignMap';
 const { noop } = func;
 const { Popup } = Overlay;
 
+const alignList = [
+    't',
+    'r',
+    'b',
+    'l',
+    'tl',
+    'tr',
+    'bl',
+    'br',
+    'lt',
+    'lb',
+    'rt',
+    'rb',
+];
+
 let alignMap = normalMap;
 
 /** Balloon */
@@ -61,20 +76,7 @@ export default class Balloon extends React.Component {
          * 弹出层位置
          * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合
          */
-        align: PropTypes.oneOf([
-            't',
-            'r',
-            'b',
-            'l',
-            'tl',
-            'tr',
-            'bl',
-            'br',
-            'lt',
-            'lb',
-            'rt',
-            'rb',
-        ]),
+        align: PropTypes.oneOf(alignList),
         /**
          * 弹层相对于trigger的定位的微调
          */
@@ -188,7 +190,7 @@ export default class Balloon extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            align: props.align,
+            align: alignList.includes(props.align) ? props.align : 'b',
             visible: 'visible' in props ? props.visible : props.defaultVisible,
         };
         this._onClose = this._onClose.bind(this);
@@ -203,7 +205,7 @@ export default class Balloon extends React.Component {
             });
         }
 
-        if ('align' in nextProps) {
+        if ('align' in nextProps && alignList.includes(nextProps.align)) {
             this.setState({
                 align: nextProps.align,
             });

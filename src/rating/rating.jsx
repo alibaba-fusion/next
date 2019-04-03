@@ -440,7 +440,7 @@ export default class Rating extends Component {
                         className={`${prefix}rating-overlay`}
                         style={overlayStyle}
                     >
-                        <form action="#">{overlay}</form>
+                        {overlay}
                     </div>
                 </div>
                 {showGrade ? (
