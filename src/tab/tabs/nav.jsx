@@ -461,6 +461,7 @@ class Nav extends React.Component {
                 triggerType={triggerType}
                 trigger={trigger}
                 container={target => target.parentNode}
+                className={`${prefix}tabs-bar-popup`}
                 {...popupProps}
             >
                 <Menu

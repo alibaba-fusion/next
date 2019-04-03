@@ -13,6 +13,10 @@
 
     &-bar {
         outline: none;
+        &-popup {
+            overflow-y: auto;
+            max-height: 480px;
+        }
     }
 
     &-nav-container {
