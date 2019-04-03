@@ -942,6 +942,19 @@ describe('AutoComplete', () => {
         // assert(wrapper.find('input').prop('value') === 'a');
     });
 
+    // simulate keydown not work in test event
+    // it('should input keyCode space with popupContent', () => {
+    //     wrapper.setProps({
+    //         popupContent: <div>any</div>,
+    //         visible: true,
+    //     });
+
+    //     wrapper.find('input').simulate('keydown', { keyCode: 32 });
+
+    //     wrapper.update();
+    //     assert(wrapper.find('input').prop('value') === ' ');
+    // });
+
     // it('should fix onChange conflict under IE9&IE10', () => {
     //     let changed = false,
     //         onChange = () => { changed = true };
