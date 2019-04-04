@@ -1,6 +1,6 @@
 import React from 'react';
 
-function getDisabledCompatibleTrigger(element) {
+export function getDisabledCompatibleTrigger(element) {
     if (
         element.type.displayName === 'Config(Button)' &&
         element.props.disabled
@@ -24,5 +24,3 @@ function getDisabledCompatibleTrigger(element) {
     }
     return element;
 }
-
-export default { getDisabledCompatibleTrigger };
