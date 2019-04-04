@@ -267,6 +267,10 @@
                 $tab-wrapped-tab-corner-radius,
                 'top'
             );
+            border-width: $tab-wrapped-border-side-width $tab-wrapped-border-side-width $tab-wrapped-border-line-width $tab-wrapped-border-side-width;
+            &.active {
+                border-width: $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width;
+            }
         }
     }
 
