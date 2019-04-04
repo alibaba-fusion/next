@@ -183,9 +183,17 @@ $tab-pure-divider-line: $tab-pure-divider-border-style $tab-pure-divider-line-wi
 /// @namespace size/tab
 $tab-wrapped-border-line-style: $line-solid !default;
 
-/// broder width
+/// active broder width
 /// @namespace size/tab
 $tab-wrapped-border-line-width: $line-1 !default;
+
+/// non-active border width
+/// @namespace size/tab
+$tab-wrapped-border-side-width: $line-1 !default;
+
+/// broder active side
+/// @namespace size/tab
+$tab-wrapped-border-active-side-width: $line-1 !default;
 
 /// corner
 /// @namespace size/tab
