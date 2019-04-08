@@ -217,6 +217,7 @@ export default function virtual(BaseComponent) {
                         dom.setStyle(rightNode, 'max-height', clientHeight);
                     this.hasScrollbar = true;
                 } else {
+                    dom.setStyle(virtualScrollNode, 'min-width', 'auto');
                     this.hasScrollbar = false;
                 }
             }
