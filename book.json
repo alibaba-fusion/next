@@ -1,4 +1,27 @@
 {
     "title" : "fuson gitbook",
-    "root":"./site/zh-cn/a11y"
+    "root":"./site/zh-cn/a11y",
+    "links": {
+        "gitbook": false,
+        "sharing": {
+          "google": false,
+          "facebook": false,
+          "twitter": false,
+          "all": false
+        }
+    },
+    "plugins": [ 
+        "github",
+        "-fontsettings"
+    ],
+    "pluginsConfig": {
+        "github": {
+            "url": "https://github.com/alibaba-fusion/next"
+        },
+        "fontsettings": {
+            "theme": "white",
+            "family": "sans",
+            "size":  2
+        }
+    } 
 }

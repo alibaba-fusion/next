@@ -50,7 +50,8 @@
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
+    "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize",
+    "deploy:a11y": "gitbook install && gitbook build . ./build && gh-pages -d build -m 'docs(*):Automatically generate documents to static page'"
   },
   "lint-staged": {
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
@@ -119,6 +120,9 @@
     "fast-sass-loader": "^1.2.5",
     "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
+    "gh-pages": "^2.0.1",
+    "gitbook-cli": "^2.3.2",
+    "gitbook-plugin-github": "^2.0.0",
     "highlight.js": "^9.12.0",
     "html5shiv": "^3.7.3",
     "husky": "^0.14.3",
