@@ -111,6 +111,10 @@
         }
     }
 
+    &-quick #{$dialog-prefix}-body {
+        padding: $dialog-message-content-padding-top $dialog-message-content-padding-left-right $dialog-message-content-padding-bottom $dialog-message-content-padding-left-right;
+    }
+
     & &-message.#{$css-prefix}message {
         min-width: $s-25 * 3;
         padding: 0;

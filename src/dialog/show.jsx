@@ -15,6 +15,29 @@ const MESSAGE_TYPE = {
     confirm: 'help',
 };
 
+export const ModalInner = function({
+    type,
+    messageProps = {},
+    title,
+    rtl,
+    prefix = 'next-',
+    content,
+}) {
+    return (
+        <Message
+            size="large"
+            shape="addon"
+            type={MESSAGE_TYPE[type]}
+            {...messageProps}
+            title={title}
+            rtl={rtl}
+            className={cx(`${prefix}dialog-message`, messageProps.className)}
+        >
+            {content}
+        </Message>
+    );
+};
+
 class Modal extends Component {
     static propTypes = {
         prefix: PropTypes.string,
@@ -46,6 +69,7 @@ class Modal extends Component {
         okProps: PropTypes.object,
         locale: PropTypes.object,
         needWrapper: PropTypes.bool,
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -113,26 +137,21 @@ class Modal extends Component {
             okProps,
             needWrapper,
             rtl,
+            className,
             ...others
         } = this.props;
         const newTitle = needWrapper && type ? null : title;
 
         const newContent =
             needWrapper && type ? (
-                <Message
-                    size="large"
-                    shape="addon"
-                    type={MESSAGE_TYPE[type]}
-                    {...messageProps}
+                <ModalInner
+                    type={type}
+                    messageProps={messageProps}
                     title={title}
                     rtl={rtl}
-                    className={cx(
-                        `${prefix}dialog-message`,
-                        messageProps.className
-                    )}
-                >
-                    {content}
-                </Message>
+                    prefix={prefix}
+                    content={content}
+                />
             ) : (
                 content
             );
@@ -151,6 +170,8 @@ class Modal extends Component {
         const { visible, loading } = this.state;
         okProps.loading = loading;
 
+        const classNames = cx(`${prefix}dialog-quick`, className);
+
         return (
             <Dialog
                 role="alertdialog"
@@ -163,6 +184,7 @@ class Modal extends Component {
                 onCancel={newOnCancel}
                 onClose={newOnClose}
                 okProps={okProps}
+                className={classNames}
             >
                 {newContent}
             </Dialog>
