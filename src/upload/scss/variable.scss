@@ -193,6 +193,12 @@ $upload-card-list-bg-color-error: $color-fill1-1 !default;
 /// margin (r)
 /// @namespace size/bounding
 $upload-card-list-margin-right: $s-3 !default;
+/// padding (lr)
+/// @namespace size/bounding
+$upload-card-list-padding-lr: $s-zero !default;
+/// padding (tb)
+/// @namespace size/bounding
+$upload-card-list-padding-tb: $s-zero !default;
 /// border
 /// @namespace statement/normal/bounding
 $upload-card-list-border-color: $color-line1-3 !default;
@@ -203,10 +209,10 @@ $upload-card-list-border-color-error: $color-error-3 !default;
 /// @namespace statement/normal/thumbnail
 $upload-card-list-thumbnail-font-color: $color-text1-1 !default;
 /// text
-/// @namespace size/normal/thumbnail
+/// @namespace statement/normal/thumbnail
 $upload-card-list-thumbnail-font-size: $font-size-caption !default;
 /// icon
-/// @namespace size/normal/thumbnail
+/// @namespace statement/normal/thumbnail
 $upload-card-list-thumbnail-icon-size: $icon-xxl !default;
 
 /// margin (t)
