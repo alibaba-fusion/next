@@ -400,6 +400,7 @@ class List extends Component {
                                 href={downloadURL}
                                 target="_blank"
                                 tabIndex={downloadURL ? '0' : '-1'}
+                                className={`${prefixCls}-tool-download-link`}
                                 style={{
                                     pointerEvents: downloadURL ? '' : 'none',
                                 }}
