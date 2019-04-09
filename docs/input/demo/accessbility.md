@@ -5,14 +5,14 @@
 请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 11
 
+Please refer to `ARIA and KeyBoard`.
+
 :::
+
 ---
 
 ````jsx
@@ -24,8 +24,9 @@ function onChange(v) {
 function onkeyDown(v) {
     console.log(v);
 }
-ReactDOM.render(<div>
-    <Input size="large" placeholder="please input" onChange={onChange} onKeyDown={onkeyDown} aria-label="please input" /><br /><br />
-</div>
+ReactDOM.render(
+    <div>
+        <Input size="large" placeholder="please input" onChange={onChange} onKeyDown={onkeyDown} aria-label="please input" /><br /><br />
+    </div>
     , mountNode);
 ````
