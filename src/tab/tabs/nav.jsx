@@ -101,14 +101,14 @@ class Nav extends React.Component {
             const activeTabOffset =
                 getOffsetLT(this.activeTab) + relativeOffset;
             const wrapperOffset = getOffsetLT(this.wrapper);
-            target = this._adjustTarget(
+            target = this._adjustTarget({
                 wrapperOffset,
                 wrapperWH,
                 activeTabWH,
                 activeTabOffset,
                 rtl,
-                target
-            );
+                target,
+            });
         }
 
         if (this.offset !== target) {
@@ -164,14 +164,14 @@ class Nav extends React.Component {
         }
     }
 
-    _adjustTarget(
+    _adjustTarget({
         wrapperOffset,
         wrapperWH,
         activeTabWH,
         activeTabOffset,
         rtl,
-        target
-    ) {
+        target,
+    }) {
         if (
             // active tab covers wrapper right edge
             wrapperOffset + wrapperWH < activeTabOffset + activeTabWH &&
