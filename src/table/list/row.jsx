@@ -38,6 +38,10 @@ export default class GroupListRow extends Row {
             [`${prefix}table-row`]: true,
             [className]: className,
         });
+
+        // clear notRenderCellIndex, incase of cached data
+        this.context.notRenderCellIndex = [];
+
         return (
             <table
                 className={cls}
@@ -73,7 +77,7 @@ export default class GroupListRow extends Row {
         const { children } = record;
         if (children) {
             return children.map((child, index) => {
-                const cells = this.renderCells(child);
+                const cells = this.renderCells(child, index);
                 if (this.isChildrenSelection()) {
                     if (!child[primaryKey]) {
                         log.warning(
