@@ -148,7 +148,7 @@ class Message extends Component {
         /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
-        const iconType = icon || TYPE_MAPS[type];
+
         const classes = classNames({
             [messagePrefix]: true,
             [`${prefix}message-${type}`]: type,
@@ -177,7 +177,11 @@ class Message extends Component {
                         <Icon type="close" />
                     </a>
                 ) : null}
-                <Icon className={`${messagePrefix}-symbol`} type={iconType} />
+                <Icon
+                    className={`${messagePrefix}-symbol ${!icon &&
+                        `${messagePrefix}-symbol-icon`}`}
+                    type={icon}
+                />
                 {title ? (
                     <div className={`${messagePrefix}-title`}>{title}</div>
                 ) : null}

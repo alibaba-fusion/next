@@ -33,7 +33,8 @@
                 $message-success-color-bg-inline,
                 $message-success-color-border-inline,
                 $message-border-radius,
-                none
+                none,
+                $message-success-icon-content
             );
         }
         &.#{$css-prefix}addon {
@@ -45,7 +46,8 @@
                 transparent,
                 transparent,
                 $message-border-radius,
-                none
+                none,
+                $message-success-icon-content
             );
         }
         &.#{$css-prefix}toast {
@@ -57,7 +59,8 @@
                 $message-success-color-bg-toast,
                 $message-success-color-border-toast,
                 $message-border-radius-toast,
-                $message-shadow-toast
+                $message-shadow-toast,
+                $message-success-icon-content
             );
         }
     }
@@ -72,7 +75,8 @@
                 $message-warning-color-bg-inline,
                 $message-warning-color-border-inline,
                 $message-border-radius,
-                none
+                none,
+                $message-warning-icon-content
             );
         }
         &.#{$css-prefix}addon {
@@ -84,7 +88,8 @@
                 transparent,
                 transparent,
                 $message-border-radius,
-                none
+                none,
+                $message-warning-icon-content
             );
         }
         &.#{$css-prefix}toast {
@@ -96,7 +101,8 @@
                 $message-warning-color-bg-toast,
                 $message-warning-color-border-toast,
                 $message-border-radius-toast,
-                $message-shadow-toast
+                $message-shadow-toast,
+                $message-warning-icon-content
             );
         }
     }
@@ -111,7 +117,8 @@
                 $message-error-color-bg-inline,
                 $message-error-color-border-inline,
                 $message-border-radius,
-                none
+                none,
+                $message-error-icon-content
             );
         }
         &.#{$css-prefix}addon {
@@ -123,7 +130,8 @@
                 transparent,
                 transparent,
                 $message-border-radius,
-                none
+                none,
+                $message-error-icon-content
             );
         }
         &.#{$css-prefix}toast {
@@ -135,7 +143,8 @@
                 $message-error-color-bg-toast,
                 $message-error-color-border-toast,
                 $message-border-radius-toast,
-                $message-shadow-toast
+                $message-shadow-toast,
+                $message-error-icon-content
             );
         }
     }
@@ -150,7 +159,8 @@
                 $message-notice-color-bg-inline,
                 $message-notice-color-border-inline,
                 $message-border-radius,
-                none
+                none,
+                $message-notice-icon-content
             );
         }
         &.#{$css-prefix}addon {
@@ -162,7 +172,8 @@
                 transparent,
                 transparent,
                 $message-border-radius,
-                none
+                none,
+                $message-notice-icon-content
             );
         }
         &.#{$css-prefix}toast {
@@ -174,7 +185,8 @@
                 $message-notice-color-bg-toast,
                 $message-notice-color-border-toast,
                 $message-border-radius-toast,
-                $message-shadow-toast
+                $message-shadow-toast,
+                $message-notice-icon-content
             );
         }
     }
@@ -189,7 +201,8 @@
                 $message-help-color-bg-inline,
                 $message-help-color-border-inline,
                 $message-border-radius,
-                none
+                none,
+                $message-help-icon-content
             );
         }
         &.#{$css-prefix}addon {
@@ -201,7 +214,8 @@
                 transparent,
                 transparent,
                 $message-border-radius,
-                none
+                none,
+                $message-help-icon-content
             );
         }
         &.#{$css-prefix}toast {
@@ -213,7 +227,8 @@
                 $message-help-color-bg-toast,
                 $message-help-color-border-toast,
                 $message-border-radius-toast,
-                $message-shadow-toast
+                $message-shadow-toast,
+                $message-help-icon-content
             );
         }
     }
@@ -228,7 +243,8 @@
                 $message-loading-color-bg-inline,
                 $message-loading-color-border-inline,
                 $message-border-radius,
-                none
+                none,
+                $message-loading-icon-content
             );
         }
         &.#{$css-prefix}addon {
@@ -240,7 +256,8 @@
                 transparent,
                 transparent,
                 $message-border-radius,
-                none
+                none,
+                $message-loading-icon-content
             );
         }
         &.#{$css-prefix}toast {
@@ -252,7 +269,8 @@
                 $message-loading-color-bg-toast,
                 $message-loading-color-border-toast,
                 $message-border-radius-toast,
-                $message-shadow-toast
+                $message-shadow-toast,
+                $message-loading-icon-content
             );
         }
     }
