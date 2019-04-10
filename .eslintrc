@@ -8,6 +8,7 @@
         "valid-jsdoc": "off",
         "max-statements": "off",
         "max-len": "off",
-        "no-unused-vars": 1
+        "no-unused-vars": 1,
+        "import/prefer-default-export": 0
     }
 }

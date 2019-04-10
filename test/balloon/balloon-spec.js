@@ -120,6 +120,42 @@ describe('Balloon', () => {
                 done();
             }, 500);
         });
+
+        it('trigger is disabled button, hover enter and leave, popup should resolve', done => {
+            defaultWrapper.setProps({
+                trigger: (
+                    <Button disabled id="balloon-btn" style={{ color: 'red' }}>
+                        button
+                    </Button>
+                ),
+                triggerType: 'hover',
+            });
+            // hover on the <span> which is specially added for disabled pattern
+            defaultWrapper.find('span').simulate('mouseenter');
+            setTimeout(function() {
+                assert(document.querySelector('.next-balloon') !== null);
+
+                defaultWrapper.find('span').simulate('mouseleave');
+
+                setTimeout(function() {
+                    assert(document.querySelector('.next-balloon') === null);
+                    done();
+                }, 600);
+            }, 500);
+        });
+
+        it('trigger can be string', done => {
+            defaultWrapper.setProps({
+                trigger: 'trigger',
+                triggerType: 'hover',
+            });
+            defaultWrapper.find('span').simulate('mouseenter');
+            setTimeout(function() {
+                assert(document.querySelector('.next-balloon') !== null);
+                done();
+            }, 300);
+        });
+
         // trigger不传,默认用空的<span></span>填充
         it('trigger default is span', () => {
             const wrapper = mount(
