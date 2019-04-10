@@ -6,15 +6,6 @@ import Icon from '../icon';
 import Animate from '../animate';
 import ConfigProvider from '../config-provider';
 
-const TYPE_MAPS = {
-    success: 'success',
-    warning: 'warning',
-    error: 'error',
-    notice: 'prompt',
-    help: 'help',
-    loading: 'loading',
-};
-
 const noop = () => {};
 
 /**
