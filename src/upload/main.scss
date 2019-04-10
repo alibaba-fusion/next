@@ -352,7 +352,7 @@
         .#{$css-prefix}upload-tool {
             position: absolute;
             z-index: 1;
-            background-color: rgba($color-black, .7);
+            background-color: rgba($upload-select-card-tool-bg-color, $upload-select-card-tool-bg-opacity);
             transition: all .3s ease;
             opacity: 0;
             width: 100%;

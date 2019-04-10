@@ -230,6 +230,13 @@ $upload-card-list-name-font-color: $color-text1-3 !default;
 $upload-select-card-tool-height: $s-7 !default;
 // @ignore
 $upload-select-card-tool-icon-size: $icon-s !default;
+/// background
+/// @namespace statement/normal/action
+$upload-select-card-tool-bg-color: $color-black !default;
+/// background opacity
+/// @type alpha
+/// @namespace statement/normal/action
+$upload-select-card-tool-bg-opacity: .7 !default;
 
 // ============================================================
 
