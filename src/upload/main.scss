@@ -440,7 +440,13 @@
         &-icon {
             margin: $s-5 0 0;
             color: $color-text1-3;
+            #{$upload-prefix}-drag-upload-icon::before {
+                content: $upload-drag-zone-upload-icon;
+            }
         }
+
+
+
         &-text {
             margin: $s-3 0 0;
             font-size: $upload-drag-zone-font-size;
