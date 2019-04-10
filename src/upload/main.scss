@@ -277,11 +277,11 @@
 
         &-wrapper {
             position: relative;
-            box-sizing: content-box;
             border: 1px solid $upload-card-list-border-color;
             width: $upload-card-size;
             height: $upload-card-size;
-            padding: $upload-card-list-padding-tb $upload-card-list-padding-lr;
+            padding: $upload-card-list-padding;
+            background-color: $upload-card-list-bg-color;
         }
 
         &-thumbnail {
@@ -315,7 +315,7 @@
 
         &-name {
             display: block;
-            width: $upload-card-size + $upload-card-list-padding-lr * 2;
+            width: $upload-card-size;
             text-align: center;
             margin-top: $upload-card-list-name-margin-top;
             font-size: $upload-card-list-name-font-size;
@@ -339,7 +339,7 @@
             }
         }
 
-        &-uploading .#{$css-prefix}upload-list-item-thumbnail {
+        &-uploading .#{$css-prefix}upload-list-item-wrapper {
             background-color: $upload-card-list-uploading-bg-color;
         }
 

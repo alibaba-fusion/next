@@ -183,7 +183,9 @@ $upload-card-icon-color: $color-line1-3 !default;
 $upload-card-hover-font-color: $color-brand1-6 !default;
 
 // Card Item
-
+/// background
+/// @namespace statement/normal
+$upload-card-list-bg-color: $color-transparent !default;
 /// background
 /// @namespace statement/uploading/add
 $upload-card-list-uploading-bg-color: $color-fill1-1 !default;
@@ -193,12 +195,9 @@ $upload-card-list-bg-color-error: $color-fill1-1 !default;
 /// margin (r)
 /// @namespace size/bounding
 $upload-card-list-margin-right: $s-3 !default;
-/// padding (lr)
+/// padding
 /// @namespace size/bounding
-$upload-card-list-padding-lr: $s-zero !default;
-/// padding (tb)
-/// @namespace size/bounding
-$upload-card-list-padding-tb: $s-zero !default;
+$upload-card-list-padding: $s-zero !default;
 /// border
 /// @namespace statement/normal/bounding
 $upload-card-list-border-color: $color-line1-3 !default;
@@ -230,12 +229,12 @@ $upload-card-list-name-font-color: $color-text1-3 !default;
 $upload-select-card-tool-height: $s-7 !default;
 // @ignore
 $upload-select-card-tool-icon-size: $icon-s !default;
-/// background
-/// @namespace statement/normal/action
+/// color
+/// @namespace statement/hover/action
 $upload-select-card-tool-bg-color: $color-black !default;
-/// background opacity
+/// opacity
 /// @type alpha
-/// @namespace statement/normal/action
+/// @namespace statement/hover/action
 $upload-select-card-tool-bg-opacity: .7 !default;
 
 // ============================================================
