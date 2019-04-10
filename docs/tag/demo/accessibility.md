@@ -5,12 +5,11 @@
 请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 3
+
+Please refer to `ARIA and KeyBoard`.
 
 :::
 ---
@@ -39,7 +38,7 @@ class Demo extends React.Component {
     render() {
         return (<div>
             <TagGroup>
-                {dataType.map(item =>   <Tag type="normal" key={item} size="medium"  onClick={() => this.onclick({item})} >{ item }</Tag>) }
+                {dataType.map(item => <Tag type="normal" key={item} size="medium"  onClick={() => this.onclick({item})} >{ item }</Tag>) }
             </TagGroup>
             {this.state.name}
         </div>);

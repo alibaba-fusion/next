@@ -5,12 +5,11 @@
 请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 8
+
+Please refer to `ARIA and KeyBoard`.
 
 :::
 ---
