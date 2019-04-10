@@ -315,7 +315,7 @@
 
         &-name {
             display: block;
-            width: calc(#{$upload-card-size} + #{$upload-card-list-padding-lr * 2});
+            width: $upload-card-size + $upload-card-list-padding-lr * 2;
             text-align: center;
             margin-top: $upload-card-list-name-margin-top;
             font-size: $upload-card-list-name-font-size;
