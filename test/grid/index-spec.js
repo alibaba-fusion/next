@@ -84,6 +84,12 @@ describe('Row', () => {
         wrapper.setProps({ component: 'ul' });
         assert(wrapper.find('.next-row').type() === 'ul');
     });
+
+    it('should rendered as custom element type(function)', () => {
+        const func = props => <div className="cus-component">{props.children}</div>; // eslint-disable-line
+        wrapper.setProps({ component: func });
+        assert(wrapper.find('.cus-component'));
+    });
 });
 
 describe('Col', () => {
@@ -151,5 +157,11 @@ describe('Col', () => {
     it('should rendered as custom element type', () => {
         wrapper.setProps({ component: 'li' });
         assert(wrapper.find('.next-col').type() === 'li');
+    });
+
+    it('should rendered as custom element type(function)', () => {
+        const func = props => <div className="cus-component">{props.children}</div>; // eslint-disable-line
+        wrapper.setProps({ component: func });
+        assert(wrapper.find('.cus-component'));
     });
 });
