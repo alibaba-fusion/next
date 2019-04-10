@@ -125,6 +125,25 @@ describe('form', () => {
             );
         });
 
+        it('should supoort component', () => {
+            let wrapper = mount(<Form component="div">
+                <FormItem required type="email" format="email" label="email:" help="help msg" >
+                    <Input name="email" />
+                </FormItem>
+            </Form>);
+            assert(wrapper.find('div.next-form'));
+
+            const Tag = (props) => {
+                return <div className="func-tag">{props.children}</div>;
+            };
+            wrapper = mount(<Form component={Tag}>
+                <FormItem required type="email" format="email" label="email:" help="help msg" >
+                    <Input name="email" />
+                </FormItem>
+            </Form>);
+            assert(wrapper.find('div.func-tag'));
+        });
+
         it('should supoort wrapperCol & labelCol', () => {
             const wrapper = mount(
                 <Form>
