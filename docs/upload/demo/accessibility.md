@@ -12,20 +12,17 @@
 > 3. 请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
+# Accessibility
 
+- order: 16
 
 Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
-
 
 > 1. only for test & develop, Never Use in production enviroments
 
 > 2. only support upload images
 
 > 3. Please refer to `ARIA and KeyBoard`.
-
-# Addon
-
-- order: 16
 
 :::
 ---

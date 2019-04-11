@@ -5,12 +5,11 @@
 通过`onSearch`事件去处理,请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-This is handled by the `onSearch` event,Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 6
+
+This is handled by the `onSearch` event,Please refer to `ARIA and KeyBoard`.
 
 :::
 ---

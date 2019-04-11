@@ -5,14 +5,14 @@
 弹层id, 传入值才会支持无障碍。
 
 :::lang=en-us
-
-id of popup. only when you set value, balloon will support accessibility.
-
-# Addon
+# Accessibility
 
 - order: 7
 
+id of popup. only when you set value, balloon will support accessibility.
+
 :::
+
 ---
 
 ````jsx
