@@ -80,7 +80,7 @@ class Demo extends React.Component {
         const popupContent = <Menu onChange={this.handleSelect} onMouseDown={preventDefault}/>;
         const popupProps = {
             triggerClickKeycode: [13, 32, 40] // space, enter, down-arrow
-        }
+        };
 
         return (
             <div className="demo-container">

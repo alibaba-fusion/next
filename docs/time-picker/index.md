@@ -55,13 +55,13 @@
 
 ## ARIA and KeyBoard
 
-| 按键    | 说明               |
-| :---- | :--------------- |
-| Enter | 打开时间选择框    |
-| Esc   | 关闭时间选择框  |
-| Up | 输入上一秒的时间 （如果 `disabledMinutes={true}` 则可能是上一分钟或者上一小时） |
-| Down | 输入下一秒的时间 （如果 `disabledMinutes={true}` 则可能是下一分钟或者下一小时） |
-| Page Up | 输入上一分钟的时间 |
-| Page Down |  输入下一分钟的时间 |
-| Alt + Page Up | 输入上一小时的时间 |
-| Alt + Page Down | 输入下一小时的时间 |
+| 按键              | 说明                                                    |
+| :-------------- | :---------------------------------------------------- |
+| Enter           | 打开时间选择框                                               |
+| Esc             | 关闭时间选择框                                               |
+| Up              | 输入上一秒的时间 （如果 `disabledMinutes={true}` 则可能是上一分钟或者上一小时） |
+| Down            | 输入下一秒的时间 （如果 `disabledMinutes={true}` 则可能是下一分钟或者下一小时） |
+| Page Up         | 输入上一分钟的时间                                             |
+| Page Down       | 输入下一分钟的时间                                             |
+| Alt + Page Up   | 输入上一小时的时间                                             |
+| Alt + Page Down | 输入下一小时的时间                                             |

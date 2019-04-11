@@ -181,7 +181,7 @@ const getCellProps = (rowIndex, colIndex, dataIndex, record) => {
         rowSpan: dataSource[record.parent].children.length
       };
     }
-}
+};
 
 class App extends React.Component {
     state = {
