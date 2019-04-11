@@ -183,11 +183,11 @@ $tab-pure-divider-line: $tab-pure-divider-border-style $tab-pure-divider-line-wi
 /// @namespace size/tab
 $tab-wrapped-border-line-style: $line-solid !default;
 
-/// active border width
+/// border width (active)
 /// @namespace size/tab
 $tab-wrapped-border-line-width: $line-1 !default;
 
-/// non-active border width
+/// border width (non-active)
 /// @namespace size/tab
 $tab-wrapped-border-side-width: $line-1 !default;
 
