@@ -183,7 +183,9 @@ $upload-card-icon-color: $color-line1-3 !default;
 $upload-card-hover-font-color: $color-brand1-6 !default;
 
 // Card Item
-
+/// background
+/// @namespace statement/normal
+$upload-card-list-bg-color: $color-transparent !default;
 /// background
 /// @namespace statement/uploading/add
 $upload-card-list-uploading-bg-color: $color-fill1-1 !default;
@@ -193,6 +195,9 @@ $upload-card-list-bg-color-error: $color-fill1-1 !default;
 /// margin (r)
 /// @namespace size/bounding
 $upload-card-list-margin-right: $s-3 !default;
+/// padding
+/// @namespace size/bounding
+$upload-card-list-padding: $s-zero !default;
 /// border
 /// @namespace statement/normal/bounding
 $upload-card-list-border-color: $color-line1-3 !default;
@@ -203,10 +208,10 @@ $upload-card-list-border-color-error: $color-error-3 !default;
 /// @namespace statement/normal/thumbnail
 $upload-card-list-thumbnail-font-color: $color-text1-1 !default;
 /// text
-/// @namespace size/normal/thumbnail
+/// @namespace statement/normal/thumbnail
 $upload-card-list-thumbnail-font-size: $font-size-caption !default;
 /// icon
-/// @namespace size/normal/thumbnail
+/// @namespace statement/normal/thumbnail
 $upload-card-list-thumbnail-icon-size: $icon-xxl !default;
 
 /// margin (t)
@@ -224,6 +229,13 @@ $upload-card-list-name-font-color: $color-text1-3 !default;
 $upload-select-card-tool-height: $s-7 !default;
 // @ignore
 $upload-select-card-tool-icon-size: $icon-s !default;
+/// color
+/// @namespace statement/hover/action
+$upload-select-card-tool-bg-color: $color-black !default;
+/// opacity
+/// @type alpha
+/// @namespace statement/hover/action
+$upload-select-card-tool-bg-opacity: .7 !default;
 
 // ============================================================
 
@@ -247,4 +259,7 @@ $upload-drag-zone-hint-font-size: $font-size-caption !default;
 /// background
 /// @namespace statement/normal
 $upload-drag-zone-bg-color: $color-transparent !default;
-
+/// icon
+/// @type icon
+/// @namespace statement/normal
+$upload-drag-zone-upload-icon: $icon-content-upload !default;

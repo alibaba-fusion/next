@@ -4,9 +4,7 @@
 @import "scss/variable";
 @import "./rtl.scss";
 
-.#{$css-prefix}upload-list-item-name {
-    text-decoration: none;
-}
+
 #{$upload-prefix} {
     @include box-sizing;
 
@@ -30,18 +28,22 @@
         }
     }
 
+    &-list-item-name {
+        text-decoration: none;
+    }
+
     &.#{$css-prefix}disabled {
         border-color: $upload-disable-border-color !important;
         color: $upload-disable-text-color !important;
 
-        :hover {
-            border-color: $upload-disable-border-color !important;
-            color: $upload-disable-text-color !important;
-            cursor: not-allowed;
+        .#{$css-prefix}icon-close {
+            cursor: not-allowed !important;
         }
-        * {
+
+        #{$upload-prefix}-inner * {
             color: $upload-disable-text-color !important;
             border-color: $upload-disable-border-color !important;
+            cursor: not-allowed !important;
         }
     }
 }
@@ -278,6 +280,8 @@
             border: 1px solid $upload-card-list-border-color;
             width: $upload-card-size;
             height: $upload-card-size;
+            padding: $upload-card-list-padding;
+            background-color: $upload-card-list-bg-color;
         }
 
         &-thumbnail {
@@ -335,7 +339,7 @@
             }
         }
 
-        &-uploading .#{$css-prefix}upload-list-item-thumbnail {
+        &-uploading .#{$css-prefix}upload-list-item-wrapper {
             background-color: $upload-card-list-uploading-bg-color;
         }
 
@@ -348,7 +352,7 @@
         .#{$css-prefix}upload-tool {
             position: absolute;
             z-index: 1;
-            background-color: rgba($color-black, .7);
+            background-color: rgba($upload-select-card-tool-bg-color, $upload-select-card-tool-bg-opacity);
             transition: all .3s ease;
             opacity: 0;
             width: 100%;
@@ -436,7 +440,13 @@
         &-icon {
             margin: $s-5 0 0;
             color: $color-text1-3;
+            #{$upload-prefix}-drag-upload-icon::before {
+                content: $upload-drag-zone-upload-icon;
+            }
         }
+
+
+
         &-text {
             margin: $s-3 0 0;
             font-size: $upload-drag-zone-font-size;

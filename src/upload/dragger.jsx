@@ -83,7 +83,7 @@ class Dragger extends React.Component {
         const children = this.props.children || (
             <div className={cls}>
                 <p className={`${prefixCls}-icon`}>
-                    <Icon type="upload" size="large" />
+                    <Icon size="large" className={`${prefixCls}-upload-icon`} />
                 </p>
                 <p className={`${prefixCls}-text`}>{locale.drag.text}</p>
                 <p className={`${prefixCls}-hint`}>{locale.drag.hint}</p>
