@@ -267,6 +267,10 @@
                 $tab-wrapped-tab-corner-radius,
                 'top'
             );
+            border-width: $tab-wrapped-border-side-width $tab-wrapped-border-side-width $tab-wrapped-border-line-width $tab-wrapped-border-side-width;
+            &.active {
+                border-width: $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width;
+            }
         }
     }
 
@@ -305,6 +309,10 @@
             margin-bottom: $tab-wrapped-tab-margin-bottom;
             @include tabs-tab-border( $tab-wrapped-bar-border, null, $tab-wrapped-tab-left-border-radius, $tab-wrapped-border-line-color-hover, $tab-wrapped-border-line-color, $tab-wrapped-bg-color-selected, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color);
             @include tabs-tab-inkbar($tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, -$tab-wrapped-border-line-width, $tab-wrapped-tab-corner-radius, 'left');
+            border-width: $tab-wrapped-border-side-width $tab-wrapped-border-line-width $tab-wrapped-border-side-width $tab-wrapped-border-side-width;
+            &.active {
+                border-width: $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width;
+            }
         }
     }
 
@@ -321,6 +329,10 @@
             margin-bottom: $tab-wrapped-tab-margin-bottom;
             @include tabs-tab-border( $tab-wrapped-bar-border, null, $tab-wrapped-tab-right-border-radius, $tab-wrapped-border-line-color-hover, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color, $tab-wrapped-bg-color-selected);
             @include tabs-tab-inkbar($tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, -$tab-wrapped-border-line-width, $tab-wrapped-tab-corner-radius, 'right');
+            border-width: $tab-wrapped-border-side-width $tab-wrapped-border-side-width $tab-wrapped-border-side-width $tab-wrapped-border-line-width;
+            &.active {
+                border-width: $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width;
+            }
         }
     }
 
