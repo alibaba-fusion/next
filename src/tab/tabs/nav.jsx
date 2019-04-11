@@ -63,7 +63,10 @@ class Nav extends React.Component {
         ctx.scrollTimer = setTimeout(() => {
             ctx.scrollToActiveTab();
         }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
-        ctx.setSlideBtn();
+        clearTimeout(ctx.slideTimer);
+        ctx.slideTimer = setTimeout(() => {
+            ctx.setSlideBtn();
+        }, 200);
         if (
             this.activeTab &&
             findDOMNode(this).contains(document.activeElement)
@@ -237,6 +240,7 @@ class Nav extends React.Component {
         if (minOffset >= 0 || navWH <= navbarWH) {
             next = false;
             prev = false;
+            this.setOffset(0, false); // no need to check slide again since this call is invoked from inside setSlideBtn
         } else if (this.offset < 0 && this.offset <= minOffset) {
             prev = true;
             next = false;
