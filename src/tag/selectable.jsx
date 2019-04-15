@@ -58,11 +58,13 @@ class Selectable extends Component {
             return false;
         }
 
-        this.setState(prevState => ({
-            checked: !prevState.checked,
-        }));
+        const { checked } = this.state;
 
-        this.props.onChange(!this.props.checked, e);
+        this.setState({
+            checked: !checked,
+        });
+
+        this.props.onChange(!checked, e);
     }
 
     render() {
