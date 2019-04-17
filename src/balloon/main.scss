@@ -10,6 +10,10 @@
 
     word-wrap: break-word;
     z-index: 0;
+    &:focus,
+    & *:focus {
+        outline: 0;
+    }
 
     &-primary {
         @include balloon-state(

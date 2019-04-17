@@ -1,7 +1,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/variable";
 
-#{$tab-prefix}[dir="rtl"] {
+#{$tab-prefix}[dir='rtl'] {
     &.#{$css-prefix}medium {
         & #{$tab-prefix}-nav-container-scrolling {
             padding-left: $tab-nav-scroll-padding-right-m;
@@ -54,6 +54,16 @@
     #{$tab-prefix}-btn-down {
         left: $tab-nav-arrow-down-positon-right;
         right: auto;
+    }
+}
+#{$tab-prefix}-text[dir='rtl'] > #{$tab-prefix}-bar {
+    #{$tab-prefix}-tab {
+        &:not(:last-child):after {
+            content: ' ';
+            position: absolute;
+            left: 0;
+            right: auto;
+        }
     }
 }
 

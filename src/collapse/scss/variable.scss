@@ -56,11 +56,17 @@ $collapse-title-font-color: $color-text1-4 !default;
 /// @namespace statement/disabled/title
 $collapse-title-font-disabled-color: $color-text1-1 !default;
 /// text
+/// @namespace statement/hover/title
+$collapse-title-hover-font-color: $color-text1-4 !default;
+/// text
 /// @namespace size/title
 $collapse-title-font-size: $font-size-body-2 !default;
 /// weight
 /// @namespace size/title
 $collapse-title-font-weight: $font-weight-2 !default;
+/// weight
+/// @namespace statement/hover/title
+$collapse-title-hover-font-weight: $font-weight-2 !default;
 /// padding(t,b)
 /// @namespace size/title
 $collapse-title-padding-tb: $s-2 !default;
@@ -71,6 +77,9 @@ $collapse-icon-size: $icon-xxs !default;
 /// color
 /// @namespace statement/normal/icon
 $collapse-icon-color: $color-text1-4 !default;
+/// color
+/// @namespace statement/hover/icon
+$collapse-icon-hover-color: $color-text1-4 !default;
 /// margin (r)
 /// @namespace size/icon
 $collapse-icon-margin-r: $s-2 !default;

@@ -905,6 +905,9 @@ class Select extends Base {
                     className={`${prefix}select-inner`}
                     ref={this.saveInputRef}
                 />
+                <span className={`${prefix}sr-only`} aria-live="polite">
+                    {this.state.srReader}
+                </span>
             </span>
         );
     }

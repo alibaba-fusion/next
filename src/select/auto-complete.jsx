@@ -357,6 +357,9 @@ class AutoComplete extends Base {
                     aria-expanded={this.state.visible}
                     {..._inputProps}
                 />
+                <span className={`${prefix}sr-only`} aria-live="polite">
+                    {this.state.srReader}
+                </span>
             </span>
         );
     }

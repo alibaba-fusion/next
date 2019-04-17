@@ -4,6 +4,8 @@ import '../../../src/demo-helper/style.js';
 import '../../../src/dialog/style.js';
 import { Demo, DemoGroup, initDemo } from '../../../src/demo-helper';
 import Dialog from '../../../src/dialog';
+import { ModalInner } from '../../../src/dialog/show';
+
 import zhCN from '../../../src/locale/zh-cn';
 import enUS from '../../../src/locale/en-us';
 
@@ -116,12 +118,50 @@ class FunctionDemo extends Component {
             </Dialog.Inner>
         );
 
+        const alertContent = (
+            <Dialog.Inner
+                className="next-dialog-quick"
+                style={style}
+                footerAlign={footerAlign}
+                footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
+                locale={locale}>
+                <ModalInner
+                    type="alert"
+                    title={hasTitle ? i18n.title : null}
+                    locale={locale}
+                    content={i18n.content} />
+            </Dialog.Inner>
+        );
+
+        const confirmContent = (
+            <Dialog.Inner
+                className="next-dialog-quick"
+                style={style}
+                footerAlign={footerAlign}
+                footerActions={okIsLeft ? ['ok', 'cancel'] : ['cancel', 'ok']}
+                locale={locale}>
+                <ModalInner
+                    type="confirm"
+                    title={hasTitle ? i18n.title : null}
+                    locale={locale}
+                    content={i18n.content} />
+            </Dialog.Inner>
+        );
+
         return (
             <div className="demo-container">
                 <Demo title="Dialog" demoFunction={this.state.demoFunction} onFunctionChange={this.onFunctionChange}>
                     <Demo title="Normal">
                         <DemoGroup label="Align">
                             {this.renderMask(hasMask, normalContent)}
+                        </DemoGroup>
+                    </Demo>
+                    <Demo title="Quick">
+                        <DemoGroup label="Alert">
+                            {this.renderMask(hasMask, alertContent)}
+                        </DemoGroup>
+                        <DemoGroup label="Confirm">
+                            {this.renderMask(hasMask, confirmContent)}
                         </DemoGroup>
                     </Demo>
                 </Demo>

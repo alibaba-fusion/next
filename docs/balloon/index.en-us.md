@@ -16,6 +16,7 @@
 ### Note
 
 -   When trigger is a custom React Component, it needs to pass through the onMouseEnter/onMouseLeave/onClick callback.
+-   This Component will be accessible when you pass id. We recommond you `<Tooltip>` for simple tip, `<Balloon triggerType="click">` for complex usage(e.g.nested with form). Don't use triggerType="focus", it's for Component internal use only.
 
 ## API
 
@@ -33,7 +34,7 @@
 | align                | position of popup relative to the trigger<br><br>**option**:<br>'t'(top)<br>'r'(right)<br>'b'(bottom)<br>'l'(left)<br>'tl'(top left)<br>'tr'(top right)<br>'bl'(bottom left)<br>'br'(bottom right)<br>'lt'(left top)<br>'lb'(left bottom)<br>'rt'(right top)<br>'rb'(right bottom) or their combinations | Enum            | 'b'                                      |
 | offset               | offset for fine tuning the popup                                                                                                                                                    | Array           | [0, 0]                                   |
 | trigger              | trigger of the popup                                                                                                                                                                  | any             | &lt;span>&lt;/span>                      |
-| triggerType          | how to trigger the popup. <br><br>**type unit**:<br>'hover'<br>'focus'<br>'click'<br> e.g.['hover', 'focus']  'click'                                                                                       | String/Array    | 'hover'                                  |
+| triggerType          | how to trigger the popup. <br><br>**type unit**:<br>'hover'<br>'click'<br> e.g.['hover', 'click']  'click'                                                                                       | String/Array    | 'hover'                                  |
 | onClose              | callback triggered when visible becomes false<br><br>**signature**:<br>Function() => void                                                                                                           | Function        | func.noop                                |
 | needAdjust           | whether to adjust the position automatically                                                                                                                                                            | Boolean         | false                                    |
 | delay                | how long should the popup be delayed after triggered in milliseconds                                                                                                                                                          | Number          | -                                        |
@@ -57,7 +58,7 @@
 | children       | content of tooltip                                                                                                                                                          | any     | -                   |
 | align          | position of popup relative to the trigger<br><br>**option**:<br>'t'(top)<br>'r'(right)<br>'b'(bottom)<br>'l'(left)<br>'tl'(top left)<br>'tr'(top right)<br>'bl'(bottom left)<br>'br'(bottom right)<br>'lt'(left top)<br>'lb'(left bottom)<br>'rt'(right top)<br>'rb'(right bottom) or their combinations | Enum    | 'b'                 |
 | trigger        | trigger of the tooltip                                                                                                                                                                 | any     | &lt;span>&lt;/span> |
-| triggerType    | how to trigger the tooltip. <br><br>**type unit**:<br>'hover'<br>'focus'<br>'click'<br> e.g.['hover', 'focus']  'click'                                                                                      | String/Array    | 'hover'                                  |
+| triggerType    | how to trigger the tooltip. <br><br>**type unit**:<br>'hover'<br>'click'<br> e.g.['hover', 'click']  'click'. `<Balloon triggerType="click">` for complex usage                                                                                     | String/Array    | 'hover'                                  |
 | popupStyle     | custom style of popup                                                                                                                                                   | Object  | -                   |
 | popupClassName | custom className of popup                                                                                                                                                | String  | -                   |
 | popupProps     | props of popup                                                                                                                                                         | Object  | -                   |

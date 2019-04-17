@@ -26,9 +26,13 @@ $slick-dots-position-bottom: $s-3 !default;
 /// @namespace size/dots
 $slick-dots-position-right: $s-5 !default;
 
-/// dot size
+/// dot width
 /// @namespace size/dots
-$slick-dots-diameter: $s-2 !default;
+$slick-dots-width: $s-2 !default;
+
+/// dot height
+/// @namespace size/dots
+$slick-dots-height: $s-2 !default;
 
 /// dot margin (l, r)
 /// @namespace size/dots

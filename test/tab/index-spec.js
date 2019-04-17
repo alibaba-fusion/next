@@ -3,7 +3,7 @@ import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import { KEYCODE } from '../../src/util';
+import { KEYCODE, dom } from '../../src/util';
 import Tab from '../../src/tab/index';
 import Nav from '../../src/tab/tabs/nav';
 import '../../src/tab/style.js';
@@ -372,29 +372,55 @@ describe('Tab', () => {
             target = null;
         });
 
-        it('should render excess tabs with slides', () => {
+        it('should render excess tabs with slides', done => {
             wrapper = mount(
                 <div style={boxStyle}>
                     <Tab>{panes}</Tab>
                 </div>,
                 { attachTo: target }
             );
-            assert(wrapper.find('.next-tabs-btn-prev').hasClass('disabled'));
-            assert(wrapper.find('.next-tabs-btn-next').length === 1);
+            setTimeout(() => {
+                assert(
+                    dom.hasClass(
+                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
+                        'disabled'
+                    )
+                );
+                assert(wrapper.find('.next-tabs-btn-next').length === 1);
+                done();
+            }, 300);
         });
 
-        it('should click prev/next to slide', () => {
+        it('should click prev/next to slide', done => {
             wrapper = mount(
                 <div style={boxStyle}>
                     <Tab animation={false}>{panes}</Tab>
                 </div>,
                 { attachTo: target }
             );
-            assert(wrapper.find('.next-tabs-btn-prev').hasClass('disabled'));
-            wrapper.find('.next-tabs-btn-next').simulate('click');
-            assert(!wrapper.find('.next-tabs-btn-prev').hasClass('disabled'));
-            wrapper.find('.next-tabs-btn-prev').simulate('click');
-            assert(wrapper.find('.next-tabs-btn-prev').hasClass('disabled'));
+            setTimeout(() => {
+                assert(
+                    dom.hasClass(
+                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
+                        'disabled'
+                    )
+                );
+                wrapper.find('.next-tabs-btn-next').simulate('click');
+                assert(
+                    !dom.hasClass(
+                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
+                        'disabled'
+                    )
+                );
+                wrapper.find('.next-tabs-btn-prev').simulate('click');
+                assert(
+                    dom.hasClass(
+                        wrapper.find('.next-tabs-btn-prev').getDOMNode(),
+                        'disabled'
+                    )
+                );
+                done();
+            }, 300);
         });
 
         it('should render excess tabs with dropdown', () => {
@@ -451,6 +477,54 @@ describe('Tab', () => {
                     .hasClass('active')
             );
         });
+
+        it('should adjust scroll length so that tab not partially in view', done => {
+            const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
+                (item, index) => (
+                    <Tab.Item title={`tabsss item ${item}`} key={index}>
+                        content
+                    </Tab.Item>
+                )
+            );
+            wrapper = mount(
+                <div style={{ width: '520px' }}>
+                    <Tab
+                        excessMode="slide"
+                        lazyLoad={false}
+                        defaultActiveKey={4}
+                        shape="capsule"
+                    >
+                        {panes}
+                    </Tab>
+                </div>,
+                {
+                    attachTo: target,
+                }
+            );
+            wrapper.update();
+            setTimeout(() => {
+                const transStr = wrapper
+                    .find('.next-tabs-nav')
+                    .at(0)
+                    .getDOMNode().style.transform;
+                const rst = transStr.match(
+                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+                );
+                assert(rst[1].startsWith('-'));
+                wrapper.find('.next-tabs-btn-prev').simulate('click');
+            }, 500);
+            setTimeout(() => {
+                const transStr = wrapper
+                    .find('.next-tabs-nav')
+                    .at(0)
+                    .getDOMNode().style.transform;
+                const rst = transStr.match(
+                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+                );
+                assert(rst[1] === '0');
+                done();
+            }, 1000);
+        });
     });
     describe('rtl mode', () => {
         let wrapper, target;
@@ -488,7 +562,7 @@ describe('Tab', () => {
             const el = wrapper.find('#test-extra').getDOMNode().parentElement;
             assert(el.style.getPropertyValue('float') === 'left');
         });
-        it('should slide', () => {
+        it('should show slide buttons', done => {
             const boxStyle = { width: '200px' };
             wrapper = mount(
                 <div style={boxStyle}>
@@ -498,26 +572,96 @@ describe('Tab', () => {
                 </div>,
                 { attachTo: target }
             );
-            assert(wrapper.find('.next-tabs-btn-prev').hasClass('disabled'));
-            assert(wrapper.find('.next-tabs-btn-next').length === 1);
-        });
-        it('should slide', (done) => {
-            const boxStyle = { width: '200px' };
-            wrapper = mount(
-                <div style={boxStyle}>
-                    <Tab rtl excessMode="slide">
-                        {panes}
-                    </Tab>
-                </div>,
-                { attachTo: target }
-            );
-            const prev = wrapper.find(".next-tabs-nav").at(0).getDOMNode().getBoundingClientRect().left;
-            wrapper.find('.next-tabs-btn-next').simulate('click');
-            setTimeout(()=>{
-                const newpos = wrapper.find(".next-tabs-nav").at(0).getDOMNode().getBoundingClientRect().left;
-                assert(newpos>prev);
+            setTimeout(() => {
+                assert(
+                    dom.hasClass(
+                        wrapper
+                            .find('.next-tabs-btn-prev')
+                            .at(0)
+                            .getDOMNode(),
+                        'disabled'
+                    )
+                );
+                assert(wrapper.find('.next-tabs-btn-next').length === 1);
                 done();
             }, 500);
+        });
+        it('should slide', done => {
+            const boxStyle = { width: '200px' };
+            wrapper = mount(
+                <div style={boxStyle}>
+                    <Tab rtl excessMode="slide">
+                        {panes}
+                    </Tab>
+                </div>,
+                { attachTo: target }
+            );
+            let prev, newpos;
+            setTimeout(() => {
+                prev = wrapper
+                    .find('.next-tabs-nav')
+                    .at(0)
+                    .getDOMNode()
+                    .getBoundingClientRect().left;
+                wrapper.find('.next-tabs-btn-next').simulate('click');
+            }, 500);
+            setTimeout(() => {
+                newpos = wrapper
+                    .find('.next-tabs-nav')
+                    .at(0)
+                    .getDOMNode()
+                    .getBoundingClientRect().left;
+                assert(newpos > prev);
+                done();
+            }, 1000);
+        });
+        it('should adjust scroll length', done => {
+            const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
+                (item, index) => (
+                    <Tab.Item title={`tabsss item ${item}`} key={index}>
+                        content
+                    </Tab.Item>
+                )
+            );
+            wrapper = mount(
+                <div style={{ width: '520px' }}>
+                    <Tab
+                        excessMode="slide"
+                        lazyLoad={false}
+                        defaultActiveKey={4}
+                        shape="wrapped"
+                        rtl
+                    >
+                        {panes}
+                    </Tab>
+                </div>,
+                {
+                    attachTo: target,
+                }
+            );
+            wrapper.update();
+            setTimeout(() => {
+                const transStr = wrapper
+                    .find('.next-tabs-nav')
+                    .at(0)
+                    .getDOMNode().style.transform;
+                const rst = transStr.match(
+                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+                );
+                assert(parseInt(rst[1])>0);
+                wrapper.find('.next-tabs-btn-prev').simulate('click');
+            }, 500);
+            setTimeout(() => {
+                const transStr = wrapper
+                    .find('.next-tabs-nav')
+                    .at(0)
+                    .getDOMNode().style.transform;
+                const rst = transStr.match(
+                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+                );
+                assert(rst[1] === '0');
+                done();
+            }, 1000);
         });
     });
 });

@@ -466,6 +466,7 @@ class Upload extends Base {
 
         const cls = classNames({
             [`${prefix}upload`]: true,
+            [`${prefix}upload-dragable`]: dragable,
             [`${prefix}disabled`]: disabled,
             [`${prefix}readonly`]: readonly,
             [className]: className,

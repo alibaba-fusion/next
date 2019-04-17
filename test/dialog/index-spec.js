@@ -2,12 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { dom } from '../../src/util';
 import Button from '../../src/button';
 import ConfigProvider from '../../src/config-provider';
 import Dialog from '../../src/dialog/index';
+import Message from '../../src/message';
 import '../../src/dialog/style.js';
 import zhCN from '../../src/locale/zh-cn';
+import { ModalInner as QuickInner } from '../../src/dialog/show';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
@@ -546,6 +552,118 @@ describe('inner', () => {
         hide();
     });
 });
+
+describe('Quick', () => {
+    let wrapper;
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
+    });
+
+    it('should support alert message', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="alert"
+                title="quick confirm modal inner"
+                locale={zhCN}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.prop('type') === 'warning');
+    });
+
+    it('should support confirm message', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="confirm"
+                title="quick confirm modal inner"
+                locale={zhCN}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.prop('type') === 'help');
+    });
+
+    it('should support message title', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="confirm"
+                title="quick confirm modal inner"
+                locale={zhCN}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.prop('title') === 'quick confirm modal inner');
+    });
+
+    it('should support default prefix', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="confirm"
+                title="quick confirm modal inner"
+                locale={zhCN}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.prop('className') === 'next-dialog-message');
+    });
+
+    it('should support messageProps', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="confirm"
+                title="quick confirm modal inner"
+                locale={zhCN}
+                messageProps={{testProp: 'test'}}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.prop('testProp') === 'test');
+    });
+
+    it('should support custom prefix', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="confirm"
+                title="quick confirm modal inner"
+                prefix="test-"
+                locale={zhCN}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.prop('className') === 'test-dialog-message');
+    });
+
+    it('should pass content as child', () => {
+        wrapper = shallow(
+            <QuickInner
+                type="confirm"
+                title="quick confirm modal inner"
+                prefix="test-"
+                locale={zhCN}
+                content={<span>Modal Content</span>}
+            />
+        );
+
+        const message = wrapper.find(Message);
+        assert(message.children().type() === 'span');
+    });
+
+})
 
 function assertOkBtn(btn) {
     assert(hasClass(btn, 'next-btn-primary'));

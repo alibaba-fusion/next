@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>主题 Demo</title>
-  <% if (disableAnimation) { %>
-    <style>
-      *,
-      *:before,
-      *:after {
-        transition: none !important;
-        animation: none !important;
-      }
-    </style>
-  <% } %>
-    <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
-    <script src="//shadow.elemecdn.com/npm/react@16.8.3/umd/react.development.js"></script>
-    <script src="//shadow.elemecdn.com/npm/react-dom@16.8.3/umd/react-dom.development.js"></script>
-    <script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
-</head>
-<body>
-  <div id="container"></div>
-  <% scripts.forEach(function(src) { %>
-  <script src="<%= src %>"></script>
-  <% })%>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>主题 Demo</title>
+        <% if (disableAnimation) { %>
+        <style>
+            *,
+            *:before,
+            *:after {
+                transition: none !important;
+                animation: none !important;
+            }
+        </style>
+        <% } %>
+        <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+        <script src="//shadow.elemecdn.com/npm/react@16.8.3/umd/react.development.js"></script>
+        <script src="//shadow.elemecdn.com/npm/react-dom@16.8.3/umd/react-dom.development.js"></script>
+        <script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
+    </head>
+    <body>
+        <div id="container"></div>
+        <% scripts.forEach(function(src) { %>
+        <script src="<%= src %>"></script>
+        <% })%>
+    </body>
 </html>
-
-

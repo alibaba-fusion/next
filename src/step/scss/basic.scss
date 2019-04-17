@@ -9,6 +9,11 @@
         position: relative;
         vertical-align: middle;
         outline: 0;
+        height: 100%;
+
+        &-body {
+            outline: 0;
+        }
 
         &-node {
             transition: all .2s ease;

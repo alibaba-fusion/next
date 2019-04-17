@@ -14,7 +14,9 @@ const getPageY = () => window.pageYOffset || document.documentElement.scrollTop;
  */
 function _getElementRect(elem) {
     let offsetTop = 0,
-        offsetLeft = 0;
+        offsetLeft = 0,
+        scrollTop = 0,
+        scrollLeft = 0;
 
     const offsetHeight = elem.offsetHeight;
     const offsetWidth = elem.offsetWidth;
@@ -26,14 +28,22 @@ function _getElementRect(elem) {
         if (!isNaN(elem.offsetLeft)) {
             offsetLeft += elem.offsetLeft;
         }
+        if (!isNaN(elem.scrollTop)) {
+            scrollTop += elem.scrollTop;
+        }
+        if (!isNaN(elem.scrollLeft)) {
+            scrollLeft += elem.scrollLeft;
+        }
     } while ((elem = elem.offsetParent) !== null);
 
     return {
         top:
             offsetTop -
+            scrollTop -
             (document.documentElement.scrollTop || document.body.scrollTop),
         left:
             offsetLeft -
+            scrollLeft -
             (document.documentElement.scrollLeft || document.body.scrollLeft),
         height: offsetHeight,
         width: offsetWidth,

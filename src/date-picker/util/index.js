@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { KEYCODE } from '../../util';
 
 export const PANEL = {
     TIME: 'time-panel',
@@ -67,4 +68,108 @@ export function extend(source, target) {
         }
     }
     return target;
+}
+
+/**
+ * 监听键盘事件，操作日期字符串
+ * @param {KeyboardEvent} e 事件对象
+ * @param {Object} param1
+ * @param {String} type 类型 year month day
+ */
+export function onDateKeydown(e, { format, dateInputStr, value }, type) {
+    if (
+        [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(
+            e.keyCode
+        ) === -1
+    ) {
+        return;
+    }
+
+    if (
+        (e.altKey &&
+            [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+        e.controlKey ||
+        e.shiftKey
+    ) {
+        return;
+    }
+
+    let date = moment(dateInputStr, format, true);
+
+    if (date.isValid()) {
+        const stepUnit = e.altKey ? 'year' : 'month';
+        switch (e.keyCode) {
+            case KEYCODE.UP:
+                date.subtract(1, type);
+                break;
+            case KEYCODE.DOWN:
+                date.add(1, type);
+                break;
+            case KEYCODE.PAGE_UP:
+                date.subtract(1, stepUnit);
+                break;
+            case KEYCODE.PAGE_DOWN:
+                date.add(1, stepUnit);
+                break;
+        }
+    } else if (value) {
+        date = value.clone();
+    } else {
+        date = moment();
+    }
+
+    e.preventDefault();
+    return date.format(format);
+}
+
+/**
+ * 监听键盘事件，操作时间
+ * @param {KeyboardEvent} e
+ * @param {Object} param1
+ * @param {String} type second hour minute
+ */
+export function onTimeKeydown(e, { format, timeInputStr, steps, value }, type) {
+    if (
+        [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(
+            e.keyCode
+        ) === -1
+    )
+        return;
+    if (
+        (e.altKey &&
+            [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
+        e.controlKey ||
+        e.shiftKey
+    )
+        return;
+
+    let time = moment(timeInputStr, format, true);
+
+    if (time.isValid()) {
+        const stepUnit = e.altKey ? 'hour' : 'minute';
+        switch (e.keyCode) {
+            case KEYCODE.UP:
+                time.subtract(steps[type], type);
+                break;
+            case KEYCODE.DOWN:
+                time.add(steps[type], type);
+                break;
+            case KEYCODE.PAGE_UP:
+                time.subtract(steps[stepUnit], stepUnit);
+                break;
+            case KEYCODE.PAGE_DOWN:
+                time.add(steps[stepUnit], stepUnit);
+                break;
+        }
+    } else if (value) {
+        time = value.clone();
+    } else {
+        time = moment()
+            .hours(0)
+            .minutes(0)
+            .seconds(0);
+    }
+
+    e.preventDefault();
+    return time.format(format);
 }

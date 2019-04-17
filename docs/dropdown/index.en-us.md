@@ -13,6 +13,10 @@
 
 You can storage operation command with dropdown component when there are too much command. There will be a drop-down menu after you click or hover the trigger element. Then choose a command and run it.
 
+### Note
+
+-   Dropdown is accessible when using like `<Dropdown triggerType={["click", "hover"]}>` (triggerType="focus" is deprecated). In our opinion, menu elements need to be confirmed by users before they are expanded when it comes to accessibility.
+
 ## API
 
 ### Dropdown
@@ -25,7 +29,7 @@ You can storage operation command with dropdown component when there are too muc
 | defaultVisible  | overlay display or not in default situation                                                                                                                                                                                        | Boolean        | false                                      |
 | onVisibleChange | callback function when toggle visible of overlay<br><br>**signatures**:<br>Function(visible: Boolean, type: String, e: Object) => void<br>**params**:<br>_visible_: {Boolean} overlay display or not<br>_type_: {String} orign of trigger overlay toggle visible<br>_e_: {Object} DOM Event| Function       | func.noop                                  |
 | trigger         | trigger element                                                                                                                                                                                   | ReactNode      | -                                          |
-| triggerType     | operation type of trigger overlay toggle visible<br><br>**options**:<br>'hover', 'click', 'focus'                                                                                                                                     | Enum           | 'hover'                                    |
+| triggerType     | operation type of trigger overlay toggle visible<br><br>**options**:<br>'hover', 'click'                                                                                                                                     | Enum           | 'hover'                                    |
 | disabled        | overlay can not toggle visible if you set disabled attribute                                                                                                                                                                                 | Boolean        | false                                      |
 | align           | overlay position relative to trigger element, see details Overlay align                                                                  | String         | 'tl bl'                                    |
 | offset          | overlay adjust position relative to trigger element                                                                                                                                                                                  | Array          | [0, 0]                                     |
