@@ -117,7 +117,7 @@
         }
 
         &.#{$css-prefix}tag-level-primary {
-            @extend %tag-statement-fill;
+            @extend %tag-statement-primary;
         }
     }
 
@@ -155,7 +155,7 @@
         }
 
         &.#{$css-prefix}tag-level-primary {
-            @extend %tag-statement-fill;
+            @extend %tag-statement-closable-primary;
         }
     }
 
@@ -213,13 +213,13 @@
             @extend %tag-statement-checkable-fill;
 
             &.checked {
-                @extend %tag-statement-checkable-primary;
+                @extend %tag-statement-checkable-fill-checked;
             }
 
             &[disabled], &.disabled {
-                color: $tag-text-color-disabled; /* $tag-text-color-disabled; */
-                border-color: $tag-fill-bg-color-disabled;
-                background-color: $tag-fill-bg-color-disabled;
+                color: $tag-checkable-primary-text-color-disabled;
+                border-color: $tag-checkable-primary-border-color-disabled;
+                background-color: $tag-checkable-primary-bg-color-disabled;
             }
         }
 
