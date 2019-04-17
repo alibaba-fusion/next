@@ -32,6 +32,14 @@ $balloon-size-padding-right: $s-4 !default;
 /// @namespace size/content
 $balloon-size-padding-closable-right: $s-10 !default;
 
+/// text
+/// @namespace size/content
+$balloon-content-font-size: $font-size-body-1 !default;
+
+/// text weight
+/// @namespace size/content
+$balloon-content-font-weight: $font-weight-2 !default;
+
 /// border width
 /// @namespace size/bounding
 $balloon-normal-border-width: $line-1 !default;
@@ -43,6 +51,14 @@ $balloon-primary-border-width: $line-1 !default;
 /// border width
 /// @namespace size/bounding
 $balloon-tooltip-border-width: $line-1 !default;
+
+/// text
+/// @namespace size/content
+$balloon-tooltip-content-font-size: $font-size-body-1 !default;
+
+/// text weight
+/// @namespace size/content
+$balloon-tooltip-content-font-weight: $font-weight-2 !default;
 
 /// size
 /// @namespace size/close icon
