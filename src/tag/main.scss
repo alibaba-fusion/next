@@ -147,11 +147,6 @@
         &.#{$css-prefix}tag-level-normal {
             @extend %tag-statement-closable-bordered;
             @extend %tag-closable-normal-tick;
-            &[disabled], &.disabled {
-                color: $tag-closable-bordered-text-color-disabled;
-                border-color: $tag-closable-bordered-border-color-disabled;
-                background-color: $tag-closable-bordered-bg-disabled;
-            }
         }
 
         &.#{$css-prefix}tag-level-primary {
@@ -214,12 +209,6 @@
 
             &.checked {
                 @extend %tag-statement-checkable-fill-checked;
-            }
-
-            &[disabled], &.disabled {
-                color: $tag-checkable-primary-text-color-disabled;
-                border-color: $tag-checkable-primary-border-color-disabled;
-                background-color: $tag-checkable-primary-bg-color-disabled;
             }
         }
 
