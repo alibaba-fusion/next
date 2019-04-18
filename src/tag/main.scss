@@ -148,9 +148,9 @@
             @extend %tag-statement-closable-bordered;
             @extend %tag-closable-normal-tick;
             &[disabled], &.disabled {
-                color: $tag-text-color-disabled;
-                border-color: $tag-checkable-normal-border-selected-disabled;
-                background-color: $tag-fill-bg-color-disabled;
+                color: $tag-closable-bordered-text-color-disabled;
+                border-color: $tag-closable-bordered-border-color-disabled;
+                background-color: $tag-closable-bordered-bg-disabled;
             }
         }
 
