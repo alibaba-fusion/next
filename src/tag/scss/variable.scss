@@ -7,7 +7,7 @@
 /// @family data-display
 /// @varPrefix $tag-
 /// @classPrefix {prefix}-tag
-/// @order {"size/bounding":10,"size/content":11,"size/tail":12,"size/tick":13,"statement/normal":10,"statement/normal/content":100,"statement/normal/bounding":101,"statement/normal/tail":102,"statement/hover":11,"statement/hover/content":110,"statement/hover/bounding":111,"statement/hover/tail":112,"statement/disabled":12,"statement/disabled/content":120,"statement/disabled/bounding":121,"statement/disabled/tail":122,"statement/selected":13,"statement/selected/tick":130,"statement/selected-hover":14,"statement/selected-hover/tick":140,"statement/selected-disabled":15,"statement/selected-disabled/tick":150}
+/// @order {"size/bounding":10,"size/content":11,"size/tail":12,"size/tick":13,"statement/normal":10,"statement/normal/bounding":100,"statement/normal/tail":101,"statement/hover":11,"statement/hover/tail":110,"statement/hover/bounding":111,"statement/disabled":12,"statement/disabled/tail":120,"statement/disabled/bounding":121,"statement/disabled/text":122,"statement/disabled/background":123,"statement/selected":13,"statement/selected/tick":130,"statement/selected-hover":14,"statement/selected-hover/tick":140,"statement/selected-disabled":15,"statement/selected-disabled/bounding":150,"statement/selected-disabled/tick":151}
 ////
 
 
@@ -211,54 +211,6 @@ $tag-closable-bordered-text-color-disabled: $color-text1-1 !default;
 /// background
 /// @namespace statement/disabled/bounding
 $tag-closable-bordered-bg-disabled: $color-transparent !default;
-
-/// text
-/// @namespace statement/normal/bounding
-$tag-closable-primary-text-color: $color-text1-3 !default;
-
-/// text
-/// @namespace statement/normal/tail
-$tag-closable-primary-tail-color: $color-text1-3 !default;
-
-/// text
-/// @namespace statement/disabled/bounding
-$tag-closable-primary-text-color-disabled: $color-text1-1 !default;
-
-/// border
-/// @namespace statement/disabled/bounding
-$tag-closable-primary-border-color-disabled: $color-fill1-1 !default;
-
-/// background
-/// @namespace statement/disabled/bounding
-$tag-closable-primary-bg-color-disabled: $color-fill1-1 !default;
-
-/// text
-/// @namespace statement/disabled/tail
-$tag-closable-primary-tail-color-disabled: $color-text1-1 !default;
-
-/// text
-/// @namespace statement/hover/bounding
-$tag-closable-primary-text-color-hover: $color-text1-4 !default;
-
-/// text
-/// @namespace statement/hover/tail
-$tag-closable-primary-tail-color-hover: $color-text1-4 !default;
-
-/// background
-/// @namespace statement/normal/bounding
-$tag-closable-primary-bg-color: $color-fill1-3 !default;
-
-/// border
-/// @namespace statement/normal/bounding
-$tag-closable-primary-border-color: $color-fill1-3 !default;
-
-/// background
-/// @namespace statement/hover/bounding
-$tag-closable-primary-bg-color-hover: $color-fill1-4 !default;
-
-/// border
-/// @namespace statement/hover/bounding
-$tag-closable-primary-border-color-hover: $color-fill1-4 !default;
 
 /// text
 /// @namespace statement/normal/tail

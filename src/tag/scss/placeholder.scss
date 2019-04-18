@@ -39,18 +39,18 @@
 
 %tag-statement-closable-primary {
     @include tag-statement(
-        $tag-closable-primary-text-color,
-        $tag-closable-primary-border-color,
-        $tag-closable-primary-bg-color,
-        $tag-closable-primary-text-color-hover,
-        $tag-closable-primary-border-color-hover,
-        $tag-closable-primary-bg-color-hover,
-        $tag-closable-primary-tail-color,
-        $tag-closable-primary-tail-color-hover,
-        $tag-closable-primary-tail-color-disabled,
-        $tag-closable-primary-text-color-disabled,
-        $tag-closable-primary-border-color-disabled,
-        $tag-closable-primary-bg-color-disabled
+        $tag-fill-text-color,
+        $tag-fill-border-color,
+        $tag-fill-bg-color,
+        $tag-fill-text-color-hover,
+        $tag-fill-border-color-hover,
+        $tag-fill-bg-color-hover,
+        $tag-fill-tail-color,
+        $tag-fill-tail-color-hover,
+        $tag-fill-tail-color-disabled,
+        $tag-fill-text-color-disabled,
+        $tag-fill-border-color-disabled,
+        $tag-fill-bg-color-disabled
     );
 }
 
