@@ -7,7 +7,7 @@
 /// @family data-display
 /// @varPrefix $tag-
 /// @classPrefix {prefix}-tag
-/// @order {"size/bounding":10,"size/content":11,"size/tail":12,"size/tick":13,"statement/normal":10,"statement/normal/bounding":100,"statement/normal/tail":101,"statement/hover":11,"statement/hover/tail":110,"statement/hover/bounding":111,"statement/disabled":12,"statement/disabled/tail":120,"statement/disabled/bounding":121,"statement/disabled/text":122,"statement/disabled/background":123,"statement/selected":13,"statement/selected/tick":130,"statement/selected-hover":14,"statement/selected-hover/tick":140,"statement/selected-disabled":15,"statement/selected-disabled/bounding":150,"statement/selected-disabled/tick":151}
+/// @order {"size/bounding":10,"size/content":11,"size/tail":12,"size/tick":13,"statement/normal":10,"statement/normal/bounding":100,"statement/normal/tail":101,"statement/hover":11,"statement/hover/tail":110,"statement/hover/bounding":111,"statement/disabled":12,"statement/disabled/tail":120,"statement/disabled/bounding":121,"statement/selected":13,"statement/selected/tick":130,"statement/selected-hover":14,"statement/selected-hover/tick":140,"statement/selected-disabled":15,"statement/selected-disabled/bounding":150,"statement/selected-disabled/tick":151}
 ////
 
 
@@ -277,7 +277,7 @@ $tag-bordered-tail-color-hover: $color-text1-4 !default;
 $tag-bordered-tail-color-disabled: $color-text1-1 !default;
 
 /// text
-/// @namespace statement/disabled/text
+/// @namespace statement/disabled/bounding
 $tag-bordered-text-color-disabled: $color-text1-1 !default;
 
 /// border
@@ -285,7 +285,7 @@ $tag-bordered-text-color-disabled: $color-text1-1 !default;
 $tag-bordered-border-color-disabled: $color-line1-1 !default;
 
 /// background
-/// @namespace statement/disabled/background
+/// @namespace statement/disabled/bounding
 $tag-bordered-bg-disabled: $color-fill1-1 !default;
 
 /// text
