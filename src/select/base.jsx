@@ -582,6 +582,7 @@ export default class Base extends React.Component {
             popupContent,
             autoWidth,
             canCloseByTrigger,
+            followTrigger,
             cache,
         } = props;
 
@@ -606,6 +607,7 @@ export default class Base extends React.Component {
             beforeClose: makeChain(this.beforeClose, popupProps.beforeClose),
             afterClose: makeChain(this.afterClose, popupProps.afterClose),
             canCloseByTrigger: canCloseByTrigger,
+            followTrigger: followTrigger,
             visible: this.state.visible,
             onVisibleChange: this.handleVisibleChange,
             shouldUpdatePosition: true,
