@@ -50,6 +50,13 @@
         text-align: center;
     }
 
+    &-tip-fullscreen {
+        display: block;
+        position: absolute;
+        z-index: 4;
+        text-align: center;
+    }
+
     &-tip-placeholder {
         display: none;
     }
