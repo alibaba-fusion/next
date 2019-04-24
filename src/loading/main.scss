@@ -51,10 +51,9 @@
     }
 
     &-tip-fullscreen {
-        display: block;
-        position: absolute;
-        z-index: 4;
-        text-align: center;
+        top: inherit;
+        left: inherit;
+        transform: inherit;
     }
 
     &-tip-placeholder {
