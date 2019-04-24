@@ -49,10 +49,9 @@ class Nav extends React.Component {
     }
 
     componentDidMount() {
-        const ctx = this;
-
-        ctx.setSlideBtn();
-        ctx.getDropdownItems(this.props);
+        if (!this.props.animation) {
+            this.initialSettings();
+        }
         events.on(window, 'resize', this.onWindowResized);
     }
 
@@ -77,6 +76,11 @@ class Nav extends React.Component {
 
     componentWillUnmount() {
         events.off(window, 'resize', this.onWindowResized);
+    }
+
+    initialSettings() {
+        this.setSlideBtn();
+        this.getDropdownItems(this.props);
     }
 
     /**
@@ -615,6 +619,7 @@ class Nav extends React.Component {
                                 animation={navCls}
                                 singleMode={false}
                                 ref={this.navRefHandler}
+                                afterAppear={this.initialSettings.bind(this)}
                             >
                                 {tabList}
                             </Animate>
