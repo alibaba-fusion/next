@@ -27,10 +27,10 @@ function onDateChange(value) {
 function dateCellRender(value) {
     const solar2lunarData = solarLunar.solar2lunar(value.year(), value.month(), value.date());
 
-    return <div className="custom-cell">
+    return (<div className="custom-cell">
         {value.date()}
         <span>{solar2lunarData.lDay === 1 ? solar2lunarData.monthCn: solar2lunarData.dayCn}</span>
-    </div>;
+    </div>);
 }
 
 
