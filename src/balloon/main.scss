@@ -8,6 +8,8 @@
     @include box-sizing;
     @include balloon-bounding($balloon-border-style);
 
+    font-size: $balloon-content-font-size;
+    font-weight: $balloon-content-font-weight;
     word-wrap: break-word;
     z-index: 0;
     &:focus,
@@ -83,7 +85,8 @@
     @include box-sizing;
     @include balloon-bounding($balloon-tooltip-border-style);
 
-    font-size: $font-size-body-1;
+    font-size: $balloon-tooltip-content-font-size;
+    font-weight: $balloon-tooltip-content-font-weight;
     z-index: 0;
 
     @include tooltip-state(
