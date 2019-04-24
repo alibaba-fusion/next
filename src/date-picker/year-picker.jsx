@@ -259,6 +259,10 @@ class YearPicker extends Component {
                 value: newValue,
                 ...others,
             });
+        } else {
+            this.setState({
+                ...others,
+            });
         }
 
         const { format } = this.props;
