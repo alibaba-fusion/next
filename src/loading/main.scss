@@ -50,6 +50,12 @@
         text-align: center;
     }
 
+    &-tip-fullscreen {
+        top: inherit;
+        left: inherit;
+        transform: inherit;
+    }
+
     &-tip-placeholder {
         display: none;
     }
