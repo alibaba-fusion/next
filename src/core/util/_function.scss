@@ -139,7 +139,7 @@
 // @param {String} $blur [$shadow-blur-sd1] - 阴影羽化值
 // @param {Color} $shadow-color [$shadow-color-opacity-sd1] - 阴影颜色
 // @param {String} $shadow-x [$shadow-distance-sd1] - 阴影x方向距离
-// @param {String} $shadow-y [$shadow-distance-sd1] - 阴影y方向距离
+// @param {String} $shadow-y [$shadow-distance-sd1y] - 阴影y方向距离
 // @param {String} $shadow-spread [$shadow-spread-sd1] - 阴影扩散值
 //
 // @example scss - SCSS 用法
@@ -152,7 +152,7 @@
     $blur: $shadow-blur-sd1,
     $shadow-color: $shadow-color-opacity-sd1,
     $shadow-x: $shadow-distance-sd1,
-    $shadow-y: $shadow-distance-sd1,
+    $shadow-y: $shadow-distance-sd1y,
     $shadow-spread: $shadow-spread-sd1
 
 ) {
