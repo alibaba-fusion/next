@@ -368,7 +368,7 @@ export default class Balloon extends React.Component {
                 needAdjust={needAdjust}
                 animation={animation}
                 delay={delay}
-                autoFocus={autoFocus}
+                autoFocus={triggerType === 'focus' ? false : autoFocus}
                 safeNode={safeNode}
                 container={popupContainer || container}
                 className={popupClassName}
