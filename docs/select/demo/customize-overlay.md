@@ -2,7 +2,7 @@
 
 - order: 14
 
-通过 popupContent 定制 select 弹层
+通过 popupContent 定制 Select 弹层， 在 popupContent 中控制 Select 菜单项的渲染，也可以通过 valueRender 自定义渲染
 
 :::lang=en-us
 
