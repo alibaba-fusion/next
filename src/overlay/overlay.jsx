@@ -585,6 +585,12 @@ export default class Overlay extends Component {
                 'click',
                 this.handleDocumentClick
             );
+
+            this._touchEvents = events.on(
+                document,
+                'touchend',
+                this.handleDocumentClick
+            );
         }
     }
 
@@ -596,6 +602,11 @@ export default class Overlay extends Component {
         if (this._clickEvents) {
             this._clickEvents.off();
             this._clickEvents = null;
+        }
+
+        if (this._touchEvents) {
+            this._touchEvents.off();
+            this._touchEvents = null;
         }
     }
 
