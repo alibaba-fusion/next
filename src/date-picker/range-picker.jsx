@@ -172,6 +172,13 @@ export default class RangePicker extends Component {
          */
         dateCellRender: PropTypes.func,
         /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
+        /**
          * 开始日期输入框的 aria-label 属性
          */
         startDateInputAriaLabel: PropTypes.string,
@@ -682,6 +689,8 @@ export default class RangePicker extends Component {
             locale,
             inputProps,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             startDateInputAriaLabel,
             startTimeInputAriaLabel,
             endDateInputAriaLabel,
@@ -773,6 +782,8 @@ export default class RangePicker extends Component {
             <RangeCalendar
                 showOtherMonth
                 dateCellRender={dateCellRender}
+                monthCellRender={monthCellRender}
+                yearCellRender={yearCellRender}
                 format={this.format}
                 defaultVisibleMonth={defaultVisibleMonth}
                 onVisibleMonthChange={onVisibleMonthChange}

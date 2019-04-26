@@ -80,6 +80,13 @@ class RangeCalendar extends React.Component {
          * 自定义日期单元格渲染
          */
         dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -214,6 +221,8 @@ class RangeCalendar extends React.Component {
             prefix,
             rtl,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             className,
             format,
             locale,
@@ -269,6 +278,8 @@ class RangeCalendar extends React.Component {
             today: this.today,
             disabledDate,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             changeMode: this.changeMode,
             changeVisibleMonth: this.changeVisibleMonth,
         };

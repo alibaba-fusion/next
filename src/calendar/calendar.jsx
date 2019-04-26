@@ -81,6 +81,7 @@ class Calendar extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 不可选择的日期
          * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
@@ -215,6 +216,7 @@ class Calendar extends Component {
             locale,
             dateCellRender,
             monthCellRender,
+            yearCellRender,
             disabledDate,
             ...others
         } = this.props;
@@ -272,6 +274,7 @@ class Calendar extends Component {
             locale,
             dateCellRender,
             monthCellRender,
+            yearCellRender,
             disabledDate,
             momentLocale: localeData,
             today: this.today,
