@@ -20,6 +20,7 @@ import {
     CALENDAR_MODE_DATE,
     CALENDAR_MODE_MONTH,
     CALENDAR_MODE_YEAR,
+    getLocaleData,
 } from './utils';
 
 /** Calendar */
@@ -239,7 +240,10 @@ class Calendar extends Component {
             visibleMonth.locale(locale.momentLocale);
         }
 
-        const localeData = visibleMonth.localeData();
+        const localeData = getLocaleData(
+            locale.format || {},
+            visibleMonth.localeData()
+        );
 
         const headerProps = {
             prefix,

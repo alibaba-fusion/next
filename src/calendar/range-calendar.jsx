@@ -20,6 +20,7 @@ import {
     CALENDAR_MODE_DATE,
     CALENDAR_MODE_MONTH,
     CALENDAR_MODE_YEAR,
+    getLocaleData,
 } from './utils';
 
 class RangeCalendar extends React.Component {
@@ -238,8 +239,11 @@ class RangeCalendar extends React.Component {
         if (rtl) {
             others.dir = 'rtl';
         }
+        const localeData = getLocaleData(
+            locale.format || {},
+            startVisibleMonth.localeData()
+        );
 
-        const localeData = startVisibleMonth.localeData();
         const endVisibleMonth = startVisibleMonth.clone().add(1, 'months');
 
         const headerProps = {
