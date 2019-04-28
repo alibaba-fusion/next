@@ -28,7 +28,8 @@ const dataSource = ['selectable tag', 'I like orange', 'small tag', 'disabled', 
 
 class Demo extends React.Component {
     state = {
-        value: ['I like orange', 'disabled & checked']
+        value: ['I like orange', 'disabled & checked'],
+        singleValue: 'selectable tag'
     };
 
     handleChange(name, checked) {
@@ -36,6 +37,13 @@ class Demo extends React.Component {
         const next = checked ? [...value, name] : value.filter(n => n !== name);
 
         this.setState({value: next});
+    }
+
+    handleChangeSingle(name, checked) {
+        const {singleValue} = this.state;
+        const next = checked ? name : '';
+
+        this.setState({singleValue: next});
     }
 
     renderTagList(props) {
@@ -51,6 +59,19 @@ class Demo extends React.Component {
         ));
     }
 
+    renderTagListSingle(props) {
+        const {singleValue} = this.state;
+
+        return dataSource.map((name, i) => (
+            <SelectableTag key={name}
+                checked={singleValue === name}
+                disabled={i > 2}
+                size={i === 2 ? 'small' : undefined}
+                onChange={this.handleChangeSingle.bind(this, name)}
+                {...props}>{name}</SelectableTag>
+        ));
+    }
+
     render() {
         return (
             <div className="tag-list">
@@ -58,6 +79,8 @@ class Demo extends React.Component {
                 <TagGroup>{this.renderTagList({type: 'normal'})}</TagGroup>
                 <h4>type: 'primary'</h4>
                 <TagGroup>{this.renderTagList({type: 'primary'})}</TagGroup>
+                <h4>Controlled Tags: Only one selected at a time</h4>
+                <TagGroup>{this.renderTagListSingle({type: 'normal'})}</TagGroup>
             </div>
         );
     }
