@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { obj, func } from '../util';
 import Tag from './tag';
 
@@ -51,6 +52,16 @@ class Selectable extends Component {
         bindCtx(this, ['handleClick']);
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if (props.checked !== undefined && props.checked !== state.checked) {
+            return {
+                checked: props.checked,
+            };
+        }
+
+        return null;
+    }
+
     handleClick(e) {
         e && e.preventDefault();
         // IE9 不支持 pointer-events，还是可能会触发 click 事件
@@ -97,4 +108,4 @@ class Selectable extends Component {
     }
 }
 
-export default Selectable;
+export default polyfill(Selectable);
