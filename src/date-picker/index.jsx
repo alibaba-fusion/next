@@ -49,6 +49,10 @@ const transform = (props, deprecated) => {
         deprecated('format', 'format: PropTypes.string,', 'DatePicker');
     }
 
+    if ('ranges' in props) {
+        deprecated('ranges', 'footerRender: PropTypes.func', 'RangePicker');
+    }
+
     return newProps;
 };
 
