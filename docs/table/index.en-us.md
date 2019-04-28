@@ -150,6 +150,7 @@ ReactDOM.render(
 | cell                 | cell rendering logic                      | ReactElement/ReactNode/Function | () => '' |
 | hasChildrenSelection | whether to render selection on Children    | Boolean                         | false    |
 | hasSelection         | whether to render selection on GroupHeader | Boolean                         | true     |
+| useFirstLevelDataWhenNoChildren | use the first level data when there is no children in dataSouce | Boolean                         | false    |
 
 ### Table.GroupFooter
 
