@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { obj, func } from '../util';
 import Tag from './tag';
 
@@ -107,4 +108,4 @@ class Selectable extends Component {
     }
 }
 
-export default Selectable;
+export default polyfill(Selectable);
