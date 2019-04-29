@@ -1,8 +1,9 @@
-# Introduction
+# Step Two: CheckList
+# 1. Introduction
 
 **Who:** Developers<br />**What:** Checklist of the most important web a11y elements. Much is taken directly from [https://a11yproject.com/checklist.html](https://a11yproject.com/checklist.html). Many additions are made to their categories and other categories are added.<br />**Why:** Easier than having a huge list of everything to include. For that you can check the [Web Accessibility Guidelines](https://yuque.antfin-inc.com/fusion-design-system/a11y/cyzv9o).
 
-# Checklist
+# 2. Checklist
 
 ## Landmarks
 ARIA Landmark roles can help assistive technology users to quickly navigate to and past blocks of content in a web interface.

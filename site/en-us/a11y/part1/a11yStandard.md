@@ -1,3 +1,5 @@
+# Web Accessibility Standard
+
 # 1. WCAG 2.1
 The W3C created a set of guidelines for making websites more accessible, the Web Content Accessibility Guidelines (WCAG) . The most recent version of the WCAG is version 2.1, which exists at the [official website](https://www.w3.org/TR/WCAG21/). This is used as the definitive guide for making a website accessible.
 

@@ -1,3 +1,5 @@
+# Summarize
+
 In our web accessibility transformation, we recommend following the following steps:
 
 1. Using Fusion components, with the a11y ability inside of Fusion, we can realize the first step of accessibility transformation.
@@ -8,8 +10,8 @@ Finally, through automated testing tools, we will find the remaining details to 
 
 Please refer to our document for detailed steps:
 
-* Step 1: [Using Fusion Components](component-usage.md)
-* Step 2: [Checklist](checklist.md)
-* Step 3: [Content Creation](content-creation.md)
+* Step One: [Using Fusion Components](component-usage.md)
+* Step Two: [Checklist](checklist.md)
+* Step Three: [Content Creation](content-creation.md)
 
 > A11y transformation process, like taking stones, small stones, sand, water to fill the water bottle, layer by layer.
