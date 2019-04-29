@@ -518,4 +518,67 @@ describe('Issue', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('should support useFirstLevelDataWhenNoChildren', () => {
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table
+                        dataSource={[
+                            {
+                                price: 'US $3',
+                                status: 3,
+                                parent: 'root',
+                                id: 3,
+                                product: [
+                                    {
+                                        title:
+                                            "2014 New Fashion Novelty Tank Slim Women's Fashion Dresses With Lace",
+                                        avatar:
+                                            'https://sc01.alicdn.com/kf/HTB1ravHKXXXXXccXVXXq6xXFXXXJ/Chinese-Style-Fashion-Custom-Digital-Print-Silk.jpg_220x220.jpg',
+                                    },
+                                ],
+                            },
+                        ]}
+                    >
+                        <Table.GroupHeader
+                            useFirstLevelDataWhenNoChildren
+                            cell={() => {
+                                return <div>title</div>;
+                            }}
+                        />
+                        <Table.Column
+                            cell={product => {
+                                return product[0].title;
+                            }}
+                            title="Product Details"
+                            dataIndex="product"
+                        />
+                        <Table.Column
+                            title="Price"
+                            dataIndex="price"
+                            width={120}
+                        />
+                        <Table.Column
+                            title="Status"
+                            dataIndex="status"
+                            width={100}
+                        />
+                        <Table.Column title="Operation" width={100} />
+                    </Table>
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        assert(
+            document.querySelectorAll('.next-table-group-header + tr')
+                .length === 1
+        );
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
 });
