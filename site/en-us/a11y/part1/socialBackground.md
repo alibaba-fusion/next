@@ -1,3 +1,6 @@
+# Social Background
+
+# 1. Importance
 > The power of the Web is in its universality.
 > Access by everyone regardless of disability is an essential aspect.
 > *<div style="text-align: right;">-Tim Berners-Lee, W3C Director and inventor of the World Wide Web</div>*
@@ -6,7 +9,7 @@ Accessibility is very important for making the utility of the Web open to everyo
 
 Making a website more accessible is not just important to protect against potential legal action, it can improve customer satisfaction, reduce customer service inquiries, and potentially add or retain customers with accessibility impairments.
 
-# 1. Terminology
+# 2. Terminology
 There are lots of terms, acronyms, and abbreviations in the field of Accessibility.
 
 - **A11y**
