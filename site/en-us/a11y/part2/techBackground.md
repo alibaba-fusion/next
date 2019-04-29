@@ -1,3 +1,5 @@
+# Tech Background
+
 # 1. The Principle of Screen Reader
 
 There are many accessibility assistive technologies, such as screen magnifier, screen reader, text-to-speech software, speech recognition software, etc. Among which screen reader is the most commonly used. Screen readers help blind or amblyopic people use apps by reading content displayed on the screen aloud.
@@ -11,6 +13,7 @@ There are many screen readers, for example:
 * Chrome Plugin
   * [ChromeVox](https://chrome.google.com/webstore/detail/chromevox/kgejglhpjiefppelpmljglcjbhoiplfn)
 
+**Accessibility Tree**:
 Assistive Technologies do not interact directly with a webpage's DOM, instead interacting with something call the Accessibility Tree. Here is the sequence of events as described at [http://whatsock.com/training/](http://whatsock.com/training/)
 
 > 1. The browser builds a DOM using HTML markup from the server.
