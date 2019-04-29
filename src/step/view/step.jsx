@@ -2,9 +2,8 @@ import React, { Component, Children } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { support, events, dom, KEYCODE, func } from '../../util';
+import { support, events, dom } from '../../util';
 
-const { makeChain } = func;
 const getHeight = el => dom.getStyle(el, 'height');
 const setHeight = (el, height) => dom.setStyle(el, 'height', height);
 
@@ -138,38 +137,38 @@ export default class Step extends Component {
     }
 
     // set dir key for aria handle
-    handleKeyDown = e => {
-        const { shape, children } = this.props;
-        const { length: max } = children;
-        let { currentfocus } = this.state;
-        const initPosition = currentfocus;
-        switch (e.keyCode) {
-            case KEYCODE.RIGHT:
-            case KEYCODE.DOWN:
-                currentfocus++;
-                break;
-            case KEYCODE.LEFT:
-            case KEYCODE.UP:
-                currentfocus--;
-                break;
-            default:
-                break;
-        }
-        currentfocus =
-            currentfocus >= max ? 0 : currentfocus < 0 ? max - 1 : currentfocus;
-        this.setState({ currentfocus }, () => {
-            const child = this.step.children[currentfocus];
-            if (!child) return;
-            const focusItem =
-                shape === 'arrow'
-                    ? child
-                    : child.querySelector('.next-step-item-body');
-            focusItem && focusItem.focus();
-        });
-        if (initPosition !== currentfocus) {
-            e.preventDefault();
-        }
-    };
+    // handleKeyDown = e => {
+    //     const { shape, children } = this.props;
+    //     const { length: max } = children;
+    //     let { currentfocus } = this.state;
+    //     const initPosition = currentfocus;
+    //     switch (e.keyCode) {
+    //         case KEYCODE.RIGHT:
+    //         case KEYCODE.DOWN:
+    //             currentfocus++;
+    //             break;
+    //         case KEYCODE.LEFT:
+    //         case KEYCODE.UP:
+    //             currentfocus--;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     currentfocus =
+    //         currentfocus >= max ? 0 : currentfocus < 0 ? max - 1 : currentfocus;
+    //     this.setState({ currentfocus }, () => {
+    //         const child = this.step.children[currentfocus];
+    //         if (!child) return;
+    //         const focusItem =
+    //             shape === 'arrow'
+    //                 ? child
+    //                 : child.querySelector('.next-step-item-body');
+    //         focusItem && focusItem.focus();
+    //     });
+    //     if (initPosition !== currentfocus) {
+    //         e.preventDefault();
+    //     }
+    // };
 
     _getValidChildren(children) {
         const result = [];
@@ -230,7 +229,8 @@ export default class Step extends Component {
                 parentHeight,
                 readOnly,
                 animation,
-                tabIndex: this.state.currentfocus === index ? '0' : '-1',
+                tabIndex: 0,
+                // tabIndex: this.state.currentfocus === index ? '0' : '-1',
                 'aria-current': status === 'process' ? 'step' : null,
                 itemRender: child.props.itemRender
                     ? child.props.itemRender
@@ -258,7 +258,7 @@ export default class Step extends Component {
             others.dir = 'rtl';
         }
 
-        others.onKeyDown = makeChain(this.handleKeyDown, others.onKeyDown);
+        // others.onKeyDown = makeChain(this.handleKeyDown, others.onKeyDown);
 
         return (
             <ol {...others} className={stepCls} ref={this._stepRefHandler}>
