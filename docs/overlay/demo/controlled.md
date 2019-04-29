@@ -55,21 +55,21 @@ class Demo extends React.Component {
                 </div>
                 <br />
                 <div>
-                    <Popup trigger={<button style={{"margin-right": "50px"}} ref={ref => {this.btn1 = ref}}>Paired Popup 1</button>}
+                    <Popup trigger={<button style={{"margin-right": "50px"}} ref={ref => {this.btn1 = ref;}}>Paired Popup 1</button>}
                         triggerType="click"
                         visible={this.state.groupVisible}
                         safeNode={[() => this.btn2, () => this.overlay2]}
                         onVisibleChange={this.onGroupVisibleChange}>
-                        <span className="overlay-demo" ref={ref => {this.overlay1 = ref}}>
+                        <span className="overlay-demo" ref={ref => {this.overlay1 = ref;}}>
                             Hello World From Popup!
                         </span>
                     </Popup>
-                    <Popup trigger={<button ref={ref => {this.btn2 = ref}}>Paired Popup 2</button>}
+                    <Popup trigger={<button ref={ref => {this.btn2 = ref;}}>Paired Popup 2</button>}
                         triggerType="click"
                         visible={this.state.groupVisible}
                         safeNode={[() => this.btn1, () => this.overlay1]}
                         onVisibleChange={this.onGroupVisibleChange}>                  
-                        <span className="overlay-demo" ref={ref => {this.overlay2 = ref}}>
+                        <span className="overlay-demo" ref={ref => {this.overlay2 = ref;}}>
                             Hello World From Popup!
                         </span>
                     </Popup>
