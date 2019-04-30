@@ -870,9 +870,16 @@ describe('RangePicker', () => {
                 Today: [ now, now ],
                 'First Week': [ start, end ],
             };
-            wrapper = mount(<RangePicker defaultVisible ranges={quickRanges} />);
+            const handleChange = (values) => {
+                assert(values[0].isSame(start));
+                assert(values[1].isSame(end));
+            }
+            wrapper = mount(<RangePicker defaultVisible onChange={handleChange} ranges={quickRanges} />);
 
             assert(wrapper.find('.next-date-picker-panel-tools').length > 0);
+
+            wrapper.find('.next-date-picker-panel-tools .next-btn').at(1).simulate('click');
+            // assert(wrapper.instance().getInstance().startValue && wrapper.instance().getInstance().startValue.isSame(start));
         });
     });
 
