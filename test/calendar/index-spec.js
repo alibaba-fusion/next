@@ -6,6 +6,7 @@ import moment from 'moment';
 import Calendar from '../../src/calendar/index';
 import RangeCalendar from '../../src/calendar/range-calendar';
 import '../../src/calendar/style.js';
+import { getLocaleData } from '../../src/calendar/utils/index';
 
 Enzyme.configure({
     adapter: new Adapter(),
@@ -138,6 +139,14 @@ describe('Calendar', () => {
                     locale={locale}
                 />
             );
+
+            const localeData = getLocaleData(locale.format, moment().localeData());
+            assert(localeData.monthsShort() === locale.format.shortMonths);
+            assert(localeData.months() === locale.format.months);
+            assert(localeData.firstDayOfWeek() === moment().localeData().firstDayOfWeek());
+            assert(localeData.weekdays() === locale.format.weekdays);
+            assert(localeData.weekdaysShort() === locale.format.shortWeekdays);
+            assert(localeData.weekdaysMin() === locale.format.veryShortWeekdays);
 
             assert(wrapper.find('.next-calendar-th').at(0).text() === locale.format.shortWeekdays[moment().localeData().firstDayOfWeek()]);
         });
