@@ -74,6 +74,7 @@ class NumberPicker extends React.Component {
          * @param {Object} obj {currentValue,oldValue:String}
          */
         onCorrect: PropTypes.func,
+        onDisabled: PropTypes.func, // 兼容0.x onDisabled
         /**
          * 最大值
          */
@@ -122,6 +123,7 @@ class NumberPicker extends React.Component {
         onKeyDown: func.noop,
         onBlur: func.noop,
         onCorrect: func.noop,
+        onDisabled: func.noop,
     };
 
     constructor(props) {
@@ -352,14 +354,14 @@ class NumberPicker extends React.Component {
         return value;
     }
 
-    step(type, e) {
+    step(type, disabled, e) {
         if (e) {
             e.preventDefault();
         }
 
-        const { disabled, min, max } = this.props;
+        const { onDisabled, min, max } = this.props;
         if (disabled) {
-            return;
+            return onDisabled(e);
         }
 
         const value = this.state.value;
@@ -377,12 +379,12 @@ class NumberPicker extends React.Component {
         this.setValue(val, e, type);
     }
 
-    down(e) {
-        this.step('down', e);
+    down(disabled, e) {
+        this.step('down', disabled, e);
     }
 
-    up(e) {
-        this.step('up', e);
+    up(disabled, e) {
+        this.step('up', disabled, e);
     }
 
     renderValue() {
@@ -454,8 +456,9 @@ class NumberPicker extends React.Component {
                 <Button
                     {...upBtnProps}
                     onMouseDown={this.handleMouseDown}
-                    disabled={disabled || upDisabled}
-                    onClick={this.up.bind(this)}
+                    disabled={disabled}
+                    className={upDisabled ? 'disabled' : null}
+                    onClick={this.up.bind(this, upDisabled)}
                     key="0"
                 >
                     <Icon size="xxs" type="arrow-up" />
@@ -463,8 +466,9 @@ class NumberPicker extends React.Component {
                 <Button
                     {...downBtnProps}
                     onMouseDown={this.handleMouseDown}
-                    disabled={disabled || downDisabled}
-                    onClick={this.down.bind(this)}
+                    disabled={disabled}
+                    className={downDisabled ? 'disabled' : null}
+                    onClick={this.down.bind(this, downDisabled)}
                     key="1"
                 >
                     <Icon size="xxs" type="arrow-down" />
@@ -476,8 +480,9 @@ class NumberPicker extends React.Component {
                 <Button
                     {...downBtnProps}
                     size={size}
-                    disabled={disabled || downDisabled}
-                    onClick={this.down.bind(this)}
+                    disabled={disabled}
+                    className={downDisabled ? 'disabled' : null}
+                    onClick={this.down.bind(this, downDisabled)}
                 >
                     <Icon type="minus" size="xs" />
                 </Button>
@@ -486,8 +491,9 @@ class NumberPicker extends React.Component {
                 <Button
                     {...upBtnProps}
                     size={size}
-                    disabled={disabled || upDisabled}
-                    onClick={this.up.bind(this)}
+                    disabled={disabled}
+                    className={upDisabled ? 'disabled' : null}
+                    onClick={this.up.bind(this, upDisabled)}
                 >
                     <Icon type="add" size="xs" />
                 </Button>
