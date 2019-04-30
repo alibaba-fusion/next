@@ -5,7 +5,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import ConfigProvider from '../config-provider';
-import { func, obj } from '../util';
+import { func, obj, log } from '../util';
 
 /** NumberPicker */
 class NumberPicker extends React.Component {
@@ -421,8 +421,8 @@ class NumberPicker extends React.Component {
             autoFocus,
             editable,
             state,
-            upBtnProps,
-            downBtnProps,
+            upBtnProps = {},
+            downBtnProps = {},
         } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
@@ -457,7 +457,9 @@ class NumberPicker extends React.Component {
                     {...upBtnProps}
                     onMouseDown={this.handleMouseDown}
                     disabled={disabled}
-                    className={upDisabled ? 'disabled' : null}
+                    className={`${upBtnProps.className || ''} ${
+                        upDisabled ? 'disabled' : ''
+                    }`}
                     onClick={this.up.bind(this, upDisabled)}
                     key="0"
                 >
@@ -467,7 +469,9 @@ class NumberPicker extends React.Component {
                     {...downBtnProps}
                     onMouseDown={this.handleMouseDown}
                     disabled={disabled}
-                    className={downDisabled ? 'disabled' : null}
+                    className={`${downBtnProps.className || ''} ${
+                        downDisabled ? 'disabled' : ''
+                    }`}
                     onClick={this.down.bind(this, downDisabled)}
                     key="1"
                 >
@@ -481,7 +485,9 @@ class NumberPicker extends React.Component {
                     {...downBtnProps}
                     size={size}
                     disabled={disabled}
-                    className={downDisabled ? 'disabled' : null}
+                    className={`${downBtnProps.className || ''} ${
+                        downDisabled ? 'disabled' : ''
+                    }`}
                     onClick={this.down.bind(this, downDisabled)}
                 >
                     <Icon type="minus" size="xs" />
@@ -492,7 +498,9 @@ class NumberPicker extends React.Component {
                     {...upBtnProps}
                     size={size}
                     disabled={disabled}
-                    className={upDisabled ? 'disabled' : null}
+                    className={`${upBtnProps.className || ''} ${
+                        upDisabled ? 'disabled' : ''
+                    }`}
                     onClick={this.up.bind(this, upDisabled)}
                 >
                     <Icon type="add" size="xs" />
@@ -535,4 +543,12 @@ class NumberPicker extends React.Component {
     }
 }
 
-export default ConfigProvider.config(NumberPicker);
+export default ConfigProvider.config(NumberPicker, {
+    transform: /* istanbul ignore next */ props => {
+        if ('onDisabled' in props && typeof props.onDisabled === 'function') {
+            log.warning('[NumberPicker]: onDisabled is deleted!');
+        }
+
+        return props;
+    },
+});
