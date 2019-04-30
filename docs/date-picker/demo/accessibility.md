@@ -22,7 +22,7 @@ const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 const onChange = val => console.log(val);
 
 ReactDOM.render(<div>
-    <DatePicker onChange={onChange} /> <br /><br />
-    <RangePicker onChange={onChange} />
+    <DatePicker dateInputAriaLabel="date input" inputProps={{"aria-label": "date picker main"}}  onChange={onChange} /> <br /><br />
+    <RangePicker startDateInputAriaLabel="start date" startTimeInputAriaLabel="start time" endDateInputAriaLabel="end date" endTimeInputAriaLabel="end time" onChange={onChange} inputProps={{"aria-label": "range picker main"}} />
 </div>, mountNode);
 ````
