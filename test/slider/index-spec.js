@@ -419,12 +419,16 @@ describe('slider', function() {
             });
         });
 
-        it('should call onChange hook', () => {
+        it('should call onChange onBeforeChange hook', () => {
             const settings = {
                 infinite: false,
                 onChange: index => {
                     assert(index === 1);
                 },
+                onBeforeChange: (currentIndex, index) => {
+                    assert(currentIndex === 0);
+                    assert(index === 1);
+                }
             };
 
             wrapper = mount(<Slider {...settings}>{slides}</Slider>);
