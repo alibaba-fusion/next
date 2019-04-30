@@ -123,6 +123,7 @@ class Loading extends React.Component {
 
         const tipCls = classNames({
             [`${prefix}loading-tip`]: true,
+            [`${prefix}loading-tip-fullscreen`]: fullScreen,
             // 默认非 right就是 bottom
             [`${prefix}loading-right-tip`]: tipAlign === 'right',
         });

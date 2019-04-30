@@ -105,6 +105,15 @@ describe('TagCheckable', () => {
             const wrapper = mount(<TagCheckable checked />);
             assert(wrapper.find('.next-tag').hasClass('checked'));
         });
+
+        it('should update `checked` state when new props', () => {
+            const wrapper = mount(<TagCheckable checked/>);
+
+            wrapper.setProps({
+                checked: false
+            })
+            assert(wrapper.children().first().state('checked') === false)
+        });
     });
 
     describe('behavior', () => {

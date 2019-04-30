@@ -177,7 +177,6 @@ export default class Button extends Component {
                 dir={rtl ? 'rtl' : undefined}
                 onMouseUp={this.onMouseUp}
                 ref={this.buttonRefHandler}
-                role="button"
             >
                 {clonedChildren}
             </TagName>

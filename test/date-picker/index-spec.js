@@ -143,6 +143,31 @@ describe('DatePicker', () => {
             assert(ret.format('YYYY-MM-DD HH:mm:ss') === '2017-11-11 11:11:11');
         });
 
+        it('should input null value in picker', () => {
+            let ret;
+            wrapper = mount(
+                <DatePicker
+                    onChange={val => (ret = val)}
+                    value="2018-02-02"
+                    defaultVisible
+                />
+            );
+            wrapper.find('.next-date-picker-input input').simulate('click');
+            wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(0)
+                .simulate('change', { target: { value: '' } });
+            wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(0)
+                .simulate('blur');
+
+            wrapper
+                .find('td[title="2018-02-09"] .next-calendar-date')
+                .simulate('click');
+            assert(ret === '2018-02-09');
+        });
+
         it('should input disabled date in picker', () => {
             let ret;
             wrapper = mount(
@@ -455,6 +480,31 @@ describe('YearPicker', () => {
             assert(ret.format('YYYY') === '2017');
         });
 
+        it('should input null value in picker', () => {
+            let ret;
+            wrapper = mount(
+                <YearPicker
+                    onChange={val => (ret = val)}
+                    value="2018"
+                    defaultVisible
+                />
+            );
+            wrapper.find('.next-year-picker-input input').simulate('click');
+            wrapper
+                .find('.next-year-picker-panel-input input')
+                .at(0)
+                .simulate('change', { target: { value: '' } });
+            wrapper
+                .find('.next-year-picker-panel-input input')
+                .at(0)
+                .simulate('blur');
+
+            wrapper
+                .find('.next-calendar-year').at(3)
+                .simulate('click');
+            assert(ret === '2012');
+        });
+
         it('should input disabled date in picker', () => {
             let ret;
             wrapper = mount(
@@ -619,6 +669,31 @@ describe('MonthPicker', () => {
                 .find('.next-month-picker-panel-input input')
                 .simulate('blur');
             assert(ret.format('YYYY-MM') === '2017-11');
+        });
+
+        it('should input null value in picker', () => {
+            let ret;
+            wrapper = mount(
+                <MonthPicker
+                    onChange={val => (ret = val)}
+                    value="2018-02"
+                    defaultVisible
+                />
+            );
+            wrapper.find('.next-month-picker-input input').simulate('click');
+            wrapper
+                .find('.next-month-picker-panel-input input')
+                .at(0)
+                .simulate('change', { target: { value: '' } });
+            wrapper
+                .find('.next-month-picker-panel-input input')
+                .at(0)
+                .simulate('blur');
+
+            wrapper
+                .find('.next-calendar-month').at(3)
+                .simulate('click');
+            assert(ret === '2018-04');
         });
 
         it('should input disabled date in picker', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.14.0",
+  "version": "1.14.2",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -70,6 +70,7 @@
     "classnames": "^2.2.3",
     "hoist-non-react-statics": "^2.1.0",
     "prop-types": "^15.6.0",
+    "react-lifecycles-compat": "^3.0.4",
     "react-transition-group": "^2.2.1",
     "shallow-element-equals": "^1.0.1"
   },
@@ -163,6 +164,7 @@
     "sassaby-next": "^3.0.0",
     "simulate-event": "^1.4.0",
     "sinon": "^5.0.10",
+    "solarlunar": "^2.0.7",
     "style-loader": "^0.18.2",
     "stylelint": "^9.2.1",
     "stylelint-scss": "^3.1.1",
