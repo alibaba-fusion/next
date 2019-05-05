@@ -25,7 +25,7 @@ Buttons are used for emphasizing important functions on your page.
 | type      | Typeo of button<br><br>**return**:<br>'primary', 'secondary', 'normal'                                                    | Enum     | 'normal' |
 | iconSize  | Size of icon in button <br><br>**return**:<br>'xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl' | Enum     | -        |
 | htmlType  | Original html type <br><br>**return**:<br>'submit', 'reset', 'button'  | Enum     | 'button' |
-| component | The html tag to be rendered <br><br>**return**:<br>'button', 'a'                                                                      | Enum     | 'button' |
+| component | The html tag to be rendered <br><br>**return**:<br>'button', 'a', 'div', 'span'                                                                       | Enum     | 'button' |
 | loading   | Loading state of a button | Boolean  | false    |
 | ghost     | Setting ghost button<br><br>**return**:<br>true, false, 'light', 'dark'                                                      | Enum     | false    |
 | text      | Setting text button | Boolean  | false    |
