@@ -60,7 +60,7 @@ const transform = (props, deprecated) => {
         deprecated('disabledYear', 'disabledDate', 'Calendar');
     }
 
-    if ('yearCellRender' in props) {
+    if ('yearCellRender' in props && typeof yearCellRender === 'function') {
         deprecated(
             'yearCellRender',
             'monthCellRender/dateCellRender',

@@ -151,6 +151,8 @@ const helpers = {
                 delete this.animationEndCallback;
             };
 
+            this.props.onBeforeChange(this.state.currentSlide, targetSlide);
+
             this.setState(
                 {
                     animating: true,
@@ -285,6 +287,8 @@ const helpers = {
                 });
             }
         }
+
+        this.props.onBeforeChange(this.state.currentSlide, currentSlide);
 
         // Slide Transition happens here.
         // animated transition happens to target Slide and

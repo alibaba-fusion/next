@@ -172,6 +172,13 @@ export default class RangePicker extends Component {
          */
         dateCellRender: PropTypes.func,
         /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
+        /**
          * 开始日期输入框的 aria-label 属性
          */
         startDateInputAriaLabel: PropTypes.string,
@@ -187,6 +194,7 @@ export default class RangePicker extends Component {
          * 结束时间输入框的 aria-label 属性
          */
         endTimeInputAriaLabel: PropTypes.string,
+        ranges: PropTypes.object,
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -263,7 +271,7 @@ export default class RangePicker extends Component {
         }
     }
 
-    onValueChange(values, handler = 'onChange') {
+    onValueChange = (values, handler = 'onChange') => {
         let ret;
         if (!values.length || !this.inputAsString) {
             ret = values;
@@ -274,7 +282,7 @@ export default class RangePicker extends Component {
             ];
         }
         this.props[handler](ret);
-    }
+    };
 
     onSelectCalendarPanel = value => {
         const { showTime, resetTime } = this.props;
@@ -668,6 +676,7 @@ export default class RangePicker extends Component {
             disabledDate,
             footerRender,
             label,
+            ranges = {}, // 兼容0.x ranges 属性
             state: inputState,
             size,
             disabled,
@@ -682,6 +691,8 @@ export default class RangePicker extends Component {
             locale,
             inputProps,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             startDateInputAriaLabel,
             startTimeInputAriaLabel,
             endDateInputAriaLabel,
@@ -773,6 +784,8 @@ export default class RangePicker extends Component {
             <RangeCalendar
                 showOtherMonth
                 dateCellRender={dateCellRender}
+                monthCellRender={monthCellRender}
+                yearCellRender={yearCellRender}
                 format={this.format}
                 defaultVisibleMonth={defaultVisibleMonth}
                 onVisibleMonthChange={onVisibleMonthChange}
@@ -888,6 +901,17 @@ export default class RangePicker extends Component {
             <PanelFooter
                 prefix={prefix}
                 value={state.startValue && state.endValue}
+                ranges={Object.keys(ranges).map(key => ({
+                    label: key,
+                    value: ranges[key],
+                    onChange: values => {
+                        this.setState({
+                            startValue: values[0],
+                            endValue: values[1],
+                        });
+                        this.onValueChange(values);
+                    },
+                }))}
                 disabledOk={
                     !state.startValue ||
                     !state.endValue ||

@@ -126,6 +126,7 @@ class MonthPicker extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 日期输入框的 aria-label 属性
          */
@@ -321,6 +322,7 @@ class MonthPicker extends Component {
             className,
             inputProps,
             monthCellRender,
+            yearCellRender,
             dateInputAriaLabel,
             ...others
         } = this.props;
@@ -380,6 +382,7 @@ class MonthPicker extends Component {
                 shape="panel"
                 modes={['month', 'year']}
                 monthCellRender={monthCellRender}
+                yearCellRender={yearCellRender}
                 value={value}
                 onSelect={this.onSelectCalendarPanel}
                 defaultVisibleMonth={defaultVisibleYear}

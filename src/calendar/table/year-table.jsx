@@ -22,6 +22,7 @@ class YearTable extends React.PureComponent {
             disabledDate,
             goPrevDecade,
             goNextDecade,
+            yearCellRender,
         } = this.props;
         const currentYear = today.year();
         const selectedYear = value ? value.year() : null;
@@ -53,13 +54,14 @@ class YearTable extends React.PureComponent {
                     content = <Icon type="arrow-right" size="xs" />;
                 } else {
                     year = startYear + counter++;
-                    content = year;
                     title = year;
                     const yearDate = visibleMonth.clone().year(year);
                     isDisabled = isDisabledDate(yearDate, disabledDate, 'year');
 
                     !isDisabled &&
                         (onClick = this.onYearCellClick.bind(this, yearDate));
+
+                    content = yearCellRender ? yearCellRender(yearDate) : year;
                 }
 
                 const isSelected = year === selectedYear;

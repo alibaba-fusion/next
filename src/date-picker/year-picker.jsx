@@ -115,6 +115,7 @@ class YearPicker extends Component {
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 日期输入框的 aria-label 属性
          */
@@ -310,6 +311,7 @@ class YearPicker extends Component {
             className,
             inputProps,
             dateInputAriaLabel,
+            yearCellRender,
             ...others
         } = this.props;
 
@@ -367,6 +369,7 @@ class YearPicker extends Component {
                 shape="panel"
                 modes={['year']}
                 value={value}
+                yearCellRender={yearCellRender}
                 onSelect={this.onSelectCalendarPanel}
                 disabledDate={disabledDate}
             />

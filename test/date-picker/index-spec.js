@@ -860,6 +860,27 @@ describe('RangePicker', () => {
             assert(wrapper.find('.next-range-picker-panel-input-end-date input').prop('aria-label') === 'Ho Ho Ho3!');
             assert(wrapper.find('.next-range-picker-panel-input-end-time input').prop('aria-label') === 'Ho Ho Ho4!');
         });
+
+        it('should support ranges', () => {
+            const now = new Date();
+            const start = (new Date()).setDate(1);
+            const end = (new Date()).setDate(7);
+
+            const quickRanges = {
+                Today: [ now, now ],
+                'First Week': [ start, end ],
+            };
+            const handleChange = (values) => {
+                assert(values[0].isSame(start));
+                assert(values[1].isSame(end));
+            }
+            wrapper = mount(<RangePicker defaultVisible onChange={handleChange} ranges={quickRanges} />);
+
+            assert(wrapper.find('.next-date-picker-panel-tools').length > 0);
+
+            wrapper.find('.next-date-picker-panel-tools .next-btn').at(1).simulate('click');
+            // assert(wrapper.instance().getInstance().startValue && wrapper.instance().getInstance().startValue.isSame(start));
+        });
     });
 
     describe('action', () => {
