@@ -72,6 +72,7 @@ class FunctionDemo extends React.Component {
 
         const otherProps = {
             hasClear: true,
+            popupContainer: (node) => node,
         };
 
         if (hasLabel) {
