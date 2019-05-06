@@ -396,6 +396,10 @@ export default class DatePicker extends Component {
                 value: newValue,
                 ...others,
             });
+        } else {
+            this.setState({
+                ...others,
+            });
         }
 
         const newValueOf = newValue ? newValue.valueOf() : null;

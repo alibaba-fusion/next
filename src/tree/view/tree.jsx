@@ -677,10 +677,13 @@ export default class Tree extends Component {
 
             onCheck(newCheckedKeys, {
                 checkedNodes: this.getNodes(checkedKeys),
-                checkedNodesPositions: checkedKeys.map(key => {
-                    const { node, pos } = this._k2n[key];
-                    return { node, pos };
-                }),
+                checkedNodesPositions: checkedKeys
+                    .map(key => {
+                        if (!this._k2n[key]) return null;
+                        const { node, pos } = this._k2n[key];
+                        return { node, pos };
+                    })
+                    .filter(v => !!v),
                 node,
                 indeterminateKeys: this.indeterminateKeys,
                 checked: check,
@@ -749,10 +752,13 @@ export default class Tree extends Component {
 
         onCheck(newCheckedKeys, {
             checkedNodes: this.getNodes(newCheckedKeys),
-            checkedNodesPositions: newCheckedKeys.map(key => {
-                const { node, pos } = this._k2n[key];
-                return { node, pos };
-            }),
+            checkedNodesPositions: newCheckedKeys
+                .map(key => {
+                    if (!this._k2n[key]) return null;
+                    const { node, pos } = this._k2n[key];
+                    return { node, pos };
+                })
+                .filter(v => !!v),
             node,
             indeterminateKeys,
             checked: check,
@@ -798,7 +804,9 @@ export default class Tree extends Component {
     }
 
     getNodes(keys) {
-        return keys.map(key => this._k2n[key].node);
+        return keys
+            .map(key => this._k2n[key] && this._k2n[key].node)
+            .filter(v => !!v);
     }
 
     getIndeterminateKeys(checkedKeys) {

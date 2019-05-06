@@ -1,11 +1,11 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
 import { KEYCODE, dom } from '../../src/util';
 import Tab from '../../src/tab/index';
-import Nav from '../../src/tab/tabs/nav';
 import '../../src/tab/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -375,7 +375,7 @@ describe('Tab', () => {
         it('should render excess tabs with slides', done => {
             wrapper = mount(
                 <div style={boxStyle}>
-                    <Tab>{panes}</Tab>
+                    <Tab animation={false}>{panes}</Tab>
                 </div>,
                 { attachTo: target }
             );
@@ -423,30 +423,6 @@ describe('Tab', () => {
             }, 300);
         });
 
-        it('should render excess tabs with dropdown', () => {
-            wrapper = mount(
-                <div style={boxStyle}>
-                    <Tab excessMode="dropdown" shape="wrapped">
-                        {panes}
-                    </Tab>
-                </div>,
-                { attachTo: target }
-            );
-            assert(wrapper.find('.next-tabs-btn-down').length === 1);
-            wrapper.find('.next-tabs-btn-down').simulate('click');
-            assert(wrapper.find('.next-overlay-wrapper').length === 1);
-            wrapper
-                .find('.next-menu-item')
-                .at(0)
-                .simulate('click');
-            assert(
-                wrapper
-                    .find('.next-menu-item')
-                    .at(0)
-                    .hasClass('next-selected')
-            );
-        });
-
         it('should not render dropdown if not excessed', () => {
             wrapper = mount(
                 <div style={boxStyle}>
@@ -457,6 +433,16 @@ describe('Tab', () => {
                 { attachTo: target }
             );
             assert(wrapper.find('.next-tabs-btn-down').length === 0);
+        });
+
+        it('should work fine without animation', () => {
+            wrapper = mount(<Tab animation={false}>{panes}</Tab>, { attachTo: target });
+            assert(
+                wrapper
+                    .find('.next-tabs-tab')
+                    .at(0)
+                    .hasClass('active')
+            );
         });
 
         it('should scrollToActiveTab', () => {
@@ -477,16 +463,75 @@ describe('Tab', () => {
                     .hasClass('active')
             );
         });
+    });
+    describe('animation sensitive tests', ()=>{
+        let target;
+        const delay = time => new Promise(resolve => setTimeout(resolve, time));
+        const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
+            <Tab.Item title={`tab item ${item}`} key={index} />
+        ));
+        const boxStyle = { width: '200px' };
 
-        it('should adjust scroll length so that tab not partially in view', done => {
-            const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
+        beforeEach(() => {
+            target = document.createElement('div');
+            document.body.appendChild(target);
+        });
+    
+        afterEach(() => {
+            ReactDOM.unmountComponentAtNode(target);
+            document.body.removeChild(target);
+        });
+        it('should render excess tabs with dropdown', async () => {
+            ReactDOM.render(
+                <div style={boxStyle}>
+                    <Tab excessMode="dropdown" shape="wrapped">
+                        {panes}
+                    </Tab>
+                </div>, target);
+            await delay(800);
+            assert(target.querySelectorAll('.next-tabs-btn-down').length === 1);
+            target.querySelector('.next-tabs-btn-down').click();
+            await delay(800);
+            assert(target.querySelectorAll('.next-overlay-wrapper').length === 1);
+            target.querySelector('.next-menu-item').click();
+            await delay(800);
+            assert(target.querySelectorAll('.next-menu-item')[0].classList.contains("next-selected"));
+        });
+        it('should show slide buttons', async () => {
+            ReactDOM.render(
+                <div style={boxStyle}>
+                <Tab rtl excessMode="slide">
+                    {panes}
+                </Tab>
+            </div>, target);
+            await delay(800);
+            assert(target.querySelector('.next-tabs-btn-prev').classList.contains("disabled"));
+        });
+        it('should slide', async () => {
+            ReactDOM.render(
+            <div style={boxStyle}>
+                <Tab rtl excessMode="slide">
+                    {panes}
+                </Tab>
+            </div>, target);
+            let prev, newpos;
+            await delay(1800);
+            prev = target.querySelector(".next-tabs-nav").getBoundingClientRect().left;
+            target.querySelector(".next-tabs-btn-next").click();
+            await delay(200);
+            newpos = target.querySelector(".next-tabs-nav").getBoundingClientRect().left;
+            assert(newpos > prev);                
+        });
+
+        it('should adjust scroll length so that tab not partially in view', async () => {
+            const newpanes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
                 (item, index) => (
                     <Tab.Item title={`tabsss item ${item}`} key={index}>
                         content
                     </Tab.Item>
                 )
             );
-            wrapper = mount(
+            ReactDOM.render(
                 <div style={{ width: '520px' }}>
                     <Tab
                         excessMode="slide"
@@ -494,36 +539,58 @@ describe('Tab', () => {
                         defaultActiveKey={4}
                         shape="capsule"
                     >
-                        {panes}
+                        {newpanes}
                     </Tab>
-                </div>,
-                {
-                    attachTo: target,
-                }
+                </div>, target);
+            await delay(1800);
+
+            let transStr = target.querySelector('.next-tabs-nav').style.transform;
+            let rst = transStr.match(
+                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
             );
-            wrapper.update();
-            setTimeout(() => {
-                const transStr = wrapper
-                    .find('.next-tabs-nav')
-                    .at(0)
-                    .getDOMNode().style.transform;
-                const rst = transStr.match(
-                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-                );
-                assert(rst[1].startsWith('-'));
-                wrapper.find('.next-tabs-btn-prev').simulate('click');
-            }, 500);
-            setTimeout(() => {
-                const transStr = wrapper
-                    .find('.next-tabs-nav')
-                    .at(0)
-                    .getDOMNode().style.transform;
-                const rst = transStr.match(
-                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-                );
-                assert(rst[1] === '0');
-                done();
-            }, 1000);
+            assert(rst[1].startsWith('-'));
+            target.querySelector('.next-tabs-btn-prev').click();
+            await delay(200);
+            transStr = target.querySelector('.next-tabs-nav').style.transform;
+            rst = transStr.match(
+                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+            );
+            assert(rst[1] === '0');
+        });
+
+        it('should adjust scroll length', async() => {
+            const newpanes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
+                (item, index) => (
+                    <Tab.Item title={`tabsss item ${item}`} key={index}>
+                        content
+                    </Tab.Item>
+                )
+            );
+            ReactDOM.render(
+                <div style={{ width: '520px' }}>
+                    <Tab
+                        excessMode="slide"
+                        lazyLoad={false}
+                        defaultActiveKey={4}
+                        shape="wrapped"
+                        rtl
+                    >
+                        {newpanes}
+                    </Tab>
+                </div>, target);
+            await delay(1000);
+            let transStr = target.querySelector('.next-tabs-nav').style.transform;
+            let rst = transStr.match(
+                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+            );
+            assert(parseInt(rst[1])>0);
+            target.querySelector('.next-tabs-btn-prev').click();
+            await delay(1000);
+            transStr = target.querySelector('.next-tabs-nav').style.transform;
+            rst = transStr.match(
+                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+            );
+            assert(rst[1] === '0');
         });
     });
     describe('rtl mode', () => {
@@ -561,107 +628,6 @@ describe('Tab', () => {
             );
             const el = wrapper.find('#test-extra').getDOMNode().parentElement;
             assert(el.style.getPropertyValue('float') === 'left');
-        });
-        it('should show slide buttons', done => {
-            const boxStyle = { width: '200px' };
-            wrapper = mount(
-                <div style={boxStyle}>
-                    <Tab rtl excessMode="slide">
-                        {panes}
-                    </Tab>
-                </div>,
-                { attachTo: target }
-            );
-            setTimeout(() => {
-                assert(
-                    dom.hasClass(
-                        wrapper
-                            .find('.next-tabs-btn-prev')
-                            .at(0)
-                            .getDOMNode(),
-                        'disabled'
-                    )
-                );
-                assert(wrapper.find('.next-tabs-btn-next').length === 1);
-                done();
-            }, 500);
-        });
-        it('should slide', done => {
-            const boxStyle = { width: '200px' };
-            wrapper = mount(
-                <div style={boxStyle}>
-                    <Tab rtl excessMode="slide">
-                        {panes}
-                    </Tab>
-                </div>,
-                { attachTo: target }
-            );
-            let prev, newpos;
-            setTimeout(() => {
-                prev = wrapper
-                    .find('.next-tabs-nav')
-                    .at(0)
-                    .getDOMNode()
-                    .getBoundingClientRect().left;
-                wrapper.find('.next-tabs-btn-next').simulate('click');
-            }, 500);
-            setTimeout(() => {
-                newpos = wrapper
-                    .find('.next-tabs-nav')
-                    .at(0)
-                    .getDOMNode()
-                    .getBoundingClientRect().left;
-                assert(newpos > prev);
-                done();
-            }, 1000);
-        });
-        it('should adjust scroll length', done => {
-            const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
-                (item, index) => (
-                    <Tab.Item title={`tabsss item ${item}`} key={index}>
-                        content
-                    </Tab.Item>
-                )
-            );
-            wrapper = mount(
-                <div style={{ width: '520px' }}>
-                    <Tab
-                        excessMode="slide"
-                        lazyLoad={false}
-                        defaultActiveKey={4}
-                        shape="wrapped"
-                        rtl
-                    >
-                        {panes}
-                    </Tab>
-                </div>,
-                {
-                    attachTo: target,
-                }
-            );
-            wrapper.update();
-            setTimeout(() => {
-                const transStr = wrapper
-                    .find('.next-tabs-nav')
-                    .at(0)
-                    .getDOMNode().style.transform;
-                const rst = transStr.match(
-                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-                );
-                assert(parseInt(rst[1])>0);
-                wrapper.find('.next-tabs-btn-prev').simulate('click');
-            }, 500);
-            setTimeout(() => {
-                const transStr = wrapper
-                    .find('.next-tabs-nav')
-                    .at(0)
-                    .getDOMNode().style.transform;
-                const rst = transStr.match(
-                    /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
-                );
-                assert(rst[1] === '0');
-                done();
-            }, 1000);
         });
     });
 });

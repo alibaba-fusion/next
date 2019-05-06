@@ -343,6 +343,7 @@
 
     &-capsule > #{$tab-prefix}-bar {
         #{$tab-prefix}-tab {
+            transition: background-color .4s $ease-out-quint, border-color .4s $ease-out-quint;
             border-top: $tab-capsule-tab-border;
             border-bottom: $tab-capsule-tab-border;
             border-left: $tab-capsule-tab-border;

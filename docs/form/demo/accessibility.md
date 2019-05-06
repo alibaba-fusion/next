@@ -49,7 +49,7 @@ class Demo extends React.Component {
     render() {
         return (
             <div>
-                <Form {...formItemLayout} size={this.state.size} style={{maxWidth: '500px'}}>
+                <Form {...formItemLayout} size={this.state.size} style={{maxWidth: '800px'}}>
                     <FormItem required label="username:">
                         <Input placeholder="Please enter your user name" id="username" name="username"/>
                     </FormItem>
@@ -57,14 +57,22 @@ class Demo extends React.Component {
                         <Input htmlType="password" placeholder="Please enter your password" id="password" name="password"/>
                     </FormItem>
                     <FormItem  
+                        id="myDateInput-1"
                         required
-                        label="date(YYYY/MM/DD):"
+                        label="Accessible Date 1 (YYYY/MM/DD):"
                         requiredMessage="Please select your date"
                     >
-                        <DatePicker name="date" format="YYYY/MM/DD" inputProps={{"aria-required": "true"}}/> 
+                        <DatePicker name="date" format="YYYY/MM/DD" inputProps={{"aria-required": "true", "id": "myDateInput-1"}}/> 
+                    </FormItem>
+                    <FormItem  
+                        required
+                        label="Accessible Date 2 (YYYY/MM/DD):"
+                        requiredMessage="Please select your date"
+                    >
+                        <DatePicker name="otherDate" format="YYYY/MM/DD" dateInputAriaLabel="Date input format YYYY/MM/DD" inputProps={{"aria-required": "true", "aria-label": "Accessible Date 2"}}/> 
                     </FormItem>
                     <FormItem label="Switch:">
-                        <Switch name="switch" defaultChecked/>
+                        <Switch name="switch" aria-label="Accessible Switch" defaultChecked/>
                     </FormItem>
                     <FormItem
                         required
