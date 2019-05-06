@@ -308,6 +308,34 @@ describe('inner', () => {
         hide();
     });
 
+    it('should support height', () => {
+        wrapper = render(<Dialog visible/>);
+        assert(!document.querySelector('.next-dialog').style.height);
+
+        assert(
+            !hasClass(
+                document.querySelector(
+                    '.next-dialog-footer'
+                ),
+                'next-dialog-footer-fixed-height'
+            )
+        );
+
+        wrapper.setProps({
+            height: '500px',
+        });
+        assert(document.querySelector('.next-dialog').style.height === '500px');
+
+        assert(
+            hasClass(
+                document.querySelector(
+                    '.next-dialog-footer'
+                ),
+                'next-dialog-footer-fixed-height'
+            )
+        );
+    });
+
     it('should close dialog if click the ok button', () => {
         Dialog.show({
             title: 'Title',
