@@ -23,7 +23,7 @@ function onChange(checked) {
 }
 
 ReactDOM.render(<div>
-    <Switch checkedChildren="on" onChange={onChange} unCheckedChildren="off" />
+    <Switch checkedChildren="on" onChange={onChange} unCheckedChildren="off" aria-label="accessible switch"/>
 
 </div>,
 mountNode);

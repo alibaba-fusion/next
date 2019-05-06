@@ -330,36 +330,36 @@ describe('Step', () => {
             assert(ret_2 === 0);
         });
 
-        it('should trigger keyboard event', () => {
-            const wrapper = mount(
-                <Step current={0}>
-                    <StepItem title="步骤1"/>
-                    <StepItem title="步骤2" />
-                    <StepItem title="步骤3" />
-                </Step>
-            );
+        // it('should trigger keyboard event', () => {
+        //     const wrapper = mount(
+        //         <Step current={0}>
+        //             <StepItem title="步骤1"/>
+        //             <StepItem title="步骤2" />
+        //             <StepItem title="步骤3" />
+        //         </Step>
+        //     );
 
-            wrapper
-                .find('.next-step-item-first')
-                .simulate('keydown', {keyCode: 40});
+        //     wrapper
+        //         .find('.next-step-item-first')
+        //         .simulate('keydown', {keyCode: 40});
             
-            assert(wrapper.find('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
+        //     assert(wrapper.find('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
 
-            wrapper
-                .find('.next-step-item-first')
-                .simulate('keydown', {keyCode: 38});
-            assert(wrapper.find('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
+        //     wrapper
+        //         .find('.next-step-item-first')
+        //         .simulate('keydown', {keyCode: 38});
+        //     assert(wrapper.find('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
 
-            wrapper
-                .find('.next-step-item-first')
-                .simulate('keydown', {keyCode: 39});
-            assert(wrapper.find('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
+        //     wrapper
+        //         .find('.next-step-item-first')
+        //         .simulate('keydown', {keyCode: 39});
+        //     assert(wrapper.find('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
 
-            wrapper
-                .find('.next-step-item-first')
-                .simulate('keydown', {keyCode: 37});
-            assert(wrapper.find('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
+        //     wrapper
+        //         .find('.next-step-item-first')
+        //         .simulate('keydown', {keyCode: 37});
+        //     assert(wrapper.find('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
             
-        });
+        // });
     });
 });

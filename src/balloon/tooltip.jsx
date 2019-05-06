@@ -99,6 +99,7 @@ export default class Tooltip extends React.Component {
             popupClassName,
             popupStyle,
             triggerType,
+            autoFocus,
             rtl,
             ...others
         } = this.props;
@@ -163,6 +164,7 @@ export default class Tooltip extends React.Component {
                 className={popupClassName}
                 style={popupStyle}
                 rtl={rtl}
+                autoFocus={triggerType === 'focus' ? false : autoFocus}
                 shouldUpdatePosition
                 {...popupProps}
             >

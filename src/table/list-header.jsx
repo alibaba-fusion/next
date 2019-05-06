@@ -23,12 +23,17 @@ export default class ListHeader extends React.Component {
          * 是否在GroupHeader上面渲染selection
          */
         hasSelection: PropTypes.bool,
+        /**
+         * 当 dataSouce 里没有 children 时，是否使用内容作为数据
+         */
+        useFirstLevelDataWhenNoChildren: PropTypes.bool,
     };
 
     static defaultProps = {
         cell: () => '',
         hasSelection: true,
         hasChildrenSelection: false,
+        useFirstLevelDataWhenNoChildren: false,
     };
 
     static _typeMark = 'listHeader';
