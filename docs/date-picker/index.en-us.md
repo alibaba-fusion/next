@@ -82,11 +82,11 @@ DatePicker are used to select a single date for an input.
 ## ARIA and KeyBoard
 
 When the `Date Picker` is focused, press `enter` will open popup to input date or time.
-
+ 
 | 按键          | 说明                           |
 | :---------- | :------------------------------ |
 | number key    | Need to manual input  the date, the specified date format        |
-| Enter       | open the calendar or select date                           |
+| Enter       | open the calendar or select date after input date  |
 | Esc         | close the calendar                  |
 | Up | Input previous day（Month Picker is previous month， Year Picker is previous year） |
 | Down | Input next day（Month Picker is next month， Year Picker is next year）

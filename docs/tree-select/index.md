@@ -107,3 +107,13 @@ const dataSource = [{
 如果不传入 key，TreeSelect 会使用内部计算出来的位置字符串作为 key 值，如果你想指定诸如 treeDefaultExpandedKeys 这样的属性，请传入自定义的 key 值，让它和 value 是一个值，是一个很好的办法。
 
 <!-- api-extra-end -->
+
+## ARIA and KeyBoard
+
+| 按键          | 说明             |
+| :---------- | :------------- |
+| Enter | 打开选择树或选择某一项 |
+| Up Arrow | 获取同级当前项前一项焦点 |
+| Down Arrow  | 获取同级当前项后一项焦点 |
+| Right Arrow | 打开当前元素的下一级子树并聚焦到第一项|
+| Left Arrow  | 返回到当前元素的父节点并关闭当前子树 |

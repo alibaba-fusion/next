@@ -56,8 +56,8 @@ class BasicDemo extends React.Component {
                     validator={this.userExists.bind(this)}
                     help=""
                 >
-                    <Input placeholder="Input frank" name="username" />
-                    <Form.Error name="username" >{
+                    <Input placeholder="Input frank" name="valUsername" />
+                    <Form.Error name="valUsername" >{
                         (errors, state) => {
                             if (state === 'loading') {
                                 return 'loading...';
@@ -74,7 +74,7 @@ class BasicDemo extends React.Component {
                     requiredTrigger="onBlur"
                     format="email"
                 >
-                    <Input placeholder="Both trigget onBlur and onChange" name="email" />
+                    <Input placeholder="Both trigget onBlur and onChange" name="valEmail" />
                 </FormItem>
 
                 <FormItem
@@ -83,7 +83,7 @@ class BasicDemo extends React.Component {
                     required
                     requiredMessage="Please enter password"
                 >
-                    <Input htmlType="password" name="passwd" />
+                    <Input htmlType="password" name="valPasswd" />
                 </FormItem>
 
                 <FormItem
@@ -92,7 +92,7 @@ class BasicDemo extends React.Component {
                     required
                     requiredMessage="Please select your gender"
                 >
-                    <RadioGroup name="sex" >
+                    <RadioGroup name="valSex" >
                         <Radio value="male">Male</Radio>
                         <Radio value="female">Female</Radio>
                     </RadioGroup>
@@ -103,7 +103,7 @@ class BasicDemo extends React.Component {
                     required
                     requiredMessage="Really do not intend to write anything?"
                 >
-                    <Input.TextArea maxLength={20} hasLimitHint placeholder="Everything is ok!" name="textarea" />
+                    <Input.TextArea maxLength={20} hasLimitHint placeholder="Everything is ok!" name="valTextarea" />
                 </FormItem>
 
                 <FormItem wrapperCol={{ offset: 6 }} >

@@ -2,14 +2,14 @@
 
 - order: 13
 
-需要用户手动输入日期，请参考`ARIA and KeyBoard`。
+支持手动输入或键盘操作，请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
 # Accessibility
 
 - order: 13
 
-User needs to manually input the date,Please refer to `ARIA and KeyBoard`.
+Support manual input or keyboard operation,Please refer to `ARIA and KeyBoard`.
 
 :::
 

@@ -1,13 +1,13 @@
 # 无障碍
 
-- order: 7
+- order: 8
 
 弹层id, 传入值才会支持无障碍。
 
 :::lang=en-us
 # Accessibility
 
-- order: 7
+- order: 8
 
 id of popup. only when you set value, balloon will support accessibility.
 
