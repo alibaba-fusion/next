@@ -270,7 +270,7 @@ export default class Menu extends Component {
 
     onBlur(e) {
         this.setState({
-            focusedKey: '',
+            focusedKey: undefined,
         });
 
         this.props.onBlur && this.props.onBlur(e);
