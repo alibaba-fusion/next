@@ -143,4 +143,4 @@ babel 配置：
 
 扫码*钉钉群* 加入即刻交流与反馈：
 
-<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1iH9unxnaK1RjSZFtXXbC2VXa-1125-1485.jpg" width="300">
+<img alt="Join the chat at dingtalk" src="https://img.alicdn.com/tfs/TB1r2GoU6DpK1RjSZFrXXa78VXa-620-818.png" width="300">
