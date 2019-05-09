@@ -50,6 +50,12 @@
         }
     }
 
+    &-footer-fixed-height {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+    }
+
     &-btn + &-btn {
         margin-left: $s-1;
     }
