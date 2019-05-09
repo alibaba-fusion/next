@@ -21,6 +21,18 @@ $pagination-prefix: ".#{$css-prefix}pagination";
 /// @namespace size/item
 $pagination-item-split: $s-1 !default;
 
+/// border style
+/// @namespace size/item
+$pagination-item-border-style: $line-solid !default;
+
+/// border width
+/// @namespace size/item
+$pagination-item-border-width: $line-1 !default;
+
+/// corner
+/// @namespace size/item
+$pagination-item-corner: $corner-1 !default;
+
 /// icon
 /// @namespace size/ellipsis
 $pagination-ellipsis-size: $icon-xs !default;
@@ -64,6 +76,14 @@ $pagination-size-selector-number-padding: $s-3 !default;
 /// @namespace size/item
 $pagination-large-item-split: $s-2 !default;
 
+/// border width
+/// @namespace size/item
+$pagination-large-item-border-width: $line-1 !default;
+
+/// corner
+/// @namespace size/item
+$pagination-large-item-corner: $corner-1 !default;
+
 /// icon
 /// @namespace size/ellipsis
 $pagination-large-ellipsis-size: $icon-s !default;
@@ -94,6 +114,14 @@ $pagination-large-size-selector-number-padding: $s-4 !default;
 /// margin (l, r)
 /// @namespace size/item
 $pagination-small-item-split: $s-1 !default;
+
+/// border width
+/// @namespace size/item
+$pagination-small-item-border-width: $line-1 !default;
+
+/// corner
+/// @namespace size/item
+$pagination-small-item-corner: $corner-1 !default;
 
 /// icon
 /// @namespace size/ellipsis
@@ -150,9 +178,76 @@ $pagination-size-selector-filter-color: $color-text1-3 !default;
 /// @namespace statement/normal/size selector
 $pagination-size-selector-filter-current-color: $color-brand1-6 !default;
 
+/// border
+/// @namespace statement/normal/item
+$pagination-item-border-color: $color-line1-3 !default;
+
+/// shadow
+/// @namespace statement/normal/item
+$pagination-item-shadow: $shadow-zero !default;
+
+/// text
+/// @namespace statement/normal/item
+$pagination-item-color: $color-text1-4 !default;
+
+/// background
+/// @namespace statement/normal/item
+$pagination-item-bg: $color-white !default;
+
+/// border
+/// @namespace statement/normal/current item
+$pagination-item-current-border-color: $color-transparent !default;
+
+/// shadow
+/// @namespace statement/normal/current item
+$pagination-item-current-shadow: $shadow-zero !default;
+
 /// text
 /// @namespace statement/normal/current item
 $pagination-item-current-color: $color-white !default;
+
+/// background
+/// @namespace statement/normal/current item
+$pagination-item-current-bg: $color-brand1-6 !default;
+
+/// border
+/// @namespace statement/hover/item
+$pagination-item-hover-border-color: $color-line1-4 !default;
+
+/// shadow
+/// @namespace statement/hover/item
+$pagination-item-hover-shadow: $shadow-zero !default;
+
+/// text
+/// @namespace statement/hover/item
+$pagination-item-hover-color: $color-text1-4 !default;
+
+/// background
+/// @namespace statement/hover/item
+$pagination-item-hover-bg: $color-fill1-2 !default;
+
+/// color
+/// @namespace statement/normal/arrow
+$pagination-arrow-color: $color-text1-3 !default;
+
+// Statement:Hover
+// ----------------------------------------
+
+/// border
+/// @namespace statement/hover/current item
+$pagination-item-current-hover-border-color: $color-transparent !default;
+
+/// shadow
+/// @namespace statement/hover/current item
+$pagination-item-current-hover-shadow: $shadow-zero !default;
+
+/// text
+/// @namespace statement/hover/current item
+$pagination-item-current-hover-color: $color-white !default;
+
+/// background
+/// @namespace statement/hover/current item
+$pagination-item-current-hover-bg: $color-brand1-9 !default;
 
 /// color
 /// @namespace statement/hover/arrow
@@ -161,30 +256,3 @@ $pagination-arrow-hover-color: $color-text1-4 !default;
 /// color
 /// @namespace statement/hover/arrow
 $pagination-arrow-hover-color-noboder: $color-brand1-6 !default;
-
-/// color
-/// @namespace statement/normal/arrow
-$pagination-arrow-color: $color-text1-3 !default;
-
-/// border color
-/// @namespace statement/normal/current item
-$pagination-item-current-border-color: $color-brand1-6 !default;
-
-/// background
-/// @namespace statement/normal/current item
-$pagination-item-current-bg: $color-brand1-6 !default;
-
-// Statement:Hover
-// ----------------------------------------
-
-/// text
-/// @namespace statement/hover/current item
-$pagination-item-current-hover-color: $color-white !default;
-
-/// border color
-/// @namespace statement/hover/current item
-$pagination-item-current-hover-border-color: $color-brand1-6 !default;
-
-/// background
-/// @namespace statement/hover/current item
-$pagination-item-current-hover-bg: $color-brand1-6 !default;
