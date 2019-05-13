@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>2. WAI-ARIA · fuson gitbook</title>
+        <title>2.WAI-ARIA · fuson gitbook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -30,7 +30,15 @@
 
     
         
-        <link rel="stylesheet" href="../style/website.css">
+    
+        
+    
+        
+    
+        
+    
+        
+    
         
     
 
@@ -109,7 +117,7 @@
                 <a href="basics.html">
             
                     
-                    1. 无障碍背景
+                    1.无障碍背景
             
                 </a>
             
@@ -122,7 +130,7 @@
                 <a href="WAI-ARIA.html">
             
                     
-                    2. WAI-ARIA
+                    2.WAI-ARIA
             
                 </a>
             
@@ -135,7 +143,7 @@
                 <a href="rules.html">
             
                     
-                    3. 无障碍的标准
+                    3.无障碍的标准
             
                 </a>
             
@@ -167,7 +175,7 @@
                 <a href="../part2/intro.html">
             
                     
-                    1. 改造综述
+                    1.改造综述
             
                 </a>
             
@@ -180,7 +188,7 @@
                 <a href="../part2/component-usage.html">
             
                     
-                    2. 步骤一：使用无障碍的 Fusion 组件
+                    2.步骤一：使用无障碍的 Fusion 组件
             
                 </a>
             
@@ -193,7 +201,7 @@
                 <a href="../part2/checklist.html">
             
                     
-                    3. 步骤二：开发 Checklist
+                    3.步骤二：开发 Checklist
             
                 </a>
             
@@ -201,14 +209,14 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.4" data-path="../part2/content-creation.md">
+        <li class="chapter " data-level="1.3.4" >
             
                 <span>
             
                     
-                    4. 步骤三：页面其他内容
+                    4.步骤三：页面其他内容
             
-                </a>
+                </span>
             
 
             
@@ -220,7 +228,7 @@
                 <a href="../part2/content-creation-link/page1.html">
             
                     
-                    1. 跳过多个页面重复出现的导航栏
+                    1.跳过多个页面重复出现的导航栏
             
                 </a>
             
@@ -233,7 +241,7 @@
                 <a href="../part2/content-creation-link/page2.html">
             
                     
-                    2. 元素的隐藏
+                    2.元素的隐藏
             
                 </a>
             
@@ -246,7 +254,7 @@
                 <a href="../part2/content-creation-link/page3.html">
             
                     
-                    3. 异步内容的更新及提醒
+                    3.异步内容的更新及提醒
             
                 </a>
             
@@ -259,7 +267,7 @@
                 <a href="../part2/content-creation-link/page4.html">
             
                     
-                    4. 焦点管理
+                    4.焦点管理
             
                 </a>
             
@@ -272,7 +280,7 @@
                 <a href="../part2/content-creation-link/page5.html">
             
                     
-                    5. 设计建议
+                    5.设计建议
             
                 </a>
             
@@ -309,7 +317,7 @@
                 <a href="../part3/develop.html">
             
                     
-                    1. 开发辅助工具
+                    1.开发辅助工具
             
                 </a>
             
@@ -322,7 +330,7 @@
                 <a href="../part3/testing.html">
             
                     
-                    2. 整体测试
+                    2.整体测试
             
                 </a>
             
@@ -365,7 +373,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >2. WAI-ARIA</a>
+        <a href=".." >2.WAI-ARIA</a>
     </h1>
 </div>
 
@@ -569,7 +577,49 @@
 <p>&#x6BD4;&#x5982;&#x4E0B;&#x9762;&#x6DFB;&#x52A0;&#x4E86;<code>role</code>&#x662F;&#x65E0;&#x7528;&#x7684;&#xFF0C;&#x4F1A;&#x5E26;&#x6765;&#x4FE1;&#x606F;&#x7684;&#x5197;&#x4F59;&#xFF1A;</p>
 <pre><code class="lang-markup">&lt;button role=&quot;button&quot;&gt;press me&lt;/button&gt;
 </code></pre>
-<h4 id="5-aria-&#x5FC5;&#x987B;&#x7B26;&#x5408;&#x6709;&#x6548;&#x7684;&#x540D;&#x79F0;">5. <code>aria-*</code>&#x5FC5;&#x987B;&#x7B26;&#x5408;&#x6709;&#x6548;&#x7684;&#x540D;&#x79F0;</h4>
+<h4 id="5-roleapplication&#x9700;&#x8C28;&#x614E;&#x4F7F;&#x7528;">5. <code>role=application</code>&#x9700;&#x8C28;&#x614E;&#x4F7F;&#x7528;</h4>
+<p>&#x7B80;&#x800C;&#x8A00;&#x4E4B;&#xFF0C;&#x771F;&#x6B63;&#x4F1A;&#x4F7F;&#x7528;<code>role=application</code>&#x7684;&#x573A;&#x666F;&#x662F;&#x975E;&#x5E38;&#x7F55;&#x89C1;&#x7684;&#xFF0C;&#x9664;&#x975E;&#x9700;&#x8981;&#x6A21;&#x62DF;&#x771F;&#x5B9E;&#x7684;&#x684C;&#x9762;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x56E0;&#x4E3A;&#x5F53;&#x4F7F;&#x7528;<code>role=application</code>&#x65F6;&#xFF0C;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x4F1A;&#x505C;&#x6B62;&#x62E6;&#x622A;&#x51FB;&#x952E;&#xFF0C;&#x5E76;&#x5C06;&#x6240;&#x6709;&#x51FB;&#x952E;&#x76F4;&#x63A5;&#x4F20;&#x9012;&#x7ED9;&#x6D4F;&#x89C8;&#x5668;&#xFF0C;&#x8FD9;&#x4F1A;&#x4F7F;&#x5F97;&#x7528;&#x6237;&#x65E0;&#x6CD5;&#x8F7B;&#x677E;&#x6D4F;&#x89C8;&#x9875;&#x9762;&#xFF0C;&#x66F4;&#x5177;&#x4F53;&#x7684;&#x4ECB;&#x7ECD;&#x8BF7;<a href="https://www.w3.org/TR/using-aria/#using-application" target="_blank">&#x53C2;&#x8003;&#x6B64;&#x5904;</a>&#x3002;</p>
+<h4 id="6-rolepresentation&#x6216;aria-hiddentrue&#x4E0D;&#x80FD;&#x7528;&#x5728;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#x4E0A;">6. <code>role=&quot;presentation&quot;</code>&#x6216;<code>aria-hidden=&quot;true&quot;</code>&#x4E0D;&#x80FD;&#x7528;&#x5728;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#x4E0A;</h4>
+<p><code>role=presentation</code>&#x6216;&#x5176;&#x540C;&#x4E49;&#x8BCD;<code>role=none</code>&#xFF0C;&#x8868;&#x793A;&#x5728;&#x5B83;&#x6240;&#x5728;&#x7684;&#x5143;&#x7D20;&#x4E2D;&#x5220;&#x9664;&#x8BED;&#x4E49;&#xFF0C;&#x5728;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#x4E0A;&#x4F7F;&#x7528;<code>role=&quot;presentation&quot;</code>&#x6216;<code>aria-hidden=&quot;true&quot;</code>&#x4F1A;&#x5BFC;&#x81F4;&#x8BE5;&#x5143;&#x7D20;&#x5931;&#x53BB;&#x7126;&#x70B9;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
+<pre><code class="lang-markup">&lt;button role=presentation&gt;press me&lt;/button&gt;     // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
+&lt;button aria-hidden=&quot;true&quot;&gt;press me&lt;/button&gt;    // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
+</code></pre>
+<h4 id="7-roleheading&#x7684;&#x4F7F;&#x7528;">7. <code>role=heading</code>&#x7684;&#x4F7F;&#x7528;</h4>
+<p>&#x6211;&#x4EEC;&#x4F7F;&#x7528;<code>role=heading</code>&#x6765;&#x6807;&#x8BC6;&#x6807;&#x9898;&#x3002;&#x5E94;&#x7528;<code>role=&quot;heading&quot;</code>&#x7684;&#x5143;&#x7D20;&#x4F1A;&#x4F7F;AT&#xFF08;&#x5982;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#xFF09;&#x5C06;&#x5176;&#x89C6;&#x4E3A;&#x6807;&#x9898;&#x3002;</p>
+<pre><code class="lang-markup">// &#x5B9E;&#x73B0;&#x7B80;&#x5355;&#x6807;&#x9898;
+&lt;div role=&quot;heading&quot;&gt;Global News items&lt;/div&gt;
+&lt;p&gt;a list of global news&lt;p&gt;
+
+// &#x5B9E;&#x73B0;&#x5176;&#x4ED6;&#x6807;&#x9898;&#x7EA7;&#x522B;
+&lt;div role=&quot;heading&quot; aria-level=&quot;7&quot;&gt;Global News level 7/div&gt;
+&lt;p&gt;a list of global news&lt;/p&gt;
+</code></pre>
+<p>&#x539F;&#x751F;&#x7684;HTML&#x53EA;&#x80FD;&#x5B9E;&#x73B0;&#x7EA7;&#x522B;6&#x7684;&#x6807;&#x9898;&#xFF0C;<code>role=&quot;heading&quot;</code>&#x548C;<code>aria-level</code>&#x5C5E;&#x6027;&#x914D;&#x5408;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0;&#x7EA7;&#x522B;&#x5176;&#x4ED6;&#x7EA7;&#x522B;&#x7684;&#x6807;&#x9898;&#x3002;</p>
+<h4 id="8-roleregion&#x7684;&#x4F7F;&#x7528;">8. <code>role=region</code>&#x7684;&#x4F7F;&#x7528;</h4>
+<p>&#x5F53;&#x6807;&#x51C6;&#x6587;&#x6863;&#x6807;&#x8BB0;&#x89D2;&#x8272;&#x7684;&#x8BED;&#x4E49;&#x65E0;&#x6CD5;&#x5BF9;&#x5E94;&#x5F85;&#x6807;&#x8BB0;&#x9875;&#x9762;&#x7684;&#x67D0;&#x90E8;&#x5206;&#x65F6;&#xFF0C;&#x53EF;&#x4F7F;&#x7528;&#x901A;&#x7528;region&#x89D2;&#x8272;&#xFF1A;<code>role=region</code>&#x3002;&#x8FD9;&#x4E9B;&#x533A;&#x57DF;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>aria-labelledby</code>&#x3001;<code>aria-label</code>&#x6216;&#x5176;&#x4ED6;&#x65B9;&#x5F0F;&#x547D;&#x540D;&#xFF0C;&#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x5E2E;&#x52A9;&#x66F4;&#x597D;&#x7684;&#x5EFA;&#x7ACB;&#x8D77;&#x9875;&#x9762;&#x4E0A;&#x5185;&#x5BB9;&#x4FE1;&#x606F;&#x4E4B;&#x95F4;&#x7684;&#x8054;&#x7CFB;&#x3002;</p>
+<pre><code class="lang-markup">&lt;div role=&quot;region&quot; aria-label=&quot;weather portlet&quot;&gt; 
+    Today&apos;s weather is very good for outing!
+&lt;/div&gt;
+</code></pre>
+<h4 id="9-&#x4F7F;&#x7528;role&#x7684;landmark&#x6807;&#x8BC6;&#x9875;&#x9762;&#x533A;&#x57DF;">9. &#x4F7F;&#x7528;<code>role</code>&#x7684;landmark&#x6807;&#x8BC6;&#x9875;&#x9762;&#x533A;&#x57DF;</h4>
+<p><code>landmark</code>&#x7528;&#x6765;&#x8868;&#x793A;&#x533A;&#x57DF;&#x7684;&#x7C7B;&#x578B;&#xFF0C;&#x90E8;&#x5206;&#x5185;&#x5BB9;&#x5982;&#x4E0B;&#xFF0C;&#x8BE6;&#x60C5;&#x8BF7;&#x70B9;&#x51FB;<a href="https://www.w3.org/TR/WCAG20-TECHS/aria.html#ARIA11" target="_blank">&#x8FD9;&#x91CC;</a>&#xFF1A;
+| role | &#x8BF4;&#x660E; |
+| :--- | ---: |
+| banner |  &#x9875;&#x9762;&#x4E3B;&#x6807;&#x9898;&#x6216;&#x5185;&#x90E8;&#x6807;&#x9898;&#x7684;&#x533A;&#x57DF;|
+| complementary | &#x6587;&#x6863;&#x4E2D;&#x652F;&#x6301;&#x4E3B;&#x8981;&#x5185;&#x5BB9;&#x7684;&#x4EFB;&#x4F55;&#x90E8;&#x5206;&#x4E14;&#x72EC;&#x7ACB; |
+| contentinfo | &#x4FE1;&#x606F;&#x533A;&#x57DF;&#xFF0C;&#x4F8B;&#x5982;&#x7248;&#x6743;&#x548C;&#x9690;&#x79C1;&#x58F0;&#x660E;&#x7684;&#x94FE;&#x63A5; |
+| form | &#x8868;&#x5355;&#x533A;&#x57DF; |
+| main | &#x4E3B;&#x8981;&#x5185;&#x5BB9;&#x533A;&#x57DF; |
+| navigation | &#x5BFC;&#x822A;&#x533A;&#x57DF; |
+| search | web&#x6587;&#x6863;&#x641C;&#x7D22;&#x5DE5;&#x5177; | 
+| application | &#x58F0;&#x660E;&#x4E3A;Web&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7684;&#x533A;&#x57DF; |</p>
+<pre><code class="lang-markup">&lt;form role=&quot;search&quot;&gt;
+    &lt;label for=&quot;s6&quot;&gt;search&lt;/label&gt;&lt;input id=&quot;s6&quot; type=&quot;text&quot; size=&quot;20&quot;&gt;
+    ...
+&lt;/form&gt;
+</code></pre>
+<p>&#x5728;&#x4E0A;&#x9762;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>role=&quot;search&quot;</code>&#x6765;&#x6807;&#x8BC6;&#x4E3A;&#x641C;&#x7D22;&#x8868;&#x5355;&#x3002;</p>
+<h4 id="10-aria-&#x5FC5;&#x987B;&#x7B26;&#x5408;&#x6709;&#x6548;&#x7684;&#x540D;&#x79F0;">10. <code>aria-*</code>&#x5FC5;&#x987B;&#x7B26;&#x5408;&#x6709;&#x6548;&#x7684;&#x540D;&#x79F0;</h4>
 <p>&#x5F00;&#x53D1;&#x8005;&#x4E0D;&#x80FD;&#x4F7F;&#x7528;&#x4E00;&#x4E2A;&#x4E0D;&#x5B58;&#x5728;&#x6216;&#x8005;&#x9519;&#x8BEF;&#x62FC;&#x5199;&#x7684;<code>aria-*</code>&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
 <pre><code class="lang-javascript">aria-hidden=<span class="hljs-string">&quot;true&quot;</span>      <span class="hljs-comment">// &#x6B63;&#x786E;&#x4F7F;&#x7528;&#x6848;&#x4F8B;</span>
 aria-hide=<span class="hljs-string">&quot;true&quot;</span>        <span class="hljs-comment">// &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;&#xFF0C;&#x4E0D;&#x5B58;&#x5728;&#x8BE5;&#x5C5E;&#x6027;</span>
@@ -593,7 +643,7 @@ aria-hide=<span class="hljs-string">&quot;true&quot;</span>        <span class="
 <li><a href="https://www.w3.org/TR/wai-aria-1.1/#xhtml_mod" target="_blank">WAI-ARIA Attributes Module</a></li>
 <li><a href="https://www.w3.org/TR/wai-aria-1.1/#xhtml_schema_mod" target="_blank">WAI-ARIA Attributes XML Schema Module</a></li>
 </ul>
-<h4 id="6-aria-&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x6709;&#x6548;&#x7684;&#x503C;">6. <code>aria-*</code>&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x6709;&#x6548;&#x7684;&#x503C;</h4>
+<h4 id="11-aria-&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x6709;&#x6548;&#x7684;&#x503C;">11. <code>aria-*</code>&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x6709;&#x6548;&#x7684;&#x503C;</h4>
 <p>&#x5F00;&#x53D1;&#x8005;&#x5728;&#x4F7F;&#x7528;<code>aria-*</code>&#x65F6;&#xFF0C;&#x9700;&#x8981;&#x5BF9;&#x5176;&#x8D4B;&#x4E88;&#x6709;&#x6548;&#x7684;&#x503C;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
 <pre><code class="lang-javascript">aria-hidden=<span class="hljs-string">&quot;true&quot;</span>      <span class="hljs-comment">// &#x6B63;&#x786E;&#x4F7F;&#x7528;&#x6848;&#x4F8B;</span>
 aria-hidden=<span class="hljs-string">&quot;yes&quot;</span>       <span class="hljs-comment">// &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;&#xFF0C;aria-hidden&#x7684;&#x53EF;&#x9009;&#x503C;&#x4E2D;&#x65E0;&quot;yes&quot;&#x9009;&#x62E9;</span>
@@ -605,27 +655,154 @@ aria-hidden=<span class="hljs-string">&quot;yes&quot;</span>       <span class="
 </ul>
 </li>
 </ul>
-<h4 id="7-aria-&#x7684;required-properties&#x5FC5;&#x987B;&#x63D0;&#x4F9B;">7. <code>aria-*</code>&#x7684;<code>required properties</code>&#x5FC5;&#x987B;&#x63D0;&#x4F9B;</h4>
+<h4 id="12-aria-&#x7684;required-properties&#x5FC5;&#x987B;&#x63D0;&#x4F9B;">12. <code>aria-*</code>&#x7684;<code>required properties</code>&#x5FC5;&#x987B;&#x63D0;&#x4F9B;</h4>
 <p>&#x5F00;&#x53D1;&#x8005;&#x9700;&#x8981;&#x68C0;&#x67E5;<code>role</code>&#x662F;&#x5426;&#x542B;&#x6709;&#x5FC5;&#x987B;&#x63D0;&#x4F9B;&#x7684;<code>aria-*</code>&#x3002;</p>
 <p>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x8FD9;&#x5F20;<a href="http://whatsock.com/training/matrices/" target="_blank">&#x8868;&#x683C;</a>&#xFF08;&#x5EFA;&#x8BAE;&#x4FDD;&#x5B58;&#x8FD9;&#x5F20;&#x8868;&#x683C;&#x4EE5;&#x5907;&#x65E5;&#x540E;&#x9891;&#x7E41;&#x67E5;&#x8BE2;&#xFF09;&#x4E2D;&#x627E;&#x5230;&#x8FD9;&#x4E9B;&#x5FC5;&#x987B;&#x63D0;&#x4F9B;&#x7279;&#x5B9A;<code>aria-*</code>&#x7684;<code>role</code>&#x7684;&#x8BE6;&#x7EC6;&#x8BF4;&#x660E;&#xFF0C;&#x6BD4;&#x5982;&#x5BF9;&#x4E8E;<code>role=heading</code>&#xFF0C;&#x5B83;&#x6709;&#x4E00;&#x4E2A;&#x5FC5;&#x987B;&#x8981;&#x6C42;&#x63D0;&#x4F9B;&#x7684;&#x5C5E;&#x6027;<code>aria-level</code>&#xFF1A;</p>
 <pre><code class="lang-markup">&lt;div role=&quot;heading&quot; aria-level=&quot;1&quot;&gt;I&apos;m a heading&lt;/div&gt;    // &#x6B63;&#x786E;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
 &lt;div role=&quot;heading&quot; &gt;I&apos;m a heading&lt;/div&gt;                  // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;&#xFF0C;&#x672A;&#x63D0;&#x4F9B;&#x5FC5;&#x9700;&#x7684;aria-level&#x5C5E;&#x6027;
 </code></pre>
-<h4 id="8-aria-labelledby&#x5C5E;&#x6027;&#x5E94;&#x5F15;&#x7528;&#x5B58;&#x5728;&#x4E8E;dom&#x4E2D;&#x7684;&#x5143;&#x7D20;">8. <code>aria-labelledby</code>&#x5C5E;&#x6027;&#x5E94;&#x5F15;&#x7528;&#x5B58;&#x5728;&#x4E8E;DOM&#x4E2D;&#x7684;&#x5143;&#x7D20;</h4>
-<p>&#x5F00;&#x53D1;&#x8005;&#x5728;&#x7ED9;<code>aria-labelledby</code>&#x5C5E;&#x6027;&#x8D4B;&#x503C;&#x65F6;&#xFF0C;&#x5E94;&#x6CE8;&#x610F;&#x4E0E;DOM&#x5143;&#x7D20;&#x4E2D;&#x7684;id&#x503C;&#x5BF9;&#x5E94;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-markup">&lt;div id=&quot;test_one&quot;&gt;it&apos;s a test&lt;/div&gt;
+<h4 id="13-aria-labelledby&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;">13. <code>aria-labelledby</code>&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;</h4>
+<ul>
+<li><p>&#x4F7F;&#x7528;<code>aria-labelledby</code>&#x8FDB;&#x884C;&#x94FE;&#x63A5;</p>
+<p>  &#x4F7F;&#x7528;<code>aria-labelledby</code>&#x5C5E;&#x6027;&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x9875;&#x9762;&#x4E0A;&#x7684;&#x53EF;&#x89C1;&#x6587;&#x672C;&#x5143;&#x7D20;&#x4F5C;&#x4E3A;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#xFF08;&#x8868;&#x5355;&#x63A7;&#x4EF6;&#x6216;&#x94FE;&#x63A5;&#xFF09;&#x7684;&#x6807;&#x7B7E;&#x3002;</p>
+<pre><code class="lang-markup">  &lt;h2 id=&quot;headline&quot;&gt;Storms hit east coast&lt;/h2&gt;
 
-&lt;input type=&quot;text&quot; aria-labelledby=&quot;test_one&quot;&gt;&lt;/input&gt;    // &#x6B63;&#x786E;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
-&lt;input type=&quot;text&quot; aria-labelledby=&quot;test_two&quot;&gt;&lt;/input&gt;    // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;&#xFF0C;&#x6587;&#x6863;&#x4E2D;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;id=&quot;test_two&quot;
+  &lt;p&gt;Torrential rain and gale force winds have struck the east coast, causing flooding in many coastal towns.
+  &lt;a id=&quot;p1&quot; href=&quot;news.html&quot; aria-labelledby=&quot;headline&quot;&gt;Read more...&lt;/a&gt;&lt;/p&gt;
 </code></pre>
-<h4 id="9-roleapplication&#x9700;&#x8C28;&#x614E;&#x4F7F;&#x7528;">9. <code>role=application</code>&#x9700;&#x8C28;&#x614E;&#x4F7F;&#x7528;</h4>
-<p>&#x7B80;&#x800C;&#x8A00;&#x4E4B;&#xFF0C;&#x771F;&#x6B63;&#x4F1A;&#x4F7F;&#x7528;<code>role=application</code>&#x7684;&#x573A;&#x666F;&#x662F;&#x975E;&#x5E38;&#x7F55;&#x89C1;&#x7684;&#xFF0C;&#x9664;&#x975E;&#x9700;&#x8981;&#x6A21;&#x62DF;&#x771F;&#x5B9E;&#x7684;&#x684C;&#x9762;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x56E0;&#x4E3A;&#x5F53;&#x4F7F;&#x7528;<code>role=application</code>&#x65F6;&#xFF0C;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x4F1A;&#x505C;&#x6B62;&#x62E6;&#x622A;&#x51FB;&#x952E;&#xFF0C;&#x5E76;&#x5C06;&#x6240;&#x6709;&#x51FB;&#x952E;&#x76F4;&#x63A5;&#x4F20;&#x9012;&#x7ED9;&#x6D4F;&#x89C8;&#x5668;&#xFF0C;&#x8FD9;&#x4F1A;&#x4F7F;&#x5F97;&#x7528;&#x6237;&#x65E0;&#x6CD5;&#x8F7B;&#x677E;&#x6D4F;&#x89C8;&#x9875;&#x9762;&#xFF0C;&#x66F4;&#x5177;&#x4F53;&#x7684;&#x4ECB;&#x7ECD;&#x8BF7;<a href="https://www.w3.org/TR/using-aria/#using-application" target="_blank">&#x53C2;&#x8003;&#x6B64;&#x5904;</a>&#x3002;</p>
-<h4 id="10-rolepresentation&#x6216;aria-hiddentrue&#x4E0D;&#x80FD;&#x7528;&#x5728;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#x4E0A;">10. <code>role=&quot;presentation&quot;</code>&#x6216;<code>aria-hidden=&quot;true&quot;</code>&#x4E0D;&#x80FD;&#x7528;&#x5728;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#x4E0A;</h4>
-<p><code>role=presentation</code>&#x6216;&#x5176;&#x540C;&#x4E49;&#x8BCD;<code>role=none</code>&#xFF0C;&#x8868;&#x793A;&#x5728;&#x5B83;&#x6240;&#x5728;&#x7684;&#x5143;&#x7D20;&#x4E2D;&#x5220;&#x9664;&#x8BED;&#x4E49;&#xFF0C;&#x5728;&#x53EF;&#x805A;&#x7126;&#x5143;&#x7D20;&#x4E0A;&#x4F7F;&#x7528;<code>role=&quot;presentation&quot;</code>&#x6216;<code>aria-hidden=&quot;true&quot;</code>&#x4F1A;&#x5BFC;&#x81F4;&#x8BE5;&#x5143;&#x7D20;&#x5931;&#x53BB;&#x7126;&#x70B9;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-markup">&lt;button role=presentation&gt;press me&lt;/button&gt;     // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
-&lt;button aria-hidden=&quot;true&quot;&gt;press me&lt;/button&gt;    // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
+<p>  &#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x5728;&#x9605;&#x8BFB;&#x4E0A;&#x8FF0;&#x4F8B;&#x5B50;&#x65F6;&#x8868;&#x73B0;&#x5982;&#x4E0B;&#xFF1A;&quot;Read more... Storm hit east coast&quot;&#xFF0C;&#x8FD9;&#x5BF9;&#x4E8E;&#x901A;&#x8FC7;&#x94FE;&#x63A5;&#x6765;&#x6D4F;&#x89C8;&#x9875;&#x9762;&#x7684;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x4F7F;&#x7528;&#x8005;&#x975E;&#x5E38;&#x6709;&#x7528;&#xFF0C;&#x5B83;&#x63D0;&#x4F9B;&#x4E86;&#x5173;&#x4E8E;&#x94FE;&#x63A5;&#x66F4;&#x591A;&#x7684;&#x4FE1;&#x606F;&#x3002;</p>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>aria-labelledby</code>&#x8FDE;&#x63A5;&#x591A;&#x4E2A;&#x6587;&#x672C;&#x8282;&#x70B9;&#x7684;&#x6807;&#x7B7E;</p>
+<pre><code class="lang-markup">  &lt;form&gt;
+      &lt;p&gt;
+          &lt;span id=&quot;timeout-label&quot; tabindex=&quot;-1&quot;&gt;&lt;label for=&quot;timeout-duration&quot;&gt;Extend time-out to&lt;/label&gt;&lt;/span&gt;
+          &lt;input type=&quot;text&quot; size=&quot;3&quot; id=&quot;timeout-duration&quot; value=&quot;20&quot; 
+          aria-labelledby=&quot;timeout-label timeout-duration timeout-unit&quot; /&gt;
+          &lt;span id=&quot;timeout-unit&quot; tabindex=&quot;-1&quot;&gt; minutes&lt;/span&gt;
+      &lt;/p&gt;
+  &lt;/form&gt;
 </code></pre>
-<h4 id="11-aria&#x4E2D;&#x4F7F;&#x7528;&#x7684;id&#x5FC5;&#x987B;&#x552F;&#x4E00;">11. <code>ARIA</code>&#x4E2D;&#x4F7F;&#x7528;&#x7684;<code>id</code>&#x5FC5;&#x987B;&#x552F;&#x4E00;</h4>
+<p>  &#x5728;&#x4E0A;&#x9762;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;<code>input</code>&#x6807;&#x7B7E;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>aria-labelledby</code>&#x6765;&#x5F15;&#x7528;&#x6587;&#x672C;&#x6807;&#x7B7E;&#x3002;&#x5F53;&#x805A;&#x7126;&#x5230;input&#x65F6;&#xFF0C;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x4F1A;&#x8BFB;&#x53D6;&#x201C;Extend time-out to 20 minutes&#x201D;&#x3002;</p>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>aria-labelledby</code>&#x4E3A;&#x975E;&#x6587;&#x672C;&#x5185;&#x5BB9;&#x63D0;&#x4F9B;&#x6587;&#x672C;&#x66FF;&#x4EE3;</p>
+<p>  <code>aria-labelledby</code>&#x5C5E;&#x6027;&#x901A;&#x8FC7;&#x4F7F;&#x7528;&#x4E0E;&#x6807;&#x6CE8;&#x5143;&#x7D20;&#x7684;ID&#x5C5E;&#x6027;&#x5339;&#x914D;&#x7684;ID&#x5F15;&#x7528;&#x503C;&#xFF0C;&#x5C06;&#x5143;&#x7D20;&#x4E0E;&#x9875;&#x9762;&#x4E0A;&#x5176;&#x4ED6;&#x4F4D;&#x7F6E;&#x53EF;&#x89C1;&#x7684;&#x6587;&#x672C;&#x76F8;&#x5173;&#x8054;&#x3002;</p>
+<pre><code class="lang-markup">  &lt;div role=&quot;img&quot; aria-labelledby=&quot;star_num&quot;&gt;
+      &lt;img src=&quot;fullstar.png&quot; alt=&quot;&quot;/&gt;
+      &lt;img src=&quot;fullstar.png&quot; alt=&quot;&quot;/&gt;
+      &lt;img src=&quot;fullstar.png&quot; alt=&quot;&quot;/&gt;
+      &lt;img src=&quot;fullstar.png&quot; alt=&quot;&quot;/&gt;
+      &lt;img src=&quot;emptystar.png&quot; alt=&quot;&quot;/&gt;
+  &lt;/div&gt;
+
+  &lt;div id=&quot;star_num&quot;&gt;4 of 5 stars are full&lt;/div&gt;
+</code></pre>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>aria-labelledby</code>&#x4E3A;&#x7528;&#x6237;&#x754C;&#x9762;&#x63A7;&#x4EF6;&#x63D0;&#x4F9B;&#x540D;&#x79F0;</p>
+<pre><code class="lang-markup">  &lt;input name=&quot;searchtxt&quot; type=&quot;text&quot; aria-labelledby=&quot;searchbtn&quot;&gt;
+  &lt;input name=&quot;searchbtn&quot; id=&quot;searchbtn&quot; type=&quot;submit&quot; value=&quot;Search&quot;&gt;
+</code></pre>
+<p>  &#x5728;&#x4E0A;&#x9762;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x5728;&#x6CA1;&#x6709;&#x4F7F;&#x7528;label&#x6807;&#x7B7E;&#x7684;&#x60C5;&#x51B5;&#x4E0B;,&#x901A;&#x8FC7;<code>aria-labelledby</code>&#x63D0;&#x4F9B;&#x5BF9;&#x6807;&#x7B7E;&#x63CF;&#x8FF0;&#x3002;</p>
+</li>
+<li><p><code>aria-labelledby</code>&#x5C5E;&#x6027;&#x5E94;&#x5F15;&#x7528;&#x5B58;&#x5728;&#x4E8E;DOM&#x4E2D;&#x7684;&#x5143;&#x7D20;</p>
+<p>  &#x5F00;&#x53D1;&#x8005;&#x5728;&#x7ED9;<code>aria-labelledby</code>&#x5C5E;&#x6027;&#x8D4B;&#x503C;&#x65F6;&#xFF0C;&#x5E94;&#x6CE8;&#x610F;&#x4E0E;DOM&#x5143;&#x7D20;&#x4E2D;&#x7684;id&#x503C;&#x5BF9;&#x5E94;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
+<pre><code class="lang-markup">  &lt;div id=&quot;test_one&quot;&gt;it&apos;s a test&lt;/div&gt;
+
+  &lt;input type=&quot;text&quot; aria-labelledby=&quot;test_one&quot;&gt;&lt;/input&gt;    // &#x6B63;&#x786E;&#x4F7F;&#x7528;&#x6848;&#x4F8B;
+  &lt;input type=&quot;text&quot; aria-labelledby=&quot;test_two&quot;&gt;&lt;/input&gt;    // &#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x6848;&#x4F8B;&#xFF0C;&#x6587;&#x6863;&#x4E2D;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;id=&quot;test_two&quot;
+</code></pre>
+</li>
+</ul>
+<h4 id="14-aria-label&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;">14. <code>aria-label</code>&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;</h4>
+<ul>
+<li><p>&#x4F7F;&#x7528;<code>aria-label</code>&#x4E3A;&#x533A;&#x57DF;&#x63D0;&#x4F9B;&#x6807;&#x7B7E;&#x63CF;&#x8FF0;</p>
+<pre><code class="lang-markup">  &lt;div role=&quot;region&quot; aria-label=&quot;weather portlet&quot;&gt; 
+      Today&apos;s weather is very good for outing!
+  &lt;/div&gt;
+</code></pre>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>aria-label</code>&#x8868;&#x660E;&#x94FE;&#x63A5;&#x76EE;&#x7684;</p>
+<pre><code class="lang-markup">  &lt;h4&gt;Neighborhood News&lt;/h4&gt;
+  &lt;p&gt;
+      Seminole tax hike:  Seminole city managers are proposing a 75% increase in 
+      property taxes for the coming fiscal year.
+      &lt;a href=&quot;taxhike.html&quot; aria-label=&quot;Read more about Seminole tax hike&quot;&gt;[Read more...]&lt;/a&gt;
+  &lt;/p&gt;
+</code></pre>
+<p>  <code>aria-label</code>&#x6587;&#x672C;&#x5C06;&#x8986;&#x76D6;&#x94FE;&#x63A5;&#x4E2D;&#x63D0;&#x4F9B;&#x7684;&#x6587;&#x672C;&#xFF0C;&#x5373;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x5C06;&#x4F7F;&#x7528;<code>aria-label</code>&#x4E2D;&#x63D0;&#x4F9B;&#x7684;&#x6587;&#x672C;&quot;Read more about Seminole tax hike&quot;&#x800C;&#x4E0D;&#x662F;&#x94FE;&#x63A5;&#x6587;&#x672C;&quot;[Read more...]&quot;&#x3002;</p>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>aria-label</code>&#x63D0;&#x4F9B;&#x4E0D;&#x53EF;&#x89C1;&#x6807;&#x7B7E;</p>
+<pre><code class="lang-markup">  &lt;div id=&quot;box&quot;&gt;
+  This is a pop-up box.
+  &lt;button aria-label=&quot;Close&quot; onclick=&quot;document.getElementById(&apos;box&apos;).style.display=&apos;none&apos;;&quot; class=&quot;close-button&quot;&gt;X&lt;/button&gt;
+  &lt;/div&gt;
+</code></pre>
+<p>  &#x5728;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x4E3A;&#x5F39;&#x51FA;&#x6846;&#x4E2D;&#x7684;&#x5305;&#x542B;&apos;X&apos;&#x7684;&#x6309;&#x94AE;&#x63D0;&#x4F9B;&#x4E86;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x53EF;&#x8BBF;&#x95EE;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x540C;&#x65F6;&#x8FD9;&#x4E2A;&#x540D;&#x79F0;&#x5728;&#x9875;&#x9762;&#x4E2D;&#x4E0D;&#x53EF;&#x89C1;&#x3002;</p>
+</li>
+</ul>
+<h4 id="15-aria-describedby&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;">15. <code>aria-describedby</code>&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;</h4>
+<ul>
+<li><p>&#x4F7F;&#x7528;<code>aria-describedby</code>&#x4E3A;&#x7528;&#x6237;&#x754C;&#x9762;&#x63A7;&#x4EF6;&#x63D0;&#x4F9B;&#x63CF;&#x8FF0;&#x6027;&#x6807;&#x7B7E;</p>
+<pre><code class="lang-markup">  &lt;p&gt;
+      &lt;span id=&quot;fontDesc&quot;&gt;Select the font faces and sizes to be used on this page&lt;/span&gt;
+      &lt;button id=&quot;fontB&quot; onclick=&quot;doAction(&apos;Fonts&apos;);&quot; aria-describedby=&quot;fontDesc&quot;&gt;Fonts&lt;/button&gt;
+  &lt;/p&gt;
+
+  &lt;p&gt;
+      &lt;span id=&quot;colorDesc&quot;&gt;Select the colors to be used on this page&lt;/span&gt;
+      &lt;button id=&quot;colorB&quot; onclick=&quot;doAction(&apos;Colors&apos;);&quot; aria-describedby=&quot;colorDesc&quot;&gt;Colors&lt;/button&gt;
+  &lt;/p&gt;
+</code></pre>
+<p>  &#x5728;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E86;<code>aria-describedby</code>&#x5C5E;&#x6027;&#x63D0;&#x4F9B;&#x6709;&#x5173;&#x6309;&#x94AE;&#x7684;&#x66F4;&#x591A;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#x3002;</p>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>aria-describedby</code>&#x63D0;&#x4F9B;&#x56FE;&#x50CF;&#x63CF;&#x8FF0;</p>
+<pre><code class="lang-markup">  &lt;img src=&quot;ladymacbeth.jpg&quot; alt=&quot;Lady MacBeth&quot; aria-describedby=&quot;p1&quot;&gt;
+  &lt;p id=&quot;p1&quot;&gt;This painting dates back to 1730 and is oil on canvas. It was created by 
+  Jean-Guy Millome, and represents ...&lt;/p&gt;
+</code></pre>
+<p>  &#x5728;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E86;<code>aria-describedby</code>&#x6765;&#x7ED9;&#x56FE;&#x50CF;&#x63D0;&#x4F9B;&#x4E86;&#x957F;&#x63CF;&#x8FF0;&#x3002;</p>
+</li>
+</ul>
+<h4 id="16-aria-required&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;">16. <code>aria-required</code>&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;</h4>
+<p><code>aria-required</code>&#x5C5E;&#x6027;&#x8868;&#x793A;&#x8F93;&#x5165;&#x6846;&#x805A;&#x7126;&#x65F6;&#xFF0C;&#x63D0;&#x793A;&#x7528;&#x6237;&#x662F;&#x5426;&#x4E3A;&#x5FC5;&#x586B;&#x9879;&#xFF0C;&#x5C5E;&#x6027;&#x7684;&#x503C;&#x53EF;&#x4EE5;&#x662F;<code>true</code>&#x6216;<code>false</code>&#x3002;</p>
+<pre><code class="lang-markup">&lt;form action=&quot;#&quot; method=&quot;post&quot; id=&quot;login&quot; onsubmit=&quot;return errorCheck()&quot;&gt;
+  &lt;p&gt;Note: [*]denotes mandatory field&lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for=&quot;usrname&quot;&gt;Login name: &lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;usrname&quot; id=&quot;usrname&quot; aria-required=&quot;true&quot;/&gt;[*]
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for=&quot;pwd&quot;&gt;Password&lt;/label&gt;
+    &lt;input type=&quot;password&quot; name=&quot;pwd&quot; id=&quot;pwd&quot; size=&quot;12&quot; aria-required=&quot;true&quot; /&gt;[*]
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Login&quot; id=&quot;next_btn&quot; name=&quot;next_btn&quot;/&gt;
+  &lt;/p&gt;
+&lt;/form&gt;
+</code></pre>
+<p>&#x5728;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x7684;&#x8F93;&#x5165;&#x6846;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;<code>aria-required=&quot;true&quot;</code>&#xFF0C;&#x56E0;&#x6B64;&#x662F;&#x5FC5;&#x987B;&#x8F93;&#x5165;&#x7684;&#x503C;&#x3002;</p>
+<h4 id="17-&#x4F7F;&#x7528;aria-invalid&#x5C5E;&#x6027;&#x8868;&#x660E;&#x8F93;&#x5165;&#x6846;&#x6570;&#x636E;&#x662F;&#x5426;&#x6709;&#x6548;">17. &#x4F7F;&#x7528;<code>aria-invalid</code>&#x5C5E;&#x6027;&#x8868;&#x660E;&#x8F93;&#x5165;&#x6846;&#x6570;&#x636E;&#x662F;&#x5426;&#x6709;&#x6548;</h4>
+<p><code>aria-invalid</code>&#x5C5E;&#x6027;false&#x4EE3;&#x8868;&#x9A8C;&#x8BC1;&#x901A;&#x8FC7;&#xFF0C;true&#x4EE3;&#x8868;&#x9A8C;&#x8BC1;&#x4E0D;&#x901A;&#x8FC7;&#xFF0C;&#x4F8B;&#x5982;</p>
+<pre><code class="lang-markup">    // &#x8868;&#x660E;&#x9A8C;&#x8BC1;&#x7684;&#x6570;&#x636E;&#x6709;&#x6548;
+    &lt;input type=&quot;text&quot; size=&quot;3&quot; aria-invalid=&quot;false&quot; /&gt;
+
+    // &#x8868;&#x660E;&#x9A8C;&#x8BC1;&#x7684;&#x6570;&#x636E;&#x65E0;&#x6548;
+    &lt;input type=&quot;text&quot; size=&quot;3&quot; aria-invalid=&quot;true&quot; /&gt;
+</code></pre>
+<h4 id="18-aria-alertdialog&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;">18. <code>aria-alertdialog</code>&#x5C5E;&#x6027;&#x7684;&#x4F7F;&#x7528;</h4>
+<p>&#x5F00;&#x53D1;&#x8005;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>role=&quot;alertdialog&quot;</code>&#x521B;&#x5EFA;&#x901A;&#x77E5;&#x3002;</p>
+<p>&#x6B64;&#x901A;&#x77E5;&#x5E94;&#x4E3A;&#x6A21;&#x6001;&#xFF0C;&#x5177;&#x6709;&#x4EE5;&#x4E0B;&#x7279;&#x5F81;&#xFF1A;</p>
+<ul>
+<li><code>aria-label</code>&#x6216;<code>aria-labelledby</code>&#x5C5E;&#x6027;&#x4E3A;alertdialog&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x53EF;&#x8BBF;&#x95EE;&#x7684;&#x540D;&#x79F0;&#x3002;</li>
+<li><code>aria-describedby</code>&#x63D0;&#x4F9B;&#x5BF9;&#x8B66;&#x62A5;&#x6587;&#x672C;&#x7684;&#x5F15;&#x7528;&#x3002;</li>
+</ul>
+<pre><code class="lang-markup">&lt;div role=&quot;alertdialog&quot; aria-labelledby=&quot;alertHeading&quot; aria-describedby=&quot;alertText&quot;&gt;
+&lt;h1 id=&quot;alertHeading&quot;&gt;Error&lt;/h1&gt;
+&lt;div id=&quot;alertText&quot;&gt;Employee&apos;s Birth Date is after their hire date. Please verify the birth date and hire date.&lt;/div&gt;
+&lt;button&gt;Save and Continue&lt;/button&gt;
+&lt;button&gt;Return to page and correct error&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+<h4 id="19-aria&#x4E2D;&#x4F7F;&#x7528;&#x7684;id&#x5FC5;&#x987B;&#x552F;&#x4E00;">19. <code>ARIA</code>&#x4E2D;&#x4F7F;&#x7528;&#x7684;<code>id</code>&#x5FC5;&#x987B;&#x552F;&#x4E00;</h4>
 <p>&#x91CD;&#x590D;&#x7684;<code>id</code>&#x662F;&#x975E;&#x5E38;&#x5E38;&#x89C1;&#x7684;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#xFF0C;&#x5206;&#x914D;&#x76F8;&#x540C;&#x7684;<code>id</code>&#x503C;&#x4F1A;&#x5BFC;&#x81F4;&#x8F85;&#x52A9;&#x6280;&#x672F;&#x5FFD;&#x7565;&#x7B2C;&#x4E8C;&#x4E2A;&#x5B9E;&#x4F8B;&#xFF0C;&#x7834;&#x574F;&#x5185;&#x5BB9;&#x7684;&#x53EF;&#x8BBF;&#x95EE;&#x6027;&#x3002;</p>
 <pre><code class="lang-markup">// &#x9519;&#x8BEF;&#x6848;&#x4F8B;&#xFF0C;&#x4F7F;&#x7528;&#x4E86;&#x91CD;&#x590D;&#x7684;id&#xFF0C;&#x5E94;&#x8BE5;&#x4FEE;&#x6539;&#x5176;&#x4E2D;&#x7684;&#x4E00;&#x4E2A;id&#x503C;
 &lt;div role=&quot;button&quot; id=&quot;hibutton&quot;&gt;click me&lt;/div&gt;
@@ -642,6 +819,8 @@ aria-hidden=<span class="hljs-string">&quot;yes&quot;</span>       <span class="
 <li><a href="https://dequeuniversity.com/rules/axe/3.1" target="_blank">List of axe 3.1 Rules</a></li>
 <li><a href="https://www.w3.org/TR/wai-aria-1.1/#state_prop_taxonomy" target="_blank">WAI-ARIA &#x72B6;&#x6001;&#x5C5E;&#x6027;&#x5206;&#x7C7B;</a></li>
 <li><a href="https://www.w3.org/TR/wai-aria-1.1/#host_general_role" target="_blank">Role Attribute</a></li>
+<li><a href="https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/#abstract" target="_blank">Techniques for WCAG 2.0</a></li>
+<li><a href="https://www.w3.org/TR/WCAG20-TECHS/aria.html#ARIA1" target="_blank">ARIA Techniques for WCAG 2.0</a></li>
 </ul>
 
                                 
@@ -670,12 +849,12 @@ aria-hidden=<span class="hljs-string">&quot;yes&quot;</span>       <span class="
 
             
                 
-                <a href="basics.html" class="navigation navigation-prev " aria-label="Previous page: 1. 无障碍背景">
+                <a href="basics.html" class="navigation navigation-prev " aria-label="Previous page: 1.无障碍背景">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="rules.html" class="navigation navigation-next " aria-label="Next page: 3. 无障碍的标准">
+                <a href="rules.html" class="navigation navigation-next " aria-label="Next page: 3.无障碍的标准">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -686,7 +865,7 @@ aria-hidden=<span class="hljs-string">&quot;yes&quot;</span>       <span class="
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"2. WAI-ARIA","level":"1.2.2","depth":2,"next":{"title":"3. 无障碍的标准","level":"1.2.3","depth":2,"path":"part1/rules.md","ref":"./part1/rules.md","articles":[]},"previous":{"title":"1. 无障碍背景","level":"1.2.1","depth":2,"path":"part1/basics.md","ref":"./part1/basics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","-fontsettings"],"root":"./site/zh-cn/a11y","styles":{"website":"style/website.css"},"pluginsConfig":{"github":{"url":"https://github.com/alibaba-fusion/next"},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"fuson gitbook","links":{"gitbook":false,"sharing":{"google":false,"facebook":false,"twitter":false,"all":false}},"gitbook":"*"},"file":{"path":"part1/WAI-ARIA.md","mtime":"2019-04-28T01:43:10.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-28T08:28:29.294Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"2.WAI-ARIA","level":"1.2.2","depth":2,"next":{"title":"3.无障碍的标准","level":"1.2.3","depth":2,"path":"part1/rules.md","ref":"./part1/rules.md","articles":[]},"previous":{"title":"1.无障碍背景","level":"1.2.1","depth":2,"path":"part1/basics.md","ref":"./part1/basics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","-fontsettings"],"root":"./site/zh-cn/a11y","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/alibaba-fusion/next"},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"fuson gitbook","links":{"gitbook":false,"sharing":{"google":false,"facebook":false,"twitter":false,"all":false}},"gitbook":"*"},"file":{"path":"part1/WAI-ARIA.md","mtime":"2019-05-13T08:09:31.487Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-13T08:10:55.464Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

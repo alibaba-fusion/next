@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>3. 异步内容的更新及提醒 · fuson gitbook</title>
+        <title>3.异步内容的更新及提醒 · fuson gitbook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -30,7 +30,15 @@
 
     
         
-        <link rel="stylesheet" href="../../style/website.css">
+    
+        
+    
+        
+    
+        
+    
+        
+    
         
     
 
@@ -109,7 +117,7 @@
                 <a href="../../part1/basics.html">
             
                     
-                    1. 无障碍背景
+                    1.无障碍背景
             
                 </a>
             
@@ -122,7 +130,7 @@
                 <a href="../../part1/WAI-ARIA.html">
             
                     
-                    2. WAI-ARIA
+                    2.WAI-ARIA
             
                 </a>
             
@@ -135,7 +143,7 @@
                 <a href="../../part1/rules.html">
             
                     
-                    3. 无障碍的标准
+                    3.无障碍的标准
             
                 </a>
             
@@ -167,7 +175,7 @@
                 <a href="../intro.html">
             
                     
-                    1. 改造综述
+                    1.改造综述
             
                 </a>
             
@@ -180,7 +188,7 @@
                 <a href="../component-usage.html">
             
                     
-                    2. 步骤一：使用无障碍的 Fusion 组件
+                    2.步骤一：使用无障碍的 Fusion 组件
             
                 </a>
             
@@ -193,7 +201,7 @@
                 <a href="../checklist.html">
             
                     
-                    3. 步骤二：开发 Checklist
+                    3.步骤二：开发 Checklist
             
                 </a>
             
@@ -201,14 +209,14 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.4" data-path="../content-creation.md">
+        <li class="chapter " data-level="1.3.4" >
             
                 <span>
             
                     
-                    4. 步骤三：页面其他内容
+                    4.步骤三：页面其他内容
             
-                </a>
+                </span>
             
 
             
@@ -220,7 +228,7 @@
                 <a href="page1.html">
             
                     
-                    1. 跳过多个页面重复出现的导航栏
+                    1.跳过多个页面重复出现的导航栏
             
                 </a>
             
@@ -233,7 +241,7 @@
                 <a href="page2.html">
             
                     
-                    2. 元素的隐藏
+                    2.元素的隐藏
             
                 </a>
             
@@ -246,7 +254,7 @@
                 <a href="page3.html">
             
                     
-                    3. 异步内容的更新及提醒
+                    3.异步内容的更新及提醒
             
                 </a>
             
@@ -259,7 +267,7 @@
                 <a href="page4.html">
             
                     
-                    4. 焦点管理
+                    4.焦点管理
             
                 </a>
             
@@ -272,7 +280,7 @@
                 <a href="page5.html">
             
                     
-                    5. 设计建议
+                    5.设计建议
             
                 </a>
             
@@ -309,7 +317,7 @@
                 <a href="../../part3/develop.html">
             
                     
-                    1. 开发辅助工具
+                    1.开发辅助工具
             
                 </a>
             
@@ -322,7 +330,7 @@
                 <a href="../../part3/testing.html">
             
                     
-                    2. 整体测试
+                    2.整体测试
             
                 </a>
             
@@ -365,7 +373,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >3. 异步内容的更新及提醒</a>
+        <a href="../.." >3.异步内容的更新及提醒</a>
     </h1>
 </div>
 
@@ -491,23 +499,95 @@ There is 3 characters.
     aria-live=&quot;polite&quot;&gt;
 </code></pre>
 <h2 id="2-&#x5B9E;&#x8DF5;&#x4F8B;&#x5B50;">2. &#x5B9E;&#x8DF5;&#x4F8B;&#x5B50;</h2>
-<p>&#x5728;&#x8FD9;&#x4E00;&#x8282;&#x6211;&#x4EEC;&#x5C06;&#x7ED3;&#x5408;Fusion Design&#x7684;&#x7EC4;&#x4EF6;&#x6765;&#x8BF4;&#x660E;&#x5982;&#x4F55;&#x5B9E;&#x73B0;&#x5F02;&#x6B65;&#x5185;&#x5BB9;&#x66F4;&#x65B0;&#x7684;&#x63D0;&#x9192;&#xFF0C;<a href="https://codesandbox.io/s/k010p7wy2v" target="_blank">&#x70B9;&#x51FB;&#x6B64;&#x5904;</a>&#x6D4F;&#x89C8;&#x5B8C;&#x6574;&#x4EE3;&#x7801;&#x4E0E;&#x9875;&#x9762;demo&#x3002;</p>
-<pre><code class="lang-markup">&lt;Form&gt;
-    &lt;FormItem label=&quot;&#x8F93;&#x5165;&#x5185;&#x5BB9;:&quot;&gt;
-        &lt;Input.TextArea
-        placeholder=&quot;&#x5206;&#x4EAB;&#x751F;&#x6D3B;&#x70B9;&#x6EF4;&quot;
-        name=&quot;contents&quot;
-        id=&quot;contents&quot;
-        aria-describedby=&quot;inputInfo&quot; 
-        aria-required=&quot;true&quot;
-        onChange={this.sizeCount}
+<p>&#x5728;&#x8FD9;&#x4E00;&#x8282;&#x6211;&#x4EEC;&#x5C06;&#x901A;&#x8FC7;Fusion Design&#x7684;&#x7EC4;&#x4EF6;&#x6765;&#x8BF4;&#x660E;&#x5982;&#x4F55;&#x5B9E;&#x73B0;&#x8868;&#x5355;&#x5185;&#x5BB9;&#x66F4;&#x65B0;&#x53CA;&#x63D0;&#x9192;&#x7684;&#x65E0;&#x969C;&#x788D;&#x652F;&#x6301;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x8003;&#x8651;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x65B9;&#x9762;&#x7684;&#x95EE;&#x9898;&#xFF1A;</p>
+<ul>
+<li><p><code>&#x8F93;&#x5165;&#x6846;&#x7684;&#x63CF;&#x8FF0;</code> - &#x5F53;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x805A;&#x7126;&#x5728;&#x8F93;&#x5165;&#x6846;&#x4E0A;&#x9762;&#xFF0C;&#x53EF;&#x4EE5;&#x8BFB;&#x53D6;label&#x6807;&#x7B7E;&#x6587;&#x672C;&#x6216;&#x89E3;&#x91CA;&#x6027;&#x63CF;&#x8FF0;&#x3002;&#x5177;&#x4F53;&#x7528;&#x6CD5;&#xFF0C;&#x8BF7;&#x53C2;&#x8003;&#x4EE5;&#x4E0B;&#x4F8B;&#x5B50;&#x3002;</p>
+<ul>
+<li>html&#x4E2D;&#x7684;&#x7ED1;&#x5B9A;&#x65B9;&#x5F0F;&#x4E3A;&#x5C06;label&#x6807;&#x7B7E;&#x4E2D;&#x7684;for&#x4E0E;&#x8F93;&#x5165;&#x6846;&#x7684;id&#x8FDB;&#x884C;&#x7ED1;&#x5B9A;&#xFF0C;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x5C31;&#x53EF;&#x4EE5;&#x8BFB;&#x53D6;label&#x6587;&#x672C;&#x3002;&#x4F7F;&#x7528;Fusion&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;<code>FormItem</code>&#x7EC4;&#x4EF6;&#x4E2D;&#x8BBE;&#x7F6E;label&#x5C5E;&#x6027;&#x4EE5;&#x53CA;&#x5B50;&#x7EC4;&#x4EF6;name&#x5C5E;&#x6027;&#xFF0C;&#x5373;&#x53EF;&#x5B9E;&#x73B0;&#x7ED1;&#x5B9A;&#xFF0C;&#x5176;&#x80CC;&#x540E;&#x7684;&#x539F;&#x7406;&#x4E5F;&#x662F;&#x5C06;label&#x4E2D;&#x7684;fors&#x5C5E;&#x6027;&#x4E0E;&#x8F93;&#x5165;&#x6846;id&#x8FDB;&#x884C;&#x7ED1;&#x5B9A;&#x3002;</li>
+<li>&#x8BBE;&#x7F6E;<code>placeholder</code>&#x8FDB;&#x884C;&#x5BF9;&#x8F93;&#x5165;&#x6846;&#x7684;&#x63CF;&#x8FF0;,&#x5177;&#x4F53;&#x7528;&#x6CD5;&#x8BF7;&#x53C2;&#x7167;<a href="https://fusion.design/component" target="_blank">&#x5B98;&#x7F51;</a>&#x3002;</li>
+<li>&#x4E5F;&#x53EF;&#x4EE5;&#x8BBE;&#x7F6E;<code>aria-label</code>&#x5BF9;&#x8F93;&#x5165;&#x6846;&#x8FDB;&#x884C;&#x89E3;&#x91CA;&#x6027;&#x63CF;&#x8FF0;&#x3002;</li>
+</ul>
+</li>
+<li><p><code>&#x5FC5;&#x586B;&#x9879;</code> - &#x5F53;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x5668;&#x8BFB;&#x53D6;&#x6587;&#x672C;&#x6846;&#x65F6;&#xFF0C;&#x63D0;&#x793A;&#x7528;&#x6237;&#x4E3A;&#x5FC5;&#x586B;&#x9879;</p>
+<ul>
+<li>&#x5BF9;&#x4E8E;&#x5FC5;&#x586B;&#x9879;&#xFF0C;&#x5728;&#x7EC4;&#x4EF6;&#x4E2D;&#x8981;&#x8BBE;&#x7F6E;<code>aria-required</code>&#x5C5E;&#x6027;&#xFF0C;&#x5E76;&#x901A;&#x8FC7;&#x89C6;&#x89C9;&#x8BBE;&#x8BA1;&#x4E0A;&#x7684;&#x9AD8;&#x4EAE;&#x63D0;&#x793A;&#x7528;&#x6237;&#x3002;&#x4F8B;&#x5982;&#xFF1A;<code>Input</code>&#x3001;<code>DatePicker</code>&#x7B49;&#x3002;</li>
+</ul>
+</li>
+<li><p><code>&#x683C;&#x5F0F;</code> - &#x63D0;&#x793A;&#x7528;&#x6237;&#x8F93;&#x5165;&#x6570;&#x636E;&#x7684;&#x683C;&#x5F0F;</p>
+<ul>
+<li>&#x5BF9;&#x4E8E;&#x8868;&#x5355;&#x9879;&#xFF0C;&#x9700;&#x63D0;&#x793A;&#x7528;&#x6237;&#x8F93;&#x5165;&#x6570;&#x636E;&#x7684;&#x683C;&#x5F0F;&#xFF0C;Funsion&#x63D0;&#x4F9B;&#x683C;&#x5F0F;&#x7684;&#x9A8C;&#x8BC1;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;aria-label&#x5C5E;&#x6027;&#x5BF9;&#x683C;&#x5F0F;&#x8FDB;&#x884C;&#x8BF4;&#x660E;&#x3002;&#x4F8B;&#x5982;&#x65E5;&#x671F;: <code>&lt;DatePicker aria-label=&quot;&#x6309;&#x7167;YYYY/MM/DD&#x683C;&#x5F0F;&#x8F93;&#x5165;&#x65E5;&#x671F;&quot; /&gt;</code></li>
+</ul>
+</li>
+<li><p><code>&#x5F02;&#x6B65;&#x5185;&#x5BB9;&#x66F4;&#x65B0;&#x7684;&#x63D0;&#x9192;</code> - Fusion&#x7EC4;&#x4EF6;&#x7ED3;&#x5408;aria-*&#x5C5E;&#x6027;&#x5B9E;&#x73B0;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x63D0;&#x9192;</p>
+<ul>
+<li>&#x6839;&#x636E;Fusion&#x7EC4;&#x4EF6;&#x81EA;&#x8EAB;&#x7684;&#x7279;&#x70B9;&#x7ED3;&#x5408;<code>aria-live</code>&#x5C5E;&#x6027;&#xFF0C;&#x5B9E;&#x73B0;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x3002;&#x5BF9;&#x4E8E;&#x8F93;&#x5165;&#x7684;&#x5185;&#x5BB9;&#x7ED9;&#x4E88;&#x7528;&#x6237;&#x63D0;&#x793A;&#x3002;&#x4F8B;&#x5982;&#xFF1A;Input&#x7EC4;&#x4EF6;&#xFF0C;&#x5F53;&#x7528;&#x6237;&#x8F93;&#x5165;&#x2018;123456&#x2019;&#xFF0C;&#x5F00;&#x542F;&#x5C4F;&#x5E55;&#x9605;&#x8BFB;&#x53BB;&#x4F1A;&#x63D0;&#x793A;&#xFF1A;&#x201C;&#x60A8;&#x8F93;&#x5165;&#x7684;&#x5185;&#x5BB9;&#x4E3A;:123456&#x5171;6&#x5B57;&#x7B26;&#x201D;&#x3002;&#x5F53;&#x7528;&#x6237;&#x5220;&#x9664;&#x5B8C;&#x6240;&#x6709;&#x7684;&#x5B57;&#x7B26;&#xFF0C;&#x5219;&#x63D0;&#x793A;&#xFF1A;&#x201C;&#x4E0D;&#x80FD;&#x4E3A;&#x7A7A;&#xFF0C;&#x8BF7;&#x8F93;&#x5165;&#x6709;&#x6548;&#x5B57;&#x7B26;&#x201C;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<p>&#x4EE5;&#x4E0B;&#x662F;&#x6839;&#x636E;Fusion&#x4E0E;&#x65E0;&#x969C;&#x969C;&#x7ED3;&#x5408;&#x7684;&#x4F8B;&#x5B50;&#xFF0C;&#x6838;&#x5FC3;&#x4EE3;&#x7801;&#x8BF7;&#x53C2;&#x8003;&#x5982;&#x4E0B;&#xFF0C;&#x5B8C;&#x6574;demo&#x8BF7;<a href="https://codesandbox.io/s/6xz4zj9pxn" target="_blank">&#x70B9;&#x51FB;&#x6B64;&#x5904;</a>&#x3002;</p>
+<pre><code class="lang-js">state = {
+    size: <span class="hljs-string">&apos;medium&apos;</span>,
+    textTip: <span class="hljs-string">&apos;&apos;</span>
+}
+
+changeHandle = (v, event)=&gt;{
+    <span class="hljs-keyword">const</span> sign = event.target.name || event.target.id
+    <span class="hljs-keyword">if</span>(sign &amp;&amp; [<span class="hljs-string">&apos;username&apos;</span>, <span class="hljs-string">&apos;remark&apos;</span>].includes(sign)) { 
+        <span class="hljs-keyword">if</span>(!v) { 
+            <span class="hljs-keyword">this</span>.setState({textTip: <span class="hljs-string">&apos;&#x4E0D;&#x80FD;&#x4E3A;&#x7A7A;&#xFF0C;&#x8BF7;&#x8F93;&#x5165;&#x6709;&#x6548;&#x5B57;&#x7B26;&apos;</span>});
+        }<span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">const</span> ariaText = <span class="hljs-string">&apos;&#x60A8;&#x8F93;&#x5165;&#x7684;&#x5185;&#x5BB9;&#x4E3A;:&apos;</span> + (!v ? <span class="hljs-string">&quot;&quot;</span>: v) + <span class="hljs-string">&apos;&#x5171;&apos;</span> + (!v ? <span class="hljs-number">0</span> : v.length) + <span class="hljs-string">&apos;&#x5B57;&#x7B26;&apos;</span>;
+            <span class="hljs-keyword">this</span>.setState({textTip: ariaText});
+        }
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sign &amp;&amp; sign === <span class="hljs-string">&apos;password&apos;</span>) { 
+        <span class="hljs-keyword">if</span>(!v) { 
+            <span class="hljs-keyword">this</span>.setState({textTip: <span class="hljs-string">&quot;&#x5BC6;&#x7801;&#x4E0D;&#x80FD;&#x4E3A;&#x7A7A;&#xFF0C;&#x8BF7;&#x8F93;&#x5165;&#x6709;&#x6548;&#x5B57;&#x7B26;&quot;</span>});
+        }<span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">const</span> ariaText = <span class="hljs-string">&apos;&#x8F93;&#x5165;&#x5BC6;&#x7801;&#x5171;&apos;</span> + (!v ? <span class="hljs-number">0</span> : v.length) + <span class="hljs-string">&apos;&#x5B57;&#x7B26;&apos;</span>;
+            <span class="hljs-keyword">this</span>.setState({textTip: ariaText});
+        }
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(event.target.type == <span class="hljs-string">&apos;checkbox&apos;</span>){
+        <span class="hljs-keyword">const</span> ariaText = (v.length === <span class="hljs-number">0</span>) ? <span class="hljs-string">&quot;&#x60A8;&#x6CA1;&#x6709;&#x9009;&#x62E9;&#x8BED;&#x8A00;&quot;</span> : (<span class="hljs-string">&quot;&#x60A8;&#x9009;&#x62E9;&#x7684;&#x8BED;&#x8A00;&#x4E3A;:&quot;</span> + v.join(<span class="hljs-string">&apos;,&apos;</span>));
+        <span class="hljs-keyword">this</span>.setState({textTip: ariaText});
+    }
+}
+
+&lt;Form {...formItemLayout} size={<span class="hljs-keyword">this</span>.state.size} style={{maxWidth: <span class="hljs-string">&apos;500px&apos;</span>}}&gt;
+    &lt;FormItem required label=&quot;username:&quot; aria-describedby=&quot;aria&quot;&gt;
+        &lt;Input
+            placeholder=&quot;Please enter your user name&quot;
+            name=&quot;username&quot;
+            aria-required=&quot;true&quot;
+            onChange={this.changeHandle}
         /&gt;
     &lt;/FormItem&gt;
 
-    &lt;FormItem label=&quot; &quot;&gt;
-        &lt;span id=&quot;inputInfo&quot; aria-live=&quot;polite&quot;&gt;
-        &#x5DF2;&#x8F93;&#x5165;&#x5B57;&#x7B26;:
+    &lt;FormItem required label=&quot;Password:&quot; aria-describedby=&quot;aria&quot;&gt;
+        &lt;Input
+            htmlType=&quot;password&quot;
+            placeholder=&quot;Please enter your password&quot;
+            aria-required=&quot;true&quot;
+            id=&quot;password&quot;
+            name=&quot;password&quot;
+            onChange={this.changeHandle}
+        /&gt;
+    &lt;/FormItem&gt;
+
+    &lt;FormItem wrapperCol={{ offset: 2 }} label=&quot; &quot;&gt;
+        &lt;span id=&quot;aria&quot; aria-live=&quot;polite&quot;&gt;
+            &lt;span aria-label={this.state.textTip} /&gt;
         &lt;/span&gt;
+
+        &lt;Form.Submit
+            validate
+            type=&quot;primary&quot;
+            onClick={this.submitHandle}
+            style={{ marginRight: 4 }}
+        &gt;
+            Submit
+        &lt;/Form.Submit&gt;
+
+        &lt;Form.Reset style={{ marginLeft: 100 }}&gt;Reset&lt;/Form.Reset&gt;
     &lt;/FormItem&gt;
 &lt;/Form&gt;
 </code></pre>
@@ -546,12 +626,12 @@ There is 3 characters.
 
             
                 
-                <a href="page2.html" class="navigation navigation-prev " aria-label="Previous page: 2. 元素的隐藏">
+                <a href="page2.html" class="navigation navigation-prev " aria-label="Previous page: 2.元素的隐藏">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="page4.html" class="navigation navigation-next " aria-label="Next page: 4. 焦点管理">
+                <a href="page4.html" class="navigation navigation-next " aria-label="Next page: 4.焦点管理">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -562,7 +642,7 @@ There is 3 characters.
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"3. 异步内容的更新及提醒","level":"1.3.4.3","depth":3,"next":{"title":"4. 焦点管理","level":"1.3.4.4","depth":3,"path":"part2/content-creation-link/page4.md","ref":"./part2/content-creation-link/page4.md","articles":[]},"previous":{"title":"2. 元素的隐藏","level":"1.3.4.2","depth":3,"path":"part2/content-creation-link/page2.md","ref":"./part2/content-creation-link/page2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","-fontsettings"],"root":"./site/zh-cn/a11y","styles":{"website":"style/website.css"},"pluginsConfig":{"github":{"url":"https://github.com/alibaba-fusion/next"},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"fuson gitbook","links":{"gitbook":false,"sharing":{"google":false,"facebook":false,"twitter":false,"all":false}},"gitbook":"*"},"file":{"path":"part2/content-creation-link/page3.md","mtime":"2019-04-28T01:43:10.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-28T08:28:29.294Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"3.异步内容的更新及提醒","level":"1.3.4.3","depth":3,"next":{"title":"4.焦点管理","level":"1.3.4.4","depth":3,"path":"part2/content-creation-link/page4.md","ref":"./part2/content-creation-link/page4.md","articles":[]},"previous":{"title":"2.元素的隐藏","level":"1.3.4.2","depth":3,"path":"part2/content-creation-link/page2.md","ref":"./part2/content-creation-link/page2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","-fontsettings"],"root":"./site/zh-cn/a11y","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/alibaba-fusion/next"},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"fuson gitbook","links":{"gitbook":false,"sharing":{"google":false,"facebook":false,"twitter":false,"all":false}},"gitbook":"*"},"file":{"path":"part2/content-creation-link/page3.md","mtime":"2019-05-13T08:09:31.490Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-13T08:10:55.464Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
