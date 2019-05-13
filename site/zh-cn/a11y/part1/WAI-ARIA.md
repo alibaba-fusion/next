@@ -121,7 +121,7 @@
 比如开发者想构建一个选项卡，可以按如下方式构建：
 
 ```markup
-<div role=tab><h2>heading tab</h2></div>
+<div role="tab"><h2>heading tab</h2></div>
 ```
 
 但是不能按照如下方式构建:
