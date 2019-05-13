@@ -63,6 +63,10 @@ typings/
 # special demo file for locally reappear issue
 docs/**/demo/issues.md
 
+# gitbook generate file
+build
+_book
+
 precss.css
 .sass-cache/
 scripts/server-remote

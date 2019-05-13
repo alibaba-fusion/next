@@ -12,7 +12,7 @@
 
 * 步骤一：[使用无障碍的 Fusion 组件](component-usage.md)
 * 步骤二：[开发 Checklist](checklist.md)
-* 步骤三：[页面改造](content-creation/)
+* 步骤三：页面改造 
 
 > 无障碍的改造过程，就像拿石头、小石子、沙子、水来填满水瓶，层层递进
 

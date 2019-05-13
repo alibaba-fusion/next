@@ -113,25 +113,89 @@ There is 3 characters.
 
 ## 2. 实践例子
 
-在这一节我们将结合Fusion Design的组件来说明如何实现异步内容更新的提醒，[点击此处](https://codesandbox.io/s/k010p7wy2v)浏览完整代码与页面demo。
+在这一节我们将通过Fusion Design的组件来说明如何实现表单内容更新及提醒的无障碍支持，我们将考虑以下几个方面的问题：
 
-```markup
-<Form>
-    <FormItem label="输入内容:">
-        <Input.TextArea
-        placeholder="分享生活点滴"
-        name="contents"
-        id="contents"
-        aria-describedby="inputInfo" 
-        aria-required="true"
-        onChange={this.sizeCount}
+* `输入框的描述` - 当屏幕阅读器聚焦在输入框上面，可以读取label标签文本或解释性描述。具体用法，请参考以下例子。
+    * html中的绑定方式为将label标签中的for与输入框的id进行绑定，屏幕阅读器就可以读取label文本。使用Fusion时，我们可以在`FormItem`组件中设置label属性以及子组件name属性，即可实现绑定，其背后的原理也是将label中的fors属性与输入框id进行绑定。
+    * 设置`placeholder`进行对输入框的描述,具体用法请参照[官网](https://fusion.design/component)。
+    * 也可以设置`aria-label`对输入框进行解释性描述。
+
+* `必填项` - 当屏幕阅读器读取文本框时，提示用户为必填项
+    * 对于必填项，在组件中要设置`aria-required`属性，并通过视觉设计上的高亮提示用户。例如：`Input`、`DatePicker`等。
+
+* `格式` - 提示用户输入数据的格式
+    * 对于表单项，需提示用户输入数据的格式，Funsion提供格式的验证，可以使用aria-label属性对格式进行说明。例如日期: `<DatePicker aria-label="按照YYYY/MM/DD格式输入日期" />`
+
+* `异步内容更新的提醒` - Fusion组件结合aria-*属性实现异步更新提醒
+    * 根据Fusion组件自身的特点结合`aria-live`属性，实现异步更新。对于输入的内容给予用户提示。例如：Input组件，当用户输入‘123456’，开启屏幕阅读去会提示：“您输入的内容为:123456共6字符”。当用户删除完所有的字符，则提示：“不能为空，请输入有效字符“。
+
+以下是根据Fusion与无障障结合的例子，核心代码请参考如下，完整demo请[点击此处](https://codesandbox.io/s/6xz4zj9pxn)。
+
+
+```js
+state = {
+    size: 'medium',
+    textTip: ''
+}
+
+changeHandle = (v, event)=>{
+    const sign = event.target.name || event.target.id
+    if(sign && ['username', 'remark'].includes(sign)) { 
+        if(!v) { 
+            this.setState({textTip: '不能为空，请输入有效字符'});
+        }else {
+            const ariaText = '您输入的内容为:' + (!v ? "": v) + '共' + (!v ? 0 : v.length) + '字符';
+            this.setState({textTip: ariaText});
+        }
+    }else if(sign && sign === 'password') { 
+        if(!v) { 
+            this.setState({textTip: "密码不能为空，请输入有效字符"});
+        }else {
+            const ariaText = '输入密码共' + (!v ? 0 : v.length) + '字符';
+            this.setState({textTip: ariaText});
+        }
+    }else if(event.target.type == 'checkbox'){
+        const ariaText = (v.length === 0) ? "您没有选择语言" : ("您选择的语言为:" + v.join(','));
+        this.setState({textTip: ariaText});
+    }
+}
+
+<Form {...formItemLayout} size={this.state.size} style={{maxWidth: '500px'}}>
+    <FormItem required label="username:" aria-describedby="aria">
+        <Input
+            placeholder="Please enter your user name"
+            name="username"
+            aria-required="true"
+            onChange={this.changeHandle}
         />
     </FormItem>
 
-    <FormItem label=" ">
-        <span id="inputInfo" aria-live="polite">
-        已输入字符:
+    <FormItem required label="Password:" aria-describedby="aria">
+        <Input
+            htmlType="password"
+            placeholder="Please enter your password"
+            aria-required="true"
+            id="password"
+            name="password"
+            onChange={this.changeHandle}
+        />
+    </FormItem>
+
+    <FormItem wrapperCol={{ offset: 2 }} label=" ">
+        <span id="aria" aria-live="polite">
+            <span aria-label={this.state.textTip} />
         </span>
+
+        <Form.Submit
+            validate
+            type="primary"
+            onClick={this.submitHandle}
+            style={{ marginRight: 4 }}
+        >
+            Submit
+        </Form.Submit>
+
+        <Form.Reset style={{ marginLeft: 100 }}>Reset</Form.Reset>
     </FormItem>
 </Form>
 ```
