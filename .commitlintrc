@@ -9,6 +9,7 @@
     "type-case": [2, "always", "lower-case"],
     "type-enum": [2, "always",
       [
+        "deprecated",
         "build",
         "chore",
         "ci",

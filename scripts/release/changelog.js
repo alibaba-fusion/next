@@ -4,6 +4,7 @@ const semver = require('semver');
 const request = require('request');
 const inquirer = require('inquirer');
 const conventionalChangelog = require('conventional-changelog');
+const config = require('conventional-changelog-alifd');
 const { logger } = require('../utils');
 
 const changelogPath = 'CHANGELOG.md';
@@ -53,7 +54,7 @@ module.exports = function* changelog() {
     logger.info(`正在生成 ${changelogPath} 文件,请稍等几秒钟...`);
 
     conventionalChangelog({
-        preset: 'angular',
+        config,
     }).on('data', chunk => {
         const log = chunk
             .toString()

@@ -1,59 +1,94 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { mount, shallow } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Loading from '../../src/loading/index';
+import Overlay from '../../src/overlay';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('Test', () => {
     describe('render', () => {
-        it('should render', () => {
-            const wrapper = mount(<Loading />);
-            assert(wrapper.find('.next-loading').length === 1);
+        let wrapper1;
+        let wrapper2;
+
+        afterEach(() => {
+            if (wrapper1) {
+                wrapper1.unmount();
+                wrapper1 = null;
+            }
+            if (wrapper2) {
+                wrapper2.unmount();
+                wrapper2 = null;
+            }
         });
-        it('size', () => {
-            const wrapper1 = mount(<Loading />);
+        it('should render default', () => {
+            wrapper1 = mount(<Loading />);
+            assert(wrapper1.find('.next-loading').length === 1);
+        });
+        it('should render medium size', () => {
+            wrapper1 = mount(<Loading />);
             assert(wrapper1.find('.next-loading-fusion-reactor').length === 1);
 
-            const wrapper2 = mount(<Loading size="medium" />);
+            wrapper2 = mount(<Loading size="medium" />);
             assert(
                 wrapper2.find('.next-loading-medium-fusion-reactor').length ===
+                    1
+            );
+        });
+
+        it('should show fullscreen', () => {
+            wrapper1 = mount(<Loading fullScreen />);
+            assert(
+                wrapper1.find(Overlay).length ===
                     1
             );
         });
     });
 
     describe('behavior', () => {
+        let wrapper1;
+        let wrapper2;
+
+        afterEach(() => {
+            if (wrapper1) {
+                wrapper1.unmount();
+                wrapper1 = null;
+            }
+            if (wrapper2) {
+                wrapper2.unmount();
+                wrapper2 = null;
+            }
+        });
         it('should support tip', () => {
-            const wrapper = mount(<Loading tip="hello world" />);
+            wrapper1 = mount(<Loading tip="hello world" />);
             assert(
-                wrapper.find('.next-loading-tip-content').text() ===
+                wrapper1.find('.next-loading-tip-content').text() ===
                     'hello world'
             );
         });
         it('should support indicator', () => {
             const indicator = <div className="custom-loading-dom" />;
-            const wrapper = mount(
+            wrapper1 = mount(
                 <Loading tip="hello world" indicator={indicator} />
             );
-            assert(wrapper.find('.next-loading-indicator').contains(indicator));
+            assert(wrapper1.find('.next-loading-indicator').contains(indicator));
         });
         it('should support visible', () => {
-            const wrapper = mount(<Loading tip="hello world" />);
-            assert(wrapper.find('.next-loading').hasClass('next-open'));
-            const wrapper2 = mount(
+            wrapper1 = mount(<Loading tip="hello world" />);
+            assert(wrapper1.find('.next-loading').hasClass('next-open'));
+            wrapper2 = mount(
                 <Loading tip="hello world" visible={false} />
             );
             assert(!wrapper2.find('.next-loading').hasClass('next-open'));
         });
         it('should support inline', () => {
-            const wrapper = mount(<Loading tip="hello world" />);
+            wrapper1 = mount(<Loading tip="hello world" />);
             assert(
-                wrapper.find('.next-loading').hasClass('next-loading-inline')
+                wrapper1.find('.next-loading').hasClass('next-loading-inline')
             );
-            const wrapper2 = mount(
+            wrapper2 = mount(
                 <Loading tip="hello world" inline={false} />
             );
             assert(

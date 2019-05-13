@@ -441,7 +441,7 @@ export default function lock(BaseComponent) {
                     dom.setStyle(
                         lockRightBodyWrapper,
                         rtl ? 'left' : 'right',
-                        width
+                        `${width}px`
                     );
             }
         }
@@ -650,6 +650,7 @@ export default function lock(BaseComponent) {
                         components={components}
                         ref="lockLeft"
                         loading={false}
+                        aria-hidden
                     />,
                     <BaseComponent
                         {...others}
@@ -661,6 +662,7 @@ export default function lock(BaseComponent) {
                         components={components}
                         ref="lockRight"
                         loading={false}
+                        aria-hidden
                     />,
                 ];
                 return (

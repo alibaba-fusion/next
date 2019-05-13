@@ -2,11 +2,11 @@
 
 - order: 6
 
-通过设置`tabIndex`与`aria-label`读取。
+若为装饰性icon，请设置通过设置 `aria-hidden` 忽略；若为按钮类型icon，请务必设置 `role="button"` 和 `aria-label`。
 
 :::lang=en-us
 
-This is handled by the `tabIndex` and `aria-label`.
+If it's a decorative icon, set `aria-hidden` to ignore; Or it's a button, set `role="button" `and  `aria-label`.
 
 # Addon
 
@@ -20,9 +20,12 @@ This is handled by the `tabIndex` and `aria-label`.
 import { Icon } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Icon type="atm"  tabIndex="0"  aria-label="icon atm" style={{ margin:'5px' }}/>
-    <Icon type="smile"  tabIndex="-1"  aria-label="icon smile" style={{ margin:'5px' }}/>
-    <Icon type="success"  tabIndex="-1"  aria-label="icon success" style={{ margin:'5px' }}/>
+    button: <br/>
+    <Icon type="atm"  role="button"  aria-label="icon atm" style={{ margin:'5px' }}/>
+    <Icon type="smile"  role="button"  aria-label="icon smile" style={{ margin:'5px' }}/>
+    <br/>
+    decoration: <br/>
+    <Icon type="success" aria-hidden style={{ margin:'5px' }}/>
 </div>, mountNode);
 
 ````

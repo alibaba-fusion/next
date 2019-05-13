@@ -5,12 +5,11 @@
 通过设置`tabIndex`读取，请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-Read this by setting `tabIndex` ,Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 7
+
+Read this by setting `tabIndex` ,Please refer to `ARIA and KeyBoard`.
 
 :::
 ---

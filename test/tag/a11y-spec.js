@@ -12,7 +12,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const { Selectable, Group, Closable } = Tag;
 
-describe('Tag', () => {
+describe('Tag A11y', () => {
     let wrapper;
 
     afterEach(() => {

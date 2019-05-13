@@ -21,8 +21,8 @@ import { Button, Balloon } from '@alifd/next';
 
 
 const defaultTrigger = <Button className="btrigger" style={{margin: '5px'}}>default style</Button>;
+const disabledTrigger = <Button disabled className="btrigger" style={{margin: '5px'}}>default style</Button>;
 const primary = <Button className="btrigger" style={{margin: '5px'}}>primary style</Button>;
-
 
 const Demo = () => (
     <div className="container">
@@ -31,6 +31,9 @@ const Demo = () => (
         </Balloon>
         <Balloon type="primary" trigger={primary} triggerType="click">
             primary
+        </Balloon>
+        <Balloon trigger={disabledTrigger} closable={false}>
+            disabeled default
         </Balloon>
     </div>
 );

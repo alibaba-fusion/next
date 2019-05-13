@@ -558,6 +558,16 @@ describe('Transfer', () => {
         assert(findItemText(wrapper, 0, 2) === '2');
         assert(findItemText(wrapper, 0, 3) === '1');
     });
+
+    it('should support id on panel elements', () => {
+        wrapper = mount(
+            <Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']}/>
+        );
+        assert(wrapper.find('#transfer-test-panel-footer-left').length === 1)
+        assert(wrapper.find('#transfer-test-panel-footer-right').length === 1)
+        assert(wrapper.find('#transfer-test-panel-header-left').length === 1)
+        assert(wrapper.find('#transfer-test-panel-header-right').length === 1)
+    });
 });
 
 function findPanel(wrapper, panelIndex) {

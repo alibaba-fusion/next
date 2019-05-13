@@ -7,7 +7,10 @@ import Tag from '../../src/tag';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const { Selectable: Tag_Checkable, Group: Tag_Group, Closable } = Tag;
+const { Selectable: TagCheckable, Group: TagGroup, Closable: TagClosable } = Tag;
+
+/* eslint-disable react/jsx-filename-extension */
+/* global describe it */
 
 describe('Tag', () => {
     describe('render', () => {
@@ -96,18 +99,27 @@ describe('Tag', () => {
     });
 });
 
-describe('Tag_Checkable', () => {
+describe('TagCheckable', () => {
     describe('render', () => {
         it('should contain `checked` class if tag is check state', () => {
-            const wrapper = mount(<Tag_Checkable checked />);
+            const wrapper = mount(<TagCheckable checked />);
             assert(wrapper.find('.next-tag').hasClass('checked'));
+        });
+
+        it('should update `checked` state when new props', () => {
+            const wrapper = mount(<TagCheckable checked/>);
+
+            wrapper.setProps({
+                checked: false
+            })
+            assert(wrapper.children().first().state('checked') === false)
         });
     });
 
     describe('behavior', () => {
         it('emit `onChange` if click undisabled tag', () => {
             const onChangeCb = sinon.spy();
-            const wrapper = mount(<Tag_Checkable onChange={onChangeCb} />);
+            const wrapper = mount(<TagCheckable onChange={onChangeCb} />);
             wrapper.find('.next-tag').simulate('click');
             assert(onChangeCb.calledOnce === true);
         });
@@ -115,18 +127,27 @@ describe('Tag_Checkable', () => {
         it('`onChange` wont emit if click disabled tag', () => {
             const onChangeCb = sinon.spy();
             const wrapper = mount(
-                <Tag_Checkable disabled onChange={onChangeCb} />
+                <TagCheckable disabled onChange={onChangeCb} />
             );
             wrapper.find('.next-tag').simulate('click');
             assert(onChangeCb.calledOnce === false);
         });
+
+        it('`onChange` passes checked state value', () => {
+            const onChangeCb = sinon.spy();
+            const wrapper = mount(<TagCheckable onChange={onChangeCb} />);
+            wrapper.find('.next-tag').simulate('click');
+            assert(onChangeCb.getCall(0).args[0] === true);
+            wrapper.find('.next-tag').simulate('click');
+            assert(onChangeCb.getCall(1).args[0] === false);
+        });
     });
 });
 
-describe('Tag_Closable', () => {
+describe('TagClosable', () => {
     describe('render', () => {
         it('should contain `checked` class if tag is check state', () => {
-            const wrapper = mount(<Closable checked />);
+            const wrapper = mount(<TagClosable checked />);
             assert(wrapper.find('.next-tag .next-tag-close-btn').length === 1);
         });
     });
@@ -135,7 +156,7 @@ describe('Tag_Closable', () => {
         it('emit `onChange` if click undisabled tag', () => {
             const onClose = sinon.spy();
             const wrapper = mount(
-                <Closable closeArea="tag" onClose={onClose} />
+                <TagClosable closeArea="tag" onClose={onClose} />
             );
             wrapper.find('.next-tag').simulate('click');
             assert(onClose.calledOnce === true);
@@ -143,16 +164,16 @@ describe('Tag_Closable', () => {
     });
 });
 
-describe('Tag_Group', () => {
+describe('TagGroup', () => {
     describe('render', () => {
         it('should contain child node that pass in', () => {
             const node = <div>Hello World</div>;
-            const wrapper = mount(<Tag_Group>{node}</Tag_Group>);
+            const wrapper = mount(<TagGroup>{node}</TagGroup>);
             assert(wrapper.contains(node) === true);
         });
 
         it('default prefix props is `next-`', () => {
-            const wrapper = shallow(<Tag_Group />);
+            const wrapper = shallow(<TagGroup />);
             assert(wrapper.props().prefix === 'next-');
         });
     });

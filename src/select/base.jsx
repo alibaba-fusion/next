@@ -148,6 +148,7 @@ export default class Base extends React.Component {
             width: 100,
             // current highlight key
             highlightKey: null,
+            srReader: '',
         };
 
         bindCtx(this, [
@@ -365,7 +366,7 @@ export default class Base extends React.Component {
         const highlightItem = this.dataStore.getEnableDS()[highlightIndex];
         highlightKey = highlightItem ? `${highlightItem.value}` : null;
 
-        this.setState({ highlightKey });
+        this.setState({ highlightKey, srReader: highlightItem.label });
 
         this.scrollMenuIntoView();
 
@@ -582,6 +583,7 @@ export default class Base extends React.Component {
             popupContent,
             autoWidth,
             canCloseByTrigger,
+            followTrigger,
             cache,
         } = props;
 
@@ -606,6 +608,7 @@ export default class Base extends React.Component {
             beforeClose: makeChain(this.beforeClose, popupProps.beforeClose),
             afterClose: makeChain(this.afterClose, popupProps.afterClose),
             canCloseByTrigger: canCloseByTrigger,
+            followTrigger: followTrigger,
             visible: this.state.visible,
             onVisibleChange: this.handleVisibleChange,
             shouldUpdatePosition: true,

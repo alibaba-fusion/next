@@ -122,6 +122,10 @@ class Pagination extends Component {
          */
         link: PropTypes.string,
         selectPopupContiner: PropTypes.func,
+        /**
+         * 弹层组件属性，透传给Popup
+         */
+        popupProps: PropTypes.object,
     };
 
     static defaultProps = {
@@ -532,6 +536,7 @@ class Pagination extends Component {
             pageSizeList,
             selectPopupContiner,
             locale,
+            popupProps,
         } = this.props;
         const { currentPageSize } = this.state;
 
@@ -540,6 +545,7 @@ class Pagination extends Component {
                 className={`${prefix}pagination-size-selector-dropdown`}
                 popupClassName={`${prefix}pagination-size-selector-popup`}
                 popupContainer={selectPopupContiner}
+                popupProps={popupProps}
                 aria-label={locale.selectAriaLabel}
                 autoWidth
                 size={size}

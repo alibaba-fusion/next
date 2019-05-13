@@ -96,7 +96,6 @@
     }
     &-off[disabled] {
         background-color: $switch-disabled-off-bg-color;
-        border: 1px solid transparent;
         cursor: not-allowed;
         &:after {
             box-shadow: $switch-off-shadow;

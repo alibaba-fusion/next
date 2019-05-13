@@ -712,7 +712,10 @@ class Select extends Base {
      * @returns
      */
     handleWrapClick = e => {
-        e.preventDefault();
+        // ignore click on input to choose text
+        if (e.target.nodeName !== 'INPUT') {
+            e.preventDefault();
+        }
         this.focusInput();
     };
 
@@ -902,6 +905,9 @@ class Select extends Base {
                     className={`${prefix}select-inner`}
                     ref={this.saveInputRef}
                 />
+                <span className={`${prefix}sr-only`} aria-live="polite">
+                    {this.state.srReader}
+                </span>
             </span>
         );
     }

@@ -35,11 +35,12 @@ Disable animation with `animation={false}`
 | navClassName        | Custom className of nav | String        | -        |
 | contentStyle        | Custom style of content | Object        | -        |
 | contentClassName    | Custom className of content | String        | -        |
-| extra               | Extra content of tab | ReactNode     | -        |
+| extra               | Extra content of tab, ensure the item won't excess when using this | ReactNode     | -        |
 | onClick             | Callback when click tab | Function      | () => {} |
 | onChange            | Callback when active tab changes<br><br>**signature**:<br>Function(key: String/Number)) => void<br>**parameter**:<br>_key_: {String/Number)} theActiveKey   | Function      | () => {} |
 | onClose             | Callback when close the tab<br><br>**signature**:<br>Function(key: String/Number)) => void<br>**parameter**:<br>_key_: {String/Number)} theClosedKey  | Function      | () => {} |
 | tabRender           | Custom template render for tab <br><br>**signature**:<br>Function(key: String, props: Object) => ReactNode<br>**parameter**:<br>_key_: {String} tabKey <br>_props_: {Object} propsOfTabItem <br>**return**:<br>{ReactNode} the rendered tab item<br> | Function      | -        |
+| popupProps            | properties pass down to Popup Menu in dropdown excess mode  | Object        | -        |
 
 ### Tab.Item
 

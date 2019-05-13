@@ -45,7 +45,7 @@ class FunctionDemo extends React.Component {
                 },
                 checkType: {
                     label: '有无 checkbox 或 radio',
-                    value: 'false',
+                    value: 'checkLeft',
                     enum: [{
                         label: 'checkbox',
                         value: 'checkbox'
@@ -53,8 +53,11 @@ class FunctionDemo extends React.Component {
                         label: 'radio',
                         value: 'radio'
                     }, {
-                        label: '无',
-                        value: 'false'
+                        label: 'check on left',
+                        value: 'checkLeft'
+                    }, {
+                        label: 'check on right',
+                        value: 'checkRight'
                     }]
                 }
             }
@@ -94,17 +97,27 @@ class FunctionDemo extends React.Component {
         }
 
         let Item = Menu.Item;
-        if (checkType === 'checkbox') {
-            Item = Menu.CheckboxItem;
-        }
-        if (checkType === 'radio') {
-            Item = Menu.RadioItem;
-        }
-        if (!(checkType === 'radio' || checkType === 'checkbox')) {
-            delete others.checked;
+        let isSelectIconRight = false;
+        switch (checkType) {
+            case 'checkbox':
+                Item = Menu.CheckboxItem;
+                break;
+            case 'radio':
+                Item = Menu.RadioItem;
+                break;
+            case 'checkLeft':
+                delete others.checked;
+                break;
+            case 'checkRight':
+                isSelectIconRight = true;
+                delete others.checked;
+                break;
+            default:
+                break;
+
         }
 
-        return <Item key={key} {...others}>{children}</Item>;
+        return <Item key={key} isSelectIconRight={isSelectIconRight} {...others}>{children}</Item>;
     }
 }
 
@@ -187,8 +200,11 @@ class FunctionDemoNest extends FunctionDemo {
                         label: 'radio',
                         value: 'radio'
                     }, {
-                        label: '无',
-                        value: 'false'
+                        label: 'check on left',
+                        value: 'checkLeft'
+                    }, {
+                        label: 'check on right',
+                        value: 'checkRight'
                     }]
                 }
             }

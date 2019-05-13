@@ -50,7 +50,7 @@ export default class Tab extends Component {
          */
         triggerType: PropTypes.oneOf(['hover', 'click']),
         /**
-         * 是否提前渲染好所有 TabPane 的内容
+         * 是否延迟加载 TabPane 的内容, 默认开启, 即不提前渲染
          */
         lazyLoad: PropTypes.bool,
         /**
@@ -98,6 +98,10 @@ export default class Tab extends Component {
          * @return {ReactNode} 返回自定义组件
          */
         tabRender: PropTypes.func,
+        /**
+         * 弹层属性透传, 只有当 excessMode 为 dropdown 时生效
+         */
+        popupProps: PropTypes.object,
         children: PropTypes.any,
         className: PropTypes.string,
     };

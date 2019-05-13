@@ -24,7 +24,7 @@ ReactDOM.render(
         </Badge>
 
         <Badge count={5}>
-            <a href="#" className="basic-example"><span className="next-visually-hidden">unread messages</span></a>
+            <a href="#" className="basic-example"><span className="next-sr-only">unread messages</span></a>
         </Badge>
     </div>
     , mountNode);

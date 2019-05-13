@@ -110,6 +110,10 @@ class Search extends React.Component {
          */
         hasClear: PropTypes.bool,
         /**
+         * 是否显示搜索按钮
+         */
+        hasIcon: PropTypes.bool,
+        /**
          * 是否禁用
          */
         disabled: PropTypes.bool,
@@ -295,6 +299,7 @@ class Search extends React.Component {
             othersAttributes.visible = Boolean(visible);
         }
         const dataAttr = obj.pickAttrsWith(others, 'data-');
+
         const left = (
             <Group
                 addonBefore={filterSelect}
@@ -302,6 +307,7 @@ class Search extends React.Component {
                 addonBeforeClassName={`${prefix}search-left-addon`}
             >
                 <AutoComplete
+                    aria-label={locale.buttonText}
                     {...othersAttributes}
                     role="searchbox"
                     hasClear={hasClear}

@@ -16,7 +16,7 @@
 ### 无障碍
 
 可通过添加如下class，使内容仅能被读屏软件读取，但不会展示到页面上
-`<span className="next-visually-hidden">unread messages</span>`
+`<span className="next-sr-only">unread messages</span>`
 
 ## API
 

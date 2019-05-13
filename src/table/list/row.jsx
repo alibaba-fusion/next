@@ -38,6 +38,10 @@ export default class GroupListRow extends Row {
             [`${prefix}table-row`]: true,
             [className]: className,
         });
+
+        // clear notRenderCellIndex, incase of cached data
+        this.context.notRenderCellIndex = [];
+
         return (
             <table
                 className={cls}
@@ -64,6 +68,13 @@ export default class GroupListRow extends Row {
         );
     }
 
+    isFirstLevelDataWhenNoChildren() {
+        return (
+            this.context.listHeader &&
+            this.context.listHeader.useFirstLevelDataWhenNoChildren
+        );
+    }
+
     isSelection() {
         return this.context.listHeader && this.context.listHeader.hasSelection;
     }
@@ -71,13 +82,23 @@ export default class GroupListRow extends Row {
     renderChildren() {
         const { record, primaryKey } = this.props;
         const { children } = record;
-        if (children) {
-            return children.map((child, index) => {
-                const cells = this.renderCells(child);
+
+        let toRenderList = children;
+        if (this.isFirstLevelDataWhenNoChildren()) {
+            log.warning(
+                `useFirstLevelDataWhenNoChildren is deprecated, change your dataSource structure, make sure there is 'children' in your dataSource.`
+            );
+
+            toRenderList = children || [record];
+        }
+
+        if (toRenderList) {
+            return toRenderList.map((child, index) => {
+                const cells = this.renderCells(child, index);
                 if (this.isChildrenSelection()) {
                     if (!child[primaryKey]) {
                         log.warning(
-                            'record.children should contains primaryKey when childrenSelection is true.'
+                            'record.children/recored should contains primaryKey when childrenSelection is true.'
                         );
                     }
                     return <tr key={child[primaryKey]}>{cells}</tr>;
