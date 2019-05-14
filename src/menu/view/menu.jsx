@@ -311,7 +311,12 @@ export default class Menu extends Component {
             return Children.map(children, child => {
                 if (
                     child &&
-                    typeof child.type === 'function' &&
+                    (typeof child.type === 'function' ||
+                        // `React.forwardRef(render)` returns a forwarding
+                        // object that includes `render` method, and the specific
+                        // `child.type` will be an object instead of a class or
+                        // function.
+                        typeof child.type === 'object') &&
                     'menuChildType' in child.type
                 ) {
                     let newChild;
