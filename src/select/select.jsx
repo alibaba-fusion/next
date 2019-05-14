@@ -136,6 +136,10 @@ class Select extends Base {
          */
         onFocus: PropTypes.func,
         /**
+         * 是否自动高亮第一个选项
+         */
+        // highlightFirstItem: PropTypes.bool,
+        /**
          * 失去焦点事件
          */
         onBlur: PropTypes.func,
@@ -151,6 +155,7 @@ class Select extends Base {
         onSearchClear: noop,
         hasArrow: true,
         onRemove: noop,
+        // highlightFirstItem: true,
         valueRender: item => {
             return item.label || item.value;
         },
@@ -223,10 +228,35 @@ class Select extends Base {
             });
         }
 
-        super.componentWillReceiveProps(nextProps);
+        this.dataStore.setOptions({
+            filter: nextProps.filter,
+            filterLocal: nextProps.filterLocal,
+        });
+
+        if (
+            nextProps.children !== this.props.children ||
+            nextProps.dataSource !== this.props.dataSource
+        ) {
+            const dataSource = this.setDataSource(nextProps);
+            this.setState({
+                dataSource,
+            });
+
+            // 远程数据有更新，并且还有搜索框
+            if (
+                nextProps.showSearch &&
+                !nextProps.filterLocal &&
+                !nextProps.popupContent
+            ) {
+                this.setFirstHightLightKeyForMenu();
+            }
+        }
 
         if ('value' in nextProps) {
-            // under controll
+            this.setState({
+                value: nextProps.value,
+            });
+
             this.valueDataSource = getValueDataSource(
                 nextProps.value,
                 this.valueDataSource.mapValueDS,
@@ -245,6 +275,12 @@ class Select extends Base {
                 this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
+        }
+
+        if ('visible' in nextProps) {
+            this.setState({
+                visible: nextProps.visible,
+            });
         }
     }
 
