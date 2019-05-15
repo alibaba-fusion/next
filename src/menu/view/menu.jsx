@@ -219,12 +219,11 @@ export default class Menu extends Component {
             selectedKeys: this.normalizeToArray(
                 selectedKeys || defaultSelectedKeys
             ),
-            focusedKey:
-                'focusedKey' in this.props
-                    ? focusedKey
-                    : focusable && autoFocus
-                    ? this.tabbableKey
-                    : null,
+            focusedKey: this.props.focusedKey
+                ? focusedKey
+                : focusable && autoFocus
+                ? this.tabbableKey
+                : null,
         };
 
         bindCtx(this, [
@@ -480,7 +479,7 @@ export default class Menu extends Component {
         }
 
         if (newOpenKeys) {
-            if (!('openKeys' in this.props)) {
+            if (!this.props.openKeys) {
                 this.setState({
                     openKeys: newOpenKeys,
                 });
@@ -539,7 +538,7 @@ export default class Menu extends Component {
         }
 
         if (newSelectedKeys) {
-            if (!('selectedKeys' in this.props)) {
+            if (!this.props.selectedKeys) {
                 this.setState({
                     selectedKeys: newSelectedKeys,
                 });
@@ -556,7 +555,7 @@ export default class Menu extends Component {
 
     handleItemClick(key, item, e) {
         if (this.props.focusable) {
-            if (!('focusedKey' in this.props)) {
+            if (!this.props.focusedKey) {
                 this.setState({
                     focusedKey: key,
                 });
@@ -570,7 +569,7 @@ export default class Menu extends Component {
                 item.props.parentMode === 'popup' &&
                 this.state.openKeys.length
             ) {
-                if (!('openKeys' in this.props)) {
+                if (!this.props.openKeys) {
                     this.setState({
                         openKeys: [],
                     });
@@ -723,7 +722,7 @@ export default class Menu extends Component {
         }
 
         if (focusedKey !== this.state.focusedKey) {
-            if (!('focusedKey' in this.props)) {
+            if (!this.props.focusedKey) {
                 this.setState({
                     focusedKey,
                 });
