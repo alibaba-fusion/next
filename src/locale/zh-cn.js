@@ -102,10 +102,15 @@ export default {
         card: {
             cancel: '取消',
             addPhoto: '上传图片',
+            download: '下载',
+            delete: '删除',
         },
         drag: {
             text: '点击或者拖动文件到虚线框内上传',
             hint: '支持 docx, xls, PDF, rar, zip, PNG, JPG 等类型的文件',
+        },
+        upload: {
+            delete: '删除',
         },
     },
     Search: {
