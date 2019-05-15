@@ -26,7 +26,7 @@ export function getValueFromEvent(e) {
 }
 
 function cloneAndAddKey(element) {
-    if (element && isValidElement(element) && !element.props.key) {
+    if (element && isValidElement(element)) {
         return cloneElement(element, { key: 'error' });
     }
     return element;
