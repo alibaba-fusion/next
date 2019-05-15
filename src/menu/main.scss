@@ -23,6 +23,18 @@
     line-height: $menu-line-height;
     font-size: $menu-font-size;
 
+
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: initial;
+        border: none;
+    }
+
+    &-embeddable &-item-inner {
+        height: 100%;
+    }
+
     &-content {
         position: relative;
         padding: 0;

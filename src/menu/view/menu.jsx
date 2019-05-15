@@ -157,6 +157,10 @@ export default class Menu extends Component {
         focusable: PropTypes.bool,
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
+        /**
+         * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
+         */
+        embeddable: PropTypes.bool,
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
@@ -186,6 +190,7 @@ export default class Menu extends Component {
         hozAlign: 'left',
         autoFocus: false,
         focusable: true,
+        embeddable: false,
         onItemFocus: noop,
         onItemKeyDown: noop,
         onItemClick: noop,
@@ -270,7 +275,7 @@ export default class Menu extends Component {
 
     onBlur(e) {
         this.setState({
-            focusedKey: '',
+            focusedKey: undefined,
         });
 
         this.props.onBlur && this.props.onBlur(e);
@@ -311,7 +316,12 @@ export default class Menu extends Component {
             return Children.map(children, child => {
                 if (
                     child &&
-                    typeof child.type === 'function' &&
+                    (typeof child.type === 'function' ||
+                        // `React.forwardRef(render)` returns a forwarding
+                        // object that includes `render` method, and the specific
+                        // `child.type` will be an object instead of a class or
+                        // function.
+                        typeof child.type === 'object') &&
                     'menuChildType' in child.type
                 ) {
                     let newChild;
@@ -732,6 +742,7 @@ export default class Menu extends Component {
             hozAlign,
             header,
             footer,
+            embeddable,
             selectMode,
             rtl,
         } = this.props;
@@ -741,6 +752,7 @@ export default class Menu extends Component {
             [`${prefix}menu`]: true,
             [`${prefix}ver`]: direction === 'ver',
             [`${prefix}hoz`]: direction === 'hoz',
+            [`${prefix}menu-embeddable`]: embeddable,
             [className]: !!className,
         });
 

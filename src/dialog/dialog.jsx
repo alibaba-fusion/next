@@ -127,6 +127,10 @@ export default class Dialog extends Component {
          * @property {String} cancel 取消按钮文案
          */
         locale: PropTypes.object,
+        /**
+         * 对话框的高度样式属性
+         */
+        height: PropTypes.string,
     };
 
     static defaultProps = {
@@ -305,6 +309,7 @@ export default class Dialog extends Component {
             locale,
             visible,
             rtl,
+            height,
         } = this.props;
         const others = pickOthers(Object.keys(Dialog.propTypes), this.props);
 
@@ -324,6 +329,7 @@ export default class Dialog extends Component {
                 closeable={closeable}
                 rtl={rtl}
                 onClose={onClose.bind(this, 'closeClick')}
+                height={height}
                 {...others}
             >
                 {children}

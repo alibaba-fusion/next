@@ -42,6 +42,7 @@
 | shouldUpdatePosition | 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式                                                                                                                                                                    | Boolean           | false                                                                             |
 | minMargin            | 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效                                                                                                                                             | Number            | 40                                                                                |
 | overlayProps         | 透传到弹层组件的属性对象                                                                                                                                                                                                     | Object            | {}                                                                                |
+| height               | 对话框的高度样式属性                                                                                                                                                                                                       | String            | -                                                                                 |
 
 <!-- api-extra-start -->
 
