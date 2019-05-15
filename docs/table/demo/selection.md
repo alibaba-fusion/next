@@ -15,7 +15,9 @@ Demo the selectable table.
 ---
 
 ````jsx
-import { Table } from '@alifd/next';
+import { Table, Icon, MenuButton } from '@alifd/next';
+
+const { Item } = MenuButton;
 
 const dataSource = () => {
     const result = [];
@@ -31,14 +33,55 @@ const dataSource = () => {
 const render = (value, index, record) => {
     return <a href="javascript:;">Remove({record.id})</a>;
 };
-const onChange = function(...args) {
+const onChange = (...args) => {
     console.log(args);
 };
+const selectItem = id => {
+    console.log(id);
+};
 
-ReactDOM.render(<Table dataSource={dataSource()} rowSelection={{onChange: onChange}}>
-    <Table.Column title="Id" dataIndex="id"/>
-    <Table.Column title="Title" dataIndex="title.name" />
-    <Table.Column title="Time" dataIndex="time"/>
-    <Table.Column cell={render}/>
+ReactDOM.render(<Table
+    dataSource={dataSource()}
+    rowSelection={{
+        onChange: onChange,
+        getProps: (record, index) => {
+            console.log(record, index)
+
+            return  index === 2 ? {
+                disabled: true,
+                children: index
+            } : {
+                children: index
+            }
+        },
+        columnProps: () => {
+            return {
+                lock: 'left',
+                width: 90,
+                align: 'center'
+            }
+        },
+        titleAddons: () => {
+            return <div>请选择</div>;
+        },
+        titleProps: () => {
+            return {
+                // remove the select all button
+                // style: {display: 'none'},
+                disabled: true,
+                children:
+                <MenuButton text onItemClick={selectItem} menuProps={{
+                    isSelectIconRight: true
+                }} >
+                    <Item key="odd">odd</Item>
+                    <Item key="even">even</Item>
+                </MenuButton>
+            }
+        }
+    }}>
+    <Table.Column title="Id" dataIndex="id" width={200}/>
+    <Table.Column title="Title" dataIndex="title.name" width={200}/>
+    <Table.Column title="Time" dataIndex="time" width={200}/>
+    <Table.Column cell={render} width={200}/>
 </Table>, mountNode);
 ````
