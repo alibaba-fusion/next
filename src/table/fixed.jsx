@@ -70,16 +70,18 @@ export default function fixed(BaseComponent) {
         }
 
         adjustFixedHeaderSize() {
-            const { hasHeader, fixedHeader, maxBodyHeight } = this.props;
+            const { hasHeader, fixedHeader, rtl } = this.props;
+            const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
+
             if (hasHeader && fixedHeader && !this.props.lockType) {
-                if (this.bodyNode.scrollHeight <= maxBodyHeight) {
-                    dom.setStyle(this.headerNode, 'paddingRight', 0);
-                } else {
+                if (this.bodyNode.scrollHeight > this.bodyNode.clientHeight) {
                     dom.setStyle(
                         this.headerNode,
-                        'paddingRight',
+                        paddingName,
                         dom.scrollbar().width
                     );
+                } else {
+                    dom.setStyle(this.headerNode, paddingName, 0);
                 }
             }
         }

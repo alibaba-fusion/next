@@ -4,9 +4,6 @@
 @import "scss/variable";
 
 .#{$css-prefix} {
-    &medium &range {
-        height: $form-element-medium-height;
-    }
     &range {
         @include box-sizing;
         @include range-bounding();

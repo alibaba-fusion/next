@@ -46,7 +46,6 @@ $nav-icononly-width: $s-15;
 
         &,
         &:hover,
-        &:focus,
         &.#{$css-prefix}focused,
         &.#{$css-prefix}selected,
         &.#{$css-prefix}opened {
@@ -373,6 +372,33 @@ $nav-icononly-width: $s-15;
         #{$menu-prefix}-hoz-icon-arrow,
         #{$menu-prefix}-icon-arrow {
             display: none;
+        }
+    }
+
+    &-embeddable {
+        &.#{$css-prefix}primary,
+        &.#{$css-prefix}secondary,
+        &.#{$css-prefix}normal {
+            height: 100%;
+            background: initial;
+            box-shadow: none;
+            border: none;
+
+            #{$menu-prefix}-sub-menu #{$menu-prefix}-item,
+            #{$nav-prefix}-item#{$menu-prefix}-item {
+                background: initial;
+            }
+        }
+
+        &#{$nav-prefix}.#{$css-prefix}hoz {
+            #{$menu-prefix}-item-inner {
+                height: 100%;
+            }
+
+            #{$menu-prefix}-sub-menu #{$menu-prefix}-item,
+            #{$nav-prefix}-item#{$menu-prefix}-item {
+                height: 100%;
+            }
         }
     }
 }

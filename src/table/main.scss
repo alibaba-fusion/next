@@ -21,7 +21,7 @@
         color: $table-th-color;
         text-align: left;
         #{$table-prefix}-cell-wrapper {
-            padding: $table-cell-padding-top $table-cell-padding-left;
+            padding: $table-header-padding-top $table-header-padding-left;
             overflow: hidden;
             text-overflow: ellipsis;
             word-break: break-all;

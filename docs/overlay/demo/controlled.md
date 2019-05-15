@@ -34,16 +34,47 @@ class Demo extends React.Component {
         });
     }
 
+    onGroupVisibleChange = groupVisible => {
+        this.setState({
+            groupVisible
+        });
+    }
+
     render() {
         return (
-            <Popup trigger={<button>Open</button>}
-                triggerType="click"
-                visible={this.state.visible}
-                onVisibleChange={this.onVisibleChange}>
-                <span className="overlay-demo">
-                    Hello World From Popup!
-                </span>
-            </Popup>
+            <div>
+                <div>
+                    <Popup trigger={<button>Open</button>}
+                        triggerType="click"
+                        visible={this.state.visible}
+                        onVisibleChange={this.onVisibleChange}>
+                        <span className="overlay-demo">
+                            Hello World From Popup!
+                        </span>
+                    </Popup>
+                </div>
+                <br />
+                <div>
+                    <Popup trigger={<button style={{"margin-right": "50px"}} ref={ref => {this.btn1 = ref;}}>Paired Popup 1</button>}
+                        triggerType="click"
+                        visible={this.state.groupVisible}
+                        safeNode={[() => this.btn2, () => this.overlay2]}
+                        onVisibleChange={this.onGroupVisibleChange}>
+                        <span className="overlay-demo" ref={ref => {this.overlay1 = ref;}}>
+                            Hello World From Popup!
+                        </span>
+                    </Popup>
+                    <Popup trigger={<button ref={ref => {this.btn2 = ref;}}>Paired Popup 2</button>}
+                        triggerType="click"
+                        visible={this.state.groupVisible}
+                        safeNode={[() => this.btn1, () => this.overlay1]}
+                        onVisibleChange={this.onGroupVisibleChange}>                  
+                        <span className="overlay-demo" ref={ref => {this.overlay2 = ref;}}>
+                            Hello World From Popup!
+                        </span>
+                    </Popup>
+                </div>
+            </div>
         );
     }
 }

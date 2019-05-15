@@ -28,6 +28,8 @@ export default class Inner extends Component {
         locale: PropTypes.object,
         role: PropTypes.string,
         rtl: PropTypes.bool,
+        // set value for a fixed height dialog. Passing a value will absolutely position the footer to the bottom.
+        height: PropTypes.string,
     };
 
     static defaultProps = {
@@ -89,6 +91,7 @@ export default class Inner extends Component {
             footerAlign,
             footerActions,
             locale,
+            height,
         } = this.props;
 
         if (footer === false) {
@@ -98,6 +101,7 @@ export default class Inner extends Component {
         const newClassName = cx({
             [`${prefix}dialog-footer`]: true,
             [`${prefix}align-${footerAlign}`]: true,
+            [`${prefix}dialog-footer-fixed-height`]: !!height,
         });
         const footerContent =
             footer === true || !footer
@@ -161,7 +165,15 @@ export default class Inner extends Component {
     }
 
     render() {
-        const { prefix, className, closeable, title, role, rtl } = this.props;
+        const {
+            prefix,
+            className,
+            closeable,
+            title,
+            role,
+            rtl,
+            height,
+        } = this.props;
         const others = pickOthers(Object.keys(Inner.propTypes), this.props);
         const newClassName = cx({
             [`${prefix}dialog`]: true,
@@ -181,6 +193,8 @@ export default class Inner extends Component {
         if (title) {
             ariaProps['aria-labelledby'] = this.titleId;
         }
+
+        others.style = Object.assign({}, others.style, { height });
 
         return (
             <div

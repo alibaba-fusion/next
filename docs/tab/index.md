@@ -41,7 +41,7 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | excessMode          | 选项卡过多时的滑动模式<br><br>**可选值**:<br>'slide', 'dropdown'                                                                                                                                                                  | Enum          | 'slide'  |
 | tabPosition         | 导航选项卡的位置，只适用于包裹型（wrapped）选项卡<br><br>**可选值**:<br>'top', 'bottom', 'left', 'right'                                                                                                                                    | Enum          | 'top'    |
 | triggerType         | 激活选项卡的触发方式<br><br>**可选值**:<br>'hover', 'click'                                                                                                                                                                      | Enum          | 'click'  |
-| lazyLoad            | 是否提前渲染好所有 TabPane 的内容                                                                                                                                                                                               | Boolean       | true     |
+| lazyLoad            | 是否延迟加载 TabPane 的内容, 默认开启, 即不提前渲染                                                                                                                                                                                    | Boolean       | true     |
 | unmountInactiveTabs | 是否自动卸载未处于激活状态的选项卡                                                                                                                                                                                                   | Boolean       | false    |
 | navStyle            | 导航条的自定义样式                                                                                                                                                                                                           | Object        | -        |
 | navClassName        | 导航条的自定义样式类                                                                                                                                                                                                          | String        | -        |
@@ -52,6 +52,7 @@ Fusion 提供了三级选项卡，分别用于不同的场景。
 | onChange            | 选项卡发生切换时的事件回调<br><br>**签名**:<br>Function(key: String/Number) => void<br>**参数**:<br>_key_: {String/Number} 改变后的 key                                                                                                  | Function      | () => {} |
 | onClose             | 选项卡被关闭时的事件回调<br><br>**签名**:<br>Function(key: String/Number) => void<br>**参数**:<br>_key_: {String/Number} 关闭的选项卡的 key                                                                                                | Function      | () => {} |
 | tabRender           | 自定义选项卡模板渲染函数<br><br>**签名**:<br>Function(key: String, props: Object) => ReactNode<br>**参数**:<br>_key_: {String} 当前 Tab.Item 的 key 值<br>_props_: {Object} 传给 Tab.Item 的所有属性键值对<br>**返回值**:<br>{ReactNode} 返回自定义组件<br> | Function      | -        |
+| popupProps          | 弹层属性透传, 只有当 excessMode 为 dropdown 时生效                                                                                                                                                                               | Object        | -        |
 
 ### Tab.Item
 

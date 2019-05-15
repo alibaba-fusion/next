@@ -46,6 +46,23 @@ describe('Menu', () => {
         assert(menu.prop('style').color === 'red');
     });
 
+    it('should support isSelectIconRight', () => {
+        wrapper = mount(
+            <Menu
+                isSelectIconRight
+                selectMode="multiple"
+                selectedKeys={['1', '2', '3']}
+            >
+                <Item key="1">item</Item>
+                <Item key="2">item</Item>
+                <Item key="3" isSelectIconRight={false}>
+                    item
+                </Item>
+            </Menu>
+        );
+        assert(wrapper.find('i.next-menu-icon-right').length === 2);
+    });
+
     it('should render menu item', () => {
         wrapper = mount(
             <Menu>
@@ -65,6 +82,23 @@ describe('Menu', () => {
         assert(item.hasClass('custom'));
         assert(item.prop('style').color === 'red');
         assert(item.find('.next-menu-item-helper').text() === 'helper');
+    });
+
+    it('should filter duplicate keys', () => {
+        wrapper = mount(
+            <Menu>
+                <Item key="1">item1</Item>
+                <Item key="2">item2</Item>
+                <Item key="2">item2</Item>
+                <Item key="2">item2</Item>
+                <Item>item</Item>
+            </Menu>
+        );
+        const item = wrapper.find('.next-menu-item');
+        assert(item.length === 3);
+        assert(item.at(0).props().title === 'item1');
+        assert(item.at(1).props().title === 'item2');
+        assert(item.at(2).props().title === 'item');
     });
 
     it('should pass className', () => {

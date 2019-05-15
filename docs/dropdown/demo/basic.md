@@ -27,7 +27,10 @@ const menu = (
 );
 
 ReactDOM.render(
-    <Dropdown trigger={<a>Hello dropdown</a>} afterOpen={() => console.log('after open')}>
-        {menu}
-    </Dropdown>, mountNode);
+    <div>
+        <Dropdown trigger={<button>Hello dropdown</button>}  triggerType={["click", "hover"]} afterOpen={() => console.log('after open')}>
+            {menu}
+        </Dropdown>
+    </div>
+, mountNode);
 ````

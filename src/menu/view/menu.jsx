@@ -126,6 +126,11 @@ export default class Menu extends Component {
         hasSelectedIcon: PropTypes.bool,
         labelToggleChecked: PropTypes.bool,
         /**
+         * 是否将选中图标居右，仅当 hasSelectedIcon 为true 时生效。
+         * 注意：SubMenu 上的选中图标一直居左，不受此API控制
+         */
+        isSelectIconRight: PropTypes.bool,
+        /**
          * 菜单第一层展示方向
          */
         direction: PropTypes.oneOf(['ver', 'hoz']),
@@ -152,6 +157,10 @@ export default class Menu extends Component {
         focusable: PropTypes.bool,
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
+        /**
+         * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
+         */
+        embeddable: PropTypes.bool,
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
@@ -175,11 +184,13 @@ export default class Menu extends Component {
         onSelect: noop,
         shallowSelect: false,
         hasSelectedIcon: true,
+        isSelectIconRight: false,
         labelToggleChecked: true,
         direction: 'ver',
         hozAlign: 'left',
         autoFocus: false,
         focusable: true,
+        embeddable: false,
         onItemFocus: noop,
         onItemKeyDown: noop,
         onItemClick: noop,
@@ -264,7 +275,7 @@ export default class Menu extends Component {
 
     onBlur(e) {
         this.setState({
-            focusedKey: '',
+            focusedKey: undefined,
         });
 
         this.props.onBlur && this.props.onBlur(e);
@@ -301,10 +312,16 @@ export default class Menu extends Component {
         this.k2n = {};
         this.p2n = {};
         const loop = (children, posPrefix, indexWrapper = { index: 0 }) => {
+            const keyArray = [];
             return Children.map(children, child => {
                 if (
                     child &&
-                    typeof child.type === 'function' &&
+                    (typeof child.type === 'function' ||
+                        // `React.forwardRef(render)` returns a forwarding
+                        // object that includes `render` method, and the specific
+                        // `child.type` will be an object instead of a class or
+                        // function.
+                        typeof child.type === 'object') &&
                     'menuChildType' in child.type
                 ) {
                     let newChild;
@@ -320,6 +337,14 @@ export default class Menu extends Component {
                         pos = `${posPrefix}-${indexWrapper.index++}`;
                         const key =
                             typeof child.key === 'string' ? child.key : pos;
+
+                        // filter out duplicate keys
+                        if (keyArray.indexOf(key) > -1) {
+                            return;
+                        }
+
+                        keyArray.push(key);
+
                         const level = pos.split('-').length - 1;
                         this.k2n[key] = this.p2n[pos] = {
                             key,
@@ -717,6 +742,7 @@ export default class Menu extends Component {
             hozAlign,
             header,
             footer,
+            embeddable,
             selectMode,
             rtl,
         } = this.props;
@@ -726,6 +752,7 @@ export default class Menu extends Component {
             [`${prefix}menu`]: true,
             [`${prefix}ver`]: direction === 'ver',
             [`${prefix}hoz`]: direction === 'hoz',
+            [`${prefix}menu-embeddable`]: embeddable,
             [className]: !!className,
         });
 

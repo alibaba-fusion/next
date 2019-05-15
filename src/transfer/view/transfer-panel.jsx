@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Checkbox from '../../checkbox';
 import Search from '../../search';
 import Menu from '../../menu';
-import { func } from '../../util';
+import { func, htmlId } from '../../util';
 import TransferItem from './transfer-item';
 
 const { bindCtx } = func;
@@ -21,7 +21,7 @@ export default class TransferPanel extends Component {
         onMoveAll: PropTypes.func,
         disabled: PropTypes.bool,
         locale: PropTypes.object,
-        title: PropTypes.string,
+        title: PropTypes.node,
         showSearch: PropTypes.bool,
         filter: PropTypes.func,
         onSearch: PropTypes.func,
@@ -32,6 +32,7 @@ export default class TransferPanel extends Component {
         itemRender: PropTypes.func,
         sortable: PropTypes.bool,
         onSort: PropTypes.func,
+        baseId: PropTypes.string,
     };
 
     constructor(props, context) {
@@ -42,6 +43,16 @@ export default class TransferPanel extends Component {
             dragValue: null,
             dragOverValue: null,
         };
+        this.footerId = props.baseId
+            ? htmlId.escapeForId(
+                  `${props.baseId}-panel-footer-${props.position}`
+              )
+            : '';
+        this.headerId = props.baseId
+            ? htmlId.escapeForId(
+                  `${props.baseId}-panel-header-${props.position}`
+              )
+            : '';
 
         bindCtx(this, [
             'handleCheck',
@@ -144,13 +155,21 @@ export default class TransferPanel extends Component {
     renderHeader() {
         const { title, prefix } = this.props;
 
-        return <div className={`${prefix}transfer-panel-header`}>{title}</div>;
+        return (
+            <div
+                id={this.headerId}
+                className={`${prefix}transfer-panel-header`}
+            >
+                {title}
+            </div>
+        );
     }
 
     renderSearch() {
         const { prefix, searchPlaceholder, locale } = this.props;
         return (
             <Search
+                aria-labelledby={this.headerId}
                 shape="simple"
                 className={`${prefix}transfer-panel-search`}
                 placeholder={searchPlaceholder || locale.searchPlaceholder}
@@ -270,8 +289,12 @@ export default class TransferPanel extends Component {
                     checked={checked}
                     indeterminate={indeterminate}
                     onChange={this.handleAllCheck}
+                    aria-labelledby={this.footerId}
                 />
-                <span className={`${prefix}transfer-panel-count`}>
+                <span
+                    className={`${prefix}transfer-panel-count`}
+                    id={this.footerId}
+                >
                     {countLabel}
                 </span>
             </div>

@@ -93,6 +93,10 @@
             text-align: center;
         }
 
+        .#{$css-prefix}input input {
+            padding: 0;
+        }
+
         &.#{$css-prefix}medium {
             width: 100px;
 

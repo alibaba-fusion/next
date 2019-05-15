@@ -6,12 +6,11 @@
 
 
 :::lang=en-us
-
-Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 7
+
+Please refer to `ARIA and KeyBoard`.
 
 :::
 ---
@@ -20,13 +19,14 @@ Please refer to `ARIA and KeyBoard`.
 import { Radio } from '@alifd/next';
 
 const RadioGroup = Radio.Group;
-ReactDOM.render(<div>
-    <RadioGroup>
-        <Radio id="python" value="python">python</Radio>
-        <Radio id="java" value="java">java</Radio>
-        <Radio id="c" value="c">c</Radio>
-    </RadioGroup>
-</div>
+ReactDOM.render(
+    <div>
+        <RadioGroup>
+            <Radio id="python" value="python">python</Radio>
+            <Radio id="java" value="java">java</Radio>
+            <Radio id="c" value="c">c</Radio>
+        </RadioGroup>
+    </div>
     , mountNode);
 
 ````

@@ -41,6 +41,7 @@
 | popupContent       | 自定义渲染的的下拉框                                                                                                                 | ReactNode     | -         |
 | visible            | 自定义渲染的的下拉框                                                                                                                 | Boolean       | -         |
 | hasClear           | 是否显示清除按钮                                                                                                                   | Boolean       | false     |
+| hasIcon            | 是否显示搜索按钮                                                                                                                   | Boolean       | true      |
 | disabled           | 是否禁用                                                                                                                       | Boolean       | false     |
 
 ## ARIA and KeyBoard

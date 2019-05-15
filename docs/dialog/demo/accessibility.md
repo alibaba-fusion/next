@@ -5,12 +5,11 @@
 通过设置`okProps`与`cancelProps`读取，请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-Read this by setting `okProps` and `cancelProps`,Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 7
+
+Read this by setting `okProps` and `cancelProps`,Please refer to `ARIA and KeyBoard`.
 
 :::
 ---

@@ -7,7 +7,7 @@
 /// @family data-display
 /// @varPrefix $slick-
 /// @classPrefix {prefix}-slick
-/// @order {"size/dots":10,"size/arrow":11,"size/track":12,"size/slide":13,"statement/normal":10,"statement/normal/dot":100,"statement/normal/arrow":101,"statement/hover":11,"statement/hover/dot":110,"statement/hover/arrow":111,"statement/selected":12,"statement/selected/dot":120,"statement/disabled":13,"statement/disabled/arrow":130}
+/// @order {"size/dots":10,"size/arrow":11,"size/track":12,"statement/normal":10,"statement/normal/dot":100,"statement/normal/arrow":101,"statement/hover":11,"statement/hover/dot":110,"statement/hover/arrow":111,"statement/selected":12,"statement/selected/dot":120,"statement/disabled":13,"statement/disabled/arrow":130}
 ////
 
 // slider variables
@@ -26,9 +26,13 @@ $slick-dots-position-bottom: $s-3 !default;
 /// @namespace size/dots
 $slick-dots-position-right: $s-5 !default;
 
-/// dot size
+/// dot width
 /// @namespace size/dots
-$slick-dots-diameter: $s-2 !default;
+$slick-dots-width: $s-2 !default;
+
+/// dot height
+/// @namespace size/dots
+$slick-dots-height: $s-2 !default;
 
 /// dot margin (l, r)
 /// @namespace size/dots
@@ -136,6 +140,10 @@ $slick-dots-background-opacity-selected: 1 !default;
 /// @type width
 /// @namespace size/dots
 $slick-dots-border-width: $line-zero !default;
+
+/// border radius
+/// @namespace size/dots
+$slick-dots-border-radius: $corner-circle !default;
 
 /// border
 /// @namespace statement/normal/dot

@@ -151,7 +151,12 @@ export default class Selecter extends React.Component {
         }
 
         return (
-            <div role="upload" style={style} className={className} {...events}>
+            <div
+                role="application"
+                style={style}
+                className={className}
+                {...events}
+            >
                 <input
                     type="file"
                     name={name}

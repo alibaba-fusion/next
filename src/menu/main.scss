@@ -23,6 +23,18 @@
     line-height: $menu-line-height;
     font-size: $menu-font-size;
 
+
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: initial;
+        border: none;
+    }
+
+    &-embeddable &-item-inner {
+        height: 100%;
+    }
+
     &-content {
         position: relative;
         padding: 0;
@@ -98,7 +110,6 @@
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused:hover,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus:hover,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}focused,
-        &:not(.#{$css-prefix}disabled):focus,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected.#{$css-prefix}focused,
         &:not(.#{$css-prefix}disabled).#{$css-prefix}selected:focus {
             @include menu-item-state(
@@ -172,6 +183,10 @@
         position: absolute;
         top: 0;
         @include icon-size($menu-icon-selected-size, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
+
+        &#{$menu-prefix}-icon-right {
+            right: $menu-icon-selected-right;
+        }
     }
 
     & &-icon-arrow.#{$css-prefix}icon {

@@ -1,7 +1,7 @@
 @import "../core/index-noreset.scss";
 @import "scss/variable";
 
-#{$tab-prefix}[dir="rtl"] {
+#{$tab-prefix}[dir='rtl'] {
     &.#{$css-prefix}medium {
         & #{$tab-prefix}-nav-container-scrolling {
             padding-left: $tab-nav-scroll-padding-right-m;
@@ -43,6 +43,31 @@
         }
     }
 
+    &#{$tab-prefix}-capsule > #{$tab-prefix}-bar {
+        #{$tab-prefix}-tab {
+            border-top: $tab-capsule-tab-border;
+            border-bottom: $tab-capsule-tab-border;
+            border-right: $tab-capsule-tab-border;
+            border-left: 0;
+            &:first-child {
+                border-left: 0;
+                border-radius: 0 $tab-capsule-corner-radius $tab-capsule-corner-radius 0;
+            }
+
+            &:last-child {
+                border-radius: $tab-capsule-corner-radius 0 0 $tab-capsule-corner-radius;
+                border-left: $tab-capsule-tab-border;
+            }
+
+            &.active {
+                margin-left: -$tab-capsule-tab-border-line-width;
+                margin-right: auto;
+                border-left: $tab-capsule-tab-border;
+                border-color: $tab-capsule-tab-border-line-color-active;
+            }
+        }
+    }
+
     #{$tab-prefix}-btn-next {
         left: $tab-nav-arrow-right-positon-right;
         right: auto;
@@ -54,6 +79,16 @@
     #{$tab-prefix}-btn-down {
         left: $tab-nav-arrow-down-positon-right;
         right: auto;
+    }
+}
+#{$tab-prefix}-text[dir='rtl'] > #{$tab-prefix}-bar {
+    #{$tab-prefix}-tab {
+        &:not(:last-child):after {
+            content: ' ';
+            position: absolute;
+            left: 0;
+            right: auto;
+        }
     }
 }
 

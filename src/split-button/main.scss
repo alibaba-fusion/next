@@ -15,7 +15,7 @@
             transform: rotate(180deg);
         }
 
-        &.#{$css-prefix}btn-normal .#{$css-prefix}icon {
+        &.#{$css-prefix}btn-normal:not(:disabled):not(.disabled) .#{$css-prefix}icon {
             color: $split-btn-trigger-normal-icon-color;
         }
 

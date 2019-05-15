@@ -18,15 +18,6 @@ import zhCN from '../../src/locale/zh-cn';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const TYPE_MAPS = {
-    success: 'success',
-    warning: 'warning',
-    error: 'error',
-    notice: 'prompt',
-    help: 'help',
-    loading: 'loading',
-};
-
 const render = element => {
     let inc;
     const container = document.createElement('div');
@@ -79,7 +70,7 @@ describe('Message', () => {
             assert(
                 wrapper.find(`.next-message.next-message-${type}`).length === 1
             );
-            assert(wrapper.find(Icon).prop('type') === TYPE_MAPS[type]);
+            assert(wrapper.find(Icon).hasClass('next-message-symbol-icon'));
             wrapper.unmount();
         });
     });

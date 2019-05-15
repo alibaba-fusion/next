@@ -118,6 +118,10 @@ class Nav extends Component {
          * 自定义导航尾部
          */
         footer: PropTypes.node,
+        /**
+         * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Nav style={{lineHeight: '100px'}}>` 自定义高度
+         */
+        embeddable: PropTypes.bool,
         popupProps: PropTypes.object,
     };
 
@@ -135,6 +139,7 @@ class Nav extends Component {
         defaultSelectedKeys: [],
         popupAlign: 'follow',
         hasTooltip: false,
+        embeddable: false,
         hasArrow: true,
         popupProps: {},
     };
@@ -195,6 +200,7 @@ class Nav extends Component {
             iconOnly,
             hasArrow,
             hasTooltip,
+            embeddable,
             popupProps,
             rtl,
             ...others
@@ -229,6 +235,7 @@ class Nav extends Component {
             [`${prefix}${realActiveDirection}`]: realActiveDirection,
             [`${prefix}icon-only`]: iconOnly,
             [`${prefix}no-arrow`]: !hasArrow,
+            [`${prefix}nav-embeddable`]: embeddable,
             [className]: !!className,
         });
         const newStyle = iconOnly ? { ...style, width: '60px' } : style;
@@ -246,7 +253,9 @@ class Nav extends Component {
             selectMode: 'single',
             itemClassName: `${prefix}nav-item`,
             popupClassName: classNames({
-                [cls.replace(`${prefix}icon-only`, '')]: mode === 'popup',
+                [cls
+                    .replace(`${prefix}icon-only`, '')
+                    .replace(`${prefix}nav-embeddable`, '')]: mode === 'popup',
                 [`${prefix}icon-only`]: iconOnly && mode === 'inline',
                 [popupClassName]: !!popupClassName,
             }),

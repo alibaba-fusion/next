@@ -25,13 +25,13 @@ const dateValue = moment('2018-01-01', 'YYYY-MM-DD', true);
 
 const App = () => (
     <div className="container nested">
-        <Balloon type="primary" trigger={primary} closable={false} triggerType="click">
+        <Balloon type="primary" autoFocus trigger={primary} closable={false} triggerType="click">
             <DatePicker defaultValue={dateValue} popupContainer={
                 (trigger) => trigger.parentNode
             } />
         </Balloon>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <Balloon type="primary" trigger={innerButton} closable={false} triggerType="click">
+        <Balloon type="primary" autoFocus trigger={innerButton} closable={false} triggerType="click">
             <Balloon trigger={<Button type="primary">please click</Button>} popupContainer={(trigger) => trigger.parentNode} triggerType="click">
                 nesting balloon content
             </Balloon>

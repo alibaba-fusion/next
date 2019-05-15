@@ -360,7 +360,9 @@ export default class VirtualList extends Component {
             return itemSizeGetter(index);
         }
 
-        const height = Object.values(this.cache).pop();
+        const height = Object.keys(this.cache)
+            .map(key => this.cache[key])
+            .pop();
         if (!this.defaultItemHeight && jumpIndex > -1 && height) {
             this.defaultItemHeight = height;
         }

@@ -155,11 +155,12 @@ ReactDOM.render(
 
 ### Table.GroupHeader
 
-| 参数                   | 说明                          | 类型                              | 默认值      |
-| -------------------- | --------------------------- | ------------------------------- | -------- |
-| cell                 | 行渲染的逻辑                      | ReactElement/ReactNode/Function | () => '' |
-| hasChildrenSelection | 是否在Children上面渲染selection    | Boolean                         | false    |
-| hasSelection         | 是否在GroupHeader上面渲染selection | Boolean                         | true     |
+| 参数                              | 说明                                    | 类型                              | 默认值      |
+| ------------------------------- | ------------------------------------- | ------------------------------- | -------- |
+| cell                            | 行渲染的逻辑                                | ReactElement/ReactNode/Function | () => '' |
+| hasChildrenSelection            | 是否在Children上面渲染selection              | Boolean                         | false    |
+| hasSelection                    | 是否在GroupHeader上面渲染selection           | Boolean                         | true     |
+| useFirstLevelDataWhenNoChildren | 当 dataSouce 里没有 children 时，是否使用内容作为数据 | Boolean                         | false    |
 
 ### Table.GroupFooter
 

@@ -48,6 +48,7 @@ It provides top navigation and side navigation, the top navigation provides glob
 | hasTooltip      | whether has tool tip (only works when iconOnly=true)                                                                   | Boolean   | false      |
 | header          | custom navigation head                                                                                               | ReactNode | -          |
 | footer          | custom navigation footer                                                                                                | ReactNode | -          |
+| embeddable          | integrate with the background or not(which means no background/border/box-shadow etc.), usually used with Layout. You can also custom its height like`<Nav style={{lineHeight: '100px'}}>`                                                                                                                                                                                                                                                               | Boolean      | false                                                                 |
 
 ### Nav.Group
 

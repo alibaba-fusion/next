@@ -80,11 +80,13 @@ class BalloonInner extends React.Component {
         return (
             <div
                 role="tooltip"
+                aria-live="polite"
                 dir={rtl ? 'rtl' : undefined}
                 className={classes}
                 style={style}
                 {...obj.pickOthers(Object.keys(BalloonInner.propTypes), others)}
             >
+                {children}
                 {closable ? (
                     <a
                         role="button"
@@ -97,7 +99,6 @@ class BalloonInner extends React.Component {
                         <Icon type="close" size="small" />
                     </a>
                 ) : null}
-                {children}
             </div>
         );
     }

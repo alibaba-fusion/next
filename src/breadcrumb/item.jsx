@@ -49,10 +49,7 @@ class Item extends Component {
         });
 
         return (
-            <div
-                dir={rtl ? 'rtl' : null}
-                className={`${prefix}breadcrumb-item`}
-            >
+            <li dir={rtl ? 'rtl' : null} className={`${prefix}breadcrumb-item`}>
                 {link ? (
                     <a href={link} className={clazz} {...others}>
                         {children}
@@ -65,7 +62,7 @@ class Item extends Component {
                 {activated
                     ? null
                     : Item.Separator({ prefix, children: separator })}
-            </div>
+            </li>
         );
     }
 }

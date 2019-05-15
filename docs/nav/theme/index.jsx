@@ -35,7 +35,7 @@ class FuncDemo extends React.Component {
         const iconOnly = demoFunction.iconOnly && demoFunction.iconOnly.value === 'true';
         const hasGroup = demoFunction.hasGroup && demoFunction.hasGroup.value === 'true';
         const hasIcons = direction === 'ver' || (demoFunction.hasIcons && demoFunction.hasIcons.value === 'true');
-        const itemStyle = iconOnly ? {} : { width: '130px' };
+        const itemStyle = iconOnly ? {} : { minWidth: '100px' };
 
         const items = [];
         const subItems = [];
@@ -55,7 +55,7 @@ class FuncDemo extends React.Component {
         return (
             <Nav defaultOpenAll type={type} direction={direction} activeDirection={activeDirection} iconOnly={iconOnly} defaultSelectedKeys={selectedKeys}>
                 {hasGroup ? <Group label={i18n.group}>{items}</Group> : items}
-                <SubNav style={itemStyle} key="5" icon={hasIcons && 'account'} label={`${i18n.item}5`}>
+                <SubNav key="5" icon={hasIcons && 'account'} label={`${i18n.item}5`}>
                     {subItems}
                 </SubNav>
             </Nav>

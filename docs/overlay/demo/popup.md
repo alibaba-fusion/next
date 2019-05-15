@@ -20,11 +20,20 @@ import { Overlay } from '@alifd/next';
 const { Popup } = Overlay;
 
 ReactDOM.render(
-    <Popup trigger={<button>Open</button>} triggerType="click">
-        <span className="overlay-demo">
-            Hello World From Popup!
-        </span>
-    </Popup>, mountNode);
+    <div>
+        <Popup trigger={<button>Open</button>} triggerType="click">
+            <span className="overlay-demo">
+                Hello World From Popup!
+            </span>
+        </Popup>
+        <br />
+        <Popup trigger={<button>Use Down Arrow to open</button>} triggerType="click" triggerClickKeycode={40}>
+            <span className="overlay-demo">
+                Hello World From Popup!
+            </span>
+        </Popup>
+    </div>
+    , mountNode);
 ````
 
 ````css

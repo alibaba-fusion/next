@@ -390,3 +390,27 @@ $message-close-icon-color: $color-text1-2 !default;
 /// icon
 /// @namespace statement/hover/close
 $message-hover-close-icon-color: $color-text1-3 !default;
+/// success icon
+/// @namespace statement/normal
+/// @type icon
+$message-success-icon-content: $icon-content-success !default;
+/// warning icon
+/// @namespace statement/normal
+/// @type icon
+$message-warning-icon-content: $icon-content-warning !default;
+/// error icon
+/// @namespace statement/normal
+/// @type icon
+$message-error-icon-content: $icon-content-error !default;
+/// notice icon
+/// @namespace statement/normal
+/// @type icon
+$message-notice-icon-content: $icon-content-prompt !default;
+/// help icon
+/// @namespace statement/normal
+/// @type icon
+$message-help-icon-content: $icon-content-help !default;
+/// help icon
+/// @namespace statement/normal
+/// @type icon
+$message-loading-icon-content: $icon-content-loading !default;

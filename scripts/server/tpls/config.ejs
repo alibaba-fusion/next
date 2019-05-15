@@ -1,456 +1,582 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>配置主题 Demo</title>
-  <meta charset="utf-8">
-  <style>
-    * {
-      outline: none;
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <head>
+        <title>配置主题 Demo</title>
+        <meta charset="utf-8" />
+        <style>
+            * {
+                outline: none;
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
-    body {
-      height: 100%;
-      color: #333;
-      font-family: 'PingFang SC', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-      font-size: 14px;
-      background: #F2F3F7;
-    }
+            body {
+                height: 100%;
+                color: #333;
+                font-family: 'PingFang SC', 'Helvetica Neue', Arial, Helvetica,
+                    sans-serif;
+                font-size: 14px;
+                background: #f2f3f7;
+            }
 
-    .error {
-      margin: 10px;
-      padding: 10px;
-      color: red;
-      background: #FFF;
-    }
+            .error {
+                margin: 10px;
+                padding: 10px;
+                color: red;
+                background: #fff;
+            }
 
-    .container {
-      display: flex;
-    }
+            .container {
+                display: flex;
+            }
 
-    .left {
-      flex: 1;
-      overflow: auto;
-      padding: 0 20px;
-    }
+            .left {
+                flex: 1;
+                overflow: auto;
+                padding: 0 20px;
+            }
 
-    .demo {
-      width: 100%;
-    }
+            .demo {
+                width: 100%;
+            }
 
-    .right {
-      position: relative;
-      flex-direction: column;
-      width: 300px;
-      border: 1px solid #DCDEE3;
-      background: #FFF;
-    }
+            .right {
+                position: relative;
+                flex-direction: column;
+                width: 300px;
+                border: 1px solid #dcdee3;
+                background: #fff;
+            }
 
-    .language {
-      display: flex;
-      padding: 5px;
-      margin: 5px 0;
-      align-items: center;
-      font-size: 12px;
-    }
+            .language {
+                display: flex;
+                padding: 5px;
+                margin: 5px 0;
+                align-items: center;
+                font-size: 12px;
+            }
 
-    .language-label {
-      padding-left: 15px;
-      width: 100px;
-    }
+            .language-label {
+                padding-left: 15px;
+                width: 100px;
+            }
 
-    .language-choice label {
-      cursor: pointer;
-      margin-right: 10px;
-    }
+            .language-choice label {
+                cursor: pointer;
+                margin-right: 10px;
+            }
 
-    .language-choice input {
-      margin-right: 6px;
-    }
+            .language-choice input {
+                margin-right: 6px;
+            }
 
-    .editor {
-      width: 300px;
-      position: absolute;
-      top: 37px;
-      left: 0;
-      max-height: calc(100% - 37px);
-      min-height: 30px;
-      overflow-y: auto;
-    }
+            .editor {
+                width: 300px;
+                position: absolute;
+                top: 37px;
+                left: 0;
+                max-height: calc(100% - 37px);
+                min-height: 30px;
+                overflow-y: auto;
+            }
 
-    .editor-ns1 {
-      padding: 10px;
-      background: #F7F8FA;
-      border-top: 1px solid #E6E7EB;
-      border-bottom: 1px solid #E6E7EB;
-    }
+            .editor-ns1 {
+                padding: 10px;
+                background: #f7f8fa;
+                border-top: 1px solid #e6e7eb;
+                border-bottom: 1px solid #e6e7eb;
+            }
 
-    .editor-ns2 {
-      padding: 7px 10px;
-      font-size: 20px;
-      font-weight: bold;
-    }
+            .editor-ns2 {
+                padding: 7px 10px;
+                font-size: 20px;
+                font-weight: bold;
+            }
 
-    .editor-ns3 {
-      padding: 7px 10px;
-      font-size: 16px;
-      font-style: italic;
-    }
+            .editor-ns3 {
+                padding: 7px 10px;
+                font-size: 16px;
+                font-style: italic;
+            }
 
-    .editor-item {
-      display: flex;
-      flex-direction: row;
-      padding: 7px 10px;
-      cursor: pointer;
-    }
+            .editor-item {
+                display: flex;
+                flex-direction: row;
+                padding: 7px 10px;
+                cursor: pointer;
+            }
 
-    .editor-item-desc {
-      flex: 1;
-      align-self: center;
-      padding-right: 5px;
-      font-size: 12px;
-    }
+            .editor-item-desc {
+                flex: 1;
+                align-self: center;
+                padding-right: 5px;
+                font-size: 12px;
+            }
 
-    .eidtor-item-input {
-      display: block;
-      width: 160px;
-      height: 24px;
-      border: 1px solid #CCC;
-      border-radius: 3px;
-      font-size: 12px;
-      background-color: #FFF;
-    }
+            .eidtor-item-input {
+                display: block;
+                width: 160px;
+                height: 24px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                font-size: 12px;
+                background-color: #fff;
+            }
 
-    input.eidtor-item-input {
-      padding: 0 7px;
-    }
+            input.eidtor-item-input {
+                padding: 0 7px;
+            }
 
-    .notice {
-      height: 40px;
-      margin: 20px 0;
-      line-height: 40px;
-      padding-left: 20px;
-      font-size: 14px;
-      background-color: #FAE7E7;
-      color: #E61C1C;
-    }
+            .notice {
+                height: 40px;
+                margin: 20px 0;
+                line-height: 40px;
+                padding-left: 20px;
+                font-size: 14px;
+                background-color: #fae7e7;
+                color: #e61c1c;
+            }
 
-    .loading {
-      height: 40px;
-      margin: 20px 0;
-      line-height: 40px;
-      padding-left: 20px;
-      font-size: 14px;
-      border: 1px solid #2192D9;
-      color: #2192D9;
-    }
-  </style>
-</head>
-<body>
-  <% if (error) { %>
-    <pre class="error"><%- error %></pre>
-  <% } else { %>
-    <div class="container">
-      <div class="left">
-        <% if (hasRubySass) { %>
-          <div class="loading">正在获取scss变量与css规则映射表，比较耗时，请勿重复刷新页面...</div>
-          <iframe class="demo" frameborder="0" scrolling="yes"></iframe>
+            .loading {
+                height: 40px;
+                margin: 20px 0;
+                line-height: 40px;
+                padding-left: 20px;
+                font-size: 14px;
+                border: 1px solid #2192d9;
+                color: #2192d9;
+            }
+        </style>
+    </head>
+    <body>
+        <% if (error) { %>
+        <pre class="error"><%- error %></pre>
         <% } else { %>
-          <div class="notice">如果想调试配置平台 Demo，请执行 `sudo gem install sass` 命令安装 ruby-sass 后刷新页面。</div>
-        <% } %>
-      </div>
-      <div class="right">
-        <div class="language">
-          <div class="language-label">Language</div>
-          <div class="language-choice">
-            <label><input name="language" type="radio" value="en-us" checked>English</label>
-            <label><input name="language" type="radio" value="zh-cn">中文</label>
-          </div>
+        <div class="container">
+            <div class="left">
+                <% if (hasRubySass) { %>
+                <div class="loading">
+                    正在获取scss变量与css规则映射表，比较耗时，请勿重复刷新页面...
+                </div>
+                <iframe class="demo" frameborder="0" scrolling="yes"></iframe>
+                <% } else { %>
+                <div class="notice">
+                    如果想调试配置平台 Demo，请执行 `sudo gem install sass`
+                    命令安装 ruby-sass 后刷新页面。
+                </div>
+                <% } %>
+            </div>
+            <div class="right">
+                <div class="language">
+                    <div class="language-label">Language</div>
+                    <div class="language-choice">
+                        <label
+                            ><input
+                                name="language"
+                                type="radio"
+                                value="en-us"
+                                checked
+                            />English</label
+                        >
+                        <label
+                            ><input
+                                name="language"
+                                type="radio"
+                                value="zh-cn"
+                            />中文</label
+                        >
+                    </div>
+                </div>
+                <div class="editor"></div>
+            </div>
         </div>
-        <div class="editor"></div>
-      </div>
-    </div>
 
-    <% if (hasRubySass) { %>
-    <script>
-      <%- trackerJS %>
-    </script>
-    <script>
-      (function() {
-        'use strict';
+        <% if (hasRubySass) { %>
+        <script>
+            <%- trackerJS %>
+        </script>
+        <script>
+            (function() {
+                'use strict';
 
-        var varEnums = JSON.parse('<%- varEnums %>');
-        var componentName = '<%= componentName %>';
+                var varEnums = JSON.parse('<%- varEnums %>');
+                var componentName = '<%= componentName %>';
 
-        var iframe = document.querySelector('iframe');
-        var loading = document.querySelector('.loading')
-        var right = document.querySelector('.right');
-        var editor = document.querySelector('.editor');
+                var iframe = document.querySelector('iframe');
+                var loading = document.querySelector('.loading');
+                var right = document.querySelector('.right');
+                var editor = document.querySelector('.editor');
 
-        iframe.addEventListener('load', function() {
-          iframe.height = window.innerHeight + 'px';
+                iframe.addEventListener('load', function() {
+                    iframe.height = window.innerHeight + 'px';
 
-          var iWin = iframe.contentWindow;
-          if (iWin.renderDemo) {
-            var choices = document.querySelector('.language-choice');
-            choices.addEventListener('change', function(e) {
-              iWin.renderDemo(e.target.value);
-            });
-          }
-        });
-
-        var varEnumsMap = Object.keys(varEnums).reduce(function(ret, enumKey) {
-          Object.keys(varEnums[enumKey]).forEach(function(variable) {
-            ret[variable] = enumKey;
-          });
-          return ret;
-        }, {});
-        var varObj;
-        var cssScssMap;
-
-        getJson({
-          url: '/getVariables.json',
-          data: {
-            componentName: componentName
-          },
-          success: function(result) {
-            iframe.src = "./index.html";
-            loading.style.display = 'none';
-            varObj = result.varObj;
-            if (varObj && varObj.items) {
-              varObj.items = varObj.items.reduce(function(ret, item) {
-                ret[item.name] = item;
-                return ret;
-              }, {});
-              cssScssMap = result.cssScssMap;
-            } else {
-              console.warn('there is no config variables.');
-            }
-          },
-          error: function(error) {
-            console.log('fetch varialbes and css-scss map failed: ' + error);
-          }
-        });
-
-        window.addEventListener('message', function (e) {
-          var data = e.data
-          if (!data || data.from !== 'demo' || !varObj) {
-            return
-          }
-
-          if (data.type === 'loaded') {
-            var iWin = iframe.contentWindow;
-            var iDoc = iWin.document;
-            var tracker = new SassTracker(iWin, varObj.classPrefix.replace('{prefix}', 'next'));
-
-            iDoc.body.addEventListener('click', function (e) {
-                var demo = tracker.findDemo(e.target);
-                if (!demo) {
-                    return console.warn('Can not find the event target demo parent, may be it was triggered in overlay.');
-                }
-                var cssRules = tracker.findCssRules(demo, true);
-                var vars = tracker.findVars(cssRules, cssScssMap);
-                var varItems = vars.map(name => varObj.items[name]);
-
-                var order = varObj.order;
-                if (order) {
-                    order.size = 1;
-                    order.statement = 2;
-                    varItems = varItems.sort((prev, next) => {
-                    var result = -1;
-
-                    var prevArr = prev.attrs.namespace.split('/');
-                    var nextArr = next.attrs.namespace.split('/');
-                    var length = Math.min(prevArr.length, nextArr.length);
-                    for (var i = 0; i < length; i++) {
-                        const prevPartNS = prevArr.slice(0, i + 1).join('/');
-                        const nextPartNS = nextArr.slice(0, i + 1).join('/');
-                        const prevOrderValue = order[prevPartNS];
-                        const nextOrderValue = order[nextPartNS];
-                        if (!prevOrderValue) {
-                        console.error('Can not find the namespace order: ' + prevPartNS);
-                        result = 1;
-                        break;
-                        }
-                        if (!nextOrderValue) {
-                        console.error('Can not find the namespace order: ' + nextPartNS);
-                        result = -1;
-                        break;
-                        }
-                        if (prevOrderValue !== nextOrderValue) {
-                        result = prevOrderValue - nextOrderValue;
-                        break;
-                        }
-                        if (i === length - 1) {
-                        result = prevArr.length - nextArr.length;
-                        }
+                    var iWin = iframe.contentWindow;
+                    if (iWin.renderDemo) {
+                        var choices = document.querySelector(
+                            '.language-choice'
+                        );
+                        choices.addEventListener('change', function(e) {
+                            iWin.renderDemo(e.target.value);
+                        });
                     }
-
-                    return result;
-                    });
-                }
-
-                var varMap = varItems.reduce(function(ret, varItem) {
-                    if (varItem && varItem.attrs && varItem.attrs.namespace) {
-                    var arr = varItem.attrs.namespace.split('/');
-                    var ns1 = arr[0];
-                    var ns2 = arr[1];
-                    var ns3 = arr[2];
-                    if (ns1 && ns2) {
-                        ret[ns1] = ret[ns1] || {};
-                        ret[ns1][ns2] = ret[ns1][ns2] || {};
-                        if (ns3) {
-                        ret[ns1][ns2][ns3] = ret[ns1][ns2][ns3] || {};
-                        ret[ns1][ns2][ns3][varItem.description] = varItem;
-                        } else {
-                        ret[ns1][ns2][varItem.description] = varItem;
-                        }
-                    }
-                    }
-
-                    return ret;
-              }, {});
-              renderEditor(varMap);
-            });
-          } else if (data.type === 'displayed') {
-            e.source.postMessage({
-              from: 'config',
-              type: 'displayed',
-              body: data.body
-            }, '*');
-          }
-        });
-
-        var changeCache = {
-          componentName: componentName
-        };
-        var firstRequest = true;
-        editor.addEventListener('change', function(e) {
-          var element = e.target;
-          changeCache[element.name] = element.value;
-
-          getJson({
-            url: '/rebuildScss.json',
-            data: changeCache,
-            success: function(result) {
-                console.log(result)
-                var iWin = iframe.contentWindow;
-                var iDoc = iWin.document;
-                var styleElement = iDoc.getElementById('rebuild');
-                if (!styleElement) {
-                    styleElement = iDoc.createElement('style');
-                    styleElement.id = 'rebuild';
-                    iDoc.head.appendChild(styleElement);
-                }
-                styleElement.innerHTML = result.css;
-
-                if (firstRequest) {
-                    var styleElements = iDoc.head.querySelectorAll('style');
-                    styleElements.forEach(function(el) {
-                        if (el !== styleElement && el.textContent.indexOf('.demo-container > h2') === -1) {
-                            iDoc.head.removeChild(el);
-                        }
-                    });
-                    firstRequest = false;
-                }
-            },
-            error: function(error) {
-              console.error('fetch rebuild scss failed: ' + error);
-            }
-          });
-        });
-
-        function renderEditor(varMap) {
-          var html = '';
-          Object.keys(varMap).forEach(function(ns1) {
-            html += '<div><div class="editor-ns1">' + ns1 +'</div><div>';
-            Object.keys(varMap[ns1]).forEach(function(ns2) {
-              html += '<div class="editor-ns2">' + ns2 + '</div>';
-              if (ns1 === 'size') {
-                html += renderItems(varMap[ns1][ns2]);
-              } else {
-                Object.keys(varMap[ns1][ns2]).forEach(function(desc) {
-                  var item = varMap[ns1][ns2][desc];
-                  if (item.name && item.value && item.attrs) {
-                    html += renderItem(desc, item);
-                  } else {
-                    html += '<div class="editor-ns3">' + desc + '</div>';
-                    html += renderItems(item);
-                  }
                 });
-              }
-            });
-            html += '</div></div>';
-          });
 
-          editor.innerHTML = html;
-        }
+                var varEnumsMap = Object.keys(varEnums).reduce(function(
+                    ret,
+                    enumKey
+                ) {
+                    Object.keys(varEnums[enumKey]).forEach(function(variable) {
+                        ret[variable] = enumKey;
+                    });
+                    return ret;
+                },
+                {});
+                var varObj;
+                var cssScssMap;
 
-        function renderItems(map) {
-          let html = '';
+                getJson({
+                    url: '/getVariables.json',
+                    data: {
+                        componentName: componentName,
+                    },
+                    success: function(result) {
+                        iframe.src = './index.html';
+                        loading.style.display = 'none';
+                        varObj = result.varObj;
+                        if (varObj && varObj.items) {
+                            varObj.items = varObj.items.reduce(function(
+                                ret,
+                                item
+                            ) {
+                                ret[item.name] = item;
+                                return ret;
+                            },
+                            {});
+                            cssScssMap = result.cssScssMap;
+                        } else {
+                            console.warn('there is no config variables.');
+                        }
+                    },
+                    error: function(error) {
+                        console.log(
+                            'fetch varialbes and css-scss map failed: ' + error
+                        );
+                    },
+                });
 
-          Object.keys(map).sort().forEach(function(desc) {
-            html += renderItem(desc, map[desc]);
-          });
+                window.addEventListener('message', function(e) {
+                    var data = e.data;
+                    if (!data || data.from !== 'demo' || !varObj) {
+                        return;
+                    }
 
-          return html;
-        }
+                    if (data.type === 'loaded') {
+                        var iWin = iframe.contentWindow;
+                        var iDoc = iWin.document;
+                        var tracker = new SassTracker(
+                            iWin,
+                            varObj.classPrefix.replace('{prefix}', 'next')
+                        );
 
-        function renderItem(desc, item) {
-          var html = '<label class="editor-item"><div class="editor-item-desc">' + desc + '</div>';
-          if (item.value[0] !== '$') {
-            var value = item.attrs.type === 'number' || item.attrs.type === 'opacity' ? parseFloat(item.value) : item.value;
-            html += '<input class="eidtor-item-input" name="' + item.name + '" value="' + value + '">';
-          } else {
-            var varType = varEnumsMap[item.value];
-            if (varType) {
-              html += '<select class="eidtor-item-input" name="' + item.name + '">';
-              var varEnum = varEnums[varType];
-              Object.keys(varEnum).forEach(function(name) {
-                var desc = varEnum[name];
-                html += '<option ' + (item.value === name ? 'selected ' : '') + 'value="' + name + '">' + desc + '</option>';
-              });
-              html += '</select>';
-            } else {
-              console.error('Can not find the ' + item.name + ' value type: ' + item.value);
-            }
-          }
-          html += '</label>';
-          return html;
-        }
+                        iDoc.body.addEventListener('click', function(e) {
+                            var demo = tracker.findDemo(e.target);
+                            if (!demo) {
+                                return console.warn(
+                                    'Can not find the event target demo parent, may be it was triggered in overlay.'
+                                );
+                            }
+                            var cssRules = tracker.findCssRules(demo, true);
+                            var vars = tracker.findVars(cssRules, cssScssMap);
+                            var varItems = vars.map(name => varObj.items[name]);
 
-        function getJson(options) {
-          var xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-              if (xhr.status >= 200 && xhr.status < 400) {
-                if (options.success) {
-                  options.success(JSON.parse(xhr.responseText));
+                            var order = varObj.order;
+                            if (order) {
+                                order.size = 1;
+                                order.statement = 2;
+                                varItems = varItems.sort((prev, next) => {
+                                    var result = -1;
+
+                                    var prevArr = prev.attrs.namespace.split(
+                                        '/'
+                                    );
+                                    var nextArr = next.attrs.namespace.split(
+                                        '/'
+                                    );
+                                    var length = Math.min(
+                                        prevArr.length,
+                                        nextArr.length
+                                    );
+                                    for (var i = 0; i < length; i++) {
+                                        const prevPartNS = prevArr
+                                            .slice(0, i + 1)
+                                            .join('/');
+                                        const nextPartNS = nextArr
+                                            .slice(0, i + 1)
+                                            .join('/');
+                                        const prevOrderValue =
+                                            order[prevPartNS];
+                                        const nextOrderValue =
+                                            order[nextPartNS];
+                                        if (!prevOrderValue) {
+                                            console.error(
+                                                'Can not find the namespace order: ' +
+                                                    prevPartNS
+                                            );
+                                            result = 1;
+                                            break;
+                                        }
+                                        if (!nextOrderValue) {
+                                            console.error(
+                                                'Can not find the namespace order: ' +
+                                                    nextPartNS
+                                            );
+                                            result = -1;
+                                            break;
+                                        }
+                                        if (prevOrderValue !== nextOrderValue) {
+                                            result =
+                                                prevOrderValue - nextOrderValue;
+                                            break;
+                                        }
+                                        if (i === length - 1) {
+                                            result =
+                                                prevArr.length - nextArr.length;
+                                        }
+                                    }
+
+                                    return result;
+                                });
+                            }
+
+                            var varMap = varItems.reduce(function(
+                                ret,
+                                varItem
+                            ) {
+                                if (
+                                    varItem &&
+                                    varItem.attrs &&
+                                    varItem.attrs.namespace
+                                ) {
+                                    var arr = varItem.attrs.namespace.split(
+                                        '/'
+                                    );
+                                    var ns1 = arr[0];
+                                    var ns2 = arr[1];
+                                    var ns3 = arr[2];
+                                    if (ns1 && ns2) {
+                                        ret[ns1] = ret[ns1] || {};
+                                        ret[ns1][ns2] = ret[ns1][ns2] || {};
+                                        if (ns3) {
+                                            ret[ns1][ns2][ns3] =
+                                                ret[ns1][ns2][ns3] || {};
+                                            ret[ns1][ns2][ns3][
+                                                varItem.description
+                                            ] = varItem;
+                                        } else {
+                                            ret[ns1][ns2][
+                                                varItem.description
+                                            ] = varItem;
+                                        }
+                                    }
+                                }
+
+                                return ret;
+                            },
+                            {});
+                            renderEditor(varMap);
+                        });
+                    } else if (data.type === 'displayed') {
+                        e.source.postMessage(
+                            {
+                                from: 'config',
+                                type: 'displayed',
+                                body: data.body,
+                            },
+                            '*'
+                        );
+                    }
+                });
+
+                var changeCache = {
+                    componentName: componentName,
+                };
+                var firstRequest = true;
+                editor.addEventListener('change', function(e) {
+                    var element = e.target;
+                    changeCache[element.name] = element.value;
+
+                    getJson({
+                        url: '/rebuildScss.json',
+                        data: changeCache,
+                        success: function(result) {
+                            console.log(result);
+                            var iWin = iframe.contentWindow;
+                            var iDoc = iWin.document;
+                            var styleElement = iDoc.getElementById('rebuild');
+                            if (!styleElement) {
+                                styleElement = iDoc.createElement('style');
+                                styleElement.id = 'rebuild';
+                                iDoc.head.appendChild(styleElement);
+                            }
+                            styleElement.innerHTML = result.css;
+
+                            if (firstRequest) {
+                                var styleElements = iDoc.head.querySelectorAll(
+                                    'style'
+                                );
+                                styleElements.forEach(function(el) {
+                                    if (
+                                        el !== styleElement &&
+                                        el.textContent.indexOf(
+                                            '.demo-container > h2'
+                                        ) === -1
+                                    ) {
+                                        iDoc.head.removeChild(el);
+                                    }
+                                });
+                                firstRequest = false;
+                            }
+                        },
+                        error: function(error) {
+                            console.error(
+                                'fetch rebuild scss failed: ' + error
+                            );
+                        },
+                    });
+                });
+
+                function renderEditor(varMap) {
+                    var html = '';
+                    Object.keys(varMap).forEach(function(ns1) {
+                        html +=
+                            '<div><div class="editor-ns1">' +
+                            ns1 +
+                            '</div><div>';
+                        Object.keys(varMap[ns1]).forEach(function(ns2) {
+                            html += '<div class="editor-ns2">' + ns2 + '</div>';
+                            if (ns1 === 'size') {
+                                html += renderItems(varMap[ns1][ns2]);
+                            } else {
+                                Object.keys(varMap[ns1][ns2]).forEach(function(
+                                    desc
+                                ) {
+                                    var item = varMap[ns1][ns2][desc];
+                                    if (item.name && item.value && item.attrs) {
+                                        html += renderItem(desc, item);
+                                    } else {
+                                        html +=
+                                            '<div class="editor-ns3">' +
+                                            desc +
+                                            '</div>';
+                                        html += renderItems(item);
+                                    }
+                                });
+                            }
+                        });
+                        html += '</div></div>';
+                    });
+
+                    editor.innerHTML = html;
                 }
-              } else {
-                if (options.error) {
-                  var html = xhr.responseText;
-                  var div = document.createElement('div');
-                  div.innerHTML = html;
-                  var text = div.textContent.trim();
-                  options.error(text);
+
+                function renderItems(map) {
+                    let html = '';
+
+                    Object.keys(map)
+                        .sort()
+                        .forEach(function(desc) {
+                            html += renderItem(desc, map[desc]);
+                        });
+
+                    return html;
                 }
-              }
-            }
-          }
-          if (options.data) {
-            options.url += '?' + Object.keys(options.data).map(function(key) {
-             return key + '=' + options.data[key]
-            }).join('&');
-          }
-          xhr.open('GET', options.url, true);
-          xhr.send();
-        }
-      })();
-    </script>
-    <% } %>
-  <% } %>
-</body>
+
+                function renderItem(desc, item) {
+                    var html =
+                        '<label class="editor-item"><div class="editor-item-desc">' +
+                        desc +
+                        '</div>';
+                    if (item.value[0] !== '$') {
+                        var value =
+                            item.attrs.type === 'number' ||
+                            item.attrs.type === 'opacity'
+                                ? parseFloat(item.value)
+                                : item.value;
+                        html +=
+                            '<input class="eidtor-item-input" name="' +
+                            item.name +
+                            '" value="' +
+                            value +
+                            '">';
+                    } else {
+                        var varType = varEnumsMap[item.value];
+                        if (varType) {
+                            html +=
+                                '<select class="eidtor-item-input" name="' +
+                                item.name +
+                                '">';
+                            var varEnum = varEnums[varType];
+                            Object.keys(varEnum).forEach(function(name) {
+                                var desc = varEnum[name];
+                                html +=
+                                    '<option ' +
+                                    (item.value === name ? 'selected ' : '') +
+                                    'value="' +
+                                    name +
+                                    '">' +
+                                    desc +
+                                    '</option>';
+                            });
+                            html += '</select>';
+                        } else {
+                            console.error(
+                                'Can not find the ' +
+                                    item.name +
+                                    ' value type: ' +
+                                    item.value
+                            );
+                        }
+                    }
+                    html += '</label>';
+                    return html;
+                }
+
+                function getJson(options) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status >= 200 && xhr.status < 400) {
+                                if (options.success) {
+                                    options.success(
+                                        JSON.parse(xhr.responseText)
+                                    );
+                                }
+                            } else {
+                                if (options.error) {
+                                    var html = xhr.responseText;
+                                    var div = document.createElement('div');
+                                    div.innerHTML = html;
+                                    var text = div.textContent.trim();
+                                    options.error(text);
+                                }
+                            }
+                        }
+                    };
+                    if (options.data) {
+                        options.url +=
+                            '?' +
+                            Object.keys(options.data)
+                                .map(function(key) {
+                                    return key + '=' + options.data[key];
+                                })
+                                .join('&');
+                    }
+                    xhr.open('GET', options.url, true);
+                    xhr.send();
+                }
+            })();
+        </script>
+        <% } %> <% } %>
+    </body>
 </html>

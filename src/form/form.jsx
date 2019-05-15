@@ -92,7 +92,7 @@ export default class Form extends React.Component {
         /**
          * 设置标签类型
          */
-        component: PropTypes.string,
+        component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         fieldOptions: PropTypes.object,
         rtl: PropTypes.bool,
     };
