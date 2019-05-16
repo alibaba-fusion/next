@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { func, obj, KEYCODE } from '../../util';
 
 const { bindCtx } = func;
-const { pickOthers } = obj;
+const { pickOthers, isNil } = obj;
 const noop = () => {};
 
 /**
@@ -214,12 +214,13 @@ export default class Menu extends Component {
         if (focusable) {
             this.tabbableKey = this.getFirstAvaliablelChildKey('0');
         }
+
         this.state = {
             openKeys: this.getInitOpenKeys(props),
             selectedKeys: this.normalizeToArray(
                 selectedKeys || defaultSelectedKeys
             ),
-            focusedKey: this.props.focusedKey
+            focusedKey: !isNil(this.props.focusedKey)
                 ? focusedKey
                 : focusable && autoFocus
                 ? this.tabbableKey
@@ -479,7 +480,7 @@ export default class Menu extends Component {
         }
 
         if (newOpenKeys) {
-            if (!this.props.openKeys) {
+            if (isNil(this.props.openKeys)) {
                 this.setState({
                     openKeys: newOpenKeys,
                 });
@@ -538,7 +539,7 @@ export default class Menu extends Component {
         }
 
         if (newSelectedKeys) {
-            if (!this.props.selectedKeys) {
+            if (isNil(this.props.selectedKeys)) {
                 this.setState({
                     selectedKeys: newSelectedKeys,
                 });
@@ -555,7 +556,7 @@ export default class Menu extends Component {
 
     handleItemClick(key, item, e) {
         if (this.props.focusable) {
-            if (!this.props.focusedKey) {
+            if (isNil(this.props.focusedKey)) {
                 this.setState({
                     focusedKey: key,
                 });
@@ -569,7 +570,7 @@ export default class Menu extends Component {
                 item.props.parentMode === 'popup' &&
                 this.state.openKeys.length
             ) {
-                if (!this.props.openKeys) {
+                if (isNil(this.props.openKeys)) {
                     this.setState({
                         openKeys: [],
                     });
@@ -722,7 +723,7 @@ export default class Menu extends Component {
         }
 
         if (focusedKey !== this.state.focusedKey) {
-            if (!this.props.focusedKey) {
+            if (isNil(this.props.focusedKey)) {
                 this.setState({
                     focusedKey,
                 });
