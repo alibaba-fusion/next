@@ -20,6 +20,12 @@ function clearNextFrameAction(nextFrameId) {
     }
 }
 
+// safari in mac
+const isMacSafari =
+    navigator && navigator.userAgent
+        ? navigator.userAgent.match(/^((?!chrome|android|windows).)*safari/i)
+        : false;
+
 const hiddenStyle = {
     visibility: 'hidden',
     position: 'absolute',
@@ -149,7 +155,7 @@ export default class TextArea extends Base {
     ieHack(value) {
         // Fix: textarea dit not support maxLength in ie9
         /* istanbul ignore if */
-        if (env.ieVersion && this.props.maxLength && this.props.multiple) {
+        if (env.ieVersion === 9 && this.props.maxLength) {
             const maxLength = parseInt(this.props.maxLength);
             const len = this.getValueLength(value, true);
             if (len > maxLength && this.props.cutString) {
@@ -164,18 +170,28 @@ export default class TextArea extends Base {
         return value;
     }
 
-    // `Enter` was considered to be two chars in chrome , but one char in ie.
-    // so we make all `Enter` to be two chars
+    /**
+     * value.length !== maxLength  in ie/safari(mac) while value has `Enter`
+     * about maxLength compute: `Enter` was considered to be one char(\n) in chrome , but two chars(\r\n) in ie/safari(mac).
+     * so while value has `Enter`, we should let display length + 1
+     */
     getValueLength(value) {
+        const { maxLength, cutString } = this.props;
+
         const nv = `${value}`;
         let strLen = this.props.getValueLength(nv);
         if (typeof strLen !== 'number') {
             strLen = nv.length;
         }
+
         /* istanbul ignore if */
-        if (env.ieVersion) {
-            return strLen + nv.split('\n').length - 1;
+        if (env.ieVersion || isMacSafari) {
+            strLen = strLen + nv.split('\n').length - 1;
+            if (strLen > maxLength && cutString) {
+                strLen = maxLength;
+            }
         }
+
         return strLen;
     }
 
@@ -224,10 +240,7 @@ export default class TextArea extends Base {
         };
 
         const wrapStyle = autoHeight
-            ? {
-                  ...style,
-                  position: 'relative',
-              }
+            ? { ...style, position: 'relative' }
             : style;
 
         return (
