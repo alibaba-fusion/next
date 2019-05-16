@@ -102,10 +102,15 @@ export default {
         card: {
             cancel: 'キャンセル',
             addPhoto: '画像アップロード',
+            download: 'ダウンロード',
+            delete: '削除',
         },
         drag: {
             text: '枠にドラッグしてアップロード',
             hint: 'docx, xls, PDF, rar, zip, PNG, JPG 等がサポートしています',
+        },
+        upload: {
+            delete: '削除',
         },
     },
     Search: {

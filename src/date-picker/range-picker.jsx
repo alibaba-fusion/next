@@ -201,6 +201,7 @@ export default class RangePicker extends Component {
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
+        defaultVisible: false,
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
