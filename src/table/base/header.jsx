@@ -22,6 +22,7 @@ export default class Header extends React.Component {
         onFilter: PropTypes.func,
         components: PropTypes.object,
         sort: PropTypes.object,
+        sortIcons: PropTypes.object,
         onSort: PropTypes.func,
         onResizeChange: PropTypes.func,
     };
@@ -60,6 +61,7 @@ export default class Header extends React.Component {
             headerCellRef,
             onSort,
             sort,
+            sortIcons,
             onResizeChange,
             pure,
             rtl,
@@ -112,6 +114,7 @@ export default class Header extends React.Component {
                                 prefix={prefix}
                                 dataIndex={dataIndex}
                                 onSort={this.onSort}
+                                sortIcons={sortIcons}
                                 sort={sort}
                                 rtl={rtl}
                                 locale={locale}

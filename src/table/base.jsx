@@ -146,6 +146,10 @@ export default class Table extends React.Component {
          */
         sort: PropTypes.object,
         /**
+         * 自定义排序按钮，例如上下排布的: `{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
+         */
+        sortIcons: PropTypes.object,
+        /**
          * 自定义国际化文案对象
          * @property {String} ok 过滤器中确认按钮文案
          * @property {String} reset 过滤器中重置按钮文案
@@ -499,6 +503,7 @@ export default class Table extends React.Component {
                 expandedIndexSimulate,
                 pure,
                 rtl,
+                sortIcons,
             } = this.props;
             const { sort } = this.state;
             const {
@@ -531,6 +536,7 @@ export default class Table extends React.Component {
                             sort={sort}
                             onResizeChange={this.onResizeChange}
                             onSort={this.onSort}
+                            sortIcons={sortIcons}
                         />
                     ) : null}
                     <Body
@@ -636,6 +642,7 @@ export default class Table extends React.Component {
                 emptyContent,
                 filterParams,
                 columns,
+                sortIcons,
                 loadingComponent: LoadingComponent = Loading,
                 ...others
             } = this.props,
