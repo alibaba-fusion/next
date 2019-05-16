@@ -42,17 +42,17 @@ class Demo extends React.Component {
     render() {
         return (
             <Form style={{width: '60%'}} {...formItemLayout} >
-                <FormItem label="userName:">
+                <FormItem label="baseUsername:">
                     <p>Fixed Name</p>
                 </FormItem>
                 <FormItem label="password:">
-                    <Input htmlType="password" name="pass" placeholder="Please Enter Password"/>
+                    <Input htmlType="password" name="basePass" placeholder="Please Enter Password"/>
                 </FormItem>
                 <FormItem label="Note:" help="something">
-                    <Input.TextArea placeholder="something" name="remark" />
+                    <Input.TextArea placeholder="something" name="baseRemark" />
                 </FormItem>
                 <FormItem label="Agreement:">
-                    <Checkbox name="agreement" defaultChecked>Agree</Checkbox>
+                    <Checkbox name="baseAgreement" defaultChecked>Agree</Checkbox>
                 </FormItem>
                 <FormItem label=" ">
                     <Form.Submit onClick={this.handleSubmit}>Confirm</Form.Submit>

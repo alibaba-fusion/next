@@ -2,14 +2,15 @@
 
 - order: 3
 
-请参考`ARIA and KeyBoard`。
+组件已支持无障碍。关于键盘操作请参考`ARIA and KeyBoard`。
+
 
 :::lang=en-us
 # Accessibility
 
 - order: 3
 
-Please refer to `ARIA and KeyBoard`.
+Components already support accessibility.Please refer to `ARIA and KeyBoard` for keyboard operation.
 
 :::
 ---
