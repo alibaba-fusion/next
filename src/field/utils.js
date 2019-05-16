@@ -25,18 +25,18 @@ export function getValueFromEvent(e) {
     return target.value;
 }
 
+function cloneAndAddKey(element) {
+    if (element && isValidElement(element)) {
+        return cloneElement(element, { key: 'error' });
+    }
+    return element;
+}
+
 export function getErrorStrs(errors) {
     if (errors) {
-        return errors.map(e => {
-            if ('message' in e) {
-                const message = e.message;
-                // add key for jsx to ignore key warning
-                if (message && isValidElement(message) && !message.props.key) {
-                    return cloneElement(message, { key: 'error' });
-                }
-                return message;
-            }
-            return e;
+        return errors.map(function(e) {
+            const message = e.message || e;
+            return cloneAndAddKey(message);
         });
     }
     return errors;
