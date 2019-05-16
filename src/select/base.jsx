@@ -175,36 +175,6 @@ export default class Base extends React.Component {
         events.on(window, 'resize', this.handleResize);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this.setState({
-                value: nextProps.value,
-            });
-        }
-
-        if ('visible' in nextProps) {
-            // this.state.visible = nextProps.visible;
-            this.setState({
-                visible: nextProps.visible,
-            });
-        }
-
-        this.dataStore.setOptions({
-            filter: nextProps.filter,
-            filterLocal: nextProps.filterLocal,
-        });
-
-        if (
-            nextProps.children !== this.props.children ||
-            nextProps.dataSource !== this.props.dataSource
-        ) {
-            const dataSource = this.setDataSource(nextProps);
-            this.setState({
-                dataSource,
-            });
-        }
-    }
-
     componentDidUpdate(prevProps, prevState) {
         if (
             prevProps.label !== this.props.label ||
