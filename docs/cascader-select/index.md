@@ -98,6 +98,6 @@ const dataSource = [{
 | Down Arrow  | 获取同级当前项后一项焦点           |
 | Left Arrow  | 进入当前项的子元素，并获取第一个子元素为焦点 |
 | Right Arrow | 返回当前项的父元素并获取焦点         |
-| Enter       | 打开目录或选择当前项                  |
+| Enter       | 打开目录或选择当前项             |
 | Esc         | 关闭目录                   |
 | SPACE       | 选择当前项                  |

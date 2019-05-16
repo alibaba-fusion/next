@@ -91,3 +91,8 @@ class Demo extends React.Component {
 ReactDOM.render(<Demo />, mountNode);
 
 ````
+```css
+.next-menu-item:focus {
+    background-color: #F2F3F7;
+}
+```

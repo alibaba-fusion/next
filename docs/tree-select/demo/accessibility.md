@@ -27,7 +27,7 @@ class Demo extends React.Component {
     }
 
     handleChange(value, data) {
-        console.log(value, data)
+        console.log(value, data);
     }
 
     render() {

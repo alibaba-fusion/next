@@ -1,15 +1,23 @@
-# Latest Log
+# Latest Log 
 
-## [1.14.3](https://github.com/alibaba-fusion/next/compare/1.14.2...1.14.3) (2019-05-09)
+## [1.14.4](https://github.com/alibaba-fusion/next/compare/1.14.3...1.14.4) (2019-05-16)
 
 
 ### Bug Fixes
 
-* **Core:** clip-path in sr-only destroys scrolling performance ([49ff99f](https://github.com/alibaba-fusion/next/commit/49ff99f))
-* **Dialog:** fixed height dialog ([c334b2b](https://github.com/alibaba-fusion/next/commit/c334b2b))
-* **Menu** empty focus key when blur using undefined ([#634](https://github.com/alibaba-fusion/next/issues/634)) ([8c6a3af](https://github.com/alibaba-fusion/next/commit/8c6a3af))
-* **Slider:** dots should be cursor: pointer; ([1754a74](https://github.com/alibaba-fusion/next/commit/1754a74))
-* **Table:** using clientHeight instead of maxBodyHeight ([33abd4a](https://github.com/alibaba-fusion/next/commit/33abd4a))
-* **Upload:** a11y problem ([97ab17b](https://github.com/alibaba-fusion/next/commit/97ab17b))
+* fix DatePicker,Switch,Upload to a11y ([99ef836](https://github.com/alibaba-fusion/next/commit/99ef836))
+* **Checkbox:** number 0 should be rendered ([93318d8](https://github.com/alibaba-fusion/next/commit/93318d8))
+* **Field:** no react key props for errors ([93127d6](https://github.com/alibaba-fusion/next/commit/93127d6))
+* **Menu:** Resolve expanding and selecting in uncontrolled mode ([#667](https://github.com/alibaba-fusion/next/issues/667)) ([0ba7e4a](https://github.com/alibaba-fusion/next/commit/0ba7e4a))
+* **Menu:** Resolve items that created by `React.forwardRef` ([807d8de](https://github.com/alibaba-fusion/next/commit/807d8de))
+* **Select:** hight first item with remote datasource. Close [#654](https://github.com/alibaba-fusion/next/issues/654) ([d784ee0](https://github.com/alibaba-fusion/next/commit/d784ee0))
+
+
+### Features
+
+* add file types/ to customize index.d.ts ([c537d81](https://github.com/alibaba-fusion/next/commit/c537d81))
+* **Menu:** add API embeddable ([6d21bb1](https://github.com/alibaba-fusion/next/commit/6d21bb1))
+* **Nav:** add API embeddable ([1379df3](https://github.com/alibaba-fusion/next/commit/1379df3))
+* **Table:** add API sortIcons to customize sort icons ([7abcf7c](https://github.com/alibaba-fusion/next/commit/7abcf7c))
 
 
