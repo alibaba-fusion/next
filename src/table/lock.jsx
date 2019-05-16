@@ -129,7 +129,8 @@ export default function lock(BaseComponent) {
             ret.forEach(child => {
                 // 为自定义的列特殊处理
                 if (child.__normalized && isLock) {
-                    child.lock = 'left';
+                    // users can set lock type for column selection now, so its origin lock type comes first
+                    child.lock = child.lock || 'left';
                     delete child.__normalized;
                 }
             });
