@@ -106,21 +106,21 @@ type Rule = {
     /**
      * 是否进行空白字符校验（true进行校验)
      */
-    whitespace: boolean;
+    whitespace?: boolean;
 
     /**
      * 自定义校验,(校验成功的时候不要忘记执行 callback(),否则会校验不返回)
      */
-    validator: (
+    validator?: (
         rule: Rule,
         value: string | number | object | boolean | Date | null,
         callback: (error?: string) => void
     ) => void;
 
     /**
-     * 触发校验的事件名称
+     * 触发校验的事件名称，默认onChange
      */
-    trigger: 'onChange' | 'onBlur' | string;
+    trigger?: 'onChange' | 'onBlur' | string;
 };
 
 type InitOption<T = string> = {
