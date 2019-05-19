@@ -68,6 +68,7 @@ export default class Step extends Component {
         this.state = {
             parentWidth: 'auto',
             parentHeight: 'auto',
+            currentfocus: 0,
         };
         this.resize = this.resize.bind(this);
     }
@@ -108,6 +109,8 @@ export default class Step extends Component {
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
             const step = ReactDOM.findDOMNode(this.step);
+            // just resize when init
+            if (step.style.height) return;
             const height = Array.prototype.slice
                 .call(step.getElementsByClassName(`${prefix}step-item`))
                 .reduce((ret, re) => {
@@ -133,6 +136,40 @@ export default class Step extends Component {
         }
     }
 
+    // set dir key for aria handle
+    // handleKeyDown = e => {
+    //     const { shape, children } = this.props;
+    //     const { length: max } = children;
+    //     let { currentfocus } = this.state;
+    //     const initPosition = currentfocus;
+    //     switch (e.keyCode) {
+    //         case KEYCODE.RIGHT:
+    //         case KEYCODE.DOWN:
+    //             currentfocus++;
+    //             break;
+    //         case KEYCODE.LEFT:
+    //         case KEYCODE.UP:
+    //             currentfocus--;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     currentfocus =
+    //         currentfocus >= max ? 0 : currentfocus < 0 ? max - 1 : currentfocus;
+    //     this.setState({ currentfocus }, () => {
+    //         const child = this.step.children[currentfocus];
+    //         if (!child) return;
+    //         const focusItem =
+    //             shape === 'arrow'
+    //                 ? child
+    //                 : child.querySelector('.next-step-item-body');
+    //         focusItem && focusItem.focus();
+    //     });
+    //     if (initPosition !== currentfocus) {
+    //         e.preventDefault();
+    //     }
+    // };
+
     _getValidChildren(children) {
         const result = [];
         React.Children.forEach(children, child => {
@@ -149,21 +186,18 @@ export default class Step extends Component {
 
     render() {
         // eslint-disable-next-line
-        let {
-            prefix,
-            locale,
+        const {
             className,
             current,
-            direction,
             labelPlacement,
             shape,
-            children,
             readOnly,
             animation,
             itemRender,
             rtl,
             ...others
         } = this.props;
+        let { prefix, direction, children } = this.props;
         prefix = this.context.prefix || prefix;
         const { parentWidth, parentHeight } = this.state;
 
@@ -195,6 +229,9 @@ export default class Step extends Component {
                 parentHeight,
                 readOnly,
                 animation,
+                tabIndex: 0,
+                // tabIndex: this.state.currentfocus === index ? '0' : '-1',
+                'aria-current': status === 'process' ? 'step' : null,
                 itemRender: child.props.itemRender
                     ? child.props.itemRender
                     : itemRender, // 优先使用Item的itemRender
@@ -221,10 +258,12 @@ export default class Step extends Component {
             others.dir = 'rtl';
         }
 
+        // others.onKeyDown = makeChain(this.handleKeyDown, others.onKeyDown);
+
         return (
-            <div {...others} className={stepCls} ref={this._stepRefHandler}>
+            <ol {...others} className={stepCls} ref={this._stepRefHandler}>
                 {cloneChildren}
-            </div>
+            </ol>
         );
     }
 }

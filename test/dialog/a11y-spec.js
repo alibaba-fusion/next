@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Dialog from '../../src/dialog/index';
 import '../../src/dialog/style.js';
-import { testReact, test, unmount } from '../util/a11y/validate';
+import { test, unmount } from '../util/a11y/validate';
 import { roleType, isHeading, isButton } from '../util/a11y/checks';
 
 /* eslint-disable react/jsx-filename-extension */
@@ -25,10 +25,10 @@ describe('Dialog A11y', () => {
         });
 
         it('should not have any violations', async () => {
-            wrapper = await testReact(
+            wrapper = await mount(
                 <Dialog visible title="Accessible Header" />
             );
-            return wrapper;
+            return test('.next-overlay-wrapper');
         });
 
         it('should have accessible header', () => {

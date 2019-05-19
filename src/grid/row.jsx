@@ -68,7 +68,7 @@ export default class Row extends Component {
          * 指定以何种元素渲染该节点
          * - 默认为 'div'
          */
-        component: PropTypes.string,
+        component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     };
 
     static defaultProps = {

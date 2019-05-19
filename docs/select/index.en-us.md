@@ -142,3 +142,16 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | -------- | ---- | ------- | --- |
 | value | option value | any | - |
 | disabled | disabled | Boolean | - |
+
+
+
+## ARIA and KeyBoard
+
+| 按键          | 说明                              |
+| :---------- | :------------------------------ |
+| Up Arrow    | Get the previous item focus of the current item |
+| Down Arrow  | Get the next item focus of the current item |
+| Enter       | Open the list or select current item    |
+| Esc         | Close the list   |
+ 
+ 

@@ -60,6 +60,7 @@ typings/
 
 # next.js build output
 .next
+next/
 
 # special demo file for locally reappear issue
 docs/**/demo/issues.md

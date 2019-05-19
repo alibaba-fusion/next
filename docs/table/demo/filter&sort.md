@@ -15,7 +15,7 @@ Demo the function of sorting and filtering.
 ---
 
 ````jsx
-import { Table, Button } from '@alifd/next';
+import { Table, Button, Icon } from '@alifd/next';
 
 const dataSource = () => {
         const result = [];
@@ -69,15 +69,6 @@ class App extends React.Component {
             filterMode: 'single'
         });
     }
-    clearSort() {
-        // your code to reset dataSource
-        const newDataSource = this.state.dataSource;
-
-        this.setState({
-            dataSource: newDataSource,
-            sort: {id: ''}
-        });
-    }
     render() {
         const filters = [{
             label: 'Nano 3',
@@ -113,7 +104,6 @@ class App extends React.Component {
         return (
             <div>
                 <p><Button onClick={this.changeMode.bind(this)}>Change filter menu to single select</Button></p>
-                <p><Button onClick={this.clearSort.bind(this)}>clearSort</Button></p>
                 <Table dataSource={this.state.dataSource}
                     onSort={this.onSort.bind(this)}
                     onFilter={this.onFilter.bind(this)}>
@@ -121,6 +111,19 @@ class App extends React.Component {
                     <Table.Column title="Title" dataIndex="title" filters={filters} filterMode={this.state.filterMode}/>
                     <Table.Column title="Time" dataIndex="time"/>
                     <Table.Column cell={render} width={200}/>
+                </Table>
+                <br />
+                Customize sortIcons:
+                <br />
+                <Table dataSource={[]}
+                    onSort={() => {}}
+                    sortIcons={{
+                        desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />,
+                        asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />
+                    }}>
+                    <Table.Column title="Id" dataIndex="id" sortable/>
+                    <Table.Column title="Title" dataIndex="title" filters={filters} filterMode={this.state.filterMode}/>
+                    <Table.Column title="Time" dataIndex="time"/>
                 </Table>
             </div>
         );

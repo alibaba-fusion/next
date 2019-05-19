@@ -8,6 +8,7 @@ import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
 import TimePickerPanel from './panel';
 import { checkDateValue, formatDateValue } from './utils';
+import { onTimeKeydown } from '../date-picker/util';
 
 const { Popup } = Overlay;
 const { noop } = func;
@@ -236,6 +237,42 @@ export default class TimePicker extends Component {
         }
     };
 
+    onKeyown = e => {
+        const { value, inputStr } = this.state;
+        const {
+            format,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+            disabledMinutes,
+            disabledSeconds,
+        } = this.props;
+
+        let unit = 'second';
+
+        if (disabledSeconds) {
+            unit = disabledMinutes ? 'hour' : 'minute';
+        }
+        const timeStr = onTimeKeydown(
+            e,
+            {
+                format,
+                timeInputStr: inputStr,
+                steps: {
+                    hour: hourStep,
+                    minute: minuteStep,
+                    second: secondStep,
+                },
+                value,
+            },
+            unit
+        );
+
+        if (!timeStr) return;
+
+        this.onInputChange(timeStr);
+    };
+
     onTimePanelSelect = value => {
         if (!('value' in this.props)) {
             this.setState({
@@ -309,6 +346,7 @@ export default class TimePicker extends Component {
             onChange: this.onInputChange,
             onBlur: this.onInputBlur,
             onPressEnter: this.onInputBlur,
+            onKeyDown: this.onKeyown,
             hint: 'clock',
         };
 

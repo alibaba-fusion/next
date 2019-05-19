@@ -41,7 +41,7 @@
 | align      | （不支持IE9浏览器）多列垂直方向对齐方式<br><br>**可选值**:<br>'top'(顶部对齐)<br>'center'(居中对齐)<br>'bottom'(底部对齐)<br>'baseline'(按第一行文字基线对齐)<br>'stretch'(未设置高度或设为 auto，将占满整个容器的高度)                | Enum                 | -     |
 | justify    | （不支持IE9浏览器）行内具有多余空间时的布局方式<br><br>**可选值**:<br>'start'(左对齐)<br>'center'(居中对齐)<br>'end'(右对齐)<br>'space-between'(两端对齐，列之间间距相等)<br>'space-around'(每列具有相同的左右间距，行两端间距是列间距的二分之一) | Enum                 | -     |
 | hidden     | 行在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl']\(在 xxs, xs, s, m, l, xl 断点下隐藏）              | Boolean/String/Array | -     |
-| component  | 指定以何种元素渲染该节点<br>- 默认为 'div'                                                                                                                                              | String               | 'div' |
+| component  | 指定以何种元素渲染该节点<br>- 默认为 'div'                                                                                                                                              | String/Function      | 'div' |
 
 ### Grid.Col
 
@@ -60,4 +60,4 @@
 | m           | >=990px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象                                                                                                     | String/Number/Object | -     |
 | l           | >=1200px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象                                                                                                    | String/Number/Object | -     |
 | xl          | >=1500px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象                                                                                                    | String/Number/Object | -     |
-| component   | 指定以何种元素渲染该节点，默认为 'div'                                                                                                                                      | String               | 'div' |
+| component   | 指定以何种元素渲染该节点，默认为 'div'                                                                                                                                      | String/Function      | 'div' |

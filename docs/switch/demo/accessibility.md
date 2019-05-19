@@ -2,14 +2,16 @@
 
 - order: 3
 
-组件已支持无障碍
+组件内部已支持无障碍，设置`aria-label`对组件进行描述。
+
 
 :::lang=en-us
 # Accessibility
 
 - order: 3
 
-Components already support accessibility.
+Components inside has support for accessibility, set `aria-label` on component is described.
+
 :::
 
 ---
@@ -23,7 +25,7 @@ function onChange(checked) {
 }
 
 ReactDOM.render(<div>
-    <Switch checkedChildren="on" onChange={onChange} unCheckedChildren="off" />
+    <Switch checkedChildren="on" onChange={onChange} unCheckedChildren="off" aria-label="accessible switch"/>
 
 </div>,
 mountNode);

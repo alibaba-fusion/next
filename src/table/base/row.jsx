@@ -81,19 +81,22 @@ export default class Row extends React.Component {
         }
     }
 
-    renderCells(record) {
+    renderCells(record, rowIndex) {
         const {
             Cell,
             columns,
             getCellProps,
             cellRef,
             prefix,
-            rowIndex,
             primaryKey,
             pure,
             locale,
             rtl,
         } = this.props;
+
+        // use params first, it's for list
+        rowIndex = rowIndex !== undefined ? rowIndex : this.props.rowIndex;
+
         const { lockType } = this.context;
         return columns.map((child, colIndex) => {
             /* eslint-disable no-unused-vars, prefer-const */

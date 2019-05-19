@@ -2,15 +2,16 @@
 
 - order: 9
 
-请参考`ARIA and KeyBoard`。
+当聚焦在组件上时，通过`aria-labelledby`对组件进行描述。关于键盘操作请参考`ARIA and KeyBoard`。
+ 
 
 :::lang=en-us
-
-Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 8
+
+When the developer presses the Enter key to select an item, the screen reader will reads the selection item, which is described by `aria-labelledby`.
+Please refer to `ARIA and KeyBoard` for keyboard operation.
 
 :::
 ---
@@ -75,14 +76,14 @@ class Demo extends React.Component {
         console.log(value, data, extra);
 
         this.setState({
-            label: extra.selectedPath.map(d => d.label).join(' / ')
+            label: extra.selectedPath.map(d => d.label).join(' / '),       
         });
     }
     render() {
         return (
             <div>
-                <div className="cascader-value">Select: {this.state.label}</div>
-                <CascaderSelect dataSource={this.state.data} onChange={this.handleChange} listStyle={{ width: '200px', height: '256px' }} />
+                <div id="a11y-cascader-select" >CascaderSelect: </div>
+                <CascaderSelect  dataSource={this.state.data} onChange={this.handleChange} listStyle={{ width: '200px', height: '256px' }} aria-labelledby="a11y-cascader-select"/>
             </div>
         );
     }
@@ -90,3 +91,8 @@ class Demo extends React.Component {
 ReactDOM.render(<Demo />, mountNode);
 
 ````
+```css
+.next-menu-item:focus {
+    background-color: #F2F3F7;
+}
+```

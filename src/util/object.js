@@ -221,3 +221,14 @@ export function pickAttrsWith(holdProps, prefix) {
 
     return others;
 }
+
+/**
+ * Checks if value is `null` or `undefined`.
+ * @param {*} value
+ * @return {Boolean}
+ */
+export function isNil(value) {
+    // It will returns `true` only if `null` or `undefined` compare with `null`
+    // with loose equaliy
+    return value == null; // eslint-disable-line eqeqeq
+}

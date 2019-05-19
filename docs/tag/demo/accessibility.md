@@ -2,15 +2,15 @@
 
 - order: 3
 
-请参考`ARIA and KeyBoard`。
+组件已支持无障碍。关于键盘操作请参考`ARIA and KeyBoard`。
+
 
 :::lang=en-us
-
-Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 3
+
+Components already support accessibility.Please refer to `ARIA and KeyBoard` for keyboard operation.
 
 :::
 ---
@@ -39,7 +39,7 @@ class Demo extends React.Component {
     render() {
         return (<div>
             <TagGroup>
-                {dataType.map(item =>   <Tag type="normal" key={item} size="medium"  onClick={() => this.onclick({item})} >{ item }</Tag>) }
+                {dataType.map(item => <Tag type="normal" key={item} size="medium"  onClick={() => this.onclick({item})} >{ item }</Tag>) }
             </TagGroup>
             {this.state.name}
         </div>);

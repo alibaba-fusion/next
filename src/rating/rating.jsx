@@ -356,7 +356,7 @@ export default class Rating extends Component {
                     <input
                         id={`${id}-${prefix}star${i + 1}`}
                         key={`input-${i}`}
-                        className={`${prefix}visually-hidden`}
+                        className={`${prefix}sr-only`}
                         aria-checked={i + 1 === parseInt(hoverValue)}
                         checked={i + 1 === parseInt(hoverValue)}
                         onChange={this.handleChecked.bind(this, i + 1)}
@@ -374,7 +374,7 @@ export default class Rating extends Component {
                 >
                     {iconNode}
                     {enableA11y ? (
-                        <span className={`${prefix}visually-hidden`}>
+                        <span className={`${prefix}sr-only`}>
                             {readAs(i + 1)}
                         </span>
                     ) : null}

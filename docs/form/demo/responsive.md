@@ -30,7 +30,7 @@ ReactDOM.render(<Form {...formItemLayout} >
         <Input />
     </FormItem>
     <FormItem label="password:">
-        <Input htmlType="password" name="pass" placeholder="Please Enter Password"/>
+        <Input htmlType="password" name="resPass" placeholder="Please Enter Password"/>
     </FormItem>
     <FormItem label="Country:">
         <Select placeholder="Please select a country" style={{width: '100%'}}>
@@ -42,7 +42,7 @@ ReactDOM.render(<Form {...formItemLayout} >
         </Select>
     </FormItem>
     <FormItem label="Note:" help="something">
-        <Input.TextArea placeholder="something" name="remark" />
+        <Input.TextArea placeholder="something" name="resReremark" />
     </FormItem>
     <FormItem label=" ">
         <Form.Submit>Submit</Form.Submit>

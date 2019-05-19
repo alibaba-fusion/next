@@ -15,6 +15,8 @@ import {
     formatDateValue,
     getDateTimeFormat,
     extend,
+    onDateKeydown,
+    onTimeKeydown,
 } from './util';
 import PanelFooter from './module/panel-footer';
 
@@ -155,6 +157,14 @@ export default class DatePicker extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        /**
+         * 日期输入框的 aria-label 属性
+         */
+        dateInputAriaLabel: PropTypes.string,
+        /**
+         * 时间输入框的 aria-label 属性
+         */
+        timeInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -172,6 +182,7 @@ export default class DatePicker extends Component {
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
+        defaultVisible: false,
         onChange: func.noop,
         onVisibleChange: func.noop,
         onOk: func.noop,
@@ -332,10 +343,62 @@ export default class DatePicker extends Component {
         }
     };
 
+    onKeyDown = e => {
+        const { format } = this.props;
+        const { dateInputStr, value } = this.state;
+        const dateStr = onDateKeydown(
+            e,
+            { format, dateInputStr, value },
+            'day'
+        );
+        if (!dateStr) return;
+        this.onDateInputChange(dateStr);
+    };
+
+    onTimeKeyDown = e => {
+        const { showTime } = this.props;
+        const { timeInputStr, value } = this.state;
+        const {
+            disabledMinutes,
+            disabledSeconds,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+        } = typeof showTime === 'object' ? showTime : {};
+        let unit = 'second';
+
+        if (disabledSeconds) {
+            unit = disabledMinutes ? 'hour' : 'minute';
+        }
+
+        const timeStr = onTimeKeydown(
+            e,
+            {
+                format: this.timeFormat,
+                timeInputStr,
+                value,
+                steps: {
+                    hour: hourStep,
+                    minute: minuteStep,
+                    second: secondStep,
+                },
+            },
+            unit
+        );
+
+        if (!timeStr) return;
+
+        this.onTimeInputChange(timeStr);
+    };
+
     handleChange = (newValue, prevValue, others = {}) => {
         if (!('value' in this.props)) {
             this.setState({
                 value: newValue,
+                ...others,
+            });
+        } else {
+            this.setState({
                 ...others,
             });
         }
@@ -410,6 +473,8 @@ export default class DatePicker extends Component {
             inputProps,
             dateCellRender,
             monthCellRender,
+            dateInputAriaLabel,
+            timeInputAriaLabel,
             ...others
         } = this.props;
 
@@ -455,6 +520,7 @@ export default class DatePicker extends Component {
             onChange: this.onDateInputChange,
             onBlur: this.onDateInputBlur,
             onPressEnter: this.onDateInputBlur,
+            onKeyDown: this.onKeyDown,
         };
 
         const dateInputValue =
@@ -466,6 +532,7 @@ export default class DatePicker extends Component {
         const dateInput = (
             <Input
                 {...sharedInputProps}
+                aria-label={dateInputAriaLabel}
                 value={dateInputValue}
                 onFocus={this.onFoucsDateInput}
                 placeholder={this.format}
@@ -514,11 +581,13 @@ export default class DatePicker extends Component {
                     placeholder={this.timeFormat}
                     value={timeInputValue}
                     size={size}
+                    aria-label={timeInputAriaLabel}
                     disabled={disabled || !value}
                     onChange={this.onTimeInputChange}
                     onFocus={this.onFoucsTimeInput}
                     onBlur={this.onTimeInputBlur}
                     onPressEnter={this.onTimeInputBlur}
+                    onKeyDown={this.onTimeKeyDown}
                     className={panelTimeInputCls}
                 />
             );
@@ -561,6 +630,9 @@ export default class DatePicker extends Component {
                     label={label}
                     state={state}
                     value={triggerInputValue}
+                    role="combobox"
+                    aria-expanded={visible}
+                    readOnly
                     placeholder={
                         placeholder ||
                         (showTime
@@ -580,6 +652,7 @@ export default class DatePicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    autoFocus
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

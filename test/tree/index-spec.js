@@ -260,7 +260,7 @@ describe('Tree', () => {
                 <TreeNode key="1" label="Component">
                     <TreeNode key="2" label="Form" selectable={false}>
                         <TreeNode key="4" label="Input" />
-                        <TreeNode key="5" label="Select" disabled />
+                        <TreeNode aria-label="select one" key="5" label="Select" disabled />
                     </TreeNode>
                     <TreeNode key="3" label="Display">
                         <TreeNode key="6" label="Table" />

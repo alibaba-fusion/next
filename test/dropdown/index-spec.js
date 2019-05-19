@@ -184,8 +184,8 @@ describe('Dropdown', () => {
                     document.querySelectorAll('.next-menu-item')[0]
             );
 
-            ReactTestUtils.Simulate.keyDown(document.activeElement, {
-                keyCode: KEYCODE.DOWN,
+            ReactTestUtils.Simulate.keyDown(trigger, {
+                keyCode: KEYCODE.SPACE,
             });
 
             setTimeout(() => {
@@ -209,7 +209,6 @@ describe('Dropdown', () => {
         ReactDOM.render(
             <Dropdown
                 autoFocus={false}
-                defaultVisible
                 trigger={<button className="trigger">Hello dropdown</button>}
                 animation={false}
             >
@@ -250,7 +249,7 @@ describe('Dropdown', () => {
         ReactDOM.render(
             <Dropdown
                 autoFocus
-                defaultVisible
+                triggerType="click"
                 trigger={<button className="trigger">Hello dropdown</button>}
                 animation={false}
             >

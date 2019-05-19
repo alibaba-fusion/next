@@ -25,6 +25,6 @@ ReactDOM.render(<div>
     <br /><br />
     <Progress percent={30} shape="line" color="rgb(208,16,76)"/>
     <Progress percent={50} shape="line"/>
-    <Progress percent={90} shape="line" color="blue" textRender={() => <Icon type="select" size="m" />} />
+    <Progress percent={90} shape="line" color="blue" textRender={() => <Icon type="select" size="medium" />} />
 </div>, mountNode);
 ````

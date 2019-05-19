@@ -98,6 +98,10 @@ export default class Tab extends Component {
          * @return {ReactNode} 返回自定义组件
          */
         tabRender: PropTypes.func,
+        /**
+         * 弹层属性透传, 只有当 excessMode 为 dropdown 时生效
+         */
+        popupProps: PropTypes.object,
         children: PropTypes.any,
         className: PropTypes.string,
     };

@@ -192,16 +192,16 @@ function renderWrappedTab(title, locale, props, demoFunction, onFunctionChange) 
     return (<Demo title={title} block demoFunction={demoFunction} onFunctionChange={onFunctionChange}>
         <DemoHead cols={['M', 'S']} />
         <DemoGroup label={locale.normal}>
-            <Tab shape="wrapped" tabPosition={tabPosition} size="medium">{children4}</Tab>
-            <Tab shape="wrapped" tabPosition={tabPosition} size="small">{children4}</Tab>
+            <Tab shape="wrapped" contentStyle={tabPosition === 'left' || tabPosition === 'right' ? { "minHeight": 150 } : null} tabPosition={tabPosition} size="medium">{children4}</Tab>
+            <Tab shape="wrapped" contentStyle={tabPosition === 'left' || tabPosition === 'right' ? { "minHeight": 150 } : null}  tabPosition={tabPosition} size="small">{children4}</Tab>
         </DemoGroup>
         <DemoGroup label={locale.slideExcess}>
-            <Tab shape="wrapped" tabPosition={tabPosition} size="medium">{children12}</Tab>
-            <Tab shape="wrapped" tabPosition={tabPosition} size="small">{children12}</Tab>
+            <Tab shape="wrapped" contentStyle={tabPosition === 'left' || tabPosition === 'right' ? { "minHeight": 150 } : null}  tabPosition={tabPosition} size="medium">{children12}</Tab>
+            <Tab shape="wrapped" contentStyle={tabPosition === 'left' || tabPosition === 'right' ? { "minHeight": 150 } : null}  tabPosition={tabPosition} size="small">{children12}</Tab>
         </DemoGroup>
         <DemoGroup label={locale.dropdownExcess}>
-            <Tab shape="wrapped" tabPosition={tabPosition} size="medium" excessMode="dropdown">{children12}</Tab>
-            <Tab shape="wrapped" tabPosition={tabPosition} size="small" excessMode="dropdown">{children12}</Tab>
+            <Tab shape="wrapped" contentStyle={tabPosition === 'left' || tabPosition === 'right' ? { "minHeight": 150 } : null}  tabPosition={tabPosition} size="medium" excessMode="dropdown">{children12}</Tab>
+            <Tab shape="wrapped" contentStyle={tabPosition === 'left' || tabPosition === 'right' ? { "minHeight": 150 } : null}  tabPosition={tabPosition} size="small" excessMode="dropdown">{children12}</Tab>
         </DemoGroup>
     </Demo>);
 }

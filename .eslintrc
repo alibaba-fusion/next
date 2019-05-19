@@ -3,11 +3,12 @@
         "es6": true,
         "node": true
     },
-    "extends": ["@alifd/eslint-config-next", "prettier"],
+    "extends": ["@alifd/eslint-config-next", "./a11y.eslintrc", "prettier"],
     "rules": {
         "valid-jsdoc": "off",
         "max-statements": "off",
         "max-len": "off",
-        "no-unused-vars": 1
+        "no-unused-vars": 1,
+        "import/prefer-default-export": 0
     }
 }

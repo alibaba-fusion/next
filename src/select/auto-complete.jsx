@@ -88,9 +88,31 @@ class AutoComplete extends Base {
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
             this.dataStore.setOptions({ key: nextProps.value });
+            this.setState({
+                value: nextProps.value,
+            });
         }
 
-        super.componentWillReceiveProps(nextProps);
+        if ('visible' in nextProps) {
+            this.setState({
+                visible: nextProps.visible,
+            });
+        }
+
+        this.dataStore.setOptions({
+            filter: nextProps.filter,
+            filterLocal: nextProps.filterLocal,
+        });
+
+        if (
+            nextProps.children !== this.props.children ||
+            nextProps.dataSource !== this.props.dataSource
+        ) {
+            const dataSource = this.setDataSource(nextProps);
+            this.setState({
+                dataSource,
+            });
+        }
 
         // remote dataSource and focused
         // 因为autoComplete没有下拉数据不展示，搜索并且有数据了需要自动展示下拉
@@ -357,6 +379,9 @@ class AutoComplete extends Base {
                     aria-expanded={this.state.visible}
                     {..._inputProps}
                 />
+                <span className={`${prefix}sr-only`} aria-live="polite">
+                    {this.state.srReader}
+                </span>
             </span>
         );
     }

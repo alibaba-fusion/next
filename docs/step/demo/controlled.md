@@ -30,7 +30,7 @@ class Component extends React.Component {
             currentStep: 3,
             stepType: 'circle',
             stepAnimation: true,
-            labelPlacement: 'vertical'
+            labelPlacement: 'ver'
         };
 
         this.onClick = this.onClick.bind(this);
@@ -77,9 +77,9 @@ class Component extends React.Component {
                         }
                     </Select>
 
-                    <Select placeholder="Label placement" onChange={this.onLabelPlacementChange.bind(this)} className="custom-select" defaultValue="vertical">
+                    <Select placeholder="Label placement" onChange={this.onLabelPlacementChange.bind(this)} className="custom-select" defaultValue="ver">
                         {
-                            ['horizontal', 'vertical'].map(item => <Select.Option value={item} key={item}>{item}</Select.Option>)
+                            ['hoz', 'ver'].map(item => <Select.Option value={item} key={item}>{item}</Select.Option>)
                         }
                     </Select>
 

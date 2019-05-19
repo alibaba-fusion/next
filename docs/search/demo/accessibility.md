@@ -2,15 +2,14 @@
 
 - order: 6
 
-通过`onSearch`事件去处理,请参考`ARIA and KeyBoard`。
+按下Enter键调用`onSearch`事件去处理,请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-This is handled by the `onSearch` event,Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 6
+
+Press the Enter key to call the `onSearch` event handle,Please refer to `ARIA and KeyBoard`.
 
 :::
 ---
@@ -18,27 +17,7 @@ This is handled by the `onSearch` event,Please refer to `ARIA and KeyBoard`.
 ````jsx
 import { Search } from '@alifd/next';
 
-class Demo extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            name:''
-        };
-        this.onsearch = this.onsearch.bind(this);
-        this.onchange = this.onchange.bind(this);
-    }
-    onchange(v) {
-        this.setState({name: v});
-    }
-    onsearch() {
-        console.log(this.state.name);
-    }
-    render() {
-        return (<div>
-            <Search key="3" onChange={this.onchange} placeholder="请输入搜索文字" onSearch={this.onsearch} searchText={<span>search</span>} style={{width: '400px'}}/>
-        </div>);
-    }
-}
-ReactDOM.render(<Demo />, mountNode);
+ReactDOM.render(<div>
+    <Search key="3" placeholder="Please enter the search content" onSearch={v => console.log(v)} searchText={<span>search</span>} style={{width: '400px'}}/>
+</div>, mountNode);
 ````

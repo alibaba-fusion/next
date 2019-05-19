@@ -119,13 +119,14 @@
             cursor: pointer;
 
             button {
+                cursor: pointer;
                 border-width: $slick-dots-border-width;
                 border-color: rgba($slick-dots-border-color-normal, $slick-dots-border-opacity-normal);
                 border-style: solid;
                 outline: none;
                 padding: 0;
-                height: $slick-dots-diameter;
-                width: $slick-dots-diameter;
+                height: $slick-dots-height;
+                width: $slick-dots-width;
                 border-radius: $slick-dots-border-radius;
                 background: rgba($slick-dots-background-color-normal, $slick-dots-background-opacity-normal);
 
@@ -162,7 +163,7 @@
         /* dots 位于右侧垂直位置 */
         &.ver {
             @include slick-dots-position(
-                $slick-dots-diameter + 4 * 2,
+                $slick-dots-width + 4 * 2,
                 $slick-dots-position-right,
                 'ver'
             );

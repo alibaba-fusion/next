@@ -106,3 +106,14 @@ const dataSource = [{
 If you do not pass the key, TreeSelect will use the internally calculated position string as the key. If you want to set an property such as treeDefaultExpandedKeys, pass the custom key. It's a good way that make the key same as the value.
 
 <!-- api-extra-end -->
+
+
+## ARIA and KeyBoard
+
+| KeyBoard          | Descripiton   |
+| :---------- | :------------------------------ |
+| Enter | Open the selection tree or select the current item |
+| Up Arrow |  Get the previous item focus of the current item of same level |
+| Down Arrow  | Get the next item focus of the current item of same level |
+| Right Arrow | Open the next subtree of the current element and focus on the first item|
+| Left Arrow  | Return to the parent node of the current element and close the current subtree|

@@ -53,7 +53,8 @@
     $bgColor,
     $borderColor,
     $corner,
-    $shadow
+    $shadow,
+    $icon
 ) {
     background-color: $bgColor;
     border-color: $borderColor;
@@ -68,6 +69,12 @@
     }
     .#{$css-prefix}message-symbol {
         color: $iconColor;
+    }
+    .#{$css-prefix}message-symbol-icon::before {
+        content: $icon;
+        @if ($icon == $message-loading-icon-content) {
+            animation: loadingCircle 1s infinite linear;
+        }
     }
 
     @if ($shape == 'inline') {

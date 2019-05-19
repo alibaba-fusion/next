@@ -1,6 +1,6 @@
 # 自定义样式
 
-- order: 11
+- order: 12
 
 通过style设置宽度
 
@@ -10,7 +10,7 @@
 
 # Custom Style
 
-- order: 11
+- order: 12
 
 Custom style can be set using  param `style`.
 

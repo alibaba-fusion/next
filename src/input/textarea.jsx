@@ -38,6 +38,10 @@ export default class TextArea extends Base {
     static propTypes = {
         ...Base.propTypes,
         /**
+         * 是否有边框
+         */
+        hasBorder: PropTypes.bool,
+        /**
          * 状态
          * @enumdesc 错误
          */
@@ -54,6 +58,7 @@ export default class TextArea extends Base {
 
     static defaultProps = {
         ...Base.defaultProps,
+        hasBorder: true,
         rows: 4,
         autoHeight: false,
     };
@@ -183,10 +188,19 @@ export default class TextArea extends Base {
     }
 
     render() {
-        const { rows, style, className, autoHeight, prefix, rtl } = this.props;
+        const {
+            rows,
+            style,
+            className,
+            autoHeight,
+            prefix,
+            rtl,
+            hasBorder,
+        } = this.props;
 
         const cls = classNames(this.getClass(), {
             [`${prefix}input-textarea`]: true,
+            [`${prefix}noborder`]: !hasBorder,
             [className]: !!className,
         });
 

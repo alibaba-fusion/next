@@ -34,6 +34,17 @@ $dialog-title-padding-left-right: $s-5 !default;
 /// divider
 /// @namespace size/title
 $dialog-title-border-width: $line-zero !default;
+/// padding (t)
+/// @namespace size/content
+$dialog-message-content-padding-top: $s-5 !default;
+
+/// padding (b)
+/// @namespace size/content
+$dialog-message-content-padding-bottom: $s-5 !default;
+
+/// padding (l, r)
+/// @namespace size/content
+$dialog-message-content-padding-left-right: $s-5 !default;
 /// text
 /// @namespace size/content
 $dialog-content-font-size: $font-size-body-1 !default;

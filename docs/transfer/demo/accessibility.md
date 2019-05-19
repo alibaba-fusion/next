@@ -2,18 +2,16 @@
 
 - order: 6
 
-
 通过设置`locale`去修改对无障碍支持，默认已经设置，请参考`ARIA and KeyBoard`。
 为保证可访问性，需要设置全局唯一的id
-:::lang=en-us
 
+:::lang=en-us
+# Accessibility
+
+- order: 6
 
 By setting the `locale` to modify on accessibility support,The default is set,Please refer to `ARIA and KeyBoard`. 
 Set a unique `id` for accessibility support.
-
-# Addon
-
-- order: 6
 
 :::
 ---

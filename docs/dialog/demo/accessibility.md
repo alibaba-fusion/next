@@ -2,15 +2,14 @@
 
 - order: 7
 
-通过设置`okProps`与`cancelProps`读取，请参考`ARIA and KeyBoard`。
+通过`okProps`与`cancelProps`设置`aria-label`属性，屏幕阅读器读取确定和取消按钮。关于键盘操作请参考`ARIA and KeyBoard`。
 
 :::lang=en-us
-
-Read this by setting `okProps` and `cancelProps`,Please refer to `ARIA and KeyBoard`.
-
-# Addon
+# Accessibility
 
 - order: 7
+
+Set the `aria-label` attribute via `okProps` and `cancelProps`, The screen reader will read the OK and Cancel buttons. Please refer to `ARIA and KeyBoard` for keyboard operation.
 
 :::
 ---

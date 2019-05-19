@@ -2,7 +2,7 @@
 
 - order: 14
 
-通过 popupContent 定制 Select 弹层， 在 popupContent 中控制 Select 菜单项的渲染，也可以通过 valueRender 自定义渲染
+通过 popupContent 定制 Select 弹层， Select 使用 popupContent 中渲染出的 item 的 value 作为菜单项的key，如果没有提供或者自定义渲染 key 请使用 valueRender
 
 :::lang=en-us
 
@@ -78,6 +78,9 @@ class Demo extends React.Component {
 
     render() {
         const popupContent = <Menu onChange={this.handleSelect} onMouseDown={preventDefault}/>;
+        const popupProps = {
+            triggerClickKeycode: [13, 32, 40] // space, enter, down-arrow
+        };
 
         return (
             <div className="demo-container">
@@ -86,6 +89,7 @@ class Demo extends React.Component {
                     visible={this.state.visible}
                     onVisibleChange={this.onVisibleChange}
                     value={this.state.value}
+                    popupProps={popupProps}
                     popupContent={popupContent} />
             </div>
         );

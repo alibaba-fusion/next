@@ -11,9 +11,11 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const FormItem = Form.Item;
 
+/* eslint-disable react/jsx-filename-extension */
+/*global describe it */
 describe('field', () => {
     describe('render', () => {
-        it('should support Form', done => {
+        it('should support Form', function(done) {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -64,7 +66,7 @@ describe('field', () => {
 
             done();
         });
-        it('should support PureComponent', done => {
+        it('should support PureComponent', function(done) {
             class Demo extends React.PureComponent {
                 constructor(props) {
                     super(props);
@@ -95,7 +97,7 @@ describe('field', () => {
             done();
         });
 
-        it('should support origin input/checkbox/radio', done => {
+        it('should support origin input/checkbox/radio', function(done) {
             class Demo extends React.Component {
                 constructor(props) {
                     super(props);
@@ -155,8 +157,8 @@ describe('field', () => {
         });
     });
     describe('init', () => {
-        it('init(input)', done => {
-            let field = new Field();
+        it('init(input)', function(done) {
+            let field = new Field(this);
             let inited = field.init('input');
 
             assert(typeof inited['ref'] === 'function');
@@ -177,8 +179,8 @@ describe('field', () => {
 
             done();
         });
-        it('initValue', done => {
-            let field = new Field();
+        it('initValue', function(done) {
+            let field = new Field(this);
             let inited = field.init('input', { initValue: 2 });
 
             assert(inited.value === 2);
@@ -189,8 +191,8 @@ describe('field', () => {
 
             done();
         });
-        it('valueName', done => {
-            let field = new Field();
+        it('valueName', function(done) {
+            let field = new Field(this);
             let inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
@@ -200,8 +202,8 @@ describe('field', () => {
             done();
         });
 
-        it('props', done => {
-            let field = new Field();
+        it('props', function(done) {
+            let field = new Field(this);
             let inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
@@ -216,9 +218,9 @@ describe('field', () => {
             done();
         });
 
-        it('custom Event: onChange', done => {
+        it('custom Event: onChange', function(done) {
             const onChange = sinon.spy();
-            let field = new Field(null, { onChange });
+            let field = new Field(this, { onChange });
             let inited = field.init('input', {
                 props: {
                     onChange,
@@ -234,7 +236,7 @@ describe('field', () => {
             assert(field.getValue('input') === 'test');
             assert(onChange.callCount === 2);
 
-            let field2 = new Field(null, {
+            let field2 = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test');
                 },
@@ -260,8 +262,8 @@ describe('field', () => {
             done();
         });
 
-        it('getValueFromEvent', done => {
-            let field = new Field(null, {
+        it('getValueFromEvent', function(done) {
+            let field = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
                 },
@@ -286,8 +288,8 @@ describe('field', () => {
             done();
         });
 
-        it('rules', done => {
-            let field = new Field();
+        it('rules', function(done) {
+            let field = new Field(this);
             field.init('input', {
                 rules: [
                     {
@@ -311,8 +313,8 @@ describe('field', () => {
     });
 
     describe('behaviour', () => {
-        it('getValue & getValues & setValue & setValues', done => {
-            let field = new Field();
+        it('getValue & getValues & setValue & setValues', function(done) {
+            let field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 2 });
             field.init('input3.name', { initValue: 3 });
@@ -331,8 +333,8 @@ describe('field', () => {
             done();
         });
 
-        it('setError & setErrors & getError & getErrors', done => {
-            let field = new Field();
+        it('setError & setErrors & getError & getErrors', function(done) {
+            let field = new Field(this);
             field.setError('input', 'error1');
 
             field.init('input');
@@ -356,8 +358,8 @@ describe('field', () => {
 
             done();
         });
-        it('getState', done => {
-            let field = new Field();
+        it('getState', function(done) {
+            let field = new Field(this);
 
             field.init('input');
 
@@ -369,8 +371,8 @@ describe('field', () => {
             done();
         });
 
-        it('validate', done => {
-            let field = new Field();
+        it('validate', function(done) {
+            let field = new Field(this);
             let inited = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
             });
@@ -413,8 +415,8 @@ describe('field', () => {
             done();
         });
 
-        it('reset', done => {
-            let field = new Field();
+        it('reset', function(done) {
+            let field = new Field(this);
             field.init('input', { initValue: '1' });
 
             field.reset();
@@ -428,8 +430,8 @@ describe('field', () => {
 
             done();
         });
-        it('remove', done => {
-            let field = new Field();
+        it('remove', function(done) {
+            let field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 1 });
             field.init('input3', { initValue: 1 });
@@ -444,8 +446,8 @@ describe('field', () => {
 
             done();
         });
-        it('spliceArray', done => {
-            let field = new Field();
+        it('spliceArray', function(done) {
+            let field = new Field(this);
             field.init('input.0', { initValue: 0 });
             field.init('input.1', { initValue: 1 });
             field.init('input.2', { initValue: 2 });

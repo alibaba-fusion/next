@@ -677,10 +677,13 @@ export default class Tree extends Component {
 
             onCheck(newCheckedKeys, {
                 checkedNodes: this.getNodes(checkedKeys),
-                checkedNodesPositions: checkedKeys.map(key => {
-                    const { node, pos } = this._k2n[key];
-                    return { node, pos };
-                }),
+                checkedNodesPositions: checkedKeys
+                    .map(key => {
+                        if (!this._k2n[key]) return null;
+                        const { node, pos } = this._k2n[key];
+                        return { node, pos };
+                    })
+                    .filter(v => !!v),
                 node,
                 indeterminateKeys: this.indeterminateKeys,
                 checked: check,
@@ -749,10 +752,13 @@ export default class Tree extends Component {
 
         onCheck(newCheckedKeys, {
             checkedNodes: this.getNodes(newCheckedKeys),
-            checkedNodesPositions: newCheckedKeys.map(key => {
-                const { node, pos } = this._k2n[key];
-                return { node, pos };
-            }),
+            checkedNodesPositions: newCheckedKeys
+                .map(key => {
+                    if (!this._k2n[key]) return null;
+                    const { node, pos } = this._k2n[key];
+                    return { node, pos };
+                })
+                .filter(v => !!v),
             node,
             indeterminateKeys,
             checked: check,
@@ -798,7 +804,9 @@ export default class Tree extends Component {
     }
 
     getNodes(keys) {
-        return keys.map(key => this._k2n[key].node);
+        return keys
+            .map(key => this._k2n[key] && this._k2n[key].node)
+            .filter(v => !!v);
     }
 
     getIndeterminateKeys(checkedKeys) {
@@ -962,7 +970,14 @@ export default class Tree extends Component {
                 if (children && children.length) {
                     props.children = loop(children, pos);
                 }
-                const node = <TreeNode rtl={rtl} key={key} {...props} />;
+                const node = (
+                    <TreeNode
+                        rtl={rtl}
+                        key={key}
+                        size={data.length}
+                        {...props}
+                    />
+                );
                 this._k2n[key].node = node;
                 return node;
             });
@@ -987,6 +1002,7 @@ export default class Tree extends Component {
 
                 props._key = key;
                 props.rtl = rtl;
+                props.size = Children.count(children);
 
                 const node = cloneElement(child, props);
                 this._k2n[key].node = node;
@@ -1006,6 +1022,7 @@ export default class Tree extends Component {
             showLine,
             isNodeBlock,
             isLabelBlock,
+            multiple,
         } = this.props;
         const others = pickOthers(Object.keys(Tree.propTypes), this.props);
 
@@ -1025,6 +1042,7 @@ export default class Tree extends Component {
         return (
             <ul
                 role="tree"
+                aria-multiselectable={multiple}
                 onBlur={this.handleBlur}
                 className={newClassName}
                 {...others}

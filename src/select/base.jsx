@@ -148,6 +148,7 @@ export default class Base extends React.Component {
             width: 100,
             // current highlight key
             highlightKey: null,
+            srReader: '',
         };
 
         bindCtx(this, [
@@ -172,36 +173,6 @@ export default class Base extends React.Component {
         setTimeout(() => this.syncWidth(), 0);
 
         events.on(window, 'resize', this.handleResize);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this.setState({
-                value: nextProps.value,
-            });
-        }
-
-        if ('visible' in nextProps) {
-            // this.state.visible = nextProps.visible;
-            this.setState({
-                visible: nextProps.visible,
-            });
-        }
-
-        this.dataStore.setOptions({
-            filter: nextProps.filter,
-            filterLocal: nextProps.filterLocal,
-        });
-
-        if (
-            nextProps.children !== this.props.children ||
-            nextProps.dataSource !== this.props.dataSource
-        ) {
-            const dataSource = this.setDataSource(nextProps);
-            this.setState({
-                dataSource,
-            });
-        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -365,7 +336,7 @@ export default class Base extends React.Component {
         const highlightItem = this.dataStore.getEnableDS()[highlightIndex];
         highlightKey = highlightItem ? `${highlightItem.value}` : null;
 
-        this.setState({ highlightKey });
+        this.setState({ highlightKey, srReader: highlightItem.label });
 
         this.scrollMenuIntoView();
 
