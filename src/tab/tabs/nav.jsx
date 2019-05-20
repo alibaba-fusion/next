@@ -604,7 +604,11 @@ class Nav extends React.Component {
         const tabList = this.renderTabList(this.props);
 
         const container = (
-            <div className={containerCls} key="nav-container">
+            <div
+                className={containerCls}
+                onKeyDown={onKeyDown}
+                key="nav-container"
+            >
                 <div
                     className={`${prefix}tabs-nav-wrap`}
                     ref={this.wrapperRefHandler}
@@ -670,7 +674,6 @@ class Nav extends React.Component {
             <div
                 className={navbarCls}
                 style={style}
-                onKeyDown={onKeyDown}
                 ref={this.navbarRefHandler}
             >
                 {navChildren}
