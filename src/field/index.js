@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import { get } from 'lodash';
 import { log, func } from '../util';
 import Validate from '../validate';
 
@@ -29,6 +30,7 @@ class Field {
         this.fieldsMeta = {};
         this.cachedBind = {};
         this.instance = {};
+        this.initValues = options.values || {};
 
         this.options = Object.assign(
             {
@@ -62,10 +64,6 @@ class Field {
         ].forEach(m => {
             this[m] = this[m].bind(this);
         });
-
-        if (options.values) {
-            this.setValues(options.values, false);
-        }
     }
 
     setOptions(options) {
@@ -94,10 +92,14 @@ class Field {
         )}`;
 
         const field = this._getInitMeta(name);
-        const defaultValue =
-            typeof initValue !== 'undefined'
-                ? initValue
-                : originalProps[defaultValueName];
+        let defaultValue;
+        if (typeof initValue !== 'undefined') {
+            defaultValue = initValue;
+        } else if (originalProps[defaultValueName]) {
+            defaultValue = originalProps[defaultValueName];
+        } else {
+            defaultValue = get(this.initValues, name);
+        }
 
         Object.assign(field, {
             valueName,
