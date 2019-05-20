@@ -22,6 +22,7 @@ const popupAlert = () => {
     Dialog.alert({
         title: 'Alert',
         content: 'alert content alert content...',
+        okProps: {children: 'Custom OK' },
         onOk: () => console.log('ok')
     });
 };
