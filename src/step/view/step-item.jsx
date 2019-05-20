@@ -178,6 +178,7 @@ class StepItem extends Component {
             status,
             icon,
             shape,
+            title,
             percent,
             itemRender,
         } = this.props;
@@ -204,7 +205,11 @@ class StepItem extends Component {
             nodeElement = null; // 如果是需要自定义节点，则不处理，返回空
         } else {
             nodeElement = (
-                <div className={`${prefix}step-item-node-circle`}>
+                <div
+                    className={`${prefix}step-item-node-circle`}
+                    role="button"
+                    aria-label={title}
+                >
                     {icon ? (
                         <Icon type={icon} />
                     ) : (
@@ -283,6 +288,7 @@ class StepItem extends Component {
                     <div
                         className={`${prefix}step-item-title`}
                         ref={this._refHandlerCreator('title')}
+                        aria-hidden="true"
                     >
                         {title}
                     </div>

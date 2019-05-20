@@ -39,7 +39,7 @@ describe('Step', () => {
                     .find('.next-step-item-title')
                     .at(0)
                     .html() ===
-                    '<div class="next-step-item-title"><span>测试</span></div>'
+                    '<div class="next-step-item-title" aria-hidden="true"><span>测试</span></div>'
             );
         });
 
