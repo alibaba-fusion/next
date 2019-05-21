@@ -225,7 +225,6 @@
     @if ($type == 'ver') {
         @if ($shape == 'circle') {
             #{$step-prefix}-item-tail {
-                width: $step-circle-item-tail-size;
                 width: $step-circle-vertical-item-tail-size;
                 height: 0;
                 margin: $step-circle-item-node-padding auto;
