@@ -37,10 +37,7 @@ class Demo extends React.Component {
 
 
     render() {
-        const { visible, footerActions, footerAlign, loading } = this.state;
-        const okProps = {
-            loading
-        };
+        const { visible } = this.state;
 
         return (
             <div>
