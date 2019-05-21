@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -8,10 +9,11 @@ import Field from '../../src/field/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+/* global describe it */
 describe('rules', () => {
     it('required', function(done) {
-        let field = new Field(this);
-        let inited = field.init('input', {
+        const field = new Field(this);
+        const inited = field.init('input', {
             rules: [
                 {
                     required: true,
@@ -32,7 +34,7 @@ describe('rules', () => {
         // validator can't callback when option.rules is an empty Array
         mount(<Input {...field.init('input', { rules: [] })} />);
 
-        let callback = sinon.spy();
+        const callback = sinon.spy();
         field.validate(callback);
 
         assert(callback.calledOnce === true);
@@ -40,8 +42,8 @@ describe('rules', () => {
         done();
     });
     it('triger', function(done) {
-        let field = new Field(this);
-        let inited = field.init('input', {
+        const field = new Field(this);
+        const inited = field.init('input', {
             rules: [
                 {
                     required: true,
@@ -56,7 +58,7 @@ describe('rules', () => {
 
         assert(field.getError('input')[0] === 'cant be null');
 
-        let inited2 = field.init('input2', {
+        const inited2 = field.init('input2', {
             rules: [
                 {
                     required: true,
@@ -74,8 +76,8 @@ describe('rules', () => {
         done();
     });
     it('validator', function(done) {
-        let field = new Field(this);
-        let inited = field.init('input', {
+        const field = new Field(this);
+        const inited = field.init('input', {
             rules: [
                 {
                     validator: (rule, value, callback) => {
