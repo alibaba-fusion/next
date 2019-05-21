@@ -10,6 +10,7 @@ export default class Sort extends React.Component {
         rtl: PropTypes.bool,
         className: PropTypes.string,
         sort: PropTypes.object,
+        sortIcons: PropTypes.object,
         onSort: PropTypes.func,
         dataIndex: PropTypes.string,
         locale: PropTypes.object,
@@ -19,7 +20,7 @@ export default class Sort extends React.Component {
     };
     // 渲染排序
     renderSort() {
-        const { prefix, sort, dataIndex, locale, rtl } = this.props,
+        const { prefix, sort, sortIcons, dataIndex, locale, rtl } = this.props,
             sortStatus = sort[dataIndex],
             map = {
                 desc: 'descending',
@@ -33,7 +34,11 @@ export default class Sort extends React.Component {
                     key={sortOrder}
                     className={sortStatus === sortOrder ? 'current' : ''}
                 >
-                    <Icon rtl={rtl} type={map[sortOrder]} size="small" />
+                    {sortIcons ? (
+                        sortIcons[sortOrder]
+                    ) : (
+                        <Icon rtl={rtl} type={map[sortOrder]} size="small" />
+                    )}
                 </a>
             );
         });

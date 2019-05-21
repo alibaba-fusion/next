@@ -199,6 +199,21 @@ describe('inner', () => {
         );
     });
 
+    it('should support custom footer button text', () => {
+        wrapper = render(<Dialog visible okProps={{className: 'custom-ok', children: 'my ok'}} cancelProps={{className: 'custom-cancel', children: 'my cancel'}} />);
+        assert(
+            document
+                .querySelector('.custom-ok')
+                .textContent.trim() === 'my ok'
+        );
+
+        assert(
+            document
+                .querySelector('.custom-cancel')
+                .textContent.trim() === 'my cancel'
+        );
+    });
+
     it("should use css to position dialog if set isFullScreen to true and align to 'cc cc'", () => {
         wrapper = render(<Dialog visible isFullScreen />);
         assert(document.querySelector('.next-dialog-container'));

@@ -103,11 +103,16 @@ export default {
         card: {
             cancel: 'Cancel',
             addPhoto: 'Add Picture',
+            download: 'Download',
+            delete: 'Delete',
         },
         drag: {
             text: 'Click or Drag the file to this area to upload',
             hint:
                 'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload',
+        },
+        upload: {
+            delete: 'Delete',
         },
     },
     Search: {

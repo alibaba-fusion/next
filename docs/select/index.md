@@ -150,3 +150,12 @@ const dataSource = [
 | -------- | ---- | ------- | --- |
 | value    | 选项值  | any     | -   |
 | disabled | 是否禁用 | Boolean | -   |
+
+## ARIA and KeyBoard
+
+| 按键         | 说明         |
+| :--------- | :--------- |
+| Up Arrow   | 获取当前项前一项焦点 |
+| Down Arrow | 获取当前项后一项焦点 |
+| Enter      | 打开列表或选择当前项 |
+| Esc        | 关闭列表       |

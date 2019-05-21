@@ -155,4 +155,48 @@ describe('src/object.js', function() {
             assert('data-cool' in res);
         });
     });
+
+    describe('#isNil', function () {
+        it(
+            'should returns `true` if passing `null` or `undefined`',
+            function () {
+                const values = [null, undefined];
+                values.forEach(function (value) {
+                    assert(object.isNil(value) === true);
+                });
+            }
+        );
+
+        it(
+            'should returns `false` if passing a falsy value ' +
+            'except `null` or `undefined`',
+            function () {
+                const values = ['', 0, false, NaN];
+                values.forEach(function (value) {
+                    assert(object.isNil(value) === false);
+                });
+            }
+        );
+
+        it(
+            'should returns `false` if passing a truthy value',
+            function () {
+                const values = [
+                    'string',
+                    '0',
+                    'false',
+                    1,
+                    -1,
+                    Infinity,
+                    [],
+                    {},
+                    function(){},
+                    /.*/
+                ];
+                values.forEach(function (value) {
+                    assert(object.isNil(value) === false);
+                });
+            }
+        );
+    });
 });

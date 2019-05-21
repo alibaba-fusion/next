@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.14.3",
+  "version": "1.14.4",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -16,6 +16,7 @@
     "dist",
     "es",
     "lib",
+    "types",
     "index-noreset.scss",
     "index-with-locales.js",
     "index.js",
@@ -26,7 +27,7 @@
   ],
   "main": "index.js",
   "module": "es/index.js",
-  "typings": "lib/index.d.ts",
+  "typings": "types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/alibaba-fusion/next.git"

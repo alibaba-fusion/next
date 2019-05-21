@@ -22,31 +22,57 @@ class Demo extends React.Component {
         visible: false
     };
 
-    onOpen = () => {
+    onOpenFullyCustomized = () => {
         this.setState({
-            visible: true
+            fullyCustomizedVisible: true
         });
     };
 
-    onClose = () => {
+    onCloseFullyCustomized = () => {
         this.setState({
-            visible: false
+            fullyCustomizedVisible: false
+        });
+    };
+
+    onOpenTextCustomized = () => {
+        this.setState({
+            textCustomizedVisible: true
+        });
+    };
+
+    onCloseTextCustomized = () => {
+        this.setState({
+            textCustomizedVisible: false
         });
     };
 
     render() {
         return (
             <div>
-                <Button onClick={this.onOpen} type="primary">
-                    Open dialog
+                <Button onClick={this.onOpenFullyCustomized} type="primary">
+                    Fully Customized Footer
+                </Button> &nbsp;
+                <Dialog
+                    title="Welcome to Alibaba.com"
+                    footer={<Button warning type="primary" onClick={this.onCloseFullyCustomized}>Customize footer</Button>}
+                    visible={this.state.fullyCustomizedVisible}
+                    onOk={this.onCloseFullyCustomized}
+                    onCancel={this.onCloseFullyCustomized}
+                    onClose={this.onCloseFullyCustomized}>
+                    Start your business here by searching a popular product
+                </Dialog>
+                <Button onClick={this.onOpenTextCustomized} type="primary">
+                    Text Only Customize
                 </Button>
                 <Dialog
                     title="Welcome to Alibaba.com"
-                    footer={<Button warning type="primary" onClick={this.onClose}>Customize footer</Button>}
-                    visible={this.state.visible}
-                    onOk={this.onClose}
-                    onCancel={this.onClose}
-                    onClose={this.onClose}>
+                    visible={this.state.textCustomizedVisible}
+                    onOk={this.onCloseTextCustomized}
+                    onCancel={this.onCloseTextCustomized}
+                    onClose={this.onCloseTextCustomized}
+                    okProps={{children: 'Custom OK', className: 'asdf'}}
+                    cancelProps={{children: 'Custom Cancel'}}
+                    >
                     Start your business here by searching a popular product
                 </Dialog>
             </div>

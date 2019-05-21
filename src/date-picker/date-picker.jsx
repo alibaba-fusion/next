@@ -183,6 +183,7 @@ export default class DatePicker extends Component {
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
+        defaultVisible: false,
         onChange: func.noop,
         onVisibleChange: func.noop,
         onOk: func.noop,

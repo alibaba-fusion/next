@@ -168,7 +168,7 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const { extraRender, progressProps, rtl } = this.props;
+        const { locale, extraRender, progressProps, rtl } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
         const onClick = () =>
@@ -224,6 +224,7 @@ class List extends Component {
                         type="close"
                         size="large"
                         role="button"
+                        aria-label={locale.upload.delete}
                         tabIndex="0"
                         onClick={onClick}
                         onKeyDown={onKeyDown}
@@ -407,6 +408,7 @@ class List extends Component {
                             >
                                 <Icon
                                     type={downloadURL ? 'download' : ''}
+                                    aria-label={locale.card.download}
                                     className={`${prefixCls}-tool-download-icon`}
                                 />
                             </a>
@@ -415,6 +417,7 @@ class List extends Component {
                                 <span className={`${prefixCls}-tool-close`}>
                                     <Icon
                                         type="ashbin"
+                                        aria-label={locale.card.delete}
                                         tabIndex="0"
                                         role="button"
                                         onClick={onClose}

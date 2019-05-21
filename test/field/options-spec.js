@@ -7,8 +7,9 @@ import Field from '../../src/field/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+/*global describe it */
 describe('options', () => {
-    it('should support autoUnmount', done => {
+    it('should support autoUnmount', function(done) {
         class Demo extends React.Component {
             state = {
                 show: true,
@@ -41,7 +42,7 @@ describe('options', () => {
         wrapper.find('button').simulate('click');
     });
 
-    it('should support autoUnmount with same name', done => {
+    it('should support autoUnmount with same name', function(done) {
         class Demo extends React.Component {
             state = {
                 show: true,
@@ -77,7 +78,7 @@ describe('options', () => {
         done();
     });
 
-    it('should support autoUnmount=false', done => {
+    it('should support autoUnmount=false', function(done) {
         class Demo extends React.Component {
             state = {
                 show: true,
@@ -96,7 +97,7 @@ describe('options', () => {
                         ) : null}
                         <button
                             onClick={() => {
-                                console.log(this.field);
+                                // console.log(this.field);
                                 assert(
                                     this.field.getValue('input2') === 'test2'
                                 );
@@ -115,7 +116,7 @@ describe('options', () => {
         done();
     });
 
-    it('scrollToFirstError', done => {
+    it('scrollToFirstError', function(done) {
         class Demo extends React.Component {
             constructor(props) {
                 super(props);
@@ -154,7 +155,7 @@ describe('options', () => {
         done();
     });
 
-    it('values', done => {
+    it('values', function(done) {
         class Demo extends React.Component {
             constructor(props) {
                 super(props);
@@ -188,8 +189,8 @@ describe('options', () => {
     });
 
     describe('should support parseName', () => {
-        it('getValues', done => {
-            const field = new Field(null, { parseName: true });
+        it('getValues', function(done) {
+            const field = new Field(this, { parseName: true });
             field.init('user.name', { initValue: 'frankqian' });
             field.init('user.pwd', { initValue: 12345 });
             field.init('option[0]', { initValue: 'option1' });
@@ -206,8 +207,8 @@ describe('options', () => {
 
             done();
         });
-        it('setValues', done => {
-            const field = new Field(null, { parseName: true });
+        it('setValues', function(done) {
+            const field = new Field(this, { parseName: true });
             field.init('user.name', { initValue: 'frankqian' });
             field.init('user.pwd', { initValue: 12345 });
             field.init('option[0]', { initValue: 'option1' });
@@ -233,8 +234,8 @@ describe('options', () => {
     });
 
     describe('should support autoValidate=false', () => {
-        it('options.autoValidate=true', done => {
-            const field = new Field(null, { autoValidate: true });
+        it('options.autoValidate=true', function(done) {
+            const field = new Field(this, { autoValidate: true });
             const inited = field.init('input', { rules: [{ minLength: 10 }] });
 
             const wrapper = mount(<Input {...inited} />);
@@ -248,8 +249,8 @@ describe('options', () => {
 
             done();
         });
-        it('options.autoValidate=false', done => {
-            const field = new Field(null, { autoValidate: false });
+        it('options.autoValidate=false', function(done) {
+            const field = new Field(this, { autoValidate: false });
             const inited = field.init('input', { rules: [{ minLength: 10 }] });
 
             const wrapper = mount(<Input {...inited} />);
@@ -266,8 +267,8 @@ describe('options', () => {
 
             done();
         });
-        it('props.autoValidate=false', done => {
-            const field = new Field(null);
+        it('props.autoValidate=false', function(done) {
+            const field = new Field(this);
             const inited = field.init('input', {
                 autoValidate: false,
                 rules: [{ minLength: 10 }],

@@ -67,6 +67,7 @@ class Switch extends React.Component {
         prefix: 'next-',
         disabled: false,
         size: 'medium',
+        defaultChecked: false,
         onChange: () => {},
     };
 

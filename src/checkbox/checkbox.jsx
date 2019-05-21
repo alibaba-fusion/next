@@ -249,7 +249,7 @@ class Checkbox extends UIState {
                     {childInput}
                 </span>
                 {[label, children].map((item, i) =>
-                    item ? (
+                    [undefined, null].indexOf(item) === -1 ? (
                         <span key={i} className={labelCls}>
                             {item}
                         </span>

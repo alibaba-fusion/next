@@ -31,13 +31,12 @@ ReactDOM.render(<div>
             </FormItem>
         </FormItem>
         <FormItem label="Password:" required hasFeedback={false}>
-            <Input htmlType="password" name="pass" placeholder="Please enter your password!"/>
+            <Input htmlType="password" name="inlinePass" placeholder="Please enter your password!"/>
         </FormItem>
 
         <FormItem label=" ">
             <Form.Submit onClick={handleSubmit}>Submit</Form.Submit>
         </FormItem>
     </Form>
-
 </div>, mountNode);
 ````

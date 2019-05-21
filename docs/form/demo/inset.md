@@ -30,10 +30,10 @@ ReactDOM.render(<div>
 
     <Form {...formItemLayout} labelAlign="inset" style={{maxWidth: '500px'}}>
         <FormItem label="User Name:">
-            <Input placeholder="Please enter your name" id="userName" name="userName"/>
+            <Input placeholder="Please enter your name" id="insetUserName" name="insetUserName"/>
         </FormItem>
         <FormItem label="Password:" validateState="error">
-            <Input htmlType="password" placeholder="Please enter your password" id="password" name="password"/>
+            <Input htmlType="password" placeholder="Please enter your password" id="insetPassword" name="insetPassword"/>
         </FormItem>
 
         <FormItem label="Size：">
@@ -49,10 +49,10 @@ ReactDOM.render(<div>
 
     <Form labelAlign="inset" inline>
         <FormItem label="User Name:">
-            <Input placeholder="Enter your name" id="userName2" name="userName2"/>
+            <Input placeholder="Enter your name" id="insetUserName2" name="insetUserName2"/>
         </FormItem>
         <FormItem label="Password:" validateState="error" help="Password is required!">
-            <Input htmlType="password" placeholder="Enter your password" id="password2" name="password2"/>
+            <Input htmlType="password" placeholder="Enter your password" id="insetPassword2" name="insetPassword2"/>
         </FormItem>
 
         <FormItem label="Size:">

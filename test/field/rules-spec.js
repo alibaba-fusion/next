@@ -9,8 +9,8 @@ import Field from '../../src/field/index';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('rules', () => {
-    it('required', done => {
-        let field = new Field();
+    it('required', function(done) {
+        let field = new Field(this);
         let inited = field.init('input', {
             rules: [
                 {
@@ -39,8 +39,8 @@ describe('rules', () => {
 
         done();
     });
-    it('triger', done => {
-        let field = new Field();
+    it('triger', function(done) {
+        let field = new Field(this);
         let inited = field.init('input', {
             rules: [
                 {
@@ -73,8 +73,8 @@ describe('rules', () => {
 
         done();
     });
-    it('validator', done => {
-        let field = new Field();
+    it('validator', function(done) {
+        let field = new Field(this);
         let inited = field.init('input', {
             rules: [
                 {

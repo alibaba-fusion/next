@@ -6,6 +6,7 @@ import Promise from 'promise-polyfill';
 import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Loading from '../../src/loading';
+import Icon from '../../src/icon';
 import Checkbox from '../../src/checkbox';
 import Table from '../../src/table/index';
 
@@ -203,6 +204,35 @@ describe('Table', () => {
                 const sortNode = wrapper.find(
                     '.next-table-header .next-table-sort'
                 );
+                sortNode.simulate('click');
+                done();
+            }
+        );
+    });
+    it('should support sortIcons', done => {
+        const onSort = (dataIndex, order) => {
+            assert(dataIndex === 'id');
+            assert(order === 'desc');
+        };
+
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
+                onSort,
+                sortIcons: {
+                    desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />,
+                    asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />
+                }
+            },
+            () => {
+                const sortNode = wrapper.find(
+                    '.next-table-header .next-table-sort'
+                );
+                assert(sortNode.find('.next-icon-arrow-down'));
+                assert(sortNode.find('.next-icon-arrow-up'));
                 sortNode.simulate('click');
                 done();
             }

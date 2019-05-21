@@ -480,7 +480,7 @@ class Field {
                 // update error in every Field
                 Object.keys(errorsGroup).forEach(i => {
                     const field = this._get(i);
-                    field.errors = errorsGroup[i].errors;
+                    field.errors = getErrorStrs(errorsGroup[i].errors);
                     field.state = 'error';
                 });
             }
