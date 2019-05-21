@@ -103,6 +103,17 @@
             }
         }
     }
+    @if ($shape == 'dot') {
+        #{$step-prefix}-item-node {
+            &-circle {
+                border-radius: $step-dot-item-dot-corner;
+                border: $step-dot-item-dot-border-width solid;
+            }
+        }
+        #{$step-prefix}-item-content {
+            font-size: $step-dot-item-content-font-size;
+        }
+    }
     #{$step-prefix}-item-node-dot {
         position: absolute;
         top: 50%;
@@ -221,6 +232,7 @@
         @if ($shape == 'circle') {
             #{$step-prefix}-item-tail {
                 width: $step-circle-item-tail-size;
+                width: $step-circle-vertical-item-tail-size;
                 height: 0;
                 margin: $step-circle-item-node-padding auto;
                 #{$step-prefix}-item-tail-underlay {
@@ -265,7 +277,7 @@
 
         @if ($shape == 'dot') {
             #{$step-prefix}-item-tail {
-                width: $step-dot-item-tail-size;
+                width: $step-dot-vertical-item-tail-size;
                 height: 0;
                 margin: $step-dot-item-dot-padding auto;
                 #{$step-prefix}-item-tail-underlay {
