@@ -5,6 +5,8 @@
     $direction,
     $itemSplit,
     $itemPaddingLeftRight,
+    $itemBorderWidth,
+    $itemCorner,
     $ellipsisSize,
     $totalFontSize,
     $currentFontSize,
@@ -22,7 +24,8 @@
     }
     #{$pagination-prefix}-item {
         padding: 0 $itemPaddingLeftRight;
-
+        border-width: $itemBorderWidth;
+        border-radius: $itemCorner;
         & + #{$pagination-prefix}-item {
 
             @if $direction == 'rtl' {
