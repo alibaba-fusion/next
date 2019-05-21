@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom';
-import { get } from 'lodash';
 import { log, func } from '../util';
 import Validate from '../validate';
 
@@ -98,7 +97,7 @@ class Field {
         } else if (originalProps[defaultValueName]) {
             defaultValue = originalProps[defaultValueName];
         } else {
-            defaultValue = get(this.initValues, name);
+            defaultValue = getIn(this.initValues, name);
         }
 
         Object.assign(field, {
