@@ -38,6 +38,7 @@ search data in forms or pages.
 | filterProps        | filter props                                                                                                                  | Object        | -         |
 | buttonProps        | props for Button                                                                                                                    | Object        | {}        |
 | popupContent       | custom popup menu                                                                                                                 | ReactNode     | -         |
+| followTrigger      | follow Trigger or not                | Boolean         | -                                         |
 | visible            | popupContent is displayed                                                                                                                 | Boolean       | -         |
 | hasClear           | show clear text button                                                                                                                   | Boolean       | false     |
 | hasIcon           | show find button                                                                                                                   | Boolean       | true     |

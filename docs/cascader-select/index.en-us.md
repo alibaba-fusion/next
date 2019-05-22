@@ -55,6 +55,7 @@ CascaderSelect consists of Select and Cascader. Cascader are hidden in a pop up 
 | popupClassName       | className of dropdown                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | String                  | -                            |
 | popupContainer       | container of dropdown                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | String/Function         | -                            |
 | popupProps           | properties of Popup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Object                  | {}                           |
+| followTrigger        | follow Trigger or not                                                                                                                                                      | Boolean         | -                                         |
 
 <!-- api-extra-start -->
 
@@ -87,7 +88,7 @@ const dataSource = [{
 The custom attribute of item in the array is also transparently passed to the data parameter of the onChange function.
 
 <!-- api-extra-end -->
- 
+
 
 ## ARIA and KeyBoard
 
@@ -100,8 +101,8 @@ The custom attribute of item in the array is also transparently passed to the da
 | Enter       | Open the directory or select current item              |
 | Esc         | Close the directory     |
 | SPACE       | Select current item              |
- 
- 
+
+
 
 
 

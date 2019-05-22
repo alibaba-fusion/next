@@ -49,6 +49,7 @@
 | popupStyle           | custom style of popup                                                                                                                                                   | Object          | {}                                       |
 | popupClassName       | custom className of popup                                                                                                                                               | String          | ''                                       |
 | popupProps           | props of popup                                                                                                                                                       | Object          | {}                                       |
+| followTrigger        | follow Trigger or not                                                                                                                                                      | Boolean         | -                                         |
 | id                   | id of popup. only when you set value, balloon will support accessibility                                                                                                                                                      | String          | -                                        |
 
 ### Balloon.Tooltip

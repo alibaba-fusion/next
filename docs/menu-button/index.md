@@ -28,6 +28,7 @@
 | popupStyle          | 弹层自定义样式                                               | Object    | -         |
 | popupClassName      | 弹层自定义样式类                                              | String    | -         |
 | popupProps          | 弹层属性透传                                                | Object    | -         |
+| followTrigger       | 是否跟随滚动                                                | Boolean   | -         |
 | defaultSelectedKeys | 默认激活的菜单项（用法同 Menu 非受控）                                | Array     | \[]       |
 | selectedKeys        | 激活的菜单项（用法同 Menu 受控）                                   | Array     | -         |
 | selectMode          | 菜单的选择模式，同 Menu                                        | String    | -         |

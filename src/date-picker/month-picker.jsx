@@ -117,6 +117,10 @@ class MonthPicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
@@ -318,6 +322,7 @@ class MonthPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             inputProps,
             monthCellRender,
@@ -413,6 +418,7 @@ class MonthPicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     role="combobox"
                     aria-expanded={visible}

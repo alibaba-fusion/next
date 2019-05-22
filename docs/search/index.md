@@ -39,6 +39,7 @@
 | filterProps        | 选择器的props                                                                                                                  | Object        | -         |
 | buttonProps        | 按钮的额外属性                                                                                                                    | Object        | {}        |
 | popupContent       | 自定义渲染的的下拉框                                                                                                                 | ReactNode     | -         |
+| followTrigger      | 是否跟随滚动                                                                                                                     | Boolean       | -         |
 | visible            | 自定义渲染的的下拉框                                                                                                                 | Boolean       | -         |
 | hasClear           | 是否显示清除按钮                                                                                                                   | Boolean       | false     |
 | hasIcon            | 是否显示搜索按钮                                                                                                                   | Boolean       | true      |

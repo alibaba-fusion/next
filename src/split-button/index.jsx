@@ -101,6 +101,10 @@ class SplitButton extends React.Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 透传给 Menu 的属性
          */
         menuProps: PropTypes.object,
@@ -216,6 +220,7 @@ class SplitButton extends React.Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             selectMode,
             menuProps,
             leftButtonProps,
@@ -269,6 +274,7 @@ class SplitButton extends React.Component {
                 </Button>
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
                     trigger={trigger}

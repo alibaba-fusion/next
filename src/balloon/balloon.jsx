@@ -155,6 +155,10 @@ export default class Balloon extends React.Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 弹层id, 传入值才会支持无障碍
          */
         id: PropTypes.string,
@@ -290,6 +294,7 @@ export default class Balloon extends React.Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             rtl,
             ...others
         } = this.props;
@@ -352,6 +357,7 @@ export default class Balloon extends React.Component {
         return (
             <Popup
                 {...popupProps}
+                followTrigger={followTrigger}
                 trigger={newTrigger}
                 cache={cache}
                 safeId={safeId}
