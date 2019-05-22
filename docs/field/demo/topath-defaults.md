@@ -39,7 +39,7 @@ class Demo extends React.Component {
       }
     } = this;
     
-    validate(['bbb.ccc'])
+    validate(['bbb.ccc']);
   };
   
   render() {
@@ -50,9 +50,9 @@ class Demo extends React.Component {
       }
     } = this;
 
-    console.log(this)
+    console.log(this);
     
-    return <Form field={field}>
+    return (<Form field={field}>
       <Button onClick={this._handleValidate}>validate</Button>
       <Form.Item label="aaa" key="aaa">
         <Input name="aaa.0"/>
@@ -60,7 +60,7 @@ class Demo extends React.Component {
       <Form.Item label="ccc" key="ccc">
         <Input name="bbb.ccc"/>
       </Form.Item>
-    </Form>;
+    </Form>);
   }
 }
 
