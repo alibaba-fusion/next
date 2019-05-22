@@ -40,6 +40,9 @@ $nav-hoz-item-corner: $corner-zero !default;
 /// active line width
 /// @namespace size/item
 $nav-hoz-item-selected-active-line: $line-2 !default;
+/// hover line width
+/// @namespace size/item
+$nav-hoz-item-hover-active-line: $line-zero !default;
 
 // Size:Ver
 // ----------------------------------------
@@ -64,6 +67,9 @@ $nav-ver-item-corner: $corner-zero !default;
 /// active line width
 /// @namespace size/item
 $nav-ver-item-selected-active-line: $line-2 !default;
+/// hover line width
+/// @namespace size/item
+$nav-ver-item-hover-active-line: $line-zero !default;
 /// height
 /// @namespace size/sub nav
 $nav-ver-sub-nav-height: $s-10 !default;
@@ -132,6 +138,12 @@ $nav-primary-item-hover-bg-color: $color-black !default;
 /// text
 /// @namespace statement/hover
 $nav-primary-item-hover-text-color: $color-white !default;
+/// text style
+/// @namespace statement/hover
+$nav-primary-item-hover-text-style: $font-weight-2 !default;
+/// hover line color
+/// @namespace statement/hover
+$nav-primary-item-hover-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover/sub nav
 $nav-primary-sub-nav-hover-bg-color: $color-black !default;
@@ -207,6 +219,12 @@ $nav-secondary-item-hover-bg-color: $color-brand1-9 !default;
 /// text
 /// @namespace statement/hover
 $nav-secondary-item-hover-text-color: $color-white !default;
+/// text style
+/// @namespace statement/hover
+$nav-secondary-item-hover-text-style: $font-weight-2 !default;
+/// hover line color
+/// @namespace statement/hover
+$nav-secondary-item-hover-active-color: $color-brand1-9 !default;
 /// background
 /// @namespace statement/hover/sub nav
 $nav-secondary-sub-nav-hover-bg-color: $color-brand1-9 !default;
@@ -285,6 +303,12 @@ $nav-normal-item-hover-bg-color: $color-white !default;
 /// text
 /// @namespace statement/hover
 $nav-normal-item-hover-text-color: $color-brand1-6 !default;
+/// text style
+/// @namespace statement/hover
+$nav-normal-item-hover-text-style: $font-weight-2 !default;
+/// hover line color
+/// @namespace statement/hover
+$nav-normal-item-hover-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover/sub nav
 $nav-normal-sub-nav-hover-bg-color: $color-fill1-2 !default;
@@ -354,6 +378,12 @@ $nav-line-item-hover-bg-color: $color-transparent !default;
 /// text
 /// @namespace statement/hover
 $nav-line-item-hover-text-color: $color-brand1-6 !default;
+/// text style
+/// @namespace statement/hover
+$nav-line-item-hover-text-style: $font-weight-2 !default;
+/// hover line color
+/// @namespace statement/hover
+$nav-line-item-hover-active-color: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover/sub nav
 $nav-line-sub-nav-hover-bg-color: $color-transparent !default;
