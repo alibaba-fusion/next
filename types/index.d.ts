@@ -47,4 +47,4 @@ export { default as Tree } from './tree';
 export { default as TreeSelect } from './tree-select';
 export { default as Upload } from './upload';
 export { default as VirtualList } from './virtual-list';
-export { default as Field } from './field';
+export const Field: any;
