@@ -1,0 +1,324 @@
+@charset "UTF-8";
+@import "../core/index-noreset.scss";
+@import "scss/variable";
+@import "scss/mixin";
+/* put your code here */
+#{$table-prefix} {
+    @include box-sizing;
+    position: relative;
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        background: $table-row-bg;
+        tr:first-child td {
+            border-top-width: 0;
+        }
+    }
+    th {
+        padding: 0;
+        background: $table-th-bg;
+        color: $table-th-color;
+        text-align: left;
+        #{$table-prefix}-cell-wrapper {
+            padding: $table-header-padding-top $table-header-padding-left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+        }
+        font-weight: $table-th-font-weight;
+        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    }
+    &-affix {
+        z-index: 1;
+    }
+    &-header-resizable {
+        position: relative;
+        #{$table-prefix}-resize-handler {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: transparent;
+            cursor: ew-resize;
+        }
+    }
+    td {
+        padding: 0;
+        #{$table-prefix}-cell-wrapper {
+            padding: $table-cell-padding-top $table-cell-padding-left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
+            .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow,
+            #{$table-prefix}-tree-placeholder {
+                margin-right: 3px;
+                float: left;
+            }
+            .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
+            .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow {
+                @include icon-size($table-tree-expanded-icon-size);
+            }
+        }
+        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    }
+    #{$table-prefix}-expanded,
+    #{$table-prefix}-selection {
+        #{$table-prefix}-cell-wrapper {
+            overflow: visible;
+        }
+    }
+    &.no-header table tr:first-child td {
+        border-top-width: 1px;
+    }
+    &.only-bottom-border {
+        border-width: 0;
+        th {
+            border-width: 0 0 $table-normal-border-width 0;
+        }
+        td {
+            border-width: 0 0 $table-normal-border-width 0;
+        }
+        #{$table-prefix}-expanded-row {
+            th {
+                border-width: 0 0 $table-normal-border-width 0;
+            }
+            td {
+                border-width: 0 0 $table-normal-border-width 0;
+            }
+        }
+    }
+    &-loading {
+        display: block;
+    }
+    &.zebra {
+        tr:nth-child(odd) td {
+            background: $table-td-normal;
+        }
+        tr:nth-child(even) td {
+            background: $table-td-gray;
+        }
+        #{$table-prefix}-row.hovered td {
+            background: $table-row-hover-bg;
+            color: $table-row-hover-color;
+        }
+        #{$table-prefix}-row.selected td {
+            background: $table-row-selected-bg;
+            color: $table-row-selected-color;
+        }
+    }
+    &-empty {
+        color: $table-empty-color;
+        padding: $table-empty-padding 0;
+        text-align: center;
+    }
+    &-expanded-row {
+        td {
+            border-width: 0;
+            &:first-child {
+                border-left-width: 1px;
+            }
+            &:last-child {
+                border-right-width: 1px;
+            }
+        }
+        &:last-child td {
+            border-bottom-width: 1px;
+        }
+        #{$table-prefix} .last td {
+            border-bottom-width: 0;
+        }
+    }
+    &-filter-footer {
+        margin: 10px 10px 0;
+        button {
+            margin-right: 5px;
+        }
+    }
+    &-row {
+        transition: all ease .3s;
+        background: $table-row-bg;
+        color: $table-row-color;
+
+        &.hidden {
+            display: none;
+        }
+        &.hovered {
+            background: $table-row-hover-bg;
+            color: $table-row-hover-color;
+        }
+        &.selected {
+            background: $table-row-selected-bg;
+            color: $table-row-selected-color;
+        }
+    }
+    &-tree-placeholder {
+        display: inline-block;
+        width: 12px;
+    }
+}
+
+.last {
+    #{$table-prefix}-expanded-row {
+        td {
+            border-bottom-width: 1px;
+        }
+    }
+}
+
+#{$table-prefix}-body,
+#{$table-prefix}-header {
+    overflow: auto;
+    font-size: $table-th-font-size;
+}
+
+#{$table-prefix}-body {
+    font-size: $table-body-font-size;
+}
+
+#{$table-prefix}-fixed {
+    border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    table {
+        table-layout: fixed;
+    }
+    #{$table-prefix}-header {
+        background: $table-th-bg;
+    }
+    @include table-border(0);
+    &#{$table-prefix}-group {
+        @include table-border($table-normal-border-width);
+    }
+}
+
+#{$table-prefix}-lock {
+    #{$table-prefix}-body {
+        overflow-x: auto;
+        overflow-y: visible;
+    }
+}
+
+#{$table-prefix}-group {
+    border-width: 0;
+    #{$table-prefix}-body {
+        margin-top: $table-group-split;
+        table {
+            margin-bottom: $table-group-split;
+            tr:first-child td {
+                border-top-width: 1px;
+            }
+        }
+    }
+    #{$table-prefix}-group-header {
+        td {
+            background: $table-group-th-bg;
+            color: $table-group-th-color;
+        }
+    }
+    #{$table-prefix}-group-footer {
+        td {
+            background: $table-group-footer-bg;
+            color: $table-group-footer-color;
+        }
+    }
+    #{$table-prefix}-row.hovered,
+    #{$table-prefix}-row.selected {
+        background: $table-row-bg;
+        color: $table-row-color;
+    }
+}
+
+#{$table-prefix}-lock {
+    position: relative;
+    table {
+        table-layout: fixed;
+    }
+}
+
+#{$table-prefix}-header-inner {
+    overflow: hidden;
+}
+
+#{$table-prefix}-lock-left,
+#{$table-prefix}-lock-right {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    border: 0;
+    table {
+        width: auto;
+    }
+    #{$table-prefix}-body {
+        overflow: hidden;
+    }
+}
+
+#{$table-prefix}-lock-right {
+    right: 0;
+    left: auto;
+    table tr td:first-child,
+    table tr th:first-child {
+        border-left-width: 1px;
+    }
+    &.shadow {
+        box-shadow: -2px 0 3px rgba(0, 0, 0, .12);
+    }
+}
+
+#{$table-prefix}-lock-left {
+    &.shadow {
+        box-shadow: 2px 0 3px rgba(0, 0, 0, .12);
+    }
+}
+
+#{$table-prefix}-filter {
+    line-height: 1;
+}
+
+#{$table-prefix}-sort {
+    position: relative;
+    width: 16px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    .#{$css-prefix}icon {
+        position: absolute;
+        left: 0;
+        @include icon-size($table-sort-icon-size);
+        color: $table-sort-color;
+    }
+    .current .#{$css-prefix}icon {
+        color: $table-sort-color-current;
+    }
+    .#{$css-prefix}icon-ascending {
+        left: 4px;
+    }
+}
+
+#{$table-prefix}-filter {
+    margin-left: 5px;
+    cursor: pointer;
+    width: 20px;
+    display: inline-block;
+    &:focus {
+        outline: 0;
+    }
+    .#{$css-prefix}icon {
+        @include icon-size($table-filter-icon-size);
+        color: $table-sort-color;
+    }
+}
+
+#{$table-prefix}-expanded-ctrl {
+    &.disabled {
+        color: $table-expanded-ctrl-disabled-color;
+    }
+    .#{$css-prefix}icon {
+        @include icon-size($table-expanded-icon-size);
+    }
+}
+
+@import "./rtl.scss";
