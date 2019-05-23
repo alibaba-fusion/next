@@ -54,7 +54,7 @@
             left: 50%;
             margin-left: -($radio-circle-size / 2);
             background: $color-white;
-            content: ' ';
+            content: '';
             transition: all .3s cubic-bezier(.78, .14, .15, .86);
         }
     }
