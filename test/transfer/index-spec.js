@@ -568,6 +568,15 @@ describe('Transfer', () => {
         assert(wrapper.find('#transfer-test-panel-header-left').length === 1)
         assert(wrapper.find('#transfer-test-panel-header-right').length === 1)
     });
+
+    it('should disabled item not move', () => {
+        wrapper = mount(<Transfer mode="simple" defaultValue={0} dataSource={dataSource} />);
+        findFooter(wrapper, 0)
+            .find('a.next-transfer-panel-move-all')
+            .simulate('click');
+        assert(findItems(wrapper, 0).length === 1);
+        assert(findItems(wrapper, 1).length === 3);
+    });
 });
 
 function findPanel(wrapper, panelIndex) {
