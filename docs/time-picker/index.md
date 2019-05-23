@@ -50,6 +50,7 @@
 | popupStyle       | 弹层自定义样式                                                                                                                                                           | Object    | -          |
 | popupClassName   | 弹层自定义样式类                                                                                                                                                          | String    | -          |
 | popupProps       | 弹层属性                                                                                                                                                              | Object    | -          |
+| followTrigger    | 是否跟随滚动                                                                                                                                                            | Boolean   | -          |
 | disabled         | 是否禁用                                                                                                                                                              | Boolean   | false      |
 | onChange         | 时间值改变时的回调<br><br>**签名**:<br>Function(value: Object/String) => void<br>**参数**:<br>_value_: {Object/String} 时间对象或时间字符串                                              | Function  | func.noop  |
 

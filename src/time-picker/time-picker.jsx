@@ -125,6 +125,10 @@ export default class TimePicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 是否禁用
          */
         disabled: PropTypes.bool,
@@ -318,6 +322,7 @@ export default class TimePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             disabled,
             className,
             locale,
@@ -394,6 +399,7 @@ export default class TimePicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

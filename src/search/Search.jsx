@@ -102,6 +102,10 @@ class Search extends React.Component {
          */
         popupContent: PropTypes.node,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 自定义渲染的的下拉框
          */
         visible: PropTypes.bool,
@@ -216,6 +220,7 @@ class Search extends React.Component {
             filterProps,
             buttonProps,
             popupContent,
+            followTrigger,
             hasClear,
             visible,
             locale,
@@ -283,6 +288,7 @@ class Search extends React.Component {
             filterSelect = (
                 <Select
                     {...filterProps}
+                    followTrigger={followTrigger}
                     hasBorder={false}
                     dataSource={filter}
                     size={size}
@@ -309,6 +315,7 @@ class Search extends React.Component {
                 <AutoComplete
                     aria-label={locale.buttonText}
                     {...othersAttributes}
+                    followTrigger={followTrigger}
                     role="searchbox"
                     hasClear={hasClear}
                     className={`${prefix}search-input`}

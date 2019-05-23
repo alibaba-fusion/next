@@ -112,6 +112,10 @@ class YearPicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
@@ -308,6 +312,7 @@ class YearPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             inputProps,
             dateInputAriaLabel,
@@ -404,6 +409,7 @@ class YearPicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     disabled={disabled}
                     visible={visible}

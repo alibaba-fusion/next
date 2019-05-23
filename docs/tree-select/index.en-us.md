@@ -50,7 +50,7 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 | popupClassName          | class name of dropdown                                                                                                                                                                                                                                               | String                  | -           |
 | popupContainer          | container of dropdown                                                                                                                                                                                                                                              | String/Function         | -           |
 | popupProps              | properties of Popup                                                                                                                                                                                                                                          | Object                  | -           |
-
+| followTrigger           | follow Trigger or not                | Boolean         | -                                         |
 <!-- api-extra-start -->
 
 ### TreeSelect.Node

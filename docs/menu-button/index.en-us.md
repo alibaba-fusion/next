@@ -27,6 +27,7 @@ MenuButton is a button which, when clicked or pressed, will show a context menu.
 | popupStyle       | Custom style of popup | Object    | -         |
 | popupClassName   | Custom className of popup | String    | -         |
 | popupProps       | Props of popup | Object    | -         |
+| followTrigger        | follow Trigger or not                                                                                                                                                      | Boolean         | -                                         |
 | defaultSelectedKeys | Default selected items, as Menu                                | Array     | \[]       |
 | selectedKeys        | Selected items, as Menu                                   | Array     | -         |
 | selectMode       | Select mode of menu, see Menu                                        | String    | -         |

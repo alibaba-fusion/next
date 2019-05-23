@@ -164,6 +164,10 @@ export default class RangePicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
@@ -688,6 +692,7 @@ export default class RangePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             locale,
             inputProps,
@@ -971,6 +976,7 @@ export default class RangePicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     disabled={disabled}
                     visible={state.visible}

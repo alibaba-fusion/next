@@ -347,7 +347,7 @@ export default class Popup extends Component {
         const newWrapperStyle = wrapperStyle || {};
 
         if (followTrigger) {
-            container = trigger => trigger.parentNode;
+            container = trigger => (trigger && trigger.parentNode) || trigger;
             newWrapperStyle.position = 'relative';
         }
 

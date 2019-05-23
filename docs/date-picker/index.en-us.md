@@ -42,6 +42,7 @@ DatePicker are used to select a single date for an input.
 | popupStyle          | Custom style of popup | Object         | -            |
 | popupClassName      | Custom className of popup  | String         | -            |
 | popupProps          | Props of popup    | Object         | -            |
+| followTrigger        | follow Trigger or not                                                                                                                                                      | Boolean         | -                                         |
 | dateInputAriaLabel | Date input aria-label attr                                                                                                                                                                                           | String    | -           |
 
 ### DatePicker.RangePicker
@@ -82,7 +83,7 @@ DatePicker are used to select a single date for an input.
 ## ARIA and KeyBoard
 
 When the `Date Picker` is focused, press `enter` will open popup to input date or time.
- 
+
 | 按键          | 说明                           |
 | :---------- | :------------------------------ |
 | number key    | Need to manual input  the date, the specified date format        |
