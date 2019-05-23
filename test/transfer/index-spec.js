@@ -535,6 +535,9 @@ describe('Transfer', () => {
         dragItem.simulate('dragStart');
         dropItem.simulate('dragOver', { pageY: referenceY + 1 });
         dropItem.simulate('drop');
+        dragItem.simulate('dragStart');
+        dropItem.simulate('dragOver', { pageY: referenceY + 1 });
+        dropItem.simulate('drop');
         assert(sortCalled);
         assert(findItemText(wrapper, 0, 0) === '0');
         assert(findItemText(wrapper, 0, 1) === '2');
@@ -563,14 +566,14 @@ describe('Transfer', () => {
         wrapper = mount(
             <Transfer dataSource={dataSource} id="transfer-test" titles={['left', 'right']}/>
         );
-        assert(wrapper.find('#transfer-test-panel-footer-left').length === 1)
-        assert(wrapper.find('#transfer-test-panel-footer-right').length === 1)
-        assert(wrapper.find('#transfer-test-panel-header-left').length === 1)
-        assert(wrapper.find('#transfer-test-panel-header-right').length === 1)
+        assert(wrapper.find('#transfer-test-panel-footer-left').length === 1);
+        assert(wrapper.find('#transfer-test-panel-footer-right').length === 1);
+        assert(wrapper.find('#transfer-test-panel-header-left').length === 1);
+        assert(wrapper.find('#transfer-test-panel-header-right').length === 1);
     });
 
     it('should disabled item not move', () => {
-        wrapper = mount(<Transfer mode="simple" defaultValue={0} dataSource={dataSource} />);
+        wrapper = mount(<Transfer mode="simple" defaultLeftChecked={0} defaultValue={0} value={['1', '2', '3']} dataSource={dataSource} />);
         findFooter(wrapper, 0)
             .find('a.next-transfer-panel-move-all')
             .simulate('click');
