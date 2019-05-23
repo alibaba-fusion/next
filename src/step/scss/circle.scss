@@ -11,7 +11,7 @@
         #{$step-prefix}-item-progress {
             #{$step-progress-prefix}-circle-text {
                 color: $step-circle-item-node-process-percent-color;
-                font-size: $step-circle-item-node-font-size;
+                font-size: $step-circle-item-node-process-percent-size;
             }
 
             #{$step-progress-prefix}-circle-underlay {

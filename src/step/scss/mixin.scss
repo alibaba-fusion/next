@@ -103,18 +103,21 @@
             }
         }
     }
-    #{$step-prefix}-item-node-dot {
-        position: absolute;
-        top: 50%;
-        margin-top: -$node-size/2;
-        left: 50%;
-        margin-left: -$node-size/2;
-        display: block;
-        width: $node-size;
-        height: $node-size;
-        border: $step-dot-item-dot-border-width solid;
-        border-radius: $step-dot-item-dot-corner;
-        transition: background-color .3s ease, border-color .3s ease;
+    @if ($shape == 'dot') {
+        #{$step-prefix}-item-content {
+            font-size: $step-dot-item-content-font-size;
+        }
+        #{$step-prefix}-item-node-dot {
+            display: block;
+            width: $node-size;
+            height: $node-size;
+            font-size: $step-dot-item-content-font-size;
+            line-height: $node-size - 2 * $step-dot-item-dot-border-width;
+            text-align: center;
+            border: $step-dot-item-dot-border-width solid;
+            border-radius: $step-dot-item-dot-corner;
+            transition: background-color .3s ease, border-color .3s ease;
+        }
     }
 
     @if ($shape == 'arrow') {
@@ -154,11 +157,7 @@
                     width: 100%;
                 }
             }
-            & > #{$step-prefix}-item-node {
-                padding: 0 $step-circle-item-node-padding;
-                width: $node-size + $step-circle-item-node-padding * 2;
-                height: $node-size;
-            }
+
             & > #{$step-prefix}-item-body {
                 width: $step-circle-item-body-width;
                 left: - ($step-circle-item-body-width - $node-size - $step-circle-item-node-padding * 2) / 2;
@@ -194,11 +193,7 @@
                     width: 100%;
                 }
             }
-            & > #{$step-prefix}-item-node {
-                padding: 0 $step-dot-item-dot-padding;
-                width: $node-size + $step-dot-item-dot-padding * 2;
-                height: $node-size;
-            }
+
             & > #{$step-prefix}-item-body {
                 width: $step-dot-item-body-width;
                 left: - ($step-dot-item-body-width - $node-size - $step-dot-item-dot-padding * 2) / 2;
@@ -220,7 +215,7 @@
     @if ($type == 'ver') {
         @if ($shape == 'circle') {
             #{$step-prefix}-item-tail {
-                width: $step-circle-item-tail-size;
+                width: $step-circle-vertical-item-tail-size;
                 height: 0;
                 margin: $step-circle-item-node-padding auto;
                 #{$step-prefix}-item-tail-underlay {
@@ -235,17 +230,12 @@
                     width: $step-circle-vertical-item-tail-size;
                 }
             }
-            & > #{$step-prefix}-item-node {
-                padding: $step-circle-item-node-padding 0;
-                width: $node-size;
-                height: $node-size+$step-circle-item-node-padding * 2;
-            }
+
             & > #{$step-prefix}-item-body {
                 position: absolute;
                 top: 0;
                 left: $node-size / 2;
                 margin-left: $step-circle-item-node-padding;
-                // margin-left: $step-circle-vertical-item-body-margin-left + $node-size;
                 & > #{$step-prefix}-item-title {
                     margin-top: $step-circle-vertical-item-title-margin-top;
                     text-align: left;
@@ -258,14 +248,13 @@
                     text-align: left;
                     font-size: $step-circle-item-content-font-size;
                     line-height: $step-circle-item-content-font-size + 4;
-                    // color: $step-circle-item-content-color;
                 }
             }
         }
 
         @if ($shape == 'dot') {
             #{$step-prefix}-item-tail {
-                width: $step-dot-item-tail-size;
+                width: $step-dot-vertical-item-tail-size;
                 height: 0;
                 margin: $step-dot-item-dot-padding auto;
                 #{$step-prefix}-item-tail-underlay {
@@ -280,11 +269,7 @@
                     width: $step-dot-vertical-item-tail-size;
                 }
             }
-            & > #{$step-prefix}-item-node {
-                padding: $step-dot-item-dot-padding 0;
-                width: $node-size;
-                height: $node-size+$step-dot-item-dot-padding * 2;
-            }
+
             & > #{$step-prefix}-item-body {
                 position: absolute;
                 top: 0;
@@ -302,7 +287,6 @@
                     text-align: left;
                     font-size: $step-dot-item-content-font-size;
                     line-height: $step-dot-item-content-font-size + 4;
-                    // color: $step-dot-item-content-color;
                 }
             }
         }
