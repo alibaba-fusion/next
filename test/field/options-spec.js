@@ -204,6 +204,16 @@ describe('options', () => {
         assert.equal(field.getValue('input.child'), inputValue);
     });
 
+    it('should support default `values` in constructor and access before init', function() {
+        const inputValue = 'my value';
+        const field = new Field(this, {
+            values: {
+                input: inputValue
+            }
+        });
+        assert.equal(field.getValue('input'), inputValue);
+    });
+
     describe('should support parseName', () => {
         it('getValues', function(done) {
             const field = new Field(this, { parseName: true });

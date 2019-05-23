@@ -63,6 +63,10 @@ class Field {
         ].forEach(m => {
             this[m] = this[m].bind(this);
         });
+
+        if (options.values) {
+            this.setValues(options.values, false);
+        }
     }
 
     setOptions(options) {
