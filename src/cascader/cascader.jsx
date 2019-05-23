@@ -103,7 +103,7 @@ export default class Cascader extends Component {
         /**
          * 异步加载数据函数
          * @param {Object} data 当前点击异步加载的数据
-         * @param {Object} source 当前点击数据
+         * @param {Object} source 当前点击数据，source是原始对象
          */
         loadData: PropTypes.func,
         searchValue: PropTypes.string,

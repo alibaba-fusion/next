@@ -7,40 +7,72 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
+type data = {
+    value?: string;
+    label?: string;
+    disabled?: boolean;
+    checkboxDisabled?: boolean;
+    children?: Array<data>;
+    [propName: string]: any;
+}
+
+type extra = {
+    /**
+     * 单选时选中的数据的路径
+     */
+    selectedPath?: Array<data>;
+    /**
+     * 多选时当前的操作是选中还是取消选中
+     */
+    checked?: boolean;
+    /**
+     * 多选时当前操作的数据
+     */
+    currentData?: {};
+    /**
+     * 多选时所有被选中的数据
+     */
+    checkedData?: Array<data>;
+    /**
+     * 多选时半选的数据
+     */
+    indeterminateData?: Array<data>;
+}
+
 export interface CascaderProps extends HTMLAttributesWeak {
     /**
      * 数据源，结构可参考下方说明
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<data>;
 
     /**
      * （非受控）默认值
      */
-    defaultValue?: string | Array<any>;
+    defaultValue?: string | Array<string>;
 
     /**
      * （受控）当前值
      */
-    value?: string | Array<any>;
+    value?: string | Array<string>;
 
     /**
      * 选中值改变时触发的回调函数
      */
     onChange?: (
-        value: string | Array<any>,
-        data: {} | Array<any>,
-        extra: {}
+        value: string | Array<string>,
+        data: data | Array<data>,
+        extra: extra
     ) => void;
 
     /**
      * （非受控）默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
      */
-    defaultExpandedValue?: Array<any>;
+    defaultExpandedValue?: Array<string>;
 
     /**
      * （受控）当前展开值
      */
-    expandedValue?: Array<any>;
+    expandedValue?: Array<string>;
 
     /**
      * 展开触发的方式
@@ -50,7 +82,7 @@ export interface CascaderProps extends HTMLAttributesWeak {
     /**
      * 展开时触发的回调函数
      */
-    onExpand?: (expandedValue: Array<any>) => void;
+    onExpand?: (expandedValue: Array<string>) => void;
 
     /**
      * 是否开启虚拟滚动
@@ -80,7 +112,7 @@ export interface CascaderProps extends HTMLAttributesWeak {
     /**
      * 每列列表样式对象
      */
-    listStyle?: {};
+    listStyle?: React.CSSProperties;
 
     /**
      * 每列列表类名
@@ -90,12 +122,12 @@ export interface CascaderProps extends HTMLAttributesWeak {
     /**
      * 每列列表项渲染函数
      */
-    itemRender?: (data: {}) => React.ReactNode;
+    itemRender?: (data: data) => React.ReactNode;
 
     /**
-     * 异步加载数据函数
+     * 异步加载数据函数，source是原始对象
      */
-    loadData?: (data: {}, source: {}) => void;
+    loadData?: (data: data, source: data) => void;
 }
 
 export default class Cascader extends React.Component<CascaderProps, any> {}

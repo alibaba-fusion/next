@@ -16,7 +16,7 @@ export interface AnimateProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 包裹子元素的标签
      */
-    component?: any;
+    component?: React.ReactHTML;
 
     /**
      * 是否只有单个子元素，如果有多个子元素，请设置为 false
@@ -31,7 +31,7 @@ export interface AnimateProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 执行第一次挂载动画前触发的回调函数
      */
-    beforeAppear?: () => void;
+    beforeAppear?: (node: React.ReactElement<any>) => void;
 
     /**
      * 执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数

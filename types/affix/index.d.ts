@@ -21,7 +21,7 @@ export interface AffixProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 当元素的样式发生固钉样式变化时触发的回调函数
      */
-    onAffix?: (元素是否被固钉: boolean) => void;
+    onAffix?: (affixed: boolean) => void;
 
     /**
      * 是否启用绝对布局实现 affix
