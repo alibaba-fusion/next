@@ -9,8 +9,15 @@ import Field from '../../src/field/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-/*global describe it */
+/*global describe it afterEach */
 describe('options', () => {
+    let wrapper;
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.unmount();
+            wrapper = null;
+        }
+    })
     it('should support autoUnmount', function(done) {
         class Demo extends React.Component {
             state = {
@@ -38,7 +45,7 @@ describe('options', () => {
                 );
             }
         }
-        const wrapper = mount(<Demo />);
+        wrapper = mount(<Demo />);
         wrapper.setState({ show: false });
         wrapper.update();
         wrapper.find('button').simulate('click');
@@ -73,7 +80,7 @@ describe('options', () => {
                 );
             }
         }
-        const wrapper = mount(<Demo />);
+        wrapper = mount(<Demo />);
         wrapper.setState({ show: false });
         wrapper.find('button').simulate('click');
 
@@ -99,7 +106,6 @@ describe('options', () => {
                         ) : null}
                         <button
                             onClick={() => {
-                                // console.log(this.field);
                                 assert(
                                     this.field.getValue('input2') === 'test2'
                                 );
@@ -111,7 +117,7 @@ describe('options', () => {
                 );
             }
         }
-        const wrapper = mount(<Demo />);
+        wrapper = mount(<Demo />);
         wrapper.setState({ show: false });
         wrapper.find('button').simulate('click');
 
@@ -151,67 +157,101 @@ describe('options', () => {
                 );
             }
         }
-        const wrapper = mount(<Demo />);
+        wrapper = mount(<Demo />);
         wrapper.find('button').simulate('click');
 
         done();
     });
 
-    it('should support default `values` in constructor', function(done) {
-        class Demo extends React.Component {
-            constructor(props) {
-                super(props);
-                this.field = new Field(this, {
-                    values: {
-                        input: 'ttt',
+    describe('values', () => {
+        it('should set default field input values when given `values` in constructor', function() {
+            const inputValue = 'my value';
+            const field = new Field(this, {
+                values: {
+                    input: inputValue
+                },
+            });
+            field.init('input');
+            assert.equal(field.getValue('input'), inputValue);
+        });
+
+        it('should set default field input values when given `values` and `parseName` = true in constructor', function() {
+            const inputValue = 'my value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        child: inputValue,
                     },
-                });
-            }
-
-            render() {
-                const init = this.field.init;
-                return (
-                    <div>
-                        <Input {...init('input')} />
-                        <button
-                            onClick={() => {
-                                assert(this.field.getValue('input') === 'ttt');
-                            }}
-                        >
-                            click
-                        </button>
-                    </div>
-                );
-            }
-        }
-        const wrapper = mount(<Demo />);
-        wrapper.find('button').simulate('click');
-
-        done();
-    });
-
-    it('should support default `values` in constructor when `parseName` = true', function() {
-        const inputValue = 'my value';
-        const field = new Field(this, {
-            parseName: true,
-            values: {
-                input: {
-                    child: inputValue
-                }
-            }
+                },
+            });
+            field.init('input.child');
+            assert.equal(field.getValue('input.child'), inputValue);
         });
-        field.init('input.child');
-        assert.equal(field.getValue('input.child'), inputValue);
-    });
 
-    it('should support default `values` in constructor and access before init', function() {
-        const inputValue = 'my value';
-        const field = new Field(this, {
-            values: {
-                input: inputValue
-            }
+        it('should allow access to field values before init when given `values` in constructor', function() {
+            const inputValue = 'my value';
+            const field = new Field(this, {
+                values: {
+                    input: inputValue,
+                },
+            });
+            assert.equal(field.getValue('input'), inputValue);
         });
-        assert.equal(field.getValue('input'), inputValue);
+
+        it('should reset `input` to undefined when given `values` in constructor and call `reset`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                values: {
+                    input: fieldDefault,
+                },
+            });
+            field.init('input');
+            field.reset();
+            assert.equal(field.getValue('input'), undefined);
+        });
+
+        it('should reset `input` to constructor `values` after calling `resetToDefault`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                values: {
+                    input: fieldDefault,
+                },
+            });
+            field.init('input');
+            field.resetToDefault('input');
+            assert.equal(field.getValue('input'), fieldDefault);
+        });
+
+        it('should reset `input` to undefined when given `values` and `parseName` = true in constructor and call `reset`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        child: fieldDefault
+                    },
+                },
+            });
+            field.init('input.child');
+            field.reset();
+            assert.equal(field.getValue('input.child'), undefined);
+        });
+
+        it('should reset `input` to undefined when given `values` and `parseName` = true in constructor and call `resetToDefault`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        child: fieldDefault
+                    },
+                },
+            });
+            field.init('input.child');
+            field.resetToDefault('input.child');
+            assert.equal(field.getValue('input.child'), fieldDefault);
+        });
     });
 
     describe('should support parseName', () => {
@@ -264,7 +304,7 @@ describe('options', () => {
             const field = new Field(this, { autoValidate: true });
             const inited = field.init('input', { rules: [{ minLength: 10 }] });
 
-            const wrapper = mount(<Input {...inited} />);
+            wrapper = mount(<Input {...inited} />);
             wrapper.find('input').simulate('change', {
                 target: {
                     value: 'test',
@@ -279,7 +319,7 @@ describe('options', () => {
             const field = new Field(this, { autoValidate: false });
             const inited = field.init('input', { rules: [{ minLength: 10 }] });
 
-            const wrapper = mount(<Input {...inited} />);
+            wrapper = mount(<Input {...inited} />);
             wrapper.find('input').simulate('change', {
                 target: {
                     value: 'test',
@@ -300,7 +340,7 @@ describe('options', () => {
                 rules: [{ minLength: 10 }],
             });
 
-            const wrapper = mount(<Input {...inited} />);
+            wrapper = mount(<Input {...inited} />);
             wrapper.find('input').simulate('change', {
                 target: {
                     value: 'test',
