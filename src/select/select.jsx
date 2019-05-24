@@ -727,7 +727,10 @@ class Select extends Base {
                 return null;
             }
 
-            const retvalue = fillProps ? value[fillProps] : valueRender(value);
+            const retvalue =
+                fillProps && fillProps in value
+                    ? value[fillProps]
+                    : valueRender(value);
             // 0 => '0'
             return typeof retvalue === 'number'
                 ? retvalue.toString()
