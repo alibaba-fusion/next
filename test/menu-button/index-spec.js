@@ -1,5 +1,6 @@
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';
+import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import MenuButton from '../../src/menu-button/index';
@@ -107,5 +108,18 @@ describe('MenuButton', () => {
                     .hasClass('next-selected')
             );
         });
+
+        it('should mulitple select can`t close', () => {
+            const onVisibleChange = sinon.spy();
+            const onItemClick = sinon.spy();
+            const wrapper = mount(
+                <MenuButton onVisibleChange={onVisibleChange} onItemClick={onItemClick} label="hello world" defaultVisible selectMode="multiple">
+                    {menu}
+                </MenuButton>
+            );
+            wrapper.find('li[title="b"][role="listitem"]').simulate('click');
+            assert(onItemClick.calledOnce);
+            assert(onVisibleChange.notCalled);
+        })
     });
 });
