@@ -29,7 +29,7 @@ class Field {
         this.fieldsMeta = {};
         this.cachedBind = {};
         this.instance = {};
-        this.initValues = options.values || {};
+        this.initValue = options.values || {};
 
         this.options = Object.assign(
             {
@@ -100,8 +100,11 @@ class Field {
             defaultValue = initValue;
         } else if (originalProps[defaultValueName]) {
             defaultValue = originalProps[defaultValueName];
+        } else if (this.options.parseName) {
+            defaultValue = getIn(this.initValue, name);
         } else {
-            defaultValue = getIn(this.initValues, name);
+            defaultValue =
+                (this.initValue && this.initValue[name]) || undefined;
         }
 
         Object.assign(field, {
