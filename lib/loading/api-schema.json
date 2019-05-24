@@ -1,0 +1,172 @@
+{
+  "name": "Loading",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式前缀"
+    },
+    "tip": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "自定义内容",
+      "docblock": "自定义内容"
+    },
+    "tipAlign": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'right'",
+            "computed": false,
+            "description": "出现在动画右边"
+          },
+          {
+            "value": "'bottom'",
+            "computed": false,
+            "description": "出现在动画下面"
+          }
+        ]
+      },
+      "required": false,
+      "description": "自定义内容位置",
+      "defaultValue": {
+        "value": "'bottom'",
+        "computed": false
+      },
+      "docblock": "自定义内容位置\n@enumdesc 出现在动画右边, 出现在动画下面",
+      "value": [
+        {
+          "value": "'right'",
+          "computed": false,
+          "description": "出现在动画右边"
+        },
+        {
+          "value": "'bottom'",
+          "computed": false,
+          "description": "出现在动画下面"
+        }
+      ]
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "loading 状态, 默认 true",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "loading 状态, 默认 true"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义class",
+      "docblock": "自定义class"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内联样式",
+      "docblock": "自定义内联样式",
+      "properties": []
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'large'",
+            "computed": false,
+            "description": "大号"
+          },
+          {
+            "value": "'medium'",
+            "computed": false,
+            "description": "中号"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置动画尺寸",
+      "defaultValue": {
+        "value": "'large'",
+        "computed": false
+      },
+      "docblock": "设置动画尺寸\n@description 仅仅对默认动画效果起作用\n@enumdesc 大号, 中号",
+      "value": [
+        {
+          "value": "'large'",
+          "computed": false,
+          "description": "大号"
+        },
+        {
+          "value": "'medium'",
+          "computed": false,
+          "description": "中号"
+        }
+      ]
+    },
+    "indicator": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "自定义动画",
+      "docblock": "自定义动画"
+    },
+    "color": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "动画颜色",
+      "docblock": "动画颜色"
+    },
+    "fullScreen": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "全屏展示",
+      "docblock": "全屏展示"
+    },
+    "children": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "子元素",
+      "docblock": "子元素"
+    },
+    "inline": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "should loader be displayed inline",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "should loader be displayed inline"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
