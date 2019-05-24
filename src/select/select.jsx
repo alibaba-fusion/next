@@ -745,9 +745,10 @@ class Select extends Base {
         } else if (value) {
             let limitedCountValue = value;
             let maxTagPlaceholderEl;
-            const totalLen = this.dataStore.flattenDataSource.length;
 
             if (maxTagCount !== undefined && value.length > maxTagCount) {
+                const totalLen = this.dataStore.getFlattenDS().length;
+
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
                     <Tag

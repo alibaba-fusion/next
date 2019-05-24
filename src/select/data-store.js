@@ -27,6 +27,7 @@ class DataStore {
         this.mapDataSource = {};
         // current data can be select (not disabled) on menu
         this.enabledDataSource = [];
+        this.flattenDataSource = [];
     }
 
     setOptions(options) {
