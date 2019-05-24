@@ -71,7 +71,7 @@ class MenuButton extends React.Component {
         /**
          * 菜单的选择模式，同 Menu
          */
-        selectMode: PropTypes.string,
+        selectMode: PropTypes.oneOf(['single', 'multiple']),
         /**
          * 点击菜单项后的回调，同 Menu
          */
@@ -123,7 +123,14 @@ class MenuButton extends React.Component {
     }
 
     clickMenuItem = (key, ...others) => {
+        const { selectMode } = this.props;
+
         this.props.onItemClick(key, ...others);
+
+        if (selectMode === 'multiple') {
+            return;
+        }
+
         this.onPopupVisibleChange(false, 'menuSelect');
     };
 
