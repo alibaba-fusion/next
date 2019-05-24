@@ -456,6 +456,25 @@ describe('Select', () => {
         wrapper.find('i.next-icon-delete-filling').simulate('click');
     });
 
+    it('should support custom content with mode=tag', done => {
+        const value = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+            { label: 'zzz', value: 1 },
+            { label: 'yyy', value: 1 },
+        ];
+        wrapper.setProps({
+            maxTagTextLength: 2,
+            visible: true,
+            maxTagCount: 2,
+            mode: 'tag',
+            value
+        });
+        wrapper.update();
+        assert(wrapper.find('span.next-select div.next-tag').length === 3);
+        done()
+    });
+
     it('should support onChange with mode=single ', done => {
         const dataSource = [
             { label: 'xxx', value: '0' },
