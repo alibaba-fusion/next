@@ -133,6 +133,11 @@ class Select extends Base {
          */
         maxTagCount: PropTypes.number,
         /**
+         * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
+         * @type {[type]}
+         */
+        maxTagPlaceholder: PropTypes.func,
+        /**
          * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
          */
         hiddenSelected: PropTypes.bool,
@@ -163,6 +168,7 @@ class Select extends Base {
         cacheValue: true,
         onSearch: noop,
         onSearchClear: noop,
+        maxTagPlaceholder: (selected, total) => `${selected} / ${total}`,
         hasArrow: true,
         onRemove: noop,
         // highlightFirstItem: true,
@@ -702,6 +708,7 @@ class Select extends Base {
             disabled,
             maxTagCount,
             maxTagTextLength,
+            maxTagPlaceholder,
         } = this.props;
         let value = this.state.value;
 
@@ -738,6 +745,8 @@ class Select extends Base {
         } else if (value) {
             let limitedCountValue = value;
             let maxTagPlaceholderEl;
+            const totalLen = this.dataStore.flattenDataSource.length;
+
             if (maxTagCount !== undefined && value.length > maxTagCount) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
@@ -746,7 +755,7 @@ class Select extends Base {
                         size={size === 'large' ? 'medium' : 'small'}
                         animation={false}
                     >
-                        {`${value.length - maxTagCount}/${value.length}`}
+                        {maxTagPlaceholder(value.length, totalLen)}
                     </Tag>
                 );
             }
