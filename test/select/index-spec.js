@@ -268,6 +268,17 @@ describe('Select', () => {
         assert(wrapper.find('.next-select em').text() === 'yyy');
     });
 
+    it('should support fillProps=anything with empty dataSource', () => {
+        wrapper.setProps({
+            value: 'jack',
+            visible: true,
+            fillProps: 'anything',
+            dataSource: []
+        });
+
+        assert(wrapper.find('.next-select em').text() === 'jack');
+    });
+
     it('should support disabled', () => {
         wrapper.setProps({
             disabled: true,
