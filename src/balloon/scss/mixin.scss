@@ -57,7 +57,7 @@
         position: absolute;
         width: $height;
         height: $height;
-        content: ' ';
+        content: '';
         transform: rotate(45deg);
         box-sizing: content-box !important;
         border: $widthBorder $balloon-border-style $colorBorder;
@@ -216,7 +216,7 @@
         position: absolute;
         width: $width;
         height: $height;
-        content: ' ';
+        content: '';
         transform: rotate(45deg);
         box-sizing: content-box !important;
         border: $balloon-tooltip-border-width $balloon-tooltip-border-style $colorBorder;

@@ -84,7 +84,7 @@
 #{$tab-prefix}-text[dir='rtl'] > #{$tab-prefix}-bar {
     #{$tab-prefix}-tab {
         &:not(:last-child):after {
-            content: ' ';
+            content: '';
             position: absolute;
             left: 0;
             right: auto;

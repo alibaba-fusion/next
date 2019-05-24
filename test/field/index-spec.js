@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -158,11 +159,11 @@ describe('field', () => {
     });
     describe('init', () => {
         it('init(input)', function(done) {
-            let field = new Field(this);
-            let inited = field.init('input');
+            const field = new Field(this);
+            const inited = field.init('input');
 
-            assert(typeof inited['ref'] === 'function');
-            assert(inited['id'] === 'input');
+            assert(typeof inited.ref === 'function');
+            assert(inited.id === 'input');
             assert(inited['data-meta'] === 'Field');
             assert('onChange' in inited);
 
@@ -180,8 +181,8 @@ describe('field', () => {
             done();
         });
         it('initValue', function(done) {
-            let field = new Field(this);
-            let inited = field.init('input', { initValue: 2 });
+            const field = new Field(this);
+            const inited = field.init('input', { initValue: 2 });
 
             assert(inited.value === 2);
             field.init('input', { initValue: 24 });
@@ -192,8 +193,8 @@ describe('field', () => {
             done();
         });
         it('valueName', function(done) {
-            let field = new Field(this);
-            let inited = field.init('input', {
+            const field = new Field(this);
+            const inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
             });
@@ -203,8 +204,8 @@ describe('field', () => {
         });
 
         it('props', function(done) {
-            let field = new Field(this);
-            let inited = field.init('input', {
+            const field = new Field(this);
+            const inited = field.init('input', {
                 initValue: true,
                 valueName: 'checked',
                 props: {
@@ -220,8 +221,8 @@ describe('field', () => {
 
         it('custom Event: onChange', function(done) {
             const onChange = sinon.spy();
-            let field = new Field(this, { onChange });
-            let inited = field.init('input', {
+            const field = new Field(this, { onChange });
+            const inited = field.init('input', {
                 props: {
                     onChange,
                 },
@@ -236,7 +237,7 @@ describe('field', () => {
             assert(field.getValue('input') === 'test');
             assert(onChange.callCount === 2);
 
-            let field2 = new Field(this, {
+            const field2 = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test');
                 },
@@ -263,16 +264,16 @@ describe('field', () => {
         });
 
         it('getValueFromEvent', function(done) {
-            let field = new Field(this, {
+            const field = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
                 },
             });
 
-            let inited = field.init('input', {
+            const inited = field.init('input', {
                 getValueFromEvent: a => {
                     assert(a === 'test');
-                    return a + '!';
+                    return `${a  }!`;
                 },
             });
 
@@ -289,7 +290,7 @@ describe('field', () => {
         });
 
         it('rules', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
             field.init('input', {
                 rules: [
                     {
@@ -314,7 +315,7 @@ describe('field', () => {
 
     describe('behaviour', () => {
         it('getValue & getValues & setValue & setValues', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 2 });
             field.init('input3.name', { initValue: 3 });
@@ -334,7 +335,7 @@ describe('field', () => {
         });
 
         it('setError & setErrors & getError & getErrors', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
             field.setError('input', 'error1');
 
             field.init('input');
@@ -342,7 +343,7 @@ describe('field', () => {
 
             field.setError('input', 'error1');
             assert(field.getError('input')[0] === 'error1');
-            assert(field.getErrors(['input'])['input'][0] === 'error1');
+            assert(field.getErrors(['input']).input[0] === 'error1');
 
             field.setError('input2', ['error2']);
             assert(field.getError('input2')[0] === 'error2');
@@ -359,7 +360,7 @@ describe('field', () => {
             done();
         });
         it('getState', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
 
             field.init('input');
 
@@ -372,8 +373,8 @@ describe('field', () => {
         });
 
         it('validate', function(done) {
-            let field = new Field(this);
-            let inited = field.init('input', {
+            const field = new Field(this);
+            const inited = field.init('input', {
                 rules: [{ required: true, message: 'cant be null' }],
             });
 
@@ -384,14 +385,14 @@ describe('field', () => {
                 },
             });
 
-            field.validate((error, value, cb) => {
-                assert(error['input']['errors'][0] === 'cant be null');
+            field.validate((error) => {
+                assert(error.input.errors[0] === 'cant be null');
             });
-            field.validate('input', (error, value, cb) => {
-                assert(error['input']['errors'][0] === 'cant be null');
+            field.validate('input', (error) => {
+                assert(error.input.errors[0] === 'cant be null');
             });
-            field.validate(['input'], (error, value, cb) => {
-                assert(error['input']['errors'][0] === 'cant be null');
+            field.validate(['input'], (error) => {
+                assert(error.input.errors[0] === 'cant be null');
             });
 
             field.init('input2', {
@@ -416,7 +417,7 @@ describe('field', () => {
         });
 
         it('reset', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
             field.init('input', { initValue: '1' });
 
             field.reset();
@@ -431,7 +432,7 @@ describe('field', () => {
             done();
         });
         it('remove', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
             field.init('input', { initValue: 1 });
             field.init('input2', { initValue: 1 });
             field.init('input3', { initValue: 1 });
@@ -447,7 +448,7 @@ describe('field', () => {
             done();
         });
         it('spliceArray', function(done) {
-            let field = new Field(this);
+            const field = new Field(this);
             field.init('input.0', { initValue: 0 });
             field.init('input.1', { initValue: 1 });
             field.init('input.2', { initValue: 2 });

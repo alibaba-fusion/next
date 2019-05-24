@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -155,7 +157,7 @@ describe('options', () => {
         done();
     });
 
-    it('values', function(done) {
+    it('should support default `values` in constructor', function(done) {
         class Demo extends React.Component {
             constructor(props) {
                 super(props);
@@ -186,6 +188,30 @@ describe('options', () => {
         wrapper.find('button').simulate('click');
 
         done();
+    });
+
+    it('should support default `values` in constructor when `parseName` = true', function() {
+        const inputValue = 'my value';
+        const field = new Field(this, {
+            parseName: true,
+            values: {
+                input: {
+                    child: inputValue
+                }
+            }
+        });
+        field.init('input.child');
+        assert.equal(field.getValue('input.child'), inputValue);
+    });
+
+    it('should support default `values` in constructor and access before init', function() {
+        const inputValue = 'my value';
+        const field = new Field(this, {
+            values: {
+                input: inputValue
+            }
+        });
+        assert.equal(field.getValue('input'), inputValue);
     });
 
     describe('should support parseName', () => {

@@ -29,6 +29,7 @@ class Field {
         this.fieldsMeta = {};
         this.cachedBind = {};
         this.instance = {};
+        this.initValues = options.values || {};
 
         this.options = Object.assign(
             {
@@ -94,10 +95,14 @@ class Field {
         )}`;
 
         const field = this._getInitMeta(name);
-        const defaultValue =
-            typeof initValue !== 'undefined'
-                ? initValue
-                : originalProps[defaultValueName];
+        let defaultValue;
+        if (typeof initValue !== 'undefined') {
+            defaultValue = initValue;
+        } else if (originalProps[defaultValueName]) {
+            defaultValue = originalProps[defaultValueName];
+        } else {
+            defaultValue = getIn(this.initValues, name);
+        }
 
         Object.assign(field, {
             valueName,
