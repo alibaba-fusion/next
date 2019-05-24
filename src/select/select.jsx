@@ -123,6 +123,16 @@ class Select extends Base {
          */
         searchValue: PropTypes.string,
         /**
+         * tag最多显示的字符数
+         * @type {[type]}
+         */
+        maxTagTextLength: PropTypes.number,
+        /**
+         * 最多显示多少个 tag
+         * @type {[type]}
+         */
+        maxTagCount: PropTypes.number,
+        /**
          * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
          */
         hiddenSelected: PropTypes.bool,
@@ -684,7 +694,15 @@ class Select extends Base {
      * @param {object} props
      */
     renderValues() {
-        const { mode, size, valueRender, fillProps, disabled } = this.props;
+        const {
+            mode,
+            size,
+            valueRender,
+            fillProps,
+            disabled,
+            maxTagCount,
+            maxTagTextLength,
+        } = this.props;
         let value = this.state.value;
 
         if (isNull(value)) {
@@ -715,15 +733,37 @@ class Select extends Base {
                 ? retvalue.toString()
                 : retvalue;
         } else if (value) {
+            let limitedCountValue = value;
+            let maxTagPlaceholderEl;
+            if (maxTagCount !== undefined && value.length > maxTagCount) {
+                limitedCountValue = limitedCountValue.slice(0, maxTagCount);
+                maxTagPlaceholderEl = (
+                    <Tag
+                        type="primary"
+                        size={size === 'large' ? 'medium' : 'small'}
+                        animation={false}
+                    >
+                        {`${value.length - maxTagCount}/${value.length}`}
+                    </Tag>
+                );
+            }
+            value = limitedCountValue;
             if (!Array.isArray(value)) {
                 value = [value];
             }
-            return value.map(v => {
+            const selectedValueNodes = value.map(v => {
                 if (!v) {
                     return null;
                 }
-
                 const labelNode = fillProps ? v[fillProps] : valueRender(v);
+                let content = labelNode;
+                if (
+                    maxTagTextLength &&
+                    typeof content === 'string' &&
+                    content.length > maxTagTextLength
+                ) {
+                    content = `${content.slice(0, maxTagTextLength)}..`;
+                }
                 return (
                     <Tag
                         key={v.value}
@@ -734,10 +774,15 @@ class Select extends Base {
                         onClose={this.handleTagClose.bind(this, v)}
                         closable
                     >
-                        {labelNode}
+                        {content}
                     </Tag>
                 );
             });
+
+            if (maxTagPlaceholderEl) {
+                selectedValueNodes.push(maxTagPlaceholderEl);
+            }
+            return selectedValueNodes;
         }
 
         return null;
@@ -898,7 +943,6 @@ class Select extends Base {
         const valuetext = this.valueDataSource.valueDS
             ? this.valueDataSource.valueDS.label
             : '';
-
         return (
             <span
                 {...othersData}
