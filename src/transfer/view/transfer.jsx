@@ -185,7 +185,7 @@ class Transfer extends Component {
             if (Array.isArray(value)) {
                 return value;
             }
-
+            /* istanbul ignore next */
             return [value];
         }
 
@@ -242,6 +242,7 @@ class Transfer extends Component {
             st.value = value;
             newValue = value;
         } else {
+            /* istanbul ignore next */
             newValue = this.state.value;
         }
         this.leftValue = this.getLeftValue(nextProps.dataSource, newValue);
