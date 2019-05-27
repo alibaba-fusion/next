@@ -123,19 +123,6 @@
 
     &tag-closable {
         position: relative;
-
-        &.#{$css-prefix}tag-large > .#{$css-prefix}tag-body {
-            max-width: calc(100% - #{$tag-size-l-icon-font + $tag-size-l-padding-lr});
-        }
-
-        &.#{$css-prefix}tag-medium > .#{$css-prefix}tag-body {
-            max-width: calc(100% - #{$tag-size-m-icon-font + $tag-size-m-padding-lr});
-        }
-
-        &.#{$css-prefix}tag-small > .#{$css-prefix}tag-body {
-            max-width: calc(100% - #{$tag-size-s-icon-font + $tag-size-s-padding-lr});
-        }
-
         > .#{$css-prefix}tag-close-btn {
             display: inline-block;
             vertical-align: middle;
