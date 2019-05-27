@@ -65,6 +65,13 @@ export default ConfigProvider.config(Slider, {
             props = { onChange: afterChange, ...others };
         }
 
+        if ('beforeChange' in props) {
+            deprecated('beforeChange', 'onBeforeChange', 'Slider');
+
+            const { beforeChange, ...others } = props;
+            props = { onBeforeChange: beforeChange, ...others };
+        }
+
         return props;
     },
 });

@@ -43,7 +43,7 @@ export default class Button extends Component {
         /**
          * 设置标签类型
          */
-        component: PropTypes.oneOf(['button', 'a']),
+        component: PropTypes.oneOf(['button', 'a', 'div', 'span']),
         /**
          * 设置按钮的载入状态
          */
@@ -162,7 +162,7 @@ export default class Button extends Component {
             className: btnCls,
         };
 
-        if (TagName === 'a') {
+        if (TagName !== 'button') {
             delete tagAttrs.type;
 
             if (tagAttrs.disabled) {

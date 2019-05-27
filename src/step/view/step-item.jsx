@@ -186,7 +186,7 @@ class StepItem extends Component {
             nodeElement = icon ? (
                 <Icon type={icon} />
             ) : (
-                <div className={`${prefix}step-item-node-circle`}> </div>
+                <div className={`${prefix}step-item-node-dot`}> </div>
             );
         } else if (shape === 'circle' && percent) {
             nodeElement = (

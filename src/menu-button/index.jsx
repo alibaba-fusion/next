@@ -57,6 +57,10 @@ class MenuButton extends React.Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 默认激活的菜单项（用法同 Menu 非受控）
          */
         defaultSelectedKeys: PropTypes.array,
@@ -175,6 +179,7 @@ class MenuButton extends React.Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             selectMode,
             menuProps,
             children,
@@ -213,6 +218,7 @@ class MenuButton extends React.Component {
         return (
             <Popup
                 {...popupProps}
+                followTrigger={followTrigger}
                 visible={state.visible}
                 onVisibleChange={this.onPopupVisibleChange}
                 trigger={trigger}

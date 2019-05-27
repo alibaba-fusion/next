@@ -109,6 +109,58 @@ describe('Table', () => {
         );
     });
 
+    it('should support columnProps/titleProps/titleAddons of rowSelection', done => {
+        timeout(
+            {
+                rowSelection: {
+                    columnProps: () => {
+                        return {
+                            lock: 'right',
+                            width: 90,
+                            align: 'center',
+                        };
+                    },
+                    titleAddons: () => {
+                        return <div id="table-titleAddons">请选择</div>;
+                    },
+                    titleProps: () => {
+                        return {
+                            disabled: true,
+                            children: '>',
+                        };
+                    },
+                },
+            },
+            () => {
+                assert(
+                    wrapper
+                        .find('#table-titleAddons')
+                        .at(0)
+                        .text() === '请选择'
+                );
+                assert(
+                    wrapper
+                        .find('colgroup')
+                        .at(2)
+                        .props().children[0].props.style.width === 90
+                );
+                assert(
+                    wrapper
+                        .find('th .next-checkbox-wrapper')
+                        .at(1)
+                        .hasClass('disabled')
+                );
+                assert(
+                    wrapper
+                        .find('th .next-checkbox-wrapper .next-checkbox-label')
+                        .at(0)
+                        .text() === '>'
+                );
+                done();
+            }
+        );
+    });
+
     it('should support events', done => {
         const onRowClick = sinon.spy();
         const onRowMouseEnter = sinon.spy();
