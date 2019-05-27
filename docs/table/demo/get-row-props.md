@@ -50,7 +50,7 @@ const setCellProps = (rowIndex, colIndex, dataIndex, record) => {
     }
 };
 
-ReactDOM.render(<Table dataSource={dataSource()} getRowProps={setRowProps} getCellProps={setCellProps}>
+ReactDOM.render(<Table dataSource={dataSource()} rowProps={setRowProps} cellProps={setCellProps}>
     <Table.Column title="Id" dataIndex="id"/>
     <Table.Column title="Title" dataIndex="title.name" />
     <Table.Column title="Time" dataIndex="time"/>

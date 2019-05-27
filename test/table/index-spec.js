@@ -259,6 +259,26 @@ describe('Table', () => {
         );
     });
 
+    it('should support rowProps for setting className', done => {
+        const rowProps = record => {
+            if (record.id === '1') {
+                return { className: 'rowClassName' };
+            }
+        };
+        timeout(
+            {
+                rowProps,
+            },
+            () => {
+                const row = wrapper
+                    .find('.next-table-body .next-table-row')
+                    .first();
+                assert(row.hasClass('rowClassName'));
+                done();
+            }
+        );
+    });
+
     it('should support fixedHeader, isZebra, hasBorder, loading', done => {
         timeout(
             {
@@ -645,6 +665,80 @@ describe('Table', () => {
                     { id: '2', name: 'test2' },
                     { id: '3', name: 'test3' },
                 ],
+                cellProps: (rowIndex, colIndex) => {
+                    if (rowIndex == 0 && colIndex == 1) {
+                        return {
+                            rowSpan: 3,
+                        };
+                    }
+                },
+            },
+            () => {
+                assert(
+                    /test/.test(
+                        wrapper
+                            .find('.next-table-row')
+                            .at(0)
+                            .find('td')
+                            .at(1)
+                            .text()
+                    )
+                );
+                assert(
+                    wrapper
+                        .find('.next-table-row')
+                        .at(1)
+                        .find('td').length === 1
+                );
+                assert(
+                    wrapper
+                        .find('.next-table-row')
+                        .at(2)
+                        .find('td').length === 1
+                );
+            }
+        ).then(() => {
+            timeout(
+                {
+                    dataSource: [
+                        { id: '1', name: 'test' },
+                        { id: '2', name: 'test2' },
+                        { id: '3', name: 'test3' },
+                    ],
+                    cellProps: (rowIndex, colIndex) => {
+                        if (rowIndex == 0 && colIndex == 0) {
+                            return {
+                                colSpan: 2,
+                            };
+                        }
+                    },
+                },
+                () => {
+                    done();
+                    assert(
+                        /1/.test(
+                            wrapper
+                                .find('.next-table-row')
+                                .at(0)
+                                .find('td')
+                                .at(0)
+                                .text()
+                        )
+                    );
+                }
+            );
+        });
+    });
+
+    it('should support colspan & rowspan', done => {
+        wrapper.setProps({});
+        timeout(
+            {
+                dataSource: [
+                    { id: '1', name: 'test' },
+                    { id: '2', name: 'test2' },
+                    { id: '3', name: 'test3' },
+                ],
                 getCellProps: (rowIndex, colIndex) => {
                     if (rowIndex == 0 && colIndex == 1) {
                         return {
@@ -719,6 +813,34 @@ describe('Table', () => {
                     { id: '3', name: 'test3' },
                 ],
                 getRowProps: (record, index) => {
+                    if (index == 0) {
+                        return {
+                            'data-props': 'rowprops',
+                        };
+                    }
+                },
+            },
+            () => {
+                assert(
+                    wrapper
+                        .find('.next-table-row')
+                        .at(0)
+                        .prop('data-props') === 'rowprops'
+                );
+                done();
+            }
+        );
+    });
+
+    it('should support rowProps', done => {
+        timeout(
+            {
+                dataSource: [
+                    { id: '1', name: 'test' },
+                    { id: '2', name: 'test2' },
+                    { id: '3', name: 'test3' },
+                ],
+                rowProps: (record, index) => {
                     if (index == 0) {
                         return {
                             'data-props': 'rowprops',

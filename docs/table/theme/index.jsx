@@ -191,7 +191,7 @@ class FunctionDemo extends React.Component {
                         <Table dataSource={listDataSource} hasBorder={false}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={false} getRowProps={getSelectedRowProps}>{cols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={false} rowProps={getSelectedRowProps}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
                         <Table dataSource={[]} hasBorder={false}>{cols}</Table>
@@ -202,7 +202,7 @@ class FunctionDemo extends React.Component {
                         <Table dataSource={listDataSource}>{groupCols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} getRowProps={getSelectedRowProps}>{groupCols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} rowProps={getSelectedRowProps}>{groupCols}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
                         <Table dataSource={[]}>{groupCols}</Table>

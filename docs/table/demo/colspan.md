@@ -2,14 +2,14 @@
 
 - order: 7
 
-通过getCellProps进行列合并。
+通过 cellProps 进行列合并。
 
 :::lang=en-us
 # Consolidation
 
 - order: 7
 
-Merging column through getCellProps.
+Merging column through cellProps.
 :::
 
 ---
@@ -34,7 +34,7 @@ const onRowClick = function (record, index, e) {
     render = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     },
-    getCellProps = (rowIndex, colIndex) => {
+    cellProps = (rowIndex, colIndex) => {
         if (rowIndex === 2 && colIndex === 1) {
             return {
                 colSpan: 2,
@@ -49,7 +49,7 @@ const onRowClick = function (record, index, e) {
         }
     };
 
-ReactDOM.render(<Table dataSource={dataSource()} onRowClick={onRowClick} getCellProps={getCellProps}>
+ReactDOM.render(<Table dataSource={dataSource()} onRowClick={onRowClick} cellProps={cellProps}>
     <Table.Column title="Id" dataIndex="id"/>
     <Table.Column title="Title" dataIndex="title.name" />
     <Table.Column title="Time" dataIndex="time"/>
