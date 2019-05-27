@@ -166,7 +166,7 @@
 
     &:after {
         position: absolute;
-        font-family: NextIcon;
+        font-family: $icon-font-family;
         -webkit-font-smoothing: antialiased;
         content: $tick-icon;
         transform: scale(.6);
