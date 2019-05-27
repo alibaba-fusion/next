@@ -1,3 +1,5 @@
+import zhCN from '../locale/zh-cn.js';
+import { obj } from '../util';
 /**
  *
  * @param {Object|Boolean} input
@@ -36,11 +38,17 @@ export default function getContextProps(props, context, displayName) {
             localeFromContext.momentLocale = nextLocale.momentLocale;
         }
     }
+
     let newLocale;
     if (locale) {
-        newLocale = { ...(localeFromContext || {}), ...locale };
+        newLocale = obj.deepMerge(
+            {},
+            zhCN[displayName],
+            localeFromContext,
+            locale
+        );
     } else if (localeFromContext) {
-        newLocale = localeFromContext;
+        newLocale = obj.deepMerge({}, zhCN[displayName], localeFromContext);
     }
 
     const newPure = typeof pure === 'boolean' ? pure : nextPure;

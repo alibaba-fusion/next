@@ -348,7 +348,8 @@ describe('ConfigProvider', () => {
         });
         ConfigProvider.setLocale({
             Select: {
-                selectPlaceHolder: '哈哈',
+                selectPlaceholder: '哈哈',
+                selectPlaceHolder: '哈哈'
             },
         });
         wrapper = mount(<Select />);
