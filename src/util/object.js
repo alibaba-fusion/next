@@ -232,3 +232,35 @@ export function isNil(value) {
     // with loose equaliy
     return value == null; // eslint-disable-line eqeqeq
 }
+
+/**
+ * Deep merge two objects.
+ * @param target
+ * @param ...sources
+ * @reference https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge?page=1&tab=votes#tab-top
+ */
+export function deepMerge(target, ...sources) {
+    if (!sources.length) return target;
+    const source = sources.shift();
+
+    if (!isPlainObject(target)) {
+        target = {};
+    }
+
+    if (isPlainObject(target) && isPlainObject(source)) {
+        for (const key in source) {
+            if (isPlainObject(source[key])) {
+                if (!target[key]) Object.assign(target, { [key]: {} });
+                // fix {a: 'te'}, {a:{b:3}}
+                if (!isPlainObject(target[key])) {
+                    target[key] = source[key];
+                }
+                deepMerge(target[key], source[key]);
+            } else {
+                Object.assign(target, { [key]: source[key] });
+            }
+        }
+    }
+
+    return deepMerge(target, ...sources);
+}
