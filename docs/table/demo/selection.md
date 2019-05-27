@@ -45,21 +45,21 @@ ReactDOM.render(<Table
     rowSelection={{
         onChange: onChange,
         getProps: (record, index) => {
-            console.log(record, index)
+            console.log(record, index);
 
             return  index === 2 ? {
                 disabled: true,
                 children: index
             } : {
                 children: index
-            }
+            };
         },
         columnProps: () => {
             return {
                 lock: 'left',
                 width: 90,
                 align: 'center'
-            }
+            };
         },
         titleAddons: () => {
             return <div>请选择</div>;
@@ -76,7 +76,7 @@ ReactDOM.render(<Table
                     <Item key="odd">odd</Item>
                     <Item key="even">even</Item>
                 </MenuButton>
-            }
+            };
         }
     }}>
     <Table.Column title="Id" dataIndex="id" width={200}/>
