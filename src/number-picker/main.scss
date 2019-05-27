@@ -104,6 +104,10 @@
                 @include icon-size($number-picker-inline-m-button-icon-size);
             }
 
+            .#{$css-prefix}btn {
+                height: $form-element-medium-height;
+            }
+
             .#{$css-prefix}btn:first-child {
                 margin-right: $number-picker-inline-m-button-margin;
             }
@@ -118,6 +122,10 @@
 
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-l-button-icon-size);
+            }
+
+            .#{$css-prefix}btn {
+                height: $form-element-large-height;
             }
 
             .#{$css-prefix}btn:first-child {
