@@ -54,7 +54,9 @@ class Demo extends React.Component{
 
 ReactDOM.render(
     <div>
-        <Select mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
+        <Select maxTagCount={2} maxTagPlaceholder={(cu, total) => `+${cu}`} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Select maxTagCount={2} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
         &nbsp;&nbsp;&nbsp;&nbsp;
         <Select hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
         &nbsp;&nbsp;&nbsp;&nbsp;

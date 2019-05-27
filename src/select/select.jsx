@@ -123,6 +123,21 @@ class Select extends Base {
          */
         searchValue: PropTypes.string,
         /**
+         * tag最多显示的字符数
+         * @type {[type]}
+         */
+        maxTagTextLength: PropTypes.number,
+        /**
+         * 最多显示多少个 tag
+         * @type {[type]}
+         */
+        maxTagCount: PropTypes.number,
+        /**
+         * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
+         * @type {[type]}
+         */
+        maxTagPlaceholder: PropTypes.func,
+        /**
          * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
          */
         hiddenSelected: PropTypes.bool,
@@ -153,6 +168,7 @@ class Select extends Base {
         cacheValue: true,
         onSearch: noop,
         onSearchClear: noop,
+        maxTagPlaceholder: (selected, total) => `${selected} / ${total}`,
         hasArrow: true,
         onRemove: noop,
         // highlightFirstItem: true,
@@ -684,7 +700,16 @@ class Select extends Base {
      * @param {object} props
      */
     renderValues() {
-        const { mode, size, valueRender, fillProps, disabled } = this.props;
+        const {
+            mode,
+            size,
+            valueRender,
+            fillProps,
+            disabled,
+            maxTagCount,
+            maxTagTextLength,
+            maxTagPlaceholder,
+        } = this.props;
         let value = this.state.value;
 
         if (isNull(value)) {
@@ -709,21 +734,49 @@ class Select extends Base {
                 return null;
             }
 
-            const retvalue = fillProps ? value[fillProps] : valueRender(value);
+            const retvalue =
+                fillProps && fillProps in value
+                    ? value[fillProps]
+                    : valueRender(value);
             // 0 => '0'
             return typeof retvalue === 'number'
                 ? retvalue.toString()
                 : retvalue;
         } else if (value) {
+            let limitedCountValue = value;
+            let maxTagPlaceholderEl;
+
+            if (maxTagCount !== undefined && value.length > maxTagCount) {
+                const totalLen = this.dataStore.getFlattenDS().length;
+
+                limitedCountValue = limitedCountValue.slice(0, maxTagCount);
+                maxTagPlaceholderEl = (
+                    <Tag
+                        type="primary"
+                        size={size === 'large' ? 'medium' : 'small'}
+                        animation={false}
+                    >
+                        {maxTagPlaceholder(value.length, totalLen)}
+                    </Tag>
+                );
+            }
+            value = limitedCountValue;
             if (!Array.isArray(value)) {
                 value = [value];
             }
-            return value.map(v => {
+            const selectedValueNodes = value.map(v => {
                 if (!v) {
                     return null;
                 }
-
                 const labelNode = fillProps ? v[fillProps] : valueRender(v);
+                let content = labelNode;
+                if (
+                    maxTagTextLength &&
+                    typeof content === 'string' &&
+                    content.length > maxTagTextLength
+                ) {
+                    content = `${content.slice(0, maxTagTextLength)}..`;
+                }
                 return (
                     <Tag
                         key={v.value}
@@ -734,10 +787,15 @@ class Select extends Base {
                         onClose={this.handleTagClose.bind(this, v)}
                         closable
                     >
-                        {labelNode}
+                        {content}
                     </Tag>
                 );
             });
+
+            if (maxTagPlaceholderEl) {
+                selectedValueNodes.push(maxTagPlaceholderEl);
+            }
+            return selectedValueNodes;
         }
 
         return null;
@@ -898,7 +956,6 @@ class Select extends Base {
         const valuetext = this.valueDataSource.valueDS
             ? this.valueDataSource.valueDS.label
             : '';
-
         return (
             <span
                 {...othersData}

@@ -257,7 +257,7 @@
     }
 
     &.#{$css-prefix}active {
-        #{$select-prefix}-arrow {
+        #{$select-prefix}-arrow .#{$css-prefix}icon-arrow-down {
             transform: rotate(180deg);
         }
     }

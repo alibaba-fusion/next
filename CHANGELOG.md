@@ -1,5 +1,49 @@
 # Change Log 
 
+# [1.15.0](https://github.com/alibaba-fusion/next/compare/1.14.6...1.15.0) (2019-05-24)
+
+
+### Bug Fixes
+
+* fusion cool render issues ([fbdffaa](https://github.com/alibaba-fusion/next/commit/fbdffaa))
+* **Calendar:** select month auto change date view ([354f545](https://github.com/alibaba-fusion/next/commit/354f545))
+* **Field:** resetDefault when parseValue false ([e2c2b00](https://github.com/alibaba-fusion/next/commit/e2c2b00))
+* **Message:** can`t close after click ([53fe94d](https://github.com/alibaba-fusion/next/commit/53fe94d))
+* **Select:** init flatten ds ([57667a4](https://github.com/alibaba-fusion/next/commit/57667a4))
+* **Select:** value no show fillProps with empty dataSource. Close [#715](https://github.com/alibaba-fusion/next/issues/715) ([70a15ab](https://github.com/alibaba-fusion/next/commit/70a15ab))
+
+
+### Features
+
+* **Select:** add api to customize show tag content ([4c29109](https://github.com/alibaba-fusion/next/commit/4c29109))
+* **Select:** add maxTagPlaceholder ([bfc9b20](https://github.com/alibaba-fusion/next/commit/bfc9b20))
+
+
+
+
+## [1.14.6](https://github.com/alibaba-fusion/next/compare/1.14.5...1.14.6) (2019-05-23)
+
+
+### Bug Fixes
+
+* **CascaderSelect:** Fixed [#676](https://github.com/alibaba-fusion/next/issues/676) ([b8a0ba2](https://github.com/alibaba-fusion/next/commit/b8a0ba2))
+* **Field:** init values with parseName=false ([0c92cfb](https://github.com/alibaba-fusion/next/commit/0c92cfb))
+
+
+
+
+## [1.14.5](https://github.com/alibaba-fusion/next/compare/1.14.4...1.14.5) (2019-05-22)
+
+
+### Bug Fixes
+
+* **Field:** parseName defaults ([#683](https://github.com/alibaba-fusion/next/issues/683)) ([7fe0130](https://github.com/alibaba-fusion/next/commit/7fe0130))
+* **Field:** revert typescript of Field to any ([c35d935](https://github.com/alibaba-fusion/next/commit/c35d935))
+* **Input:** maxLength in safari on Mac. Close [#671](https://github.com/alibaba-fusion/next/issues/671) ([f771d67](https://github.com/alibaba-fusion/next/commit/f771d67))
+* **Tab:** should not listen to extra keyboard events ([50e1699](https://github.com/alibaba-fusion/next/commit/50e1699))
+
+
+
 ## [1.14.4](https://github.com/alibaba-fusion/next/compare/1.14.3...1.14.4) (2019-05-16)
 
 

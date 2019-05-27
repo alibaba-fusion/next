@@ -448,6 +448,9 @@ export default class CascaderSelect extends Component {
 
         const positions = value.map(this.getPos.bind(this));
         positions.forEach(pos => {
+            if (!pos) {
+                return false;
+            }
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');

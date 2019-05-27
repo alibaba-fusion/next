@@ -398,7 +398,7 @@
             );
 
             &:not(:last-child):after {
-                content: ' ';
+                content: '';
                 position: absolute;
                 right: 0;
                 top: calc(50% - #{$tab-text-item-sep-height / 2});
