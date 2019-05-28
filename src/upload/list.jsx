@@ -224,7 +224,7 @@ class List extends Component {
                         type="close"
                         size="large"
                         role="button"
-                        aria-label={locale.upload.delete}
+                        aria-label={locale.upload && locale.upload.delete}
                         tabIndex="0"
                         onClick={onClick}
                         onKeyDown={onKeyDown}
