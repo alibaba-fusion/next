@@ -1,11 +1,11 @@
 # Latest Log 
 
-## [1.14.6](https://github.com/alibaba-fusion/next/compare/1.14.5...1.14.6) (2019-05-23)
+## [1.14.8](https://github.com/alibaba-fusion/next/compare/1.14.6...1.14.8) (2019-05-28)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** Fixed [#676](https://github.com/alibaba-fusion/next/issues/676) ([b8a0ba2](https://github.com/alibaba-fusion/next/commit/b8a0ba2))
-* **Field:** init values with parseName=false ([0c92cfb](https://github.com/alibaba-fusion/next/commit/0c92cfb))
+* **Field:** resetDefault when parseValue false ([cd2623e](https://github.com/alibaba-fusion/next/commit/cd2623e))
+* **Upload:** make sure locale.upload is valid ([04c2417](https://github.com/alibaba-fusion/next/commit/04c2417))
 
 
