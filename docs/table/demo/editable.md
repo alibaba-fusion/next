@@ -91,7 +91,7 @@ class Demo extends React.Component {
         };
     }
     renderCell = (value, index, record) => {
-        return <EditablePane defaultTitle={value}/>
+        return <EditablePane defaultTitle={value}/>;
     }
 
     render() {
