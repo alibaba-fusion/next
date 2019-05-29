@@ -31,6 +31,7 @@
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 0 0 $paddingLr;
+        max-width: calc(100% - #{$_marginLeft + $iconSize + $paddingLr});
     }
     &[dir=rtl].#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 $paddingLr 0 0;
