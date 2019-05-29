@@ -52,13 +52,11 @@
     $iconColor,
     $bgColor,
     $borderColor,
-    $corner,
     $shadow,
     $icon
 ) {
     background-color: $bgColor;
     border-color: $borderColor;
-    border-radius: $corner;
     box-shadow: $shadow;
 
     .#{$css-prefix}message-title {
