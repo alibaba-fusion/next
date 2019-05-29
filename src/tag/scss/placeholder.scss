@@ -123,6 +123,17 @@
     );
 }
 
+%tag-statement-normal {
+    @include tag-statement(
+        $tag-secondary-text-color,
+        $tag-secondary-border-color,
+        $tag-secondary-bg,
+        $tag-secondary-text-color-hover,
+        $tag-secondary-border-color-hover,
+        $tag-secondary-bg-hover
+    );
+}
+
 %tag-statement-secondary {
     @include tag-statement(
         $tag-secondary-text-color,
