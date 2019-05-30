@@ -23,7 +23,6 @@ export default class Column extends React.Component {
         ]),
         /**
          * 表头显示的内容
-         * value, rowIndex, record, context四个属性只可读不可被更改
          */
         title: PropTypes.oneOfType([
             PropTypes.element,
