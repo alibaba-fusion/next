@@ -18,9 +18,6 @@ When popup is nested in another popup, say DatePicker is nested in Balloon, use 
 ````jsx
 import { Button, Balloon } from '@alifd/next';
 
-
-
-
 class App extends React.Component {
     constructor(props) {
         super(props);
