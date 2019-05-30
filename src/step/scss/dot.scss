@@ -137,7 +137,7 @@
         padding: 0 0 0 4px;
         font-size: 0;
         display: table-cell;
-        // vertical-align: middle;
+        width: $step-dot-item-dot-wait-size + 4;
         #{$step-prefix}-item-container {
             padding: 0;
         }
