@@ -71,6 +71,7 @@ export default {
         selectPlaceholder: '請選擇',
         autoCompletePlaceholder: '請輸入',
         notFoundContent: '無選項',
+        maxTagPlaceholder: '已選擇 {selected}/{total} 項',
     },
     Table: {
         empty: '沒有數據',
