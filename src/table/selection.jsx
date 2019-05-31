@@ -173,21 +173,20 @@ export default function selection(BaseComponent) {
             if (checked) {
                 indeterminate = false;
             }
-            return (
-                <React.Fragment>
-                    {mode === 'multiple' ? (
-                        <Checkbox
-                            indeterminate={indeterminate}
-                            aria-label={locale.selectAll}
-                            checked={checked}
-                            onChange={onChange}
-                            {...attrs}
-                            {...userAttrs}
-                        />
-                    ) : null}
-                    {rowSelection.titleAddons && rowSelection.titleAddons()}
-                </React.Fragment>
-            );
+            return [
+                mode === 'multiple' ? (
+                    <Checkbox
+                        key="_total"
+                        indeterminate={indeterminate}
+                        aria-label={locale.selectAll}
+                        checked={checked}
+                        onChange={onChange}
+                        {...attrs}
+                        {...userAttrs}
+                    />
+                ) : null,
+                rowSelection.titleAddons && rowSelection.titleAddons(),
+            ];
         };
 
         renderSelectionBody = (value, index, record) => {
