@@ -15,6 +15,18 @@ Use align prop to set align type
 
 ---
 
+````css
+.overlay-container {
+    position: relative;
+    height: 150px;
+    margin: 50px;
+    border: 1px solid #999;
+    overflow: auto;
+    text-align: center;
+    color: red;
+}
+````
+
 ````jsx
 import { Overlay } from '@alifd/next';
 
@@ -37,16 +49,4 @@ ReactDOM.render(
         </div>
     </div>
     , mountNode);
-````
-
-````css
-.overlay-container {
-    position: relative;
-    height: 150px;
-    margin: 50px;
-    border: 1px solid #999;
-    overflow: auto;
-    text-align: center;
-    color: red;
-}
 ````

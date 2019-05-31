@@ -61,6 +61,7 @@
         font-size: $upload-text-list-font-size;
         overflow: hidden;
         transition: all .2s ease-out;
+        border-radius: $upload-text-list-corner;
 
         &:not(:last-child) {
             margin-bottom: 4px;
@@ -143,6 +144,8 @@
         font-size: $upload-image-list-item-font-size;
         transition: all .2s ease-out;
         overflow: hidden;
+        border-radius: $upload-card-list-corner;
+
         &:not(:last-child) {
             margin-bottom: 4px;
         }

@@ -72,6 +72,7 @@ export default {
         selectPlaceholder: 'Please Select',
         autoCompletePlaceholder: 'Please Input',
         notFoundContent: 'No Options',
+        maxTagPlaceholder: 'Selected {selected}/{total} Total',
     },
     Table: {
         empty: 'No Data',

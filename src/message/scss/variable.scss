@@ -93,14 +93,20 @@ $message-close-icon-size: $icon-xs;
 // ----------------------------------------
 
 /// corner
-/// @namespace statement/normal/bounding
-$message-border-radius: $corner-1 !default;
+/// @namespace size/bounding
+$message-size-l-border-radius: $corner-1 !default;
+/// corner
+/// @namespace size/bounding
+$message-size-m-border-radius: $corner-1 !default;
+/// corner
+/// @namespace size/bounding
+$message-size-l-border-radius-toast: $corner-1 !default;
+/// corner
+/// @namespace size/bounding
+$message-size-m-border-radius-toast: $corner-1 !default;
 /// border style
 /// @namespace statement/normal/bounding
 $message-border-style: $line-solid !default;
-/// corner
-/// @namespace statement/normal/bounding
-$message-border-radius-toast: $corner-1 !default;
 /// border style
 /// @namespace statement/normal/bounding
 $message-border-style-toast: $line-solid !default;

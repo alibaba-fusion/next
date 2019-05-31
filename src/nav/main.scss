@@ -97,6 +97,7 @@ $nav-icononly-width: $s-15;
             &:before {
                 width: 0;
                 left: 50%;
+                height: $nav-hoz-item-selected-active-line;
             }
 
             &:hover:before {
@@ -165,6 +166,7 @@ $nav-icononly-width: $s-15;
             &:before {
                 height: 0;
                 top: 50%;
+                width: $nav-ver-item-selected-active-line;
             }
 
             &:hover:before {
