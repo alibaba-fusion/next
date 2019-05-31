@@ -30,8 +30,8 @@ Form Input, use it with Form components usually.
 | readOnly        | read only, forbid editing    | Boolean       | false     |
 | trim            | onChange will  auto trim text                                                                                      | Boolean       | false     |
 | placeholder     | place holder  | String        | -         |
-| onFocus         | callback when input get focused<br><br>**signature**:<br>Function() => void  | Function      | func.noop |
-| onBlur          | callback when input lose focused<br><br>**signature**:<br>Function() => void   | Function      | func.noop |
+| onFocus         | callback when input get focused<br><br>**signature**:<br>Function(e: Event) => void <br>**params**:<br>_e_: {Event} DOM Event Object  | Function      | func.noop |
+| onBlur          | callback when input lose focused<br><br>**signature**:<br>Function(e: Event) => void <br>**params**:<br>_e_: {Event} DOM Event Object  | Function      | func.noop |
 | getValueLength  | define the  value length caculation<br><br>**signature**:<br>Function(value: String) => Number<br>**params**:<br>_value_: {String} Data<br>returns:<br>{Number} caculated length<br> | Function      | func.noop |
 | htmlType        | html input type     | String        | -         |
 | state           | state<br><br>option:<br>'error'<br>'loading'<br>'success'    | Enum          | -         |

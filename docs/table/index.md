@@ -140,7 +140,7 @@ ReactDOM.render(
 | ----------- | --------------------------------------------------------------------------------------------------- | ------------------------------- | -------------- |
 | dataIndex   | 指定列对应的字段，支持`a.b`形式的快速取值                                                                             | String                          | -              |
 | cell        | 行渲染的逻辑<br>value, rowIndex, record, context四个属性只可读不可被更改<br>Function(value, index, record) => Element | ReactElement/ReactNode/Function | value => value |
-| title       | 表头显示的内容<br>value, rowIndex, record, context四个属性只可读不可被更改                                             | ReactElement/ReactNode/Function | -              |
+| title       | 表头显示的内容                                                                                             | ReactElement/ReactNode/Function | -              |
 | sortable    | 是否支持排序                                                                                              | Boolean                         | -              |
 | width       | 列宽，注意在锁列的情况下一定需要配置宽度                                                                                | Number/String                   | -              |
 | align       | 单元格的对齐方式<br><br>**可选值**:<br>'left', 'center', 'right'                                               | Enum                            | -              |
