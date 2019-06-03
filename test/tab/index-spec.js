@@ -141,7 +141,7 @@ describe('Tab', () => {
             const tabBar = wrapper.find('.next-tabs-bar').instance();
             assert(
                 tabBar.style.background === 'red' ||
-                    tabBar.style.background.startsWith('red')
+                tabBar.style.background.startsWith('red')
             );
         });
 
@@ -161,7 +161,7 @@ describe('Tab', () => {
             const tabContent = wrapper.find('.next-tabs-content').instance();
             assert(
                 tabContent.style.background === 'red' ||
-                    tabContent.style.background.startsWith('red')
+                tabContent.style.background.startsWith('red')
             );
         });
 
@@ -464,7 +464,7 @@ describe('Tab', () => {
             );
         });
     });
-    describe('animation sensitive tests', ()=>{
+    describe('animation sensitive tests', () => {
         let target;
         const delay = time => new Promise(resolve => setTimeout(resolve, time));
         const panes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
@@ -476,7 +476,7 @@ describe('Tab', () => {
             target = document.createElement('div');
             document.body.appendChild(target);
         });
-    
+
         afterEach(() => {
             ReactDOM.unmountComponentAtNode(target);
             document.body.removeChild(target);
@@ -500,27 +500,27 @@ describe('Tab', () => {
         it('should show slide buttons', async () => {
             ReactDOM.render(
                 <div style={boxStyle}>
-                <Tab rtl excessMode="slide">
-                    {panes}
-                </Tab>
-            </div>, target);
+                    <Tab rtl excessMode="slide">
+                        {panes}
+                    </Tab>
+                </div>, target);
             await delay(800);
             assert(target.querySelector('.next-tabs-btn-prev').classList.contains("disabled"));
         });
         it('should slide', async () => {
             ReactDOM.render(
-            <div style={boxStyle}>
-                <Tab rtl excessMode="slide">
-                    {panes}
-                </Tab>
-            </div>, target);
+                <div style={boxStyle}>
+                    <Tab rtl excessMode="slide">
+                        {panes}
+                    </Tab>
+                </div>, target);
             let prev, newpos;
             await delay(1800);
             prev = target.querySelector(".next-tabs-nav").getBoundingClientRect().left;
             target.querySelector(".next-tabs-btn-next").click();
             await delay(200);
             newpos = target.querySelector(".next-tabs-nav").getBoundingClientRect().left;
-            assert(newpos > prev);                
+            assert(newpos > prev);
         });
 
         it('should adjust scroll length so that tab not partially in view', async () => {
@@ -558,7 +558,7 @@ describe('Tab', () => {
             assert(rst[1] === '0');
         });
 
-        it('should adjust scroll length', async() => {
+        it('should adjust scroll length', async () => {
             const newpanes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
                 (item, index) => (
                     <Tab.Item title={`tabsss item ${item}`} key={index}>
@@ -578,12 +578,12 @@ describe('Tab', () => {
                         {newpanes}
                     </Tab>
                 </div>, target);
-            await delay(1000);
+            await delay(1200);
             let transStr = target.querySelector('.next-tabs-nav').style.transform;
             let rst = transStr.match(
                 /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
             );
-            assert(parseInt(rst[1])>0);
+            assert(parseInt(rst[1]) > 0);
             target.querySelector('.next-tabs-btn-prev').click();
             await delay(1000);
             transStr = target.querySelector('.next-tabs-nav').style.transform;
@@ -591,6 +591,45 @@ describe('Tab', () => {
                 /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
             );
             assert(rst[1] === '0');
+        });
+
+        it('should auto scroll to active tab', async () => {
+            const tabs = [
+                { tab: 'Home', key: 1 },
+                { tab: 'Documnet', key: 2 },
+                { tab: 'Setting', key: 3 },
+                { tab: 'Help', key: 4 },
+                { tab: 'Admin', key: 5 },
+                { tab: 'More 1', key: 6 },
+                { tab: 'More 2', key: 7 },
+                { tab: 'More 3', key: 8 },
+                { tab: 'More 4', key: 9 },
+                { tab: 'More 5', key: 10 },
+                { tab: 'More 6', key: 11 },
+                { tab: 'More 7', key: 12 },
+                { tab: 'More 8', key: 13 },
+                { tab: 'More 9', key: 14 },
+                { tab: 'More 10', key: 15 },
+                { tab: 'More 11', key: 16 },
+                { tab: 'More 12', key: 17 },
+                { tab: 'More 13', key: 18 },
+                { tab: 'More 14', key: 19 }
+            ];
+            ReactDOM.render(
+                <div className="fusion-demo" style={{ maxWidth: '520px' }}>
+                    <div className="demo-item-title">Controlled mode</div>
+                    <Tab excessMode="slide" activeKey={9}>
+                        {
+                            tabs.map(item => <Tab.Item key={item.key} title={item.tab}>{item.tab} content, content, content</Tab.Item>)
+                        }
+                    </Tab>
+                </div>, target);
+            await delay(1200);
+            let transStr = target.querySelector('.next-tabs-nav').style.transform;
+            let rst = transStr.match(
+                /translate3d\((\-?\d+\.\d+|\-?\d+)px,.*\)/i
+            );
+            assert(parseInt(rst[1]) < 560);
         });
     });
     describe('rtl mode', () => {
