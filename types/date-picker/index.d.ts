@@ -192,7 +192,7 @@ export interface RangePickerProps extends HTMLAttributesWeak {
     /**
      * 点击确认按钮时的回调 返回开始时间和结束时间`[ MomentObject|String, MomentObject|String ]`
      */
-    onOk?: () => Array<any>;
+    onOk?: (value: Array<any>) => void;
 
     /**
      * 输入框内置标签
@@ -493,7 +493,7 @@ export interface DatePickerProps extends HTMLAttributesWeak {
     /**
      * 点击确认按钮时的回调
      */
-    onOk?: () => {} | string;
+    onOk?: (value: {} | string) => void;
 
     /**
      * 输入框尺寸
