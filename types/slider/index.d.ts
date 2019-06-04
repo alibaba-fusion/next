@@ -75,7 +75,7 @@ export interface SliderProps extends HTMLAttributesWeak {
     /**
      * 导航锚点的 CSS 类
      */
-    dotsClass?: boolean;
+    dotsClass?: string;
 
     /**
      * 导航锚点位置
