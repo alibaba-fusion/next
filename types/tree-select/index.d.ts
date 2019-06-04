@@ -163,7 +163,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak {
      */
     popupContainer?:
         | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+        | ((target: Node) => Node);
 
     /**
      * 透传到 Popup 的属性对象

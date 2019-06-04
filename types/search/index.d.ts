@@ -78,7 +78,7 @@ export interface SearchProps extends HTMLAttributesWeak {
      */
     popupContainer?:
         | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+        | ((target: Node) => Node);
 
     /**
      * 弹层的 className

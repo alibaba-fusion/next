@@ -76,7 +76,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
      */
     popupContainer?:
         | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+        | ((target: Node) => Node);
 
     /**
      * 弹层id, 传入值才会支持无障碍
@@ -219,7 +219,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
      */
     popupContainer?:
         | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+        | ((target: Node) => Node);
 
     /**
      * 弹层组件style，透传给Popup
