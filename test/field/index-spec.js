@@ -416,6 +416,57 @@ describe('field', () => {
             done();
         });
 
+        it('should show setError on validate', function(done) {
+            const field = new Field(this);
+            const inited = field.init('input');
+            const wrapper = mount(<Input {...inited} />);
+            
+            field.setError('input', 'my error');
+            field.validate('input', (err) => {
+                assert(err.input.errors[0] === 'my error');
+                wrapper.unmount();
+                done();
+            });
+        });
+
+        it('should merge setError and rules on validate', function(done) {
+            const field = new Field(this);
+            const inited = field.init('input');
+            const inited2 = field.init('input2', {
+                rules: [{ required: true, message: 'cant be null' }],
+            });
+            const wrapper = mount(<Input {...inited} />);
+            const wrapper2 = mount(<Input {...inited2} />);
+
+            field.setError('input', 'my error');
+            field.validate((err) => {
+                assert(err.input.errors[0] === 'my error');
+                assert(err.input2.errors[0] === 'cant be null');
+
+                wrapper.unmount();
+                wrapper2.unmount();
+                done();
+            });
+        });
+
+        it('should overwrite setError errors when using rules', function(done) {
+            const field = new Field(this);
+
+            const inited = field.init('input', {
+                rules: [{ required: true, message: 'cant be null' }],
+            });
+            const wrapper = mount(<Input {...inited} />);
+
+            field.setError('input', 'my error');
+            field.validate((err) => {
+                assert(err.input.errors.length === 1);
+                assert(err.input.errors[0] === 'cant be null');
+
+                wrapper.unmount();
+                done();
+            });
+        });
+
         it('reset', function(done) {
             const field = new Field(this);
             field.init('input', { initValue: '1' });
