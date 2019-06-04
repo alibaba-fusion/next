@@ -101,9 +101,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -247,9 +245,7 @@ export interface RangePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -393,9 +389,7 @@ export interface YearPickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -538,9 +532,7 @@ export interface DatePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
