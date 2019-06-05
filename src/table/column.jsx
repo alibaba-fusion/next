@@ -60,6 +60,12 @@ export default class Column extends React.Component {
          */
         filterMode: PropTypes.oneOf(['single', 'multiple']),
         /**
+         * filter 模式下传递给 Menu 菜单的属性， 默认继承 `Menu` 组件的API
+         * @property {Boolean} subMenuSelectable 默认为`false` subMenu是否可选择
+         * @property {Boolean} isSelectIconRight 默认为`false` 是否将选中图标居右。注意：SubMenu 上的选中图标一直居左，不受此API控制
+         */
+        filterMenuProps: PropTypes.object,
+        /**
          * 是否支持锁列,可选值为`left`,`right`, `true`
          */
         lock: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
@@ -76,6 +82,9 @@ export default class Column extends React.Component {
     static defaultProps = {
         cell: value => value,
         filterMode: 'multiple',
+        filterMenuProps: {
+            subMenuSelectable: false,
+        },
         resizable: false,
     };
 
