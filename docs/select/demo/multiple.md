@@ -57,8 +57,8 @@ const maxTagPlaceholder = (selectedValues, totalValues) => {
     const trigger = <span>{`已选择 ${selectedValues.length}/${totalValues.length} 项`}</span>;
     const labels = selectedValues.map(obj => obj.label);
 
-    return <Tooltip trigger={trigger}>{ labels.join(', ') }</Tooltip>
-}
+    return <Tooltip trigger={trigger}>{ labels.join(', ') }</Tooltip>;
+};
 
 ReactDOM.render(
     <div>

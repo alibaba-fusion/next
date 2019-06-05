@@ -25,9 +25,7 @@ export interface MenuButtonProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层展开状态

@@ -79,6 +79,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | popupClassName | className of the shell | any | - |
 | popupStyle | Inline style of the shell | Object | - |
 | popupProps | Attributes added to the shell | Object | {} |
+| followTrigger         | follow Trigger or not                                                                                                                                                                                                                             | Boolean                 | -         |
 | popupContent | Content of custom shell | ReactNode | - |
 | filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
 | filter | A local filter method that returns a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |
@@ -125,6 +126,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | popupClassName | className of the shell | any | - |
 | popupStyle | Inline style of the shell | Object | - |
 |popupProps | Attributes added to the shell | Object | {} |
+| followTrigger         | follow Trigger or not                                                                                                                                                                                                                             | Boolean                 | -         |
 | popupContent | Content of custom shell | ReactNode | - |
 | filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
 | filter | Local filter method, returning a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |

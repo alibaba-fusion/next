@@ -1,10 +1,15 @@
 # Latest Log 
 
-## [1.15.3](https://github.com/alibaba-fusion/next/compare/1.15.2...1.15.3) (2019-05-30)
+## [1.15.4](https://github.com/alibaba-fusion/next/compare/1.15.3...1.15.4) (2019-05-31)
 
 
 ### Bug Fixes
 
-* **Select:** tag should show all content but it ellipsis, close [#751](https://github.com/alibaba-fusion/next/issues/751) ([46122aa](https://github.com/alibaba-fusion/next/commit/46122aa))
+* **Table:** React.Fragment is supported in 16.2.4, use [] instead ([aec5368](https://github.com/alibaba-fusion/next/commit/aec5368))
+
+
+### Features
+
+* **Select:** add API tagInline to make it won't wrap ([d21f8a1](https://github.com/alibaba-fusion/next/commit/d21f8a1))
 
 

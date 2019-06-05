@@ -187,8 +187,8 @@
                 right: 0;
                 z-index: 1;
                 padding: 0 4px 0 16px;
-                color: $color-text1-3;
-                background: linear-gradient(90deg, rgba(255, 255, 255, 0), #FFF 10px);
+                color: $input-text-color;
+                background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-bg-color 10px);
             }
         }
     }

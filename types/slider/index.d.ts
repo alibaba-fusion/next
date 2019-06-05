@@ -73,6 +73,11 @@ export interface SliderProps extends HTMLAttributesWeak {
     dots?: boolean;
 
     /**
+     * 导航锚点的 CSS 类
+     */
+    dotsClass?: string;
+
+    /**
      * 导航锚点位置
      */
     dotsDirection?: 'hoz' | 'ver';
