@@ -87,6 +87,10 @@ export default class Base extends React.Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 自定义弹层的内容
          */
         popupContent: PropTypes.node,

@@ -200,6 +200,10 @@ export default class CascaderSelect extends Component {
          * 透传到 Popup 的属性对象
          */
         popupProps: PropTypes.object,
+        /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -583,6 +587,10 @@ export default class CascaderSelect extends Component {
         if (onChange) {
             onChange(value, data, extra);
         }
+
+        if (searchValue && this.select) {
+            this.select.handleSearchClear();
+        }
     }
 
     handleClear() {
@@ -789,6 +797,7 @@ export default class CascaderSelect extends Component {
             popupClassName,
             popupContainer,
             popupProps,
+            followTrigger,
         } = this.props;
         const { value, searchValue, visible } = this.state;
         const others = pickOthers(
@@ -821,7 +830,7 @@ export default class CascaderSelect extends Component {
             visible,
             onVisibleChange: this.handleVisibleChange,
             showSearch,
-            searchValue,
+            // searchValue,
             onSearch: this.handleSearch,
             onKeyDown: this.handleKeyDown,
             popupContent,
@@ -829,6 +838,7 @@ export default class CascaderSelect extends Component {
             popupClassName,
             popupContainer,
             popupProps,
+            followTrigger,
         };
 
         if (showSearch) {

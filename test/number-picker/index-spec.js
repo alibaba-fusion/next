@@ -244,11 +244,13 @@ describe('number-picker', () => {
             let onChange = value => {
                     assert(value === 20);
                 },
+                onDisabled = sinon.spy(),
                 wrapper = mount(
                     <NumberPicker
                         defaultValue={19}
                         max={20}
                         step={3}
+                        onDisabled={onDisabled}
                         onChange={onChange}
                     />
                 );
@@ -262,6 +264,8 @@ describe('number-picker', () => {
                 .at(0)
                 .simulate('click');
 
+            assert(onDisabled.calledOnce);
+
             let onChange2 = value => {
                     assert(value === 18);
                 },
@@ -271,6 +275,7 @@ describe('number-picker', () => {
                         max={20}
                         min={18}
                         step={3}
+                        onDisabled={onDisabled}
                         onChange={onChange2}
                     />
                 );
@@ -284,6 +289,7 @@ describe('number-picker', () => {
                 .at(1)
                 .simulate('click');
 
+            assert(onDisabled.calledTwice);
             assert(
                 mount(
                     <NumberPicker

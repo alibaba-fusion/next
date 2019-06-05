@@ -36,8 +36,13 @@
             border-top: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
         }
 
-        &-footer > #{$date-picker-btn-prefix}:not(:last-child) {
+        &-footer > #{$date-picker-btn-prefix}:not(:last-child),
+        &-tools > #{$date-picker-btn-prefix}:not(:last-child) {
             margin-right: $s-4;
+        }
+
+        &-tools {
+            float: left;
         }
     }
 

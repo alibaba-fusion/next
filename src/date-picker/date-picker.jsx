@@ -142,6 +142,10 @@ export default class DatePicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
@@ -157,6 +161,7 @@ export default class DatePicker extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 日期输入框的 aria-label 属性
          */
@@ -469,10 +474,12 @@ export default class DatePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             inputProps,
             dateCellRender,
             monthCellRender,
+            yearCellRender,
             dateInputAriaLabel,
             timeInputAriaLabel,
             ...others
@@ -547,6 +554,7 @@ export default class DatePicker extends Component {
                 format={this.format}
                 dateCellRender={dateCellRender}
                 monthCellRender={monthCellRender}
+                yearCellRender={yearCellRender}
                 onSelect={this.onSelectCalendarPanel}
                 defaultVisibleMonth={defaultVisibleMonth}
                 onVisibleMonthChange={onVisibleMonthChange}
@@ -652,6 +660,7 @@ export default class DatePicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     disabled={disabled}
                     visible={visible}

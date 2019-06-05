@@ -20,13 +20,30 @@
     );
 }
 
-%tag-statement-fill {
+%tag-statement-primary {
     @include tag-statement(
         $tag-fill-text-color,
-        $tag-fill-bg-color,
+        $tag-fill-border-color,
         $tag-fill-bg-color,
         $tag-fill-text-color-hover,
+        $tag-fill-border-color-hover,
         $tag-fill-bg-color-hover,
+        $tag-fill-tail-color,
+        $tag-fill-tail-color-hover,
+        $tag-fill-tail-color-disabled,
+        $tag-fill-text-color-disabled,
+        $tag-fill-border-color-disabled,
+        $tag-fill-bg-color-disabled
+    );
+}
+
+%tag-statement-closable-primary {
+    @include tag-statement(
+        $tag-fill-text-color,
+        $tag-fill-border-color,
+        $tag-fill-bg-color,
+        $tag-fill-text-color-hover,
+        $tag-fill-border-color-hover,
         $tag-fill-bg-color-hover,
         $tag-fill-tail-color,
         $tag-fill-tail-color-hover,
@@ -40,10 +57,10 @@
 %tag-statement-checkable-fill {
     @include tag-statement(
         $tag-checkable-fill-text-color,
-        $tag-checkable-fill-bg-color,
+        $tag-checkable-fill-border-color,
         $tag-checkable-fill-bg-color,
         $tag-checkable-fill-text-color-hover,
-        $tag-checkable-fill-bg-color-hover,
+        $tag-checkable-fill-border-color-hover,
         $tag-checkable-fill-bg-color-hover,
         $tag-checkable-fill-tail-color,
         $tag-checkable-fill-tail-color-hover,
@@ -54,29 +71,20 @@
     );
 }
 
-%tag-statement-primary {
-    @include tag-statement(
-        $tag-primary-text-color,
-        $tag-primary-bg-color,
-        $tag-primary-bg-color,
-        $tag-primary-text-color-hover,
-        $tag-primary-bg-color-hover,
-        $tag-primary-bg-color-hover,
-        $tag-primary-tail-color,
-        $tag-primary-tail-color-hover
-    );
-}
-
-%tag-statement-checkable-primary {
+%tag-statement-checkable-fill-checked {
     @include tag-statement(
         $tag-checkable-primary-text-color,
-        $tag-checkable-primary-bg-color,
+        $tag-checkable-primary-border-color,
         $tag-checkable-primary-bg-color,
         $tag-checkable-primary-text-color-hover,
-        $tag-checkable-primary-bg-color-hover,
+        $tag-checkable-primary-border-color-hover,
         $tag-checkable-primary-bg-color-hover,
         $tag-checkable-primary-tail-color,
-        $tag-checkable-primary-tail-color-hover
+        $tag-checkable-primary-tail-color-hover,
+        $tag-checkable-primary-tail-color,
+        $tag-checkable-primary-text-color-disabled,
+        $tag-checkable-primary-border-color-disabled,
+        $tag-checkable-primary-bg-color-disabled
     );
 }
 
@@ -112,6 +120,17 @@
         $tag-closable-bordered-text-color-disabled, // $tag-bordered-text-color-disabled,
         $tag-closable-bordered-border-color-disabled, // $tag-bordered-border-color-disabled,
         $tag-closable-bordered-bg-disabled // $tag-bordered-bg-disabled
+    );
+}
+
+%tag-statement-normal {
+    @include tag-statement(
+        $tag-secondary-text-color,
+        $tag-secondary-border-color,
+        $tag-secondary-bg,
+        $tag-secondary-text-color-hover,
+        $tag-secondary-border-color-hover,
+        $tag-secondary-bg-hover
     );
 }
 

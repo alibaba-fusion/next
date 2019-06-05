@@ -117,25 +117,12 @@
         }
 
         &.#{$css-prefix}tag-level-primary {
-            @extend %tag-statement-fill;
+            @extend %tag-statement-primary;
         }
     }
 
     &tag-closable {
         position: relative;
-
-        &.#{$css-prefix}tag-large > .#{$css-prefix}tag-body {
-            max-width: calc(100% - #{$tag-size-l-height});
-        }
-
-        &.#{$css-prefix}tag-medium > .#{$css-prefix}tag-body {
-            max-width: calc(100% - #{$tag-size-m-height});
-        }
-
-        &.#{$css-prefix}tag-small > .#{$css-prefix}tag-body {
-            max-width: calc(100% - #{$tag-size-s-height});
-        }
-
         > .#{$css-prefix}tag-close-btn {
             display: inline-block;
             vertical-align: middle;
@@ -147,15 +134,10 @@
         &.#{$css-prefix}tag-level-normal {
             @extend %tag-statement-closable-bordered;
             @extend %tag-closable-normal-tick;
-            &[disabled], &.disabled {
-                color: $tag-text-color-disabled;
-                border-color: $tag-checkable-normal-border-selected-disabled;
-                background-color: $tag-fill-bg-color-disabled;
-            }
         }
 
         &.#{$css-prefix}tag-level-primary {
-            @extend %tag-statement-fill;
+            @extend %tag-statement-closable-primary;
         }
     }
 
@@ -204,7 +186,7 @@
             @extend %tag-selectable-normal;
 
             &.checked {
-                @extend %tag-statement-secondary;
+                @extend %tag-statement-normal;
                 @extend %tag-checkable-normal-tick;
             }
         }
@@ -213,13 +195,7 @@
             @extend %tag-statement-checkable-fill;
 
             &.checked {
-                @extend %tag-statement-checkable-primary;
-            }
-
-            &[disabled], &.disabled {
-                color: $tag-text-color-disabled; /* $tag-text-color-disabled; */
-                border-color: $tag-fill-bg-color-disabled;
-                background-color: $tag-fill-bg-color-disabled;
+                @extend %tag-statement-checkable-fill-checked;
             }
         }
 

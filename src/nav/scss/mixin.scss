@@ -6,7 +6,6 @@
     $height,
     $fontSize,
     $padding,
-    $activeLineWidth,
     $marginTB,
     $marginLR,
     $itemCorner
@@ -19,14 +18,6 @@
         margin-right: $marginLR;
         padding: 0 $padding;
         border-radius: $itemCorner;
-
-        &:before {
-            @if $direction == 'hoz' {
-                height: $activeLineWidth;
-            } @else {
-                width: $activeLineWidth;
-            }
-        }
     }
 
     #{$menu-prefix}-item:not(:first-child),
@@ -91,10 +82,12 @@
     $shadow,
     $hoverBgColor,
     $hoverColor,
+    $hoverWeight,
     $selectedBgColor,
     $selectedColor,
     $selectedWeight,
     $activeColor,
+    $hoverLineColor,
     $openedBgColor,
     $openedColor,
     $groupColor,
@@ -114,6 +107,7 @@
         &:hover {
             background-color: $hoverBgColor;
             color: $hoverColor;
+            font-weight: $hoverWeight;
         }
 
         &.#{$css-prefix}selected {
@@ -129,6 +123,9 @@
 
         &:before {
             background-color: $activeColor;
+        }
+        &:hover:before {
+            background-color: $hoverLineColor;
         }
     }
 

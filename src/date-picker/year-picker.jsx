@@ -112,9 +112,14 @@ class YearPicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 日期输入框的 aria-label 属性
          */
@@ -307,9 +312,11 @@ class YearPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             inputProps,
             dateInputAriaLabel,
+            yearCellRender,
             ...others
         } = this.props;
 
@@ -367,6 +374,7 @@ class YearPicker extends Component {
                 shape="panel"
                 modes={['year']}
                 value={value}
+                yearCellRender={yearCellRender}
                 onSelect={this.onSelectCalendarPanel}
                 disabledDate={disabledDate}
             />
@@ -401,6 +409,7 @@ class YearPicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     disabled={disabled}
                     visible={visible}

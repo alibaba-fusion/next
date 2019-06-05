@@ -25,7 +25,7 @@
 | type      | 按钮的类型<br><br>**可选值**:<br>'primary', 'secondary', 'normal'                                                    | Enum     | 'normal' |
 | iconSize  | 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小<br><br>**可选值**:<br>'xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl' | Enum     | -        |
 | htmlType  | 当 component = 'button' 时，设置 button 标签的 type 值<br><br>**可选值**:<br>'submit', 'reset', 'button'                 | Enum     | 'button' |
-| component | 设置标签类型<br><br>**可选值**:<br>'button', 'a'                                                                      | Enum     | 'button' |
+| component | 设置标签类型<br><br>**可选值**:<br>'button', 'a', 'div', 'span'                                                       | Enum     | 'button' |
 | loading   | 设置按钮的载入状态                                                                                                    | Boolean  | false    |
 | ghost     | 是否为幽灵按钮<br><br>**可选值**:<br>true, false, 'light', 'dark'                                                      | Enum     | false    |
 | text      | 是否为文本按钮                                                                                                      | Boolean  | false    |

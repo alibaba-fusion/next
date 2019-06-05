@@ -5,7 +5,7 @@
 /// @family navigation
 /// @varPrefix $step-
 /// @classPrefix {prefix}-step
-/// @order {"size/bounding":10,"size/text":11,"size/node":12,"size/divider":13,"size/content":14,"size/dot":15,"statement/awaiting":10,"statement/awaiting/arrow":100,"statement/awaiting/divider":101,"statement/awaiting/content":102,"statement/awaiting/node":103,"statement/processing":11,"statement/processing/arrow":110,"statement/processing/divider":111,"statement/processing/content":112,"statement/processing/node":113,"statement/finished":12,"statement/finished/arrow":120,"statement/finished/divider":121,"statement/finished/content":122,"statement/finished/node":123,"statement/disabled":13,"statement/disabled/arrow":130,"statement/disabled/divider":131,"statement/disabled/content":132,"statement/disabled/node":133,"statement/normal":14,"statement/normal/content":140}
+/// @order {"size/bounding":10,"size/text":11,"size/node":12,"size/divider":13,"size/content":14,"size/dot":15,"statement/awaiting":10,"statement/awaiting/arrow":100,"statement/awaiting/node":101,"statement/awaiting/divider":102,"statement/awaiting/content":103,"statement/processing":11,"statement/processing/arrow":110,"statement/processing/node":111,"statement/processing/divider":112,"statement/processing/content":113,"statement/finished":12,"statement/finished/arrow":120,"statement/finished/node":121,"statement/finished/divider":122,"statement/finished/content":123,"statement/disabled":13,"statement/disabled/arrow":130,"statement/disabled/node":131,"statement/disabled/divider":132,"statement/disabled/content":133,"statement/normal":14,"statement/normal/content":140}
 ////
 
 $step-prefix: '.' + $css-prefix + 'step';
@@ -204,6 +204,10 @@ $step-circle-item-node-process-color: $color-white !default;
 /// percent text
 /// @namespace statement/processing/node
 $step-circle-item-node-process-percent-color: $color-brand1-6 !default;
+
+/// percent size
+/// @namespace size/node
+$step-circle-item-node-process-percent-size: $font-size-body-1 !default;
 
 /// border color
 /// @namespace statement/finished/node

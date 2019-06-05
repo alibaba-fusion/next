@@ -1,5 +1,4 @@
 @import "../core/index-noreset.scss";
-
 @import "scss/variable";
 @import "scss/mixin";
 @import "./rtl.scss";
@@ -26,17 +25,23 @@
 
     & &-item {
         display: inline-block;
-
+        border-style: $pagination-item-border-style;
+        border-color: $pagination-item-border-color;
+        background: $pagination-item-bg;
+        color: $pagination-item-color;
+        box-shadow: $pagination-item-shadow;
         &.#{$css-prefix}current {
             border-color: $pagination-item-current-border-color;
             background: $pagination-item-current-bg;
             color: $pagination-item-current-color;
+            box-shadow: $pagination-item-current-shadow;
         }
         &.#{$css-prefix}current:hover,
         &.#{$css-prefix}current:focus {
             border-color: $pagination-item-current-hover-border-color;
             background: $pagination-item-current-hover-bg;
             color: $pagination-item-current-hover-color;
+            box-shadow: $pagination-item-current-hover-shadow;
         }
     }
 
@@ -142,6 +147,8 @@
             'ltr',
             $itemSplit: $pagination-small-item-split,
             $itemPaddingLeftRight: $s-2 - 2px,
+            $itemBorderWidth: $pagination-small-item-border-width,
+            $itemCorner: $pagination-small-item-corner,
             $ellipsisSize: $pagination-small-ellipsis-size,
             $totalFontSize: $pagination-small-total-font-size,
             $currentFontSize: $pagination-small-current-font-size,
@@ -173,6 +180,8 @@
             'ltr',
             $itemSplit: $pagination-item-split,
             $itemPaddingLeftRight: $s-3 - 2px,
+            $itemBorderWidth: $pagination-item-border-width,
+            $itemCorner: $pagination-item-corner,
             $ellipsisSize: $pagination-ellipsis-size,
             $totalFontSize: $pagination-total-font-size,
             $currentFontSize: $pagination-current-font-size,
@@ -204,6 +213,8 @@
             'ltr',
             $itemSplit: $pagination-large-item-split,
             $itemPaddingLeftRight: $s-4 - 1px,
+            $itemBorderWidth: $pagination-large-item-border-width,
+            $itemCorner: $pagination-large-item-corner,
             $ellipsisSize: $pagination-large-ellipsis-size,
             $totalFontSize: $pagination-large-total-font-size,
             $currentFontSize: $pagination-large-current-font-size,

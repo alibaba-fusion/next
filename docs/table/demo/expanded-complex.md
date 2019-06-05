@@ -126,8 +126,8 @@ class App extends React.Component {
             openRowKeys: openRowKeys
         });
     }
-    getRowProps(record, index) {
-        console.log('getRowProps', record, index);
+    rowProps(record, index) {
+        console.log('rowProps', record, index);
         return {className: `next-myclass-${index}`};
     }
     onExpandedRowClick(record, index) {
@@ -152,7 +152,7 @@ class App extends React.Component {
                     getExpandedColProps={this.state.getExpandedColProps}
                     hasExpandedRowCtrl={this.state.hasExpandedRowCtrl}
                     onRowOpen={this.onRowOpen.bind(this)}
-                    getRowProps={this.getRowProps.bind(this)}
+                    rowProps={this.rowProps.bind(this)}
                     onExpandedRowClick={this.onExpandedRowClick.bind(this)}
                 >
                     <Table.Column title="Id" dataIndex="id" sortable/>

@@ -180,6 +180,18 @@ class Transfer extends Component {
         locale: zhCN.Transfer,
     };
 
+    static normalizeValue(value) {
+        if (value) {
+            if (Array.isArray(value)) {
+                return value;
+            }
+            /* istanbul ignore next */
+            return [value];
+        }
+
+        return [];
+    }
+
     constructor(props, context) {
         super(props, context);
 
@@ -197,13 +209,15 @@ class Transfer extends Component {
             operations.push(<Icon rtl={rtl} type="arrow-left" />);
         }
         const { left, right } = this.filterCheckedValue(
-            this.normalizeValue(defaultLeftChecked),
-            this.normalizeValue(defaultRightChecked),
+            Transfer.normalizeValue(defaultLeftChecked),
+            Transfer.normalizeValue(defaultRightChecked),
             dataSource
         );
 
         this.state = {
-            value: this.normalizeValue('value' in props ? value : defaultValue),
+            value: Transfer.normalizeValue(
+                'value' in props ? value : defaultValue
+            ),
             leftCheckedValue: left,
             rightCheckedValue: right,
         };
@@ -224,10 +238,11 @@ class Transfer extends Component {
 
         let newValue;
         if ('value' in nextProps) {
-            const value = this.normalizeValue(nextProps.value);
+            const value = Transfer.normalizeValue(nextProps.value);
             st.value = value;
             newValue = value;
         } else {
+            /* istanbul ignore next */
             newValue = this.state.value;
         }
         this.leftValue = this.getLeftValue(nextProps.dataSource, newValue);
@@ -241,18 +256,6 @@ class Transfer extends Component {
         st.rightCheckedValue = right;
 
         this.setState(st);
-    }
-
-    normalizeValue(value) {
-        if (value) {
-            if (Array.isArray(value)) {
-                return value;
-            }
-
-            return [value];
-        }
-
-        return [];
     }
 
     filterCheckedValue(left, right, dataSource) {

@@ -20,6 +20,7 @@ import {
     CALENDAR_MODE_DATE,
     CALENDAR_MODE_MONTH,
     CALENDAR_MODE_YEAR,
+    getLocaleData,
 } from './utils';
 
 class RangeCalendar extends React.Component {
@@ -79,6 +80,13 @@ class RangeCalendar extends React.Component {
          * 自定义日期单元格渲染
          */
         dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -126,7 +134,10 @@ class RangeCalendar extends React.Component {
                 startValue,
             });
 
-            if (startValue) {
+            if (
+                startValue &&
+                !startValue.isSame(this.state.startValue, 'day')
+            ) {
                 this.setState({
                     startVisibleMonth: startValue,
                 });
@@ -148,7 +159,7 @@ class RangeCalendar extends React.Component {
     }
 
     onSelectCell = (date, nextMode) => {
-        this.changeVisibleMonth(date, 'cellClick');
+        // this.changeVisibleMonth(date, 'cellClick');
 
         if (this.state.mode === CALENDAR_MODE_DATE) {
             this.props.onSelect(date);
@@ -213,6 +224,8 @@ class RangeCalendar extends React.Component {
             prefix,
             rtl,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             className,
             format,
             locale,
@@ -238,8 +251,11 @@ class RangeCalendar extends React.Component {
         if (rtl) {
             others.dir = 'rtl';
         }
+        const localeData = getLocaleData(
+            locale.format || {},
+            startVisibleMonth.localeData()
+        );
 
-        const localeData = startVisibleMonth.localeData();
         const endVisibleMonth = startVisibleMonth.clone().add(1, 'months');
 
         const headerProps = {
@@ -265,6 +281,8 @@ class RangeCalendar extends React.Component {
             today: this.today,
             disabledDate,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             changeMode: this.changeMode,
             changeVisibleMonth: this.changeVisibleMonth,
         };

@@ -171,6 +171,10 @@ export default class TreeSelect extends Component {
          * 透传到 Popup 的属性对象
          */
         popupProps: PropTypes.object,
+        /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -750,6 +754,7 @@ export default class TreeSelect extends Component {
             className,
             popupContainer,
             popupProps,
+            followTrigger,
         } = this.props;
         const others = pickOthers(
             Object.keys(TreeSelect.propTypes),
@@ -795,6 +800,7 @@ export default class TreeSelect extends Component {
                 popupStyle={popupStyle}
                 popupClassName={popupClassName}
                 popupProps={popupProps}
+                followTrigger={followTrigger}
                 {...others}
             />
         );

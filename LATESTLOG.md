@@ -1,11 +1,15 @@
 # Latest Log 
 
-## [1.14.6](https://github.com/alibaba-fusion/next/compare/1.14.5...1.14.6) (2019-05-23)
+## [1.15.4](https://github.com/alibaba-fusion/next/compare/1.15.3...1.15.4) (2019-05-31)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** Fixed [#676](https://github.com/alibaba-fusion/next/issues/676) ([b8a0ba2](https://github.com/alibaba-fusion/next/commit/b8a0ba2))
-* **Field:** init values with parseName=false ([0c92cfb](https://github.com/alibaba-fusion/next/commit/0c92cfb))
+* **Table:** React.Fragment is supported in 16.2.4, use [] instead ([aec5368](https://github.com/alibaba-fusion/next/commit/aec5368))
+
+
+### Features
+
+* **Select:** add API tagInline to make it won't wrap ([d21f8a1](https://github.com/alibaba-fusion/next/commit/d21f8a1))
 
 

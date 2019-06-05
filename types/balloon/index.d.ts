@@ -74,9 +74,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层id, 传入值才会支持无障碍
@@ -217,9 +215,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层组件style，透传给Popup

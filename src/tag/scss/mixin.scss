@@ -31,12 +31,13 @@
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 0 0 $paddingLr;
+        max-width: calc(100% - #{$_marginLeft + $iconSize + $paddingLr});
     }
     &[dir=rtl].#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 $paddingLr 0 0;
     }
 
-    > .#{$css-prefix}tag-close-btn {
+    &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-close-btn {
         margin-left: $_marginLeft;
         padding-right: $paddingLr;
         .#{$css-prefix}icon {
@@ -166,7 +167,7 @@
 
     &:after {
         position: absolute;
-        font-family: NextIcon;
+        font-family: $icon-font-family;
         -webkit-font-smoothing: antialiased;
         content: $tick-icon;
         transform: scale(.6);

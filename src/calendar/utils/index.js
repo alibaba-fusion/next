@@ -74,3 +74,25 @@ export function preFormatDateValue(value, format) {
 
     return null;
 }
+
+export function getLocaleData(
+    {
+        months,
+        shortMonths,
+        firstDayOfWeek,
+        weekdays,
+        shortWeekdays,
+        veryShortWeekdays,
+    },
+    localeData
+) {
+    return {
+        ...localeData,
+        monthsShort: () => shortMonths || localeData.monthsShort(),
+        months: () => months || localeData.months(),
+        firstDayOfWeek: () => firstDayOfWeek || localeData.firstDayOfWeek(),
+        weekdays: () => weekdays || localeData.weekdays,
+        weekdaysShort: () => shortWeekdays || localeData.weekdaysShort(),
+        weekdaysMin: () => veryShortWeekdays || localeData.weekdaysMin(),
+    };
+}
