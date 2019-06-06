@@ -36,8 +36,10 @@ class Calendar extends Component {
          * 选中的日期值 (moment 对象)
          */
         value: checkMomentObj,
-        // 面板模式
-        mode: PropTypes.oneOf(CALENDAR_MODES),
+        /**
+         * 面板模式
+         */
+        mode: PropTypes.oneOf(CALENDAR_MODES), // 生成 API 文档需要手动改回 ['date', 'month', 'year']
         // 面板可变化的模式列表，仅初始化时接收一次
         modes: PropTypes.array,
         // 日期值的格式（用于日期title显示的格式）
@@ -59,6 +61,11 @@ class Calendar extends Component {
          * @param {Object} value 对应的日期值 (moment 对象)
          */
         onSelect: PropTypes.func,
+        /**
+         * 面板模式变化时的回调
+         * @param {Object} mode 对应面板模式 date month year
+         */
+        onModeChange: PropTypes.func,
         /**
          * 展现的月份变化时的回调
          * @param {Object} value 显示的月份 (moment 对象)
@@ -103,6 +110,7 @@ class Calendar extends Component {
         format: 'YYYY-MM-DD',
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
+        onModeChange: func.noop,
         dateCellRender: value => value.date(),
         locale: nextLocale.Calendar,
         showOtherMonth: true,
@@ -165,6 +173,7 @@ class Calendar extends Component {
             nextMode !== this.state.mode
         ) {
             this.setState({ mode: nextMode });
+            this.props.onModeChange(nextMode);
         }
     };
 
