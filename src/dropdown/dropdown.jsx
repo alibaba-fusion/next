@@ -52,7 +52,8 @@ export default class Dropdown extends Component {
          */
         align: PropTypes.string,
         /**
-         * 弹层相对于触发元素定位的微调
+         * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
+         * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
          */
         offset: PropTypes.array,
         /**

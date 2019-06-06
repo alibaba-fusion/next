@@ -2,10 +2,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { func, obj, KEYCODE, env } from '../util';
+import { func, obj, KEYCODE, env, str } from '../util';
 import Tag from '../tag';
 import Input from '../input';
 import Icon from '../icon';
+import zhCN from '../locale/zh-cn';
 import Base from './base';
 import { isNull, getValueDataSource, valueToSelectKey } from './util';
 
@@ -123,18 +124,17 @@ class Select extends Base {
          */
         searchValue: PropTypes.string,
         /**
-         * tag最多显示的字符数
-         * @type {[type]}
+         * 是否一行显示，仅在 mode 为 multiple 的时候生效
          */
-        maxTagTextLength: PropTypes.number,
+        tagInline: PropTypes.bool,
         /**
          * 最多显示多少个 tag
-         * @type {[type]}
          */
         maxTagCount: PropTypes.number,
         /**
          * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
-         * @type {[type]}
+         * @param {number} selectedValues 当前已选中的元素
+         * @param {number} totalValues 总待选元素
          */
         maxTagPlaceholder: PropTypes.func,
         /**
@@ -159,16 +159,18 @@ class Select extends Base {
          */
         onBlur: PropTypes.func,
         onKeyDown: PropTypes.func,
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
         ...Base.defaultProps,
+        locale: zhCN.Select,
         mode: 'single',
         showSearch: false,
         cacheValue: true,
+        tagInline: false,
         onSearch: noop,
         onSearchClear: noop,
-        maxTagPlaceholder: (selected, total) => `${selected} / ${total}`,
         hasArrow: true,
         onRemove: noop,
         // highlightFirstItem: true,
@@ -203,6 +205,7 @@ class Select extends Base {
             'handleSearch',
             'handleSearchKeyDown',
             'handleSelectAll',
+            'maxTagPlaceholder',
         ]);
     }
 
@@ -695,20 +698,30 @@ class Select extends Base {
         }
     }
 
+    maxTagPlaceholder(selectedValues, totalValues) {
+        const { locale } = this.props;
+
+        return `${str.template(locale.maxTagPlaceholder, {
+            selected: selectedValues.length,
+            total: totalValues.length,
+        })}`;
+    }
+
     /**
      * 如果用户是自定义的弹层，则直接以 value 为准，不再校验 dataSource
      * @param {object} props
      */
     renderValues() {
         const {
+            prefix,
             mode,
             size,
             valueRender,
             fillProps,
             disabled,
             maxTagCount,
-            maxTagTextLength,
             maxTagPlaceholder,
+            tagInline,
         } = this.props;
         let value = this.state.value;
 
@@ -745,38 +758,49 @@ class Select extends Base {
         } else if (value) {
             let limitedCountValue = value;
             let maxTagPlaceholderEl;
+            const totalValue = this.dataStore.getFlattenDS();
+            const holder =
+                'maxTagPlaceholder' in this.props
+                    ? maxTagPlaceholder
+                    : this.maxTagPlaceholder;
 
-            if (maxTagCount !== undefined && value.length > maxTagCount) {
-                const totalLen = this.dataStore.getFlattenDS().length;
-
+            if (
+                maxTagCount !== undefined &&
+                value.length > maxTagCount &&
+                !tagInline
+            ) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
                     <Tag
+                        key="_count"
                         type="primary"
                         size={size === 'large' ? 'medium' : 'small'}
                         animation={false}
                     >
-                        {maxTagPlaceholder(value.length, totalLen)}
+                        {holder(value, totalValue)}
                     </Tag>
                 );
             }
+
+            if (value.length > 0 && tagInline) {
+                maxTagPlaceholderEl = (
+                    <div className={`${prefix}select-tag-compact`} key="_count">
+                        {holder(value, totalValue)}
+                    </div>
+                );
+            }
+
             value = limitedCountValue;
             if (!Array.isArray(value)) {
                 value = [value];
             }
+
             const selectedValueNodes = value.map(v => {
                 if (!v) {
                     return null;
                 }
                 const labelNode = fillProps ? v[fillProps] : valueRender(v);
-                let content = labelNode;
-                if (
-                    maxTagTextLength &&
-                    typeof content === 'string' &&
-                    content.length > maxTagTextLength
-                ) {
-                    content = `${content.slice(0, maxTagTextLength)}..`;
-                }
+
                 return (
                     <Tag
                         key={v.value}
@@ -787,13 +811,17 @@ class Select extends Base {
                         onClose={this.handleTagClose.bind(this, v)}
                         closable
                     >
-                        {content}
+                        {labelNode}
                     </Tag>
                 );
             });
 
             if (maxTagPlaceholderEl) {
-                selectedValueNodes.push(maxTagPlaceholderEl);
+                if (tagInline) {
+                    selectedValueNodes.unshift(maxTagPlaceholderEl);
+                } else {
+                    selectedValueNodes.push(maxTagPlaceholderEl);
+                }
             }
             return selectedValueNodes;
         }
@@ -1006,7 +1034,7 @@ class Select extends Base {
     }
 
     renderSearchInput(valueNodes, placeholder, inputEl) {
-        const { prefix, mode } = this.props;
+        const { prefix, mode, tagInline } = this.props;
         const isSingle = mode === 'single';
 
         const mirrorText = this.state.searchValue;
@@ -1014,17 +1042,29 @@ class Select extends Base {
         const cls = classNames({
             [`${prefix}select-values`]: true,
             [`${prefix}input-text-field`]: true,
+            [`${prefix}select-compact`]: !isSingle && tagInline,
         });
 
-        return (
-            <span className={cls}>
-                {isSingle && valueNodes ? <em>{valueNodes}</em> : valueNodes}
-                <span className={`${prefix}select-trigger-search`}>
-                    {inputEl}
-                    <span aria-hidden>{mirrorText || placeholder}&nbsp;</span>
-                </span>
+        const searchInput = [
+            isSingle && valueNodes ? <em>{valueNodes}</em> : valueNodes,
+        ];
+        const triggerSearch = (
+            <span
+                key="trigger-search"
+                className={`${prefix}select-trigger-search`}
+            >
+                {inputEl}
+                <span aria-hidden>{mirrorText || placeholder}&nbsp;</span>
             </span>
         );
+
+        if (!isSingle && tagInline) {
+            searchInput.unshift(triggerSearch);
+        } else {
+            searchInput.push(triggerSearch);
+        }
+
+        return <span className={cls}>{searchInput}</span>;
     }
 
     /**

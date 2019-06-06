@@ -587,6 +587,10 @@ export default class CascaderSelect extends Component {
         if (onChange) {
             onChange(value, data, extra);
         }
+
+        if (searchValue && this.select) {
+            this.select.handleSearchClear();
+        }
     }
 
     handleClear() {
@@ -826,7 +830,7 @@ export default class CascaderSelect extends Component {
             visible,
             onVisibleChange: this.handleVisibleChange,
             showSearch,
-            searchValue,
+            // searchValue,
             onSearch: this.handleSearch,
             onKeyDown: this.handleKeyDown,
             popupContent,

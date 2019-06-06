@@ -18,9 +18,6 @@ Use 'visible' to control whether the popup should be displayed.
 ````jsx
 import { Button, Balloon } from '@alifd/next';
 
-
-
-
 class App extends React.Component {
     constructor(props) {
         super(props);

@@ -36,31 +36,35 @@ class Demo extends React.Component {
 
         this.state = {
             dataSource: result,
-            id:''
         };
-        this.onclick = this.onclick.bind(this);
-        this.render = this.render.bind(this);
     }
-    onclick(v) {
-        let k;
-        for (let i = 0; i < result.length; i++) {
-            if (v === result[i].id) {
-                k = i;
-                break;
+
+    onRemove = (id) => {
+        const {dataSource} = this.state;
+        let index = -1;
+        dataSource.forEach((item, i) => {
+            if (item.id === id) {
+                index = i;
             }
+        });
+        if (index !== -1) {
+            dataSource.splice(index, 1);
+            this.setState({
+                dataSource
+            });
         }
-        result.splice(k, 1);
     }
-    getRow(item) {
-        this.setState({ id: item.id });
-    }
+
+    renderOper = (value, index, record) => {
+        return <a onClick={this.onRemove.bind(this, record.id)}>Remove({record.id})</a>;
+    };
     render() {
         return (<div>
-            <Table dataSource={this.state.dataSource}  onRowClick={this.getRow.bind(this)}>
+            <Table dataSource={this.state.dataSource}>
                 <Table.Column title="Id" dataIndex="id"/>
                 <Table.Column title="Title" dataIndex="title.name" />
                 <Table.Column title="Time" dataIndex="time"/>
-                <Table.Column title="operate" cell={<a href="javascript:;" onClick={() => this.onclick(this.state.id)}>Remove</a>}/>
+                <Table.Column title="operate" cell={this.renderOper}/>
             </Table>
         </div>);
     }

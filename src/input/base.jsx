@@ -57,10 +57,12 @@ class Base extends React.Component {
         placeholder: PropTypes.string,
         /**
          * 获取焦点时候触发的回调
+         * @param {Event} e DOM事件对象
          */
         onFocus: PropTypes.func,
         /**
          * 失去焦点时候触发的回调
+         * @param {Event} e DOM事件对象
          */
         onBlur: PropTypes.func,
         /**

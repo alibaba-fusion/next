@@ -170,6 +170,29 @@
         }
     }
 
+    &-multiple {
+        .#{$css-prefix}input {
+            height: auto;
+            align-items: start;
+        }
+        #{$select-prefix}-compact {
+            position: relative;
+            white-space: nowrap;
+            #{$select-prefix}-trigger-search {
+                width: auto;
+            }
+            #{$select-prefix}-tag-compact {
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 1;
+                padding: 0 4px 0 16px;
+                color: $input-text-color;
+                background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-bg-color 10px);
+            }
+        }
+    }
+
     &-multiple, &-tag {
         #{$select-prefix}-values {
             /* Tag 有 3px 的 margin-bottom，所以包裹 Tag 的容器要作一下处理 */
@@ -195,6 +218,9 @@
             #{$select-prefix}-values {
                 @include select-size($form-element-small-height, $select-s-lineheight);
             }
+            #{$select-prefix}-values-compact {
+                height: $form-element-small-height !important;
+            }
             #{$tag-prefix} {
                 border: 0;
                 @include select-tag-size($select-s-lineheight, -1);
@@ -203,7 +229,7 @@
                     line-height: $select-s-lineheight;
                 }
             }
-            .#{$css-prefix}input-label, .#{$css-prefix}input-control {
+            .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
                 line-height: $form-element-small-height - 2;
             }
         }
@@ -212,10 +238,13 @@
             #{$select-prefix}-values {
                 @include select-size($form-element-medium-height, $select-m-lineheight);
             }
+            #{$select-prefix}-values-compact {
+                height: $form-element-medium-height !important;
+            }
             #{$tag-prefix} {
                 @include select-tag-size($select-m-lineheight);
             }
-            .#{$css-prefix}input-label, .#{$css-prefix}input-control {
+            .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
                 line-height: $form-element-medium-height - 2;
             }
         }
@@ -224,10 +253,13 @@
             #{$select-prefix}-values {
                 @include select-size($form-element-large-height, $select-l-lineheight);
             }
+            #{$select-prefix}-values-compact {
+                height: $form-element-large-height !important;
+            }
             #{$tag-prefix} {
                 @include select-tag-size($select-l-lineheight);
             }
-            .#{$css-prefix}input-label, .#{$css-prefix}input-control {
+            .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
                 line-height: $form-element-large-height - 2;
             }
         }
@@ -421,3 +453,5 @@
         }
     }
 }
+
+@import "./rtl.scss";

@@ -85,7 +85,8 @@ export default class Overlay extends Component {
          */
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         /**
-         * 弹层相对于参照元素定位的微调
+         * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
+         * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
          */
         offset: PropTypes.array,
         /**

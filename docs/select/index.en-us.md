@@ -79,6 +79,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | popupClassName | className of the shell | any | - |
 | popupStyle | Inline style of the shell | Object | - |
 | popupProps | Attributes added to the shell | Object | {} |
+| followTrigger         | follow Trigger or not                                                                                                                                                                                                                             | Boolean                 | -         |
 | popupContent | Content of custom shell | ReactNode | - |
 | filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
 | filter | A local filter method that returns a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |
@@ -96,7 +97,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 |cacheValue | dataSource keeps the selected content | Boolean | true |
 |valueRender | Methods for rendering Select to display content <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>** Parameters**:<br>_item_: {Object} Render node's item<br>**return value **:<br>{ReactNode} show content <br> | Function | item => item.label \|\| item.value |
 | searchValue | Controlled search value, generally not set | String | - |
-| maxTagTextLength      | max length of each tag                                                                                                                                                                                                                                               | Number                                 | -                                             |
+| tagInline               | show in one line or not                                                                                                                                                                                                                                                    | Boolean                                | false                                             |
 | maxTagCount           | max count of tag can be show                                                                                                                                                                                                                                               | Number                                 | -                                             |
 | maxTagPlaceholder     | if selected tags' length is over maxTagCount, what to show <br><br>**签名**:<br>Function() => void                                                                                                                                                                                 | Function                               | (selected, total) => `${selected} / ${total}` |
 | onRemove | tag Delete callback <br><br><br>**Signature**:<br>Function(item: object) => void<br>**Parameters**:<br>_item_: {object} Render node's Item | Function | func.noop |
@@ -125,6 +126,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | popupClassName | className of the shell | any | - |
 | popupStyle | Inline style of the shell | Object | - |
 |popupProps | Attributes added to the shell | Object | {} |
+| followTrigger         | follow Trigger or not                                                                                                                                                                                                                             | Boolean                 | -         |
 | popupContent | Content of custom shell | ReactNode | - |
 | filterLocal | Whether to use local filtering, turn this off when the data source is remote | Boolean | true |
 | filter | Local filter method, returning a Boolean value to determine whether to keep <br><br>**Signature**:<br>Function() => void | Function | filter |

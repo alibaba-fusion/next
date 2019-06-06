@@ -45,6 +45,11 @@ class App extends React.Component {
             value: '111222',
             menuData: menuData
         };
+
+        this.onVisibleChange = this.onVisibleChange.bind(this);
+        this.onSearch = this.onSearch.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onFocus = this.onFocus.bind(this);
     }
 
     renderMenu() {
@@ -104,17 +109,24 @@ class App extends React.Component {
         });
     }
 
+    onVisibleChange() {
+        this.setState({
+            visible: false
+        });
+    }
+
     render() {
         const {visible, value} = this.state;
 
         return (<div style={{width: 700}}>
             <Search
+                onVisibleChange={this.onVisibleChange}
                 popupContent={this.renderMenu()}
                 visible={visible}
                 value={value}
-                onSearch={this.onSearch.bind(this)}
-                onChange={this.onChange.bind(this)}
-                onFocus={this.onFocus.bind(this)}
+                onSearch={this.onSearch}
+                onChange={this.onChange}
+                onFocus={this.onFocus}
             />
         </div>);
     }

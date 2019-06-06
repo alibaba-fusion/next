@@ -76,9 +76,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak {
     /**
      * 弹层挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层的 className
@@ -239,9 +237,7 @@ export interface SelectProps extends HTMLAttributesWeak {
     /**
      * 弹层挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层的 className

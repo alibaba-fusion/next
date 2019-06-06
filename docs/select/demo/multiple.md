@@ -15,7 +15,9 @@ multiple select
 ---
 
 ````jsx
-import { Select } from '@alifd/next';
+import { Select, Balloon } from '@alifd/next';
+
+const { Tooltip } = Balloon;
 
 const dataSource = [
     {value: '10001', label: 'Lucy King'},
@@ -51,16 +53,26 @@ class Demo extends React.Component{
   }
 }
 
+const maxTagPlaceholder = (selectedValues, totalValues) => {
+    const trigger = <span>{`已选择 ${selectedValues.length}/${totalValues.length} 项`}</span>;
+    const labels = selectedValues.map(obj => obj.label);
+
+    return <Tooltip trigger={trigger}>{ labels.join(', ') }</Tooltip>;
+};
 
 ReactDOM.render(
     <div>
-        <Select maxTagCount={2} maxTagPlaceholder={(cu, total) => `+${cu}`} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <Select maxTagCount={2} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <Select hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <Demo />
+        <Select mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        受控写法 <Demo /><br /><br />
+        设置最大显示Tag数 (maxTagCount) <br />
+        <Select maxTagCount={2} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /> <br /><br />
+        设置最大显示Tag数，并自定义超出显示内容 (maxTagCount + maxTagPlaceholder) <br />
+        <Select maxTagCount={2} maxTagPlaceholder={maxTagPlaceholder} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /><br /><br />
+        设置一行展示 (tagInline) <br />
+        <Select maxTagCount={2} tagInline mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /><br /><br />
+        设置一行展示，并自定义超出显示内容 (tagInline + maxTagPlaceholder) <br />
+        <Select maxTagCount={2} tagInline maxTagPlaceholder={maxTagPlaceholder} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /><br /><br />
     </div>
 , mountNode);
 ````

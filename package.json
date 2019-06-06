@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.15.1",
+  "version": "1.15.4",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -76,6 +76,7 @@
     "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
+    "@types/react": "^16.8.13",
     "@alifd/api-extractor": "^3.4.0",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
