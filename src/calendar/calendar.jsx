@@ -63,7 +63,7 @@ class Calendar extends Component {
         onSelect: PropTypes.func,
         /**
          * 面板模式变化时的回调
-         * @param {Object} mode 对应面板模式 date month year
+         * @param {String} mode 对应面板模式 date month year
          */
         onModeChange: PropTypes.func,
         /**
@@ -89,6 +89,10 @@ class Calendar extends Component {
          */
         monthCellRender: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
+        /**
+         * 年份范围，[START_YEAR, END_YEAR] (只在shape 为 ‘card’, 'fullscreen' 下生效)
+         */
+        yearRange: PropTypes.arrayOf(PropTypes.number),
         /**
          * 不可选择的日期
          * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
@@ -232,6 +236,7 @@ class Calendar extends Component {
             monthCellRender,
             yearCellRender,
             disabledDate,
+            yearRange,
             ...others
         } = this.props;
         const state = this.state;
@@ -330,7 +335,7 @@ class Calendar extends Component {
                 {shape === 'panel' ? (
                     panelHeaders[state.mode]
                 ) : (
-                    <CardHeader {...headerProps} />
+                    <CardHeader {...headerProps} yearRange={yearRange} />
                 )}
                 {tables[state.mode]}
             </div>
