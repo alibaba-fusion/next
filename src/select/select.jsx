@@ -1046,7 +1046,11 @@ class Select extends Base {
         });
 
         const searchInput = [
-            isSingle && valueNodes ? <em>{valueNodes}</em> : valueNodes,
+            isSingle && valueNodes ? (
+                <em key="select-value">{valueNodes}</em>
+            ) : (
+                valueNodes
+            ),
         ];
         const triggerSearch = (
             <span
