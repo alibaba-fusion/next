@@ -62,7 +62,7 @@
 | onRemove  | 点击移除的回调<br><br>**签名**:<br>Function() => void | Function | -         |
 | onCancel  | 取消上传的回调<br><br>**签名**:<br>Function() => void | Function | -         |
 
-### Upload.Drager
+### Upload.Dragger
 
 > IE10+ 支持。继承 Upload 的 API，除非特别说明
 
