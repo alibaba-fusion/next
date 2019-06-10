@@ -1,4 +1,5 @@
 import React from 'react';
+import sinon from 'sinon';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -154,13 +155,16 @@ describe('Calendar', () => {
 
     describe('action', () => {
         it('should change mode', () => {
-            wrapper = mount(<Calendar />);
+            const onModeChange = sinon.spy();
+
+            wrapper = mount(<Calendar onModeChange={onModeChange} />);
             wrapper
                 .find('.next-radio-wrapper input')
                 .at(1)
                 .simulate('change', { target: { checked: true } });
             assert(wrapper.find('td').length === 12);
             assert(wrapper.find('td[title="1月"]').length === 1);
+            assert(onModeChange.calledOnce);
         });
 
         it('should change panel mode to month', () => {
