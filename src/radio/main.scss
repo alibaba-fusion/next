@@ -98,6 +98,9 @@
                 }
             }
         }
+        #{$radio-prefix}-label {
+            color: $radio-normal-font-color-disabled;
+        }
     }
 
     &:not(.disabled):hover,
@@ -301,6 +304,7 @@
     font-size: $radio-font-size;
     vertical-align: middle;
     line-height: 1;
+    color: $radio-normal-font-color;
 }
 
 @-moz-document url-prefix() {
