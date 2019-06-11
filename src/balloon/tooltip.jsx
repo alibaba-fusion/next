@@ -172,6 +172,7 @@ export default class Tooltip extends React.Component {
                 rtl={rtl}
                 autoFocus={triggerType === 'focus' ? false : autoFocus}
                 shouldUpdatePosition
+                needAdjust={false}
                 {...popupProps}
             >
                 {content}
