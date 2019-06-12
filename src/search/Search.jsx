@@ -245,19 +245,20 @@ class Search extends React.Component {
                 [`${prefix}search-icon`]: true,
                 [buttonProps.className]: !!buttonProps.className,
             });
-            searchIcon = (
-                <Icon
-                    type="search"
-                    tabIndex="0"
-                    role="button"
-                    aria-disabled={disabled}
-                    aria-label={locale.buttonText}
-                    {...buttonProps}
-                    className={cls}
-                    onClick={this.onSearch}
-                    onKeyDown={this.onKeyDown}
-                />
-            );
+            hasIcon &&
+                (searchIcon = (
+                    <Icon
+                        type="search"
+                        tabIndex="0"
+                        role="button"
+                        aria-disabled={disabled}
+                        aria-label={locale.buttonText}
+                        {...buttonProps}
+                        className={cls}
+                        onClick={this.onSearch}
+                        onKeyDown={this.onKeyDown}
+                    />
+                ));
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
