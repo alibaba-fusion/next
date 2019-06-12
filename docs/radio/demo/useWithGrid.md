@@ -69,6 +69,7 @@ class ControlApp extends React.Component {
                             <Radio value="strawberry" onClick={this.onClick} >Strawberry</Radio>
                         </Col>
                     </Row>
+                    <Row>Just simple context</Row>
                 </RadioGroup>
             </div>
         );
