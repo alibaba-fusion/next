@@ -1,20 +1,15 @@
 # Latest Log 
 
-## [1.15.5](https://github.com/alibaba-fusion/next/compare/1.15.4...1.15.5) (2019-06-06)
+## [1.15.6](https://github.com/alibaba-fusion/next/compare/1.15.5...1.15.6) (2019-06-13)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** clear search input  change ([bff0134](https://github.com/alibaba-fusion/next/commit/bff0134))
-* **Date-picker:** prop 'onOk' typescript declaration File wrong ([3c21dcd](https://github.com/alibaba-fusion/next/commit/3c21dcd))
-* **Nav:** disorder when set margin(t, b) of hoz Nav, close [#744](https://github.com/alibaba-fusion/next/issues/744) ([f6f9625](https://github.com/alibaba-fusion/next/commit/f6f9625))
-* **RangePicker:** to start month  after selected ([2ea6cf6](https://github.com/alibaba-fusion/next/commit/2ea6cf6))
-* **Select:** warning in select base, close [#771](https://github.com/alibaba-fusion/next/issues/771) ([dae7047](https://github.com/alibaba-fusion/next/commit/dae7047))
-* **Table:** resizeable won't work if isTree on, close [#384](https://github.com/alibaba-fusion/next/issues/384) ([bf1eb55](https://github.com/alibaba-fusion/next/commit/bf1eb55))
-
-
-### Features
-
-* **Table:** add API filterMenuProps ([61ab2b0](https://github.com/alibaba-fusion/next/commit/61ab2b0))
+* **Balloon:** position shouldn't be chanaged when no space, close [#774](https://github.com/alibaba-fusion/next/issues/774) ([a6d55f8](https://github.com/alibaba-fusion/next/commit/a6d55f8))
+* **Dialog:** title radius when bg color #close-783 ([8692936](https://github.com/alibaba-fusion/next/commit/8692936)), closes [#close-783](https://github.com/alibaba-fusion/next/issues/close-783)
+* **Field:** setError valiate - #close 747 ([25adbd1](https://github.com/alibaba-fusion/next/commit/25adbd1))
+* **NumberPicker:** support null to clear value. relate [#780](https://github.com/alibaba-fusion/next/issues/780) ([15ae286](https://github.com/alibaba-fusion/next/commit/15ae286))
+* **Search:** hasIcon with shape=simple. Close [#734](https://github.com/alibaba-fusion/next/issues/734) ([033bfb8](https://github.com/alibaba-fusion/next/commit/033bfb8))
+* **Slider:** lazyLoad pre and next pics, close [#706](https://github.com/alibaba-fusion/next/issues/706) ([f841201](https://github.com/alibaba-fusion/next/commit/f841201))
 
 
