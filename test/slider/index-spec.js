@@ -585,12 +585,14 @@ describe('slider', function () {
         });
 
         it('should render with lazyLoad', () => {
-            const wrapper = mount(
+            wrapper = mount(
                 <Slider rtl lazyLoad infinite={false}>
                     {slides}
                 </Slider>
             );
+
             assert(wrapper.find('.custom-slick-item').length === 3);
+            wrapper.find('button.next-slick-next').simulate('click')
         });
 
         it('too more slidesToShow ', () => {
