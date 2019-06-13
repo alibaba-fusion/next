@@ -255,11 +255,10 @@ const helpers = {
         if (this.props.lazyLoad) {
             let loaded = true;
             const slidesToLoad = [];
+            const slidesLen = this.state.slideCount;
 
             const sliderIndex =
-                targetSlide < 0
-                    ? this.state.slideCount + targetSlide
-                    : currentSlide;
+                targetSlide < 0 ? slidesLen + targetSlide : currentSlide;
 
             for (
                 let i = sliderIndex;
@@ -269,16 +268,28 @@ const helpers = {
                 let k = i;
                 if (rtl) {
                     k =
-                        i >= this.state.slideCount
-                            ? this.state.slideCount * 2 - i - 1
-                            : this.state.slideCount - i - 1;
+                        i >= slidesLen
+                            ? slidesLen * 2 - i - 1
+                            : slidesLen - i - 1;
                 }
 
-                loaded = loaded && this.state.lazyLoadedList.indexOf(k) >= 0;
-                if (!loaded) {
+                const pre = k - 1 < 0 ? slidesLen - 1 : k - 1;
+                const next = k + 1 >= slidesLen ? 0 : k + 1;
+
+                this.state.lazyLoadedList.indexOf(k) < 0 &&
                     slidesToLoad.push(k);
-                }
+                this.state.lazyLoadedList.indexOf(pre) < 0 &&
+                    slidesToLoad.push(pre);
+                this.state.lazyLoadedList.indexOf(next) < 0 &&
+                    slidesToLoad.push(next);
             }
+
+            slidesToLoad.forEach(i => {
+                if (this.state.lazyLoadedList.indexOf(i) < 0) {
+                    loaded = false;
+                }
+            });
+
             if (!loaded) {
                 this.setState({
                     lazyLoadedList: this.state.lazyLoadedList.concat(
