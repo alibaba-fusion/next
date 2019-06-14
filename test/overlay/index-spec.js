@@ -132,6 +132,7 @@ class PopupControlDemo extends React.Component {
 
 describe('Overlay', () => {
     let wrapper;
+    let wrapper2;
 
     beforeEach(() => {
         const nodeListArr = [].slice.call(
@@ -412,6 +413,44 @@ describe('Overlay', () => {
         const overlay = wrapper.instance().getInstance();
         const content = overlay.getContent();
         assert(content.textContent.trim() === 'content');
+    });
+
+    it('should support onClick', (done) => {
+        const handleClick = (e) => {
+            assert('target' in e);
+            done();
+        };
+
+        wrapper = render(
+            <Overlay
+                visible
+                onClick={handleClick}
+            >
+                <div className="content" />
+            </Overlay>
+        );
+
+        simulateEvent.simulate(document.querySelector('.content'), 'click');
+    });
+
+    it('should support stop Child Click propagation by default', (done) => {
+        const clickHandler = () => {
+            assert(false);
+        }
+
+        wrapper = render(
+            <div id="overlay-container" onClick={clickHandler}>
+                <Overlay visible container={'overlay-container'}>
+                    <div className="content" />
+                </Overlay>
+            </div>
+        );
+
+        simulateEvent.simulate(document.querySelector('.content'), 'click');
+        
+        setTimeout(() => {
+            done();
+        }, 1000);
     });
 });
 

@@ -185,6 +185,7 @@ export default class Overlay extends Component {
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         onMaskMouseEnter: PropTypes.func,
         onMaskMouseLeave: PropTypes.func,
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -214,6 +215,7 @@ export default class Overlay extends Component {
         needAdjust: true,
         disableScroll: false,
         cache: false,
+        onClick: e => e.stopPropagation(),
     };
 
     constructor(props) {
@@ -713,6 +715,7 @@ export default class Overlay extends Component {
                 style: { ...child.props.style, ...style },
                 ref: makeChain(this.saveContentRef, child.ref),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
+                onClick: this.props.onClick,
             });
 
             if (align) {
