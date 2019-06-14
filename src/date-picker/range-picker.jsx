@@ -134,7 +134,7 @@ export default class RangePicker extends Component {
         /**
          * 弹层展示状态变化时的回调
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} reason 触发弹层显示和隐藏的来源
+         * @param {String} type 触发弹层显示和隐藏的来源 okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -596,13 +596,13 @@ export default class RangePicker extends Component {
         this.onValueChange([startValue, endValue]);
     };
 
-    onVisibleChange = (visible, reason) => {
+    onVisibleChange = (visible, type) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
-        this.props.onVisibleChange(visible, reason);
+        this.props.onVisibleChange(visible, type);
     };
 
     changePanel = panel => {
