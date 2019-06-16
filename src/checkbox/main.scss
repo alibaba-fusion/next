@@ -123,6 +123,9 @@
             border-color: $checkbox-hovered-border-color;
             background-color: $checkbox-hovered-bg-color;
         }
+        #{$checkbox-prefix}-label {
+            cursor: pointer;
+        }
     }
 
     &.indeterminate:not(.disabled):hover,
