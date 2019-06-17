@@ -74,6 +74,9 @@ $upload-text-list-size-font-color: $color-text1-2 !default;
 /// text
 /// @namespace statement/hover/extra
 $upload-text-list-size-font-color-hover: $color-brand1-6 !default;
+/// height
+/// @namespace size/progressbar
+$upload-text-list-progressbar-height: $s-2 !default;
 
 // ============================================================
 
@@ -93,7 +96,9 @@ $upload-image-list-item-picture-icon-size: $icon-l !default;
 /// border
 /// @namespace size/picture
 $upload-image-list-item-picture-border-width: $line-1 !default;
-
+/// corner
+/// @namespace size/picture
+$upload-image-list-item-picture-corner: $corner-zero !default;
 
 /// font
 /// @namespace statement/normal/thumbnail
@@ -141,6 +146,10 @@ $upload-image-list-item-picture-border-color: $color-line1-2 !default;
 /// background
 /// @namespace statement/normal/picture
 $upload-image-list-item-picture-background-color: $color-fill1-2 !default;
+/// height
+/// @namespace size/progressbar
+$upload-image-list-progressbar-height: $s-2 !default;
+
 
 // ============================================================
 
@@ -228,6 +237,10 @@ $upload-card-list-name-font-size: $font-size-caption !default;
 /// text
 /// @namespace statement/normal/name
 $upload-card-list-name-font-color: $color-text1-3 !default;
+/// height
+/// @namespace size/progressbar
+$upload-card-list-progressbar-height: $s-2 !default;
+
 
 // 上传后的 item 文件下载、删除操作区域的样式
 // @ignore
@@ -258,6 +271,9 @@ $upload-drag-zone-corner: $corner-1 !default;
 /// font
 /// @namespace size/bounding
 $upload-drag-zone-font-size: $font-size-body-2 !default;
+/// icon
+/// @namespace size/bounding
+$upload-drag-zone-icon-size: $s-6 !default;
 /// hint-font
 /// @namespace size/bounding
 $upload-drag-zone-hint-font-size: $font-size-caption !default;
@@ -268,3 +284,12 @@ $upload-drag-zone-bg-color: $color-transparent !default;
 /// @type icon
 /// @namespace statement/normal
 $upload-drag-zone-upload-icon: $icon-content-upload !default;
+/// icon-color
+/// @namespace statement/normal
+$upload-drag-zone-upload-icon-color: $color-text1-3 !default;
+/// title
+/// @namespace statement/normal
+$upload-drag-zone-upload-normal-title-color: $color-text1-3 !default;
+/// hint
+/// @namespace statement/normal
+$upload-drag-zone-upload-normal-hint-color: $color-text1-2 !default;
