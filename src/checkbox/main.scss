@@ -24,6 +24,7 @@
         width: $checkbox-size;
         height: $checkbox-size;
         margin: 0;
+        cursor: pointer;
     }
 
     #{$checkbox-prefix}-inner {
@@ -121,6 +122,9 @@
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-hovered-border-color;
             background-color: $checkbox-hovered-bg-color;
+        }
+        #{$checkbox-prefix}-label {
+            cursor: pointer;
         }
     }
 
