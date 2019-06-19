@@ -488,12 +488,15 @@ export default class Tree extends Component {
     }
 
     getCheckedKeys(props, willReceiveProps) {
-        let checkedKeys =
-            'checkedKeys' in props
-                ? props.checkedKeys
-                : willReceiveProps
-                ? []
-                : props.defaultCheckedKeys;
+        let checkedKeys = props.defaultCheckedKeys;
+
+        if ('checkedKeys' in props) {
+            checkedKeys = props.checkedKeys;
+        } else if (willReceiveProps) {
+            checkedKeys = [];
+        }
+
+        checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
 
         const { checkStrictly } = this.props;
         if (checkStrictly) {
