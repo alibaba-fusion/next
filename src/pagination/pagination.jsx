@@ -601,6 +601,7 @@ class Pagination extends Component {
             link,
             onChange,
             selectPopupContiner,
+            popupProps,
             ...others
         } = this.props;
         /* eslint-enable */
