@@ -254,6 +254,11 @@ export interface SelectProps extends HTMLAttributesWeak {
      */
     popupProps?: {};
 
+    /** 
+     * 是否跟随滚动
+    */
+    followTrigger?: boolean;
+
     /**
      * 自定义弹层的内容
      */
