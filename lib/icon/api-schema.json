@@ -1,0 +1,65 @@
+{
+  "name": "Icon",
+  "props": {
+    "type": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "指定显示哪种图标",
+      "docblock": "指定显示哪种图标"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'xxs'",
+            "computed": false
+          },
+          {
+            "value": "'xs'",
+            "computed": false
+          },
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          },
+          {
+            "value": "'xl'",
+            "computed": false
+          },
+          {
+            "value": "'xxl'",
+            "computed": false
+          },
+          {
+            "value": "'xxxl'",
+            "computed": false
+          },
+          {
+            "value": "'inherit'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "指定图标大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "指定图标大小"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
