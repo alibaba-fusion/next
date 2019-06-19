@@ -818,9 +818,10 @@ export default class Tree extends Component {
     getIndeterminateKeys(checkedKeys) {
         const indeterminateKeys = [];
 
-        const poss = filterChildKey(checkedKeys, this._k2n).map(
-            key => this._k2n[key].pos
-        );
+        const poss = filterChildKey(
+            checkedKeys.filter(key => !!this._k2n[key]),
+            this._k2n
+        ).map(key => this._k2n[key].pos);
         poss.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
