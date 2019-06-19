@@ -487,13 +487,15 @@ export default class Tree extends Component {
         return newSelectKeys;
     }
 
+    /* istanbul ignore next */
     getCheckedKeys(props, willReceiveProps) {
-        let checkedKeys =
-            'checkedKeys' in props
-                ? props.checkedKeys
-                : willReceiveProps
-                ? []
-                : props.defaultCheckedKeys;
+        let checkedKeys = props.defaultCheckedKeys;
+
+        if ('checkedKeys' in props) {
+            checkedKeys = props.checkedKeys;
+        } else if (willReceiveProps) {
+            checkedKeys = [];
+        }
 
         const { checkStrictly } = this.props;
         if (checkStrictly) {
@@ -504,8 +506,12 @@ export default class Tree extends Component {
             } else {
                 checkedKeys = normalizeToArray(checkedKeys);
             }
+
+            checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
         } else {
             checkedKeys = getAllCheckedKeys(checkedKeys, this._k2n, this._p2n);
+            checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
+
             this.indeterminateKeys = this.getIndeterminateKeys(checkedKeys);
         }
 
