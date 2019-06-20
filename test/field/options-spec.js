@@ -273,6 +273,23 @@ describe('options', () => {
 
             done();
         });
+        it('should get `initValue` of `name` if `getValue` called before init', function() {
+            const field = new Field(this, {parseName: true, values: {a: {b: 1}}});
+            assert(field.getValue('a.b') === 1);
+        });
+        it('should return `initValues` for `names` if `getValues` called before init', function() {
+            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
+            const {a, b} = field.getValues(['a', 'b']);
+            assert(a === 1);
+            assert(b === 2);
+        });
+        it('should return all of `initValues` if `getValues` called with no names before init', function() {
+            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
+            const {a, b, c} = field.getValues();
+            assert(a === 1);
+            assert(b === 2);
+            assert(c === 3);
+        });
         it('setValues', function(done) {
             const field = new Field(this, { parseName: true });
             field.init('user.name', { initValue: 'frankqian' });

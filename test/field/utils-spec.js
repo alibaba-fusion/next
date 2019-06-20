@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'power-assert';
-import {getErrorStrs} from '../../src/field/utils';
+import {getErrorStrs, getIn, setIn} from '../../src/field/utils';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it */
@@ -55,4 +55,76 @@ describe('Field Utils', () => {
             assert.deepEqual(result[1].props.children, 'message 2');
         });
     })
+
+    describe('getIn', () => {
+        it('should return state when state is falsy', () => {
+            assert(getIn(undefined, 'a') === undefined);
+        });
+
+        it('should return undefind when no name', () => {
+            assert(getIn({a: 1}, '') === undefined);
+        });
+
+        it('should return undefind when value for name', () => {
+            assert(getIn({a: 1}, 'b') === undefined);
+        });
+
+        it('should get top level element', () => {
+            assert(getIn({a: 1}, 'a') === 1);
+        });
+
+        it('should get deep level element', () => {
+            assert(getIn({a: {b: {c: 1}}}, 'a.b.c') === 1);
+        });
+
+        it('should get array element with dot notation', () => {
+            assert(getIn({a: [1, 2]}, 'a.1') === 2);
+        });
+
+        it('should get array element with bracket notation', () => {
+            assert(getIn({a: [1, 2]}, 'a[1]') === 2);
+        });
+
+        it('should get element that is deep array combination', () => {
+            assert(getIn({a: [1, {b: {c: 2}}]}, 'a[1].b.c') === 2);
+        });
+    });
+
+    describe('setIn', () => {
+        it('should initialize state with object when it is falsy and path is NaN', () => {
+            assert(setIn(undefined, 'a', 5).a === 5);
+        });
+
+        it('should initialize state with array when it is falsy and path is NaN', () => {
+            assert(setIn(undefined, '1', 5)[1] === 5);
+        });
+
+        it('should initialize state with whole path', () => {
+            assert(setIn(undefined, 'a.b.c', 5).a.b.c === 5);
+        });
+
+        it('should not modify state when setting new value', () => {
+            const state = {a: {b: { c: 1}}};
+            setIn(state, 'a.b.c', 5);
+            assert(state.a.b.c === 1);
+        });
+
+        it('should duplicate state with new value', () => {
+            const state = {a: {b: { c: 1}}};
+            const newState = setIn(state, 'a.b.c', 5);
+            assert(newState.a.b.c === 5);
+        });
+
+        it('should handle array dot notation', () => {
+            const state = {a: {b: [1, 2]}};
+            const newState = setIn(state, 'a.b.1', 5);
+            assert(newState.a.b[1] === 5);
+        });
+
+        it('should handle array bracket notation', () => {
+            const state = {a: {b: [1, 2]}};
+            const newState = setIn(state, 'a.b[1]', 5);
+            assert(newState.a.b[1] === 5);
+        });
+    });
 });

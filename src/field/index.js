@@ -318,7 +318,7 @@ class Field {
             return field.value;
         }
 
-        return undefined;
+        return getIn(this.initValue, name);
     }
 
     /**
@@ -330,16 +330,21 @@ class Field {
         const fields = names || this.getNames();
         let allValues = {};
 
-        fields.forEach(f => {
-            if (f.disabled) {
-                return;
-            }
-            if (!this.options.parseName) {
-                allValues[f] = this.getValue(f);
-            } else {
-                allValues = setIn(allValues, f, this.getValue(f));
-            }
-        });
+        if (fields.length) {
+            fields.forEach(f => {
+                if (f.disabled) {
+                    return;
+                }
+                if (!this.options.parseName) {
+                    allValues[f] = this.getValue(f);
+                } else {
+                    allValues = setIn(allValues, f, this.getValue(f));
+                }
+            });
+        } else if (this.initValue) {
+            allValues = this.initValue;
+        }
+
         return allValues;
     }
 
