@@ -327,18 +327,19 @@ class Field {
      * @param {Array} names
      */
     getValues(names) {
-        const fields = names || this.getNames();
+        names = names || this.getNames();
         let allValues = {};
 
-        if (fields.length) {
-            fields.forEach(f => {
-                if (f.disabled) {
+        if (names.length) {
+            names.forEach(name => {
+                const field = this._get(name);
+                if (field && field.disabled) {
                     return;
                 }
                 if (!this.options.parseName) {
-                    allValues[f] = this.getValue(f);
+                    allValues[name] = this.getValue(name);
                 } else {
-                    allValues = setIn(allValues, f, this.getValue(f));
+                    allValues = setIn(allValues, name, this.getValue(name));
                 }
             });
         } else if (this.initValue) {

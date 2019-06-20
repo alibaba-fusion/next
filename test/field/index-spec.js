@@ -334,6 +334,15 @@ describe('field', () => {
             done();
         });
 
+        it('should ignore disabled values when calling getValues', function() {
+            const field = new Field(this);
+            field.init('input', { initValue: 1, props: { disabled: true} });
+            field.init('input2', { initValue: 2 });
+            const values = field.getValues();
+            assert(values.input === undefined);
+            assert(values.input2 === 2);
+        });
+
         it('setError & setErrors & getError & getErrors', function(done) {
             const field = new Field(this);
             field.setError('input', 'error1');
@@ -498,24 +507,44 @@ describe('field', () => {
 
             done();
         });
-        it('spliceArray', function(done) {
-            const field = new Field(this);
-            field.init('input.0', { initValue: 0 });
-            field.init('input.1', { initValue: 1 });
-            field.init('input.2', { initValue: 2 });
+        describe('spliceArray', function() {
+            it('should remove the middle field item', () => {
+                const field = new Field(this);
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
 
-            field.spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 1);
 
-            assert(field.getValue('input.0') === 0);
-            assert(field.getValue('input.1') === 2);
-            assert(field.getValue('input.2') === undefined);
+                assert(field.getValue('input.0') === 0);
+                assert(field.getValue('input.1') === 2);
+                assert(field.getValue('input.2') === undefined);
+            });
 
-            field.spliceArray('input.{index}', 0);
-            assert(field.getValue('input.0') === 2);
-            assert(field.getValue('input.1') === undefined);
-            assert(field.getValue('input.2') === undefined);
+            it('should remove the first 2 field items', () => {
+                const field = new Field(this);
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
 
-            done();
+                field.spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 0);
+                assert(field.getValue('input.0') === 2);
+                assert(field.getValue('input.1') === undefined);
+                assert(field.getValue('input.2') === undefined);
+            });
+
+            it('should make no change `keymatch` does not contain `{index}', () => {
+                const field = new Field(this);
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
+
+                field.spliceArray('input', 0);
+                assert(field.getValue('input.0') === 0);
+                assert(field.getValue('input.1') === 1);
+                assert(field.getValue('input.2') === 2);
+            });
         });
     });
 });
