@@ -1,7 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
-import { Item, Group, Divider } from '../Menu'
+import { Item, Group, Divider } from '../menu';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
