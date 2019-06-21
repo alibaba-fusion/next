@@ -696,7 +696,10 @@ export default class Overlay extends Component {
         let children =
             stateVisible || (cache && this._isMounted) ? propChildren : null;
         if (children) {
-            const child = Children.only(children);
+            let child = Children.only(children);
+            if (typeof child.type === 'function') {
+                child = <div role="none">{child}</div>;
+            }
             const childClazz = classnames({
                 [`${prefix}overlay-inner`]: true,
                 [animation.in]: status === 'entering',
