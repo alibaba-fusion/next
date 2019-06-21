@@ -697,7 +697,11 @@ export default class Overlay extends Component {
             stateVisible || (cache && this._isMounted) ? propChildren : null;
         if (children) {
             let child = Children.only(children);
-            if (typeof child.type === 'function') {
+            // if chlild is a functional component wrap in a component to allow a ref to be set
+            if (
+                typeof child.type === 'function' &&
+                !(child.type.prototype instanceof Component)
+            ) {
                 child = <div role="none">{child}</div>;
             }
             const childClazz = classnames({
