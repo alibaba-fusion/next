@@ -189,7 +189,7 @@ describe('options', () => {
             assert.equal(field.getValue('input.child'), inputValue);
         });
 
-        it('should allow access to field values before init when given `values` in constructor', function() {
+        it('should allow access with `getValue` before init when given `values` in constructor', function() {
             const inputValue = 'my value';
             const field = new Field(this, {
                 values: {
@@ -197,6 +197,27 @@ describe('options', () => {
                 },
             });
             assert.equal(field.getValue('input'), inputValue);
+        });
+
+        it('should allow access to with `getValues` before init when given `values` in constructor', function() {
+            const inputValue = 'my value';
+            const field = new Field(this, {
+                values: {
+                    input: inputValue,
+                },
+            });
+            assert.equal(field.getValues().input, inputValue);
+        });
+
+        it('should use setValues instead of constructor values on field that has not been initialized', function() {
+            const inputValue = 'my value';            
+            const field = new Field(this, {
+                values: {
+                    input: inputValue,
+                },
+            });
+            field.setValue('input', 1)
+            assert.equal(field.getValue('input'), 1);
         });
 
         it('should reset `input` to undefined when given `values` in constructor and call `reset`', function() {
@@ -221,6 +242,160 @@ describe('options', () => {
             field.init('input');
             field.resetToDefault('input');
             assert.equal(field.getValue('input'), fieldDefault);
+        });
+
+        it('should reset `input` to undefined when given `values` in constructor and call `reset`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                values: {
+                    input: fieldDefault
+                },
+            });
+            field.init('input');
+            field.reset();
+            assert.equal(field.getValue('input'), undefined);
+        });
+
+        it('should return `{}` for `getValues after all fields are removed', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                values: {
+                    input: fieldDefault
+                },
+            });
+            field.init('input');
+            field.remove('input');
+            assert.equal(Object.keys(field.getValues()).length, 0);
+        });
+
+        it('should return `undefined` after `remove` then re-`init`', function() {
+            const field = new Field(this, {values: {input: 4}});
+            field.init('input');
+            field.remove('input');
+            field.init('input');
+
+            assert(field.getValue('input') === undefined);
+        })
+    });
+
+    describe('should support parseName', () => {
+        it('getValues', function(done) {
+            const field = new Field(this, { parseName: true });
+            field.init('user.name', { initValue: 'frankqian' });
+            field.init('user.pwd', { initValue: 12345 });
+            field.init('option[0]', { initValue: 'option1' });
+            field.init('option[1]', { initValue: 'option2' });
+
+            const values = field.getValues();
+
+            assert(Object.keys(values).length === 2);
+            assert(values.user.name === 'frankqian');
+            assert(values.user.pwd === 12345);
+            assert(values.option[0] === 'option1');
+
+            assert(field.getValue('option[1]') === 'option2');
+
+            done();
+        });
+        it('should get constructor value of `name` if `getValue` called before init', function() {
+            const field = new Field(this, {
+                parseName: true,
+                values: { a: { b: 1 } },
+            });
+            assert(field.getValue('a.b') === 1);
+        });
+
+        it('should return constructor value for `names` if `getValues` called before init', function() {
+            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
+            const {a, b} = field.getValues(['a', 'b']);
+            assert(a === 1);
+            assert(b === 2);
+        });
+        it('should return all of constructor value if `getValues` called with no names before init', function() {
+            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
+            const {a, b, c} = field.getValues();
+            assert(a === 1);
+            assert(b === 2);
+            assert(c === 3);
+        });
+        it('setValues', function(done) {
+            const field = new Field(this, { parseName: true });
+            field.init('user.name', { initValue: 'frankqian' });
+            field.init('user.pwd', { initValue: 12345 });
+            field.init('option[0]', { initValue: 'option1' });
+            field.init('option[1]', { initValue: 'option2' });
+
+            field.setValues({
+                user: {
+                    pwd: 'helloworld',
+                },
+                option: ['test1', 'test2'],
+            });
+
+            const values = field.getValues();
+
+            assert(Object.keys(values).length === 2);
+
+            assert(values.user.name === 'frankqian');
+            assert(values.user.pwd === 'helloworld');
+            assert(values.option[0] === 'test1');
+
+            done();
+        });
+
+        it('should allow access with `getValue` before init when given `values` in constructor', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    },
+                },
+            });
+            assert.equal(field.getValue('input.myValue'), fieldDefault);
+        });
+
+        it('should allow access to with `getValues` before init when given `values` in constructor', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    },
+                },
+            });
+            assert.equal(field.getValues().input.myValue, fieldDefault);
+        });
+
+        it('should use setValues instead of constructor values on field that has not been initialized', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    },
+                },
+            });
+            field.setValue('input.myValue', 1)
+            assert.equal(field.getValue('input.myValue'), 1);
+        });
+
+        it('should reset `input` to undefined when given `values` in constructor and call `reset`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    },
+                },
+            });
+            field.init('input.myValue');
+            field.reset();
+            assert.equal(field.getValue('input.myValue'), undefined);
         });
 
         it('should reset `input` to undefined when given `values` and `parseName` = true in constructor and call `reset`', function() {
@@ -252,67 +427,53 @@ describe('options', () => {
             field.resetToDefault('input.child');
             assert.equal(field.getValue('input.child'), fieldDefault);
         });
-    });
 
-    describe('should support parseName', () => {
-        it('getValues', function(done) {
-            const field = new Field(this, { parseName: true });
-            field.init('user.name', { initValue: 'frankqian' });
-            field.init('user.pwd', { initValue: 12345 });
-            field.init('option[0]', { initValue: 'option1' });
-            field.init('option[1]', { initValue: 'option2' });
-
-            const values = field.getValues();
-
-            assert(Object.keys(values).length === 2);
-            assert(values.user.name === 'frankqian');
-            assert(values.user.pwd === 12345);
-            assert(values.option[0] === 'option1');
-
-            assert(field.getValue('option[1]') === 'option2');
-
-            done();
-        });
-        it('should get `initValue` of `name` if `getValue` called before init', function() {
-            const field = new Field(this, {parseName: true, values: {a: {b: 1}}});
-            assert(field.getValue('a.b') === 1);
-        });
-        it('should return `initValues` for `names` if `getValues` called before init', function() {
-            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
-            const {a, b} = field.getValues(['a', 'b']);
-            assert(a === 1);
-            assert(b === 2);
-        });
-        it('should return all of `initValues` if `getValues` called with no names before init', function() {
-            const field = new Field(this, {parseName: true, values: {a: 1, b: 2, c: 3}});
-            const {a, b, c} = field.getValues();
-            assert(a === 1);
-            assert(b === 2);
-            assert(c === 3);
-        });
-        it('setValues', function(done) {
-            const field = new Field(this, { parseName: true });
-            field.init('user.name', { initValue: 'frankqian' });
-            field.init('user.pwd', { initValue: 12345 });
-            field.init('option[0]', { initValue: 'option1' });
-            field.init('option[1]', { initValue: 'option2' });
-
-            field.setValues({
-                user: {
-                    pwd: 'helloworld',
+        it('should remove top level field after removed', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    }
                 },
-                option: ['test1', 'test2'],
             });
+            field.init('input.myValue');
+            field.remove('input.myValue');
+            assert.equal(Object.keys(field.getValues()).input, undefined);
+        });
 
-            const values = field.getValues();
+        it('should return `{}` for `getValues after `remove()`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    }
+                },
+            });
+            field.init('input.myValue');
+            field.setValue('input.value2', fieldDefault);
+            field.remove();
+            assert.equal(Object.keys(field.getValues()).length, 0);
+        });
 
-            assert(Object.keys(values).length === 2);
+        it('should return `undefined` after `remove` then re-`init`', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    }
+                },
+            });
+            field.init('input.myValue');
+            field.remove('input.myValue');
+            field.init('input.myValue');
 
-            assert(values.user.name === 'frankqian');
-            assert(values.user.pwd === 'helloworld');
-            assert(values.option[0] === 'test1');
-
-            done();
+            assert(field.getValue('input.myValue') === undefined);
         });
     });
 

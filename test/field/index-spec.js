@@ -334,6 +334,42 @@ describe('field', () => {
             done();
         });
 
+        it('should return `undefined` for `getValue` on uninitialized field', function() {
+            const field = new Field(this);
+            assert.equal(field.getValue('input'), undefined);
+        });
+
+        it('should return empty object for `getValues` on uninitialized field', function() {
+            const field = new Field(this);
+            assert.equal(Object.keys(field.getValues()).length, 0);
+        });
+
+        it('should set value with `setValue` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            field.init('input');
+            assert.equal(field.getValue('input'), 1);
+        });
+
+        it('should set value with `setValues` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValues({input: 1})
+            field.init('input');
+            assert.equal(field.getValue('input'), 1);
+        });
+
+        it('should return value from `setValue` when calling `getValue` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            assert.equal(field.getValue('input'), 1);
+        });
+
+        it('should return value from `setValue` when calling `getValues` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            assert.equal(field.getValues().input, 1);
+        });
+
         it('should ignore disabled values when calling getValues', function() {
             const field = new Field(this);
             field.init('input', { initValue: 1, props: { disabled: true} });

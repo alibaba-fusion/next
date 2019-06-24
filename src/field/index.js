@@ -8,6 +8,7 @@ import {
     getParams,
     setIn,
     getIn,
+    deleteIn,
     mapValidateRules,
 } from './utils';
 
@@ -29,7 +30,9 @@ class Field {
         this.fieldsMeta = {};
         this.cachedBind = {};
         this.instance = {};
-        this.initValue = options.values || {};
+        // holds constructor values. Used for setting field defaults on init if no other value or initValue is passed.
+        // Also used caching values when using `parseName: true` before a field is initialized
+        this.fieldCache = options.values || {};
 
         this.options = Object.assign(
             {
@@ -101,10 +104,10 @@ class Field {
         } else if (originalProps[defaultValueName]) {
             defaultValue = originalProps[defaultValueName];
         } else if (this.options.parseName) {
-            defaultValue = getIn(this.initValue, name);
+            defaultValue = getIn(this.fieldCache, name);
         } else {
             defaultValue =
-                (this.initValue && this.initValue[name]) || undefined;
+                (this.fieldCache && this.fieldCache[name]) || undefined;
         }
 
         Object.assign(field, {
@@ -318,7 +321,11 @@ class Field {
             return field.value;
         }
 
-        return getIn(this.initValue, name);
+        if (this.options.parseName) {
+            return getIn(this.fieldCache, name);
+        }
+
+        return undefined;
     }
 
     /**
@@ -342,8 +349,8 @@ class Field {
                     allValues = setIn(allValues, name, this.getValue(name));
                 }
             });
-        } else if (this.initValue) {
-            allValues = this.initValue;
+        } else if (this.options.parseName) {
+            allValues = this.fieldCache;
         }
 
         return allValues;
@@ -367,6 +374,8 @@ class Field {
                 this.setValue(name, fieldsValue[name], false);
             });
         } else {
+            // set fieldCache to be used later. If no fields were initialized, this is used for getValue
+            this.fieldCache = Object.assign({}, this.fieldCache, fieldsValue);
             const fields = this.getNames();
             fields.forEach(name => {
                 const value = getIn(fieldsValue, name);
@@ -594,7 +603,6 @@ class Field {
         const names = ns || Object.keys(this.fieldsMeta);
         names.forEach(name => {
             const field = this._get(name);
-            this.getValue(name);
             if (field) {
                 changed = true;
 
@@ -647,11 +655,15 @@ class Field {
         if (typeof ns === 'string') {
             ns = [ns];
         }
+        if (!ns) {
+            this.fieldCache = {};
+        }
         const names = ns || Object.keys(this.fieldsMeta);
         names.forEach(name => {
             if (name in this.fieldsMeta) {
                 delete this.fieldsMeta[name];
             }
+            deleteIn(this.fieldCache, name);
         });
     }
 
