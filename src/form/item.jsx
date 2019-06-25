@@ -339,7 +339,7 @@ export default class Item extends React.Component {
                                 this.props,
                                 child.type.displayName
                             ),
-                            props: child.props,
+                            props: { ...child.props, ref: child.ref },
                         },
                         childrenProps
                     );
