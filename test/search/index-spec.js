@@ -38,6 +38,9 @@ describe('Search', () => {
         it('should accept no-icon', () => {
             const wrapper = mount(<Search hasIcon={false} />);
             assert(wrapper.find('.next-icon').length === 0);
+
+            const wrapperSimple = mount(<Search hasIcon={false} shape="simple" />);
+            assert(wrapperSimple.find('.next-icon').length === 0);
         });
         it('should accept search text', () => {
             const text = 'search';

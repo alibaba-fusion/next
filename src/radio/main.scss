@@ -22,6 +22,7 @@
             width: $radio-width;
             height: $radio-width;
             margin: 0;
+            cursor: pointer;
         }
     }
 
@@ -110,6 +111,9 @@
         #{$radio-prefix}-inner {
             border-color: $radio-hovered-border-color;
             background-color: $radio-hovered-bg-color;
+        }
+        #{$radio-prefix}-label {
+            cursor: pointer;
         }
     }
 

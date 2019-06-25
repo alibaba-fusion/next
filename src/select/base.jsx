@@ -68,6 +68,7 @@ export default class Base extends React.Component {
         /**
          * 弹层显示或隐藏时触发的回调
          * @param {Boolean} visible 弹层是否显示
+         * @param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**

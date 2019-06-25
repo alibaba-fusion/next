@@ -11,6 +11,7 @@
     border-radius: $dialog-corner;
     box-shadow: $dialog-shadow;
     text-align: left;
+    overflow: hidden;
 
     &-header {
         padding: $dialog-title-padding-top $dialog-title-padding-left-right $dialog-title-padding-bottom $dialog-title-padding-left-right;
@@ -57,7 +58,7 @@
     }
 
     &-btn + &-btn {
-        margin-left: $s-1;
+        margin-left: $dialog-footer-button-spacing;
     }
 
     &-close {

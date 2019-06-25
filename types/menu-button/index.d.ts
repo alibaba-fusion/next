@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import { Item, Group, Divider } from '../menu';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
@@ -88,4 +89,8 @@ export interface MenuButtonProps extends HTMLAttributesWeak {
     menuProps?: {};
 }
 
-export default class MenuButton extends React.Component<MenuButtonProps, any> {}
+export default class MenuButton extends React.Component<MenuButtonProps, any> {
+    static Item: typeof Item;
+    static Group: typeof Group;
+    static Divider: typeof Divider;
+}

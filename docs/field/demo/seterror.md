@@ -22,6 +22,14 @@ import { Input, Button, Field } from '@alifd/next';
 class App extends React.Component {
     field = new Field(this);
 
+    validate = () => {
+        console.log(this.field.getErrors());
+      this.field.validate((error, values) => {
+        // eslint-disable-next-line no-alert
+        alert(JSON.stringify(error));
+      });
+    };
+
     render() {
         const { init, getError, setError, setErrors } = this.field;
         return (<div className="demo">
@@ -52,8 +60,11 @@ class App extends React.Component {
             <span style={{color: 'red'}}>{getError('input2')}</span><br/>
 
             <Button onClick={() => {
-                setError('input2', 'errors will be removed by onChange');
+                setError('input2', 'errors will be removed by onChange and shown on validate');
             }}>setError</Button>
+
+            <Button onClick={this.validate}>
+            validate</Button>	
         </div>);
     }
 }
