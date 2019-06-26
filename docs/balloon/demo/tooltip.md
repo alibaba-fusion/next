@@ -18,8 +18,6 @@ Simplified Balloon, which can only set align, trigger and children, and triggere
 ````jsx
 import { Button, Balloon } from '@alifd/next';
 
-
-
 const Tooltip = Balloon.Tooltip;
 
 const top = <Button style={{margin: '5px'}} id="top" className="btrigger">top</Button>;

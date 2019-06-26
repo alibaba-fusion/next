@@ -71,6 +71,7 @@ export default {
         selectPlaceholder: '请选择',
         autoCompletePlaceholder: '请输入',
         notFoundContent: '无选项',
+        maxTagPlaceholder: '已选择 {selected}/{total} 项',
     },
     Table: {
         empty: '没有数据',

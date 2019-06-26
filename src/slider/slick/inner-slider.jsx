@@ -114,6 +114,12 @@ class InnerSlider extends React.Component {
             for (let i = 0, j = React.Children.count(children); i < j; i++) {
                 if (i >= currentSlide && i < currentSlide + slidesToShow) {
                     lazyLoadedList.push(i);
+
+                    const pre = i - 1 < 0 ? j - 1 : i - 1;
+                    const next = i + 1 >= j ? 0 : i + 1;
+
+                    lazyLoadedList.push(pre);
+                    lazyLoadedList.push(next);
                 }
             }
 

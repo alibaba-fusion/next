@@ -318,6 +318,10 @@ export default class Tree extends Component {
             st.checkedKeys = this.getCheckedKeys(nextProps, true);
         }
 
+        this.indeterminateKeys = this.getIndeterminateKeys(
+            st.checkedKeys || this.state.checkedKeys || []
+        );
+
         if (Object.keys(st).length) {
             this.setState(st);
         }
@@ -487,13 +491,15 @@ export default class Tree extends Component {
         return newSelectKeys;
     }
 
+    /* istanbul ignore next */
     getCheckedKeys(props, willReceiveProps) {
-        let checkedKeys =
-            'checkedKeys' in props
-                ? props.checkedKeys
-                : willReceiveProps
-                ? []
-                : props.defaultCheckedKeys;
+        let checkedKeys = props.defaultCheckedKeys;
+
+        if ('checkedKeys' in props) {
+            checkedKeys = props.checkedKeys;
+        } else if (willReceiveProps) {
+            checkedKeys = [];
+        }
 
         const { checkStrictly } = this.props;
         if (checkStrictly) {
@@ -504,8 +510,12 @@ export default class Tree extends Component {
             } else {
                 checkedKeys = normalizeToArray(checkedKeys);
             }
+
+            checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
         } else {
             checkedKeys = getAllCheckedKeys(checkedKeys, this._k2n, this._p2n);
+            checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
+
             this.indeterminateKeys = this.getIndeterminateKeys(checkedKeys);
         }
 
@@ -812,9 +822,10 @@ export default class Tree extends Component {
     getIndeterminateKeys(checkedKeys) {
         const indeterminateKeys = [];
 
-        const poss = filterChildKey(checkedKeys, this._k2n).map(
-            key => this._k2n[key].pos
-        );
+        const poss = filterChildKey(
+            checkedKeys.filter(key => !!this._k2n[key]),
+            this._k2n
+        ).map(key => this._k2n[key].pos);
         poss.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {

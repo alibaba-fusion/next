@@ -429,6 +429,26 @@ class Field {
     }
 
     /**
+     * Get errors using `getErrors` and format to match the structure of errors returned in field.validate
+     * @param {Array} fieldNames
+     * @return {Object || null} map of inputs and their errors
+     */
+    formatGetErrors(fieldNames) {
+        const errors = this.getErrors(fieldNames);
+        let formattedErrors = null;
+        for (const field in errors) {
+            if (errors.hasOwnProperty(field) && errors[field]) {
+                const errorsObj = errors[field];
+                if (!formattedErrors) {
+                    formattedErrors = {};
+                }
+                formattedErrors[field] = { errors: errorsObj };
+            }
+        }
+        return formattedErrors;
+    }
+
+    /**
      * validate by trigger
      * @param {Array} ns names
      * @param {Function} cb callback after validate
@@ -461,7 +481,8 @@ class Field {
         }
 
         if (!hasRule) {
-            callback && callback(null, this.getValues(fieldNames));
+            const errors = this.formatGetErrors(fieldNames);
+            callback && callback(errors, this.getValues(fieldNames));
             return;
         }
 
@@ -491,6 +512,16 @@ class Field {
                     field.errors = getErrorStrs(errorsGroup[i].errors);
                     field.state = 'error';
                 });
+            }
+
+            const formattedGetErrors = this.formatGetErrors(fieldNames);
+
+            if (formattedGetErrors) {
+                errorsGroup = Object.assign(
+                    {},
+                    formattedGetErrors,
+                    errorsGroup
+                );
             }
 
             // update to success which has no error

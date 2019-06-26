@@ -188,16 +188,20 @@ class RadioGroup extends Component {
                         (index === 0 && !this.state.value) || checked ? 0 : -1;
                     const childrtl =
                         child.props.rtl === undefined ? rtl : child.props.rtl;
-                    return React.cloneElement(
-                        child,
-                        child.props.tabIndex === undefined
-                            ? {
-                                  checked,
-                                  tabIndex,
-                                  rtl: childrtl,
-                              }
-                            : { checked, rtl: childrtl }
-                    );
+                    if (
+                        child.type &&
+                        child.type.displayName === 'Config(Radio)'
+                    ) {
+                        return React.cloneElement(child, {
+                            checked,
+                            tabIndex,
+                            rtl: childrtl,
+                        });
+                    }
+                    return React.cloneElement(child, {
+                        checked,
+                        rtl: childrtl,
+                    });
                 }
             );
         } else {

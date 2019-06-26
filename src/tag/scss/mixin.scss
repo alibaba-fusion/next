@@ -37,7 +37,7 @@
         padding: 0 $paddingLr 0 0;
     }
 
-    > .#{$css-prefix}tag-close-btn {
+    &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-close-btn {
         margin-left: $_marginLeft;
         padding-right: $paddingLr;
         .#{$css-prefix}icon {

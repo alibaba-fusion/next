@@ -467,7 +467,7 @@ describe('Select', () => {
         wrapper.find('i.next-icon-delete-filling').simulate('click');
     });
 
-    it('should support custom content with mode=tag', done => {
+    it('should support maxTagCount', done => {
         const value = [
             { label: 'xxx', value: '0' },
             { label: 'empty', value: 1 },
@@ -475,7 +475,6 @@ describe('Select', () => {
             { label: 'yyy', value: 1 },
         ];
         wrapper.setProps({
-            maxTagTextLength: 2,
             visible: true,
             maxTagCount: 2,
             mode: 'tag',
@@ -483,6 +482,25 @@ describe('Select', () => {
         });
         wrapper.update();
         assert(wrapper.find('span.next-select div.next-tag').length === 3);
+        done()
+    });
+
+    it('should support tagInline', done => {
+        const value = [
+            { label: 'xxx', value: '0' },
+            { label: 'empty', value: 1 },
+            { label: 'zzz', value: 1 },
+            { label: 'yyy', value: 1 },
+        ];
+        wrapper.setProps({
+            visible: true,
+            tagInline: true,
+            mode: 'tag',
+            value
+        });
+        wrapper.update();
+
+        assert(wrapper.find('span.next-select .next-select-compact div.next-select-tag-compact').length === 1);
         done()
     });
 

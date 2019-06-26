@@ -119,3 +119,7 @@
 -   建议一个FormItem放一个组件, 方便错误提示跟随组件展示
 -   组件必须是FormItem的第一层子元素
 -   详细校验请查看 `Field` 组件文档的 rules
+
+## 复杂表单场景
+
+如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [uform](https://github.com/alibaba/uform)，uform已经封装了所有fusion组件，保证您开箱即用

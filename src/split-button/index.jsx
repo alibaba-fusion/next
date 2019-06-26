@@ -77,7 +77,7 @@ class SplitButton extends React.Component {
         /**
          * 弹层显示状态变化时的回调函数
          * @param {Boolean} visible 弹层显示状态
-         * @param {String} reason 触发弹层显示和隐藏的来源
+         * @param {String} type 触发弹层显示或隐藏的来源 menuSelect 表示由menu触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
