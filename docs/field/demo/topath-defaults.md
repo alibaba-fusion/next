@@ -31,16 +31,6 @@ class Demo extends React.Component {
       }
     }
   });
-
-	_handleValidate = () => {
-    const {
-      field: {
-        validate
-      }
-    } = this;
-    
-    validate(['bbb.ccc']);
-  };
   
   render() {
     const {

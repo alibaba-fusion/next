@@ -130,7 +130,7 @@ export function deleteIn(state, name) {
         .split('.');
     const length = path.length;
     if (!length) {
-        return;
+        return state;
     }
 
     let result = state;

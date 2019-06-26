@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'power-assert';
-import {getErrorStrs, getIn, setIn} from '../../src/field/utils';
+import {getErrorStrs, getIn, setIn, deleteIn} from '../../src/field/utils';
 
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it */
@@ -125,6 +125,40 @@ describe('Field Utils', () => {
             const state = {a: {b: [1, 2]}};
             const newState = setIn(state, 'a.b[1]', 5);
             assert(newState.a.b[1] === 5);
+        });
+
+        it('should add to existing nested object', () => {
+            const state = {a: {b: 1 }};
+            const newState = setIn(state, 'a.c.d', 5);
+            assert(newState.a.c.d === 5);
+        });
+
+        it('should add to empty object', () => {
+            const newState = setIn({}, 'a.b.c', 5);
+            assert(newState.a.b.c === 5);
+        });
+    });
+
+    describe('deleteIn', () => {
+        it('should do nothing when name is not present', () => {
+            assert.deepEqual(deleteIn({a: { b: 1}}, 'x'), { a: { b: 1 }});
+        });
+
+        it('should do nothing given empty object', () => {
+            assert.deepEqual(deleteIn({}, 'x'), {});
+        });
+
+        it('should delete nested element, but leave object', () => {
+            assert.deepEqual(deleteIn({a : { b: 1}}, 'a.b'), {a: {}});
+        });
+
+        it('should delete top level element, but leave object', () => {
+            assert.deepEqual(deleteIn({a : { b: 1}}, 'a'), {});
+        });
+
+        it('should delete array element, but not change later indices', () => {
+            // eslint-disable-next-line no-sparse-arrays
+            assert.deepEqual(deleteIn({a : { b: [1, 2, 3]}}, 'a.b.0'), {a : { b: [, 2, 3]}}); 
         });
     });
 });

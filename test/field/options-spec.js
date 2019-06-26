@@ -171,7 +171,6 @@ describe('options', () => {
                     input: inputValue
                 },
             });
-            field.init('input');
             assert.equal(field.getValue('input'), inputValue);
         });
 
@@ -285,7 +284,6 @@ describe('options', () => {
             field.init('user.pwd', { initValue: 12345 });
             field.init('option[0]', { initValue: 'option1' });
             field.init('option[1]', { initValue: 'option2' });
-
             const values = field.getValues();
 
             assert(Object.keys(values).length === 2);
@@ -369,7 +367,7 @@ describe('options', () => {
             assert.equal(field.getValues().input.myValue, fieldDefault);
         });
 
-        it('should use setValues instead of constructor values on field that has not been initialized', function() {
+        it('should use setValue instead of constructor values on field that has not been initialized', function() {
             const fieldDefault = 'field default value';
             const field = new Field(this, {
                 parseName: true,
@@ -383,50 +381,7 @@ describe('options', () => {
             assert.equal(field.getValue('input.myValue'), 1);
         });
 
-        it('should reset `input` to undefined when given `values` in constructor and call `reset`', function() {
-            const fieldDefault = 'field default value';
-            const field = new Field(this, {
-                parseName: true,
-                values: {
-                    input: {
-                        myValue: fieldDefault
-                    },
-                },
-            });
-            field.init('input.myValue');
-            field.reset();
-            assert.equal(field.getValue('input.myValue'), undefined);
-        });
-
-        it('should reset `input` to undefined when given `values` and `parseName` = true in constructor and call `reset`', function() {
-            const fieldDefault = 'field default value';
-            const field = new Field(this, {
-                parseName: true,
-                values: {
-                    input: {
-                        child: fieldDefault
-                    },
-                },
-            });
-            field.init('input.child');
-            field.reset();
-            assert.equal(field.getValue('input.child'), undefined);
-        });
-
-        it('should reset `input` to undefined when given `values` and `parseName` = true in constructor and call `resetToDefault`', function() {
-            const fieldDefault = 'field default value';
-            const field = new Field(this, {
-                parseName: true,
-                values: {
-                    input: {
-                        child: fieldDefault
-                    },
-                },
-            });
-            field.init('input.child');
-            field.resetToDefault('input.child');
-            assert.equal(field.getValue('input.child'), fieldDefault);
-        });
+        
 
         it('should remove top level field after removed', function() {
             const fieldDefault = 'field default value';
@@ -474,6 +429,145 @@ describe('options', () => {
             field.init('input.myValue');
 
             assert(field.getValue('input.myValue') === undefined);
+        });
+
+        it('should return all setValues', function() {
+            const fieldDefault = 'field default value';
+            const field = new Field(this, {
+                parseName: true,
+            });
+            field.setValues({
+                input: {
+                    myValue: fieldDefault,
+                },
+            });
+
+            assert.deepEqual(field.getValues(), {
+                input: { myValue: fieldDefault },
+            });
+        });
+
+        it('should return all setValues and initValues', function() {
+            const fieldDefault = 'field default value';
+            const otherDefault = 'other default value';
+            const field = new Field(this, {
+                parseName: true,
+            });
+            field.setValues({
+                input: {
+                    myValue: fieldDefault,
+                },
+            });
+
+            field.init('input.otherValue', { initValue: otherDefault });
+
+            assert.deepEqual(field.getValues(), {
+                input: {
+                    myValue: fieldDefault,
+                    otherValue: otherDefault,
+                },
+            });
+        });
+        describe('reset', function() {
+            it('should reset all to undefined when call `reset`', function() {
+                const fieldDefault = 'field default value';
+                const field = new Field(this, {
+                    parseName: true,
+                });
+                field.setValue('input.myValue', fieldDefault);
+                field.setValue('input.otherValue', fieldDefault);
+                field.reset();
+                assert.equal(field.getValue('input.myValue'), undefined);
+                assert.equal(field.getValue('input.otherValue'), undefined);
+            });
+
+            it('should reset all to undefined when given `values` in constructor and call `reset`', function() {
+                const fieldDefault = 'field default value';
+                const field = new Field(this, {
+                    parseName: true,
+                    values: {
+                        input: {
+                            myValue: fieldDefault,
+                            otherValue: fieldDefault
+                        },
+                    },
+                });
+                field.init('input.myValue');
+                field.init('input.otherValue');
+                field.reset();
+                assert.equal(field.getValue('input.myValue'), undefined);
+                assert.equal(field.getValue('input.otherValue'), undefined);
+            });
+
+            it('should reset only `input.myValue` to undefined when given `values` in constructor and pass `input.myValue` to `reset`', function() {
+                const fieldDefault = 'field default value';
+                const field = new Field(this, {
+                    parseName: true,
+                    values: {
+                        input: {
+                            myValue: fieldDefault,
+                            otherValue: fieldDefault
+                        },
+                    },
+                });
+                field.init('input.myValue');
+                field.reset('input.myValue');
+                assert.equal(field.getValue('input.myValue'), undefined);
+                assert.equal(field.getValue('input.otherValue'), fieldDefault);
+            });
+
+            it('should reset all to undefined when call `resetToDefault` with no defaults', function() {
+                const fieldDefault = 'field default value';
+                const field = new Field(this, {
+                    parseName: true,
+                });
+                field.setValue('input.myValue', fieldDefault);
+                field.setValue('input.otherValue', fieldDefault);
+                field.resetToDefault();
+                assert.equal(field.getValue('input.myValue'), undefined);
+                assert.equal(field.getValue('input.otherValue'), undefined);
+            });
+    
+            it('should reset all to undefined when given `values` in constructor and call `resetToDefault`', function() {
+                const fieldDefault = 'field default value';
+                const secondValue = 'second';
+                const field = new Field(this, {
+                    parseName: true,
+                    values: {
+                        input: {
+                            myValue: fieldDefault,
+                            otherValue: fieldDefault
+                        },
+                    },
+                });
+                field.init('input.myValue');
+                field.init('input.otherValue');
+                field.setValue('input.myValue', secondValue);
+                field.setValue('input.otherValue', secondValue);
+                field.resetToDefault();
+                assert.equal(field.getValue('input.myValue'), fieldDefault);
+                assert.equal(field.getValue('input.otherValue'), fieldDefault);
+            });
+
+            it('should reset `input` to undefined when given `values` in constructor and call `resetToDefault`', function() {
+                const fieldDefault = 'field default value';
+                const secondValue = 'second';
+                const field = new Field(this, {
+                    parseName: true,
+                    values: {
+                        input: {
+                            myValue: fieldDefault,
+                            otherValue: fieldDefault
+                        },
+                    },
+                });
+                field.init('input.myValue');
+                field.setValue('input.myValue', secondValue);
+                field.setValue('input.otherValue', secondValue);
+                field.resetToDefault('input.myValue');
+                assert.equal(field.getValue('input.myValue'), fieldDefault);
+                assert.equal(field.getValue('input.otherValue'), secondValue);
+            });
         });
     });
 
