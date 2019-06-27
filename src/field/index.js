@@ -376,6 +376,7 @@ class Field {
             });
         } else {
             // NOTE: this is a shallow merge
+            // Ex. we have two values a.b.c=1 ; a.b.d=2, and use setValues({a:{b:{c:3}}}) , then because of shallow merge a.b.d will be lost, we will get only {a:{b:{c:3}}}
             this.values = Object.assign({}, this.values, fieldsValue);
             const fields = this.getNames();
             fields.forEach(name => {
