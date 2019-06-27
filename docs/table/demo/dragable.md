@@ -45,10 +45,10 @@ function MyRow (props) {
         'drop-over-downward': isOver && others.index > dragingIndex,
     });
 
-    return <SelectionRow {...others}
+    return (<SelectionRow {...others}
         style={{ ...style, ...{ opacity } }}
         className={cls}
-        wrapper={(row) => connectDragSource(connectDropTarget(row))} />
+        wrapper={(row) => connectDragSource(connectDropTarget(row))} />);
 }
 
 const NewRow = DropTarget(
@@ -106,9 +106,9 @@ class InnerTable extends React.Component {
   }
 
   moveRow = (dragIndex, hoverIndex) => {
-    let { onSort } = this.props;
+    const { onSort } = this.props;
     const dragRow = this.state.dataSource[dragIndex];
-    let dataSource = [...this.state.dataSource];
+    const dataSource = [...this.state.dataSource];
     dataSource.splice(dragIndex, 1);
     dataSource.splice(hoverIndex, 0, dragRow);
     this.setState({
@@ -120,7 +120,7 @@ class InnerTable extends React.Component {
 
   render() {
 
-    let { excludeProvider, ...restProps } = this.props;
+    const { excludeProvider, ...restProps } = this.props;
     const tableProps = {
         ...restProps,
         dataSource: this.state.dataSource,

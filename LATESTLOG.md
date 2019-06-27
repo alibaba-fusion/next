@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.15.9](https://github.com/alibaba-fusion/next/compare/1.15.8...1.15.9) (2019-06-20)
+## [1.15.10](https://github.com/alibaba-fusion/next/compare/1.15.9...1.15.10) (2019-06-27)
 
 
-### Bug Fixes
+### Features
 
-* **Tree:** set checkedStrategy check error ([fa3c164](https://github.com/alibaba-fusion/next/commit/fa3c164))
+* **Table:** dragable table with react-dnd ([95c05c9](https://github.com/alibaba-fusion/next/commit/95c05c9))
 
 
