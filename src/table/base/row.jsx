@@ -25,6 +25,7 @@ export default class Row extends React.Component {
         cellRef: PropTypes.func,
         colGroup: PropTypes.object,
         locale: PropTypes.object,
+        wrapper: PropTypes.func,
     };
 
     static defaultProps = {
@@ -38,6 +39,7 @@ export default class Row extends React.Component {
         onMouseLeave: noop,
         cellRef: noop,
         colGroup: {},
+        wrapper: row => row,
     };
 
     static contextTypes = {
@@ -194,13 +196,15 @@ export default class Row extends React.Component {
             locale,
             expandedIndexSimulate,
             rtl,
+            wrapper,
             ...others
         } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
             [className]: className,
         });
-        return (
+
+        const tr = (
             <tr
                 className={cls}
                 role="row"
@@ -213,5 +217,7 @@ export default class Row extends React.Component {
                 {children}
             </tr>
         );
+
+        return wrapper(tr);
     }
 }
