@@ -14,6 +14,11 @@ export interface AutoCompleteProps extends HTMLAttributesWeak {
     size?: 'small' | 'medium' | 'large';
 
     /**
+     * name
+     */
+    name?: string;
+
+    /**
      * 当前值，用于受控模式
      */
     value?: string | number;
