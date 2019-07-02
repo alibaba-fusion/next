@@ -244,6 +244,17 @@ describe('form', () => {
                 wrapper.find('.next-form-item-label label').prop('required')
             );
         });
+        it('should supoort ref', () => {
+            const saveRef = sinon.spy();
+            const wrapper = mount(
+                <Form>
+                    <FormItem required label="test">
+                        <Input name="testref" ref={saveRef}/>
+                    </FormItem>
+                </Form>
+            );
+            assert(saveRef.calledOnce);
+        });
         it('should supoort function children', () => {
             const wrapper = mount(
                 <Form>
