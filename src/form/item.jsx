@@ -326,7 +326,10 @@ export default class Item extends React.Component {
                 child.type._typeMark !== 'form_item' &&
                 child.type._typeMark !== 'form_error'
             ) {
-                let extraProps = childrenProps;
+                let extraProps = Object.assign({}, childrenProps, {
+                    ref: child.ref,
+                });
+
                 if (
                     this.context._formField &&
                     'name' in child.props &&
@@ -341,7 +344,7 @@ export default class Item extends React.Component {
                             ),
                             props: child.props,
                         },
-                        childrenProps
+                        extraProps
                     );
                 } else {
                     extraProps = Object.assign({}, child.props, extraProps);

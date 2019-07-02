@@ -19,6 +19,7 @@ const formItemLayout = {
     },
 };
 
+/* eslint-disable no-undef, react/jsx-filename-extension */
 describe('form', () => {
     describe('render', () => {
         it('Form ', () => {
@@ -273,6 +274,20 @@ describe('form', () => {
             assert(wrapper.find('input[id="frank"]').length === 0);
             assert(
                 wrapper.find('input[id="unknow"]').prop('value') === 'unknow'
+            );
+        });
+
+        it('should supoort refs on Input children', (done) => {
+            const callback = (ref) => {
+                assert(ref);
+                done();
+            }
+            mount(
+                <Form>
+                    <FormItem required label="test">
+                        <Input name="name" ref={callback} />
+                    </FormItem>
+                </Form>
             );
         });
     });
