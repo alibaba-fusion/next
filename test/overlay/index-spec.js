@@ -132,7 +132,6 @@ class PopupControlDemo extends React.Component {
 
 describe('Overlay', () => {
     let wrapper;
-    let wrapper2;
 
     beforeEach(() => {
         const nodeListArr = [].slice.call(
@@ -452,6 +451,21 @@ describe('Overlay', () => {
             done();
         }, 1000);
     });
+
+    it('should support function children', () => {
+        const MyFuncComp = () => {
+            return 'content';
+        }
+        wrapper = render(
+            <Overlay visible>
+                <MyFuncComp />
+            </Overlay>
+        );
+
+        const overlay = wrapper.instance().getInstance();
+        const content = overlay.getContent();
+        assert(content.textContent.trim() === 'content');
+    })
 });
 
 describe('Popup', () => {
