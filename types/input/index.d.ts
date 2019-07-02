@@ -22,12 +22,12 @@ export interface TextAreaProps extends HTMLAttributesWeak {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, opts: {}) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>, opts: {}) => void;
 
     /**
      * 禁用状态
