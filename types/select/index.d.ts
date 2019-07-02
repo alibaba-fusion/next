@@ -175,6 +175,11 @@ export interface SelectProps extends HTMLAttributesWeak {
     size?: 'small' | 'medium' | 'large';
 
     /**
+     * name
+     */
+    name?: string;
+
+    /**
      * 当前值，用于受控模式
      */
     value?: any;
