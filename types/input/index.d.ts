@@ -22,12 +22,12 @@ export interface TextAreaProps extends HTMLAttributesWeak {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: any) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: any, opts: {}) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, opts: {}) => void;
 
     /**
      * 禁用状态
@@ -175,12 +175,12 @@ export interface InputProps extends HTMLAttributesWeak {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: any) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: any, opts: {}) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, opts: {}) => void;
 
     /**
      * 禁用状态
