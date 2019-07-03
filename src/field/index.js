@@ -8,6 +8,7 @@ import {
     getParams,
     setIn,
     getIn,
+    deleteIn,
     mapValidateRules,
 } from './utils';
 
@@ -29,7 +30,9 @@ class Field {
         this.fieldsMeta = {};
         this.cachedBind = {};
         this.instance = {};
-        this.initValue = options.values || {};
+        // holds constructor values. Used for setting field defaults on init if no other value or initValue is passed.
+        // Also used caching values when using `parseName: true` before a field is initialized
+        this.values = options.values || {};
 
         this.options = Object.assign(
             {
@@ -89,6 +92,8 @@ class Field {
             getValueFromEvent = null,
             autoValidate = true,
         } = fieldOption;
+        const { parseName } = this.options;
+
         const originalProps = Object.assign({}, props, rprops);
         const defaultValueName = `default${valueName[0].toUpperCase()}${valueName.slice(
             1
@@ -100,11 +105,10 @@ class Field {
             defaultValue = initValue;
         } else if (originalProps[defaultValueName]) {
             defaultValue = originalProps[defaultValueName];
-        } else if (this.options.parseName) {
-            defaultValue = getIn(this.initValue, name);
+        } else if (parseName) {
+            defaultValue = getIn(this.values, name);
         } else {
-            defaultValue =
-                (this.initValue && this.initValue[name]) || undefined;
+            defaultValue = (this.values && this.values[name]) || undefined;
         }
 
         Object.assign(field, {
@@ -124,6 +128,11 @@ class Field {
 
         if (!('value' in field)) {
             field.value = defaultValue;
+        }
+        if (parseName && !getIn(this.values, name)) {
+            this.values = setIn(this.values, name, field.value);
+        } else if (!parseName && !this.values[name]) {
+            this.values[name] = field.value;
         }
 
         // Component props
@@ -201,6 +210,12 @@ class Field {
             ? field.getValueFromEvent.apply(this, others)
             : getValueFromEvent(e);
 
+        if (this.options.parseName) {
+            this.values = setIn(this.values, name, field.value);
+        } else {
+            this.values[name] = field.value;
+        }
+
         this._resetError(name);
 
         // validate while onChange
@@ -248,14 +263,19 @@ class Field {
             const cache = this.fieldsMeta[name];
             this._setCache(name, key, cache);
             // after destroy, delete data
-            delete this.fieldsMeta[name];
             delete this.instance[name];
+            this.remove(name);
             return;
         }
 
         // 2. _saveRef(B, ref) (eg: same name but different compoent may be here)
         if (autoUnmount && !this.fieldsMeta[name]) {
             this.fieldsMeta[name] = this._getCache(name, key);
+            this.setValue(
+                name,
+                this.fieldsMeta[name] && this.fieldsMeta[name].value,
+                false
+            );
         }
 
         // only one time here
@@ -312,45 +332,39 @@ class Field {
     }
 
     getValue(name) {
-        const field = this._get(name);
-
-        if (field && 'value' in field) {
-            return field.value;
+        if (this.options.parseName) {
+            return getIn(this.values, name);
         }
-
-        return undefined;
+        return this.values[name];
     }
 
     /**
      * 1. get values by names.
-     * 2. ignore disabled value.
+     * 2. If no names passed, return shallow copy of `field.values`
      * @param {Array} names
      */
     getValues(names) {
-        const fields = names || this.getNames();
-        let allValues = {};
+        const allValues = {};
 
-        fields.forEach(f => {
-            if (f.disabled) {
-                return;
-            }
-            if (!this.options.parseName) {
-                allValues[f] = this.getValue(f);
-            } else {
-                allValues = setIn(allValues, f, this.getValue(f));
-            }
-        });
+        if (names && names.length) {
+            names.forEach(name => {
+                allValues[name] = this.getValue(name);
+            });
+        } else {
+            Object.assign(allValues, this.values);
+        }
+
         return allValues;
     }
 
     setValue(name, value, reRender = true) {
         if (name in this.fieldsMeta) {
             this.fieldsMeta[name].value = value;
+        }
+        if (this.options.parseName) {
+            this.values = setIn(this.values, name, value);
         } else {
-            // if not exist, then new one
-            this.fieldsMeta[name] = {
-                value,
-            };
+            this.values[name] = value;
         }
         reRender && this._reRender();
     }
@@ -361,11 +375,22 @@ class Field {
                 this.setValue(name, fieldsValue[name], false);
             });
         } else {
+            // NOTE: this is a shallow merge
+            // Ex. we have two values a.b.c=1 ; a.b.d=2, and use setValues({a:{b:{c:3}}}) , then because of shallow merge a.b.d will be lost, we will get only {a:{b:{c:3}}}
+            this.values = Object.assign({}, this.values, fieldsValue);
             const fields = this.getNames();
             fields.forEach(name => {
-                const value = getIn(fieldsValue, name);
+                const value = getIn(this.values, name);
                 if (value !== undefined) {
-                    this.setValue(name, value, false);
+                    // copy over values that are in this.values
+                    this.fieldsMeta[name].value = value;
+                } else {
+                    // if no value then copy values from fieldsMeta to keep initialized component data
+                    this.values = setIn(
+                        this.values,
+                        name,
+                        this.fieldsMeta[name].value
+                    );
                 }
             });
         }
@@ -586,9 +611,12 @@ class Field {
         let changed = false;
 
         const names = ns || Object.keys(this.fieldsMeta);
+
+        if (!ns) {
+            this.values = {};
+        }
         names.forEach(name => {
             const field = this._get(name);
-            this.getValue(name);
             if (field) {
                 changed = true;
 
@@ -598,6 +626,12 @@ class Field {
                 delete field.errors;
                 delete field.rules;
                 delete field.rulesMap;
+
+                if (this.options.parseName) {
+                    this.values = setIn(this.values, name, field.value);
+                } else {
+                    this.values[name] = field.value;
+                }
             }
         });
 
@@ -641,10 +675,19 @@ class Field {
         if (typeof ns === 'string') {
             ns = [ns];
         }
+        if (!ns) {
+            this.values = {};
+        }
+
         const names = ns || Object.keys(this.fieldsMeta);
         names.forEach(name => {
             if (name in this.fieldsMeta) {
                 delete this.fieldsMeta[name];
+            }
+            if (this.options.parseName) {
+                this.values = deleteIn(this.values, name);
+            } else {
+                delete this.values[name];
             }
         });
     }
@@ -660,12 +703,14 @@ class Field {
             return;
         }
 
+        // regex to match field names in the same target array
         const reg = keyMatch.replace('{index}', '(\\d+)');
         const keyReg = new RegExp(`^${reg}$`);
 
         let list = [];
         const names = this.getNames();
         names.forEach(n => {
+            // is name in the target array?
             const ret = keyReg.exec(n);
             if (ret) {
                 const index = parseInt(ret[1]);
@@ -684,12 +729,20 @@ class Field {
         if (list.length > 0 && list[0].index === startIndex + 1) {
             list.forEach(l => {
                 const n = keyMatch.replace('{index}', l.index - 1);
-                this.fieldsMeta[n] = this.fieldsMeta[l.name];
+                const v = this.getValue(l.name);
+                this.setValue(n, v, false);
             });
+            this.remove(list[list.length - 1].name);
 
-            delete this.fieldsMeta[list[list.length - 1].name];
+            let parentName = keyMatch.replace('.{index}', '');
+            parentName = parentName.replace('[{index}]', '');
+            const parent = this.getValue(parentName);
 
-            this._reRender();
+            if (parent) {
+                // if parseName=true then parent is an Array object but does not know an element was removed
+                // this manually decrements the array length
+                parent.length--;
+            }
         }
     }
 
