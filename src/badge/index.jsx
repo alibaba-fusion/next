@@ -22,9 +22,13 @@ class Badge extends Component {
          */
         children: PropTypes.node,
         /**
-         * 展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时隐藏
+         * 展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时默认隐藏
          */
         count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        /**
+         * 当count为0时，是否显示count
+         */
+        showZero: PropTypes.bool,
         /**
          * 自定义节点内容
          */
@@ -45,6 +49,7 @@ class Badge extends Component {
     static defaultProps = {
         prefix: 'next-',
         count: 0,
+        showZero: false,
         overflowCount: 99,
         dot: false,
     };
@@ -59,6 +64,7 @@ class Badge extends Component {
             style,
             rtl,
             count: originCount,
+            showZero,
             overflowCount: originOverflowCount,
         } = this.props;
         const count = parseInt(originCount, 10);
@@ -66,7 +72,7 @@ class Badge extends Component {
         const others = obj.pickOthers(Badge.propTypes, this.props);
 
         // 如果是数字，则添加默认的 title
-        if (count) {
+        if (count || (count === 0 && showZero)) {
             others.title = others.title || `${count}`;
         }
 
@@ -82,7 +88,15 @@ class Badge extends Component {
             <span dir={rtl ? 'rtl' : undefined} className={classes} {...others}>
                 {children}
                 <Sup
-                    {...{ prefix, content, count, overflowCount, dot, style }}
+                    {...{
+                        prefix,
+                        content,
+                        count,
+                        showZero,
+                        overflowCount,
+                        dot,
+                        style,
+                    }}
                 />
             </span>
         );

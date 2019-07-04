@@ -20,6 +20,7 @@ export default class Sup extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         count: PropTypes.number,
+        showZero: PropTypes.bool,
         overflowCount: PropTypes.number,
         content: PropTypes.node,
         dot: PropTypes.bool,
@@ -29,6 +30,7 @@ export default class Sup extends Component {
     static defaultProps = {
         prefix: 'next-',
         count: 0,
+        showZero: false,
         overflowCount: 99,
         dot: false,
     };
@@ -154,6 +156,7 @@ export default class Sup extends Component {
         const {
             prefix,
             count,
+            showZero,
             overflowCount,
             dot,
             style,
@@ -161,15 +164,15 @@ export default class Sup extends Component {
         } = this.props;
 
         const supClasses = classNames(`${prefix}badge-scroll-number`, {
-            [`${prefix}badge-count`]: !!count,
+            [`${prefix}badge-count`]: !!count || (count === 0 && showZero),
             [`${prefix}badge-dot`]: dot,
             [`${prefix}badge-custom`]: !!content,
         });
 
         let children = null;
-        const show = dot || count > 0 || content;
+        const show = dot || count > 0 || (count === 0 && showZero) || content;
 
-        if (count > 0) {
+        if (count > 0 || (count === 0 && showZero)) {
             const realCount =
                 overflowCount > 0 && count > overflowCount
                     ? `${overflowCount}+`

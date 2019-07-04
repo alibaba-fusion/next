@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import co from 'co';
@@ -269,4 +269,10 @@ describe('Badge', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('should show zero when count is even zero by setting showZero', () => {
+        const wrapper = render(<Badge count={0} showZero />);
+        assert.notStrictEqual(wrapper.find('.next-badge-count'), null);
+        assert(wrapper.find('.next-badge-count').hasClass('next-badge-scroll-number'));
+    })
 });
