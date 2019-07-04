@@ -601,7 +601,7 @@ export default class Tree extends Component {
                 if (checkable) {
                     this.handleCheck(!item.props.checked, key, node);
                 } else if (selectable) {
-                    this.handleSelect(!item.props.selected, key, node);
+                    this.handleSelect(!item.props.selected, key, node, e);
                 }
                 break;
             }
@@ -650,7 +650,7 @@ export default class Tree extends Component {
         }
     }
 
-    handleSelect(select, key, node) {
+    handleSelect(select, key, node, e) {
         const { multiple, onSelect } = this.props;
         let selectedKeys = [...this.state.selectedKeys];
         if (multiple) {
@@ -668,6 +668,7 @@ export default class Tree extends Component {
             selectedNodes: this.getNodes(selectedKeys),
             node,
             selected: select,
+            event: e,
         });
     }
 
