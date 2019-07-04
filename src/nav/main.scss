@@ -437,6 +437,13 @@ $nav-icononly-width: $s-15;
             }
         }
     }
+
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: initial;
+        border: none;
+    }
 }
 
 @import "./rtl.scss";
