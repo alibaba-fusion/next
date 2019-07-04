@@ -655,10 +655,8 @@ export default class Tree extends Component {
         let selectedKeys = [...this.state.selectedKeys];
         if (multiple) {
             this.processKey(selectedKeys, key, select);
-        } else if (select) {
-            selectedKeys = [key];
         } else {
-            selectedKeys = [];
+            selectedKeys = [key];
         }
 
         if (!('selectedKeys' in this.props)) {
