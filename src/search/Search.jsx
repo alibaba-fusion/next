@@ -171,12 +171,12 @@ class Search extends React.Component {
         this.setState(state);
     }
 
-    onChange = value => {
+    onChange = (value, ...argv) => {
         if (!('value' in this.props)) {
             this.setState({ value });
         }
 
-        this.props.onChange(value);
+        this.props.onChange(value, ...argv);
     };
 
     onSearch = () => {

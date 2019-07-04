@@ -48,7 +48,6 @@ ReactDOM.render(<Demo />, mountNode);
 .custom-affix-container {
     height: 150px;
     overflow-y: scroll;
-    width: 50px;
     background: url(https://img.alicdn.com/tfs/TB1AbJXSpXXXXXJXpXXXXXXXXXX-32-32.jpg) repeat 50% 50%;
 }
 
