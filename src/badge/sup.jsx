@@ -88,6 +88,9 @@ export default class Sup extends Component {
 
     computeStyle(removeTransition, revert) {
         const { prefix, count, overflowCount } = this.props;
+        if (count < 0) {
+            return;
+        }
         const supNode = this.refs.sup;
 
         if (supNode && dom.hasClass(supNode, `${prefix}badge-count`)) {
