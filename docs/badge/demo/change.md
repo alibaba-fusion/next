@@ -61,6 +61,9 @@ class Demo extends React.Component {
                     <Badge count={this.state.count}>
                         <a href="#" className="head-example"><span className="next-sr-only">unread messages</span></a>
                     </Badge>
+                    <Badge count={this.state.count} showZero>
+                        <a href="#" className="head-example"><span className="next-sr-only">unread messages</span></a>
+                    </Badge>
                     <ButtonGroup>
                         <Button aria-label="add" onClick={this.increase}>
                             <Icon type="add"/>
