@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.15.9",
+  "version": "1.15.11",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -76,7 +76,6 @@
     "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
-    "@types/react": "^16.8.13",
     "@alifd/api-extractor": "^3.4.0",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
@@ -88,6 +87,7 @@
     "@no-repeat/sass-tracker": "^0.0.10",
     "@no-repeat/sassdoc-parser": "^0.0.11",
     "@octokit/rest": "^15.15.1",
+    "@types/react": "^16.8.13",
     "autoprefixer": "^7.1.4",
     "axe-core": "^3.2.0",
     "babel-core": "^6.26.0",
@@ -157,6 +157,8 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-cropper": "^1.0.0",
     "react-dev-utils": "^4.2.1",
+    "react-dnd": "^7.0.0",
+    "react-dnd-html5-backend": "^7.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",

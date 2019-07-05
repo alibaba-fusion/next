@@ -22,7 +22,7 @@ function clearNextFrameAction(nextFrameId) {
 
 // safari in mac
 const isMacSafari =
-    navigator && navigator.userAgent
+    typeof navigator !== 'undefined' && navigator && navigator.userAgent
         ? navigator.userAgent.match(/^((?!chrome|android|windows).)*safari/i)
         : false;
 
