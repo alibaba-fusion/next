@@ -353,12 +353,14 @@ export default class Position {
     _isInViewport(element) {
         const viewportSize = _getViewportSize();
         // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
-        const elementRect = _getElementRect(element);
+        // const elementRect = _getElementRect(element);
+        const elementRect = element.getBoundingClientRect();
+
         return (
             elementRect.left >= 0 &&
-            elementRect.left + element.offsetWidth <= viewportSize.width &&
+            elementRect.left + element.offsetWidth < viewportSize.width &&
             elementRect.top >= 0 &&
-            elementRect.top + element.offsetHeight <= viewportSize.height
+            elementRect.top + element.offsetHeight < viewportSize.height
         );
     }
     // 在这里做RTL判断 top-left 定位转化为等效的 top-right定位
