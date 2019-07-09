@@ -49,24 +49,52 @@ $font-family-zh: "Microsoft YaHei", SimSun, Arial !default !default;
 
 // ------------------- font-weight ------------------- //
 
-/// light
-/// @semantic 细体
+/// thin
+/// @semantic Ultra light(Thin)
 /// @group weight
 /// @export weight
 $font-weight-1: lighter !default;
-/// regular
-/// @semantic 常规
+/// extra light
+/// @semantic Extra Light
+/// @group weight
+/// @export weight
+$font-weight-thin: 200 !default;
+/// light
+/// @semantic Light
+/// @group weight
+/// @export weight
+$font-weight-light: 300 !default;
+/// normal
+/// @semantic Regular(Normal)
 /// @group weight
 /// @export weight
 $font-weight-2: normal !default;
+/// medium
+/// @semantic Medium
+/// @group weight
+/// @export weight
+$font-weight-medium: 500 !default;
+/// semi bold
+/// @semantic Semi Bold
+/// @group weight
+/// @export weight
+$font-weight-semi-bold: 600 !default;
 /// bold
-/// @semantic 粗体
+/// @semantic Bold
 /// @group weight
 /// @export weight
 $font-weight-3: bold !default;
+/// extra bold
+/// @semantic Extra Bold
+/// @group weight
+/// @export weight
+$font-weight-extra-bold: 800 !default;
+/// heavy
+/// @semantic Ultra Bold(Heavy)
+/// @group weight
+/// @export weight
+$font-weight-ultra-bold: 900 !default;
 
-$font-weight-thin: 200 !default;
-$font-weight-medium: 500 !default;
 $font-weight-bolder: bolder !default;
 
 // ------------------- font-size ------------------- //

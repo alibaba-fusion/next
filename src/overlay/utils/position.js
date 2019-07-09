@@ -191,27 +191,33 @@ export default class Position {
     }
 
     _makeElementInViewport(pinElement, number, type, isPinFixed) {
-        let result = number;
-        const docElement = document.documentElement;
-        const offsetParent =
-            pinElement.offsetParent || document.documentElement;
+        // pinElement.offsetParent is never body because wrapper has position: absolute
+        // refactored to make code clearer. Revert if wrapper style changes.
 
-        if (result < 0) {
-            if (isPinFixed) {
-                result = 0;
-            } else if (
-                offsetParent === document.body &&
-                dom.getStyle(offsetParent, 'position') === 'static'
-            ) {
-                // Only when div's offsetParent is document.body, we set new position result.
-                result = Math.max(
-                    docElement[`scroll${type}`],
-                    document.body[`scroll${type}`]
-                );
-            }
-        }
+        // let result = number;
+        // const docElement = document.documentElement;
+        // const offsetParent =
+        //     pinElement.offsetParent || document.documentElement;
 
-        return result;
+        // if (result < 0) {
+        //     if (isPinFixed) {
+        //         result = 0;
+        //     }
+
+        //     else if (
+        //         offsetParent === document.body &&
+        //         dom.getStyle(offsetParent, 'position') === 'static'
+        //     ) {
+        //         // Only when div's offsetParent is document.body, we set new position result.
+        //         result = Math.max(
+        //             docElement[`scroll${type}`],
+        //             document.body[`scroll${type}`]
+        //         );
+        //     }
+        // }
+        // return result;
+
+        return number < 0 && isPinFixed ? 0 : number;
     }
 
     _normalizePosition(element, align, isPinFixed) {

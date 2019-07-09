@@ -114,6 +114,9 @@
                 }
             }
         }
+        #{$checkbox-prefix}-label {
+            color: $checkbox-disabled-label-color;
+        }
     }
 
     &:not(.disabled):hover,
@@ -166,6 +169,7 @@
 
 #{$checkbox-prefix}-label {
     font-size: $checkbox-font-size;
+    color: $checkbox-label-color;
     vertical-align: middle;
     margin: 0;
     margin-left: $checkbox-margin-left;
