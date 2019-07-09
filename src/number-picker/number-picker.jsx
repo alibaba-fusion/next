@@ -106,6 +106,14 @@ class NumberPicker extends React.Component {
          * 减少按钮的props
          */
         downBtnProps: PropTypes.object,
+        /**
+         * 内联 label
+         */
+        label: PropTypes.node,
+        /**
+         * inner after
+         */
+        innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
     };
 
@@ -422,8 +430,10 @@ class NumberPicker extends React.Component {
             autoFocus,
             editable,
             state,
+            label,
             upBtnProps = {},
             downBtnProps = {},
+            innerAfter,
         } = this.props;
 
         const prefixCls = `${prefix}number-picker`;
@@ -448,38 +458,37 @@ class NumberPicker extends React.Component {
             }
         }
 
-        let innerAfter = null,
+        let extra = null,
             innerAfterClassName = null,
             addonBefore = null,
             addonAfter = null;
         if (type === 'normal') {
-            innerAfter = [
-                <Button
-                    {...upBtnProps}
-                    onMouseDown={this.handleMouseDown}
-                    disabled={disabled}
-                    className={`${upBtnProps.className || ''} ${
-                        upDisabled ? 'disabled' : ''
-                    }`}
-                    onClick={this.up.bind(this, upDisabled)}
-                    key="0"
-                >
-                    <Icon size="xxs" type="arrow-up" />
-                </Button>,
-                <Button
-                    {...downBtnProps}
-                    onMouseDown={this.handleMouseDown}
-                    disabled={disabled}
-                    className={`${downBtnProps.className || ''} ${
-                        downDisabled ? 'disabled' : ''
-                    }`}
-                    onClick={this.down.bind(this, downDisabled)}
-                    key="1"
-                >
-                    <Icon size="xxs" type="arrow-down" />
-                </Button>,
-            ];
-            innerAfterClassName = `${prefixCls}-handler`;
+            extra = (
+                <span className={`${prefixCls}-handler`}>
+                    <Button
+                        {...upBtnProps}
+                        onMouseDown={this.handleMouseDown}
+                        disabled={disabled}
+                        className={`${upBtnProps.className || ''} ${
+                            upDisabled ? 'disabled' : ''
+                        }`}
+                        onClick={this.up.bind(this, upDisabled)}
+                    >
+                        <Icon size="xxs" type="arrow-up" />
+                    </Button>
+                    <Button
+                        {...downBtnProps}
+                        onMouseDown={this.handleMouseDown}
+                        disabled={disabled}
+                        className={`${downBtnProps.className || ''} ${
+                            downDisabled ? 'disabled' : ''
+                        }`}
+                        onClick={this.down.bind(this, downDisabled)}
+                    >
+                        <Icon size="xxs" type="arrow-down" />
+                    </Button>
+                </span>
+            );
         } else {
             addonBefore = (
                 <Button
@@ -534,8 +543,9 @@ class NumberPicker extends React.Component {
                     size={size}
                     onChange={this.onChange.bind(this)}
                     ref={this.saveInputRef.bind(this)}
+                    label={label}
                     innerAfter={innerAfter}
-                    innerAfterClassName={innerAfterClassName}
+                    extra={extra}
                     addonBefore={addonBefore}
                     addonAfter={addonAfter}
                 />
@@ -544,4 +554,4 @@ class NumberPicker extends React.Component {
     }
 }
 
-export default ConfigProvider.config(NumberPicker);
+export default NumberPicker;
