@@ -121,6 +121,10 @@ export default class Position {
                 isPinFixed
             );
             const pinElementParentOffset = this._getParentOffset(pinElement);
+            const pinElementParentScrollOffset = this._getParentScrollOffset(
+                pinElement
+            );
+
             const baseElementOffset =
                 isPinFixed && isBaseFixed
                     ? this._getLeftTop(baseElement)
@@ -129,12 +133,14 @@ export default class Position {
                 baseElementOffset.top +
                 baseElementPoints.y -
                 pinElementParentOffset.top -
-                pinElementPoints.y;
+                pinElementPoints.y +
+                pinElementParentScrollOffset.top;
             const left =
                 baseElementOffset.left +
                 baseElementPoints.x -
                 pinElementParentOffset.left -
-                pinElementPoints.x;
+                pinElementPoints.x +
+                pinElementParentScrollOffset.left;
             this._setPinElementPostion(pinElement, { left, top }, this.offset);
 
             if (!firstPositionResult) {
@@ -158,6 +164,7 @@ export default class Position {
             'Top',
             isPinFixed
         );
+
         this._setPinElementPostion(
             pinElement,
             { left: inViewportLeft, top: inViewportTop },
@@ -189,6 +196,25 @@ export default class Position {
         offset.offsetParent = parent;
         return offset;
     }
+
+    _getParentScrollOffset = function(elem) {
+        let top = 0;
+        let left = 0;
+
+        if (elem && elem.offsetParent) {
+            if (!isNaN(elem.offsetParent.scrollTop)) {
+                top += elem.offsetParent.scrollTop;
+            }
+            if (!isNaN(elem.offsetParent.scrollLeft)) {
+                left += elem.offsetParent.scrollLeft;
+            }
+        }
+
+        return {
+            top,
+            left,
+        };
+    };
 
     _makeElementInViewport(pinElement, number, type, isPinFixed) {
         let result = number;
