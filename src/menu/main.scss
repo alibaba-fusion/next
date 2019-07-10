@@ -156,13 +156,13 @@
             white-space: nowrap;
 
             #{$menu-prefix}-more {
-                width: 40px;
                 padding: 0;
                 text-align: center;
             }
         }
 
         > #{$menu-prefix}-item,
+        > #{$menu-prefix}-sub-menu-wrapper,
         #{$menu-prefix}-content > #{$menu-prefix}-item {
             display: inline-block;
             vertical-align: top;

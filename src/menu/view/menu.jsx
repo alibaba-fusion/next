@@ -142,7 +142,7 @@ export default class Menu extends Component {
          */
         hozAlign: PropTypes.oneOf(['left', 'right']),
         /**
-         * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction 为 'hoz' 时生效
+         * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction='hoz' mode='popup' 时生效
          */
         hozInLine: PropTypes.bool,
         /**
@@ -304,8 +304,8 @@ export default class Menu extends Component {
     }
 
     adjustChildrenWidth() {
-        const { direction, prefix } = this.props;
-        if (direction !== 'hoz') {
+        const { direction, prefix, hozInLine } = this.props;
+        if (direction !== 'hoz' || !hozInLine) {
             return;
         }
 
