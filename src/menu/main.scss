@@ -23,7 +23,6 @@
     line-height: $menu-line-height;
     font-size: $menu-font-size;
 
-
     &-embeddable,
     &-embeddable &-item.#{$css-prefix}disabled,
     &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
@@ -151,6 +150,17 @@
 
     &.#{$css-prefix}hoz {
         padding: 0;
+
+        &#{$menu-prefix}-nowrap {
+            overflow: hidden;
+            white-space: nowrap;
+
+            #{$menu-prefix}-more {
+                width: 40px;
+                padding: 0;
+                text-align: center;
+            }
+        }
 
         > #{$menu-prefix}-item,
         #{$menu-prefix}-content > #{$menu-prefix}-item {

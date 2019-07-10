@@ -2,11 +2,14 @@ import React, { Component, Children, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { func, obj, KEYCODE } from '../../util';
+import SubMenu from './sub-menu';
+import { func, obj, dom, events, KEYCODE } from '../../util';
+import { getWidth } from './util';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;
 const noop = () => {};
+const MENUITEM_OVERFLOWED_CLASSNAME = 'menuitem-overflowed';
 
 /**
  * Menu
@@ -139,6 +142,10 @@ export default class Menu extends Component {
          */
         hozAlign: PropTypes.oneOf(['left', 'right']),
         /**
+         * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction 为 'hoz' 时生效
+         */
+        hozInLine: PropTypes.bool,
+        /**
          * 自定义菜单头部
          */
         header: PropTypes.node,
@@ -188,6 +195,7 @@ export default class Menu extends Component {
         labelToggleChecked: true,
         direction: 'ver',
         hozAlign: 'left',
+        hozInLine: false,
         autoFocus: false,
         focusable: true,
         embeddable: false,
@@ -207,15 +215,21 @@ export default class Menu extends Component {
             focusedKey,
             focusable,
             autoFocus,
+            hozInLine,
         } = this.props;
 
-        this.newChildren = this.getNewChildren(children);
+        this.state = {
+            lastVisibleIndex: undefined,
+        };
+
+        this.newChildren = this.getNewChildren({ children, hozInLine });
 
         if (focusable) {
             this.tabbableKey = this.getFirstAvaliablelChildKey('0');
         }
 
         this.state = {
+            lastVisibleIndex: undefined,
             openKeys: this.getInitOpenKeys(props),
             selectedKeys: this.normalizeToArray(
                 selectedKeys || defaultSelectedKeys
@@ -233,6 +247,7 @@ export default class Menu extends Component {
             'handleItemClick',
             'handleItemKeyDown',
             'onBlur',
+            'adjustChildrenWidth',
         ]);
 
         this.popupNodes = [];
@@ -240,6 +255,12 @@ export default class Menu extends Component {
 
     componentDidMount() {
         this.menuNode = findDOMNode(this);
+
+        this.adjustChildrenWidth();
+
+        if (this.props.hozInLine) {
+            events.on(window, 'resize', this.adjustChildrenWidth);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -260,8 +281,13 @@ export default class Menu extends Component {
         }
     }
 
-    componentWillUpdate(nextProps) {
-        this.newChildren = this.getNewChildren(nextProps.children);
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state.lastVisibleIndex !== nextState.lastVisibleIndex) {
+            this.adjustChildrenWidth();
+        }
+
+        this.newChildren = this.getNewChildren(nextProps);
+
         if (this.props.focusable) {
             if (this.tabbableKey in this.k2n) {
                 if (this.state.focusedKey) {
@@ -273,6 +299,70 @@ export default class Menu extends Component {
         }
     }
 
+    componentWillUnmount() {
+        events.off(window, 'resize', this.adjustChildrenWidth);
+    }
+
+    adjustChildrenWidth() {
+        const { direction, prefix } = this.props;
+        if (direction !== 'hoz') {
+            return;
+        }
+
+        if (!this.menuNode) {
+            return;
+        }
+
+        const children = this.menuNode.children;
+
+        if (children.length < 2) {
+            return;
+        }
+
+        const spaceWidth = getWidth(this.menuNode);
+
+        let currentSumWidth = 0,
+            lastVisibleIndex = -1;
+
+        const menuItemNodes = [].slice
+            .call(children)
+            .filter(
+                node =>
+                    node.className.split(' ').indexOf(`${prefix}menu-more`) < 0
+            );
+
+        const overflowedItems = menuItemNodes.filter(
+            c =>
+                c.className.split(' ').indexOf(MENUITEM_OVERFLOWED_CLASSNAME) >=
+                0
+        );
+
+        overflowedItems.forEach(c => {
+            dom.setStyle(c, 'display', 'inline-block');
+        });
+
+        const lastIndicator = children[children.length - 1];
+        dom.setStyle(lastIndicator, 'display', 'inline-block');
+        const moreWidth = getWidth(lastIndicator);
+        dom.setStyle(lastIndicator, 'display', 'none');
+
+        this.menuItemSizes = menuItemNodes.map(c => getWidth(c));
+
+        overflowedItems.forEach(c => {
+            dom.setStyle(c, 'display', 'none');
+        });
+
+        this.menuItemSizes.forEach(liWidth => {
+            currentSumWidth += liWidth;
+            if (currentSumWidth + moreWidth <= spaceWidth) {
+                lastVisibleIndex++;
+            }
+        });
+
+        this.setState({
+            lastVisibleIndex,
+        });
+    }
     onBlur(e) {
         this.setState({
             focusedKey: undefined,
@@ -308,9 +398,75 @@ export default class Menu extends Component {
         return this.normalizeToArray(initOpenKeys);
     }
 
-    getNewChildren(children) {
+    getIndicatorsItem(items, isPlaceholder) {
+        const { prefix } = this.props;
+        const moreCls = cx({
+            [`${prefix}menu-more`]: true,
+        });
+
+        const style = {};
+        // keep placehold to get width
+        if (isPlaceholder) {
+            style.visibility = 'hidden';
+            // indicators which not in use, just display: none
+        } else if (items && items.length === 0) {
+            style.display = 'none';
+        }
+
+        return (
+            <SubMenu label="···" noIcon className={moreCls} style={style}>
+                {items}
+            </SubMenu>
+        );
+    }
+
+    addIndicators = children => {
+        const arr = [];
+        const { lastVisibleIndex } = this.state;
+
+        children.forEach((child, index) => {
+            let overflowedItems = [];
+
+            if (index > lastVisibleIndex) {
+                child = React.cloneElement(child, {
+                    key: `more-${index}`,
+                    style: { display: 'none' },
+                    className: `${child.className ||
+                        ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
+                });
+            }
+
+            if (index === lastVisibleIndex + 1) {
+                overflowedItems = children
+                    .slice(lastVisibleIndex + 1)
+                    .map((c, i) => {
+                        return React.cloneElement(c, {
+                            key: `more-${index}-${i}`,
+                        });
+                    });
+                arr.push(this.getIndicatorsItem(overflowedItems));
+            }
+
+            arr.push(child);
+        });
+
+        arr.push(this.getIndicatorsItem([], true));
+
+        return arr;
+    };
+
+    getNewChildren({ children, hozInLine }) {
         this.k2n = {};
         this.p2n = {};
+
+        let arr = [];
+
+        if (hozInLine) {
+            arr = this.addIndicators(children);
+        } else {
+            arr = children;
+        }
+
         const loop = (children, posPrefix, indexWrapper = { index: 0 }) => {
             const keyArray = [];
             return Children.map(children, child => {
@@ -395,7 +551,7 @@ export default class Menu extends Component {
             });
         };
 
-        return loop(children, '0');
+        return loop(arr, '0');
     }
 
     normalizeToArray(items) {
@@ -744,6 +900,7 @@ export default class Menu extends Component {
             footer,
             embeddable,
             selectMode,
+            hozInLine,
             rtl,
         } = this.props;
         const others = pickOthers(Object.keys(Menu.propTypes), this.props);
@@ -753,6 +910,7 @@ export default class Menu extends Component {
             [`${prefix}ver`]: direction === 'ver',
             [`${prefix}hoz`]: direction === 'hoz',
             [`${prefix}menu-embeddable`]: embeddable,
+            [`${prefix}menu-nowrap`]: hozInLine,
             [className]: !!className,
         });
 
