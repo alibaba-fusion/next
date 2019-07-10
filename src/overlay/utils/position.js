@@ -378,12 +378,14 @@ export default class Position {
     // Detecting element is in the window， we want to adjust position later.
     _isInViewport(element) {
         const viewportSize = _getViewportSize();
-        // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         // const elementRect = _getElementRect(element);
         const elementRect = element.getBoundingClientRect();
 
+        // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         return (
             elementRect.left >= 0 &&
+            // using strict < instead of <=, to handle the bug of container expaned on element placement
+            // closing https://github.com/alibaba-fusion/next/issues/853
             elementRect.left + element.offsetWidth < viewportSize.width &&
             elementRect.top >= 0 &&
             elementRect.top + element.offsetHeight < viewportSize.height
