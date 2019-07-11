@@ -16,6 +16,9 @@ const isIE9 = env.ieVersion === 9;
 /**
  * 无障碍化注意事项:
  * 1. Select 无搜索情况下，不应该让 Input 可focus，此时外层wrap必须可focus，并且需要相应focus事件让外边框发生变化
+ *
+ * TODO: hightLight 后续改造注意点
+ * 1. hightLight 跟随点击变化(fixed) 2. 弹窗打开时根据 是否高亮第一个选项的 api开关设置是否hightLight 第一项
  */
 
 // 自定义弹层：1. 不需要关心Menu的点击事件 2. 不需要关心dataSource变化
@@ -351,7 +354,7 @@ class Select extends Base {
      * @param  {Array<string>} keys
      * @
      */
-    handleMenuSelect(keys) {
+    handleMenuSelect(keys, item) {
         const { mode, readOnly, disabled } = this.props;
 
         if (readOnly || disabled) {
@@ -365,7 +368,11 @@ class Select extends Base {
             return this.handleSingleSelect(keys[0], 'itemClick');
         } else {
             // 正常多选
-            return this.handleMultipleSelect(keys, 'itemClick');
+            return this.handleMultipleSelect(
+                keys,
+                'itemClick',
+                item.props && item.props._key
+            );
         }
     }
 
@@ -407,7 +414,7 @@ class Select extends Base {
     /**
      * 多选模式 multiple/tag
      */
-    handleMultipleSelect(keys, triggerType) {
+    handleMultipleSelect(keys, triggerType, key) {
         const itemObj = getValueDataSource(
             keys,
             this.valueDataSource.mapValueDS,
@@ -424,6 +431,12 @@ class Select extends Base {
         if (hiddenSelected) {
             this.setVisible(false, triggerType);
         }
+
+        key &&
+            this.state.visible &&
+            this.setState({
+                highlightKey: key,
+            });
 
         if (this.useDetailValue()) {
             this.handleChange(itemObj.valueDS, triggerType);
@@ -1046,7 +1059,11 @@ class Select extends Base {
         });
 
         const searchInput = [
-            isSingle && valueNodes ? <em>{valueNodes}</em> : valueNodes,
+            isSingle && valueNodes ? (
+                <em key="select-value">{valueNodes}</em>
+            ) : (
+                valueNodes
+            ),
         ];
         const triggerSearch = (
             <span

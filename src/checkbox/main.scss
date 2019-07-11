@@ -24,6 +24,7 @@
         width: $checkbox-size;
         height: $checkbox-size;
         margin: 0;
+        cursor: pointer;
     }
 
     #{$checkbox-prefix}-inner {
@@ -113,6 +114,9 @@
                 }
             }
         }
+        #{$checkbox-prefix}-label {
+            color: $checkbox-disabled-label-color;
+        }
     }
 
     &:not(.disabled):hover,
@@ -121,6 +125,9 @@
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-hovered-border-color;
             background-color: $checkbox-hovered-bg-color;
+        }
+        #{$checkbox-prefix}-label {
+            cursor: pointer;
         }
     }
 
@@ -162,6 +169,7 @@
 
 #{$checkbox-prefix}-label {
     font-size: $checkbox-font-size;
+    color: $checkbox-label-color;
     vertical-align: middle;
     margin: 0;
     margin-left: $checkbox-margin-left;

@@ -65,7 +65,7 @@ $nav-icononly-width: $s-15;
     }
 
     &.#{$css-prefix}hoz {
-        height: $nav-hoz-height;
+        height: $nav-hoz-height + 2 * $nav-hoz-item-margin-tb;
 
         @include nav-size(
             'hoz',
@@ -436,6 +436,13 @@ $nav-icononly-width: $s-15;
                 height: 100%;
             }
         }
+    }
+
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: initial;
+        border: none;
     }
 }
 
