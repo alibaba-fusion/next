@@ -1,13 +1,13 @@
 # 选择器
 
-- order: 3
+- order: 4
 
 演示了 Select 的多种形态.
 
 :::lang=en-us
 # Select
 
-- order: 3
+- order: 4
 
 api usage of select
 :::
@@ -21,8 +21,7 @@ const dataSource = [
     {value: 10002, label: 'Lily King'},
     {value: 10003, label: 'Tom Cat', disabled: true},
     {label: 'Special Group', children: [
-        {value: new Date(), label: 'new Date()'},
-        {value: false, label: 'FALSE'},
+        {value: -1, label: 'FALSE'},
         {value: 0, label: 'ZERO'}
     ]}
 ];
