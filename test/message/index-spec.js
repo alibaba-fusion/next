@@ -144,7 +144,7 @@ describe('Message', () => {
 });
 
 describe('toast', done => {
-    it('should render nowrap message when content too long[Overlay case]', () => {
+    it('should render nowrap message when content too long[Overlay case]', (done) => {
         const content = 'content content content content content content content content content content content content content content content content content content content content';
         Message.show(content);
 
@@ -153,14 +153,12 @@ describe('toast', done => {
         assert(dom.innerText.trim() === content);
         assert(dom.offsetWidth > 200);
 
-        setTimeout(() => {
-            Message.hide();
-        }, 500);
+        Message.hide();
 
-        setTimeout(done, 1000);
+        setTimeout(done, 500);
     });
 
-    it('should render message when only pass content string', () => {
+    it('should render message when only pass content string', (done) => {
         Message.show('content');
         assert(
             document
@@ -168,14 +166,11 @@ describe('toast', done => {
                 .innerText.trim() === 'content'
         );
 
-        setTimeout(() => {
-            Message.hide();
-        }, 500);
-
-        setTimeout(done, 1000);
+        Message.hide();
+        setTimeout(done, 500);
     });
 
-    it('should render message when only pass content react element', () => {
+    it('should render message when only pass content react element', (done) => {
         Message.show(<i>content</i>);
         assert(
             document
@@ -183,14 +178,12 @@ describe('toast', done => {
                 .innerText.trim() === 'content'
         );
 
-        setTimeout(() => {
-            Message.hide();
-        }, 500);
+        Message.hide();
 
-        setTimeout(done, 1000);
+        setTimeout(done, 500);
     });
 
-    it('should render message when pass config object', () => {
+    it('should render message when pass config object', (done) => {
         Message.show({
             type: 'warning',
             content: 'content',
@@ -203,11 +196,8 @@ describe('toast', done => {
                 .innerText.trim() === 'content'
         );
 
-        setTimeout(() => {
-            Message.hide();
-        }, 500);
-
-        setTimeout(done, 1000);
+        Message.hide();
+        setTimeout(done, 500);
     });
 
     it('should close message after duration and call afterClose method', done => {
