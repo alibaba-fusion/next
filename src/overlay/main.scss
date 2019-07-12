@@ -4,6 +4,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
 
     .#{$css-prefix}overlay-inner {
         z-index: 1001;
