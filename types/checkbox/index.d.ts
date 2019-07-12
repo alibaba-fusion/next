@@ -9,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 
 type data = {
     value?: string | number;
-    label?: string | number;
+    label?: React.ReactNode;
     disabled?: boolean;
     [propName: string]: any;
 }

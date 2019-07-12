@@ -35,12 +35,12 @@ export interface SplitButtonProps extends HTMLAttributesWeak {
     /**
      * 默认激活的菜单项（用法同 Menu 非受控）
      */
-    defaultSelectedKeys?: Array<any>;
+    defaultSelectedKeys?: Array<string>;
 
     /**
      * 激活的菜单项（用法同 Menu 受控）
      */
-    selectedKeys?: Array<any>;
+    selectedKeys?: Array<string>;
 
     /**
      * 菜单的选择模式
