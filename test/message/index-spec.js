@@ -144,6 +144,22 @@ describe('Message', () => {
 });
 
 describe('toast', done => {
+    it('should render nowrap message when content too long[Overlay case]', () => {
+        const content = 'content content content content content content content content content content content content content content content content content content content content';
+        Message.show(content);
+
+        const dom = document.querySelector('.next-overlay-wrapper .next-message');
+
+        assert(dom.innerText.trim() === content);
+        assert(dom.offsetWidth > 200);
+
+        setTimeout(() => {
+            Message.hide();
+        }, 500);
+
+        setTimeout(done, 1000);
+    });
+
     it('should render message when only pass content string', () => {
         Message.show('content');
         assert(
