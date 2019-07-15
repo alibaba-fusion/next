@@ -13,7 +13,7 @@ Enzyme.configure({ adapter: new Adapter() });
 const FormItem = Form.Item;
 
 /* eslint-disable react/jsx-filename-extension */
-/*global describe it */
+/*global describe it afterEach */
 describe('field', () => {
     describe('render', () => {
         it('should support Form', function(done) {
@@ -158,6 +158,14 @@ describe('field', () => {
         });
     });
     describe('init', () => {
+        let wrapper;
+        afterEach(() => {
+            if (wrapper) {
+                wrapper.unmount();
+                wrapper = null;
+            }
+        });
+
         it('init(input)', function(done) {
             const field = new Field(this);
             const inited = field.init('input');
@@ -311,6 +319,100 @@ describe('field', () => {
 
             done();
         });
+
+        it('should support control through `setState`', function(done) {
+            class Demo extends React.Component {
+                state = {
+                    show: true,
+                    inputValue: 'start'
+                };
+                field = new Field(this);
+    
+                render() {
+                    const init = this.field.init; 
+                    return (
+                        <div>
+                            <Input {...init('input', {props: {value: this.state.inputValue}})} />{' '}
+                            <button
+                                id="set"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'start'
+                                    );
+                                    this.setState({
+                                        inputValue: 'end',
+                                    })
+                                }}
+                            >
+                                click
+                            </button>
+                            <button
+                                id="get"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'end'
+                                    );
+                                    done();
+                                }}
+                            >
+                                click
+                            </button>
+                        </div>
+                    );
+                }
+            }
+
+            wrapper = mount(<Demo />);
+            wrapper.find('#set').simulate('click');
+            wrapper.find('#get').simulate('click');
+        });
+
+        it('should support control through `setState` when `parseName` is true', function(done) {
+            class Demo extends React.Component {
+                state = {
+                    show: true,
+                    inputValue: 'start'
+                };
+                field = new Field(this, { parseName: true});
+    
+                render() {
+                    const init = this.field.init; 
+                    return (
+                        <div>
+                            <Input {...init('input', {props: {value: this.state.inputValue}})} />{' '}
+                            <button
+                                id="set"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'start'
+                                    );
+                                    this.setState({
+                                        inputValue: 'end',
+                                    })
+                                }}
+                            >
+                                click
+                            </button>
+                            <button
+                                id="get"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'end'
+                                    );
+                                    done();
+                                }}
+                            >
+                                click
+                            </button>
+                        </div>
+                    );
+                }
+            }
+
+            wrapper = mount(<Demo />);
+            wrapper.find('#set').simulate('click');
+            wrapper.find('#get').simulate('click');
+        })
     });
 
     describe('behaviour', () => {

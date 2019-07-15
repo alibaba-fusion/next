@@ -124,6 +124,13 @@ class Field {
         // Controlled Component
         if (valueName in originalProps) {
             field.value = originalProps[valueName];
+
+            // When rerendering set the values
+            if (parseName) {
+                this.values = setIn(this.values, name, field.value);
+            } else {
+                this.values[name] = field.value;
+            }
         }
 
         if (!('value' in field)) {
