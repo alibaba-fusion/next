@@ -128,7 +128,7 @@ class Collapse extends React.Component {
         let isExpanded = false;
 
         if (this.props.accordion) {
-            isExpanded = expandedKeys[0] === key;
+            isExpanded = String(expandedKeys[0]) === String(key);
         } else {
             isExpanded = expandedKeys.some(expandedKey => {
                 if (
