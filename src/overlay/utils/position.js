@@ -146,7 +146,7 @@ export default class Position {
             if (!firstPositionResult) {
                 firstPositionResult = { left, top };
             }
-            if (this._isInViewport(pinElement)) {
+            if (this._isInViewport(pinElement, align)) {
                 return align;
             }
         }
@@ -381,20 +381,39 @@ export default class Position {
         });
     }
 
+    // Are the right sides of the pin and base aligned?
+    _isRightAligned(align) {
+        const [pinAlign, baseAlign] = align.split(' ');
+        return pinAlign[1] === 'r' && pinAlign[1] === baseAlign[1];
+    }
+
+    // Are the bottoms of the pin and base aligned?
+    _isBottomAligned(align) {
+        const [pinAlign, baseAlign] = align.split(' ');
+        return pinAlign[0] === 'b' && pinAlign[0] === baseAlign[0];
+    }
+
     // Detecting element is in the window， we want to adjust position later.
-    _isInViewport(element) {
+    _isInViewport(element, align) {
         const viewportSize = _getViewportSize();
-        // const elementRect = _getElementRect(element);
-        const elementRect = element.getBoundingClientRect();
+        const elementRect = _getElementRect(element);
+
+        // https://github.com/alibaba-fusion/next/issues/853
+        // Equality causes issues in Chrome when pin element is off screen to right or bottom.
+        // If it is not supposed to align with the bottom or right, then subtract 1 to use strict less than.
+        const viewportWidth = this._isRightAligned(align)
+            ? viewportSize.width
+            : viewportSize.width - 1;
+        const viewportHeight = this._isBottomAligned(align)
+            ? viewportSize.height
+            : viewportSize.height - 1;
 
         // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         return (
             elementRect.left >= 0 &&
-            // using strict < instead of <=, to handle the bug of container expaned on element placement
-            // closing https://github.com/alibaba-fusion/next/issues/853
-            elementRect.left + element.offsetWidth < viewportSize.width &&
+            elementRect.left + element.offsetWidth <= viewportWidth &&
             elementRect.top >= 0 &&
-            elementRect.top + element.offsetHeight < viewportSize.height
+            elementRect.top + element.offsetHeight <= viewportHeight
         );
     }
     // 在这里做RTL判断 top-left 定位转化为等效的 top-right定位
