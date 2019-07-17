@@ -78,6 +78,11 @@ export default class Uploader {
         func.promiseCall(
             before,
             options => {
+                if (options === false) {
+                    const err = new Error(errorCode.BEFOREUPLOAD_REJECT);
+                    err.code = errorCode.BEFOREUPLOAD_REJECT;
+                    return this.options.onError(err, null, file);
+                }
                 this.post(
                     file,
                     obj.isPlainObject(options) ? options : undefined
