@@ -18,14 +18,6 @@ $nav-icononly-width: $s-15;
         font-weight: inherit;
     }
 
-    &-icon-placeholder {
-        display: inline-block;
-        width: $nav-icon-only-font-size;
-        height: $nav-icon-only-font-size;
-        margin-left: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
-        margin-right: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
-    }
-
     &-group-label {
         height: $nav-group-height;
         line-height: $nav-group-height;
@@ -349,10 +341,10 @@ $nav-icononly-width: $s-15;
             text-overflow: clip;
         }
 
-        #{$menu-prefix}-item-text > span,
-        #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
-            opacity: 0;
-        }
+        // #{$menu-prefix}-item-text > span,
+        // #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
+        //     opacity: 0;
+        // }
 
         &.#{$css-prefix}normal {
             #{$nav-prefix}-icon.#{$css-prefix}icon {
@@ -387,7 +379,8 @@ $nav-icononly-width: $s-15;
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2
+                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
+                $marginRight: (18px - $nav-icon-only-font-size) / 2
             );
             transition: all ease .3s;
             transform-origin: center 46%;
@@ -397,6 +390,7 @@ $nav-icononly-width: $s-15;
             @include icon-size(
                 $size: $nav-icon-only-font-size,
                 $marginLeft: (18px - $nav-icon-only-font-size) / 2,
+                $marginRight: (18px - $nav-icon-only-font-size) / 2,
                 $transform: rotate(180deg)
             );
         }

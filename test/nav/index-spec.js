@@ -265,7 +265,7 @@ describe('Nav', () => {
 
         let items = nav.find('li.next-nav-item');
         assert(items.at(0).find('i.next-nav-icon').length === 1);
-        assert(items.at(1).find('span.next-nav-icon-placeholder').length === 1);
+        assert(items.at(1).find('i.next-nav-icon').length === 0);
 
         let subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(
@@ -296,7 +296,7 @@ describe('Nav', () => {
         );
 
         const groupLabel = nav.find('li.next-nav-group-label');
-        assert(groupLabel.find('span.next-nav-icon-placeholder').length === 1);
+        assert(groupLabel.find('.next-menu-item-inner > span').length === 1);
 
         wrapper.setProps({
             mode: 'popup',
@@ -324,13 +324,13 @@ describe('Nav', () => {
         subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(subNavItems.at(0).find('i.next-nav-icon').length === 1);
         assert(
-            subNavItems.at(1).find('span.next-nav-icon-placeholder').length ===
+            subNavItems.at(1).find('.next-menu-item-text > span').length ===
                 1
         );
         popupItems = nav.find('li.next-nav-popup-item');
         assert(popupItems.at(0).find('i.next-nav-icon').length === 1);
         assert(
-            popupItems.at(1).find('span.next-nav-icon-placeholder').length === 1
+            popupItems.at(1).find('.next-menu-item-text > span').length === 1
         );
         items = nav.find('li.next-nav-item');
         items.at(0).simulate('mouseenter');
