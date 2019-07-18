@@ -15,6 +15,24 @@ A simple case.
 
 ---
 
+````css
+.virtual-box {
+    height: 200px;
+    width: 200px;
+    border: 1px solid #ddd;
+    overflow: auto;
+}
+.virtual-box ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.virtual-box li {
+    padding-left: 10px;
+    border-bottom: 1px solid #333;
+}
+````
+
 ````jsx
 import { VirtualList } from '@alifd/next';
 
@@ -43,22 +61,4 @@ const demo = (
 
 
 ReactDOM.render(demo, mountNode);
-````
-
-````css
-.virtual-box {
-    height: 200px;
-    width: 200px;
-    border: 1px solid #ddd;
-    overflow: auto;
-}
-.virtual-box ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-.virtual-box li {
-    padding-left: 10px;
-    border-bottom: 1px solid #333;
-}
 ````
