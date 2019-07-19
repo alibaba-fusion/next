@@ -103,7 +103,7 @@ class Field {
         let defaultValue;
         if (typeof initValue !== 'undefined') {
             defaultValue = initValue;
-        } else if (originalProps[defaultValueName]) {
+        } else if (typeof originalProps[defaultValueName] !== 'undefined') {
             defaultValue = originalProps[defaultValueName];
         } else if (parseName) {
             defaultValue = getIn(this.values, name);
