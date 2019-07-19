@@ -271,6 +271,11 @@ export default class Overlay extends Component {
 
         const willOpen = !this.props.visible && nextProps.visible;
         const willClose = this.props.visible && !nextProps.visible;
+
+        if (nextProps.align !== this.props.align) {
+            this.lastAlign = this.props.align;
+        }
+
         if (willOpen) {
             this.beforeOpen();
             nextProps.beforeOpen();
@@ -411,6 +416,13 @@ export default class Overlay extends Component {
             });
         }
 
+        const { status } = this.state;
+        if (status === 'mounting') {
+            this.setState({
+                status: 'entering',
+            });
+        }
+
         this.lastAlign = align;
     }
 
@@ -449,7 +461,7 @@ export default class Overlay extends Component {
         this.setState(
             {
                 visible: true,
-                status: 'entering',
+                status: 'mounting',
             },
             () => {
                 // NOTE: setState callback (second argument) now fires immediately after componentDidMount / componentDidUpdate instead of after all components have rendered.
