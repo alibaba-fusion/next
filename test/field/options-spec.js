@@ -197,6 +197,17 @@ describe('options', () => {
             assert.equal(field.getValue('input'), inputValue);
         });
 
+        it('should set default field input values when given falsy `values` in constructor', function() {
+            const inputValue = 0;
+            const field = new Field(this, {
+                values: {
+                    input: inputValue
+                },
+            });
+            field.init('input');
+            assert.equal(field.getValue('input'), inputValue);
+        });
+
         it('should set default field input values when given `values` and `parseName` = true in constructor', function() {
             const inputValue = 'my value';
             const field = new Field(this, {
