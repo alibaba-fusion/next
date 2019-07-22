@@ -47,7 +47,7 @@
     }
 
     > #{$btn-prefix}-primary:not(:first-child) {
-        border-right-color: transparentize($color-white, .8);
+        border-right-color: rgba($color-white, .2);
 
         &:hover {
             border-right-color: transparent;
