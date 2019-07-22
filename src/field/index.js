@@ -103,12 +103,12 @@ class Field {
         let defaultValue;
         if (typeof initValue !== 'undefined') {
             defaultValue = initValue;
-        } else if (originalProps[defaultValueName]) {
+        } else if (typeof originalProps[defaultValueName] !== 'undefined') {
             defaultValue = originalProps[defaultValueName];
         } else if (parseName) {
             defaultValue = getIn(this.values, name);
-        } else {
-            defaultValue = (this.values && this.values[name]) || undefined;
+        } else if (this.values && typeof this.values[name] !== 'undefined') {
+            defaultValue = this.values[name];
         }
 
         Object.assign(field, {
