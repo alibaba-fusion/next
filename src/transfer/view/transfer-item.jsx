@@ -79,7 +79,8 @@ export default class TransferItem extends Component {
         onClick(panelPosition === 'left' ? 'right' : 'left', item.value);
     }
 
-    handleDragStart() {
+    handleDragStart(ev) {
+        ev.dataTransfer.setData('text/plain', ev.target.id);
         const { onDragStart, panelPosition, item } = this.props;
         onDragStart(panelPosition, item.value);
     }
