@@ -514,7 +514,8 @@ class Field {
 
         if (!hasRule) {
             const errors = this.formatGetErrors(fieldNames);
-            callback && callback(errors, this.getValues(fieldNames));
+            callback &&
+                callback(errors, this.getValues(names ? fieldNames : []));
             return;
         }
 
@@ -566,7 +567,8 @@ class Field {
             }
 
             // eslint-disable-next-line callback-return
-            callback && callback(errorsGroup, this.getValues(fieldNames));
+            callback &&
+                callback(errorsGroup, this.getValues(names ? fieldNames : []));
             this._reRender();
 
             if (errorsGroup && this.options.scrollToFirstError) {
