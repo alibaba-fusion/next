@@ -20,7 +20,7 @@ import { Menu } from '@alifd/next';
 const { SubMenu, Item } = Menu;
 
 ReactDOM.render(
-    <Menu hozInLine direction="hoz" mode="inline" className="my-hoz-menu" popupClassName="my-hoz-menu" popupAutoWidth>
+    <Menu hozInLine direction="hoz" mode="popup" className="my-hoz-menu" popupClassName="my-hoz-menu" popupAutoWidth>
         <Item key="1">First</Item>
         <Item key="2">Second</Item>
         <SubMenu label="Sub Nav">

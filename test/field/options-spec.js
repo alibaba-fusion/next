@@ -163,6 +163,29 @@ describe('options', () => {
         done();
     });
 
+    describe('defaultValue', () => {
+        it('should support `defaultValue`', function() {
+            const inputValue = 'my value';
+            const field = new Field(this);
+            field.init('input', {props: {defaultValue: inputValue}});
+            assert.equal(field.getValue('input'), inputValue);
+        });
+
+        it('should support `defaultValue` with different value name and make camel case', function() {
+            const inputValue = 'my value';
+            const field = new Field(this);
+            field.init('input', { valueName: 'myValue', props: { defaultMyValue: inputValue} });
+            assert.equal(field.getValue('input'), inputValue);
+        });
+
+        it('should support `defaultValue` with falsy value', function() {
+            const inputValue = 0;
+            const field = new Field(this);
+            field.init('input', {props: {defaultValue: inputValue}});
+            assert.equal(field.getValue('input'), inputValue);
+        });
+    })
+
     describe('values', () => {
         it('should set default field input values when given `values` in constructor', function() {
             const inputValue = 'my value';
@@ -171,6 +194,17 @@ describe('options', () => {
                     input: inputValue
                 },
             });
+            assert.equal(field.getValue('input'), inputValue);
+        });
+
+        it('should set default field input values when given falsy `values` in constructor', function() {
+            const inputValue = 0;
+            const field = new Field(this, {
+                values: {
+                    input: inputValue
+                },
+            });
+            field.init('input');
             assert.equal(field.getValue('input'), inputValue);
         });
 

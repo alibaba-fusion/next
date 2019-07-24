@@ -103,12 +103,12 @@ class Field {
         let defaultValue;
         if (typeof initValue !== 'undefined') {
             defaultValue = initValue;
-        } else if (originalProps[defaultValueName]) {
+        } else if (typeof originalProps[defaultValueName] !== 'undefined') {
             defaultValue = originalProps[defaultValueName];
         } else if (parseName) {
             defaultValue = getIn(this.values, name);
-        } else {
-            defaultValue = (this.values && this.values[name]) || undefined;
+        } else if (this.values && typeof this.values[name] !== 'undefined') {
+            defaultValue = this.values[name];
         }
 
         Object.assign(field, {
@@ -124,6 +124,13 @@ class Field {
         // Controlled Component
         if (valueName in originalProps) {
             field.value = originalProps[valueName];
+
+            // When rerendering set the values
+            if (parseName) {
+                this.values = setIn(this.values, name, field.value);
+            } else {
+                this.values[name] = field.value;
+            }
         }
 
         if (!('value' in field)) {
@@ -507,7 +514,8 @@ class Field {
 
         if (!hasRule) {
             const errors = this.formatGetErrors(fieldNames);
-            callback && callback(errors, this.getValues(fieldNames));
+            callback &&
+                callback(errors, this.getValues(names ? fieldNames : []));
             return;
         }
 
@@ -559,7 +567,8 @@ class Field {
             }
 
             // eslint-disable-next-line callback-return
-            callback && callback(errorsGroup, this.getValues(fieldNames));
+            callback &&
+                callback(errorsGroup, this.getValues(names ? fieldNames : []));
             this._reRender();
 
             if (errorsGroup && this.options.scrollToFirstError) {

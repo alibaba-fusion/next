@@ -1,5 +1,51 @@
 # Change Log 
 
+## [1.16.4](https://github.com/alibaba-fusion/next/compare/1.16.3...1.16.4) (2019-07-23)
+
+
+### Bug Fixes
+
+* **Field:** validate no names fix [#913](https://github.com/alibaba-fusion/next/issues/913) ([d131416](https://github.com/alibaba-fusion/next/commit/d131416))
+
+
+
+
+## [1.16.3](https://github.com/alibaba-fusion/next/compare/1.16.2...1.16.3) (2019-07-22)
+
+
+### Bug Fixes
+
+* **Field:** falsy defaultValue prop: fix [#897](https://github.com/alibaba-fusion/next/issues/897) ([530896d](https://github.com/alibaba-fusion/next/commit/530896d)) ([3d1743d](https://github.com/alibaba-fusion/next/commit/3d1743d))
+
+
+
+
+## [1.16.2](https://github.com/alibaba-fusion/next/compare/1.16.1...1.16.2) (2019-07-19)
+
+
+### Bug Fixes
+
+* **DatePicker:** RangePicker select year error ([e32cbbe](https://github.com/alibaba-fusion/next/commit/e32cbbe))
+* **Dialog:** br br alignment: fixes [#887](https://github.com/alibaba-fusion/next/issues/887) ([0a92c73](https://github.com/alibaba-fusion/next/commit/0a92c73))
+* **Nav:** label should show in iconOnly mode, close [#894](https://github.com/alibaba-fusion/next/issues/894) ([5cfd0fa](https://github.com/alibaba-fusion/next/commit/5cfd0fa))
+* **Table:** filter Menu blocked, close [#893](https://github.com/alibaba-fusion/next/issues/893) ([a16d566](https://github.com/alibaba-fusion/next/commit/a16d566))
+* **Upload:** add errorcode in beforeUpload ([c6a505a](https://github.com/alibaba-fusion/next/commit/c6a505a))
+
+
+
+
+## [1.16.1](https://github.com/alibaba-fusion/next/compare/1.16.0...1.16.1) (2019-07-15)
+
+
+### Bug Fixes
+
+* **Collapse:** number defaultExpandKeys: fix [#878](https://github.com/alibaba-fusion/next/issues/878) ([991ba8a](https://github.com/alibaba-fusion/next/commit/991ba8a)) ([56b031a](https://github.com/alibaba-fusion/next/commit/56b031a))
+* **Field:** fixes [#880](https://github.com/alibaba-fusion/next/issues/880) ([ebe1ea1](https://github.com/alibaba-fusion/next/commit/ebe1ea1))
+* **Overlay:** set width: 100% incase of overlay collapse, close [#874](https://github.com/alibaba-fusion/next/issues/874) ([2d8845e](https://github.com/alibaba-fusion/next/commit/2d8845e))
+
+
+
+
 # [1.16.0](https://github.com/alibaba-fusion/next/compare/1.15.12...1.16.0) (2019-07-11)
 
 
