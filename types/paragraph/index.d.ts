@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface ParagraphProps extends React.HTMLAttributes<HTMLElement> {
+export interface ParagraphProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 额外的样式名 会附加到 root dom 上
      */

@@ -2,13 +2,13 @@
 
 import * as React from 'react';
 import { data } from '../checkbox';
-
+import CommonProps from '../util';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface GroupProps extends HTMLAttributesWeak {
+export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -89,7 +89,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onMouseLeave?: any;
 }
 
-export interface RadioProps extends HTMLAttributesWeak {
+export interface RadioProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */

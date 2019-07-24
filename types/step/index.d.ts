@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
     onClick?: any;
 }
 
-export interface ItemProps extends HTMLAttributesWeak {
+export interface ItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`
      */
@@ -55,7 +56,7 @@ export interface ItemProps extends HTMLAttributesWeak {
 }
 
 export class Item extends React.Component<ItemProps, any> {}
-export interface StepProps extends React.HTMLAttributes<HTMLElement> {
+export interface StepProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 当前步骤
      */
