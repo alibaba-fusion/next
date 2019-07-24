@@ -5,7 +5,6 @@ import { Types } from '@alifd/adaptor-helper';
 
 const now = new Date();
 
-
 export default {
     name: 'Calendar',
     shape: ['fullscreen', 'card', 'panel', 'rangePanel'],
@@ -32,7 +31,25 @@ export default {
             }]
         };
     },
-    adaptor: ({ shape, level, width, date, style = {}, ...others }) => {
+    adaptor: ({ shape, level, width, date = '', style = {}, ...others }) => {
+        const arr = date.split('-').map(number => Number(number) || 0);
+
+        const d = moment();
+        arr.forEach((number, index) => {
+            if (!number) return;
+            switch (index) {
+                case 0:
+                    d.year(number);
+                    break;
+                case 1:
+                    d.month(number - 1);
+                    break;
+                case 2:
+                    d.date(number);
+                    break;
+                default: return;
+            }
+        });
 
         if (shape === 'rangePanel') {
             if (!Calendar.RangeCalendar) return null;
@@ -41,11 +58,11 @@ export default {
                 <Calendar.RangeCalendar {...others}  style={{
                     width,
                     ...style
-                }} showOtherMonth startValue={moment(date)} endValue={moment(date).clone().add(1, 'months')} />
+                }} showOtherMonth startValue={d} endValue={d.clone().add(1, 'months')} />
             );
         }
         return (
-            <Calendar {...others} value={moment(date)} shape={shape} mode={level === 'day' ? 'date' : level} style={{
+            <Calendar {...others} value={d} shape={shape} mode={level === 'day' ? 'date' : level} style={{
                 width,
                 ...style
             }} />
