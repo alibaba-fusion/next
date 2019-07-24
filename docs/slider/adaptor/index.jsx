@@ -2,20 +2,7 @@ import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { Slider } from '@alifd/next';
 
-const banners = [
-    'https://img.alicdn.com/tps/TB1bewbNVXXXXc5XXXXXXXXXXXX-1000-300.png',
-    'https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg',
-    'https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg',
-    'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg'
-];
-
-const cards = [
-    'https://img.alicdn.com/bao/uploaded/i3/TB1YHwUNpXXXXaNXXXXXXXXXXXX_!!0-item_pic.jpg_150x150q120.jpg',
-    'https://img.alicdn.com/bao/uploaded/i3/TB1SyBLNpXXXXb4aXXXXXXXXXXX_!!0-item_pic.jpg_150x150q120.jpg',
-    'https://img.alicdn.com/bao/uploaded/i3/TB1NllZLXXXXXcPXpXXXXXXXXXX_!!0-item_pic.jpg_150x150q120.jpg',
-    'https://img.alicdn.com/bao/uploaded/i4/TB1v3A7KpXXXXa0aXXXXXXXXXXX_!!0-item_pic.jpg_150x150q120.jpg',
-    'https://img.alicdn.com/bao/uploaded/i2/TB1FOfLMVXXXXacapXXXXXXXXXX_!!0-item_pic.jpg_150x150q120.jpg'
-];
+const colors = ['#7732bb', '#047cc0', '#00884b', '#e3bc13', '#db7c00', '#aa231f'];
 
 export default {
     name: 'Slider',
@@ -58,11 +45,13 @@ export default {
         const slides = [];
 
         for (let i = 0; i < imageNumber; i++) {
-            const images = shape === 'banner' ? banners : cards;
-            const imageURL = images[i % images.length];
+            const slideWidth = level === 'ver' || shape === 'banner' ? width : width / imageNumber;
+            const slideHeight = level === 'ver'  ? height / imageNumber : height;
             slides.push(
                 <div key={i}>
-                    <img style={{ width:  level === 'ver' || shape === 'banner' ? width : width / imageNumber, height: level === 'ver'  ? height / imageNumber : height}} src={imageURL} alt="image" />
+                    <div style={{ backgroundColor: colors[i % colors.length], color: '#fff', fontSize: shape === 'banner' ? 36 : 24, lineHeight: `${slideHeight}px`, textAlign: 'center',  width: slideWidth, height: slideHeight }}>
+                        Slide {i + 1}
+                    </div>
                 </div>
             );
         }

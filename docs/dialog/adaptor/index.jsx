@@ -46,6 +46,7 @@ export default {
          const dialogStyle = {
             position: mask ? 'absolute' : 'relative',
             width: width,
+            zIndex: 1,
             ...(mask ? {
                 left: 20,
                 top: 20,
@@ -134,4 +135,4 @@ export default {
             };
         }
     })
-}
+};
