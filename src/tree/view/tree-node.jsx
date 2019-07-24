@@ -183,7 +183,7 @@ export default class TreeNode extends Component {
         e.preventDefault();
 
         const { root, selected, eventKey } = this.props;
-        root.handleSelect(!selected, eventKey, this);
+        root.handleSelect(!selected, eventKey, this, e);
     }
 
     handleCheck() {

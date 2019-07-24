@@ -6,7 +6,6 @@
     $height,
     $fontSize,
     $padding,
-    $activeLineWidth,
     $marginTB,
     $marginLR,
     $itemCorner
@@ -19,24 +18,24 @@
         margin-right: $marginLR;
         padding: 0 $padding;
         border-radius: $itemCorner;
+    }
 
-        &:before {
-            @if $direction == 'hoz' {
-                height: $activeLineWidth;
-            } @else {
-                width: $activeLineWidth;
-            }
+    @if $direction == 'ver' {
+        #{$menu-prefix}-item:not(:first-child),
+        #{$menu-prefix}-sub-menu-wrapper:not(:first-child) > #{$menu-prefix}-item {
+            margin-top: $marginTB;
         }
-    }
 
-    #{$menu-prefix}-item:not(:first-child),
-    #{$menu-prefix}-sub-menu-wrapper:not(:first-child) > #{$menu-prefix}-item {
-        margin-top: $marginTB;
-    }
-
-    #{$menu-prefix}-item:not(:last-child),
-    #{$menu-prefix}-sub-menu-wrapper:not(:last-child) > #{$menu-prefix}-item {
-        margin-bottom: $marginTB;
+        #{$menu-prefix}-item:not(:last-child),
+        #{$menu-prefix}-sub-menu-wrapper:not(:last-child) > #{$menu-prefix}-item {
+            margin-bottom: $marginTB;
+        }
+    } @else {
+        #{$menu-prefix}-item,
+        #{$menu-prefix}-sub-menu-wrapper > #{$menu-prefix}-item {
+            margin-top: $marginTB;
+            margin-bottom: $marginTB;
+        }
     }
 
     #{$menu-prefix}-item-inner {
@@ -91,10 +90,12 @@
     $shadow,
     $hoverBgColor,
     $hoverColor,
+    $hoverWeight,
     $selectedBgColor,
     $selectedColor,
     $selectedWeight,
     $activeColor,
+    $hoverLineColor,
     $openedBgColor,
     $openedColor,
     $groupColor,
@@ -114,6 +115,7 @@
         &:hover {
             background-color: $hoverBgColor;
             color: $hoverColor;
+            font-weight: $hoverWeight;
         }
 
         &.#{$css-prefix}selected {
@@ -129,6 +131,9 @@
 
         &:before {
             background-color: $activeColor;
+        }
+        &:hover:before {
+            background-color: $hoverLineColor;
         }
     }
 

@@ -47,6 +47,7 @@ export default class TreeCell extends React.Component {
             primaryKey,
             locale,
             rtl,
+            children,
         } = this.props;
         const {
             openTreeRowKeys: openRowKeys,
@@ -97,6 +98,7 @@ export default class TreeCell extends React.Component {
         }
         return (
             <CellComponent {...this.props} innerStyle={firstCellStyle}>
+                {children}
                 {treeArrowNode}
             </CellComponent>
         );

@@ -112,7 +112,7 @@ export default class DatePicker extends Component {
         /**
          * 弹层展示状态变化时的回调
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} reason 触发弹层显示和隐藏的来源
+         * @param {String} type 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -142,6 +142,10 @@ export default class DatePicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
@@ -157,6 +161,7 @@ export default class DatePicker extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 日期输入框的 aria-label 属性
          */
@@ -427,13 +432,13 @@ export default class DatePicker extends Component {
         }
     };
 
-    onVisibleChange = (visible, reason) => {
+    onVisibleChange = (visible, type) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
-        this.props.onVisibleChange(visible, reason);
+        this.props.onVisibleChange(visible, type);
     };
 
     changePanel = panel => {
@@ -469,10 +474,12 @@ export default class DatePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             inputProps,
             dateCellRender,
             monthCellRender,
+            yearCellRender,
             dateInputAriaLabel,
             timeInputAriaLabel,
             ...others
@@ -547,6 +554,7 @@ export default class DatePicker extends Component {
                 format={this.format}
                 dateCellRender={dateCellRender}
                 monthCellRender={monthCellRender}
+                yearCellRender={yearCellRender}
                 onSelect={this.onSelectCalendarPanel}
                 defaultVisibleMonth={defaultVisibleMonth}
                 onVisibleMonthChange={onVisibleMonthChange}
@@ -652,6 +660,7 @@ export default class DatePicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     disabled={disabled}
                     visible={visible}

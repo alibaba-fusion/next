@@ -102,7 +102,7 @@ export default class Table extends React.Component {
          * @param {Number} index 该行所对应的序列
          * @returns {Object} 需要设置的行属性
          */
-        getRowProps: PropTypes.func,
+        rowProps: PropTypes.func,
         /**
          * 设置单元格的属性，通过该属性可以进行合并单元格
          * @param {Number} rowIndex 该行所对应的序列
@@ -111,7 +111,7 @@ export default class Table extends React.Component {
          * @param {Object} record 该行对应的记录
          * @returns {Object} 返回td元素的所支持的属性对象
          */
-        getCellProps: PropTypes.func,
+        cellProps: PropTypes.func,
         /**
          * 表格是否具有边框
          */
@@ -232,6 +232,9 @@ export default class Table extends React.Component {
          * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
          * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
          * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
+         * @property {Function} columnProps `Function()=>Object` 选择列 的props，例如锁列、对齐等，可使用`Table.Column` 的所有参数
+         * @property {Function} titleProps `Function()=>Object` 选择列 表头的props，仅在 `multiple` 模式下生效
+         * @property {Function} titleAddons `Function()=>Node` 选择列 表头添加的元素，在`single` `multiple` 下都生效
          */
         rowSelection: PropTypes.object,
         /**
@@ -267,7 +270,7 @@ export default class Table extends React.Component {
          */
         onBodyScroll: PropTypes.func,
         /**
-         * 开启时，getExpandedColProps() / getRowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
+         * 开启时，getExpandedColProps() / rowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
          */
         expandedIndexSimulate: PropTypes.bool,
     };
@@ -280,8 +283,8 @@ export default class Table extends React.Component {
         onSort: noop,
         onFilter: noop,
         onResizeChange: noop,
-        getRowProps: noop,
-        getCellProps: noop,
+        rowProps: noop,
+        cellProps: noop,
         prefix: 'next-',
         hasBorder: true,
         hasHeader: true,
@@ -494,9 +497,9 @@ export default class Table extends React.Component {
                 dataSource,
                 emptyContent,
                 loading,
-                getCellProps,
                 primaryKey,
-                getRowProps,
+                cellProps,
+                rowProps,
                 onRowClick,
                 onRowMouseEnter,
                 onRowMouseLeave,
@@ -548,9 +551,9 @@ export default class Table extends React.Component {
                         components={components}
                         loading={loading}
                         emptyContent={emptyContent}
-                        getCellProps={getCellProps}
+                        getCellProps={cellProps}
                         primaryKey={primaryKey}
-                        getRowProps={getRowProps}
+                        getRowProps={rowProps}
                         columns={flatChildren}
                         rowRef={this.getRowRef}
                         cellRef={this.getCellRef}
@@ -628,8 +631,8 @@ export default class Table extends React.Component {
                 onRowMouseEnter,
                 onRowMouseLeave,
                 onFilter,
-                getRowProps,
-                getCellProps,
+                rowProps,
+                cellProps,
                 primaryKey,
                 components,
                 wrapperContent,

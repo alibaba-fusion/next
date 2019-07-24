@@ -121,7 +121,6 @@ class Nav extends React.Component {
         if (this.offset !== target) {
             // needs move
             this.offset = target;
-
             let navOffset = {};
             const navStyle = this.nav.style;
 
@@ -394,12 +393,16 @@ class Nav extends React.Component {
         const wrapperWH = getOffsetWH(this.wrapper);
         const activeTabOffset = getOffsetLT(this.activeTab);
         const wrapperOffset = getOffsetLT(this.wrapper);
-
         let target = this.offset;
         if (
             activeTabOffset >= wrapperOffset + wrapperWH ||
             activeTabOffset + activeTabWH <= wrapperOffset
         ) {
+            this.setOffset(
+                this.offset + wrapperOffset - activeTabOffset,
+                true,
+                true
+            );
             return;
         }
         this.setOffset(target, true, true);

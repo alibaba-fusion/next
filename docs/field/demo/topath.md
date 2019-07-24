@@ -25,7 +25,13 @@ import { Input, Button, Field } from '@alifd/next';
 
 class App extends React.Component {
     field = new Field(this, {
-        parseName: true
+        parseName: true,
+        values: {
+            objWithDefaults: {
+                a: 1,
+                b: 2
+            }
+        }
     });
 
     onGetValue() {
@@ -43,7 +49,7 @@ class App extends React.Component {
     }
 
     render() {
-        const { init, reset } = this.field;
+        const { init, reset, resetToDefault } = this.field;
 
         return (<div className="demo">
             <h3>Object transfer</h3>
@@ -57,6 +63,11 @@ class App extends React.Component {
             arr.1: <Input {...init('arr.1', {initValue: '1'})} />
             <br/><br/>
 
+            <h3>Object with Defaults</h3>
+            objWithDefaults.a: <Input {...init('objWithDefaults.a')} /> &nbsp;
+            objWithDefaults.b: <Input {...init('objWithDefaults.b')} />
+            <br/><br/>
+
             result:
             <pre>{JSON.stringify(this.field.getValues(), null, 2)}</pre>
 
@@ -65,6 +76,7 @@ class App extends React.Component {
             <Button type="primary" onClick={this.onGetValue.bind(this)}>getValues</Button>
             <Button onClick={this.onSetValue.bind(this)}>setValues</Button>
             <Button onClick={() => reset()}>reset</Button>
+            <Button onClick={() => resetToDefault()}>resetToDefault</Button>
         </div>);
     }
 }

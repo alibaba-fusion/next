@@ -7,7 +7,7 @@
 /// @family data-display
 /// @varPrefix $tag-
 /// @classPrefix {prefix}-tag
-/// @order {"size/bounding":10,"size/content":11,"size/tail":12,"size/tick":13,"statement/normal":10,"statement/normal/content":100,"statement/normal/bounding":101,"statement/normal/tail":102,"statement/hover":11,"statement/hover/content":110,"statement/hover/bounding":111,"statement/hover/tail":112,"statement/disabled":12,"statement/disabled/content":120,"statement/disabled/bounding":121,"statement/disabled/tail":122,"statement/selected":13,"statement/selected/tick":130,"statement/selected-hover":14,"statement/selected-hover/tick":140,"statement/selected-disabled":15,"statement/selected-disabled/tick":150}
+/// @order {"size/bounding":10,"size/content":11,"size/tail":12,"size/tick":13,"statement/normal":10,"statement/normal/bounding":100,"statement/normal/tail":101,"statement/hover":11,"statement/hover/tail":110,"statement/hover/bounding":111,"statement/disabled":12,"statement/disabled/tail":120,"statement/disabled/bounding":121,"statement/selected":13,"statement/selected/tick":130,"statement/selected-hover":14,"statement/selected-hover/tick":140,"statement/selected-disabled":15,"statement/selected-disabled/bounding":150,"statement/selected-disabled/tick":151}
 ////
 
 
@@ -216,6 +216,14 @@ $tag-closable-bordered-bg-disabled: $color-transparent !default;
 /// @namespace statement/normal/tail
 $tag-fill-tail-color: $color-text1-3 !default;
 
+/// border
+/// @namespace statement/normal/bounding
+$tag-fill-border-color: $color-fill1-3 !default;
+
+/// border
+/// @namespace statement/hover/bounding
+$tag-fill-border-color-hover: $color-fill1-4 !default;
+
 /// text
 /// @namespace statement/disabled/bounding
 $tag-fill-text-color-disabled: $color-text1-1 !default;
@@ -231,18 +239,6 @@ $tag-fill-bg-color-disabled: $color-fill1-1 !default;
 /// text
 /// @namespace statement/disabled/tail
 $tag-fill-tail-color-disabled: $color-text1-1 !default;
-
-/// text
-/// @namespace statement/normal/bounding
-$tag-primary-text-color: $color-white !default;
-
-/// background
-/// @namespace statement/normal/bounding
-$tag-primary-bg-color: $color-brand1-6 !default;
-
-/// text
-/// @namespace statement/normal/tail
-$tag-primary-tail-color: $color-white !default;
 
 /// text
 /// @namespace statement/normal/bounding
@@ -270,14 +266,6 @@ $tag-fill-tail-color-hover: $color-text1-4 !default;
 
 /// text
 /// @namespace statement/hover/bounding
-$tag-primary-text-color-hover: $color-white !default;
-
-/// text
-/// @namespace statement/hover/tail
-$tag-primary-tail-color-hover: $color-white !default;
-
-/// text
-/// @namespace statement/hover/bounding
 $tag-bordered-text-color-hover: $color-text1-4 !default;
 
 /// text
@@ -289,7 +277,7 @@ $tag-bordered-tail-color-hover: $color-text1-4 !default;
 $tag-bordered-tail-color-disabled: $color-text1-1 !default;
 
 /// text
-/// @namespace statement/disabled/text
+/// @namespace statement/disabled/bounding
 $tag-bordered-text-color-disabled: $color-text1-1 !default;
 
 /// border
@@ -297,7 +285,7 @@ $tag-bordered-text-color-disabled: $color-text1-1 !default;
 $tag-bordered-border-color-disabled: $color-line1-1 !default;
 
 /// background
-/// @namespace statement/disabled/background
+/// @namespace statement/disabled/bounding
 $tag-bordered-bg-disabled: $color-fill1-1 !default;
 
 /// text
@@ -358,10 +346,6 @@ $tag-fill-bg-color-hover: $color-fill1-4 !default;
 
 /// background
 /// @namespace statement/hover/bounding
-$tag-primary-bg-color-hover: $color-brand1-9 !default;
-
-/// background
-/// @namespace statement/hover/bounding
 $tag-bordered-bg-hover: $color-transparent !default;
 
 /// background
@@ -384,6 +368,10 @@ $tag-checkable-fill-text-color: $color-text1-3 !default;
 /// @namespace statement/normal/bounding
 $tag-checkable-fill-bg-color: $color-fill1-3 !default;
 
+/// border
+/// @namespace statement/normal/bounding
+$tag-checkable-fill-border-color: $color-fill1-3 !default;
+
 /// text
 /// @namespace statement/hover/bounding
 $tag-checkable-fill-text-color-hover: $color-text1-4 !default;
@@ -391,6 +379,10 @@ $tag-checkable-fill-text-color-hover: $color-text1-4 !default;
 /// background
 /// @namespace statement/hover/bounding
 $tag-checkable-fill-bg-color-hover: $color-fill1-4 !default;
+
+/// border
+/// @namespace statement/hover/bounding
+$tag-checkable-fill-border-color-hover: $color-fill1-4 !default;
 
 /// text
 /// @namespace statement/normal/tail
@@ -464,6 +456,14 @@ $tag-checkable-primary-text-color: $color-white !default;
 /// @namespace statement/normal/bounding
 $tag-checkable-primary-bg-color: $color-brand1-6 !default;
 
+/// border
+/// @namespace statement/normal/bounding
+$tag-checkable-primary-border-color: $color-brand1-6 !default;
+
+/// text
+/// @namespace statement/disabled/bounding
+$tag-checkable-primary-text-color-disabled: $color-text1-1 !default;
+
 /// text
 /// @namespace statement/hover/bounding
 $tag-checkable-primary-text-color-hover: $color-white !default;
@@ -471,6 +471,18 @@ $tag-checkable-primary-text-color-hover: $color-white !default;
 /// background
 /// @namespace statement/hover/bounding
 $tag-checkable-primary-bg-color-hover: $color-brand1-9 !default;
+
+/// border
+/// @namespace statement/hover/bounding
+$tag-checkable-primary-border-color-hover: $color-brand1-9 !default;
+
+/// border
+/// @namespace statement/disabled/bounding
+$tag-checkable-primary-border-color-disabled: $color-fill1-1 !default;
+
+/// background
+/// @namespace statement/disabled/bounding
+$tag-checkable-primary-bg-color-disabled: $color-fill1-1 !default;
 
 /// text
 /// @namespace statement/normal/tail
@@ -483,10 +495,6 @@ $tag-checkable-primary-tail-color-hover: $color-white !default;
 /// background
 /// @namespace statement/selected-disabled/tick
 $tag-checkable-secondary-bg-selected-disabled: $color-line1-1 !default;
-
-/// background
-/// @namespace statement/disabled/bounding
-$tag-primary-bg-color-disabled: $color-brand1-1 !default;
 
 /// text
 /// @namespace statement/selected/tick
@@ -513,3 +521,30 @@ $tag-checkable-secondary-icon-color-selected-hover: $color-white !default;
 $tag-checkable-secondary-icon-color-selected-disabled: $color-white !default;
 
 
+/// text
+/// @namespace statement/normal/bounding
+$tag-closable-primary-fill-text-color: $color-text1-3 !default;
+/// border
+/// @namespace statement/normal/bounding
+$tag-closable-primary-fill-border-color: $color-fill1-3;
+/// background
+/// @namespace statement/normal/bounding
+$tag-closable-primary-fill-bg-color: $color-fill1-3 !default;
+/// text
+/// @namespace statement/hover/bounding
+$tag-closable-primary-fill-text-color-hover: $color-text1-4 !default;
+/// border
+/// @namespace statement/hover/bounding
+$tag-closable-primary-fill-border-color-hover: $color-fill1-4 !default;
+/// background
+/// @namespace statement/hover/bounding
+$tag-closable-primary-fill-bg-color-hover: $color-fill1-4 !default;
+/// text
+/// @namespace statement/disabled/bounding
+$tag-closable-primary-fill-text-color-disabled: $color-text1-1 !default;
+/// border
+/// @namespace statement/disabled/bounding
+$tag-closable-primary-fill-border-color-disabled: $color-fill1-1 !default;
+/// background
+/// @namespace statement/disabled/bounding
+$tag-closable-primary-fill-bg-color-disabled: $color-fill1-1 !default;

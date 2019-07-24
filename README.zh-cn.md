@@ -119,7 +119,7 @@ babel 配置：
     // ...
     plugins: [
         [
-            'babel-plugin-import',
+            'import',
             {
                 libraryName: '@alifd/next',
                 style: true,

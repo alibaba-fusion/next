@@ -12,7 +12,7 @@ import './index.scss';
 Enzyme.configure({ adapter: new Adapter() });
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
-describe('slider', function() {
+describe('slider', function () {
     this.timeout(0);
 
     describe('render', () => {
@@ -80,7 +80,7 @@ describe('slider', function() {
                     {slides}
                 </Slider>
             );
-            assert(wrapper.find('.custom-slick-item').length === 1);
+            assert(wrapper.find('.custom-slick-item').length === 3);
         });
 
         it('using prefixCls deprecated', () => {
@@ -119,7 +119,7 @@ describe('slider', function() {
         });
 
         it('should autoplay', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider infinite={false} autoplay autoplaySpeed={200}>
                         {slides}
@@ -137,7 +137,7 @@ describe('slider', function() {
         });
 
         it('should fade', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider
                         infinite={false}
@@ -226,7 +226,7 @@ describe('slider', function() {
             </div>
         ));
 
-        beforeEach(() => {});
+        beforeEach(() => { });
 
         afterEach(() => {
             if (wrapper) {
@@ -273,7 +273,7 @@ describe('slider', function() {
         });
 
         it('too more slidesToShow ', () => {
-            return co(function*() {
+            return co(function* () {
                 const settings = {
                     slidesToShow: 5,
                     slidesToScroll: 10,
@@ -338,7 +338,7 @@ describe('slider', function() {
         });
 
         it('should click next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 yield delay(100);
                 assert(
@@ -362,7 +362,7 @@ describe('slider', function() {
         });
 
         it('should hover next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
 
                 wrapper
@@ -391,7 +391,7 @@ describe('slider', function() {
         });
 
         it('should click dots', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 assert(
                     wrapper
@@ -419,12 +419,16 @@ describe('slider', function() {
             });
         });
 
-        it('should call onChange hook', () => {
+        it('should call onChange onBeforeChange hook', () => {
             const settings = {
                 infinite: false,
                 onChange: index => {
                     assert(index === 1);
                 },
+                onBeforeChange: (currentIndex, index) => {
+                    assert(currentIndex === 0);
+                    assert(index === 1);
+                }
             };
 
             wrapper = mount(<Slider {...settings}>{slides}</Slider>);
@@ -453,7 +457,7 @@ describe('slider', function() {
         });
 
         it('should click next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider rtl infinite={false}>
                         {slides}
@@ -483,7 +487,7 @@ describe('slider', function() {
         });
 
         it('should hover next/prev arrow', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider rtl infinite={false}>
                         {slides}
@@ -517,7 +521,7 @@ describe('slider', function() {
         });
 
         it('should click dots', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);
                 assert(
                     wrapper
@@ -562,7 +566,7 @@ describe('slider', function() {
         });
 
         it('should autoplay', () => {
-            return co(function*() {
+            return co(function* () {
                 wrapper = mount(
                     <Slider rtl autoplay infinite={false} autoplaySpeed={200}>
                         {slides}
@@ -581,16 +585,18 @@ describe('slider', function() {
         });
 
         it('should render with lazyLoad', () => {
-            const wrapper = mount(
+            wrapper = mount(
                 <Slider rtl lazyLoad infinite={false}>
                     {slides}
                 </Slider>
             );
-            assert(wrapper.find('.custom-slick-item').length === 1);
+
+            assert(wrapper.find('.custom-slick-item').length === 3);
+            wrapper.find('button.next-slick-next').simulate('click')
         });
 
         it('too more slidesToShow ', () => {
-            return co(function*() {
+            return co(function* () {
                 const settings = {
                     rtl: true,
                     slidesToShow: 2,

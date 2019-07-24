@@ -63,6 +63,7 @@ export default class Balloon extends React.Component {
         /**
          * 弹层在显示和隐藏触发的事件
          * @param {Boolean} visible 弹层是否隐藏和显示
+         * @param {String} type 触发弹层显示或隐藏的来源， closeClick 表示由自带的关闭按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -79,7 +80,8 @@ export default class Balloon extends React.Component {
          */
         align: PropTypes.oneOf(alignList),
         /**
-         * 弹层相对于trigger的定位的微调
+         * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
+         * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
          */
         offset: PropTypes.array,
         /**
@@ -154,6 +156,10 @@ export default class Balloon extends React.Component {
          * 弹层组件属性，透传给Popup
          */
         popupProps: PropTypes.object,
+        /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
         /**
          * 弹层id, 传入值才会支持无障碍
          */
@@ -290,6 +296,7 @@ export default class Balloon extends React.Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             rtl,
             ...others
         } = this.props;
@@ -352,6 +359,7 @@ export default class Balloon extends React.Component {
         return (
             <Popup
                 {...popupProps}
+                followTrigger={followTrigger}
                 trigger={newTrigger}
                 cache={cache}
                 safeId={safeId}

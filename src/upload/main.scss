@@ -61,6 +61,7 @@
         font-size: $upload-text-list-font-size;
         overflow: hidden;
         transition: all .2s ease-out;
+        border-radius: $upload-text-list-corner;
 
         &:not(:last-child) {
             margin-bottom: 4px;
@@ -103,6 +104,15 @@
             // uploading state, two line display
             //  so  line-height = height / 2  - padding-top;
             line-height: $upload-text-list-height / 2 - $s-1;
+            .#{$css-prefix}upload-list-item-progress {
+                .#{$css-prefix}progress-line-underlay {
+                    height: $upload-text-list-progressbar-height;
+                }
+                .#{$css-prefix}progress-line-overlay {
+                    height: $upload-text-list-progressbar-height;
+                    margin-top: - ($upload-text-list-progressbar-height / 2);
+                }
+            }
         }
         &-done {
             // 行高 = 高度 - 上下padding
@@ -143,6 +153,8 @@
         font-size: $upload-image-list-item-font-size;
         transition: all .2s ease-out;
         overflow: hidden;
+        border-radius: $upload-card-list-corner;
+
         &:not(:last-child) {
             margin-bottom: 4px;
         }
@@ -183,9 +195,6 @@
             color: $upload-text-list-size-font-color;
             margin-left: 8px;
         }
-        &-progress {
-            line-height: $upload-image-list-item-picture-size / 2;
-        }
 
         &-done:hover .#{$css-prefix}upload-list-item-name {
             color: $upload-text-list-name-font-color-hover;
@@ -204,6 +213,7 @@
             height: $upload-image-list-item-picture-size;
             color: $upload-image-list-item-thumbnail-font-color;
             border: $upload-image-list-item-picture-border-width solid $upload-image-list-item-picture-border-color;
+            border-radius: $upload-image-list-item-picture-corner;
             background-color: $upload-image-list-item-picture-background-color;
             margin-right: $thumbnail-margin-right;
             vertical-align: middle;
@@ -243,6 +253,14 @@
                 margin-right: $upload-image-list-close-icon-size + $upload-image-list-close-icon-right * 2;
                 height: $upload-image-list-item-picture-size / 2;
                 line-height: $upload-image-list-item-picture-size / 2;
+
+                .#{$css-prefix}progress-line-underlay {
+                    height: $upload-image-list-progressbar-height;
+                }
+                .#{$css-prefix}progress-line-overlay {
+                    height: $upload-image-list-progressbar-height;
+                    margin-top: - ($upload-image-list-progressbar-height / 2);
+                }
             }
         }
         &-error-with-msg {
@@ -333,9 +351,12 @@
             width: 100%;
             .#{$css-prefix}progress-line-underlay {
                 border-radius: 0;
+                height: $upload-card-list-progressbar-height;
             }
             .#{$css-prefix}progress-line-overlay {
                 border-radius: 0;
+                height: $upload-card-list-progressbar-height;
+                margin-top: - ($upload-card-list-progressbar-height / 2);
             }
         }
 
@@ -439,9 +460,11 @@
 
         &-icon {
             margin: $s-5 0 0;
-            color: $color-text1-3;
+            color: $upload-drag-zone-upload-icon-color;
+
             #{$upload-prefix}-drag-upload-icon::before {
                 content: $upload-drag-zone-upload-icon;
+                font-size: $upload-drag-zone-icon-size;
             }
         }
 
@@ -450,12 +473,12 @@
         &-text {
             margin: $s-3 0 0;
             font-size: $upload-drag-zone-font-size;
-            color: $color-text1-3;
+            color: $upload-drag-zone-upload-normal-title-color;
         }
         &-hint {
             margin: $s-1 0 $s-5;
             font-size: $upload-drag-zone-hint-font-size;
-            color: $color-text1-2;
+            color: $upload-drag-zone-upload-normal-hint-color;
         }
         &-over {
             border-color: $upload-drag-zone-over-border-color;

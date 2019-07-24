@@ -18,14 +18,6 @@ $nav-icononly-width: $s-15;
         font-weight: inherit;
     }
 
-    &-icon-placeholder {
-        display: inline-block;
-        width: $nav-icon-only-font-size;
-        height: $nav-icon-only-font-size;
-        margin-left: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
-        margin-right: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
-    }
-
     &-group-label {
         height: $nav-group-height;
         line-height: $nav-group-height;
@@ -65,14 +57,13 @@ $nav-icononly-width: $s-15;
     }
 
     &.#{$css-prefix}hoz {
-        height: $nav-hoz-height;
+        height: $nav-hoz-height + 2 * $nav-hoz-item-margin-tb;
 
         @include nav-size(
             'hoz',
             $nav-hoz-height - $popup-local-border-width * 2,
             $nav-hoz-font-size,
             $nav-hoz-item-padding-lr,
-            $nav-hoz-item-selected-active-line,
             $nav-hoz-item-margin-tb,
             $nav-hoz-item-margin-lr,
             $nav-hoz-item-corner
@@ -94,9 +85,23 @@ $nav-icononly-width: $s-15;
             height: $nav-hoz-height - $popup-local-border-width * 2;
         }
 
-        #{$nav-prefix}-item:before {
-            width: 0;
-            left: 50%;
+        #{$nav-prefix}-item {
+            &:before {
+                width: 0;
+                left: 50%;
+                height: $nav-hoz-item-selected-active-line;
+            }
+
+            &:hover:before {
+                height: $nav-hoz-item-hover-active-line;
+            }
+
+            @if ($nav-hoz-item-hover-active-line != 0) {
+                &:hover:before {
+                    width: 100%;
+                    left: 0;
+                }
+            }
         }
 
         &.#{$css-prefix}top #{$nav-prefix}-item:before {
@@ -110,6 +115,7 @@ $nav-icononly-width: $s-15;
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
             width: 100%;
             left: 0;
+            height: $nav-hoz-item-selected-active-line;
         }
     }
 
@@ -121,7 +127,6 @@ $nav-icononly-width: $s-15;
             $nav-ver-height,
             $nav-ver-font-size,
             $nav-ver-item-padding-lr,
-            $nav-ver-item-selected-active-line,
             $nav-ver-item-margin-tb,
             $nav-ver-item-margin-lr,
             $nav-ver-item-corner
@@ -149,9 +154,23 @@ $nav-icononly-width: $s-15;
             font-size: $nav-ver-sub-nav-font-size;
         }
 
-        #{$nav-prefix}-item:before {
-            height: 0;
-            top: 50%;
+        #{$nav-prefix}-item {
+            &:before {
+                height: 0;
+                top: 50%;
+                width: $nav-ver-item-selected-active-line;
+            }
+
+            &:hover:before {
+                width: $nav-ver-item-hover-active-line;
+            }
+
+            @if ($nav-ver-item-hover-active-line != 0) {
+                &:hover:before {
+                    height: 100%;
+                    top: 0;
+                }
+            }
         }
 
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
@@ -165,6 +184,7 @@ $nav-icononly-width: $s-15;
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
             height: 100%;
             top: 0;
+            width: $nav-ver-item-selected-active-line;
         }
     }
 
@@ -181,10 +201,12 @@ $nav-icononly-width: $s-15;
             $nav-primary-shadow,
             $nav-primary-item-hover-bg-color,
             $nav-primary-item-hover-text-color,
+            $nav-primary-item-hover-text-style,
             $nav-primary-item-selected-bg-color,
             $nav-primary-item-selected-text-color,
             $nav-primary-item-selected-text-style,
             $nav-primary-item-selected-active-color,
+            $nav-primary-item-hover-active-color,
             $nav-primary-item-opened-bg-color,
             $nav-primary-item-opened-text-color,
             $nav-primary-group-text-color,
@@ -215,10 +237,12 @@ $nav-icononly-width: $s-15;
             $nav-secondary-shadow,
             $nav-secondary-item-hover-bg-color,
             $nav-secondary-item-hover-text-color,
+            $nav-secondary-item-hover-text-style,
             $nav-secondary-item-selected-bg-color,
             $nav-secondary-item-selected-text-color,
             $nav-secondary-item-selected-text-style,
             $nav-secondary-item-selected-active-color,
+            $nav-secondary-item-hover-active-color,
             $nav-secondary-item-opened-bg-color,
             $nav-secondary-item-opened-text-color,
             $nav-secondary-group-text-color,
@@ -245,10 +269,12 @@ $nav-icononly-width: $s-15;
             $nav-normal-shadow,
             $nav-normal-item-hover-bg-color,
             $nav-normal-item-hover-text-color,
+            $nav-normal-item-hover-text-style,
             $nav-normal-item-selected-bg-color,
             $nav-normal-item-selected-text-color,
             $nav-normal-item-selected-text-style,
             $nav-normal-item-selected-active-color,
+            $nav-normal-item-hover-active-color,
             $nav-normal-item-opened-bg-color,
             $nav-normal-item-opened-text-color,
             $nav-normal-group-text-color,
@@ -287,10 +313,12 @@ $nav-icononly-width: $s-15;
             $shadow-zero,
             $nav-line-item-hover-bg-color,
             $nav-line-item-hover-text-color,
+            $nav-line-item-hover-text-style,
             $nav-line-item-selected-bg-color,
             $nav-line-item-selected-text-color,
             $nav-line-item-selected-text-style,
             $nav-line-item-selected-active-color,
+            $nav-line-item-hover-active-color,
             $nav-line-item-opened-bg-color,
             $nav-line-item-opened-text-color,
             $nav-line-group-text-color,
@@ -313,10 +341,10 @@ $nav-icononly-width: $s-15;
             text-overflow: clip;
         }
 
-        #{$menu-prefix}-item-text > span,
-        #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
-            opacity: 0;
-        }
+        // #{$menu-prefix}-item-text > span,
+        // #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
+        //     opacity: 0;
+        // }
 
         &.#{$css-prefix}normal {
             #{$nav-prefix}-icon.#{$css-prefix}icon {
@@ -351,7 +379,8 @@ $nav-icononly-width: $s-15;
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2
+                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
+                $marginRight: (18px - $nav-icon-only-font-size) / 2
             );
             transition: all ease .3s;
             transform-origin: center 46%;
@@ -361,6 +390,7 @@ $nav-icononly-width: $s-15;
             @include icon-size(
                 $size: $nav-icon-only-font-size,
                 $marginLeft: (18px - $nav-icon-only-font-size) / 2,
+                $marginRight: (18px - $nav-icon-only-font-size) / 2,
                 $transform: rotate(180deg)
             );
         }
@@ -400,6 +430,13 @@ $nav-icononly-width: $s-15;
                 height: 100%;
             }
         }
+    }
+
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: initial;
+        border: none;
     }
 }
 

@@ -50,6 +50,12 @@ $checkbox-checked-hovered-border-color: $color-transparent !default;
 /// @namespace statement/checked/icon
 $checkbox-checked-circle-color: $color-white !default;
 /// text
+/// @namespace statement/normal/label
+$checkbox-label-color: $color-text1-4 !default;
+/// text
+/// @namespace statement/disabled/label
+$checkbox-disabled-label-color: $color-text1-4 !default;
+/// text
 /// @namespace statement/disabled/icon
 $checkbox-disabled-circle-color: $color-text1-1 !default;
 /// text

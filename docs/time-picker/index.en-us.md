@@ -50,6 +50,7 @@ By default, TimePicker using moment instance as input value, which is the sugges
 | popupStyle       | Custom style of popup | Object    | -          |
 | popupClassName   | Custom className of popup  | String    | -          |
 | popupProps       | Props of popup  | Object    | -          |
+| followTrigger    | follow Trigger or not                | Boolean         | -                                         |
 | disabled         | Disable the picker  | Boolean   | false      |
 | onChange         | Callback when date changes<br><br>**signature**:<br>Function(value: Object/String) => void<br>**paramter**:<br>_value_: {Object/String} date value                                                                  | Function  | func.noop  |
 

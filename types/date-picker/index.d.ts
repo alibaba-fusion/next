@@ -101,9 +101,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -192,7 +190,7 @@ export interface RangePickerProps extends HTMLAttributesWeak {
     /**
      * 点击确认按钮时的回调 返回开始时间和结束时间`[ MomentObject|String, MomentObject|String ]`
      */
-    onOk?: () => Array<any>;
+    onOk?: (value: Array<any>) => void;
 
     /**
      * 输入框内置标签
@@ -247,9 +245,7 @@ export interface RangePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -393,9 +389,7 @@ export interface YearPickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -493,7 +487,7 @@ export interface DatePickerProps extends HTMLAttributesWeak {
     /**
      * 点击确认按钮时的回调
      */
-    onOk?: () => {} | string;
+    onOk?: (value: {} | string) => void;
 
     /**
      * 输入框尺寸
@@ -538,9 +532,7 @@ export interface DatePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式

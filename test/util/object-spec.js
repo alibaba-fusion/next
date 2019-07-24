@@ -199,4 +199,103 @@ describe('src/object.js', function() {
             }
         );
     });
+
+    describe('#deepMerge', function() {
+        let obj1, obj2;
+
+        beforeEach(() => {
+            obj1 = {
+                foo: '100',
+                bar: '2003',
+                baz: {
+                    a: 'test',
+                    b: {
+                        a: 0
+                    }
+                }
+            };
+            obj2 = {
+                a: {
+                    ds: '3'
+                },
+                bar: {
+                    t: '2'
+                },
+                baz: {
+                    a: {
+                        sd: '3'
+                    },
+                    b: {
+                        a: '6',
+                        ad: 4
+                    },
+                    c: 's'
+                }
+            };
+        });
+
+        it('deepMerge support edge', function() {
+            const res = object.deepMerge(undefined, null, [], {}, '', NaN, 1, 'a', {a:3});
+
+            assert('a' in res);
+            assert(res.a === 3);
+            assert(Object.keys(res).length === 1);
+        });
+
+        it('deepMerge support normal', function() {
+
+            const res = object.deepMerge({}, {a: 'te'}, {a: 4});
+            assert(Object.keys(res).length === 1);
+            assert(res.a === 4);
+        });
+
+
+        it('deepMerge support deep', function() {
+
+            const res = object.deepMerge({}, {a: 'te'}, {a:{b:3}});
+            console.log(res);
+            assert(Object.keys(res).length === 1);
+            assert(res.a.b === 3);
+        });
+
+        it('deepMerge support with arr', function() {
+            const res = object.deepMerge({}, {
+                name: 'Anon',
+                gender: 'Female',
+                hair: {
+                    color: 'brown',
+                    cut: 'long'
+                },
+                eyes: 'blue',
+                family: ['mom', 'dad']
+            }, {
+                name: 'David Walsh',
+                gender: 'Male',
+                hair: {
+                    cut: 'short'
+                },
+                family: ['wife', 'kids', 'dog']
+            });
+
+            console.log(res);
+            assert(Object.keys(res).length === 5);
+            assert(Object.keys(res.hair).length === 2);
+            assert(res.family.length === 3);
+        });
+
+        it('deepMerge support deep', function() {
+
+            const res = object.deepMerge({}, obj1, obj2);
+            console.log(res);
+            assert(Object.keys(res).length === 4);
+            assert(res.a.ds === '3');
+            assert(res.foo === '100');
+            assert(res.bar.t === '2');
+            assert(res.baz.a.sd === '3');
+            assert(res.baz.b.a === '6');
+            assert(res.baz.b.ad === 4);
+            assert(res.baz.c === 's');
+        });
+
+    });
 });

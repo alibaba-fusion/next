@@ -34,15 +34,12 @@ class Item extends Component {
     render() {
         const { prefix, iconOnly, hasTooltip } = this.context;
         const { icon, children, ...others } = this.props;
-        let iconEl =
+        const iconEl =
             typeof icon === 'string' ? (
                 <Icon className={`${prefix}nav-icon`} type={icon} />
             ) : (
                 icon
             );
-        if (iconOnly && !iconEl) {
-            iconEl = <span className={`${prefix}nav-icon-placeholder`} />;
-        }
 
         const item = (
             <Menu.Item {...others}>

@@ -11,17 +11,17 @@
         #{$step-prefix}-item-progress {
             #{$step-progress-prefix}-circle-text {
                 color: $step-circle-item-node-process-percent-color;
-                font-size: $step-circle-item-node-font-size;
+                font-size: $step-circle-item-node-process-percent-size;
             }
 
             #{$step-progress-prefix}-circle-underlay {
                 stroke: $step-circle-item-node-wait-border-color;
-                stroke-width: $s-1;
+                stroke-width: 3 * $step-circle-item-node-border-width;
             }
 
             #{$step-progress-prefix}-circle-overlay-normal {
                 stroke: $step-circle-item-node-finish-border-color;
-                stroke-width: $s-1;
+                stroke-width: 3 * $step-circle-item-node-border-width;
             }
         }
         #{$step-prefix}-item-node-placeholder {

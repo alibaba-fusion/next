@@ -89,10 +89,11 @@ class Collapse extends React.Component {
     onItemClick(key) {
         let expandedKeys = this.state.expandedKeys;
         if (this.props.accordion) {
-            expandedKeys = expandedKeys[0] === key ? [] : [key];
+            expandedKeys = String(expandedKeys[0]) === String(key) ? [] : [key];
         } else {
             expandedKeys = [...expandedKeys];
-            const index = expandedKeys.indexOf(key);
+            const stringKey = String(key);
+            const index = expandedKeys.findIndex(k => String(k) === stringKey);
             const isExpanded = index > -1;
             if (isExpanded) {
                 expandedKeys.splice(index, 1);
@@ -127,7 +128,7 @@ class Collapse extends React.Component {
         let isExpanded = false;
 
         if (this.props.accordion) {
-            isExpanded = expandedKeys[0] === key;
+            isExpanded = String(expandedKeys[0]) === String(key);
         } else {
             isExpanded = expandedKeys.some(expandedKey => {
                 if (

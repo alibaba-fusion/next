@@ -22,12 +22,12 @@ export interface SwitchProps extends HTMLAttributesWeak {
     /**
      * 打开时的内容
      */
-    checkedChildren?: any;
+    checkedChildren?: React.ReactNode;
 
     /**
      * 关闭时的内容
      */
-    unCheckedChildren?: any;
+    unCheckedChildren?: React.ReactNode;
 
     /**
      * 开关状态改变是触发此事件

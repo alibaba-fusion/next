@@ -16,9 +16,11 @@ export function normalizeToArray(keys) {
  * @param {Object} _k2n
  */
 export function filterChildKey(keys, _k2n) {
-    const newKeys = [...keys].sort((prev, next) => {
-        return getDepth(prev, _k2n) - getDepth(next, _k2n);
-    });
+    const newKeys = [...keys]
+        .filter(key => !!_k2n[key])
+        .sort((prev, next) => {
+            return getDepth(prev, _k2n) - getDepth(next, _k2n);
+        });
 
     for (let i = 0; i < newKeys.length; i++) {
         for (let j = 0; j < newKeys.length; j++) {
@@ -36,9 +38,11 @@ export function filterChildKey(keys, _k2n) {
 }
 
 export function filterParentKey(keys, _k2n) {
-    const newKeys = [...keys].sort((prev, next) => {
-        return getDepth(next, _k2n) - getDepth(prev, _k2n);
-    });
+    const newKeys = [...keys]
+        .filter(key => !!_k2n[key])
+        .sort((prev, next) => {
+            return getDepth(next, _k2n) - getDepth(prev, _k2n);
+        });
 
     for (let i = 0; i < newKeys.length; i++) {
         for (let j = 0; j < newKeys.length; j++) {

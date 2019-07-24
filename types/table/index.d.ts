@@ -168,11 +168,18 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement> {
      * 设置每一行的属性，如果返回值和其他针对行操作的属性冲突则无效。
      */
     getRowProps?: (record: {}, index: number) => {};
+    rowProps?: (record: {}, index: number) => {};
 
     /**
      * 设置单元格的属性，通过该属性可以进行合并单元格
      */
     getCellProps?: (
+        rowIndex: number,
+        colIndex: number,
+        dataIndex: string,
+        record: {}
+    ) => {};
+    cellProps?: (
         rowIndex: number,
         colIndex: number,
         dataIndex: string,

@@ -196,9 +196,7 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak {
     /**
      * 下拉框挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 透传到 Popup 的属性对象

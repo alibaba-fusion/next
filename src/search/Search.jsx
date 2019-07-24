@@ -102,6 +102,10 @@ class Search extends React.Component {
          */
         popupContent: PropTypes.node,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 自定义渲染的的下拉框
          */
         visible: PropTypes.bool,
@@ -167,12 +171,12 @@ class Search extends React.Component {
         this.setState(state);
     }
 
-    onChange = value => {
+    onChange = (value, ...argv) => {
         if (!('value' in this.props)) {
             this.setState({ value });
         }
 
-        this.props.onChange(value);
+        this.props.onChange(value, ...argv);
     };
 
     onSearch = () => {
@@ -216,6 +220,7 @@ class Search extends React.Component {
             filterProps,
             buttonProps,
             popupContent,
+            followTrigger,
             hasClear,
             visible,
             locale,
@@ -240,19 +245,20 @@ class Search extends React.Component {
                 [`${prefix}search-icon`]: true,
                 [buttonProps.className]: !!buttonProps.className,
             });
-            searchIcon = (
-                <Icon
-                    type="search"
-                    tabIndex="0"
-                    role="button"
-                    aria-disabled={disabled}
-                    aria-label={locale.buttonText}
-                    {...buttonProps}
-                    className={cls}
-                    onClick={this.onSearch}
-                    onKeyDown={this.onKeyDown}
-                />
-            );
+            hasIcon &&
+                (searchIcon = (
+                    <Icon
+                        type="search"
+                        tabIndex="0"
+                        role="button"
+                        aria-disabled={disabled}
+                        aria-label={locale.buttonText}
+                        {...buttonProps}
+                        className={cls}
+                        onClick={this.onSearch}
+                        onKeyDown={this.onKeyDown}
+                    />
+                ));
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
@@ -283,6 +289,7 @@ class Search extends React.Component {
             filterSelect = (
                 <Select
                     {...filterProps}
+                    followTrigger={followTrigger}
                     hasBorder={false}
                     dataSource={filter}
                     size={size}
@@ -309,6 +316,7 @@ class Search extends React.Component {
                 <AutoComplete
                     aria-label={locale.buttonText}
                     {...othersAttributes}
+                    followTrigger={followTrigger}
                     role="searchbox"
                     hasClear={hasClear}
                     className={`${prefix}search-input`}

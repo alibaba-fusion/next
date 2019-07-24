@@ -71,6 +71,7 @@ export default ConfigProvider.config(Table, {
             const { optimization, ...others } = props;
             props = { pure: optimization, ...others };
         }
+
         if ('getRowClassName' in props) {
             deprecated('getRowClassName', 'getRowProps', 'Table');
 
@@ -87,6 +88,20 @@ export default ConfigProvider.config(Table, {
             } else {
                 props = { getRowProps, ...others };
             }
+        }
+
+        if ('getRowProps' in props) {
+            deprecated('getRowProps', 'rowProps', 'Table in 1.15.0');
+
+            const { getRowProps, ...others } = props;
+            props = { rowProps: getRowProps, ...others };
+        }
+
+        if ('getCellProps' in props) {
+            deprecated('getCellProps', 'cellProps', 'Table in 1.15.0');
+
+            const { getCellProps, ...others } = props;
+            props = { cellProps: getCellProps, ...others };
         }
 
         return props;

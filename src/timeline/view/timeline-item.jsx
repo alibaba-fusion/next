@@ -7,7 +7,7 @@ import Button from '../../button';
 import { obj } from '../../util';
 
 const { Expand } = Animate;
-/*Timeline.Item */
+/** Timeline.Item */
 class TimelineItem extends Component {
     static propTypes = {
         prefix: PropTypes.string,

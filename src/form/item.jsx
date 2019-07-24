@@ -41,7 +41,7 @@ export default class Item extends React.Component {
         extra: PropTypes.node,
         /**
          * 校验状态，如不设置，则会根据校验规则自动生成
-         * @enumdesc 成功, 失败, 校验中
+         * @enumdesc 失败, 成功, 校验中
          */
         validateState: PropTypes.oneOf(['error', 'success', 'loading']),
         /**
@@ -339,7 +339,7 @@ export default class Item extends React.Component {
                                 this.props,
                                 child.type.displayName
                             ),
-                            props: child.props,
+                            props: { ...child.props, ref: child.ref },
                         },
                         childrenProps
                     );

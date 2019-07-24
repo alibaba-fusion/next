@@ -76,9 +76,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak {
     /**
      * 弹层挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层的 className
@@ -177,6 +175,11 @@ export interface SelectProps extends HTMLAttributesWeak {
     size?: 'small' | 'medium' | 'large';
 
     /**
+     * name
+     */
+    name?: string;
+
+    /**
      * 当前值，用于受控模式
      */
     value?: any;
@@ -239,9 +242,7 @@ export interface SelectProps extends HTMLAttributesWeak {
     /**
      * 弹层挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层的 className
@@ -257,6 +258,11 @@ export interface SelectProps extends HTMLAttributesWeak {
      * 添加到弹层上的属性
      */
     popupProps?: {};
+
+    /** 
+     * 是否跟随滚动
+    */
+    followTrigger?: boolean;
 
     /**
      * 自定义弹层的内容

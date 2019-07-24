@@ -11,7 +11,7 @@ export interface LoadingProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 自定义内容
      */
-    tip?: any;
+    tip?: React.ReactNode;
 
     /**
      * 自定义内容位置
@@ -39,9 +39,9 @@ export interface LoadingProps extends React.HTMLAttributes<HTMLElement> {
     size?: 'large' | 'medium';
 
     /**
-     * 自定义动画
+     * 自定义动画内容
      */
-    indicator?: any;
+    indicator?: React.ReactNode;
 
     /**
      * 动画颜色
@@ -56,7 +56,7 @@ export interface LoadingProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 子元素
      */
-    children?: any;
+    children?: React.ReactNode;
 
     /**
      * should loader be displayed inline

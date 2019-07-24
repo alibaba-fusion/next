@@ -134,7 +134,7 @@ export default class RangePicker extends Component {
         /**
          * 弹层展示状态变化时的回调
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} reason 触发弹层显示和隐藏的来源
+         * @param {String} type 触发弹层显示和隐藏的来源 okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -164,6 +164,10 @@ export default class RangePicker extends Component {
          */
         popupProps: PropTypes.object,
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 输入框其他属性
          */
         inputProps: PropTypes.object,
@@ -171,6 +175,13 @@ export default class RangePicker extends Component {
          * 自定义日期单元格渲染
          */
         dateCellRender: PropTypes.func,
+        /**
+         * 自定义月份渲染函数
+         * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
+         * @returns {ReactNode}
+         */
+        monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         /**
          * 开始日期输入框的 aria-label 属性
          */
@@ -187,6 +198,7 @@ export default class RangePicker extends Component {
          * 结束时间输入框的 aria-label 属性
          */
         endTimeInputAriaLabel: PropTypes.string,
+        ranges: PropTypes.object,
         locale: PropTypes.object,
         className: PropTypes.string,
     };
@@ -264,7 +276,7 @@ export default class RangePicker extends Component {
         }
     }
 
-    onValueChange(values, handler = 'onChange') {
+    onValueChange = (values, handler = 'onChange') => {
         let ret;
         if (!values.length || !this.inputAsString) {
             ret = values;
@@ -275,7 +287,7 @@ export default class RangePicker extends Component {
             ];
         }
         this.props[handler](ret);
-    }
+    };
 
     onSelectCalendarPanel = value => {
         const { showTime, resetTime } = this.props;
@@ -584,13 +596,13 @@ export default class RangePicker extends Component {
         this.onValueChange([startValue, endValue]);
     };
 
-    onVisibleChange = (visible, reason) => {
+    onVisibleChange = (visible, type) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
-        this.props.onVisibleChange(visible, reason);
+        this.props.onVisibleChange(visible, type);
     };
 
     changePanel = panel => {
@@ -669,6 +681,7 @@ export default class RangePicker extends Component {
             disabledDate,
             footerRender,
             label,
+            ranges = {}, // 兼容0.x ranges 属性
             state: inputState,
             size,
             disabled,
@@ -679,10 +692,13 @@ export default class RangePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            followTrigger,
             className,
             locale,
             inputProps,
             dateCellRender,
+            monthCellRender,
+            yearCellRender,
             startDateInputAriaLabel,
             startTimeInputAriaLabel,
             endDateInputAriaLabel,
@@ -774,6 +790,8 @@ export default class RangePicker extends Component {
             <RangeCalendar
                 showOtherMonth
                 dateCellRender={dateCellRender}
+                monthCellRender={monthCellRender}
+                yearCellRender={yearCellRender}
                 format={this.format}
                 defaultVisibleMonth={defaultVisibleMonth}
                 onVisibleMonthChange={onVisibleMonthChange}
@@ -889,6 +907,17 @@ export default class RangePicker extends Component {
             <PanelFooter
                 prefix={prefix}
                 value={state.startValue && state.endValue}
+                ranges={Object.keys(ranges).map(key => ({
+                    label: key,
+                    value: ranges[key],
+                    onChange: values => {
+                        this.setState({
+                            startValue: values[0],
+                            endValue: values[1],
+                        });
+                        this.onValueChange(values);
+                    },
+                }))}
                 disabledOk={
                     !state.startValue ||
                     !state.endValue ||
@@ -947,6 +976,7 @@ export default class RangePicker extends Component {
             >
                 <Popup
                     {...popupProps}
+                    followTrigger={followTrigger}
                     autoFocus
                     disabled={disabled}
                     visible={state.visible}

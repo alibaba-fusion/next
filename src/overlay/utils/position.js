@@ -121,6 +121,10 @@ export default class Position {
                 isPinFixed
             );
             const pinElementParentOffset = this._getParentOffset(pinElement);
+            const pinElementParentScrollOffset = this._getParentScrollOffset(
+                pinElement
+            );
+
             const baseElementOffset =
                 isPinFixed && isBaseFixed
                     ? this._getLeftTop(baseElement)
@@ -129,18 +133,20 @@ export default class Position {
                 baseElementOffset.top +
                 baseElementPoints.y -
                 pinElementParentOffset.top -
-                pinElementPoints.y;
+                pinElementPoints.y +
+                pinElementParentScrollOffset.top;
             const left =
                 baseElementOffset.left +
                 baseElementPoints.x -
                 pinElementParentOffset.left -
-                pinElementPoints.x;
+                pinElementPoints.x +
+                pinElementParentScrollOffset.left;
             this._setPinElementPostion(pinElement, { left, top }, this.offset);
 
             if (!firstPositionResult) {
                 firstPositionResult = { left, top };
             }
-            if (this._isInViewport(pinElement)) {
+            if (this._isInViewport(pinElement, align)) {
                 return align;
             }
         }
@@ -158,6 +164,7 @@ export default class Position {
             'Top',
             isPinFixed
         );
+
         this._setPinElementPostion(
             pinElement,
             { left: inViewportLeft, top: inViewportTop },
@@ -190,28 +197,53 @@ export default class Position {
         return offset;
     }
 
-    _makeElementInViewport(pinElement, number, type, isPinFixed) {
-        let result = number;
-        const docElement = document.documentElement;
-        const offsetParent =
-            pinElement.offsetParent || document.documentElement;
+    _getParentScrollOffset = function(elem) {
+        let top = 0;
+        let left = 0;
 
-        if (result < 0) {
-            if (isPinFixed) {
-                result = 0;
-            } else if (
-                offsetParent === document.body &&
-                dom.getStyle(offsetParent, 'position') === 'static'
-            ) {
-                // Only when div's offsetParent is document.body, we set new position result.
-                result = Math.max(
-                    docElement[`scroll${type}`],
-                    document.body[`scroll${type}`]
-                );
+        if (elem && elem.offsetParent) {
+            if (!isNaN(elem.offsetParent.scrollTop)) {
+                top += elem.offsetParent.scrollTop;
+            }
+            if (!isNaN(elem.offsetParent.scrollLeft)) {
+                left += elem.offsetParent.scrollLeft;
             }
         }
 
-        return result;
+        return {
+            top,
+            left,
+        };
+    };
+
+    _makeElementInViewport(pinElement, number, type, isPinFixed) {
+        // pinElement.offsetParent is never body because wrapper has position: absolute
+        // refactored to make code clearer. Revert if wrapper style changes.
+
+        // let result = number;
+        // const docElement = document.documentElement;
+        // const offsetParent =
+        //     pinElement.offsetParent || document.documentElement;
+
+        // if (result < 0) {
+        //     if (isPinFixed) {
+        //         result = 0;
+        //     }
+
+        //     else if (
+        //         offsetParent === document.body &&
+        //         dom.getStyle(offsetParent, 'position') === 'static'
+        //     ) {
+        //         // Only when div's offsetParent is document.body, we set new position result.
+        //         result = Math.max(
+        //             docElement[`scroll${type}`],
+        //             document.body[`scroll${type}`]
+        //         );
+        //     }
+        // }
+        // return result;
+
+        return number < 0 && isPinFixed ? 0 : number;
     }
 
     _normalizePosition(element, align, isPinFixed) {
@@ -349,16 +381,39 @@ export default class Position {
         });
     }
 
+    // Are the right sides of the pin and base aligned?
+    _isRightAligned(align) {
+        const [pinAlign, baseAlign] = align.split(' ');
+        return pinAlign[1] === 'r' && pinAlign[1] === baseAlign[1];
+    }
+
+    // Are the bottoms of the pin and base aligned?
+    _isBottomAligned(align) {
+        const [pinAlign, baseAlign] = align.split(' ');
+        return pinAlign[0] === 'b' && pinAlign[0] === baseAlign[0];
+    }
+
     // Detecting element is in the window， we want to adjust position later.
-    _isInViewport(element) {
+    _isInViewport(element, align) {
         const viewportSize = _getViewportSize();
-        // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         const elementRect = _getElementRect(element);
+
+        // https://github.com/alibaba-fusion/next/issues/853
+        // Equality causes issues in Chrome when pin element is off screen to right or bottom.
+        // If it is not supposed to align with the bottom or right, then subtract 1 to use strict less than.
+        const viewportWidth = this._isRightAligned(align)
+            ? viewportSize.width
+            : viewportSize.width - 1;
+        const viewportHeight = this._isBottomAligned(align)
+            ? viewportSize.height
+            : viewportSize.height - 1;
+
+        // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         return (
             elementRect.left >= 0 &&
-            elementRect.left + element.offsetWidth <= viewportSize.width &&
+            elementRect.left + element.offsetWidth <= viewportWidth &&
             elementRect.top >= 0 &&
-            elementRect.top + element.offsetHeight <= viewportSize.height
+            elementRect.top + element.offsetHeight <= viewportHeight
         );
     }
     // 在这里做RTL判断 top-left 定位转化为等效的 top-right定位

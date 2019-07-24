@@ -1,11 +1,10 @@
 # Latest Log 
 
-## [1.14.6](https://github.com/alibaba-fusion/next/compare/1.14.5...1.14.6) (2019-05-23)
+## [1.16.4](https://github.com/alibaba-fusion/next/compare/1.16.3...1.16.4) (2019-07-23)
 
 
 ### Bug Fixes
 
-* **CascaderSelect:** Fixed [#676](https://github.com/alibaba-fusion/next/issues/676) ([b8a0ba2](https://github.com/alibaba-fusion/next/commit/b8a0ba2))
-* **Field:** init values with parseName=false ([0c92cfb](https://github.com/alibaba-fusion/next/commit/0c92cfb))
+* **Field:** validate no names fix [#913](https://github.com/alibaba-fusion/next/issues/913) ([d131416](https://github.com/alibaba-fusion/next/commit/d131416))
 
 

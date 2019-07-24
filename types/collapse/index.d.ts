@@ -34,6 +34,14 @@ export interface PanelProps extends HTMLAttributesWeak {
 }
 
 export class Panel extends React.Component<PanelProps, any> {}
+
+type data = {
+    title?: React.ReactNode;
+    content?: React.ReactNode;
+    disabled?: boolean;
+    [propName: string]: any;
+}
+
 export interface CollapseProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 样式前缀
@@ -48,17 +56,17 @@ export interface CollapseProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 使用数据模型构建
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<data>;
 
     /**
      * 默认展开keys
      */
-    defaultExpandedKeys?: Array<any>;
+    defaultExpandedKeys?: Array<data>;
 
     /**
      * 受控展开keys
      */
-    expandedKeys?: Array<any>;
+    expandedKeys?: Array<data>;
 
     /**
      * 展开状态发升变化时候的回调

@@ -181,7 +181,7 @@ export default class CascaderSelect extends Component {
         /**
          * 下拉框显示或关闭时触发事件的回调函数
          * @param {Boolean} visible 是否显示
-         * @param {String} type 触发显示关闭的操作类型
+         * @param {String} type 触发显示关闭的操作类型, fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -200,6 +200,10 @@ export default class CascaderSelect extends Component {
          * 透传到 Popup 的属性对象
          */
         popupProps: PropTypes.object,
+        /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -583,6 +587,10 @@ export default class CascaderSelect extends Component {
         if (onChange) {
             onChange(value, data, extra);
         }
+
+        if (searchValue && this.select) {
+            this.select.handleSearchClear();
+        }
     }
 
     handleClear() {
@@ -789,6 +797,7 @@ export default class CascaderSelect extends Component {
             popupClassName,
             popupContainer,
             popupProps,
+            followTrigger,
         } = this.props;
         const { value, searchValue, visible } = this.state;
         const others = pickOthers(
@@ -821,7 +830,7 @@ export default class CascaderSelect extends Component {
             visible,
             onVisibleChange: this.handleVisibleChange,
             showSearch,
-            searchValue,
+            // searchValue,
             onSearch: this.handleSearch,
             onKeyDown: this.handleKeyDown,
             popupContent,
@@ -829,6 +838,7 @@ export default class CascaderSelect extends Component {
             popupClassName,
             popupContainer,
             popupProps,
+            followTrigger,
         };
 
         if (showSearch) {

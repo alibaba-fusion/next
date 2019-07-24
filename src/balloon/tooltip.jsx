@@ -74,6 +74,10 @@ export default class Tooltip extends React.Component {
          */
         popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
+         * 是否跟随滚动
+         */
+        followTrigger: PropTypes.bool,
+        /**
          * 弹层id, 传入值才会支持无障碍
          */
         id: PropTypes.string,
@@ -98,6 +102,7 @@ export default class Tooltip extends React.Component {
             popupProps,
             popupClassName,
             popupStyle,
+            followTrigger,
             triggerType,
             autoFocus,
             rtl,
@@ -156,6 +161,7 @@ export default class Tooltip extends React.Component {
             <Popup
                 role="tooltip"
                 container={popupContainer}
+                followTrigger={followTrigger}
                 trigger={newTrigger}
                 triggerType={newTriggerType}
                 align={alignMap[align].align}
@@ -166,6 +172,7 @@ export default class Tooltip extends React.Component {
                 rtl={rtl}
                 autoFocus={triggerType === 'focus' ? false : autoFocus}
                 shouldUpdatePosition
+                needAdjust={false}
                 {...popupProps}
             >
                 {content}

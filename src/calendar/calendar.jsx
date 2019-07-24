@@ -20,6 +20,7 @@ import {
     CALENDAR_MODE_DATE,
     CALENDAR_MODE_MONTH,
     CALENDAR_MODE_YEAR,
+    getLocaleData,
 } from './utils';
 
 /** Calendar */
@@ -35,8 +36,10 @@ class Calendar extends Component {
          * 选中的日期值 (moment 对象)
          */
         value: checkMomentObj,
-        // 面板模式
-        mode: PropTypes.oneOf(CALENDAR_MODES),
+        /**
+         * 面板模式
+         */
+        mode: PropTypes.oneOf(CALENDAR_MODES), // 生成 API 文档需要手动改回 ['date', 'month', 'year']
         // 面板可变化的模式列表，仅初始化时接收一次
         modes: PropTypes.array,
         // 日期值的格式（用于日期title显示的格式）
@@ -59,6 +62,11 @@ class Calendar extends Component {
          */
         onSelect: PropTypes.func,
         /**
+         * 面板模式变化时的回调
+         * @param {String} mode 对应面板模式 date month year
+         */
+        onModeChange: PropTypes.func,
+        /**
          * 展现的月份变化时的回调
          * @param {Object} value 显示的月份 (moment 对象)
          * @param {String} reason 触发月份改变原因
@@ -80,6 +88,11 @@ class Calendar extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
+        /**
+         * 年份范围，[START_YEAR, END_YEAR] (只在shape 为 ‘card’, 'fullscreen' 下生效)
+         */
+        yearRange: PropTypes.arrayOf(PropTypes.number),
         /**
          * 不可选择的日期
          * @param {Object} calendarDate 对应 Calendar 返回的自定义日期对象
@@ -101,6 +114,7 @@ class Calendar extends Component {
         format: 'YYYY-MM-DD',
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
+        onModeChange: func.noop,
         dateCellRender: value => value.date(),
         locale: nextLocale.Calendar,
         showOtherMonth: true,
@@ -142,13 +156,18 @@ class Calendar extends Component {
     }
 
     onSelectCell = (date, nextMode) => {
+        const { shape } = this.props;
+
         this.changeVisibleMonth(date, 'cellClick');
 
         // 当用户所在的面板为初始化面板时，则选择动作为触发 onSelect 回调
         if (this.state.mode === this.MODES[0]) {
             this.props.onSelect(date);
         }
-        this.changeMode(nextMode);
+
+        if (shape === 'panel') {
+            this.changeMode(nextMode);
+        }
     };
 
     changeMode = nextMode => {
@@ -158,6 +177,7 @@ class Calendar extends Component {
             nextMode !== this.state.mode
         ) {
             this.setState({ mode: nextMode });
+            this.props.onModeChange(nextMode);
         }
     };
 
@@ -214,7 +234,9 @@ class Calendar extends Component {
             locale,
             dateCellRender,
             monthCellRender,
+            yearCellRender,
             disabledDate,
+            yearRange,
             ...others
         } = this.props;
         const state = this.state;
@@ -239,7 +261,10 @@ class Calendar extends Component {
             visibleMonth.locale(locale.momentLocale);
         }
 
-        const localeData = visibleMonth.localeData();
+        const localeData = getLocaleData(
+            locale.format || {},
+            visibleMonth.localeData()
+        );
 
         const headerProps = {
             prefix,
@@ -268,6 +293,7 @@ class Calendar extends Component {
             locale,
             dateCellRender,
             monthCellRender,
+            yearCellRender,
             disabledDate,
             momentLocale: localeData,
             today: this.today,
@@ -309,7 +335,7 @@ class Calendar extends Component {
                 {shape === 'panel' ? (
                     panelHeaders[state.mode]
                 ) : (
-                    <CardHeader {...headerProps} />
+                    <CardHeader {...headerProps} yearRange={yearRange} />
                 )}
                 {tables[state.mode]}
             </div>

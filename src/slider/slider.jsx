@@ -119,6 +119,7 @@ export default class Slider extends Component {
          * @param {Number} index 幻灯片的索引
          */
         onChange: PropTypes.func,
+        onBeforeChange: PropTypes.func, // 兼容 0.x onBeforeChange
         children: PropTypes.any,
         /**
          * 自定义传入的class
@@ -187,6 +188,7 @@ export default class Slider extends Component {
         variableWidth: false,
         waitForAnimate: true,
         onChange: () => {},
+        onBeforeChange: () => {},
         edgeEvent: null,
         swipeEvent: null,
         nextArrow: null, // nextArrow, prevArrow are react components

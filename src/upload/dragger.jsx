@@ -7,7 +7,7 @@ import zhCN from '../locale/zh-cn.js';
 import Upload from './upload';
 
 /**
- * Upload.Drager
+ * Upload.Dragger
  * @description IE10+ 支持。继承 Upload 的 API，除非特别说明
  */
 class Dragger extends React.Component {

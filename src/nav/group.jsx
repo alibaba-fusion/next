@@ -37,10 +37,7 @@ class Group extends Component {
         let newLabel = label;
         if (iconOnly) {
             // TODO: add a group icon ?
-            newLabel = [
-                <span key="icon" className={`${prefix}nav-icon-placeholder`} />,
-                <span key="label">{label}</span>,
-            ];
+            newLabel = [<span key="label">{label}</span>];
         }
 
         const cls = classNames({

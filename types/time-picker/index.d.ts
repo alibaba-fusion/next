@@ -92,7 +92,7 @@ export interface TimePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (target: {}) => React.ReactNode;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层对齐方式, 详情见Overlay 文档

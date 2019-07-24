@@ -12,7 +12,7 @@
 
 ### 何时使用
 
-用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。<br /> 参考文章: <br />1. <a href="https://zhuanlan.zhihu.com/p/56684600" target="_blank">组件的设计思想</a> <br /> 2. <a href="https://zhuanlan.zhihu.com/p/59483736" target="_blank">Fusion Upload组件对接阿里云OSS/七牛/又拍</a>
+用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。<br /> 参考文章: <br />1. <a href="https://zhuanlan.zhihu.com/p/56684600" target="_blank">Upload 组件的设计思想</a> <br /> 2. <a href="https://zhuanlan.zhihu.com/p/59483736" target="_blank">Fusion Upload组件对接阿里云OSS/七牛/又拍</a>
 
 ## API
 
@@ -62,7 +62,7 @@
 | onRemove  | 点击移除的回调<br><br>**签名**:<br>Function() => void | Function | -         |
 | onCancel  | 取消上传的回调<br><br>**签名**:<br>Function() => void | Function | -         |
 
-### Upload.Drager
+### Upload.Dragger
 
 > IE10+ 支持。继承 Upload 的 API，除非特别说明
 

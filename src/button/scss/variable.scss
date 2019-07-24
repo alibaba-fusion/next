@@ -5,7 +5,7 @@
 /// @family general
 /// @varPrefix $btn-
 /// @classPrefix {prefix}-btn
-/// @order {"statement/normal":10,"statement/hover":11,"statement/disabled":12,"statement/loading":13,"size/bounding":10,"size/text":11,"size/icon":12}
+/// @order {"statement/normal":10,"statement/hover":11,"statement/disabled":12,"statement/loading":13,"size/bounding":10,"size/text":11,"size/icon":12,"size/normal":13}
 ////
 
 $btn-prefix: '.' + $css-prefix + 'btn';
@@ -55,7 +55,7 @@ $btn-size-s-icon-margin: $s-1 !default;
 $btn-size-s-icon-split-size: $icon-xs !default;
 
 /// corner
-/// @namespace statement/normal
+/// @namespace size/normal
 $btn-size-s-corner: $corner-1 !default;
 
 // Medium
@@ -90,7 +90,7 @@ $btn-size-m-icon-margin: $s-1 !default;
 $btn-size-m-icon-split-size: $icon-xs !default;
 
 /// corner
-/// @namespace statement/normal
+/// @namespace size/normal
 $btn-size-m-corner: $corner-1 !default;
 
 // Large
@@ -125,7 +125,7 @@ $btn-size-l-icon-margin: $s-1 !default;
 $btn-size-l-icon-split-size: $icon-s !default;
 
 /// corner
-/// @namespace statement/normal
+/// @namespace size/normal
 $btn-size-l-corner: $corner-1 !default;
 
 // Pure

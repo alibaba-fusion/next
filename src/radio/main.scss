@@ -22,6 +22,7 @@
             width: $radio-width;
             height: $radio-width;
             margin: 0;
+            cursor: pointer;
         }
     }
 
@@ -54,7 +55,7 @@
             left: 50%;
             margin-left: -($radio-circle-size / 2);
             background: $color-white;
-            content: ' ';
+            content: '';
             transition: all .3s cubic-bezier(.78, .14, .15, .86);
         }
     }
@@ -98,6 +99,9 @@
                 }
             }
         }
+        #{$radio-prefix}-label {
+            color: $radio-normal-font-color-disabled;
+        }
     }
 
     &:not(.disabled):hover,
@@ -107,6 +111,9 @@
         #{$radio-prefix}-inner {
             border-color: $radio-hovered-border-color;
             background-color: $radio-hovered-bg-color;
+        }
+        #{$radio-prefix}-label {
+            cursor: pointer;
         }
     }
 
@@ -301,6 +308,7 @@
     font-size: $radio-font-size;
     vertical-align: middle;
     line-height: 1;
+    color: $radio-normal-font-color;
 }
 
 @-moz-document url-prefix() {

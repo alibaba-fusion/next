@@ -31,8 +31,7 @@ export default class Dropdown extends Component {
         /**
          * 弹层显示或隐藏时触发的回调函数
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源
-         * @param {Object} e DOM事件
+         * @param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -52,7 +51,8 @@ export default class Dropdown extends Component {
          */
         align: PropTypes.string,
         /**
-         * 弹层相对于触发元素定位的微调
+         * 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量
+         * e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px
          */
         offset: PropTypes.array,
         /**
