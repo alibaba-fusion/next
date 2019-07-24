@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onSelect?: any;
 }
 
-export interface CalendarProps extends HTMLAttributesWeak {
+export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认选中的日期（moment 对象）
      */

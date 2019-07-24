@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -8,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onKeyDown?: any;
 }
 
-export interface NumberPickerProps extends HTMLAttributesWeak {
+export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式前缀
      */

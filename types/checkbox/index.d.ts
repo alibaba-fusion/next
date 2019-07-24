@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -14,7 +15,7 @@ type data = {
     [propName: string]: any;
 }
 
-export interface GroupProps extends HTMLAttributesWeak {
+export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
@@ -70,7 +71,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onMouseLeave?: any;
 }
 
-export interface CheckboxProps extends HTMLAttributesWeak {
+export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */

@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 统一设置 Button 组件的按钮大小
      */
@@ -14,7 +15,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface ButtonProps extends HTMLAttributesWeak {
+export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的类型
      */

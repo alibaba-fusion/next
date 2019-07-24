@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
+export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -83,7 +84,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export class Tooltip extends React.Component<TooltipProps, any> {}
-export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
+export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 自定义类名
      */

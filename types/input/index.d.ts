@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -8,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onKeyDown?: any;
 }
 
-export interface TextAreaProps extends HTMLAttributesWeak {
+export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当前值
      */
@@ -122,7 +123,7 @@ export interface TextAreaProps extends HTMLAttributesWeak {
 
 export class TextArea extends React.Component<TextAreaProps, any> {}
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
      */
@@ -161,7 +162,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onKeyDown?: any;
 }
 
-export interface InputProps extends HTMLAttributesWeak {
+export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当前值
      */

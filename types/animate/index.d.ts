@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface AnimateProps extends React.HTMLAttributes<HTMLElement> {
+export interface AnimateProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 动画 className
      */

@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 是否禁用
      */
@@ -19,9 +20,9 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
     children?: React.ReactNode;
 }
 
-export class Item extends React.Component<ItemProps, any> {}
+export class Item extends React.Component<ItemProps, any>  {}
 
-export interface SubMenuProps extends React.HTMLAttributes<HTMLElement> {
+export interface SubMenuProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 标签内容
      */
@@ -45,7 +46,7 @@ export interface SubMenuProps extends React.HTMLAttributes<HTMLElement> {
 
 export class SubMenu extends React.Component<SubMenuProps, any> {}
 
-export interface PopupItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 标签内容
      */
@@ -63,7 +64,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface CheckboxItemProps extends HTMLAttributesWeak {
+export interface CheckboxItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否选中
      */
@@ -101,7 +102,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface RadioItemProps extends HTMLAttributesWeak {
+export interface RadioItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否选中
      */
@@ -130,7 +131,7 @@ export interface RadioItemProps extends HTMLAttributesWeak {
 
 export class RadioItem extends React.Component<RadioItemProps, any> {}
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 标签内容
      */
@@ -144,14 +145,14 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
 
 export class Group extends React.Component<GroupProps, any> {}
 
-export interface DividerProps extends React.HTMLAttributes<HTMLElement> {}
+export interface DividerProps extends React.HTMLAttributes<HTMLElement>, CommonProps {}
 
 export class Divider extends React.Component<DividerProps, any> {}
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
 }
 
-export interface MenuProps extends HTMLAttributesWeak {
+export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 菜单项和子菜单
      */
