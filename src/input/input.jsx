@@ -323,11 +323,11 @@ export default class Input extends Base {
                 className={cls}
                 style={hasAddon ? undefined : style}
             >
-                {this.renderInner(innerBefore, innerBeforeCls)}
                 {this.renderLabel()}
+                {this.renderInner(innerBefore, innerBeforeCls)}
                 {inputRender(inputEl)}
-                {this.renderControl()}
                 {this.renderInner(innerAfter, innerAfterCls)}
+                {this.renderControl()}
             </span>
         );
 

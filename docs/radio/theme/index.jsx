@@ -103,13 +103,13 @@ class RadioDefaultDemo extends React.Component {
                         </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <RadioGroup>
-                            <Radio checked >{label}</Radio>
+                        <RadioGroup defaultValue={1}>
+                            <Radio value={1} >{label}</Radio>
                         </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Selected & Hover">
-                        <RadioGroup>
-                            <Radio checked className="hovered" >{label}</Radio>
+                        <RadioGroup defaultValue={1}>
+                            <Radio value={1} className="hovered" >{label}</Radio>
                         </RadioGroup>
                     </DemoGroup>
                     <DemoGroup label="Disabled & Normal">

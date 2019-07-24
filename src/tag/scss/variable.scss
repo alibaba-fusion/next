@@ -521,3 +521,30 @@ $tag-checkable-secondary-icon-color-selected-hover: $color-white !default;
 $tag-checkable-secondary-icon-color-selected-disabled: $color-white !default;
 
 
+/// text
+/// @namespace statement/normal/bounding
+$tag-closable-primary-fill-text-color: $color-text1-3 !default;
+/// border
+/// @namespace statement/normal/bounding
+$tag-closable-primary-fill-border-color: $color-fill1-3;
+/// background
+/// @namespace statement/normal/bounding
+$tag-closable-primary-fill-bg-color: $color-fill1-3 !default;
+/// text
+/// @namespace statement/hover/bounding
+$tag-closable-primary-fill-text-color-hover: $color-text1-4 !default;
+/// border
+/// @namespace statement/hover/bounding
+$tag-closable-primary-fill-border-color-hover: $color-fill1-4 !default;
+/// background
+/// @namespace statement/hover/bounding
+$tag-closable-primary-fill-bg-color-hover: $color-fill1-4 !default;
+/// text
+/// @namespace statement/disabled/bounding
+$tag-closable-primary-fill-text-color-disabled: $color-text1-1 !default;
+/// border
+/// @namespace statement/disabled/bounding
+$tag-closable-primary-fill-border-color-disabled: $color-fill1-1 !default;
+/// background
+/// @namespace statement/disabled/bounding
+$tag-closable-primary-fill-bg-color-disabled: $color-fill1-1 !default;

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const apiExtractor = require('@alifd/api-extractor');
-const tsgen = require('@alifd/dts-generator');
+// const tsgen = require('@alifd/dts-generator');
 const { logger } = require('../utils');
 const config = require('../config');
 
@@ -59,9 +59,15 @@ module.exports = function(options) {
             );
 
             fs.writeFileSync(apiPath, apiString);
-            tsgen(apiInfo).then(apiData => {
-                fs.writeFileSync(exportDTSPath, apiData.message);
-            });
+            fs.writeFileSync(
+                exportDTSPath,
+                `import ${apiInfo.name} from '../../types/${shortName}';
+export default ${apiInfo.name};
+`
+            );
+            // tsgen(apiInfo).then(apiData => {
+            //     fs.writeFileSync(exportDTSPath, apiData.message);
+            // });
         } else {
             logger.warn(`Can not generate ${apiPath}`);
         }

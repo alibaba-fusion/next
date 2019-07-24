@@ -24,6 +24,7 @@ export default class SubMenu extends Component {
         root: PropTypes.object,
         level: PropTypes.number,
         groupIndent: PropTypes.number,
+        noIcon: PropTypes.bool,
         /**
          * 标签内容
          */
@@ -51,6 +52,7 @@ export default class SubMenu extends Component {
 
     static defaultProps = {
         groupIndent: 0,
+        noIcon: false,
         selectable: false,
     };
 
@@ -133,6 +135,7 @@ export default class SubMenu extends Component {
             selectable: selectableFromProps,
             label,
             children,
+            noIcon,
             subMenuContentClassName,
             triggerType: propsTriggerType,
             parentMode,
@@ -222,7 +225,7 @@ export default class SubMenu extends Component {
             <li role={roleItem} {...others} {...liProps}>
                 <NewItem {...itemProps}>
                     <span className={`${prefix}menu-item-text`}>{label}</span>
-                    <Icon {...arrorProps} />
+                    {noIcon ? null : <Icon {...arrorProps} />}
                 </NewItem>
                 {expandAnimation ? (
                     <Expand
@@ -239,7 +242,12 @@ export default class SubMenu extends Component {
     }
 
     renderPopup() {
-        const { children, subMenuContentClassName, ...others } = this.props;
+        const {
+            children,
+            subMenuContentClassName,
+            noIcon,
+            ...others
+        } = this.props;
         const root = this.props.root;
         const { prefix, popupClassName, popupStyle, rtl } = root.props;
 
@@ -253,7 +261,7 @@ export default class SubMenu extends Component {
         others.rtl = rtl;
 
         return (
-            <PopupItem {...others} hasSubMenu>
+            <PopupItem {...others} noIcon={noIcon} hasSubMenu>
                 <ul
                     role="menu"
                     dir={rtl ? 'rtl' : undefined}

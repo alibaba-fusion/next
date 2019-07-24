@@ -13,7 +13,7 @@ Enzyme.configure({ adapter: new Adapter() });
 const FormItem = Form.Item;
 
 /* eslint-disable react/jsx-filename-extension */
-/*global describe it */
+/*global describe it afterEach */
 describe('field', () => {
     describe('render', () => {
         it('should support Form', function(done) {
@@ -158,6 +158,14 @@ describe('field', () => {
         });
     });
     describe('init', () => {
+        let wrapper;
+        afterEach(() => {
+            if (wrapper) {
+                wrapper.unmount();
+                wrapper = null;
+            }
+        });
+
         it('init(input)', function(done) {
             const field = new Field(this);
             const inited = field.init('input');
@@ -311,6 +319,100 @@ describe('field', () => {
 
             done();
         });
+
+        it('should support control through `setState`', function(done) {
+            class Demo extends React.Component {
+                state = {
+                    show: true,
+                    inputValue: 'start'
+                };
+                field = new Field(this);
+    
+                render() {
+                    const init = this.field.init; 
+                    return (
+                        <div>
+                            <Input {...init('input', {props: {value: this.state.inputValue}})} />{' '}
+                            <button
+                                id="set"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'start'
+                                    );
+                                    this.setState({
+                                        inputValue: 'end',
+                                    })
+                                }}
+                            >
+                                click
+                            </button>
+                            <button
+                                id="get"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'end'
+                                    );
+                                    done();
+                                }}
+                            >
+                                click
+                            </button>
+                        </div>
+                    );
+                }
+            }
+
+            wrapper = mount(<Demo />);
+            wrapper.find('#set').simulate('click');
+            wrapper.find('#get').simulate('click');
+        });
+
+        it('should support control through `setState` when `parseName` is true', function(done) {
+            class Demo extends React.Component {
+                state = {
+                    show: true,
+                    inputValue: 'start'
+                };
+                field = new Field(this, { parseName: true});
+    
+                render() {
+                    const init = this.field.init; 
+                    return (
+                        <div>
+                            <Input {...init('input', {props: {value: this.state.inputValue}})} />{' '}
+                            <button
+                                id="set"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'start'
+                                    );
+                                    this.setState({
+                                        inputValue: 'end',
+                                    })
+                                }}
+                            >
+                                click
+                            </button>
+                            <button
+                                id="get"
+                                onClick={() => {
+                                    assert(
+                                        this.field.getValue('input') === 'end'
+                                    );
+                                    done();
+                                }}
+                            >
+                                click
+                            </button>
+                        </div>
+                    );
+                }
+            }
+
+            wrapper = mount(<Demo />);
+            wrapper.find('#set').simulate('click');
+            wrapper.find('#get').simulate('click');
+        })
     });
 
     describe('behaviour', () => {
@@ -332,6 +434,56 @@ describe('field', () => {
             assert(field.getValue('input2') === 4);
 
             done();
+        });
+
+        it('should return `undefined` for `getValue` on uninitialized field', function() {
+            const field = new Field(this);
+            assert.equal(field.getValue('input'), undefined);
+        });
+
+        it('should return empty object for `getValues` on uninitialized field', function() {
+            const field = new Field(this);
+            assert.equal(Object.keys(field.getValues()).length, 0);
+        });
+
+        it('should set value with `setValue` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            field.init('input');
+            assert.equal(field.getValue('input'), 1);
+        });
+
+        it('should set value with `setValues` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValues({input: 1})
+            field.init('input');
+            assert.equal(field.getValue('input'), 1);
+        });
+
+        it('should return value from `setValue` when calling `getValue` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            assert.equal(field.getValue('input'), 1);
+        });
+
+        it('should return value from `setValue` when calling `getValues` on uninitialized field', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            assert.equal(field.getValues().input, 1);
+        });
+
+        it('should return values from `setValue` and init when calling `getValues`', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            field.init('input2', {initValue: 2})
+            assert.deepEqual(field.getValues(), { input: 1, input2: 2});
+        });
+
+        it('should return `setValue` value instead of initValue', function() {
+            const field = new Field(this);
+            field.setValue('input', 1)
+            field.init('input', {initValue: 2})
+            assert.deepEqual(field.getValues(), { input: 1 });
         });
 
         it('setError & setErrors & getError & getErrors', function(done) {
@@ -466,22 +618,46 @@ describe('field', () => {
                 done();
             });
         });
+        
+        describe('reset', function() {
+            it('should set value to `undefined` on `reset()` if init with `initValue`', function() {
+                const field = new Field(this);
+                field.init('input', { initValue: '1' });
+    
+                field.reset();
+                assert(field.getValue('input') === undefined);
+            });
 
-        it('reset', function(done) {
-            const field = new Field(this);
-            field.init('input', { initValue: '1' });
+            it('should set only named value to `undefined` on `reset()` if init with `initValue`', function() {
+                const field = new Field(this);
+                field.init('input', { initValue: '1' });
+                field.init('input2', { initValue: '2' });
+    
+                field.reset('input');
+                assert.deepEqual(field.getValues(), { input: undefined, input2: '2'});
+            });
+    
+            it('should set value to `initValue` on `resetToDefaults()` if init with `initValue`', function() {
+                const field = new Field(this);
+                field.init('input', { initValue: '4' });
+                field.setValue('input', '33');
+    
+                field.resetToDefault();
+                assert(field.getValue('input') === '4');
+            });
 
-            field.reset();
-            assert(field.getValue('input') === undefined);
-
-            field.init('input2', { initValue: '4' });
-            field.setValue('input2', '33');
-
-            field.resetToDefault();
-            assert(field.getValue('input2') === '4');
-
-            done();
+            it('should set only named value to `initValue` on `resetToDefaults()` if init with `initValue`', function() {
+                const field = new Field(this);
+                field.init('input', { initValue: '4' });
+                field.setValue('input', '33');
+                field.init('input2', { initValue: '4' });
+                field.setValue('input2', '33');
+    
+                field.resetToDefault('input');
+                assert.deepEqual(field.getValues(), { input: '4', input2: '33'});
+            });
         });
+
         it('remove', function(done) {
             const field = new Field(this);
             field.init('input', { initValue: 1 });
@@ -498,24 +674,58 @@ describe('field', () => {
 
             done();
         });
-        it('spliceArray', function(done) {
-            const field = new Field(this);
-            field.init('input.0', { initValue: 0 });
-            field.init('input.1', { initValue: 1 });
-            field.init('input.2', { initValue: 2 });
+        describe('spliceArray', function() {
+            it('should remove the middle field item', () => {
+                const field = new Field(this);
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
 
-            field.spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 1);
 
-            assert(field.getValue('input.0') === 0);
-            assert(field.getValue('input.1') === 2);
-            assert(field.getValue('input.2') === undefined);
+                assert(field.getValue('input.0') === 0);
+                assert(field.getValue('input.1') === 2);
+                assert(field.getValue('input.2') === undefined);
+            });
 
-            field.spliceArray('input.{index}', 0);
-            assert(field.getValue('input.0') === 2);
-            assert(field.getValue('input.1') === undefined);
-            assert(field.getValue('input.2') === undefined);
+            it('should remove the first 2 field items', () => {
+                const field = new Field(this);
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
 
-            done();
+                field.spliceArray('input.{index}', 1);
+                field.spliceArray('input.{index}', 0);
+                assert(field.getValue('input.0') === 2);
+                assert(field.getValue('input.1') === undefined);
+                assert(field.getValue('input.2') === undefined);
+            });
+
+            it('should make no change `keymatch` does not contain `{index}', () => {
+                const field = new Field(this);
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
+
+                field.spliceArray('input', 0);
+                assert(field.getValue('input.0') === 0);
+                assert(field.getValue('input.1') === 1);
+                assert(field.getValue('input.2') === 2);
+            });
+
+            it('should remove the middle field item when parseName=true', () => {
+                const field = new Field(this, { parseName: true });
+                field.init('input.0', { initValue: 0 });
+                field.init('input.1', { initValue: 1 });
+                field.init('input.2', { initValue: 2 });
+
+                field.spliceArray('input.{index}', 1);
+
+                assert(field.getValue('input.0') === 0);
+                assert(field.getValue('input.1') === 2);
+                assert(field.getValue('input.2') === undefined);
+                assert(field.getValue('input').length === 2);
+            });
         });
     });
 });

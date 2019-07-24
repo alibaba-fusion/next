@@ -5,6 +5,7 @@ import Radio from '../../radio';
 
 class CardHeader extends React.PureComponent {
     static propTypes = {
+        yearRange: PropTypes.arrayOf(PropTypes.number),
         yearRangeOffset: PropTypes.number,
         locale: PropTypes.object,
     };
@@ -18,12 +19,16 @@ class CardHeader extends React.PureComponent {
     };
 
     getYearSelect(year) {
-        const { prefix, yearRangeOffset, locale } = this.props;
-        const startYear = year - yearRangeOffset;
-        const endYear = year + yearRangeOffset;
+        const { prefix, yearRangeOffset, yearRange = [], locale } = this.props;
+
+        let [startYear, endYear] = yearRange;
+        if (!startYear || !endYear) {
+            startYear = year - yearRangeOffset;
+            endYear = year + yearRangeOffset;
+        }
 
         const options = [];
-        for (let i = startYear; i < endYear; i++) {
+        for (let i = startYear; i <= endYear; i++) {
             options.push(
                 <Select.Option key={i} value={i}>
                     {i}

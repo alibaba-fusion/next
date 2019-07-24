@@ -89,7 +89,14 @@ export default class Uploader {
                 );
             },
             error => {
-                this.options.onError(error, null, file);
+                let err;
+                if (error) {
+                    err = error;
+                } else {
+                    err = new Error(errorCode.BEFOREUPLOAD_REJECT);
+                    err.code = errorCode.BEFOREUPLOAD_REJECT;
+                }
+                this.options.onError(err, null, file);
             }
         );
     }
