@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface AffixProps extends React.HTMLAttributes<HTMLElement> {
+export interface AffixProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 设置 Affix 需要监听滚动事件的容器元素
      */
