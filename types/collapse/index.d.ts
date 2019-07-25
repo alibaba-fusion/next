@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface PanelProps extends HTMLAttributesWeak {
+export interface PanelProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -42,7 +43,7 @@ type data = {
     [propName: string]: any;
 }
 
-export interface CollapseProps extends React.HTMLAttributes<HTMLElement> {
+export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
      */

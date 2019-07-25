@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface DialogProps extends HTMLAttributesWeak {
+export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否显示
      */

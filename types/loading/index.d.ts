@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface LoadingProps extends React.HTMLAttributes<HTMLElement> {
+export interface LoadingProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
      */

@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface MessageProps extends HTMLAttributesWeak {
+export interface MessageProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 反馈类型
      */

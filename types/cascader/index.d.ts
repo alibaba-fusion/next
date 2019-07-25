@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -39,7 +40,7 @@ type extra = {
     indeterminateData?: Array<data>;
 }
 
-export interface CascaderProps extends HTMLAttributesWeak {
+export interface CascaderProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 数据源，结构可参考下方说明
      */

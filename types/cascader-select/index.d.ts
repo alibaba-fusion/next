@@ -2,13 +2,14 @@
 
 import * as React from 'react';
 import { CascaderProps, data, extra } from '../cascader';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak {
+export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, CommonProps {
     /**
      * 选择框大小
      */
