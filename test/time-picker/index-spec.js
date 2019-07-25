@@ -100,7 +100,7 @@ describe('TimePicker', () => {
             assert(
                 wrapper.find(
                     '.next-time-picker-menu-second .next-time-picker-menu-item'
-                ).length === 12
+                ).length === 13
             );
         });
     });

@@ -71,41 +71,52 @@ class TimeMenu extends React.Component {
         this.menu = ref;
     };
 
-    render() {
+    createTimeMenuItem = index => {
         const {
             prefix,
-            title,
             mode,
             activeIndex,
-            step,
             disabled,
             disabledItems,
             onSelect,
         } = this.props;
+        const isDisabled = disabled || disabledItems(index);
+        const itemCls = classnames({
+            [`${prefix}time-picker-menu-item`]: true,
+            [`${prefix}disabled`]: isDisabled,
+            [`${prefix}selected`]: index === activeIndex,
+        });
+        const handleClick = isDisabled ? noop : () => onSelect(index, mode);
+
+        return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <li
+                role="option"
+                aria-selected={String(index === activeIndex)}
+                key={index}
+                title={index}
+                className={itemCls}
+                onClick={handleClick}
+            >
+                {index}
+            </li>
+        );
+    };
+
+    render() {
+        const { prefix, title, mode, step } = this.props;
         const total = mode === 'hour' ? 24 : 60;
         const list = [];
+        let last = 0;
         for (let i = 0; i < total; i++) {
             if (i % step === 0) {
-                const isDisabled = disabled || disabledItems(i);
-                const itemCls = classnames({
-                    [`${prefix}time-picker-menu-item`]: true,
-                    [`${prefix}disabled`]: isDisabled,
-                    [`${prefix}selected`]: i === activeIndex,
-                });
-                const onClick = isDisabled ? noop : () => onSelect(i, mode);
-                list.push(
-                    <li
-                        role="option"
-                        aria-selected={String(i === activeIndex)}
-                        key={i}
-                        title={i}
-                        className={itemCls}
-                        onClick={onClick}
-                    >
-                        {i}
-                    </li>
-                );
+                last = i;
+                list.push(this.createTimeMenuItem(i));
             }
+        }
+
+        if (last < total - 1) {
+            list.push(this.createTimeMenuItem(total - 1));
         }
 
         const menuTitle = title ? (
