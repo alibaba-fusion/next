@@ -78,6 +78,16 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
      * 点击按钮的回调
      */
     onClick?: (e: {}) => void;
+
+    /**
+     * 在Button组件使用component属性值为a时有效，代表链接页面的URL
+     */
+    href?: string;
+
+    /**
+     * 在Button组件使用component属性值为a时有效，代表何处打开链接文档
+     */
+    target?: string;
 }
 
 export default class Button extends React.Component<ButtonProps, any> {
