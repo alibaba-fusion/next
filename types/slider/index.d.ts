@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface SliderProps extends HTMLAttributesWeak {
+export interface SliderProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义传入的样式
      */

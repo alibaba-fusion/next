@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
@@ -8,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onKeyDown?: any;
 }
 
-export interface SwitchProps extends HTMLAttributesWeak {
+export interface SwitchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
