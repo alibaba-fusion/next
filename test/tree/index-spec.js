@@ -710,6 +710,47 @@ describe('Tree', () => {
         assert(hasClass(findTreeNodeByKey('1'), 'next-filtered'));
     });
 
+    it('should support disabled', () => {
+        ReactDOM.render(
+            <Tree
+                dataSource={dataSource}
+                defaultExpandAll
+                checkable
+                defaultCheckedKeys={['3']}
+            />,
+            mountNode
+        );
+
+        ['1', '3', '6'].forEach(key => assertChecked(key, true));
+        checkTreeNode('6');
+        checkTreeNode('4');
+        ['1', '3', '6'].forEach(key => assertChecked(key, false));
+        assertChecked('4', true);
+    })
+
+    it('should support checkable = false', () => {
+        ReactDOM.render(
+            <Tree
+                dataSource={cloneData(dataSource, {
+                    2: {
+                        disabled: false,
+                        checkable: false
+                    }
+                })}
+                defaultExpandAll
+                checkable
+                defaultCheckedKeys={['3']}
+            />,
+            mountNode
+        );
+        ['3', '6'].forEach(key => assertChecked(key, true));
+        assertIndeterminate('1', true);
+        checkTreeNode('4');
+        checkTreeNode('5');
+        ['1', '3', '6'].forEach(key => assertChecked(key, true));
+        assertIndeterminate('1', false);
+    });
+
     it('should support keyboard', () => {
         ReactDOM.render(
             <Tree
