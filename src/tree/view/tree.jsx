@@ -20,6 +20,7 @@ const { pickOthers, isPlainObject } = obj;
 
 const childChecked = (child, checkedKeys) => {
     if (child.disabled || parent.checkboxDisabled) return true;
+    /* istanbul ignore next */
     if (child.checkable === false) {
         return (
             !child.children ||

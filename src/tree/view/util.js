@@ -30,6 +30,7 @@ export function forEachEnableNode(node, callback = () => {}) {
  */
 export function isNodeDisabledChecked(node) {
     if (node.disabled || node.checkboxDisabled) return true;
+    /* istanbul ignore next */
     if (node.checkable === false) {
         return (
             !node.children ||
@@ -52,6 +53,7 @@ export function getCheckableParentNode(node, _p2n) {
     parentPos = parentPos.join('-');
     const parentNode = _p2n[parentPos];
     if (parentNode.disabled || parentNode.checkboxDisabled) return false;
+    /* istanbul ignore next */
     if (parentNode.checkable === false) {
         return getCheckableParentNode(parentNode, _p2n);
     }
