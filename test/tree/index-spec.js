@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import { dom, KEYCODE, func } from '../../src/util';
+import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
 import '../../src/tree/style.js';
 
@@ -111,7 +111,9 @@ class CheckDemo extends Component {
                 defaultExpandAll
                 checkable
                 checkedKeys={this.state.checkedKeys}
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 onCheck={this.handleCheck}
                 {...this.props}
             />
@@ -411,8 +413,8 @@ describe('Tree', () => {
         );
         assertChecked('3', true);
         assertChecked('6', true);
-        assertChecked('1', false);
-        assertIndeterminate('1', true);
+        assertChecked('1', true);
+        assertIndeterminate('1', false);
         assert(
             hasClass(
                 findTreeNodeByKey('4').querySelector('.next-checkbox-wrapper'),
@@ -452,7 +454,9 @@ describe('Tree', () => {
             <Tree
                 checkable
                 defaultExpandAll
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 onCheck={handleCheck}
             />,
             mountNode
@@ -474,7 +478,9 @@ describe('Tree', () => {
                 checkable
                 checkedStrategy="parent"
                 defaultExpandAll
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 onCheck={handleCheck}
             />,
             mountNode
