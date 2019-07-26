@@ -43,9 +43,12 @@ class Dragger extends React.Component {
     };
 
     onDragOver = e => {
-        this.setState({
-            dragOver: true,
-        });
+        if (!this.state.dragOver) {
+            this.setState({
+                dragOver: true,
+            });
+        }
+
         this.props.onDragOver(e);
     };
 
