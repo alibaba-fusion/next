@@ -7,6 +7,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['on', 'off', 'disabledOn', 'disabledOff'],
             default: 'off'
@@ -17,6 +18,7 @@ export default {
             default: 'medium'
         }, {
             name: 'showLabel',
+            label: 'Label',
             type: Types.bool,
             default: false
         }]

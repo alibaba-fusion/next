@@ -26,6 +26,7 @@ export default {
             ), ...(
                 shape === 'addon' ? [] : [{
                     name: 'state',
+                    label: 'Status',
                     type: Types.enum,
                     options: ['normal', 'focused', 'disabled', 'error', ...(shape === 'textfield' ? ['success', 'loading'] : [])],
                     default: 'normal'

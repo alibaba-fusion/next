@@ -8,6 +8,12 @@ export default {
     editor: (shape = 'line') => {
         return {
             props: [{
+                name: 'mode',
+                label: 'Type',
+                type: Types.enum,
+                options: ['basic', 'staging'],
+                default: 'basic'
+            }, {
                 name: 'level',
                 type: Types.enum,
                 options: ['normal', 'success', 'error'],
@@ -18,12 +24,8 @@ export default {
                 options: ['large', 'medium', 'small'],
                 default: 'medium'
             }, {
-                name: 'mode',
-                type: Types.enum,
-                options: ['basic', 'staging'],
-                default: 'basic'
-            }, {
                 name: 'text',
+                label: 'Data Included',
                 type: Types.bool,
                 default: false
             },

@@ -30,6 +30,7 @@ export default {
             default: 'above'
         }, {
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['normal', 'hover', 'clicked', 'disabled'],
             default: 'normal'

@@ -40,6 +40,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'select',
+            label: 'Selection Mode',
             type: Types.enum,
             options: ['node', 'label'],
             default: 'label'

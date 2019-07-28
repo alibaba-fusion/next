@@ -10,6 +10,7 @@ export default {
     editor: (shape) => ({
       props: [...(shape === 'card' ? [{
         name: 'level',
+        label: 'Orientation',
         type: Types.enum,
         options: [{ label: 'Vertical', value: 'ver'}, {label: 'Horizontal', value: 'hoz' }],
         default: 'hoz'

@@ -125,11 +125,13 @@ export default {
     editor: () => ({
         props: [{
             name: 'selectType',
+            label: 'Selection Mode',
             type: Types.enum,
             options: ['checkbox', 'radio', 'checkLeft', 'checkRight'],
             default: 'checkLeft'
         }, {
             name: 'nestMode',
+            label: 'Subset Structure',
             type: Types.enum,
             options: ['inline', 'popup'],
             default: 'inline',

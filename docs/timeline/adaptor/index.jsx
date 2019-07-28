@@ -7,11 +7,13 @@ export default {
     editor: () => ({
         props: [{
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['normal', 'success', 'error'],
             default: 'normal'
         }, {
             name: 'timeLeft',
+            label: 'Position',
             type: Types.bool,
             default: false
         }, {

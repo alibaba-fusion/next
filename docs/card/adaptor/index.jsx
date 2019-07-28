@@ -8,6 +8,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'bullet',
+            label: 'Label',
             type: Types.bool,
             default: false,
         }, {
@@ -16,7 +17,7 @@ export default {
             default: true,
         }, {
             name: 'expand',
-            label: 'Expaned',
+            label: 'Expanded',
             type: Types.bool,
             default: false
         }, {
@@ -34,10 +35,12 @@ export default {
             default: 'Title'
         }, {
             name: 'subTitle',
+            label: 'Subtitle',
             type: Types.string,
             default: '',
         }, {
             name: 'extra',
+            label: 'Extra Data',
             type: Types.string,
             default: '',
         }],

@@ -7,6 +7,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['normal', 'disabled'],
             default: 'normal'

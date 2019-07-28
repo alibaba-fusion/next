@@ -13,6 +13,7 @@ export default {
         return {
             props: [{
                 name: 'state',
+                label: 'Status',
                 type: Types.enum,
                 options: ['normal', 'expanded', 'selected', 'disabled'],
                 default: 'normal'

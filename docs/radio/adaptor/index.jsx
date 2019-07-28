@@ -30,6 +30,7 @@ export default {
         return {
             props: [{
                 name: 'state',
+                label: 'Status',
                 type: Types.enum,
                 options: ['normal', 'hover', 'disabled', 'checked', 'checkedHover', 'checkedDisabled'],
                 default: 'normal'

@@ -38,6 +38,7 @@ export default {
                 },
                 {
                     name: 'direction',
+                    label: 'Align',
                     type: Types.enum,
                     options: ALIGN_LIST,
                     default: 'b',
