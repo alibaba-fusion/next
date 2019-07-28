@@ -47,18 +47,21 @@ export default {
             default: 35
         }],
     }),
-    adaptor: ({ shape, level, type, scalePosition, state, width, start, end, style, className, ...others }) => {
+    adaptor: ({ shape, level, type, scalePosition, state, width, start, end, style, ...others }) => {
         return (
-            <Range
+            <div
                 {...others}
                 style={{ width, ...style }}
-                className={`${className || ''} ${state === 'hover' ? 'simulation-hover' : state === 'clicked' ? 'simulation-click' : ''}`}
-                slider={level}
-                value={level === 'double' ? [start, end] : end}
-                marks={shape === 'scale' || type === 'scale' ? 10 : false}
-                marksPosition={scalePosition}
-                disabled={state === 'disabled'}
-            />
+            >
+                <Range
+                    className={state === 'hover' ? 'simulation-hover' : state === 'clicked' ? 'simulation-click' : ''}
+                    slider={level}
+                    value={level === 'double' ? [start, end] : end}
+                    marks={shape === 'scale' || type === 'scale' ? 10 : false}
+                    marksPosition={scalePosition}
+                    disabled={state === 'disabled'}
+                />
+            </div>
         );
     },
     demoOptions: (demo) => {

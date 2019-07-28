@@ -55,9 +55,9 @@ export default {
             }
         };
     },
-    adaptor: ({ shape, level, direction, closable, data }) => {
+    adaptor: ({ shape, level, direction, closable, data, style, ...others }) => {
         return (
-            <Balloon.Inner type={level} style={{position: 'relative'}} isTooltip={shape === 'tooltip'} align={direction} closable={shape === 'balloon' && closable}>
+            <Balloon.Inner {...others} type={level} style={{position: 'relative', ...style }} isTooltip={shape === 'tooltip'} align={direction} closable={shape === 'balloon' && closable}>
                 {data}
             </Balloon.Inner>
         );
