@@ -36,7 +36,7 @@
     &-nav {
         display: inline-block;
         position: relative;
-        transition: all .4s $ease-out-quint;
+        transition: all $motion-duration-standard $motion-ease;
         list-style: none;
         padding: 0;
         margin: 0;
@@ -55,7 +55,7 @@
     &-tab {
         display: inline-block;
         position: relative;
-        transition: all .4s $ease-out-quint;
+        transition: all $motion-duration-immediately $motion-linear;
 
         &-inner {
             position: relative;
@@ -66,7 +66,7 @@
         &:before {
             content: "";
             position: absolute;
-            transition: all .4s $ease-out-quint;
+            transition: all $motion-duration-standard $motion-ease;
         }
 
         &.active {
@@ -343,7 +343,7 @@
 
     &-capsule > #{$tab-prefix}-bar {
         #{$tab-prefix}-tab {
-            transition: background-color .4s $ease-out-quint, border-color .4s $ease-out-quint;
+            transition: background-color $motion-duration-immediately $motion-linear;
             border-top: $tab-capsule-tab-border;
             border-bottom: $tab-capsule-tab-border;
             border-left: $tab-capsule-tab-border;

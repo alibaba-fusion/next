@@ -15,7 +15,7 @@
         white-space: nowrap;
         vertical-align: middle;
         user-select: none;
-        transition: all .3s ease-out;
+        transition: all $motion-duration-immediately $motion-linear;
         cursor: pointer;
 
         &:after {
@@ -23,7 +23,7 @@
             position: absolute;
             opacity: 0;
             visibility: hidden;
-            transition: opacity .5s ease;
+            transition: opacity $motion-duration-immediately $motion-linear;
         }
 
         .#{$css-prefix}icon.#{$css-prefix}xs {

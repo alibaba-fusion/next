@@ -18,7 +18,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            transition: all .2s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
 
             > b {
                 font-weight: normal;
