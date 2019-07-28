@@ -1276,6 +1276,24 @@ describe('RangePicker', () => {
             assert(ret[1].format('YYYY-MM-DD') === '2017-12-25');
         });
 
+        it('should select Year', () => {
+            wrapper = mount(
+                <RangePicker
+                    defaultVisibleMonth={() => startValue}
+                    defaultVisible
+                />
+            );
+            wrapper
+                .find('.next-calendar-panel-header-left .next-calendar-btn').at(1)
+                .simulate('click');
+
+            wrapper
+                .find('.next-calendar-year').at(5)
+                .simulate('click');
+            assert(wrapper
+                .find('.next-calendar-panel-header-full .next-calendar-btn').text() === '2014')
+        });
+
         it('should select time panel', () => {
             let ret;
             wrapper = mount(

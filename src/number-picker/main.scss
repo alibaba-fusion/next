@@ -24,6 +24,10 @@
             input {
                 padding-right: 2px;
             }
+
+            .#{$css-prefix}input-control {
+                padding-right: 0;
+            }
         }
 
         .#{$css-prefix}btn {
@@ -57,6 +61,7 @@
             opacity: 0;
             transition: opacity .24s linear .1s;
             height: 100%;
+            display: block;
         }
 
         &:hover #{$number-picker-prefix}-handler {
@@ -167,6 +172,7 @@
     }
 }
 #{$number-picker-prefix}-inline[dir="rtl"] {
+
     .#{$css-prefix}btn {
         border-radius: 0;
     }
@@ -180,3 +186,9 @@
         border-bottom-left-radius: $form-element-medium-corner !important;
     }
 }
+#{$number-picker-prefix}-normal[dir="rtl"] {
+    .#{$css-prefix}input .#{$css-prefix}input-control {
+        padding-left: 0;
+    }
+}
+

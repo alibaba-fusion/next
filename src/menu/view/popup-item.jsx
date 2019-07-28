@@ -24,6 +24,7 @@ export default class PopupItem extends Component {
         root: PropTypes.object,
         level: PropTypes.number,
         hasSubMenu: PropTypes.bool,
+        noIcon: PropTypes.bool,
         rtl: PropTypes.bool,
         selectable: PropTypes.bool,
         /**
@@ -42,6 +43,7 @@ export default class PopupItem extends Component {
 
     static defaultProps = {
         selectable: false,
+        noIcon: false,
     };
 
     constructor(props) {
@@ -201,6 +203,7 @@ export default class PopupItem extends Component {
             children,
             triggerType,
             align,
+            noIcon,
             rtl,
         } = this.props;
         const others = obj.pickOthers(
@@ -276,7 +279,7 @@ export default class PopupItem extends Component {
         const arrow = <Icon {...arrowProps} />;
         const trigger = triggerIsIcon
             ? arrow
-            : this.renderItem(selectable, arrow, others);
+            : this.renderItem(selectable, noIcon ? null : arrow, others);
         const popup = this.renderPopup(
             trigger,
             newTriggerType,

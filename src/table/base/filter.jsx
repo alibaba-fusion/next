@@ -182,6 +182,7 @@ export default class Filter extends React.Component {
                 visible={visible}
                 autoFocus
                 rtl={rtl}
+                needAdjust={false}
                 container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
             >

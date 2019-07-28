@@ -835,6 +835,46 @@ describe('Menu', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('should support hozInLine in hoz', () => {
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu
+                direction="hoz"
+                style={{width: 300}}
+                mode="popup"
+                hozInLine
+            >
+                <Item key="0" style={{width: 100}}>0</Item>
+                <Item key="1" style={{width: 60}}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                    <Item key="2">2</Item>
+                    <Item key="3">3</Item>
+                </SubMenu>
+                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="5">5</Item>
+                <Item key="6">6</Item>
+            </Menu>,
+            div
+        );
+
+        const menu = document.querySelector('.next-menu.next-hoz');
+        assert(menu.querySelectorAll('li.next-menu-more').length === 2);
+
+        const indicator = menu.querySelectorAll('li.next-menu-more')[0].querySelector('.next-menu-item-inner');
+        indicator.click();
+        const overlay = document.querySelector('.next-overlay-wrapper');
+
+        assert(overlay);
+        assert(overlay.querySelectorAll('li').length === 2);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+
+    });
 });
 
 describe('Menu.create', () => {

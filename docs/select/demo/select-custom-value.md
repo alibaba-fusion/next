@@ -31,22 +31,6 @@ const valueRender = v => {
     return `${v.value} / ${v.gender} / ${v.age}`;
 };
 
-ReactDOM.render(
-    <div className="demo-container">
-        <Select
-            mode="multiple"
-            placeholder="custom value"
-            valueRender={valueRender}
-            dataSource={dataSource}
-            onChange={handleChange} />
-    </div>,
-    mountNode
-);
+ReactDOM.render(<Select mode="multiple" placeholder="custom value" valueRender={valueRender} dataSource={dataSource} onChange={handleChange} />, mountNode);
 ````
 
-````css
-.demo-container {
-    padding: 16px;
-    background-color: #F8F8F8;
-}
-````
