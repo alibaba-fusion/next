@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import moment from 'moment';
+import { checkMomentObj } from '../utils';
 
 function scrollTo(element, to, duration) {
     const requestAnimationFrame =
@@ -40,6 +42,7 @@ class TimeMenu extends React.Component {
         disabledItems: PropTypes.func,
         onSelect: PropTypes.func,
         disabled: PropTypes.bool,
+        value: checkMomentObj,
     };
 
     static defaultProps = {
@@ -104,7 +107,7 @@ class TimeMenu extends React.Component {
     };
 
     render() {
-        const { prefix, title, mode, step } = this.props;
+        const { prefix, title, mode, step, value } = this.props;
         const total = mode === 'hour' ? 24 : 60;
         const list = [];
         let last = 0;
@@ -115,7 +118,12 @@ class TimeMenu extends React.Component {
             }
         }
 
-        if (last < total - 1) {
+        if (
+            last < total - 1 &&
+            value &&
+            moment.isMoment(value) &&
+            value.hour() === 23
+        ) {
             list.push(this.createTimeMenuItem(total - 1));
         }
 

@@ -126,6 +126,7 @@ class TimePickerPanel extends Component {
             prefix,
             disabled,
             onSelect: this.onSelectMenuItem,
+            value: value,
         };
 
         let activeHour;
