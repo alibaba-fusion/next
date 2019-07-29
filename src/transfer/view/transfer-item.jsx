@@ -80,7 +80,10 @@ export default class TransferItem extends Component {
     }
 
     handleDragStart(ev) {
-        ev.dataTransfer.setData('text/plain', ev.target.id);
+        ev &&
+            ev.dataTransfer &&
+            typeof ev.dataTransfer.setData === 'function' &&
+            ev.dataTransfer.setData('text/plain', ev.target.id);
         const { onDragStart, panelPosition, item } = this.props;
         onDragStart(panelPosition, item.value);
     }
