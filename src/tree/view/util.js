@@ -12,6 +12,24 @@ export function normalizeToArray(keys) {
 }
 
 /**
+ * 判断子节点是否是选中状态，如果 checkable={false} 则向下递归，
+ * @param {Node} child
+ * @param {Array} checkedKeys
+ */
+export function childChecked(child, checkedKeys) {
+    if (child.disabled || parent.checkboxDisabled) return true;
+    /* istanbul ignore next */
+    if (child.checkable === false) {
+        return (
+            !child.children ||
+            child.children.length === 0 ||
+            child.children.every(c => childChecked(c, checkedKeys))
+        );
+    }
+    return checkedKeys.indexOf(child.key) > -1;
+}
+
+/**
  * 遍历所有可用的子节点
  * @param {Node}
  * @param {Function} callback
@@ -27,6 +45,7 @@ export function forEachEnableNode(node, callback = () => {}) {
 /**
  * 判断节点是否禁用checked
  * @param {Node} node
+ * @returns {Boolean}
  */
 export function isNodeDisabledChecked(node) {
     if (node.disabled || node.checkboxDisabled) return true;
@@ -43,8 +62,10 @@ export function isNodeDisabledChecked(node) {
 }
 
 /**
- * 获取一个 checkable = {true} 的父节点
+ * 递归获取一个 checkable = {true} 的父节点，当 checkable={false} 时继续往上查找
  * @param {Node} node
+ * @param {Map} _p2n
+ * @return {Node}
  */
 export function getCheckableParentNode(node, _p2n) {
     let parentPos = node.pos.split(['-']);

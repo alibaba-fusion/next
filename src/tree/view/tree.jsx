@@ -12,24 +12,12 @@ import {
     filterParentKey,
     getAllCheckedKeys,
     forEachEnableNode,
+    childChecked,
 } from './util';
 
 const { bindCtx, noop } = func;
 const { getOffset } = dom;
 const { pickOthers, isPlainObject } = obj;
-
-const childChecked = (child, checkedKeys) => {
-    if (child.disabled || parent.checkboxDisabled) return true;
-    /* istanbul ignore next */
-    if (child.checkable === false) {
-        return (
-            !child.children ||
-            child.children.length === 0 ||
-            child.children.every(c => childChecked(c, checkedKeys))
-        );
-    }
-    return checkedKeys.indexOf(child.key) > -1;
-};
 
 /**
  * Tree
