@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface MonthPickerProps extends HTMLAttributesWeak {
+export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框内置标签
      */
@@ -141,7 +142,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface RangePickerProps extends HTMLAttributesWeak {
+export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认展示的起始月份
      */
@@ -300,7 +301,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface YearPickerProps extends HTMLAttributesWeak {
+export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框内置标签
      */
@@ -423,7 +424,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface DatePickerProps extends HTMLAttributesWeak {
+export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框内置标签
      */

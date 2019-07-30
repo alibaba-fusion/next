@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
 }
 
-export interface SplitButtonProps extends HTMLAttributesWeak {
+export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的类型
      */
@@ -35,12 +36,12 @@ export interface SplitButtonProps extends HTMLAttributesWeak {
     /**
      * 默认激活的菜单项（用法同 Menu 非受控）
      */
-    defaultSelectedKeys?: Array<any>;
+    defaultSelectedKeys?: Array<string>;
 
     /**
      * 激活的菜单项（用法同 Menu 受控）
      */
-    selectedKeys?: Array<any>;
+    selectedKeys?: Array<string>;
 
     /**
      * 菜单的选择模式

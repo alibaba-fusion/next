@@ -20,7 +20,10 @@ export interface ConfigProviderProps {
      * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
      * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传
      */
-    errorBoundary?: boolean | {};
+    errorBoundary?: boolean | {
+        afterCatch?: (error: Error, errorInfo: React.ErrorInfo) => void;
+        fallbackUI?: (error: Error, errorInfo: React.ErrorInfo) => React.ReactElement<any>;
+    };
 
     /**
      * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用

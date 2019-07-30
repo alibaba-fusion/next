@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
      */
@@ -200,7 +201,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface SubmitProps extends HTMLAttributesWeak {
+export interface SubmitProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的类型
      */
@@ -281,7 +282,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface ResetProps extends HTMLAttributesWeak {
+export interface ResetProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的类型
      */
@@ -363,7 +364,7 @@ export interface ResetProps extends HTMLAttributesWeak {
 
 export class Reset extends React.Component<ResetProps, any> {}
 
-export interface ErrorProps extends React.HTMLAttributes<HTMLElement> {
+export interface ErrorProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 表单名
      */
@@ -385,7 +386,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface FormProps extends HTMLAttributesWeak {
+export interface FormProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式前缀
      */

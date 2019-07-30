@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface ProgressProps extends React.HTMLAttributes<HTMLElement> {
+export interface ProgressProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 形态
      */
