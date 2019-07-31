@@ -379,9 +379,6 @@ export default class Range extends React.Component {
 
     _onMouseDown(e) {
         if (e.button === 0) {
-            this.setState({
-                hasMovingClass: true,
-            });
             this._start(e.pageX);
             this._addDocumentMouseEvents();
             pauseEvent(e);
@@ -389,9 +386,6 @@ export default class Range extends React.Component {
     }
 
     _onTouchStart(e) {
-        this.setState({
-            hasMovingClass: true,
-        });
         this._start(e.targetTouches[0].pageX);
         this._addDocumentTouchEvents();
         e.stopPropagation(); // preventDefault() will be ignored: https://www.chromestatus.com/features/5093566007214080
@@ -426,6 +420,10 @@ export default class Range extends React.Component {
     }
 
     _start(position) {
+        this.setState({
+            hasMovingClass: true,
+        });
+
         const { tempValue } = this.state;
         const range = this.dom;
         const start = range.getBoundingClientRect().left;
