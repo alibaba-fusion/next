@@ -187,16 +187,9 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     onCancel?: () => void;
 }
 
-export class Card extends React.Component<CardProps, any> { }
+export class Card extends React.Component<CardProps, any> {}
 
-export interface DraggerProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
-    /**
-     * 样式前缀
-     */
-    prefix?: string;
-}
-
-export class Dragger extends React.Component<DraggerProps, any> { }
+export class Dragger extends React.Component<UploadProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
@@ -244,7 +237,7 @@ export interface SelecterProps extends HTMLAttributesWeak, CommonProps {
     onDrop?: () => void;
 }
 
-export class Selecter extends React.Component<SelecterProps, any> { }
+export class Selecter extends React.Component<SelecterProps, any> {}
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onError?: any;
     onSelect?: any;
