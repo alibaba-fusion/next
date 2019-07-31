@@ -442,6 +442,14 @@ describe('CascaderSelect', () => {
             value: VALUE,
         });
         assert(called);
+        wrapper.setProps({
+            valueRender: item => item.label,
+            onChange: (value) => {
+                assert.deepEqual(value, [VALUE, '2973']);
+            }
+        });
+        const item00 = findItem(0, 0);
+        ReactTestUtils.Simulate.click(item00);
     });
 });
 
