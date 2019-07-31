@@ -201,6 +201,7 @@ export default class RangePicker extends Component {
         ranges: PropTypes.object,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {

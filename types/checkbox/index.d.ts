@@ -39,12 +39,12 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 被选中的值列表
      */
-    value?: Array<data> | string | number;
+    value?: Array<string> | Array<number> | string | number;
 
     /**
      * 默认被选中的值列表
      */
-    defaultValue?: Array<data> | string | number;
+    defaultValue?: Array<string> | Array<number> | string | number;
 
     /**
      * 通过子元素方式设置内部 checkbox
@@ -91,6 +91,16 @@ export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
      * 选中状态
      */
     checked?: boolean;
+
+    /**
+     * checkbox 的value
+     */
+    value?: string | number;
+
+    /**
+     * name
+     */
+    name?: string;
 
     /**
      * 默认选中状态
