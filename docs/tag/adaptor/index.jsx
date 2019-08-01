@@ -26,6 +26,7 @@ export default {
             options: ['large', 'medium', 'small']
         }, {
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['normal', 'hover', 'disabled', ...(shape === 'selectable' ? ['selected', 'selectedHover', 'selectedDisabled'] : [])],
             default: 'normal'

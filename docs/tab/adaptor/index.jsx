@@ -20,6 +20,7 @@ export default {
         if (['pure', 'wrapped', 'text'].indexOf(shape) !== -1) {
             props.push({
                 name: 'overflow',
+                label: 'Overflow Indicator',
                 type: Types.enum,
                 options: ['slide', 'dropdown'],
                 default: 'slide'

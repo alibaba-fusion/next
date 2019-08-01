@@ -37,11 +37,13 @@ export default {
             normal: {
                 props: [{
                     name: 'state',
+                    label: 'Status',
                     type: Types.enum,
                     options: ['uploading', 'done', 'error'],
                     default: 'uploading'
                 }, {
                     name: 'close',
+                    label: 'Close Included',
                     type: Types.bool,
                     default: false
                 }, {
@@ -65,11 +67,13 @@ export default {
             image: {
                 props: [{
                     name: 'state',
+                    label: 'Status',
                     type: Types.enum,
                     options: ['uploading', 'done', 'error'],
                     default: 'uploading'
                 }, {
                     name: 'close',
+                    label: 'Close Included',
                     type: Types.bool,
                     default: false
                 }, {
@@ -93,6 +97,7 @@ export default {
             card: {
                 props: [{
                     name: 'state',
+                    label: 'Status',
                     type: Types.enum,
                     options: ['normal', 'disabled', 'uploading', 'done', 'error'],
                     default: 'string'
@@ -109,6 +114,7 @@ export default {
             drag: {
                 props: [{
                     name: 'state',
+                    label: 'Status',
                     type: Types.enum,
                     options: ['normal', 'over', 'uploading', 'disabled', 'done', 'error'],
                     default: 'over'

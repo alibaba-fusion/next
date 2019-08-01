@@ -18,6 +18,7 @@ export default {
             default: 'medium'
         }, {
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['normal', 'expanded', 'disabled'],
             default: 'normal'

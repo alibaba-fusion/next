@@ -7,6 +7,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'level',
+            label: 'Shape',
             type: Types.enum,
             options: ['inline', 'toast', 'addon'],
             default: 'inline'
@@ -17,11 +18,13 @@ export default {
             default: 'medium'
         }, {
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['success', 'warning', 'error', 'notice', 'help', 'loading'],
             default: 'success',
         }, {
             name: 'closable',
+            label: 'Close Included',
             type: Types.bool,
             default: false
         }, {

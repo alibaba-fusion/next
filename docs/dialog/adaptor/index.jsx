@@ -1,7 +1,8 @@
 import React from 'react';
+import { Types } from '@alifd/adaptor-helper';
 import { Dialog, Message } from '@alifd/next';
 import locale from '../../../src/locale/en-us';
-import { Types } from '@alifd/adaptor-helper';
+
 
 export default {
     name: 'Dialog',
@@ -13,11 +14,13 @@ export default {
             default: 'normal'
         }, {
             name: 'footerAlign',
+            label: 'Button Position',
             type: Types.enum,
             options: ['left', 'right', 'center'],
             default: 'right'
         }, {
             name: 'okButtonPosition',
+            label: 'Button Order',
             type: Types.enum,
             options: ['left', 'right'],
             default: 'left'
@@ -58,7 +61,7 @@ export default {
             className: level === 'normal' ? className : `${className || ''} next-dialog-quick`,
             style: dialogStyle,
             footerAlign: footerAlign,
-            footerActions: okButtonPosition == 'left' ? ['ok', 'cancel'] : ['cancel', 'ok'],
+            footerActions: okButtonPosition === 'left' ? ['ok', 'cancel'] : ['cancel', 'ok'],
             locale: locale.Dialog,
             height: `${height}px`
         };

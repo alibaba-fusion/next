@@ -131,6 +131,7 @@ export default {
             default: 'normal'
         }, {
             name: 'selectLinePosition',
+            label: 'Label Position',
             type: Types.enum,
             options: shape === 'hoz' ? ['top', 'bottom', 'none'] : ['left', 'right', 'none'],
             default: shape === 'hoz' ? 'bottom' : 'right'

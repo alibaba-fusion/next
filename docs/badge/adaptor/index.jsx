@@ -7,6 +7,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'level',
+            label: 'Type',
             type: Types.enum,
             options: ['dot', 'number'],
             default: 'dot'

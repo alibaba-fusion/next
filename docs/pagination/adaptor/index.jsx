@@ -14,11 +14,13 @@ export default {
             default: 'medium'
         }, {
             name: 'sizeSelector',
+            label: 'Widget',
             type: Types.enum,
             options: ['none', 'filter', 'dropdown'],
             default: 'none'
         }, {
             name: 'control',
+            label: 'Arrow Style',
             type: Types.enum,
             options: ['textAndIcon', 'onlyIcon', 'noBorder'],
             default: 'textAndIcon'

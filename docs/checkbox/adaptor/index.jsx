@@ -7,6 +7,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'state',
+            label: 'Status',
             type: Types.enum,
             options: ['normal', 'hover', 'disabled', 'indeterminate', 'indeterminateHover', 'indeterminateDisabled', 'checked', 'checkedHover', 'checkedDisabled'],
             default: 'normal'

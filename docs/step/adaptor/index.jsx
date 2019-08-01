@@ -29,6 +29,7 @@ export default {
         return {
             props: [{
                 name: 'level',
+                label: 'Orientation',
                 type: Types.enum,
                 options: [{ value: 'hoz', label: 'Horizontal' }, { value: 'ver', label: 'Vertical' }]
             },
@@ -46,6 +47,7 @@ export default {
 
                 }] : [{
                     name: 'state',
+                    label: 'Status',
                     type: Types.enum,
                     options: ['normal', 'disabled'],
                     default: 'normal'

@@ -12,6 +12,7 @@ export default {
         return {
             props: [{
                 name: 'level',
+                label: 'Type',
                 type: Types.enum,
                 options: ['day', 'month', 'year'].filter((level) => {
                     if (level === 'year') return shape === 'panel';

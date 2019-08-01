@@ -8,6 +8,7 @@ export default {
     editor: () => ({
         props: [{
             name: 'level',
+            label: 'Type',
             type: Types.enum,
             options: ['normal', 'simple'],
             default: 'normal'
@@ -17,10 +18,12 @@ export default {
             default: false,
         }, {
             name: 'sourcePanelTitle',
+            label: 'Source Title',
             type: Types.string,
             default: 'Title'
         }, {
             name: 'targetPanelTitle',
+            label: 'Target Title',
             type: Types.string,
             default: 'Title'
         }],

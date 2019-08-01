@@ -6,15 +6,8 @@ export default {
     name: 'Table',
     editor: () => ({
         props: [{
-            name: 'border',
-            type: Types.bool,
-            default: false
-        }, {
-            name: 'stripe',
-            type: Types.bool,
-            default: false
-        }, {
             name: 'select',
+            label: 'Selection Mode',
             type: Types.enum,
             options: ['checkbox', 'none'],
             default: 'none'
@@ -25,9 +18,18 @@ export default {
             default: 'left'
         }, {
             name: 'head',
+            label: 'Header',
             type: Types.enum,
             options: ['show', 'hide'],
             default: 'show'
+        }, {
+            name: 'border',
+            type: Types.bool,
+            default: false
+        }, {
+            name: 'stripe',
+            type: Types.bool,
+            default: false
         }, {
             name: 'width',
             type: Types.number,
