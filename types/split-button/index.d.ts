@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { ButtonProps } from '../button';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
 }
 
-export interface SplitButtonProps extends HTMLAttributesWeak, ButtonProps {
+export interface SplitButtonProps extends HTMLAttributesWeak {
     /**
      * 按钮的类型
      */
