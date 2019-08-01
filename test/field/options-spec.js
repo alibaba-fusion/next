@@ -308,7 +308,18 @@ describe('options', () => {
             field.init('input');
 
             assert(field.getValue('input') === undefined);
-        })
+        });
+
+        it('should set the value to constructor value even with initValue from init', function() {
+            const inputValue = 0;
+            const field = new Field(this, {
+                values: {
+                    input: inputValue
+                },
+            });
+            field.init('input', {initValue: 1});
+            assert.equal(field.getValue('input'), inputValue);
+        });
     });
 
     describe('should support parseName', () => {
@@ -601,6 +612,27 @@ describe('options', () => {
                 field.resetToDefault('input.myValue');
                 assert.equal(field.getValue('input.myValue'), fieldDefault);
                 assert.equal(field.getValue('input.otherValue'), secondValue);
+            });
+        });
+
+        it('should set the value to constructor value even with initValue from init', function() {
+            const fieldDefault = 0;
+            const initValue = 'other default value';
+            const field = new Field(this, {
+                parseName: true,
+                values: {
+                    input: {
+                        myValue: fieldDefault
+                    }
+                }
+            });
+
+            field.init('input.myValue', { initValue });
+
+            assert.deepEqual(field.getValues(), {
+                input: {
+                    myValue: fieldDefault,
+                },
             });
         });
     });
