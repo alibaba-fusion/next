@@ -22,11 +22,11 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
 
-    yield pushMaster();
+     // yield pushMaster();
     yield pushPlatformDocsBranch();
-    yield publishToNpm();
+    // yield publishToNpm();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
@@ -84,26 +84,26 @@ function* pushPlatformDocsBranch() {
         const buildIgnore = path.join(__dirname, 'build.gitignore');
         const content = fs.readFileSync(buildIgnore, 'utf8');
         fs.writeFileSync(gitIgnore, content);
+console.log('================')
+        // yield runCommond('cd platform-docs;git add .');
 
-        yield runCommond('cd platform-docs;git add .');
+        // logger.success(
+        //     `[command] cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
+        // );
+        // cp.execSync(
+        //     `cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
+        // );
 
-        logger.success(
-            `[command] cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
-        );
-        cp.execSync(
-            `cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
-        );
+        // yield runCommond('cd platform-docs;git push origin platform-docs -f');
+        // yield runCommond(`cd platform-docs;git tag ${buildTag}`);
+        // yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
 
-        yield runCommond('cd platform-docs;git push origin platform-docs -f');
-        yield runCommond(`cd platform-docs;git tag ${buildTag}`);
-        yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
-
-        logger.success(
-            '******** push to branch platform-docs success! ********\n'
-        );
+        // logger.success(
+        //     '******** push to branch platform-docs success! ********\n'
+        // );
     } finally {
-        yield fs.remove(docs);
-        yield runCommond('git worktree prune');
+        // yield fs.remove(docs);
+        // yield runCommond('git worktree prune');
     }
 }
 
