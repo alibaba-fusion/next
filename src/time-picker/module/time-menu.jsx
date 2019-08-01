@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { checkMomentObj } from '../utils';
 
 function scrollTo(element, to, duration) {
     const requestAnimationFrame =
@@ -37,7 +38,9 @@ class TimeMenu extends React.Component {
         mode: PropTypes.oneOf(['hour', 'minute', 'second']),
         step: PropTypes.number,
         activeIndex: PropTypes.number,
+        value: checkMomentObj,
         disabledItems: PropTypes.func,
+        renderTimeMenuItems: PropTypes.func,
         onSelect: PropTypes.func,
         disabled: PropTypes.bool,
     };
@@ -45,6 +48,7 @@ class TimeMenu extends React.Component {
     static defaultProps = {
         step: 1,
         disabledItems: () => false,
+        renderTimeMenuItems: list => list,
         onSelect: () => {},
         disabled: false,
     };
@@ -71,40 +75,52 @@ class TimeMenu extends React.Component {
         this.menu = ref;
     };
 
-    render() {
+    createMenuItems = list => {
         const {
             prefix,
-            title,
             mode,
-            activeIndex,
-            step,
             disabled,
             disabledItems,
+            activeIndex,
             onSelect,
+            renderTimeMenuItems,
+            value: timeValue,
         } = this.props;
+        list = renderTimeMenuItems(list, mode, timeValue) || list;
+
+        return list.map(({ label, value }) => {
+            const isDisabled = disabled || disabledItems(value);
+            const itemCls = classnames({
+                [`${prefix}time-picker-menu-item`]: true,
+                [`${prefix}disabled`]: isDisabled,
+                [`${prefix}selected`]: value === activeIndex,
+            });
+            const onClick = isDisabled ? noop : () => onSelect(value, mode);
+            return (
+                <li
+                    role="option"
+                    aria-selected={String(value === activeIndex)}
+                    key={value}
+                    title={value}
+                    className={itemCls}
+                    onClick={onClick}
+                >
+                    {label}
+                </li>
+            );
+        });
+    };
+
+    render() {
+        const { prefix, title, mode, step } = this.props;
         const total = mode === 'hour' ? 24 : 60;
         const list = [];
         for (let i = 0; i < total; i++) {
             if (i % step === 0) {
-                const isDisabled = disabled || disabledItems(i);
-                const itemCls = classnames({
-                    [`${prefix}time-picker-menu-item`]: true,
-                    [`${prefix}disabled`]: isDisabled,
-                    [`${prefix}selected`]: i === activeIndex,
+                list.push({
+                    label: i,
+                    value: i,
                 });
-                const onClick = isDisabled ? noop : () => onSelect(i, mode);
-                list.push(
-                    <li
-                        role="option"
-                        aria-selected={String(i === activeIndex)}
-                        key={i}
-                        title={i}
-                        className={itemCls}
-                        onClick={onClick}
-                    >
-                        {i}
-                    </li>
-                );
             }
         }
 
@@ -120,7 +136,7 @@ class TimeMenu extends React.Component {
                     className={`${prefix}time-picker-menu-${mode}`}
                     ref={this._menuRefHandler}
                 >
-                    {list}
+                    {this.createMenuItems(list)}
                 </ul>
             </div>
         );
