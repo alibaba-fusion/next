@@ -85,6 +85,18 @@ export default class TimePicker extends Component {
          */
         disabledSeconds: PropTypes.func,
         /**
+         * 渲染的可选择时间列表
+         * [{
+         *  label: '01',
+         *  value: 1
+         * }]
+         * @param {Array} list 默认渲染的列表
+         * @param {String} mode 渲染的菜单 hour, minute, second
+         * @param {moment} value 当前时间，可能为 null
+         * @return {Array} 返回需要渲染的数据
+         */
+        renderTimeMenuItems: PropTypes.func,
+        /**
          * 弹层是否显示（受控）
          */
         visible: PropTypes.bool,
@@ -316,6 +328,7 @@ export default class TimePicker extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
+            renderTimeMenuItems,
             popupAlign,
             popupTriggerType,
             popupContainer,
@@ -380,6 +393,7 @@ export default class TimePicker extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
+            renderTimeMenuItems,
             onSelect: this.onTimePanelSelect,
         };
 
