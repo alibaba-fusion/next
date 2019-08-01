@@ -22,7 +22,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
 
     yield pushMaster();
     yield pushPlatformDocsBranch();
