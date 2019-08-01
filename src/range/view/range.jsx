@@ -392,6 +392,8 @@ export default class Range extends React.Component {
     }
 
     onKeyDown(e) {
+        if (this.props.disabled) return;
+
         if (
             e.keyCode === KEYCODE.LEFT_ARROW ||
             e.keyCode === KEYCODE.RIGHT_ARROW
@@ -576,9 +578,9 @@ export default class Range extends React.Component {
             this._onMouseUpListener = null;
         }
 
-        if (this._onTouchStartListener) {
-            this._onTouchStartListener.off();
-            this._onTouchStartListener = null;
+        if (this._onTouchMoveListener) {
+            this._onTouchMoveListener.off();
+            this._onTouchMoveListener = null;
         }
 
         if (this._onTouchEndListener) {
@@ -586,8 +588,6 @@ export default class Range extends React.Component {
             this._onTouchEndListener = null;
         }
     }
-
-    _remove;
 
     // position => current (value type)
     _positionToCurrent(position) {
