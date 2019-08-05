@@ -12,7 +12,7 @@ import {
     filterParentKey,
     getAllCheckedKeys,
     forEachEnableNode,
-    childChecked,
+    isNodeChecked,
 } from './util';
 
 const { bindCtx, noop } = func;
@@ -756,7 +756,7 @@ export default class Tree extends Component {
                         for (let m = 0; m < pnode.children.length; m++) {
                             if (
                                 !pnode.children.every(child =>
-                                    childChecked(child, checkedKeys)
+                                    isNodeChecked(child, checkedKeys)
                                 )
                             ) {
                                 parentCheck = false;

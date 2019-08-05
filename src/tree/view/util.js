@@ -16,17 +16,17 @@ export function normalizeToArray(keys) {
  * @param {Node} child
  * @param {Array} checkedKeys
  */
-export function childChecked(child, checkedKeys) {
-    if (child.disabled || parent.checkboxDisabled) return true;
+export function isNodeChecked(node, checkedKeys) {
+    if (node.disabled || parent.checkboxDisabled) return true;
     /* istanbul ignore next */
-    if (child.checkable === false) {
+    if (node.checkable === false) {
         return (
-            !child.children ||
-            child.children.length === 0 ||
-            child.children.every(c => childChecked(c, checkedKeys))
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(c => isNodeChecked(c, checkedKeys))
         );
     }
-    return checkedKeys.indexOf(child.key) > -1;
+    return checkedKeys.indexOf(node.key) > -1;
 }
 
 /**
@@ -153,18 +153,6 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);
     const flatKeys = filterChildKey(filteredKeys, _k2n, _p2n);
 
-    const childChecked = child => {
-        if (child.disabled || child.checkboxDisabled) return true;
-        if (child.checkable === false) {
-            return (
-                !child.children ||
-                child.children.length === 0 ||
-                child.children.every(childChecked)
-            );
-        }
-        return flatKeys.indexOf(child.key) > -1;
-    };
-
     const removeKey = child => {
         if (child.disabled || child.checkboxDisabled) return;
         if (
@@ -195,7 +183,9 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
                 parent.checkboxDisabled
             )
                 continue;
-            const parentChecked = parent.children.every(childChecked);
+            const parentChecked = parent.children.every(child =>
+                isNodeChecked(child, flatKeys)
+            );
             if (parentChecked) {
                 parent.children.forEach(removeKey);
                 addParentKey(i, parent);
