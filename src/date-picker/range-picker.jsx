@@ -316,7 +316,9 @@ export default class RangePicker extends Component {
                         // 第一次选择，如果设置了时间默认值，则使用该默认时间
                         if (showTime.defaultValue) {
                             const defaultTimeValue = formatDateValue(
-                                showTime.defaultValue,
+                                Array.isArray(showTime.defaultValue)
+                                    ? showTime.defaultValue[0]
+                                    : showTime.defaultValue,
                                 this.timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
@@ -346,7 +348,10 @@ export default class RangePicker extends Component {
                         // 第一次选择，如果设置了时间默认值，则使用该默认时间
                         if (showTime.defaultValue) {
                             const defaultTimeValue = formatDateValue(
-                                showTime.defaultValue,
+                                Array.isArray(showTime.defaultValue)
+                                    ? showTime.defaultValue[1] ||
+                                          showTime.defaultValue[0]
+                                    : showTime.defaultValue,
                                 this.timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
@@ -606,9 +611,15 @@ export default class RangePicker extends Component {
     };
 
     changePanel = panel => {
+        const { startValue, endValue } = this.state;
         this.setState({
             panel,
-            activeDateInput: panel === PANEL.DATE ? 'startValue' : 'startTime',
+            activeDateInput:
+                panel === PANEL.DATE
+                    ? !!startValue && !endValue
+                        ? 'endValue'
+                        : 'startValue'
+                    : 'startTime',
         });
     };
 
@@ -850,7 +861,7 @@ export default class RangePicker extends Component {
                     {...sharedTimeInputProps}
                     value={startTimeInputValue}
                     aria-label={startTimeInputAriaLabel}
-                    disabled={disabled || !state.startValue || !state.endValue}
+                    disabled={disabled || !state.startValue}
                     onFocus={() => this.onFocusTimeInput('startTime')}
                     className={startTimeInputCls}
                 />
@@ -866,7 +877,7 @@ export default class RangePicker extends Component {
                     {...sharedTimeInputProps}
                     value={endTimeInputValue}
                     aria-label={endTimeInputAriaLabel}
-                    disabled={disabled || !state.endValue || !state.startValue}
+                    disabled={disabled || !state.endValue}
                     onFocus={() => this.onFocusTimeInput('endTime')}
                     className={endTimeInputCls}
                 />
@@ -888,6 +899,7 @@ export default class RangePicker extends Component {
                 <div className={`${prefix}range-picker-panel-time`}>
                     <TimePickerPanel
                         {...sharedTimePickerProps}
+                        disabled={disabled || !state.startValue}
                         className={`${prefix}range-picker-panel-time-start`}
                         value={state.startValue}
                         onSelect={this.onSelectStartTime}
@@ -895,6 +907,7 @@ export default class RangePicker extends Component {
                     <TimePickerPanel
                         {...sharedTimePickerProps}
                         {...disabledTime}
+                        disabled={disabled || !state.endValue}
                         className={`${prefix}range-picker-panel-time-end`}
                         value={state.endValue}
                         onSelect={this.onSelectEndTime}
@@ -906,7 +919,7 @@ export default class RangePicker extends Component {
         panelFooter = panelFooter || (
             <PanelFooter
                 prefix={prefix}
-                value={state.startValue && state.endValue}
+                value={state.startValue || state.endValue}
                 ranges={Object.keys(ranges).map(key => ({
                     label: key,
                     value: ranges[key],

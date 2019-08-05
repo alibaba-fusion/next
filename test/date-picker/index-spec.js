@@ -12,6 +12,7 @@ const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
+const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
 
 // 禁止选择 startValue 之前的所有日期
 const disabledDate = function(date, view) {
@@ -1136,6 +1137,31 @@ describe('RangePicker', () => {
                 .simulate('click');
             assert(
                 ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 09:00:00'
+            );
+        });
+
+        it('should set defaultValues for TimePicker', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker
+                    showTime={{ defaultValue: defaultTimeValues }}
+                    defaultVisible
+                    defaultVisibleMonth={() => startValue}
+                    onChange={val => (ret = val)}
+                />
+            );
+            wrapper
+                .find('td[title="2017-11-09"] .next-calendar-date')
+                .simulate('click');
+            assert(
+                ret[0].format('YYYY-MM-DD HH:mm:ss') === '2017-11-09 09:00:00'
+            );
+            wrapper
+                .find('td[title="2017-12-09"] .next-calendar-date')
+                .at(1)
+                .simulate('click');
+            assert(
+                ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 23:59:59'
             );
         });
 
