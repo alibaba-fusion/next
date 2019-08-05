@@ -24,11 +24,11 @@ class Cache {
         this._store.set(key, value);
     }
 
-    update(key, value) {
-        if (this.has(key)) {
-            this._store.set(key, value);
-        }
-    }
+    // update(key, value) {
+    //   if (this.has(key)) {
+    //     this._store.set(key, value);
+    //   }
+    // }
 
     remove(key) {
         this._store.delete(key);

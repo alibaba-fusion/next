@@ -202,6 +202,29 @@ export function pickOthers(holdProps, props) {
 }
 
 /**
+ * 过滤出其它属性
+ * @param  {Object|Array} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
+ * @param  {Object} props     被过滤的对象
+ * @return {Object}           props
+ *
+ * @example
+ * object.pickInProps(FooComponent.propTypes, this.props);
+ * object.pickInProps(['className', 'onChange'], this.props);
+ */
+export function pickInProps(holdProps, props) {
+    const p = {};
+    const isArray = typeOf(holdProps) === 'Array';
+
+    for (const key in props) {
+        if (_isInObj(key, holdProps, isArray)) {
+            p[key] = props[key];
+        }
+    }
+
+    return p;
+}
+
+/**
  * 过滤出带prefix的属性
  * @param  {Object} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
  * @param  {string} prefix    包含的字符串
