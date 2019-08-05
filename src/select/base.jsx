@@ -120,6 +120,7 @@ export default class Base extends React.Component {
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
+        popupComponent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -560,6 +561,7 @@ export default class Base extends React.Component {
             canCloseByTrigger,
             followTrigger,
             cache,
+            popupComponent,
         } = props;
 
         const cls = classNames(
@@ -592,8 +594,10 @@ export default class Base extends React.Component {
             style: popupStyle || popupProps.style,
         };
 
+        const Tag = popupComponent ? popupComponent : Popup;
+
         return (
-            <Popup
+            <Tag
                 {..._props}
                 trigger={this.renderSelect()}
                 ref={this.savePopupRef}
@@ -608,7 +612,7 @@ export default class Base extends React.Component {
                 ) : (
                     this.renderMenu()
                 )}
-            </Popup>
+            </Tag>
         );
     }
 }
