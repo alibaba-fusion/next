@@ -50,8 +50,8 @@ export const getContextProps = (props = {}, contextProps = {}, displayName) => {
     const propsValue = obj.pickInProps(propTypes, props);
     const contextPropsValue = {
         ...defaultProps,
-        ...obj.pickInProps(propTypes, contextProps),
         ...context,
+        ...obj.pickInProps(propTypes, contextProps),
     };
     let localeFromContext;
     if (contextPropsValue.locale) {
