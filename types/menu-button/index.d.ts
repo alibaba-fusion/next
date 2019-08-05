@@ -3,8 +3,9 @@
 import * as React from 'react';
 import { Item, Group, Divider } from '../menu';
 import CommonProps from '../util';
+import { ButtonProps } from '../button';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
 }
 

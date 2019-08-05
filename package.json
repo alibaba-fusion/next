@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.16.4",
+  "version": "1.16.6",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -40,7 +40,7 @@
     "check-sass": "node ./scripts/check/sass.js",
     "docs": "node ./scripts/docs/index.js",
     "api": "node ./scripts/api.js",
-    "pack": "node ./scripts/pack.js",
+    "pack": "node ./scripts/pack.js && node ./scripts/adaptor/build.js",
     "release": "node ./scripts/release/index.js",
     "test": "node --max_old_space_size=8192 ./scripts/test/index.js",
     "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
@@ -76,6 +76,8 @@
     "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
+    "@alifd/adaptor-generate": "^0.2.3",
+    "@alifd/adaptor-helper": "^0.1.3",
     "@alifd/api-extractor": "^3.5.1",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
