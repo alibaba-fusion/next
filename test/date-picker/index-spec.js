@@ -1115,6 +1115,48 @@ describe('RangePicker', () => {
             );
         });
 
+        it('should select start date & time then select end date & time', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    defaultVisible
+                    defaultVisibleMonth={() => moment('2019-08-01', 'YYYY-MM-DD')}
+                    onChange={val => (ret = val)}
+                />
+            );
+
+            wrapper.find('.next-calendar-cell[title="2019-08-06"]').simulate('click');
+            wrapper
+                .find('.next-range-picker-panel-input-start-time input')
+                .simulate('focus');
+            wrapper
+                .find(
+                    '.next-range-picker-panel-time-start .next-time-picker-menu-hour .next-time-picker-menu-item'
+                )
+                .at(3)
+                .simulate('click');
+            wrapper
+                .find(
+                    '.next-date-picker-panel-footer .next-btn'
+                )
+                .at(0)
+                .simulate('click');
+            wrapper.find('.next-calendar-cell[title="2019-08-09"]').simulate('click');
+            wrapper
+                .find('.next-range-picker-panel-input-end-time input')
+                .simulate('focus');
+            wrapper
+                .find(
+                    '.next-range-picker-panel-time-end .next-time-picker-menu-hour .next-time-picker-menu-item'
+                )
+                .at(3)
+                .simulate('click');
+            assert(
+                ret[0].format('YYYY-MM-DD HH:mm:ss') === '2019-08-06 03:00:00'
+            );
+        });
+
         it('should set defaultValue for TimePicker', () => {
             let ret;
             wrapper = mount(
