@@ -319,10 +319,10 @@ export default class TreeSelect extends Component {
 
         switch (treeCheckedStrategy) {
             case 'parent':
-                keys = filterChildKey(keys, this._k2n);
+                keys = filterChildKey(keys, this._k2n, this._p2n);
                 break;
             case 'child':
-                keys = filterParentKey(keys, this._k2n);
+                keys = filterParentKey(keys, this._k2n, this._p2n);
                 break;
             default:
                 break;
