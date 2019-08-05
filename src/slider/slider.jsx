@@ -156,7 +156,7 @@ export default class Slider extends Component {
         arrowSize: 'medium',
         arrowPosition: 'inner',
         vertical: false,
-        verticalSwiping: true,
+        verticalSwiping: false,
         dots: true,
         dotsDirection: 'hoz',
         arrows: true,
