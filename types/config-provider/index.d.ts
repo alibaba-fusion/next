@@ -38,6 +38,11 @@ export interface ConfigProviderProps {
     rtl?: boolean;
 
     /**
+     * 设备类型
+     */
+    device?: 'tablet' | 'desktop' | 'phone';
+
+    /**
      * 组件树
      */
     children?: React.ReactElement<any>;

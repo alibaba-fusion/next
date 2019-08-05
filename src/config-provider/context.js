@@ -35,6 +35,7 @@ export const propTypes = {
     pure: PropTypes.bool,
     warning: PropTypes.bool,
     rtl: PropTypes.bool,
+    device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
     errorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };
 
