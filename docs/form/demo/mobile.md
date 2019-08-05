@@ -34,10 +34,6 @@ class Demo extends React.Component {
         device: 'desktop'
     }
 
-    handleSubmit = (values) => {
-        console.log('Get form value:', values);
-    };
-
     handleDeviceChange = (device) => {
         this.setState({
             device
@@ -70,7 +66,7 @@ class Demo extends React.Component {
                         <Checkbox name="baseAgreement" defaultChecked>Agree</Checkbox>
                     </FormItem>
                     <FormItem label=" ">
-                        <Form.Submit onClick={this.handleSubmit}>Confirm</Form.Submit>
+                        <Form.Submit >Confirm</Form.Submit>
                     </FormItem>
                 </Form>
             </div>
