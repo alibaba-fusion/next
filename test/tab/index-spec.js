@@ -6,6 +6,7 @@ import sinon from 'sinon';
 import assert from 'power-assert';
 import { KEYCODE, dom } from '../../src/util';
 import Tab from '../../src/tab/index';
+import TabNav from '../../src/tab/tabs/nav';
 import '../../src/tab/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -182,6 +183,17 @@ describe('Tab', () => {
             wrapper = mount(<Tab lazyLoad={false}>{panes}</Tab>);
             assert(wrapper.find('.next-tabs-tabpane').length === 4);
         });
+
+        it('should support device', () => {
+            wrapper = mount(<Tab>{panes}</Tab>);
+            assert(wrapper.find('.next-tabs-scrollable').length === 0);
+            assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
+            wrapper.setProps({
+                device: 'phone'
+            });
+            assert(wrapper.find('.next-tabs-scrollable').length > 0);
+            assert(wrapper.find(TabNav).prop('excessMode') === 'dropdown');
+        })
     });
 
     describe('with action', () => {
