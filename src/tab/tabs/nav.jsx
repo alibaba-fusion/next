@@ -14,7 +14,6 @@ import {
     isTransformSupported,
 } from './utils';
 
-const noop = () => {};
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
 const { Popup } = Overlay;
@@ -52,26 +51,21 @@ class Nav extends React.Component {
         if (!this.props.animation) {
             this.initialSettings();
         }
+        this.activeTab.focus();
         events.on(window, 'resize', this.onWindowResized);
     }
 
     componentDidUpdate() {
-        const ctx = this;
         // 此处通过延时处理，屏蔽动画带来的定位不准确问题（由于要支持ie9，因此无法使用transitionend）
-        clearTimeout(ctx.scrollTimer);
-        ctx.scrollTimer = setTimeout(() => {
-            ctx.scrollToActiveTab();
+        clearTimeout(this.scrollTimer);
+        this.scrollTimer = setTimeout(() => {
+            this.scrollToActiveTab();
         }, 410); // transition-duration is set to be .4s, wait for the transition finishes before re-calc
-        clearTimeout(ctx.slideTimer);
-        ctx.slideTimer = setTimeout(() => {
-            ctx.setSlideBtn();
+
+        clearTimeout(this.slideTimer);
+        this.slideTimer = setTimeout(() => {
+            this.setSlideBtn();
         }, 200);
-        if (
-            this.activeTab &&
-            findDOMNode(this).contains(document.activeElement)
-        ) {
-            this.activeTab.focus();
-        }
     }
 
     componentWillUnmount() {
@@ -393,7 +387,7 @@ class Nav extends React.Component {
         const wrapperWH = getOffsetWH(this.wrapper);
         const activeTabOffset = getOffsetLT(this.activeTab);
         const wrapperOffset = getOffsetLT(this.wrapper);
-        let target = this.offset;
+        const target = this.offset;
         if (
             activeTabOffset >= wrapperOffset + wrapperWH ||
             activeTabOffset + activeTabWH <= wrapperOffset
