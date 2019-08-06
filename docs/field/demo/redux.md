@@ -33,12 +33,15 @@ function formReducer(state = {email: 'frankqian@qq.com'}, action) {
 }
 
 class Demo extends React.Component {
-    componentWillReceiveProps(nextProps) {
-        this.field.setValues({
-            email: nextProps.email,
-            newlen: nextProps.email.length
-        });
+    componentDidUpdate(prevProps) {
+        if (this.props.email !== prevProps.email) {
+          this.field.setValues({
+            email: this.props.email,
+            newlen: this.props.email.length,
+          });
+        }
     }
+
 
     field = new Field(this, {
         onChange: (name, value) => {
