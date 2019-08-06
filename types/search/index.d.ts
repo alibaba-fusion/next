@@ -156,7 +156,7 @@ export interface SearchProps extends HTMLAttributesWeak {
     /**
      * 点击搜索按钮触发的回调
      */
-    onSearch?: (value: {}) => void;
+    onSearch?: (value: string, filterValue?: any) => void;
 
     /**
      * 选择器默认值
