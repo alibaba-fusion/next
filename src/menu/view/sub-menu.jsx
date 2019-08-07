@@ -119,6 +119,11 @@ export default class SubMenu extends Component {
         const { mode, root } = this.props;
 
         return Children.map(children, child => {
+            // to fix https://github.com/alibaba-fusion/next/issues/952
+            if (typeof child !== 'function' && typeof child !== 'object') {
+                return child;
+            }
+
             return cloneElement(child, {
                 parent: this,
                 parentMode: mode || root.props.mode,
