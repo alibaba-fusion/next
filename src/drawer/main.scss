@@ -1,0 +1,42 @@
+@charset "UTF-8";
+@import "../core/index-noreset.scss";
+@import "./scss/mixin.scss";
+@import "./scss/variable.scss";
+
+@import "./rtl.scss";
+
+#{$drawer-prefix} {
+    @include box-sizing;
+    position: fixed;
+    z-index: 1001;
+    background: $drawer-bg;
+    border: $drawer-border-width $drawer-border-style $drawer-border-color;
+    box-shadow: $drawer-shadow;
+    overflow: hidden;
+
+    &-right {
+        height: 100%;
+        width: 300px;
+    }
+
+    &-left {
+        height: 100%;
+        width: 300px;
+    }
+
+    &-top {
+        width: 100%;
+        height: 30%;
+    }
+
+    &-bottom {
+        width: 100%;
+        height: 80%;
+    }
+
+    &-body {
+        padding: $drawer-content-padding-top $drawer-content-padding-left-right $drawer-content-padding-bottom $drawer-content-padding-left-right;
+        font-size: $drawer-content-font-size;
+        color: $drawer-content-color;
+    }
+}
