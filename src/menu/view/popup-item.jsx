@@ -136,7 +136,7 @@ export default class PopupItem extends Component {
     }
 
     renderItem(selectable, children, others) {
-        const { _key, root, level, label, className } = this.props;
+        const { _key, root, level, inlineLevel, label, className } = this.props;
         const { prefix } = root.props;
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
@@ -147,6 +147,7 @@ export default class PopupItem extends Component {
             _key,
             root,
             level,
+            inlineLevel,
             type: 'submenu',
         };
         if (open) {
