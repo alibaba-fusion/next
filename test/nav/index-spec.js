@@ -209,6 +209,21 @@ describe('Nav', () => {
         assert(wrapper.find('li.next-nav-group-label').length === 1);
     });
 
+    it('should support showChildSelected', () => {
+        wrapper = mount(
+            <Nav showChildSelected selectedKeys="1">
+                <SubNav label="Group label">
+                    <Item key="1">First</Item>
+                    <Item key="2">Second</Item>
+                </SubNav>
+            </Nav>
+        );
+
+        const subNavItem = wrapper.find('li.next-nav-sub-nav-item').at(0);
+
+        assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
+    });
+
     it('should support iconOnly', done => {
         wrapper = mount(
             <Nav iconOnly style={{ width: '200px' }}>
