@@ -1,13 +1,21 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface GroupProps extends HTMLAttributesWeak {
+type data = {
+    value?: string | number;
+    label?: React.ReactNode;
+    disabled?: boolean;
+    [propName: string]: any;
+}
+
+export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
@@ -26,17 +34,17 @@ export interface GroupProps extends HTMLAttributesWeak {
     /**
      * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<string> | Array<data> | Array<number>;
 
     /**
      * 被选中的值列表
      */
-    value?: Array<any> | string | number;
+    value?: Array<string> | Array<number> | string | number;
 
     /**
      * 默认被选中的值列表
      */
-    defaultValue?: Array<any> | string | number;
+    defaultValue?: Array<string> | Array<number> | string | number;
 
     /**
      * 通过子元素方式设置内部 checkbox
@@ -46,7 +54,7 @@ export interface GroupProps extends HTMLAttributesWeak {
     /**
      * 选中值改变时的事件
      */
-    onChange?: (value: Array<any>, e: any) => void;
+    onChange?: (value: Array<string> | Array<data>, e: any) => void;
 
     /**
      * 子项目的排列方式
@@ -63,7 +71,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onMouseLeave?: any;
 }
 
-export interface CheckboxProps extends HTMLAttributesWeak {
+export interface CheckboxProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
@@ -83,6 +91,16 @@ export interface CheckboxProps extends HTMLAttributesWeak {
      * 选中状态
      */
     checked?: boolean;
+
+    /**
+     * checkbox 的value
+     */
+    value?: string | number;
+
+    /**
+     * name
+     */
+    name?: string;
 
     /**
      * 默认选中状态
@@ -117,12 +135,12 @@ export interface CheckboxProps extends HTMLAttributesWeak {
     /**
      * 鼠标进入enter事件
      */
-    onMouseEnter?: (e: any) => void;
+    onMouseEnter?: (e: React.MouseEvent<HTMLInputElement>) => void;
 
     /**
      * 鼠标离开Leave事件
      */
-    onMouseLeave?: (e: any) => void;
+    onMouseLeave?: (e: React.MouseEvent<HTMLInputElement>) => void;
 }
 
 export default class Checkbox extends React.Component<CheckboxProps, any> {

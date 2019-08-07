@@ -14,6 +14,7 @@
     overflow: hidden;
     animation-duration: $motion-duration-standard;
     animation-timing-function: $motion-ease-in-out;
+    max-width: 90%;
 
     &-header {
         padding: $dialog-title-padding-top $dialog-title-padding-left-right $dialog-title-padding-bottom $dialog-title-padding-left-right;

@@ -565,7 +565,7 @@ export default class CascaderSelect extends Component {
 
     handleChange(value, data, extra) {
         const { multiple, changeOnSelect, onChange } = this.props;
-        const { visible, searchValue } = this.state;
+        const { visible, searchValue, value: stateValue } = this.state;
 
         const st = {};
         if (
@@ -574,6 +574,11 @@ export default class CascaderSelect extends Component {
         ) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
+
+        if (multiple && stateValue && Array.isArray(stateValue)) {
+            value = [...stateValue.filter(v => !this._v2n[v]), ...value];
+        }
+
         if (!('value' in this.props)) {
             st.value = value;
         }

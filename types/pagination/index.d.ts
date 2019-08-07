@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface PaginationProps extends HTMLAttributesWeak {
+export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义国际化文案对象
      */

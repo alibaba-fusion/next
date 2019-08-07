@@ -25,7 +25,7 @@ class Affix extends React.Component {
         offsetBottom: PropTypes.number,
         /**
          * 当元素的样式发生固钉样式变化时触发的回调函数
-         * @param {Boolean} 元素是否被固钉
+         * @param {Boolean} affixed 元素是否被固钉
          */
         onAffix: PropTypes.func,
         /**

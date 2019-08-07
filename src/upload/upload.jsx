@@ -275,6 +275,8 @@ class Upload extends Base {
     }
 
     uploadFiles(files) {
+        // NOTE: drag上传，当鼠标松开的时候回执行 onDrop，但此时onChange还没出发所以 value=[], 必须提前标识上传中
+        this.uploading = true;
         const fileList = files
             .filter(file => {
                 if (file.state === 'selected') {

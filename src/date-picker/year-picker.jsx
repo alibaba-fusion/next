@@ -126,6 +126,7 @@ class YearPicker extends Component {
         dateInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {

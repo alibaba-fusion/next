@@ -33,6 +33,19 @@
         white-space: nowrap;
     }
 
+    &-scrollable #{$tab-prefix}-nav-scroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        &::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            -webkit-appearance: none;
+            opacity: 0 !important;
+        }
+    }
+
     &-nav {
         display: inline-block;
         position: relative;

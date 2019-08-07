@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 统一设置 Button 组件的按钮大小
      */
@@ -14,7 +15,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface ButtonProps extends HTMLAttributesWeak {
+export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的类型
      */
@@ -77,6 +78,16 @@ export interface ButtonProps extends HTMLAttributesWeak {
      * 点击按钮的回调
      */
     onClick?: (e: {}) => void;
+
+    /**
+     * 在Button组件使用component属性值为a时有效，代表链接页面的URL
+     */
+    href?: string;
+
+    /**
+     * 在Button组件使用component属性值为a时有效，代表何处打开链接文档
+     */
+    target?: string;
 }
 
 export default class Button extends React.Component<ButtonProps, any> {

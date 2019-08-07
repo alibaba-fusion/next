@@ -22,14 +22,16 @@
         display: inline-block;
         vertical-align: top;
     }
-
-    &-item {
+    & &-item:not([disabled]) {
         display: inline-block;
         border-style: $pagination-item-border-style;
         border-color: $pagination-item-border-color;
         background: $pagination-item-bg;
         color: $pagination-item-color;
         box-shadow: $pagination-item-shadow;
+    }
+
+    & &-item {
         &.#{$css-prefix}current {
             border-color: $pagination-item-current-border-color;
             background: $pagination-item-current-bg;

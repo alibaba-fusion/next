@@ -12,6 +12,7 @@ const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
+const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
 
 // 禁止选择 startValue 之前的所有日期
 const disabledDate = function(date, view) {
@@ -1114,6 +1115,48 @@ describe('RangePicker', () => {
             );
         });
 
+        it('should select start date & time then select end date & time', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker
+                    showTime
+                    defaultVisible
+                    defaultVisibleMonth={() => moment('2019-08-01', 'YYYY-MM-DD')}
+                    onChange={val => (ret = val)}
+                />
+            );
+
+            wrapper.find('.next-calendar-cell[title="2019-08-06"]').simulate('click');
+            wrapper
+                .find('.next-range-picker-panel-input-start-time input')
+                .simulate('focus');
+            wrapper
+                .find(
+                    '.next-range-picker-panel-time-start .next-time-picker-menu-hour .next-time-picker-menu-item'
+                )
+                .at(3)
+                .simulate('click');
+            wrapper
+                .find(
+                    '.next-date-picker-panel-footer .next-btn'
+                )
+                .at(0)
+                .simulate('click');
+            wrapper.find('.next-calendar-cell[title="2019-08-09"]').simulate('click');
+            wrapper
+                .find('.next-range-picker-panel-input-end-time input')
+                .simulate('focus');
+            wrapper
+                .find(
+                    '.next-range-picker-panel-time-end .next-time-picker-menu-hour .next-time-picker-menu-item'
+                )
+                .at(3)
+                .simulate('click');
+            assert(
+                ret[0].format('YYYY-MM-DD HH:mm:ss') === '2019-08-06 03:00:00'
+            );
+        });
+
         it('should set defaultValue for TimePicker', () => {
             let ret;
             wrapper = mount(
@@ -1136,6 +1179,31 @@ describe('RangePicker', () => {
                 .simulate('click');
             assert(
                 ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 09:00:00'
+            );
+        });
+
+        it('should set defaultValues for TimePicker', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker
+                    showTime={{ defaultValue: defaultTimeValues }}
+                    defaultVisible
+                    defaultVisibleMonth={() => startValue}
+                    onChange={val => (ret = val)}
+                />
+            );
+            wrapper
+                .find('td[title="2017-11-09"] .next-calendar-date')
+                .simulate('click');
+            assert(
+                ret[0].format('YYYY-MM-DD HH:mm:ss') === '2017-11-09 09:00:00'
+            );
+            wrapper
+                .find('td[title="2017-12-09"] .next-calendar-date')
+                .at(1)
+                .simulate('click');
+            assert(
+                ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 23:59:59'
             );
         });
 

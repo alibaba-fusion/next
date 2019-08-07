@@ -103,6 +103,36 @@ describe('TimePicker', () => {
                 ).length === 12
             );
         });
+
+        it('should render menu items', () => {
+            const renderTimeMenuItems = (list) => {
+                return list.map(({ label, value }) => {
+                    return {
+                        value,
+                        label: value > 9 ? String(value) : `0${value}`
+                    };
+                });
+            };
+            wrapper = mount(<TimePicker defaultVisible renderTimeMenuItems={renderTimeMenuItems}  />);
+
+            assert(
+                wrapper.find(
+                    '.next-time-picker-menu-second .next-time-picker-menu-item'
+                ).at(0).text() === '00'
+            );
+
+            assert(
+                wrapper.find(
+                    '.next-time-picker-menu-second .next-time-picker-menu-item'
+                ).at(9).text() === '09'
+            );
+
+            assert(
+                wrapper.find(
+                    '.next-time-picker-menu-second .next-time-picker-menu-item'
+                ).at(10).text() === '10'
+            );
+        });
     });
 
     describe('action', () => {
