@@ -11,6 +11,7 @@ export default class Item extends Component {
     static propTypes = {
         _key: PropTypes.string,
         level: PropTypes.number,
+        inlineLevel: PropTypes.number,
         groupIndent: PropTypes.number,
         root: PropTypes.object,
         menu: PropTypes.any,
@@ -153,7 +154,7 @@ export default class Item extends Component {
 
     render() {
         const {
-            level,
+            inlineLevel,
             root,
             replaceClassName,
             groupIndent,
@@ -194,14 +195,14 @@ export default class Item extends Component {
 
         if (
             parentMode === 'inline' &&
-            level > 1 &&
+            inlineLevel > 1 &&
             inlineIndent > 0 &&
             needIndent
         ) {
             const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [paddingProp]: `${level * inlineIndent -
+                [paddingProp]: `${inlineLevel * inlineIndent -
                     (groupIndent || 0) * 0.4 * inlineIndent}px`,
             };
         }
