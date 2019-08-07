@@ -150,6 +150,7 @@ export default class TimePicker extends Component {
          */
         onChange: PropTypes.func,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {

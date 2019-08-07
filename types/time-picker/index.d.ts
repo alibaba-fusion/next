@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface TimePickerProps extends HTMLAttributesWeak {
+export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的文案
      */

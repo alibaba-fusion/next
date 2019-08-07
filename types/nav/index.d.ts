@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 标签内容
      */
@@ -21,7 +22,7 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
 
 export class Group extends React.Component<GroupProps, any> {}
 
-export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 是否禁用
      */
@@ -45,7 +46,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
 
 export class Item extends React.Component<ItemProps, any> {}
 
-export interface PopupItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface PopupItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 标签内容
      */
@@ -69,7 +70,7 @@ export interface PopupItemProps extends React.HTMLAttributes<HTMLElement> {
 
 export class PopupItem extends React.Component<PopupItemProps, any> {}
 
-export interface SubNavProps extends React.HTMLAttributes<HTMLElement> {
+export interface SubNavProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 自定义类名
      */
@@ -101,7 +102,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
 }
 
-export interface NavProps extends HTMLAttributesWeak {
+export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 导航项和子导航
      */

@@ -172,6 +172,7 @@ export default class DatePicker extends Component {
         timeInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {
