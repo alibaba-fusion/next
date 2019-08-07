@@ -205,7 +205,7 @@ export default class Base extends React.Component {
         if (width && this.width !== width) {
             this.width = width;
 
-            if (this.popupRef && this.props.autoWidth) {
+            if (this.popupRef && this.shouldAutoWidth()) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef && this.popupRef.getInstance().overlay) {
@@ -386,7 +386,6 @@ export default class Base extends React.Component {
         const {
             prefix,
             mode,
-            autoWidth,
             locale,
             notFoundContent,
             useVirtual,
@@ -421,7 +420,9 @@ export default class Base extends React.Component {
         const menuProps = {
             children,
             role: 'listbox',
-            style: autoWidth ? { width: this.width } : { minWidth: this.width },
+            style: this.shouldAutoWidth()
+                ? { width: this.width }
+                : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
             focusable: false,
@@ -548,6 +549,14 @@ export default class Base extends React.Component {
         }
     };
 
+    shouldAutoWidth() {
+        if (this.props.popupComponent) {
+            return false;
+        }
+
+        return this.props.autoWidth;
+    }
+
     render(props) {
         const {
             prefix,
@@ -557,7 +566,6 @@ export default class Base extends React.Component {
             popupClassName,
             popupStyle,
             popupContent,
-            autoWidth,
             canCloseByTrigger,
             followTrigger,
             cache,
@@ -605,7 +613,9 @@ export default class Base extends React.Component {
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
-                        style={autoWidth ? { width: this.width } : {}}
+                        style={
+                            this.shouldAutoWidth() ? { width: this.width } : {}
+                        }
                     >
                         {popupContent}
                     </div>
