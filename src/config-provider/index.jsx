@@ -52,6 +52,10 @@ class ConfigProvider extends Component {
          */
         rtl: PropTypes.bool,
         /**
+         * 设备类型，针对不同的设备类型组件做出对应的响应式变化
+         */
+        device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
+        /**
          * 组件树
          */
         children: PropTypes.element,
@@ -68,6 +72,7 @@ class ConfigProvider extends Component {
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
+        nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextErrorBoundary: PropTypes.oneOfType([
             PropTypes.bool,
             PropTypes.object,
@@ -115,6 +120,7 @@ class ConfigProvider extends Component {
             nextPure,
             nextRtl,
             nextWarning,
+            nextDevice,
             nextErrorBoundary,
         } = childContextCache.root() || {};
 
@@ -124,6 +130,7 @@ class ConfigProvider extends Component {
             pure: nextPure,
             rtl: nextRtl,
             warning: nextWarning,
+            device: nextDevice,
             errorBoundary: nextErrorBoundary,
         };
     };
@@ -147,6 +154,7 @@ class ConfigProvider extends Component {
             pure,
             warning,
             rtl,
+            device,
             errorBoundary,
         } = this.props;
 
@@ -156,6 +164,7 @@ class ConfigProvider extends Component {
             nextPure: pure,
             nextRtl: rtl,
             nextWarning: warning,
+            nextDevice: device,
             nextErrorBoundary: errorBoundary,
         };
     }
