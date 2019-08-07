@@ -49,7 +49,7 @@ class Demo extends React.Component {
                     onChange={this.onPlacementChange}
                 /> &nbsp;&nbsp;&nbsp;&nbsp;
 
-                <Select id="basic-demo" popupProps={{placement: this.state.placement }} onChange={onChange} onBlur={onBlur} onToggleHighlightItem={onToggleHighlightItem} defaultValue="jack" aria-label="name is" showSearch hasClear>
+                <Select id="basic-demo" popupComponent={Drawer} popupProps={{placement: this.state.placement}} autoWidth={false} onChange={onChange} onBlur={onBlur} onToggleHighlightItem={onToggleHighlightItem} defaultValue="jack" aria-label="name is" hasClear>
                     <Option value="jack">Jack</Option>
                     <Option value="frank">Frank</Option>
                     <Option value="hugo">Hugo</Option>

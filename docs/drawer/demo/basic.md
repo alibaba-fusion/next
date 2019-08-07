@@ -52,7 +52,6 @@ class Demo extends React.Component {
                 /> &nbsp;&nbsp;&nbsp;&nbsp;
                 <Button type="primary" onClick={this.onOpen}> open </Button>
                 <Drawer
-                    id="tessss"
                     visible={this.state.visible}
                     placement={this.state.placement}
                     onVisibleChange={this.onVisibleChange}>

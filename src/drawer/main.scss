@@ -12,7 +12,7 @@
     background: $drawer-bg;
     border: $drawer-border-width $drawer-border-style $drawer-border-color;
     box-shadow: $drawer-shadow;
-    overflow: hidden;
+    overflow: auto;
 
     &-right {
         height: 100%;

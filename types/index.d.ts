@@ -13,6 +13,7 @@ export { default as Collapse } from './collapse';
 export { default as ConfigProvider } from './config-provider';
 export { default as DatePicker } from './date-picker';
 export { default as Dialog } from './dialog';
+export { default as Drawer } from './drawer';
 export { default as Dropdown } from './dropdown';
 export { default as Form } from './form';
 export { default as Grid } from './grid';
