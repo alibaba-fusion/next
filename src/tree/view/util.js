@@ -10,49 +10,109 @@ export function normalizeToArray(keys) {
 
     return [];
 }
+
+/**
+ * 判断子节点是否是选中状态，如果 checkable={false} 则向下递归，
+ * @param {Node} child
+ * @param {Array} checkedKeys
+ */
+export function isNodeChecked(node, checkedKeys) {
+    if (node.disabled || parent.checkboxDisabled) return true;
+    /* istanbul ignore next */
+    if (node.checkable === false) {
+        return (
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(c => isNodeChecked(c, checkedKeys))
+        );
+    }
+    return checkedKeys.indexOf(node.key) > -1;
+}
+
+/**
+ * 遍历所有可用的子节点
+ * @param {Node}
+ * @param {Function} callback
+ */
+export function forEachEnableNode(node, callback = () => {}) {
+    if (node.disabled || node.checkboxDisabled) return;
+    // eslint-disable-next-line callback-return
+    callback(node);
+    if (node.children && node.children.length > 0) {
+        node.children.forEach(child => forEachEnableNode(child, callback));
+    }
+}
+/**
+ * 判断节点是否禁用checked
+ * @param {Node} node
+ * @returns {Boolean}
+ */
+export function isNodeDisabledChecked(node) {
+    if (node.disabled || node.checkboxDisabled) return true;
+    /* istanbul ignore next */
+    if (node.checkable === false) {
+        return (
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(isNodeDisabledChecked)
+        );
+    }
+
+    return false;
+}
+
+/**
+ * 递归获取一个 checkable = {true} 的父节点，当 checkable={false} 时继续往上查找
+ * @param {Node} node
+ * @param {Map} _p2n
+ * @return {Node}
+ */
+export function getCheckableParentNode(node, _p2n) {
+    let parentPos = node.pos.split(['-']);
+    if (parentPos.length === 2) return node;
+    parentPos.splice(parentPos.length - 1, 1);
+    parentPos = parentPos.join('-');
+    const parentNode = _p2n[parentPos];
+    if (parentNode.disabled || parentNode.checkboxDisabled) return false;
+    /* istanbul ignore next */
+    if (parentNode.checkable === false) {
+        return getCheckableParentNode(parentNode, _p2n);
+    }
+
+    return parentNode;
+}
 /**
  * 过滤子节点
  * @param {Array} keys
  * @param {Object} _k2n
  */
-export function filterChildKey(keys, _k2n) {
-    const newKeys = [...keys]
-        .filter(key => !!_k2n[key])
-        .sort((prev, next) => {
-            return getDepth(prev, _k2n) - getDepth(next, _k2n);
-        });
-
-    for (let i = 0; i < newKeys.length; i++) {
-        for (let j = 0; j < newKeys.length; j++) {
-            if (
-                i !== j &&
-                isDescendantOrSelf(_k2n[newKeys[i]].pos, _k2n[newKeys[j]].pos)
-            ) {
-                newKeys.splice(j, 1);
-                j--;
-            }
+export function filterChildKey(keys, _k2n, _p2n) {
+    const newKeys = [];
+    keys.forEach(key => {
+        const node = getCheckableParentNode(_k2n[key], _p2n);
+        if (
+            !node ||
+            node.checkable === false ||
+            node === _k2n[key] ||
+            keys.indexOf(node.key) === -1
+        ) {
+            newKeys.push(key);
         }
-    }
-
+    });
     return newKeys;
 }
 
-export function filterParentKey(keys, _k2n) {
-    const newKeys = [...keys]
-        .filter(key => !!_k2n[key])
-        .sort((prev, next) => {
-            return getDepth(next, _k2n) - getDepth(prev, _k2n);
-        });
+export function filterParentKey(keys, _k2n, _p2n) {
+    const newKeys = [];
 
-    for (let i = 0; i < newKeys.length; i++) {
-        for (let j = 0; j < newKeys.length; j++) {
-            if (
-                i !== j &&
-                isDescendantOrSelf(_k2n[newKeys[j]].pos, _k2n[newKeys[i]].pos)
-            ) {
-                newKeys.splice(j, 1);
-                j--;
-            }
+    for (let i = 0; i < keys.length; i++) {
+        const node = _k2n[keys[i]];
+        if (
+            !node.children ||
+            node.children.length === 0 ||
+            node.children.every(isNodeDisabledChecked)
+        ) {
+            newKeys.push(keys[i]);
         }
     }
 
@@ -91,10 +151,22 @@ export function isSiblingOrSelf(currentPos, targetPos) {
 export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     checkedKeys = normalizeToArray(checkedKeys);
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);
-    let flatKeys = filterChildKey(filteredKeys, _k2n);
-    const childChecked = child => flatKeys.indexOf(child.key) > -1;
-    const removeKey = child => flatKeys.splice(flatKeys.indexOf(child.key), 1);
+    const flatKeys = filterChildKey(filteredKeys, _k2n, _p2n);
+
+    const removeKey = child => {
+        if (child.disabled || child.checkboxDisabled) return;
+        if (
+            child.checkable === false &&
+            child.children &&
+            child.children.length > 0
+        ) {
+            return child.children.forEach(removeKey);
+        }
+        flatKeys.splice(flatKeys.indexOf(child.key), 1);
+    };
+
     const addParentKey = (i, parent) => flatKeys.splice(i, 0, parent.key);
+
     const keys = [...flatKeys];
     for (let i = 0; i < keys.length; i++) {
         const pos = _k2n[keys[i]].pos;
@@ -105,7 +177,15 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
         for (let j = nums.length - 2; j > 0; j--) {
             const parentPos = nums.slice(0, j + 1).join('-');
             const parent = _p2n[parentPos];
-            const parentChecked = parent.children.every(childChecked);
+            if (
+                parent.checkable === false ||
+                parent.disabled ||
+                parent.checkboxDisabled
+            )
+                continue;
+            const parentChecked = parent.children.every(child =>
+                isNodeChecked(child, flatKeys)
+            );
             if (parentChecked) {
                 parent.children.forEach(removeKey);
                 addParentKey(i, parent);
@@ -116,20 +196,12 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     }
 
     const newKeys = [];
-    if (flatKeys.length) {
-        flatKeys = flatKeys.reverse();
-        const ps = Object.keys(_p2n);
-        for (let i = 0; i < flatKeys.length; i++) {
-            const pos = _k2n[flatKeys[i]].pos;
-            for (let j = 0; j < ps.length; j++) {
-                if (isDescendantOrSelf(pos, ps[j])) {
-                    newKeys.push(_p2n[ps[j]].key);
-                    ps.splice(j, 1);
-                    j--;
-                }
-            }
-        }
-    }
+    flatKeys.forEach(key => {
+        forEachEnableNode(_k2n[key], node => {
+            if (node.checkable === false) return;
+            newKeys.push(node.key);
+        });
+    });
 
     return newKeys;
 }

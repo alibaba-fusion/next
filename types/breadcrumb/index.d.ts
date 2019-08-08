@@ -24,7 +24,7 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 面包屑最多显示个数，超出部分会被隐藏
      */
-    maxNode?: number;
+    maxNode?: number | 'auto';
 
     /**
      * 分隔符，可以是文本或 Icon

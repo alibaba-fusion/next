@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -8,7 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onKeyDown?: any;
 }
 
-export interface TextAreaProps extends HTMLAttributesWeak {
+export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当前值
      */
@@ -22,12 +23,12 @@ export interface TextAreaProps extends HTMLAttributesWeak {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: any) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: any, opts: {}) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>, opts: {}) => void;
 
     /**
      * 禁用状态
@@ -122,7 +123,7 @@ export interface TextAreaProps extends HTMLAttributesWeak {
 
 export class TextArea extends React.Component<TextAreaProps, any> {}
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
      */
@@ -161,7 +162,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onKeyDown?: any;
 }
 
-export interface InputProps extends HTMLAttributesWeak {
+export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 当前值
      */
@@ -175,12 +176,12 @@ export interface InputProps extends HTMLAttributesWeak {
     /**
      * 发生改变的时候触发的回调
      */
-    onChange?: (value: string, e: any) => void;
+    onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 键盘按下的时候触发的回调
      */
-    onKeyDown?: (e: any, opts: {}) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>, opts: {}) => void;
 
     /**
      * 禁用状态

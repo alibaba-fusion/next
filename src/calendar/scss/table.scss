@@ -49,7 +49,7 @@
             padding: $calendar-fullscreen-table-cell-padding-tb $calendar-fullscreen-table-cell-padding-lr;
             min-height: $calendar-fullscreen-table-cell-min-height;
             border-top: $calendar-fullscreen-table-cell-boder-top-width $line-solid;
-            transition: background .3s ease;
+            transition: background $motion-duration-immediately $motion-linear;
 
             @include calendar-cell-state (
                 $calendar-fullscreen-table-cell-normal-background,

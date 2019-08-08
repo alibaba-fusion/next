@@ -8,6 +8,8 @@
 .#{$css-prefix}message {
     @include box-sizing;
     @include message-bounding();
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease-in-out;
 
     .#{$css-prefix}message-close {
         color: $message-close-icon-color;

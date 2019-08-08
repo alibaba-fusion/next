@@ -28,7 +28,7 @@ const slides = [
     { url: 'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg', text: 'Amoy Doll Design Competition' }
 ];
 
-const itemNodes = slides.map((item, index) => <div key={index} className="slider-img-wrapper"><img src={item.url} alt={item.text} /></div>);
+const itemNodes = slides.map((item, index) => <div key={index} className="slider-img-wrapper"><img draggable={false} src={item.url} alt={item.text} /></div>);
 
 ReactDOM.render(<Slider>{itemNodes}</Slider>, mountNode);
 ````

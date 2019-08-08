@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface PanelProps extends HTMLAttributesWeak {
+export interface PanelProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -34,7 +35,15 @@ export interface PanelProps extends HTMLAttributesWeak {
 }
 
 export class Panel extends React.Component<PanelProps, any> {}
-export interface CollapseProps extends React.HTMLAttributes<HTMLElement> {
+
+type data = {
+    title?: React.ReactNode;
+    content?: React.ReactNode;
+    disabled?: boolean;
+    [propName: string]: any;
+}
+
+export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式前缀
      */
@@ -48,17 +57,17 @@ export interface CollapseProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 使用数据模型构建
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<data>;
 
     /**
      * 默认展开keys
      */
-    defaultExpandedKeys?: Array<any>;
+    defaultExpandedKeys?: Array<data>;
 
     /**
      * 受控展开keys
      */
-    expandedKeys?: Array<any>;
+    expandedKeys?: Array<data>;
 
     /**
      * 展开状态发升变化时候的回调

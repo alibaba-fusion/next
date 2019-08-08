@@ -30,7 +30,7 @@
         cursor: pointer;
         height: $time-picker-menu-item-height;
         line-height: $time-picker-menu-item-height;
-        transition: background .3s ease-out;
+        transition: background $motion-duration-immediately $motion-linear;
         color: $time-picker-menu-item-color;
         background: $time-picker-menu-item-background;
         outline: none;

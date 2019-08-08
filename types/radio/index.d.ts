@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
-
+import { data } from '../checkbox';
+import CommonProps from '../util';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface GroupProps extends HTMLAttributesWeak {
+export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -41,7 +42,7 @@ export interface GroupProps extends HTMLAttributesWeak {
     /**
      * 设置标签类型
      */
-    component?: string | (() => void);
+    component?: React.ReactHTML | (() => void);
 
     /**
      * 选中值改变时的事件
@@ -66,7 +67,7 @@ export interface GroupProps extends HTMLAttributesWeak {
     /**
      * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<string> | Array<data> | Array<number>;
 
     /**
      * 通过子元素方式设置内部radio
@@ -88,7 +89,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onMouseLeave?: any;
 }
 
-export interface RadioProps extends HTMLAttributesWeak {
+export interface RadioProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义类名
      */
@@ -127,12 +128,12 @@ export interface RadioProps extends HTMLAttributesWeak {
     /**
      * 鼠标进入enter事件
      */
-    onMouseEnter?: (e: any) => void;
+    onMouseEnter?: (e: React.MouseEvent<HTMLInputElement>) => void;
 
     /**
      * 鼠标离开事件
      */
-    onMouseLeave?: (e: any) => void;
+    onMouseLeave?: (e: React.MouseEvent<HTMLInputElement>) => void;
 
     /**
      * radio是否被禁用

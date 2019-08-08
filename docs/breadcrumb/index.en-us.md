@@ -20,7 +20,7 @@ It is used to inform the user of the current position and the position of the cu
 | Param           | Description                                                                                                                  | Type       | Default Value          |
 | --------- | -------------------------- | --------- | ------------------------------ |
 | children  | Children components, hsould be an Breadcrumb.Item | custom    | -                              |
-| maxNode   | The maximum number of breadcrumbs is displayed and the excess is hidden         | Number    | 100                            |
+| maxNode   | The maximum number of breadcrumbs is displayed and the excess is hidden, can set auto compute  maximum number         | Number    | 100, 'auto'                        |
 | separator | Separator, can be text or Icon            | ReactNode | &lt;Icon type="arrow-right" /> |
 | component | Set Element type                     | String/Function | 'nav'                          |
 

@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
@@ -10,6 +11,8 @@ import {
     filterChildKey,
     filterParentKey,
     getAllCheckedKeys,
+    forEachEnableNode,
+    isNodeChecked,
 } from './util';
 
 const { bindCtx, noop } = func;
@@ -703,12 +706,17 @@ export default class Tree extends Component {
 
         const pos = this._k2n[key].pos;
 
-        const ps = Object.keys(this._p2n);
-        ps.forEach(p => {
-            if (isDescendantOrSelf(pos, p)) {
-                this.processKey(checkedKeys, this._p2n[p].key, check);
-            }
+        forEachEnableNode(this._k2n[key], node => {
+            if (node.checkable === false) return;
+            this.processKey(checkedKeys, node.key, check);
         });
+
+        const ps = Object.keys(this._p2n);
+        // ps.forEach(p => {
+        //     if (this._p2n[p].checkable !== false && !this._p2n[p].disabled && isDescendantOrSelf(pos, p)) {
+        //         this.processKey(checkedKeys, this._p2n[p].key, check);
+        //     }
+        // });
 
         let currentPos = pos;
         const nums = pos.split('-');
@@ -716,6 +724,14 @@ export default class Tree extends Component {
             let parentCheck = true;
 
             const parentPos = nums.slice(0, i - 1).join('-');
+            if (
+                this._p2n[parentPos].disabled ||
+                this._p2n[parentPos].checkboxDisabled ||
+                this._p2n[parentPos].checkable === false
+            ) {
+                currentPos = parentPos;
+                continue;
+            }
             const parentKey = this._p2n[parentPos].key;
             const parentChecked = checkedKeys.indexOf(parentKey) > -1;
             if (!check && !parentChecked) {
@@ -724,12 +740,34 @@ export default class Tree extends Component {
 
             for (let j = 0; j < ps.length; j++) {
                 const p = ps[j];
-                if (isSiblingOrSelf(currentPos, p)) {
-                    const k = this._p2n[p].key;
-                    if (checkedKeys.indexOf(k) === -1) {
+                const pnode = this._p2n[p];
+                if (
+                    isSiblingOrSelf(currentPos, p) &&
+                    !pnode.disabled &&
+                    !pnode.checkboxDisabled
+                ) {
+                    const k = pnode.key;
+                    if (pnode.checkable === false) {
+                        // eslint-disable-next-line max-depth
+                        if (!pnode.children || pnode.children.length === 0)
+                            continue;
+
+                        // eslint-disable-next-line max-depth
+                        for (let m = 0; m < pnode.children.length; m++) {
+                            if (
+                                !pnode.children.every(child =>
+                                    isNodeChecked(child, checkedKeys)
+                                )
+                            ) {
+                                parentCheck = false;
+                                break;
+                            }
+                        }
+                    } else if (checkedKeys.indexOf(k) === -1) {
                         parentCheck = false;
-                        break;
                     }
+
+                    if (!parentCheck) break;
                 }
             }
 
@@ -749,10 +787,18 @@ export default class Tree extends Component {
         let newCheckedKeys;
         switch (checkedStrategy) {
             case 'parent':
-                newCheckedKeys = filterChildKey(checkedKeys, this._k2n);
+                newCheckedKeys = filterChildKey(
+                    checkedKeys,
+                    this._k2n,
+                    this._p2n
+                );
                 break;
             case 'child':
-                newCheckedKeys = filterParentKey(checkedKeys, this._k2n);
+                newCheckedKeys = filterParentKey(
+                    checkedKeys,
+                    this._k2n,
+                    this._p2n
+                );
                 break;
             default:
                 newCheckedKeys = checkedKeys;
@@ -819,17 +865,24 @@ export default class Tree extends Component {
     }
 
     getIndeterminateKeys(checkedKeys) {
+        if (this.props.checkStrictly) {
+            return [];
+        }
+
         const indeterminateKeys = [];
 
         const poss = filterChildKey(
             checkedKeys.filter(key => !!this._k2n[key]),
-            this._k2n
+            this._k2n,
+            this._p2n
         ).map(key => this._k2n[key].pos);
         poss.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');
-                const parentKey = this._p2n[parentPos].key;
+                const parent = this._p2n[parentPos];
+                if (parent.disabled || parent.checkboxDisabled) break;
+                const parentKey = parent.key;
                 if (indeterminateKeys.indexOf(parentKey) === -1) {
                     indeterminateKeys.push(parentKey);
                 }

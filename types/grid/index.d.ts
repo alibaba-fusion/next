@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     hidden?: any;
 }
 
-export interface RowProps extends HTMLAttributesWeak {
+export interface RowProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 行内容
      */
@@ -60,7 +61,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     hidden?: any;
 }
 
-export interface ColProps extends HTMLAttributesWeak {
+export interface ColProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 列内容
      */
@@ -133,7 +134,7 @@ export interface ColProps extends HTMLAttributesWeak {
 }
 
 export class Col extends React.Component<ColProps, any> {}
-export interface GridProps extends React.HTMLAttributes<HTMLElement> {}
+export interface GridProps extends React.HTMLAttributes<HTMLElement>, CommonProps {}
 
 export default class Grid extends React.Component<GridProps, any> {
     static Row: typeof Row;
