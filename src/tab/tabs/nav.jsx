@@ -51,7 +51,7 @@ class Nav extends React.Component {
         if (!this.props.animation) {
             this.initialSettings();
         }
-        this.activeTab.focus();
+
         events.on(window, 'resize', this.onWindowResized);
     }
 
