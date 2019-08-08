@@ -37,7 +37,7 @@ class Demo extends React.Component {
         // 注意：initValue只会在组件第一次初始化的时候被赋值，如果你是异步赋值请用setValue
         return <div>
             <Input {...init('name',{initValue:'first value'})} />
-            <button onClick={this.onClick>获取数据</button>
+            <button onClick={this.onClick}>获取数据</button>
         </div>
     }
 }
