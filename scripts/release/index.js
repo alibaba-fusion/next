@@ -24,7 +24,7 @@ const runCommond = function(cmd) {
 co(function*() {
     checkTags();
 
-    yield pushMaster();
+    // yield pushMaster();
     yield pushPlatformDocsBranch();
     yield publishToNpm();
 }).catch(err => {

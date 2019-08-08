@@ -1,0 +1,30 @@
+////
+/// @module drawer: 虚拟滚动列表
+/// @tag Drawer
+/// @category component
+/// @family feedback
+/// @varPrefix $drawer-
+/// @classPrefix {prefix}-drawer
+////
+
+// drawer variables
+// --------------------------------------------------
+
+// unconfigurable
+$drawer-prefix: ".#{$css-prefix}drawer";
+
+/// background
+/// @namespace statement/normal/bounding
+$drawer-bg: $color-white !default;
+/// border
+/// @namespace statement/normal/bounding
+$drawer-border-color: $color-line1-2 !default;
+/// border style
+/// @namespace statement/normal/bounding
+$drawer-border-style: $line-solid !default;
+/// shadow
+/// @namespace statement/normal/bounding
+$drawer-shadow: $shadow-2-down !default;
+/// border width
+/// @namespace size/bounding
+$drawer-border-width: $line-1 !default;
