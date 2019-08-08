@@ -3,10 +3,11 @@
 import * as React from 'react';
 import CommonProps from '../util';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends React.InputHTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
     onKeyDown?: any;
+    size?: any;
 }
 
 export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
@@ -156,11 +157,6 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
 }
 
 export class Group extends React.Component<GroupProps, any> {}
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
-    defaultValue?: any;
-    onChange?: any;
-    onKeyDown?: any;
-}
 
 export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
