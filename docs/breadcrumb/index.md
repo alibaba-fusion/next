@@ -21,7 +21,7 @@
 | 参数        | 说明                         | 类型              | 默认值                            |
 | --------- | -------------------------- | --------------- | ------------------------------ |
 | children  | 面包屑子节点，需传入 Breadcrumb.Item | custom          | -                              |
-| maxNode   | 面包屑最多显示个数，超出部分会被隐藏         | Number          | 100                            |
+| maxNode   | 面包屑最多显示个数，超出部分会被隐藏, 设置成 `auto` 之后会自动根据容器宽度计算         | Number, `auto`        | 100                            |
 | separator | 分隔符，可以是文本或 Icon            | ReactNode       | &lt;Icon type="arrow-right" /> |
 | component | 设置标签类型                     | String/Function | 'nav'                          |
 
