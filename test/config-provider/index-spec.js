@@ -223,6 +223,14 @@ class TestAlias extends Component {
     }
 }
 
+class TestDevice extends Component {
+    render() {
+        return <span>{this.props.device}</span>
+    }
+}
+
+const NTestDevice = config(TestDevice);
+
 describe('ConfigProvider', () => {
     let wrapper;
 
@@ -536,5 +544,20 @@ describe('ConfigProvider.ErrorBoundary', () => {
             </ConfigProvider>
         );
         assert(wrapper.dive().name() === 'ErrorBoundary');
+    });
+
+    it('should support device', () => {
+        wrapper = mount(
+            <ConfigProvider device="tablet">
+                <NTestDevice />
+            </ConfigProvider>
+        );
+
+        assert(wrapper.text() === 'tablet');
+        wrapper.setProps({
+            device: 'desktop'
+        });
+
+        assert(wrapper.text() === 'desktop');
     });
 });

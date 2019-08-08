@@ -55,7 +55,7 @@
 
     &-panel-item {
         &.#{$css-prefix}focused {
-            transition: background-color .2s ease;
+            transition: background-color $motion-duration-immediately $motion-linear;
         }
 
         &:not(.#{$css-prefix}disabled).#{$css-prefix}simple:hover {

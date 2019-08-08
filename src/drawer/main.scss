@@ -1,0 +1,38 @@
+@charset "UTF-8";
+@import "../core/index-noreset.scss";
+@import "./scss/mixin.scss";
+@import "./scss/variable.scss";
+
+@import "./rtl.scss";
+
+#{$drawer-prefix} {
+    @include box-sizing;
+    position: fixed;
+    z-index: 1001;
+    background: $drawer-bg;
+    border: $drawer-border-width $drawer-border-style $drawer-border-color;
+    box-shadow: $drawer-shadow;
+    overflow: auto;
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease-in-out;
+
+    &-right {
+        height: 100%;
+        width: 300px;
+    }
+
+    &-left {
+        height: 100%;
+        width: 300px;
+    }
+
+    &-top {
+        width: 100%;
+        height: 30%;
+    }
+
+    &-bottom {
+        width: 100%;
+        height: 80%;
+    }
+}

@@ -55,6 +55,18 @@ class TimePickerPanel extends Component {
          */
         disabledSeconds: PropTypes.func,
         /**
+         * 渲染的可选择时间列表
+         * [{
+         *  label: '01',
+         *  value: 1
+         * }]
+         * @param {Array} list 默认渲染的列表
+         * @param {String} mode 渲染的菜单 hour, minute, second
+         * @param {moment} value 当前时间，可能为 null
+         * @return {Array} 返回需要渲染的数据
+         */
+        renderTimeMenuItems: PropTypes.func,
+        /**
          * 选择某个日期值时的回调
          * @param {Object} 选中后的日期值
          */
@@ -110,6 +122,7 @@ class TimePickerPanel extends Component {
             disabledHours,
             disabledMinutes,
             disabledSeconds,
+            renderTimeMenuItems,
             ...others
         } = this.props;
 
@@ -126,6 +139,8 @@ class TimePickerPanel extends Component {
             prefix,
             disabled,
             onSelect: this.onSelectMenuItem,
+            renderTimeMenuItems,
+            value,
         };
 
         let activeHour;

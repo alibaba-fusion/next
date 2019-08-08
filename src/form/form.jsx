@@ -95,6 +95,10 @@ export default class Form extends React.Component {
         component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         fieldOptions: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 预设屏幕宽度
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
     static defaultProps = {
@@ -105,6 +109,7 @@ export default class Form extends React.Component {
         onChange: func.noop,
         component: 'form',
         saveField: func.noop,
+        device: 'desktop',
     };
 
     static childContextTypes = {
@@ -163,6 +168,7 @@ export default class Form extends React.Component {
             className,
             inline,
             size,
+            device,
             labelAlign,
             labelTextAlign,
             onSubmit,
@@ -206,6 +212,8 @@ export default class Form extends React.Component {
                                 : wrapperCol,
                             labelAlign: child.props.labelAlign
                                 ? child.props.labelAlign
+                                : device === 'phone'
+                                ? 'top'
                                 : labelAlign,
                             labelTextAlign: child.props.labelTextAlign
                                 ? child.props.labelTextAlign

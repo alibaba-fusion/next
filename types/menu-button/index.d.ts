@@ -2,13 +2,14 @@
 
 import * as React from 'react';
 import { Item, Group, Divider } from '../menu';
+import CommonProps from '../util';
 import { ButtonProps } from '../button';
 
 interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
 }
 
-export interface MenuButtonProps extends HTMLAttributesWeak {
+export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮上的文本内容
      */
