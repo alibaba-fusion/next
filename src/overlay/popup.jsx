@@ -250,7 +250,7 @@ export default class Popup extends Component {
                 onMouseLeave,
                 onFocus,
                 onBlur,
-            } = trigger.props;
+            } = (trigger && trigger.props) || {};
             triggerTypes.forEach(triggerType => {
                 switch (triggerType) {
                     case 'click':
@@ -289,7 +289,7 @@ export default class Popup extends Component {
             });
         }
 
-        return React.cloneElement(trigger, props);
+        return trigger && React.cloneElement(trigger, props);
     }
 
     renderContent() {

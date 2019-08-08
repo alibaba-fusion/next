@@ -31,6 +31,7 @@ module.exports = {
         'core',
         'date-picker',
         'dialog',
+        'drawer',
         'dropdown',
         'field',
         'form',
