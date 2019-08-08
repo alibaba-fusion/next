@@ -54,7 +54,7 @@
 
         #{$tree-prefix}-switcher-icon {
             @include icon-size($tree-switch-arrow-size);
-            transition: transform cubic-bezier(.23, 1, .32, 1) 300ms;
+            transition: transform $motion-duration-immediately $motion-linear;
             color: $tree-switch-arrow-color;
         }
 
@@ -197,7 +197,7 @@
         }
 
         #{$tree-prefix}-node-label {
-            transition: color cubic-bezier(.23, 1, .32, 1) 300ms, background-color cubic-bezier(.23, 1, .32, 1) 300ms;
+            transition: color $motion-duration-immediately $motion-linear, background-color $motion-duration-immediately $motion-linear;
             cursor: default;
             @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
         }
@@ -238,7 +238,7 @@
     &.#{$css-prefix}node-block #{$tree-prefix}-node-inner {
         padding-top: $tree-node-padding;
         padding-bottom: $tree-node-padding;
-        transition: color cubic-bezier(.23, 1, .32, 1) 300ms, background-color cubic-bezier(.23, 1, .32, 1) 300ms;
+        transition: color $motion-duration-immediately $motion-linear, background-color $motion-duration-immediately $motion-linear;
         cursor: pointer;
         @include tree-node-state($tree-node-normal-color, $tree-node-normal-background);
 

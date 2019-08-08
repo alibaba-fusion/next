@@ -164,7 +164,7 @@ export default class Slider extends Component {
         infinite: true,
         autoplay: false,
         autoplaySpeed: 3000,
-        speed: 500,
+        speed: 600,
         adaptiveHeight: false,
         centerMode: false,
         centerPadding: '50px', // Side padding when in center mode (px or %); 展示部分为center，pading会产生前后预览

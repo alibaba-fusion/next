@@ -12,6 +12,8 @@
     box-shadow: $dialog-shadow;
     text-align: left;
     overflow: hidden;
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease-in-out;
     max-width: 90%;
 
     &-header {
