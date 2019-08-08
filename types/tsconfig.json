@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "experimentalDecorators": true,
+      "jsx": "preserve",
+      "removeComments": true,
+      "sourceMap": true
+    },
+   "include": ["types/**/*"]
+}

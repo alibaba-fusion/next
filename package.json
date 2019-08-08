@@ -46,14 +46,18 @@
     "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
     "order-var": "node ./scripts/order-var.js",
     "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
+    "tslint": "tsc types/**/*.d.ts",
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
+    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
   },
   "lint-staged": {
+    "types/**/*.d.ts": [
+        "tslint"
+    ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
       "prettier --write"
     ],
@@ -174,7 +178,8 @@
     "style-loader": "^0.18.2",
     "stylelint": "^9.2.1",
     "stylelint-scss": "^3.1.1",
-    "typescript": "^3.0.1",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.x",
     "whatwg-fetch": "^2.0.3"

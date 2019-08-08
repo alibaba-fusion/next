@@ -20,6 +20,7 @@ class Pagination extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
+        device: PropTypes.oneOf(['desktop', 'tablet', 'phone']),
         className: PropTypes.string,
         /**
          * 自定义国际化文案对象
@@ -579,7 +580,8 @@ class Pagination extends Component {
             prefix,
             pure,
             rtl,
-            type,
+            device,
+            type: paginationType,
             size,
             shape,
             className,
@@ -611,6 +613,12 @@ class Pagination extends Component {
         const pageLast = this.renderPageLast(currentPage, totalPage);
         const sizeSelector = this.renderPageSizeSelector();
         const isStart = pageSizePosition === 'start';
+
+        let type = paginationType;
+
+        if (device === 'phone' && type === 'normal') {
+            type = 'simple';
+        }
 
         const classes = cx({
             [`${prefix}pagination`]: true,
