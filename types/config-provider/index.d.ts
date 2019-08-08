@@ -38,8 +38,12 @@ export interface ConfigProviderProps {
     /**
      * 是否开启 rtl 模式
      */
-    rtl?: boolean;
 
+    rtl?: boolean;
+    /**
+     * 设备类型，针对不同的设备类型组件做出对应的响应式变化
+     */
+    device: 'tablet' | 'desktop' | 'phone',
     /**
      * 组件树
      */
