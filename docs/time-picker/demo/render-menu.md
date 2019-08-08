@@ -25,7 +25,7 @@ const renderTimeMenuItems = (list) => {
             label: value > 9 ? String(value) : `0${value}`
         };
     });
-}
+};
 
 ReactDOM.render(<TimePicker renderTimeMenuItems={renderTimeMenuItems} />, mountNode);
 ````

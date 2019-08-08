@@ -37,7 +37,7 @@ class Demo extends React.Component {
     handleDeviceChange = (device) => {
         this.setState({
             device
-        })
+        });
     };
 
     render() {
