@@ -21,31 +21,13 @@ export default class Inner extends Component {
         role: 'dialog',
     };
 
-    getNode(name, ref) {
-        this[name] = ref;
-    }
-
-    renderBody() {
-        const { prefix, children } = this.props;
-        if (children) {
-            return (
-                <div
-                    className={`${prefix}drawer-body`}
-                    ref={this.getNode.bind(this, 'bodyNode')}
-                >
-                    {children}
-                </div>
-            );
-        }
-        return null;
-    }
-
     render() {
         const {
             prefix,
             className,
             closeable,
             placement,
+            children,
             role,
             rtl,
         } = this.props;
@@ -57,8 +39,6 @@ export default class Inner extends Component {
             [`${prefix}closeable`]: closeable,
             [className]: !!className,
         });
-
-        const body = this.renderBody();
 
         const ariaProps = {
             role,
@@ -72,7 +52,7 @@ export default class Inner extends Component {
                 {...others}
                 dir={rtl ? 'rtl' : undefined}
             >
-                {body}
+                {children}
             </div>
         );
     }

@@ -28,20 +28,3 @@ $drawer-shadow: $shadow-2-down !default;
 /// border width
 /// @namespace size/bounding
 $drawer-border-width: $line-1 !default;
-
-
-/// text
-/// @namespace size/content
-$drawer-content-font-size: $font-size-body-1 !default;
-/// padding (t)
-/// @namespace size/content
-$drawer-content-padding-top: $s-5 !default;
-/// padding (b)
-/// @namespace size/content
-$drawer-content-padding-bottom: $s-5 !default;
-/// padding (l, r)
-/// @namespace size/content
-$drawer-content-padding-left-right: $s-5 !default;
-/// text
-/// @namespace statement/normal/content
-$drawer-content-color: $color-text1-3 !default;
