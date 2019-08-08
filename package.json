@@ -56,7 +56,7 @@
   },
   "lint-staged": {
     "types/**/*.d.ts": [
-        "tslint"
+        "npm run tslint --"
     ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
       "prettier --write"

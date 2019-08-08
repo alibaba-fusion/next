@@ -11,7 +11,8 @@ export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
 }
 
 export class Group extends React.Component<GroupProps, any> {}
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends React.ButtonHTMLAttributes<HTMLElement> {
+    type?: any;
     onClick?: any;
 }
 
