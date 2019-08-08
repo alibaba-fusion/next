@@ -865,7 +865,8 @@ class Select extends Base {
 
     handleClear = e => {
         e.stopPropagation();
-
+        const { onSearchClear } = this.props;
+        !!onSearchClear && onSearchClear('select');
         this.handleChange(undefined, 'clear');
     };
 
