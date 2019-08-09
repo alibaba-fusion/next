@@ -23,6 +23,7 @@ export default class SubMenu extends Component {
         _key: PropTypes.string,
         root: PropTypes.object,
         level: PropTypes.number,
+        inlineLevel: PropTypes.number,
         groupIndent: PropTypes.number,
         noIcon: PropTypes.bool,
         /**
