@@ -420,9 +420,6 @@ export default class Base extends React.Component {
         const menuProps = {
             children,
             role: 'listbox',
-            style: this.shouldAutoWidth()
-                ? { width: this.width }
-                : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
             focusable: false,
@@ -434,11 +431,14 @@ export default class Base extends React.Component {
             onMouseDown: preventDefault,
             className: menuClassName,
         };
+        const menuStyle = this.shouldAutoWidth()
+            ? { width: this.width }
+            : { minWidth: this.width };
 
         return useVirtual && children.length ? (
             <div
                 className={`${prefix}select-menu-wrapper`}
-                style={{ position: 'relative' }}
+                style={{ position: 'relative', ...menuStyle }}
             >
                 <VirtualList
                     itemsRenderer={(items, ref) => {
@@ -459,7 +459,7 @@ export default class Base extends React.Component {
                 </VirtualList>
             </div>
         ) : (
-            <Menu {...menuProps} />
+            <Menu {...menuProps} style={menuStyle} />
         );
     }
 
