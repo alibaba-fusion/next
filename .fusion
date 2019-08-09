@@ -58,6 +58,7 @@
     "line": "lib/core/style/_line.scss",
     "shadow": "lib/core/style/_shadow.scss",
     "icon": "lib/core/style/_icon.scss",
+    "motion": "lib/core/style/_motion.scss",
     "form-element": "lib/core/utility/_form-element.scss",
     "popup": "lib/core/utility/_popup.scss",
     "mask": "lib/core/utility/_mask.scss",
