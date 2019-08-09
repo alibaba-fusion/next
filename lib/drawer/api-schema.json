@@ -1,0 +1,150 @@
+{
+  "name": "Drawer",
+  "props": {
+    "trigger": {
+      "type": {
+        "name": "element"
+      },
+      "required": false,
+      "description": "触发弹层显示或隐藏的元素",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "触发弹层显示或隐藏的元素"
+    },
+    "triggerType": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "array"
+          }
+        ]
+      },
+      "required": false,
+      "description": "触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示",
+      "docblock": "是否显示"
+    },
+    "hasMask": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示遮罩",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示遮罩"
+    },
+    "closeable": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'mask' 或 'esc,mask'\n如果设置为 true，则以上关闭方式全部生效\n如果设置为 false，则以上关闭方式全部失效",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'mask' 或 'esc,mask'\n如果设置为 true，则以上关闭方式全部生效\n如果设置为 false，则以上关闭方式全部失效"
+    },
+    "placement": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'top'",
+            "computed": false
+          },
+          {
+            "value": "'right'",
+            "computed": false
+          },
+          {
+            "value": "'bottom'",
+            "computed": false
+          },
+          {
+            "value": "'left'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "位于页面的位置",
+      "defaultValue": {
+        "value": "'right'",
+        "computed": false
+      },
+      "docblock": "位于页面的位置"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层显示或隐藏时触发的回调",
+      "docblock": "弹层显示或隐藏时触发的回调\n@param {Boolean} visible 弹层是否显示\n@param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+      "params": [
+        {
+          "name": "visible",
+          "description": "弹层是否显示",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "type",
+          "description": "触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "animation": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "object"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "显示隐藏时动画的播放方式",
+      "docblock": "显示隐藏时动画的播放方式\n@property {String} in 进场动画\n@property {String} out 出场动画"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
