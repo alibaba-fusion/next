@@ -79,6 +79,7 @@
     "collapse": "lib/collapse/scss/variable.scss",
     "time-picker": "lib/time-picker/scss/variable.scss",
     "date-picker": "lib/date-picker/scss/variable.scss",
+    "drawer": "lib/drawer/scss/variable.scss",
     "message": "lib/message/scss/variable.scss",
     "dialog": "lib/dialog/scss/variable.scss",
     "grid": "lib/grid/scss/variable.scss",

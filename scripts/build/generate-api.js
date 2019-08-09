@@ -17,13 +17,14 @@ const defaultOrderMap = {
 
 module.exports = function generateApis(componentName = 'all') {
     if (componentName === 'all') {
-        const components = fs.readdirSync(path.join(cwd, 'docs'));
+        const docsPath = path.join(cwd, 'docs');
+        const components = fs.readdirSync(docsPath);
 
         components.forEach(componentName => {
-            if (/^\./.test(componentName)) {
-                return;
+            const stats = fs.statSync(path.join(docsPath, componentName));
+            if (stats.isDirectory()) {
+                generateApi(componentName);
             }
-            generateApi(componentName);
         });
     } else {
         generateApi(componentName);
@@ -43,7 +44,6 @@ function generateApi(componentName) {
     const readme = fs.readFileSync(readmePath, 'utf8');
     const ast = remark.parse(readme);
     const currentComponentPath = path.join(cwd, 'src', componentName);
-
     const mainApiInfo = extractor.extract(currentComponentPath);
 
     if (mainApiInfo) {
