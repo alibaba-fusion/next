@@ -60,7 +60,7 @@
         line-height: $upload-text-list-height - $s-2;
         font-size: $upload-text-list-font-size;
         overflow: hidden;
-        transition: all .2s ease-out;
+        transition: all $motion-duration-immediately $motion-linear;
         border-radius: $upload-text-list-corner;
 
         &:not(:last-child) {
@@ -74,7 +74,7 @@
             color: $upload-text-list-close-icon-color;
             cursor: pointer;
             text-align: center;
-            transition: all .2s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
             line-height: $upload-text-list-height;
             @include icon-size($upload-text-list-close-icon-size);
         }
@@ -93,7 +93,7 @@
         }
         &-name {
             color: $upload-text-list-name-font-color;
-            transition: all .2s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
         }
 
         &-size {
@@ -151,7 +151,7 @@
         height: $upload-image-list-item-picture-size;
         line-height: $upload-image-list-item-picture-size;
         font-size: $upload-image-list-item-font-size;
-        transition: all .2s ease-out;
+        transition: all $motion-duration-immediately $motion-linear;
         overflow: hidden;
         border-radius: $upload-card-list-corner;
 
@@ -188,7 +188,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-            transition: all .2s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
         }
 
         &-size {
@@ -374,7 +374,7 @@
             position: absolute;
             z-index: 1;
             background-color: rgba($upload-select-card-tool-bg-color, $upload-select-card-tool-bg-opacity);
-            transition: all .3s ease;
+            transition: all $motion-duration-immediately $motion-linear;
             opacity: 0;
             width: 100%;
             height: $upload-select-card-tool-height;
@@ -418,7 +418,7 @@
     background-color: $upload-card-bg-color;
     text-align: center;
     cursor: pointer;
-    transition: border-color .3s ease;
+    transition: border-color $motion-duration-immediately $motion-linear;
     display: table-cell;
     vertical-align: middle;
 
@@ -451,7 +451,7 @@
 
     #{$upload-prefix}-drag {
         border: 1px dashed $upload-drag-zone-border-color;
-        transition: border-color .3s ease;
+        transition: border-color $motion-duration-immediately $motion-linear;
         cursor: pointer;
         border-radius: $upload-drag-zone-corner;
         background-color: $upload-drag-zone-bg-color;

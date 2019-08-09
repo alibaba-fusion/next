@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface NodeProps extends React.HTMLAttributes<HTMLElement> {
+export interface NodeProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 树节点
      */
@@ -54,7 +55,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
 }
 
-export interface TreeProps extends HTMLAttributesWeak {
+export interface TreeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 树节点
      */

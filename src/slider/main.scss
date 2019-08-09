@@ -55,7 +55,7 @@
         height: 100%;
         min-height: 1px;
         outline: 0;
-        transition: all .3s cubic-bezier(.86, 0, .07, 1);
+        transition: all $motion-duration-immediately $motion-linear;
 
         #{$slick-prefix}[dir="rtl"] & {
             float: right;
@@ -71,7 +71,7 @@
         position: absolute;
         cursor: pointer;
         text-align: center;
-        transition: .4s ease-in;
+        transition: all $motion-duration-immediately $motion-linear;
 
         /* prev/next 按钮不同位置下的外观 */
         &.inner {

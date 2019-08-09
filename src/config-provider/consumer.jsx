@@ -66,6 +66,7 @@ Consumer.contextTypes = {
     nextPure: PropTypes.bool,
     newRtl: PropTypes.bool,
     nextWarning: PropTypes.bool,
+    nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
 };
 
 export default Consumer;

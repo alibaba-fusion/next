@@ -27,7 +27,10 @@ class CheckboxGroup extends Component {
         /**
          * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
          */
-        dataSource: PropTypes.arrayOf(PropTypes.any),
+        dataSource: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object),
+        ]),
         /**
          * 被选中的值列表
          */

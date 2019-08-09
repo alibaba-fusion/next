@@ -1,8 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import assert from 'power-assert';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount, } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Breadcrumb from '../../src/breadcrumb';
+import '../../src/breadcrumb/style';
 import ConfigProvider from '../../src/config-provider';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -46,6 +48,18 @@ describe('Item', () => {
 });
 
 describe('Breadcrumb', () => {
+    let mountNode;
+
+    beforeEach(() => {
+        mountNode = document.createElement('div');
+        document.body.appendChild(mountNode);
+    });
+
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(mountNode);
+        document.body.removeChild(mountNode);
+    });
+
     it("should throw error if you don't pass Item as children", () => {
         try {
             shallow(<Breadcrumb>Breadcrumb</Breadcrumb>);
@@ -73,6 +87,21 @@ describe('Breadcrumb', () => {
             ellipsisItem.find('span').hasClass('next-breadcrumb-text-ellipsis')
         );
         wrapper.unmount();
+    });
+
+    it('should render ellipsis if maxNode set auto', () => {
+        ReactDOM.render(
+            <Breadcrumb maxNode="auto" style={{ width: '1px' }}>
+                <Item>Home 1</Item>
+                <Item>Whatever 2</Item>
+                <Item>All Categories 3</Item>
+                <Item>Women’s Clothing 4</Item>
+                <Item>Blouses & Shirts 5</Item>
+                <Item>T-shirts 6</Item>
+            </Breadcrumb>
+        , mountNode);
+        const ellipsisItem = mountNode.querySelectorAll('.next-breadcrumb-text')[1];
+        assert(ellipsisItem.textContent === '...');
     });
 
     it('should not render the separator of the last item', () => {

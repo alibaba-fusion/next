@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface RangeProps extends HTMLAttributesWeak {
+export interface RangeProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -46,17 +47,17 @@ export interface RangeProps extends HTMLAttributesWeak {
     /**
      * 设置当前取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
      */
-    value?: number | Array<any>;
+    value?: number | Array<number>;
 
     /**
      * 设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`
      */
-    defaultValue?: number | Array<any>;
+    defaultValue?: number | Array<number>;
 
     /**
      * 刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）
      */
-    marks?: boolean | number | Array<any> | {};
+    marks?: boolean | number | Array<number> | {};
 
     /**
      * marks显示在上方('above')or下方('below')

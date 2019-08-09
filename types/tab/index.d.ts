@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface ItemProps extends HTMLAttributesWeak {
+export interface ItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选项卡标题
      */
@@ -29,7 +30,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface TabProps extends HTMLAttributesWeak {
+export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换
      */

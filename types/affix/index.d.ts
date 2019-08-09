@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface AffixProps extends React.HTMLAttributes<HTMLElement> {
+export interface AffixProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 设置 Affix 需要监听滚动事件的容器元素
      */
@@ -21,7 +22,7 @@ export interface AffixProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 当元素的样式发生固钉样式变化时触发的回调函数
      */
-    onAffix?: (元素是否被固钉: boolean) => void;
+    onAffix?: (affixed: boolean) => void;
 
     /**
      * 是否启用绝对布局实现 affix

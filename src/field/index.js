@@ -134,7 +134,19 @@ class Field {
         }
 
         if (!('value' in field)) {
-            field.value = defaultValue;
+            if (parseName) {
+                const cachedValue = getIn(this.values, name);
+                field.value =
+                    typeof cachedValue !== 'undefined'
+                        ? cachedValue
+                        : defaultValue;
+            } else {
+                const cachedValue = this.values[name];
+                field.value =
+                    typeof cachedValue !== 'undefined'
+                        ? cachedValue
+                        : defaultValue;
+            }
         }
         if (parseName && !getIn(this.values, name)) {
             this.values = setIn(this.values, name, field.value);

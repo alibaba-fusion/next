@@ -15,7 +15,7 @@
     &-trigger {
         min-width: 100px;
         outline: 0;
-        transition: all .3s ease;
+        transition: all $motion-duration-immediately $motion-linear;
 
         .#{$css-prefix}input-label {
             flex: 0 0 auto;
@@ -298,8 +298,13 @@
         cursor: pointer;
         width: auto !important;
         text-align: center;
-        transition: all .3s ease;
+        transition: all $motion-duration-immediately $motion-linear;
         /* transform-origin: center 41.8%; // icon 图像中心 */
+    }
+
+    &-popup-wrap {
+        animation-duration: $motion-duration-standard;
+        animation-timing-function: $motion-ease;
     }
 
     &-menu-wrapper {

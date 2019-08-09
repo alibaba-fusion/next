@@ -34,7 +34,7 @@
         background: $checkbox-bg-color;
         border-radius: $checkbox-border-radius;
         border: $checkbox-border-width solid $checkbox-border-color;
-        transition: ease all .3s 0s;
+        transition: all $motion-duration-immediately $motion-linear;
         text-align: left; /* 防止继承父级 */
         box-shadow: $checkbox-shadow;
         /* box-sizing: content-box; */
@@ -45,7 +45,7 @@
             top: 0;
             opacity: 0;
             line-height: $checkbox-size;
-            transition: all .3s cubic-bezier(.78, .14, .15, .86);
+            transition: all $motion-duration-immediately $motion-linear;
             color: $checkbox-checked-circle-color;
             left: ($checkbox-size - $checkbox-circle-size) / 2;
             @if ($checkbox-circle-size == 12) {

@@ -92,10 +92,13 @@ function* buildCompiledDocs(cwd) {
     const ignoreFolders = ['core'];
     const componentList = [];
     const folders = yield fs.readdir(from);
+
     for (const folder of folders) {
-        if (/^\./.test(folder) || ignoreFolders.indexOf(folder) !== -1) {
+        const stats = fs.statSync(path.join(from, folder));
+        if (!stats.isDirectory() || ignoreFolders.indexOf(folder) > -1) {
             continue;
         }
+
         const apiFrom = path.join(from, folder, 'index.md');
         const enAPIFrom = path.join(from, folder, 'index.en-us.md');
         const demoBaseFrom = path.join(from, folder, 'demo');

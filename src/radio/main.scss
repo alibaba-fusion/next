@@ -43,7 +43,7 @@
         background: $radio-bg-color;
         border-radius: $radio-radius-size;
         border: $radio-circle-border-width solid $radio-border-color;
-        transition: ease all .36s 0s;
+        transition: all $motion-duration-immediately $motion-linear;
         box-shadow: $radio-shadow;
 
         &:after {
@@ -56,7 +56,7 @@
             margin-left: -($radio-circle-size / 2);
             background: $color-white;
             content: '';
-            transition: all .3s cubic-bezier(.78, .14, .15, .86);
+            transition: all $motion-duration-immediately $motion-linear;
         }
     }
 
@@ -151,14 +151,14 @@
             margin: 0 0 0 -1px;
             border: 1px solid $radio-button-border-color;
             background-color: $radio-button-bg-color;
-            transition: ease all .3s 0s;
+            transition: all $motion-duration-immediately $motion-linear;
             vertical-align: middle;
 
             #{$radio-prefix}-label {
                 display: block;
                 color: $radio-button-font-color;
                 margin: 0;
-                transition: ease all .3s 0s;
+                transition: all $motion-duration-immediately $motion-linear;
             }
 
             &:hover,

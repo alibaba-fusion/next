@@ -71,6 +71,14 @@ class Checkbox extends UIState {
          * @param {Event} e Dom 事件对象
          */
         onMouseLeave: PropTypes.func,
+        /**
+         * checkbox 的value
+         */
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
+         * name
+         */
+        name: PropTypes.string,
     };
 
     static defaultProps = {

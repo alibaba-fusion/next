@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onError?: any;
@@ -9,7 +10,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface CardProps extends HTMLAttributesWeak {
+export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传的地址
      */
@@ -186,22 +187,15 @@ export interface CardProps extends HTMLAttributesWeak {
     onCancel?: () => void;
 }
 
-export class Card extends React.Component<CardProps, any> { }
+export class Card extends React.Component<CardProps, any> {}
 
-export interface DraggerProps extends React.HTMLAttributes<HTMLElement> {
-    /**
-     * 样式前缀
-     */
-    prefix?: string;
-}
-
-export class Dragger extends React.Component<DraggerProps, any> { }
+export class Dragger extends React.Component<UploadProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onSelect?: any;
 }
 
-export interface SelecterProps extends HTMLAttributesWeak {
+export interface SelecterProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否禁用上传功能
      */
@@ -243,7 +237,7 @@ export interface SelecterProps extends HTMLAttributesWeak {
     onDrop?: () => void;
 }
 
-export class Selecter extends React.Component<SelecterProps, any> { }
+export class Selecter extends React.Component<SelecterProps, any> {}
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onError?: any;
     onSelect?: any;
@@ -251,7 +245,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface UploadProps extends HTMLAttributesWeak {
+export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传的地址
      */

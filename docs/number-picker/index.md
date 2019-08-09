@@ -51,6 +51,7 @@
 | downBtnProps | 减少按钮的props                                                                                                                                     | Object        | -         |
 | label        | 内联 label                                                                                                                                       | ReactNode     | -         |
 | innerAfter   | inner after                                                                                                                                    | ReactNode     | -         |
+| device       | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                         | Enum          | -         |
 
 ## ARIA and KeyBoard
 

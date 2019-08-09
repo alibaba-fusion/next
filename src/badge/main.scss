@@ -81,7 +81,7 @@
         &-scroll-number-only {
             position: relative;
             display: inline-block;
-            transition: transform .3s cubic-bezier(.645, .045, .355, 1), -webkit-transform .3s cubic-bezier(.645, .045, .355, 1);
+            transition: transform $motion-duration-immediately $motion-linear, -webkit-transform $motion-duration-immediately $motion-linear;
             min-width: $badge-size-dot-min-width;
 
             span {

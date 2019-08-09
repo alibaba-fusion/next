@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface ColumnProps extends HTMLAttributesWeak {
+export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 指定列对应的字段，支持`a.b`形式的快速取值
      */
@@ -72,7 +73,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface ColumnGroupProps extends HTMLAttributesWeak {
+export interface ColumnGroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 表头显示的内容
      */
@@ -81,7 +82,7 @@ export interface ColumnGroupProps extends HTMLAttributesWeak {
 
 export class ColumnGroup extends React.Component<ColumnGroupProps, any> {}
 
-export interface GroupHeaderProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupHeaderProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 行渲染的逻辑
      */
@@ -105,7 +106,7 @@ export interface GroupHeaderProps extends React.HTMLAttributes<HTMLElement> {
 
 export class GroupHeader extends React.Component<GroupHeaderProps, any> {}
 
-export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement> {
+export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 行渲染的逻辑
      */
@@ -113,7 +114,7 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
-export interface TableProps extends React.HTMLAttributes<HTMLElement> {
+export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式类名的品牌前缀
      */

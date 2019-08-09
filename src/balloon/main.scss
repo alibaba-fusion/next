@@ -10,6 +10,8 @@
 
     font-size: $balloon-content-font-size;
     font-weight: $balloon-content-font-weight;
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease-in-out;
     word-wrap: break-word;
     z-index: 0;
     &:focus,

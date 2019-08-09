@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface SearchProps extends HTMLAttributesWeak {
+export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 大小
      */
@@ -156,7 +157,7 @@ export interface SearchProps extends HTMLAttributesWeak {
     /**
      * 点击搜索按钮触发的回调
      */
-    onSearch?: (value: {}) => void;
+    onSearch?: (value: string, filterValue?: any) => void;
 
     /**
      * 选择器默认值
