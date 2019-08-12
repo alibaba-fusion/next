@@ -577,16 +577,13 @@ export default class Menu extends Component {
     }
 
     normalizeToArray(items) {
-        let arr = [];
         if (items) {
             if (Array.isArray(items)) {
-                arr = items;
+                return items;
             } else {
-                arr = [items];
+                return [items];
             }
         }
-
-        return arr.filter(key => key in this.k2n);
     }
 
     isSibling(currentPos, targetPos) {
@@ -623,7 +620,9 @@ export default class Menu extends Component {
             if (mode === 'inline') {
                 if (openMode === 'single') {
                     newOpenKeys = openKeys.filter(
-                        k => !this.isSibling(this.k2n[key].pos, this.k2n[k].pos)
+                        k =>
+                            this.k2n[k] &&
+                            !this.isSibling(this.k2n[key].pos, this.k2n[k].pos)
                     );
                     newOpenKeys.push(key);
                 } else {
@@ -631,7 +630,10 @@ export default class Menu extends Component {
                 }
             } else {
                 newOpenKeys = openKeys.filter(k => {
-                    return this.isAncestor(this.k2n[key].pos, this.k2n[k].pos);
+                    return (
+                        this.k2n[k] &&
+                        this.isAncestor(this.k2n[key].pos, this.k2n[k].pos)
+                    );
                 });
                 newOpenKeys.push(key);
             }
@@ -653,6 +655,7 @@ export default class Menu extends Component {
                 newOpenKeys = openKeys.filter(k => {
                     return (
                         k !== key &&
+                        this.k2n[k] &&
                         !this.isAncestor(this.k2n[k].pos, this.k2n[key].pos)
                     );
                 });
