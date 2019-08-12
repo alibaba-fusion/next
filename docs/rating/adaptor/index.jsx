@@ -21,7 +21,7 @@ export default {
             default: 3
         }]
     }),
-    adaptor: ({ type, size, value }) => {
-        return <Rating showGrade={type === 'level'} value={value} size={size} />;
+    adaptor: ({ type, size, value, ...others }) => {
+        return <Rating {...others} showGrade={type === 'level'} value={value} size={size} />;
     }
 };
