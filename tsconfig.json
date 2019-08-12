@@ -5,5 +5,5 @@
       "removeComments": true,
       "sourceMap": true
     },
-   "include": ["types/**/*"]
+    "exclude": ["node_modules"]
 }
