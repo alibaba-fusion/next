@@ -127,9 +127,19 @@ function* publishToNpm() {
             message: 'Are you sure to publish to npmjs.com ? (yes | no)',
         },
     ]);
+
+    const distTags = yield inquirer.prompt([
+        {
+            name: 'tag',
+            type: 'list',
+            choices: ['latest', 'next', 'beta'],
+            default: 0,
+            message: 'publish dist-tags:',
+        },
+    ]);
     if (pubNpm.pub.toLowerCase() === 'yes') {
         logger.success('publishing ...');
-        yield runCommond('npm publish');
+        yield runCommond(`npm publish --tag ${distTags.tag}`);
         yield triggerRelease();
     } else {
         logger.success('publish abort.');
