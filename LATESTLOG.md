@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.16.6](https://github.com/alibaba-fusion/next/compare/1.16.5...1.16.6) (2019-08-01)
+## [1.16.7](https://github.com/alibaba-fusion/next/compare/1.16.6...1.16.7) (2019-08-13)
 
 
 ### Bug Fixes
 
-* **Typescript:** fix menu-button & split-button ([0cfe939](https://github.com/alibaba-fusion/next/commit/0cfe939))
+* **Field:** bug of resetToDefault withtou initValue. close [#1001](https://github.com/alibaba-fusion/next/issues/1001) ([a76b05c](https://github.com/alibaba-fusion/next/commit/a76b05c))
 
 
