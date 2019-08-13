@@ -69,7 +69,7 @@ export default {
                 size={size}
                 style={{ width, ...style }}
                 popupContainer={node => node}
-                popupProps={{ needAdjust: false }}
+                popupProps={{ needAdjust: false, autoFocus: false }}
                 format={type === 'HM' ? 'HH:mm' : type === 'MS' ? 'mm:ss' : 'HH:mm:ss'}
                 label={label}
                 disabled={state === 'disabled'}
