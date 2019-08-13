@@ -288,5 +288,14 @@ describe('TextArea', () => {
 
             done();
         });
+
+        it('support null to reset', done => {
+            let wrapper = mount(<Input.TextArea defaultValue={19} />);
+
+            // value = null 时候清空数据
+            wrapper.setProps({ value: null });
+            assert(wrapper.find('textarea[data-real]').prop('value') === '');
+            done();
+        });
     });
 });
