@@ -31,6 +31,7 @@ export default class GroupListRow extends Row {
             cellRef,
             getCellProps,
             locale,
+            wrapper,
             rtl,
             ...others
         } = this.props;

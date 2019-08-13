@@ -61,7 +61,9 @@ module.exports = function(options) {
             fs.writeFileSync(apiPath, apiString);
             fs.writeFileSync(
                 exportDTSPath,
-                `export * from '../../types/${shortName}';
+                `import ${apiInfo.name} from '../../types/${shortName}';
+export * from '../../types/${shortName}';
+export default ${apiInfo.name};
 `
             );
             // tsgen(apiInfo).then(apiData => {
@@ -70,6 +72,15 @@ module.exports = function(options) {
         } else {
             logger.warn(`Can not generate ${apiPath}`);
         }
+    });
+
+    // generate d.ts for locale
+    ['zh-cn', 'en-us', 'ja-jp', 'zh-tw'].forEach(file => {
+        const localePath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
+        fs.writeFileSync(
+            localePath,
+            `export * from '../../types/locale/${file}';`
+        );
     });
 
     // hack Field
