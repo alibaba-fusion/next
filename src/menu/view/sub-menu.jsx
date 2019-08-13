@@ -97,7 +97,7 @@ export default class SubMenu extends Component {
 
         return (
             !!selectMode &&
-            selectedKeys.some(key => root.k2n[key].pos.indexOf(_keyPos) > -1)
+            selectedKeys.some(key => root.k2n[key].pos.indexOf(_keyPos) === 0)
         );
     }
 
@@ -149,6 +149,7 @@ export default class SubMenu extends Component {
         const {
             _key,
             level,
+            inlineLevel,
             root,
             className,
             selectable: selectableFromProps,
@@ -186,6 +187,7 @@ export default class SubMenu extends Component {
             'aria-expanded': open,
             _key,
             level,
+            inlineLevel,
             root,
             type: 'submenu',
             component: 'div',
