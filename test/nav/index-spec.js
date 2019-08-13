@@ -224,6 +224,12 @@ describe('Nav', () => {
         const subNavItem = wrapper.find('li.next-nav-sub-nav-item').at(0);
 
         assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
+
+        wrapper.setProps({
+            mode: 'popup'
+        });
+
+        assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
     });
 
     it('should support iconOnly', done => {

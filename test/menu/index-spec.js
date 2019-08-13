@@ -106,6 +106,19 @@ describe('Menu', () => {
         assert(innerHTML.match('test-submenu-string'));
     });
 
+    it('Group/SubMenu robotness', () => {
+        wrapper = mount(
+            <Menu openKeys={['no-exist']} mode="popup">
+                <SubMenu key="sub-menu" label="Sub menu">
+                    <Item className="custom-className" key="sub-1">
+                        Sub option 1
+                    </Item>
+                </SubMenu>
+            </Menu>
+        );
+        assert(wrapper);
+    });
+
     it('should filter duplicate keys', () => {
         wrapper = mount(
             <Menu>
