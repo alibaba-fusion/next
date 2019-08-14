@@ -48,6 +48,9 @@ export interface locale {
         ok: string;
         cancel: string;
     };
+    Drawer: {
+        close: string;
+    };
     Message: {
         closeAriaLabel: string;
     };

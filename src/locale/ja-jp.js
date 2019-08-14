@@ -48,6 +48,9 @@ export default {
         ok: '確認',
         cancel: 'キャンセル',
     },
+    Drawer: {
+        close: '閉鎖する',
+    },
     Message: {
         closeAriaLabel: '閉鎖する',
     },
