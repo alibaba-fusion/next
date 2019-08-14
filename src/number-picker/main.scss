@@ -59,7 +59,7 @@
 
         #{$number-picker-prefix}-handler {
             opacity: 0;
-            transition: opacity .24s linear .1s;
+            transition: opacity $motion-duration-immediately $motion-linear;
             height: 100%;
             display: block;
         }

@@ -92,7 +92,6 @@ class BalloonInner extends React.Component {
                         role="button"
                         aria-label={locale.close}
                         tabIndex="0"
-                        href="javascript:void(0);"
                         className={`${_prefix}-close`}
                         onClick={onClose}
                     >

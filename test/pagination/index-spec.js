@@ -680,4 +680,13 @@ describe('Pagination', () => {
                 )
         );
     });
+
+    it('should support device transfer type to simple', () => {
+        wrapper.setProps({
+            device: 'phone',
+            type: 'normal'
+        });
+
+        assert(wrapper.find('.next-simple').length > 0);
+    })
 });

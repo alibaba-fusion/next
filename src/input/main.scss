@@ -54,7 +54,7 @@
     line-height: 1;
     width: 200px;
     border-spacing: 0;
-    transition: all .3s ease-out;
+    transition: all $motion-duration-immediately $motion-linear;
 
     border: $input-border-width solid $input-border-color;
     background-color: $input-bg-color;
@@ -188,7 +188,7 @@
         }
 
         .#{$css-prefix}icon {
-            transition: all .3s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
             color: $input-hint-color;
         }
 

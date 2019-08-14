@@ -1,10 +1,11 @@
 # Latest Log 
 
-## [1.16.4](https://github.com/alibaba-fusion/next/compare/1.16.3...1.16.4) (2019-07-23)
+## [1.17.4](https://github.com/alibaba-fusion/next/compare/1.17.3...1.17.4) (2019-08-13)
 
 
 ### Bug Fixes
 
-* **Field:** validate no names fix [#913](https://github.com/alibaba-fusion/next/issues/913) ([d131416](https://github.com/alibaba-fusion/next/commit/d131416))
+* **Menu:** child-selected should work in popup mode ([bd784e7](https://github.com/alibaba-fusion/next/commit/bd784e7))
+* **Tag:** closable can`t set `data-xx` prop ([d1e5507](https://github.com/alibaba-fusion/next/commit/d1e5507))
 
 

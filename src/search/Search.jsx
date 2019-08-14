@@ -49,7 +49,8 @@ class Search extends React.Component {
         onChange: PropTypes.func,
         /**
          * 点击搜索按钮触发的回调
-         * @param {Object} value 输入值
+         * @param {String} value 输入值
+         * @param {String} filterValue 选项值
          */
         onSearch: PropTypes.func,
         /**

@@ -138,7 +138,7 @@
         }
     }
     &-row {
-        transition: all ease .3s;
+        transition: all $motion-duration-immediately $motion-linear;
         background: $table-row-bg;
         color: $table-row-color;
 

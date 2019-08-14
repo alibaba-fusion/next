@@ -43,6 +43,7 @@ module.exports = function getWebpackConfig(options) {
             'index-loader': path.join(loadersPath, 'index/index.js'),
             'demo-loader': path.join(loadersPath, 'demo/index.js'),
             'theme-loader': path.join(loadersPath, 'theme/index.js'),
+            'adaptor-loader': path.join(loadersPath, 'adaptor/index.js'),
         },
     };
 
@@ -137,6 +138,16 @@ module.exports = function getWebpackConfig(options) {
                     disableAnimation,
                     componentName,
                 },
+            },
+        ],
+    });
+    config.module.rules.push({
+        test: /adaptor\/.+\.jsx$/,
+        use: [
+            babelLoader,
+            {
+                loader: 'adaptor-loader',
+                options: {},
             },
         ],
     });

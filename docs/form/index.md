@@ -40,6 +40,7 @@
 | value          | 表单数值                                                                                                                                                                                                                                    | Object          | -                                                      |
 | onChange       | 表单变化回调<br><br>**签名**:<br>Function(values: Object, item: Object) => void<br>**参数**:<br>_values_: {Object} 表单数据<br>_item_: {Object} 详细<br>_item.name_: {String} 变化的组件名<br>_item.value_: {String} 变化的数据<br>_item.field_: {Object} field 实例 | Function        | func.noop                                              |
 | component      | 设置标签类型                                                                                                                                                                                                                                  | String/Function | 'form'                                                 |
+| device         | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                                                                                                                  | Enum            | 'desktop'                                              |
 
 ### Form.Item
 
@@ -82,6 +83,7 @@
 | validator           | [表单校验] 自定义校验函数<br><br>**签名**:<br>Function() => void                                                                     | Function           | -     |
 | validatorTrigger    | validator 自定义触发方式                                                                                                       | String/Array       | -     |
 | autoValidate        | 是否修改数据时自动触发校验                                                                                                           | Boolean            | -     |
+| device              | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                  | Enum               | -     |
 
 ### Form.Submit
 

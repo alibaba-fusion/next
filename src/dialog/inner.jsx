@@ -149,7 +149,6 @@ export default class Inner extends Component {
                 <a
                     role="button"
                     aria-label={locale.close}
-                    href="javascript:;"
                     className={`${prefix}dialog-close`}
                     onClick={onClose}
                 >

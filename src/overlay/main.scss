@@ -18,7 +18,7 @@
         width: 100%;
         height: 100%;
         background-color: change-color($color: $mask-background, $alpha: $mask-opacity);
-        transition: opacity .3s;
+        transition: opacity $motion-duration-standard $motion-ease;
         opacity: 0;
     }
 
