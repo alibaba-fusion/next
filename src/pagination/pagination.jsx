@@ -214,17 +214,11 @@ class Pagination extends Component {
     }
     onPageItemClick(page, e) {
         if (!('current' in this.props)) {
-            this.setState(
-                {
-                    current: page,
-                },
-                () => {
-                    this.props.onChange(page, e);
-                }
-            );
-        } else {
-            this.props.onChange(page, e);
+            this.setState({
+                current: page,
+            });
         }
+        this.props.onChange(page, e);
     }
 
     onInputChange(value) {
