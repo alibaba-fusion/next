@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import Enzyme, { shallow } from 'enzyme';
+import ReactTestUtils from 'react-dom/test-utils';
 import Adapter from 'enzyme-adapter-react-16';
 import { dom } from '../../src/util';
 import Drawer from '../../src/drawer/index';
@@ -39,6 +40,42 @@ const render = element => {
     };
 };
 
+class Demo extends React.Component {
+    state = {
+        visible: false,
+    };
+
+    onOpen = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    render() {
+        return (
+            <div>
+                <button onClick={this.onOpen} type="primary">
+                    打开对话框
+                </button>
+                <Drawer
+                    title="欢迎来到 Alibaba.com"
+                    visible={this.state.visible}
+                    onClose={this.onClose}
+                    {...this.props}
+                >
+                    开启您的贸易生活从 Alibaba.com 开始
+                </Drawer>
+            </div>
+        );
+    }
+}
+
 describe('Drawer', () => {
     let wrapper;
     afterEach(() => {
@@ -46,6 +83,18 @@ describe('Drawer', () => {
             wrapper.unmount();
             wrapper = null;
         }
+    });
+
+    it('should show and hide', () => {
+        wrapper = render(<Demo animation={false} />);
+        const btn = document.querySelector('button');
+        ReactTestUtils.Simulate.click(btn);
+        assert(document.querySelector('.next-drawer'));
+
+        const closeLink = document.querySelector('.next-drawer-close');
+        ReactTestUtils.Simulate.click(closeLink);
+
+        assert(!document.querySelector('.next-drawer'));
     });
 
     it('should support placement', () => {
@@ -60,6 +109,11 @@ describe('Drawer', () => {
                 )
             );
         });
+    });
+
+    it('should hide close link if set closeable to false', () => {
+        wrapper = render(<Drawer visible closeable={false} />);
+        assert(!document.querySelector('.next-drawer-close'));
     });
 
 })
