@@ -40,7 +40,7 @@ const render = element => {
     };
 };
 
-class Demo extends React.Component {
+class DrawerDemo extends React.Component {
     state = {
         visible: false,
     };
@@ -60,8 +60,8 @@ class Demo extends React.Component {
     render() {
         return (
             <div>
-                <button onClick={this.onOpen} type="primary">
-                    打开对话框
+                <button id="open-drawer" onClick={this.onOpen} type="primary">
+                    打开抽屉
                 </button>
                 <Drawer
                     title="欢迎来到 Alibaba.com"
@@ -78,6 +78,14 @@ class Demo extends React.Component {
 
 describe('Drawer', () => {
     let wrapper;
+
+    beforeEach(() => {
+        const overlay = document.querySelectorAll('.next-overlay-wrapper');
+        overlay.forEach(dom => {
+            document.body.removeChild(dom);
+        });
+    });
+
     afterEach(() => {
         if (wrapper) {
             wrapper.unmount();
@@ -86,15 +94,16 @@ describe('Drawer', () => {
     });
 
     it('should show and hide', () => {
-        wrapper = render(<Demo animation={false} />);
-        const btn = document.querySelector('button');
+        wrapper = render(<DrawerDemo animation={false} />);
+        const btn = document.getElementById('open-drawer');
         ReactTestUtils.Simulate.click(btn);
-        assert(document.querySelector('.next-drawer'));
 
+        assert(document.querySelector('.next-drawer'));
         const closeLink = document.querySelector('.next-drawer-close');
         ReactTestUtils.Simulate.click(closeLink);
 
         assert(!document.querySelector('.next-drawer'));
+
     });
 
     it('should support placement', () => {
