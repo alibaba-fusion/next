@@ -10,6 +10,8 @@
 @import "scss/_fading-exits/_fadeOutLeft.scss";
 @import "scss/_fading-exits/_fadeOutRight.scss";
 @import "scss/_fading-exits/_fadeOutUp.scss";
+@import "scss/_sliding-exits/sliding-exits.scss";
+@import "scss/_sliding-entrances/sliding-entrances.scss";
 @import "scss/_zooming-entrances/_zoomIn.scss";
 @import "scss/_zooming-exits/_zoomOut.scss";
 @import "scss/_expand-entrances/_expandInDown.scss";
@@ -58,6 +60,38 @@
 
 .fadeOutUp {
     @include fadeOutUp();
+}
+
+.slideInUp {
+    @include slideInUp();
+}
+
+.slideInDown {
+    @include slideInDown();
+}
+
+.slideInLeft {
+    @include slideInLeft();
+}
+
+.slideInRight {
+    @include slideInRight();
+}
+
+.slideOutUp {
+    @include slideOutUp();
+}
+
+.slideOutRight {
+    @include slideOutRight();
+}
+
+.slideOutLeft {
+    @include slideOutLeft();
+}
+
+.slideOutDown {
+    @include slideOutDown();
 }
 
 .zoomIn {

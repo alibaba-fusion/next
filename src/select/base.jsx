@@ -120,7 +120,7 @@ export default class Base extends React.Component {
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
-        popupComponent: PropTypes.node,
+        popupComponent: PropTypes.any,
     };
 
     static defaultProps = {

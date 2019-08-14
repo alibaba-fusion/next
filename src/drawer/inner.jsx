@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Icon from '../icon';
+import zhCN from '../locale/zh-cn';
 import { obj } from '../util';
 
+const noop = () => {};
 const { pickOthers } = obj;
 
 export default class Inner extends Component {
@@ -13,13 +16,73 @@ export default class Inner extends Component {
         role: PropTypes.string,
         placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
         rtl: PropTypes.bool,
+        onClose: PropTypes.func,
+        locale: PropTypes.object,
+        bodyStyle: PropTypes.object,
+        afterClose: PropTypes.func,
+        beforeOpen: PropTypes.func,
+        beforeClose: PropTypes.func,
+        cache: PropTypes.bool,
+        shouldUpdatePosition: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         closeable: true,
         role: 'dialog',
+        onClose: noop,
+        locale: zhCN.Drawer,
     };
+
+    renderHeader() {
+        const { prefix, title } = this.props;
+        if (title) {
+            return (
+                <div
+                    className={`${prefix}drawer-header`}
+                    role="heading"
+                    aria-level="1"
+                >
+                    {title}
+                </div>
+            );
+        }
+        return null;
+    }
+
+    renderBody() {
+        const { prefix, children, bodyStyle } = this.props;
+        if (children) {
+            return (
+                <div className={`${prefix}drawer-body`} style={bodyStyle}>
+                    {children}
+                </div>
+            );
+        }
+        return null;
+    }
+
+    renderCloseLink() {
+        const { prefix, closeable, onClose, locale } = this.props;
+
+        if (closeable) {
+            return (
+                <a
+                    role="button"
+                    aria-label={locale.close}
+                    className={`${prefix}drawer-close`}
+                    onClick={onClose}
+                >
+                    <Icon
+                        className={`${prefix}drawer-close-icon`}
+                        type="close"
+                    />
+                </a>
+            );
+        }
+
+        return null;
+    }
 
     render() {
         const {
@@ -27,7 +90,6 @@ export default class Inner extends Component {
             className,
             closeable,
             placement,
-            children,
             role,
             rtl,
         } = this.props;
@@ -45,6 +107,10 @@ export default class Inner extends Component {
             'aria-modal': 'true',
         };
 
+        const header = this.renderHeader();
+        const body = this.renderBody();
+        const closeLink = this.renderCloseLink();
+
         return (
             <div
                 {...ariaProps}
@@ -52,7 +118,9 @@ export default class Inner extends Component {
                 {...others}
                 dir={rtl ? 'rtl' : undefined}
             >
-                {children}
+                {header}
+                {body}
+                {closeLink}
             </div>
         );
     }
