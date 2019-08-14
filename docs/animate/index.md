@@ -42,6 +42,10 @@
 | fadeInLeft   | fadeOutLeft   |
 | fadeInRight  | fadeOutRight  |
 | fadeInUp     | fadeOutUp     |
+| slideInDown   | slideOutUp   |
+| slideInLeft   | slideOutLeft   |
+| slideInRight  | slideOutRight  |
+| slideInUp     | slideOutDown     |
 | zoomIn       | zoomOut       |
 | expandInDown | expandOutUp   |
 | expandInUp   | expandOutDown |
