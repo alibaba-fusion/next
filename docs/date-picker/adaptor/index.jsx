@@ -40,7 +40,7 @@ export default {
                 type: Types.string,
                 default: shape === 'range' ? 'Start Date - End Date' : 'Please Select Date'
             }]
-        }
+        };
     },
     adaptor: ({ shape, state, size, type, width, label, placeholder = '', style = {}, ...others }) => {
         const now = moment();
@@ -55,7 +55,10 @@ export default {
                     {...others}
                     visible={state === 'expanded'}
                     disabled={state === 'disabled'}
-                    popupProps={{ needAdjust: false }}
+                    popupProps={{
+                        needAdjust: false,
+                        autoFocus: false,
+                    }}
                     popupContainer={node => node}
                     style={style}
                     size={size}
@@ -75,7 +78,10 @@ export default {
                 {...others}
                 visible={state === 'expanded'}
                 disabled={state === 'disabled'}
-                popupProps={{ needAdjust: false }}
+                popupProps={{
+                    needAdjust: false,
+                    autoFocus: false,
+                }}
                 popupContainer={node => node}
                 style={style}
                 size={size}

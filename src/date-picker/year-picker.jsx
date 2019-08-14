@@ -409,9 +409,9 @@ class YearPicker extends Component {
                 className={yearPickerCls}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

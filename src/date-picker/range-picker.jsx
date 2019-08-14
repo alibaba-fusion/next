@@ -989,9 +989,9 @@ export default class RangePicker extends Component {
                 className={classNames}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
