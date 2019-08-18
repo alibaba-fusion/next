@@ -111,11 +111,9 @@ class Base extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) {
+            const value = nextProps.value;
             this.setState({
-                value:
-                    typeof nextProps.value === 'undefined'
-                        ? ''
-                        : nextProps.value,
+                value: value === undefined || value === null ? '' : value,
             });
         }
     }

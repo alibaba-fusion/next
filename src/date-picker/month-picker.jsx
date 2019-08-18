@@ -137,6 +137,7 @@ class MonthPicker extends Component {
         dateInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {
@@ -420,9 +421,9 @@ class MonthPicker extends Component {
                 className={monthPickerCls}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     role="combobox"
                     aria-expanded={visible}
                     disabled={disabled}

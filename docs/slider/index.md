@@ -50,7 +50,7 @@
 | slideDirection     | 轮播方向<br><br>**可选值**:<br>'hoz', 'ver'                                                               | Enum           | 'hoz'    |
 | slidesToShow       | 同时展示的图片数量                                                                                          | Number         | 1        |
 | slidesToScroll     | 同时滑动的图片数量                                                                                          | Number         | 1        |
-| speed              | 轮播速度                                                                                               | Number         | 500      |
+| speed              | 轮播速度                                                                                               | Number         | 600      |
 | activeIndex        | 跳转到指定的轮播图（受控）                                                                                      | Number         | -        |
 | triggerType        | 锚点导航触发方式<br><br>**可选值**:<br>'click', 'hover'                                                       | Enum           | 'click'  |
 | onChange           | 轮播切换的回调函数<br><br>**签名**:<br>Function(index: Number) => void<br>**参数**:<br>_index_: {Number} 幻灯片的索引 | Function       | () => {} |

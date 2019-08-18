@@ -8,7 +8,7 @@
 
     &-trigger {
         .#{$css-prefix}icon {
-            transition: transform .3s cubic-bezier(.645, .045, .355, 1);
+            transition: transform $motion-duration-immediately $motion-linear;
         }
 
         &.#{$css-prefix}expand .#{$css-prefix}icon {

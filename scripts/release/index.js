@@ -24,7 +24,28 @@ const runCommond = function(cmd) {
 co(function*() {
     checkTags();
 
-    yield pushMaster();
+    const publish = yield inquirer.prompt([
+        {
+            name: 'normal',
+            type: 'list',
+            choices: [
+                {
+                    name: 'Normal publish',
+                    value: 'yes',
+                },
+                {
+                    name: 'Beta / pre minor fix',
+                    value: 'no',
+                },
+            ],
+            default: 0,
+            message: 'Is this a normal publish?',
+        },
+    ]);
+
+    if (publish.normal === 'yes') {
+        yield pushMaster();
+    }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
 }).catch(err => {
@@ -65,6 +86,8 @@ function* pushMaster() {
 
 function* pushPlatformDocsBranch() {
     const docs = path.join(cwd, 'platform-docs');
+    yield runCommond(`git tag ${masterTag}`);
+    yield runCommond(`git push origin ${masterTag}`);
 
     try {
         yield fs.ensureDir(docs);
@@ -108,11 +131,6 @@ function* pushPlatformDocsBranch() {
 }
 
 function* publishToNpm() {
-    yield runCommond('git checkout master');
-    yield runCommond('git pull');
-    yield runCommond(`git tag ${masterTag}`);
-    yield runCommond(`git push origin ${masterTag}`);
-
     const pubNpm = yield inquirer.prompt([
         {
             name: 'pub',
@@ -127,9 +145,19 @@ function* publishToNpm() {
             message: 'Are you sure to publish to npmjs.com ? (yes | no)',
         },
     ]);
+
+    const distTags = yield inquirer.prompt([
+        {
+            name: 'tag',
+            type: 'list',
+            choices: ['latest', 'next', 'beta'],
+            default: 0,
+            message: 'publish dist-tags:',
+        },
+    ]);
     if (pubNpm.pub.toLowerCase() === 'yes') {
         logger.success('publishing ...');
-        yield runCommond('npm publish');
+        yield runCommond(`npm publish --tag ${distTags.tag}`);
         yield triggerRelease();
     } else {
         logger.success('publish abort.');

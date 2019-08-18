@@ -205,7 +205,7 @@ let myfield = new Field(this [,options]);
 | getValue | 获取单个输入控件的值 | Function(name: String) | | |
 | setValues | 设置一组输入控件的值（会触发render，请遵循react时机使用) | Function(obj: Object) | | |
 | setValue | 设置单个输入控件的值 （会触发render，请遵循react时机使用)| Function(name: String, value) | | |
-| validate | 校验并获取一组输入域的值与 Error | Function([names: String[]], [options: Object], callback: Function(errors, values)) | | |
+| validate | 校验并获取一组输入域的值与 Error | Function([names: String[]], callback: Function(errors, values)) | | |
 | getError | 获取单个输入控件的 Error | Function(name: String) | | |
 | getErrors | 获取一组输入控件的 Error | Function([name: String]) | | |
 | setError | 设置单个输入控件的 Error | Function(name: String, errors:String/Array[String]) | | |

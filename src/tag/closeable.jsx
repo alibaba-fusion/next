@@ -53,10 +53,12 @@ class Closeable extends Component {
             size,
             children,
             rtl,
+            ...others
         } = this.props;
 
         return (
             <Tag
+                {...others}
                 rtl={rtl}
                 disabled={disabled}
                 className={className}

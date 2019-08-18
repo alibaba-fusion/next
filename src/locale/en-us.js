@@ -48,6 +48,9 @@ export default {
         ok: 'OK',
         cancel: 'Cancel',
     },
+    Drawer: {
+        close: 'Close',
+    },
     Message: {
         closeAriaLabel: 'Close',
     },

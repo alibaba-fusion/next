@@ -128,6 +128,10 @@
             background-color: $openedBgColor;
             color: $openedColor;
         }
+        &.#{$css-prefix}child-selected {
+            background-color: $openedBgColor;
+            color: $openedColor;
+        }
 
         &:before {
             background-color: $activeColor;

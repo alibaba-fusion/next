@@ -126,6 +126,7 @@ class YearPicker extends Component {
         dateInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {
@@ -408,9 +409,9 @@ class YearPicker extends Component {
                 className={yearPickerCls}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

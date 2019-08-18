@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.16.6",
+  "version": "1.17.6",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -41,22 +41,23 @@
     "docs": "node ./scripts/docs/index.js",
     "api": "node ./scripts/api.js",
     "pack": "node ./scripts/pack.js",
+    "pack-adaptor": "node ./scripts/adaptor/build.js",
     "release": "node ./scripts/release/index.js",
     "test": "node --max_old_space_size=8192 ./scripts/test/index.js",
     "test:a11y": "node --max_old_space_size=8192 ./scripts/test/a11y-index.js",
     "order-var": "node ./scripts/order-var.js",
     "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
-    "tslint": "tsc types/**/*.d.ts",
+    "tslint": "tsc",
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize"
+    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "lint-staged": {
     "types/**/*.d.ts": [
-        "tslint"
+      "npm run tslint --"
     ],
     "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
       "prettier --write"
@@ -80,7 +81,9 @@
     "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
-    "@alifd/api-extractor": "^3.5.1",
+    "@alifd/adaptor-generate": "^0.2.3",
+    "@alifd/adaptor-helper": "^0.1.3",
+    "@alifd/api-extractor": "^3.5.2",
     "@alifd/babel-preset-next": "^2.0.0",
     "@alifd/doc-parser": "^1.0.0",
     "@alifd/dts-generator": "^1.0.3",

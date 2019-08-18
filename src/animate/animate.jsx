@@ -39,6 +39,7 @@ class Animate extends Component {
         ]),
         /**
          * 执行第一次挂载动画前触发的回调函数
+         * @param {HTMLElement} node 执行动画的 dom 元素
          */
         beforeAppear: PropTypes.func,
         /**

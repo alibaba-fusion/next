@@ -62,6 +62,7 @@ module.exports = function(options) {
             fs.writeFileSync(
                 exportDTSPath,
                 `import ${apiInfo.name} from '../../types/${shortName}';
+export * from '../../types/${shortName}';
 export default ${apiInfo.name};
 `
             );
@@ -71,6 +72,15 @@ export default ${apiInfo.name};
         } else {
             logger.warn(`Can not generate ${apiPath}`);
         }
+    });
+
+    // generate d.ts for locale
+    ['zh-cn', 'en-us', 'ja-jp', 'zh-tw'].forEach(file => {
+        const localePath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
+        fs.writeFileSync(
+            localePath,
+            `export * from '../../types/locale/${file}';`
+        );
     });
 
     // hack Field

@@ -25,6 +25,7 @@ const onOk = (value) => console.log('onOK:', value.format('YYYY-MM-DD HH:mm:ss')
 const onRangeOk = (value) => console.log('onOk: [%s, %s]', value[0].format('YYYY-MM-DD HH:mm:ss'), value[1].format('YYYY-MM-DD HH:mm:ss'));
 
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
+const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
 
 ReactDOM.render(<div>
     <p>DatePicker With Time</p>
@@ -39,5 +40,7 @@ ReactDOM.render(<div>
     <RangePicker showTime resetTime onChange={onChange} onOk={onRangeOk} />
     <p>RangePicker with Time, with default time value, hide seconds</p>
     <RangePicker showTime={{ defaultValue: defaultTimeValue, format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} />
+    <p>RangePicker with Time, with default start & end time value, hide seconds</p>
+    <RangePicker showTime={{ defaultValue: defaultTimeValues, format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} />
 </div>, mountNode);
 ````

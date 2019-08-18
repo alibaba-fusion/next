@@ -183,6 +183,10 @@ export default class Item extends React.Component {
          * 是否修改数据时自动触发校验
          */
         autoValidate: PropTypes.bool,
+        /**
+         * 预设屏幕宽度
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
     static defaultProps = {
@@ -258,9 +262,13 @@ export default class Item extends React.Component {
             labelCol,
             wrapperCol,
             prefix,
-            labelAlign,
             labelTextAlign,
         } = this.props;
+
+        const labelAlign = this.getLabelAlign(
+            this.props.labelAlign,
+            this.props.device
+        );
 
         if (!label) {
             return null;
@@ -299,9 +307,13 @@ export default class Item extends React.Component {
             wrapperCol,
             children,
             extra,
-            labelAlign,
             prefix,
         } = this.props;
+
+        const labelAlign = this.getLabelAlign(
+            this.props.labelAlign,
+            this.props.device
+        );
 
         const state = this.getState();
 
@@ -374,15 +386,22 @@ export default class Item extends React.Component {
         );
     }
 
+    getLabelAlign(labelAlign, device) {
+        if (device === 'phone') {
+            return 'top';
+        }
+
+        return labelAlign;
+    }
+
     render() {
-        const {
-            className,
-            labelAlign,
-            style,
-            prefix,
-            wrapperCol,
-            labelCol,
-        } = this.props;
+        const { className, style, prefix, wrapperCol, labelCol } = this.props;
+
+        const labelAlign = this.getLabelAlign(
+            this.props.labelAlign,
+            this.props.device
+        );
+
         const state = this.getState();
         const size = this.getSize();
 

@@ -28,7 +28,7 @@ $nav-icononly-width: $s-15;
         #{$menu-prefix}-item-text > span,
         #{$nav-prefix}-group-label > span {
             opacity: 1;
-            transition: opacity .3s;
+            transition: opacity $motion-duration-immediately $motion-linear;
         }
 
         a {
@@ -52,7 +52,7 @@ $nav-icononly-width: $s-15;
 
     &.#{$css-prefix}active &-item:before {
         position: absolute;
-        transition: all .4s cubic-bezier(.23, 1, .32, 1);
+        transition: all $motion-duration-standard $motion-ease;
         content: '';
     }
 
@@ -120,7 +120,7 @@ $nav-icononly-width: $s-15;
     }
 
     &.#{$css-prefix}ver {
-        transition: width .3s;
+        transition: width $motion-duration-standard $motion-ease;
 
         @include nav-size(
             'ver',
@@ -382,7 +382,7 @@ $nav-icononly-width: $s-15;
                 $marginLeft: (18px - $nav-icon-only-font-size) / 2,
                 $marginRight: (18px - $nav-icon-only-font-size) / 2
             );
-            transition: all ease .3s;
+            transition: all $motion-duration-immediately $motion-linear;
             transform-origin: center 46%;
         }
 

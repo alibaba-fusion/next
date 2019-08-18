@@ -41,6 +41,10 @@ export default class Group extends Component {
         });
 
         const newChildren = children.map(child => {
+            // to fix https://github.com/alibaba-fusion/next/issues/952
+            if (typeof child !== 'function' && typeof child !== 'object') {
+                return child;
+            }
             const { className } = child.props;
             const newChildClassName = cx({
                 [`${prefix}menu-group-item`]: true,

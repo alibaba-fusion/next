@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface DialogProps extends HTMLAttributesWeak {
+export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否显示
      */
@@ -39,7 +40,7 @@ export interface DialogProps extends HTMLAttributesWeak {
      * ['ok']（只存在确认按钮）
      * ['cancel']（只存在取消按钮）
      */
-    footerActions?: Array<any>;
+    footerActions?: Array<string>;
 
     /**
      * 在点击确定按钮时触发的回调函数
@@ -70,7 +71,7 @@ export interface DialogProps extends HTMLAttributesWeak {
      * 如果设置为 true，则以上关闭方式全部生效
      * 如果设置为 false，则以上关闭方式全部失效
      */
-    closeable?: string | boolean;
+    closeable?: 'close' | 'mask' | 'esc' | boolean;
 
     /**
      * 对话框关闭时触发的回调函数

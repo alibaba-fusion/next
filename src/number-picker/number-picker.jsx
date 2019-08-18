@@ -115,6 +115,10 @@ class NumberPicker extends React.Component {
          */
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
+        /**
+         * 预设屏幕宽度
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
     static defaultProps = {
@@ -418,7 +422,7 @@ class NumberPicker extends React.Component {
 
     render() {
         const {
-            type,
+            device,
             prefix,
             rtl,
             disabled,
@@ -436,11 +440,13 @@ class NumberPicker extends React.Component {
             innerAfter,
         } = this.props;
 
+        let type = device === 'phone' ? 'inline' : this.props.type;
+
         const prefixCls = `${prefix}number-picker`;
 
         const cls = classNames({
             [prefixCls]: true,
-            [`${prefixCls}-${this.props.type}`]: this.props.type,
+            [`${prefixCls}-${type}`]: type,
             [`${prefix}${size}`]: true,
             [className]: className,
         });

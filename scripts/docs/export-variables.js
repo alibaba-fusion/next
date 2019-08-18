@@ -15,6 +15,7 @@ module.exports = function*(options) {
         'lib/core/style/_line.scss',
         'lib/core/style/_shadow.scss',
         'lib/core/style/_icon.scss',
+        'lib/core/style/_motion.scss',
         'lib/core/utility/_form-element.scss',
         'lib/core/utility/_mask.scss',
         'lib/core/utility/_popup.scss',

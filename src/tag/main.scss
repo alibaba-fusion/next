@@ -29,7 +29,7 @@
         border-style: solid; /* 可配置??? */
         overflow: hidden;
         white-space: nowrap;
-        transition: all .2s cubic-bezier(.23, 1, .32, 1);
+        transition: all $motion-duration-immediately $motion-linear;
         font-size: 0;
         outline: 0;
 

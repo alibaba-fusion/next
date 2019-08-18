@@ -278,7 +278,7 @@ export default class Range extends React.Component {
         const value = props.value !== undefined ? props.value : defaultValue;
 
         this.state = {
-            value: value,
+            value,
             tempValue: value,
             hasMovingClass: false,
             lowerTooltipVisible: false,
@@ -304,7 +304,7 @@ export default class Range extends React.Component {
                 value = initialValue;
             }
             this.setState({
-                value: value,
+                value,
                 tempValue: value,
             });
         }
@@ -379,16 +379,21 @@ export default class Range extends React.Component {
 
     _onMouseDown(e) {
         if (e.button === 0) {
-            this.setState({
-                hasMovingClass: true,
-            });
             this._start(e.pageX);
-            this._addDocumentEvents();
+            this._addDocumentMouseEvents();
             pauseEvent(e);
         }
     }
 
+    _onTouchStart(e) {
+        this._start(e.targetTouches[0].pageX);
+        this._addDocumentTouchEvents();
+        e.stopPropagation(); // preventDefault() will be ignored: https://www.chromestatus.com/features/5093566007214080
+    }
+
     onKeyDown(e) {
+        if (this.props.disabled) return;
+
         if (
             e.keyCode === KEYCODE.LEFT_ARROW ||
             e.keyCode === KEYCODE.RIGHT_ARROW
@@ -417,6 +422,10 @@ export default class Range extends React.Component {
     }
 
     _start(position) {
+        this.setState({
+            hasMovingClass: true,
+        });
+
         const { tempValue } = this.state;
         const range = this.dom;
         const start = range.getBoundingClientRect().left;
@@ -462,7 +471,7 @@ export default class Range extends React.Component {
                 this.setState({
                     // tooltipVisible: false,
                     tempValue: value,
-                    value: value,
+                    value,
                 });
             }
             this.props.onChange(tempValue);
@@ -470,7 +479,9 @@ export default class Range extends React.Component {
     }
 
     _move(e) {
-        this._onProcess(e.pageX);
+        const position =
+            e.type === 'mousemove' ? e.pageX : e.targetTouches[0].pageX;
+        this._onProcess(position);
     }
 
     _onProcess(position, start) {
@@ -530,7 +541,7 @@ export default class Range extends React.Component {
         }
     }
 
-    _addDocumentEvents() {
+    _addDocumentMouseEvents() {
         this._onMouseMoveListener = events.on(
             document,
             'mousemove',
@@ -539,6 +550,19 @@ export default class Range extends React.Component {
         this._onMouseUpListener = events.on(
             document,
             'mouseup',
+            this._end.bind(this)
+        );
+    }
+
+    _addDocumentTouchEvents() {
+        this._onTouchMoveListener = events.on(
+            document,
+            'touchmove',
+            this._move.bind(this)
+        );
+        this._onTouchEndListener = events.on(
+            document,
+            'touchend',
             this._end.bind(this)
         );
     }
@@ -552,6 +576,16 @@ export default class Range extends React.Component {
         if (this._onMouseUpListener) {
             this._onMouseUpListener.off();
             this._onMouseUpListener = null;
+        }
+
+        if (this._onTouchMoveListener) {
+            this._onTouchMoveListener.off();
+            this._onTouchMoveListener = null;
+        }
+
+        if (this._onTouchEndListener) {
+            this._onTouchEndListener.off();
+            this._onTouchEndListener = null;
         }
     }
 
@@ -716,6 +750,7 @@ export default class Range extends React.Component {
                 id={id}
                 dir={rtl ? 'rtl' : 'ltr'}
                 onMouseDown={disabled ? noop : this._onMouseDown.bind(this)}
+                onTouchStart={disabled ? noop : this._onTouchStart.bind(this)}
             >
                 {marks !== false && marksPosition === 'above' ? (
                     <Mark {...commonProps} marks={this._calcMarks()} />

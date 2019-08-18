@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface ItemProps extends HTMLAttributesWeak {
+export interface ItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 节点状态
      */
@@ -58,7 +59,7 @@ type foldItem = {
     foldShow?: boolean;
 }
 
-export interface TimelineProps extends React.HTMLAttributes<HTMLElement> {
+export interface TimelineProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式的品牌前缀
      */

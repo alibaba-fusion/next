@@ -165,7 +165,7 @@ describe('Range ', () => {
         );
     });
 
-    it('dragging onChange onProcess', done => {
+    it('laptop dragging onChange onProcess', done => {
         let changeValue = 0;
         let processValue = 0;
         let onChangeCall = 0;
@@ -202,6 +202,55 @@ describe('Range ', () => {
         });
         RangeInstance._move({
             pageX: 20,
+            type: 'mousemove',
+            stopPropagation: () => {},
+            preventDefault: () => {},
+        });
+        RangeInstance._end();
+
+        assert(processValue === 20);
+        assert(processCall === 1);
+        assert(onChangeCall === 1);
+        done();
+    });
+
+    it('mobile dragging onChange onProcess', done => {
+        let changeValue = 0;
+        let processValue = 0;
+        let onChangeCall = 0;
+        let processCall = 0;
+        const wrapper = mount(
+            <Range
+                defaultValue={10}
+                style={{ width: 100 }}
+                marks={[0, 26, 37, 100]}
+                onChange={function(value) {
+                    // console.log('onChange', value);
+                    changeValue = value;
+                    onChangeCall++;
+                }}
+                onProcess={function(value) {
+                    // console.log('onProcess', value);
+                    processValue = value;
+                    processCall++;
+                }}
+                min={0}
+                max={100}
+            />
+        );
+
+        const RangeInstance = wrapper
+            .find('Range')
+            .at(0)
+            .instance();
+        RangeInstance._onTouchStart({
+            targetTouches: [{ pageX: 10 }],
+            stopPropagation: () => {},
+            preventDefault: () => {},
+        });
+        RangeInstance._move({
+            targetTouches: [{ pageX: 20 }],
+            type: 'touchmove',
             stopPropagation: () => {},
             preventDefault: () => {},
         });
@@ -243,6 +292,7 @@ describe('Range ', () => {
         });
         RangeInstance._move({
             pageX: 30,
+            type: 'mousemove',
             stopPropagation: () => {},
             preventDefault: () => {},
         });
@@ -259,6 +309,7 @@ describe('Range ', () => {
         });
         RangeInstance._move({
             pageX: 0,
+            type: 'mousemove',
             stopPropagation: () => {},
             preventDefault: () => {},
         });

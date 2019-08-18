@@ -23,7 +23,7 @@
 | component       | 包裹子元素的标签                                                                                                                                          | any                                 | 'div'    |
 | singleMode      | 是否只有单个子元素，如果有多个子元素，请设置为 false                                                                                                                     | Boolean                             | true     |
 | children        | 子元素                                                                                                                                               | ReactElement/Array&lt;ReactElement> | -        |
-| beforeAppear    | 执行第一次挂载动画前触发的回调函数<br><br>**签名**:<br>Function() => void                                                                                            | Function                            | () => {} |
+| beforeAppear    | 执行第一次挂载动画前触发的回调函数<br><br>**签名**:<br>Function(node: HTMLElement) => void<br>**参数**:<br>_node_: {HTMLElement} 执行动画的 dom 元素                         | Function                            | () => {} |
 | onAppear        | 执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数<br><br>**签名**:<br>Function(node: HTMLElement) => void<br>**参数**:<br>_node_: {HTMLElement} 执行动画的 dom 元素 | Function                            | () => {} |
 | afterAppear     | 执行完第一次挂载动画后触发的函数<br><br>**签名**:<br>Function(node: HTMLElement) => void<br>**参数**:<br>_node_: {HTMLElement} 执行动画的 dom 元素                          | Function                            | () => {} |
 | beforeEnter     | 执行进场动画前触发的回调函数<br><br>**签名**:<br>Function(node: HTMLElement) => void<br>**参数**:<br>_node_: {HTMLElement} 执行动画的 dom 元素                            | Function                            | () => {} |
@@ -42,6 +42,10 @@
 | fadeInLeft   | fadeOutLeft   |
 | fadeInRight  | fadeOutRight  |
 | fadeInUp     | fadeOutUp     |
+| slideInDown  | slideOutUp    |
+| slideInLeft  | slideOutLeft  |
+| slideInRight | slideOutRight |
+| slideInUp    | slideOutDown  |
 | zoomIn       | zoomOut       |
 | expandInDown | expandOutUp   |
 | expandInUp   | expandOutDown |

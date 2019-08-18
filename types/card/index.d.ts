@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
 
-export interface CardProps extends HTMLAttributesWeak {
+export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 卡片的标题
      */

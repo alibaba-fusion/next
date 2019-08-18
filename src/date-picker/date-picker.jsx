@@ -172,6 +172,7 @@ export default class DatePicker extends Component {
         timeInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {
@@ -659,9 +660,9 @@ export default class DatePicker extends Component {
                 className={datePickerCls}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

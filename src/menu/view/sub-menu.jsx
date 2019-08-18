@@ -23,6 +23,7 @@ export default class SubMenu extends Component {
         _key: PropTypes.string,
         root: PropTypes.object,
         level: PropTypes.number,
+        inlineLevel: PropTypes.number,
         groupIndent: PropTypes.number,
         noIcon: PropTypes.bool,
         /**
@@ -87,6 +88,21 @@ export default class SubMenu extends Component {
         return openKeys.indexOf(_key) > -1;
     }
 
+    getChildSelected() {
+        const { _key, root } = this.props;
+        const { selectMode } = root.props;
+        const { selectedKeys } = root.state;
+
+        const _keyPos = root.k2n[_key].pos;
+
+        return (
+            !!selectMode &&
+            selectedKeys.some(
+                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
+            )
+        );
+    }
+
     handleMouseEnter(e) {
         this.handleOpen(true);
 
@@ -119,6 +135,11 @@ export default class SubMenu extends Component {
         const { mode, root } = this.props;
 
         return Children.map(children, child => {
+            // to fix https://github.com/alibaba-fusion/next/issues/952
+            if (typeof child !== 'function' && typeof child !== 'object') {
+                return child;
+            }
+
             return cloneElement(child, {
                 parent: this,
                 parentMode: mode || root.props.mode,
@@ -130,6 +151,7 @@ export default class SubMenu extends Component {
         const {
             _key,
             level,
+            inlineLevel,
             root,
             className,
             selectable: selectableFromProps,
@@ -150,6 +172,8 @@ export default class SubMenu extends Component {
         } = root.props;
         const triggerType = propsTriggerType || rootTriggerType;
         const open = this.getOpen();
+        const isChildSelected = this.getChildSelected();
+
         const others = obj.pickOthers(
             Object.keys(SubMenu.propTypes),
             this.props
@@ -165,10 +189,15 @@ export default class SubMenu extends Component {
             'aria-expanded': open,
             _key,
             level,
+            inlineLevel,
             root,
             type: 'submenu',
             component: 'div',
             parentMode,
+            className: cx({
+                [`${prefix}opened`]: open,
+                [`${prefix}child-selected`]: isChildSelected,
+            }),
         };
         const arrorProps = {
             type:
@@ -193,9 +222,6 @@ export default class SubMenu extends Component {
             arrorProps.onClick = this.handleClick;
         } else {
             itemProps.onClick = this.handleClick;
-        }
-        if (open) {
-            itemProps.className = `${prefix}opened`;
         }
 
         const newSubMenuContentClassName = cx({

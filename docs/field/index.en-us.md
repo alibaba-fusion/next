@@ -201,7 +201,7 @@ The api interface provided by the object after `new` (eg `myfield.getValues()`) 
 | getValue | get the value of a single input control | Function(name: String) |
 | setValues ​​| Sets the value of a set of input controls (triggers render, follow the use of react time) | Function(obj: Object) |
 | setValue | Sets the value of a single input control (triggers render, follow the use of react time) | Function(name: String, value) |
-| Validate | Validate and retrieve the values ​​of a set of input fields and Error | Function([names: String[]], [options: Object], callback: Function(errors, values)) | | |
+| Validate | Validate and retrieve the values ​​of a set of input fields and Error | Function([names: String[]], callback: Function(errors, values)) | | |
 |getError | Get Error of a Single Input Control | Function(name: String) | | |
 |getErrors | Get Errors of a Group of Input Controls | Function([name: String]) | | |
 |setError | Set Error for a Single Input Control | Function(name: String, errors:String/Array[String]) | | |
