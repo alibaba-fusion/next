@@ -634,6 +634,8 @@ class Select extends Base {
      * It MUST be multiple mode, needn't additional judgement
      */
     handleTagClose(item) {
+        const { readOnly } = this.props;
+        if (readOnly) return false;
         if (this.useDetailValue()) {
             const value = this.state.value.filter(v => {
                 return item.value !== v.value;
@@ -865,8 +867,7 @@ class Select extends Base {
 
     handleClear = e => {
         e.stopPropagation();
-        const { onSearchClear } = this.props;
-        !!onSearchClear && onSearchClear('select');
+        
         this.handleChange(undefined, 'clear');
     };
 
