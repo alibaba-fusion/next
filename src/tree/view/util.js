@@ -17,7 +17,7 @@ export function normalizeToArray(keys) {
  * @param {Array} checkedKeys
  */
 export function isNodeChecked(node, checkedKeys) {
-    if (node.disabled || parent.checkboxDisabled) return true;
+    if (node.disabled || node.checkboxDisabled) return true;
     /* istanbul ignore next */
     if (node.checkable === false) {
         return (
