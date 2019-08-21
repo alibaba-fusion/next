@@ -138,6 +138,7 @@ class Checkbox extends UIState {
                     ),
                 });
             }
+
             this.disabled =
                 nextProps.disabled ||
                 ('disabled' in nextContext && nextContext.disabled);
@@ -147,12 +148,13 @@ class Checkbox extends UIState {
                     checked: nextProps.checked,
                 });
             }
-            if ('indeterminate' in nextProps) {
-                this.setState({
-                    indeterminate: nextProps.indeterminate,
-                });
-            }
             this.disabled = nextProps.disabled;
+        }
+
+        if ('indeterminate' in nextProps) {
+            this.setState({
+                indeterminate: nextProps.indeterminate,
+            });
         }
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
