@@ -2,9 +2,13 @@
 
 import * as React from 'react';
 import { PopupProps } from '../overlay';
+import CommonProps from '../util';
 
+interface HTMLAttributesWeak extends PopupProps {
+    title?: any;
+}
 
-export interface DrawerProps extends PopupProps {
+export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
      * **mask** 表示点击遮罩区域可以关闭对话框
@@ -16,12 +20,33 @@ export interface DrawerProps extends PopupProps {
     closeable?: string | boolean;
 
     /**
+     * 标题
+     */
+    title?: React.ReactNode;
+    /**
+     * body上的样式
+     */
+    bodyStyle?: React.CSSProperties;
+    /**
      * 显示隐藏时动画的播放方式
      * @property {String} in 进场动画
      * @property {String} out 出场动画
      */
     animation?: {} | boolean;
 
+    /**
+     * 宽度，仅在 placement是 left right 的时候生效
+     */
+    width?: number | string;
+
+    /**
+     * 高度，仅在 placement是 top bottom 的时候生效
+     */
+    height?: number | string;
+    /**
+     * 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
+     */
+    onVisibleChange?: (visible: boolean, reason: string) => void;
     /**
      * 位于页面的位置
      */

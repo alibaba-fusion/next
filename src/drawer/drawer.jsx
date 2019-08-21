@@ -20,6 +20,7 @@ export default class Drawer extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
+        // 不建议使用trigger
         trigger: PropTypes.element,
         triggerType: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
@@ -30,14 +31,6 @@ export default class Drawer extends Component {
          * 高度，仅在 placement是 top bottom 的时候生效
          */
         height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 是否显示
-         */
-        visible: PropTypes.bool,
-        /**
-         * 是否显示遮罩
-         */
-        hasMask: PropTypes.bool,
         /**
          * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
@@ -63,10 +56,18 @@ export default class Drawer extends Component {
          */
         title: PropTypes.node,
         /**
-         * 弹层显示或隐藏时触发的回调
-         * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
+         * body上的样式
          */
+        bodyStyle: PropTypes.object,
+        /**
+         * 是否显示
+         */
+        visible: PropTypes.bool,
+        /**
+         * 是否显示遮罩
+         */
+        hasMask: PropTypes.bool,
+        // 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
         onVisibleChange: PropTypes.func,
         /**
          * 显示隐藏时动画的播放方式
@@ -74,10 +75,6 @@ export default class Drawer extends Component {
          * @property {String} out 出场动画
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-        /**
-         * body上的样式
-         */
-        bodyStyle: PropTypes.object,
         locale: PropTypes.object,
     };
 

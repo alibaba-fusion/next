@@ -1,13 +1,13 @@
 # 抽屉式选择
 
-- order: 1
+- order: 3
 
 将 Select 的弹出模式换成 Drawer
 
 :::lang=en-us
 # Drawer Select
 
-- order: 1
+- order: 3
 
 Select width drawer
 :::
