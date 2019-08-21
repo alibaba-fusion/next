@@ -333,6 +333,7 @@ export default class TreeNode extends Component {
                 : 'arrow-down';
 
         return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <span
                 className={className}
                 onClick={disabled ? null : this.handleExpand}

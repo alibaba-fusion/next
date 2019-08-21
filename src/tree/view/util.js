@@ -17,7 +17,7 @@ export function normalizeToArray(keys) {
  * @param {Array} checkedKeys
  */
 export function isNodeChecked(node, checkedKeys) {
-    if (node.disabled || parent.checkboxDisabled) return true;
+    if (node.disabled || node.checkboxDisabled) return true;
     /* istanbul ignore next */
     if (node.checkable === false) {
         return (
@@ -102,7 +102,7 @@ export function filterChildKey(keys, _k2n, _p2n) {
     return newKeys;
 }
 
-export function filterParentKey(keys, _k2n, _p2n) {
+export function filterParentKey(keys, _k2n) {
     const newKeys = [];
 
     for (let i = 0; i < keys.length; i++) {
@@ -204,8 +204,4 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     });
 
     return newKeys;
-}
-
-function getDepth(key, _k2n) {
-    return _k2n[key].pos.split('-').length;
 }
