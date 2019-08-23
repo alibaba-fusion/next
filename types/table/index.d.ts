@@ -121,6 +121,11 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     prefix?: string;
 
     /**
+     * 尺寸 small为紧凑模式
+     */
+    size?: 'small' | 'medium';
+
+    /**
      * 自定义类名
      */
     className?: string;

@@ -54,6 +54,10 @@ export default class Table extends React.Component {
          */
         style: PropTypes.object,
         /**
+         * 尺寸 small为紧凑模式
+         */
+        size: PropTypes.oneOf(['small', 'medium']),
+        /**
          * 表格展示的数据源
          */
         dataSource: PropTypes.array,
@@ -283,6 +287,7 @@ export default class Table extends React.Component {
         onSort: noop,
         onFilter: noop,
         onResizeChange: noop,
+        size: 'medium',
         rowProps: noop,
         cellProps: noop,
         prefix: 'next-',
@@ -621,6 +626,7 @@ export default class Table extends React.Component {
                 hasBorder,
                 isZebra,
                 loading,
+                size,
                 hasHeader,
                 prefix,
                 dataSource,
@@ -651,6 +657,7 @@ export default class Table extends React.Component {
             } = this.props,
             cls = classnames({
                 [`${prefix}table`]: true,
+                [`${prefix}table-${size}`]: size,
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,
