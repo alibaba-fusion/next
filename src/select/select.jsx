@@ -867,7 +867,7 @@ class Select extends Base {
 
     handleClear = e => {
         e.stopPropagation();
-        
+
         this.handleChange(undefined, 'clear');
     };
 
@@ -948,6 +948,7 @@ class Select extends Base {
             onBlur,
             onFocus,
             rtl,
+            value,
         } = this.props;
         const others = obj.pickOthers(Select.propTypes, this.props);
         const othersData = obj.pickAttrsWith(others, 'data-');
@@ -992,7 +993,7 @@ class Select extends Base {
                 [`${prefix}has-search`]: hasSearch, // 用于单选时展开后判断是否隐藏值
                 [`${prefix}select-in-ie`]: isIE9,
                 [`${prefix}select-in-ie-fixwidth`]: this.state.fixWidth,
-                [`${prefix}has-clear`]: this.hasClear(),
+                [`${prefix}has-clear`]: !value ? false : this.hasClear(),
             }
         );
 
