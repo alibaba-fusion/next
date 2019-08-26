@@ -261,9 +261,6 @@ export default class Table extends React.Component {
          * 是否开启虚拟滚动
          */
         useVirtual: PropTypes.bool,
-        /**
-         * 设置行高
-         */
         rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
         /**
          * 在内容区域滚动的时候触发的函数
