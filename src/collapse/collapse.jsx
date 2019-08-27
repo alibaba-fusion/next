@@ -75,15 +75,16 @@ class Collapse extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('expandedKeys' in nextProps) {
-            this.setState({
+    static getDerivedStateFromProps(props) {
+        if ('expandedKeys' in props) {
+            return {
                 expandedKeys:
-                    typeof nextProps.expandedKeys === 'undefined'
+                    typeof props.expandedKeys === 'undefined'
                         ? []
-                        : nextProps.expandedKeys,
-            });
+                        : props.expandedKeys,
+            };
         }
+        return null;
     }
 
     onItemClick(key) {
