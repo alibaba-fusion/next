@@ -14,7 +14,7 @@ First drawer
 ---
 
 ````jsx
-import { Radio, Button, Drawer } from '@alifd/next';
+import { Button, Drawer } from '@alifd/next';
 
 class Demo extends React.Component {
     state = {
@@ -28,7 +28,7 @@ class Demo extends React.Component {
     };
 
     onClose = (reason, e) => {
-        console.log(reason, e);
+        console.log('onClose: ', reason, e);
         this.setState({
             visible: false
         });
@@ -42,7 +42,6 @@ class Demo extends React.Component {
                     title="标题"
                     placement="right"
                     visible={this.state.visible}
-                    closeable
                     onClose={this.onClose}>
                     Start your business here by searching a popular product
                 </Drawer>
