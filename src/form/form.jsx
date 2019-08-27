@@ -146,12 +146,12 @@ export default class Form extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this._formField.setValues(nextProps.value);
+    static getDerivedStateFromProps(props) {
+        if ('value' in props) {
+            this._formField.setValues(props.value);
         }
-        if ('error' in nextProps) {
-            this._formField.setErrors(nextProps.error);
+        if ('error' in props) {
+            this._formField.setErrors(props.error);
         }
     }
 
