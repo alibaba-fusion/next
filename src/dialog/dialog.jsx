@@ -359,6 +359,7 @@ export default class Dialog extends Component {
             ...closeConfig
         } = this.mapcloseableToConfig(closeable);
         const newOverlayProps = {
+            disableScroll: true,
             ...overlayProps,
             prefix,
             visible,
@@ -371,7 +372,6 @@ export default class Dialog extends Component {
             align: useCSS ? false : align,
             onRequestClose: onClose,
             needAdjust: false,
-            disableScroll: true,
             ref: this.getOverlayRef,
             rtl,
         };
