@@ -98,10 +98,11 @@
     }
 
     &-tabpane {
-        display: none;
+        position: absolute;
+        visibility: hidden;
 
         &.active {
-            display: block;
+            visibility: visible;
         }
     }
 
@@ -137,7 +138,7 @@
     }
 
     &-content {
-        overflow: hidden;
+        position: relative;
     }
 
     /* position: vertical */
