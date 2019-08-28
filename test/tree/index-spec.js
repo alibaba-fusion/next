@@ -751,6 +751,31 @@ describe('Tree', () => {
         assertIndeterminate('1', false);
     });
 
+    it('should test defaultCheckKeys in disabled node',  () => {
+        ReactDOM.render(
+            <Tree
+                dataSource={cloneData(dataSource, {
+                    2: {
+                        disabled: false,
+                        checkable: true
+                    },
+                    5: {
+                        disabled: true
+                    }
+                })}
+                defaultExpandAll
+                checkable
+                defaultCheckedKeys={['2', '4', '5']}
+            />,
+            mountNode
+        );
+
+        ['2', '4', '5'].forEach(key => assertChecked(key, true));
+        checkTreeNode('4');
+        ['2', '4'].forEach(key => assertChecked(key, false));
+        assertChecked('5', true)
+    })
+
     it('should support keyboard', () => {
         ReactDOM.render(
             <Tree
