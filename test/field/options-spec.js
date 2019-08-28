@@ -187,6 +187,30 @@ describe('options', () => {
     })
 
     describe('values', () => {
+        it('should shallow copy values with parseName=false', function() {
+            const inputValues = {a: 1, b: 2};
+            const field = new Field(this, {
+                values: inputValues,
+            });
+            field.setValue('b', 20);
+
+            assert.equal(field.getValue('b'), 20);
+            assert.equal(inputValues.b, 2);
+        });
+        it('should shallow copy values with parseName=true', function() {
+            const inputValues = { a: [1, 2, 3, 4], b: { c: 5}};
+            const field = new Field(this, {
+                parseName: true,
+                values: inputValues,
+            });
+            field.setValue('a.0', 100);
+            assert.equal(field.getValue('a.0'), 100);
+            assert.equal(inputValues.a[0], 1);
+
+            field.setValue('b.c', 50);
+            assert.equal(field.getValue('b.c'), 50);
+            assert.equal(inputValues.b.c, 5);
+        });
         it('should set default field input values when given `values` in constructor', function() {
             const inputValue = 'my value';
             const field = new Field(this, {
