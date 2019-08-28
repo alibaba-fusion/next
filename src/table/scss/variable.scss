@@ -54,6 +54,21 @@ $table-header-padding-top: $s-3 !default;
 /// padding (l, r)
 /// @namespace size/header
 $table-header-padding-left: $s-4 !default;
+
+/// padding (t, b)
+/// @namespace size/cell
+$table-size-s-cell-padding-top: $s-2 !default;
+/// padding (l, r)
+/// @namespace size/cell
+$table-size-s-cell-padding-left: $s-2 !default;
+/// padding (t, b)
+/// @namespace size/header
+$table-size-s-header-padding-top: $s-2 !default;
+/// padding (l, r)
+/// @namespace size/header
+$table-size-s-header-padding-left: $s-2 !default;
+
+
 /// margin (t, b)
 /// @namespace size/group list
 $table-group-split: $s-2 !default;

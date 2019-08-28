@@ -170,18 +170,18 @@ export default function expanded(BaseComponent) {
         }
 
         normalizeChildren(children) {
+            const { prefix, size } = this.props;
             const toArrayChildren = Children.map(children, (child, index) =>
                 React.cloneElement(child, {
                     key: index,
                 })
             );
-            const { prefix } = this.props;
             toArrayChildren.unshift(
                 <Col
                     title=""
                     key="expanded"
                     cell={this.renderExpandedCell.bind(this)}
-                    width={50}
+                    width={size === 'small' ? 34 : 50}
                     className={`${prefix}table-expanded`}
                     __normalized
                 />
