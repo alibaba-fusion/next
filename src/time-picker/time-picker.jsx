@@ -413,9 +413,9 @@ export default class TimePicker extends Component {
                 className={classNames}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
                     trigger={triggerInput}

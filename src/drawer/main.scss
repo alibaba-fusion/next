@@ -18,21 +18,66 @@
 
     &-right {
         height: 100%;
-        width: 300px;
+        max-width: 80%;
+        width: 240px;
     }
 
     &-left {
         height: 100%;
-        width: 300px;
+        max-width: 80%;
+        width: 240px;
     }
 
     &-top {
         width: 100%;
-        height: 30%;
     }
 
     &-bottom {
         width: 100%;
-        height: 80%;
+    }
+
+    &-header {
+        padding: $drawer-title-padding-top $drawer-title-padding-left-right $drawer-title-padding-bottom $drawer-title-padding-left-right;
+        border-bottom: $drawer-title-border-width $line-solid $drawer-title-border-color;
+        font-size: $drawer-title-font-size;
+        background: $drawer-title-bg-color;
+        color: $drawer-title-color;
+    }
+
+    &-body {
+        padding: $drawer-content-padding-top $drawer-content-padding-left-right $drawer-content-padding-bottom $drawer-content-padding-left-right;
+        font-size: $drawer-content-font-size;
+        color: $drawer-content-color;
+    }
+
+    &-close {
+        position: absolute;
+        top: $drawer-close-top;
+        right: $drawer-close-right;
+        width: $drawer-close-width;
+        height: $drawer-close-width;
+        color: $drawer-close-color;
+
+        &:link,
+        &:visited {
+            height: $drawer-close-width;
+            color: $drawer-close-color;
+        }
+
+        &:hover {
+            background: $drawer-close-bg-hovered;
+            color: $drawer-close-color-hovered;
+        }
+
+        & &-icon.#{$css-prefix}icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            @include icon-square-size(
+                $size: $drawer-close-size,
+                $marginTop: -($drawer-close-size / 2),
+                $marginLeft: -($drawer-close-size / 2)
+            );
+        }
     }
 }

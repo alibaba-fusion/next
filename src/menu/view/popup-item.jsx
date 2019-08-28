@@ -77,7 +77,9 @@ export default class PopupItem extends Component {
 
         return (
             !!selectMode &&
-            selectedKeys.some(key => root.k2n[key].pos.indexOf(_keyPos) === 0)
+            selectedKeys.some(
+                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
+            )
         );
     }
 

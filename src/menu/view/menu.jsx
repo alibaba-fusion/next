@@ -580,10 +580,11 @@ export default class Menu extends Component {
         if (items) {
             if (Array.isArray(items)) {
                 return items;
-            } else {
-                return [items];
             }
+            return [items];
         }
+
+        return [];
     }
 
     isSibling(currentPos, targetPos) {

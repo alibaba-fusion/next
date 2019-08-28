@@ -1,13 +1,13 @@
 # 抽屉式选择
 
-- order: 1
+- order: 3
 
 将 Select 的弹出模式换成 Drawer
 
 :::lang=en-us
 # Drawer Select
 
-- order: 1
+- order: 3
 
 Select width drawer
 :::
@@ -41,6 +41,11 @@ class Demo extends React.Component {
     }
 
     render() {
+        const drawerProps = {
+            placement: this.state.placement,
+            closeable: 'mask',
+            bodyStyle: {padding: 0}
+        };
         return (
             <div>
                 <Radio.Group
@@ -49,7 +54,7 @@ class Demo extends React.Component {
                     onChange={this.onPlacementChange}
                 /> &nbsp;&nbsp;&nbsp;&nbsp;
 
-                <Select id="basic-demo" popupComponent={Drawer} popupProps={{placement: this.state.placement}} autoWidth={false} onChange={onChange} onBlur={onBlur} onToggleHighlightItem={onToggleHighlightItem} defaultValue="jack" aria-label="name is" hasClear>
+                <Select id="basic-demo" popupComponent={Drawer} popupProps={drawerProps} autoWidth={false} onChange={onChange} onBlur={onBlur} onToggleHighlightItem={onToggleHighlightItem} defaultValue="jack" aria-label="name is" hasClear>
                     <Option value="jack">Jack</Option>
                     <Option value="frank">Frank</Option>
                     <Option value="hugo">Hugo</Option>

@@ -265,7 +265,7 @@ describe('options', () => {
             assert.equal(field.getValue('input'), undefined);
         });
 
-        it('should reset `input` to constructor `values` after calling `resetToDefault`', function() {
+        it('should reset `input` to constructor `undefined` after calling `resetToDefault`', function() {
             const fieldDefault = 'field default value';
             const field = new Field(this, {
                 values: {
@@ -274,7 +274,7 @@ describe('options', () => {
             });
             field.init('input');
             field.resetToDefault('input');
-            assert.equal(field.getValue('input'), fieldDefault);
+            assert.equal(field.getValue('input'), undefined);
         });
 
         it('should reset `input` to undefined when given `values` in constructor and call `reset`', function() {
@@ -589,12 +589,17 @@ describe('options', () => {
                 field.init('input.otherValue');
                 field.setValue('input.myValue', secondValue);
                 field.setValue('input.otherValue', secondValue);
+                
+                // simulation rerender
+                field.init('input.myValue');
+                field.init('input.otherValue');
+                
                 field.resetToDefault();
-                assert.equal(field.getValue('input.myValue'), fieldDefault);
-                assert.equal(field.getValue('input.otherValue'), fieldDefault);
+                assert.equal(field.getValue('input.myValue'), undefined);
+                assert.equal(field.getValue('input.otherValue'), undefined);
             });
 
-            it('should reset `input` to undefined when given `values` in constructor and call `resetToDefault`', function() {
+            it('should reset `input.myValue` which inited to undefined when given `values` in constructor and call `resetToDefault`', function() {
                 const fieldDefault = 'field default value';
                 const secondValue = 'second';
                 const field = new Field(this, {
@@ -609,8 +614,11 @@ describe('options', () => {
                 field.init('input.myValue');
                 field.setValue('input.myValue', secondValue);
                 field.setValue('input.otherValue', secondValue);
+
+                field.init('input.myValue');
+                
                 field.resetToDefault('input.myValue');
-                assert.equal(field.getValue('input.myValue'), fieldDefault);
+                assert.equal(field.getValue('input.myValue'), undefined);
                 assert.equal(field.getValue('input.otherValue'), secondValue);
             });
         });

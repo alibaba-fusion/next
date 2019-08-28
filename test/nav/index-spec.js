@@ -209,10 +209,24 @@ describe('Nav', () => {
         assert(wrapper.find('li.next-nav-group-label').length === 1);
     });
 
+    it('should support defaultSelectedKeys undefined/null', () => {
+        wrapper = mount(
+            <Nav defaultSelectedKeys={null}>
+                <SubNav label="Group label">
+                    <Item key="1">First</Item>
+                    <Item key="2">Second</Item>
+                </SubNav>
+            </Nav>
+        );
+
+    });
+
     it('should support showChildSelected', () => {
         wrapper = mount(
-            <Nav showChildSelected selectedKeys="1" />
+            <Nav selectedKeys="1" />
         );
+
+        assert(wrapper);
 
         wrapper.setProps({
             children: <SubNav label="Group label">
@@ -230,6 +244,12 @@ describe('Nav', () => {
         });
 
         assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
+
+        wrapper.setProps({
+            selectedKeys: 'ddasdfa'
+        });
+
+        assert(wrapper);
     });
 
     it('should support iconOnly', done => {

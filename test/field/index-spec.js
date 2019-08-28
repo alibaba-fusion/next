@@ -656,6 +656,16 @@ describe('field', () => {
                 field.resetToDefault('input');
                 assert.deepEqual(field.getValues(), { input: '4', input2: '33'});
             });
+
+            it('should set only named value to `undefined` on `resetToDefaults()` if init without `initValue`', function() {
+                const field = new Field(this);
+                field.init('input');
+                field.setValue('input', 'a value');
+                field.init('input'); // simulation a rerender
+
+                field.resetToDefault();
+                assert.deepEqual(field.getValues(), { input: undefined});
+            });
         });
 
         it('remove', function(done) {

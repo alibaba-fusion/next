@@ -1,24 +1,25 @@
-# 基本
+# 自定义弹出方向
 
-- order: 0
+- order: 1
 
-第一个抽屉
+自定义弹出方向
 
 :::lang=en-us
 # Basic
 
-- order: 0
+- order: 1
 
-First drawer
+Diffrent placement
 :::
 ---
 
 ````jsx
-import { Button, Drawer } from '@alifd/next';
+import { Radio, Button, Drawer } from '@alifd/next';
 
 class Demo extends React.Component {
     state = {
         visible: false,
+        placement: 'right'
     };
 
     onOpen = () => {
@@ -27,21 +28,32 @@ class Demo extends React.Component {
         });
     };
 
-    onClose = (reason, e) => {
-        console.log('onClose: ', reason, e);
+    onClose = (reason) => {
+
         this.setState({
             visible: false
+        });
+    };
+
+    onPlacementChange = dir => {
+        this.setState({
+            placement: dir
         });
     }
 
     render() {
         return (
             <div>
+                <Radio.Group
+                    dataSource={['right', 'bottom', 'left', 'top']}
+                    defaultValue={'right'}
+                    onChange={this.onPlacementChange}
+                /> &nbsp;&nbsp;&nbsp;&nbsp;
                 <Button type="primary" onClick={this.onOpen}> open </Button>
                 <Drawer
                     title="标题"
-                    placement="right"
                     visible={this.state.visible}
+                    placement={this.state.placement}
                     onClose={this.onClose}>
                     Start your business here by searching a popular product
                 </Drawer>
