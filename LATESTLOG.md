@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.16.7](https://github.com/alibaba-fusion/next/compare/1.16.6...1.16.7) (2019-08-13)
+## [1.16.8](https://github.com/alibaba-fusion/next/compare/1.16.7...1.16.8) (2019-08-28)
 
 
 ### Bug Fixes
 
-* **Field:** bug of resetToDefault withtou initValue. close [#1001](https://github.com/alibaba-fusion/next/issues/1001) ([a76b05c](https://github.com/alibaba-fusion/next/commit/a76b05c))
+* **Field:** shallow copy. Close [#1062](https://github.com/alibaba-fusion/next/issues/1062) ([222d348](https://github.com/alibaba-fusion/next/commit/222d348))
 
 

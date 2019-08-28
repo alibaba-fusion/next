@@ -62,6 +62,8 @@ module.exports = function(options) {
             fs.writeFileSync(
                 exportDTSPath,
                 `import ${apiInfo.name} from '../../types/${shortName}';
+
+export * from '../../types/${shortName}';
 export default ${apiInfo.name};
 `
             );

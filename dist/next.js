@@ -1,5 +1,5 @@
 /*!
- * @alifd/next@1.16.7 (https://fusion.design)
+ * @alifd/next@1.16.8 (https://fusion.design)
  * Copyright 2018-present Alibaba Group,
  * Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)
  */
@@ -15974,7 +15974,7 @@ var Field = function () {
         this.instance = {};
         // holds constructor values. Used for setting field defaults on init if no other value or initValue is passed.
         // Also used caching values when using `parseName: true` before a field is initialized
-        this.values = options.values || {};
+        this.values = (0, _extends3.default)({}, options.values);
 
         this.options = (0, _extends3.default)({
             parseName: false,
@@ -15989,10 +15989,6 @@ var Field = function () {
         ['init', 'getValue', 'getValues', 'setValue', 'setValues', 'getError', 'getErrors', 'setError', 'setErrors', 'validate', 'getState', 'reset', 'resetToDefault', 'remove', 'spliceArray'].forEach(function (m) {
             _this[m] = _this[m].bind(_this);
         });
-
-        if (options.values) {
-            this.setValues(options.values, false);
-        }
     }
 
     Field.prototype.setOptions = function setOptions(options) {
@@ -16029,8 +16025,6 @@ var Field = function () {
 
         var originalProps = (0, _extends3.default)({}, props, rprops);
         var defaultValueName = 'default' + valueName[0].toUpperCase() + valueName.slice(1);
-
-        var field = this._getInitMeta(name);
         var defaultValue = void 0;
         if (typeof initValue !== 'undefined') {
             defaultValue = initValue;
@@ -16039,6 +16033,8 @@ var Field = function () {
             defaultValue = originalProps[defaultValueName];
         }
 
+        // get field from this.fieldsMeta or new one
+        var field = this._getInitMeta(name);
         (0, _extends3.default)(field, {
             valueName: valueName,
             initValue: defaultValue,
@@ -16060,26 +16056,28 @@ var Field = function () {
             }
         }
 
-        // should get value from this.values
         /**
-         * a new field (value not in field)
-         * step 1: get value from this.values
-         * step 2: from defaultValue
+         * first init field (value not in field)
+         * should get field.value from this.values or defaultValue
          */
         if (!('value' in field)) {
             if (parseName) {
                 var cachedValue = (0, _utils.getIn)(this.values, name);
-                field.value = typeof cachedValue !== 'undefined' ? cachedValue : defaultValue;
+                if (typeof cachedValue !== 'undefined') {
+                    field.value = cachedValue;
+                } else if (typeof defaultValue !== 'undefined') {
+                    field.value = defaultValue;
+                    this.values = (0, _utils.setIn)(this.values, name, field.value);
+                }
             } else {
                 var _cachedValue = this.values[name];
-                field.value = typeof _cachedValue !== 'undefined' ? _cachedValue : defaultValue;
+                if (typeof _cachedValue !== 'undefined') {
+                    field.value = _cachedValue;
+                } else if (typeof defaultValue !== 'undefined') {
+                    field.value = defaultValue;
+                    this.values[name] = field.value;
+                }
             }
-        }
-
-        if (parseName && !(0, _utils.getIn)(this.values, name)) {
-            this.values = (0, _utils.setIn)(this.values, name, field.value);
-        } else if (!parseName && !this.values[name]) {
-            this.values[name] = field.value;
         }
 
         // Component props
@@ -20214,7 +20212,7 @@ module.exports = exports['default'];
 
 var next = __webpack_require__(159);
 
-next.version = '1.16.7';
+next.version = '1.16.8';
 
 module.exports = next;
 
