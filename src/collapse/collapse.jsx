@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { func, obj } from '../util';
 import Panel from './panel';
@@ -255,4 +256,4 @@ class Collapse extends React.Component {
     }
 }
 
-export default ConfigProvider.config(Collapse);
+export default polyfill(ConfigProvider.config(Collapse));
