@@ -32,7 +32,7 @@ class Field {
         this.instance = {};
         // holds constructor values. Used for setting field defaults on init if no other value or initValue is passed.
         // Also used caching values when using `parseName: true` before a field is initialized
-        this.values = options.values || {};
+        this.values = Object.assign({}, options.values);
 
         this.options = Object.assign(
             {
@@ -66,10 +66,6 @@ class Field {
         ].forEach(m => {
             this[m] = this[m].bind(this);
         });
-
-        if (options.values) {
-            this.setValues(options.values, false);
-        }
     }
 
     setOptions(options) {
@@ -98,8 +94,6 @@ class Field {
         const defaultValueName = `default${valueName[0].toUpperCase()}${valueName.slice(
             1
         )}`;
-
-        const field = this._getInitMeta(name);
         let defaultValue;
         if (typeof initValue !== 'undefined') {
             defaultValue = initValue;
@@ -108,6 +102,8 @@ class Field {
             defaultValue = originalProps[defaultValueName];
         }
 
+        // get field from this.fieldsMeta or new one
+        const field = this._getInitMeta(name);
         Object.assign(field, {
             valueName,
             initValue: defaultValue,
@@ -130,32 +126,28 @@ class Field {
             }
         }
 
-        // should get value from this.values
         /**
-         * a new field (value not in field)
-         * step 1: get value from this.values
-         * step 2: from defaultValue
+         * first init field (value not in field)
+         * should get field.value from this.values or defaultValue
          */
         if (!('value' in field)) {
             if (parseName) {
                 const cachedValue = getIn(this.values, name);
-                field.value =
-                    typeof cachedValue !== 'undefined'
-                        ? cachedValue
-                        : defaultValue;
+                if (typeof cachedValue !== 'undefined') {
+                    field.value = cachedValue;
+                } else if (typeof defaultValue !== 'undefined') {
+                    field.value = defaultValue;
+                    this.values = setIn(this.values, name, field.value);
+                }
             } else {
                 const cachedValue = this.values[name];
-                field.value =
-                    typeof cachedValue !== 'undefined'
-                        ? cachedValue
-                        : defaultValue;
+                if (typeof cachedValue !== 'undefined') {
+                    field.value = cachedValue;
+                } else if (typeof defaultValue !== 'undefined') {
+                    field.value = defaultValue;
+                    this.values[name] = field.value;
+                }
             }
-        }
-
-        if (parseName && !getIn(this.values, name)) {
-            this.values = setIn(this.values, name, field.value);
-        } else if (!parseName && !this.values[name]) {
-            this.values[name] = field.value;
         }
 
         // Component props
