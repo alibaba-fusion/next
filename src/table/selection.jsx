@@ -100,7 +100,7 @@ export default function selection(BaseComponent) {
         }
 
         normalizeChildren(children) {
-            const { prefix, rowSelection } = this.props;
+            const { prefix, rowSelection, size } = this.props;
             if (rowSelection) {
                 children = Children.map(children, (child, index) =>
                     React.cloneElement(child, {
@@ -117,7 +117,7 @@ export default function selection(BaseComponent) {
                         key="selection"
                         title={this.renderSelectionHeader.bind(this)}
                         cell={this.renderSelectionBody.bind(this)}
-                        width={50}
+                        width={size === 'small' ? 34 : 50}
                         className={`${prefix}table-selection`}
                         __normalized
                         {...attrs}

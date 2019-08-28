@@ -6,6 +6,21 @@
 #{$table-prefix} {
     @include box-sizing;
     position: relative;
+
+    &#{$table-prefix}-small {
+        th {
+            #{$table-prefix}-cell-wrapper {
+                padding: $table-size-s-header-padding-top $table-size-s-header-padding-left;
+            }
+        }
+
+        td {
+            #{$table-prefix}-cell-wrapper {
+                padding: $table-size-s-cell-padding-top $table-size-s-cell-padding-left;
+            }
+        }
+    }
+
     table {
         border-collapse: collapse;
         border-spacing: 0;
