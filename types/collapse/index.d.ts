@@ -88,6 +88,10 @@ export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, Common
      * 手风琴模式，一次只能打开一个
      */
     accordion?: boolean;
+    /**
+     * 内容显示左侧或右侧
+     */
+    rtl?: boolean;
 }
 
 export default class Collapse extends React.Component<CollapseProps, any> {
