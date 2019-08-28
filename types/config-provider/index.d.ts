@@ -48,6 +48,10 @@ export interface ConfigProviderProps {
      * 组件树
      */
     children?: React.ReactElement<any>;
+    /**
+     * 弹层挂载的容器节点
+     */
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 }
 
 export default class ConfigProvider extends React.Component<
