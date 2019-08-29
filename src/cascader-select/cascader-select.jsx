@@ -269,6 +269,7 @@ export default class CascaderSelect extends Component {
         bindCtx(this, [
             'handleVisibleChange',
             'handleAfterOpen',
+            'handleSelect',
             'handleChange',
             'handleClear',
             'handleRemove',
@@ -563,17 +564,23 @@ export default class CascaderSelect extends Component {
         }
     }
 
-    handleChange(value, data, extra) {
-        const { multiple, changeOnSelect, onChange } = this.props;
-        const { visible, searchValue, value: stateValue } = this.state;
+    handleSelect(value, data) {
+        const { multiple, changeOnSelect } = this.props;
+        const { visible, searchValue } = this.state;
 
-        const st = {};
         if (
             !multiple &&
             (!changeOnSelect || this.isLeaf(data) || !!searchValue)
         ) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
+    }
+
+    handleChange(value, data, extra) {
+        const { multiple, onChange } = this.props;
+        const { searchValue, value: stateValue } = this.state;
+
+        const st = {};
 
         if (multiple && stateValue && Array.isArray(stateValue)) {
             value = [...stateValue.filter(v => !this._v2n[v]), ...value];
@@ -761,6 +768,7 @@ export default class CascaderSelect extends Component {
         };
         if (!readOnly) {
             props.onChange = this.handleChange;
+            props.onSelect = this.handleSelect;
         }
         if (showSearch) {
             props.searchValue = searchValue;
