@@ -49,6 +49,7 @@ export default class Cascader extends Component {
          * @param {Array} extra.indeterminateData 多选时半选的数据
          */
         onChange: PropTypes.func,
+        onSelect: PropTypes.func,
         /**
          * （非受控）默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
          */
@@ -446,26 +447,31 @@ export default class Cascader extends Component {
     }
 
     handleSelect(v, canExpand) {
-        if (
-            !(this.props.canOnlySelectLeaf && canExpand) &&
-            this.state.value[0] !== v
-        ) {
-            if (!('value' in this.props)) {
-                this.setState({
-                    value: [v],
-                });
+        if (!(this.props.canOnlySelectLeaf && canExpand)) {
+            const data = this._v2n[v];
+            const nums = data.pos.split('-');
+            const selectedPath = nums.slice(1).reduce((ret, num, index) => {
+                const p = nums.slice(0, index + 2).join('-');
+                ret.push(this._p2n[p]);
+                return ret;
+            }, []);
+
+            if (this.state.value[0] !== v) {
+                if (!('value' in this.props)) {
+                    this.setState({
+                        value: [v],
+                    });
+                }
+
+                if ('onChange' in this.props) {
+                    this.props.onChange(v, data, {
+                        selectedPath,
+                    });
+                }
             }
 
-            if ('onChange' in this.props) {
-                const data = this._v2n[v];
-                const nums = data.pos.split('-');
-                const selectedPath = nums.slice(1).reduce((ret, num, index) => {
-                    const p = nums.slice(0, index + 2).join('-');
-                    ret.push(this._p2n[p]);
-                    return ret;
-                }, []);
-
-                this.props.onChange(v, data, {
+            if ('onSelect' in this.props) {
+                this.props.onSelect(v, data, {
                     selectedPath,
                 });
             }
