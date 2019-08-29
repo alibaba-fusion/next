@@ -331,7 +331,7 @@ class Nav extends React.Component {
                 style,
             } = child.props;
 
-            const active = `${activeKey}` === child.key;
+            const active = activeKey === child.key;
             const cls = classnames(
                 {
                     [`${prefix}tabs-tab`]: true,
