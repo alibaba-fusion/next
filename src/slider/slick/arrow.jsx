@@ -51,9 +51,9 @@ export default class Arrow extends Component {
         }
 
         // 下一个 index 大于总数？？
-        if (slideCount <= slidesToShow) {
-            return true;
-        }
+        // if (slideCount <= slidesToShow) {
+        //     return true;
+        // }
 
         // 向前箭头：当前是第 0 个
         if (type === 'prev') {
