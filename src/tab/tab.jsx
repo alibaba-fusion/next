@@ -148,6 +148,7 @@ export default class Tab extends Component {
 
         if (activeKey === undefined) {
             React.Children.forEach(props.children, (child, index) => {
+                if (activeKey !== undefined) return;
                 if (React.isValidElement(child)) {
                     if (!child.props.disabled) {
                         activeKey = child.key || index;
