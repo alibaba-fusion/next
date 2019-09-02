@@ -387,8 +387,10 @@
             }
 
             &:hover {
-                background-color: $tab-capsule-bg-color-hover;
-            }
+                z-index: 1;
+                border-right: $tab-capsule-tab-border;
+                margin-right: -$tab-capsule-tab-border-line-width;
+                border-color: $tab-capsule-tab-border-line-color-hover;            }
 
             @include tabs-tab-statement(
                 $tab-capsule-text-color,
