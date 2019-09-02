@@ -201,10 +201,10 @@
             }
 
             .#{$css-prefix}input {
-                background: transparentize($search-normal-dark-bg-color, 1 - $search-normal-dark-bg-opacity);
+                background: $color-calculate-search-normal-dark-bg;
             }
             .#{$css-prefix}select {
-                background: transparentize($search-normal-dark-bg-color, 1 - $search-normal-dark-bg-opacity);
+                background: $color-calculate-search-normal-dark-bg;
             }
 
             &.#{$css-prefix}large {
@@ -287,10 +287,10 @@
                 color: $search-simple-dark-text-color;
             }
             .#{$css-prefix}input {
-                background: transparentize($search-simple-dark-bg-color, 1 - $search-simple-dark-bg-opacity);
+                background: $color-calculate-search-simple-dark-bg;
             }
             .#{$css-prefix}select {
-                background: transparentize($search-simple-dark-bg-color, 1 - $search-simple-dark-bg-opacity);
+                background: $color-calculate-search-simple-dark-bg;
             }
 
             #{$search-prefix}-left {

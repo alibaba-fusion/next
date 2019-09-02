@@ -361,6 +361,23 @@ describe('slider', function () {
             });
         });
 
+        it('should have correct disabled class for next/prev arrow', () => {
+            return co(function* () {
+                wrapper = mount(<Slider
+                    infinite={false}
+                    defaultActiveIndex={2}
+                    slidesToShow={5}
+                    >{slides}</Slider>);
+                yield delay(100);
+                assert(
+                    wrapper.find('.next-slick-arrow.next-slick-next').at(0).hasClass('disabled')
+                );
+                assert(
+                    !wrapper.find('.next-slick-arrow.next-slick-prev').at(0).hasClass('disabled')
+                );
+            });
+        });
+
         it('should hover next/prev arrow', () => {
             return co(function* () {
                 wrapper = mount(<Slider infinite={false}>{slides}</Slider>);

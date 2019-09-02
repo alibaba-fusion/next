@@ -151,8 +151,12 @@ export function isSiblingOrSelf(currentPos, targetPos) {
 export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     checkedKeys = normalizeToArray(checkedKeys);
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);
-    const flatKeys = filterChildKey(filteredKeys, _k2n, _p2n);
-
+    const flatKeys = [
+        ...filterChildKey(filteredKeys, _k2n, _p2n),
+        ...filteredKeys.filter(
+            key => _k2n[key].disabled || _k2n[key].checkboxDisabled
+        ),
+    ];
     const removeKey = child => {
         if (child.disabled || child.checkboxDisabled) return;
         if (
@@ -197,6 +201,10 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
 
     const newKeys = [];
     flatKeys.forEach(key => {
+        if (_k2n[key].disabled || _k2n[key].checkboxDisabled) {
+            newKeys.push(key);
+            return;
+        }
         forEachEnableNode(_k2n[key], node => {
             if (node.checkable === false) return;
             newKeys.push(node.key);

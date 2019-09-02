@@ -872,7 +872,14 @@ export default class Tree extends Component {
         const indeterminateKeys = [];
 
         const poss = filterChildKey(
-            checkedKeys.filter(key => !!this._k2n[key]),
+            checkedKeys
+                .filter(key => !!this._k2n[key])
+                .filter(
+                    key =>
+                        !this._k2n[key].disabled &&
+                        !this._k2n[key].checkboxDisabled &&
+                        this._k2n[key].checkable !== false
+                ),
             this._k2n,
             this._p2n
         ).map(key => this._k2n[key].pos);
