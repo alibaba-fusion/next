@@ -101,6 +101,8 @@
         visibility: hidden;
         opacity: 0;
         height: 0;
+        margin: 0 !important;
+        padding: 0 !important;
 
         &.active {
             visibility: visible;
@@ -385,10 +387,7 @@
             }
 
             &:hover {
-                z-index: 1;
-                border-right: $tab-capsule-tab-border;
-                margin-right: -$tab-capsule-tab-border-line-width;
-                border-color: $tab-capsule-tab-border-line-color-hover;
+                background-color: $tab-capsule-bg-color-hover;
             }
 
             @include tabs-tab-statement(
