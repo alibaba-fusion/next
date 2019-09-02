@@ -330,8 +330,8 @@ class Nav extends React.Component {
                 onMouseLeave,
                 style,
             } = child.props;
-            /*eslint-disable eqeqeq*/
-            const active = activeKey == child.key;
+
+            const active = activeKey === child.key;
             const cls = classnames(
                 {
                     [`${prefix}tabs-tab`]: true,
