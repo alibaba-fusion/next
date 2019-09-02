@@ -72,7 +72,7 @@ export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 展开状态发升变化时候的回调
      */
-    onExpand?: () => void;
+    onExpand?: (expandedKeys: Array<data>) => void;
 
     /**
      * 所有禁用
