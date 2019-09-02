@@ -162,11 +162,11 @@
 
         .#{$css-prefix}icon {
             @include icon-size($tab-icon-size);
+            line-height: 1;
         }
 
         .#{$css-prefix}tabs-tab-close {
             padding-left: $close-icon-margin-left;
-            line-height: 1;
             @include icon-size($close-icon-size);
         }
     }
