@@ -374,6 +374,7 @@ export default class Dialog extends Component {
             needAdjust: false,
             ref: this.getOverlayRef,
             rtl,
+            maskClass: useCSS ? `${prefix}dialog-container` : '',
         };
         if (!useCSS) {
             newOverlayProps.beforePosition = this.beforePosition;
@@ -383,19 +384,6 @@ export default class Dialog extends Component {
 
         const inner = this.renderInner(canCloseByCloseClick);
 
-        return (
-            <Overlay {...newOverlayProps}>
-                {useCSS ? (
-                    <div
-                        className={`${prefix}dialog-container`}
-                        dir={rtl ? 'rtl' : undefined}
-                    >
-                        {inner}
-                    </div>
-                ) : (
-                    inner
-                )}
-            </Overlay>
-        );
+        return <Overlay {...newOverlayProps}>{inner}</Overlay>;
     }
 }
