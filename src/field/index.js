@@ -5,6 +5,10 @@ import { scrollToFirstError, cloneAndAddKey, log } from './utils';
 
 class NextField extends Field {
     static useField(options = {}) {
+        if (!useState || !useMemo) {
+            log.warning('need react version > 16.8.0');
+            return;
+        }
         return this.getUseField({ useMemo, useState })(options);
     }
 

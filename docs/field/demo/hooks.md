@@ -1,21 +1,19 @@
-# 带有反应挂钩的功能组件
+# Hooks
 
 - order: 12
 
-`Field` 将反应挂钩 `useField` 公开为静态方法。接受与 `new Field(...)` 一起使用的 `options` 参数。
+在 functional component 里可使用 `Field.useField` 支持 hooks. `依赖: react@^16.8`
 
 :::lang=en-us
-# Functional Component with React Hooks
+# Hooks
 
 - order: 12
 
-`Field` exposes a React Hook `useField` as a static method. Takes in the `options` parameter used with `new Field(...)`. 
+`Field` exposes a React Hook `useField` as a static method. Takes in the `options` parameter used with `new Field(...)`. `dependencies: react@^16.8`
 
 
 :::
 ---
-
-
 
 
 ````jsx
