@@ -24,6 +24,6 @@ export default {
         }]
     }),
     adaptor: ({ state, size, showLabel, ...others }) => {
-        return <Switch {...others} checked={['on', 'disabledOn'].indexOf(state) !== -1} checkedChildren={showLabel ? 'on' : ''} unCheckedChildren={showLabel ? 'off' : ''} disabled={state.indexOf('disabled') !== -1}/>
+        return <Switch {...others} checked={['on', 'disabledOn'].indexOf(state) !== -1} checkedChildren={showLabel ? 'on' : ''} unCheckedChildren={showLabel ? 'off' : ''} disabled={state.indexOf('disabled') !== -1} size={size} />;
     }
-}
+};
