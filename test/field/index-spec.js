@@ -696,6 +696,17 @@ describe('field', () => {
                 assert(field.getValue('input.0') === 0);
                 assert(field.getValue('input.1') === 2);
                 assert(field.getValue('input.2') === undefined);
+
+
+                field.init('key.0.id', { initValue: 0 });
+                field.init('key.1.id', { initValue: 1 });
+                field.init('key.2.id', { initValue: 2 });
+
+                field.spliceArray('key.{index}', 1);
+
+                assert(field.getValue('key.0.id') === 0);
+                assert(field.getValue('key.1.id') === 2);
+                assert(field.getValue('key.2.id') === undefined);
             });
 
             it('should remove the first 2 field items', () => {
@@ -709,6 +720,18 @@ describe('field', () => {
                 assert(field.getValue('input.0') === 2);
                 assert(field.getValue('input.1') === undefined);
                 assert(field.getValue('input.2') === undefined);
+
+
+                field.init('key.0.id', { initValue: 0 });
+                field.init('key.1.id', { initValue: 1 });
+                field.init('key.2.id', { initValue: 2 });
+
+                field.spliceArray('key.{index}', 1);
+                field.spliceArray('key.{index}', 0);
+
+                assert(field.getValue('key.0.id') === 2);
+                assert(field.getValue('key.1.id') === undefined);
+                assert(field.getValue('key.2.id') === undefined);
             });
 
             it('should make no change `keymatch` does not contain `{index}', () => {
