@@ -501,9 +501,16 @@ export default class CascaderSelect extends Component {
     }
 
     handleVisibleChange(visible, type) {
+        const { searchValue } = this.state;
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
+            });
+        }
+
+        if (!visible && searchValue) {
+            this.setState({
+                searchValue: '',
             });
         }
 
