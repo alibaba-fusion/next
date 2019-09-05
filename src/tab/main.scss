@@ -369,6 +369,7 @@
 
             &:hover {
                 z-index: 1;
+                transition: none;
                 border-right: $tab-capsule-tab-border;
                 margin-right: -$tab-capsule-tab-border-line-width;
                 border-color: $tab-capsule-tab-border-line-color-hover;
