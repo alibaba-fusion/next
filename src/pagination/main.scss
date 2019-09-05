@@ -98,6 +98,9 @@
             vertical-align: top;
             min-width: $s-16;
         }
+        &-dropdown .#{$css-prefix}select-inner {
+            min-width: $s-16;
+        }
         &-popup {
             min-width: $s-16;
         }
