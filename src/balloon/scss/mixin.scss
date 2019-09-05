@@ -168,6 +168,8 @@
         top: $top;
         right: $right;
         font-size: $iconSize;
+        cursor: pointer;
+
         .#{$css-prefix}icon {
             @include icon-square-size($iconSize);
         }

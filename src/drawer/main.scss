@@ -57,6 +57,7 @@
         width: $drawer-close-width;
         height: $drawer-close-width;
         color: $drawer-close-color;
+        cursor: pointer;
 
         &:link,
         &:visited {

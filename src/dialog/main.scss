@@ -71,6 +71,7 @@
         width: $dialog-close-width;
         height: $dialog-close-width;
         color: $dialog-close-color;
+        cursor: pointer;
 
         &:link,
         &:visited {

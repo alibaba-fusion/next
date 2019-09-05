@@ -15,6 +15,7 @@
         color: $message-close-icon-color;
         font-size: 0;
         position: absolute;
+        cursor: pointer;
 
         .#{$css-prefix}icon-close {
             @include icon-square-size($message-close-icon-size);
