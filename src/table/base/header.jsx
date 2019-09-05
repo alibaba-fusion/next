@@ -88,6 +88,7 @@ export default class Header extends React.Component {
                     filters,
                     filterMode,
                     filterMenuProps,
+                    filterProps,
                     width,
                     align,
                     alignHeader,
@@ -144,6 +145,7 @@ export default class Header extends React.Component {
                                 filterParams={filterParams}
                                 filterMode={filterMode}
                                 filterMenuProps={filterMenuProps}
+                                filterProps={filterProps}
                                 onFilter={onFilter}
                             />
                         ) : null;

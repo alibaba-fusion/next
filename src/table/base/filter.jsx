@@ -14,6 +14,7 @@ export default class Filter extends React.Component {
         filterMode: PropTypes.string,
         filterParams: PropTypes.object,
         filterMenuProps: PropTypes.object,
+        filterProps: PropTypes.object,
         locale: PropTypes.object,
         onFilter: PropTypes.func,
         prefix: PropTypes.string,
@@ -124,8 +125,10 @@ export default class Filter extends React.Component {
             locale,
             filterMode,
             filterMenuProps,
+            filterProps,
             rtl,
         } = this.props;
+
         const { visible, selectedKeys } = this.state;
         const { subMenuSelectable, ...others } = filterMenuProps;
 
@@ -185,6 +188,7 @@ export default class Filter extends React.Component {
                 needAdjust={false}
                 container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
+                {...filterProps}
             >
                 <Menu
                     footer={footer}
