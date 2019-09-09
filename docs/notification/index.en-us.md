@@ -62,5 +62,5 @@ Noticfication.config({
 | maxCount | Max visible count, default Infinity | Number | - |  |
 | getContainer | Return the mount node for Notification | () => HTMLNode | () => document.body |  |
 | offset | Offset after align, [x, y] | Array | [30, 30] |  |
-| placement |  Position of Notification, can be one of `topLeft` `topRight` `bottomLeft` `bottomRight` | String | topRight |  |
+| placement |  Position of Notification, can be one of `tl` `tr` `bl` `br` | String | topRight |  |
 | size | Use `Message` size prop | String | large |  |

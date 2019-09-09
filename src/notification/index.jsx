@@ -9,11 +9,11 @@ import config from './config';
 
 const getAnimation = placement => {
     switch (placement) {
-        case 'topLeft':
-        case 'bottomLeft':
+        case 'tl':
+        case 'bl':
             return 'slideInLeft';
-        case 'topRight':
-        case 'bottomRight':
+        case 'tr':
+        case 'br':
             return 'slideInRight';
         default:
             return null;
@@ -128,10 +128,10 @@ class Notification extends Component {
             <div
                 className={`${prefix}notification`}
                 style={{
-                    [config.placement.indexOf('bottom') === 0
+                    [config.placement.indexOf('b') === 0
                         ? 'bottom'
                         : 'top']: config.offset[1],
-                    [config.placement.indexOf('Left') !== -1
+                    [config.placement.indexOf('l') !== -1
                         ? 'left'
                         : 'right']: config.offset[0],
                 }}

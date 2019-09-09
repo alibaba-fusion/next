@@ -63,5 +63,5 @@ Noticfication.config({
 | maxCount | 最多同时出现的个数, 默认不限制 | Number | - |  |
 | getContainer | 配置渲染节点的输出位置 | () => HTMLNode | () => document.body |  |
 | offset | 对齐之后的偏移 [x, y] | Array | [30, 30] |  |
-| placement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | String | topRight |  |
+| placement | 弹出位置，可选 `tl` `tr` `bl` `br` | String | topRight |  |
 | size | 使用 `Message` 组件的 | String | large |  |

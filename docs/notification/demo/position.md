@@ -9,7 +9,7 @@
 
 - order: 4
 
-Can setting `topLeft`, `topRight`, `bottomLeft`, `bottomRight`
+Can setting `tl`, `tr`, `bl`, `br`
 
 :::
 
@@ -29,16 +29,16 @@ const openNotification = (placement) => {
 
 ReactDOM.render(
     <div className="button-row">
-        <Button onClick={() => openNotification('topLeft')}>
+        <Button onClick={() => openNotification('tl')}>
             Top Left
         </Button>
-        <Button onClick={() => openNotification('topRight')}>
+        <Button onClick={() => openNotification('tr')}>
             Top Right
         </Button>
-        <Button onClick={() => openNotification('bottomLeft')}>
+        <Button onClick={() => openNotification('bl')}>
             Bottom Left
         </Button>
-        <Button onClick={() => openNotification('bottomRight')}>
+        <Button onClick={() => openNotification('br')}>
             Bottom Right
         </Button>
     </div>,
