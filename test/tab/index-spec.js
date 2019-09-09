@@ -192,7 +192,7 @@ describe('Tab', () => {
                 device: 'phone'
             });
             assert(wrapper.find('.next-tabs-scrollable').length > 0);
-            assert(wrapper.find(TabNav).prop('excessMode') === 'dropdown');
+            assert(wrapper.find(TabNav).prop('excessMode') === 'slide');
         })
     });
 

@@ -64,6 +64,7 @@ export default class Column extends React.Component {
          * @property {Boolean} isSelectIconRight 默认为`false` 是否将选中图标居右。注意：SubMenu 上的选中图标一直居左，不受此API控制
          */
         filterMenuProps: PropTypes.object,
+        filterProps: PropTypes.object,
         /**
          * 是否支持锁列,可选值为`left`,`right`, `true`
          */
@@ -84,6 +85,7 @@ export default class Column extends React.Component {
         filterMenuProps: {
             subMenuSelectable: false,
         },
+        filterProps: {},
         resizable: false,
     };
 

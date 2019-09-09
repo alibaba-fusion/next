@@ -278,7 +278,7 @@ export default class Tab extends Component {
             rtl,
             animation,
             activeKey,
-            excessMode: isTouchable ? 'dropdown' : excessMode,
+            excessMode: isTouchable ? 'slide' : excessMode,
             extra,
             tabs,
             tabPosition,
