@@ -72,7 +72,7 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "^1.2.1",
+    "@alifd/field": "^1.3.0",
     "@alifd/validate": "^1.1.3",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.3",
