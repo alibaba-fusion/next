@@ -22,10 +22,10 @@ import React from 'react';
 import { Input, Button, Field } from '@alifd/next';
 
  
-function NewApp() {
-    const field = Field.useField({ values: { input: 'abc' }});
+function App() {
+    const field = Field.useField();
 
-    const { init, setValue, reset } = field;
+    const { init, setValue, reset, getError } = field;
 
     function onGetValue() {
         console.log(field.getValue('input'));
@@ -35,16 +35,25 @@ function NewApp() {
         field.setValue('input', 'xyz');
     }
 
-    return (
-        <div className="demo">
-            <Input {...init('input', {initValue: 'test'})} />
+    return (<div className="demo">
+            <Input {...init('input', {
+                initValue: 'test',  
+                rules: [{
+                    required: true,
+                    pattern: /hello/,
+                    message: 'must be hello'
+                }]
+            })} />
+            <span style={{color: 'red'}}>{getError('input')}</span>
+
+            <br/><br/>
             <Button onClick={onSetValue}> setValue </Button>
             <Button onClick={onGetValue}> getValue </Button>
             <br/><br/>
         </div>);
- }
+}
  
  
-ReactDOM.render(<NewApp/>, mountNode);
+ReactDOM.render(<App/>, mountNode);
  
  ````

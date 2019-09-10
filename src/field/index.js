@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
 import Field from '@alifd/field';
 
-import { scrollToFirstError, cloneAndAddKey, log } from './utils';
+import { log } from '../util';
+import { scrollToFirstError, cloneAndAddKey } from './utils';
 
 class NextField extends Field {
     static useField(options = {}) {

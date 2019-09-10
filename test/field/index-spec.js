@@ -156,6 +156,51 @@ describe('field', () => {
 
             done();
         });
+        it('should support hooks', function(done) {
+            function Demo () {
+                const field = Field.useField();
+                                
+                const init = field.init;
+                return (
+                    <Form field={field}>
+                        <FormItem>
+                            <Input
+                                {...init(
+                                    'input',
+                                    {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: 'cant be null',
+                                            },
+                                            {
+                                                pattern: /hi/,
+                                                message: 'cant be null',
+                                            },
+                                        ],
+                                    },
+                                    { defaultValue: '3' }
+                                )}
+                            />
+                        </FormItem>
+                        <button
+                            onClick={() => {
+                                assert(
+                                    field.getValue('input') === '3'
+                                );
+                                field.setValue('b', 2);
+                                field.reset();
+                            }}
+                        >
+                            click
+                        </button>
+                    </Form>)
+            };
+            const wrapper = mount(<Demo />);
+            wrapper.find('button').simulate('click');
+
+            done();
+        });
     });
     describe('init', () => {
         let wrapper;
