@@ -189,7 +189,7 @@ class Collapse extends React.Component {
         // 是否有child传入过key
         const allKeys = React.Children.map(
             this.props.children,
-            child => child.key
+            child => child && child.key
         );
         const hasKeys = Boolean(allKeys.length);
 
