@@ -9,16 +9,17 @@
 
     & {
         min-width: $s-25;
-        padding: 0 $card-padding-lr;
         border: $card-border-width $card-border-style $card-border-color;
         border-radius: $card-corner;
         box-shadow: $card-shadow;
         background: $card-background;
+        overflow: hidden;
     }
 
     &-head {
         background: $card-header-background;
-
+        padding-left: $card-padding-lr;
+        padding-right: $card-padding-lr;
         &-show-bullet {
             #{$card-prefix}-title {
                 padding-left: $card-title-padding-left;
@@ -73,10 +74,12 @@
 
     &-body {
         padding-bottom: $card-body-padding-bottom;
+        padding-left: $card-padding-lr;
+        padding-right: $card-padding-lr;
     }
 
     &-show-divider {
-        #{$card-prefix}-head {
+        #{$card-prefix}-head-main {
             border-bottom: $card-head-bottom-border-width $card-border-style $card-head-bottom-border-color;
         }
 
@@ -91,6 +94,9 @@
         }
     }
 
+    &—free {
+        padding: 0;
+    }
     &-content {
         overflow: hidden;
         transition: all $motion-duration-standard $motion-ease;
@@ -106,5 +112,72 @@
                 transform: rotate(180deg);
             }
         }
+    }
+
+    &-header {
+        background: $card-header-background;
+        padding: 0 $card-padding-lr;
+        margin-bottom: $card-body-show-divider-padding-top;
+        margin-top: $card-body-padding-bottom;
+    }
+
+    &-media,
+    &-media > * {
+        display: block;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    &-header-titles {
+        overflow: hidden;
+    }
+
+    &-header-extra {
+        float: right;
+        text-align: right;
+        & .#{$css-prefix}-btn {
+            margin-left: $s-3;
+            vertical-align: middle;
+        }
+    }
+
+    &-header-title {
+        color: $card-title-color;
+        font-size: $card-title-font-size;
+        line-height: 1.5;
+    }
+
+    &-header-subtitle {
+        font-size: $card-sub-title-font-size;
+        color: $card-sub-title-color;
+    }
+
+    &-actions {
+        display: block;
+        padding-left: $card-padding-lr;
+        padding-right: $card-padding-lr;
+        padding-top: $card-body-show-divider-padding-top;
+        padding-bottom: $card-body-padding-bottom;
+        .#{$css-prefix}btn:not(:last-child) {
+            margin-right: $s-3;
+            vertical-align: middle;
+        }
+    }
+
+    &-divider {
+        border-style: none;
+        width: 100%;
+        margin: 0;
+        border-bottom: $card-head-bottom-border-width $card-border-style $card-head-bottom-border-color;
+    }
+
+    &-content-container {
+        margin-top: $card-body-show-divider-padding-top;
+        padding-bottom: $card-body-padding-bottom;
+        padding-left: $card-padding-lr;
+        padding-right: $card-padding-lr;
     }
 }
