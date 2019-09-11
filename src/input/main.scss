@@ -312,12 +312,17 @@
         vertical-align: middle;
         white-space: nowrap;
 
+        & + span {
+            border-radius: 0 !important;
+        }
+
         /* stylelint-disable declaration-no-important */
         &:first-child {
             border-bottom-right-radius: 0 !important;
             border-top-right-radius: 0 !important;
             //TODO: removed in 2.x
-            > * {
+
+            & * {
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
             }
