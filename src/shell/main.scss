@@ -1,0 +1,315 @@
+@charset "UTF-8";
+
+@import "../core/index-noreset.scss";
+@import "scss/variable";
+@import "./rtl.scss";
+
+#{$shell-prefix} {
+    @include box-sizing;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: all .2s $motion-ease;
+
+    &-content-wrapper {
+        overflow: auto;
+    }
+
+    &-header {
+        display: flex;
+        width: 100%;
+        color: $shell-header-color;
+        height: $shell-header-height;
+        background: $shell-header-background;
+        border-bottom: $shell-header-divider;
+        box-shadow: $shell-header-shadow;
+        padding: 0 $shell-header-paddingLeft;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 9;
+
+        .dock-trigger,
+        .nav-trigger {
+            outline: 0;
+            background: $shell-header-background;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-trigger {
+            margin-right: 10px;
+        }
+        .dock-trigger {
+            margin-left: 10px;
+        }
+
+        #{$shell-prefix}-navigation {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: $shell-navigation-hoz-align;
+            height: $shell-header-height;
+            line-height: $shell-header-height;
+            margin: 0 $shell-navigation-hoz-marginLeft;
+        }
+        #{$shell-prefix}-branding {
+            display: flex;
+            align-items: center;
+        }
+        #{$shell-prefix}-action {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &-task-header {
+        width: 100%;
+        min-height: $shell-multitask-min-height;
+        background: $shell-multitask-background;
+        border-bottom: $shell-multitask-divider;
+        box-shadow: $shell-multitask-shadow;
+        padding: 0 $shell-multitask-paddingLeft;
+        overflow: auto;
+    }
+
+    &-sub-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
+    }
+    &-main {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        position: relative;
+        height: 100%;
+        box-sizing: content-box;
+        background: $shell-content-background;
+        overflow: auto;
+        transition: all .2s $motion-ease;
+
+        #{$shell-prefix}-appbar {
+            min-height: $shell-appbar-min-height;
+            background: $shell-appbar-background;
+            border-bottom: $shell-appbar-divider;
+            box-shadow: $shell-appbar-shadow;
+            padding: 0 $shell-appbar-paddingLeft;
+        }
+
+        #{$shell-prefix}-content {
+            flex: 1;
+            padding: $shell-content-paddingTop $shell-content-paddingLeft;
+        }
+
+        #{$shell-prefix}-content-inner {
+            margin: 0 auto;
+            max-width: $shell-content-max-width;
+            display: grid;
+            grid-row-gap: $shell-content-gutter-row;
+            grid-column-gap: $shell-content-gutter-column;
+            grid-template-columns: repeat($shell-content-columns, 1fr);
+        }
+
+        #{$shell-prefix}-footer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background: $shell-footer-background;
+            min-height: $shell-footer-min-height;
+        }
+    }
+
+    &-aside {
+        transition: all .2s $motion-ease;
+
+        .aside-trigger {
+            cursor: pointer;
+            outline: 0;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 20px;
+            height: 48px;
+            display: flex;
+            border: 1px solid #DDD;
+            align-items: center;
+            justify-content: center;
+            background: $shell-navigation-ver-background;
+        }
+        .local-nav-trigger {
+            outline: 0;
+            background: $shell-local-navigation-background;
+            border-right: 0;
+            transform: translate(100%, -50%) rotate(180deg);
+            right: 0;
+        }
+        .ancillary-trigger {
+            outline: 0;
+            background: $shell-ancillary-background;
+            transform: translate(-100%, -50%);
+            border-right: 0;
+            left: 1px;
+        }
+
+        &.#{$css-prefix}aside-localnavigation {
+            position: relative;
+        }
+
+        &.#{$css-prefix}aside-ancillary {
+            position: relative;
+        }
+
+
+        &#{$shell-prefix}-navigation {
+            overflow-x: auto;
+            width: $shell-navigation-ver-width;
+            background: $shell-navigation-ver-background;
+            border-right: $shell-navigation-ver-divider;
+            box-shadow: $shell-navigation-ver-shadow;
+            display: flex;
+            flex-direction: column;
+            justify-self: flex-start;
+            padding: $shell-navigation-ver-paddingTop 0 $shell-navigation-ver-paddingBottom;
+            transition: all .2s $motion-ease;
+
+            &#{$shell-prefix}-collapse {
+                width: 0;
+                &#{$shell-prefix}-mini {
+                    width: $shell-navigation-ver-width-mini;
+                }
+            }
+        }
+
+        &#{$shell-prefix}-tooldock {
+            overflow-x: auto;
+            // height: 100%;
+            width: $shell-tooldock-width;
+            background: $shell-tooldock-background;
+            border-left: $shell-tooldock-divider;
+            box-shadow: $shell-tooldock-shadow;
+            padding: $shell-tooldock-paddingTop 0 $shell-tooldock-paddingBottom;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #{$shell-prefix}-tooldockitem {
+            width: 100%;
+            text-align: center;
+            padding: $shell-tooldock-item-paddingTop 0;
+            color: $shell-tooldock-item-color;
+            background: $shell-tooldock-item-background;
+
+            &:hover {
+                color: $shell-tooldock-item-color-hover;
+                background: $shell-tooldock-item-background-hover;
+            }
+        }
+
+        #{$shell-prefix}-localnavigation {
+            position: relative;
+            height: 100%;
+            width: $shell-local-navigation-width;
+            background: $shell-local-navigation-background;
+            border-right: $shell-local-navigation-divider;
+            box-shadow: $shell-local-navigation-shadow;
+            padding: $shell-local-navigation-paddingTop 0 $shell-local-navigation-paddingBottom;
+            display: flex;
+            flex-direction: column;
+            justify-self: flex-start;
+            transition: all .2s $motion-ease;
+
+            &#{$shell-prefix}-collapse {
+                .aside-trigger {
+                    border: 1px solid #DDD;
+                    border-left: none;
+                    transform: translate(100%, -50%);
+                }
+            }
+        }
+
+        #{$shell-prefix}-ancillary {
+            height: 100%;
+            width: $shell-ancillary-width;
+            background: $shell-ancillary-background;
+            border-left: $shell-ancillary-divider;
+            box-shadow: $shell-ancillary-shadow;
+            padding: $shell-ancillary-paddingTop 0 $shell-ancillary-paddingBottom;
+            display: flex;
+            flex-direction: column;
+            justify-self: flex-start;
+            transition: all .2s $motion-ease;
+
+            &#{$shell-prefix}-collapse {
+                .aside-trigger {
+                    border: 1px solid #DDD;
+                    border-left: none;
+                    transform: translate(-100%, -50%) rotate(180deg);
+                }
+            }
+        }
+
+        & > #{$shell-prefix}-collapse {
+            width: 0;
+        }
+    }
+
+
+    &-phone {
+
+        #{$shell-prefix}-header #{$shell-prefix}-navigation {
+            display: none;
+        }
+        #{$shell-prefix}-navigation {
+            width: 100%;
+            height: 100%;
+            transition: height .2s $motion-ease;
+            &#{$shell-prefix}-collapse {
+                padding: 0;
+                height: 0;
+                transition: height .2s $motion-ease;
+            }
+        }
+        #{$shell-prefix}-tooldock {
+            height: $shell-tooldock-height;
+            left: 0;
+            right: 0;
+            position: absolute;
+            width: 100%;
+            flex-direction: row;
+            justify-content: center;
+            &#{$shell-prefix}-collapse {
+                display: none;
+                height: 0;
+                padding: 0;
+                transition: all .2s $motion-ease;
+            }
+        }
+
+        // #{$shell-prefix}-ancillary {
+        //     right: 0;
+        // }
+    }
+
+    &-tablet,
+    &-phone {
+        #{$shell-prefix}-aside.#{$css-prefix}aside-ancillary {
+            width: 0;
+        }
+        #{$shell-prefix}-ancillary {
+            transform: translateX(-100%);
+        }
+        #{$shell-prefix}-aside.#{$css-prefix}aside-localnavigation {
+            width: 0;
+        }
+    }
+}

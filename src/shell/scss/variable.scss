@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+////
+/// @module shell: 布局框架
+/// @tag Shell
+/// @category component
+/// @family data-entry
+/// @varPrefix $shell-
+/// @classPrefix {prefix}-shell
+/// @order {}
+////
+// shell variables
+// --------------------------------------------------
+$shell-prefix: '.#{$css-prefix}shell' !default;
+
+$shell-header-color: $color-white !default;
+$shell-header-height: $s-13 !default;
+$shell-header-background: $color-black !default;
+$shell-header-shadow: 1px 1px 1px #000 !default;
+$shell-header-divider-size: $line-1 !default;
+$shell-header-divider-style: $line-solid !default;
+$shell-header-divider-color: #1F1F1F !default;
+$shell-header-divider: $shell-header-divider-size $shell-header-divider-style $shell-header-divider-color;
+$shell-header-paddingLeft: $s-8 !default;
+
+
+$shell-multitask-min-height: $s-10 !default;
+$shell-multitask-background: $color-white !default;
+$shell-multitask-shadow: $shadow-zero !default;
+$shell-multitask-divider-size: $line-1 !default;
+$shell-multitask-divider-style: $line-solid !default;
+$shell-multitask-divider-color: $color-line1-1 !default;
+$shell-multitask-divider: $shell-multitask-divider-size $shell-multitask-divider-style $shell-multitask-divider-color;
+$shell-multitask-paddingLeft: $s-zero !default;
+
+
+$shell-navigation-hoz-marginLeft: $s-12 !default;
+$shell-navigation-hoz-align: flex-end !default; // flex-start flex-end center space-evenly space-around space-between
+
+
+$shell-navigation-ver-width: $s-42 !default;
+$shell-navigation-ver-shadow: $shadow-zero !default;
+$shell-navigation-ver-paddingTop: $s-2 !default;
+$shell-navigation-ver-paddingBottom: $s-2 !default;
+$shell-navigation-ver-width-mini: $s-15 !default;
+$shell-navigation-ver-background: $color-black !default;
+$shell-navigation-ver-divider-size: $line-1 !default;
+$shell-navigation-ver-divider-style: $line-solid !default;
+$shell-navigation-ver-divider-color: #1F1F1F !default;
+$shell-navigation-ver-divider: $shell-navigation-ver-divider-size $shell-navigation-ver-divider-style $shell-navigation-ver-divider-color;
+
+$shell-local-navigation-width: $s-42 !default;
+$shell-local-navigation-background: $color-fill1-4 !default;
+$shell-local-navigation-paddingTop: $s-2 !default;
+$shell-local-navigation-paddingBottom: $s-2 !default;
+$shell-local-navigation-shadow: $shadow-zero !default;
+$shell-local-navigation-divider-size: $line-1 !default;
+$shell-local-navigation-divider-style: $line-solid !default;
+$shell-local-navigation-divider-color: $color-line1-1 !default;
+$shell-local-navigation-divider: $shell-local-navigation-divider-size $shell-local-navigation-divider-style $shell-local-navigation-divider-color;
+
+
+$shell-appbar-background: $color-black !default;
+$shell-appbar-min-height: $s-12 !default;
+$shell-appbar-shadow: $shadow-zero !default;
+$shell-appbar-paddingLeft: $s-6 !default;
+$shell-appbar-divider-size: $line-1 !default;
+$shell-appbar-divider-style: $line-solid !default;
+$shell-appbar-divider-color: $color-line1-1 !default;
+$shell-appbar-divider: $shell-appbar-divider-size $shell-appbar-divider-style $shell-appbar-divider-color;
+
+
+$shell-content-max-width: unset !default;
+$shell-content-background: $color-fill1-3 !default;
+$shell-content-paddingLeft: $s-6 !default;
+$shell-content-paddingTop: $s-6 !default;
+$shell-content-gutter-row: $s-4 !default;
+$shell-content-gutter-column: $s-4 !default;
+$shell-content-columns: 1 !default;
+
+$shell-footer-min-height: $s-14 !default;
+$shell-footer-background: $color-black !default;
+
+$shell-ancillary-width: $s-42 !default;
+$shell-ancillary-background: $color-white !default;
+$shell-ancillary-paddingTop: $s-2 !default;
+$shell-ancillary-paddingBottom: $s-2 !default;
+$shell-ancillary-shadow: $shadow-zero !default;
+$shell-ancillary-divider-size: $line-1 !default;
+$shell-ancillary-divider-style: $line-solid !default;
+$shell-ancillary-divider-color: $color-line1-1 !default;
+$shell-ancillary-divider: $shell-ancillary-divider-size $shell-ancillary-divider-style $shell-ancillary-divider-color;
+
+$shell-tooldock-height: $s-13 !default;
+$shell-tooldock-width: $s-13 !default;
+$shell-tooldock-background: $color-fill1-4 !default;
+$shell-tooldock-paddingTop: $s-2 !default;
+$shell-tooldock-paddingBottom: $s-2 !default;
+$shell-tooldock-shadow: $shadow-zero !default;
+$shell-tooldock-divider-size: $line-1 !default;
+$shell-tooldock-divider-style: $line-solid !default;
+$shell-tooldock-divider-color: $color-line1-1 !default;
+$shell-tooldock-divider: $shell-tooldock-divider-size $shell-tooldock-divider-style $shell-tooldock-divider-color;
+
+
+$shell-tooldock-item-paddingTop: $s-2 !default;
+$shell-tooldock-item-color: $color-text1-3 !default;
+$shell-tooldock-item-color-hover: $color-text1-4 !default;
+$shell-tooldock-item-color-active: $color-text1-4 !default;
+$shell-tooldock-item-background: $color-transparent !default;
+$shell-tooldock-item-background-hover: $color-fill1-3 !default;
+$shell-tooldock-item-background-active: $color-fill1-3 !default;
