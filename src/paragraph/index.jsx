@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
+import { log } from '../util';
 
 /* eslint-disable */
 
@@ -31,6 +32,13 @@ class Paragraph extends React.Component {
         type: 'long',
         size: 'medium',
     };
+
+    constructor(props) {
+        super(props);
+        log.warning(
+            '[Paragraph] is deprecated, please use Typography.Paragraph instead!'
+        );
+    }
 
     render() {
         const { prefix, className, type, size, rtl, ...others } = this.props;
