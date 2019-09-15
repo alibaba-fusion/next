@@ -35,6 +35,10 @@ export default class Form extends React.Component {
          */
         size: PropTypes.oneOf(['large', 'medium', 'small']),
         /**
+         * 单个 Item 中表单类组件宽度是否是100%
+         */
+        fullWidth: PropTypes.bool,
+        /**
          * 标签的位置
          * @enumdesc 上, 左, 内
          */
@@ -115,6 +119,7 @@ export default class Form extends React.Component {
     static childContextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.string,
+        _formFullWidth: PropTypes.bool,
     };
 
     constructor(props) {
@@ -143,6 +148,7 @@ export default class Form extends React.Component {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
             _formSize: this.props.size,
+            _formFullWidth: this.props.fullWidth,
         };
     }
 
