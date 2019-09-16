@@ -175,13 +175,21 @@ export default class Rating extends Component {
         const surplusNum =
             (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
         let value = Number(fullNum) + Number(surplusNum.toFixed(1));
-
         if (value >= count) {
             value = count;
         } else if (allowHalf) {
             const floorValue = Math.floor(value);
-            value =
-                value - 0.5 >= floorValue ? floorValue + 1 : floorValue + 0.5;
+            if (rtl) {
+                value =
+                    value - 0.5 >= floorValue
+                        ? floorValue + 1.5
+                        : floorValue + 1;
+            } else {
+                value =
+                    value - 0.5 >= floorValue
+                        ? floorValue + 1
+                        : floorValue + 0.5;
+            }
         } else {
             value = Math.floor(value) + 1;
         }
