@@ -1,4 +1,5 @@
 @import "../core/index-noreset.scss";
+@import "./scss/variable.scss";
 
 .#{$css-prefix}overlay-wrapper {
     .#{$css-prefix}overlay-inner {
@@ -12,12 +13,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: $mask-background;
+        background-color: $color-calculate-mask-background;
         transition: opacity $motion-duration-standard $motion-ease;
         opacity: 0;
     }
 
     &.opened .#{$css-prefix}overlay-backdrop {
-        opacity: $mask-opacity;
+        opacity: 1;
     }
 }

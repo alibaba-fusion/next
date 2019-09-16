@@ -131,28 +131,33 @@ export default class Tab extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (
-            nextProps.activeKey &&
-            this.state.activeKey !== nextProps.activeKey
+            nextProps.activeKey !== undefined &&
+            this.state.activeKey !== `${nextProps.activeKey}`
         ) {
             this.setState({
-                activeKey: nextProps.activeKey,
+                activeKey: `${nextProps.activeKey}`,
             });
         }
     }
 
     getDefaultActiveKey(props) {
-        let activeKey = props.activeKey || props.defaultActiveKey;
-        if (!activeKey) {
+        let activeKey =
+            props.activeKey === undefined
+                ? props.defaultActiveKey
+                : props.activeKey;
+
+        if (activeKey === undefined) {
             React.Children.forEach(props.children, (child, index) => {
+                if (activeKey !== undefined) return;
                 if (React.isValidElement(child)) {
-                    /* eslint-disable eqeqeq */
-                    if (activeKey == undefined && !child.props.disabled) {
+                    if (!child.props.disabled) {
                         activeKey = child.key || index;
                     }
                 }
             });
         }
-        return activeKey;
+
+        return `${activeKey}`;
     }
 
     getNextActiveKey(isNext) {

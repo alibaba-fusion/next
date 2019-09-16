@@ -186,6 +186,7 @@ export default class Overlay extends Component {
         onMaskMouseEnter: PropTypes.func,
         onMaskMouseLeave: PropTypes.func,
         onClick: PropTypes.func,
+        maskClass: PropTypes.string,
     };
 
     static defaultProps = {
@@ -216,6 +217,7 @@ export default class Overlay extends Component {
         disableScroll: false,
         cache: false,
         onClick: e => e.stopPropagation(),
+        maskClass: '',
     };
 
     constructor(props) {
@@ -702,6 +704,7 @@ export default class Overlay extends Component {
             wrapperClassName,
             onMaskMouseEnter,
             onMaskMouseLeave,
+            maskClass,
         } = this.props;
         const { visible: stateVisible, status, animation } = this.state;
 
@@ -718,7 +721,7 @@ export default class Overlay extends Component {
             }
             const childClazz = classnames({
                 [`${prefix}overlay-inner`]: true,
-                [animation.in]: status === 'entering',
+                [animation.in]: status === 'entering' || status === 'mounting',
                 [animation.out]: status === 'leaving',
                 [child.props.className]: !!child.props.className,
                 [className]: !!className,
@@ -772,6 +775,11 @@ export default class Overlay extends Component {
                 wrapperStyle
             );
 
+            const maskClazz = classnames({
+                [`${prefix}overlay-backdrop`]: true,
+                [maskClass]: !!maskClass,
+            });
+
             children = (
                 <div
                     className={wrapperClazz}
@@ -780,14 +788,17 @@ export default class Overlay extends Component {
                 >
                     {hasMask ? (
                         <div
-                            className={`${prefix}overlay-backdrop`}
+                            className={maskClazz}
                             onClick={this.handleMaskClick}
                             onMouseEnter={onMaskMouseEnter}
                             onMouseLeave={onMaskMouseLeave}
                             dir={rtl ? 'rtl' : undefined}
-                        />
-                    ) : null}
-                    {children}
+                        >
+                            {children}
+                        </div>
+                    ) : (
+                        children
+                    )}
                 </div>
             );
         }
