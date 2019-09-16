@@ -8,6 +8,8 @@ import { getFieldInitCfg } from './enhance';
 
 const { Row, Col } = Grid;
 
+const { isNil } = obj;
+
 /** Form.Item
  *  @description 手动传递了 wrapCol labelCol 会使用 Grid 辅助布局; labelAlign='top' 会强制禁用 Grid
  *  @order 1
@@ -259,8 +261,7 @@ export default class Item extends React.Component {
     }
 
     getFullWidth() {
-        return this.props.fullWidth === undefined ||
-            this.props.fullWidth === null
+        return isNil(this.props.fullWidth)
             ? !!this.context._formFullWidth
             : this.props.fullWidth;
     }
