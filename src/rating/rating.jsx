@@ -172,7 +172,8 @@ export default class Rating extends Component {
 
         const pos = e.pageX - this.underlayNode.getBoundingClientRect().left;
         const fullNum = Math.floor(pos / (iconSpace + iconSize));
-        const surplusNum = (pos - fullNum * (iconSpace + iconSize)) / iconSize;
+        const surplusNum =
+            (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
         let value = Number(fullNum) + Number(surplusNum.toFixed(1));
 
         if (value >= count) {
