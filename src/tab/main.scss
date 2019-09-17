@@ -298,9 +298,15 @@
         }
     }
 
-    &-wrapped#{$tab-prefix}-top > #{$tab-prefix}-content {
-        top: -$tab-wrapped-content-position-top;
-        border-top: $tab-wrapped-content-border;
+    &-wrapped#{$tab-prefix}-top > #{$tab-prefix}-bar:before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        height: 0;
+        border-bottom: $tab-wrapped-content-border;
+        transform: translateY(-$tab-wrapped-content-border-line-width);
+        display: block;
     }
 
     /* Shape: wrapped(bottom) */
