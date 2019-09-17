@@ -64,7 +64,7 @@ class App extends React.Component {
                     <span style={{marginLeft: 10, color: '#FFF'}}>MyName</span>
                 </Shell.Action>
 
-                <Shell.Navigation trigger={null} collapse={this.state.navcollapse}>
+                <Shell.Navigation>
                     <Nav type="primary" embeddable>
                         <Nav.Item icon="account">Nav Item 1</Nav.Item>
                         <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
@@ -74,9 +74,6 @@ class App extends React.Component {
                         <Nav.Item icon="account">Nav Item 6</Nav.Item>
                         <Nav.Item icon="account">Nav Item 7</Nav.Item>
                     </Nav>
-                <div className="my-trigger-nav" onClick={this.btnClick}>
-                    {this.state.navcollapse ? '>' : '<'}
-                </div>
                 </Shell.Navigation>
 
                 <Shell.LocalNavigation>

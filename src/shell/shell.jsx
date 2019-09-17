@@ -13,12 +13,22 @@ export default function ShellBase(props) {
 
         static propTypes = {
             prefix: PropTypes.string,
+            /**
+             * 设备类型
+             * @enumdesc 手机, 平板, PC电脑
+             */
             device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+            /**
+             * 设备类型
+             * @enumdesc 浅色, 深色, 主题色
+             */
+            type: PropTypes.oneOf(['light', 'dark', 'brand']),
         };
 
         static defaultProps = {
             prefix: 'next-',
             device: 'desktop',
+            type: 'light',
         };
 
         static childContextTypes = {
@@ -108,14 +118,17 @@ export default function ShellBase(props) {
                 com = children
                     .filter(
                         child =>
+                            child &&
                             child.type._typeMark.replace('Shell_', '') ===
-                                mark && child.props.direction !== 'hoz'
+                                mark &&
+                            child.props.direction !== 'hoz'
                     )
                     .pop();
             } else {
                 com = children
                     .filter(
                         child =>
+                            child &&
                             child.type._typeMark.replace('Shell_', '') === mark
                     )
                     .pop();
@@ -145,7 +158,7 @@ export default function ShellBase(props) {
         };
 
         renderShell = props => {
-            const { prefix, children, className, ...others } = props;
+            const { prefix, children, className, type, ...others } = props;
 
             const { device } = this.state;
 
@@ -443,14 +456,9 @@ export default function ShellBase(props) {
             if (layout.header) {
                 headerDom = (
                     <header key="header" className={headerCls}>
-                        {Object.keys(layout.header).map(key => {
-                            return (
-                                layout.header[key] &&
-                                React.cloneElement(layout.header[key], {
-                                    key,
-                                })
-                            );
-                        })}
+                        {layout.header.Branding}
+                        {layout.header.Navigation}
+                        {layout.header.Action}
                     </header>
                 );
             }
@@ -489,6 +497,7 @@ export default function ShellBase(props) {
             const cls = classnames({
                 [`${prefix}shell`]: true,
                 [`${prefix}shell-${device}`]: true,
+                [`${prefix}shell-${type}`]: true,
                 [className]: !!className,
             });
 

@@ -1,285 +1,251 @@
 import { Demo, DemoGroup, DemoHead, initDemo } from '../../../src/demo-helper';
-import Button from '../../../src/button';
+import Shell from '../../../src/shell';
+import Nav from '../../../src/nav';
+import Search from '../../../src/search';
 import Icon from '../../../src/icon';
 import ConfigProvider from '../../../src/config-provider';
 import zhCN from '../../../src/locale/zh-cn';
 import enUS from '../../../src/locale/en-us';
 import '../../../src/demo-helper/style.js';
-import '../../../src/button/style.js';
+import '../../../src/shell/style.js';
+import '../../../src/search/style.js';
+import '../../../src/nav/style.js';
 
 /* eslint-disable */
 const i18nMap = {
     'zh-cn': {
         button: '按钮',
-        warningButton: '警告按钮',
-        ghostButton: '幽灵按钮',
-        groupButton: '按钮组合',
-        textButton: '文字按钮',
-        normal: '普通',
-        primary: '主要',
-        secondary: '次要',
-        light: '浅色',
-        dark: '深色',
-        hover: '悬浮',
-        disabled: '禁用',
-        goback: '后退',
-        goforward: '前进',
+        light: 'Shell模版1 - light',
+        dark: 'Shell模版2 - dark',
+        brand: 'Shell模版3 - brand',
     },
     'en-us': {
         button: 'Button',
-        warningButton: 'Warning Button',
-        ghostButton: 'Ghost Button',
-        groupButton: 'Group Button',
-        textButton: 'Text Button',
-        normal: 'Normal',
-        primary: 'Primary',
-        secondary: 'Secondary',
-        light: 'Light',
-        dark: 'Dark',
-        hover: 'Hover',
-        disabled: 'Disabled',
-        goback: 'Go Back',
-        goforward: 'Go Forward',
+        light: 'Template 1 - light',
+        dark: 'Template 2 - dark',
+        brand: 'Template 3 - brand',
     }
 };
-
-const ButtonGroup = Button.Group;
-
-function renderButton(type, i18n, children) {
-    return (
-        <Demo title={i18n[type]} key={type}>
-            <DemoHead cols={['L', 'M', 'S']} />
-            <DemoGroup label={i18n.normal}>
-                <Button type={type} size="large">{children}</Button>
-                <Button type={type} size="medium">{children}</Button>
-                <Button type={type} size="small">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.hover}>
-                <Button type={type} size="large" className="hover">{children}</Button>
-                <Button type={type} size="medium" className="hover">{children}</Button>
-                <Button type={type} size="small" className="hover">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.disabled}>
-                <Button type={type} size="large" disabled>{children}</Button>
-                <Button type={type} size="medium" disabled>{children}</Button>
-                <Button type={type} size="small" disabled>{children}</Button>
-            </DemoGroup>
-        </Demo>
-    );
-}
-
-function renderWarningButton(type, i18n, children) {
-    return (
-        <Demo title={i18n[type]} key={type}>
-            <DemoHead cols={['L', 'M', 'S']} />
-            <DemoGroup label={i18n.normal}>
-                <Button warning type={type} size="large">{children}</Button>
-                <Button warning type={type} size="medium">{children}</Button>
-                <Button warning type={type} size="small">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.hover}>
-                <Button warning type={type} size="large" className="hover">{children}</Button>
-                <Button warning type={type} size="medium" className="hover">{children}</Button>
-                <Button warning type={type} size="small" className="hover">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.disabled}>
-                <Button warning type={type} size="large" disabled>{children}</Button>
-                <Button warning type={type} size="medium" disabled>{children}</Button>
-                <Button warning type={type} size="small" disabled>{children}</Button>
-            </DemoGroup>
-        </Demo>
-    );
-}
-
-function renderTextButton(type, i18n, children) {
-    return (
-        <Demo title={i18n[type]} key={type}>
-            <DemoHead cols={['L', 'M', 'S']} />
-            <DemoGroup label={i18n.normal}>
-                <Button text type={type} size="large">{children}</Button>
-                <Button text type={type} size="medium">{children}</Button>
-                <Button text type={type} size="small">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.hover}>
-                <Button text type={type} size="large" className="hover">{children}</Button>
-                <Button text type={type} size="medium" className="hover">{children}</Button>
-                <Button text type={type} size="small" className="hover">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.disabled}>
-                <Button text type={type} size="large" disabled>{children}</Button>
-                <Button text type={type} size="medium" disabled>{children}</Button>
-                <Button text type={type} size="small" disabled>{children}</Button>
-            </DemoGroup>
-        </Demo>
-    );
-}
-
-function renderGhostButton(type, i18n, children) {
-    let style = {};
-
-    if (type === 'dark') {
-        style = {
-            backgroundColor: '#333',
-            color: '#FFF'
-        }
-    }
-
-    return (
-        <Demo title={i18n[type]} key={type} style={style}>
-            <DemoHead cols={['L', 'M', 'S']} />
-            <DemoGroup label={i18n.normal}>
-                <Button ghost={type} size="large">{children}</Button>
-                <Button ghost={type} size="medium">{children}</Button>
-                <Button ghost={type} size="small">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.hover}>
-                <Button ghost={type} size="large" className="hover">{children}</Button>
-                <Button ghost={type} size="medium" className="hover">{children}</Button>
-                <Button ghost={type} size="small" className="hover">{children}</Button>
-            </DemoGroup>
-            <DemoGroup label={i18n.disabled}>
-                <Button ghost={type} size="large" disabled>{children}</Button>
-                <Button ghost={type} size="medium" disabled>{children}</Button>
-                <Button ghost={type} size="small" disabled>{children}</Button>
-            </DemoGroup>
-        </Demo>
-    )
-}
-
-class FunctionGroupButton extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            demoFunction: {
-                'arrow-type': {
-                    label: '图标类型',
-                    value: 'none',
-                    enum: [{
-                        label: '无',
-                        value: 'none'
-                    }, {
-                        label: '箭头',
-                        value: 'arrow'
-                    }, {
-                        label: '只有图标',
-                        value: 'only-icon'
-                    }]
-                }
-            }
-        }
-    }
-
-    onFunctionChange = (ret) => {
-        this.setState({
-            demoFunction: ret,
-        });
-    }
-
+class RenderShell extends React.Component {
     render() {
-        const { title, locale, types } = this.props;
-        const { demoFunction } = this.state;
-        const children = locale.button;
-        const iconType = demoFunction['arrow-type'].value;
+        const { type, i18n, demoFunction } = this.props;
+        return (<Demo title={i18n[type]} key={type}>
+            <DemoGroup label={'normal'}>
+                <Shell style={{height: 500, width: 800}} device={demoFunction.device.value} type={type}>
+                    {
+                        demoFunction.branding.value === 'true'
+                            ? <Shell.Branding>
+                                <div style={{width: 32, height: 32,background: '#555'}}></div>
+                                <span style={{marginLeft: 10}}>App Name</span>
+                            </Shell.Branding>
+                            : null
+                    }
 
-        let left, middle, right;
+                    {
+                        demoFunction.navigation.value !== 'false'
+                            ?  <Shell.Navigation direction={demoFunction.navigation.value}>
+                                <Nav type="primary" embeddable direction={demoFunction.navigation.value} hozInLine>
+                                    <Nav.Item icon="account">Nav Item 1</Nav.Item>
+                                    <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
+                                    <Nav.Item icon="atm">Nav Item 3</Nav.Item>
+                                    <Nav.Item icon="account">Nav Item 4</Nav.Item>
+                                    <Nav.Item icon="account">Nav Item 5</Nav.Item>
+                                    <Nav.Item icon="account">Nav Item 6</Nav.Item>
+                                    <Nav.Item icon="account">Nav Item 7</Nav.Item>
+                                </Nav>
+                            </Shell.Navigation>
+                            : null
+                    }
+                    {
+                        demoFunction.actions.value === 'true'
+                            ? <Shell.Action>
+                                <Search key="2" shape="simple" type="dark" palceholder="Search" style={{width: '200px', marginRight: 20}}/>
+                                <Icon type="ic_tongzhi" />
+                                <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" style={{width: 32, height: 32, borderRadius: '50%', verticalAlign: 'middle'}} alt="用户头像" />
+                                <span style={{marginLeft: 10}}>MyName</span>
+                            </Shell.Action>
+                            : null
+                    }
+                    {
+                        demoFunction.localNav.value === 'true'
+                            ? <Shell.LocalNavigation>
+                                <Nav embeddable>
+                                <Nav.SubNav label="Local Nav1">
+                                    <Nav.Item>Local Nav1</Nav.Item>
+                                </Nav.SubNav>
+                                <Nav.SubNav label="Local Nav2">
+                                    <Nav.Item>Local Nav2</Nav.Item>
+                                </Nav.SubNav>
+                                <Nav.SubNav label="Local Nav3">
+                                    <Nav.Item>Local Nav3</Nav.Item>
+                                </Nav.SubNav>
+                                <Nav.Item>Local Nav4</Nav.Item>
+                                <Nav.Item>Local Nav5</Nav.Item>
+                                <Nav.Item>Local Nav6</Nav.Item>
+                                <Nav.Item>Local Nav7</Nav.Item>
+                                <Nav.Item>Local Nav8</Nav.Item>
+                                <Nav.Item>Local Nav4</Nav.Item>
+                                <Nav.Item>Local Nav5</Nav.Item>
+                                <Nav.Item>Local Nav6</Nav.Item>
+                                <Nav.Item>Local Nav7</Nav.Item>
+                                <Nav.Item>Local Nav8</Nav.Item>
+                                </Nav>
+                            </Shell.LocalNavigation>
+                            : null
+                    }
+                    <Shell.Content>
+                        <div style={{minHeight: 1200, background: '#fff'}}></div>
+                    </Shell.Content>
 
-        switch (iconType) {
-            case 'none': {
-                left = children;
-                middle = children;
-                right = children;
-                break;
-            }
-            case 'arrow': {
-                left = [<Icon type="arrow-left" key="icon" />, locale.goback];
-                middle = children;
-                right = [locale.goforward, <Icon type="arrow-right" key="icon" />];
-                break;
-            }
-            case 'only-icon': {
-                left = <Icon type="set" />;
-                middle = <Icon type="atm" />;
-                right = <Icon type="download" />;
-            }
-        }
-
-        return (<Demo title={title} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
-        {
-            types.map(type => {
-                return (
-                    <Demo title={locale[type]} key={type}>
-                        <DemoHead cols={['L', 'M', 'S']} />
-                        <DemoGroup label={locale.normal}>
-                            <ButtonGroup size="large">
-                                <Button type={type}>{left}</Button>
-                                <Button type={type}>{middle}</Button>
-                                <Button type={type}>{right}</Button>
-                            </ButtonGroup>
-                            <ButtonGroup size="medium">
-                                <Button type={type}>{left}</Button>
-                                <Button type={type}>{middle}</Button>
-                                <Button type={type}>{right}</Button>
-                            </ButtonGroup>
-                            <ButtonGroup size="small">
-                                <Button type={type}>{left}</Button>
-                                <Button type={type}>{middle}</Button>
-                                <Button type={type}>{right}</Button>
-                            </ButtonGroup>
-                        </DemoGroup>
-                    </Demo>
-                )
-            })
-        }
-        </Demo>)
+                    {
+                        demoFunction.ancillary.value === 'true'
+                            ? <Shell.Ancillary>
+                            </Shell.Ancillary>
+                            : null
+                    }
+                    {
+                        demoFunction.tooldock.value === 'true'
+                            ? <Shell.ToolDock>
+                                <Shell.ToolDockItem>
+                                <Icon type="calendar" />
+                                </Shell.ToolDockItem>
+                                <Shell.ToolDockItem>
+                                <Icon type="atm" />
+                                </Shell.ToolDockItem>
+                                <Shell.ToolDockItem>
+                                <Icon type="account" />
+                                </Shell.ToolDockItem>
+                            </Shell.ToolDock>
+                            : null
+                    }
+                    {
+                        demoFunction.footer.value === 'true'
+                            ? <Shell.Footer>
+                                <span>Alibaba Fusion</span>
+                                <span>@ 2019 Alibaba Piecework 版权所有</span>
+                            </Shell.Footer>
+                            : null
+                    }
+                </Shell>
+            </DemoGroup>
+        </Demo>);
     }
+}
+
+const renderShell = (type, i18n, demoFunction) => {
+    return <RenderShell type={type} i18n={i18n} demoFunction={demoFunction} />;
 }
 
 class FunctionDemo extends React.Component {
     constructor(props) {
         super(props);
-        let iconList;
-        if (props.noArrow) {
-            iconList = [{
-                label: '无',
-                value: 'none'
-            }, {
-                label: '旺旺',
-                value: 'atm'
-            }, {
-                label: '设置',
-                value: 'set'
-            }];
-        } else {
-            iconList = [{
-                label: '无',
-                value: 'none'
-            }, {
-                label: '左箭头',
-                value: 'arrow-left'
-            }, {
-                label: '右箭头',
-                value: 'arrow-right'
-            }, {
-                label: '下箭头',
-                value: 'arrow-down'
-            }, {
-                label: '上箭头',
-                value: 'arrow-up'
-            }, {
-                label: '旺旺',
-                value: 'atm'
-            }];
-        }
-
-
         this.state = {
             demoFunction: {
-                'arrow-type': {
-                    label: '图标类型',
-                    value: 'none',
-                    enum: iconList
-                }
+                'device': {
+                    label: 'Device',
+                    value: 'desktop',
+                    enum: [{
+                        label: 'desktop',
+                        value: 'desktop'
+                    }, {
+                        label: 'tablet',
+                        value: 'tablet'
+                    }, {
+                        label: 'phone',
+                        value: 'phone'
+                    }]
+                },
+                'branding': {
+                    label: 'Branding',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'actions': {
+                    label: 'Actions',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'navigation': {
+                    label: 'Applicaitoin Nav',
+                    value: 'ver',
+                    enum: [{
+                        label: '侧栏',
+                        value: 'ver'
+                    }, {
+                        label: '顶部',
+                        value: 'hoz'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'localNav': {
+                    label: 'Local Nav',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'appbar': {
+                    label: 'Appbar',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'footer': {
+                    label: 'Footer',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'ancillary': {
+                    label: 'Ancillary',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
+                'tooldock': {
+                    label: 'Tooldock',
+                    value: 'true',
+                    enum: [{
+                        label: '有',
+                        value: 'true'
+                    }, {
+                        label: '无',
+                        value: 'false'
+                    }]
+                },
             }
         }
     }
@@ -291,24 +257,12 @@ class FunctionDemo extends React.Component {
     }
 
     render() {
-        const { title, locale, types, buttonRender } = this.props;
+        const { title, locale, types, shellRender } = this.props;
         const { demoFunction } = this.state;
-        const iconType = demoFunction['arrow-type'].value;
-        const iconPosition = ['arrow-right', 'arrow-up', 'arrow-down'].indexOf(iconType) > -1 ? 'after' : 'before';
-        const children = [locale.button];
-
-        if (iconType !== 'none') {
-            const icon = <Icon type={iconType} key="icon" />;
-            if (iconPosition === 'before') {
-                children.unshift(icon);
-            } else {
-                children.push(icon);
-            }
-        }
 
         return (<Demo title={title} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
             {
-                types.map(type => buttonRender(type, locale, children))
+                types.map(type => shellRender(type, locale, demoFunction))
             }
         </Demo>)
     }
@@ -317,11 +271,7 @@ class FunctionDemo extends React.Component {
 
 function render(i18n, lang) {
     return ReactDOM.render(<ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}><div className="demo-container">
-        <FunctionDemo title={i18n.button} locale={i18n} buttonRender={renderButton} types={['normal', 'primary', 'secondary']} />
-        <FunctionDemo title={i18n.textButton} locale={i18n} buttonRender={renderTextButton} types={['normal', 'primary', 'secondary']} />
-        <FunctionDemo title={i18n.warningButton} locale={i18n} buttonRender={renderWarningButton} types={['normal', 'primary']} noArrow />
-        <FunctionDemo title={i18n.ghostButton} locale={i18n} buttonRender={renderGhostButton} types={['light', 'dark']} />
-        <FunctionGroupButton title={i18n.groupButton} locale={i18n} types={['normal', 'primary', 'secondary']} />
+        <FunctionDemo title={i18n.button} locale={i18n} shellRender={renderShell} types={['light', 'dark', 'brand']} />
     </div></ConfigProvider>, document.getElementById('container'));
 }
 

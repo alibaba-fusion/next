@@ -11,9 +11,12 @@
 
 ## Guide
 
+Shell 是整个应用的基础结构框架。它体现应用的结构形式和承载应用的基本能力，让用户可以在同一套框架下完成自己所有的操作。
+
 ### 何时使用
 
-中后台常用的布局组件
+- Shell 应该根据业务实际诉求的复杂度进行配置；
+- 同一个应用统一使用一套 Shell 框架，避免出现混乱问题；
 
 ````jsx
 <Shell>
@@ -31,7 +34,7 @@
     <Shell.Ancillary />
     <Shell.ToolDock>
         <Shell.ToolDockItem />
-    </ Shell.ToolDock>
+    </Shell.ToolDock>
 </Shell>
 ````
 

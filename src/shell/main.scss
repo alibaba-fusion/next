@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 @import "../core/index-noreset.scss";
+@import "scss/mixin";
 @import "scss/variable";
 @import "./rtl.scss";
 
@@ -18,12 +19,6 @@
     &-header {
         display: flex;
         width: 100%;
-        color: $shell-header-color;
-        height: $shell-header-height;
-        background: $shell-header-background;
-        border-bottom: $shell-header-divider;
-        box-shadow: $shell-header-shadow;
-        padding: 0 $shell-header-paddingLeft;
         justify-content: space-between;
         align-items: center;
         z-index: 9;
@@ -31,7 +26,7 @@
         .dock-trigger,
         .nav-trigger {
             outline: 0;
-            background: $shell-header-background;
+            // background: $shell-dark-header-background;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -52,10 +47,6 @@
             display: flex;
             align-items: center;
             flex-direction: row;
-            justify-content: $shell-navigation-hoz-align;
-            height: $shell-header-height;
-            line-height: $shell-header-height;
-            margin: 0 $shell-navigation-hoz-marginLeft;
         }
         #{$shell-prefix}-branding {
             display: flex;
@@ -65,16 +56,6 @@
             display: flex;
             align-items: center;
         }
-    }
-
-    &-task-header {
-        width: 100%;
-        min-height: $shell-multitask-min-height;
-        background: $shell-multitask-background;
-        border-bottom: $shell-multitask-divider;
-        box-shadow: $shell-multitask-shadow;
-        padding: 0 $shell-multitask-paddingLeft;
-        overflow: auto;
     }
 
     &-sub-main {
@@ -91,30 +72,16 @@
         position: relative;
         height: 100%;
         box-sizing: content-box;
-        background: $shell-content-background;
         overflow: auto;
         transition: all .2s $motion-ease;
 
-        #{$shell-prefix}-appbar {
-            min-height: $shell-appbar-min-height;
-            background: $shell-appbar-background;
-            border-bottom: $shell-appbar-divider;
-            box-shadow: $shell-appbar-shadow;
-            padding: 0 $shell-appbar-paddingLeft;
-        }
-
         #{$shell-prefix}-content {
             flex: 1;
-            padding: $shell-content-paddingTop $shell-content-paddingLeft;
         }
 
         #{$shell-prefix}-content-inner {
             margin: 0 auto;
-            max-width: $shell-content-max-width;
             display: grid;
-            grid-row-gap: $shell-content-gutter-row;
-            grid-column-gap: $shell-content-gutter-column;
-            grid-template-columns: repeat($shell-content-columns, 1fr);
         }
 
         #{$shell-prefix}-footer {
@@ -123,8 +90,6 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            background: $shell-footer-background;
-            min-height: $shell-footer-min-height;
         }
     }
 
@@ -143,18 +108,15 @@
             border: 1px solid #DDD;
             align-items: center;
             justify-content: center;
-            background: $shell-navigation-ver-background;
         }
         .local-nav-trigger {
             outline: 0;
-            background: $shell-local-navigation-background;
             border-right: 0;
             transform: translate(100%, -50%) rotate(180deg);
             right: 0;
         }
         .ancillary-trigger {
             outline: 0;
-            background: $shell-ancillary-background;
             transform: translate(-100%, -50%);
             border-right: 0;
             left: 1px;
@@ -171,32 +133,14 @@
 
         &#{$shell-prefix}-navigation {
             overflow-x: auto;
-            width: $shell-navigation-ver-width;
-            background: $shell-navigation-ver-background;
-            border-right: $shell-navigation-ver-divider;
-            box-shadow: $shell-navigation-ver-shadow;
             display: flex;
             flex-direction: column;
             justify-self: flex-start;
-            padding: $shell-navigation-ver-paddingTop 0 $shell-navigation-ver-paddingBottom;
             transition: all .2s $motion-ease;
-
-            &#{$shell-prefix}-collapse {
-                width: 0;
-                &#{$shell-prefix}-mini {
-                    width: $shell-navigation-ver-width-mini;
-                }
-            }
         }
 
         &#{$shell-prefix}-tooldock {
             overflow-x: auto;
-            // height: 100%;
-            width: $shell-tooldock-width;
-            background: $shell-tooldock-background;
-            border-left: $shell-tooldock-divider;
-            box-shadow: $shell-tooldock-shadow;
-            padding: $shell-tooldock-paddingTop 0 $shell-tooldock-paddingBottom;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -205,24 +149,11 @@
         #{$shell-prefix}-tooldockitem {
             width: 100%;
             text-align: center;
-            padding: $shell-tooldock-item-paddingTop 0;
-            color: $shell-tooldock-item-color;
-            background: $shell-tooldock-item-background;
-
-            &:hover {
-                color: $shell-tooldock-item-color-hover;
-                background: $shell-tooldock-item-background-hover;
-            }
         }
 
         #{$shell-prefix}-localnavigation {
             position: relative;
             height: 100%;
-            width: $shell-local-navigation-width;
-            background: $shell-local-navigation-background;
-            border-right: $shell-local-navigation-divider;
-            box-shadow: $shell-local-navigation-shadow;
-            padding: $shell-local-navigation-paddingTop 0 $shell-local-navigation-paddingBottom;
             display: flex;
             flex-direction: column;
             justify-self: flex-start;
@@ -239,11 +170,6 @@
 
         #{$shell-prefix}-ancillary {
             height: 100%;
-            width: $shell-ancillary-width;
-            background: $shell-ancillary-background;
-            border-left: $shell-ancillary-divider;
-            box-shadow: $shell-ancillary-shadow;
-            padding: $shell-ancillary-paddingTop 0 $shell-ancillary-paddingBottom;
             display: flex;
             flex-direction: column;
             justify-self: flex-start;
@@ -257,14 +183,371 @@
                 }
             }
         }
+    }
 
-        & > #{$shell-prefix}-collapse {
-            width: 0;
+    &-light {
+        @include shell-trigger-background(
+            $shell-light-header-background,
+            $shell-light-header-background,
+            $shell-light-local-navigation-background,
+            $shell-light-ancillary-background
+        );
+
+        #{$shell-prefix}-header {
+            @include shell-header-type(
+                $shell-light-header-color,
+                $shell-light-header-height,
+                $shell-light-header-background,
+                $shell-light-header-divider,
+                $shell-light-header-shadow,
+                $shell-light-header-paddingLeft
+            );
+
+            #{$shell-prefix}-navigation {
+                @include shell-header-navigation(
+                    $shell-light-navigation-hoz-align,
+                    $shell-light-header-height,
+                    $shell-light-header-height,
+                    $shell-light-navigation-hoz-marginLeft
+                );
+            }
+        }
+
+        #{$shell-prefix}-task-header {
+            @include shell-task-header(
+                $shell-light-multitask-min-height,
+                $shell-light-multitask-background,
+                $shell-light-multitask-divider,
+                $shell-light-multitask-shadow,
+                $shell-light-multitask-paddingLeft
+            );
+        }
+
+        #{$shell-prefix}-main {
+            background: $shell-light-content-background;
+
+            #{$shell-prefix}-appbar {
+                @include shell-appbar(
+                    $shell-light-appbar-min-height,
+                    $shell-light-appbar-background,
+                    $shell-light-appbar-divider,
+                    $shell-light-appbar-shadow,
+                    $shell-light-appbar-paddingLeft
+                );
+            }
+
+            @include shell-content(
+                $shell-light-content-paddingTop,
+                $shell-light-content-paddingLeft,
+                $shell-light-content-max-width,
+                $shell-light-content-gutter-row,
+                $shell-light-content-gutter-column,
+                $shell-light-content-columns
+            );
+
+            #{$shell-prefix}-footer {
+                background: $shell-light-footer-background;
+                min-height: $shell-light-footer-min-height;
+            }
+        }
+
+        #{$shell-prefix}-aside {
+            &#{$shell-prefix}-navigation {
+                @include shell-navigation(
+                    $shell-light-navigation-ver-width,
+                    $shell-light-navigation-ver-background,
+                    $shell-light-navigation-ver-divider,
+                    $shell-light-navigation-ver-shadow,
+                    $shell-light-navigation-ver-paddingTop,
+                    $shell-light-navigation-ver-paddingBottom,
+                    $shell-light-navigation-ver-width-mini
+                );
+            }
+            &#{$shell-prefix}-tooldock {
+                @include shell-tooldock(
+                    $shell-light-tooldock-width,
+                    $shell-light-tooldock-background,
+                    $shell-light-tooldock-divider,
+                    $shell-light-tooldock-shadow,
+                    $shell-light-tooldock-paddingTop,
+                    $shell-light-tooldock-paddingBottom
+                );
+            }
+            #{$shell-prefix}-tooldockitem {
+                @include shell-tooldock-item(
+                    $shell-light-tooldock-item-paddingTop,
+                    $shell-light-tooldock-item-color,
+                    $shell-light-tooldock-item-background,
+                    $shell-light-tooldock-item-color-hover,
+                    $shell-light-tooldock-item-background-hover
+                );
+            }
+            #{$shell-prefix}-localnavigation {
+                @include shell-localnavigation(
+                    $shell-light-local-navigation-width,
+                    $shell-light-local-navigation-background,
+                    $shell-light-local-navigation-divider,
+                    $shell-light-local-navigation-shadow,
+                    $shell-light-local-navigation-paddingTop,
+                    $shell-light-local-navigation-paddingBottom
+                );
+            }
+            #{$shell-prefix}-ancillary {
+                @include shell-ancillary(
+                    $shell-light-ancillary-width,
+                    $shell-light-ancillary-background,
+                    $shell-light-ancillary-divider,
+                    $shell-light-ancillary-shadow,
+                    $shell-light-ancillary-paddingTop,
+                    $shell-light-ancillary-paddingBottom
+                );
+            }
+        }
+    }
+
+    &-dark {
+        @include shell-trigger-background(
+            $shell-dark-header-background,
+            $shell-dark-header-background,
+            $shell-dark-local-navigation-background,
+            $shell-dark-ancillary-background
+        );
+
+        #{$shell-prefix}-header {
+            @include shell-header-type(
+                $shell-dark-header-color,
+                $shell-dark-header-height,
+                $shell-dark-header-background,
+                $shell-dark-header-divider,
+                $shell-dark-header-shadow,
+                $shell-dark-header-paddingLeft
+            );
+
+            #{$shell-prefix}-navigation {
+                @include shell-header-navigation(
+                    $shell-dark-navigation-hoz-align,
+                    $shell-dark-header-height,
+                    $shell-dark-header-height,
+                    $shell-dark-navigation-hoz-marginLeft
+                );
+            }
+        }
+
+        #{$shell-prefix}-task-header {
+            @include shell-task-header(
+                $shell-dark-multitask-min-height,
+                $shell-dark-multitask-background,
+                $shell-dark-multitask-divider,
+                $shell-dark-multitask-shadow,
+                $shell-dark-multitask-paddingLeft
+            );
+        }
+
+        #{$shell-prefix}-main {
+            background: $shell-dark-content-background;
+
+            #{$shell-prefix}-appbar {
+                @include shell-appbar(
+                    $shell-dark-appbar-min-height,
+                    $shell-dark-appbar-background,
+                    $shell-dark-appbar-divider,
+                    $shell-dark-appbar-shadow,
+                    $shell-dark-appbar-paddingLeft
+                );
+            }
+
+            @include shell-content(
+                $shell-dark-content-paddingTop,
+                $shell-dark-content-paddingLeft,
+                $shell-dark-content-max-width,
+                $shell-dark-content-gutter-row,
+                $shell-dark-content-gutter-column,
+                $shell-dark-content-columns
+            );
+
+            #{$shell-prefix}-footer {
+                background: $shell-dark-footer-background;
+                min-height: $shell-dark-footer-min-height;
+            }
+        }
+
+        #{$shell-prefix}-aside {
+            &#{$shell-prefix}-navigation {
+                @include shell-navigation(
+                    $shell-dark-navigation-ver-width,
+                    $shell-dark-navigation-ver-background,
+                    $shell-dark-navigation-ver-divider,
+                    $shell-dark-navigation-ver-shadow,
+                    $shell-dark-navigation-ver-paddingTop,
+                    $shell-dark-navigation-ver-paddingBottom,
+                    $shell-dark-navigation-ver-width-mini
+                );
+            }
+            &#{$shell-prefix}-tooldock {
+                @include shell-tooldock(
+                    $shell-dark-tooldock-width,
+                    $shell-dark-tooldock-background,
+                    $shell-dark-tooldock-divider,
+                    $shell-dark-tooldock-shadow,
+                    $shell-dark-tooldock-paddingTop,
+                    $shell-dark-tooldock-paddingBottom
+                );
+            }
+            #{$shell-prefix}-tooldockitem {
+                @include shell-tooldock-item(
+                    $shell-dark-tooldock-item-paddingTop,
+                    $shell-dark-tooldock-item-color,
+                    $shell-dark-tooldock-item-background,
+                    $shell-dark-tooldock-item-color-hover,
+                    $shell-dark-tooldock-item-background-hover
+                );
+            }
+            #{$shell-prefix}-localnavigation {
+                @include shell-localnavigation(
+                    $shell-dark-local-navigation-width,
+                    $shell-dark-local-navigation-background,
+                    $shell-dark-local-navigation-divider,
+                    $shell-dark-local-navigation-shadow,
+                    $shell-dark-local-navigation-paddingTop,
+                    $shell-dark-local-navigation-paddingBottom
+                );
+            }
+            #{$shell-prefix}-ancillary {
+                @include shell-ancillary(
+                    $shell-dark-ancillary-width,
+                    $shell-dark-ancillary-background,
+                    $shell-dark-ancillary-divider,
+                    $shell-dark-ancillary-shadow,
+                    $shell-dark-ancillary-paddingTop,
+                    $shell-dark-ancillary-paddingBottom
+                );
+            }
+        }
+    }
+
+    &-brand {
+        @include shell-trigger-background(
+            $shell-brand-header-background,
+            $shell-brand-header-background,
+            $shell-brand-local-navigation-background,
+            $shell-brand-ancillary-background
+        );
+
+        #{$shell-prefix}-header {
+            @include shell-header-type(
+                $shell-brand-header-color,
+                $shell-brand-header-height,
+                $shell-brand-header-background,
+                $shell-brand-header-divider,
+                $shell-brand-header-shadow,
+                $shell-brand-header-paddingLeft
+            );
+
+            #{$shell-prefix}-navigation {
+                @include shell-header-navigation(
+                    $shell-brand-navigation-hoz-align,
+                    $shell-brand-header-height,
+                    $shell-brand-header-height,
+                    $shell-brand-navigation-hoz-marginLeft
+                );
+            }
+        }
+
+        #{$shell-prefix}-task-header {
+            @include shell-task-header(
+                $shell-brand-multitask-min-height,
+                $shell-brand-multitask-background,
+                $shell-brand-multitask-divider,
+                $shell-brand-multitask-shadow,
+                $shell-brand-multitask-paddingLeft
+            );
+        }
+
+        #{$shell-prefix}-main {
+            background: $shell-brand-content-background;
+
+            #{$shell-prefix}-appbar {
+                @include shell-appbar(
+                    $shell-brand-appbar-min-height,
+                    $shell-brand-appbar-background,
+                    $shell-brand-appbar-divider,
+                    $shell-brand-appbar-shadow,
+                    $shell-brand-appbar-paddingLeft
+                );
+            }
+
+            @include shell-content(
+                $shell-brand-content-paddingTop,
+                $shell-brand-content-paddingLeft,
+                $shell-brand-content-max-width,
+                $shell-brand-content-gutter-row,
+                $shell-brand-content-gutter-column,
+                $shell-brand-content-columns
+            );
+
+            #{$shell-prefix}-footer {
+                background: $shell-brand-footer-background;
+                min-height: $shell-brand-footer-min-height;
+            }
+        }
+
+        #{$shell-prefix}-aside {
+            &#{$shell-prefix}-navigation {
+                @include shell-navigation(
+                    $shell-brand-navigation-ver-width,
+                    $shell-brand-navigation-ver-background,
+                    $shell-brand-navigation-ver-divider,
+                    $shell-brand-navigation-ver-shadow,
+                    $shell-brand-navigation-ver-paddingTop,
+                    $shell-brand-navigation-ver-paddingBottom,
+                    $shell-brand-navigation-ver-width-mini
+                );
+            }
+
+            &#{$shell-prefix}-tooldock {
+                @include shell-tooldock(
+                    $shell-brand-tooldock-width,
+                    $shell-brand-tooldock-background,
+                    $shell-brand-tooldock-divider,
+                    $shell-brand-tooldock-shadow,
+                    $shell-brand-tooldock-paddingTop,
+                    $shell-brand-tooldock-paddingBottom
+                );
+            }
+            #{$shell-prefix}-tooldockitem {
+                @include shell-tooldock-item(
+                    $shell-brand-tooldock-item-paddingTop,
+                    $shell-brand-tooldock-item-color,
+                    $shell-brand-tooldock-item-background,
+                    $shell-brand-tooldock-item-color-hover,
+                    $shell-brand-tooldock-item-background-hover
+                );
+            }
+            #{$shell-prefix}-localnavigation {
+                @include shell-localnavigation(
+                    $shell-brand-local-navigation-width,
+                    $shell-brand-local-navigation-background,
+                    $shell-brand-local-navigation-divider,
+                    $shell-brand-local-navigation-shadow,
+                    $shell-brand-local-navigation-paddingTop,
+                    $shell-brand-local-navigation-paddingBottom
+                );
+            }
+            #{$shell-prefix}-ancillary {
+                @include shell-ancillary(
+                    $shell-brand-ancillary-width,
+                    $shell-brand-ancillary-background,
+                    $shell-brand-ancillary-divider,
+                    $shell-brand-ancillary-shadow,
+                    $shell-brand-ancillary-paddingTop,
+                    $shell-brand-ancillary-paddingBottom
+                );
+            }
         }
     }
 
 
-    &-phone {
+    &#{$shell-prefix}-phone {
 
         #{$shell-prefix}-header #{$shell-prefix}-navigation {
             display: none;
@@ -280,7 +563,7 @@
             }
         }
         #{$shell-prefix}-tooldock {
-            height: $shell-tooldock-height;
+            height: $shell-dark-tooldock-height;
             left: 0;
             right: 0;
             position: absolute;
@@ -294,14 +577,10 @@
                 transition: all .2s $motion-ease;
             }
         }
-
-        // #{$shell-prefix}-ancillary {
-        //     right: 0;
-        // }
     }
 
-    &-tablet,
-    &-phone {
+    &#{$shell-prefix}-tablet,
+    &#{$shell-prefix}-phone {
         #{$shell-prefix}-aside.#{$css-prefix}aside-ancillary {
             width: 0;
         }
