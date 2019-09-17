@@ -28,10 +28,10 @@ function _getElementRect(elem) {
         if (!isNaN(elem.offsetLeft)) {
             offsetLeft += elem.offsetLeft;
         }
-        if (!isNaN(elem.scrollTop)) {
+        if (!isNaN(elem.scrollTop) && elem !== document.body) {
             scrollTop += elem.scrollTop;
         }
-        if (!isNaN(elem.scrollLeft)) {
+        if (!isNaN(elem.scrollLeft) && elem !== document.body) {
             scrollLeft += elem.scrollLeft;
         }
     } while ((elem = elem.offsetParent) !== null);
@@ -201,7 +201,7 @@ export default class Position {
         let top = 0;
         let left = 0;
 
-        if (elem && elem.offsetParent) {
+        if (elem && elem.offsetParent && elem.offsetParent !== document.body) {
             if (!isNaN(elem.offsetParent.scrollTop)) {
                 top += elem.offsetParent.scrollTop;
             }
