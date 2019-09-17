@@ -122,9 +122,7 @@
         }
     }
 
-    &.disabled,
-    &.indeterminate.disabled,
-    &.checked.disabled {
+    &.disabled {
         input[type="checkbox"] {
             cursor: not-allowed;
         }
@@ -135,6 +133,9 @@
         &.checked,
         &.indeterminate {
             #{$checkbox-prefix}-inner {
+                border-color: $checkbox-disabled-border-color;
+                background: $checkbox-disabled-bg-color;
+
                 &:hover, &.hovered {
                     border-color: $checkbox-disabled-border-color;
                 }
