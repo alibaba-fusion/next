@@ -22,7 +22,6 @@
 
     &-base {
         float: left;
-        cursor: pointer;
     }
 
     &-text {
@@ -61,6 +60,7 @@
     &-underlay,
     &-overlay {
         #{$rating-prefix}-icon {
+            cursor: pointer;
             margin-left: $s-1;
         }
 
