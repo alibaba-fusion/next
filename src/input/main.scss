@@ -268,7 +268,7 @@
         line-height: 0;
         width: 100%;
 
-        &-auto-width {
+        &-auto-width, > #{$input-prefix}:nth-child(2) {
             width: 100%;
             border-radius: 0 !important;
         }
@@ -289,6 +289,7 @@
                 border-bottom-left-radius: $form-element-large-corner !important;
             }
         }
+
         > #{$input-prefix}:last-child {
             &.#{$css-prefix}small {
                 border-top-right-radius: $form-element-small-corner !important;
