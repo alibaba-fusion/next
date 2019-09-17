@@ -40,6 +40,7 @@ type data = {
     title?: React.ReactNode;
     content?: React.ReactNode;
     disabled?: boolean;
+    key?: string;
     [propName: string]: any;
 }
 
@@ -62,17 +63,17 @@ export interface CollapseProps extends React.HTMLAttributes<HTMLElement>, Common
     /**
      * 默认展开keys
      */
-    defaultExpandedKeys?: Array<data>;
+    defaultExpandedKeys?: Array<string>;
 
     /**
      * 受控展开keys
      */
-    expandedKeys?: Array<data>;
+    expandedKeys?: Array<string>;
 
     /**
      * 展开状态发升变化时候的回调
      */
-    onExpand?: (expandedKeys: Array<data>) => void;
+    onExpand?: (expandedKeys: Array<string>) => void;
 
     /**
      * 所有禁用

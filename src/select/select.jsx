@@ -867,7 +867,6 @@ class Select extends Base {
 
     handleClear = e => {
         e.stopPropagation();
-        
         this.handleChange(undefined, 'clear');
     };
 
@@ -877,6 +876,7 @@ class Select extends Base {
 
         return (
             typeof value !== 'undefined' &&
+            value !== null &&
             hasClear &&
             !readOnly &&
             !disabled &&
