@@ -273,6 +273,14 @@
             border-radius: 0 !important;
         }
 
+        > #{$input-prefix} {
+            border-radius: 0;
+            &.#{$css-prefix}focus {
+                position: relative;
+                z-index: 1;
+            }
+        }
+
         > #{$input-prefix}:first-child {
             &.#{$css-prefix}small {
                 border-top-left-radius: $form-element-small-corner !important;
@@ -318,8 +326,21 @@
             border-top-right-radius: 0 !important;
             //TODO: removed in 2.x
             > * {
+                margin-right: -$input-border-width;
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
+                &.#{$css-prefix}focus {
+                    position: relative;
+                    z-index: 1;
+                }
+                > #{$input-prefix} {
+                    border-bottom-right-radius: 0 !important;
+                    border-top-right-radius: 0 !important;
+                }
+                > #{$input-prefix}.#{$css-prefix}focus {
+                    position: relative;
+                    z-index: 1;
+                }
             }
         }
         &:last-child {
@@ -327,8 +348,13 @@
             border-top-left-radius: 0 !important;
             //TODO: removed in 2.x
             > * {
+                margin-left: -$input-border-width;
                 border-bottom-left-radius: 0 !important;
                 border-top-left-radius: 0 !important;
+                > #{$input-prefix} {
+                    border-bottom-left-radius: 0 !important;
+                    border-top-left-radius: 0 !important;
+                }
             }
         }
     }
