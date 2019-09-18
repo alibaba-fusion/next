@@ -495,6 +495,8 @@ export default class Base extends React.Component {
                     key: item.value,
                     className: `${prefix}select-menu-item`,
                     disabled: item.disabled,
+                    onClick: () =>
+                        this.setState({ visible: !this.state.visible }),
                 };
                 if (item.title) {
                     itemProps.title = item.title;
