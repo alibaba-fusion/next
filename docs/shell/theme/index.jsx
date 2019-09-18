@@ -29,13 +29,48 @@ const i18nMap = {
 class RenderShell extends React.Component {
     render() {
         const { type, i18n, demoFunction } = this.props;
+        const device = demoFunction.device.value;
+        // let globalNavType = demoFunction.navigationType.value,
+        //     localNavType = demoFunction.localNavType.value,
+        let globalNavType = 'normal',
+            localNavType = 'normal',
+            logoStyle = {},
+            shellStyle = {};
+
+        switch(type) {
+            case 'light':
+                logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
+                break;
+            case 'dark':
+                logoStyle = {width: 32, height: 32, background: '#FFF', opacity: '0.2'};
+                break;
+            case 'brand':
+                logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
+                break;
+            default:
+                break;
+        }
+
+        switch(device) {
+            case 'phone':
+                shellStyle = {height: 500, width: 480, border: '1px solid #eee'};
+                break;
+            case 'tablet':
+                shellStyle = {height: 500, width: 768, border: '1px solid #eee'};
+                break;
+            case 'desktop':
+                shellStyle = {height: 500, width: 1000, border: '1px solid #eee'};
+                break;
+            default:
+                break;
+        }
         return (<Demo title={i18n[type]} key={type}>
             <DemoGroup label={'normal'}>
-                <Shell style={{height: 500, width: 800}} device={demoFunction.device.value} type={type}>
+                <Shell style={shellStyle} device={device} type={type}>
                     {
                         demoFunction.branding.value === 'true'
                             ? <Shell.Branding>
-                                <div style={{width: 32, height: 32,background: '#555'}}></div>
+                                <div style={logoStyle}></div>
                                 <span style={{marginLeft: 10}}>App Name</span>
                             </Shell.Branding>
                             : null
@@ -44,7 +79,7 @@ class RenderShell extends React.Component {
                     {
                         demoFunction.navigation.value !== 'false'
                             ?  <Shell.Navigation direction={demoFunction.navigation.value}>
-                                <Nav type="primary" embeddable direction={demoFunction.navigation.value} hozInLine>
+                                <Nav type={globalNavType} embeddable direction={demoFunction.navigation.value} hozInLine>
                                     <Nav.Item icon="account">Nav Item 1</Nav.Item>
                                     <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                                     <Nav.Item icon="atm">Nav Item 3</Nav.Item>
@@ -59,17 +94,17 @@ class RenderShell extends React.Component {
                     {
                         demoFunction.actions.value === 'true'
                             ? <Shell.Action>
-                                <Search key="2" shape="simple" type="dark" palceholder="Search" style={{width: '200px', marginRight: 20}}/>
+                                <Search key="2" shape='simple' palceholder="Search" style={{width: '160px', marginRight: 20}}/>
                                 <Icon type="ic_tongzhi" />
-                                <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" style={{width: 32, height: 32, borderRadius: '50%', verticalAlign: 'middle'}} alt="用户头像" />
-                                <span style={{marginLeft: 10}}>MyName</span>
+                                <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" style={{width: 24, height: 24, borderRadius: '50%', verticalAlign: 'middle'}} alt="用户头像" />
+                                <span style={{marginLeft: 10}}>Name</span>
                             </Shell.Action>
                             : null
                     }
                     {
                         demoFunction.localNav.value === 'true'
                             ? <Shell.LocalNavigation>
-                                <Nav embeddable>
+                                <Nav type={localNavType} embeddable>
                                 <Nav.SubNav label="Local Nav1">
                                     <Nav.Item>Local Nav1</Nav.Item>
                                 </Nav.SubNav>
@@ -91,6 +126,13 @@ class RenderShell extends React.Component {
                                 <Nav.Item>Local Nav8</Nav.Item>
                                 </Nav>
                             </Shell.LocalNavigation>
+                            : null
+                    }
+                    {
+                        demoFunction.appbar.value === 'true'
+                            ? <Shell.AppBar>
+
+                            </Shell.AppBar>
                             : null
                     }
                     <Shell.Content>
@@ -191,9 +233,26 @@ class FunctionDemo extends React.Component {
                         value: 'false'
                     }]
                 },
+                // 'navigationType': {
+                //     label: 'Applicaitoin Nav Type',
+                //     value: 'normal',
+                //     enum: [{
+                //         label: 'normal',
+                //         value: 'normal'
+                //     }, {
+                //         label: 'primary',
+                //         value: 'primary'
+                //     }, {
+                //         label: 'secondary',
+                //         value: 'secondary'
+                //     }, {
+                //         label: 'line',
+                //         value: 'line'
+                //     }]
+                // },
                 'localNav': {
                     label: 'Local Nav',
-                    value: 'true',
+                    value: 'false',
                     enum: [{
                         label: '有',
                         value: 'true'
@@ -202,9 +261,26 @@ class FunctionDemo extends React.Component {
                         value: 'false'
                     }]
                 },
+                // 'localNavType': {
+                //     label: 'Local Nav Type',
+                //     value: 'normal',
+                //     enum: [{
+                //         label: 'normal',
+                //         value: 'normal'
+                //     }, {
+                //         label: 'primary',
+                //         value: 'primary'
+                //     }, {
+                //         label: 'secondary',
+                //         value: 'secondary'
+                //     }, {
+                //         label: 'line',
+                //         value: 'line'
+                //     }]
+                // },
                 'appbar': {
                     label: 'Appbar',
-                    value: 'true',
+                    value: 'false',
                     enum: [{
                         label: '有',
                         value: 'true'
@@ -215,7 +291,7 @@ class FunctionDemo extends React.Component {
                 },
                 'footer': {
                     label: 'Footer',
-                    value: 'true',
+                    value: 'false',
                     enum: [{
                         label: '有',
                         value: 'true'
@@ -226,7 +302,7 @@ class FunctionDemo extends React.Component {
                 },
                 'ancillary': {
                     label: 'Ancillary',
-                    value: 'true',
+                    value: 'false',
                     enum: [{
                         label: '有',
                         value: 'true'
@@ -237,7 +313,7 @@ class FunctionDemo extends React.Component {
                 },
                 'tooldock': {
                     label: 'Tooldock',
-                    value: 'true',
+                    value: 'false',
                     enum: [{
                         label: '有',
                         value: 'true'

@@ -36,11 +36,11 @@ $shell-light-header-divider-size: $line-1 !default;
 $shell-light-header-divider-style: $line-solid !default;
 /// color
 /// @namespace statement/header/divider
-$shell-light-header-divider-color: #1F1F1F !default;
+$shell-light-header-divider-color: $color-line1-1 !default;
 $shell-light-header-divider: $shell-light-header-divider-size $shell-light-header-divider-style $shell-light-header-divider-color;
 /// padding (l, r)
 /// @namespace statement/header
-$shell-light-header-paddingLeft: $s-8 !default;
+$shell-light-header-paddingLeft: $s-4 !default;
 
 /// min-height
 /// @namespace statement/multitask
@@ -89,7 +89,7 @@ $shell-light-navigation-ver-paddingBottom: $s-2 !default;
 $shell-light-navigation-ver-width-mini: $s-15 !default;
 /// background
 /// @namespace statement/navigation
-$shell-light-navigation-ver-background: $color-black !default;
+$shell-light-navigation-ver-background: $color-white !default;
 /// size
 /// @namespace statement/navigation/divider
 $shell-light-navigation-ver-divider-size: $line-1 !default;
@@ -98,7 +98,7 @@ $shell-light-navigation-ver-divider-size: $line-1 !default;
 $shell-light-navigation-ver-divider-style: $line-solid !default;
 /// color
 /// @namespace statement/navigation/divider
-$shell-light-navigation-ver-divider-color: #1F1F1F !default;
+$shell-light-navigation-ver-divider-color: $color-line1-1 !default;
 $shell-light-navigation-ver-divider: $shell-light-navigation-ver-divider-size $shell-light-navigation-ver-divider-style $shell-light-navigation-ver-divider-color;
 
 /// width
@@ -129,7 +129,7 @@ $shell-light-local-navigation-divider: $shell-light-local-navigation-divider-siz
 
 /// background
 /// @namespace statement/appbar
-$shell-light-appbar-background: $color-black !default;
+$shell-light-appbar-background: $color-white !default;
 /// min-height
 /// @namespace statement/appbar
 $shell-light-appbar-min-height: $s-12 !default;
@@ -158,10 +158,10 @@ $shell-light-content-max-width: unset !default;
 $shell-light-content-background: $color-fill1-3 !default;
 /// padding (l, r)
 /// @namespace statement/content
-$shell-light-content-paddingLeft: $s-6 !default;
+$shell-light-content-paddingLeft: $s-5 !default;
 /// padding (t, b)
 /// @namespace statement/content
-$shell-light-content-paddingTop: $s-6 !default;
+$shell-light-content-paddingTop: $s-5 !default;
 /// gutter (row)
 /// @namespace statement/content
 $shell-light-content-gutter-row: $s-4 !default;
@@ -177,7 +177,13 @@ $shell-light-content-columns: 1 !default;
 $shell-light-footer-min-height: $s-14 !default;
 /// background
 /// @namespace statement/footer
-$shell-light-footer-background: $color-black !default;
+$shell-light-footer-background: $color-transparent !default;
+/// color
+/// @namespace statement/footer
+$shell-light-footer-color: $color-text1-1 !default;
+/// font-size
+/// @namespace statement/footer
+$shell-light-footer-font-size: $font-size-body-2 !default;
 
 /// width
 /// @namespace statement/ancillary
@@ -284,7 +290,7 @@ $shell-dark-header-divider-color: #1F1F1F !default;
 $shell-dark-header-divider: $shell-dark-header-divider-size $shell-dark-header-divider-style $shell-dark-header-divider-color;
 /// padding (l, r)
 /// @namespace statement/header
-$shell-dark-header-paddingLeft: $s-8 !default;
+$shell-dark-header-paddingLeft: $s-4 !default;
 
 /// min-height
 /// @namespace statement/multitask
@@ -333,7 +339,7 @@ $shell-dark-navigation-ver-paddingBottom: $s-2 !default;
 $shell-dark-navigation-ver-width-mini: $s-15 !default;
 /// background
 /// @namespace statement/navigation
-$shell-dark-navigation-ver-background: $color-black !default;
+$shell-dark-navigation-ver-background: $color-white !default;
 /// size
 /// @namespace statement/navigation/divider
 $shell-dark-navigation-ver-divider-size: $line-1 !default;
@@ -342,7 +348,7 @@ $shell-dark-navigation-ver-divider-size: $line-1 !default;
 $shell-dark-navigation-ver-divider-style: $line-solid !default;
 /// color
 /// @namespace statement/navigation/divider
-$shell-dark-navigation-ver-divider-color: #1F1F1F !default;
+$shell-dark-navigation-ver-divider-color: $color-line1-1 !default;
 $shell-dark-navigation-ver-divider: $shell-dark-navigation-ver-divider-size $shell-dark-navigation-ver-divider-style $shell-dark-navigation-ver-divider-color;
 
 /// width
@@ -373,7 +379,7 @@ $shell-dark-local-navigation-divider: $shell-dark-local-navigation-divider-size 
 
 /// background
 /// @namespace statement/appbar
-$shell-dark-appbar-background: $color-black !default;
+$shell-dark-appbar-background: $color-white !default;
 /// min-height
 /// @namespace statement/appbar
 $shell-dark-appbar-min-height: $s-12 !default;
@@ -402,10 +408,10 @@ $shell-dark-content-max-width: unset !default;
 $shell-dark-content-background: $color-fill1-3 !default;
 /// padding (l, r)
 /// @namespace statement/content
-$shell-dark-content-paddingLeft: $s-6 !default;
+$shell-dark-content-paddingLeft: $s-5 !default;
 /// padding (t, b)
 /// @namespace statement/content
-$shell-dark-content-paddingTop: $s-6 !default;
+$shell-dark-content-paddingTop: $s-5 !default;
 /// gutter (row)
 /// @namespace statement/content
 $shell-dark-content-gutter-row: $s-4 !default;
@@ -421,7 +427,13 @@ $shell-dark-content-columns: 1 !default;
 $shell-dark-footer-min-height: $s-14 !default;
 /// background
 /// @namespace statement/footer
-$shell-dark-footer-background: $color-black !default;
+$shell-dark-footer-background: $color-transparent !default;
+/// color
+/// @namespace statement/footer
+$shell-dark-footer-color: $color-text1-1 !default;
+/// font-size
+/// @namespace statement/footer
+$shell-dark-footer-font-size: $font-size-body-2 !default;
 
 /// width
 /// @namespace statement/ancillary
@@ -523,11 +535,11 @@ $shell-brand-header-divider-size: $line-1 !default;
 $shell-brand-header-divider-style: $line-solid !default;
 /// color
 /// @namespace statement/header/divider
-$shell-brand-header-divider-color: #1F1F1F !default;
+$shell-brand-header-divider-color: $color-line1-1 !default;
 $shell-brand-header-divider: $shell-brand-header-divider-size $shell-brand-header-divider-style $shell-brand-header-divider-color;
 /// padding (l, r)
 /// @namespace statement/header
-$shell-brand-header-paddingLeft: $s-8 !default;
+$shell-brand-header-paddingLeft: $s-4 !default;
 
 /// min-height
 /// @namespace statement/multitask
@@ -576,7 +588,7 @@ $shell-brand-navigation-ver-paddingBottom: $s-2 !default;
 $shell-brand-navigation-ver-width-mini: $s-15 !default;
 /// background
 /// @namespace statement/navigation
-$shell-brand-navigation-ver-background: $color-black !default;
+$shell-brand-navigation-ver-background: $color-white !default;
 /// size
 /// @namespace statement/navigation/divider
 $shell-brand-navigation-ver-divider-size: $line-1 !default;
@@ -585,7 +597,7 @@ $shell-brand-navigation-ver-divider-size: $line-1 !default;
 $shell-brand-navigation-ver-divider-style: $line-solid !default;
 /// color
 /// @namespace statement/navigation/divider
-$shell-brand-navigation-ver-divider-color: #1F1F1F !default;
+$shell-brand-navigation-ver-divider-color: $color-line1-1 !default;
 $shell-brand-navigation-ver-divider: $shell-brand-navigation-ver-divider-size $shell-brand-navigation-ver-divider-style $shell-brand-navigation-ver-divider-color;
 
 /// width
@@ -616,7 +628,7 @@ $shell-brand-local-navigation-divider: $shell-brand-local-navigation-divider-siz
 
 /// background
 /// @namespace statement/appbar
-$shell-brand-appbar-background: $color-black !default;
+$shell-brand-appbar-background: $color-white !default;
 /// min-height
 /// @namespace statement/appbar
 $shell-brand-appbar-min-height: $s-12 !default;
@@ -645,10 +657,10 @@ $shell-brand-content-max-width: unset !default;
 $shell-brand-content-background: $color-fill1-3 !default;
 /// padding (l, r)
 /// @namespace statement/content
-$shell-brand-content-paddingLeft: $s-6 !default;
+$shell-brand-content-paddingLeft: $s-5 !default;
 /// padding (t, b)
 /// @namespace statement/content
-$shell-brand-content-paddingTop: $s-6 !default;
+$shell-brand-content-paddingTop: $s-5 !default;
 /// gutter (row)
 /// @namespace statement/content
 $shell-brand-content-gutter-row: $s-4 !default;
@@ -664,7 +676,13 @@ $shell-brand-content-columns: 1 !default;
 $shell-brand-footer-min-height: $s-14 !default;
 /// background
 /// @namespace statement/footer
-$shell-brand-footer-background: $color-black !default;
+$shell-brand-footer-background: $color-transparent !default;
+/// color
+/// @namespace statement/footer
+$shell-brand-footer-color: $color-text1-1 !default;
+/// font-size
+/// @namespace statement/footer
+$shell-brand-footer-font-size: $font-size-body-2 !default;
 
 /// width
 /// @namespace statement/ancillary

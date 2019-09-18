@@ -47,6 +47,7 @@
             display: flex;
             align-items: center;
             flex-direction: row;
+            overflow: hidden;
         }
         #{$shell-prefix}-branding {
             display: flex;
@@ -248,6 +249,8 @@
             #{$shell-prefix}-footer {
                 background: $shell-light-footer-background;
                 min-height: $shell-light-footer-min-height;
+                color: $shell-light-footer-color;
+                font-size: $shell-light-footer-font-size;
             }
         }
 
@@ -368,6 +371,8 @@
             #{$shell-prefix}-footer {
                 background: $shell-dark-footer-background;
                 min-height: $shell-dark-footer-min-height;
+                color: $shell-dark-footer-color;
+                font-size: $shell-dark-footer-font-size;
             }
         }
 
@@ -488,6 +493,8 @@
             #{$shell-prefix}-footer {
                 background: $shell-brand-footer-background;
                 min-height: $shell-brand-footer-min-height;
+                color: $shell-brand-footer-color;
+                font-size: $shell-brand-footer-font-size;
             }
         }
 

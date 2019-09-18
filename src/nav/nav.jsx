@@ -248,7 +248,7 @@ class Nav extends Component {
             [`${prefix}nav-embeddable`]: embeddable,
             [className]: !!className,
         });
-        const newStyle = newIconOnly ? { ...style, width: '60px' } : style;
+        const newStyle = newIconOnly ? { ...style, width: '58px' } : style;
 
         const props = {
             prefix,

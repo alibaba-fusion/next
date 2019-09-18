@@ -50,10 +50,10 @@ class App extends React.Component {
                 <Radio value="tablet">tablet</Radio>
                 <Radio value="desktop">desktop</Radio>
             </Radio.Group>
-            <Shell className={"iframe-hack"} device={this.state.device}>
+            <Shell className={"iframe-hack"} device={this.state.device} style={{border: '1px solid #eee'}}>
                 <Shell.Branding>
                     <div className="rectangular"></div>
-                    <span style={{marginLeft: 10, color: '#FFF'}}>App Name</span>
+                    <span style={{marginLeft: 10}}>App Name</span>
                 </Shell.Branding>
                 <Shell.Navigation direction="hoz">
                     <Search key="2" shape="simple" type="dark" palceholder="Search" style={{width: '200px'}}/>
@@ -61,11 +61,11 @@ class App extends React.Component {
                 <Shell.Action>
                     <Icon type="ic_tongzhi" />
                     <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" className="avatar" alt="用户头像" />
-                    <span style={{marginLeft: 10, color: '#FFF'}}>MyName</span>
+                    <span style={{marginLeft: 10}}>MyName</span>
                 </Shell.Action>
 
                 <Shell.Navigation>
-                    <Nav type="primary" embeddable>
+                    <Nav embeddable>
                         <Nav.Item icon="account">Nav Item 1</Nav.Item>
                         <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                         <Nav.Item icon="atm">Nav Item 3</Nav.Item>
@@ -142,15 +142,15 @@ ReactDOM.render((
   align-items: center;
 }
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   vertical-align: middle;
 }
 .rectangular {
   width: 32px;
   height: 32px;
-  background: #555;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .iframe-hack {
@@ -160,6 +160,5 @@ ReactDOM.render((
 
 .next-shell-action .next-icon {
   margin: 0 30px;
-  color: #fff;
 }
 ````

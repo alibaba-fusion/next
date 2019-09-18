@@ -24,7 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Shell className={"iframe-hack"}>
+        <Shell className={"iframe-hack"} style={{border: '1px solid #eee'}}>
           <Shell.Branding>
             <div className="rectangular"></div>
             <span style={{marginLeft: 10}}>App Name</span>
@@ -58,15 +58,15 @@ ReactDOM.render((
 ````
 ````css
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   vertical-align: middle;
 }
 .rectangular {
   width: 32px;
   height: 32px;
-  background: #555;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .iframe-hack {
