@@ -200,8 +200,15 @@ export default class Base extends React.Component {
      * @protected
      */
     syncWidth() {
-        const width = dom.getStyle(this.selectDOM, 'width');
+        const { popupStyle, popupProps } = this.props;
+        if (
+            (popupStyle && 'width' in popupStyle) ||
+            (popupProps && popupProps.style && 'width' in popupProps.style)
+        ) {
+            return;
+        }
 
+        const width = dom.getStyle(this.selectDOM, 'width');
         if (width && this.width !== width) {
             this.width = width;
 
