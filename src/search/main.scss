@@ -41,8 +41,8 @@
             line-height: 1;
         }
 
-        .#{$css-prefix}select {
-            margin-right: 0;
+        &.#{$css-prefix}input-group-addon .#{$css-prefix}select {
+            margin: 0;
         }
     }
 
