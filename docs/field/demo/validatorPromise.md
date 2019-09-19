@@ -1,24 +1,24 @@
-# 校验
+# 验证承诺
 
 - order: 4
 
-校验的错误信息需要用`getError`获取
-
-`注意`：Form 和 Field 做了深度结合，在 Form 中使用Field，错误信息不需`getError`获取会自动展现。
-
-请参考 validatorPromise demo，以使用Promise而不是回调
+验证表单值，并在承诺中返回错误。也支持回调。如果回调返回承诺，承诺的结果将在 “验证” 函数的承诺中返回。
 
 :::lang=en-us
-# validate
+# validate Promise
 
 - order: 4
 
-you can easily use validate in `Form`, or you can use `getError` to set errors where you want to put. See `validatorPromise` demo to use promises instead of callbacks.
+validate form values with errors returned wrapped in a promise. Also supports callbacks. If the callback returns a promise, the results of the promise will be returned in a promise from the `validate` function.
+
 :::
 ---
 
 ````jsx
-import { Input, Button, Checkbox, Field } from '@alifd/next';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { Input, Button, Checkbox } from '@alifd/next';
+import Field from '@alifd/field';
 
 
 
@@ -43,19 +43,23 @@ class App extends React.Component {
     }
     field = new Field(this, {scrollToFirstError: -10});
 
-    isChecked(rule, value, callback) {
+    isChecked(rule, value) {
         if (!value) {
-            return callback('consent agreement not checked ');
+            return Promise.reject('consent agreement not checked ')
         } else {
-            return callback();
+            return Promise.resolve(null);
         }
     }
 
-    userName(rule, value, callback) {
+    userName(rule, value) {
         if (value === 'frank') {
-            setTimeout(() => callback('name existed'), 200);
+            return new Promise((resolve, reject) => {
+                setTimeout(() => reject('name existed'), 200);
+            })
         } else {
-            setTimeout(() => callback(), 200);
+            return new Promise((resolve) => {
+                setTimeout(() => resolve(null), 200);
+            })
         }
     }
 
@@ -137,7 +141,7 @@ class App extends React.Component {
             <br/>
 
             <Button type="primary" onClick={() => {
-                this.field.validate((errors, values) => {
+                this.field.validatePromise().then(({errors, values}) => {
                     console.log(errors, values);
                 });
             }}>validate</Button>

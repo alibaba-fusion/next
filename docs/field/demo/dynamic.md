@@ -2,35 +2,33 @@
 
 - order: 6
 
-通过 `spliceArray` 可以删除数组格式 name (eg: name.{index}) 的数据, 并且自动订正其他 name 的 index - 1 问题
+通过 `deleteArrayValue/addArrayValue` 可以往数组格式的数据里面 删除/添加 数据, 并且自动订正其他 name 的 偏移问题
 
 :::lang=en-us
 # mix usage
 
 - order: 6
 
-by use `spliceArray` could delete array type keys (eg: name.{index}), and make larger keys auto -1
+by use `deleteArrayValue/addArrayValue` could delete and add array , and fix keys offset problem
 :::
 ---
 
-
 ````jsx
 import { Button, Input, Table, Field } from '@alifd/next';
-
 
 class Demo extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            tableSource: [1, 2, 3].map(i => {
-                return { id: i };
-            })
-        };
         this.idx = 3;
 
         this.field = new Field(this, {
             parseName: true,
+            values: {
+                name: [0, 1, 2, 3].map(i => {
+                    return { id: i, input: i };
+                })
+            }
         });
     }
 
@@ -39,37 +37,33 @@ class Demo extends React.Component {
         console.log(values);
     }
 
-    add = () => {
-        const { tableSource } = this.state;
-        tableSource.push({
-            id: ++this.idx
-        });
-
-        this.setState({ tableSource });
+    addItem(index){
+        ++this.idx;
+        this.field.addArrayValue('name', index, {id: this.idx, input: this.idx});
     }
 
     removeItem(index) {
-        const { tableSource } = this.state;
-        tableSource.splice(index, 1);
-        this.field.spliceArray('name.{index}', index);
-        this.setState({ tableSource });
+        this.field.deleteArrayValue('name', index);
     }
 
-    input = (value, index) => <Input  {...this.field.init(`name.${index}`, { initValue: index })} />;
-    delete = (value, index) => <Button warning onClick={this.removeItem.bind(this, index)}>delete</Button>;
+    input = (value, index) => <Input  {...this.field.init(`name.${index}.input`)} />;
+    op = (value, index) => {
+        return <span>
+            <Button type="primary" onClick={this.addItem.bind(this, index + 1)}>add</Button>
+            <Button warning onClick={this.removeItem.bind(this, index)} style={{marginLeft: 4}}>delete</Button>
+        </span>
+    }
 
     render() {
+        const dataSource = this.field.getValue('name');
         return (
             <div>
-                <Table dataSource={this.state.tableSource}>
+                <Table dataSource={dataSource}>
                     <Table.Column title="id" dataIndex="id" />
                     <Table.Column title="input" dataIndex="id" cell={this.input} />
-                    <Table.Column title="operation" cell={this.delete} width={100} />
+                    <Table.Column title="operation" cell={this.op} width={150} />
                 </Table>
-                <div style={{ marginTop: 10 }}>
-                    <Button type="primary" onClick={this.getValues} >print</Button>
-                    <Button type="normal" onClick={this.add} style={{ marginLeft: 8 }}>Add</Button>
-                </div>
+                <pre style={{marginTop: 8}}>{JSON.stringify(dataSource, null, 2)}</pre>
             </div>
         );
     }
