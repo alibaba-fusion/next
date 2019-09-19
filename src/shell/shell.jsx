@@ -55,9 +55,10 @@ export default function ShellBase(props) {
 
         componentWillReceiveProps(nextProps) {
             const { device } = this.props;
-            const deviceMap = getCollapseMap(device);
 
             if (nextProps.device !== device) {
+                const deviceMap = getCollapseMap(nextProps.device);
+
                 this.setState({
                     controll: false,
                     collapseMap: deviceMap,
@@ -65,19 +66,6 @@ export default function ShellBase(props) {
                 });
             }
         }
-
-        // componentDidUpdate(prevProps) {
-        //     const { device } = this.props;
-        //     const deviceMap = getCollapseMap(device);
-
-        //     if (prevProps.device !== device) {
-        //         this.setState({
-        //             controll: false,
-        //             collapseMap: deviceMap,
-        //             device,
-        //         });
-        //     }
-        // }
 
         setChildCollapse = (child, mark) => {
             const { device, collapseMap, controll } = this.state;
