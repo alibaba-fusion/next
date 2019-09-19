@@ -1,133 +1,205 @@
 import React from 'react';
-import { Types, ContentType, parseData, STATE_MARK } from '@alifd/adaptor-helper';
-import { Button, Icon } from '@alifd/next';
-
-const createContent = (list = []) => {
-    if (!Array.isArray(list)) return list;
-    return list.map(({ type, value }, index) => {
-        if (type === ContentType.icon) {
-            return <Icon type={value} key={`icon-${index}`} />;
-        }
-        return value;
-    });
-};
+import { Types } from '@alifd/adaptor-helper';
+import { Shell, Icon } from '@alifd/next';
 
 export default {
-  name: 'Button',
-  shape: ['normal', 'text', 'warning', 'ghost', 'group'],
+  name: 'Shell',
+  shape: ['normal'],
   editor: (shape) => {
     return {
       props: [{
         name: 'level',
         type: Types.enum,
+        default: 'light',
         options: {
-          normal: ['normal', 'primary', 'secondary'],
-          text: ['normal', 'primary', 'secondary'],
-          warning: ['normal', 'primary'],
-          ghost: ['light', 'dark'],
-          group: ['normal', 'primary', 'secondary'],
+          normal: ['light', 'dark', 'brand'],
         }[shape],
-      }, {
-        name: 'size',
+      },{
+        name: 'device',
+        label: 'Device',
         type: Types.enum,
-        options: ['large', 'medium', 'small'],
-        default: 'medium'
-      }],
-      data: {
-        icon: true,
-        ...(shape === 'group' ? {} : {
-          disable: true,
-          hover: true,
-        }),
-        default: shape === 'group' ? 'Button\nButton\nButton' : 'Button'
-      }
+        options: ['desktop', 'tablet', 'phone'],
+        default: 'desktop',
+      },{
+        name: 'branding',
+        label: 'Branding',
+        type: Types.bool,
+        default: true,
+      },{
+        name: 'actions',
+        label: 'Actions',
+        type: Types.bool,
+        default: true,
+      },{
+        name: 'navigation',
+        label: 'Navigation',
+        type: Types.enum,
+        options: ['ver', 'hoz', false],
+        default: 'ver',
+      },{
+        name: 'localNav',
+        label: 'LocalNav',
+        type: Types.bool,
+        default: true,
+      },{
+        name: 'appbar',
+        label: 'Appbar',
+        type: Types.bool,
+        default: true,
+      },{
+        name: 'footer',
+        label: 'Footer',
+        type: Types.bool,
+        default: true,
+      },{
+        name: 'tooldock',
+        label: 'Tooldock',
+        type: Types.bool,
+        default: true,
+      },{
+        name: 'ancillary',
+        label: 'Ancillary',
+        type: Types.bool,
+        default: true,
+      }]
     };
   },
-  adaptor: ({ shape, level, size, data, ...others }) => {
-    const list = parseData(data, { parseContent: true });
+  adaptor: ({ level, device, branding, actions, localNav, appbar, footer, tooldock, ancillary, navigation,  ...others }) => {
+    let logoStyle = {},
+        shellStyle = {};
 
-    const buttonProps = {
-      type: shape === 'ghost' ? 'normal' : level,
-      warning: shape === 'warning',
-      text: shape === 'text',
-      ghost: shape === 'ghost' ? level : false,
-    };
+    switch(level) {
+        case 'light':
+            logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
+            break;
+        case 'dark':
+            logoStyle = {width: 32, height: 32, background: '#FFF', opacity: '0.2'};
+            break;
+        case 'brand':
+            logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
+            break;
+        default:
+            break;
+    }
 
-    if (list.length === 1) {
-      const className = (others.className || '');
-      return <Button {...others} disabled={list[0].state === 'disabled'} className={list[0].state === 'hover' ? ['hover', className].join(' ') : className } size={size} {...buttonProps}>{createContent(list[0].value)}</Button>
+    switch(device) {
+        case 'phone':
+            shellStyle = {height: 500, width: 480, border: '1px solid #eee'};
+            break;
+        case 'tablet':
+            shellStyle = {height: 500, width: 768, border: '1px solid #eee'};
+            break;
+        case 'desktop':
+            shellStyle = {height: 500, width: 1000, border: '1px solid #eee'};
+            break;
+        default:
+            break;
     }
 
     return (
-      <Button.Group {...others} size={size}>
-        {
-          list.map((item, index) => <Button key={index} disabled={item.state === 'disabled'} className={item.state === 'hover' ? 'hover' : ''} {...buttonProps}>{createContent(item.value)}</Button>)
-        }
-      </Button.Group>
+        <Shell style={shellStyle} device={device} type={level}>
+            {
+                branding
+                    ? <Shell.Branding>
+                        <div style={logoStyle}></div>
+                        <span style={{marginLeft: 10}}>App Name</span>
+                    </Shell.Branding>
+                    : null
+            }
+
+            {
+                !navigation
+                    ?  <Shell.Navigation direction={navigation}>
+                        <Nav type="normal" embeddable direction={navigation} hozInLine>
+                            <Nav.Item icon="account">Nav Item 1</Nav.Item>
+                            <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
+                            <Nav.Item icon="atm">Nav Item 3</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 4</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 5</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 6</Nav.Item>
+                            <Nav.Item icon="account">Nav Item 7</Nav.Item>
+                        </Nav>
+                    </Shell.Navigation>
+                    : null
+            }
+            {
+                actions
+                    ? <Shell.Action>
+                        <Search key="2" shape='simple' palceholder="Search" style={{width: '160px', marginRight: 20}}/>
+                        <Icon type="ic_tongzhi" />
+                        <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" style={{width: 24, height: 24, borderRadius: '50%', verticalAlign: 'middle'}} alt="用户头像" />
+                        <span style={{marginLeft: 10}}>Name</span>
+                    </Shell.Action>
+                    : null
+            }
+            {
+                localNav
+                    ? <Shell.LocalNavigation>
+                        <Nav type="normal" embeddable>
+                        <Nav.SubNav label="Local Nav1">
+                            <Nav.Item>Local Nav1</Nav.Item>
+                        </Nav.SubNav>
+                        <Nav.SubNav label="Local Nav2">
+                            <Nav.Item>Local Nav2</Nav.Item>
+                        </Nav.SubNav>
+                        <Nav.SubNav label="Local Nav3">
+                            <Nav.Item>Local Nav3</Nav.Item>
+                        </Nav.SubNav>
+                        <Nav.Item>Local Nav4</Nav.Item>
+                        <Nav.Item>Local Nav5</Nav.Item>
+                        <Nav.Item>Local Nav6</Nav.Item>
+                        <Nav.Item>Local Nav7</Nav.Item>
+                        <Nav.Item>Local Nav8</Nav.Item>
+                        <Nav.Item>Local Nav4</Nav.Item>
+                        <Nav.Item>Local Nav5</Nav.Item>
+                        <Nav.Item>Local Nav6</Nav.Item>
+                        <Nav.Item>Local Nav7</Nav.Item>
+                        <Nav.Item>Local Nav8</Nav.Item>
+                        </Nav>
+                    </Shell.LocalNavigation>
+                    : null
+            }
+            {
+                appbar
+                    ? <Shell.AppBar>
+
+                    </Shell.AppBar>
+                    : null
+            }
+            <Shell.Content>
+                <div style={{minHeight: 1200, background: '#fff'}}></div>
+            </Shell.Content>
+
+            {
+                ancillary
+                    ? <Shell.Ancillary>
+                    </Shell.Ancillary>
+                    : null
+            }
+            {
+                tooldock
+                    ? <Shell.ToolDock>
+                        <Shell.ToolDockItem>
+                        <Icon type="calendar" />
+                        </Shell.ToolDockItem>
+                        <Shell.ToolDockItem>
+                        <Icon type="atm" />
+                        </Shell.ToolDockItem>
+                        <Shell.ToolDockItem>
+                        <Icon type="account" />
+                        </Shell.ToolDockItem>
+                    </Shell.ToolDock>
+                    : null
+            }
+            {
+                footer
+                    ? <Shell.Footer>
+                        <span>Alibaba Fusion</span>
+                        <span>@ 2019 Alibaba Piecework 版权所有</span>
+                    </Shell.Footer>
+                    : null
+            }
+        </Shell>
     );
-  },
-  content(shape) {
-    if (shape === 'group') {
-      return {
-        options: [{
-          name: 'iconType',
-          options: ['none', 'arrow', 'onlyIcon'],
-          default: 'none'
-        }],
-        transform: (props, { iconType }) => {
-          if (iconType === 'arrow') {
-            return {
-              ...props,
-              data: ['[arrow-left]Go Back', 'Button', 'Go Forward[arrow-right]'].join('\n'),
-            };
-          }
-
-          if (iconType === 'onlyIcon') {
-            return {
-              ...props,
-              data: ['[set]', '[atm]', '[download]'].join('\n'),
-            };
-          }
-
-          return props;
-        }
-      };
-    }
-
-    return {
-      options: [{
-        name: 'iconType',
-        options: ['none', 'arrow-left', 'arrow-right', 'arrow-down', 'arrow-up', 'atm'],
-        default: 'none'
-      }],
-      transform: (props, { iconType }) => {
-        if (iconType === 'none') return props;
-        let { data } = props;
-        const icon = `[${iconType}]`;
-
-        if (['arrow-right', 'arrow-down', 'arrow-up'].indexOf(iconType) !== -1) {
-          data = data + icon;
-        } else {
-          data = Object.keys(STATE_MARK).filter(v => !!v).indexOf(data.substring(0, 1)) !== -1 ?
-            [data.substring(0, 1), icon, data.substring(1)].join('') : icon + data;
-        }
-
-        return {
-          ...props,
-          data
-        };
-      }
-    };
-  },
-  demoOptions(demo) {
-    const { node } = demo;
-    const { level } = node.props;
-    if (level === 'dark') {
-      return {
-        ...demo,
-        background: '#000',
-      };
-    }
-    return demo;
   }
 };

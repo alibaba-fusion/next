@@ -1,96 +1,45 @@
-/// <reference types="react" />
-
-import * as React from 'react';
+import { HTMLAttributes, ElementType, Component, ComponentType } from "react";
 import CommonProps from '../util';
 
-export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface ShellProps extends HTMLAttributes<HTMLElement>, CommonProps {
     /**
-     * 统一设置 Button 组件的按钮大小
+     * 设备类型，针对不同的设备类型组件做出对应的响应式变化
      */
-    size?: string;
+    device?: 'tablet' | 'desktop' | 'phone';
 }
 
-export class Group extends React.Component<GroupProps, any> {}
-interface HTMLAttributesWeak extends React.ButtonHTMLAttributes<HTMLElement> {
-    type?: any;
-    onClick?: any;
+export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonProps {
+
 }
 
-export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
-    /**
-     * 按钮的类型
-     */
-    type?: 'primary' | 'secondary' | 'normal';
-
-    /**
-     * 按钮的尺寸
-     */
-    size?: 'small' | 'medium' | 'large';
-
-    /**
-     * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
-     */
-    iconSize?:
-        | 'xxs'
-        | 'xs'
-        | 'small'
-        | 'medium'
-        | 'large'
-        | 'xl'
-        | 'xxl'
-        | 'xxxl';
-
-    /**
-     * 当 component = 'button' 时，设置 button 标签的 type 值
-     */
-    htmlType?: 'submit' | 'reset' | 'button';
-
-    /**
-     * 设置标签类型
-     */
-    component?: 'button' | 'a';
-
-    /**
-     * 设置按钮的载入状态
-     */
-    loading?: boolean;
-
-    /**
-     * 是否为幽灵按钮
-     */
-    ghost?: true | false | 'light' | 'dark';
-
-    /**
-     * 是否为文本按钮
-     */
-    text?: boolean;
-
-    /**
-     * 是否为警告按钮
-     */
-    warning?: boolean;
-
-    /**
-     * 是否禁用
-     */
-    disabled?: boolean;
-
-    /**
-     * 点击按钮的回调
-     */
-    onClick?: (e: {}) => void;
-
-    /**
-     * 在Button组件使用component属性值为a时有效，代表链接页面的URL
-     */
-    href?: string;
-
-    /**
-     * 在Button组件使用component属性值为a时有效，代表何处打开链接文档
-     */
-    target?: string;
+export interface ShellNavigationProps extends ShellCommonProps {
+    collapse?: boolean;
+    direction?: 'hoz' | 'ver';
 }
 
-export default class Button extends React.Component<ButtonProps, any> {
-    static Group: typeof Group;
+export interface ShellLocalNavigationProps extends ShellCommonProps {
+    collapse?: boolean;
+}
+
+export interface ShellToolDockProps extends ShellCommonProps {
+    collapse?: boolean;
+}
+
+export interface ShellAncillaryProps extends ShellCommonProps {
+    collapse?: boolean;
+}
+
+export default class Shell extends Component<ShellProps, any> {
+    static Branding: ComponentType<ShellCommonProps>;
+    static Action: ComponentType<ShellCommonProps>;
+    static MultiTask: ComponentType<ShellCommonProps>;
+    static AppBar: ComponentType<ShellCommonProps>;
+    static Content: ComponentType<ShellCommonProps>;
+    static Footer: ComponentType<ShellCommonProps>;
+    static ToolDockItem: ComponentType<ShellCommonProps>;
+
+    static Navigation: ComponentType<ShellNavigationProps>;
+    static LocalNavigation: ComponentType<ShellLocalNavigationProps>;
+    static Ancillary: ComponentType<ShellAncillaryProps>;
+    static ToolDock: ComponentType<ShellToolDockProps>;
 }

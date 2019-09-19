@@ -1,48 +1,73 @@
-# Button
+# Shell
 
 -   category: Components
 -   family: General
--   chinese: 按钮
--   type: Form
+-   chinese: 框架
+-   type: 布局
 
 ---
 
-Button used to trigger an action.
+Support IE10+
 
 ## Guide
 
-### When To Use
+Shell is the infrastructure framework of the whole application. It embodies the structure of the application and the basic capabilities of the application, so that users can complete all their operations under the same framework.
 
-Buttons are used for emphasizing important functions on your page.
+### 何时使用
+
+- Shell should be configured according to the actual business requirements.
+- The same application uses a unified Shell framework to avoid confusion.
+
+````jsx
+<Shell>
+    <Shell.Branding />
+    <Shell.Navigation/>
+    <Shell.Action />
+
+    <Shell.MultiTask />
+    <Shell.LocalNavigation />
+
+    <Shell.AppBar />
+    <Shell.Content />
+    <Shell.Footer />
+
+    <Shell.Ancillary />
+    <Shell.ToolDock>
+        <Shell.ToolDockItem />
+    </Shell.ToolDock>
+</Shell>
+````
+
+`<Shell.Content />` uses css-grid, others are `display: flex`
 
 ## API
 
-### Button
+### Shell
+| Param                | Description  | Type              | Default Value      |
+| -------------------- | ------------ | ----------------- | ------------------ |
+| device             | Preset screen width, tt determines whether `Navigation` `LocalNavigation` `Ancillary`take space or not<br><br>**option**:<br>'phone', 'tablet', 'desktop'     | Enum         |  desktop    |
 
-| Param        | Description                                                                                                           | Type       | Default Value      |
-| --------- | ------------------------------------------------------------------------------------------------------------ | -------- | -------- |
-| size      | Size of button<br><br>**return**:<br>'small', 'medium', 'large'                                                          | Enum     | 'medium' |
-| type      | Typeo of button<br><br>**return**:<br>'primary', 'secondary', 'normal'                                                    | Enum     | 'normal' |
-| iconSize  | Size of icon in button <br><br>**return**:<br>'xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl' | Enum     | -        |
-| htmlType  | Original html type <br><br>**return**:<br>'submit', 'reset', 'button'  | Enum     | 'button' |
-| component | The html tag to be rendered <br><br>**return**:<br>'button', 'a', 'div', 'span'                                                                       | Enum     | 'button' |
-| loading   | Loading state of a button | Boolean  | false    |
-| ghost     | Setting ghost button<br><br>**return**:<br>true, false, 'light', 'dark'                                                      | Enum     | false    |
-| text      | Setting text button | Boolean  | false    |
-| warning   | Settting warning button | Boolean  | false    |
-| disabled  | whether is disabled     | Boolean  | false    |
-| onClick   | Callback of click event <br><br>**signature**:<br>Function(e: Object) => void<br>**return**:<br>_e_: {Object} Event Object               | Function | () => {} |
+### Shell.Navigation
+It will tell his children whether it's collapse or not by `isCollapse` via Context.
 
-### Button.Group
-
-| Param   | Description                  | Type     | Default Value      |
-| ---- | ------------------- | ------ | -------- |
-| size | Size of buttons in group | String | 'medium' |
+| Param                | Description  | Type              | Default Value      |
+| -------------------- | ------------ | ----------------- | ------------------ |
+| collapse   | collapse or not  | Boolean         | false     |
+| direction  | header or asider<br><br>**option**:<br>'hoz', 'ver'    | Enum         |  hoz    |
 
 
-## ARIA and KeyBoard
+### Shell.LocalNavigation
+| Param                | Description  | Type              | Default Value      |
+| -------------------- | ------------ | ----------------- | ------------------ |
+| collapse   | collapse or not    | Boolean         | false     |
 
-| KeyBoard          | Descripiton                              |
-| :---------- | :------------------------------ |
-| Enter       | Trigger the onClick event    |
-| SPACE       | Trigger the onClick event    |
+### Shell.ToolDock
+| Param                | Description  | Type              | Default Value      |
+| -------------------- | ------------ | ----------------- | ------------------ |
+| collapse   | collapse or not   | Boolean         | false     |
+
+### Shell.Ancillary
+| Param                | Description  | Type              | Default Value      |
+| -------------------- | ------------ | ----------------- | ------------------ |
+| collapse   | collapse or not   | Boolean         | false     |
+
