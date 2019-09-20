@@ -26,43 +26,43 @@ describe('input', () => {
         });
     });
 
-  describe('PureComponent', () => {
-    it('should change value', () => {
-          class PPureComponent extends React.PureComponent {
-            constructor(props) {
-              super(props);
-              this.field = new Field(this);
-            }
-            render() {
-              return (
-                <div>{this.props.children}</div>
-              )
-            } 
+    describe('PureComponent', () => {
+      it('should change value', () => {
+        class PPureComponent extends React.PureComponent {
+          constructor(props) {
+            super(props);
+            this.field = new Field(this);
           }
-          class Demo extends React.Component {
-            constructor(props) {
-              super(props);
-              this.field = new Field(this);
-            }
-            render() {
-              return (
-                <Form>
-                  <PPureComponent>
-                    <Form.Item>
-                      <Input name="name"/>
-                    </Form.Item>
-                  </PPureComponent>
-                </Form>
-              )
-            }
+          render() {
+            return (
+              <div>{this.props.children}</div>
+            )
+          } 
+        }
+        class Demo extends React.Component {
+          constructor(props) {
+            super(props);
+            this.field = new Field(this);
           }
-          let wrapper = mount(<Demo/>);
-          wrapper.find('input#name').simulate('change', { target: { value: 'test' } });
-          assert(
-            wrapper
-            .find('input#name')
-            .prop('value') === 'test'
-          );
+          render() {
+            return (
+              <Form>
+                <PPureComponent>
+                  <Form.Item>
+                    <Input name="name"/>
+                  </Form.Item>
+                </PPureComponent>
+              </Form>
+            )
+          }
+        }
+        let wrapper = mount(<Demo/>);
+        wrapper.find('input#name').simulate('change', { target: { value: 'test' } });
+        assert(
+          wrapper
+          .find('input#name')
+          .prop('value') === 'test'
+        );
       });
     })
 
