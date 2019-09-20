@@ -37,7 +37,7 @@ When there is a lot of content to show when paged load processing is needed.
 | onPageSizeChange |  The callback function trigget when the number of pageSize selector changes<br><br>**signatures**:<br>Function(pageSize: Number) => void<br>**params**:<br>_pageSize_: {Number} The number of pagesize changed                         | Function                          | () => {}    |
 | hideOnlyOnePage  | Whether to hide the pager when the number of pages is 1                     | Boolean                           | false       |
 | showJump         | When the number of pagination is 1, if the hidden pager type is set to normal, after the page number exceeds 5 pages, the jump input box and button will be displayed. When showJump is set to false, the jump zone is no longer displayed.                                                                      | Boolean                           | true        |
-| link             | Set the jump link url of the page number button. Its value is a template string containing {page}, such as：<http://xxx.com/{page}>                                                                                  | String                            | -           |
+| link             | Set the jump link url of the page number button. Its value is a template string containing {page}, such as：<http://www.taobao.com/{page}>                                                                                  | String                            | -           |
 | popupProps       | Props for Popup                                                                                                                                                         | Object  | -                   |
 
 ## ARIA and KeyBoard
