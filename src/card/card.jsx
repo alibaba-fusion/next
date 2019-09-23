@@ -10,7 +10,10 @@ import { obj } from '../util';
 
 const { pickOthers } = obj;
 
-/** Card */
+/**
+ * Card
+ * @order 0
+ */
 export default class Card extends React.Component {
     static displayName = 'Card';
 

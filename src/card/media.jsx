@@ -10,6 +10,7 @@ const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
 
 /**
  * Card.Media
+ * @order 1
  */
 class CardMedia extends PureComponent {
     static propTypes = {

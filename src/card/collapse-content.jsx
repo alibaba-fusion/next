@@ -8,6 +8,7 @@ import nextLocale from '../locale/zh-cn';
 
 /**
  * Card.CollaspeContent
+ * @order 3
  */
 class CardCollaspeContent extends Component {
     static propTypes = {

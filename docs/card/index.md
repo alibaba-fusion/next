@@ -31,11 +31,22 @@
 | extra           | 标题区域的用户自定义内容                                                 | ReactNode     | -     |
 | free            | 是否开启自由模式，开启后card 将使用子组件配合使用, 设置此项后 title, subtitle, 等等属性都将失效 | Boolean       | false |
 
-### Card.Actions
+### Card.Media
 
-| 参数        | 说明     | 类型     | 默认值   |
-| --------- | ------ | ------ | ----- |
-| component | 设置标签类型 | custom | 'div' |
+| 参数        | 说明      | 类型     | 默认值   |
+| --------- | ------- | ------ | ----- |
+| component | 设置标签类型  | custom | 'div' |
+| image     | 背景图片地址  | String | -     |
+| src       | 媒体源文件地址 | String | -     |
+
+### Card.Header
+
+| 参数        | 说明           | 类型        | 默认值   |
+| --------- | ------------ | --------- | ----- |
+| title     | 卡片的标题        | ReactNode | -     |
+| subTitle  | 卡片的副标题       | ReactNode | -     |
+| extra     | 标题区域的用户自定义内容 | ReactNode | -     |
+| component | 设置标签类型       | custom    | 'div' |
 
 ### Card.Content
 
@@ -49,19 +60,8 @@
 | --------- | ------ | ------ | ---- |
 | component | 设置标签类型 | custom | 'hr' |
 
-### Card.Header
+### Card.Actions
 
-| 参数        | 说明           | 类型        | 默认值   |
-| --------- | ------------ | --------- | ----- |
-| title     | 卡片的标题        | ReactNode | -     |
-| subTitle  | 卡片的副标题       | ReactNode | -     |
-| extra     | 标题区域的用户自定义内容 | ReactNode | -     |
-| component | 设置标签类型       | custom    | 'div' |
-
-### Card.Media
-
-| 参数        | 说明      | 类型     | 默认值   |
-| --------- | ------- | ------ | ----- |
-| component | 设置标签类型  | custom | 'div' |
-| image     | 背景图片地址  | String | -     |
-| src       | 媒体源文件地址 | String | -     |
+| 参数        | 说明     | 类型     | 默认值   |
+| --------- | ------ | ------ | ----- |
+| component | 设置标签类型 | custom | 'div' |

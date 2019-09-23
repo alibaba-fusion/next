@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 
 /**
  * Card.BulletHeader
+ * @order 2
  */
 class CardBulletHeader extends Component {
     static propTypes = {

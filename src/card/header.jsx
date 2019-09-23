@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 
 /**
  * Card.Header
+ * @order 2
  */
 class CardHeader extends PureComponent {
     static propTypes = {

@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 
 /**
  * Card.Divider
+ * @order 4
  */
 class CardDivider extends PureComponent {
     static propTypes = {

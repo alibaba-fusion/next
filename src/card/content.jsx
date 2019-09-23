@@ -5,6 +5,7 @@ import ConfigProvider from '../config-provider';
 
 /**
  * Card.Content
+ * @order 3
  */
 class CardContent extends PureComponent {
     static propTypes = {
