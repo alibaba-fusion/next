@@ -24,6 +24,7 @@ export { default as Menu } from './menu';
 export { default as MenuButton } from './menu-button';
 export { default as Message } from './message';
 export { default as Nav } from './nav';
+export { default as Notification } from './notification';
 export { default as NumberPicker } from './number-picker';
 export { default as Overlay } from './overlay';
 export { default as Pagination } from './pagination';
