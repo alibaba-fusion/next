@@ -200,6 +200,12 @@ export function config(Component, options = {}) {
                 return ret;
             }, {});
 
+            if ('pure' in newContextProps) {
+                log.warning(
+                    'pure of ConfigProvider is deprecated, use Function Component or React.PureComponent'
+                );
+            }
+
             const newOthers = options.transform
                 ? options.transform(others, this._deprecated)
                 : others;
