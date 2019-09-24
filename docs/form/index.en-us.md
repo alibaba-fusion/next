@@ -19,6 +19,7 @@ Form layout, validation, data submission operations used.
 -   Form uses `size="medium"` by default and controls the size of all components in the FormItem. If you want to modify the component size, set `<FormItem size="small" >`.
 -   In the vertical layout form, if the text (generally `<p>` tag) or component deviates upwards, it can be adjusted with `className="next-form-text-align"`
 -   It must be a component wrapped directly by `<FormItem>` to display the error message. If the error did not show, check whether there are multiple levels DOM. For example, `<FormItem><div><Input/></div></FormItem>` is unable to display error message.
+-   could use `<Form field={false}>` to close inner field
 
 ## API
 

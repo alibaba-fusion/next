@@ -20,6 +20,7 @@
 -   Form 默认使用 `size=medium`, 并且会控制 FormItem 内所有组件的size。 如果想修改组件的size `<FormItem size="small" >`
 -   在垂直表单中如果文字（一般 `<p>` 标签）或者组件向上偏离，可以通过 `className="next-form-text-align"` 辅助调整
 -   必须是被 `<FormItem>`直接包裹的组件才能展示校验错误提示。如果界面不展示错误信息，请检查是否有多个层级。 比如 `<FormItem><div><Input/></div></FormItem>` 是无法展示校验信息的。
+-   可以通过 `<Form field={false}>` 来关闭数据获取，变成一个纯布局组件
 
 ## API
 
@@ -32,7 +33,7 @@
 | fullWidth      | 单个 Item 中表单类组件宽度是否是100%                                                                                                                                                                                                                 | Boolean         | -                                                      |
 | labelAlign     | 标签的位置<br><br>**可选值**:<br>'top'(上)<br>'left'(左)<br>'inset'(内)                                                                                                                                                                            | Enum            | 'left'                                                 |
 | labelTextAlign | 标签的左右对齐方式<br><br>**可选值**:<br>'left'(左)<br>'right'(右)                                                                                                                                                                                    | Enum            | -                                                      |
-| field          | 经 `new Field(this)` 初始化后，直接传给 Form 即可 用到表单校验则不可忽略此项                                                                                                                                                                                     | any             | -                                                      |
+| field          | field 实例, 传 false 会禁用 field                                                                                                                                                                                                             | any             | -                                                      |
 | saveField      | 保存 Form 自动生成的 field 对象<br><br>**签名**:<br>Function() => void                                                                                                                                                                             | Function        | func.noop                                              |
 | labelCol       | 控制第一级 Item 的 labelCol                                                                                                                                                                                                                   | Object          | -                                                      |
 | wrapperCol     | 控制第一级 Item 的 wrapperCol                                                                                                                                                                                                                 | Object          | -                                                      |

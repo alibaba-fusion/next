@@ -49,7 +49,7 @@ export default class Form extends React.Component {
          */
         labelTextAlign: PropTypes.oneOf(['left', 'right']),
         /**
-         * 经 `new Field(this)` 初始化后，直接传给 Form 即可 用到表单校验则不可忽略此项
+         * field 实例, 传 false 会禁用 field
          */
         field: PropTypes.any,
         /**
@@ -124,24 +124,29 @@ export default class Form extends React.Component {
 
     constructor(props) {
         super(props);
-        const options = {
-            ...props.fieldOptions,
-            onChange: this.onChange,
-        };
 
-        if (props.field) {
-            this._formField = props.field;
-            const onChange = this._formField.options.onChange;
-            options.onChange = func.makeChain(onChange, this.onChange);
-            this._formField.setOptions && this._formField.setOptions(options);
-        } else {
-            if ('value' in props) {
-                options.values = props.value;
+        this._formField = null;
+        if (props.field !== false) {
+            const options = {
+                ...props.fieldOptions,
+                onChange: this.onChange,
+            };
+
+            if (props.field) {
+                this._formField = props.field;
+                const onChange = this._formField.options.onChange;
+                options.onChange = func.makeChain(onChange, this.onChange);
+                this._formField.setOptions &&
+                    this._formField.setOptions(options);
+            } else {
+                if ('value' in props) {
+                    options.values = props.value;
+                }
+                this._formField = new Field(this, options);
             }
-            this._formField = new Field(this, options);
-        }
 
-        props.saveField(this._formField);
+            props.saveField(this._formField);
+        }
     }
 
     getChildContext() {
@@ -153,11 +158,13 @@ export default class Form extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this._formField.setValues(nextProps.value);
-        }
-        if ('error' in nextProps) {
-            this._formField.setErrors(nextProps.error);
+        if (this._formField) {
+            if ('value' in nextProps) {
+                this._formField.setValues(nextProps.value);
+            }
+            if ('error' in nextProps) {
+                this._formField.setErrors(nextProps.error);
+            }
         }
     }
 
