@@ -4,6 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import { dom } from '../../src/util';
 import Transfer from '../../src/transfer/index';
+import Tree from '../../src/tree/index';
 import '../../src/transfer/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -579,6 +580,49 @@ describe('Transfer', () => {
             .simulate('click');
         assert(findItems(wrapper, 0).length === 1);
         assert(findItems(wrapper, 1).length === 3);
+    });
+    it('should customer panel work well', () => {
+
+        const treeDataSource = [{
+            label: 'Form',
+            key: '2',
+            value: '2',
+            selectable: false,
+            children: [{
+                label: 'Input',
+                key: '4',
+                value: '4'
+            }, {
+                label: 'Field',
+                key: '7',
+                value: '7'
+            }, {
+                label: 'Select',
+                key: '5',
+                value: '5',
+            }]
+        }];
+
+        const transferDataSource = [];
+        function flatten(list = []) {
+            list.forEach(item => {
+                transferDataSource.push(item);
+                flatten(item.children);
+            });
+        }
+        flatten(treeDataSource);
+        wrapper = mount(
+            <Transfer mode="simple" defaultLeftChecked={0} defaultValue={0} value={['1', '2', '3']} dataSource={transferDataSource} >
+                { (position) => {
+                    if (position === 'left') {
+                        return <Tree checkable editable dataSource={dataSource}/>
+                    }
+                } }
+            </Transfer>
+        );
+        findFooter(wrapper, 0)
+            .find('a.next-transfer-panel-move-all')
+            .simulate('click');
     });
 });
 
