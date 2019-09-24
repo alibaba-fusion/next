@@ -16,7 +16,7 @@ With all components.
 ---
 
 ````jsx
-import { Menu, Search, Icon, Nav, Breadcrumb, Card, Tab, Shell, Radio } from '@alifd/next';
+import { Menu, Search, Icon, Nav, Breadcrumb, Shell, Radio } from '@alifd/next';
 
 const { SubNav, Item, Group, Divider } = Nav;
 
@@ -36,10 +36,11 @@ class App extends React.Component {
         });
     }
 
-    triggerClick = (e, currentCollapse) => {
-        console.log(e, currentCollapse)
+    onCollapseChange = (visible, e) => {
+        console.log('onCollapseChange:',visible, e);
+
         this.setState({
-            navcollapse: !currentCollapse
+            navcollapse: visible
         });
     }
 
@@ -59,12 +60,11 @@ class App extends React.Component {
                     <Search key="2" shape="simple" type="dark" palceholder="Search" style={{width: '200px'}}/>
                 </Shell.Navigation>
                 <Shell.Action>
-                    <Icon type="ic_tongzhi" />
                     <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" className="avatar" alt="用户头像" />
                     <span style={{marginLeft: 10}}>MyName</span>
                 </Shell.Action>
 
-                <Shell.Navigation>
+                <Shell.Navigation collapse={this.state.navcollapse} onCollapseChange={this.onCollapseChange}>
                     <Nav embeddable>
                         <Nav.Item icon="account">Nav Item 1</Nav.Item>
                         <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
@@ -74,7 +74,11 @@ class App extends React.Component {
                         <Nav.Item icon="account">Nav Item 6</Nav.Item>
                         <Nav.Item icon="account">Nav Item 7</Nav.Item>
                     </Nav>
+                    <div style={{textAlign: 'center', background: '#eee'}} onClick={this.btnClick}>
+                        { this.state.navcollapse ? <Icon type="arrow-right" size="xs" /> : <Icon type="arrow-left" size="xs" /> }
+                    </div>
                 </Shell.Navigation>
+
 
                 <Shell.LocalNavigation>
                     <Nav embeddable>

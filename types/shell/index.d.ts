@@ -6,6 +6,7 @@ export interface ShellProps extends HTMLAttributes<HTMLElement>, CommonProps {
      * 设备类型，针对不同的设备类型组件做出对应的响应式变化
      */
     device?: 'tablet' | 'desktop' | 'phone';
+    type?: 'light' | 'dark' | 'brand';
 }
 
 export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonProps {

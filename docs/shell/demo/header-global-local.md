@@ -16,7 +16,7 @@ Header with double asider
 ---
 
 ````jsx
-import { Menu, Search, Icon, Nav, Breadcrumb, Card, Tab, Shell, Radio } from '@alifd/next';
+import { Menu, Search, Nav, Shell, Radio } from '@alifd/next';
 
 const { SubNav, Item, Group, Divider } = Nav;
 
@@ -46,7 +46,6 @@ class App extends React.Component {
                         <Search key="2" shape="simple" type="dark" palceholder="Search" style={{width: '200px'}}/>
                     </Shell.Navigation>
                     <Shell.Action>
-                        <Icon type="ic_tongzhi" />
                         <img src="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png" className="avatar" alt="用户头像" />
                         <span style={{marginLeft: 10}}>MyName</span>
                     </Shell.Action>

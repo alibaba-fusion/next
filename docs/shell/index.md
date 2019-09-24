@@ -46,28 +46,34 @@ Shell 是整个应用的基础结构框架。它体现应用的结构形式和�
 | 参数                  | 说明          | 类型              | 默认值              |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | device             | 预设屏幕宽度，会影响`Navigation` `LocalNavigation` `Ancillary`等是否占据空间<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'     | Enum         |  desktop    |
+| type             | 样式类型，分浅色主题、深色主题、主题色主题，用户可自定义配置<br><br>**可选值**:<br>'light', 'dark', 'brand'     | Enum         |  light    |
 
 ### Shell.Navigation
 向子组件透传 isCollapse 的Context，表示当前是否处于折叠状态
 
 | 参数                  | 说明          | 类型              | 默认值              |
 | -------------------- | ------------ | ----------------- | ------------------ |
-| collapse   | 是否折叠(折叠成只有icon状态)   | Boolean         | false     |
 | direction  | 方向<br><br>**可选值**:<br>'hoz', 'ver'    | Enum         |  hoz    |
+| collapse   | 是否折叠(折叠成只有icon状态)   | Boolean         | false     |
+| onCollapseChange   | 默认按钮触发的展开收起状态   | Function        | () => {}   |
 
 
 ### Shell.LocalNavigation
 | 参数                  | 说明          | 类型              | 默认值              |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | 是否折叠（完全收起）    | Boolean         | false     |
+| onCollapseChange   | 默认按钮触发的展开收起状态   | Function        | () => {}   |
 
 ### Shell.ToolDock
 | 参数                  | 说明          | 类型              | 默认值              |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | 是否折叠（完全收起）   | Boolean         | false     |
+| onCollapseChange   | 默认按钮触发的展开收起状态   | Function        | () => {}   |
 
 ### Shell.Ancillary
 | 参数                  | 说明          | 类型              | 默认值              |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | 是否折叠（完全收起）   | Boolean         | false     |
+| onCollapseChange   | 默认按钮触发的展开收起状态   | Function        | () => {}   |
+
 

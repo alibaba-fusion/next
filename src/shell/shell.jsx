@@ -39,6 +39,7 @@ export default function ShellBase(props) {
             super(props);
 
             const deviceMap = getCollapseMap(props.device);
+            this.layout = {};
 
             this.state = {
                 controll: false,
@@ -58,6 +59,19 @@ export default function ShellBase(props) {
 
             if (nextProps.device !== device) {
                 const deviceMap = getCollapseMap(nextProps.device);
+                const { collapseMap } = this.state;
+
+                Object.keys(deviceMap).forEach(block => {
+                    const { props } = this.layout[block];
+                    if (collapseMap[block] !== deviceMap[block]) {
+                        if (
+                            props &&
+                            typeof props.onCollapseChange === 'function'
+                        ) {
+                            props.onCollapseChange(deviceMap[block]);
+                        }
+                    }
+                });
 
                 this.setState({
                     controll: false,
@@ -76,6 +90,7 @@ export default function ShellBase(props) {
             // 非受控模式
             if (isBoolean(collapse) === false) {
                 props.collapse = controll ? collapseMap[mark] : deviceMap[mark];
+                // props.collapse = collapseMap[mark];
             }
 
             if (device !== 'phone' && mark === 'Navigation') {
@@ -85,20 +100,24 @@ export default function ShellBase(props) {
             return React.cloneElement(child, props);
         };
 
-        toggleAside = (mark, e) => {
+        toggleAside = (mark, props, e) => {
             const { device, collapseMap } = this.state;
             const deviceMap = getCollapseMap(device);
-            const current =
-                mark in collapseMap ? collapseMap[mark] : deviceMap[mark];
+            const current = props.collapse;
 
+            const newCollapseMap = {
+                ...deviceMap,
+                ...collapseMap,
+                [mark]: !current,
+            };
             this.setState({
                 controll: true,
-                collapseMap: {
-                    ...deviceMap,
-                    ...this.state.collapseMap,
-                    [mark]: !current,
-                },
+                collapseMap: newCollapseMap,
             });
+
+            if (props && typeof props.onCollapseChange === 'function') {
+                props.onCollapseChange(newCollapseMap[mark]);
+            }
 
             const { children } = this.props;
             let com;
@@ -130,19 +149,31 @@ export default function ShellBase(props) {
         };
 
         toggleNavigation = e => {
-            this.toggleAside('Navigation', e);
+            const mark = 'Navigation';
+            const { props } = this.layout[mark];
+
+            this.toggleAside(mark, props, e);
         };
 
         toggleLocalNavigation = e => {
-            this.toggleAside('LocalNavigation', e);
+            const mark = 'LocalNavigation';
+            const { props } = this.layout[mark];
+
+            this.toggleAside(mark, props, e);
         };
 
         toggleAncillary = e => {
-            this.toggleAside('Ancillary', e);
+            const mark = 'Ancillary';
+            const { props } = this.layout[mark];
+
+            this.toggleAside(mark, props, e);
         };
 
         toggleToolDock = e => {
-            this.toggleAside('ToolDock', e);
+            const mark = 'ToolDock';
+            const { props } = this.layout[mark];
+
+            this.toggleAside(mark, props, e);
         };
 
         renderShell = props => {
@@ -259,7 +290,7 @@ export default function ShellBase(props) {
             // 如果存在垂直模式的 Navigation, 则需要在 Branding 上出现 trigger
             if (needNavigationTrigger) {
                 const branding = layout.header.Branding;
-                let { trigger } = layout.Navigation.props;
+                let { trigger, collapse } = layout.Navigation.props;
 
                 if ('trigger' in layout.Navigation.props) {
                     trigger =
@@ -278,7 +309,11 @@ export default function ShellBase(props) {
                             onClick={this.toggleNavigation}
                             onKeyDown={this.toggleNavigation}
                         >
-                            <Icon size="xs" type="arrow-double-right" />
+                            {collapse ? (
+                                <Icon size="xs" type="arrow-double-right" />
+                            ) : (
+                                <Icon size="xs" type="arrow-double-left" />
+                            )}
                         </div>
                     );
                 }
@@ -349,7 +384,7 @@ export default function ShellBase(props) {
 
             // 按照dom结构，innerArr 包括 LocalNavigation content Ancillary
             if (layout.LocalNavigation) {
-                let { trigger } = layout.LocalNavigation.props;
+                let { trigger, collapse } = layout.LocalNavigation.props;
 
                 if ('trigger' in layout.LocalNavigation.props) {
                     trigger =
@@ -368,7 +403,11 @@ export default function ShellBase(props) {
                             onClick={this.toggleLocalNavigation}
                             onKeyDown={this.toggleLocalNavigation}
                         >
-                            <Icon size="xs" type="arrow-right" />
+                            {collapse ? (
+                                <Icon size="xs" type="arrow-right" />
+                            ) : (
+                                <Icon size="xs" type="arrow-left" />
+                            )}
                         </div>
                     );
                 }
@@ -401,7 +440,7 @@ export default function ShellBase(props) {
             }
 
             if (layout.Ancillary) {
-                let { trigger } = layout.Ancillary.props;
+                let { trigger, collapse } = layout.Ancillary.props;
 
                 if ('trigger' in layout.Ancillary.props) {
                     trigger =
@@ -420,7 +459,11 @@ export default function ShellBase(props) {
                             onClick={this.toggleAncillary}
                             onKeyDown={this.toggleAncillary}
                         >
-                            <Icon size="xs" type="arrow-right" />
+                            {collapse ? (
+                                <Icon size="xs" type="arrow-left" />
+                            ) : (
+                                <Icon size="xs" type="arrow-right" />
+                            )}
                         </div>
                     );
                 }
@@ -496,6 +539,8 @@ export default function ShellBase(props) {
             if (componentName === 'Page') {
                 return <section className={mainCls}>{contentArr}</section>;
             }
+
+            this.layout = layout;
 
             return (
                 <section className={cls} {...others}>

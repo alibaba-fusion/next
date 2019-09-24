@@ -112,8 +112,8 @@
         }
         .local-nav-trigger {
             outline: 0;
-            border-right: 0;
-            transform: translate(100%, -50%) rotate(180deg);
+            border-left: none;
+            transform: translate(100%, -50%);
             right: 0;
         }
         .ancillary-trigger {
@@ -159,14 +159,6 @@
             flex-direction: column;
             justify-self: flex-start;
             transition: all .2s $motion-ease;
-
-            &#{$shell-prefix}-collapse {
-                .aside-trigger {
-                    border: 1px solid #DDD;
-                    border-left: none;
-                    transform: translate(100%, -50%);
-                }
-            }
         }
 
         #{$shell-prefix}-ancillary {
@@ -175,14 +167,6 @@
             flex-direction: column;
             justify-self: flex-start;
             transition: all .2s $motion-ease;
-
-            &#{$shell-prefix}-collapse {
-                .aside-trigger {
-                    border: 1px solid #DDD;
-                    border-left: none;
-                    transform: translate(-100%, -50%) rotate(180deg);
-                }
-            }
         }
     }
 

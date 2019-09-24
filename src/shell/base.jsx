@@ -13,7 +13,7 @@ export default function Base(props) {
             prefix: PropTypes.string,
             collapse: PropTypes.bool,
             miniable: PropTypes.bool,
-            Component: PropTypes.string,
+            component: PropTypes.string,
             trigger: PropTypes.node,
             triggerProps: PropTypes.object,
             /**
@@ -25,7 +25,7 @@ export default function Base(props) {
 
         static defaultProps = {
             prefix: 'next-',
-            Component: 'div',
+            component: 'div',
             onCollapseChange: () => {},
         };
 
@@ -44,9 +44,6 @@ export default function Base(props) {
                 isCollapse: collapse,
             };
         }
-        componentWillReceiveProps(nextProps) {
-            // this.props.onCollapseChange(nextProps.collapse);
-        }
 
         render() {
             const {
@@ -58,13 +55,13 @@ export default function Base(props) {
                 collapse,
                 triggerProps,
                 onCollapseChange,
-                Component,
+                component,
                 ...others
             } = this.props;
 
             const basePrefix = this.context.prefix || prefix;
 
-            let Tag = Component;
+            let Tag = component;
 
             const cls = classnames({
                 [`${basePrefix}shell-${componentName.toLowerCase()}`]: true,
