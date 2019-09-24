@@ -5,7 +5,7 @@ import { obj, log } from '../util';
 import getContextProps from './get-context-props';
 import ErrorBoundary from './error-boundary';
 
-const { shallowEqual } = obj;
+const { shallowEqual, typeOf } = obj;
 
 function getDisplayName(Component) {
     return Component.displayName || Component.name || 'Component';
@@ -67,7 +67,13 @@ export function getDirection() {
 }
 
 export function config(Component, options = {}) {
-    if (Component.prototype.shouldComponentUpdate === undefined) {
+    // 非 forwardRef 创建的 class component
+    if (
+        typeOf(Component) === 'Function' &&
+        Component.prototype.isReactComponent !== undefined &&
+        Component.prototype.shouldComponentUpdate === undefined
+    ) {
+        // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
         Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
             nextProps,
             nextState
@@ -194,6 +200,12 @@ export function config(Component, options = {}) {
                 }
                 return ret;
             }, {});
+
+            if ('pure' in newContextProps) {
+                log.warning(
+                    'pure of ConfigProvider is deprecated, use Function Component or React.PureComponent'
+                );
+            }
 
             const newOthers = options.transform
                 ? options.transform(others, this._deprecated)
