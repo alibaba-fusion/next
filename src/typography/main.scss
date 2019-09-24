@@ -13,29 +13,7 @@
         margin-top: 1.2em;
     }
 
-    h1#{$typography-prefix}-title {
-        font-size: $typography-title-h1-font-size;
-    }
 
-    h2#{$typography-prefix}-title {
-        font-size: $typography-title-h2-font-size;
-    }
-
-    h3#{$typography-prefix}-title {
-        font-size: $typography-title-h3-font-size;
-    }
-
-    h4#{$typography-prefix}-title {
-        font-size: $typography-title-h4-font-size;
-    }
-
-    h5#{$typography-prefix}-title {
-        font-size: $typography-title-h5-font-size;
-    }
-
-    h6#{$typography-prefix}-title {
-        font-size: $typography-title-h6-font-size;
-    }
 
     &-paragraph {
         color: $typography-text-color;
@@ -57,7 +35,7 @@
     code {
         background-color: $typography-text-code-background;
         color: $typography-text-code-color;
-        border: 1px solid $typography-text-code-border;
+        border: 1px solid $typography-text-code-border-color;
         margin: 0 .2em;
         padding: .2em .4em .1em;
         font-size: 85%;
@@ -92,4 +70,28 @@
             color: $color-link-3;
         }
     }
+}
+
+h1#{$typography-prefix}-title {
+    font-size: $typography-title-h1-font-size;
+}
+
+h2#{$typography-prefix}-title {
+    font-size: $typography-title-h2-font-size;
+}
+
+h3#{$typography-prefix}-title {
+    font-size: $typography-title-h3-font-size;
+}
+
+h4#{$typography-prefix}-title {
+    font-size: $typography-title-h4-font-size;
+}
+
+h5#{$typography-prefix}-title {
+    font-size: $typography-title-h5-font-size;
+}
+
+h6#{$typography-prefix}-title {
+    font-size: $typography-title-h6-font-size;
 }
