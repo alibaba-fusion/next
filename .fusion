@@ -105,6 +105,7 @@
     "transfer": "lib/transfer/scss/variable.scss",
     "tree": "lib/tree/scss/variable.scss",
     "tree-select": "lib/tree-select/scss/variable.scss",
+    "typography": "lib/typography/scss/variable.scss",
     "upload": "lib/upload/scss/variable.scss"
   }
 }
