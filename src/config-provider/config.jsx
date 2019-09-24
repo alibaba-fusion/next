@@ -67,9 +67,10 @@ export function getDirection() {
 }
 
 export function config(Component, options = {}) {
-    // 非 forwardRef 创建的组件
+    // 非 forwardRef 创建的 class component
     if (
         typeOf(Component) === 'Function' &&
+        Component.prototype.isReactComponent !== undefined &&
         Component.prototype.shouldComponentUpdate === undefined
     ) {
         // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
