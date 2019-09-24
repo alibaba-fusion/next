@@ -11,6 +11,7 @@ import '../../src/transfer/style.js';
 /* global describe it afterEach */
 
 Enzyme.configure({ adapter: new Adapter() });
+const TreeNode = Tree.Node;
 const { hasClass, getOffset } = dom;
 const dataSource = [
     { label: '0', value: '0', disabled: true },
@@ -535,6 +536,7 @@ describe('Transfer', () => {
         position = 'left';
         dragItem.simulate('dragStart');
         dropItem.simulate('dragOver', { pageY: referenceY + 1 });
+        dragItem.simulate('dragEnd');
         dropItem.simulate('drop');
         dragItem.simulate('dragStart');
         dropItem.simulate('dragOver', { pageY: referenceY + 1 });
@@ -574,7 +576,7 @@ describe('Transfer', () => {
     });
 
     it('should disabled item not move', () => {
-        wrapper = mount(<Transfer mode="simple" defaultLeftChecked={0} defaultValue={0} value={['1', '2', '3']} dataSource={dataSource} />);
+        wrapper = mount(<Transfer mode="simple" defaultLeftChecked={['0']} defaultValue={['0']} value={['1', '2', '3']} dataSource={dataSource} />);
         findFooter(wrapper, 0)
             .find('a.next-transfer-panel-move-all')
             .simulate('click');
@@ -603,6 +605,13 @@ describe('Transfer', () => {
             }]
         }];
 
+        function getTreeDataSource(dataSource = [], value) {
+            return dataSource.map(({ children, ...props }) => (
+                <TreeNode {...props} disabled={props.disabled || value.includes(props.value)} key={props.value}>
+                    {getTreeDataSource(children, value)}
+                </TreeNode>
+            ));
+        }
         const transferDataSource = [];
         function flatten(list = []) {
             list.forEach(item => {
@@ -612,17 +621,25 @@ describe('Transfer', () => {
         }
         flatten(treeDataSource);
         wrapper = mount(
-            <Transfer mode="simple" defaultLeftChecked={0} defaultValue={0} value={['1', '2', '3']} dataSource={transferDataSource} >
-                { (position) => {
+            <Transfer
+                dataSource={transferDataSource}>
+                { ({ position, onChange, value }) => {
                     if (position === 'left') {
-                        return <Tree checkable editable dataSource={dataSource}/>
+                        return (
+                            <Tree checkable editable
+                                  style={{padding: '10px'}}
+                                  checkedKeys={value}
+                                  onCheck={(keys, extra) => {const newValues=extra.checkedNodes.map(item => item.props.value); onChange(position, newValues)}}
+                            >
+                                {getTreeDataSource(treeDataSource, value)}
+                            </Tree>
+                        );
                     }
-                } }
+                }
+                }
             </Transfer>
         );
-        findFooter(wrapper, 0)
-            .find('a.next-transfer-panel-move-all')
-            .simulate('click');
+        wrapper.find('.next-checkbox').at(0).simulate('click');
     });
 });
 
