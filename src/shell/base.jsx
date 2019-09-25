@@ -16,6 +16,7 @@ export default function Base(props) {
             component: PropTypes.string,
             trigger: PropTypes.node,
             triggerProps: PropTypes.object,
+            direction: PropTypes.oneOf(['hoz', 'ver']),
             /**
              * 弹层显示或隐藏时触发的回调函数
              * @param {Boolean} collapse 弹层是否显示
@@ -51,6 +52,7 @@ export default function Base(props) {
                 className,
                 miniable,
                 device,
+                direction,
                 children,
                 collapse,
                 triggerProps,
@@ -83,7 +85,10 @@ export default function Base(props) {
                 return children;
             }
 
-            if (['Navigation', 'ToolDock'].indexOf(componentName) > -1) {
+            if (
+                ['ToolDock'].indexOf(componentName) > -1 ||
+                (componentName === 'Navigation' && direction === 'ver')
+            ) {
                 Tag = 'aside';
             }
 

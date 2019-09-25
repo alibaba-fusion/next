@@ -51,7 +51,7 @@ class App extends React.Component {
                     </Shell.Action>
 
                     <Shell.Navigation>
-                        <Nav embeddable>
+                        <Nav embeddable aria-label="global navigation">
                             <Nav.Item icon="account">Nav Item 1</Nav.Item>
                             <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                             <Nav.Item icon="atm">Nav Item 3</Nav.Item>
@@ -63,7 +63,7 @@ class App extends React.Component {
                     </Shell.Navigation>
 
                     <Shell.LocalNavigation>
-                        <Nav embeddable>
+                        <Nav embeddable aria-label="local navigation">
                         <Nav.SubNav label="Local Nav1">
                             <Item>Local Nav1</Item>
                         </Nav.SubNav>

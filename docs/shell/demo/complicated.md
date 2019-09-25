@@ -16,12 +16,12 @@ With all components.
 ---
 
 ````jsx
-import { Menu, Search, Icon, Nav, Breadcrumb, Shell, Radio } from '@alifd/next';
+import { Search, Icon, Nav, Shell, Radio } from '@alifd/next';
 
 const { SubNav, Item, Group, Divider } = Nav;
 
 class App extends React.Component {
-   state = {
+    state = {
         device: 'desktop'
     }
     onChange = device => {
@@ -65,7 +65,7 @@ class App extends React.Component {
                 </Shell.Action>
 
                 <Shell.Navigation collapse={this.state.navcollapse} onCollapseChange={this.onCollapseChange}>
-                    <Nav embeddable>
+                    <Nav embeddable aria-label="global navigation">
                         <Nav.Item icon="account">Nav Item 1</Nav.Item>
                         <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                         <Nav.Item icon="atm">Nav Item 3</Nav.Item>
@@ -79,9 +79,8 @@ class App extends React.Component {
                     </div>
                 </Shell.Navigation>
 
-
                 <Shell.LocalNavigation>
-                    <Nav embeddable>
+                    <Nav embeddable aria-label="local navigation">
                     <Nav.SubNav label="Local Nav1">
                         <Item>Local Nav1</Item>
                     </Nav.SubNav>
@@ -136,15 +135,6 @@ ReactDOM.render((
 ), mountNode);
 ````
 ````css
-.my-trigger-nav {
-  min-height: 30px;
-  color: #fff;
-  background: #333;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-}
 .avatar {
   width: 24px;
   height: 24px;
@@ -161,8 +151,8 @@ ReactDOM.render((
   width: 100%;
   height: 500px;
 }
-
-.next-shell-action .next-icon {
-  margin: 0 30px;
+.next-demo-section {
+    margin-right: 0;
 }
+
 ````

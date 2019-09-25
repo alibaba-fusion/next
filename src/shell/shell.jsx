@@ -3,7 +3,11 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Icon from '../icon';
 import { isBoolean, getCollapseMap } from './util';
+import { KEYCODE } from '../util';
 
+/**
+ * Shell
+ */
 export default function ShellBase(props) {
     const { componentName } = props;
     class Shell extends Component {
@@ -62,7 +66,7 @@ export default function ShellBase(props) {
                 const { collapseMap } = this.state;
 
                 Object.keys(deviceMap).forEach(block => {
-                    const { props } = this.layout[block];
+                    const { props } = this.layout[block] || {};
                     if (collapseMap[block] !== deviceMap[block]) {
                         if (
                             props &&
@@ -152,12 +156,20 @@ export default function ShellBase(props) {
             const mark = 'Navigation';
             const { props } = this.layout[mark];
 
+            if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
+                return;
+            }
+
             this.toggleAside(mark, props, e);
         };
 
         toggleLocalNavigation = e => {
             const mark = 'LocalNavigation';
             const { props } = this.layout[mark];
+
+            if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
+                return;
+            }
 
             this.toggleAside(mark, props, e);
         };
@@ -166,12 +178,20 @@ export default function ShellBase(props) {
             const mark = 'Ancillary';
             const { props } = this.layout[mark];
 
+            if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
+                return;
+            }
+
             this.toggleAside(mark, props, e);
         };
 
         toggleToolDock = e => {
             const mark = 'ToolDock';
             const { props } = this.layout[mark];
+
+            if ('keyCode' in e && e.keyCode !== KEYCODE.ENTER) {
+                return;
+            }
 
             this.toggleAside(mark, props, e);
         };
@@ -297,6 +317,7 @@ export default function ShellBase(props) {
                         (trigger &&
                             React.cloneElement(trigger, {
                                 onClick: this.toggleNavigation,
+                                'aria-expanded': !collapse,
                             })) ||
                         trigger;
                 } else {
@@ -305,6 +326,8 @@ export default function ShellBase(props) {
                             key="nav-trigger"
                             role="button"
                             tabIndex={0}
+                            aria-expanded={!collapse}
+                            aria-label={'toggle'}
                             className="nav-trigger"
                             onClick={this.toggleNavigation}
                             onKeyDown={this.toggleNavigation}
@@ -331,13 +354,14 @@ export default function ShellBase(props) {
             // 如果存在 toolDock, 则需要在 Action 上出现 trigger
             if (needDockTrigger) {
                 const action = layout.header && layout.header.Action;
-                let { trigger } = layout.ToolDock.props;
+                let { trigger, collapse } = layout.ToolDock.props;
 
                 if ('trigger' in layout.ToolDock.props) {
                     trigger =
                         (trigger &&
                             React.cloneElement(trigger, {
                                 onClick: this.toggleToolDock,
+                                'aria-expanded': !collapse,
                             })) ||
                         trigger;
                 } else {
@@ -346,6 +370,8 @@ export default function ShellBase(props) {
                             key="dock-trigger"
                             tabIndex={0}
                             role="button"
+                            aria-expanded={!collapse}
+                            aria-label={'toggle'}
                             className="dock-trigger"
                             onClick={this.toggleToolDock}
                             onKeyDown={this.toggleToolDock}
@@ -391,6 +417,7 @@ export default function ShellBase(props) {
                         (trigger &&
                             React.cloneElement(trigger, {
                                 onClick: this.toggleLocalNavigation,
+                                'aria-expanded': !collapse,
                             })) ||
                         trigger;
                 } else {
@@ -399,6 +426,8 @@ export default function ShellBase(props) {
                             key="local-nav-trigger"
                             role="button"
                             tabIndex={0}
+                            aria-expanded={!collapse}
+                            aria-label={'toggle'}
                             className="local-nav-trigger aside-trigger"
                             onClick={this.toggleLocalNavigation}
                             onKeyDown={this.toggleLocalNavigation}
@@ -433,7 +462,7 @@ export default function ShellBase(props) {
 
             if (layout.content) {
                 innerArr.push(
-                    <section key="submain" className={submainCls}>
+                    <section key="submain" className={submainCls} tabIndex={0}>
                         {layout.content}
                     </section>
                 );
@@ -447,6 +476,7 @@ export default function ShellBase(props) {
                         (trigger &&
                             React.cloneElement(trigger, {
                                 onClick: this.toggleAncillary,
+                                'aria-expanded': !collapse,
                             })) ||
                         trigger;
                 } else {
@@ -455,6 +485,8 @@ export default function ShellBase(props) {
                             key="ancillary-trigger"
                             role="button"
                             tabIndex={0}
+                            aria-expanded={!collapse}
+                            aria-label={'toggle'}
                             className="ancillary-trigger aside-trigger"
                             onClick={this.toggleAncillary}
                             onKeyDown={this.toggleAncillary}
