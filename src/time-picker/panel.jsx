@@ -21,6 +21,10 @@ class TimePickerPanel extends Component {
          */
         showHour: PropTypes.bool,
         /**
+         * 是否显示分钟
+         */
+        showMinute: PropTypes.bool,
+        /**
          * 是否显示秒
          */
         showSecond: PropTypes.bool,
@@ -80,6 +84,7 @@ class TimePickerPanel extends Component {
         prefix: 'next-',
         showHour: true,
         showSecond: true,
+        showMinute: true,
         disabledHours: noop,
         disabledMinutes: noop,
         disabledSeconds: noop,
@@ -115,6 +120,7 @@ class TimePickerPanel extends Component {
             className,
             disabled,
             showHour,
+            showMinute,
             showSecond,
             hourStep,
             minuteStep,
@@ -126,12 +132,10 @@ class TimePickerPanel extends Component {
             ...others
         } = this.props;
 
+        const colLen = [showHour, showMinute, showSecond].filter(v => v).length;
         const classNames = classnames(
-            {
-                [`${prefix}time-picker-panel`]: true,
-                [`${prefix}time-picker-panel-col-3`]: showHour && showSecond,
-                [`${prefix}time-picker-panel-col-2`]: !showHour || !showSecond,
-            },
+            `${prefix}time-picker-panel`,
+            `${prefix}time-picker-panel-col-${colLen}`,
             className
         );
 
@@ -165,14 +169,16 @@ class TimePickerPanel extends Component {
                         disabledItems={disabledHours}
                     />
                 ) : null}
-                <TimeMenu
-                    {...commonProps}
-                    activeIndex={activeMinute}
-                    title={locale.minute}
-                    mode="minute"
-                    step={minuteStep}
-                    disabledItems={disabledMinutes}
-                />
+                {showMinute ? (
+                    <TimeMenu
+                        {...commonProps}
+                        activeIndex={activeMinute}
+                        title={locale.minute}
+                        mode="minute"
+                        step={minuteStep}
+                        disabledItems={disabledMinutes}
+                    />
+                ) : null}
                 {showSecond ? (
                     <TimeMenu
                         {...commonProps}
