@@ -333,9 +333,9 @@ export default function ShellBase(props) {
                             onKeyDown={this.toggleNavigation}
                         >
                             {collapse ? (
-                                <Icon size="xs" type="arrow-double-right" />
+                                <Icon size="xs" type="toggle-right" />
                             ) : (
-                                <Icon size="xs" type="arrow-double-left" />
+                                <Icon size="xs" type="toggle-left" />
                             )}
                         </div>
                     );
