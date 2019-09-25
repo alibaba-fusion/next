@@ -141,7 +141,7 @@ const renderSlides = specProps => {
                 tabIndex: '-1',
                 'aria-posinset': index,
                 'aria-setsize': count,
-                role: 'option',
+                role: 'listitem',
                 dir: specProps.rtl ? 'rtl' : 'ltr',
                 // server-side render depend on elements of their own style
                 style: !dom.hasDOM
