@@ -718,7 +718,7 @@ export default class Overlay extends Component {
             }
             const childClazz = classnames({
                 [`${prefix}overlay-inner`]: true,
-                [animation.in]: status === 'entering',
+                [animation.in]: status === 'entering' || status === 'mounting',
                 [animation.out]: status === 'leaving',
                 [child.props.className]: !!child.props.className,
                 [className]: !!className,
