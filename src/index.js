@@ -48,5 +48,7 @@ export { default as Timeline } from './timeline';
 export { default as Transfer } from './transfer';
 export { default as Tree } from './tree';
 export { default as TreeSelect } from './tree-select';
+export { default as Typography } from './typography';
 export { default as Upload } from './upload';
 export { default as VirtualList } from './virtual-list';
+export { default as Notification } from './notification';

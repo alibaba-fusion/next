@@ -55,7 +55,6 @@ module.exports = {
         'rating',
         'search',
         'select',
-        'shell',
         'slider',
         'split-button',
         'step',
@@ -72,5 +71,8 @@ module.exports = {
         'upload',
         'validate',
         'virtual-list',
+        'shell',
+        'notification',
+        'typography',
     ],
 };

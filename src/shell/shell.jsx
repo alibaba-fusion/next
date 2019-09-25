@@ -333,9 +333,9 @@ export default function ShellBase(props) {
                             onKeyDown={this.toggleNavigation}
                         >
                             {collapse ? (
-                                <Icon size="xs" type="toggle-right" />
+                                <Icon size="small" type="toggle-right" />
                             ) : (
-                                <Icon size="xs" type="toggle-left" />
+                                <Icon size="small" type="toggle-left" />
                             )}
                         </div>
                     );
@@ -376,7 +376,7 @@ export default function ShellBase(props) {
                             onClick={this.toggleToolDock}
                             onKeyDown={this.toggleToolDock}
                         >
-                            <Icon size="xs" type="add" />
+                            <Icon size="small" type="add" />
                         </div>
                     );
                 }
@@ -433,9 +433,9 @@ export default function ShellBase(props) {
                             onKeyDown={this.toggleLocalNavigation}
                         >
                             {collapse ? (
-                                <Icon size="xs" type="arrow-right" />
+                                <Icon size="small" type="arrow-right" />
                             ) : (
-                                <Icon size="xs" type="arrow-left" />
+                                <Icon size="small" type="arrow-left" />
                             )}
                         </div>
                     );
@@ -492,9 +492,9 @@ export default function ShellBase(props) {
                             onKeyDown={this.toggleAncillary}
                         >
                             {collapse ? (
-                                <Icon size="xs" type="arrow-left" />
+                                <Icon size="small" type="arrow-left" />
                             ) : (
-                                <Icon size="xs" type="arrow-right" />
+                                <Icon size="small" type="arrow-right" />
                             )}
                         </div>
                     );
