@@ -91,6 +91,10 @@ export function config(Component, options = {}) {
             pure: PropTypes.bool,
             rtl: PropTypes.bool,
             device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
+            popupContainer: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.func,
+            ]),
             errorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -104,6 +108,10 @@ export function config(Component, options = {}) {
             nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool,
             nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
+            nextPopupContainer: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.func,
+            ]),
             nextErrorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -149,6 +157,7 @@ export function config(Component, options = {}) {
                 pure,
                 rtl,
                 device,
+                popupContainer,
                 errorBoundary,
                 ...others
             } = this.props;
@@ -158,18 +167,28 @@ export function config(Component, options = {}) {
                 nextPure,
                 nextRtl,
                 nextDevice,
+                nextPopupContainer,
                 nextErrorBoundary,
             } = this.context;
 
             const displayName =
                 options.componentName || getDisplayName(Component);
             const contextProps = getContextProps(
-                { prefix, locale, pure, device, rtl, errorBoundary },
+                {
+                    prefix,
+                    locale,
+                    pure,
+                    device,
+                    popupContainer,
+                    rtl,
+                    errorBoundary,
+                },
                 {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
                     nextPure,
                     nextDevice,
+                    nextPopupContainer,
                     nextRtl:
                         typeof nextRtl === 'boolean'
                             ? nextRtl
@@ -188,6 +207,7 @@ export function config(Component, options = {}) {
                 'pure',
                 'rtl',
                 'device',
+                'popupContainer',
             ].reduce((ret, name) => {
                 if (typeof contextProps[name] !== 'undefined') {
                     ret[name] = contextProps[name];

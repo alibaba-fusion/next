@@ -8,7 +8,7 @@
 // 根据 Alibaba Base DPL 设计实现
 
 /// icon font path 字体路径
-$icon-font-path: "//at.alicdn.com/t/font_515771_emcns5054x3whfr" !default;
+$icon-font-path: "//at.alicdn.com/t/font_515771_s0trfxc09h" !default;
 
 /// icon font name 自定义的icon font 名称
 $icon-font-name: "icon" !default;
@@ -311,3 +311,63 @@ $icon-content-email: "\e605" !default;
 /// @export type
 /// @unconfigurable
 $icon-content-atm: "\e606" !default;
+
+/// icon-content-copy
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-copy: "\e60f" !default;
+
+/// icon-content-toggle-left
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-toggle-left: "\e602" !default;
+
+/// icon-content-toggle-right
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-toggle-right: "\e603" !default;
+
+/// icon-content-eye
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-eye: "\e611" !default;
+
+/// icon-content-eye-close
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-eye-close: "\e600" !default;
+
+/// icon-content-unlock
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-unlock: "\e615" !default;
+
+/// icon-content-lock
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-lock: "\e617" !default;
+
+/// icon-content-exit
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-exit: "\e616" !default;
+
+/// icon-content-chart-bar
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-chart-bar: "\e612" !default;
+
+/// icon-content-chart-pie
+/// @group type
+/// @export type
+/// @unconfigurable
+$icon-content-chart-pie: "\e613" !default;

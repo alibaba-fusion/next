@@ -75,6 +75,14 @@
         &.#{$css-prefix}medium {
             .#{$css-prefix}btn {
                 width: $number-picker-normal-m-button-width;
+
+                &:first-child {
+                    border-top-right-radius: $form-element-medium-corner;
+                }
+
+                &:last-child {
+                    border-bottom-right-radius: $form-element-medium-corner;
+                }
             }
 
             .#{$css-prefix}icon {
@@ -85,6 +93,14 @@
         &.#{$css-prefix}large {
             .#{$css-prefix}btn {
                 width: $number-picker-normal-l-button-width;
+
+                &:first-child {
+                    border-top-right-radius: $form-element-large-corner;
+                }
+
+                &:last-child {
+                    border-bottom-right-radius: $form-element-large-corner;
+                }
             }
 
             .#{$css-prefix}icon {
@@ -113,12 +129,16 @@
                 height: $form-element-medium-height;
             }
 
-            .#{$css-prefix}btn:first-child {
+            .#{$css-prefix}before .#{$css-prefix}btn {
                 margin-right: $number-picker-inline-m-button-margin;
+                border-top-left-radius: $number-picker-inline-m-button-corner;
+                border-bottom-left-radius: $number-picker-inline-m-button-corner;
             }
 
-            .#{$css-prefix}btn:last-child {
+            .#{$css-prefix}after .#{$css-prefix}btn {
                 margin-left: $number-picker-inline-m-button-margin;
+                border-top-right-radius: $number-picker-inline-m-button-corner;
+                border-bottom-right-radius: $number-picker-inline-m-button-corner;
             }
         }
 
@@ -133,12 +153,16 @@
                 height: $form-element-large-height;
             }
 
-            .#{$css-prefix}btn:first-child {
+            .#{$css-prefix}before .#{$css-prefix}btn {
                 margin-right: $number-picker-inline-l-button-margin;
+                border-top-left-radius: $number-picker-inline-l-button-corner;
+                border-bottom-left-radius: $number-picker-inline-l-button-corner;
             }
 
-            .#{$css-prefix}btn:last-child {
+            .#{$css-prefix}after .#{$css-prefix}btn {
                 margin-left: $number-picker-inline-l-button-margin;
+                border-top-right-radius: $number-picker-inline-l-button-corner;
+                border-bottom-right-radius: $number-picker-inline-l-button-corner;
             }
         }
 
@@ -159,36 +183,67 @@
         &:first-child {
             border-right: 1px solid $color-line1-3;
             border-left: 0;
-            border-top-left-radius: $form-element-medium-corner;
             border-top-right-radius: 0;
+
+            &.#{$css-prefix}medium {
+                border-top-left-radius: $form-element-medium-corner;
+            }
+
+            &.#{$css-prefix}large {
+                border-top-left-radius: $form-element-large-corner;
+            }
         }
 
         &:last-child {
             border-right: 1px solid $color-line1-3;
             border-left: 0;
-            border-bottom-left-radius: $form-element-medium-corner;
             border-bottom-right-radius: 0;
+
+            &.#{$css-prefix}medium {
+                border-bottom-left-radius: $form-element-medium-corner;
+            }
+
+            &.#{$css-prefix}large {
+                border-bottom-left-radius: $form-element-large-corner;
+            }
         }
     }
-}
-#{$number-picker-prefix}-inline[dir="rtl"] {
 
-    .#{$css-prefix}btn {
-        border-radius: 0;
-    }
-    //TODO: remove !important in 2.x
-    .#{$css-prefix}before .#{$css-prefix}btn {
-        border-top-right-radius: $form-element-medium-corner !important;
-        border-bottom-right-radius: $form-element-medium-corner !important;
-    }
-    .#{$css-prefix}after .#{$css-prefix}btn {
-        border-top-left-radius: $form-element-medium-corner !important;
-        border-bottom-left-radius: $form-element-medium-corner !important;
-    }
-}
-#{$number-picker-prefix}-normal[dir="rtl"] {
     .#{$css-prefix}input .#{$css-prefix}input-control {
         padding-left: 0;
     }
 }
 
+#{$number-picker-prefix}-inline[dir="rtl"] {
+    .#{$css-prefix}before .#{$css-prefix}btn {
+        margin-right: 0;
+
+        &.#{$css-prefix}medium {
+            margin-left: $number-picker-inline-m-button-margin;
+            border-top-right-radius: $number-picker-inline-m-button-corner !important;
+            border-bottom-right-radius: $number-picker-inline-m-button-corner !important;
+        }
+
+        &.#{$css-prefix}large {
+            margin-left: $number-picker-inline-l-button-margin;
+            border-top-right-radius: $number-picker-inline-l-button-corner !important;
+            border-bottom-right-radius: $number-picker-inline-l-button-corner !important;
+        }
+    }
+
+    .#{$css-prefix}after .#{$css-prefix}btn {
+        margin-left: 0;
+
+        &.#{$css-prefix}medium {
+            margin-right: $number-picker-inline-m-button-margin;
+            border-top-left-radius: $number-picker-inline-m-button-corner !important;
+            border-bottom-left-radius: $number-picker-inline-m-button-corner !important;
+        }
+
+        &.#{$css-prefix}large {
+            margin-right: $number-picker-inline-l-button-margin;
+            border-top-left-radius: $number-picker-inline-l-button-corner !important;
+            border-bottom-left-radius: $number-picker-inline-l-button-corner !important;
+        }
+    }
+}

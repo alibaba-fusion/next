@@ -75,6 +75,20 @@
             width: 100%;
         }
     }
+
+    &-item-fullwidth &-item-control {
+        > .#{$css-prefix}input-group,
+        > .#{$css-prefix}input,
+        > .#{$css-prefix}select,
+        > .#{$css-prefix}date-picker,
+        > .#{$css-prefix}month-picker,
+        > .#{$css-prefix}year-picker,
+        > .#{$css-prefix}range-picker,
+        > .#{$css-prefix}time-picker {
+            width: 100%;
+        }
+    }
+
     &-item-label {
         display: inline-block;
         vertical-align: top;

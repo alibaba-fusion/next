@@ -19,6 +19,7 @@ Form layout, validation, data submission operations used.
 -   Form uses `size="medium"` by default and controls the size of all components in the FormItem. If you want to modify the component size, set `<FormItem size="small" >`.
 -   In the vertical layout form, if the text (generally `<p>` tag) or component deviates upwards, it can be adjusted with `className="next-form-text-align"`
 -   It must be a component wrapped directly by `<FormItem>` to display the error message. If the error did not show, check whether there are multiple levels DOM. For example, `<FormItem><div><Input/></div></FormItem>` is unable to display error message.
+-   could use `<Form field={false}>` to close inner field
 
 ## API
 
@@ -28,6 +29,7 @@ Form layout, validation, data submission operations used.
 | ------------------ | ------------------------------------------- | ---------- | ------------ |
 | inline             | Inline form                                 | Boolean    | -           |
 | size               | Customization of a single Item's size takes precedence over Form's size, and when the component is used with Item, the component itself sets the size attribute to be invalid. <br><br>**option**:<br>'large'<br>'medium'<br>'small' | Enum     | 'medium'                                               |
+| fullWidth           | Set a single Item's is full width                                                                                                 | Boolean            | -     |
 | labelAlign     | To set the position align of label<br><br>**option**:<br>'top'<br>'left'<br>'inset'  | Enum     | 'left'           |
 | labelTextAlign | To set the position align of text in label<br><br>**option**:<br>'left'<br>'right'                  | Enum     | -                   |
 | field          | By the initialization of `new Field(this)`, set to Form right. Do not ignore specify this, when use validation on form.             | any      | -             |
@@ -48,6 +50,7 @@ Form layout, validation, data submission operations used.
 | ------------------ | ------------------------------------------- | --------- | ----- |
 | label          | To set the label of item                                        | ReactNode | -     |
 | size           | Customization of Item's own size takes precedence over Form's size. when Form and Item both set the size, the component itself sets the size attribute to be invalid。<br><br>**option**:<br>'large', 'small', 'medium' | Enum      | -     |
+| fullWidth           |  Set Input item is full width                                                                                                 | Boolean            | -     |
 | labelCol       | To set label's layout same as `<Col>` setting the span offset, such as {span:8,offset:16}. It only valid in vertical forms.      | Object    | -     |
 | wrapperCol     | When you need to set the layout style for the input control, use this property, use the same with the labelCol                            | Object    | -     |
 | help           | Custom prompt information, if not set, it will be automatically generated according to the check rule.                                       | ReactNode | -     |

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
-import { func, obj, log } from '../util';
+import { func, obj } from '../util';
 
 /**
  * Form.Reset
@@ -42,7 +42,6 @@ class Reset extends React.Component {
         const field = this.context._formField || this.props.field;
 
         if (!field) {
-            log.warning('Form.Reset should be used in `Form`');
             onClick();
             return;
         }

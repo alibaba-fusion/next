@@ -1,4 +1,4 @@
-# Paragraph
+# Paragraph (UNSAFE)
 
 -   category: Components
 -   family: General

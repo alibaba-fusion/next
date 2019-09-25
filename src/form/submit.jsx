@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
-import { func, obj, log } from '../util';
+import { func, obj } from '../util';
 
 /**
  * Form.Submit
@@ -41,7 +41,6 @@ class Submit extends React.Component {
         const field = this.context._formField || this.props.field;
 
         if (!field) {
-            log.warning('Form.Submit should be used in `Form`');
             onClick();
             return;
         }

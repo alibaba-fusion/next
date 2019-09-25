@@ -27,10 +27,56 @@
     }
 }
 #{$input-prefix}-group[dir="rtl"] {
-    #{$input-prefix}-group-addon {
+    > #{$input-prefix}:first-child {
+        &.#{$css-prefix}small {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            border-top-right-radius: $form-element-small-corner !important;
+            border-bottom-right-radius: $form-element-small-corner !important;
+        }
 
+        &.#{$css-prefix}medium {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            border-top-right-radius: $form-element-medium-corner !important;
+            border-bottom-right-radius: $form-element-medium-corner !important;
+        }
+
+        &.#{$css-prefix}large {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            border-top-right-radius: $form-element-large-corner !important;
+            border-bottom-right-radius: $form-element-large-corner !important;
+        }
+    }
+    > #{$input-prefix}:last-child {
+        &.#{$css-prefix}small {
+            border-top-left-radius: $form-element-small-corner !important;
+            border-bottom-left-radius: $form-element-small-corner !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        &.#{$css-prefix}medium {
+            border-top-left-radius: $form-element-medium-corner !important;
+            border-bottom-left-radius: $form-element-medium-corner !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        &.#{$css-prefix}large {
+            border-top-left-radius: $form-element-large-corner !important;
+            border-bottom-left-radius: $form-element-large-corner !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+    }
+
+    #{$input-prefix}-group-addon {
         /* stylelint-disable declaration-no-important */
-        &:first-child {
+        &:first-child,
+        &:first-child > #{$input-prefix},
+        &:first-child > * > #{$input-prefix} {
             border-bottom-left-radius: 0 !important;
             border-top-left-radius: 0 !important;
 
@@ -49,7 +95,17 @@
                 border-top-right-radius: $form-element-large-corner !important;
             }
         }
-        &:last-child {
+
+        //TODO: removed in 2.x
+        &:first-child > * {
+            margin-left: -$input-border-width;
+            border-bottom-left-radius: 0 !important;
+            border-top-left-radius: 0 !important;
+        }
+
+        &:last-child,
+        &:last-child > #{$input-prefix},
+        &:last-child > * > #{$input-prefix} {
             border-bottom-right-radius: 0 !important;
             border-top-right-radius: 0 !important;
 
@@ -67,6 +123,13 @@
                 border-bottom-left-radius: $form-element-large-corner !important;
                 border-top-left-radius: $form-element-large-corner !important;
             }
+        }
+
+        &:last-child > * {
+            //TODO: removed in 2.x
+            margin-right: -$input-border-width;
+            border-bottom-right-radius: 0 !important;
+            border-top-right-radius: 0 !important;
         }
     }
     #{$input-prefix}-group-text {

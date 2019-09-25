@@ -172,6 +172,10 @@ For details, please check Demo Demo `Associate Control`
 ### initialization
 ```
 Let myfield = new Field(this [,options]);
+
+or with hooks
+
+let myfield = Field.useField([options]); // react version must > 16.8
 ```
 
 |Parameter | Description | Type | Optional |Default |

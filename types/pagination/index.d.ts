@@ -104,7 +104,7 @@ export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
     showJump?: boolean;
 
     /**
-     * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://xxx.com/{page}
+     * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://www.taobao.com/{page}
      */
     link?: string;
 

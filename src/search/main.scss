@@ -40,6 +40,10 @@
         .#{$css-prefix}select-values {
             line-height: 1;
         }
+
+        &.#{$css-prefix}input-group-addon .#{$css-prefix}select {
+            margin: 0;
+        }
     }
 
     #{$search-prefix}-left-addon + #{$search-prefix}-input .#{$css-prefix}input {
