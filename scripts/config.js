@@ -55,6 +55,7 @@ module.exports = {
         'rating',
         'search',
         'select',
+        'shell',
         'slider',
         'split-button',
         'step',

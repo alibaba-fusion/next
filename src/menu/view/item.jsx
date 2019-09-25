@@ -210,7 +210,7 @@ export default class Item extends Component {
 
         let role = 'menuitem';
         if ('selectMode' in root.props) {
-            role = 'listitem';
+            role = 'option';
         }
 
         return (

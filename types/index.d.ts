@@ -34,6 +34,7 @@ export { default as Range } from './range';
 export { default as Rating } from './rating';
 export { default as Search } from './search';
 export { default as Select } from './select';
+export { default as Shell } from './shell';
 export { default as Slider } from './slider';
 export { default as SplitButton } from './split-button';
 export { default as Step } from './step';

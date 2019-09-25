@@ -152,6 +152,10 @@ class Nav extends Component {
         hasArrow: PropTypes.bool,
     };
 
+    static contextTypes = {
+        isCollapse: PropTypes.bool,
+    };
+
     constructor(props) {
         super(props);
 
@@ -168,10 +172,12 @@ class Nav extends Component {
             hasArrow,
         } = this.props;
 
+        const { isCollapse } = this.context;
+
         return {
             prefix,
             mode: direction === 'hoz' ? 'popup' : mode,
-            iconOnly,
+            iconOnly: 'iconOnly' in this.props ? iconOnly : isCollapse,
             hasTooltip,
             hasArrow,
         };
@@ -206,6 +212,10 @@ class Nav extends Component {
             ...others
         } = this.props;
 
+        const { isCollapse } = this.context;
+
+        const newIconOnly = 'iconOnly' in this.props ? iconOnly : isCollapse;
+
         let realActiveDirection = activeDirection;
         if (
             realActiveDirection &&
@@ -219,7 +229,7 @@ class Nav extends Component {
             realActiveDirection = null;
         }
 
-        if (!iconOnly && realActiveDirection === undefined) {
+        if (!newIconOnly && realActiveDirection === undefined) {
             realActiveDirection =
                 direction === 'hoz'
                     ? 'bottom'
@@ -233,12 +243,12 @@ class Nav extends Component {
             [`${prefix}${type}`]: type,
             [`${prefix}active`]: realActiveDirection,
             [`${prefix}${realActiveDirection}`]: realActiveDirection,
-            [`${prefix}icon-only`]: iconOnly,
+            [`${prefix}icon-only`]: newIconOnly,
             [`${prefix}no-arrow`]: !hasArrow,
             [`${prefix}nav-embeddable`]: embeddable,
             [className]: !!className,
         });
-        const newStyle = iconOnly ? { ...style, width: '60px' } : style;
+        const newStyle = newIconOnly ? { ...style, width: '58px' } : style;
 
         const props = {
             prefix,
@@ -247,7 +257,7 @@ class Nav extends Component {
             triggerType,
             mode: direction === 'hoz' ? 'popup' : mode,
             popupAlign: direction === 'hoz' ? 'follow' : popupAlign,
-            inlineIndent: iconOnly ? 0 : inlineIndent,
+            inlineIndent: newIconOnly ? 0 : inlineIndent,
             hasSelectedIcon: false,
             popupAutoWidth: true,
             selectMode: 'single',
@@ -256,7 +266,7 @@ class Nav extends Component {
                 [cls
                     .replace(`${prefix}icon-only`, '')
                     .replace(`${prefix}nav-embeddable`, '')]: mode === 'popup',
-                [`${prefix}icon-only`]: iconOnly && mode === 'inline',
+                [`${prefix}icon-only`]: newIconOnly && mode === 'inline',
                 [popupClassName]: !!popupClassName,
             }),
             popupProps: popupItemProps => {
