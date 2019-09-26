@@ -885,6 +885,7 @@ export default class RangePicker extends Component {
             );
 
             const showSecond = this.timeFormat.indexOf('s') > -1;
+            const showMinute = this.timeFormat.indexOf('m') > -1;
 
             const sharedTimePickerProps = {
                 ...showTime,
@@ -892,6 +893,7 @@ export default class RangePicker extends Component {
                 locale,
                 disabled,
                 showSecond,
+                showMinute,
             };
 
             const disabledTime = this.getDisabledTime(state);
