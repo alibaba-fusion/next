@@ -10,6 +10,11 @@
 
 
 
+## [1.18.2](https://github.com/alibaba-fusion/next/compare/1.18.1...1.18.2) (2019-09-26)
+
+
+
+
 ## [1.18.1](https://github.com/alibaba-fusion/next/compare/1.17.12...1.18.1) (2019-09-26)
 
 
