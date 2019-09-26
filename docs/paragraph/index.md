@@ -1,4 +1,4 @@
-# Paragraph (已废弃)
+# Paragraph
 
 -   category: Components
 -   family: General
@@ -9,7 +9,7 @@
 
 ## Guide
 
-段落用于控制页面整体的文本视觉，主要由行间距及文本大小体现。
+（已废弃，请使用Typography）段落用于控制页面整体的文本视觉，主要由行间距及文本大小体现。
 
 ## 何时使用
 
