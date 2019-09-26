@@ -375,6 +375,7 @@ export default class Dialog extends Component {
             ref: this.getOverlayRef,
             rtl,
             maskClass: useCSS ? `${prefix}dialog-container` : '',
+            isChildrenInMask: useCSS && hasMask,
         };
         if (!useCSS) {
             newOverlayProps.beforePosition = this.beforePosition;
@@ -384,6 +385,22 @@ export default class Dialog extends Component {
 
         const inner = this.renderInner(canCloseByCloseClick);
 
-        return <Overlay {...newOverlayProps}>{inner}</Overlay>;
+        // useCSS && hasMask : isFullScreen 并且 有mask的模式下，为了解决 next-overlay-backdrop 覆盖mask，使得点击mask关闭页面的功能不生效的问题，需要开启 Overlay 的 isChildrenInMask 功能，并且把 next-dialog-container 放到 next-overlay-backdrop上
+        // useCSS && !hasMask : isFullScreen 并且 没有mask的情况下，需要关闭 isChildrenInMask 功能，以防止children不渲染
+        // 其他模式下维持 mask 与 children 同级的关系
+        return (
+            <Overlay {...newOverlayProps}>
+                {useCSS && !hasMask ? (
+                    <div
+                        className={`${prefix}dialog-container`}
+                        dir={rtl ? 'rtl' : undefined}
+                    >
+                        {inner}
+                    </div>
+                ) : (
+                    inner
+                )}
+            </Overlay>
+        );
     }
 }
