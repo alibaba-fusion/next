@@ -6,7 +6,7 @@ English | [简体中文](./README.zh-cn.md)
   </a>
 </p>
 
-<p align="center">An enterprise-class UI solution for backend system, amied of settling the problems like cooperation between designers and front-developers, consistency of product experience and development efficiency.</p>
+<p align="center">An enterprise-class UI solution for backend system, aimed at settling the problems like cooperation between designers and front-developers, consistency of product experience and development efficiency.</p>
 
 ---
 
