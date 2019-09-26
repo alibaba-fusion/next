@@ -1,4 +1,4 @@
-# Noticfication
+# Notification
 
 -   category: Components
 -   family: Feedback
@@ -23,14 +23,14 @@
 ## API
 
 
-- `Noticfication.success(config)`
-- `Noticfication.error(config)`
-- `Noticfication.warning(config)`
-- `Noticfication.notice(config)`
-- `Noticfication.help(config)`
-- `Noticfication.open(config)`
-- `Noticfication.close(key: String)`
-- `Noticfication.destroy()`
+- `Notification.success(config)`
+- `Notification.error(config)`
+- `Notification.warning(config)`
+- `Notification.notice(config)`
+- `Notification.help(config)`
+- `Notification.open(config)`
+- `Notification.close(key: String)`
+- `Notification.destroy()`
 
 config 参数如下：
 
@@ -48,10 +48,10 @@ config 参数如下：
 
 还提供了一个全局配置方法，在调用前提前配置，全局一次生效。
 
-- `Noticfication.config(options)`
+- `Notification.config(options)`
 
 ```js
-Noticfication.config({
+Notification.config({
   placement: 'bottomRight',
   duration: 3000,
 });

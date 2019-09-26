@@ -1,4 +1,4 @@
-# Noticfication
+# Notification
 
 -   category: Components
 -   family: Feedback
@@ -22,14 +22,14 @@ To display a notification message at any of the four corners of the viewport. Ty
 ## API
 
 
-- `Noticfication.success(config)`
-- `Noticfication.error(config)`
-- `Noticfication.warning(config)`
-- `Noticfication.notice(config)`
-- `Noticfication.help(config)`
-- `Noticfication.open(config)`
-- `Noticfication.close(key: String)`
-- `Noticfication.destroy()`
+- `Notification.success(config)`
+- `Notification.error(config)`
+- `Notification.warning(config)`
+- `Notification.notice(config)`
+- `Notification.help(config)`
+- `Notification.open(config)`
+- `Notification.close(key: String)`
+- `Notification.destroy()`
 
 The properties of config are as follows:
 
@@ -47,10 +47,10 @@ The properties of config are as follows:
 
 `notification` also provides a global `config()` method that can be used for specifying the default options. Once this method is used, all the notification boxes will take into account these globally defined options when displaying.
 
-- `Noticfication.config(options)`
+- `Notification.config(options)`
 
 ```js
-Noticfication.config({
+Notification.config({
   placement: 'bottomRight',
   duration: 3000,
 });
