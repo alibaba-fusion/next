@@ -95,6 +95,7 @@
     "range": "lib/range/scss/variable.scss",
     "rating": "lib/rating/scss/variable.scss",
     "search": "lib/search/scss/variable.scss",
+    "shell": "lib/shell/scss/variable.scss",
     "slider": "lib/slider/scss/variable.scss",
     "split-button": "lib/split-button/scss/variable.scss",
     "step": "lib/step/scss/variable.scss",
