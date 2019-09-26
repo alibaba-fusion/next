@@ -353,8 +353,8 @@ function render(i18n, lang) {
 
 window.renderDemo = function (lang = 'en-us') {
     render(i18nMap[lang], lang);
-};
+};s
 
 renderDemo();
 
-initDemo('button');
+initDemo('shell');

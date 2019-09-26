@@ -151,8 +151,4 @@ ReactDOM.render((
   width: 100%;
   height: 500px;
 }
-.next-demo-section {
-    margin-right: 0;
-}
-
 ````

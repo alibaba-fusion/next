@@ -150,8 +150,7 @@ $shell-light-appbar-divider-style: $line-solid !default;
 $shell-light-appbar-divider-color: $color-line1-1 !default;
 $shell-light-appbar-divider: $shell-light-appbar-divider-size $shell-light-appbar-divider-style $shell-light-appbar-divider-color;
 
-/// max-width
-/// @namespace statement/content
+
 $shell-light-content-max-width: unset !default;
 /// background
 /// @namespace statement/content
@@ -162,14 +161,9 @@ $shell-light-content-paddingLeft: $s-5 !default;
 /// padding (t, b)
 /// @namespace statement/content
 $shell-light-content-paddingTop: $s-5 !default;
-/// gutter (row)
-/// @namespace statement/content
+
 $shell-light-content-gutter-row: $s-4 !default;
-/// gutter (column)
-/// @namespace statement/content
 $shell-light-content-gutter-column: $s-4 !default;
-/// columns
-/// @namespace statement/content
 $shell-light-content-columns: 1 !default;
 
 /// min-height
@@ -400,8 +394,7 @@ $shell-dark-appbar-divider-style: $line-solid !default;
 $shell-dark-appbar-divider-color: $color-line1-1 !default;
 $shell-dark-appbar-divider: $shell-dark-appbar-divider-size $shell-dark-appbar-divider-style $shell-dark-appbar-divider-color;
 
-/// max-width
-/// @namespace statement/content
+
 $shell-dark-content-max-width: unset !default;
 /// background
 /// @namespace statement/content
@@ -412,14 +405,9 @@ $shell-dark-content-paddingLeft: $s-5 !default;
 /// padding (t, b)
 /// @namespace statement/content
 $shell-dark-content-paddingTop: $s-5 !default;
-/// gutter (row)
-/// @namespace statement/content
+
 $shell-dark-content-gutter-row: $s-4 !default;
-/// gutter (column)
-/// @namespace statement/content
 $shell-dark-content-gutter-column: $s-4 !default;
-/// columns
-/// @namespace statement/content
 $shell-dark-content-columns: 1 !default;
 
 /// min-height
@@ -649,8 +637,7 @@ $shell-brand-appbar-divider-style: $line-solid !default;
 $shell-brand-appbar-divider-color: $color-line1-1 !default;
 $shell-brand-appbar-divider: $shell-brand-appbar-divider-size $shell-brand-appbar-divider-style $shell-brand-appbar-divider-color;
 
-/// max-width
-/// @namespace statement/content
+
 $shell-brand-content-max-width: unset !default;
 /// background
 /// @namespace statement/content
@@ -661,14 +648,9 @@ $shell-brand-content-paddingLeft: $s-5 !default;
 /// padding (t, b)
 /// @namespace statement/content
 $shell-brand-content-paddingTop: $s-5 !default;
-/// gutter (row)
-/// @namespace statement/content
+
 $shell-brand-content-gutter-row: $s-4 !default;
-/// gutter (column)
-/// @namespace statement/content
 $shell-brand-content-gutter-column: $s-4 !default;
-/// columns
-/// @namespace statement/content
 $shell-brand-content-columns: 1 !default;
 
 /// min-height

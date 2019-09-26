@@ -70,12 +70,12 @@
         padding: $paddingTop $paddingLeft;
     }
 
-    #{$shell-prefix}-content-inner {
-        max-width: $max-width;
-        grid-row-gap: $gutter-row;
-        grid-column-gap: $gutter-column;
-        grid-template-columns: repeat($columns, 1fr);
-    }
+    // #{$shell-prefix}-content-inner {
+    //     max-width: $max-width;
+    //     grid-row-gap: $gutter-row;
+    //     grid-column-gap: $gutter-column;
+    //     grid-template-columns: repeat($columns, 1fr);
+    // }
 }
 
 @mixin shell-trigger-background(

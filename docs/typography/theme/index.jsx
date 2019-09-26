@@ -77,4 +77,4 @@ window.renderDemo = function (lang) {
 
 window.renderDemo('en-us');
 
-initDemo('paragraph');
+initDemo('typography');
