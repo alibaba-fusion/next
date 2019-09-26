@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface TreeSelectProps extends HTMLAttributesWeak {
+export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 树节点
      */
@@ -161,9 +162,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak {
     /**
      * 下拉框挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 透传到 Popup 的属性对象

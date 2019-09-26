@@ -57,8 +57,6 @@ class PopupItem extends Component {
                         type="arrow-right"
                     />
                 );
-            } else if (!iconEl) {
-                iconEl = <span className={`${prefix}nav-icon-placeholder`} />;
             }
         }
         const newLabel = [

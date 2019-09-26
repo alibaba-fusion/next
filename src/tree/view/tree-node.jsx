@@ -183,7 +183,7 @@ export default class TreeNode extends Component {
         e.preventDefault();
 
         const { root, selected, eventKey } = this.props;
-        root.handleSelect(!selected, eventKey, this);
+        root.handleSelect(!selected, eventKey, this, e);
     }
 
     handleCheck() {
@@ -333,6 +333,7 @@ export default class TreeNode extends Component {
                 : 'arrow-down';
 
         return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <span
                 className={className}
                 onClick={disabled ? null : this.handleExpand}

@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
+export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 弹层内容
      */
@@ -190,7 +191,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export class Popup extends React.Component<PopupProps, any> {}
-export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
+export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 弹层内容
      */

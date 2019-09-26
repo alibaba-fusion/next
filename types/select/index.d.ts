@@ -1,13 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
-
+import CommonProps from '../util';
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface AutoCompleteProps extends HTMLAttributesWeak {
+export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选择器尺寸
      */
@@ -76,9 +76,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak {
     /**
      * 弹层挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层的 className
@@ -143,7 +141,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak {
 
 export class AutoComplete extends React.Component<AutoCompleteProps, any> {}
 
-export interface OptionGroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface OptionGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 设置分组的文案
      */
@@ -152,7 +150,7 @@ export interface OptionGroupProps extends React.HTMLAttributes<HTMLElement> {
 
 export class OptionGroup extends React.Component<OptionGroupProps, any> {}
 
-export interface OptionProps extends React.HTMLAttributes<HTMLElement> {
+export interface OptionProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 选项值
      */
@@ -170,11 +168,16 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface SelectProps extends HTMLAttributesWeak {
+export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选择器尺寸
      */
     size?: 'small' | 'medium' | 'large';
+
+    /**
+     * name
+     */
+    name?: string;
 
     /**
      * 当前值，用于受控模式
@@ -239,9 +242,7 @@ export interface SelectProps extends HTMLAttributesWeak {
     /**
      * 弹层挂载的容器节点
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层的 className
@@ -257,6 +258,11 @@ export interface SelectProps extends HTMLAttributesWeak {
      * 添加到弹层上的属性
      */
     popupProps?: {};
+
+    /**
+     * 是否跟随滚动
+    */
+    followTrigger?: boolean;
 
     /**
      * 自定义弹层的内容

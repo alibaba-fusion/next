@@ -1,12 +1,15 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import { Item, Group, Divider } from '../menu';
+import CommonProps from '../util';
+import { ButtonProps } from '../button';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
 }
 
-export interface MenuButtonProps extends HTMLAttributesWeak {
+export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮上的文本内容
      */
@@ -25,9 +28,7 @@ export interface MenuButtonProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层展开状态
@@ -90,4 +91,8 @@ export interface MenuButtonProps extends HTMLAttributesWeak {
     menuProps?: {};
 }
 
-export default class MenuButton extends React.Component<MenuButtonProps, any> {}
+export default class MenuButton extends React.Component<MenuButtonProps, any> {
+    static Item: typeof Item;
+    static Group: typeof Group;
+    static Divider: typeof Divider;
+}

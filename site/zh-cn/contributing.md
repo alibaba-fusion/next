@@ -39,7 +39,19 @@ chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp；`scope` 必填，�
 7. 如果一次 pull request 涉及到多次提交，请对提交记录进行 rebase 操作，缩减为一条提交记录
 
 ## 开发流程
-在你 clone 了 `@alifd/next` 的代码仓库并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
+
+1. 将代码 fork 到自己的 github 仓库 (在 https://github.com/alibaba-fusion/next 上，点击右上角 fork 按钮)
+2. 下载这份被 fork 的代码，你可以在 https://github.com/[your account]/next 找到刚 fork 的代码
+```
+git clone git@github.com:[your account]/next.git
+```
+3. 进入刚克隆的目录，创建分支进行开发
+```
+cd next
+git checkout -b fix-issue-100
+```
+
+在完成上述操作并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
 
 * `npm run dev component` 启动指定组件的调试页面
 
@@ -52,6 +64,24 @@ chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp；`scope` 必填，�
 * `npm run build` 编译 es2015+ 代码生成 lib 和 es 目录
 
 * `npm run pack` 打包文件，生成 dist 目录
+
+4. 开发完成后按照要求补充单元测试、运行单元测试、编写语义化的commit信息后，进入 https://github.com/[your account]/next 找到 `New pull request` 按钮提交PR
+
+5. 维护者可能会有一些修改建议，开发者可能需要根据修改建议反复修改代码。最终由组件库维护者合并PR，在下次发布时本次修改的功能生效。
+
+## 开发注意事项
+
+1. Fusion Next 作为前端组件库支持 SSR 因此需要做到：
+    - 尽量避免使用 window 等客户端变量 ( server端没有window对象，如果使用需要从window开始逐级判断是否存在 )
+    - 客户端端对象的判断用typeof
+        ```
+        if(window && window.autoScroll)
+        =>
+        if(typeof window != undefined && window.autoScroll) )
+        ```
+    - 避免往window等全局对象挂载定时器 (可能内存泄漏)
+    - 避免random()等不确定性输出(输出结果可预期，不依赖于环境等)
+2. sass 颜色变量计算的结果，需要以 `$color-calcualte-` 开头，写到组件的 variable.scss 中(不能写到main.scss中)，参考`Search`组件，#1029
 
 
 ## 发布周期

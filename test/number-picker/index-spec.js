@@ -569,6 +569,9 @@ describe('number-picker', () => {
             wrapper.setProps({ value: undefined });
             assert(wrapper.find('input').prop('value') === '');
 
+            wrapper.setProps({ value: null });
+            assert(wrapper.find('input').prop('value') === '');
+
             done();
         });
     });

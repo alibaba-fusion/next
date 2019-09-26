@@ -71,6 +71,14 @@ class Checkbox extends UIState {
          * @param {Event} e Dom 事件对象
          */
         onMouseLeave: PropTypes.func,
+        /**
+         * checkbox 的value
+         */
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
+         * name
+         */
+        name: PropTypes.string,
     };
 
     static defaultProps = {
@@ -130,6 +138,7 @@ class Checkbox extends UIState {
                     ),
                 });
             }
+
             this.disabled =
                 nextProps.disabled ||
                 ('disabled' in nextContext && nextContext.disabled);
@@ -139,12 +148,13 @@ class Checkbox extends UIState {
                     checked: nextProps.checked,
                 });
             }
-            if ('indeterminate' in nextProps) {
-                this.setState({
-                    indeterminate: nextProps.indeterminate,
-                });
-            }
             this.disabled = nextProps.disabled;
+        }
+
+        if ('indeterminate' in nextProps) {
+            this.setState({
+                indeterminate: nextProps.indeterminate,
+            });
         }
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {

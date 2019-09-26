@@ -81,6 +81,7 @@ class FunctionDemo extends React.Component {
         const functions = convert(demoFunction);
         const { lang } = this.props;
         const i18n = i18nMap[lang];
+        const { size } = functions;
         const rowSelection = {
             mode: functions.rowSelection,
             selectedRowKeys: [4]
@@ -89,6 +90,7 @@ class FunctionDemo extends React.Component {
         if (functions.filters === 'true') {
             filters = [{ label: 'Option1', value: 'Option1' }, { label: 'Option2', value: 'Option2' }];
         }
+
         function productRender(product) {
             return (
                 <div className="media">
@@ -174,19 +176,28 @@ class FunctionDemo extends React.Component {
             className: index === 1 ? 'selected' : ''
         });
         const cols = [
-            <Table.Column cell={productRender} title={i18n.productDetail} key="product" dataIndex="product" filters={filters} />,
             <Table.Column cell={priceRender} title={i18n.price} dataIndex="price" key="price" />,
             <Table.Column cell={statusRender} title={i18n.status} dataIndex="status" key="status" />,
             <Table.Column cell={operRender} title="" dataIndex="oper" key="oper" />
         ];
 
+        const smallCols = [].concat(
+            <Table.Column title={i18n.productDetail} key="product" dataIndex="product[0].title" filters={filters} />
+            , cols);
+
+        cols.unshift(<Table.Column cell={productRender} title={i18n.productDetail} key="product" dataIndex="product" filters={filters} />);
+
         const groupCols = cols.slice();
         groupCols.unshift(<Table.GroupHeader cell={groupHeaderRender} />);
         groupCols.push(<Table.GroupFooter cell={groupFooterRender} />);
 
+        const smallGroupCols = smallCols.slice();
+        smallGroupCols.unshift(<Table.GroupHeader cell={groupHeaderRender} />);
+        smallGroupCols.push(<Table.GroupFooter cell={groupFooterRender} />);
+
         return (
             <Demo title="List" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
-                <Demo title="List">
+                <Demo title="List medium">
                     <DemoGroup label="Normal">
                         <Table dataSource={listDataSource} hasBorder={false}>{cols}</Table>
                     </DemoGroup>
@@ -197,7 +208,12 @@ class FunctionDemo extends React.Component {
                         <Table dataSource={[]} hasBorder={false}>{cols}</Table>
                     </DemoGroup>
                 </Demo>
-                <Demo title="Group">
+                <Demo title="List small">
+                    <DemoGroup label="Normal">
+                        <Table size="small" dataSource={listDataSource} hasBorder={false}>{smallCols}</Table>
+                    </DemoGroup>
+                </Demo>
+                <Demo title="Group medium">
                     <DemoGroup label="Normal">
                         <Table dataSource={listDataSource}>{groupCols}</Table>
                     </DemoGroup>
@@ -206,6 +222,11 @@ class FunctionDemo extends React.Component {
                     </DemoGroup>
                     <DemoGroup label="No Data">
                         <Table dataSource={[]}>{groupCols}</Table>
+                    </DemoGroup>
+                </Demo>
+                <Demo title="Group small">
+                    <DemoGroup label="Normal">
+                        <Table size="small" dataSource={listDataSource}>{smallGroupCols}</Table>
                     </DemoGroup>
                 </Demo>
             </Demo>
@@ -262,6 +283,7 @@ class TableFunctionDemo extends React.Component {
         const functions = convert(demoFunction);
         const { lang } = this.props;
         const i18n = i18nMap[lang];
+        const { size } = functions;
         const rowSelection = functions.rowSelection === 'false' ? null : {
             mode: functions.rowSelection,
             selectedRowKeys: [1]
@@ -342,18 +364,22 @@ class TableFunctionDemo extends React.Component {
         }
 
         const cols = [
-            <Table.Column cell={productRender} align={align} title={i18n.productDetail} key="product" dataIndex="product" filters={filters} />,
             <Table.Column cell={priceRender} title={i18n.price} dataIndex="price" key="price" />,
             <Table.Column cell={statusRender} title={i18n.status} dataIndex="status" key="status" />,
             <Table.Column cell={operRender} title="" dataIndex="oper" key="oper" />
         ];
+        const smallCols = [].concat(
+            <Table.Column align={align} title={i18n.productDetail} key="product" dataIndex="product[0].title" filters={filters} />
+            , cols);
+
+        cols.unshift(<Table.Column cell={productRender} align={align} title={i18n.productDetail} key="product" dataIndex="product" filters={filters} />);
         const groupCols = cols.slice();
         groupCols.unshift(<Table.GroupHeader cell={groupHeaderRender} />);
         groupCols.push(<Table.GroupFooter cell={groupFooterRender} />);
 
         return (
             <Demo title="Table" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
-                <Demo title="Table">
+                <Demo title="Table medium">
                     <DemoGroup label="Normal">
                         <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
@@ -366,7 +392,11 @@ class TableFunctionDemo extends React.Component {
                     <DemoGroup label="No Data">
                         <Table rowSelection={rowSelection} dataSource={[]} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
-
+                </Demo>
+                <Demo title="Table small">
+                    <DemoGroup label="Normal">
+                        <Table size="small" rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{smallCols}</Table>
+                    </DemoGroup>
                 </Demo>
 
             </Demo>

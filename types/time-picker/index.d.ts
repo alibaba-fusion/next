@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface TimePickerProps extends HTMLAttributesWeak {
+export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的文案
      */
@@ -92,7 +93,7 @@ export interface TimePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (target: {}) => React.ReactNode;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层对齐方式, 详情见Overlay 文档

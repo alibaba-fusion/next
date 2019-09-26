@@ -1,3 +1,4 @@
+import React from 'react';
 import assert from 'power-assert';
 import * as object from '../../src/util/object';
 
@@ -249,6 +250,11 @@ describe('src/object.js', function() {
             assert(res.a === 4);
         });
 
+        it('deepMerge support node', function() {
+            const res = object.deepMerge({}, {a: <span>ddd</span>}, {b: 3});
+            console.log(res)
+            assert(Object.keys(res).length === 2);
+        });
 
         it('deepMerge support deep', function() {
 

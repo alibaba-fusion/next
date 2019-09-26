@@ -68,6 +68,7 @@ export default class Base extends React.Component {
         /**
          * 弹层显示或隐藏时触发的回调
          * @param {Boolean} visible 弹层是否显示
+         * @param {String} type 触发弹层显示或隐藏的来源 fromContent 表示由Dropdown内容触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -119,6 +120,7 @@ export default class Base extends React.Component {
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
+        popupComponent: PropTypes.any,
     };
 
     static defaultProps = {
@@ -198,12 +200,19 @@ export default class Base extends React.Component {
      * @protected
      */
     syncWidth() {
-        const width = dom.getStyle(this.selectDOM, 'width');
+        const { popupStyle, popupProps } = this.props;
+        if (
+            (popupStyle && 'width' in popupStyle) ||
+            (popupProps && popupProps.style && 'width' in popupProps.style)
+        ) {
+            return;
+        }
 
+        const width = dom.getStyle(this.selectDOM, 'width');
         if (width && this.width !== width) {
             this.width = width;
 
-            if (this.popupRef && this.props.autoWidth) {
+            if (this.popupRef && this.shouldAutoWidth()) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef && this.popupRef.getInstance().overlay) {
@@ -384,7 +393,6 @@ export default class Base extends React.Component {
         const {
             prefix,
             mode,
-            autoWidth,
             locale,
             notFoundContent,
             useVirtual,
@@ -419,7 +427,6 @@ export default class Base extends React.Component {
         const menuProps = {
             children,
             role: 'listbox',
-            style: autoWidth ? { width: this.width } : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
             focusable: false,
@@ -431,11 +438,14 @@ export default class Base extends React.Component {
             onMouseDown: preventDefault,
             className: menuClassName,
         };
+        const menuStyle = this.shouldAutoWidth()
+            ? { width: this.width }
+            : { minWidth: this.width };
 
         return useVirtual && children.length ? (
             <div
                 className={`${prefix}select-menu-wrapper`}
-                style={{ position: 'relative' }}
+                style={{ position: 'relative', ...menuStyle }}
             >
                 <VirtualList
                     itemsRenderer={(items, ref) => {
@@ -456,7 +466,7 @@ export default class Base extends React.Component {
                 </VirtualList>
             </div>
         ) : (
-            <Menu {...menuProps} />
+            <Menu {...menuProps} style={menuStyle} />
         );
     }
 
@@ -546,6 +556,14 @@ export default class Base extends React.Component {
         }
     };
 
+    shouldAutoWidth() {
+        if (this.props.popupComponent) {
+            return false;
+        }
+
+        return this.props.autoWidth;
+    }
+
     render(props) {
         const {
             prefix,
@@ -555,10 +573,10 @@ export default class Base extends React.Component {
             popupClassName,
             popupStyle,
             popupContent,
-            autoWidth,
             canCloseByTrigger,
             followTrigger,
             cache,
+            popupComponent,
         } = props;
 
         const cls = classNames(
@@ -591,8 +609,10 @@ export default class Base extends React.Component {
             style: popupStyle || popupProps.style,
         };
 
+        const Tag = popupComponent ? popupComponent : Popup;
+
         return (
-            <Popup
+            <Tag
                 {..._props}
                 trigger={this.renderSelect()}
                 ref={this.savePopupRef}
@@ -600,14 +620,16 @@ export default class Base extends React.Component {
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
-                        style={autoWidth ? { width: this.width } : {}}
+                        style={
+                            this.shouldAutoWidth() ? { width: this.width } : {}
+                        }
                     >
                         {popupContent}
                     </div>
                 ) : (
                     this.renderMenu()
                 )}
-            </Popup>
+            </Tag>
         );
     }
 }

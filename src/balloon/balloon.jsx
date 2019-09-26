@@ -63,6 +63,7 @@ export default class Balloon extends React.Component {
         /**
          * 弹层在显示和隐藏触发的事件
          * @param {Boolean} visible 弹层是否隐藏和显示
+         * @param {String} type 触发弹层显示或隐藏的来源， closeClick 表示由自带的关闭按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**

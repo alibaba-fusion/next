@@ -70,7 +70,7 @@
         border-style: $range-size-slider-border-style;
         border-color: $range-normal-slider-border-color;
         border-radius: 50%;
-        transition: transform .4s cubic-bezier(.23, 1, .32, 1), border-color .4s cubic-bezier(.23, 1, .32, 1);
+        transition: transform $motion-duration-immediately $motion-linear, border-color $motion-duration-immediately $motion-linear;
     }
 
     .#{$css-prefix}range-slider.#{$css-prefix}range-slider-moving .#{$css-prefix}range-slider-inner {

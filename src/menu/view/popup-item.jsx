@@ -24,6 +24,7 @@ export default class PopupItem extends Component {
         root: PropTypes.object,
         level: PropTypes.number,
         hasSubMenu: PropTypes.bool,
+        noIcon: PropTypes.bool,
         rtl: PropTypes.bool,
         selectable: PropTypes.bool,
         /**
@@ -42,6 +43,7 @@ export default class PopupItem extends Component {
 
     static defaultProps = {
         selectable: false,
+        noIcon: false,
     };
 
     constructor(props) {
@@ -64,6 +66,21 @@ export default class PopupItem extends Component {
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
+    }
+
+    getChildSelected() {
+        const { _key, root } = this.props;
+        const { selectMode } = root.props;
+        const { selectedKeys } = root.state;
+
+        const _keyPos = root.k2n[_key].pos;
+
+        return (
+            !!selectMode &&
+            selectedKeys.some(
+                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
+            )
+        );
     }
 
     getPopupProps() {
@@ -134,10 +151,11 @@ export default class PopupItem extends Component {
     }
 
     renderItem(selectable, children, others) {
-        const { _key, root, level, label, className } = this.props;
+        const { _key, root, level, inlineLevel, label, className } = this.props;
         const { prefix } = root.props;
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
+        const isChildSelected = this.getChildSelected();
 
         const itemProps = {
             'aria-haspopup': true,
@@ -145,16 +163,15 @@ export default class PopupItem extends Component {
             _key,
             root,
             level,
+            inlineLevel,
             type: 'submenu',
         };
-        if (open) {
-            itemProps.className = cx({
-                [`${prefix}opened`]: true,
-                [className]: !!className,
-            });
-        } else {
-            itemProps.className = className;
-        }
+
+        itemProps.className = cx({
+            [`${prefix}opened`]: open,
+            [`${prefix}child-selected`]: isChildSelected,
+            [className]: !!className,
+        });
 
         return (
             <NewItem {...itemProps} {...others}>
@@ -201,6 +218,7 @@ export default class PopupItem extends Component {
             children,
             triggerType,
             align,
+            noIcon,
             rtl,
         } = this.props;
         const others = obj.pickOthers(
@@ -276,7 +294,7 @@ export default class PopupItem extends Component {
         const arrow = <Icon {...arrowProps} />;
         const trigger = triggerIsIcon
             ? arrow
-            : this.renderItem(selectable, arrow, others);
+            : this.renderItem(selectable, noIcon ? null : arrow, others);
         const popup = this.renderPopup(
             trigger,
             newTriggerType,

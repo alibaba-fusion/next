@@ -18,14 +18,6 @@ $nav-icononly-width: $s-15;
         font-weight: inherit;
     }
 
-    &-icon-placeholder {
-        display: inline-block;
-        width: $nav-icon-only-font-size;
-        height: $nav-icon-only-font-size;
-        margin-left: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
-        margin-right: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width;
-    }
-
     &-group-label {
         height: $nav-group-height;
         line-height: $nav-group-height;
@@ -36,7 +28,7 @@ $nav-icononly-width: $s-15;
         #{$menu-prefix}-item-text > span,
         #{$nav-prefix}-group-label > span {
             opacity: 1;
-            transition: opacity .3s;
+            transition: opacity $motion-duration-immediately $motion-linear;
         }
 
         a {
@@ -60,12 +52,12 @@ $nav-icononly-width: $s-15;
 
     &.#{$css-prefix}active &-item:before {
         position: absolute;
-        transition: all .4s cubic-bezier(.23, 1, .32, 1);
+        transition: all $motion-duration-standard $motion-ease;
         content: '';
     }
 
     &.#{$css-prefix}hoz {
-        height: $nav-hoz-height;
+        height: $nav-hoz-height + 2 * $nav-hoz-item-margin-tb;
 
         @include nav-size(
             'hoz',
@@ -128,7 +120,7 @@ $nav-icononly-width: $s-15;
     }
 
     &.#{$css-prefix}ver {
-        transition: width .3s;
+        transition: width $motion-duration-standard $motion-ease;
 
         @include nav-size(
             'ver',
@@ -349,10 +341,10 @@ $nav-icononly-width: $s-15;
             text-overflow: clip;
         }
 
-        #{$menu-prefix}-item-text > span,
-        #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
-            opacity: 0;
-        }
+        // #{$menu-prefix}-item-text > span,
+        // #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
+        //     opacity: 0;
+        // }
 
         &.#{$css-prefix}normal {
             #{$nav-prefix}-icon.#{$css-prefix}icon {
@@ -387,9 +379,10 @@ $nav-icononly-width: $s-15;
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2
+                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
+                $marginRight: (18px - $nav-icon-only-font-size) / 2
             );
-            transition: all ease .3s;
+            transition: all $motion-duration-immediately $motion-linear;
             transform-origin: center 46%;
         }
 
@@ -397,6 +390,7 @@ $nav-icononly-width: $s-15;
             @include icon-size(
                 $size: $nav-icon-only-font-size,
                 $marginLeft: (18px - $nav-icon-only-font-size) / 2,
+                $marginRight: (18px - $nav-icon-only-font-size) / 2,
                 $transform: rotate(180deg)
             );
         }
@@ -436,6 +430,13 @@ $nav-icononly-width: $s-15;
                 height: 100%;
             }
         }
+    }
+
+    &-embeddable,
+    &-embeddable &-item.#{$css-prefix}disabled,
+    &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
+        background: initial;
+        border: none;
     }
 }
 

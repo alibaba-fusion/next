@@ -73,7 +73,10 @@ class RadioGroup extends Component {
         /**
          * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`
          */
-        dataSource: PropTypes.arrayOf(PropTypes.any),
+        dataSource: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object),
+        ]),
         /**
          * 通过子元素方式设置内部radio
          */
@@ -188,16 +191,20 @@ class RadioGroup extends Component {
                         (index === 0 && !this.state.value) || checked ? 0 : -1;
                     const childrtl =
                         child.props.rtl === undefined ? rtl : child.props.rtl;
-                    return React.cloneElement(
-                        child,
-                        child.props.tabIndex === undefined
-                            ? {
-                                  checked,
-                                  tabIndex,
-                                  rtl: childrtl,
-                              }
-                            : { checked, rtl: childrtl }
-                    );
+                    if (
+                        child.type &&
+                        child.type.displayName === 'Config(Radio)'
+                    ) {
+                        return React.cloneElement(child, {
+                            checked,
+                            tabIndex,
+                            rtl: childrtl,
+                        });
+                    }
+                    return React.cloneElement(child, {
+                        checked,
+                        rtl: childrtl,
+                    });
                 }
             );
         } else {

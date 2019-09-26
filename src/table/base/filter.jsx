@@ -13,6 +13,8 @@ export default class Filter extends React.Component {
         filters: PropTypes.array,
         filterMode: PropTypes.string,
         filterParams: PropTypes.object,
+        filterMenuProps: PropTypes.object,
+        filterProps: PropTypes.object,
         locale: PropTypes.object,
         onFilter: PropTypes.func,
         prefix: PropTypes.string,
@@ -117,8 +119,18 @@ export default class Filter extends React.Component {
     };
 
     render() {
-        const { filters, prefix, locale, filterMode, rtl } = this.props;
+        const {
+            filters,
+            prefix,
+            locale,
+            filterMode,
+            filterMenuProps,
+            filterProps,
+            rtl,
+        } = this.props;
+
         const { visible, selectedKeys } = this.state;
+        const { subMenuSelectable, ...others } = filterMenuProps;
 
         function renderMenuItem(item) {
             return <Menu.Item key={item.value}>{item.label}</Menu.Item>;
@@ -129,7 +141,7 @@ export default class Filter extends React.Component {
                 <Menu.SubMenu
                     label={parent.label}
                     key={parent.value}
-                    selectable={false}
+                    selectable={subMenuSelectable}
                 >
                     {renderMenuContent(children)}
                 </Menu.SubMenu>
@@ -173,8 +185,10 @@ export default class Filter extends React.Component {
                 visible={visible}
                 autoFocus
                 rtl={rtl}
+                needAdjust={false}
                 container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
+                {...filterProps}
             >
                 <Menu
                     footer={footer}
@@ -182,6 +196,7 @@ export default class Filter extends React.Component {
                     selectedKeys={selectedKeys}
                     selectMode={filterMode}
                     onSelect={this.onFilterSelect}
+                    {...others}
                 >
                     {content}
                 </Menu>

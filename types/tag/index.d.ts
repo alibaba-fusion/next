@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface CloseableProps extends HTMLAttributesWeak {
+export interface CloseableProps extends HTMLAttributesWeak, CommonProps {
     /**
      * closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮
      */
@@ -39,7 +40,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface SelectableProps extends HTMLAttributesWeak {
+export interface SelectableProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 标签是否被选中，受控用法
      * tag checked or not, a controlled way
@@ -68,7 +69,11 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface TagProps extends HTMLAttributesWeak {
+export interface TagGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {}
+
+export class TagGroup extends React.Component<TagGroupProps, any> {}
+
+export interface TagProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 标签类名前缀,提供给二次开发者用
      */
@@ -103,4 +108,5 @@ export interface TagProps extends HTMLAttributesWeak {
 export default class Tag extends React.Component<TagProps, any> {
     static Closeable: typeof Closeable;
     static Selectable: typeof Selectable;
+    static Group: typeof TagGroup;
 }

@@ -20,6 +20,8 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
         overflow: auto;
         width: $s-25;
         height: $s-8 * 6;
+        overflow-x: hidden;
+        overflow-y: auto;
         & + & {
             border-left: $cascader-menu-border;
         }

@@ -22,7 +22,6 @@
 
     &-base {
         float: left;
-        cursor: pointer;
     }
 
     &-text {
@@ -61,6 +60,7 @@
     &-underlay,
     &-overlay {
         #{$rating-prefix}-icon {
+            cursor: pointer;
             margin-left: $s-1;
         }
 
@@ -70,7 +70,7 @@
         }
 
         #{$rating-icon-prefix} {
-            transition: all 50ms ease-in;
+            transition: all $motion-duration-immediately $motion-linear;
 
             &.hover {
                 transform: scale3d(1.1, 1.1, 1.1);

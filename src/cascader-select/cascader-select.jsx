@@ -181,7 +181,7 @@ export default class CascaderSelect extends Component {
         /**
          * 下拉框显示或关闭时触发事件的回调函数
          * @param {Boolean} visible 是否显示
-         * @param {String} type 触发显示关闭的操作类型
+         * @param {String} type 触发显示关闭的操作类型, fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -269,6 +269,7 @@ export default class CascaderSelect extends Component {
         bindCtx(this, [
             'handleVisibleChange',
             'handleAfterOpen',
+            'handleSelect',
             'handleChange',
             'handleClear',
             'handleRemove',
@@ -500,9 +501,16 @@ export default class CascaderSelect extends Component {
     }
 
     handleVisibleChange(visible, type) {
+        const { searchValue } = this.state;
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
+            });
+        }
+
+        if (!visible && searchValue) {
+            this.setState({
+                searchValue: '',
             });
         }
 
@@ -563,17 +571,28 @@ export default class CascaderSelect extends Component {
         }
     }
 
-    handleChange(value, data, extra) {
-        const { multiple, changeOnSelect, onChange } = this.props;
+    handleSelect(value, data) {
+        const { multiple, changeOnSelect } = this.props;
         const { visible, searchValue } = this.state;
 
-        const st = {};
         if (
             !multiple &&
             (!changeOnSelect || this.isLeaf(data) || !!searchValue)
         ) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
+    }
+
+    handleChange(value, data, extra) {
+        const { multiple, onChange } = this.props;
+        const { searchValue, value: stateValue } = this.state;
+
+        const st = {};
+
+        if (multiple && stateValue && Array.isArray(stateValue)) {
+            value = [...stateValue.filter(v => !this._v2n[v]), ...value];
+        }
+
         if (!('value' in this.props)) {
             st.value = value;
         }
@@ -586,6 +605,10 @@ export default class CascaderSelect extends Component {
 
         if (onChange) {
             onChange(value, data, extra);
+        }
+
+        if (searchValue && this.select) {
+            this.select.handleSearchClear();
         }
     }
 
@@ -752,6 +775,7 @@ export default class CascaderSelect extends Component {
         };
         if (!readOnly) {
             props.onChange = this.handleChange;
+            props.onSelect = this.handleSelect;
         }
         if (showSearch) {
             props.searchValue = searchValue;
@@ -826,7 +850,7 @@ export default class CascaderSelect extends Component {
             visible,
             onVisibleChange: this.handleVisibleChange,
             showSearch,
-            searchValue,
+            // searchValue,
             onSearch: this.handleSearch,
             onKeyDown: this.handleKeyDown,
             popupContent,

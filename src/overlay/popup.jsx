@@ -43,7 +43,7 @@ export default class Popup extends Component {
         /**
          * 弹层显示或隐藏时触发的回调函数
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} type 触发弹层显示或隐藏的来源
+         * @param {String} type 触发弹层显示或隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          * @param {Object} e DOM事件
          */
         onVisibleChange: PropTypes.func,
@@ -250,7 +250,7 @@ export default class Popup extends Component {
                 onMouseLeave,
                 onFocus,
                 onBlur,
-            } = trigger.props;
+            } = (trigger && trigger.props) || {};
             triggerTypes.forEach(triggerType => {
                 switch (triggerType) {
                     case 'click':
@@ -289,7 +289,7 @@ export default class Popup extends Component {
             });
         }
 
-        return React.cloneElement(trigger, props);
+        return trigger && React.cloneElement(trigger, props);
     }
 
     renderContent() {

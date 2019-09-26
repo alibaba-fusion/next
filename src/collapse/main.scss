@@ -25,7 +25,7 @@
     #{$collapse-prefix}-panel-icon {
         position: absolute;
         color: $collapse-icon-color;
-        transition: transform .3s;
+        transition: transform $motion-duration-immediately $motion-linear;
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
@@ -41,7 +41,7 @@
         color: $collapse-title-font-color;
         cursor: pointer;
         padding: $collapse-title-padding-tb 0 $collapse-title-padding-tb $collapse-icon-margin-r + $collapse-icon-margin-l + $collapse-icon-size;
-        transition: background .2s ease;
+        transition: background $motion-duration-immediately $motion-linear;
 
         &:hover {
             background: $collapse-title-hover-bg-color;
@@ -61,7 +61,7 @@
         background: $collapse-content-bg-color;
         font-size: $collapse-content-font-size;
         color: $collapse-content-color;
-        transition: all .3s cubic-bezier(.23, 1, .32, 1);
+        transition: all $motion-duration-standard $motion-ease;
         opacity: 0;
     }
 

@@ -5,7 +5,7 @@ import { obj, log } from '../util';
 import getContextProps from './get-context-props';
 import ErrorBoundary from './error-boundary';
 
-const { shallowEqual } = obj;
+const { shallowEqual, typeOf } = obj;
 
 function getDisplayName(Component) {
     return Component.displayName || Component.name || 'Component';
@@ -67,7 +67,13 @@ export function getDirection() {
 }
 
 export function config(Component, options = {}) {
-    if (Component.prototype.shouldComponentUpdate === undefined) {
+    // 非 forwardRef 创建的 class component
+    if (
+        typeOf(Component) === 'Function' &&
+        Component.prototype.isReactComponent !== undefined &&
+        Component.prototype.shouldComponentUpdate === undefined
+    ) {
+        // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
         Component.prototype.shouldComponentUpdate = function shouldComponentUpdate(
             nextProps,
             nextState
@@ -90,6 +96,7 @@ export function config(Component, options = {}) {
             locale: PropTypes.object,
             pure: PropTypes.bool,
             rtl: PropTypes.bool,
+            device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
             errorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -102,6 +109,7 @@ export function config(Component, options = {}) {
             nextPure: PropTypes.bool,
             nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool,
+            nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
             nextErrorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -146,6 +154,7 @@ export function config(Component, options = {}) {
                 locale,
                 pure,
                 rtl,
+                device,
                 errorBoundary,
                 ...others
             } = this.props;
@@ -154,17 +163,19 @@ export function config(Component, options = {}) {
                 nextLocale = {},
                 nextPure,
                 nextRtl,
+                nextDevice,
                 nextErrorBoundary,
             } = this.context;
 
             const displayName =
                 options.componentName || getDisplayName(Component);
             const contextProps = getContextProps(
-                { prefix, locale, pure, rtl, errorBoundary },
+                { prefix, locale, pure, device, rtl, errorBoundary },
                 {
                     nextPrefix,
                     nextLocale: { ...currentGlobalLocale, ...nextLocale },
                     nextPure,
+                    nextDevice,
                     nextRtl:
                         typeof nextRtl === 'boolean'
                             ? nextRtl
@@ -177,15 +188,24 @@ export function config(Component, options = {}) {
             );
 
             // errorBoundary is only for <ErrorBoundary>
-            const newContextProps = ['prefix', 'locale', 'pure', 'rtl'].reduce(
-                (ret, name) => {
-                    if (typeof contextProps[name] !== 'undefined') {
-                        ret[name] = contextProps[name];
-                    }
-                    return ret;
-                },
-                {}
-            );
+            const newContextProps = [
+                'prefix',
+                'locale',
+                'pure',
+                'rtl',
+                'device',
+            ].reduce((ret, name) => {
+                if (typeof contextProps[name] !== 'undefined') {
+                    ret[name] = contextProps[name];
+                }
+                return ret;
+            }, {});
+
+            if ('pure' in newContextProps) {
+                log.warning(
+                    'pure of ConfigProvider is deprecated, use Function Component or React.PureComponent'
+                );
+            }
 
             const newOthers = options.transform
                 ? options.transform(others, this._deprecated)

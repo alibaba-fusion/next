@@ -1,6 +1,7 @@
 import React from 'react';
-import Enzyme from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import assert from 'power-assert';
 import Radio from '../../src/radio/index';
 import '../../src/radio/style';
 import { unmount, testReact } from '../util/a11y/validate';
@@ -97,5 +98,38 @@ describe('Radio A11y', () => {
             <Radio.Group value={'apple'} dataSource={list} />
         );
         return wrapper;
+    });
+
+    it('should add tabIndex for first Radio Item', async () => {
+        const wrapper = mount(
+            <Radio.Group >
+                <Radio id="pear" value="pear" checked>={true}
+                    梨子
+                </Radio>
+                <Radio id="apple" value="apple" className="apple">
+                    苹果
+                </Radio>
+            </Radio.Group>
+        );
+        wrapper.update();
+        assert(wrapper.find("input#pear").at(0).getDOMNode().tabIndex === 0);
+    });
+
+    it('should not add tabIndex for non Radio Item', async () => {
+        const wrapper = mount(
+            <Radio.Group defaultValue={'pear'} >
+                <div id="mywrapper" >
+                    <Radio id="pear" value="pear">
+                        梨子
+                    </Radio>
+                </div>
+                <div id='another' tabIndex="-100">
+                    <Radio id="apple" value="apple" className="apple">
+                        苹果
+                    </Radio>
+                </div>
+            </Radio.Group>
+        );
+        assert(wrapper.find("div#mywrapper").at(0).getDOMNode().tabIndex === -1);
     });
 });

@@ -1,13 +1,14 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface MonthPickerProps extends HTMLAttributesWeak {
+export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框内置标签
      */
@@ -101,9 +102,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -143,7 +142,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface RangePickerProps extends HTMLAttributesWeak {
+export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认展示的起始月份
      */
@@ -192,7 +191,7 @@ export interface RangePickerProps extends HTMLAttributesWeak {
     /**
      * 点击确认按钮时的回调 返回开始时间和结束时间`[ MomentObject|String, MomentObject|String ]`
      */
-    onOk?: () => Array<any>;
+    onOk?: (value: Array<any>) => void;
 
     /**
      * 输入框内置标签
@@ -247,9 +246,7 @@ export interface RangePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -304,7 +301,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface YearPickerProps extends HTMLAttributesWeak {
+export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框内置标签
      */
@@ -393,9 +390,7 @@ export interface YearPickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式
@@ -429,7 +424,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface DatePickerProps extends HTMLAttributesWeak {
+export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框内置标签
      */
@@ -493,7 +488,7 @@ export interface DatePickerProps extends HTMLAttributesWeak {
     /**
      * 点击确认按钮时的回调
      */
-    onOk?: () => {} | string;
+    onOk?: (value: {} | string) => void;
 
     /**
      * 输入框尺寸
@@ -538,9 +533,7 @@ export interface DatePickerProps extends HTMLAttributesWeak {
     /**
      * 弹层容器
      */
-    popupContainer?: (
-        target: React.ReactElement<any>
-    ) => React.ReactElement<any>;
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层自定义样式

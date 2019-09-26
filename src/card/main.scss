@@ -93,13 +93,13 @@
 
     &-content {
         overflow: hidden;
-        transition: .3s all $ease-out;
+        transition: all $motion-duration-standard $motion-ease;
         position: relative;
     }
 
     &-footer {
         .#{$css-prefix}icon {
-            transition: .3s all cubic-bezier(.645, .045, .355, 1);
+            transition: all $motion-duration-immediately $motion-linear;
 
             &.expand {
                 transform-origin: 50% 47%;

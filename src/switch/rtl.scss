@@ -3,7 +3,7 @@
 .#{$css-prefix}switch {
     &:after[dir="rtl"] {
         content: " ";
-        transition: all .4s cubic-bezier(.78, .14, .15, .86);
+        transition: all $motion-duration-immediately $motion-linear;
         transform-origin: right center;
     }
 

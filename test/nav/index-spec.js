@@ -209,6 +209,49 @@ describe('Nav', () => {
         assert(wrapper.find('li.next-nav-group-label').length === 1);
     });
 
+    it('should support defaultSelectedKeys undefined/null', () => {
+        wrapper = mount(
+            <Nav defaultSelectedKeys={null}>
+                <SubNav label="Group label">
+                    <Item key="1">First</Item>
+                    <Item key="2">Second</Item>
+                </SubNav>
+            </Nav>
+        );
+
+    });
+
+    it('should support showChildSelected', () => {
+        wrapper = mount(
+            <Nav selectedKeys="1" />
+        );
+
+        assert(wrapper);
+
+        wrapper.setProps({
+            children: <SubNav label="Group label">
+            <Item key="1">First</Item>
+            <Item key="2">Second</Item>
+        </SubNav>
+        });
+
+        const subNavItem = wrapper.find('li.next-nav-sub-nav-item').at(0);
+
+        assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
+
+        wrapper.setProps({
+            mode: 'popup'
+        });
+
+        assert(subNavItem.find('.next-nav-item').hasClass('next-child-selected'));
+
+        wrapper.setProps({
+            selectedKeys: 'ddasdfa'
+        });
+
+        assert(wrapper);
+    });
+
     it('should support iconOnly', done => {
         wrapper = mount(
             <Nav iconOnly style={{ width: '200px' }}>
@@ -265,7 +308,7 @@ describe('Nav', () => {
 
         let items = nav.find('li.next-nav-item');
         assert(items.at(0).find('i.next-nav-icon').length === 1);
-        assert(items.at(1).find('span.next-nav-icon-placeholder').length === 1);
+        assert(items.at(1).find('i.next-nav-icon').length === 0);
 
         let subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(
@@ -296,7 +339,7 @@ describe('Nav', () => {
         );
 
         const groupLabel = nav.find('li.next-nav-group-label');
-        assert(groupLabel.find('span.next-nav-icon-placeholder').length === 1);
+        assert(groupLabel.find('.next-menu-item-inner > span').length === 1);
 
         wrapper.setProps({
             mode: 'popup',
@@ -324,13 +367,13 @@ describe('Nav', () => {
         subNavItems = nav.find('li.next-nav-sub-nav-item');
         assert(subNavItems.at(0).find('i.next-nav-icon').length === 1);
         assert(
-            subNavItems.at(1).find('span.next-nav-icon-placeholder').length ===
+            subNavItems.at(1).find('.next-menu-item-text > span').length ===
                 1
         );
         popupItems = nav.find('li.next-nav-popup-item');
         assert(popupItems.at(0).find('i.next-nav-icon').length === 1);
         assert(
-            popupItems.at(1).find('span.next-nav-icon-placeholder').length === 1
+            popupItems.at(1).find('.next-menu-item-text > span').length === 1
         );
         items = nav.find('li.next-nav-item');
         items.at(0).simulate('mouseenter');

@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * 获取对象的类型
  * @param  {*} obj
@@ -249,13 +251,18 @@ export function deepMerge(target, ...sources) {
 
     if (isPlainObject(target) && isPlainObject(source)) {
         for (const key in source) {
-            if (isPlainObject(source[key])) {
+            // 如果是object 进行深拷贝
+            if (
+                isPlainObject(source[key]) &&
+                !React.isValidElement(source[key])
+            ) {
                 if (!target[key]) Object.assign(target, { [key]: {} });
                 // fix {a: 'te'}, {a:{b:3}}
                 if (!isPlainObject(target[key])) {
                     target[key] = source[key];
                 }
                 deepMerge(target[key], source[key]);
+                // string/number/function/react node 等直接复制
             } else {
                 Object.assign(target, { [key]: source[key] });
             }

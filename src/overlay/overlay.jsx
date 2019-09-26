@@ -185,6 +185,7 @@ export default class Overlay extends Component {
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         onMaskMouseEnter: PropTypes.func,
         onMaskMouseLeave: PropTypes.func,
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -214,6 +215,7 @@ export default class Overlay extends Component {
         needAdjust: true,
         disableScroll: false,
         cache: false,
+        onClick: e => e.stopPropagation(),
     };
 
     constructor(props) {
@@ -269,6 +271,11 @@ export default class Overlay extends Component {
 
         const willOpen = !this.props.visible && nextProps.visible;
         const willClose = this.props.visible && !nextProps.visible;
+
+        if (nextProps.align !== this.props.align) {
+            this.lastAlign = this.props.align;
+        }
+
         if (willOpen) {
             this.beforeOpen();
             nextProps.beforeOpen();
@@ -409,6 +416,13 @@ export default class Overlay extends Component {
             });
         }
 
+        const { status } = this.state;
+        if (status === 'mounting') {
+            this.setState({
+                status: 'entering',
+            });
+        }
+
         this.lastAlign = align;
     }
 
@@ -447,7 +461,7 @@ export default class Overlay extends Component {
         this.setState(
             {
                 visible: true,
-                status: 'entering',
+                status: 'mounting',
             },
             () => {
                 // NOTE: setState callback (second argument) now fires immediately after componentDidMount / componentDidUpdate instead of after all components have rendered.
@@ -694,7 +708,14 @@ export default class Overlay extends Component {
         let children =
             stateVisible || (cache && this._isMounted) ? propChildren : null;
         if (children) {
-            const child = Children.only(children);
+            let child = Children.only(children);
+            // if chlild is a functional component wrap in a component to allow a ref to be set
+            if (
+                typeof child.type === 'function' &&
+                !(child.type.prototype instanceof Component)
+            ) {
+                child = <div role="none">{child}</div>;
+            }
             const childClazz = classnames({
                 [`${prefix}overlay-inner`]: true,
                 [animation.in]: status === 'entering',
@@ -713,6 +734,7 @@ export default class Overlay extends Component {
                 style: { ...child.props.style, ...style },
                 ref: makeChain(this.saveContentRef, child.ref),
                 'aria-hidden': !stateVisible && cache && this._isMounted,
+                onClick: this.props.onClick,
             });
 
             if (align) {

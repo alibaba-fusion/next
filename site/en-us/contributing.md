@@ -39,7 +39,19 @@ Chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp; `scope` is required
 7. If a pull request has multiple commits, rebase the multiple commit record to one commit record.
 
 ## Development Workflow
-After you clone the `@alifd/next` and install the dependencies with `npm install`, you can also run the following commands:
+
+1. Fork this repo to your own github account (step in the page https://github.com/alibaba-fusion/next , click on the fork button in the upper right cornor)
+2. Download the code you just forked on https://github.com/[your account]/next
+```
+git clone git@github.com:[your account]/next.git
+```
+3. Step in the files, create a new branch and start your work
+```
+cd next
+git checkout -b fix-issue-100
+```
+
+After doing all the stuff above and install the dependencies with `npm install`, you can also run the following commands:
 
 * `npm run dev component` start the debug page of the specified component
 
@@ -53,6 +65,19 @@ After you clone the `@alifd/next` and install the dependencies with `npm install
 
 * `npm run pack` package the file and generate the dist directory
 
+## Notes
+
+1. To support SSR (Server-Side-Render):
+    - Avoid using client variables such as windows as far as possible ( There is no window object on the server side. If you need to use it, you need to judge whether it exists step by step from the window. )
+    - Use `typeof` to check whether a client object exits or not
+        ```
+        if(window && window.autoScroll)
+        =>
+        if(typeof window != undefined && window.autoScroll) )
+        ```
+    - Avoid mounting timers (possible memory leaks) to global objects such as windows
+    - Avoid uncertain outputs such as random () (the output is predictable, independent of environment, etc.)
+2. The variable of SASS color calculation needs to start with `$color-calcualte-`, and should be written to `variable.scss` (not to `main.scss`), refer to `Search`, see #1029.
 
 ## Release Schedule
 

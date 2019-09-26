@@ -20,7 +20,10 @@ export interface ConfigProviderProps {
      * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
      * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传
      */
-    errorBoundary?: boolean | {};
+    errorBoundary?: boolean | {
+        afterCatch?: (error: Error, errorInfo: React.ErrorInfo) => void;
+        fallbackUI?: (error: Error, errorInfo: React.ErrorInfo) => React.ReactElement<any>;
+    };
 
     /**
      * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用
@@ -35,8 +38,12 @@ export interface ConfigProviderProps {
     /**
      * 是否开启 rtl 模式
      */
-    rtl?: boolean;
 
+    rtl?: boolean;
+    /**
+     * 设备类型，针对不同的设备类型组件做出对应的响应式变化
+     */
+    device?: 'tablet' | 'desktop' | 'phone',
     /**
      * 组件树
      */

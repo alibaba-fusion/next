@@ -49,7 +49,8 @@ class Search extends React.Component {
         onChange: PropTypes.func,
         /**
          * 点击搜索按钮触发的回调
-         * @param {Object} value 输入值
+         * @param {String} value 输入值
+         * @param {String} filterValue 选项值
          */
         onSearch: PropTypes.func,
         /**
@@ -171,12 +172,12 @@ class Search extends React.Component {
         this.setState(state);
     }
 
-    onChange = value => {
+    onChange = (value, ...argv) => {
         if (!('value' in this.props)) {
             this.setState({ value });
         }
 
-        this.props.onChange(value);
+        this.props.onChange(value, ...argv);
     };
 
     onSearch = () => {
@@ -245,19 +246,20 @@ class Search extends React.Component {
                 [`${prefix}search-icon`]: true,
                 [buttonProps.className]: !!buttonProps.className,
             });
-            searchIcon = (
-                <Icon
-                    type="search"
-                    tabIndex="0"
-                    role="button"
-                    aria-disabled={disabled}
-                    aria-label={locale.buttonText}
-                    {...buttonProps}
-                    className={cls}
-                    onClick={this.onSearch}
-                    onKeyDown={this.onKeyDown}
-                />
-            );
+            hasIcon &&
+                (searchIcon = (
+                    <Icon
+                        type="search"
+                        tabIndex="0"
+                        role="button"
+                        aria-disabled={disabled}
+                        aria-label={locale.buttonText}
+                        {...buttonProps}
+                        className={cls}
+                        onClick={this.onSearch}
+                        onKeyDown={this.onKeyDown}
+                    />
+                ));
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,

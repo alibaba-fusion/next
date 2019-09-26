@@ -134,7 +134,10 @@ class RangeCalendar extends React.Component {
                 startValue,
             });
 
-            if (startValue) {
+            if (
+                startValue &&
+                !startValue.isSame(this.state.startValue, 'day')
+            ) {
                 this.setState({
                     startVisibleMonth: startValue,
                 });
@@ -156,11 +159,12 @@ class RangeCalendar extends React.Component {
     }
 
     onSelectCell = (date, nextMode) => {
-        this.changeVisibleMonth(date, 'cellClick');
-
         if (this.state.mode === CALENDAR_MODE_DATE) {
             this.props.onSelect(date);
+        } else {
+            this.changeVisibleMonth(date, 'cellClick');
         }
+
         this.changeMode(nextMode);
     };
 

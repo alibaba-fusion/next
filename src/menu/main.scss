@@ -22,7 +22,8 @@
     background: $menu-background;
     line-height: $menu-line-height;
     font-size: $menu-font-size;
-
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease;
 
     &-embeddable,
     &-embeddable &-item.#{$css-prefix}disabled,
@@ -53,7 +54,7 @@
             }
 
             &expand-enter-active {
-                transition: height .3s ease-out;
+                transition: height $motion-duration-standard $motion-ease;
             }
 
             &expand-leave {
@@ -61,7 +62,7 @@
             }
 
             &expand-leave-active {
-                transition: height .3s ease-out;
+                transition: height $motion-duration-standard $motion-ease;
             }
         }
     }
@@ -69,7 +70,7 @@
     &-item {
         position: relative;
         padding: 0 $menu-padding-horizontal;
-        transition: background .2s ease;
+        transition: background $motion-duration-immediately $motion-linear;
         color: $menu-color;
         cursor: pointer;
 
@@ -152,7 +153,18 @@
     &.#{$css-prefix}hoz {
         padding: 0;
 
+        &#{$menu-prefix}-nowrap {
+            overflow: hidden;
+            white-space: nowrap;
+
+            #{$menu-prefix}-more {
+                padding: 0;
+                text-align: center;
+            }
+        }
+
         > #{$menu-prefix}-item,
+        > #{$menu-prefix}-sub-menu-wrapper,
         #{$menu-prefix}-content > #{$menu-prefix}-item {
             display: inline-block;
             vertical-align: top;
@@ -195,7 +207,7 @@
         right: 10px;
         @include icon-size($menu-icon-size);
         color: $menu-arrow-color;
-        transition: all ease .3s;
+        transition: all $motion-duration-immediately $motion-linear;
     }
 
     & &-icon-arrow-down.#{$css-prefix}open {
@@ -218,7 +230,7 @@
         right: 6px;
         @include icon-size($icon-xs);
         color: $menu-arrow-color;
-        transition: all ease .3s;
+        transition: all $motion-duration-immediately $motion-linear;
     }
 
     & &-hoz-icon-arrow.#{$css-prefix}open {

@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface SliderProps extends HTMLAttributesWeak {
+export interface SliderProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义传入的样式
      */
@@ -71,6 +72,11 @@ export interface SliderProps extends HTMLAttributesWeak {
      * 是否显示导航锚点
      */
     dots?: boolean;
+
+    /**
+     * 导航锚点的 CSS 类
+     */
+    dotsClass?: string;
 
     /**
      * 导航锚点位置

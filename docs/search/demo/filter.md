@@ -70,7 +70,6 @@ class App extends React.Component {
                 {
                     label: 'Suppliers',
                     value: 'Suppliers',
-                    default: true
                 }
             ],
             value: ''
@@ -96,7 +95,7 @@ class App extends React.Component {
 
         return (<div>
             <Search onChange={this.onChange.bind(this)} onSearch={this.onSearch.bind(this)}
-                filterProps={{autoWidth: false}}
+                filterProps={{autoWidth: false}} defaultFilterValue="Suppliers"
                 filter={this.state.filter} onFilterChange={this.onFilterChange.bind(this)}/>
         </div>);
     }

@@ -134,7 +134,7 @@ export default class RangePicker extends Component {
         /**
          * 弹层展示状态变化时的回调
          * @param {Boolean} visible 弹层是否显示
-         * @param {String} reason 触发弹层显示和隐藏的来源
+         * @param {String} type 触发弹层显示和隐藏的来源 okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发
          */
         onVisibleChange: PropTypes.func,
         /**
@@ -201,6 +201,7 @@ export default class RangePicker extends Component {
         ranges: PropTypes.object,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {
@@ -316,7 +317,9 @@ export default class RangePicker extends Component {
                         // 第一次选择，如果设置了时间默认值，则使用该默认时间
                         if (showTime.defaultValue) {
                             const defaultTimeValue = formatDateValue(
-                                showTime.defaultValue,
+                                Array.isArray(showTime.defaultValue)
+                                    ? showTime.defaultValue[0]
+                                    : showTime.defaultValue,
                                 this.timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
@@ -346,7 +349,10 @@ export default class RangePicker extends Component {
                         // 第一次选择，如果设置了时间默认值，则使用该默认时间
                         if (showTime.defaultValue) {
                             const defaultTimeValue = formatDateValue(
-                                showTime.defaultValue,
+                                Array.isArray(showTime.defaultValue)
+                                    ? showTime.defaultValue[1] ||
+                                          showTime.defaultValue[0]
+                                    : showTime.defaultValue,
                                 this.timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
@@ -596,19 +602,25 @@ export default class RangePicker extends Component {
         this.onValueChange([startValue, endValue]);
     };
 
-    onVisibleChange = (visible, reason) => {
+    onVisibleChange = (visible, type) => {
         if (!('visible' in this.props)) {
             this.setState({
                 visible,
             });
         }
-        this.props.onVisibleChange(visible, reason);
+        this.props.onVisibleChange(visible, type);
     };
 
     changePanel = panel => {
+        const { startValue, endValue } = this.state;
         this.setState({
             panel,
-            activeDateInput: panel === PANEL.DATE ? 'startValue' : 'startTime',
+            activeDateInput:
+                panel === PANEL.DATE
+                    ? !!startValue && !endValue
+                        ? 'endValue'
+                        : 'startValue'
+                    : 'startTime',
         });
     };
 
@@ -850,7 +862,7 @@ export default class RangePicker extends Component {
                     {...sharedTimeInputProps}
                     value={startTimeInputValue}
                     aria-label={startTimeInputAriaLabel}
-                    disabled={disabled || !state.startValue || !state.endValue}
+                    disabled={disabled || !state.startValue}
                     onFocus={() => this.onFocusTimeInput('startTime')}
                     className={startTimeInputCls}
                 />
@@ -866,7 +878,7 @@ export default class RangePicker extends Component {
                     {...sharedTimeInputProps}
                     value={endTimeInputValue}
                     aria-label={endTimeInputAriaLabel}
-                    disabled={disabled || !state.endValue || !state.startValue}
+                    disabled={disabled || !state.endValue}
                     onFocus={() => this.onFocusTimeInput('endTime')}
                     className={endTimeInputCls}
                 />
@@ -888,6 +900,7 @@ export default class RangePicker extends Component {
                 <div className={`${prefix}range-picker-panel-time`}>
                     <TimePickerPanel
                         {...sharedTimePickerProps}
+                        disabled={disabled || !state.startValue}
                         className={`${prefix}range-picker-panel-time-start`}
                         value={state.startValue}
                         onSelect={this.onSelectStartTime}
@@ -895,6 +908,7 @@ export default class RangePicker extends Component {
                     <TimePickerPanel
                         {...sharedTimePickerProps}
                         {...disabledTime}
+                        disabled={disabled || !state.endValue}
                         className={`${prefix}range-picker-panel-time-end`}
                         value={state.endValue}
                         onSelect={this.onSelectEndTime}
@@ -906,7 +920,7 @@ export default class RangePicker extends Component {
         panelFooter = panelFooter || (
             <PanelFooter
                 prefix={prefix}
-                value={state.startValue && state.endValue}
+                value={state.startValue || state.endValue}
                 ranges={Object.keys(ranges).map(key => ({
                     label: key,
                     value: ranges[key],
@@ -975,9 +989,9 @@ export default class RangePicker extends Component {
                 className={classNames}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}

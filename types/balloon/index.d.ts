@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
+export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -49,7 +50,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
      * 触发行为
      * 鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件
      */
-    triggerType?: string | Array<any>;
+    triggerType?: string | Array<string>;
 
     /**
      * 弹层组件style，透传给Popup
@@ -74,9 +75,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层id, 传入值才会支持无障碍
@@ -85,7 +84,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export class Tooltip extends React.Component<TooltipProps, any> {}
-export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
+export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 自定义类名
      */
@@ -151,7 +150,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 弹层相对于trigger的定位的微调
      */
-    offset?: Array<any>;
+    offset?: Array<number>;
 
     /**
      * 触发元素
@@ -162,7 +161,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
      * 触发行为
      * 鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click
      */
-    triggerType?: string | Array<any>;
+    triggerType?: string | Array<string>;
 
     /**
      * 任何visible为false时会触发的事件
@@ -217,9 +216,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
      */
-    popupContainer?:
-        | string
-        | ((target: React.ReactElement<any>) => React.ReactElement<any>);
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 弹层组件style，透传给Popup

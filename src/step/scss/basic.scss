@@ -16,7 +16,7 @@
         }
 
         &-node {
-            transition: all .2s ease;
+            transition: all $motion-duration-immediately $motion-linear;
             &.clicked {
                 transform: scale3d(.8, .8, .8);
             }

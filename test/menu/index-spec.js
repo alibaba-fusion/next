@@ -84,6 +84,41 @@ describe('Menu', () => {
         assert(item.find('.next-menu-item-helper').text() === 'helper');
     });
 
+    it('Group/SubMenu should accepct string/number/node', () => {
+        wrapper = mount(
+            <Menu defaultOpenKeys={['sub-menu']}>
+                 <Group label="Group">
+                    test-group-string
+                    <Item className="custom-className" key="group-1">
+                        Group option 1
+                    </Item>
+                </Group>
+                <SubMenu key="sub-menu" label="Sub menu">
+                    test-submenu-string
+                    <Item className="custom-className" key="sub-1">
+                        Sub option 1
+                    </Item>
+                </SubMenu>
+            </Menu>
+        );
+        const innerHTML = wrapper.find('.next-menu').at(0).instance().innerHTML;
+        assert(innerHTML.match('test-group-string'));
+        assert(innerHTML.match('test-submenu-string'));
+    });
+
+    it('Group/SubMenu robotness', () => {
+        wrapper = mount(
+            <Menu openKeys={['no-exist']} mode="popup">
+                <SubMenu key="sub-menu" label="Sub menu">
+                    <Item className="custom-className" key="sub-1">
+                        Sub option 1
+                    </Item>
+                </SubMenu>
+            </Menu>
+        );
+        assert(wrapper);
+    });
+
     it('should filter duplicate keys', () => {
         wrapper = mount(
             <Menu>
@@ -161,6 +196,36 @@ describe('Menu', () => {
         const item = wrapper.find('.next-menu-item');
         assert(item.hasClass('next-disabled'));
         assert(item.prop('aria-disabled'));
+    });
+
+    it('paddingleft should only be related to inline mode', () => {
+        wrapper = mount(
+            <Menu direction="hoz" mode="popup" defaultOpenKeys={['sub', 'sub1', 'sub2', 'suba', 'suba1', 'suba2']}>
+                <SubMenu label="submenu1" key="sub">
+                    <Item>1</Item>
+                    <SubMenu label="submenu2" mode="inline" key="sub1">
+                        <Item>2</Item>
+                        <SubMenu label="submenu3" mode="inline" key="sub2">
+                            <Item id="sub2-item">3</Item>
+                        </SubMenu>
+                    </SubMenu>
+                </SubMenu>
+                <SubMenu label="submenu11" key="suba">
+                    <Item>11</Item>
+                    <SubMenu label="submenu21" key="suba1">
+                        <Item>21</Item>
+                        <SubMenu label="submenu31" mode="inline" key="suba2">
+                            <Item id="suba2-item">31</Item>
+                        </SubMenu>
+                    </SubMenu>
+                </SubMenu>
+            </Menu>
+        );
+        const item1Level = wrapper.find('#sub2-item').at(0).props().inlineLevel;
+        const item2Level = wrapper.find('#suba2-item').at(0).props().inlineLevel;
+
+        assert(item1Level === 3);
+        assert(item2Level === 2);
     });
 
     it('should render menu divider', () => {
@@ -834,6 +899,46 @@ describe('Menu', () => {
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
+    });
+
+    it('should support hozInLine in hoz', () => {
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu
+                direction="hoz"
+                style={{width: 300}}
+                mode="popup"
+                hozInLine
+            >
+                <Item key="0" style={{width: 100}}>0</Item>
+                <Item key="1" style={{width: 60}}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                    <Item key="2">2</Item>
+                    <Item key="3">3</Item>
+                </SubMenu>
+                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="5">5</Item>
+                <Item key="6">6</Item>
+            </Menu>,
+            div
+        );
+
+        const menu = document.querySelector('.next-menu.next-hoz');
+        assert(menu.querySelectorAll('li.next-menu-more').length === 2);
+
+        const indicator = menu.querySelectorAll('li.next-menu-more')[0].querySelector('.next-menu-item-inner');
+        indicator.click();
+        const overlay = document.querySelector('.next-overlay-wrapper');
+
+        assert(overlay);
+        assert(overlay.querySelectorAll('li').length === 2);
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+
     });
 });
 

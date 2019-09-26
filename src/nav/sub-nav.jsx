@@ -66,8 +66,6 @@ class SubNav extends Component {
                         type={mode === 'popup' ? 'arrow-right' : 'arrow-down'}
                     />
                 );
-            } else if (!iconEl) {
-                iconEl = <span className={`${prefix}nav-icon-placeholder`} />;
             }
         }
         const newLabel = [

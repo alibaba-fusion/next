@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
-import { dom, KEYCODE, func } from '../../src/util';
+import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
 import '../../src/tree/style.js';
 
@@ -111,7 +111,9 @@ class CheckDemo extends Component {
                 defaultExpandAll
                 checkable
                 checkedKeys={this.state.checkedKeys}
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 onCheck={this.handleCheck}
                 {...this.props}
             />
@@ -366,7 +368,7 @@ describe('Tree', () => {
         assertSelected('3', true);
 
         selectTreeNode('3');
-        assertSelected('3', false);
+        assertSelected('3', true);
     });
 
     it('should support selectedKeys and onSelect', () => {
@@ -411,8 +413,8 @@ describe('Tree', () => {
         );
         assertChecked('3', true);
         assertChecked('6', true);
-        assertChecked('1', false);
-        assertIndeterminate('1', true);
+        assertChecked('1', true);
+        assertIndeterminate('1', false);
         assert(
             hasClass(
                 findTreeNodeByKey('4').querySelector('.next-checkbox-wrapper'),
@@ -452,7 +454,9 @@ describe('Tree', () => {
             <Tree
                 checkable
                 defaultExpandAll
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 onCheck={handleCheck}
             />,
             mountNode
@@ -474,7 +478,9 @@ describe('Tree', () => {
                 checkable
                 checkedStrategy="parent"
                 defaultExpandAll
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 onCheck={handleCheck}
             />,
             mountNode
@@ -703,6 +709,72 @@ describe('Tree', () => {
 
         assert(hasClass(findTreeNodeByKey('1'), 'next-filtered'));
     });
+
+    it('should support disabled', () => {
+        ReactDOM.render(
+            <Tree
+                dataSource={dataSource}
+                defaultExpandAll
+                checkable
+                defaultCheckedKeys={['3']}
+            />,
+            mountNode
+        );
+
+        ['1', '3', '6'].forEach(key => assertChecked(key, true));
+        checkTreeNode('6');
+        checkTreeNode('4');
+        ['1', '3', '6'].forEach(key => assertChecked(key, false));
+        assertChecked('4', true);
+    })
+
+    it('should support checkable = false', () => {
+        ReactDOM.render(
+            <Tree
+                dataSource={cloneData(dataSource, {
+                    2: {
+                        disabled: false,
+                        checkable: false
+                    }
+                })}
+                defaultExpandAll
+                checkable
+                defaultCheckedKeys={['3']}
+            />,
+            mountNode
+        );
+        ['3', '6'].forEach(key => assertChecked(key, true));
+        assertIndeterminate('1', true);
+        checkTreeNode('4');
+        checkTreeNode('5');
+        ['1', '3', '6'].forEach(key => assertChecked(key, true));
+        assertIndeterminate('1', false);
+    });
+
+    it('should test defaultCheckKeys in disabled node',  () => {
+        ReactDOM.render(
+            <Tree
+                dataSource={cloneData(dataSource, {
+                    2: {
+                        disabled: false,
+                        checkable: true
+                    },
+                    5: {
+                        disabled: true
+                    }
+                })}
+                defaultExpandAll
+                checkable
+                defaultCheckedKeys={['2', '4', '5']}
+            />,
+            mountNode
+        );
+
+        ['2', '4', '5'].forEach(key => assertChecked(key, true));
+        checkTreeNode('4');
+        ['2', '4'].forEach(key => assertChecked(key, false));
+        assertChecked('5', true)
+    })
 
     it('should support keyboard', () => {
         ReactDOM.render(

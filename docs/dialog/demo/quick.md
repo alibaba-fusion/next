@@ -17,7 +17,6 @@ The Dialog provides quick methods called alert and confirm, as well as a lower-l
 ````jsx
 import { Button, Dialog, ConfigProvider } from '@alifd/next';
 
-
 const popupAlert = () => {
     Dialog.alert({
         title: 'Alert',
@@ -36,7 +35,7 @@ const popupConfirm = () => {
     });
 };
 
-const popupCustom = () => {
+const popupShow = () => {
     const dialog = Dialog.show({
         title: 'Custom',
         content: 'custom content custom content...',
@@ -48,12 +47,25 @@ const popupCustom = () => {
     });
 };
 
+const popupCustomIcon = () => {
+    Dialog.confirm({
+        title: 'Confirm',
+        content: 'set icon as "warning" ',
+        messageProps:{
+            type: 'warning'
+        },
+        onOk: () => console.log('ok'),
+        onCancel: () => console.log('cancel')
+    });
+}
+
 ReactDOM.render(
     <ConfigProvider locale={{ Dialog: { ok: 'OK', cancel: 'Cancel' } }}>
         <span>
             <Button onClick={popupAlert}>Alert</Button> &nbsp;
             <Button onClick={popupConfirm}>Confirm</Button> &nbsp;
-            <Button onClick={popupCustom}>Custom</Button>
+            <Button onClick={popupShow}>Show</Button> &nbsp;
+            <Button onClick={popupCustomIcon}>Custom Icon</Button>
         </span>
     </ConfigProvider>,
     mountNode
