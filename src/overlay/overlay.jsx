@@ -187,6 +187,7 @@ export default class Overlay extends Component {
         onMaskMouseLeave: PropTypes.func,
         onClick: PropTypes.func,
         maskClass: PropTypes.string,
+        isChildrenInMask: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -216,6 +217,7 @@ export default class Overlay extends Component {
         needAdjust: true,
         disableScroll: false,
         cache: false,
+        isChildrenInMask: false,
         onClick: e => e.stopPropagation(),
         maskClass: '',
     };
@@ -705,6 +707,7 @@ export default class Overlay extends Component {
             onMaskMouseEnter,
             onMaskMouseLeave,
             maskClass,
+            isChildrenInMask,
         } = this.props;
         const { visible: stateVisible, status, animation } = this.state;
 
@@ -794,11 +797,10 @@ export default class Overlay extends Component {
                             onMouseLeave={onMaskMouseLeave}
                             dir={rtl ? 'rtl' : undefined}
                         >
-                            {children}
+                            {isChildrenInMask && children}
                         </div>
-                    ) : (
-                        children
-                    )}
+                    ) : null}
+                    {!isChildrenInMask && children}
                 </div>
             );
         }
