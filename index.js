@@ -1,5 +1,5 @@
 var next = require('./lib/index.js');
 
-next.version = '1.17.12';
+next.version = '1.18.1';
 
 module.exports = next;

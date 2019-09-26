@@ -45,7 +45,7 @@ class App extends React.Component {
 
     isChecked(rule, value) {
         if (!value) {
-            return Promise.reject('consent agreement not checked ')
+            return Promise.reject('consent agreement not checked ');
         } else {
             return Promise.resolve(null);
         }
@@ -55,11 +55,11 @@ class App extends React.Component {
         if (value === 'frank') {
             return new Promise((resolve, reject) => {
                 setTimeout(() => reject('name existed'), 200);
-            })
+            });
         } else {
             return new Promise((resolve) => {
                 setTimeout(() => resolve(null), 200);
-            })
+            });
         }
     }
 

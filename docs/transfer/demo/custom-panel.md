@@ -102,7 +102,7 @@ class Demo extends React.Component {
                             <Tree checkable editable
                                 style={{padding: '10px'}}
                                 checkedKeys={value}
-                                onCheck={(keys, extra) => {const newValues=extra.checkedNodes.map(item => item.props.value); onChange(position, newValues)}}
+                                onCheck={(keys, extra) => {const newValues=extra.checkedNodes.map(item => item.props.value); onChange(position, newValues);}}
                                 >
                                 {this.getTreeDataSource(treeDataSource, selected)}
                             </Tree>

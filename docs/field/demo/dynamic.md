@@ -48,10 +48,10 @@ class Demo extends React.Component {
 
     input = (value, index) => <Input  {...this.field.init(`name.${index}.input`)} />;
     op = (value, index) => {
-        return <span>
+        return (<span>
             <Button type="primary" onClick={this.addItem.bind(this, index + 1)}>add</Button>
             <Button warning onClick={this.removeItem.bind(this, index)} style={{marginLeft: 4}}>delete</Button>
-        </span>
+        </span>);
     }
 
     render() {
