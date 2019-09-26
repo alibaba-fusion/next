@@ -30,9 +30,10 @@ class RenderShell extends React.Component {
     render() {
         const { type, i18n, demoFunction } = this.props;
         const device = demoFunction.device.value;
+        const globalDir = demoFunction.navigation.value;
         // let globalNavType = demoFunction.navigationType.value,
         //     localNavType = demoFunction.localNavType.value,
-        let globalNavType = 'normal',
+        let globalHozNavType = 'normal',
             localNavType = 'normal',
             logoStyle = {},
             shellStyle = {};
@@ -40,12 +41,15 @@ class RenderShell extends React.Component {
         switch(type) {
             case 'light':
                 logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
+                globalHozNavType = 'normal';
                 break;
             case 'dark':
                 logoStyle = {width: 32, height: 32, background: '#FFF', opacity: '0.2'};
+                globalHozNavType = globalDir === 'hoz' ? 'primary' : 'normal';
                 break;
             case 'brand':
                 logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
+                globalHozNavType = globalDir === 'hoz' ? 'secondary' : 'normal';
                 break;
             default:
                 break;
@@ -78,8 +82,8 @@ class RenderShell extends React.Component {
 
                     {
                         demoFunction.navigation.value !== 'false'
-                            ?  <Shell.Navigation direction={demoFunction.navigation.value}>
-                                <Nav type={globalNavType} embeddable direction={demoFunction.navigation.value} hozInLine>
+                            ?  <Shell.Navigation direction={globalDir}>
+                                <Nav type={globalHozNavType} embeddable direction={globalDir} hozInLine>
                                     <Nav.Item icon="account">Nav Item 1</Nav.Item>
                                     <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                                     <Nav.Item icon="atm">Nav Item 3</Nav.Item>
@@ -353,7 +357,7 @@ function render(i18n, lang) {
 
 window.renderDemo = function (lang = 'en-us') {
     render(i18nMap[lang], lang);
-};s
+};
 
 renderDemo();
 
