@@ -416,6 +416,14 @@ class NumberPicker extends React.Component {
         e.preventDefault();
     }
 
+    /**
+     *  size need't small
+     *  @param size string
+     * */
+    _ignoreSmall(size) {
+        return size === 'large' ? 'large' : 'medium';
+    }
+
     render() {
         const {
             type,
@@ -441,7 +449,7 @@ class NumberPicker extends React.Component {
         const cls = classNames({
             [prefixCls]: true,
             [`${prefixCls}-${this.props.type}`]: this.props.type,
-            [`${prefix}${size}`]: true,
+            [`${prefix}${this._ignoreSmall(size)}`]: true,
             [className]: className,
         });
 
@@ -493,7 +501,7 @@ class NumberPicker extends React.Component {
             addonBefore = (
                 <Button
                     {...downBtnProps}
-                    size={size}
+                    size={this._ignoreSmall(size)}
                     disabled={disabled}
                     className={`${downBtnProps.className || ''} ${
                         downDisabled ? 'disabled' : ''
@@ -506,7 +514,7 @@ class NumberPicker extends React.Component {
             addonAfter = (
                 <Button
                     {...upBtnProps}
-                    size={size}
+                    size={this._ignoreSmall(size)}
                     disabled={disabled}
                     className={`${upBtnProps.className || ''} ${
                         upDisabled ? 'disabled' : ''
@@ -540,7 +548,7 @@ class NumberPicker extends React.Component {
                     readOnly={!editable}
                     value={this.renderValue()}
                     disabled={disabled}
-                    size={size}
+                    size={this._ignoreSmall(size)}
                     onChange={this.onChange.bind(this)}
                     ref={this.saveInputRef.bind(this)}
                     label={label}
