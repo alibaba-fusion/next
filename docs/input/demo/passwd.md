@@ -18,9 +18,15 @@ Set `Input` as a password type input;
 ````jsx
 import { Input } from '@alifd/next';
 
+function onChange(v) {
+    console.log(v);
+}
+
 ReactDOM.render(
     <div>
-        <Input htmlType="password" defaultValue="whoami" aria-label="Please input password"/>
+        <Input.Password placeholder="please input password" onChange={onChange} /><br /><br />
+        <Input.Password size="large" placeholder="please input password" onChange={onChange} /><br /><br />
+        <Input.Password size="small" placeholder="please input password" onChange={onChange} /><br /><br />
     </div>
     , mountNode);
 ````

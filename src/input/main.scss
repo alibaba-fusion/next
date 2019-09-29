@@ -115,9 +115,11 @@
         }
     }
 
-    .#{$css-prefix}icon-delete-filling:hover {
-        cursor: pointer;
-        color: $input-hint-hover-color;
+    .#{$css-prefix}icon-delete-filling, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
+        &:hover {
+            cursor: pointer;
+            color: $input-hint-hover-color;
+        }
     }
 
     @mixin clear-icon-visible {
