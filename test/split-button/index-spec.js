@@ -44,7 +44,7 @@ describe('SplitButton', () => {
             wrapper.setProps({ selectedKeys: ['b'] });
             assert(
                 wrapper
-                    .find('li[title="b"][role="listitem"]')
+                    .find('li[title="b"][role="option"]')
                     .hasClass('next-selected')
             );
         });
@@ -81,10 +81,10 @@ describe('SplitButton', () => {
                     {menu}
                 </SplitButton>
             );
-            wrapper.find('li[title="b"][role="listitem"]').simulate('click');
+            wrapper.find('li[title="b"][role="option"]').simulate('click');
             assert(
                 wrapper
-                    .find('li[title="b"][role="listitem"]')
+                    .find('li[title="b"][role="option"]')
                     .hasClass('next-selected')
             );
         });
@@ -100,10 +100,10 @@ describe('SplitButton', () => {
                     {menu}
                 </SplitButton>
             );
-            wrapper.find('li[title="b"][role="listitem"]').simulate('click');
+            wrapper.find('li[title="b"][role="option"]').simulate('click');
             assert(
                 wrapper
-                    .find('li[title="a"][role="listitem"]')
+                    .find('li[title="a"][role="option"]')
                     .hasClass('next-selected')
             );
         });

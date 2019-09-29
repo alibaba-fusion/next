@@ -231,6 +231,17 @@ class TestDevice extends Component {
 
 const NTestDevice = config(TestDevice);
 
+function FunComponent (props) {
+    return <div {...props}/>
+};
+const NewFunComponent = config(FunComponent);
+
+const ForwardRef = React.forwardRef((props,ref)=>{
+    return (
+        <div ref={ref} {...props}></div>
+    )
+});
+const NewForwardRef = config(ForwardRef);
 describe('ConfigProvider', () => {
     let wrapper;
 
@@ -239,6 +250,22 @@ describe('ConfigProvider', () => {
             wrapper.unmount();
             wrapper = null;
         }
+    });
+
+    it('should support function component', () => {
+        wrapper = mount(<ConfigProvider>
+            <NewFunComponent title="ssss" />
+        </ConfigProvider>);
+        const output = wrapper.find(FunComponent);
+        assert(output);
+    });
+
+    it('should support forwardRef component', () => {
+        wrapper = mount(<ConfigProvider>
+            <NewForwardRef title="ssss" />
+        </ConfigProvider>);
+        const output = wrapper.find(FunComponent);
+        assert(output);
     });
 
     it('should use default prop by default', () => {

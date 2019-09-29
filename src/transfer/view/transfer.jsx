@@ -140,6 +140,10 @@ class Transfer extends Component {
          * 请设置 id 以保证transfer的可访问性
          */
         id: PropTypes.string,
+        /**
+         * 接收 children 自定义渲染列表
+         */
+        children: PropTypes.func,
     };
 
     static defaultProps = {
@@ -538,6 +542,7 @@ class Transfer extends Component {
             sortable,
             rtl,
             id,
+            children,
         } = this.props;
         const { value, leftCheckedValue, rightCheckedValue } = this.state;
         const itemValues = dataSource.map(item => item.value);
@@ -569,6 +574,7 @@ class Transfer extends Component {
             sortable,
             onSort: this.handlePanelSort,
             baseId: id,
+            customerList: children,
         };
         const others = pickOthers(Object.keys(Transfer.propTypes), this.props);
 

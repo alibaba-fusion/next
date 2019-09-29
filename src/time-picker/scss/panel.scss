@@ -24,4 +24,10 @@
             width: 50%;
         }
     }
+
+    &-col-1 {
+        #{$time-picker-prefix}-menu {
+            width: 100%;
+        }
+    }
 }

@@ -6,12 +6,14 @@
 
 `注意`：Form 和 Field 做了深度结合，在 Form 中使用Field，错误信息不需`getError`获取会自动展现。
 
+请参考 validatorPromise demo，以使用Promise而不是回调
+
 :::lang=en-us
 # validate
 
 - order: 4
 
-you can easily use validate in `Form`, or you can use `getError` to set errors where you want to put
+you can easily use validate in `Form`, or you can use `getError` to set errors where you want to put. See `validatorPromise` demo to use promises instead of callbacks.
 :::
 ---
 

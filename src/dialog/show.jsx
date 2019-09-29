@@ -43,7 +43,7 @@ class Modal extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
-        type: PropTypes.string,
+        type: PropTypes.oneOf(['alert', 'confirm']),
         title: PropTypes.node,
         content: PropTypes.node,
         messageProps: PropTypes.object,

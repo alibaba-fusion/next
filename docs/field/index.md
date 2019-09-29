@@ -176,6 +176,10 @@ class Demo extends React.Component {
 ### 初始化
 ```
 let myfield = new Field(this [,options]);
+
+或者使用hooks
+
+let myfield = Field.useField([options]); // 要求 react 版本 > 16.8
 ```
 
 | 参数      | 说明                                     | 类型       |  可选值 |默认值 |

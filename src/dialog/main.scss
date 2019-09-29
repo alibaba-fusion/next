@@ -106,6 +106,7 @@
         padding: $s-10;
         overflow: auto;
         text-align: center;
+        box-sizing: border-box;
 
         &:before {
             display: inline-block;

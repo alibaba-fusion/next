@@ -154,6 +154,7 @@ export default config(Component);
 | device | Responsive of device <br>Options:<br> `desktop`, `tablet`, `phone` | - |
 | warning  | whether to display the warning prompt for component properties being deprecated in development mode        | Boolean      | true  |
 | children | component tree                                 | ReactElement | -   |
+| popupContainer | shell container node | String/Function | - |
 
 <!-- api-extra-start -->
 

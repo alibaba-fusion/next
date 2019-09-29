@@ -44,7 +44,11 @@ class App extends React.Component {
                 b: 'b',
                 c: 'c'
             },
-            arr: ['first', 'second']
+            arr: ['first', 'second'],
+            objWithDefaults: {
+                a: 100,
+                b: 200
+            }
         });
     }
 

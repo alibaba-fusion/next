@@ -388,6 +388,7 @@ export default class TimePicker extends Component {
             disabled,
             showHour: format.indexOf('H') > -1,
             showSecond: format.indexOf('s') > -1,
+            showMinute: format.indexOf('m') > -1,
             hourStep,
             minuteStep,
             secondStep,
