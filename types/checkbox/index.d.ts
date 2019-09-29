@@ -54,7 +54,7 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时的事件
      */
-    onChange?: (value: Array<string> | Array<data>, e: any) => void;
+    onChange?: (value: Array<string>, e: any) => void;
 
     /**
      * 子项目的排列方式
