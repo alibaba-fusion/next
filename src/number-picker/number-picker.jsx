@@ -266,6 +266,15 @@ class NumberPicker extends React.Component {
         }
 
         if (`${val}` !== `${value}`) {
+            // under controled, set back to props.value
+            if (
+                'value' in this.props &&
+                `${this.props.value}` !== `${this.state.value}`
+            ) {
+                this.setState({
+                    value: this.props.value,
+                });
+            }
             this.onCorrect(val, value);
         }
 
