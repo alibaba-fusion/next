@@ -49,6 +49,15 @@ describe('Line', () => {
                 wrapper.find('.next-progress-line-show-border').length === 1
             );
         });
+
+        it('should render a line progress with custom background color', () => {
+            wrapper = mount(<Progress percent={66} backgroundColor={'blue'} />);
+
+            assert(
+                wrapper.find('.next-progress-line-underlay').prop('style')
+                    .backgroundColor === 'blue'
+            );
+        });
     });
 
     describe('action', () => {
@@ -121,6 +130,21 @@ describe('Circle', () => {
                 />
             );
             assert(wrapper.find('.next-progress-circle-text').text() === '6.6');
+        });
+
+        it('should render a circle progress with custom background color', () => {
+            const wrapper = mount(
+                <Progress
+                    shape="circle"
+                    percent={66}
+                    backgroundColor={'#ff0000'}
+                />
+            );
+
+            assert(
+                wrapper.find('.next-progress-circle-underlay').prop('style')
+                    .stroke === '#ff0000'
+            );
         });
     });
 
