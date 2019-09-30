@@ -146,7 +146,7 @@
     &.#{$css-prefix}focus {
         border-color: $input-focus-border-color;
         background-color: $input-focus-bg-color;
-        box-shadow: 0 0 0 $input-focus-shadow-spread $input-focus-shadow-color;
+        box-shadow: 0 0 0 $input-focus-shadow-spread $color-input-focus-shadow;
     }
 
     &.#{$css-prefix}error {
@@ -159,7 +159,7 @@
         }
 
         &.#{$css-prefix}focus {
-            box-shadow: 0 0 0 $input-focus-shadow-spread $input-feedback-error-shadow-color;
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-input-feedback-error-shadow;
         }
     }
 
