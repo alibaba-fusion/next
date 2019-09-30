@@ -38,10 +38,15 @@ $input-hover-bg-color: $color-white !default;
 /// border
 /// @namespace statement/focus
 $input-focus-border-color: $color-brand1-6 !default;
+$color-calculate-input-focus-shadow: rgba($input-focus-border-color, .2);
 
 /// background
 /// @namespace statement/focus
 $input-focus-bg-color: $color-white !default;
+
+/// shadow
+/// @namespace statement/focus
+$input-focus-shadow-spread: $line-zero !default;
 
 /// border
 /// @namespace size/bounding
@@ -160,6 +165,11 @@ $input-feedback-loading-color: $color-notice-3 !default;
 /// border
 /// @namespace statement/error
 $input-feedback-error-border-color: $color-error-3 !default;
+$color-calculate-input-feedback-error-shadow: rgba($input-feedback-error-border-color, .2);
+
+/// background
+/// @namespace statement/error
+$input-feedback-error-bg-color: $color-white !default;
 
 // maxlen
 // --------------------------------------------------

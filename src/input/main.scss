@@ -115,9 +115,11 @@
         }
     }
 
-    .#{$css-prefix}icon-delete-filling:hover {
-        cursor: pointer;
-        color: $input-hint-hover-color;
+    .#{$css-prefix}icon-delete-filling, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
+        &:hover {
+            cursor: pointer;
+            color: $input-hint-hover-color;
+        }
     }
 
     @mixin clear-icon-visible {
@@ -144,14 +146,20 @@
     &.#{$css-prefix}focus {
         border-color: $input-focus-border-color;
         background-color: $input-focus-bg-color;
+        box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
     }
 
     &.#{$css-prefix}error {
         border-color: $input-feedback-error-border-color;
+        background-color: $input-feedback-error-bg-color;
 
         &.#{$css-prefix}focus,
         &:hover {
             border-color: $input-feedback-error-border-color;
+        }
+
+        &.#{$css-prefix}focus {
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-feedback-error-shadow;
         }
     }
 
