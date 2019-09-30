@@ -5,6 +5,9 @@ import ConfigProvider from '../config-provider';
 import Input from './input';
 import Icon from '../icon/index';
 
+function preventDefault(e) {
+    e.preventDefault();
+}
 export default class Password extends Input {
     state = {
         hint: 'eye',
@@ -20,7 +23,9 @@ export default class Password extends Input {
         showToggle: true,
     };
 
-    toggleEye = () => {
+    toggleEye = e => {
+        e.preventDefault();
+
         const eyeClose = this.state.hint === 'eye-close';
 
         this.setState({
@@ -34,7 +39,11 @@ export default class Password extends Input {
         const { hint, htmlType } = this.state;
 
         const extra = showToggle ? (
-            <Icon type={hint} onClick={this.toggleEye} />
+            <Icon
+                type={hint}
+                onClick={this.toggleEye}
+                onMouseDown={preventDefault}
+            />
         ) : null;
 
         return <Input {...others} extra={extra} htmlType={htmlType} />;
