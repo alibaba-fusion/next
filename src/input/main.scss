@@ -146,6 +146,7 @@
     &.#{$css-prefix}focus {
         border-color: $input-focus-border-color;
         background-color: $input-focus-bg-color;
+        box-shadow: 0 0 0 $input-focus-shadow-spread rgba($input-focus-border-color, .2);
     }
 
     &.#{$css-prefix}error {
@@ -155,6 +156,10 @@
         &.#{$css-prefix}focus,
         &:hover {
             border-color: $input-feedback-error-border-color;
+        }
+
+        &.#{$css-prefix}focus {
+            box-shadow: 0 0 0 $input-focus-shadow-spread rgba($input-feedback-error-border-color, .2);
         }
     }
 

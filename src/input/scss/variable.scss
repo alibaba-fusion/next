@@ -43,6 +43,10 @@ $input-focus-border-color: $color-brand1-6 !default;
 /// @namespace statement/focus
 $input-focus-bg-color: $color-white !default;
 
+/// shadow
+/// @namespace statement/focus
+$input-focus-shadow-spread: $line-zero !default;
+
 /// border
 /// @namespace size/bounding
 $input-border-width: $line-1 !default;
