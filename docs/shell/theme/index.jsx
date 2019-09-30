@@ -14,13 +14,13 @@ import '../../../src/nav/style.js';
 /* eslint-disable */
 const i18nMap = {
     'zh-cn': {
-        button: '按钮',
+        shell: '布局框架',
         light: 'Shell模版1 - light',
         dark: 'Shell模版2 - dark',
         brand: 'Shell模版3 - brand',
     },
     'en-us': {
-        button: 'Button',
+        shell: 'Shell',
         light: 'Template 1 - light',
         dark: 'Template 2 - dark',
         brand: 'Template 3 - brand',
@@ -351,7 +351,7 @@ class FunctionDemo extends React.Component {
 
 function render(i18n, lang) {
     return ReactDOM.render(<ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}><div className="demo-container">
-        <FunctionDemo title={i18n.button} locale={i18n} shellRender={renderShell} types={['light', 'dark', 'brand']} />
+        <FunctionDemo title={i18n.shell} locale={i18n} shellRender={renderShell} types={['light', 'dark', 'brand']} />
     </div></ConfigProvider>, document.getElementById('container'));
 }
 
