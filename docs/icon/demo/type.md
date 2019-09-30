@@ -28,7 +28,8 @@ const types = [
     'loading', 'search', 'close', 'ellipsis', 'picture',
     'calendar', 'ashbin', 'upload', 'download', 'set',
     'edit', 'refresh', 'filter', 'attachment', 'account',
-    'email', 'atm'
+    'email', 'atm', 'copy', 'exit', 'eye', 'eye-close', 'toggle-left', 'toggle-right',
+    'lock', 'unlock','chart-pie', 'chart-bar'
 ];
 
 
