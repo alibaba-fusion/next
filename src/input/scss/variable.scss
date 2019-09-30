@@ -38,6 +38,7 @@ $input-hover-bg-color: $color-white !default;
 /// border
 /// @namespace statement/focus
 $input-focus-border-color: $color-brand1-6 !default;
+$input-focus-shadow-color: rgba($input-focus-border-color, .2);
 
 /// background
 /// @namespace statement/focus
@@ -164,6 +165,7 @@ $input-feedback-loading-color: $color-notice-3 !default;
 /// border
 /// @namespace statement/error
 $input-feedback-error-border-color: $color-error-3 !default;
+$input-feedback-error-shadow-color: rgba($input-feedback-error-border-color, .2);
 
 /// background
 /// @namespace statement/error
