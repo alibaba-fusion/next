@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import ConfigProvider from '../config-provider';
 
 export default function Base(props) {
     const { componentName } = props;
@@ -100,5 +101,5 @@ export default function Base(props) {
         }
     }
 
-    return Shell;
+    return ConfigProvider.config(Shell);
 }
