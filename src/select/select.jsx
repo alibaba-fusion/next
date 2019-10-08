@@ -668,14 +668,30 @@ class Select extends Base {
         const value = this.state.value;
         const searchValue = this.state.searchValue;
 
-        if (searchValue || !value || !value.length) {
+        const valueDates = getValueDataSource(
+            value,
+            this.valueDataSource.mapValueDS,
+            this.dataStore.getMapDS()
+        ).valueDS;
+
+        if (!valueDates || searchValue || !value || !value.length) {
             return false;
         }
 
-        e.preventDefault();
-
-        const nextValues = value.slice(0, value.length - 1);
-        // 手动调用 handleMenuSelect 时直接传入原生的 value，可以减少 toString 的操作
+        let indexLocation = -1;
+        let nextValues;
+        for (let i = valueDates.length - 1; i >= 0; i--) {
+            if (valueDates[i] && !valueDates[i].disabled) {
+                indexLocation = i;
+                break;
+            }
+        }
+        if (indexLocation !== -1) {
+            nextValues = value.filter((item, index) => index !== indexLocation);
+            // 手动调用 handleMenuSelect 时直接传入原生的 value，可以减少 toString 的操作
+        } else {
+            return false;
+        }
 
         if (this.useDetailValue()) {
             this.handleChange(nextValues, 'tag');
