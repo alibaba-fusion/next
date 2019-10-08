@@ -406,7 +406,7 @@ export default class Base extends React.Component {
         const value = this.state.value;
         let selectedKeys;
 
-        if (isNull(value) || value.length === 0) {
+        if (isNull(value) || value.length === 0 || this.isAutoComplete) {
             selectedKeys = [];
         } else if (isSingle(mode)) {
             selectedKeys = [valueToSelectKey(value)];
