@@ -534,6 +534,8 @@ class Select extends Base {
             mode,
             hasClear,
             onToggleHighlightItem,
+            readOnly,
+            disabled,
         } = this.props;
 
         if (popupContent) {
@@ -554,6 +556,9 @@ class Select extends Base {
                 break;
             case KEYCODE.ENTER:
                 e.preventDefault();
+                if (readOnly || disabled) {
+                    break;
+                }
                 this.chooseHighlightItem(proxy, e);
                 break;
             case KEYCODE.ESC:
@@ -565,6 +570,9 @@ class Select extends Base {
                 !hasSearch && e.preventDefault();
                 break;
             case KEYCODE.BACKSPACE:
+                if (readOnly || disabled) {
+                    break;
+                }
                 if ((mode === 'multiple' && showSearch) || mode === 'tag') {
                     // 在多选并且有搜索的情况下，删除最后一个 tag
                     const valueDS = this.valueDataSource.valueDS;
