@@ -567,7 +567,14 @@ class Select extends Base {
             case KEYCODE.BACKSPACE:
                 if ((mode === 'multiple' && showSearch) || mode === 'tag') {
                     // 在多选并且有搜索的情况下，删除最后一个 tag
-                    this.handleDeleteTag(e);
+                    const valueDS = this.valueDataSource.valueDS;
+                    if (
+                        valueDS &&
+                        valueDS.length &&
+                        !valueDS[valueDS.length - 1].disabled
+                    ) {
+                        this.handleDeleteTag(e);
+                    }
                 } else if (
                     mode === 'single' &&
                     hasClear &&
