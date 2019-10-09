@@ -414,7 +414,7 @@ class Select extends Base {
     /**
      * 多选模式 multiple/tag
      */
-    handleMultipleSelect(keys, triggerType, key) {
+    handleMultipleSelect(keys, triggerType, key, keepSearchValue) {
         const itemObj = getValueDataSource(
             keys,
             this.valueDataSource.mapValueDS,
@@ -432,6 +432,8 @@ class Select extends Base {
             this.setVisible(false, triggerType);
         }
 
+        // 因为搜索后会设置 hightLight 为第一个item，menu渲染会自动滚动到 hightLight 的元素上面。
+        // 所以设置 hightLight 为当前选中项避免滚动
         key &&
             this.state.visible &&
             this.setState({
@@ -447,7 +449,11 @@ class Select extends Base {
         this.updateSelectAllYet(itemObj.value);
 
         // 清空搜索
-        if (!('searchValue' in this.props) && this.state.searchValue) {
+        if (
+            !('searchValue' in this.props) &&
+            this.state.searchValue &&
+            !keepSearchValue
+        ) {
             // 因为 SearchValue 被 clear 后会重新渲染 Menu，所以在 Overlay 检测 safeNode 的时候 e.target 可能会找不到导致弹窗关闭
             setTimeout(() => {
                 this.handleSearchClear(triggerType);
@@ -528,6 +534,8 @@ class Select extends Base {
             mode,
             hasClear,
             onToggleHighlightItem,
+            readOnly,
+            disabled,
         } = this.props;
 
         if (popupContent) {
@@ -548,6 +556,9 @@ class Select extends Base {
                 break;
             case KEYCODE.ENTER:
                 e.preventDefault();
+                if (readOnly || disabled) {
+                    break;
+                }
                 this.chooseHighlightItem(proxy, e);
                 break;
             case KEYCODE.ESC:
@@ -559,9 +570,19 @@ class Select extends Base {
                 !hasSearch && e.preventDefault();
                 break;
             case KEYCODE.BACKSPACE:
+                if (readOnly || disabled) {
+                    break;
+                }
                 if ((mode === 'multiple' && showSearch) || mode === 'tag') {
                     // 在多选并且有搜索的情况下，删除最后一个 tag
-                    this.handleDeleteTag(e);
+                    const valueDS = this.valueDataSource.valueDS;
+                    if (
+                        valueDS &&
+                        valueDS.length &&
+                        !valueDS[valueDS.length - 1].disabled
+                    ) {
+                        this.handleDeleteTag(e);
+                    }
                 } else if (
                     mode === 'single' &&
                     hasClear &&
@@ -584,25 +605,27 @@ class Select extends Base {
             return valueToSelectKey(v);
         });
 
+        let keepSearchValue = false;
+
         const index = keys.map(v => `${v}`).indexOf(key);
 
         if (index > -1) {
             // unselect
             keys.splice(index, 1);
+            keepSearchValue = true; // 回车反选保留搜索值
         } else {
             // select
             keys.push(key);
         }
 
-        this.handleMultipleSelect(keys, 'enter');
+        this.handleMultipleSelect(keys, 'enter', null, keepSearchValue);
     }
 
     // 回车 选择高亮的 item
     chooseHighlightItem(proxy, e) {
-        const prevVisible = this.state.visible;
         const { mode } = this.props;
 
-        if (!prevVisible) {
+        if (!this.state.visible) {
             // input tag by itself
             if (mode === 'tag' && this.state.searchValue) {
                 this.chooseMultipleItem(this.state.searchValue);

@@ -96,6 +96,10 @@ export default class Base extends React.Component {
          */
         popupContent: PropTypes.node,
         /**
+         * 添加到菜单上的属性
+         */
+        menuProps: PropTypes.object,
+        /**
          * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
          */
         filterLocal: PropTypes.bool,
@@ -396,12 +400,13 @@ export default class Base extends React.Component {
             locale,
             notFoundContent,
             useVirtual,
+            menuProps,
         } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
 
-        if (isNull(value) || value.length === 0) {
+        if (isNull(value) || value.length === 0 || this.isAutoComplete) {
             selectedKeys = [];
         } else if (isSingle(mode)) {
             selectedKeys = [valueToSelectKey(value)];
@@ -424,7 +429,8 @@ export default class Base extends React.Component {
             );
         }
 
-        const menuProps = {
+        const customProps = {
+            ...menuProps,
             children,
             role: 'listbox',
             selectedKeys,
@@ -455,7 +461,7 @@ export default class Base extends React.Component {
                                     ref(c);
                                     this.menuRef = c;
                                 }}
-                                {...menuProps}
+                                {...customProps}
                             >
                                 {items}
                             </Menu>
@@ -466,7 +472,7 @@ export default class Base extends React.Component {
                 </VirtualList>
             </div>
         ) : (
-            <Menu {...menuProps} style={menuStyle} />
+            <Menu {...customProps} style={menuStyle} />
         );
     }
 
