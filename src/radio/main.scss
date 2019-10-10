@@ -158,7 +158,6 @@
             }
 
             &:hover,
-            &:focus,
             &.hovered {
                 z-index: 10;
                 border-color: $radio-button-border-color-hovered;
