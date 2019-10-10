@@ -108,7 +108,7 @@
         color: $iconColor;
     }
 
-    .#{$css-prefix}breadcrumb-text:not(.next-breadcrumb-text-ellipsis):hover > a {
+    .#{$css-prefix}breadcrumb-text:not(.#{$css-prefix}breadcrumb-text-ellipsis):hover > a {
         color: $textColorHover;
     }
 
@@ -116,7 +116,7 @@
         color: $currentTextColorHover;
     }
 
-    a.#{$css-prefix}breadcrumb-text:not(.next-breadcrumb-text-ellipsis):hover {
+    a.#{$css-prefix}breadcrumb-text:not(.#{$css-prefix}breadcrumb-text-ellipsis):hover {
         color: $textColorHover;
 
         > b {
