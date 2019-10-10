@@ -118,9 +118,7 @@
     }
 
     &.checked:not(.disabled):hover,
-    &.checked:not(.disabled).hovered,
-    &.checked:not(.disabled):focus,
-    &.checked.focused {
+    &.checked:not(.disabled).hovered {
         #{$radio-prefix}-inner {
             border-color: $radio-checked-hovered-border-color;
             background: $radio-checked-hovered-bg-color;

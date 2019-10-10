@@ -94,7 +94,8 @@
     }
 
     &:not(.disabled):hover,
-    &.hovered {
+    &.hovered,
+    &.focused {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-hovered-border-color;
             background-color: $checkbox-hovered-bg-color;
