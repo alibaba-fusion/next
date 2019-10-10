@@ -105,9 +105,7 @@
     }
 
     &:not(.disabled):hover,
-    &:not(.disabled).hovered,
-    &:not(.disabled):focus,
-    &:not(.disabled).focused {
+    &:not(.disabled).hovered {
         #{$radio-prefix}-inner {
             border-color: $radio-hovered-border-color;
             background-color: $radio-hovered-bg-color;
