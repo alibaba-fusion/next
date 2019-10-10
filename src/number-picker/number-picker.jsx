@@ -217,9 +217,9 @@ class NumberPicker extends React.Component {
 
     onKeyDown(e, ...args) {
         if (e.keyCode === 38) {
-            this.up(e);
+            this.up(false, e);
         } else if (e.keyCode === 40) {
-            this.down(e);
+            this.down(false, e);
         }
         this.props.onKeyDown(e, ...args);
     }
@@ -266,6 +266,15 @@ class NumberPicker extends React.Component {
         }
 
         if (`${val}` !== `${value}`) {
+            // under controled, set back to props.value
+            if (
+                'value' in this.props &&
+                `${this.props.value}` !== `${this.state.value}`
+            ) {
+                this.setState({
+                    value: this.props.value,
+                });
+            }
             this.onCorrect(val, value);
         }
 

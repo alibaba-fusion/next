@@ -214,14 +214,15 @@ export default config(Component);
 
 ### ConfigProvider
 
-| 参数            | 说明                                                                                                                                                                                                     | 类型             | 默认值   |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- | ----- |
-| errorBoundary | 是否开启错误捕捉 errorBoundary<br>如需自定义参数，请传入对象 对象接受参数列表如下：<br><br>fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示<br>afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传 | Boolean/Object | false |
-| pure          | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用                                                                                                                                                                    | Boolean        | -     |
-| warning       | 是否在开发模式下显示组件属性被废弃的 warning 提示                                                                                                                                                                          | Boolean        | true  |
-| rtl           | 是否开启 rtl 模式                                                                                                                                                                                            | Boolean        | -     |
-| device        | 设备类型，针对不同的设备类型组件做出对应的响应式变化<br><br>**可选值**:<br>'tablet', 'desktop', 'phone'                                                                                                                             | Enum           | -     |
-| children      | 组件树                                                                                                                                                                                                    | ReactElement   | -     |
+| 参数             | 说明                                                                                                                                                                                                     | 类型              | 默认值   |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- | ----- |
+| errorBoundary  | 是否开启错误捕捉 errorBoundary<br>如需自定义参数，请传入对象 对象接受参数列表如下：<br><br>fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示<br>afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传 | Boolean/Object  | false |
+| pure           | 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用                                                                                                                                                                    | Boolean         | -     |
+| warning        | 是否在开发模式下显示组件属性被废弃的 warning 提示                                                                                                                                                                          | Boolean         | true  |
+| rtl            | 是否开启 rtl 模式                                                                                                                                                                                            | Boolean         | -     |
+| device         | 设备类型，针对不同的设备类型组件做出对应的响应式变化<br><br>**可选值**:<br>'tablet', 'desktop', 'phone'                                                                                                                             | Enum            | -     |
+| children       | 组件树                                                                                                                                                                                                    | ReactElement    | -     |
+| popupContainer | 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数                                                                                                                                                                     | String/Function | -     |
 
 <!-- api-extra-start -->
 

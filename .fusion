@@ -3,8 +3,8 @@
   "publish-template": "@alifd/next-theme-template@2x",
   "class-prefix": ".next",
   "icon": {
-    "iconfont-project-id": "544230",
-    "iconfont-path": "//at.alicdn.com/t/font_t6jzs3l3nwtmaemi"
+    "iconfont-project-id": "515771",
+    "iconfont-path": "//at.alicdn.com/t/font_515771_7u6frotlpa6"
   },
   "import": {
     "sources": {
@@ -95,6 +95,7 @@
     "range": "lib/range/scss/variable.scss",
     "rating": "lib/rating/scss/variable.scss",
     "search": "lib/search/scss/variable.scss",
+    "shell": "lib/shell/scss/variable.scss",
     "slider": "lib/slider/scss/variable.scss",
     "split-button": "lib/split-button/scss/variable.scss",
     "step": "lib/step/scss/variable.scss",
@@ -105,6 +106,7 @@
     "transfer": "lib/transfer/scss/variable.scss",
     "tree": "lib/tree/scss/variable.scss",
     "tree-select": "lib/tree-select/scss/variable.scss",
+    "typography": "lib/typography/scss/variable.scss",
     "upload": "lib/upload/scss/variable.scss"
   }
 }

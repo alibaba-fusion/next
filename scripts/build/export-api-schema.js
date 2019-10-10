@@ -83,8 +83,10 @@ export default ${apiInfo.name};
         );
     });
 
-    // hack Field
-    entries.push('export const Field: any;');
+    // hack Field / Shell / Typography
+    entries.push(`export { default as Field } from './field';
+export { default as Notification } from './notification';
+export { default as Shell } from './shell';`);
 
     fs.writeFileSync(entriesPath, entries.join(''));
 };

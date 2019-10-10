@@ -189,6 +189,7 @@ export default class SubMenu extends Component {
             'aria-expanded': open,
             _key,
             level,
+            role: 'listitem',
             inlineLevel,
             root,
             type: 'submenu',
@@ -233,7 +234,7 @@ export default class SubMenu extends Component {
             roleItem = 'menuitem';
         if ('selectMode' in root.props) {
             roleMenu = 'listbox';
-            roleItem = 'listitem';
+            roleItem = 'option';
         }
 
         const subMenu = open ? (

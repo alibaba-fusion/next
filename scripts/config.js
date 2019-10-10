@@ -71,5 +71,8 @@ module.exports = {
         'upload',
         'validate',
         'virtual-list',
+        'shell',
+        'notification',
+        'typography',
     ],
 };

@@ -1,15 +1,15 @@
 # Latest Log 
 
-## [1.17.12](https://github.com/alibaba-fusion/next/compare/1.17.11...1.17.12) (2019-09-19)
+## [1.18.3](https://github.com/alibaba-fusion/next/compare/1.18.2...1.18.3) (2019-09-30)
 
 
 ### Bug Fixes
 
-* **Input:** border should collapse in input group, close [#1127](https://github.com/alibaba-fusion/next/issues/1127) ([ac4e604](https://github.com/alibaba-fusion/next/commit/ac4e604))
-* **Overlay:** wrong object of reference in safari ([cba0d1e](https://github.com/alibaba-fusion/next/commit/cba0d1e))
-* **Rating:** click offset in allowHalf, close [#1123](https://github.com/alibaba-fusion/next/issues/1123) ([b4278c4](https://github.com/alibaba-fusion/next/commit/b4278c4))
-* **Select:** popupStyle width should override autoWidth, close [#1075](https://github.com/alibaba-fusion/next/issues/1075) ([0e75a2f](https://github.com/alibaba-fusion/next/commit/0e75a2f))
-* **Tab:** fix tab nav border in fusion cool ([43d2013](https://github.com/alibaba-fusion/next/commit/43d2013))
-* **Util:** copy react node directly, close [#1132](https://github.com/alibaba-fusion/next/issues/1132) ([04618b0](https://github.com/alibaba-fusion/next/commit/04618b0))
+* **Icon:** correct eye/eye-close's width ([19b7d04](https://github.com/alibaba-fusion/next/commit/19b7d04))
+* **NumberPicker:** corner config ([db5929f](https://github.com/alibaba-fusion/next/commit/db5929f))
+* **NumberPicker:** fix display valueunder controlled. fix [#1163](https://github.com/alibaba-fusion/next/issues/1163) ([7207532](https://github.com/alibaba-fusion/next/commit/7207532))
+* **NumberPicker:** up down key ([6edc9a6](https://github.com/alibaba-fusion/next/commit/6edc9a6))
+* **Progress:** backgroundColor is invalid ([#1180](https://github.com/alibaba-fusion/next/issues/1180)) ([b4ee796](https://github.com/alibaba-fusion/next/commit/b4ee796))
+* **Typescript:** add field ([01fdcd2](https://github.com/alibaba-fusion/next/commit/01fdcd2))
 
 

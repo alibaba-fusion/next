@@ -6,6 +6,7 @@
     src: url('#{$icon-font-path}.eot');
     src:
         url('#{$icon-font-path}.eot?#iefix') format('embedded-opentype'),
+        url('#{$icon-font-path}.woff2') format('woff2'),
         url('#{$icon-font-path}.woff') format('woff'),
         url('#{$icon-font-path}.ttf') format('truetype'),
         url('#{$icon-font-path}.svg#NextIcon') format('svg');
@@ -71,6 +72,16 @@
         content: $icon-content-loading;
         animation: loadingCircle 1s infinite linear;
     }
+    &-eye:before { content: $icon-content-eye; }
+    &-copy:before { content: $icon-content-copy; }
+    &-toggle-left:before { content: $icon-content-toggle-left; }
+    &-toggle-right:before { content: $icon-content-toggle-right; }
+    &-eye-close:before { content: $icon-content-eye-close; }
+    &-unlock:before { content: $icon-content-unlock; }
+    &-lock:before { content: $icon-content-lock; }
+    &-exit:before { content: $icon-content-exit; }
+    &-chart-bar:before { content: $icon-content-chart-bar; }
+    &-chart-pie:before { content: $icon-content-chart-pie; }
 }
 
 @keyframes loadingCircle {

@@ -57,7 +57,7 @@ const popupCustomIcon = () => {
         onOk: () => console.log('ok'),
         onCancel: () => console.log('cancel')
     });
-}
+};
 
 ReactDOM.render(
     <ConfigProvider locale={{ Dialog: { ok: 'OK', cancel: 'Cancel' } }}>

@@ -8,6 +8,8 @@ import { getFieldInitCfg } from './enhance';
 
 const { Row, Col } = Grid;
 
+const { isNil } = obj;
+
 /** Form.Item
  *  @description 手动传递了 wrapCol labelCol 会使用 Grid 辅助布局; labelAlign='top' 会强制禁用 Grid
  *  @order 1
@@ -61,6 +63,10 @@ export default class Item extends React.Component {
          * 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。
          */
         size: PropTypes.oneOf(['large', 'small', 'medium']),
+        /**
+         * 单个 Item 中表单类组件宽度是否是100%
+         */
+        fullWidth: PropTypes.bool,
         /**
          * 标签的位置
          * @enumdesc 上, 左, 内
@@ -197,6 +203,7 @@ export default class Item extends React.Component {
     static contextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formFullWidth: PropTypes.bool,
     };
 
     static _typeMark = 'form_item';
@@ -251,6 +258,12 @@ export default class Item extends React.Component {
 
     getSize() {
         return this.props.size || this.context._formSize;
+    }
+
+    getFullWidth() {
+        return isNil(this.props.fullWidth)
+            ? !!this.context._formFullWidth
+            : this.props.fullWidth;
     }
 
     getItemLabel() {
@@ -404,12 +417,14 @@ export default class Item extends React.Component {
 
         const state = this.getState();
         const size = this.getSize();
+        const fullWidth = this.getFullWidth();
 
         const itemClassName = classNames({
             [`${prefix}form-item`]: true,
             [`${prefix}${labelAlign}`]: labelAlign,
             [`has-${state}`]: !!state,
             [`${prefix}${size}`]: !!size,
+            [`${prefix}form-item-fullwidth`]: fullWidth,
             [`${className}`]: !!className,
         });
 

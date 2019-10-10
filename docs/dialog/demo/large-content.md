@@ -25,7 +25,8 @@ const largeContent = new Array(30).fill(
 class Demo extends React.Component {
     state = {
         visible: false,
-        isFullScreen: false
+        isFullScreen: false,
+        closeOnMaskClick: false,
     };
 
     onOpen = () => {
@@ -46,8 +47,14 @@ class Demo extends React.Component {
         });
     }
 
+    toggleCloseOnMaskClick = () => {
+        this.setState({
+            closeOnMaskClick: !this.state.closeOnMaskClick
+        });
+    }
+
     render() {
-        const { visible, isFullScreen } = this.state;
+        const { visible, isFullScreen, closeOnMaskClick } = this.state;
 
         return (
             <div>
@@ -55,12 +62,17 @@ class Demo extends React.Component {
                     When the height of the dialog exceeds the viewport height of the browser, whether to show the scroll bar:
                 </div>
                 <Switch style={{ display: 'block', marginBottom: '10px' }} checked={isFullScreen} onChange={this.toggleIsFullScreen} />
+                <div style={{ display: 'block', marginBottom: '10px' }}>
+                    Close on mask click:
+                </div>
+                <Switch style={{ display: 'block', marginBottom: '10px' }} checked={closeOnMaskClick} onChange={this.toggleCloseOnMaskClick} />
                 <Button onClick={this.onOpen} type="primary">
                     Open dialog
                 </Button>
                 <Dialog title="Welcome to Alibaba.com"
                     visible={visible}
                     isFullScreen={isFullScreen}
+                    closeable={closeOnMaskClick ? 'close,esc,mask' : 'close,esc'}
                     onOk={this.onClose}
                     onCancel={this.onClose}
                     onClose={this.onClose}>
