@@ -59,7 +59,8 @@
         }
     }
 
-    &.checked {
+    &.checked,
+    &.checked.focused {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-checked-border-color;
             background-color: $checkbox-checked-bg-color;
@@ -76,7 +77,8 @@
         }
     }
 
-    &.indeterminate {
+    &.indeterminate,
+    &.indeterminate.focused {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-checked-border-color;
             background-color: $checkbox-checked-bg-color;
