@@ -174,6 +174,7 @@ class Modal extends Component {
 
         return (
             <Dialog
+                prefix={prefix}
                 role="alertdialog"
                 {...others}
                 visible={visible}

@@ -557,6 +557,20 @@ describe('inner', () => {
         assert(!document.querySelector('.far-overlay-wrapper'));
     });
 
+    it('quick-calling should should support set prefix for dialog', () => {
+        const { hide } = Dialog.show({
+            prefix: 'test-',
+            title: 'Title',
+            content: 'Content',
+        });
+
+        assert(
+            hasClass(document.querySelector('.test-dialog'), 'test-closeable')
+        );
+
+        hide();
+    });
+
     it('should throw error (async)', () => {
         const { hide } = Dialog.show({
             title: 'Title',
