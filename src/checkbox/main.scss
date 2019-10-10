@@ -107,10 +107,8 @@
 
     &.indeterminate:not(.disabled):hover,
     &.indeterminate:not(.disabled).hovered,
-    &.indeterminate.focused,
     &.checked:not(.disabled):hover,
-    &.checked:not(.disabled).hovered,
-    &.checked.focused {
+    &.checked:not(.disabled).hovered {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-checked-hovered-border-color;
             background-color: $checkbox-checked-hovered-bg-color;
