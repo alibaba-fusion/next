@@ -342,7 +342,7 @@ export default function ShellBase(props) {
                 }
 
                 if (!branding) {
-                    layout.header.Branding = trigger;
+                    trigger && (layout.header.Branding = trigger);
                 } else {
                     layout.header.Branding = React.cloneElement(branding, {}, [
                         trigger,
@@ -520,7 +520,7 @@ export default function ShellBase(props) {
             }
 
             // 按照dom结构, arr 包括 header Navigation ToolDock 和 innerArr
-            if (layout.header) {
+            if (Object.keys(layout.header).length > 0) {
                 headerDom = (
                     <header key="header" className={headerCls}>
                         {layout.header.Branding}

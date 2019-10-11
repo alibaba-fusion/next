@@ -228,5 +228,35 @@ describe('Shell', () => {
 
             assert(wrapper.find('.next-shell-navigation.next-shell-collapse'));
         });
+
+        it('should support no header', () => {
+            wrapper = render(
+            <Shell className={"iframe-hack"} style={{border: '1px solid #eee'}}>
+                 <Shell.Navigation trigger={null}>
+                    <Nav embeddable aria-label="global navigation">
+                        <Nav.Item icon="account">Nav Item 1</Nav.Item>
+                        <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
+                        <Nav.Item icon="atm">Nav Item 3</Nav.Item>
+                        <Nav.Item icon="account">Nav Item 4</Nav.Item>
+                        <Nav.Item icon="account">Nav Item 5</Nav.Item>
+                        <Nav.Item icon="account">Nav Item 6</Nav.Item>
+                        <Nav.Item icon="account">Nav Item 7</Nav.Item>
+                    </Nav>
+                </Shell.Navigation>
+
+                <Shell.Content>
+                    <div style={{minHeight: 1200, background: '#fff'}}></div>
+                </Shell.Content>
+
+                <Shell.Footer>
+                    <span>Alibaba Fusion</span>
+                    <span>@ 2019 Alibaba Piecework 版权所有</span>
+                </Shell.Footer>
+            </Shell>
+            );
+
+            assert(wrapper.find('.next-shell-header').length === 0);
+        });
+
     });
 });
