@@ -232,7 +232,7 @@ describe('Shell', () => {
         it('should support no header', () => {
             wrapper = render(
             <Shell className={"iframe-hack"} style={{border: '1px solid #eee'}}>
-                 <Shell.Navigation trigger={null}>
+                <Shell.Navigation trigger={null}>
                     <Nav embeddable aria-label="global navigation">
                         <Nav.Item icon="account">Nav Item 1</Nav.Item>
                         <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
@@ -258,5 +258,21 @@ describe('Shell', () => {
             assert(wrapper.find('.next-shell-header').length === 0);
         });
 
+        it('should support nothing', () => {
+            wrapper = render(
+            <Shell className={"iframe-hack"} style={{border: '1px solid #eee'}}>
+                <Shell.Content>
+                    <div style={{minHeight: 1200, background: '#fff'}}></div>
+                </Shell.Content>
+
+                <Shell.Footer>
+                    <span>Alibaba Fusion</span>
+                    <span>@ 2019 Alibaba Piecework 版权所有</span>
+                </Shell.Footer>
+            </Shell>
+            );
+
+            assert(wrapper.find('.next-shell-header').length === 0);
+        });
     });
 });
