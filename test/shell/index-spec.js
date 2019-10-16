@@ -274,5 +274,54 @@ describe('Shell', () => {
 
             assert(wrapper.find('.next-shell-header').length === 0);
         });
+
+        it('should support nothing', () => {
+            wrapper = render(
+            <Shell className={"iframe-hack"} style={{border: '1px solid #eee'}}>
+                <Shell.Content>
+                    <div style={{minHeight: 1200, background: '#fff'}}></div>
+                </Shell.Content>
+
+                <Shell.Footer>
+                    <span>Alibaba Fusion</span>
+                    <span>@ 2019 Alibaba Piecework 版权所有</span>
+                </Shell.Footer>
+            </Shell>
+            );
+
+            assert(wrapper.find('.next-shell-header').length === 0);
+        });
+
+        it('only tooldock, show header only in phone', () => {
+            wrapper = render(
+            <Shell className={"iframe-hack"} style={{border: '1px solid #eee'}}>
+                <Shell.Content>
+                    <div style={{minHeight: 1200, background: '#fff'}}></div>
+                </Shell.Content>
+
+                <Shell.ToolDock>
+                    <Shell.ToolDockItem>
+                    <Icon type="calendar" />
+                    </Shell.ToolDockItem>
+                    <Shell.ToolDockItem>
+                    <Icon type="atm" />
+                    </Shell.ToolDockItem>
+                    <Shell.ToolDockItem>
+                    <Icon type="account" />
+                    </Shell.ToolDockItem>
+                </Shell.ToolDock>
+            </Shell>
+            );
+
+            wrapper.setProps({
+                device: 'tablet'
+            });
+            assert(wrapper.find('.next-shell-header').length === 0);
+
+            wrapper.setProps({
+                device: 'phone'
+            });
+            assert(wrapper.find('.next-shell-header').length === 1);
+        });
     });
 });
