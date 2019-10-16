@@ -12,6 +12,9 @@
     box-shadow: $dialog-shadow;
     text-align: left;
     overflow: hidden;
+    animation-duration: $motion-duration-standard;
+    animation-timing-function: $motion-ease-in-out;
+    max-width: 90%;
 
     &-header {
         padding: $dialog-title-padding-top $dialog-title-padding-left-right $dialog-title-padding-bottom $dialog-title-padding-left-right;
@@ -68,6 +71,7 @@
         width: $dialog-close-width;
         height: $dialog-close-width;
         color: $dialog-close-color;
+        cursor: pointer;
 
         &:link,
         &:visited {
@@ -102,6 +106,7 @@
         padding: $s-10;
         overflow: auto;
         text-align: center;
+        box-sizing: border-box;
 
         &:before {
             display: inline-block;

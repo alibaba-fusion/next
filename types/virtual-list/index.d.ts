@@ -1,8 +1,9 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
-export interface VirtualListProps extends React.HTMLAttributes<HTMLElement> {
+export interface VirtualListProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
      * 渲染的子节点
      */

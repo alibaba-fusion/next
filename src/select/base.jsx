@@ -96,6 +96,10 @@ export default class Base extends React.Component {
          */
         popupContent: PropTypes.node,
         /**
+         * 添加到菜单上的属性
+         */
+        menuProps: PropTypes.object,
+        /**
          * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
          */
         filterLocal: PropTypes.bool,
@@ -120,6 +124,7 @@ export default class Base extends React.Component {
         notFoundContent: PropTypes.node,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
+        popupComponent: PropTypes.any,
     };
 
     static defaultProps = {
@@ -199,12 +204,19 @@ export default class Base extends React.Component {
      * @protected
      */
     syncWidth() {
-        const width = dom.getStyle(this.selectDOM, 'width');
+        const { popupStyle, popupProps } = this.props;
+        if (
+            (popupStyle && 'width' in popupStyle) ||
+            (popupProps && popupProps.style && 'width' in popupProps.style)
+        ) {
+            return;
+        }
 
+        const width = dom.getStyle(this.selectDOM, 'width');
         if (width && this.width !== width) {
             this.width = width;
 
-            if (this.popupRef && this.props.autoWidth) {
+            if (this.popupRef && this.shouldAutoWidth()) {
                 // overy 的 node 节点可能没有挂载完成，所以这里需要异步
                 setTimeout(() => {
                     if (this.popupRef && this.popupRef.getInstance().overlay) {
@@ -385,16 +397,16 @@ export default class Base extends React.Component {
         const {
             prefix,
             mode,
-            autoWidth,
             locale,
             notFoundContent,
             useVirtual,
+            menuProps,
         } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
 
-        if (isNull(value) || value.length === 0) {
+        if (isNull(value) || value.length === 0 || this.isAutoComplete) {
             selectedKeys = [];
         } else if (isSingle(mode)) {
             selectedKeys = [valueToSelectKey(value)];
@@ -417,10 +429,10 @@ export default class Base extends React.Component {
             );
         }
 
-        const menuProps = {
+        const customProps = {
+            ...menuProps,
             children,
             role: 'listbox',
-            style: autoWidth ? { width: this.width } : { minWidth: this.width },
             selectedKeys,
             focusedKey: highlightKey,
             focusable: false,
@@ -432,11 +444,14 @@ export default class Base extends React.Component {
             onMouseDown: preventDefault,
             className: menuClassName,
         };
+        const menuStyle = this.shouldAutoWidth()
+            ? { width: this.width }
+            : { minWidth: this.width };
 
         return useVirtual && children.length ? (
             <div
                 className={`${prefix}select-menu-wrapper`}
-                style={{ position: 'relative' }}
+                style={{ position: 'relative', ...menuStyle }}
             >
                 <VirtualList
                     itemsRenderer={(items, ref) => {
@@ -446,7 +461,7 @@ export default class Base extends React.Component {
                                     ref(c);
                                     this.menuRef = c;
                                 }}
-                                {...menuProps}
+                                {...customProps}
                             >
                                 {items}
                             </Menu>
@@ -457,7 +472,7 @@ export default class Base extends React.Component {
                 </VirtualList>
             </div>
         ) : (
-            <Menu {...menuProps} />
+            <Menu {...customProps} style={menuStyle} />
         );
     }
 
@@ -547,6 +562,14 @@ export default class Base extends React.Component {
         }
     };
 
+    shouldAutoWidth() {
+        if (this.props.popupComponent) {
+            return false;
+        }
+
+        return this.props.autoWidth;
+    }
+
     render(props) {
         const {
             prefix,
@@ -556,10 +579,10 @@ export default class Base extends React.Component {
             popupClassName,
             popupStyle,
             popupContent,
-            autoWidth,
             canCloseByTrigger,
             followTrigger,
             cache,
+            popupComponent,
         } = props;
 
         const cls = classNames(
@@ -592,8 +615,10 @@ export default class Base extends React.Component {
             style: popupStyle || popupProps.style,
         };
 
+        const Tag = popupComponent ? popupComponent : Popup;
+
         return (
-            <Popup
+            <Tag
                 {..._props}
                 trigger={this.renderSelect()}
                 ref={this.savePopupRef}
@@ -601,14 +626,16 @@ export default class Base extends React.Component {
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
-                        style={autoWidth ? { width: this.width } : {}}
+                        style={
+                            this.shouldAutoWidth() ? { width: this.width } : {}
+                        }
                     >
                         {popupContent}
                     </div>
                 ) : (
                     this.renderMenu()
                 )}
-            </Popup>
+            </Tag>
         );
     }
 }

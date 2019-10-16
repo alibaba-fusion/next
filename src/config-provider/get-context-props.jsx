@@ -19,13 +19,23 @@ const parseBoundary = input => {
 };
 
 export default function getContextProps(props, context, displayName) {
-    const { prefix, locale, pure, rtl, errorBoundary } = props;
+    const {
+        prefix,
+        locale,
+        pure,
+        rtl,
+        device,
+        popupContainer,
+        errorBoundary,
+    } = props;
     const {
         nextPrefix,
         nextLocale,
         nextPure,
         nextWarning,
         nextRtl,
+        nextDevice,
+        nextPopupContainer,
         nextErrorBoundary,
     } = context;
 
@@ -72,6 +82,8 @@ export default function getContextProps(props, context, displayName) {
         pure: newPure,
         rtl: newRtl,
         warning: nextWarning,
+        device: device || nextDevice || undefined,
+        popupContainer: popupContainer || nextPopupContainer,
         errorBoundary: newErrorBoundary,
     };
 }

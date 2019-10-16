@@ -256,14 +256,12 @@ export default function lock(BaseComponent) {
 
         onLockBodyWheel = e => {
             const y = e.deltaY;
-            const x = e.deltaX;
-            const thresholdX = 15;
-            const safeScrollX = x > -thresholdX && x < thresholdX;
+
             if (this.isLock()) {
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
                     scrollNode = this.bodyNode,
-                    { scrollTop, clientHeight, scrollHeight } = scrollNode;
+                    { scrollTop } = scrollNode;
 
                 if (lockLeftBody) {
                     lockLeftBody.scrollTop = y;
@@ -272,14 +270,6 @@ export default function lock(BaseComponent) {
                     lockRightBody.scrollTop = y;
                 }
                 scrollNode.scrollTop = scrollTop + y;
-                const { scrollTop: newScrollTop } = scrollNode;
-                if (
-                    newScrollTop + clientHeight < scrollHeight &&
-                    newScrollTop &&
-                    safeScrollX
-                ) {
-                    e.preventDefault();
-                }
             }
         };
 

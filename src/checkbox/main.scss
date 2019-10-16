@@ -34,7 +34,7 @@
         background: $checkbox-bg-color;
         border-radius: $checkbox-border-radius;
         border: $checkbox-border-width solid $checkbox-border-color;
-        transition: ease all .3s 0s;
+        transition: all $motion-duration-immediately $motion-linear;
         text-align: left; /* 防止继承父级 */
         box-shadow: $checkbox-shadow;
         /* box-sizing: content-box; */
@@ -45,7 +45,7 @@
             top: 0;
             opacity: 0;
             line-height: $checkbox-size;
-            transition: all .3s cubic-bezier(.78, .14, .15, .86);
+            transition: all $motion-duration-immediately $motion-linear;
             color: $checkbox-checked-circle-color;
             left: ($checkbox-size - $checkbox-circle-size) / 2;
             @if ($checkbox-circle-size == 12) {
@@ -59,7 +59,8 @@
         }
     }
 
-    &.checked {
+    &.checked,
+    &.checked.focused {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-checked-border-color;
             background-color: $checkbox-checked-bg-color;
@@ -76,7 +77,8 @@
         }
     }
 
-    &.indeterminate {
+    &.indeterminate,
+    &.indeterminate.focused {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-checked-border-color;
             background-color: $checkbox-checked-bg-color;
@@ -90,32 +92,6 @@
                 transform: scale3d(1, 1, 1);
                 @include icon-size($checkbox-circle-size, 0); /* font-size < 12px的时候进行覆盖。 */
             }
-        }
-    }
-
-    &.disabled {
-        input[type="checkbox"] {
-            cursor: not-allowed;
-        }
-        #{$checkbox-prefix}-inner {
-            border-color: $checkbox-disabled-border-color;
-            background: $checkbox-disabled-bg-color;
-        }
-        &.checked,
-        &.indeterminate {
-            #{$checkbox-prefix}-inner {
-                &:hover, &.hovered {
-                    border-color: $checkbox-disabled-border-color;
-                }
-
-                > .#{$css-prefix}icon {
-                    color: $checkbox-disabled-circle-color;
-                    opacity: 1;
-                }
-            }
-        }
-        #{$checkbox-prefix}-label {
-            color: $checkbox-disabled-label-color;
         }
     }
 
@@ -133,10 +109,8 @@
 
     &.indeterminate:not(.disabled):hover,
     &.indeterminate:not(.disabled).hovered,
-    &.indeterminate.focused,
     &.checked:not(.disabled):hover,
-    &.checked:not(.disabled).hovered,
-    &.checked.focused {
+    &.checked:not(.disabled).hovered {
         #{$checkbox-prefix}-inner {
             border-color: $checkbox-checked-hovered-border-color;
             background-color: $checkbox-checked-hovered-bg-color;
@@ -145,6 +119,35 @@
                 color: $checkbox-checked-hovered-circle-color;
                 opacity: 1;
             }
+        }
+    }
+
+    &.disabled {
+        input[type="checkbox"] {
+            cursor: not-allowed;
+        }
+        #{$checkbox-prefix}-inner {
+            border-color: $checkbox-disabled-border-color;
+            background: $checkbox-disabled-bg-color;
+        }
+        &.checked,
+        &.indeterminate {
+            #{$checkbox-prefix}-inner {
+                border-color: $checkbox-disabled-border-color;
+                background: $checkbox-disabled-bg-color;
+
+                &:hover, &.hovered {
+                    border-color: $checkbox-disabled-border-color;
+                }
+
+                > .#{$css-prefix}icon {
+                    color: $checkbox-disabled-circle-color;
+                    opacity: 1;
+                }
+            }
+        }
+        #{$checkbox-prefix}-label {
+            color: $checkbox-disabled-label-color;
         }
     }
 }

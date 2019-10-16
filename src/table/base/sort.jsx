@@ -30,7 +30,6 @@ export default class Sort extends React.Component {
         const icons = ['asc', 'desc'].map(sortOrder => {
             return (
                 <a
-                    href="javascript:;"
                     key={sortOrder}
                     className={sortStatus === sortOrder ? 'current' : ''}
                 >

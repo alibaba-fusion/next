@@ -35,6 +35,10 @@ export default class Form extends React.Component {
          */
         size: PropTypes.oneOf(['large', 'medium', 'small']),
         /**
+         * 单个 Item 中表单类组件宽度是否是100%
+         */
+        fullWidth: PropTypes.bool,
+        /**
          * 标签的位置
          * @enumdesc 上, 左, 内
          */
@@ -45,7 +49,7 @@ export default class Form extends React.Component {
          */
         labelTextAlign: PropTypes.oneOf(['left', 'right']),
         /**
-         * 经 `new Field(this)` 初始化后，直接传给 Form 即可 用到表单校验则不可忽略此项
+         * field 实例, 传 false 会禁用 field
          */
         field: PropTypes.any,
         /**
@@ -95,6 +99,10 @@ export default class Form extends React.Component {
         component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         fieldOptions: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 预设屏幕宽度
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
     static defaultProps = {
@@ -105,48 +113,58 @@ export default class Form extends React.Component {
         onChange: func.noop,
         component: 'form',
         saveField: func.noop,
+        device: 'desktop',
     };
 
     static childContextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.string,
+        _formFullWidth: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
-        const options = {
-            ...props.fieldOptions,
-            onChange: this.onChange,
-        };
 
-        if (props.field) {
-            this._formField = props.field;
-            const onChange = this._formField.options.onChange;
-            options.onChange = func.makeChain(onChange, this.onChange);
-            this._formField.setOptions && this._formField.setOptions(options);
-        } else {
-            if ('value' in props) {
-                options.values = props.value;
+        this._formField = null;
+        if (props.field !== false) {
+            const options = {
+                ...props.fieldOptions,
+                onChange: this.onChange,
+            };
+
+            if (props.field) {
+                this._formField = props.field;
+                const onChange = this._formField.options.onChange;
+                options.onChange = func.makeChain(onChange, this.onChange);
+                this._formField.setOptions &&
+                    this._formField.setOptions(options);
+            } else {
+                if ('value' in props) {
+                    options.values = props.value;
+                }
+                this._formField = new Field(this, options);
             }
-            this._formField = new Field(this, options);
-        }
 
-        props.saveField(this._formField);
+            props.saveField(this._formField);
+        }
     }
 
     getChildContext() {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
             _formSize: this.props.size,
+            _formFullWidth: this.props.fullWidth,
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this._formField.setValues(nextProps.value);
-        }
-        if ('error' in nextProps) {
-            this._formField.setErrors(nextProps.error);
+        if (this._formField) {
+            if ('value' in nextProps) {
+                this._formField.setValues(nextProps.value);
+            }
+            if ('error' in nextProps) {
+                this._formField.setErrors(nextProps.error);
+            }
         }
     }
 
@@ -163,6 +181,7 @@ export default class Form extends React.Component {
             className,
             inline,
             size,
+            device,
             labelAlign,
             labelTextAlign,
             onSubmit,
@@ -206,6 +225,8 @@ export default class Form extends React.Component {
                                 : wrapperCol,
                             labelAlign: child.props.labelAlign
                                 ? child.props.labelAlign
+                                : device === 'phone'
+                                ? 'top'
                                 : labelAlign,
                             labelTextAlign: child.props.labelTextAlign
                                 ? child.props.labelTextAlign

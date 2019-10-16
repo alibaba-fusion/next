@@ -11,6 +11,7 @@ export default class Line extends React.PureComponent {
         hasBorder: PropTypes.bool,
         textRender: PropTypes.func,
         color: PropTypes.string,
+        backgroundColor: PropTypes.string,
         rtl: PropTypes.bool,
         prefix: PropTypes.string,
         className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -28,6 +29,7 @@ export default class Line extends React.PureComponent {
             textRender,
             className,
             rtl,
+            backgroundColor,
             ...others
         } = this.props;
 
@@ -52,7 +54,11 @@ export default class Line extends React.PureComponent {
                 !color && progressive && percent >= 80,
         });
 
-        const lineStyle = { width: `${percent}%`, backgroundColor: color };
+        const lineStyle = {
+            width: `${percent > 100 ? 100 : percent < 0 ? 0 : percent}%`,
+            backgroundColor: color,
+        };
+        const underlayStyle = { backgroundColor: backgroundColor };
 
         return (
             <div
@@ -65,7 +71,10 @@ export default class Line extends React.PureComponent {
                 {...others}
             >
                 <div className={`${prefix}progress-line-container`}>
-                    <div className={`${prefix}progress-line-underlay`}>
+                    <div
+                        className={`${prefix}progress-line-underlay`}
+                        style={underlayStyle}
+                    >
                         <div className={lineCls} style={lineStyle} />
                     </div>
                 </div>

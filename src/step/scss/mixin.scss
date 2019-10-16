@@ -96,10 +96,10 @@
             text-align: center;
             border: $step-circle-item-node-border-width solid;
             border-radius: $step-circle-item-node-corner;
-            transition: background-color .2s ease, border-color .2s ease;
+            transition: background-color $motion-duration-immediately $motion-linear;
             #{$step-icon-prefix} {
                 @include icon-size($step-circle-item-node-icon-size);
-                animation: zoomIn .2s linear;
+                animation: zoomIn $motion-duration-immediately $motion-linear;
             }
         }
     }
@@ -153,7 +153,7 @@
                     position: absolute;
                     top: 0;
                     height: $step-circle-item-tail-size;
-                    transition: all .4s ease;
+                    transition: all $motion-duration-immediately $motion-linear;
                     width: 100%;
                 }
             }
@@ -189,7 +189,7 @@
                     position: absolute;
                     top: 0;
                     height: $step-dot-item-tail-size;
-                    transition: all .4s ease;
+                    transition: all $motion-duration-immediately $motion-linear;
                     width: 100%;
                 }
             }

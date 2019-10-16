@@ -162,6 +162,7 @@
 
         .#{$css-prefix}icon {
             @include icon-size($tab-icon-size);
+            line-height: 1;
         }
 
         .#{$css-prefix}tabs-tab-close {

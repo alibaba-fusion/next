@@ -310,19 +310,20 @@ describe('TreeSelect', () => {
         let triggered = false;
         const initValue = '4';
         const appendValue = '6';
-        const expectValue = ['3', '4'];
+        const expectValue = ['4', '3'];
         const handleChange = (value, data) => {
             triggered = true;
             assert.deepEqual(value, expectValue);
             assert.deepEqual(data, expectValue.map(v => _v2n[v]));
         };
-
         wrapper = mount(
             <TreeSelect
                 defaultVisible
                 treeCheckable
                 treeDefaultExpandAll
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 value={initValue}
                 onChange={handleChange}
             />
@@ -361,7 +362,9 @@ describe('TreeSelect', () => {
         wrapper = mount(
             <TreeSelect
                 treeCheckable
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 defaultValue={['6']}
                 treeCheckedStrategy="parent"
             />
@@ -387,12 +390,14 @@ describe('TreeSelect', () => {
                 defaultVisible
                 treeDefaultExpandAll
                 treeCheckable
-                dataSource={dataSource}
+                dataSource={cloneData(dataSource, {
+                    2: { disabled: false }
+                })}
                 defaultValue={['6']}
                 treeCheckedStrategy="all"
             />
         );
-        assert.deepEqual(getLabels(wrapper), ['裙子', '女装']);
+        assert.deepEqual(getLabels(wrapper), ['女装', '裙子']);
 
         wrapper
             .find('div.next-tag')
@@ -567,13 +572,13 @@ describe('TreeSelect', () => {
     });
 });
 
-function cloneData(data, keyMap = {}) {
+function cloneData(data, valueMap = {}) {
     const loop = data =>
         data.map(item => {
             let newItem;
 
-            if (item.key in keyMap) {
-                newItem = { ...item, ...keyMap[item.key] };
+            if (item.value in valueMap) {
+                newItem = { ...item, ...valueMap[item.value] };
             } else {
                 newItem = { ...item };
             }

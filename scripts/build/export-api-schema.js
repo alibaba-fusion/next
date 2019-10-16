@@ -62,6 +62,7 @@ module.exports = function(options) {
             fs.writeFileSync(
                 exportDTSPath,
                 `import ${apiInfo.name} from '../../types/${shortName}';
+export * from '../../types/${shortName}';
 export default ${apiInfo.name};
 `
             );
@@ -73,8 +74,19 @@ export default ${apiInfo.name};
         }
     });
 
-    // hack Field
-    entries.push('export const Field: any;');
+    // generate d.ts for locale
+    ['zh-cn', 'en-us', 'ja-jp', 'zh-tw'].forEach(file => {
+        const localePath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
+        fs.writeFileSync(
+            localePath,
+            `export * from '../../types/locale/${file}';`
+        );
+    });
+
+    // hack Field / Shell / Typography
+    entries.push(`export { default as Field } from './field';
+export { default as Notification } from './notification';
+export { default as Shell } from './shell';`);
 
     fs.writeFileSync(entriesPath, entries.join(''));
 };

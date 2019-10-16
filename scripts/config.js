@@ -31,6 +31,7 @@ module.exports = {
         'core',
         'date-picker',
         'dialog',
+        'drawer',
         'dropdown',
         'field',
         'form',
@@ -70,5 +71,8 @@ module.exports = {
         'upload',
         'validate',
         'virtual-list',
+        'shell',
+        'notification',
+        'typography',
     ],
 };

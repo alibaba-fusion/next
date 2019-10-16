@@ -26,7 +26,7 @@
 
     #{$search-prefix}-left {
         border-style: solid;
-        transition: all .3s ease-out;
+        transition: all $motion-duration-immediately $motion-linear;
     }
 
     #{$search-prefix}-left-addon {
@@ -39,6 +39,10 @@
 
         .#{$css-prefix}select-values {
             line-height: 1;
+        }
+
+        &.#{$css-prefix}input-group-addon .#{$css-prefix}select {
+            margin: 0;
         }
     }
 
@@ -201,10 +205,10 @@
             }
 
             .#{$css-prefix}input {
-                background: transparentize($search-normal-dark-bg-color, 1 - $search-normal-dark-bg-opacity);
+                background: $color-calculate-search-normal-dark-bg;
             }
             .#{$css-prefix}select {
-                background: transparentize($search-normal-dark-bg-color, 1 - $search-normal-dark-bg-opacity);
+                background: $color-calculate-search-normal-dark-bg;
             }
 
             &.#{$css-prefix}large {
@@ -238,7 +242,7 @@
         box-shadow: $search-simple-normal-shadow;
         #{$search-prefix}-icon {
             cursor: pointer;
-            transition: all .3s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
         }
 
         #{$search-prefix}-left,.#{$css-prefix}input {
@@ -287,10 +291,10 @@
                 color: $search-simple-dark-text-color;
             }
             .#{$css-prefix}input {
-                background: transparentize($search-simple-dark-bg-color, 1 - $search-simple-dark-bg-opacity);
+                background: $color-calculate-search-simple-dark-bg;
             }
             .#{$css-prefix}select {
-                background: transparentize($search-simple-dark-bg-color, 1 - $search-simple-dark-bg-opacity);
+                background: $color-calculate-search-simple-dark-bg;
             }
 
             #{$search-prefix}-left {

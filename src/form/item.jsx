@@ -8,6 +8,8 @@ import { getFieldInitCfg } from './enhance';
 
 const { Row, Col } = Grid;
 
+const { isNil } = obj;
+
 /** Form.Item
  *  @description 手动传递了 wrapCol labelCol 会使用 Grid 辅助布局; labelAlign='top' 会强制禁用 Grid
  *  @order 1
@@ -61,6 +63,10 @@ export default class Item extends React.Component {
          * 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。
          */
         size: PropTypes.oneOf(['large', 'small', 'medium']),
+        /**
+         * 单个 Item 中表单类组件宽度是否是100%
+         */
+        fullWidth: PropTypes.bool,
         /**
          * 标签的位置
          * @enumdesc 上, 左, 内
@@ -183,6 +189,10 @@ export default class Item extends React.Component {
          * 是否修改数据时自动触发校验
          */
         autoValidate: PropTypes.bool,
+        /**
+         * 预设屏幕宽度
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
     static defaultProps = {
@@ -193,6 +203,7 @@ export default class Item extends React.Component {
     static contextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formFullWidth: PropTypes.bool,
     };
 
     static _typeMark = 'form_item';
@@ -249,6 +260,12 @@ export default class Item extends React.Component {
         return this.props.size || this.context._formSize;
     }
 
+    getFullWidth() {
+        return isNil(this.props.fullWidth)
+            ? !!this.context._formFullWidth
+            : this.props.fullWidth;
+    }
+
     getItemLabel() {
         const {
             id,
@@ -258,9 +275,13 @@ export default class Item extends React.Component {
             labelCol,
             wrapperCol,
             prefix,
-            labelAlign,
             labelTextAlign,
         } = this.props;
+
+        const labelAlign = this.getLabelAlign(
+            this.props.labelAlign,
+            this.props.device
+        );
 
         if (!label) {
             return null;
@@ -299,9 +320,13 @@ export default class Item extends React.Component {
             wrapperCol,
             children,
             extra,
-            labelAlign,
             prefix,
         } = this.props;
+
+        const labelAlign = this.getLabelAlign(
+            this.props.labelAlign,
+            this.props.device
+        );
 
         const state = this.getState();
 
@@ -374,23 +399,32 @@ export default class Item extends React.Component {
         );
     }
 
+    getLabelAlign(labelAlign, device) {
+        if (device === 'phone') {
+            return 'top';
+        }
+
+        return labelAlign;
+    }
+
     render() {
-        const {
-            className,
-            labelAlign,
-            style,
-            prefix,
-            wrapperCol,
-            labelCol,
-        } = this.props;
+        const { className, style, prefix, wrapperCol, labelCol } = this.props;
+
+        const labelAlign = this.getLabelAlign(
+            this.props.labelAlign,
+            this.props.device
+        );
+
         const state = this.getState();
         const size = this.getSize();
+        const fullWidth = this.getFullWidth();
 
         const itemClassName = classNames({
             [`${prefix}form-item`]: true,
             [`${prefix}${labelAlign}`]: labelAlign,
             [`has-${state}`]: !!state,
             [`${prefix}${size}`]: !!size,
+            [`${prefix}form-item-fullwidth`]: fullWidth,
             [`${className}`]: !!className,
         });
 

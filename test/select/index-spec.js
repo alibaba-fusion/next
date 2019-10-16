@@ -437,6 +437,25 @@ describe('Select', () => {
         wrapper.find('div.next-tag .next-tag-close-btn').simulate('click');
     });
 
+    it('should not delete disabled item with BACKSPACE', done => {
+        wrapper.setProps({
+            mode: 'tag',
+            dataSource:  [{value: '10001', label: 'Lucy King'}, {value: '10003', label: 'Tom Cat', disabled: true}],
+            value: ['10001', '10003'],
+            onChange: function(value) {
+                assert(value.length === 1);
+                done();
+            },
+        });
+
+        wrapper.find('input').simulate('keydown', {
+            key: 'backSpace',
+            keyCode: 8,
+        });
+
+        wrapper.find('div.next-tag .next-tag-close-btn').first().simulate('click');
+    });
+    
     it('should support mode=tag with visible=false', done => {
         wrapper.setProps({
             mode: 'tag',

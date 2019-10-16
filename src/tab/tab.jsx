@@ -14,6 +14,7 @@ export default class Tab extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
+        device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         /**
          * 被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换
          */
@@ -130,28 +131,33 @@ export default class Tab extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (
-            nextProps.activeKey &&
-            this.state.activeKey !== nextProps.activeKey
+            nextProps.activeKey !== undefined &&
+            this.state.activeKey !== `${nextProps.activeKey}`
         ) {
             this.setState({
-                activeKey: nextProps.activeKey,
+                activeKey: `${nextProps.activeKey}`,
             });
         }
     }
 
     getDefaultActiveKey(props) {
-        let activeKey = props.activeKey || props.defaultActiveKey;
-        if (!activeKey) {
+        let activeKey =
+            props.activeKey === undefined
+                ? props.defaultActiveKey
+                : props.activeKey;
+
+        if (activeKey === undefined) {
             React.Children.forEach(props.children, (child, index) => {
+                if (activeKey !== undefined) return;
                 if (React.isValidElement(child)) {
-                    /* eslint-disable eqeqeq */
-                    if (activeKey == undefined && !child.props.disabled) {
+                    if (!child.props.disabled) {
                         activeKey = child.key || index;
                     }
                 }
             });
         }
-        return activeKey;
+
+        return `${activeKey}`;
     }
 
     getNextActiveKey(isNext) {
@@ -242,11 +248,13 @@ export default class Tab extends Component {
             onClose,
             children,
             rtl,
+            device,
             ...others
         } = this.props;
         const { activeKey } = this.state;
 
         const tabs = toArray(children);
+        const isTouchable = ['phone', 'tablet'].indexOf(device) !== -1;
         let newPosition = tabPosition;
         if (rtl && ['left', 'right'].indexOf(tabPosition) >= 0) {
             newPosition = tabPosition === 'left' ? 'right' : 'left';
@@ -258,6 +266,7 @@ export default class Tab extends Component {
                 [`${prefix}tabs-vertical`]:
                     shape === 'wrapped' &&
                     ['left', 'right'].indexOf(tabPosition) >= 0,
+                [`${prefix}tabs-scrollable`]: isTouchable,
                 [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
                 [`${prefix + size}`]: size,
             },
@@ -269,7 +278,7 @@ export default class Tab extends Component {
             rtl,
             animation,
             activeKey,
-            excessMode,
+            excessMode: isTouchable ? 'slide' : excessMode,
             extra,
             tabs,
             tabPosition,

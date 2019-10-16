@@ -43,7 +43,7 @@ class Modal extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
-        type: PropTypes.string,
+        type: PropTypes.oneOf(['alert', 'confirm']),
         title: PropTypes.node,
         content: PropTypes.node,
         messageProps: PropTypes.object,
@@ -102,8 +102,8 @@ class Modal extends Component {
     };
 
     wrapper(fn, callback) {
-        return () => {
-            const res = fn();
+        return (...args) => {
+            const res = fn(...args);
             if (res && res.then) {
                 this.loading(true);
 
@@ -174,6 +174,7 @@ class Modal extends Component {
 
         return (
             <Dialog
+                prefix={prefix}
                 role="alertdialog"
                 {...others}
                 visible={visible}

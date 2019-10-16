@@ -8,6 +8,7 @@
 @import "lib/core/style/_line.scss";
 @import "lib/core/style/_shadow.scss";
 @import "lib/core/style/_icon.scss";
+@import "lib/core/style/_motion.scss";
 @import "lib/core/utility/_form-element.scss";
 @import "lib/core/utility/_mask.scss";
 @import "lib/core/utility/_popup.scss";
@@ -24,6 +25,7 @@
 @import "lib/collapse/scss/variable.scss";
 @import "lib/date-picker/scss/variable.scss";
 @import "lib/dialog/scss/variable.scss";
+@import "lib/drawer/scss/variable.scss";
 @import "lib/form/scss/variable.scss";
 @import "lib/grid/scss/variable.scss";
 @import "lib/input/scss/variable.scss";
@@ -33,6 +35,7 @@
 @import "lib/message/scss/variable.scss";
 @import "lib/nav/scss/variable.scss";
 @import "lib/number-picker/scss/variable.scss";
+@import "lib/overlay/scss/variable.scss";
 @import "lib/pagination/scss/variable.scss";
 @import "lib/paragraph/scss/variable.scss";
 @import "lib/progress/scss/variable.scss";
@@ -41,6 +44,7 @@
 @import "lib/rating/scss/variable.scss";
 @import "lib/search/scss/variable.scss";
 @import "lib/select/scss/variable.scss";
+@import "lib/shell/scss/variable.scss";
 @import "lib/slider/scss/variable.scss";
 @import "lib/split-button/scss/variable.scss";
 @import "lib/step/scss/variable.scss";
@@ -53,5 +57,6 @@
 @import "lib/transfer/scss/variable.scss";
 @import "lib/tree/scss/variable.scss";
 @import "lib/tree-select/scss/variable.scss";
+@import "lib/typography/scss/variable.scss";
 @import "lib/upload/scss/variable.scss";
 @import "lib/virtual-list/scss/variable.scss";

@@ -57,6 +57,46 @@ describe('Card', () => {
             );
             assert(wrapper.find('.next-card-head').length === 0);
         });
+
+        it('should render media & actions', () => {
+            wrapper = mount(
+                <Card
+                    {...commonProps}
+                    media={<img src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png" />}
+                    actions={<Button text type="primary">Button</Button>}
+                >
+                    Card Content
+                </Card>
+            );
+
+            assert(wrapper.find('.next-card-media').length > 0);
+            assert(wrapper.find('.next-card-actions').length > 0);
+        });
+
+        it('should render free', () => {
+            wrapper = mount(
+                <Card
+                    style= {{ width: 300 }}
+                    free
+                >
+                    <Card.Media>
+                        <img src="https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png" />
+                    </Card.Media>
+                    <Card.Header title="Title" subTitle="Sub Title" extra={<Button type="primary" text>Link</Button>} />
+                    <Card.Divider />
+                    <Card.Content>
+                        Card Content
+                    </Card.Content>
+                    <Card.Actions>
+                        <Button type="primary" key="action1" text>Action 1</Button>
+                        <Button type="primary" key="action2" text>Action 2</Button>
+                    </Card.Actions>
+                </Card>
+            );
+
+            assert(wrapper.find('.next-card-free').length > 0);
+            // assert(wrapper.find('.next-card-actions').length > 0);
+        });
     });
 
     describe('action', () => {

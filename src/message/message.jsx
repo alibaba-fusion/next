@@ -161,7 +161,6 @@ class Message extends Component {
                     <a
                         role="button"
                         aria-label={locale.closeAriaLabel}
-                        href="javascript:;"
                         className={`${messagePrefix}-close`}
                         onClick={this.onClose}
                     >

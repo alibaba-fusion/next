@@ -172,6 +172,7 @@ export default class DatePicker extends Component {
         timeInputAriaLabel: PropTypes.string,
         locale: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.string,
     };
 
     static defaultProps = {
@@ -578,6 +579,7 @@ export default class DatePicker extends Component {
             const timePanelProps = typeof showTime === 'object' ? showTime : {};
 
             const showSecond = this.timeFormat.indexOf('s') > -1;
+            const showMinute = this.timeFormat.indexOf('m') > -1;
 
             const panelTimeInputCls = classnames({
                 [`${prefix}date-picker-panel-input`]: true,
@@ -606,6 +608,7 @@ export default class DatePicker extends Component {
                     locale={locale}
                     className={`${prefix}date-picker-panel-time`}
                     showSecond={showSecond}
+                    showMinute={showMinute}
                     disabled={disabled}
                     prefix={prefix}
                     value={value}
@@ -659,9 +662,9 @@ export default class DatePicker extends Component {
                 className={datePickerCls}
             >
                 <Popup
+                    autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
-                    autoFocus
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}

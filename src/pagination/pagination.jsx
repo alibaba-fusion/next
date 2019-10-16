@@ -20,6 +20,7 @@ class Pagination extends Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
+        device: PropTypes.oneOf(['desktop', 'tablet', 'phone']),
         className: PropTypes.string,
         /**
          * 自定义国际化文案对象
@@ -118,7 +119,7 @@ class Pagination extends Component {
          */
         showJump: PropTypes.bool,
         /**
-         * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://xxx.com/{page}
+         * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://www.taobao.com/{page}
          */
         link: PropTypes.string,
         selectPopupContiner: PropTypes.func,
@@ -213,17 +214,11 @@ class Pagination extends Component {
     }
     onPageItemClick(page, e) {
         if (!('current' in this.props)) {
-            this.setState(
-                {
-                    current: page,
-                },
-                () => {
-                    this.props.onChange(page, e);
-                }
-            );
-        } else {
-            this.props.onChange(page, e);
+            this.setState({
+                current: page,
+            });
         }
+        this.props.onChange(page, e);
     }
 
     onInputChange(value) {
@@ -579,7 +574,8 @@ class Pagination extends Component {
             prefix,
             pure,
             rtl,
-            type,
+            device,
+            type: paginationType,
             size,
             shape,
             className,
@@ -611,6 +607,12 @@ class Pagination extends Component {
         const pageLast = this.renderPageLast(currentPage, totalPage);
         const sizeSelector = this.renderPageSizeSelector();
         const isStart = pageSizePosition === 'start';
+
+        let type = paginationType;
+
+        if (device === 'phone' && type === 'normal') {
+            type = 'simple';
+        }
 
         const classes = cx({
             [`${prefix}pagination`]: true,

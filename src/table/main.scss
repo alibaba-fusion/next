@@ -6,6 +6,21 @@
 #{$table-prefix} {
     @include box-sizing;
     position: relative;
+
+    &#{$table-prefix}-small {
+        th {
+            #{$table-prefix}-cell-wrapper {
+                padding: $table-size-s-header-padding-top $table-size-s-header-padding-left;
+            }
+        }
+
+        td {
+            #{$table-prefix}-cell-wrapper {
+                padding: $table-size-s-cell-padding-top $table-size-s-cell-padding-left;
+            }
+        }
+    }
+
     table {
         border-collapse: collapse;
         border-spacing: 0;
@@ -56,6 +71,8 @@
             #{$table-prefix}-tree-placeholder {
                 margin-right: 3px;
                 float: left;
+                outline: 0;
+                cursor: pointer;
             }
             .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
             .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow {
@@ -138,7 +155,7 @@
         }
     }
     &-row {
-        transition: all ease .3s;
+        transition: all $motion-duration-immediately $motion-linear;
         background: $table-row-bg;
         color: $table-row-color;
 
@@ -313,6 +330,10 @@
 }
 
 #{$table-prefix}-expanded-ctrl {
+    cursor: pointer;
+    &:focus {
+        outline: 0;
+    }
     &.disabled {
         color: $table-expanded-ctrl-disabled-color;
     }

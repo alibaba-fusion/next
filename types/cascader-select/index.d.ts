@@ -1,13 +1,15 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import { CascaderProps, data, extra } from '../cascader';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
 }
 
-export interface CascaderSelectProps extends HTMLAttributesWeak {
+export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, CommonProps {
     /**
      * 选择框大小
      */
@@ -51,31 +53,31 @@ export interface CascaderSelectProps extends HTMLAttributesWeak {
     /**
      * 数据源，结构可参考下方说明
      */
-    dataSource?: Array<any>;
+    dataSource?: Array<data>;
 
     /**
      * （非受控）默认值
      */
-    defaultValue?: string | Array<any>;
+    defaultValue?: string | Array<string>;
 
     /**
      * （受控）当前值
      */
-    value?: string | Array<any>;
+    value?: string | Array<string>;
 
     /**
      * 选中值改变时触发的回调函数
      */
     onChange?: (
-        value: string | Array<any>,
-        data: {} | Array<any>,
-        extra: {}
+        value: string | Array<string>,
+        data: data | Array<data>,
+        extra: extra
     ) => void;
 
     /**
      * 默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置
      */
-    defaultExpandedValue?: Array<any>;
+    defaultExpandedValue?: Array<string>;
 
     /**
      * 展开触发的方式
@@ -110,7 +112,7 @@ export interface CascaderSelectProps extends HTMLAttributesWeak {
     /**
      * 每列列表样式对象
      */
-    listStyle?: {};
+    listStyle?: React.CSSProperties;
 
     /**
      * 每列列表类名
@@ -125,7 +127,7 @@ export interface CascaderSelectProps extends HTMLAttributesWeak {
     /**
      * 渲染 item 内容的方法
      */
-    itemRender?: (item: {}) => React.ReactNode;
+    itemRender?: (item: data) => React.ReactNode;
 
     /**
      * 是否显示搜索框

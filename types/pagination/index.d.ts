@@ -1,12 +1,13 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
-export interface PaginationProps extends HTMLAttributesWeak {
+export interface PaginationProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义国际化文案对象
      */
@@ -103,7 +104,7 @@ export interface PaginationProps extends HTMLAttributesWeak {
     showJump?: boolean;
 
     /**
-     * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://xxx.com/{page}
+     * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://www.taobao.com/{page}
      */
     link?: string;
 

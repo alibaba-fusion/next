@@ -467,7 +467,12 @@ export default class Menu extends Component {
             arr = children;
         }
 
-        const loop = (children, posPrefix, indexWrapper = { index: 0 }) => {
+        const loop = (
+            children,
+            posPrefix,
+            indexWrapper = { index: 0 },
+            inlineLevel = 1
+        ) => {
             const keyArray = [];
             return Children.map(children, child => {
                 if (
@@ -505,23 +510,39 @@ export default class Menu extends Component {
                         this.k2n[key] = this.p2n[pos] = {
                             key,
                             pos,
+                            mode: child.props.mode,
                             type: child.type.menuChildType,
                             disabled: child.props.disabled,
                             label: child.props.label || child.props.children,
                         };
 
-                        props._key = key;
                         props.level = level;
+                        props.inlineLevel = inlineLevel;
+                        props._key = key;
                         props.groupIndent =
                             child.type.menuChildType === 'group' ? 1 : 0;
                     }
+
+                    // paddingLeft(or paddingRight in rtl) only make sense in inline mode
+                    // parent know children's inlineLevel
+                    // if parent's mode is popup, then children's inlineLevel must be 1;
+                    // else inlineLevel should add 1
+                    const childLevel =
+                        (child.props.mode || props.root.props.mode) === 'popup'
+                            ? 1
+                            : inlineLevel + 1;
 
                     switch (child.type.menuChildType) {
                         case 'submenu':
                             newChild = cloneElement(
                                 child,
                                 props,
-                                loop(child.props.children, pos)
+                                loop(
+                                    child.props.children,
+                                    pos,
+                                    undefined,
+                                    childLevel
+                                )
                             );
                             break;
                         case 'group':
@@ -531,7 +552,8 @@ export default class Menu extends Component {
                                 loop(
                                     child.props.children,
                                     posPrefix,
-                                    indexWrapper
+                                    indexWrapper,
+                                    childLevel
                                 )
                             );
                             break;
@@ -599,7 +621,9 @@ export default class Menu extends Component {
             if (mode === 'inline') {
                 if (openMode === 'single') {
                     newOpenKeys = openKeys.filter(
-                        k => !this.isSibling(this.k2n[key].pos, this.k2n[k].pos)
+                        k =>
+                            this.k2n[k] &&
+                            !this.isSibling(this.k2n[key].pos, this.k2n[k].pos)
                     );
                     newOpenKeys.push(key);
                 } else {
@@ -607,7 +631,10 @@ export default class Menu extends Component {
                 }
             } else {
                 newOpenKeys = openKeys.filter(k => {
-                    return this.isAncestor(this.k2n[key].pos, this.k2n[k].pos);
+                    return (
+                        this.k2n[k] &&
+                        this.isAncestor(this.k2n[key].pos, this.k2n[k].pos)
+                    );
                 });
                 newOpenKeys.push(key);
             }
@@ -629,6 +656,7 @@ export default class Menu extends Component {
                 newOpenKeys = openKeys.filter(k => {
                     return (
                         k !== key &&
+                        this.k2n[k] &&
                         !this.isAncestor(this.k2n[k].pos, this.k2n[key].pos)
                     );
                 });

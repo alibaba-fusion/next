@@ -1,11 +1,7 @@
 @import "../core/index-noreset.scss";
+@import "./scss/variable.scss";
 
 .#{$css-prefix}overlay-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-
     .#{$css-prefix}overlay-inner {
         z-index: 1001;
     }
@@ -17,12 +13,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: $mask-background;
-        transition: opacity .3s;
+        background-color: $color-calculate-mask-background;
+        transition: opacity $motion-duration-standard $motion-ease;
         opacity: 0;
     }
 
     &.opened .#{$css-prefix}overlay-backdrop {
-        opacity: $mask-opacity;
+        opacity: 1;
     }
 }

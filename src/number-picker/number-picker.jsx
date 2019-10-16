@@ -115,6 +115,10 @@ class NumberPicker extends React.Component {
          */
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
+        /**
+         * 预设屏幕宽度
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
     static defaultProps = {
@@ -213,9 +217,9 @@ class NumberPicker extends React.Component {
 
     onKeyDown(e, ...args) {
         if (e.keyCode === 38) {
-            this.up(e);
+            this.up(false, e);
         } else if (e.keyCode === 40) {
-            this.down(e);
+            this.down(false, e);
         }
         this.props.onKeyDown(e, ...args);
     }
@@ -262,6 +266,15 @@ class NumberPicker extends React.Component {
         }
 
         if (`${val}` !== `${value}`) {
+            // under controled, set back to props.value
+            if (
+                'value' in this.props &&
+                `${this.props.value}` !== `${this.state.value}`
+            ) {
+                this.setState({
+                    value: this.props.value,
+                });
+            }
             this.onCorrect(val, value);
         }
 
@@ -418,7 +431,7 @@ class NumberPicker extends React.Component {
 
     render() {
         const {
-            type,
+            device,
             prefix,
             rtl,
             disabled,
@@ -436,11 +449,13 @@ class NumberPicker extends React.Component {
             innerAfter,
         } = this.props;
 
+        let type = device === 'phone' ? 'inline' : this.props.type;
+
         const prefixCls = `${prefix}number-picker`;
 
         const cls = classNames({
             [prefixCls]: true,
-            [`${prefixCls}-${this.props.type}`]: this.props.type,
+            [`${prefixCls}-${type}`]: type,
             [`${prefix}${size}`]: true,
             [className]: className,
         });

@@ -537,5 +537,18 @@ describe('Rating', () => {
             );
             assert(wrapper.find('.next-rating').props().dir === 'rtl');
         });
+
+        it('should support rtl in half mode', () => {
+            const wrapper = mount(
+                <Rating
+                    rtl
+                    allowHalf
+                    defaultValue={3}
+                    onChange={onChange}
+                    id="action-test-1"
+                />
+            );
+            assert(wrapper.find('.next-rating').props().dir === 'rtl');
+        });
     });
 });

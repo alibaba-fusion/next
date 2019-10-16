@@ -27,7 +27,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            transition: all 1s $progress-easing;
+            transition: all $motion-duration-standard $motion-ease;
 
             &-normal {
                 background-color: $progress-line-normal-color;
@@ -115,7 +115,7 @@
         }
 
         &-overlay {
-            transition: all 1s $progress-easing;
+            transition: all $motion-duration-standard $motion-ease;
             stroke-linecap: $progress-circle-corner;
             stroke-width: $progress-circle-overlay-width;
 
@@ -167,7 +167,7 @@
         line-height: 1;
         -webkit-transform: translateY(-50%);
         transform: translateY(-50%);
-        transition: transform .3s $progress-easing;
+        transition: transform $motion-duration-standard $motion-ease;
         color: $progress-circle-text-color;
     }
 }

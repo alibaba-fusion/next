@@ -1,7 +1,12 @@
 import ConfigProvider from '../config-provider';
 import Input from './input';
+import Password from './password';
 import TextArea from './textarea';
 import Group from './group';
+
+Input.Password = ConfigProvider.config(Password, {
+    exportNames: ['getInputNode', 'focus'],
+});
 
 Input.TextArea = ConfigProvider.config(TextArea, {
     exportNames: ['getInputNode', 'focus'],

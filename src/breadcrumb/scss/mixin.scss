@@ -7,6 +7,7 @@
     display: block;
     margin: 0;
     padding: 0;
+    white-space: nowrap;
 
     .#{$css-prefix}breadcrumb-item {
         display: inline-block;
@@ -18,7 +19,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            transition: all .2s ease-out;
+            transition: all $motion-duration-immediately $motion-linear;
 
             > b {
                 font-weight: normal;
@@ -107,7 +108,7 @@
         color: $iconColor;
     }
 
-    .#{$css-prefix}breadcrumb-text:not(.next-breadcrumb-text-ellipsis):hover > a {
+    .#{$css-prefix}breadcrumb-text:not(.#{$css-prefix}breadcrumb-text-ellipsis):hover > a {
         color: $textColorHover;
     }
 
@@ -115,7 +116,7 @@
         color: $currentTextColorHover;
     }
 
-    a.#{$css-prefix}breadcrumb-text:not(.next-breadcrumb-text-ellipsis):hover {
+    a.#{$css-prefix}breadcrumb-text:not(.#{$css-prefix}breadcrumb-text-ellipsis):hover {
         color: $textColorHover;
 
         > b {

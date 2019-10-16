@@ -9,13 +9,13 @@
     @include box-sizing;
     outline: none;
     text-align: left;
-    transition: all .3s cubic-bezier(.78, .14, .15, .86);
+    transition: all $motion-duration-immediately $motion-linear;
     overflow: hidden;
     cursor: pointer;
 
     &:after {
         content: " ";
-        transition: all .4s cubic-bezier(.78, .14, .15, .86);
+        transition: all $motion-duration-immediately $motion-linear;
         transform-origin: left center;
     }
 
