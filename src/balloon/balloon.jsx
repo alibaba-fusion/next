@@ -67,7 +67,7 @@ export default class Balloon extends React.Component {
          */
         onVisibleChange: PropTypes.func,
         /**
-         * 弹出层对齐方式
+         * 弹出层对齐方式, 是否为边缘对齐
          */
         alignEdge: PropTypes.bool,
         /**
