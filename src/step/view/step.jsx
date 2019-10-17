@@ -21,7 +21,7 @@ export default class Step extends Component {
          */
         direction: PropTypes.oneOf(['hoz', 'ver']),
         /**
-         * 横向布局时的内容排列
+         * 横向布局时( direction 为 hoz )的内容排列
          */
         labelPlacement: PropTypes.oneOf(['hoz', 'ver']),
         /**
