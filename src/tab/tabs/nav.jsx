@@ -379,27 +379,28 @@ class Nav extends React.Component {
     }
 
     scrollToActiveTab = () => {
-        if (!this.activeTab || this.props.excessMode !== 'slide') {
-            return;
-        }
-
-        const activeTabWH = getOffsetWH(this.activeTab);
-        const wrapperWH = getOffsetWH(this.wrapper);
-        const activeTabOffset = getOffsetLT(this.activeTab);
-        const wrapperOffset = getOffsetLT(this.wrapper);
-        const target = this.offset;
         if (
-            activeTabOffset >= wrapperOffset + wrapperWH ||
-            activeTabOffset + activeTabWH <= wrapperOffset
+            this.activeTab &&
+            ['slide', 'dropdown'].includes(this.props.excessMode)
         ) {
-            this.setOffset(
-                this.offset + wrapperOffset - activeTabOffset,
-                true,
-                true
-            );
-            return;
+            const activeTabWH = getOffsetWH(this.activeTab);
+            const wrapperWH = getOffsetWH(this.wrapper);
+            const activeTabOffset = getOffsetLT(this.activeTab);
+            const wrapperOffset = getOffsetLT(this.wrapper);
+            const target = this.offset;
+            if (
+                activeTabOffset >= wrapperOffset + wrapperWH ||
+                activeTabOffset + activeTabWH <= wrapperOffset
+            ) {
+                this.setOffset(
+                    this.offset + wrapperOffset - activeTabOffset,
+                    true,
+                    true
+                );
+                return;
+            }
+            this.setOffset(target, true, true);
         }
-        this.setOffset(target, true, true);
     };
 
     onPrevClick = () => {
