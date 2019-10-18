@@ -87,6 +87,10 @@
             border-color: $radio-disabled-border-color;
             background: $radio-disabled-bg-color;
 
+            &:after {
+                background: $radio-disabled-circle-color;
+            }
+
             &:hover, &.hovered {
                 border-color: $radio-disabled-border-color;
             }
@@ -94,8 +98,10 @@
         &.checked {
             #{$radio-prefix}-inner {
                 border-color: $radio-checked-disabled-border-color;
+                background: $radio-checked-disabled-bg-color;
+
                 &:after {
-                    background: $radio-disabled-circle-color;
+                    background: $radio-checked-disabled-circle-color;
                 }
             }
         }
