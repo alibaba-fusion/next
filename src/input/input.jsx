@@ -120,7 +120,11 @@ export default class Input extends Base {
         const nv = `${value}`;
         let strLen = this.props.getValueLength(nv);
         if (typeof strLen !== 'number') {
-            strLen = nv.length;
+            let cnt = 0;
+            for (let item of nv) {
+                cnt++;
+            }
+            strLen = cnt;
         }
 
         return strLen;
