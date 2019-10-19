@@ -242,6 +242,12 @@ class IframeUploader extends React.Component {
                     target={iframeName}
                 >
                     <input
+                        name="_documentDomain"
+                        value={this.domain}
+                        type="hidden"
+                    />
+                    <span ref="data" />
+                    <input
                         ref="input"
                         type="file"
                         accept={accept}
@@ -249,12 +255,6 @@ class IframeUploader extends React.Component {
                         onChange={this.onSelect}
                         style={INPUT_STYLE}
                     />
-                    <input
-                        name="_documentDomain"
-                        value={this.domain}
-                        type="hidden"
-                    />
-                    <span ref="data" />
                 </form>
                 {children}
             </span>
