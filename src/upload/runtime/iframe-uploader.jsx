@@ -50,6 +50,7 @@ class IframeUploader extends React.Component {
             typeof document !== 'undefined' && document.domain
                 ? document.domain
                 : '';
+        this.uid = uid();
     }
 
     state = {
@@ -66,6 +67,7 @@ class IframeUploader extends React.Component {
 
     file = {};
 
+    uid = '';
     onLoad = () => {
         if (!this.state.uploading) {
             return;
@@ -100,7 +102,6 @@ class IframeUploader extends React.Component {
 
     startUpload() {
         this.upload(this.file);
-        this.file = {};
     }
 
     upload(file) {
@@ -213,8 +214,8 @@ class IframeUploader extends React.Component {
             name,
             style,
         } = this.props;
-
-        const iframeName = `${name}-iframe`;
+        const { uid } = this;
+        const iframeName = `${name}-${uid}-iframe`;
 
         return (
             <span
