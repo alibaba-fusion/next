@@ -43,7 +43,6 @@ export default function selection(BaseComponent) {
              * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
              * @property {Function} columnProps `Function()=>Object` 选择列 的props，例如锁列、对齐等，可使用`Table.Column` 的所有参数
              * @property {Function} titleProps `Function()=>Object` 选择列 表头的props，仅在 `multiple` 模式下生效
-             * @property {Function} titleAddons `Function()=>Node` 选择列 表头添加的元素，在`single` `multiple` 下都生效
              */
             rowSelection: PropTypes.object,
             primaryKey: PropTypes.string,

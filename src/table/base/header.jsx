@@ -107,9 +107,11 @@ export default class Header extends React.Component {
                     sortElement,
                     filterElement,
                     resizeElement;
-                if (col.children && col.children.length) {
-                    attrs.colSpan = colSpan;
-                } else {
+
+                attrs.colSpan = colSpan;
+
+                // column.group doesn't have sort resize filter
+                if (!(col.children && col.children.length)) {
                     if (sortable) {
                         sortElement = (
                             <Sort
@@ -152,6 +154,11 @@ export default class Header extends React.Component {
                     }
                     attrs.rowSpan = rowSpan - index;
                 }
+
+                if (+attrs.colSpan === 0) {
+                    return null;
+                }
+
                 return (
                     <Cell
                         {...others}

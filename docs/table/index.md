@@ -150,6 +150,7 @@ ReactDOM.render(
 | filterMenuProps | filter 模式下传递给 Menu 菜单的属性， 默认继承 `Menu` 组件的API<br><br>**属性**:<br>_subMenuSelectable_: {Boolean} 默认为`false` subMenu是否可选择<br>_isSelectIconRight_: {Boolean} 默认为`false` 是否将选中图标居右。注意：SubMenu 上的选中图标一直居左，不受此API控制 | Object                          | {     subMenuSelectable: false, } |
 | lock            | 是否支持锁列,可选值为`left`,`right`, `true`                                                                                                                                                                           | Boolean/String                  | -                                 |
 | resizable       | 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.                                                                                                                                                                    | Boolean                         | false                             |
+| colSpan         | header cell 横跨的格数，设置为0表示不出现此 th                                                                                                                                                                             | Number                          | -                                 |
 
 ### Table.ColumnGroup
 
