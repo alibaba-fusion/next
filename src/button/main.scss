@@ -26,10 +26,10 @@
             transition: opacity $motion-duration-immediately $motion-linear;
         }
 
-        .#{$css-prefix}icon.#{$css-prefix}xs {
-            &:before {
-                vertical-align: baseline;
-            }
+        .#{$css-prefix}icon {
+            font-size: 0;
+            vertical-align: top;
+            height: 100%;
         }
 
         &.hover,
