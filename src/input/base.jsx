@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
 
@@ -109,13 +111,15 @@ class Base extends React.Component {
         locale: zhCN.Input,
     };
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
             const value = nextProps.value;
-            this.setState({
+            return {
                 value: value === undefined || value === null ? '' : value,
-            });
+            };
         }
+
+        return null;
     }
 
     ieHack(value) {
@@ -275,4 +279,4 @@ class Base extends React.Component {
     }
 }
 
-export default Base;
+export default polyfill(Base);

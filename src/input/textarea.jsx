@@ -101,9 +101,7 @@ export default class TextArea extends Base {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        super.componentWillReceiveProps(nextProps);
-
+    componentDidUpdate(nextProps) {
         if (this.props.autoHeight && this.props.value !== nextProps.value) {
             this._resizeTextArea(nextProps.value);
         }
