@@ -176,7 +176,7 @@ class Search extends React.Component {
                 filterValue === undefined ? '' : filterValue;
         }
 
-        if (Object.keys(nextState) > 0) {
+        if (Object.keys(nextState).length > 0) {
             return nextState;
         }
 
