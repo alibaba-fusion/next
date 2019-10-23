@@ -111,9 +111,9 @@ class Base extends React.Component {
         locale: zhCN.Input,
     };
 
-    static getDerivedStateFromProps(props) {
-        if ('value' in props) {
-            const value = props.value;
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
+            const value = nextProps.value;
             return {
                 value: value === undefined || value === null ? '' : value,
             };

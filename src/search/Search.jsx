@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import Input from '../input';
 import Select from '../select';
 import Button from '../button';
@@ -157,19 +159,29 @@ class Search extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        const state = {};
-        if ('value' in nextProps) {
-            state.value =
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const nextState = {};
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
+            const value = nextProps.value;
+            nextState.value =
                 typeof nextProps.value === 'undefined' ? '' : nextProps.value;
         }
-        if ('filterValue' in nextProps) {
-            state.filterValue =
+
+        if (
+            'filterValue' in nextProps &&
+            nextProps.filterValue !== prevState.filterValue
+        ) {
+            nextState.filterValue =
                 typeof nextProps.filterValue === 'undefined'
                     ? ''
                     : nextProps.filterValue;
         }
-        this.setState(state);
+
+        if (Object.keys(nextState) > 0) {
+            return nextState;
+        }
+
+        return null;
     }
 
     onChange = (value, ...argv) => {
@@ -351,4 +363,4 @@ class Search extends React.Component {
     }
 }
 
-export default Search;
+export default polyfill(Search);
