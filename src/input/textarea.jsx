@@ -101,12 +101,22 @@ export default class TextArea extends Base {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        super.componentWillReceiveProps(nextProps);
-
+    componentDidUpdate(nextProps) {
         if (this.props.autoHeight && this.props.value !== nextProps.value) {
             this._resizeTextArea(nextProps.value);
         }
+    }
+
+    static getDerivedStateFromProps(props) {
+        if ('value' in props) {
+            const value = props.value;
+
+            return {
+                value: value === undefined || value === null ? '' : value,
+            };
+        }
+
+        return null;
     }
 
     _getMinMaxHeight({ minRows, maxRows }, value) {
