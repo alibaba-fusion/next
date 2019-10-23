@@ -113,6 +113,30 @@ describe('Affix', () => {
             assert(wrapper.find('.next-affix').length === 0);
         });
 
+        it('shoud render with affixTop useAbsolute', () => {
+            const style = { padding: '40px 0' };
+            wrapper = mount(
+                <div style={style}>
+                    <Affix offsetTop={0} useAbsolute>
+                        <Button type="secondary"> Hello World </Button>
+                    </Affix>
+                </div>
+            );
+            assert(wrapper.find('.next-affix').length === 0);
+        });
+
+        it('shoud render with affixBottom useAbsolute', () => {
+            const style = { padding: '40px 0' };
+            wrapper = mount(
+                <div style={style}>
+                    <Affix offsetBottom={0} useAbsolute>
+                        <Button type="secondary"> Hello World </Button>
+                    </Affix>
+                </div>
+            );
+            assert(wrapper.find('.next-affix').length === 0);
+        });
+
         it('should render with specified target', () => {
             wrapper = mount(<AffixDemo />, {
                 attachTo: document.getElementById('react-app'),
@@ -150,6 +174,10 @@ describe('Affix', () => {
 
             affixDemo.simulate('scroll', {
                 deltaY: 200,
+            });
+
+            affixDemo.simulate('scroll', {
+                deltaY: 500,
             });
         });
     });
