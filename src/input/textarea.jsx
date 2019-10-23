@@ -107,18 +107,6 @@ export default class TextArea extends Base {
         }
     }
 
-    static getDerivedStateFromProps(props) {
-        if ('value' in props) {
-            const value = props.value;
-
-            return {
-                value: value === undefined || value === null ? '' : value,
-            };
-        }
-
-        return null;
-    }
-
     _getMinMaxHeight({ minRows, maxRows }, value) {
         const node = ReactDOM.findDOMNode(this.helpRef);
         node.setAttribute('rows', minRows);
