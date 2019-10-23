@@ -164,17 +164,16 @@ class Search extends React.Component {
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             const value = nextProps.value;
             nextState.value =
-                typeof nextProps.value === 'undefined' ? '' : nextProps.value;
+                value === undefined || value === null ? '' : nextProps.value;
         }
 
         if (
             'filterValue' in nextProps &&
             nextProps.filterValue !== prevState.filterValue
         ) {
+            const filterValue = nextProps.filterValue;
             nextState.filterValue =
-                typeof nextProps.filterValue === 'undefined'
-                    ? ''
-                    : nextProps.filterValue;
+                filterValue === undefined ? '' : filterValue;
         }
 
         if (Object.keys(nextState) > 0) {
