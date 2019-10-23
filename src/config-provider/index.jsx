@@ -1,5 +1,6 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import getContextProps from './get-context-props';
 import {
     config,
@@ -17,6 +18,18 @@ import Cache from './cache';
 
 const childContextCache = new Cache();
 
+const setMomentLocale = locale => {
+    let moment;
+    try {
+        moment = require('moment');
+    } catch (e) {
+        // ignore
+    }
+
+    if (moment && locale) {
+        moment.locale(locale.momentLocale);
+    }
+};
 /**
  * ConfigProvider
  * @propsExtends false
@@ -155,6 +168,10 @@ class ConfigProvider extends Component {
                 this.getChildContext()
             )
         );
+
+        this.state = {
+            locale: this.props.locale,
+        };
     }
 
     getChildContext() {
@@ -181,14 +198,16 @@ class ConfigProvider extends Component {
         };
     }
 
-    componentWillMount() {
-        this.setMomentLocale(this.props.locale);
-    }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.locale !== prevState.locale) {
+            setMomentLocale(nextProps.locale);
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.locale !== nextProps.locale) {
-            this.setMomentLocale(nextProps.locale);
+            return {
+                locale: nextProps.locale,
+            };
         }
+
+        return null;
     }
 
     componentDidUpdate() {
@@ -206,22 +225,9 @@ class ConfigProvider extends Component {
         childContextCache.remove(this);
     }
 
-    setMomentLocale(locale) {
-        let moment;
-        try {
-            moment = require('moment');
-        } catch (e) {
-            // ignore
-        }
-
-        if (moment && locale) {
-            moment.locale(locale.momentLocale);
-        }
-    }
-
     render() {
         return Children.only(this.props.children);
     }
 }
 
-export default ConfigProvider;
+export default polyfill(ConfigProvider);
