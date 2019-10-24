@@ -1,11 +1,13 @@
 # Latest Log 
 
-## [1.18.5](https://github.com/alibaba-fusion/next/compare/1.18.4...1.18.5) (2019-10-17)
+## [1.18.6](https://github.com/alibaba-fusion/next/compare/1.18.5...1.18.6) (2019-10-24)
 
 
 ### Bug Fixes
 
-* **Balloon:** Tooltip shoule support alignEdge, close [#1222](https://github.com/alibaba-fusion/next/issues/1222) ([3c6289a](https://github.com/alibaba-fusion/next/commit/3c6289a))
-* **Shell:** should support use nothing ([1c76aea](https://github.com/alibaba-fusion/next/commit/1c76aea))
+* **Affix:** fix recursive call in some situation ([633c3b6](https://github.com/alibaba-fusion/next/commit/633c3b6))
+* **Button:** style vertical align middle ([cec2e9a](https://github.com/alibaba-fusion/next/commit/cec2e9a))
+* **Shell:** config Shell.Page ([4249e0a](https://github.com/alibaba-fusion/next/commit/4249e0a))
+* **Tab:** make dropdown mode tab nav scroll to active ([881ce87](https://github.com/alibaba-fusion/next/commit/881ce87))
 
 
