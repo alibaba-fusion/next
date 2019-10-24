@@ -1,0 +1,398 @@
+{
+  "name": "Pagination",
+  "props": {
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义国际化文案对象",
+      "defaultValue": {
+        "value": "zhCN.Pagination",
+        "computed": true
+      },
+      "docblock": "自定义国际化文案对象",
+      "properties": []
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'simple'",
+            "computed": false
+          },
+          {
+            "value": "'mini'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "分页组件类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "分页组件类型"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'arrow-only'",
+            "computed": false
+          },
+          {
+            "value": "'arrow-prev-only'",
+            "computed": false
+          },
+          {
+            "value": "'no-border'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "前进后退按钮样式",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "前进后退按钮样式"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "分页组件大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "分页组件大小"
+    },
+    "current": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "（受控）当前页码",
+      "docblock": "（受控）当前页码"
+    },
+    "defaultCurrent": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "（非受控）初始页码",
+      "defaultValue": {
+        "value": "1",
+        "computed": false
+      },
+      "docblock": "（非受控）初始页码"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "页码发生改变时的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "页码发生改变时的回调函数\n@param {Number} current 改变后的页码数\n@param {Object} e 点击事件对象",
+      "params": [
+        {
+          "name": "current",
+          "description": "改变后的页码数",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "e",
+          "description": "点击事件对象",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "total": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "总记录数",
+      "defaultValue": {
+        "value": "100",
+        "computed": false
+      },
+      "docblock": "总记录数"
+    },
+    "totalRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "总数的渲染函数",
+      "docblock": "总数的渲染函数\n@param {Number} total 总数\n@param {Array} range 当前数据在总数中的区间",
+      "params": [
+        {
+          "name": "total",
+          "description": "总数",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "range",
+          "description": "当前数据在总数中的区间",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "pageShowCount": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "页码显示的数量，更多的使用...代替",
+      "defaultValue": {
+        "value": "5",
+        "computed": false
+      },
+      "docblock": "页码显示的数量，更多的使用...代替"
+    },
+    "pageSize": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "一页中的记录数",
+      "defaultValue": {
+        "value": "10",
+        "computed": false
+      },
+      "docblock": "一页中的记录数"
+    },
+    "pageSizeSelector": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "false",
+            "computed": false
+          },
+          {
+            "value": "'filter'",
+            "computed": false
+          },
+          {
+            "value": "'dropdown'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "每页显示选择器类型",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "每页显示选择器类型"
+    },
+    "pageSizeList": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "shape",
+              "value": {
+                "label": {
+                  "name": "string",
+                  "required": false
+                },
+                "value": {
+                  "name": "number",
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "每页显示选择器可选值",
+      "defaultValue": {
+        "value": "[5, 10, 20]",
+        "computed": false
+      },
+      "docblock": "每页显示选择器可选值"
+    },
+    "pageNumberRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义页码渲染函数，函数作用于页码button以及当前页/总页数的数字渲染",
+      "defaultValue": {
+        "value": "index => index",
+        "computed": false
+      },
+      "docblock": "自定义页码渲染函数，函数作用于页码button以及当前页/总页数的数字渲染\n@param {Number} index 分页的页码，从1开始\n@return {ReactNode} 返回渲染结果",
+      "params": [
+        {
+          "name": "index",
+          "description": "分页的页码，从1开始",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回渲染结果",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "pageSizePosition": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'start'",
+            "computed": false
+          },
+          {
+            "value": "'end'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "每页显示选择器在组件中的位置",
+      "defaultValue": {
+        "value": "'start'",
+        "computed": false
+      },
+      "docblock": "每页显示选择器在组件中的位置"
+    },
+    "useFloatLayout": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "存在每页显示选择器时是否使用浮动布局",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "存在每页显示选择器时是否使用浮动布局"
+    },
+    "onPageSizeChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "每页显示记录数量改变时的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "每页显示记录数量改变时的回调函数\n@param {Number} pageSize 改变后的每页显示记录数",
+      "params": [
+        {
+          "name": "pageSize",
+          "description": "改变后的每页显示记录数",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "hideOnlyOnePage": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当分页数为1时，是否隐藏分页器",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "当分页数为1时，是否隐藏分页器"
+    },
+    "showJump": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "type 设置为 normal 时，在页码数超过5页后，会显示跳转输入框与按钮，当设置 showJump 为 false 时，不再显示该跳转区域",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "type 设置为 normal 时，在页码数超过5页后，会显示跳转输入框与按钮，当设置 showJump 为 false 时，不再显示该跳转区域"
+    },
+    "link": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://www.taobao.com/{page}",
+      "docblock": "设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://www.taobao.com/{page}"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层组件属性，透传给Popup",
+      "docblock": "弹层组件属性，透传给Popup",
+      "properties": []
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
