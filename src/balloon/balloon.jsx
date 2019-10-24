@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import Overlay from '../overlay';
 import { func, obj, log } from '../util';
 import BalloonInner from './inner';
@@ -27,7 +28,7 @@ const alignList = [
 let alignMap = normalMap;
 
 /** Balloon */
-export default class Balloon extends React.Component {
+class Balloon extends React.Component {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -205,18 +206,17 @@ export default class Balloon extends React.Component {
         this._onVisibleChange = this._onVisibleChange.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+    static getDerivedStateFromProps(props) {
+        const nextState = {};
+        if ('visible' in props) {
+            nextState.visible = props.visible;
         }
 
-        if ('align' in nextProps && alignList.includes(nextProps.align)) {
-            this.setState({
-                align: nextProps.align,
-            });
+        if ('align' in props && alignList.includes(props.align)) {
+            nextState.align = props.align;
         }
+
+        return nextState;
     }
 
     _onVisibleChange(visible, trigger) {
@@ -388,3 +388,5 @@ export default class Balloon extends React.Component {
         );
     }
 }
+
+export default polyfill(Balloon);
