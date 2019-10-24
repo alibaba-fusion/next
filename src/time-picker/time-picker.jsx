@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
+import ConfigProvider from '../config-provider';
 import Input from '../input';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
@@ -19,6 +20,7 @@ const timePickerLocale = nextLocale.TimePicker;
  */
 export default class TimePicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -109,7 +111,7 @@ export default class TimePicker extends Component {
          * @param {Object} target 目标节点
          * @return {ReactNode} 容器节点
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
          * 弹层对齐方式, 详情见Overlay 文档
          */
