@@ -24,9 +24,11 @@ const Shell = ShellBase({
     });
 });
 
-Shell.Page = ShellBase({
-    componentName: 'Page',
-});
+Shell.Page = ConfigProvider.config(
+    ShellBase({
+        componentName: 'Page',
+    })
+);
 
 export default ConfigProvider.config(Shell, {
     transform: /* istanbul ignore next */ (props, deprecated) => {

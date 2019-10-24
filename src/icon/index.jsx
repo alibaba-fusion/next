@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
-
+import { obj } from '../util';
 /**
  * Icon
  */
 class Icon extends Component {
     static propTypes = {
-        prefix: PropTypes.string,
-        rtl: PropTypes.bool,
+        ...ConfigProvider.propTypes,
         /**
          * 指定显示哪种图标
          */
@@ -40,7 +39,12 @@ class Icon extends Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, type, size, className, rtl, ...other } = this.props;
+        const { prefix, type, size, className, rtl } = this.props;
+
+        const others = obj.pickOthers(
+            Object.assign({}, Icon.propTypes),
+            this.props
+        );
 
         const classes = cx({
             [`${prefix}icon`]: true,
@@ -62,10 +66,10 @@ class Icon extends Component {
                 'ascending',
             ].indexOf(type) !== -1
         ) {
-            other.dir = 'rtl';
+            others.dir = 'rtl';
         }
 
-        return <i {...other} className={classes} />;
+        return <i {...others} className={classes} />;
     }
 }
 

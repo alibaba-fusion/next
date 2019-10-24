@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classnames from 'classnames';
+import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
 import CardHeader from './head/card-header';
@@ -26,6 +27,7 @@ import {
 /** Calendar */
 class Calendar extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**

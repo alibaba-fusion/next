@@ -8,6 +8,7 @@ import nextLocale from '../../locale/zh-cn';
 /** Timeline */
 class Timeline extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         /**
          * 样式的品牌前缀
          */
