@@ -13,8 +13,7 @@ const { makeChain, noop } = func;
 class Radio extends UIState {
     static displayName = 'Radio';
     static propTypes = {
-        prefix: PropTypes.string,
-        rtl: PropTypes.bool,
+        ...ConfigProvider.propTypes,
         /**
          * 自定义类名
          */

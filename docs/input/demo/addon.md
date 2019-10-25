@@ -20,7 +20,7 @@ ReactDOM.render(<div>
         addonTextAfter=".com"
         size="large"
         defaultValue="alibaba"
-        maxLength={2}
+        maxLength={5}
         aria-label="input with config of addonTextBefore and addonTextAfter" /><br /><br />
 
     <Input

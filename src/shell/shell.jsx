@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import { isBoolean, getCollapseMap } from './util';
 import { KEYCODE } from '../util';
+
+import { isBoolean, getCollapseMap } from './util';
 
 /**
  * Shell
@@ -16,6 +18,7 @@ export default function ShellBase(props) {
         static _typeMark = componentName;
 
         static propTypes = {
+            ...ConfigProvider.propTypes,
             prefix: PropTypes.string,
             /**
              * 设备类型
@@ -35,10 +38,6 @@ export default function ShellBase(props) {
             type: 'light',
         };
 
-        static childContextTypes = {
-            shellPrefix: PropTypes.string,
-        };
-
         constructor(props) {
             super(props);
 
@@ -49,12 +48,6 @@ export default function ShellBase(props) {
                 controll: false,
                 collapseMap: deviceMap,
                 device: props.device,
-            };
-        }
-
-        getChildContext() {
-            return {
-                shellPrefix: this.props.prefix,
             };
         }
 

@@ -46,6 +46,9 @@ describe('TextArea', () => {
                 .simulate('change', { target: { value: '20' } });
             assert(wrapper.find('textarea').prop('value') === '20');
 
+            wrapper.setProps({value: 'helloworld'});
+            assert(wrapper.find('textarea').prop('value') === 'helloworld');
+            
             done();
         });
 
@@ -63,6 +66,9 @@ describe('TextArea', () => {
                 .find('textarea')
                 .simulate('change', { target: { value: '20' } });
             assert(wrapper.find('textarea').prop('value') === '123');
+
+            wrapper.setProps({value: 'helloworld'});
+            assert(wrapper.find('textarea').prop('value') === 'helloworld');
 
             done();
         });

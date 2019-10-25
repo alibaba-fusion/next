@@ -197,7 +197,7 @@ class FuncDemoVer extends FuncDemo {
         return (
             <Demo title="Vertical" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 {this.renderVerType('Normal', 'normal')}
-                {this.renderVerType('Primay', 'primary')}
+                {this.renderVerType('Primary', 'primary')}
                 {this.renderVerType('Secondary', 'secondary')}
                 {this.renderVerType('Line', 'line')}
             </Demo>

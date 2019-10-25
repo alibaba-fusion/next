@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
+import ConfigProvider from '../config-provider';
 import Input from '../input';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
@@ -17,8 +19,9 @@ const timePickerLocale = nextLocale.TimePicker;
 /**
  * TimePicker
  */
-export default class TimePicker extends Component {
+class TimePicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -109,7 +112,7 @@ export default class TimePicker extends Component {
          * @param {Object} target 目标节点
          * @return {ReactNode} 容器节点
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
          * 弹层对齐方式, 详情见Overlay 文档
          */
@@ -183,22 +186,18 @@ export default class TimePicker extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            const value = formatDateValue(
-                nextProps.value,
-                nextProps.format || this.props.format
-            );
-            this.setState({
-                value,
-            });
+    static getDerivedStateFromProps(props) {
+        const state = {};
+
+        if ('value' in props) {
+            state.value = formatDateValue(props.value, props.format);
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if ('visible' in props) {
+            state.visible = props.visible;
         }
+
+        return state;
     }
 
     onValueChange(newValue) {
@@ -445,3 +444,5 @@ export default class TimePicker extends Component {
         );
     }
 }
+
+export default polyfill(TimePicker);

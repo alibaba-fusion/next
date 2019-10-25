@@ -6,7 +6,7 @@ import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
 import Select from '../select';
-import { KEYCODE, str } from '../util';
+import { KEYCODE, str, obj } from '../util';
 import zhCN from '../locale/zh-cn.js';
 
 const { Option } = Select;
@@ -17,6 +17,7 @@ const noop = () => {};
  */
 class Pagination extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -630,7 +631,10 @@ class Pagination extends Component {
         }
 
         const buildComponent = (...coms) => (
-            <div className={classes} {...others}>
+            <div
+                className={classes}
+                {...obj.pickOthers(Object.keys(Pagination.propTypes), others)}
+            >
                 {isStart && sizeSelector}
                 {totalRender ? this.renderPageTotal() : null}
                 <div className={`${prefix}pagination-pages`}>

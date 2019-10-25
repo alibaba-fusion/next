@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
+import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
 import Calendar from '../calendar';
@@ -27,6 +28,7 @@ const { Popup } = Overlay;
  */
 export default class DatePicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -128,7 +130,7 @@ export default class DatePicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
          * 弹层自定义样式
          */

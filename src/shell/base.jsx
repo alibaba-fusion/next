@@ -11,6 +11,7 @@ export default function Base(props) {
         static _typeMark = `Shell_${componentName}`;
 
         static propTypes = {
+            ...ConfigProvider.propTypes,
             prefix: PropTypes.string,
             collapse: PropTypes.bool,
             miniable: PropTypes.bool,
@@ -33,10 +34,6 @@ export default function Base(props) {
 
         static childContextTypes = {
             isCollapse: PropTypes.bool,
-        };
-
-        static contextTypes = {
-            shellPrefix: PropTypes.string,
         };
 
         getChildContext() {
@@ -62,21 +59,19 @@ export default function Base(props) {
                 ...others
             } = this.props;
 
-            const basePrefix = this.context.prefix || prefix;
-
             let Tag = component;
 
             const cls = classnames({
-                [`${basePrefix}shell-${componentName.toLowerCase()}`]: true,
-                [`${basePrefix}shell-collapse`]: !!collapse,
-                [`${basePrefix}shell-mini`]: miniable,
+                [`${prefix}shell-${componentName.toLowerCase()}`]: true,
+                [`${prefix}shell-collapse`]: !!collapse,
+                [`${prefix}shell-mini`]: miniable,
                 [className]: !!className,
             });
 
             let newChildren = children;
             if (componentName === 'Content') {
                 newChildren = (
-                    <div className={`${basePrefix}shell-content-inner`}>
+                    <div className={`${prefix}shell-content-inner`}>
                         {children}
                     </div>
                 );
