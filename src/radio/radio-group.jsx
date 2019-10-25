@@ -13,11 +13,11 @@ const { pickOthers } = obj;
  */
 class RadioGroup extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         /**
          * 样式类名的品牌前缀
          */
         prefix: PropTypes.string,
-        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */

@@ -58,7 +58,7 @@ class ConfigProvider extends Component {
         /**
          * 组件树
          */
-        children: PropTypes.element,
+        children: PropTypes.any,
         /**
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数
          */

@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ConfigProvider from '../config-provider';
 import BulletHeader from './bullet-header';
 import CollapseContent from './collapse-content';
 import CardMedia from './media';
@@ -18,6 +19,7 @@ export default class Card extends React.Component {
     static displayName = 'Card';
 
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**

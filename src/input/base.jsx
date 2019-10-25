@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
 
+import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
 
 class Base extends React.Component {
     static propTypes = {
-        prefix: PropTypes.string,
+        ...ConfigProvider.propTypes,
         /**
          * 当前值
          */

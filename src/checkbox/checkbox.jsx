@@ -17,6 +17,7 @@ function isChecked(selectedValue, value) {
 class Checkbox extends UIState {
     static displayName = 'Checkbox';
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
