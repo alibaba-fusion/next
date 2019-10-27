@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import { events, func, KEYCODE } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
@@ -137,7 +138,7 @@ function pauseEvent(e) {
 }
 
 /** Range */
-export default class Range extends React.Component {
+class Range extends React.Component {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -293,21 +294,20 @@ export default class Range extends React.Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { min } = this.props;
-        const initialValue = _isMultiple(nextProps.slider) ? [min, min] : min;
-        if ('value' in nextProps) {
-            let value = nextProps.value;
+    static getDerivedStateFromProps(props) {
+        if ('value' in props) {
+            let { value, min } = props;
 
-            if (value === undefined) {
-                // value设置undefined,reset为初始值
-                value = initialValue;
+            if (props.value === undefined) {
+                value = _isMultiple(props.slider) ? [min, min] : min;
             }
-            this.setState({
+
+            return {
                 value,
                 tempValue: value,
-            });
+            };
         }
+        return null;
     }
 
     _marksToScales(marks) {
@@ -820,3 +820,5 @@ export default class Range extends React.Component {
         );
     }
 }
+
+export default polyfill(Range);
