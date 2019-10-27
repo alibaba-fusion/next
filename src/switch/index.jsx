@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE } from '../util';
 import ConfigProvider from '../config-provider';
 
@@ -82,16 +83,12 @@ class Switch extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('checked' in nextProps) {
-            let checked = nextProps.checked;
-            if (checked === undefined) {
-                checked = false;
-            }
-            this.setState({
-                checked: checked,
-            });
+    static getDerivedStateFromProps(props) {
+        const nextState = {};
+        if ('checked' in props) {
+            nextState.checked = !!props.checked;
         }
+        return nextState;
     }
 
     onChange(ev) {
@@ -174,4 +171,4 @@ class Switch extends React.Component {
     }
 }
 
-export default ConfigProvider.config(Switch);
+export default ConfigProvider.config(polyfill(Switch));
