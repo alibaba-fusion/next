@@ -428,7 +428,7 @@ export default class Range extends React.Component {
 
         const { tempValue } = this.state;
         const range = this.dom;
-        const start = range.getBoundingClientRect().left;
+        const start = range.getBoundingClientRect().left + window.pageXOffset;
         // used in unit test
         let width = range.clientWidth;
         if (!width) {
