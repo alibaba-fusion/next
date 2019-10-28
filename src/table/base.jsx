@@ -622,6 +622,7 @@ export default class Table extends React.Component {
         let table = this.renderTable(ret.groupChildren, ret.flatChildren),
             {
                 className,
+                style,
                 hasBorder,
                 isZebra,
                 loading,
@@ -670,6 +671,7 @@ export default class Table extends React.Component {
         const content = (
             <div
                 className={cls}
+                style={style}
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}
