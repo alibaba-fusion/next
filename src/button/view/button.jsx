@@ -152,6 +152,10 @@ export default class Button extends Component {
                 });
             }
 
+            if (typeof child === 'string' && child) {
+                return <span>{child}</span>;
+            }
+
             return child;
         });
 
