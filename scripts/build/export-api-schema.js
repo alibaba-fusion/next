@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const apiExtractor = require('@alifd/api-extractor');
 // const tsgen = require('@alifd/dts-generator');
-const { logger } = require('../utils');
+const { logger, getComponentName } = require('../utils');
 const config = require('../config');
 
 const cwd = process.cwd();
@@ -30,7 +30,7 @@ module.exports = function(options) {
         if (
             [
                 'core',
-                'field',
+                // 'field',
                 'locale',
                 'mixin-ui-state',
                 'util',
@@ -62,6 +62,7 @@ module.exports = function(options) {
             fs.writeFileSync(
                 exportDTSPath,
                 `import ${apiInfo.name} from '../../types/${shortName}';
+
 export * from '../../types/${shortName}';
 export default ${apiInfo.name};
 `
@@ -69,6 +70,25 @@ export default ${apiInfo.name};
             // tsgen(apiInfo).then(apiData => {
             //     fs.writeFileSync(exportDTSPath, apiData.message);
             // });
+        } else if (['field', 'shell', 'notification'].indexOf(shortName) > -1) {
+            const exportName = getComponentName(shortName);
+            // hack Field / Shell / Typography
+            logger.success(`generate lib/index.d.ts of ${shortName}`);
+
+            fs.writeFileSync(
+                exportDTSPath,
+                `import ${exportName} from '../../types/${shortName}';
+
+export * from '../../types/${shortName}';
+export default ${exportName};
+`
+            );
+
+            entries.push(
+                `export { default as ${getComponentName(
+                    shortName
+                )} } from './${shortName}';\n`
+            );
         } else {
             logger.warn(`Can not generate ${apiPath}`);
         }
@@ -82,11 +102,6 @@ export default ${apiInfo.name};
             `export * from '../../types/locale/${file}';`
         );
     });
-
-    // hack Field / Shell / Typography
-    entries.push(`export { default as Field } from './field';
-export { default as Notification } from './notification';
-export { default as Shell } from './shell';`);
 
     fs.writeFileSync(entriesPath, entries.join(''));
 };

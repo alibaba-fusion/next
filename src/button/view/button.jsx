@@ -1,6 +1,8 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ConfigProvider from '../../config-provider';
+import { obj } from '../../util';
 
 function mapIconSize(size) {
     return {
@@ -13,6 +15,7 @@ function mapIconSize(size) {
 /** Button */
 export default class Button extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -113,6 +116,8 @@ export default class Button extends Component {
             ghost,
             component,
             iconSize,
+            disabled,
+            onClick,
             children,
             rtl,
             ...others
@@ -157,8 +162,10 @@ export default class Button extends Component {
 
         const TagName = component;
         const tagAttrs = {
-            ...others,
+            ...obj.pickOthers(Object.keys(Button.propTypes), others),
             type: htmlType,
+            disabled: disabled,
+            onClick: onClick,
             className: btnCls,
         };
 

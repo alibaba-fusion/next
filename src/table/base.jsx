@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
 import Loading from '../loading';
+import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
 import { log, obj } from '../util';
 import BodyComponent from './base/body';
@@ -39,6 +40,7 @@ export default class Table extends React.Component {
     static Sort = SortComponent;
 
     static propTypes = {
+        ...ConfigProvider.propTypes,
         /**
          * 样式类名的品牌前缀
          */
@@ -620,6 +622,7 @@ export default class Table extends React.Component {
         let table = this.renderTable(ret.groupChildren, ret.flatChildren),
             {
                 className,
+                style,
                 hasBorder,
                 isZebra,
                 loading,
@@ -664,8 +667,13 @@ export default class Table extends React.Component {
         if (rtl) {
             others.dir = 'rtl';
         }
+
         const content = (
-            <div className={cls} {...others}>
+            <div
+                className={cls}
+                style={style}
+                {...obj.pickOthers(Object.keys(Table.propTypes), others)}
+            >
                 {table}
             </div>
         );

@@ -696,7 +696,7 @@ export default class Cascader extends Component {
 
     onBlur(e) {
         this.setState({
-            focusedValue: '',
+            focusedValue: undefined,
         });
 
         this.props.onBlur && this.props.onBlur(e);

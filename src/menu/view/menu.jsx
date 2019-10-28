@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import SubMenu from './sub-menu';
+import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
 import { getWidth } from './util';
 
@@ -18,6 +19,7 @@ export default class Menu extends Component {
     static isNextMenu = true;
 
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,

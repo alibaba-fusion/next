@@ -122,7 +122,6 @@ class Affix extends React.Component {
             width: affixOffset.width,
             height: affixChildHeight,
         };
-
         if (
             affixMode.top &&
             containerScrollTop > affixOffset.top - affixMode.offset
@@ -207,9 +206,9 @@ class Affix extends React.Component {
         const { onAffix } = this.props;
 
         if (affixed) {
-            onAffix(true);
+            setTimeout(() => onAffix(true));
         } else if (!affixStyle) {
-            onAffix(false);
+            setTimeout(() => onAffix(false));
         }
     }
 
