@@ -296,7 +296,8 @@ class Range extends React.Component {
 
     static getDerivedStateFromProps(props) {
         if ('value' in props) {
-            let { value, min } = props;
+            let { value } = props;
+            const { min } = props;
 
             if (props.value === undefined) {
                 value = _isMultiple(props.slider) ? [min, min] : min;
