@@ -19,6 +19,8 @@ class NextField extends Field {
             processErrorMessage: cloneAndAddKey,
         });
         super(com, newOptions);
+
+        this.validate = this.validate.bind(this);
     }
 
     validate(ns, cb) {

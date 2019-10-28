@@ -60,7 +60,7 @@ class App extends React.Component {
     }
 
     render() {
-        const init = this.field.init;
+        const { init, validate, reset } = this.field;
 
         return (<div className="demo">
             <Input {...init('input', {initValue: 'delete all', rules: {required: true}})} />
@@ -137,12 +137,12 @@ class App extends React.Component {
             <br/>
 
             <Button type="primary" onClick={() => {
-                this.field.validate((errors, values) => {
+                validate((errors, values) => {
                     console.log(errors, values);
                 });
             }}>validate</Button>
             <Button onClick={() => {
-                this.field.reset();
+                reset();
             }}>reset</Button>
 
             <Button onClick={() => {
