@@ -83,12 +83,14 @@ class Switch extends React.Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        const nextState = {};
-        if ('checked' in props) {
-            nextState.checked = !!props.checked;
+    static getDerivedStateFromProps(props, state) {
+        if (props.checked !== undefined && props.checked !== state.checked) {
+            return {
+                checked: props.checked,
+            };
         }
-        return nextState;
+
+        return null;
     }
 
     onChange(ev) {
