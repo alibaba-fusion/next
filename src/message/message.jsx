@@ -6,6 +6,7 @@ import nextLocale from '../locale/zh-cn';
 import Icon from '../icon';
 import Animate from '../animate';
 import ConfigProvider from '../config-provider';
+import { obj } from '../util';
 
 const noop = () => {};
 
@@ -123,6 +124,7 @@ class Message extends Component {
             prefix,
             pure,
             className,
+            style,
             type,
             shape,
             size,
@@ -137,8 +139,10 @@ class Message extends Component {
             animation,
             rtl,
             locale,
-            ...others
         } = this.props;
+        const others = {
+            ...obj.pickOthers(Object.keys(Message.propTypes), this.props),
+        };
         /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
@@ -156,6 +160,7 @@ class Message extends Component {
         const newChildren = visible ? (
             <div
                 role="alert"
+                style={style}
                 {...others}
                 className={classes}
                 dir={rtl ? 'rtl' : undefined}
