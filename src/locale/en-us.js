@@ -30,6 +30,7 @@ export default {
     DatePicker: {
         placeholder: 'Select Date',
         datetimePlaceholder: 'Select Date And Time',
+        weekPlaceholder: 'Please choose week',
         monthPlaceholder: 'Select Month',
         yearPlaceholder: 'Select Year',
         now: 'Now',

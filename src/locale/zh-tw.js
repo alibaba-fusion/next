@@ -32,6 +32,7 @@ export default {
         datetimePlaceholder: '請選擇日期和時間',
         monthPlaceholder: '請選擇月',
         yearPlaceholder: '請選擇年',
+        weekPlaceholder: '請選擇周',
         now: '此刻',
         selectTime: '選擇時間',
         selectDate: '選擇日期',

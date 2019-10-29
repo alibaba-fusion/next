@@ -31,6 +31,7 @@ export interface locale {
         placeholder: string;
         datetimePlaceholder: string;
         monthPlaceholder: string;
+        weekPlaceholder: string;
         yearPlaceholder: string;
         now: string;
         selectTime: string;

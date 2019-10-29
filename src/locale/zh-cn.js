@@ -30,6 +30,7 @@ export default {
     DatePicker: {
         placeholder: '请选择日期',
         datetimePlaceholder: '请选择日期和时间',
+        weekPlaceholder: '请选择周',
         monthPlaceholder: '请选择月',
         yearPlaceholder: '请选择年',
         now: '此刻',

@@ -580,4 +580,5 @@ export default class DatePicker extends React.Component<DatePickerProps, any> {
     static MonthPicker: typeof MonthPicker;
     static RangePicker: typeof RangePicker;
     static YearPicker: typeof YearPicker;
+    static WeekPicker: React.ComponentType<DatePickerProps>;
 }
