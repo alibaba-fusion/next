@@ -143,6 +143,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
+    type?: 'date' | 'month' | 'year',
     /**
      * 默认展示的起始月份
      */

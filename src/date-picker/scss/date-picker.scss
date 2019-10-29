@@ -14,6 +14,7 @@
 
     &-body {
         width: $s-18 * 4;
+        font-size: 0;
     }
 
     &-panel-input#{$date-picker-input-prefix} {

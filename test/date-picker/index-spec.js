@@ -992,6 +992,16 @@ describe('RangePicker', () => {
             wrapper.find('.next-date-picker-panel-tools .next-btn').at(1).simulate('click');
             // assert(wrapper.instance().getInstance().startValue && wrapper.instance().getInstance().startValue.isSame(start));
         });
+
+        it('should render type month', () => {
+            wrapper = mount(<RangePicker type="month" followTrigger visible defaultValue={['2018-03', '2018-08']} />);
+            assert(wrapper.find('.next-calendar').length === 2);
+        });
+
+        it('should render type year', () => {
+            wrapper = mount(<RangePicker type="year" followTrigger visible defaultValue={['2018', '2019']} />);
+            assert(wrapper.find('.next-calendar').length === 2);
+        });
     });
 
     describe('action', () => {
@@ -1067,6 +1077,26 @@ describe('RangePicker', () => {
             assert(ret[0].format('YYYY-MM-DD') === '2017-11-09');
             assert(ret[1].format('YYYY-MM-DD') === '2017-12-15');
         });
+
+        it('should select in type range', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker
+                    type="month"
+                    defaultValue={[startValue, endValue]}
+                    onChange={val => (ret = val)}
+                />
+            );
+
+            wrapper
+                .find('.next-range-picker-trigger-input input')
+                .at(0)
+                .simulate('click');
+            wrapper
+                .find('td[title="Aug"] .next-calendar-month').at(0)
+                .simulate('click');
+            assert(ret[0].format('YYYY-MM-DD') === '2017-08-01');
+        })
 
         it('should slect range with same day', () => {
             let ret;

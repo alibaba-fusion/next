@@ -59,3 +59,11 @@
         vertical-align: baseline;
     }
 }
+
+#{$range-picker-prefix}-panel-body {
+    font-size: 0;
+    .#{$css-prefix}calendar {
+        display: inline-block;
+        width: 50%;
+    }
+}

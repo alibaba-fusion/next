@@ -50,6 +50,7 @@ DatePicker are used to select a single date for an input.
 | Param | Description  | Type  | Default Value  |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ |
 | size                | Size of input <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
+| type                    | Select date range type<br><br>**option**:<br>'date', 'month', 'year'                                                                                                                                                                                       | Enum                 | 'date'                                                                                       |          |           |
 | defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                 | Function       | -            |
 | value               | Range value `[moment, moment]` | Array          | -            |
 | defaultValue        | Default range value `[moment, moment]`    | Array          | - |
