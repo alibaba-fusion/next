@@ -413,6 +413,16 @@ describe('field', () => {
             wrapper.find('#set').simulate('click');
             wrapper.find('#get').simulate('click');
         })
+        it('should has key by getValues when parseName=true', () => {
+            const field = new Field(this, { parseName: true });
+            field.init('obj.arrd[0]', { initValue: undefined });
+            field.init('obj.arrd[1]', { initValue: undefined });
+
+            const value = field.getValues();
+
+            assert(Object.keys(value).length === 1);
+            assert(Array.isArray(value.obj.arrd));
+        });
     });
 
     describe('behaviour', () => {
