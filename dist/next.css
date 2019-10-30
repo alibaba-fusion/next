@@ -1,5 +1,5 @@
 /*!
- * @alifd/next@1.16.7 (https://fusion.design)
+ * @alifd/next@1.16.10 (https://fusion.design)
  * Copyright 2018-present Alibaba Group,
  * Licensed under MIT (https://github.com/alibaba-fusion/next/blob/master/LICENSE)
  */
@@ -16049,9 +16049,11 @@ small {
       border-color: #E6E7EB; }
     .next-tabs-capsule > .next-tabs-bar .next-tabs-tab:hover {
       z-index: 1;
+      -webkit-transition: none;
+      transition: none;
       border-right: 1px solid #C4C6CF;
       margin-right: -1px;
-      border-color: #5584FF; }
+      border-color: #C4C6CF; }
     .next-tabs-capsule > .next-tabs-bar .next-tabs-tab:hover {
       cursor: pointer;
       color: #333333;
