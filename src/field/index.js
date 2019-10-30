@@ -135,7 +135,7 @@ class Field {
                 const cachedValue = getIn(this.values, name);
                 if (typeof cachedValue !== 'undefined') {
                     field.value = cachedValue;
-                } else if (typeof defaultValue !== 'undefined') {
+                } else {
                     field.value = defaultValue;
                     this.values = setIn(this.values, name, field.value);
                 }
