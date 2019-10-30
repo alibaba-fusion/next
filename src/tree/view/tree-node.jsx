@@ -446,11 +446,10 @@ export default class TreeNode extends Component {
         }
 
         let childTree;
+
         if (renderChildNodes) {
             childTree = renderChildNodes(children);
-        }
-
-        if (!childTree) {
+        } else {
             childTree = (
                 <ul role="group" className={`${prefix}tree-child-tree`}>
                     {children}

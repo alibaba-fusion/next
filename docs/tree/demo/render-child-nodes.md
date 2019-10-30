@@ -1,13 +1,13 @@
 # 平铺叶子节点
 
-- order: 2
+- order: 9
 
 当最后一级都是叶子节点时，平铺展示
 
 :::lang=en-us
 # Tile leaf nodes
 
-- order: 2
+- order: 9
 
 When the last level is all leaf nodes, the tiling display.
 :::
@@ -49,9 +49,11 @@ class Demo extends React.Component {
     render() {
         return <Tree checkable renderChildNodes={(nodes) => {
             if (nodes.filter((node) => !node.props.children || node.props.children.length === 0).length !== nodes.length) {
-                return null;
+                <ul role="group" className={`next-tree-child-tree`}>
+                    {nodes}
+                </ul>
             }
-            return <ul className="next-tree-child-tree custom-leaf-tree">{nodes}</ul>
+            return <ul role="group" className="next-tree-child-tree custom-leaf-tree">{nodes}</ul>;
         }} defaultExpandAll dataSource={this.state.data}/>;
     }
 }

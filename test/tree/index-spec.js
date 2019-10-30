@@ -298,7 +298,7 @@ describe('Tree', () => {
                             (node) => !node.props.children ||
                                 node.props.children.length === 0
                         ).length !== nodes.length) {
-                        return null;
+                        return <ul role="group" className={`next-tree-child-tree`}>{nodes}</ul>;
                     }
                     return <ul className="custom-child-tree">{nodes}</ul>;
                 }}
