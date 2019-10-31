@@ -47,7 +47,7 @@ class Output extends React.Component {
 
 const Func = props => {
     return <div>This is a Function Component</div>;
-}
+};
 
 const NewFunc = config(Func);
 const NewOutput = config(Output);
