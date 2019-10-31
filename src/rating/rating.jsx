@@ -75,17 +75,33 @@ class Rating extends Component {
          * 自定义国际化文案对象
          */
         locale: PropTypes.object,
+        /**
+         * 状态
+         * @enumdesc 预览态, 正常态
+         */
+        state: PropTypes.oneOf(['preview', 'normal']),
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         size: 'medium',
         disabled: false,
+        readOnly: false,
         count: 5,
         showGrade: false,
         defaultValue: 0,
         readAs: val => val,
         allowHalf: false,
+        state: 'normal',
         iconType: 'favorites-filling',
         onChange: noop,
         onHoverChange: noop,
@@ -122,12 +138,26 @@ class Rating extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
+
         if ('value' in nextProps) {
-            return {
-                value: nextProps.value || 0,
-            };
+            state.value = nextProps.value || 0;
         }
-        return null;
+
+        if (
+            'disabled' in nextProps ||
+            'readOnly' in nextProps ||
+            'state' in nextProps ||
+            'renderPreview' in nextProps
+        ) {
+            state.disabled =
+                nextProps.disabled ||
+                nextProps.readOnly ||
+                (nextProps.state === 'preview' &&
+                    !('renderPreview' in nextProps));
+        }
+
+        return state;
     }
 
     componentDidMount() {
@@ -223,7 +253,8 @@ class Rating extends Component {
     }
 
     onKeyDown(e) {
-        const { disabled, onKeyDown, count } = this.props;
+        const { onKeyDown, count } = this.props;
+        const { disabled } = this.state;
         if (disabled || supportKeys.indexOf(e.keyCode) < 0) {
             return !onKeyDown || onKeyDown(e);
         }
@@ -321,11 +352,14 @@ class Rating extends Component {
             size,
             iconType,
             strokeMode,
-            disabled,
             readAs,
             rtl,
+            state,
+            renderPreview,
             locale,
         } = this.props;
+
+        const { disabled } = this.state;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const { hoverValue, clicked } = this.state;
         const underlay = [],
@@ -428,6 +462,10 @@ class Rating extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (state === 'preview' && 'renderPreview' in this.props) {
+            return renderPreview(value, this.props);
         }
 
         return (
