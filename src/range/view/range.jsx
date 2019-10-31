@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import { events, func, KEYCODE } from '../../util';
+import { events, func, KEYCODE, dom } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
 import Scale from './scale';
@@ -296,17 +296,15 @@ class Range extends React.Component {
 
     static getDerivedStateFromProps(props) {
         if ('value' in props) {
-            let { value } = props;
-            const { min, slider } = props;
+            const { min, slider, value } = props;
+            const newState = { value };
 
             if (value === undefined) {
-                value = _isMultiple(slider) ? [min, min] : min;
+                newState.value = _isMultiple(slider) ? [min, min] : min;
+                newState.tempValue = value;
             }
 
-            return {
-                value,
-                tempValue: value,
-            };
+            return newState;
         }
         return null;
     }
@@ -429,7 +427,7 @@ class Range extends React.Component {
 
         const { tempValue } = this.state;
         const range = this.dom;
-        const start = range.getBoundingClientRect().left;
+        const start = dom.getOffset(range).left;
         // used in unit test
         let width = range.clientWidth;
         if (!width) {

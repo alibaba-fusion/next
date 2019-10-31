@@ -271,3 +271,25 @@ export function deepMerge(target, ...sources) {
 
     return deepMerge(target, ...sources);
 }
+
+/**
+ * 组件是否为 Fucntion Component
+ * @param {*} component 传入的组件
+ */
+export function isFunctionComponent(component) {
+    return (
+        typeOf(component) === 'Function' &&
+        component.prototype.isReactComponent === undefined
+    );
+}
+
+/**
+ * 组件是否为 Class Component
+ * @param {*} component  传入的组件
+ */
+export function isClassComponent(component) {
+    return (
+        typeOf(component) === 'Function' &&
+        component.prototype.isReactComponent !== undefined
+    );
+}
