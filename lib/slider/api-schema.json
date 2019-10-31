@@ -1,0 +1,436 @@
+{
+  "name": "Slider",
+  "props": {
+    "className": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "自定义传入的样式",
+      "docblock": "自定义传入的样式"
+    },
+    "adaptiveHeight": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否使用自适应高度",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否使用自适应高度"
+    },
+    "animation": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "动效类型，默认是'slide'",
+      "defaultValue": {
+        "value": "'slide'",
+        "computed": false
+      },
+      "docblock": "动效类型，默认是'slide'"
+    },
+    "arrows": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示箭头",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示箭头"
+    },
+    "arrowSize": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航箭头大小 可选值: 'medium', 'large'",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "导航箭头大小 可选值: 'medium', 'large'"
+    },
+    "arrowPosition": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'inner'",
+            "computed": false
+          },
+          {
+            "value": "'outer'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航箭头位置 可选值: 'inner', 'outer'",
+      "defaultValue": {
+        "value": "'inner'",
+        "computed": false
+      },
+      "docblock": "导航箭头位置 可选值: 'inner', 'outer'"
+    },
+    "arrowDirection": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false
+          },
+          {
+            "value": "'ver'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航箭头的方向 可选值: 'hoz', 'ver'",
+      "defaultValue": {
+        "value": "'hoz'",
+        "computed": false
+      },
+      "docblock": "导航箭头的方向 可选值: 'hoz', 'ver'"
+    },
+    "autoplay": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否自动播放",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否自动播放"
+    },
+    "autoplaySpeed": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "自动播放的速度",
+      "defaultValue": {
+        "value": "3000",
+        "computed": false
+      },
+      "docblock": "自动播放的速度"
+    },
+    "nextArrow": {
+      "type": {
+        "name": "element"
+      },
+      "required": false,
+      "description": "向后箭头",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "向后箭头"
+    },
+    "prevArrow": {
+      "type": {
+        "name": "element"
+      },
+      "required": false,
+      "description": "向前箭头",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "向前箭头"
+    },
+    "centerMode": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否启用居中模式",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否启用居中模式"
+    },
+    "dots": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示导航锚点",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示导航锚点"
+    },
+    "dotsDirection": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false
+          },
+          {
+            "value": "'ver'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航锚点位置",
+      "defaultValue": {
+        "value": "'hoz'",
+        "computed": false
+      },
+      "docblock": "导航锚点位置"
+    },
+    "dotRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义导航锚点",
+      "docblock": "自定义导航锚点",
+      "params": [],
+      "returns": null
+    },
+    "draggable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否可拖拽",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否可拖拽"
+    },
+    "infinite": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否使用无穷循环模式",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否使用无穷循环模式"
+    },
+    "defaultActiveIndex": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "初始被激活的轮播图",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "初始被激活的轮播图"
+    },
+    "lazyLoad": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否启用懒加载",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否启用懒加载"
+    },
+    "slideDirection": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false
+          },
+          {
+            "value": "'ver'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "轮播方向",
+      "defaultValue": {
+        "value": "'hoz'",
+        "computed": false
+      },
+      "docblock": "轮播方向"
+    },
+    "slidesToShow": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "同时展示的图片数量",
+      "defaultValue": {
+        "value": "1",
+        "computed": false
+      },
+      "docblock": "同时展示的图片数量"
+    },
+    "slidesToScroll": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "同时滑动的图片数量",
+      "defaultValue": {
+        "value": "1",
+        "computed": false
+      },
+      "docblock": "同时滑动的图片数量"
+    },
+    "speed": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "轮播速度",
+      "defaultValue": {
+        "value": "600",
+        "computed": false
+      },
+      "docblock": "轮播速度"
+    },
+    "activeIndex": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "跳转到指定的轮播图（受控）",
+      "docblock": "跳转到指定的轮播图（受控）"
+    },
+    "triggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "锚点导航触发方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "锚点导航触发方式"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "轮播切换的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "轮播切换的回调函数\n@param {Number} index 幻灯片的索引",
+      "params": [
+        {
+          "name": "index",
+          "description": "幻灯片的索引",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义传入的class",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "自定义传入的class",
+      "properties": []
+    },
+    "centerPadding": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "Side padding when in center mode (px or %); 展示部分为center，pading会产生前后预览",
+      "defaultValue": {
+        "value": "'50px'",
+        "computed": false
+      },
+      "docblock": "Side padding when in center mode (px or %); 展示部分为center，pading会产生前后预览"
+    },
+    "cssEase": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "CSS3 Animation Easing,默认‘ease’",
+      "defaultValue": {
+        "value": "'ease'",
+        "computed": false
+      },
+      "docblock": "CSS3 Animation Easing,默认‘ease’"
+    },
+    "focusOnSelect": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "多图轮播时，点击选中后自动居中",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "多图轮播时，点击选中后自动居中"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
