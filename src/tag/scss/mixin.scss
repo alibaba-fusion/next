@@ -206,3 +206,17 @@
     right: 0;
     bottom: 0;
 }
+
+@mixin tag-preset-color($name, $color) {
+    &-#{$name} {
+        background-color: $color;
+        border-color: $color;
+        color: #FFF;
+
+        &-inverse {
+            background-color: rgba($color, .25);
+            border-color: $color;
+            color: $color;
+        }
+    }
+}
