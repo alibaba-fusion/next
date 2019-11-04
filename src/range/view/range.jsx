@@ -297,14 +297,16 @@ class Range extends React.Component {
     static getDerivedStateFromProps(props) {
         if ('value' in props) {
             const { min, slider, value } = props;
-            const newState = { value };
+            let newVal = value;
 
             if (value === undefined) {
-                newState.value = _isMultiple(slider) ? [min, min] : min;
-                newState.tempValue = value;
+                newVal = _isMultiple(slider) ? [min, min] : min;
             }
 
-            return newState;
+            return {
+                value: newVal,
+                tempValue: newVal,
+            };
         }
         return null;
     }
