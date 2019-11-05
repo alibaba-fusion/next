@@ -460,7 +460,7 @@ class Rating extends Component {
         });
 
         const previewCls = classNames({
-            [`${prefix}preview`]: true,
+            [`${prefix}form-preview`]: true,
         });
 
         const overlayStyle = {

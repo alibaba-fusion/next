@@ -251,7 +251,7 @@ export default class TextArea extends Base {
 
         const previewCls = classNames({
             [`${prefix}input-textarea`]: true,
-            [`${prefix}preview`]: true,
+            [`${prefix}form-preview`]: true,
         });
 
         const wrapStyle = autoHeight

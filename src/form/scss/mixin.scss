@@ -14,7 +14,7 @@
 }
 
 @mixin form-preview($font-size, $line-height) {
-    .#{$css-prefix}preview {
+    .#{$css-prefix}form-preview {
         font-size: $font-size;
         line-height: $line-height;
         &.#{$css-prefix}input-textarea {
