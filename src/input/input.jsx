@@ -318,7 +318,8 @@ export default class Input extends Base {
         );
 
         if (isPreview) {
-            const { label, value } = props;
+            const { value } = props;
+            const { label } = this.props;
             if ('renderPreview' in this.props) {
                 return (
                     <div className={previewCls}>
@@ -328,10 +329,12 @@ export default class Input extends Base {
             }
             return (
                 <p className={previewCls}>
+                    {addonBefore || addonTextBefore}
                     {label}
                     {innerBefore}
                     {value}
                     {innerAfter}
+                    {addonAfter || addonTextAfter}
                 </p>
             );
         }

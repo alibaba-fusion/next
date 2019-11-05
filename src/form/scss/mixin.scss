@@ -17,7 +17,9 @@
     .#{$css-prefix}form-preview {
         font-size: $font-size;
         line-height: $line-height;
-        &.#{$css-prefix}input-textarea {
+        &.#{$css-prefix}input-textarea > p {
+            text-align: justify;
+            min-height: $font-size * 1.4;
             line-height: 1.4;
             margin-top: ($line-height - (1.4 * $font-size)) / 2;
         }

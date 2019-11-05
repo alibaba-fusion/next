@@ -50,7 +50,7 @@ class Demo extends React.Component {
             <div>
                 <Form {...formItemLayout} isPreview={this.state.preview} size={this.state.size} style={{maxWidth: '800px'}}>
                     <FormItem label="preview: " style={{marginBottom: 0}}>
-                        <Switch onChange={this.onPreviewChange} />
+                        <Switch isPreview={false} onChange={this.onPreviewChange} />
                     </FormItem>
                     <div style={{height: 1, width: '100%', margin: '20px 0'}}/>
                     <FormItem required label="Username:">
@@ -58,6 +58,10 @@ class Demo extends React.Component {
                     </FormItem>
                     <FormItem required label="Password:">
                         <Input defaultValue="Fusion@2019" htmlType="password" placeholder="Please enter your password" id="password" name="password" aria-required="true" />
+                    </FormItem>
+
+                    <FormItem required label="Link:">
+                        <Input name="link" addonTextBefore="http://" addonTextAfter=".com" defaultValue="alibaba" aria-label="input with config of addonTextBefore and addonTextAfter" />
                     </FormItem>
 
                     <FormItem required label="Rating:">

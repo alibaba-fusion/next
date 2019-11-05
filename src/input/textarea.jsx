@@ -259,7 +259,7 @@ export default class TextArea extends Base {
             : style;
 
         if (isPreview) {
-            const { label, value } = props;
+            const { value } = props;
             if ('renderPreview' in this.props) {
                 return (
                     <div className={previewCls}>
@@ -269,8 +269,9 @@ export default class TextArea extends Base {
             }
             return (
                 <p className={previewCls}>
-                    {label}
-                    {value}
+                    {value.split('\n').map((data, i) => (
+                        <p key={`p-${i}`}>{data}</p>
+                    ))}
                 </p>
             );
         }
