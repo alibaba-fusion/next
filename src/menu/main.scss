@@ -228,14 +228,14 @@
         position: absolute;
         top: 0;
         right: 6px;
-        @include icon-size($icon-xs);
+        @include icon-size($menu-hoz-icon-size);
         color: $menu-arrow-color;
         transition: all $motion-duration-immediately $motion-linear;
     }
 
     & &-hoz-icon-arrow.#{$css-prefix}open {
         @include icon-size(
-            $size: $icon-xs,
+            $size: $menu-hoz-icon-size,
             $transform: rotate(180deg)
         );
     }
