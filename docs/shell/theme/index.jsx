@@ -31,9 +31,9 @@ class RenderShell extends React.Component {
         const { type, i18n, demoFunction } = this.props;
         const device = demoFunction.device.value;
         const globalDir = demoFunction.navigation.value;
-        // let globalNavType = demoFunction.navigationType.value,
+        let globalNavType = demoFunction.navigationType.value,
         //     localNavType = demoFunction.localNavType.value,
-        let globalHozNavType = 'normal',
+            // globalHozNavType = 'normal',
             localNavType = 'normal',
             logoStyle = {},
             shellStyle = {};
@@ -41,15 +41,15 @@ class RenderShell extends React.Component {
         switch(type) {
             case 'light':
                 logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
-                globalHozNavType = 'normal';
+                // globalHozNavType = 'normal';
                 break;
             case 'dark':
                 logoStyle = {width: 32, height: 32, background: '#FFF', opacity: '0.2'};
-                globalHozNavType = globalDir === 'hoz' ? 'primary' : 'normal';
+                // globalHozNavType = globalDir === 'hoz' ? 'primary' : 'normal';
                 break;
             case 'brand':
                 logoStyle = {width: 32, height: 32, background: '#000', opacity: '0.04'};
-                globalHozNavType = globalDir === 'hoz' ? 'secondary' : 'normal';
+                // globalHozNavType = globalDir === 'hoz' ? 'secondary' : 'normal';
                 break;
             default:
                 break;
@@ -68,8 +68,8 @@ class RenderShell extends React.Component {
             default:
                 break;
         }
-        return (<Demo title={i18n[type]} key={type}>
-            <DemoGroup label={'normal'}>
+        return (<Demo title={'Shell'} key={type}>
+            <DemoGroup label={'default'}>
                 <Shell style={shellStyle} device={device} type={type}>
                     {
                         demoFunction.branding.value === 'true'
@@ -83,7 +83,7 @@ class RenderShell extends React.Component {
                     {
                         demoFunction.navigation.value !== 'false'
                             ?  <Shell.Navigation direction={globalDir}>
-                                <Nav type={globalHozNavType} embeddable direction={globalDir} hozInLine>
+                                <Nav type={globalNavType} embeddable direction={globalDir} hozInLine>
                                     <Nav.Item icon="account">Nav Item 1</Nav.Item>
                                     <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                                     <Nav.Item icon="atm">Nav Item 3</Nav.Item>
@@ -237,23 +237,23 @@ class FunctionDemo extends React.Component {
                         value: 'false'
                     }]
                 },
-                // 'navigationType': {
-                //     label: 'Applicaitoin Nav Type',
-                //     value: 'normal',
-                //     enum: [{
-                //         label: 'normal',
-                //         value: 'normal'
-                //     }, {
-                //         label: 'primary',
-                //         value: 'primary'
-                //     }, {
-                //         label: 'secondary',
-                //         value: 'secondary'
-                //     }, {
-                //         label: 'line',
-                //         value: 'line'
-                //     }]
-                // },
+                'navigationType': {
+                    label: 'App Nav Type',
+                    value: 'normal',
+                    enum: [{
+                        label: 'normal',
+                        value: 'normal'
+                    }, {
+                        label: 'primary',
+                        value: 'primary'
+                    }, {
+                        label: 'secondary',
+                        value: 'secondary'
+                    }, {
+                        label: 'line',
+                        value: 'line'
+                    }]
+                },
                 'localNav': {
                     label: 'Local Nav',
                     value: 'false',
@@ -337,13 +337,11 @@ class FunctionDemo extends React.Component {
     }
 
     render() {
-        const { title, locale, types, shellRender } = this.props;
+        const { title, locale, type, shellRender } = this.props;
         const { demoFunction } = this.state;
 
         return (<Demo title={title} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
-            {
-                types.map(type => shellRender(type, locale, demoFunction))
-            }
+            { shellRender(type, locale, demoFunction) }
         </Demo>)
     }
 }
@@ -351,7 +349,11 @@ class FunctionDemo extends React.Component {
 
 function render(i18n, lang) {
     return ReactDOM.render(<ConfigProvider lang={lang === 'en-us' ? enUS : zhCN}><div className="demo-container">
-        <FunctionDemo title={i18n.shell} locale={i18n} shellRender={renderShell} types={['light', 'dark', 'brand']} />
+        {
+            ['light', 'dark', 'brand'].map(type => {
+                return <FunctionDemo key={type} type={type} title={i18n[type]} locale={i18n} shellRender={renderShell} />
+            })
+        }
     </div></ConfigProvider>, document.getElementById('container'));
 }
 
