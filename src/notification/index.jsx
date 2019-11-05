@@ -188,7 +188,7 @@ let mounting = false;
 let waitOpens = [];
 
 function open(options = {}) {
-    if (!options.title || !options.content) return;
+    if (!options.title && !options.content) return;
 
     const duration =
         !options.duration && options.duration !== 0
