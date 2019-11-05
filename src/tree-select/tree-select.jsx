@@ -423,7 +423,7 @@ export default class TreeSelect extends Component {
         if (
             treeCheckable &&
             !treeCheckStrictly &&
-            treeCheckedStrategy === 'all'
+            ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1
         ) {
             const removedPos = this._v2n[removedValue].pos;
             value = this.state.value.filter(v => {

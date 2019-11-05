@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { events, func, KEYCODE } from '../../util';
+import { events, func, KEYCODE, dom } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
 import Scale from './scale';
@@ -428,7 +428,7 @@ export default class Range extends React.Component {
 
         const { tempValue } = this.state;
         const range = this.dom;
-        const start = range.getBoundingClientRect().left;
+        const start = dom.getOffset(range).left;
         // used in unit test
         let width = range.clientWidth;
         if (!width) {

@@ -19,6 +19,10 @@
                 padding: $table-size-s-cell-padding-top $table-size-s-cell-padding-left;
             }
         }
+
+        #{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
+            padding: $s-3 $s-4;
+        }
     }
 
     table {
@@ -35,14 +39,19 @@
         background: $table-th-bg;
         color: $table-th-color;
         text-align: left;
+        font-weight: $table-th-font-weight;
+        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+
         #{$table-prefix}-cell-wrapper {
             padding: $table-header-padding-top $table-header-padding-left;
             overflow: hidden;
             text-overflow: ellipsis;
             word-break: break-all;
         }
-        font-weight: $table-th-font-weight;
-        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+
+        &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
+            padding: $s-3 $s-4;
+        }
     }
     &-affix {
         z-index: 1;
@@ -61,6 +70,8 @@
     }
     td {
         padding: 0;
+        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+
         #{$table-prefix}-cell-wrapper {
             padding: $table-cell-padding-top $table-cell-padding-left;
             overflow: hidden;
@@ -79,7 +90,9 @@
                 @include icon-size($table-tree-expanded-icon-size);
             }
         }
-        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+        &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
+            padding: $s-3 $s-4;
+        }
     }
     #{$table-prefix}-expanded,
     #{$table-prefix}-selection {
