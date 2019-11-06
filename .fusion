@@ -51,6 +51,7 @@
   },
   "variables": {
     "divider": "lib/divider/scss/variable.scss",
+    "divider": "lib/divider/scss/variable.scss",
     "global": "lib/core/style/_global.scss",
     "size": "lib/core/style/_size.scss",
     "color": "lib/core/style/_color.scss",
