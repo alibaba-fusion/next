@@ -23,13 +23,13 @@ export interface NotificationOptions {
 }
 
 export default class Notification {
-    config: (config: NotificationConfig) => NotificationConfig;
-    open: (options: NotificationOptions) => string;
-    close: (key: string) => void;
-    destroy: () => void;
-    success: (options: NotificationOptions) => string;
-    error: (options: NotificationOptions) => string;
-    warning: (options: NotificationOptions) => string;
-    notice: (options: NotificationOptions) => string;
-    help: (options: NotificationOptions) => string;
+    static config: (config: NotificationConfig) => NotificationConfig;
+    static open: (options: NotificationOptions) => string;
+    static close: (key: string) => void;
+    static destroy: () => void;
+    static success: (options: NotificationOptions) => string;
+    static error: (options: NotificationOptions) => string;
+    static warning: (options: NotificationOptions) => string;
+    static notice: (options: NotificationOptions) => string;
+    static help: (options: NotificationOptions) => string;
 }
