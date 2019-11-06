@@ -175,6 +175,8 @@ export default class DatePicker extends Component {
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -477,6 +479,8 @@ export default class DatePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
@@ -658,12 +662,14 @@ export default class DatePicker extends Component {
                 />
             </div>
         );
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(DatePicker.propTypes, others)}
                 className={datePickerCls}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
@@ -677,15 +683,21 @@ export default class DatePicker extends Component {
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}date-picker-panel-header`}>
-                            {dateInput}
-                            {timeInput}
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
+                            <div
+                                className={`${prefix}date-picker-panel-header`}
+                            >
+                                {dateInput}
+                                {timeInput}
+                            </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }
