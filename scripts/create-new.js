@@ -74,13 +74,13 @@ co(function*() {
     // src/index.js
     const srcIndexJSPath = path.join(cwd, 'src', 'index.js');
     let srcIndexJSContent = fs.readFileSync(srcIndexJSPath, 'utf8');
-    srcIndexJSContent += `export { default as ${name} } from './${dashName}';`;
+    srcIndexJSContent += `export { default as ${name} } from './${dashName}';\n`;
     fs.writeFileSync(srcIndexJSPath, srcIndexJSContent);
 
     // types/index.d.ts
     const typesIndexJSPath = path.join(cwd, 'types', 'index.d.ts');
     let typesIndexJSContent = fs.readFileSync(typesIndexJSPath, 'utf8');
-    typesIndexJSContent += `export { default as ${name} } from './${dashName}';`;
+    typesIndexJSContent += `export { default as ${name} } from './${dashName}';\n`;
     fs.writeFileSync(typesIndexJSPath, typesIndexJSContent);
 
     // .fusion
