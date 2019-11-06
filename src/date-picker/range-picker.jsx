@@ -204,6 +204,8 @@ export default class RangePicker extends Component {
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -706,6 +708,8 @@ export default class RangePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             locale,
@@ -987,12 +991,14 @@ export default class RangePicker extends Component {
             </div>
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(RangePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
@@ -1006,26 +1012,32 @@ export default class RangePicker extends Component {
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}range-picker-panel-header`}>
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
                             <div
-                                className={`${prefix}range-picker-panel-input`}
+                                className={`${prefix}range-picker-panel-header`}
                             >
-                                {startDateInput}
-                                {startTimeInput}
-                                <span
-                                    className={`${prefix}range-picker-panel-input-separator`}
+                                <div
+                                    className={`${prefix}range-picker-panel-input`}
                                 >
-                                    -
-                                </span>
-                                {endDateInput}
-                                {endTimeInput}
+                                    {startDateInput}
+                                    {startTimeInput}
+                                    <span
+                                        className={`${prefix}range-picker-panel-input-separator`}
+                                    >
+                                        -
+                                    </span>
+                                    {endDateInput}
+                                    {endTimeInput}
+                                </div>
                             </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

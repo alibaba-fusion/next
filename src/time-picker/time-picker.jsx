@@ -154,6 +154,8 @@ class TimePicker extends Component {
         onChange: PropTypes.func,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -335,6 +337,8 @@ class TimePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             disabled,
             className,
@@ -407,12 +411,14 @@ class TimePicker extends Component {
             className
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(TimePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
@@ -426,20 +432,26 @@ class TimePicker extends Component {
                     style={popupStyle}
                     className={popupClassName}
                 >
-                    <div
-                        dir={others.dir}
-                        className={`${prefix}time-picker-body`}
-                    >
-                        <div className={`${prefix}time-picker-panel-header`}>
-                            <Input
-                                {...sharedInputProps}
-                                placeholder={format}
-                                className={`${prefix}time-picker-panel-input`}
-                            />
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div
+                            dir={others.dir}
+                            className={`${prefix}time-picker-body`}
+                        >
+                            <div
+                                className={`${prefix}time-picker-panel-header`}
+                            >
+                                <Input
+                                    {...sharedInputProps}
+                                    placeholder={format}
+                                    className={`${prefix}time-picker-panel-input`}
+                                />
+                            </div>
+                            <TimePickerPanel {...panelProps} />
                         </div>
-                        <TimePickerPanel {...panelProps} />
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

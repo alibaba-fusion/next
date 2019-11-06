@@ -127,6 +127,8 @@ class YearPicker extends Component {
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -313,6 +315,8 @@ class YearPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
@@ -403,12 +407,14 @@ class YearPicker extends Component {
             </div>
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(YearPicker.propTypes, others)}
                 className={yearPickerCls}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
                     {...popupProps}
                     followTrigger={followTrigger}
@@ -422,14 +428,20 @@ class YearPicker extends Component {
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}year-picker-panel-header`}>
-                            {dateInput}
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
+                            <div
+                                className={`${prefix}year-picker-panel-header`}
+                            >
+                                {dateInput}
+                            </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }
