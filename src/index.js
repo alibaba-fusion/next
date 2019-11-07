@@ -53,3 +53,4 @@ export { default as Upload } from './upload';
 export { default as VirtualList } from './virtual-list';
 export { default as Notification } from './notification';
 export { default as Divider } from './divider';
+export { default as Avatar } from './avatar';

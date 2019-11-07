@@ -22,7 +22,7 @@ $divider-prefix: ".#{$css-prefix}divider";
 $divider-hoz-size: $line-1 !default;
 /// color
 /// @namespace statement/divider
-$divider-hoz-color: $color-line1-1 !default;
+$divider-hoz-color: $color-line1-2 !default;
 /// padding (l, r)
 /// @namespace statement/text
 $divider-hoz-text-center-paddingLeft: $s-4 !default;
@@ -52,7 +52,7 @@ $divider-hoz-text-color: $color-text1-4 !default;
 $divider-ver-size: $line-1 !default;
 /// color
 /// @namespace statement/divider
-$divider-ver-color: $color-line1-1 !default;
+$divider-ver-color: $color-line1-2 !default;
 /// margin (l, r)
 /// @namespace statement/text
 $divider-ver-marginLeft: $s-2 !default;

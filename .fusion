@@ -50,6 +50,7 @@
     }
   },
   "variables": {
+    "avatar": "lib/avatar/scss/variable.scss",
     "divider": "lib/divider/scss/variable.scss",
     "divider": "lib/divider/scss/variable.scss",
     "global": "lib/core/style/_global.scss",

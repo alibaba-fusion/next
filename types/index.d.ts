@@ -53,3 +53,4 @@ export { default as VirtualList } from './virtual-list';
 export { default as Typography } from './typography';
 export { default as Field } from './field';
 export { default as Divider } from './divider';
+export { default as Avatar } from './avatar';
