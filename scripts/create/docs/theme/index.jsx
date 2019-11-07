@@ -10,7 +10,7 @@ import {{ name }} from '../../../src/{{ dashName }}';
 
 const i18nMap = {
     'zh-cn': {
-        '{{ dashName }}': '徽标',
+        '{{ dashName }}': '{{ chineseName }}',
         normal: '正常'
     },
     'en-us': {
@@ -48,8 +48,8 @@ class Render{{ name }} extends React.Component {
         const { demoFunction } = this.state;
         const hasChildren = demoFunction.hasChildren.value === 'true';
 
-        return (<Demo title={i18nMap[{{ dashName }}]} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
-            <Demo title={i18nMap[{{ dashName }}]}>
+        return (<Demo title={i18nMap['{{ dashName }}']} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
+            <Demo title={i18nMap['{{ dashName }}']}>
                 <DemoGroup label={i18nMap.normal}>
                     <{{ name }} hasChildren={hasChildren}/>
                 </DemoGroup>
