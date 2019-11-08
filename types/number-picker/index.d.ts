@@ -14,7 +14,7 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
      * 样式前缀
      */
     prefix?: string;
-
+    name?: string;
     /**
      * 设置类型
      */

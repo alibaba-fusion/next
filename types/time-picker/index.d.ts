@@ -13,6 +13,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      * 按钮的文案
      */
     label?: React.ReactNode;
+    name?: string;
 
     /**
      * 输入框状态
