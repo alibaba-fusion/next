@@ -555,7 +555,7 @@ export default class Menu extends Component {
                                     child.props.children,
                                     posPrefix,
                                     indexWrapper,
-                                    childLevel
+                                    props.level
                                 )
                             );
                             break;
