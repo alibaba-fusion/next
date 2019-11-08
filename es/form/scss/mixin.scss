@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+// form mixins
+// --------------------------------------------------
+
+@mixin form-enhance($line-height) {
+    .#{$css-prefix}checkbox-wrapper, .#{$css-prefix}checkbox-group, .#{$css-prefix}radio-wrapper, .#{$css-prefix}radio-group {
+        line-height: $line-height;
+    }
+}
