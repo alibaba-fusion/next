@@ -154,6 +154,7 @@ class TimePicker extends Component {
         onChange: PropTypes.func,
         className: PropTypes.string,
         name: PropTypes.string,
+        inputProps: PropTypes.object,
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
     };
@@ -331,6 +332,7 @@ class TimePicker extends Component {
             disabledMinutes,
             disabledSeconds,
             renderTimeMenuItems,
+            inputProps,
             popupAlign,
             popupTriggerType,
             popupContainer,
@@ -361,6 +363,7 @@ class TimePicker extends Component {
             ? inputStr
             : (value && value.format(format)) || '';
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             value: inputValue,
