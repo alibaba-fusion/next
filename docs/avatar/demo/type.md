@@ -22,8 +22,7 @@ ReactDOM.render(
         <Avatar icon="account" />
         <Avatar icon={<Icon type="account" />} />
         <Avatar>U</Avatar>
-        <Avatar src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png" />
-        <Avatar src="https://iXXavapXa-904-826.png" />
+        <Avatar src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png" />
         <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>U</Avatar>
         <Avatar style={{ backgroundColor: '#87d068' }} icon="account" />
     </div>

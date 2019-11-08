@@ -54,9 +54,9 @@ class RenderAvatar extends React.Component {
                     <Avatar icon="account" size="small" />
                 </DemoGroup>
                 <DemoGroup label={i18nMap.img}>
-                    <Avatar src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png" size="large" />
-                    <Avatar src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png" size="medium" />
-                    <Avatar src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png" size="small" />
+                    <Avatar src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png" size="large" />
+                    <Avatar src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png" size="medium" />
+                    <Avatar src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png" size="small" />
                 </DemoGroup>
                 <DemoGroup label={i18nMap.letters}>
                     <Avatar size="large">U</Avatar>
@@ -72,9 +72,9 @@ class RenderAvatar extends React.Component {
                     <Avatar shape="square" size="small"  icon="account"/>
                 </DemoGroup>
                 <DemoGroup label={i18nMap.img}>
-                    <Avatar shape="square" size="large" src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png"/>
-                    <Avatar shape="square" size="medium" src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png"/>
-                    <Avatar shape="square" size="small" src="https://img.alicdn.com/tfs/TB1EHhicAH0gK0jSZPiXXavapXa-904-826.png"/>
+                    <Avatar shape="square" size="large" src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png"/>
+                    <Avatar shape="square" size="medium" src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png"/>
+                    <Avatar shape="square" size="small" src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png"/>
                 </DemoGroup>
                 <DemoGroup label={i18nMap.letters}>
                     <Avatar shape="square" size="large">U</Avatar>
