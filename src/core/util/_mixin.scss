@@ -564,7 +564,6 @@
 @mixin button-size($padding, $height, $font-size, $border-width) {
     padding: 0 $padding;
     height: $height;
-    line-height: $height - 2 * $border-width;
     font-size: $font-size;
     border-width: $border-width;
 }
