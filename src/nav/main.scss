@@ -2,7 +2,7 @@
 @import "scss/mixin";
 @import "scss/variable";
 
-$nav-icononly-width: $s-15;
+$nav-icononly-width: 58px;
 
 #{$nav-prefix} {
     @include box-sizing;
@@ -112,6 +112,7 @@ $nav-icononly-width: $s-15;
             bottom: - $popup-local-border-width;
         }
 
+        .#{$css-prefix}child-selected#{$nav-prefix}-item:before,
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
             width: 100%;
             left: 0;
@@ -181,6 +182,7 @@ $nav-icononly-width: $s-15;
             right: - $popup-local-border-width;
         }
 
+        .#{$css-prefix}child-selected#{$nav-prefix}-item:before,
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
             height: 100%;
             top: 0;

@@ -6,7 +6,7 @@
 
 `注意`：Form 和 Field 做了深度结合，在 Form 中使用Field，错误信息不需`getError`获取会自动展现。
 
-请参考 validatorPromise demo，以使用Promise而不是回调
+请参考 validatorPromise demo，以使用 Promise 而不是回调
 
 :::lang=en-us
 # validate
@@ -60,7 +60,7 @@ class App extends React.Component {
     }
 
     render() {
-        const init = this.field.init;
+        const { init, validate, reset } = this.field;
 
         return (<div className="demo">
             <Input {...init('input', {initValue: 'delete all', rules: {required: true}})} />
@@ -137,12 +137,12 @@ class App extends React.Component {
             <br/>
 
             <Button type="primary" onClick={() => {
-                this.field.validate((errors, values) => {
+                validate((errors, values) => {
                     console.log(errors, values);
                 });
             }}>validate</Button>
             <Button onClick={() => {
-                this.field.reset();
+                reset();
             }}>reset</Button>
 
             <Button onClick={() => {

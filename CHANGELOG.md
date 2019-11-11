@@ -1,5 +1,81 @@
 # Change Log 
 
+## [1.18.11](https://github.com/alibaba-fusion/next/compare/1.18.10...1.18.11) (2019-10-31)
+
+
+### Bug Fixes
+
+* **Range:** add window.pageXOffset when calculate  ([#1289](https://github.com/alibaba-fusion/next/issues/1289)) ([3460f0f](https://github.com/alibaba-fusion/next/commit/3460f0f))
+
+
+
+
+## [1.18.10](https://github.com/alibaba-fusion/next/compare/1.18.9...1.18.10) (2019-10-29)
+
+
+### Bug Fixes
+
+* **ConfigProvider:** warning when config function component ([6eb71b5](https://github.com/alibaba-fusion/next/commit/6eb71b5))
+* **NumberPicker:** under control input 0 => 0. ([60c0d86](https://github.com/alibaba-fusion/next/commit/60c0d86))
+
+
+
+
+## [1.18.9](https://github.com/alibaba-fusion/next/compare/1.18.8...1.18.9) (2019-10-28)
+
+
+### Bug Fixes
+
+* **Field:** validate bind ([3ad8068](https://github.com/alibaba-fusion/next/commit/3ad8068))
+
+
+
+
+## [1.18.8](https://github.com/alibaba-fusion/next/compare/1.18.7...1.18.8) (2019-10-25)
+
+
+### Bug Fixes
+
+* **Overlay:** use rgba instead of change-color to get a color with alpha ([e552a66](https://github.com/alibaba-fusion/next/commit/e552a66))
+* **Table:** reset style ([db24905](https://github.com/alibaba-fusion/next/commit/db24905))
+
+
+
+
+## [1.18.7](https://github.com/alibaba-fusion/next/compare/1.18.6...1.18.7) (2019-10-25)
+
+
+### Bug Fixes
+
+* **Cascader:** scroll focus error ([fa92198](https://github.com/alibaba-fusion/next/commit/fa92198))
+
+
+
+
+## [1.18.6](https://github.com/alibaba-fusion/next/compare/1.18.5...1.18.6) (2019-10-24)
+
+
+### Bug Fixes
+
+* **Affix:** fix recursive call in some situation ([633c3b6](https://github.com/alibaba-fusion/next/commit/633c3b6))
+* **Button:** style vertical align middle ([cec2e9a](https://github.com/alibaba-fusion/next/commit/cec2e9a))
+* **Shell:** config Shell.Page ([4249e0a](https://github.com/alibaba-fusion/next/commit/4249e0a))
+* **Tab:** make dropdown mode tab nav scroll to active ([881ce87](https://github.com/alibaba-fusion/next/commit/881ce87))
+
+
+
+
+## [1.18.5](https://github.com/alibaba-fusion/next/compare/1.18.4...1.18.5) (2019-10-17)
+
+
+### Bug Fixes
+
+* **Balloon:** Tooltip shoule support alignEdge, close [#1222](https://github.com/alibaba-fusion/next/issues/1222) ([3c6289a](https://github.com/alibaba-fusion/next/commit/3c6289a))
+* **Shell:** should support use nothing ([1c76aea](https://github.com/alibaba-fusion/next/commit/1c76aea))
+
+
+
+
 ## [1.18.4](https://github.com/alibaba-fusion/next/compare/1.18.3...1.18.4) (2019-10-11)
 
 

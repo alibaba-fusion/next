@@ -21,6 +21,7 @@ class Transfer extends Component {
     };
 
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,

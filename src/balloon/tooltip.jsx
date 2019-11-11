@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import BalloonInner from './inner';
-import { normalMap as alignMap } from './alignMap';
+import { normalMap, edgeMap } from './alignMap';
 import { getDisabledCompatibleTrigger } from './util';
 
 const { Popup } = Overlay;
 
+let alignMap = normalMap;
 /** Balloon.Tooltip */
 export default class Tooltip extends React.Component {
     static propTypes = {
@@ -105,6 +106,7 @@ export default class Tooltip extends React.Component {
             followTrigger,
             triggerType,
             autoFocus,
+            alignEdge,
             rtl,
             ...others
         } = this.props;
@@ -114,6 +116,8 @@ export default class Tooltip extends React.Component {
             others.rtl = true;
             trOrigin = 'rtlTrOrigin';
         }
+
+        alignMap = alignEdge ? edgeMap : normalMap;
 
         const transformOrigin = alignMap[align][trOrigin];
         const _offset = alignMap[align].offset;
@@ -130,6 +134,7 @@ export default class Tooltip extends React.Component {
                 style={_style}
                 align={align}
                 rtl={rtl}
+                alignEdge={alignEdge}
             >
                 {children}
             </BalloonInner>

@@ -25,7 +25,6 @@ ReactDOM.render(
     <div >
         <Input.TextArea
             autoHeight
-            trim
             aria-label="auto height"
             placeholder="autoHeight"
             onKeyDown={(e, opts) => {

@@ -1,5 +1,6 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import ConfigProvider from '../config-provider';
 import Item from './item';
@@ -69,17 +70,20 @@ class Breadcrumb extends Component {
         };
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if (state.prevMaxNode === props.maxNode) {
+            return {};
+        }
+
+        return {
+            prevMaxNode: props.maxNode,
+            maxNode: props.maxNode === 'auto' ? 100 : props.maxNode,
+        };
+    }
+
     componentDidMount() {
         this.computeMaxNode();
         events.on(window, 'resize', this.computeMaxNode);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.maxNode !== this.props.maxNode) {
-            this.setState({
-                maxNode: nextProps.maxNode === 'auto' ? 100 : nextProps.maxNode,
-            });
-        }
     }
 
     componentDidUpdate() {
@@ -240,4 +244,4 @@ class Breadcrumb extends Component {
     }
 }
 
-export default ConfigProvider.config(Breadcrumb);
+export default ConfigProvider.config(polyfill(Breadcrumb));

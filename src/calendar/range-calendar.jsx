@@ -25,6 +25,7 @@ import {
 
 class RangeCalendar extends React.Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         /**
          * 样式前缀
          */
