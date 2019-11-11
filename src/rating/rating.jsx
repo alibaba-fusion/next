@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import Icon from '../icon';
 import { func, KEYCODE, obj } from '../util';
 import zhCN from '../locale/zh-cn';
@@ -17,7 +19,7 @@ const ICON_SIZE_MAP = {
 };
 
 /** Rating */
-export default class Rating extends Component {
+class Rating extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -119,16 +121,17 @@ export default class Rating extends Component {
         ]);
     }
 
-    componentDidMount() {
-        this.getRenderResult();
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('value' in nextProps) {
+            return {
+                value: nextProps.value || 0,
+            };
+        }
+        return null;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this.setState({
-                value: nextProps.value || 0,
-            });
-        }
+    componentDidMount() {
+        this.getRenderResult();
     }
 
     componentWillUnmount() {
@@ -461,3 +464,5 @@ export default class Rating extends Component {
         );
     }
 }
+
+export default polyfill(Rating);

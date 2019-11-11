@@ -182,7 +182,7 @@ export default function expanded(BaseComponent) {
                     key="expanded"
                     cell={this.renderExpandedCell.bind(this)}
                     width={size === 'small' ? 34 : 50}
-                    className={`${prefix}table-expanded`}
+                    className={`${prefix}table-expanded ${prefix}table-prerow`}
                     __normalized
                 />
             );

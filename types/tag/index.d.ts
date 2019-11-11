@@ -62,6 +62,10 @@ export interface SelectableProps extends HTMLAttributesWeak, CommonProps {
      * 标签是否被禁用
      */
     disabled?: boolean;
+    /**
+     * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
+     */
+    size?: 'small' | 'medium' | 'large';
 }
 
 export class Selectable extends React.Component<SelectableProps, any> {}
