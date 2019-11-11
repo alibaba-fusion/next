@@ -85,6 +85,7 @@ class Upload extends Base {
          * 选择文件回调
          */
         onSelect: PropTypes.func,
+
         /**
          * 上传中
          */
@@ -94,6 +95,13 @@ class Upload extends Base {
          * @param {Object} info 文件事件对象
          */
         onChange: PropTypes.func,
+        /**
+         * ie9模式下 iframe onload回调
+         * @param {Object} file 文件
+         * @param {Object} iframe 值
+         * @param {Object} callbacks 值
+         */
+        onLoad: PropTypes.func,
         /**
          * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
          * @param {Object} file 文件

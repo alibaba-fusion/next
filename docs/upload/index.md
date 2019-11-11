@@ -204,7 +204,7 @@ Next Upload组件上传文件使用的`multipart/form-data`方式上传文件,�
 -   ie9 下用因为使用 iframe 作为无刷新上传方案，必须保证表单页面的域名和上传的服务器端的域名相同。
 -   ie9 下服务器端返回数据需要设置头部 `context-type` 为 `text/html`，不要设置为 `application/json`
 -   如果只是一级域名相同（`taobao.com` 为一级域名  `shop.taobao.com` 为二级域名），可以通过降域的方式实现跨域上传。
-
+-   ie9 模式下 提供onLoad方法监听 iframe的 onLoad事件
 假设你表单页面的域是：shop.taobao.com，而上传的服务器端路径却是 upload.taobao.com。服务端返回必须带额外script标签
 
         <script>document.domain="taobao.com";</script>
