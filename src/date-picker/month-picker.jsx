@@ -431,6 +431,7 @@ class MonthPicker extends Component {
             >
                 <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     role="combobox"
@@ -438,7 +439,6 @@ class MonthPicker extends Component {
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
