@@ -31,6 +31,7 @@ class IframeUploader extends React.Component {
         onStart: PropTypes.func,
         onSuccess: PropTypes.func,
         onError: PropTypes.func,
+        onLoad: PropTypes.func,
         accept: PropTypes.string,
     };
 
@@ -70,7 +71,19 @@ class IframeUploader extends React.Component {
         if (!this.state.uploading) {
             return;
         }
+
         const { props, file } = this;
+        const { onLoad, onSuccess, onError } = props;
+        if (onLoad) {
+            // 存在 onLoad方法 交给用户自行处理 onLoad事件
+            onLoad(file, this.refs.iframe, {
+                onSuccess,
+                onError,
+            });
+            this.endUpload();
+            return;
+        }
+
         let response;
         try {
             const doc = this.refs.iframe.contentDocument;
@@ -79,13 +92,13 @@ class IframeUploader extends React.Component {
                 doc.body.removeChild(script);
             }
             response = doc.body.innerHTML;
-            props.onSuccess(response, file);
+            onSuccess(response, file);
         } catch (err) {
             log.warning(
                 'cross domain error for Upload. Maybe server should return document.domain script.'
             );
             response = 'cross-domain';
-            props.onError(err, null, file);
+            onError(err, null, file);
         }
         this.endUpload();
     };
