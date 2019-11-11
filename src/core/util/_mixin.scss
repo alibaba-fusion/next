@@ -409,7 +409,8 @@
         margin-right: $marginRight;
     }
 
-    &:before {
+    &:before,
+    & .#{$css-prefix}icon-remote {
         width: $size;
         font-size: $size;
         line-height: inherit;

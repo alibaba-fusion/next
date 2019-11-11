@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
+import createFromIconfontCN from './icon-font';
 import { obj } from '../util';
 /**
  * Icon
@@ -13,6 +14,7 @@ class Icon extends Component {
          * 指定显示哪种图标
          */
         type: PropTypes.string,
+        children: PropTypes.node,
         /**
          * 指定图标大小
          */
@@ -39,8 +41,14 @@ class Icon extends Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, type, size, className, rtl } = this.props;
-
+        const {
+            prefix,
+            type,
+            size,
+            className,
+            rtl,
+            children,
+        } = this.props;
         const others = obj.pickOthers(
             Object.assign({}, Icon.propTypes),
             this.props
@@ -68,9 +76,14 @@ class Icon extends Component {
         ) {
             others.dir = 'rtl';
         }
-
-        return <i {...others} className={classes} />;
+      
+        return (
+            <i {...others} className={classes}>
+                {children}
+            </i>
+        );
     }
 }
 
+Icon.createFromIconfontCN = createFromIconfontCN;
 export default ConfigProvider.config(Icon);
