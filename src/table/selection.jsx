@@ -118,7 +118,7 @@ export default function selection(BaseComponent) {
                         title={this.renderSelectionHeader.bind(this)}
                         cell={this.renderSelectionBody.bind(this)}
                         width={size === 'small' ? 34 : 50}
-                        className={`${prefix}table-selection`}
+                        className={`${prefix}table-selection ${prefix}table-prerow`}
                         __normalized
                         {...attrs}
                     />

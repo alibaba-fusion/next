@@ -29,6 +29,8 @@ class Mask extends React.Component {
         overlayProps: PropTypes.object,
         onClose: PropTypes.func,
         timeoutId: PropTypes.string,
+        style: PropTypes.style,
+        className: PropTypes.string,
     };
 
     static defaultProps = {
@@ -40,6 +42,8 @@ class Mask extends React.Component {
             in: 'pulse',
             out: 'zoomOut',
         },
+        style: {},
+        className: '',
     };
 
     state = {
@@ -80,6 +84,8 @@ class Mask extends React.Component {
             animation,
             overlayProps,
             timeoutId,
+            className,
+            style,
             ...others
         } = this.props;
         /* eslint-enable */
@@ -102,7 +108,8 @@ class Mask extends React.Component {
                     type={type}
                     shape="toast"
                     title={title}
-                    className={`${prefix}message-wrapper`}
+                    style={style}
+                    className={`${prefix}message-wrapper ${className}`}
                     onClose={this.handleClose}
                 >
                     {content}
