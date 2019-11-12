@@ -88,6 +88,15 @@ export default class Input extends Base {
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
         innerAfterClassName: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -95,6 +104,7 @@ export default class Input extends Base {
         size: 'medium',
         autoComplete: 'off',
         hasBorder: true,
+        isPreview: false,
         onPressEnter: func.noop,
         inputRender: el => el,
     };
@@ -261,6 +271,8 @@ export default class Input extends Base {
             className,
             hasBorder,
             prefix,
+            isPreview,
+            renderPreview,
             addonBefore,
             addonAfter,
             addonTextBefore,
@@ -290,6 +302,9 @@ export default class Input extends Base {
             [`${prefix}after`]: true,
             [innerAfterClassName]: innerAfterClassName,
         });
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+        });
 
         const props = this.getProps();
         // custom data attributes are assigned to the top parent node
@@ -301,6 +316,28 @@ export default class Input extends Base {
             Object.assign({}, dataProps, Input.propTypes),
             this.props
         );
+
+        if (isPreview) {
+            const { value } = props;
+            const { label } = this.props;
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+            return (
+                <p {...others} className={previewCls}>
+                    {addonBefore || addonTextBefore}
+                    {label}
+                    {innerBefore}
+                    {value}
+                    {innerAfter}
+                    {addonAfter || addonTextAfter}
+                </p>
+            );
+        }
 
         const inputEl = (
             <input
