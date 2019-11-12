@@ -364,18 +364,6 @@ export default class Cascader extends Component {
         );
     }
 
-    isSiblingOrSelf(currentPos, targetPos) {
-        const currentNums = currentPos.split('-').slice(0, -1);
-        const targetNums = targetPos.split('-').slice(0, -1);
-
-        return (
-            currentNums.length === targetNums.length &&
-            currentNums.every((num, index) => {
-                return num === targetNums[index];
-            })
-        );
-    }
-
     processValue(value, v, checked) {
         const index = value.indexOf(v);
         if (checked && index === -1) {
