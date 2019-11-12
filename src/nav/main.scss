@@ -112,7 +112,6 @@ $nav-icononly-width: 58px;
             bottom: - $popup-local-border-width;
         }
 
-        .#{$css-prefix}child-selected#{$nav-prefix}-item:before,
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
             width: 100%;
             left: 0;
@@ -182,7 +181,6 @@ $nav-icononly-width: 58px;
             right: - $popup-local-border-width;
         }
 
-        .#{$css-prefix}child-selected#{$nav-prefix}-item:before,
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
             height: 100%;
             top: 0;

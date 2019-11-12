@@ -504,8 +504,11 @@ export default function lock(BaseComponent) {
         adjustCellSize() {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
+                    // record may be a string
                     const rowIndex =
-                        '__rowIndex' in item ? item.__rowIndex : index;
+                        typeof record === 'object' && '__rowIndex' in item
+                            ? item.__rowIndex
+                            : index;
                     const lockLeftRow = this.getCellNode(rowIndex, 0, 'left'),
                         lockRightRow = this.getCellNode(rowIndex, 0, 'right'),
                         row = this.getFirstNormalCellNode(rowIndex),
