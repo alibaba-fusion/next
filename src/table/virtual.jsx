@@ -269,6 +269,19 @@ export default function virtual(BaseComponent) {
             }
         }
 
+        normalizeDataSource(ds) {
+            const { primaryKey } = this.props;
+            const ret = [];
+            ds.forEach((item, index) => {
+                const itemCopy = { ...item };
+
+                itemCopy.__rowIndex = index;
+                itemCopy.__primaryKeyValue = itemCopy[primaryKey] || index;
+                ret.push(itemCopy);
+            });
+            return ret;
+        }
+
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
             let {
@@ -282,8 +295,8 @@ export default function virtual(BaseComponent) {
                 ...others
             } = this.props;
 
-            const entireDataSource = dataSource;
-            let newDataSource = dataSource;
+            const entireDataSource = this.normalizeDataSource(dataSource);
+            let newDataSource = entireDataSource;
 
             this.rowSelection = this.props.rowSelection;
             if (this.hasVirtualData) {
@@ -292,9 +305,11 @@ export default function virtual(BaseComponent) {
                 const { start, end } = this.getVisibleRange(
                     this.state.scrollToRow
                 );
-                dataSource.forEach((current, index, record) => {
+
+                entireDataSource.forEach((current, index) => {
                     if (index >= start && index < end) {
                         current.__rowIndex = index;
+
                         newDataSource.push(current);
                     }
                 });

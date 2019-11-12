@@ -20,24 +20,17 @@ export default class TreeRow extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { className, record, primaryKey, prefix, ...others } = this.props;
+        const { className, record, prefix, ...others } = this.props;
         const { treeStatus, openRowKeys } = this.context;
+        const id = record.__primaryKeyValue;
         const cls = classnames({
-            hidden:
-                !(treeStatus.indexOf(record[primaryKey]) > -1) &&
-                record.__level !== 0,
+            hidden: !(treeStatus.indexOf(id) > -1) && record.__level !== 0,
             [`${prefix}table-row-level-${record.__level}`]: true,
-            opened: openRowKeys.indexOf(record[primaryKey]) > -1,
+            opened: openRowKeys.indexOf(id) > -1,
             [className]: className,
         });
         return (
-            <Row
-                {...others}
-                record={record}
-                className={cls}
-                primaryKey={primaryKey}
-                prefix={prefix}
-            />
+            <Row {...others} record={record} className={cls} prefix={prefix} />
         );
     }
 }

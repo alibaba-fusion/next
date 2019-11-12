@@ -108,8 +108,8 @@ export default function expanded(BaseComponent) {
             const { getExpandedColProps, prefix, locale } = this.props;
 
             const { openRowKeys } = this.state,
-                { primaryKey } = this.props,
-                hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
+                hasExpanded =
+                    openRowKeys.indexOf(record.__primaryKeyValue) > -1,
                 switchNode = hasExpanded ? (
                     <Icon type="minus" size="xs" />
                 ) : (
@@ -152,8 +152,7 @@ export default function expanded(BaseComponent) {
 
         onExpandedClick(value, record, i, e) {
             const openRowKeys = [...this.state.openRowKeys],
-                { primaryKey } = this.props,
-                id = record[primaryKey],
+                id = record.__primaryKeyValue,
                 index = openRowKeys.indexOf(id);
             if (index > -1) {
                 openRowKeys.splice(index, 1);
@@ -191,9 +190,11 @@ export default function expanded(BaseComponent) {
 
         normalizeDataSource(ds) {
             const ret = [];
-            ds.forEach(item => {
+            const start = (ds[0] && ds[0].__rowIndex) || 0;
+            ds.forEach((item, index) => {
                 const itemCopy = { ...item };
                 itemCopy.__expanded = true;
+                itemCopy.__rowIndex = start + index;
                 ret.push(item, itemCopy);
             });
             return ret;

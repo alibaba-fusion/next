@@ -133,7 +133,6 @@ export default function selection(BaseComponent) {
                 attrs = {},
                 {
                     rowSelection,
-                    primaryKey,
                     dataSource,
                     entireDataSource,
                     locale,
@@ -155,7 +154,7 @@ export default function selection(BaseComponent) {
                             .disabled;
                     }
                 })
-                .map(record => record[primaryKey])
+                .map(record => record.__primaryKeyValue)
                 .forEach(id => {
                     if (selectedRowKeys.indexOf(id) === -1) {
                         checked = false;
@@ -190,10 +189,11 @@ export default function selection(BaseComponent) {
         };
 
         renderSelectionBody = (value, index, record) => {
-            const { rowSelection, primaryKey } = this.props;
+            const { rowSelection } = this.props;
             const { selectedRowKeys } = this.state;
             const mode = rowSelection.mode ? rowSelection.mode : 'multiple';
-            const checked = selectedRowKeys.indexOf(record[primaryKey]) > -1;
+            const checked =
+                selectedRowKeys.indexOf(record.__primaryKeyValue) > -1;
             const onChange = this.selectOneRow.bind(this, index, record);
             const attrs = rowSelection.getProps
                 ? rowSelection.getProps(record, index) || {}
@@ -225,7 +225,7 @@ export default function selection(BaseComponent) {
             const source = entireDataSource ? entireDataSource : dataSource;
 
             this.flatDataSource(source).forEach((record, index) => {
-                const id = record[primaryKey];
+                const id = record.__primaryKeyValue;
                 if (getProps) {
                     attrs = getProps(record, index) || {};
                 }
@@ -258,7 +258,7 @@ export default function selection(BaseComponent) {
                 i;
             const { primaryKey, rowSelection, dataSource } = this.props,
                 mode = rowSelection.mode ? rowSelection.mode : 'multiple',
-                id = record[primaryKey];
+                id = record.__primaryKeyValue;
             if (!id) {
                 log.warning(
                     `Can't get value from record using given ${primaryKey} as primaryKey.`

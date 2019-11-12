@@ -485,6 +485,24 @@ export default class Table extends React.Component {
         this.props.onResizeChange(dataIndex, value);
     };
 
+    normalizeDataSource(ds) {
+        const { primaryKey } = this.props;
+        const ret = [];
+        ds.forEach((item, index) => {
+            const itemCopy = { ...item };
+
+            if (!('__rowIndex' in itemCopy)) {
+                itemCopy.__rowIndex = index;
+            }
+            if (!('__primaryKeyValue' in itemCopy)) {
+                itemCopy.__primaryKeyValue = itemCopy[primaryKey] || index;
+            }
+
+            ret.push(itemCopy);
+        });
+        return ret;
+    }
+
     // 通过头部和扁平的结构渲染表格
     renderTable(groupChildren, flatChildren) {
         if (
@@ -519,6 +537,7 @@ export default class Table extends React.Component {
                 Body = BodyComponent,
             } = components;
             const colGroup = this.renderColGroup(flatChildren);
+            const newDataSource = this.normalizeDataSource(dataSource);
 
             return (
                 <Wrapper
@@ -565,7 +584,7 @@ export default class Table extends React.Component {
                         expandedIndexSimulate={expandedIndexSimulate}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
-                        dataSource={dataSource}
+                        dataSource={newDataSource}
                         locale={locale}
                     />
                     {wrapperContent}

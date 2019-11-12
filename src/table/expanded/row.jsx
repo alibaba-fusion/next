@@ -30,7 +30,8 @@ export default class ExpandedRow extends React.Component {
 
         const { columns, cellRef } = this.props;
         if (expandedRowRender) {
-            const { primaryKey, prefix } = this.props,
+            const { prefix } = this.props,
+                id = record.__primaryKeyValue,
                 leftIndent = expandedRowIndent[0],
                 rightIndent = expandedRowIndent[1],
                 totalIndent = leftIndent + rightIndent,
@@ -63,7 +64,7 @@ export default class ExpandedRow extends React.Component {
                 );
             }
             if (lockType) {
-                return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
+                return openRowKeys.indexOf(id) > -1 ? (
                     <tr
                         className={`${prefix}table-expanded-row`}
                         key={`expanded-${index}`}
@@ -85,10 +86,10 @@ export default class ExpandedRow extends React.Component {
                     </div>
                 );
             }
-            return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
+            return openRowKeys.indexOf(id) > -1 ? (
                 <tr
                     className={`${prefix}table-expanded-row`}
-                    key={`expanded-${record[primaryKey] || index}`}
+                    key={`expanded-${id}`}
                 >
                     {renderCols(leftIndent)}
                     <td colSpan={colSpan - totalIndent}>{content}</td>
@@ -107,8 +108,8 @@ export default class ExpandedRow extends React.Component {
 
         if (record.__expanded) {
             const expandedIndex = expandedIndexSimulate
-                ? (rowIndex - 1) / 2
-                : rowIndex;
+                ? rowIndex
+                : rowIndex * 2 + 1;
             return this.renderExpandedRow(
                 record,
                 expandedIndex,
@@ -116,7 +117,7 @@ export default class ExpandedRow extends React.Component {
             );
         }
 
-        const newRowIndex = expandedIndexSimulate ? rowIndex / 2 : rowIndex;
+        const newRowIndex = expandedIndexSimulate ? rowIndex : rowIndex * 2;
         return (
             <Row
                 {...others}

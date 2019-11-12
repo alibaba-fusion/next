@@ -40,15 +40,7 @@ export default class TreeCell extends React.Component {
     };
 
     render() {
-        const {
-            colIndex,
-            record,
-            prefix,
-            primaryKey,
-            locale,
-            rtl,
-            children,
-        } = this.props;
+        const { colIndex, record, prefix, locale, rtl, children } = this.props;
         const {
             openTreeRowKeys: openRowKeys,
             indent,
@@ -73,7 +65,7 @@ export default class TreeCell extends React.Component {
                 );
                 if (record.children && record.children.length) {
                     const hasExpanded =
-                        openRowKeys.indexOf(record[primaryKey]) > -1;
+                        openRowKeys.indexOf(record.__primaryKeyValue) > -1;
 
                     treeArrowType = hasExpanded ? 'arrow-down' : 'arrow-right';
 

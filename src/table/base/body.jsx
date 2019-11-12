@@ -110,13 +110,12 @@ export default class Body extends React.Component {
         if (dataSource.length) {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
-                const rowIndex =
-                    '__rowIndex' in record ? record.__rowIndex : index;
+                const rowIndex = record.__rowIndex;
 
                 if (expandedIndexSimulate) {
                     rowProps = record.__expanded
                         ? {}
-                        : getRowProps(record, index / 2);
+                        : getRowProps(record, rowIndex / 2);
                 } else {
                     rowProps = getRowProps(record, rowIndex);
                 }
@@ -132,7 +131,7 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] || rowIndex}${expanded}`}
+                        key={`${record.__primaryKeyValue}${expanded}`}
                         {...rowProps}
                         ref={this.getRowRef.bind(this, rowIndex)}
                         colGroup={colGroup}

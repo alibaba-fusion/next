@@ -142,7 +142,6 @@ class App extends React.Component {
                 <p> <Button onClick={this.disabledExpandedCol.bind(this)}> disable fourth row </Button> &nbsp;
                     <Button onClick={this.toggleCol.bind(this)}> hide + </Button></p>
                 <Table dataSource={this.state.dataSource}
-                    expandedIndexSimulate
                     isZebra={this.state.isZebra}
                     hasBorder={this.state.hasBorder}
                     onSort={this.onSort.bind(this)}

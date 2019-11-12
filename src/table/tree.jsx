@@ -118,7 +118,7 @@ export default function tree(BaseComponent) {
 
         onTreeNodeClick = record => {
             const { primaryKey } = this.props,
-                id = record[primaryKey],
+                id = record.__primaryKeyValue,
                 dataSource = this.ds,
                 openRowKeys = [...this.state.openRowKeys],
                 index = openRowKeys.indexOf(id),
