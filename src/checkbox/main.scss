@@ -162,6 +162,7 @@
 
 #{$checkbox-prefix}-group {
     #{$checkbox-prefix}-wrapper {
+        display: inline-block;
         margin-left: 8px;
         &:first-child {
             margin-left: 0;
