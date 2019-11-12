@@ -262,13 +262,13 @@ export default class TextArea extends Base {
             const { value } = props;
             if ('renderPreview' in this.props) {
                 return (
-                    <div className={previewCls}>
+                    <div {...others} className={previewCls}>
                         {renderPreview(value, this.props)}
                     </div>
                 );
             }
             return (
-                <p className={previewCls}>
+                <p {...others} className={previewCls}>
                     {value.split('\n').map((data, i) => (
                         <p key={`p-${i}`}>{data}</p>
                     ))}

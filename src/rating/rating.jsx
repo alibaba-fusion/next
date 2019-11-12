@@ -486,7 +486,7 @@ class Rating extends Component {
 
         if (isPreview && 'renderPreview' in this.props) {
             return (
-                <div className={previewCls}>
+                <div id={id ? id : null} {...others} className={previewCls}>
                     {renderPreview(value, this.props)}
                 </div>
             );

@@ -322,13 +322,13 @@ export default class Input extends Base {
             const { label } = this.props;
             if ('renderPreview' in this.props) {
                 return (
-                    <div className={previewCls}>
+                    <div {...others} className={previewCls}>
                         {renderPreview(value, this.props)}
                     </div>
                 );
             }
             return (
-                <p className={previewCls}>
+                <p {...others} className={previewCls}>
                     {addonBefore || addonTextBefore}
                     {label}
                     {innerBefore}
