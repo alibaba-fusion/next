@@ -5,6 +5,13 @@ import ConfigProvider from '../config-provider';
 import Icon from '../icon';
 import { obj } from '../util';
 
+const mapIconSize = size => {
+    return {
+        large: 'medium',
+        medium: 'small',
+        small: 'xs',
+    }[size];
+};
 /**
  * Avatar
  */
@@ -71,6 +78,12 @@ class Avatar extends Component {
         }
     };
 
+    getIconSize = avatarSize => {
+        return typeof avatarSize === 'number'
+            ? avatarSize / 2
+            : mapIconSize(avatarSize);
+    };
+
     render() {
         const {
             prefix,
@@ -108,26 +121,26 @@ class Avatar extends Component {
                   }
                 : {};
 
-        if (src && isImgExist) {
-            children = (
-                <img
-                    src={src}
-                    srcSet={srcSet}
-                    onError={this.handleImgLoadError}
-                    alt={alt}
-                />
-            );
+        const iconSize = this.getIconSize(size);
+        if (src) {
+            if (isImgExist) {
+                children = (
+                    <img
+                        src={src}
+                        srcSet={srcSet}
+                        onError={this.handleImgLoadError}
+                        alt={alt}
+                    />
+                );
+            } else {
+                children = <Icon type={'picture'} size={iconSize} />;
+            }
         } else if (typeof icon === 'string') {
-            const iconSize = typeof size === 'number' ? size / 2 : size;
             children = <Icon type={icon} size={iconSize} />;
         } else if (icon) {
-            const iconSize =
-                'size' in icon.props
-                    ? icon.props.size
-                    : typeof size === 'number'
-                    ? size / 2
-                    : size;
-            children = React.cloneElement(icon, { size: iconSize });
+            const newIconSize =
+                'size' in icon.props ? icon.props.size : iconSize;
+            children = React.cloneElement(icon, { size: newIconSize });
         }
 
         return (
