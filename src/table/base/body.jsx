@@ -110,8 +110,11 @@ export default class Body extends React.Component {
         if (dataSource.length) {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
+                // record may be a string
                 const rowIndex =
-                    '__rowIndex' in record ? record.__rowIndex : index;
+                    typeof record === 'object' && '__rowIndex' in record
+                        ? record.__rowIndex
+                        : index;
 
                 if (expandedIndexSimulate) {
                     rowProps = record.__expanded
