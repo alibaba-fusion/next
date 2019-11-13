@@ -32,5 +32,5 @@ export default class Field extends innerField{
      * react hooks 风格使用 Field
      * @param options
      */
-    useField(options?: FieldOption): Field;
+    static useField(options?: FieldOption): Field;
 }
