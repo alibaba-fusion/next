@@ -294,19 +294,23 @@ class Range extends React.Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, state) {
         if ('value' in props) {
             const { min, slider, value } = props;
-            let newVal = value;
+            const { hasMovingClass } = state;
+            const newState = {
+                value,
+            };
 
             if (value === undefined) {
-                newVal = _isMultiple(slider) ? [min, min] : min;
+                newState.value = _isMultiple(slider) ? [min, min] : min;
             }
 
-            return {
-                value: newVal,
-                tempValue: newVal,
-            };
+            if (!hasMovingClass) {
+                newState.tempValue = newState.value;
+            }
+
+            return newState;
         }
         return null;
     }
@@ -328,7 +332,6 @@ class Range extends React.Component {
     _calcScales() {
         const { min, max, marks } = this.props;
         const scales = this._marksToScales(marks);
-        // let scales = null;
 
         if (scales !== false) {
             if (Array.isArray(scales)) {
@@ -462,6 +465,7 @@ class Range extends React.Component {
             upperTooltipVisible: false,
             tooltipAnimation: true,
         });
+
         if (!isEqual(tempValue, startValue)) {
             // Not Controlled
             if (!('value' in this.props)) {
