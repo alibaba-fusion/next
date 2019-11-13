@@ -91,10 +91,10 @@ class Demo extends React.Component {
         const { selected } = this.state;
 
         return (
-            <Transfer 
-                dataSource={transferDataSource} 
-                listStyle={{ width: '200px', height: '192px' }} 
-                onChange={this.handleChange} 
+            <Transfer
+                dataSource={transferDataSource}
+                listStyle={{ width: '200px', height: '192px' }}
+                onChange={this.handleChange}
                 titles={[<Button key='left' type='primary'>Source</Button>, 'Target']} >
                 { ({ position, onChange, value }) => {
                     if (position === 'left') {
@@ -102,13 +102,17 @@ class Demo extends React.Component {
                             <Tree checkable editable
                                 style={{padding: '10px'}}
                                 checkedKeys={value}
-                                onCheck={(keys, extra) => {const newValues=extra.checkedNodes.map(item => item.props.value); onChange(position, newValues);}}
-                                >
+                                onCheck={
+                                    (keys, extra) => {
+                                        const newValues=extra.checkedNodes.map(item => item.props.value);
+                                        onChange(position, newValues);
+                                    }
+                                }>
                                 {this.getTreeDataSource(treeDataSource, selected)}
                             </Tree>
                         );
                     }
-                  } 
+                  }
                 }
             </Transfer>
         );

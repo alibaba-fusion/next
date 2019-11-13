@@ -95,6 +95,21 @@ describe('Table', () => {
         );
     });
 
+    it('should render when dataSource is made of string', done => {
+        timeout(
+            {
+                dataSource: ['string1', 'string2'],
+                children: [<Table.Column
+                    cell={(value, index, record) => record}
+                />],
+            },
+            () => {
+                assert(wrapper);
+                done();
+            }
+        );
+    });
+
     it('should render RadioMode', done => {
         timeout(
             {

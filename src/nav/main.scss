@@ -2,7 +2,7 @@
 @import "scss/mixin";
 @import "scss/variable";
 
-$nav-icononly-width: $s-15;
+$nav-icononly-width: 58px;
 
 #{$nav-prefix} {
     @include box-sizing;

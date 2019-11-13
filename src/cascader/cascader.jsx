@@ -5,6 +5,13 @@ import Menu from '../menu';
 import { func, obj, dom } from '../util';
 import CascaderMenu from './menu';
 import CascaderMenuItem from './item';
+import {
+    filterChildValue,
+    getAllCheckedValues,
+    forEachEnableNode,
+    isSiblingOrSelf,
+    isNodeChecked,
+} from './utils';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
@@ -322,79 +329,11 @@ export default class Cascader extends Component {
     }
     /*eslint-disable max-statements*/
     completeValue(dataSource, value) {
-        const filterValue = value.filter(
-            v => typeof this._v2n[v] !== 'undefined'
-        );
-        const flatValue = this.flatValue(filterValue);
-
-        const childChecked = child => flatValue.indexOf(child.value) > -1;
-        const removeValue = child =>
-            flatValue.splice(flatValue.indexOf(child.value), 1);
-        const addParentValue = (i, parent) =>
-            flatValue.splice(i, 0, parent.value);
-        for (let i = 0; i < flatValue.length; i++) {
-            const pos = this.getPos(flatValue[i]);
-            const nums = pos.split('-');
-            if (nums.length === 2) {
-                break;
-            }
-            for (let j = nums.length - 2; j > 0; j--) {
-                const parent = nums
-                    .slice(1, j + 1)
-                    .reduce((ret, num) => ret.children[num], {
-                        children: dataSource,
-                    });
-                const parentChecked = parent.children.every(childChecked);
-                if (parentChecked) {
-                    parent.children.forEach(removeValue);
-                    addParentValue(i, parent);
-                } else {
-                    break;
-                }
-            }
-        }
-
-        const newValue = [];
-        if (flatValue.length) {
-            // flatValue = flatValue.reverse(); TODO 后续检测大数据性能问题
-            const ps = Object.keys(this._p2n);
-            for (let i = 0; i < flatValue.length; i++) {
-                const pos = this.getPos(flatValue[i]);
-                for (let j = 0; j < ps.length; j++) {
-                    if (this.isDescendantOrSelf(pos, ps[j])) {
-                        newValue.push(this.getValue(ps[j]));
-                        ps.splice(j, 1);
-                        j--;
-                    }
-                }
-            }
-        }
-
-        return newValue;
+        return getAllCheckedValues(value, this._v2n, this._p2n);
     }
     /*eslint-enable*/
     flatValue(value) {
-        const getDepth = v => this.getPos(v).split('-').length;
-        const newValue = value.slice(0).sort((prev, next) => {
-            return getDepth(prev) - getDepth(next);
-        });
-
-        for (let i = 0; i < newValue.length; i++) {
-            for (let j = 0; j < newValue.length; j++) {
-                if (
-                    i !== j &&
-                    this.isDescendantOrSelf(
-                        this.getPos(newValue[i]),
-                        this.getPos(newValue[j])
-                    )
-                ) {
-                    newValue.splice(j, 1);
-                    j--;
-                }
-            }
-        }
-
-        return newValue;
+        return filterChildValue(value, this._v2n, this._p2n);
     }
 
     getValue(pos) {
@@ -419,18 +358,6 @@ export default class Cascader extends Component {
 
         return (
             currentNums.length <= targetNums.length &&
-            currentNums.every((num, index) => {
-                return num === targetNums[index];
-            })
-        );
-    }
-
-    isSiblingOrSelf(currentPos, targetPos) {
-        const currentNums = currentPos.split('-').slice(0, -1);
-        const targetNums = targetPos.split('-').slice(0, -1);
-
-        return (
-            currentNums.length === targetNums.length &&
             currentNums.every((num, index) => {
                 return num === targetNums[index];
             })
@@ -496,33 +423,72 @@ export default class Cascader extends Component {
             const pos = this.getPos(v);
 
             const ps = Object.keys(this._p2n);
-            ps.forEach(p => {
-                if (this.isDescendantOrSelf(pos, p)) {
-                    this.processValue(value, this.getValue(p), checked);
-                }
+
+            forEachEnableNode(this._v2n[v], node => {
+                if (node.checkable === false) return;
+                this.processValue(value, node.value, checked);
             });
 
             let currentPos = pos;
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
-                let parentChecked = true;
+                let parentCheck = true;
+
+                const parentPos = nums.slice(0, i - 1).join('-');
+                if (
+                    this._p2n[parentPos].disabled ||
+                    this._p2n[parentPos].checkboxDisabled ||
+                    this._p2n[parentPos].checkable === false
+                ) {
+                    currentPos = parentPos;
+                    continue;
+                }
+
+                const parentValue = this._p2n[parentPos].value;
+                const parentChecked = value.indexOf(parentValue) > -1;
+                if (!checked && !parentChecked) {
+                    break;
+                }
+
                 for (let j = 0; j < ps.length; j++) {
                     const p = ps[j];
-                    if (!this.isSiblingOrSelf(currentPos, p)) {
-                        continue;
-                    }
-                    const v = this.getValue(p);
-                    if (value.indexOf(v) === -1) {
-                        parentChecked = false;
-                        break;
+                    const pnode = this._p2n[p];
+                    if (
+                        isSiblingOrSelf(currentPos, p) &&
+                        !pnode.disabled &&
+                        !pnode.checkboxDisabled
+                    ) {
+                        const k = pnode.value;
+                        // eslint-disable-next-line max-depth
+                        if (pnode.checkable === false) {
+                            // eslint-disable-next-line max-depth
+                            if (
+                                !pnode.children ||
+                                pnode.children.length === 0
+                            ) {
+                                continue;
+                            }
+                            // eslint-disable-next-line max-depth
+                            for (let m = 0; m < pnode.children.length; m++) {
+                                // eslint-disable-next-line max-depth
+                                if (
+                                    !pnode.children.every(child =>
+                                        isNodeChecked(child, value)
+                                    )
+                                ) {
+                                    parentCheck = false;
+                                    break;
+                                }
+                            }
+                        } else if (value.indexOf(k) === -1) {
+                            parentCheck = false;
+                        }
+
+                        if (!parentCheck) break;
                     }
                 }
-                const parentPos = nums.slice(0, i - 1).join('-');
-                this.processValue(
-                    value,
-                    this.getValue(parentPos),
-                    parentChecked
-                );
+
+                this.processValue(value, parentValue, parentCheck);
 
                 currentPos = parentPos;
             }
@@ -675,23 +641,34 @@ export default class Cascader extends Component {
     }
 
     getIndeterminate(value) {
-        const indeterminate = [];
+        const indeterminateValues = [];
 
-        const positions = this.flatValue(value).map(value =>
-            this.getPos(value)
-        );
-        positions.forEach(pos => {
+        const poss = filterChildValue(
+            value
+                .filter(v => !!this._v2n[v])
+                .filter(
+                    v =>
+                        !this._v2n[v].disabled &&
+                        !this._v2n[v].checkboxDisabled &&
+                        this._v2n[v].checkable !== false
+                ),
+            this._v2n,
+            this._p2n
+        ).map(v => this._v2n[v].pos);
+        poss.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');
-                const parentValue = this.getValue(parentPos);
-                if (indeterminate.indexOf(parentValue) === -1) {
-                    indeterminate.push(parentValue);
+                const parent = this._p2n[parentPos];
+                if (parent.disabled || parent.checkboxDisabled) break;
+                const parentValue = parent.value;
+                if (indeterminateValues.indexOf(parentValue) === -1) {
+                    indeterminateValues.push(parentValue);
                 }
             }
         });
 
-        return indeterminate;
+        return indeterminateValues;
     }
 
     onBlur(e) {
