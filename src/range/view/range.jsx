@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import { events, func, KEYCODE, dom } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
@@ -137,7 +138,7 @@ function pauseEvent(e) {
 }
 
 /** Range */
-export default class Range extends React.Component {
+class Range extends React.Component {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -293,21 +294,25 @@ export default class Range extends React.Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { min } = this.props;
-        const initialValue = _isMultiple(nextProps.slider) ? [min, min] : min;
-        if ('value' in nextProps) {
-            let value = nextProps.value;
+    static getDerivedStateFromProps(props, state) {
+        if ('value' in props) {
+            const { min, slider, value } = props;
+            const { hasMovingClass } = state;
+            const newState = {
+                value,
+            };
 
             if (value === undefined) {
-                // value设置undefined,reset为初始值
-                value = initialValue;
+                newState.value = _isMultiple(slider) ? [min, min] : min;
             }
-            this.setState({
-                value,
-                tempValue: value,
-            });
+
+            if (!hasMovingClass) {
+                newState.tempValue = newState.value;
+            }
+
+            return newState;
         }
+        return null;
     }
 
     _marksToScales(marks) {
@@ -327,7 +332,6 @@ export default class Range extends React.Component {
     _calcScales() {
         const { min, max, marks } = this.props;
         const scales = this._marksToScales(marks);
-        // let scales = null;
 
         if (scales !== false) {
             if (Array.isArray(scales)) {
@@ -461,6 +465,7 @@ export default class Range extends React.Component {
             upperTooltipVisible: false,
             tooltipAnimation: true,
         });
+
         if (!isEqual(tempValue, startValue)) {
             // Not Controlled
             if (!('value' in this.props)) {
@@ -820,3 +825,5 @@ export default class Range extends React.Component {
         );
     }
 }
+
+export default polyfill(Range);
