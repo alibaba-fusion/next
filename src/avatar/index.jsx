@@ -5,13 +5,6 @@ import ConfigProvider from '../config-provider';
 import Icon from '../icon';
 import { obj } from '../util';
 
-const mapIconSize = size => {
-    return {
-        large: 'medium',
-        medium: 'small',
-        small: 'xs',
-    }[size];
-};
 /**
  * Avatar
  */
@@ -79,9 +72,7 @@ class Avatar extends Component {
     };
 
     getIconSize = avatarSize => {
-        return typeof avatarSize === 'number'
-            ? avatarSize / 2
-            : mapIconSize(avatarSize);
+        return typeof avatarSize === 'number' ? avatarSize / 2 : avatarSize;
     };
 
     render() {
