@@ -80,6 +80,19 @@ class Checkbox extends UIState {
          * name
          */
         name: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -89,6 +102,8 @@ class Checkbox extends UIState {
         onMouseEnter: noop,
         onMouseLeave: noop,
         prefix: 'next-',
+        readOnly: false,
+        isPreview: false,
     };
 
     static contextTypes = {
@@ -124,6 +139,8 @@ class Checkbox extends UIState {
         };
 
         this.disabled =
+            props.isPreview ||
+            props.readOnly ||
             props.disabled ||
             (context.__group__ && 'disabled' in context && context.disabled);
         this.onChange = this.onChange.bind(this);
@@ -141,6 +158,8 @@ class Checkbox extends UIState {
             }
 
             this.disabled =
+                nextProps.isPreview ||
+                nextProps.readOnly ||
                 nextProps.disabled ||
                 ('disabled' in nextContext && nextContext.disabled);
         } else {
@@ -149,7 +168,8 @@ class Checkbox extends UIState {
                     checked: nextProps.checked,
                 });
             }
-            this.disabled = nextProps.disabled;
+            this.disabled =
+                nextProps.isPreview || nextProps.readOnly || nextProps.disabled;
         }
 
         if ('indeterminate' in nextProps) {
@@ -202,6 +222,8 @@ class Checkbox extends UIState {
             onMouseEnter,
             onMouseLeave,
             rtl,
+            isPreview,
+            renderPreview,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -239,6 +261,15 @@ class Checkbox extends UIState {
         });
         const labelCls = `${prefix}checkbox-label`;
         const type = indeterminate ? 'semi-select' : 'select';
+
+        if (isPreview && 'renderPreview' in this.props) {
+            const previewCls = `${prefix}form-preview`;
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(checked, this.props)}
+                </div>
+            );
+        }
 
         return (
             <label

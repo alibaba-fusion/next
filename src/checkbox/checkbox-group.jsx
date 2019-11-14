@@ -64,6 +64,19 @@ class CheckboxGroup extends Component {
          * - ver: 垂直排列
          */
         itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -71,6 +84,8 @@ class CheckboxGroup extends Component {
         onChange: () => {},
         prefix: 'next-',
         itemDirection: 'hoz',
+        readOnly: false,
+        isPreview: false,
     };
 
     static childContextTypes = {
@@ -104,11 +119,13 @@ class CheckboxGroup extends Component {
     }
 
     getChildContext() {
+        const { readOnly, isPreview, disabled } = this.props;
+
         return {
             __group__: true,
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: this.props.disabled,
+            disabled: readOnly || isPreview || disabled,
         };
     }
 
@@ -153,8 +170,19 @@ class CheckboxGroup extends Component {
             disabled,
             itemDirection,
             rtl,
+            isPreview,
+            renderPreview,
         } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
+
+        if (isPreview && 'renderPreview' in this.props) {
+            const previewCls = `${prefix}form-preview`;
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(this.state.value, this.props)}
+                </div>
+            );
+        }
 
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
         let children;
