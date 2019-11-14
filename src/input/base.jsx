@@ -94,6 +94,15 @@ class Base extends React.Component {
         rtl: PropTypes.bool,
         state: PropTypes.oneOf(['error', 'loading', 'success']),
         locale: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -103,6 +112,7 @@ class Base extends React.Component {
         hasLimitHint: false,
         cutString: true,
         readOnly: false,
+        isPreview: false,
         trim: false,
         onFocus: func.noop,
         onBlur: func.noop,

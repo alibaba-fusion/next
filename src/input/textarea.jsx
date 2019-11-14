@@ -60,11 +60,21 @@ export default class TextArea extends Base {
          * 多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)
          */
         rows: PropTypes.number,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
         ...Base.defaultProps,
         hasBorder: true,
+        isPreview: false,
         rows: 4,
         autoHeight: false,
     };
@@ -207,6 +217,8 @@ export default class TextArea extends Base {
             style,
             className,
             autoHeight,
+            isPreview,
+            renderPreview,
             prefix,
             rtl,
             hasBorder,
@@ -237,9 +249,32 @@ export default class TextArea extends Base {
             overflowY: this.state.overflowY,
         };
 
+        const previewCls = classNames({
+            [`${prefix}input-textarea`]: true,
+            [`${prefix}form-preview`]: true,
+        });
+
         const wrapStyle = autoHeight
             ? { ...style, position: 'relative' }
             : style;
+
+        if (isPreview) {
+            const { value } = props;
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+            return (
+                <p {...others} className={previewCls}>
+                    {value.split('\n').map((data, i) => (
+                        <p key={`p-${i}`}>{data}</p>
+                    ))}
+                </p>
+            );
+        }
 
         return (
             <span

@@ -409,7 +409,8 @@
         margin-right: $marginRight;
     }
 
-    &:before {
+    &:before,
+    & .#{$css-prefix}icon-remote {
         width: $size;
         font-size: $size;
         line-height: inherit;
@@ -564,7 +565,6 @@
 @mixin button-size($padding, $height, $font-size, $border-width) {
     padding: 0 $padding;
     height: $height;
-    line-height: $height - 2 * $border-width;
     font-size: $font-size;
     border-width: $border-width;
 }
