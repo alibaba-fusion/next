@@ -229,6 +229,12 @@ export default class Tree extends Component {
          * 当前获得焦点的子菜单或菜单项 key 值
          */
         focusedKey: PropTypes.string,
+        /**
+         * 渲染子节点
+         * @param {Array<ReactNode>} nodes 所有的子节点
+         * @return {ReactNode} 返回节点
+         */
+        renderChildNodes: PropTypes.func,
         focusable: PropTypes.bool,
         autoFocus: PropTypes.bool,
         onItemFocus: PropTypes.func,
