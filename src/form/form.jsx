@@ -119,6 +119,7 @@ export default class Form extends React.Component {
     static childContextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.string,
+        _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
     };
 
@@ -153,6 +154,7 @@ export default class Form extends React.Component {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
             _formSize: this.props.size,
+            _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
         };
     }
