@@ -465,7 +465,7 @@ class NumberPicker extends React.Component {
             innerAfter,
         } = this.props;
 
-        let type = device === 'phone' ? 'inline' : this.props.type;
+        const type = device === 'phone' ? 'inline' : this.props.type;
 
         const prefixCls = `${prefix}number-picker`;
 

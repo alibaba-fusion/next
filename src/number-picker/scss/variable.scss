@@ -17,10 +17,17 @@ $number-picker-prefix: '.#{$css-prefix}number-picker';
 
 /// width
 /// @namespace size/button
+$number-picker-normal-s-button-width: $s-5 !default;
+/// width
+/// @namespace size/button
 $number-picker-normal-m-button-width: $s-5 !default;
 /// width
 /// @namespace size/button
 $number-picker-normal-l-button-width: $s-5 !default;
+
+/// icon
+/// @namespace size/button
+$number-picker-normal-s-button-icon-size: $icon-xxs !default;
 
 /// icon
 /// @namespace size/button
@@ -33,6 +40,16 @@ $number-picker-normal-l-button-icon-size: $icon-xxs !default;
 // inline
 // --------------------------------------------------
 
+/// icon
+/// @namespace size/button
+$number-picker-inline-s-button-icon-size: $icon-xs !default;
+/// margin
+/// @type number
+/// @namespace size/button
+$number-picker-inline-s-button-margin: 2px !default;
+/// corner
+/// @namespace size/button
+$number-picker-inline-s-button-corner: $corner-1 !default;
 /// icon
 /// @namespace size/button
 $number-picker-inline-m-button-icon-size: $icon-xs !default;
