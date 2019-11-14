@@ -349,34 +349,15 @@ $nav-icononly-width: 58px;
         // }
 
         &.#{$css-prefix}normal {
-            #{$nav-prefix}-icon.#{$css-prefix}icon {
-                @include icon-size(
-                    $size: $nav-icon-only-font-size,
-                    $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $popup-local-border-width,
-                    $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $popup-local-border-width
-                );
-            }
+            @include icon-only-size($popup-local-border-width);
         }
 
         &.#{$css-prefix}primary {
-            #{$nav-prefix}-icon.#{$css-prefix}icon {
-                @include icon-size(
-                    $size: $nav-icon-only-font-size,
-                    $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width,
-                    $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $nav-primary-border-width
-                );
-            }
+            @include icon-only-size($nav-primary-border-width);
         }
         &.#{$css-prefix}secondary {
-            #{$nav-prefix}-icon.#{$css-prefix}icon {
-                @include icon-size(
-                    $size: $nav-icon-only-font-size,
-                    $marginLeft: ($nav-icononly-width - $nav-ver-item-padding-lr * 2 - $nav-secondary-border-width * 2 - $nav-icon-only-font-size) / 2,
-                    $marginRight: ($nav-icononly-width - $nav-ver-item-padding-lr * 2 - $nav-secondary-border-width * 2 - $nav-icon-only-font-size) / 2
-                );
-            }
+            @include icon-only-size($nav-secondary-border-width);
         }
-
 
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
@@ -419,6 +400,10 @@ $nav-icononly-width: 58px;
             #{$menu-prefix}-sub-menu #{$menu-prefix}-item,
             #{$nav-prefix}-item#{$menu-prefix}-item {
                 background: initial;
+            }
+
+            &.#{$css-prefix}icon-only {
+                @include icon-only-size(0);
             }
         }
 
