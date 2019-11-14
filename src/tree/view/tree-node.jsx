@@ -439,14 +439,24 @@ export default class TreeNode extends Component {
 
     renderChildTree(hasChildTree) {
         const { prefix, children, expanded, root } = this.props;
-        const { animation } = root.props;
+        const { animation, renderChildNodes } = root.props;
 
-        let childTree =
-            expanded && hasChildTree ? (
+        if (!expanded || !hasChildTree) {
+            return null;
+        }
+
+        let childTree;
+
+        if (renderChildNodes) {
+            childTree = renderChildNodes(children);
+        } else {
+            childTree = (
                 <ul role="group" className={`${prefix}tree-child-tree`}>
                     {children}
                 </ul>
-            ) : null;
+            );
+        }
+
         if (animation) {
             childTree = <Expand animationAppear={false}>{childTree}</Expand>;
         }

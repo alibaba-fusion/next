@@ -25,13 +25,14 @@
 
 ### Tag
 
-| 参数          | 说明                                                                                  | 类型       | 默认值       |
-| ----------- | ----------------------------------------------------------------------------------- | -------- | --------- |
-| size        | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br><br>**可选值**:<br>'small', 'medium', 'large' | Enum     | 'medium'  |
-| type        | 标签的类型<br><br>**可选值**:<br>'normal', 'primary'                                        | Enum     | 'normal'  |
-| animation   | 是否开启动效                                                                              | Boolean  | false     |
-| afterAppear | 标签出现动画结束后执行的回调<br><br>**签名**:<br>Function() => void                                 | Function | func.noop |
-| onClick     | 点击回调<br><br>**签名**:<br>Function() => void                                           | Function | func.noop |
+| 参数          | 说明                                                                                                                       | 类型       | 默认值       |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
+| size        | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br><br>**可选值**:<br>'small', 'medium', 'large'                                      | Enum     | 'medium'  |
+| type        | 标签的类型<br><br>**可选值**:<br>'normal', 'primary'                                                                             | Enum     | 'normal'  |
+| color       | 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效 | String   | -         |
+| animation   | 是否开启动效                                                                                                                   | Boolean  | false     |
+| afterAppear | 标签出现动画结束后执行的回调<br><br>**签名**:<br>Function() => void                                                                      | Function | func.noop |
+| onClick     | 点击回调<br><br>**签名**:<br>Function() => void                                                                                | Function | func.noop |
 
 ### Tag.Closeable
 
