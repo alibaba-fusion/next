@@ -47,6 +47,11 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     defaultValue?: Array<string> | Array<number> | string | number;
 
     /**
+     * name
+     */
+    name?: string;
+
+    /**
      * 通过子元素方式设置内部 checkbox
      */
     children?: Array<any>;
