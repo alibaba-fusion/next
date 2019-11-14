@@ -10,6 +10,9 @@ export default ConfigProvider.config(Rating, {
             props = { showGrade: type === 'grade', ...others };
         }
 
+        const { disabled, readOnly } = props;
+        props.disabled = disabled || readOnly;
+
         return props;
     },
 });

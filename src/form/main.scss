@@ -25,6 +25,7 @@
         }
 
         @include form-enhance($form-element-medium-height - 4);
+        @include form-preview($form-element-medium-font-size, $form-element-medium-height);
 
         #{$form-prefix}-item-label {
             font-size: $form-element-medium-font-size;
@@ -37,6 +38,8 @@
             }
 
             @include form-enhance($form-element-large-height - 1);
+            @include form-preview($form-element-large-font-size, $form-element-large-height);
+
             .#{$css-prefix}switch {
                 margin-top: ($form-element-large-height - 26)/2;
             }
@@ -53,6 +56,7 @@
             }
 
             @include form-enhance($form-element-small-height);
+            @include form-preview($form-element-small-font-size, $form-element-small-height);
 
             #{$form-prefix}-item-label {
                 font-size: $form-element-small-font-size;

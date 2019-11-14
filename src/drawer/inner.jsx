@@ -19,6 +19,7 @@ export default class Inner extends Component {
         rtl: PropTypes.bool,
         onClose: PropTypes.func,
         locale: PropTypes.object,
+        headerStyle: PropTypes.object,
         bodyStyle: PropTypes.object,
         afterClose: PropTypes.func,
         beforeOpen: PropTypes.func,
@@ -36,11 +37,12 @@ export default class Inner extends Component {
     };
 
     renderHeader() {
-        const { prefix, title } = this.props;
+        const { prefix, title, headerStyle } = this.props;
         if (title) {
             return (
                 <div
                     className={`${prefix}drawer-header`}
+                    style={headerStyle}
                     role="heading"
                     aria-level="1"
                 >
@@ -119,9 +121,11 @@ export default class Inner extends Component {
                 {...others}
                 dir={rtl ? 'rtl' : undefined}
             >
-                {header}
-                {body}
-                {closeLink}
+                <div style={{ height: '100%', overflow: 'auto' }}>
+                    {header}
+                    {body}
+                    {closeLink}
+                </div>
             </div>
         );
     }
