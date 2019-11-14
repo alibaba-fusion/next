@@ -248,6 +248,15 @@ class Range extends React.Component {
          * 是否已rtl模式展示
          */
         rtl: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -268,6 +277,7 @@ class Range extends React.Component {
         pure: false,
         marksPosition: 'above',
         rtl: false,
+        isPreview: false,
     };
 
     constructor(props) {
@@ -704,6 +714,8 @@ class Range extends React.Component {
             defaultValue,
             tooltipVisible,
             rtl,
+            isPreview,
+            renderPreview,
         } = this.props;
         const classes = classNames({
             [`${prefix}range`]: true,
@@ -744,6 +756,24 @@ class Range extends React.Component {
                 : defaultValue
                 ? Array.isArray(defaultValue)
                 : false);
+
+        if (isPreview) {
+            const previewCls = `${prefix}form-preview`;
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p className={previewCls}>
+                    {Array.isArray(value) ? value.join(',') : value}
+                </p>
+            );
+        }
 
         return (
             <div
