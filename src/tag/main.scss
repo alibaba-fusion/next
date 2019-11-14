@@ -71,6 +71,14 @@
             cursor: not-allowed;
             pointer-events: none;
         }
+
+        /* 预设颜色值 */
+        @include tag-preset-color('blue', $tag-color-preset-blue);
+        @include tag-preset-color('green', $tag-color-preset-green);
+        @include tag-preset-color('orange', $tag-color-preset-orange);
+        @include tag-preset-color('red', $tag-color-preset-red);
+        @include tag-preset-color('turquoise', $tag-color-preset-turquoise);
+        @include tag-preset-color('yellow', $tag-color-preset-yellow);
     }
 
     &tag-large {
