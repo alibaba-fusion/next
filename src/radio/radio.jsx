@@ -70,6 +70,19 @@ class Radio extends UIState {
          * name
          */
         name: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -78,6 +91,8 @@ class Radio extends UIState {
         onMouseEnter: noop,
         tabIndex: 0,
         prefix: 'next-',
+        isPreview: false,
+        readOnly: false,
     };
 
     static contextTypes = {
@@ -108,6 +123,8 @@ class Radio extends UIState {
 
         this.onChange = this.onChange.bind(this);
         this.disabled =
+            props.isPreview ||
+            props.readOnly ||
             props.disabled ||
             (context.__group__ && 'disabled' in context && context.disabled);
     }
@@ -127,6 +144,8 @@ class Radio extends UIState {
         }
 
         this.disabled =
+            nextProps.isPreivew ||
+            nextProps.readOnly ||
             nextProps.disabled ||
             (nextContext.__group__ &&
                 'disabled' in nextContext &&
@@ -177,6 +196,8 @@ class Radio extends UIState {
             tabIndex,
             rtl,
             name,
+            isPreview,
+            renderPreview,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -186,6 +207,15 @@ class Radio extends UIState {
 
         const others = obj.pickOthers(Radio.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
+
+        if (isPreview && 'renderPreview' in this.props) {
+            const previewCls = `${prefix}form-preview`;
+            return (
+                <div id={id ? id : null} {...others} className={previewCls}>
+                    {renderPreview(checked, this.props)}
+                </div>
+            );
+        }
 
         let input = (
             <input

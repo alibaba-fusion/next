@@ -91,6 +91,19 @@ class RadioGroup extends Component {
          * - ver: 垂直排列
          */
         itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -100,6 +113,8 @@ class RadioGroup extends Component {
         prefix: 'next-',
         component: 'div',
         itemDirection: 'hoz',
+        isPreview: false,
+        readOnly: false,
     };
 
     static childContextTypes = {
@@ -127,12 +142,14 @@ class RadioGroup extends Component {
     }
 
     getChildContext() {
+        const { disabled, isPreview, readOnly } = this.props;
+
         return {
             __group__: true,
             isButton: this.props.shape === 'button',
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: this.props.disabled,
+            disabled: disabled || isPreview || readOnly,
         };
     }
 
@@ -168,11 +185,22 @@ class RadioGroup extends Component {
             prefix,
             itemDirection,
             component,
+            isPreview,
+            renderPreview,
         } = this.props;
         const others = pickOthers(
             Object.keys(RadioGroup.propTypes),
             this.props
         );
+
+        if (isPreview && 'renderPreview' in this.props) {
+            const previewCls = `${prefix}form-preview`;
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(this.state.value, this.props)}
+                </div>
+            );
+        }
 
         if (rtl) {
             others.dir = 'rtl';
