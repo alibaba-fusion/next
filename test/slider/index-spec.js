@@ -6,6 +6,7 @@ import co from 'co';
 import Icon from '../../src/icon';
 import Slider from '../../src/slider/index';
 import './index.scss';
+import ConfigProvider from '../../src/config-provider';
 
 /* eslint-disable */
 
@@ -55,6 +56,17 @@ describe('slider', function () {
             );
             assert(wrapper.find('.next-slick-arrow').length === 0);
             assert(wrapper.find('.next-slick-dots').length === 0);
+        });
+
+        it('should ConfigProvider work', () => {
+            const wrapper = mount(
+                <ConfigProvider prefix="ddd-">
+                    <Slider>
+                        <Icon type="account"/>
+                    </Slider>
+                </ConfigProvider>
+            );
+            assert(wrapper.find('.ddd-icon-account').length > 0);
         });
 
         it('should render dots', () => {
