@@ -21,6 +21,7 @@ const i18nMap = {
         feedback: '反馈',
         loading: '加载中',
         success: '成功',
+        warning: '警告',
         clear: '清除',
         multiple: '多行',
         long: '比较长的字符串！',
@@ -38,6 +39,7 @@ const i18nMap = {
         feedback: 'feedback',
         loading: 'loading',
         success: 'success',
+        warning: 'warning',
         clear: 'clear',
         multiple: 'multiple line',
         long: 'long long string!',
@@ -76,6 +78,11 @@ function render(i18n) {
                 <Input htmlType="password" value={i18n.password} size="large"/>
                 <Input htmlType="password" value={i18n.password}/>
                 <Input htmlType="password" value={i18n.password} size="small"/>
+            </DemoGroup>
+            <DemoGroup label="Warning">
+                <Input state="warning" value={i18n.warning} size="large"/>
+                <Input state="warning" value={i18n.warning}/>
+                <Input state="warning" value={i18n.warning} size="small"/>
             </DemoGroup>
             <DemoGroup label="Success">
                 <Input value={i18n.success} size="large" state="success"/>

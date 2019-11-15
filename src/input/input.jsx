@@ -144,6 +144,8 @@ export default class Input extends Base {
             stateWrap = <Icon type="success-filling" />;
         } else if (state === 'loading') {
             stateWrap = <Icon type="loading" />;
+        } else if (state === 'warning') {
+            stateWrap = <Icon type="warning" />;
         }
 
         let clearWrap = null;
