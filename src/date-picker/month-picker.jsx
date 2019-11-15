@@ -140,6 +140,8 @@ class MonthPicker extends Component {
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -326,6 +328,8 @@ class MonthPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
@@ -417,13 +421,17 @@ class MonthPicker extends Component {
                 />
             </div>
         );
+
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(MonthPicker.propTypes, others)}
                 className={monthPickerCls}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     role="combobox"
@@ -431,21 +439,26 @@ class MonthPicker extends Component {
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div className={panelBodyClassName} dir={others.dir}>
-                        <div className={`${prefix}month-picker-panel-header`}>
-                            {dateInput}
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div className={panelBodyClassName} dir={others.dir}>
+                            <div
+                                className={`${prefix}month-picker-panel-header`}
+                            >
+                                {dateInput}
+                            </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

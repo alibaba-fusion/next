@@ -1,10 +1,13 @@
 # Latest Log 
 
-## [1.18.11](https://github.com/alibaba-fusion/next/compare/1.18.10...1.18.11) (2019-10-31)
+## [1.18.15](https://github.com/alibaba-fusion/next/compare/1.18.14...1.18.15) (2019-11-12)
 
 
 ### Bug Fixes
 
-* **Range:** add window.pageXOffset when calculate  ([#1289](https://github.com/alibaba-fusion/next/issues/1289)) ([3460f0f](https://github.com/alibaba-fusion/next/commit/3460f0f))
+* **Cascader:** disable can`t change checked ([0c63ae6](https://github.com/alibaba-fusion/next/commit/0c63ae6))
+* **Checkbox:** fix style display ([2801eb0](https://github.com/alibaba-fusion/next/commit/2801eb0))
+* **Table:** item of dataSource may be a string ([73760fb](https://github.com/alibaba-fusion/next/commit/73760fb))
+* **TreeSelect:** add max height ([f1d2f06](https://github.com/alibaba-fusion/next/commit/f1d2f06))
 
 
