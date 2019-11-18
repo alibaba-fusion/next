@@ -551,7 +551,7 @@ describe('Range ', () => {
         const wrapperDouble = mount(<Range isPreview value={[10, 40]} />);
 
         assert(wrapperSingle.getDOMNode().innerText === '30');
-        assert(wrapperDouble.getDOMNode().innerText === '10,40');
+        assert(wrapperDouble.getDOMNode().innerText === '10~40');
     });
 
     it('should renderPreview', () => {
