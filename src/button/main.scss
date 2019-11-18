@@ -16,6 +16,7 @@
         vertical-align: middle;
         user-select: none;
         transition: all $motion-duration-immediately $motion-linear;
+        line-height: 1;
         cursor: pointer;
 
         &:after {
@@ -26,10 +27,23 @@
             transition: opacity $motion-duration-immediately $motion-linear;
         }
 
-        .#{$css-prefix}icon.#{$css-prefix}xs {
-            &:before {
-                vertical-align: baseline;
-            }
+        &::before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            width: 0;
+            vertical-align: middle;
+        }
+
+        .#{$css-prefix}icon {
+            display: inline-block;
+            font-size: 0;
+            vertical-align: middle;
+        }
+
+        > span {
+            display: inline-block;
+            vertical-align: middle;
         }
 
         &.hover,
