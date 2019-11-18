@@ -315,16 +315,19 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 是否启用选择模式
      */
     rowSelection?: {
-        getProps?: (record: object, index: number) => void;
+        getProps?: (record: {}, index: number) => void;
         onChange?: (selectedRowKeys: Array<any>, records: Array<any>) => void;
         onSelect?: (
             selected: boolean,
-            record: object,
+            record: {},
             records: Array<any>
         ) => void;
         onSelectAll?: (selected: boolean, records: Array<any>) => void;
         selectedRowKeys?: Array<any>;
         mode?: 'single' | 'multiple';
+        titleProps?: () => {};
+        columnProps?: () => {};
+        titleAddons?: () => {};
     };
 
     /**
