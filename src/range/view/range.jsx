@@ -758,7 +758,7 @@ class Range extends React.Component {
                 : false);
 
         if (isPreview) {
-            const previewCls = `${prefix}form-preview`;
+            const previewCls = classNames(className, `${prefix}form-preview`);
 
             if ('renderPreview' in this.props) {
                 return (
@@ -769,8 +769,8 @@ class Range extends React.Component {
             }
 
             return (
-                <p className={previewCls}>
-                    {Array.isArray(value) ? value.join(',') : value}
+                <p dir={rtl ? 'rtl' : 'ltr'} className={previewCls}>
+                    {Array.isArray(value) ? value.join('~') : value}
                 </p>
             );
         }
