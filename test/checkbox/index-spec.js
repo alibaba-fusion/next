@@ -113,8 +113,8 @@ describe('Checkbox', () => {
 
     describe('render in preview mode', () => {
         it('should isPreview', () => {
-            const wrapper = mount(<Checkbox checked isPreview />);
-            assert(wrapper.find('.disabled').length === 1);
+            const wrapper = mount(<Checkbox checked label="apple" isPreview />);
+            assert(wrapper.getDOMNode().innerText === 'apple');
         });
 
         it('should renderPreview', () => {

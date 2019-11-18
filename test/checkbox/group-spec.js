@@ -226,9 +226,9 @@ describe('Checkbox.Group', () => {
     describe('render in preview mode', () => {
         it('should isPreview', () => {
             const wrapper = mount(
-                <CheckboxGroup isPreview defaultValue={0} dataSource={list} />
+                <CheckboxGroup isPreview defaultValue={['apple']} dataSource={list} />
             );
-            assert(wrapper.find('.disabled').length === 3);
+            assert(wrapper.getDOMNode().innerText === 'apple');
         });
 
         it('should renderPreview', () => {
