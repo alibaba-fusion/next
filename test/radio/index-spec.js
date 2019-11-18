@@ -37,8 +37,8 @@ describe('Radio', () => {
         });
 
         it('should isPreview', () => {
-            const wrapper = mount(<Radio isPreview />);
-            assert(wrapper.find('.next-radio.disabled').length === 1);
+            const wrapper = mount(<Radio isPreview defaultChecked label="apple" />);
+            assert(wrapper.getDOMNode().innerText === 'apple');
         });
 
         it('should renderPreview', () => {

@@ -396,8 +396,8 @@ describe('Radio.Group', () => {
 
     describe('should render preview', () => {
         it('should isPreview', () => {
-            const wrapper = mount(<RadioGroup isPreview dataSource={numberList} />);
-            assert(wrapper.find('.next-radio.disabled').length === 3);
+            const wrapper = mount(<RadioGroup isPreview defaultValue={['apple']} dataSource={numberList} />);
+            assert(wrapper.getDOMNode().innerText === 'apple');
         });
 
         it('should renderPreview', () => {
