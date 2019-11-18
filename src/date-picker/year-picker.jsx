@@ -124,6 +124,15 @@ class YearPicker extends Component {
          * 日期输入框的 aria-label 属性
          */
         dateInputAriaLabel: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 年份
+         */
+        renderPreview: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
@@ -295,6 +304,30 @@ class YearPicker extends Component {
         this.props.onVisibleChange(visible, reason);
     };
 
+    renderPreview(others) {
+        const { prefix, format, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames({
+            [`${prefix}form-preview`]: true,
+        });
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -322,6 +355,7 @@ class YearPicker extends Component {
             inputProps,
             dateInputAriaLabel,
             yearCellRender,
+            isPreview,
             ...others
         } = this.props;
 
@@ -345,6 +379,12 @@ class YearPicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, YearPicker.PropTypes)
+            );
         }
 
         const panelInputCls = `${prefix}year-picker-panel-input`;

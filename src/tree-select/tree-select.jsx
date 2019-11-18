@@ -182,7 +182,7 @@ export default class TreeSelect extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {Array<data>} value 选择值 { label: , value:}
          */
         renderPreview: PropTypes.func,
     };

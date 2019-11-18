@@ -153,7 +153,7 @@ class TimePicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {MomentObject} value 时间
          */
         renderPreview: PropTypes.func,
         /**
@@ -385,18 +385,18 @@ class TimePicker extends Component {
 
         const { value, inputStr, inputing, visible } = this.state;
 
-        if (isPreview) {
-            return this.renderPreview(
-                obj.pickOthers(others, TimePicker.PropTypes)
-            );
-        }
-
         const triggerCls = classnames({
             [`${prefix}time-picker-trigger`]: true,
         });
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, TimePicker.PropTypes)
+            );
         }
 
         const inputValue = inputing

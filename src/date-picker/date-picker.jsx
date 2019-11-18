@@ -172,6 +172,15 @@ export default class DatePicker extends Component {
          * 时间输入框的 aria-label 属性
          */
         timeInputAriaLabel: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 日期
+         */
+        renderPreview: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
@@ -457,6 +466,30 @@ export default class DatePicker extends Component {
         this.onValueChange(this.state.value, 'onOk');
     };
 
+    renderPreview(others) {
+        const { prefix, format, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames({
+            [`${prefix}form-preview`]: true,
+        });
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -489,6 +522,7 @@ export default class DatePicker extends Component {
             yearCellRender,
             dateInputAriaLabel,
             timeInputAriaLabel,
+            isPreview,
             ...others
         } = this.props;
 
@@ -525,6 +559,12 @@ export default class DatePicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, DatePicker.PropTypes)
+            );
         }
 
         const sharedInputProps = {
