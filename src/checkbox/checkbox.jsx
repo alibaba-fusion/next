@@ -89,10 +89,6 @@ class Checkbox extends UIState {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
-        /**
-         * 是否为只读态，效果上同 disabeld
-         */
-        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -102,7 +98,6 @@ class Checkbox extends UIState {
         onMouseEnter: noop,
         onMouseLeave: noop,
         prefix: 'next-',
-        readOnly: false,
         isPreview: false,
     };
 
@@ -139,8 +134,6 @@ class Checkbox extends UIState {
         };
 
         this.disabled =
-            props.isPreview ||
-            props.readOnly ||
             props.disabled ||
             (context.__group__ && 'disabled' in context && context.disabled);
         this.onChange = this.onChange.bind(this);
@@ -158,8 +151,6 @@ class Checkbox extends UIState {
             }
 
             this.disabled =
-                nextProps.isPreview ||
-                nextProps.readOnly ||
                 nextProps.disabled ||
                 ('disabled' in nextContext && nextContext.disabled);
         } else {
@@ -168,8 +159,7 @@ class Checkbox extends UIState {
                     checked: nextProps.checked,
                 });
             }
-            this.disabled =
-                nextProps.isPreview || nextProps.readOnly || nextProps.disabled;
+            this.disabled = nextProps.disabled;
         }
 
         if ('indeterminate' in nextProps) {
@@ -262,12 +252,20 @@ class Checkbox extends UIState {
         const labelCls = `${prefix}checkbox-label`;
         const type = indeterminate ? 'semi-select' : 'select';
 
-        if (isPreview && 'renderPreview' in this.props) {
-            const previewCls = `${prefix}form-preview`;
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...othersData} className={previewCls}>
+                        {renderPreview(checked, this.props)}
+                    </div>
+                );
+            }
+
             return (
-                <div {...others} className={previewCls}>
-                    {renderPreview(checked, this.props)}
-                </div>
+                <p {...othersData} className={previewCls}>
+                    {checked && (this.state.value || children || label)}
+                </p>
             );
         }
 

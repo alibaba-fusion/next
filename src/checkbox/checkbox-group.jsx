@@ -73,10 +73,6 @@ class CheckboxGroup extends Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
-        /**
-         * 是否为只读态，效果上同 disabeld
-         */
-        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -84,7 +80,6 @@ class CheckboxGroup extends Component {
         onChange: () => {},
         prefix: 'next-',
         itemDirection: 'hoz',
-        readOnly: false,
         isPreview: false,
     };
 
@@ -119,13 +114,11 @@ class CheckboxGroup extends Component {
     }
 
     getChildContext() {
-        const { readOnly, isPreview, disabled } = this.props;
-
         return {
             __group__: true,
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: readOnly || isPreview || disabled,
+            disabled: this.props.disabled,
         };
     }
 
@@ -175,12 +168,21 @@ class CheckboxGroup extends Component {
         } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
-        if (isPreview && 'renderPreview' in this.props) {
-            const previewCls = `${prefix}form-preview`;
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(this.state.value, this.props)}
+                    </div>
+                );
+            }
+
             return (
-                <div {...others} className={previewCls}>
-                    {renderPreview(this.state.value, this.props)}
-                </div>
+                <p {...others} className={previewCls}>
+                    {this.state.value.join(',')}
+                </p>
             );
         }
 
