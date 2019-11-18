@@ -17,7 +17,7 @@ You can switch to preview state. Preview state and editor state share the same l
 ---
 
 ````jsx
-import { Form, Input, Switch, Rating, Grid, Field, Icon } from '@alifd/next';
+import { Form, Input, Switch, Rating, Grid, Field, Icon, Radio } from '@alifd/next';
 
 const {Row, Col} = Grid;
 const FormItem = Form.Item;
@@ -70,6 +70,16 @@ class Demo extends React.Component {
 
                     <FormItem required label="Custom Render Rating:">
                         <Rating defaultValue={4.5} name="rate2" isPreview aria-label="what's the rate2 score" renderPreview={this.ratingPreview}/>
+                    </FormItem>
+
+                    <FormItem required label="Custom Render Rating:">
+                        <Radio.Group
+                            value="react"
+                        >
+                            <Radio value="react">React</Radio>
+                            <Radio value="vue">Vue</Radio>
+                            <Radio value="angular">Angular</Radio>
+                        </Radio.Group>
                     </FormItem>
 
                     <FormItem label="Note:">

@@ -100,10 +100,6 @@ class RadioGroup extends Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
-        /**
-         * 是否为只读态，效果上同 disabeld
-         */
-        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -114,7 +110,6 @@ class RadioGroup extends Component {
         component: 'div',
         itemDirection: 'hoz',
         isPreview: false,
-        readOnly: false,
     };
 
     static childContextTypes = {
@@ -142,14 +137,14 @@ class RadioGroup extends Component {
     }
 
     getChildContext() {
-        const { disabled, isPreview, readOnly } = this.props;
+        const { disabled } = this.props;
 
         return {
             __group__: true,
             isButton: this.props.shape === 'button',
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: disabled || isPreview || readOnly,
+            disabled: disabled,
         };
     }
 
@@ -193,12 +188,21 @@ class RadioGroup extends Component {
             this.props
         );
 
-        if (isPreview && 'renderPreview' in this.props) {
-            const previewCls = `${prefix}form-preview`;
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(this.state.value, this.props)}
+                    </div>
+                );
+            }
+
             return (
-                <div {...others} className={previewCls}>
-                    {renderPreview(this.state.value, this.props)}
-                </div>
+                <p {...others} className={previewCls}>
+                    {this.state.value}
+                </p>
             );
         }
 

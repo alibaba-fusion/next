@@ -79,10 +79,6 @@ class Radio extends UIState {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
-        /**
-         * 是否为只读态，效果上同 disabeld
-         */
-        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -92,7 +88,6 @@ class Radio extends UIState {
         tabIndex: 0,
         prefix: 'next-',
         isPreview: false,
-        readOnly: false,
     };
 
     static contextTypes = {
@@ -123,8 +118,6 @@ class Radio extends UIState {
 
         this.onChange = this.onChange.bind(this);
         this.disabled =
-            props.isPreview ||
-            props.readOnly ||
             props.disabled ||
             (context.__group__ && 'disabled' in context && context.disabled);
     }
@@ -144,8 +137,6 @@ class Radio extends UIState {
         }
 
         this.disabled =
-            nextProps.isPreivew ||
-            nextProps.readOnly ||
             nextProps.disabled ||
             (nextContext.__group__ &&
                 'disabled' in nextContext &&
@@ -198,6 +189,7 @@ class Radio extends UIState {
             name,
             isPreview,
             renderPreview,
+            value,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -208,12 +200,21 @@ class Radio extends UIState {
         const others = obj.pickOthers(Radio.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
-        if (isPreview && 'renderPreview' in this.props) {
-            const previewCls = `${prefix}form-preview`;
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div id={id} {...others} className={previewCls}>
+                        {renderPreview(checked, this.props)}
+                    </div>
+                );
+            }
+
             return (
-                <div id={id ? id : null} {...others} className={previewCls}>
-                    {renderPreview(checked, this.props)}
-                </div>
+                <p id={id} {...others} className={previewCls}>
+                    {checked && (value || children || label)}
+                </p>
             );
         }
 
@@ -222,7 +223,6 @@ class Radio extends UIState {
                 {...obj.pickOthers(othersData, others)}
                 name={name}
                 id={id}
-                role="radio"
                 tabIndex={tabIndex}
                 disabled={disabled}
                 checked={checked}
