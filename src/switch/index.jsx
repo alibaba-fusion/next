@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE } from '../util';
 import ConfigProvider from '../config-provider';
+import zhCN from '../locale/zh-cn';
 
 /** Switch*/
 class Switch extends React.Component {
@@ -73,9 +74,9 @@ class Switch extends React.Component {
          */
         renderPreview: PropTypes.func,
         /**
-         * 是否为只读态，效果上同 disabeld
+         * 国际化配置
          */
-        readOnly: PropTypes.bool,
+        locale: PropTypes.object,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -85,6 +86,7 @@ class Switch extends React.Component {
         isPreview: false,
         readOnly: false,
         onChange: () => {},
+        locale: zhCN.Switch,
     };
 
     constructor(props, context) {
@@ -139,6 +141,7 @@ class Switch extends React.Component {
             rtl,
             isPreview,
             renderPreview,
+            locale,
             ...others
         } = this.props;
         const { checked } = this.state;
@@ -157,7 +160,7 @@ class Switch extends React.Component {
             [className]: className,
         });
         let attrs;
-        const isDisabled = disabled || readOnly || isPreview;
+        const isDisabled = disabled || readOnly;
 
         if (!isDisabled) {
             attrs = {
@@ -172,12 +175,23 @@ class Switch extends React.Component {
             };
         }
 
-        const previewCls = `${prefix}form-preview`;
-        if (isPreview && 'renderPreview' in this.props) {
+        if (isPreview) {
+            const previewCls = classNames(className, {
+                [`${prefix}form-preview`]: true,
+            });
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div className={previewCls} {...others}>
+                        {renderPreview(checked, this.props)}
+                    </div>
+                );
+            }
+
             return (
-                <div className={previewCls}>
-                    {renderPreview(checked, this.props)}
-                </div>
+                <p className={previewCls} {...others}>
+                    {locale[status]}
+                </p>
             );
         }
 
