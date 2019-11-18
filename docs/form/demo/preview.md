@@ -73,7 +73,7 @@ class Demo extends React.Component {
                     </FormItem>
 
                     <FormItem required label="Range:">
-                        <Range slider="double" isPreview value={[10, 80]} />
+                        <Range slider="double" isPreview defaultValue={[10, 80]} />
                     </FormItem>
 
                     <FormItem label="Note:">
