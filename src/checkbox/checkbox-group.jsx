@@ -189,7 +189,7 @@ class CheckboxGroup extends Component {
                     dir={rtl ? 'rtl' : undefined}
                     className={previewCls}
                 >
-                    {this.state.value.join(',')}
+                    {this.state.value.join(', ')}
                 </p>
             );
         }
