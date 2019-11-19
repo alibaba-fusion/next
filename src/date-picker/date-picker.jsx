@@ -671,12 +671,12 @@ export default class DatePicker extends Component {
             >
                 <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}

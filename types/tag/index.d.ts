@@ -73,7 +73,9 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onClick?: any;
 }
 
-export interface TagGroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {}
+export interface TagGroupProps
+    extends React.HTMLAttributes<HTMLElement>,
+        CommonProps {}
 
 export class TagGroup extends React.Component<TagGroupProps, any> {}
 
@@ -92,6 +94,11 @@ export interface TagProps extends HTMLAttributesWeak, CommonProps {
      * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
      */
     size?: 'small' | 'medium' | 'large';
+
+    /**
+     * 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效
+     */
+    color?: string;
 
     /**
      * 是否开启动效

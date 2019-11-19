@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+// {{ dashName }} variables
+// --------------------------------------------------
+
+////
+/// @module {{ dashName }}: {{ chineseName}}
+/// @tag {{ name }}
+/// @category component
+/// @family {{ family }}
+/// @varPrefix ${{ dashName }}-
+/// @classPrefix {prefix}-{{ dashName }}
+/// @order {}
+////
+
+// Unconfigurable
+// ----------------------------------------
+${{ dashName }}-prefix: ".#{$css-prefix}{{ dashName }}";

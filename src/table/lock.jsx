@@ -504,8 +504,11 @@ export default function lock(BaseComponent) {
         adjustCellSize() {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
+                    // record may be a string
                     const rowIndex =
-                        '__rowIndex' in item ? item.__rowIndex : index;
+                        typeof record === 'object' && '__rowIndex' in item
+                            ? item.__rowIndex
+                            : index;
 
                     // 同步最左侧的锁列
                     this.lockLeftChildren.forEach((child, i) => {
