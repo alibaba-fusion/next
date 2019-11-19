@@ -1,13 +1,11 @@
-# Latest Log 
+# Latest Log
 
-## [1.18.15](https://github.com/alibaba-fusion/next/compare/1.18.14...1.18.15) (2019-11-12)
+## [1.18.16](https://github.com/alibaba-fusion/next/compare/1.18.15...1.18.16) (2019-11-15)
 
 
 ### Bug Fixes
 
-* **Cascader:** disable can`t change checked ([0c63ae6](https://github.com/alibaba-fusion/next/commit/0c63ae6))
-* **Checkbox:** fix style display ([2801eb0](https://github.com/alibaba-fusion/next/commit/2801eb0))
-* **Table:** item of dataSource may be a string ([73760fb](https://github.com/alibaba-fusion/next/commit/73760fb))
-* **TreeSelect:** add max height ([f1d2f06](https://github.com/alibaba-fusion/next/commit/f1d2f06))
-
+* **Nav:** remove border-width when embeddable ([fb0b1bc](https://github.com/alibaba-fusion/next/commit/fb0b1bc))
+* **Slider:** ConfigProvider should work for innerSlider, close [#1358](https://github.com/alibaba-fusion/next/issues/1358) ([58ef17d](https://github.com/alibaba-fusion/next/commit/58ef17d))
+* **Typescript** Perfect d.ts for Field/Dialog ([4a901c8](https://github.com/alibaba-fusion/next/pull/1347/commits/4a901c8)) ([31b5c24](https://github.com/alibaba-fusion/next/pull/1361/commits/31b5c24))
 

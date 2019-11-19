@@ -15,6 +15,8 @@ module.exports = {
         'Upload.Drager': 'Upload',
     },
     components: [
+        'avatar',
+        'divider',
         'affix',
         'animate',
         'badge',

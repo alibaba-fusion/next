@@ -545,4 +545,24 @@ describe('Range ', () => {
             { width: '70%', left: 0 }
         );
     });
+
+    it('should isPreview', () => {
+        const wrapperSingle = mount(<Range isPreview value={30} />);
+        const wrapperDouble = mount(<Range isPreview value={[10, 40]} />);
+
+        assert(wrapperSingle.getDOMNode().innerText === '30');
+        assert(wrapperDouble.getDOMNode().innerText === '10~40');
+    });
+
+    it('should renderPreview', () => {
+        const wrapperSingle = mount(
+            <Range isPreview renderPreview={() => 'single'} value={30} />
+        );
+        const wrapperDouble = mount(
+            <Range isPreview renderPreview={() => 'double'} value={[10, 40]} />
+        );
+
+        assert(wrapperSingle.getDOMNode().innerText === 'single');
+        assert(wrapperDouble.getDOMNode().innerText === 'double');
+    });
 });

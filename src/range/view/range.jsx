@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
-import { events, func, KEYCODE, dom } from '../../util';
+import { events, func, KEYCODE, dom, obj } from '../../util';
 import Balloon from '../../balloon';
 import { getPercent, getPrecision, isEqual, getDragging } from '../utils';
 import Scale from './scale';
@@ -14,6 +14,7 @@ import FixedSlider from './fixedSlider';
 
 const Tooltip = Balloon.Tooltip;
 const { noop, bindCtx } = func;
+const { pickOthers } = obj;
 
 function _isMultiple(slider, isFixedWidth) {
     return isFixedWidth || slider === 'double';
@@ -248,6 +249,15 @@ class Range extends React.Component {
          * 是否已rtl模式展示
          */
         rtl: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -268,6 +278,7 @@ class Range extends React.Component {
         pure: false,
         marksPosition: 'above',
         rtl: false,
+        isPreview: false,
     };
 
     constructor(props) {
@@ -704,7 +715,12 @@ class Range extends React.Component {
             defaultValue,
             tooltipVisible,
             rtl,
+            isPreview,
+            renderPreview,
         } = this.props;
+
+        const others = pickOthers(Object.keys(Range.propTypes), this.props);
+
         const classes = classNames({
             [`${prefix}range`]: true,
             disabled: disabled,
@@ -745,11 +761,40 @@ class Range extends React.Component {
                 ? Array.isArray(defaultValue)
                 : false);
 
+        if (isPreview) {
+            const previewCls = classNames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : 'ltr'}
+                        {...others}
+                        className={previewCls}
+                    >
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : 'ltr'}
+                    {...others}
+                    className={previewCls}
+                >
+                    {Array.isArray(value) ? value.join('~') : value}
+                </p>
+            );
+        }
+
         return (
             <div
                 ref={dom => {
                     this.dom = dom;
                 }}
+                {...others}
                 style={style}
                 className={classes}
                 id={id}
