@@ -205,15 +205,25 @@ class Radio extends UIState {
 
             if ('renderPreview' in this.props) {
                 return (
-                    <div id={id} {...others} className={previewCls}>
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : 'ltr'}
+                        {...others}
+                        className={previewCls}
+                    >
                         {renderPreview(checked, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p id={id} {...others} className={previewCls}>
-                    {checked && (value || children || label)}
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : 'ltr'}
+                    {...others}
+                    className={previewCls}
+                >
+                    {checked && (children || label || value)}
                 </p>
             );
         }

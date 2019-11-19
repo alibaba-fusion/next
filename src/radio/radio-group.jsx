@@ -188,6 +188,10 @@ class RadioGroup extends Component {
             this.props
         );
 
+        if (rtl) {
+            others.dir = 'rtl';
+        }
+
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
 
@@ -204,10 +208,6 @@ class RadioGroup extends Component {
                     {this.state.value}
                 </p>
             );
-        }
-
-        if (rtl) {
-            others.dir = 'rtl';
         }
 
         let children;
