@@ -129,5 +129,5 @@ export interface locale {
     Switch: {
         on: string;
         off: string;
-    }
+    };
 }
