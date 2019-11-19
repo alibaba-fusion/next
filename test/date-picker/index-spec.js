@@ -819,6 +819,19 @@ describe('WeekPicker', () => {
             wrapper.setProps({ visible: true });
             assert(wrapper.find('.next-week-picker-body').length === 1);
         });
+
+        it('should support preview mode render', () => {
+            wrapper = mount(<WeekPicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-1st');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY') === '2018');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {

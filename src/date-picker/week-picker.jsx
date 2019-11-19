@@ -9,7 +9,7 @@ import Calendar from '../calendar';
 import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
 import { func, obj, KEYCODE } from '../util';
-import { PANEL, checkDateValue, formatDateValue } from './util';
+import { checkDateValue, formatDateValue } from './util';
 
 const { Popup } = Overlay;
 
@@ -140,10 +140,21 @@ class WeekPicker extends Component {
          * @returns {ReactNode}
          */
         monthCellRender: PropTypes.func,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 年份
+         */
+        renderPreview: PropTypes.func,
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -274,6 +285,28 @@ class WeekPicker extends Component {
         this.onVisibleChange(false, 'calendarSelect');
     };
 
+    renderPreview(others) {
+        const { prefix, format, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames(className, `${prefix}form-preview`);
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     dateRender = value => {
         const { prefix, dateCellRender } = this.props;
         const selectedValue = this.state.value;
@@ -331,11 +364,14 @@ class WeekPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
             monthCellRender,
             yearCellRender,
+            isPreview,
             ...others
         } = this.props;
         const { visible, value } = this.state;
@@ -350,6 +386,12 @@ class WeekPicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, WeekPicker.PropTypes)
+            );
         }
 
         const trigger = (
@@ -370,44 +412,50 @@ class WeekPicker extends Component {
             </div>
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(WeekPicker.propTypes, others)}
                 className={classnames(`${prefix}week-picker`, className)}
             >
-                <Popup
+                <PopupComponent
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div
-                        dir={others.dir}
-                        className={`${prefix}week-picker-body`}
-                    >
-                        <Calendar
-                            shape="panel"
-                            value={value}
-                            format={format}
-                            className={`${prefix}calendar-week`}
-                            dateCellRender={this.dateRender}
-                            monthCellRender={monthCellRender}
-                            yearCellRender={yearCellRender}
-                            onSelect={this.onSelectCalendarPanel}
-                            defaultVisibleMonth={defaultVisibleMonth}
-                            onVisibleMonthChange={onVisibleMonthChange}
-                            disabledDate={disabledDate}
-                        />
-                        {footerRender()}
-                    </div>
-                </Popup>
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div
+                            dir={others.dir}
+                            className={`${prefix}week-picker-body`}
+                        >
+                            <Calendar
+                                shape="panel"
+                                value={value}
+                                format={format}
+                                className={`${prefix}calendar-week`}
+                                dateCellRender={this.dateRender}
+                                monthCellRender={monthCellRender}
+                                yearCellRender={yearCellRender}
+                                onSelect={this.onSelectCalendarPanel}
+                                defaultVisibleMonth={defaultVisibleMonth}
+                                onVisibleMonthChange={onVisibleMonthChange}
+                                disabledDate={disabledDate}
+                            />
+                            {footerRender()}
+                        </div>
+                    )}
+                </PopupComponent>
             </div>
         );
     }
