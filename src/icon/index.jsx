@@ -17,19 +17,24 @@ class Icon extends Component {
         children: PropTypes.node,
         /**
          * 指定图标大小
+         * <br/>**可选值**<br/> xxs, xs, small, medium, large, xl, xxl, xxxl, inherit
          */
-        size: PropTypes.oneOf([
-            'xxs',
-            'xs',
-            'small',
-            'medium',
-            'large',
-            'xl',
-            'xxl',
-            'xxxl',
-            'inherit',
+        size: PropTypes.oneOfType([
+            PropTypes.oneOf([
+                'xxs',
+                'xs',
+                'small',
+                'medium',
+                'large',
+                'xl',
+                'xxl',
+                'xxxl',
+                'inherit',
+            ]),
+            PropTypes.number,
         ]),
         className: PropTypes.string,
+        style: PropTypes.string,
     };
 
     static defaultProps = {
@@ -47,6 +52,7 @@ class Icon extends Component {
             size,
             className,
             rtl,
+            style,
             children,
         } = this.props;
         const others = obj.pickOthers(
@@ -57,7 +63,7 @@ class Icon extends Component {
         const classes = cx({
             [`${prefix}icon`]: true,
             [`${prefix}icon-${type}`]: !!type,
-            [`${prefix}${size}`]: !!size,
+            [`${prefix}${size}`]: !!size && typeof size === 'string',
             [className]: !!className,
         });
 
@@ -76,9 +82,23 @@ class Icon extends Component {
         ) {
             others.dir = 'rtl';
         }
-      
+
+        const sizeStyle =
+            typeof size === 'number'
+                ? {
+                      width: size,
+                      height: size,
+                      lineHeight: `${size}px`,
+                      fontSize: size,
+                  }
+                : {};
+
         return (
-            <i {...others} className={classes}>
+            <i
+                {...others}
+                style={{ ...sizeStyle, ...style }}
+                className={classes}
+            >
                 {children}
             </i>
         );

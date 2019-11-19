@@ -13,6 +13,7 @@ export interface IconProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 指定图标大小
      */
     size?:
+        | number
         | 'xxs'
         | 'xs'
         | 'small'
