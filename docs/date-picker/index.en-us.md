@@ -50,7 +50,7 @@ DatePicker are used to select a single date for an input.
 | Param | Description  | Type  | Default Value  |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ |
 | size                | Size of input <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
-| type                    | Select date range type<br><br>**option**:<br>'date', 'month', 'year'                                                                                                                                                                                       | Enum                 | 'date'                                                                                       |          |           |
+| type (v1.19.0+)                | Select date range type<br><br>**option**:<br>'date', 'month', 'year'                                                                                                                                                                                       | Enum                 | 'date'                                                                                       |          |           |
 | defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                 | Function       | -            |
 | value               | Range value `[moment, moment]` | Array          | -            |
 | defaultValue        | Default range value `[moment, moment]`    | Array          | - |
@@ -79,7 +79,7 @@ DatePicker are used to select a single date for an input.
 | endDateInputAriaLabel   | End date input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
 | endTimeInputAriaLabel   | End time input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
 
-### DatePicker.WeekPicker
+### DatePicker.WeekPicker v1.19.0+
 
 | 参数                  | 说明                                                                                                                                                                                                                                                                   | 类型              | 默认值         |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ----------- |
