@@ -179,3 +179,15 @@
         }
     }
 }
+
+@mixin icon-only-size(
+    $border-width
+) {
+    #{$nav-prefix}-icon.#{$css-prefix}icon {
+        @include icon-size(
+            $size: $nav-icon-only-font-size,
+            $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $border-width,
+            $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $border-width
+        );
+    }
+}

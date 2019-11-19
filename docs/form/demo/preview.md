@@ -17,7 +17,7 @@ You can switch to preview state. Preview state and editor state share the same l
 ---
 
 ````jsx
-import { Form, Input, Switch, Rating, Grid, Field, Icon, Radio } from '@alifd/next';
+import { Form, Input, Switch, Rating, Grid, Field, Icon, Radio, Range } from '@alifd/next';
 
 const {Row, Col} = Grid;
 const FormItem = Form.Item;
@@ -80,6 +80,10 @@ class Demo extends React.Component {
                             <Radio value="vue">Vue</Radio>
                             <Radio value="angular">Angular</Radio>
                         </Radio.Group>
+                    </FormItem>
+                    
+                    <FormItem required label="Range:">
+                        <Range slider="double" isPreview defaultValue={[10, 80]} />
                     </FormItem>
 
                     <FormItem label="Note:">
