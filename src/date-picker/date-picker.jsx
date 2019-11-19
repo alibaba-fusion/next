@@ -467,11 +467,9 @@ export default class DatePicker extends Component {
     };
 
     renderPreview(others) {
-        const { prefix, format, renderPreview } = this.props;
+        const { prefix, format, className, renderPreview } = this.props;
         const { value } = this.state;
-        const previewCls = classnames({
-            [`${prefix}form-preview`]: true,
-        });
+        const previewCls = classnames(className, `${prefix}form-preview`);
 
         const label = value ? value.format(format) : '';
 

@@ -697,11 +697,9 @@ export default class RangePicker extends Component {
     };
 
     renderPreview([startValue, endValue], others) {
-        const { prefix, format, renderPreview } = this.props;
+        const { prefix, format, className, renderPreview } = this.props;
 
-        const previewCls = classnames({
-            [`${prefix}form-preview`]: true,
-        });
+        const previewCls = classnames(className, `${prefix}form-preview`);
 
         const startLabel = startValue ? startValue.format(format) : '';
         const endLabel = endValue ? endValue.format(format) : '';

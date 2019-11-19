@@ -809,11 +809,9 @@ export default class CascaderSelect extends Component {
     }
 
     renderPreview(others) {
-        const { prefix, multiple, renderPreview } = this.props;
+        const { prefix, multiple, className, renderPreview } = this.props;
         const { value } = this.state;
-        const previewCls = classNames({
-            [`${prefix}form-preview`]: true,
-        });
+        const previewCls = classNames(className, `${prefix}form-preview`);
         let items =
             (multiple
                 ? this.getMultipleData(value)

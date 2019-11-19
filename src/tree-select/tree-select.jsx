@@ -744,11 +744,9 @@ export default class TreeSelect extends Component {
     }
 
     renderPreview(data, others) {
-        const { prefix, renderPreview } = this.props;
+        const { prefix, className, renderPreview } = this.props;
 
-        const previewCls = classNames({
-            [`${prefix}form-preview`]: true,
-        });
+        const previewCls = classNames(className, `${prefix}form-preview`);
         let items = data;
 
         if (data && !Array.isArray(data)) {
