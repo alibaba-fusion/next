@@ -550,19 +550,20 @@ export default function lock(BaseComponent) {
             }
         }
 
-        getFirstNormalCellNode(index) {
-            let i = 0;
-            let row;
-            do {
-                row = this.getCellNode(index, i);
-                i++;
-            } while (
-                (!row || (row && row.rowSpan && row.rowSpan > 1)) &&
-                this.tableInc.flatChildren.length > i
-            );
+        // remove this in next major version, keep this for temperary incase of using it
+        // getFirstNormalCellNode(index) {
+        //     let i = 0;
+        //     let row;
+        //     do {
+        //         row = this.getCellNode(index, i);
+        //         i++;
+        //     } while (
+        //         (!row || (row && row.rowSpan && row.rowSpan > 1)) &&
+        //         this.tableInc.flatChildren.length > i
+        //     );
 
-            return row;
-        }
+        //     return row;
+        // }
 
         getRowNode(index, type) {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
