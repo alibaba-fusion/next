@@ -304,6 +304,7 @@ export default class Input extends Base {
         });
         const previewCls = classNames({
             [`${prefix}form-preview`]: true,
+            [className]: !!className,
         });
 
         const props = this.getProps();
