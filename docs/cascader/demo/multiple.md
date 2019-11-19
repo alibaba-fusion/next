@@ -36,6 +36,9 @@ class Demo extends React.Component {
             .then(data => {
                 data[1].disabled = true;
                 data[2].checkboxDisabled = true;
+                data[0].children[2].checkboxDisabled = true;
+                data[0].children[1].disabled = true;
+
                 this.setState({ data });
             })
             .catch(e => console.log(e));

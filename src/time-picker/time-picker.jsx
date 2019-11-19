@@ -423,6 +423,7 @@ class TimePicker extends Component {
             >
                 <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     visible={visible}
@@ -430,7 +431,6 @@ class TimePicker extends Component {
                     trigger={triggerInput}
                     container={popupContainer}
                     disabled={disabled}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     style={popupStyle}
                     className={popupClassName}

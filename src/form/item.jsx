@@ -208,6 +208,7 @@ export default class Item extends React.Component {
     static contextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
+        _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
     };
 
@@ -263,6 +264,10 @@ export default class Item extends React.Component {
 
     getSize() {
         return this.props.size || this.context._formSize;
+    }
+
+    getIsPreview() {
+        return this.props.isPreview || this.context._formPreview;
     }
 
     getFullWidth() {
@@ -335,7 +340,10 @@ export default class Item extends React.Component {
 
         const state = this.getState();
 
-        const childrenProps = { size: this.getSize() };
+        const childrenProps = {
+            size: this.getSize(),
+            isPreview: this.getIsPreview(),
+        };
         if (state && (state === 'error' || hasFeedback)) {
             childrenProps.state = state;
         }

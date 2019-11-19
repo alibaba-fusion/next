@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.18.14",
+  "version": "1.18.16",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -37,6 +37,7 @@
     "dev": "node ./scripts/server/index.js",
     "build": "node ./scripts/build/index.js",
     "check": "node ./scripts/check/index.js",
+    "create": "node ./scripts/create-new.js",
     "check-sass": "node ./scripts/check/sass.js",
     "docs": "node ./scripts/docs/index.js",
     "api": "node ./scripts/api.js",
@@ -156,6 +157,7 @@
     "moment": "^2.20.1",
     "node-sass": "4.6.0",
     "node-sass-package-importer": "^5.2.0",
+    "nunjucks": "^3.2.0",
     "postcss-loader": "^2.0.6",
     "postcss-scss": "1.0.2",
     "power-assert": "^1.5.0",
