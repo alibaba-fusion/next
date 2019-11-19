@@ -173,14 +173,22 @@ class CheckboxGroup extends Component {
 
             if ('renderPreview' in this.props) {
                 return (
-                    <div {...others} className={previewCls}>
+                    <div
+                        {...others}
+                        dir={rtl ? 'rtl' : undefined}
+                        className={previewCls}
+                    >
                         {renderPreview(this.state.value, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p {...others} className={previewCls}>
+                <p
+                    {...others}
+                    dir={rtl ? 'rtl' : undefined}
+                    className={previewCls}
+                >
                     {this.state.value.join(',')}
                 </p>
             );

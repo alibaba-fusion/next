@@ -256,14 +256,24 @@ class Checkbox extends UIState {
             const previewCls = classnames(className, `${prefix}form-preview`);
             if ('renderPreview' in this.props) {
                 return (
-                    <div id={id} {...othersData} className={previewCls}>
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : undefined}
+                        {...othersData}
+                        className={previewCls}
+                    >
                         {renderPreview(checked, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p id={id} {...othersData} className={previewCls}>
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : undefined}
+                    {...othersData}
+                    className={previewCls}
+                >
                     {checked && (children || label || this.state.value)}
                 </p>
             );
