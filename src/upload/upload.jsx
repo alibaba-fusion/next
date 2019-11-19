@@ -156,6 +156,15 @@ class Upload extends Base {
          */
         progressProps: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -463,6 +472,8 @@ class Upload extends Base {
             extraRender,
             progressProps,
             rtl,
+            isPreview,
+            renderPreview,
             ...others
         } = this.props;
 
@@ -498,6 +509,24 @@ class Upload extends Base {
                     </div>
                 </div>
             );
+        }
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                return <div>{renderPreview(this.state.value, this.props)}</div>;
+            }
+
+            if (listType) {
+                return (
+                    <List
+                        isPreview
+                        listType={listType}
+                        value={this.state.value}
+                    />
+                );
+            }
+
+            return null;
         }
 
         // disabled 状态下把 remove函数替换成禁止 remove的函数

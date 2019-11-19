@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { func, dom, events } from '../util';
 import Menu from '../menu';
 import Overlay from '../overlay';
+import Input from '../input';
+
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
 import VirtualList from '../virtual-list';
@@ -125,6 +127,15 @@ export default class Base extends React.Component {
         locale: PropTypes.object,
         rtl: PropTypes.bool,
         popupComponent: PropTypes.any,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -583,6 +594,8 @@ export default class Base extends React.Component {
             followTrigger,
             cache,
             popupComponent,
+            isPreview,
+            renderPreview,
         } = props;
 
         const cls = classNames(
@@ -593,6 +606,52 @@ export default class Base extends React.Component {
             },
             popupClassName || popupProps.className
         );
+
+        if (isPreview) {
+            const previewCls = classNames({
+                [`${prefix}form-preview`]: true,
+            });
+
+            if (this.isAutoComplete) {
+                return (
+                    <Input
+                        isPreview={isPreview}
+                        renderPreview={renderPreview}
+                        value={this.state.value}
+                    />
+                );
+            } else {
+                const valueDS = this.valueDataSource.valueDS;
+                if (typeof renderPreview === 'function') {
+                    return (
+                        <div className={previewCls}>
+                            {renderPreview(valueDS, this.props)}
+                        </div>
+                    );
+                } else {
+                    const { fillProps } = this.props;
+                    if (mode === 'single') {
+                        return (
+                            <Input
+                                isPreview={isPreview}
+                                value={
+                                    fillProps
+                                        ? valueDS[fillProps]
+                                        : valueDS.label
+                                }
+                            />
+                        );
+                    } else {
+                        return (
+                            <Input
+                                isPreview={isPreview}
+                                value={valueDS.map(i => i.label).join(', ')}
+                            />
+                        );
+                    }
+                }
+            }
+        }
 
         const _props = {
             triggerType: 'click',
