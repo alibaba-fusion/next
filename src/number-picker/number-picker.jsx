@@ -118,6 +118,15 @@ class NumberPicker extends React.Component {
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
         /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
@@ -463,6 +472,8 @@ class NumberPicker extends React.Component {
             upBtnProps = {},
             downBtnProps = {},
             innerAfter,
+            isPreview,
+            renderPreview,
         } = this.props;
 
         const type = device === 'phone' ? 'inline' : this.props.type;
@@ -551,6 +562,26 @@ class NumberPicker extends React.Component {
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
+
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                return (
+                    <div {...others} style={style} className={previewCls}>
+                        {renderPreview(this.renderValue(), this.props)}
+                    </div>
+                );
+            }
+            return (
+                <p {...others} style={{ style }} className={previewCls}>
+                    {this.renderValue()}
+                </p>
+            );
+        }
 
         return (
             <span

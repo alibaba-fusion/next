@@ -17,7 +17,8 @@ You can switch to preview state. Preview state and editor state share the same l
 ---
 
 ````jsx
-import { Form, Input, Switch, Rating, Grid, Field, Icon, Radio, Range, Checkbox } from '@alifd/next';
+import { Form, Input, Switch, Rating, Grid, Field, Icon, Radio, Range, Checkbox, NumberPicker, Select, Upload } from '@alifd/next';
+
 
 const {Row, Col} = Grid;
 const FormItem = Form.Item;
@@ -29,6 +30,30 @@ const formItemLayout = {
         span: 16
     }
 };
+const fileList = [{
+    uid: '0',
+    name: 'IMG.png',
+    state: 'done',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
+}, {
+    uid: '1',
+    name: 'IMG.png',
+    percent: 50,
+    state: 'uploading',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
+}, {
+    uid: '2',
+    name: 'IMG.png',
+    state: 'error',
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+    imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
+}];
+
 class Demo extends React.Component {
     state = {
         size: 'medium',
@@ -64,6 +89,21 @@ class Demo extends React.Component {
                         <Input name="link" addonTextBefore="http://" addonTextAfter=".com" defaultValue="alibaba" aria-label="input with config of addonTextBefore and addonTextAfter" />
                     </FormItem>
 
+                    <FormItem required label="Number:">
+                        <NumberPicker name="number" isPreview defaultValue={1} />
+                    </FormItem>
+
+                    <FormItem required label="autoComplete:">
+                        <Select.AutoComplete name="autoComplete" isPreview defaultValue="selected" />
+                    </FormItem>
+
+                    <FormItem required label="multiple Select:">
+                        <Select name="select" isPreview defaultValue={["a", "b"]} mode="multiple" >
+                            <Select.Option value="a">a</Select.Option>
+                            <Select.Option value="b">b</Select.Option>
+                        </Select>
+                    </FormItem>
+
                     <FormItem required label="Rating:">
                         <Rating defaultValue={4.5} name="rate" isPreview aria-label="what's the rate score" />
                     </FormItem>
@@ -96,6 +136,13 @@ class Demo extends React.Component {
 
                     <FormItem label="Note:">
                         <Input.TextArea placeholder="description" name="a11yRemark" defaultValue="Fusion 是一套企业级中后台UI的解决方案，致力于解决设计师与前端在产品体验一致性、工作协同、开发效率方面的问题。通过协助业务线构建设计系统，提供系统化工具协助设计师前端使用设计系统，下游提供一站式设计项目协作平台；打通互联网产品从设计到开发的工作流。" />
+                    </FormItem>
+
+                    <FormItem label="Upload:">
+                        <Upload defaultValue={fileList} listType="text" />
+                    </FormItem>
+                    <FormItem label="Upload:">
+                        <Upload defaultValue={fileList} listType="image" />
                     </FormItem>
                     <FormItem wrapperCol={{offset: 7}}>
                         <Form.Submit validate type="primary" onClick={this.submitHandler}>Submit</Form.Submit>

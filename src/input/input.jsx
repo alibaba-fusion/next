@@ -323,7 +323,7 @@ export default class Input extends Base {
         if (isPreview) {
             const { value } = props;
             const { label } = this.props;
-            if ('renderPreview' in this.props) {
+            if (typeof renderPreview === 'function') {
                 return (
                     <div {...others} className={previewCls}>
                         {renderPreview(value, this.props)}
