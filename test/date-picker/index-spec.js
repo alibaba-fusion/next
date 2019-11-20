@@ -86,6 +86,18 @@ describe('DatePicker', () => {
             assert(wrapper.find('.next-date-picker-panel-input input').at(0).prop('aria-label') === 'Ho Ho Ho!');
             assert(wrapper.find('.next-date-picker-panel-input input').at(1).prop('aria-label') === 'Ho Ho Ho!');
         });
+        it('should support preview mode render', () => {
+            wrapper = mount(<DatePicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-11-11');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY-MM-DD') === '2018-11-11');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {
@@ -441,6 +453,18 @@ describe('YearPicker', () => {
 
             assert(wrapper.find('.test-aria .next-year-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
         });
+        it('should support preview mode render', () => {
+            wrapper = mount(<YearPicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY') === '2018');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {
@@ -627,6 +651,19 @@ describe('MonthPicker', () => {
             wrapper = mount(<MonthPicker popupClassName="test-aria" visible={true} dateInputAriaLabel="Ho Ho Ho!" />);
 
             assert(wrapper.find('.test-aria .next-month-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
+        });
+
+        it('should support preview mode render', () => {
+            wrapper = mount(<MonthPicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-11');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY-MM') === '2018-11');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
     });
 
@@ -881,6 +918,19 @@ describe('RangePicker', () => {
 
             wrapper.find('.next-date-picker-panel-tools .next-btn').at(1).simulate('click');
             // assert(wrapper.instance().getInstance().startValue && wrapper.instance().getInstance().startValue.isSame(start));
+        });
+
+        it('should support preview mode render', () => {
+            wrapper = mount(<RangePicker defaultValue={[startValue, endValue]} isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2017-11-20 - 2017-12-15');
+            wrapper.setProps({
+                renderPreview: ([start]) => {
+                    assert(start.format('YYYY-MM-DD') === '2017-11-20');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
     });
 

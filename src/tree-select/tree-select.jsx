@@ -5,6 +5,7 @@ import React, {
     cloneElement,
 } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
 import {
@@ -175,6 +176,15 @@ export default class TreeSelect extends Component {
          * 是否跟随滚动
          */
         followTrigger: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {Array<data>} value 选择值 { label: , value:}
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -732,6 +742,31 @@ export default class TreeSelect extends Component {
             </div>
         );
     }
+
+    renderPreview(data, others) {
+        const { prefix, className, renderPreview } = this.props;
+
+        const previewCls = classNames(className, `${prefix}form-preview`);
+        let items = data;
+
+        if (data && !Array.isArray(data)) {
+            items = [data];
+        }
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(items, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {items.map(({ label }) => label).join(', ')}
+            </p>
+        );
+    }
     /*eslint-enable*/
     render() {
         const {
@@ -755,6 +790,7 @@ export default class TreeSelect extends Component {
             popupContainer,
             popupProps,
             followTrigger,
+            isPreview,
         } = this.props;
         const others = pickOthers(
             Object.keys(TreeSelect.propTypes),
@@ -769,6 +805,10 @@ export default class TreeSelect extends Component {
         let data = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
             data = data[0];
+        }
+
+        if (isPreview) {
+            return this.renderPreview(data, others);
         }
 
         return (

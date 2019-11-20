@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Select from '../select';
 import Cascader from '../cascader';
 import Menu from '../menu';
@@ -204,6 +205,15 @@ export default class CascaderSelect extends Component {
          * 是否跟随滚动
          */
         followTrigger: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {Array<data>} value 选择值 { label: , value:}
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -798,6 +808,34 @@ export default class CascaderSelect extends Component {
         );
     }
 
+    renderPreview(others) {
+        const { prefix, multiple, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classNames(className, `${prefix}form-preview`);
+        let items =
+            (multiple
+                ? this.getMultipleData(value)
+                : this.getSignleData(value)) || [];
+
+        if (!Array.isArray(items)) {
+            items = [items];
+        }
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(items, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {items.map(({ label }) => label).join(', ')}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -818,15 +856,21 @@ export default class CascaderSelect extends Component {
             popupContainer,
             popupProps,
             followTrigger,
+            isPreview,
         } = this.props;
         const { value, searchValue, visible } = this.state;
         const others = pickOthers(
             Object.keys(CascaderSelect.propTypes),
             this.props
         );
-        const popupContent = this.renderPopupContent();
 
         this.updateCache(dataSource);
+
+        if (isPreview) {
+            return this.renderPreview(others);
+        }
+
+        const popupContent = this.renderPopupContent();
 
         const props = {
             prefix,
