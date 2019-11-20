@@ -306,6 +306,7 @@ export default class Input extends Base {
         });
         const previewCls = classNames({
             [`${prefix}form-preview`]: true,
+            [className]: !!className,
         });
 
         const props = this.getProps();
@@ -330,14 +331,14 @@ export default class Input extends Base {
                 );
             }
             return (
-                <p {...others} className={previewCls}>
+                <div {...others} className={previewCls}>
                     {addonBefore || addonTextBefore}
                     {label}
                     {innerBefore}
                     {value}
                     {innerAfter}
                     {addonAfter || addonTextAfter}
-                </p>
+                </div>
             );
         }
 

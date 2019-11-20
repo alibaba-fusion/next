@@ -1,10 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Enzyme, { shallow, mount, expect } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
 import Checkbox from '../../src/checkbox/index';
 
 /* eslint-disable */
@@ -222,6 +220,22 @@ describe('Checkbox.Group', () => {
 
             assert(wrapper1.find('.indeterminate').length === 1);
             assert(wrapper2.find('.indeterminate').length === 1);
+        });
+    });
+
+    describe('render in preview mode', () => {
+        it('should isPreview', () => {
+            const wrapper = mount(
+                <CheckboxGroup isPreview defaultValue={['apple']} dataSource={list} />
+            );
+            assert(wrapper.getDOMNode().innerText === 'apple');
+        });
+
+        it('should renderPreview', () => {
+            const wrapper = mount(
+                <CheckboxGroup isPreview renderPreview={() => 'checkbox preview'} defaultValue={0} dataSource={list} />
+            );
+            assert(wrapper.getDOMNode().innerText === 'checkbox preview');
         });
     });
 });

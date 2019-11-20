@@ -29,13 +29,21 @@ describe('Radio', () => {
         });
         it('should support className', () => {
             const wrapper = mount(<Radio className="custom-name" />);
-            assert(
-                wrapper.find('.next-radio-wrapper.custom-name').length === 1
-            );
+            assert(wrapper.find('.next-radio-wrapper.custom-name').length === 1);
         });
         it('should support name', () => {
             const wrapper = mount(<Radio name="customer" />);
             assert(wrapper.find('input[name="customer"]').length === 1);
+        });
+
+        it('should isPreview', () => {
+            const wrapper = mount(<Radio isPreview defaultChecked label="apple" />);
+            assert(wrapper.getDOMNode().innerText === 'apple');
+        });
+
+        it('should renderPreview', () => {
+            const wrapper = mount(<Radio isPreview renderPreview={() => 'render preivew'} />);
+            assert(wrapper.getDOMNode().innerText === 'render preivew');
         });
     });
 
@@ -54,10 +62,7 @@ describe('Radio', () => {
             });
             it('should checked after click', () => {
                 assert(!wrapper.state.checked);
-                ReactTestUtils.scryRenderedDOMComponentsWithTag(
-                    wrapper,
-                    'input'
-                )[0].click();
+                ReactTestUtils.scryRenderedDOMComponentsWithTag(wrapper, 'input')[0].click();
                 assert(!!wrapper.state.checked);
             });
             it('should call `onChange`', () => {
@@ -65,9 +70,7 @@ describe('Radio', () => {
                 const wrapper1 = mount(<Radio onChange={onChange} />);
 
                 assert(!wrapper.find('input').prop('checked'));
-                wrapper1
-                    .find('input')
-                    .simulate('change', { target: { checked: true } });
+                wrapper1.find('input').simulate('change', { target: { checked: true } });
 
                 assert(onChange.calledOnce);
                 assert(wrapper.find('input').prop('checked'));

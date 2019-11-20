@@ -126,4 +126,8 @@ export default {
     Rating: {
         description: '评分选项',
     },
+    Switch: {
+        on: '已打开',
+        off: '已关闭',
+    },
 };
