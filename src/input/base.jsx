@@ -236,6 +236,7 @@ class Base extends React.Component {
             [`${prefix}input`]: true,
             [`${prefix}disabled`]: !!disabled,
             [`${prefix}error`]: state === 'error',
+            [`${prefix}warning`]: state === 'warning',
             [`${prefix}focus`]: this.state.focus,
         });
     }

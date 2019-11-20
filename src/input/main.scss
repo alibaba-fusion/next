@@ -149,6 +149,20 @@
         box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
     }
 
+    &.#{$css-prefix}warning {
+        border-color: $input-feedback-warning-border-color;
+        background-color: $input-feedback-warning-bg-color;
+
+        &.#{$css-prefix}focus,
+        &:hover {
+            border-color: $input-feedback-warning-border-color;
+        }
+
+        &.#{$css-prefix}focus {
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-feedback-warning-shadow;
+        }
+    }
+
     &.#{$css-prefix}error {
         border-color: $input-feedback-error-border-color;
         background-color: $input-feedback-error-bg-color;
@@ -183,6 +197,10 @@
             &.#{$css-prefix}error {
                 color: $input-maxlen-error-color;
             }
+
+            &.#{$css-prefix}warning {
+                color: $input-maxlen-warning-color;
+            }
         }
 
         > * {
@@ -200,6 +218,9 @@
             color: $input-hint-color;
         }
 
+        .#{$css-prefix}icon-warning {
+            color: $input-feedback-warning-color;
+        }
         .#{$css-prefix}icon-success-filling {
             color: $input-feedback-success-color;
         }

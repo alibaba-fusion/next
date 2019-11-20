@@ -13,6 +13,11 @@
                 color: $form-error-color;
             }
         }
+        &.has-warning {
+            #{$form-prefix}-item-help {
+                color: $form-warning-color;
+            }
+        }
 
         /* medium */
         // TODO: REMOVE the lastchild's margin-bottom in 2.x version
