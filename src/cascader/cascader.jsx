@@ -731,9 +731,10 @@ export default class Cascader extends Component {
                         props.checkable = !(canOnlyCheckLeaf && canExpand);
                         props.checked = value.indexOf(item.value) > -1;
                         props.indeterminate =
-                            checkStrictly || canOnlyCheckLeaf
+                            (checkStrictly || canOnlyCheckLeaf
                                 ? false
-                                : this.indeterminate.indexOf(item.value) > -1;
+                                : this.indeterminate.indexOf(item.value) >
+                                  -1) || !!item.indeterminate;
                         props.checkboxDisabled = !!item.checkboxDisabled;
                         props.onCheck = this.handleCheck.bind(this, item.value);
                     } else {
