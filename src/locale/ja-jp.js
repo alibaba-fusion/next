@@ -126,4 +126,8 @@ export default {
     Rating: {
         description: '評価オプション',
     },
+    Switch: {
+        on: '開いています',
+        off: '閉じられました',
+    },
 };
