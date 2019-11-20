@@ -452,6 +452,7 @@ class List extends Component {
         if (isPreview) {
             const previewCls = classNames({
                 [`${prefix}form-preview`]: true,
+                [className]: !!className,
             });
             list = this.props.value.map(file => {
                 const { downloadURL, imgURL, name } = file;
