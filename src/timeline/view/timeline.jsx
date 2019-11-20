@@ -46,15 +46,21 @@ class Timeline extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (
-            'fold' in nextProps &&
-            'fold' in prevState &&
-            nextProps.fold.length !== prevState.fold.length
-        ) {
+        const { innerUpdate, fold } = prevState;
+
+        if (innerUpdate) {
+            return {
+                fold,
+                innerUpdate: false,
+            };
+        }
+
+        if ('fold' in nextProps) {
             return {
                 fold: nextProps.fold,
             };
         }
+
         return null;
     }
 
@@ -73,7 +79,7 @@ class Timeline extends Component {
                 }
             }
 
-            this.setState({ fold });
+            this.setState({ fold, innerUpdate: true });
         }
     }
 
