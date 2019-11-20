@@ -671,6 +671,35 @@ describe('Table', () => {
         );
     });
 
+    it('header should support colspan', done => {
+        wrapper.setProps({});
+
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" />,
+                    <Table.Column dataIndex="name" />,
+                ]
+            },
+            () => {
+                assert(wrapper.find('.next-table-header th').length === 2);
+            }
+        ).then(() => {
+            timeout(
+                {
+                    children: [
+                        <Table.Column dataIndex="id" colSpan="2" />,
+                        <Table.Column dataIndex="name" colSpan="0" />,
+                    ]
+                },
+                () => {
+                    assert(wrapper.find('.next-table-header th').length === 1);
+                    done();
+                }
+            )
+        });
+    });
+
     it('should support colspan & rowspan', done => {
         wrapper.setProps({});
         timeout(
