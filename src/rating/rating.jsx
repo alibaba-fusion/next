@@ -461,6 +461,7 @@ class Rating extends Component {
 
         const previewCls = classNames({
             [`${prefix}form-preview`]: true,
+            [className]: !!className,
         });
 
         const overlayStyle = {
@@ -486,7 +487,7 @@ class Rating extends Component {
 
         if (isPreview && 'renderPreview' in this.props) {
             return (
-                <div id={id ? id : null} {...others} className={previewCls}>
+                <div id={id} {...others} className={previewCls}>
                     {renderPreview(value, this.props)}
                 </div>
             );
@@ -494,7 +495,7 @@ class Rating extends Component {
 
         return (
             <div
-                id={id ? id : null}
+                id={id}
                 {...others}
                 className={ratingCls}
                 onKeyDown={this.onKeyDown}

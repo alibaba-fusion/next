@@ -513,7 +513,15 @@ class Upload extends Base {
 
         if (isPreview) {
             if (typeof renderPreview === 'function') {
-                return <div>{renderPreview(this.state.value, this.props)}</div>;
+                const previewCls = classNames({
+                    [`${prefix}form-preview`]: true,
+                    [className]: !!className,
+                });
+                return (
+                    <div style={style} className={previewCls}>
+                        {renderPreview(this.state.value, this.props)}
+                    </div>
+                );
             }
 
             if (listType) {
@@ -521,6 +529,8 @@ class Upload extends Base {
                     <List
                         isPreview
                         listType={listType}
+                        style={style}
+                        className={className}
                         value={this.state.value}
                     />
                 );

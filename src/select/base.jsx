@@ -596,6 +596,8 @@ export default class Base extends React.Component {
             popupComponent,
             isPreview,
             renderPreview,
+            style,
+            className,
         } = props;
 
         const cls = classNames(
@@ -608,13 +610,11 @@ export default class Base extends React.Component {
         );
 
         if (isPreview) {
-            const previewCls = classNames({
-                [`${prefix}form-preview`]: true,
-            });
-
             if (this.isAutoComplete) {
                 return (
                     <Input
+                        style={style}
+                        className={className}
                         isPreview={isPreview}
                         renderPreview={renderPreview}
                         value={this.state.value}
@@ -623,8 +623,12 @@ export default class Base extends React.Component {
             } else {
                 const valueDS = this.valueDataSource.valueDS;
                 if (typeof renderPreview === 'function') {
+                    const previewCls = classNames({
+                        [`${prefix}form-preview`]: true,
+                        [className]: !!className,
+                    });
                     return (
-                        <div className={previewCls}>
+                        <div style={style} className={previewCls}>
                             {renderPreview(valueDS, this.props)}
                         </div>
                     );
@@ -633,6 +637,8 @@ export default class Base extends React.Component {
                     if (mode === 'single') {
                         return (
                             <Input
+                                style={style}
+                                className={className}
                                 isPreview={isPreview}
                                 value={
                                     fillProps
@@ -644,6 +650,8 @@ export default class Base extends React.Component {
                     } else {
                         return (
                             <Input
+                                style={style}
+                                className={className}
                                 isPreview={isPreview}
                                 value={valueDS.map(i => i.label).join(', ')}
                             />

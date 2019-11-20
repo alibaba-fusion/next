@@ -565,18 +565,19 @@ class NumberPicker extends React.Component {
 
         const previewCls = classNames({
             [`${prefix}form-preview`]: true,
+            [className]: !!className,
         });
 
         if (isPreview) {
             if (typeof renderPreview === 'function') {
                 return (
-                    <div {...others} className={previewCls}>
+                    <div {...others} style={style} className={previewCls}>
                         {renderPreview(this.renderValue(), this.props)}
                     </div>
                 );
             }
             return (
-                <p {...others} className={previewCls}>
+                <p {...others} style={{ style }} className={previewCls}>
                     {this.renderValue()}
                 </p>
             );

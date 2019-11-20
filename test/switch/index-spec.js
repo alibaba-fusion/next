@@ -118,4 +118,21 @@ describe('Switch', () => {
         });
         assert(wrapper.find('.next-switch-off').length === 1);
     });
+    it('should render readonly switch', () => {
+        const wrapper = mount(<Switch readOnly />);
+        assert(wrapper.find('.next-switch-off').length === 1);
+        wrapper.find('.next-switch').simulate('click');
+        assert(wrapper.find('.next-switch-off').length === 1);
+    });
+    it('should renderPreview', () => {
+        const wrapper = mount(
+            <Switch
+                id="render-preview"
+                isPreview
+                renderPreview={() => 'preview switch'}
+            />
+        );
+
+        assert(wrapper.getDOMNode().innerText === 'preview switch');
+    });
 });
