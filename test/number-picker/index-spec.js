@@ -117,6 +117,37 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should work with value and onChange and min under control', done => {
+            class App extends React.Component {
+                state = {
+                };
+                onChange = value => {
+                    this.setState({
+                        value,
+                    });
+                };
+
+                render() {
+                    return (
+                        <NumberPicker
+                            min={6}
+                            value={this.state.value}
+                            onChange={this.onChange}
+                        />
+                    );
+                }
+            }
+
+            const wrapper = mount(<App />);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: '1' } });
+            assert(wrapper.find('input').prop('value') == '1');
+
+            done();
+        });
+
         // 特殊输入检测
         it('should support input with -/-0/-0./0./0.0 ', () => {
             const onChange = sinon.spy();

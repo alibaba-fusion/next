@@ -154,6 +154,9 @@ class TimePicker extends Component {
         onChange: PropTypes.func,
         className: PropTypes.string,
         name: PropTypes.string,
+        inputProps: PropTypes.object,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -329,12 +332,15 @@ class TimePicker extends Component {
             disabledMinutes,
             disabledSeconds,
             renderTimeMenuItems,
+            inputProps,
             popupAlign,
             popupTriggerType,
             popupContainer,
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             disabled,
             className,
@@ -357,6 +363,7 @@ class TimePicker extends Component {
             ? inputStr
             : (value && value.format(format)) || '';
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             value: inputValue,
@@ -407,13 +414,16 @@ class TimePicker extends Component {
             className
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(TimePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     visible={visible}
@@ -421,25 +431,30 @@ class TimePicker extends Component {
                     trigger={triggerInput}
                     container={popupContainer}
                     disabled={disabled}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     style={popupStyle}
                     className={popupClassName}
                 >
-                    <div
-                        dir={others.dir}
-                        className={`${prefix}time-picker-body`}
-                    >
-                        <div className={`${prefix}time-picker-panel-header`}>
-                            <Input
-                                {...sharedInputProps}
-                                placeholder={format}
-                                className={`${prefix}time-picker-panel-input`}
-                            />
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div
+                            dir={others.dir}
+                            className={`${prefix}time-picker-body`}
+                        >
+                            <div
+                                className={`${prefix}time-picker-panel-header`}
+                            >
+                                <Input
+                                    {...sharedInputProps}
+                                    placeholder={format}
+                                    className={`${prefix}time-picker-panel-input`}
+                                />
+                            </div>
+                            <TimePickerPanel {...panelProps} />
                         </div>
-                        <TimePickerPanel {...panelProps} />
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

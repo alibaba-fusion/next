@@ -174,8 +174,8 @@
 
         &-date {
             @include calendar-card-cell-size(
-                $s-6,
-                $s-6,
+                $calendar-card-table-cell-date-width,
+                $calendar-card-table-cell-date-height,
                 $calendar-card-table-cell-date-border-radius,
                 $s-1
             );
@@ -183,8 +183,8 @@
 
         &-month {
             @include calendar-card-cell-size(
-                $s-15,
-                $s-6,
+                $calendar-card-table-cell-month-width,
+                $calendar-card-table-cell-month-height,
                 $calendar-card-table-cell-month-border-radius,
                 $s-2
             );
@@ -192,8 +192,8 @@
 
         &-year {
             @include calendar-card-cell-size(
-                $s-12,
-                $s-6,
+                $calendar-card-table-cell-year-width,
+                $calendar-card-table-cell-year-height,
                 $calendar-card-table-cell-year-border-radius,
                 $s-2
             );

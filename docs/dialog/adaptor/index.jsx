@@ -50,6 +50,7 @@ export default {
             position: mask ? 'absolute' : 'relative',
             width: width,
             zIndex: 1,
+            maxWidth: 'none',
             ...(mask ? {
                 left: 20,
                 top: 20,
