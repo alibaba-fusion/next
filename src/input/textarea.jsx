@@ -252,6 +252,7 @@ export default class TextArea extends Base {
         const previewCls = classNames({
             [`${prefix}input-textarea`]: true,
             [`${prefix}form-preview`]: true,
+            [className]: !!className,
         });
 
         const wrapStyle = autoHeight
@@ -268,11 +269,11 @@ export default class TextArea extends Base {
                 );
             }
             return (
-                <p {...others} className={previewCls}>
+                <div {...others} className={previewCls}>
                     {value.split('\n').map((data, i) => (
                         <p key={`p-${i}`}>{data}</p>
                     ))}
-                </p>
+                </div>
             );
         }
 

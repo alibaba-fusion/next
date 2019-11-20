@@ -70,6 +70,15 @@ class Radio extends UIState {
          * name
          */
         name: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -78,6 +87,7 @@ class Radio extends UIState {
         onMouseEnter: noop,
         tabIndex: 0,
         prefix: 'next-',
+        isPreview: false,
     };
 
     static contextTypes = {
@@ -177,6 +187,9 @@ class Radio extends UIState {
             tabIndex,
             rtl,
             name,
+            isPreview,
+            renderPreview,
+            value,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -187,12 +200,39 @@ class Radio extends UIState {
         const others = obj.pickOthers(Radio.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
 
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : 'ltr'}
+                        {...others}
+                        className={previewCls}
+                    >
+                        {renderPreview(checked, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : 'ltr'}
+                    {...others}
+                    className={previewCls}
+                >
+                    {checked && (children || label || value)}
+                </p>
+            );
+        }
+
         let input = (
             <input
                 {...obj.pickOthers(othersData, others)}
                 name={name}
                 id={id}
-                role="radio"
                 tabIndex={tabIndex}
                 disabled={disabled}
                 checked={checked}
