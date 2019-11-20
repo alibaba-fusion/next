@@ -821,9 +821,9 @@ describe('WeekPicker', () => {
         });
 
         it('should support preview mode render', () => {
-            wrapper = mount(<WeekPicker defaultValue="2018-11-11" isPreview />);
+            wrapper = mount(<WeekPicker defaultValue="2018-48" format="YYYY-w" isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
-            assert(wrapper.find('.next-form-preview').text() === '2018-1st');
+            assert(wrapper.find('.next-form-preview').text() === '2018-48');
             wrapper.setProps({
                 renderPreview: (value) => {
                     assert(value.format('YYYY') === '2018');
