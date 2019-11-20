@@ -22,6 +22,13 @@ $number-picker-normal-m-button-width: $s-5 !default;
 /// @namespace size/button
 $number-picker-normal-l-button-width: $s-5 !default;
 
+/// width
+/// @namespace size/input
+$number-picker-normal-m-input-width: $s-20 !default;
+/// width
+/// @namespace size/input
+$number-picker-normal-l-input-width: $s-20 !default;
+
 /// icon
 /// @namespace size/button
 $number-picker-normal-m-button-icon-size: $icon-xxs !default;
@@ -43,6 +50,9 @@ $number-picker-inline-m-button-margin: 2px !default;
 /// corner
 /// @namespace size/button
 $number-picker-inline-m-button-corner: $corner-1 !default;
+/// width
+/// @namespace size/input
+$number-picker-inline-m-input-width: $s-25 !default;
 /// icon
 /// @namespace size/button
 $number-picker-inline-l-button-icon-size: $icon-xs !default;
@@ -53,3 +63,6 @@ $number-picker-inline-l-button-margin: 2px !default;
 /// corner
 /// @namespace size/button
 $number-picker-inline-l-button-corner: $corner-1 !default;
+/// width
+/// @namespace size/input
+$number-picker-inline-l-input-width: $s-32 !default;
