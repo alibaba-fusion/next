@@ -229,6 +229,7 @@ export default class RangePicker extends Component {
         size: 'medium',
         showTime: false,
         resetTime: false,
+        format: 'YYYY-MM-DD',
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
@@ -715,7 +716,6 @@ export default class RangePicker extends Component {
         const { prefix, format, className, renderPreview } = this.props;
 
         const previewCls = classnames(className, `${prefix}form-preview`);
-
         const startLabel = startValue ? startValue.format(format) : '';
         const endLabel = endValue ? endValue.format(format) : '';
 
