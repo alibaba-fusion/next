@@ -16,8 +16,6 @@
     }
 
     &-normal {
-        width: 80px;
-
         .#{$css-prefix}input {
             width: 100%;
 
@@ -73,6 +71,7 @@
         }
 
         &.#{$css-prefix}medium {
+            width: $number-picker-normal-m-input-width;
             .#{$css-prefix}btn {
                 width: $number-picker-normal-m-button-width;
 
@@ -91,6 +90,7 @@
         }
 
         &.#{$css-prefix}large {
+            width: $number-picker-normal-l-input-width;
             .#{$css-prefix}btn {
                 width: $number-picker-normal-l-button-width;
 
@@ -119,7 +119,7 @@
         }
 
         &.#{$css-prefix}medium {
-            width: 100px;
+            width: $number-picker-inline-m-input-width;
 
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-m-button-icon-size);
@@ -143,7 +143,7 @@
         }
 
         &.#{$css-prefix}large {
-            width: 128px;
+            width: $number-picker-inline-l-input-width;
 
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-l-button-icon-size);
