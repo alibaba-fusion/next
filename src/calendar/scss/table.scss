@@ -234,3 +234,57 @@
         }
     }
 }
+
+#{$calendar-prefix}-panel#{$calendar-prefix}-week {
+    #{$calendar-prefix}-tbody {
+        tr {
+            cursor: pointer;
+        }
+        tr:hover {
+            #{$calendar-prefix}-cell #{$calendar-prefix}-date {
+                @include calendar-cell-state (
+                    $calendar-card-table-cell-hover-background,
+                    $calendar-card-table-cell-hover-color,
+                    $calendar-card-table-cell-hover-border-color
+                );
+            }
+        }
+
+        #{$calendar-prefix}-cell.#{$css-prefix}selected {
+            #{$calendar-prefix}-date {
+                font-weight: normal;
+                background: transparent;
+                border-color: transparent;
+            }
+        }
+
+        #{$calendar-prefix}-week-active-date {
+            position: relative;
+            color: $calendar-card-table-cell-inrange-color;
+            &::before {
+                content: '';
+                position: absolute;
+                left: -$line-1;
+                top: -$line-1;
+                bottom: -$line-1;
+                right: -$line-1;
+                border: $line-1 $line-solid;
+                background: $calendar-card-table-cell-inrange-background;
+                border-color: $calendar-card-table-cell-inrange-border-color;
+                border-radius: $calendar-card-table-cell-date-border-radius;
+            }
+            > span {
+                position: relative;
+            }
+        }
+
+        #{$calendar-prefix}-week-active-start,
+        #{$calendar-prefix}-week-active-end {
+            color: $calendar-card-table-cell-select-color;
+            &::before {
+                background: $calendar-card-table-cell-select-background;
+                border-color: $calendar-card-table-cell-select-border-color;
+            }
+        }
+    }
+}

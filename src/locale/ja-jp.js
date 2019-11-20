@@ -32,6 +32,7 @@ export default {
         datetimePlaceholder: '日時を選択してください',
         monthPlaceholder: '月を選択してください',
         yearPlaceholder: '年を選択してください',
+        weekPlaceholder: '周を選んでください',
         now: '現在',
         selectTime: '時間の選択',
         selectDate: '日付けの選択',

@@ -10,7 +10,11 @@
 @import "scss/range-picker";
 @import "./rtl.scss";
 
-#{$date-picker-prefix}, #{$range-picker-prefix}, #{$month-picker-prefix}, #{$year-picker-prefix} {
+#{$date-picker-prefix},
+#{$range-picker-prefix},
+#{$month-picker-prefix},
+#{$year-picker-prefix},
+#{$week-picker-prefix} {
     @include box-sizing;
 
     &-body {
@@ -53,5 +57,13 @@
 
     #{$date-picker-input-prefix} input {
         vertical-align: baseline;
+    }
+}
+
+#{$range-picker-prefix}-panel-body {
+    font-size: 0;
+    .#{$css-prefix}calendar {
+        display: inline-block;
+        width: 50%;
     }
 }
