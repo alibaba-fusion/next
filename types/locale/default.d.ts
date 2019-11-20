@@ -127,4 +127,8 @@ export interface locale {
     Rating: {
         description: string;
     };
+    Switch: {
+        on: string;
+        off: string;
+    };
 }

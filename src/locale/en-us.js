@@ -129,4 +129,8 @@ export default {
     Rating: {
         description: 'Rating Options',
     },
+    Switch: {
+        on: 'on',
+        off: 'off',
+    },
 };

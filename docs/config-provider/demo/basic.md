@@ -24,37 +24,42 @@ class Output extends React.Component {
     static propTypes = {
         prefix: PropTypes.string,
         locale: PropTypes.object,
-        pure: PropTypes.bool
     };
 
     static defaultProps = {
         prefix: 'next-',
         locale: {
             hello: '你好'
-        },
-        pure: false
+        }
     };
 
     render() {
-        const { prefix, locale, pure } = this.props;
+        const { prefix, locale } = this.props;
 
         return (
             <ul>
                 <li>prefix: {prefix}</li>
                 <li>locale: {JSON.stringify(locale)}</li>
-                <li>pure: {pure.toString()}</li>
             </ul>
         );
     }
 }
 
+const Func = props => {
+    return <div>This is a Function Component</div>;
+};
+
+const NewFunc = config(Func);
 const NewOutput = config(Output);
 
 class Demo extends React.Component {
     render() {
         return (
-            <ConfigProvider prefix="custom-" locale={{ Output: { hello: 'hello' } }} pure>
-                <NewOutput />
+            <ConfigProvider prefix="custom-" locale={{ Output: { hello: 'hello' } }}>
+                <div>
+                    <NewOutput />
+                    <NewFunc />
+                </div>
             </ConfigProvider>
         );
     }

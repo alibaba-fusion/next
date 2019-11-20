@@ -137,9 +137,20 @@ class MonthPicker extends Component {
          * 日期输入框的 aria-label 属性
          */
         dateInputAriaLabel: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 月份
+         */
+        renderPreview: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -305,6 +316,28 @@ class MonthPicker extends Component {
         this.props.onVisibleChange(visible, type);
     };
 
+    renderPreview(others) {
+        const { prefix, format, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames(className, `${prefix}form-preview`);
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -326,12 +359,15 @@ class MonthPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
             monthCellRender,
             yearCellRender,
             dateInputAriaLabel,
+            isPreview,
             ...others
         } = this.props;
 
@@ -355,6 +391,12 @@ class MonthPicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, MonthPicker.PropTypes)
+            );
         }
 
         const panelInputCls = `${prefix}month-picker-panel-input`;
@@ -417,13 +459,17 @@ class MonthPicker extends Component {
                 />
             </div>
         );
+
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(MonthPicker.propTypes, others)}
                 className={monthPickerCls}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     role="combobox"
@@ -431,21 +477,26 @@ class MonthPicker extends Component {
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div className={panelBodyClassName} dir={others.dir}>
-                        <div className={`${prefix}month-picker-panel-header`}>
-                            {dateInput}
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div className={panelBodyClassName} dir={others.dir}>
+                            <div
+                                className={`${prefix}month-picker-panel-header`}
+                            >
+                                {dateInput}
+                            </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

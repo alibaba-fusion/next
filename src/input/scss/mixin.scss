@@ -57,9 +57,6 @@
 
 @mixin input-border-radius($size) {
     border-radius: $size;
-    input {
-        border-radius: $size;
-    }
     #{$input-prefix}-control {
         border-radius: 0 $size $size 0;
     }

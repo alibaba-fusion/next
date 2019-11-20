@@ -133,6 +133,18 @@ describe('TimePicker', () => {
                 ).at(10).text() === '10'
             );
         });
+        it('should support preview mode render', () => {
+            wrapper = mount(<TimePicker defaultValue="12:00:00" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '12:00:00');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('HH:mm:ss') === '12:00:00');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {

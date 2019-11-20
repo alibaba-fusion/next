@@ -137,8 +137,23 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     height?: string;
 }
 
+export interface QuickShowConfig extends DialogProps {
+    prefix?: string;
+    type?: 'alert' | 'confirm';
+    messageProps?: object;
+    content?: React.ReactNode;
+    onOk?: () => void;
+    onCancel?: () => void;
+    okProps?: object;
+    needWrapper?: boolean;
+}
+
+export interface QuickShowRet {
+    hide: () => void;
+}
+
 export default class Dialog extends React.Component<DialogProps, any> {
-    static show(config: {}): {};
-    static alert(config: {}): {};
-    static confirm(config: {}): {};
+    static show(config: QuickShowConfig): QuickShowRet;
+    static alert(config: QuickShowConfig): QuickShowRet;
+    static confirm(config: QuickShowConfig): QuickShowRet;
 }

@@ -251,7 +251,7 @@ describe('Cascader', () => {
         expandCalled = false;
     });
 
-    it('should render multiple cascader', () => {
+    it('should render multiple cascader', done => {
         const dataSource = [
             {
                 value: '2973',
@@ -283,8 +283,18 @@ describe('Cascader', () => {
         let data;
         let extra;
         const handleChange = (v, d, e) => {
-            d.forEach(d => delete d._source);
-            e.checkedData.forEach(d => delete d._source);
+            d = filter$Source(d);
+            const item = {
+                ...e.currentData,
+            };
+            delete item._source;
+            delete item.children;
+            e = {
+                ...e,
+                currentData: item,
+                checkedData: filter$Source(e.checkedData),
+                indeterminateData: filter$Source(e.indeterminateData),
+            };
             assert.deepEqual(value, sortByValue(v, true));
             assert.deepEqual(data, sortByValue(d));
             e.checkedData = sortByValue(e.checkedData);
@@ -330,19 +340,22 @@ describe('Cascader', () => {
         assert(changeCalled);
         changeCalled = false;
 
-        (value = ['2980']),
+        setTimeout(() => {
+            (value = ['2980']),
             (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
-        extra = {
-            checked: false,
-            currentData: { value: '2974', label: '西安', pos: '0-0-0' },
-            checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
-            indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
-        };
-        checkItem(findItem(wrapper, 1, 0), false);
-        compareIndeterminate(findItem(wrapper, 0, 0));
-        compareNotChecked(findItem(wrapper, 1, 0));
-        findItem(wrapper, 2).forEach(compareNotChecked);
-        assert(changeCalled);
+            extra = {
+                checked: false,
+                currentData: { value: '2974', label: '西安', pos: '0-0-0' },
+                checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
+                indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
+            };
+            checkItem(findItem(wrapper, 1, 0), false);
+            compareIndeterminate(findItem(wrapper, 0, 0));
+            compareNotChecked(findItem(wrapper, 1, 0));
+            findItem(wrapper, 2).forEach(compareNotChecked);
+            assert(changeCalled);
+            done();
+        }, 20)
     });
 
     it('should render multiple cascader when set checkStrictly to true', () => {
@@ -685,4 +698,16 @@ function findRealItem(listIndex, itemIndex) {
     return document
         .querySelectorAll('.next-cascader-menu')
         [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
+}
+
+function filter$Source (data) {
+    if (!data) return;
+
+    return [...data].map((it) => {
+        const item = {
+            ...it
+        };
+        delete item._source;
+        return item;
+    })
 }

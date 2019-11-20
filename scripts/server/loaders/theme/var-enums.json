@@ -45,7 +45,8 @@
     "$corner-2": "corner-2",
     "$corner-3": "corner-3",
     "$corner-circle": "corner-circle",
-    "$corner-zero": "corner-zero"
+    "$corner-zero": "corner-zero",
+    "$corner-semicircle": "corner-semicircle"
   },
   "font.weightcore": {
     "$font-weight-1": "light",

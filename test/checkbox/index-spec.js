@@ -95,7 +95,7 @@ describe('Checkbox', () => {
 
     describe('[behavior] controlled', () => {
         it('should support controlled `checked` and `indeterminate`', () => {
-            const wrapper = shallow(<Checkbox checked={true} />).dive();
+            const wrapper = shallow(<Checkbox checked />).dive();
             assert(wrapper.state().checked);
             assert(wrapper.find('.checked').length === 1);
 
@@ -108,6 +108,20 @@ describe('Checkbox', () => {
                 indeterminate: true,
             });
             assert(wrapper.find('.indeterminate').length === 1);
+        });
+    });
+
+    describe('render in preview mode', () => {
+        it('should isPreview', () => {
+            const wrapper = mount(<Checkbox checked label="apple" isPreview />);
+            assert(wrapper.getDOMNode().innerText === 'apple');
+        });
+
+        it('should renderPreview', () => {
+            const wrapper = mount(
+                <Checkbox checked isPreview renderPreview={() => 'checked'} />
+            );
+            assert(wrapper.getDOMNode().innerText === 'checked');
         });
     });
 });

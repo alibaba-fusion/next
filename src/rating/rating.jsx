@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import Icon from '../icon';
 import { func, KEYCODE, obj } from '../util';
 import zhCN from '../locale/zh-cn';
@@ -17,7 +19,7 @@ const ICON_SIZE_MAP = {
 };
 
 /** Rating */
-export default class Rating extends Component {
+class Rating extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -73,12 +75,27 @@ export default class Rating extends Component {
          * 自定义国际化文案对象
          */
         locale: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         size: 'medium',
         disabled: false,
+        readOnly: false,
+        isPreview: false,
         count: 5,
         showGrade: false,
         defaultValue: 0,
@@ -119,16 +136,29 @@ export default class Rating extends Component {
         ]);
     }
 
-    componentDidMount() {
-        this.getRenderResult();
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
+        if ('value' in nextProps) {
+            state.value = nextProps.value || 0;
+        }
+
+        if (
+            'disabled' in nextProps ||
+            'readOnly' in nextProps ||
+            'isPreview' in nextProps ||
+            'renderPreview' in nextProps
+        ) {
+            state.disabled =
+                nextProps.disabled ||
+                nextProps.readOnly ||
+                (nextProps.isPreview && !('renderPreview' in nextProps));
+        }
+
+        return state;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this.setState({
-                value: nextProps.value || 0,
-            });
-        }
+    componentDidMount() {
+        this.getRenderResult();
     }
 
     componentWillUnmount() {
@@ -198,6 +228,10 @@ export default class Rating extends Component {
     }
 
     handleHover(e) {
+        if (this.state.disabled) {
+            return;
+        }
+
         const value = this.getValue(e);
         const { onHoverChange } = this.props;
         if (value !== this.state.hoverValue) {
@@ -212,6 +246,10 @@ export default class Rating extends Component {
     }
 
     handleLeave() {
+        if (this.state.disabled) {
+            return;
+        }
+
         this.clearTimer();
 
         this.setState({
@@ -220,7 +258,12 @@ export default class Rating extends Component {
     }
 
     onKeyDown(e) {
-        const { disabled, onKeyDown, count } = this.props;
+        if (this.state.disabled) {
+            return;
+        }
+
+        const { onKeyDown, count } = this.props;
+        const { disabled } = this.state;
         if (disabled || supportKeys.indexOf(e.keyCode) < 0) {
             return !onKeyDown || onKeyDown(e);
         }
@@ -262,10 +305,17 @@ export default class Rating extends Component {
     }
 
     handleChecked(index) {
+        if (this.state.disabled) {
+            return;
+        }
+
         this.setState({ hoverValue: index });
     }
 
     handleClick(e) {
+        if (this.state.disabled) {
+            return;
+        }
         const value = this.getValue(e);
         if (value < 0) {
             return;
@@ -318,11 +368,14 @@ export default class Rating extends Component {
             size,
             iconType,
             strokeMode,
-            disabled,
             readAs,
             rtl,
+            isPreview,
+            renderPreview,
             locale,
         } = this.props;
+
+        const { disabled } = this.state;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const { hoverValue, clicked } = this.state;
         const underlay = [],
@@ -406,6 +459,11 @@ export default class Rating extends Component {
             [`${prefix}rating-base-disabled`]: disabled,
         });
 
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
+
         const overlayStyle = {
             width: this.getOverlayWidth(),
         };
@@ -427,9 +485,17 @@ export default class Rating extends Component {
             others.dir = 'rtl';
         }
 
+        if (isPreview && 'renderPreview' in this.props) {
+            return (
+                <div id={id} {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
         return (
             <div
-                id={id ? id : null}
+                id={id}
                 {...others}
                 className={ratingCls}
                 onKeyDown={this.onKeyDown}
@@ -461,3 +527,5 @@ export default class Rating extends Component {
         );
     }
 }
+
+export default polyfill(Rating);

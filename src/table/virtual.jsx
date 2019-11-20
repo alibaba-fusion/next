@@ -283,14 +283,21 @@ export default function virtual(BaseComponent) {
             } = this.props;
 
             const entireDataSource = dataSource;
+            let newDataSource = dataSource;
 
             this.rowSelection = this.props.rowSelection;
             if (this.hasVirtualData) {
+                newDataSource = [];
                 components = { ...components };
                 const { start, end } = this.getVisibleRange(
                     this.state.scrollToRow
                 );
-                dataSource = dataSource.slice(start, end);
+                dataSource.forEach((current, index, record) => {
+                    if (index >= start && index < end) {
+                        current.__rowIndex = index;
+                        newDataSource.push(current);
+                    }
+                });
 
                 if (!components.Body) {
                     components.Body = VirtualBody;
@@ -301,7 +308,7 @@ export default function virtual(BaseComponent) {
             return (
                 <BaseComponent
                     {...others}
-                    dataSource={dataSource}
+                    dataSource={newDataSource}
                     entireDataSource={entireDataSource}
                     components={components}
                     fixedHeader={fixedHeader}

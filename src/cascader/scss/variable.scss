@@ -17,6 +17,14 @@ $cascader-prefix: ".#{$css-prefix}cascader";
 /// @namespace size/menu
 $cascader-menu-border-width: $line-1 !default;
 
+/// width
+/// @namespace size/menu
+$cascader-menu-width: $s-25 !default;
+
+/// height
+/// @namespace size/menu
+$cascader-menu-height: $s-48 !default;
+
 /// size
 /// @namespace size/icon arrow
 $cascader-menu-icon-expand-size: $icon-xxs !default;

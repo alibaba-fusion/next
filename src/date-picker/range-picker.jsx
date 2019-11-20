@@ -205,10 +205,21 @@ export default class RangePicker extends Component {
          * 结束时间输入框的 aria-label 属性
          */
         endTimeInputAriaLabel: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {[MomentObject, MomentObject]} value 日期区间
+         */
+        renderPreview: PropTypes.func,
         ranges: PropTypes.object,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -700,6 +711,29 @@ export default class RangePicker extends Component {
         return disabledTime;
     };
 
+    renderPreview([startValue, endValue], others) {
+        const { prefix, format, className, renderPreview } = this.props;
+
+        const previewCls = classnames(className, `${prefix}form-preview`);
+
+        const startLabel = startValue ? startValue.format(format) : '';
+        const endLabel = endValue ? endValue.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview([startValue, endValue], this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {startLabel} - {endLabel}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -722,6 +756,8 @@ export default class RangePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             locale,
@@ -733,6 +769,7 @@ export default class RangePicker extends Component {
             startTimeInputAriaLabel,
             endDateInputAriaLabel,
             endTimeInputAriaLabel,
+            isPreview,
             ...others
         } = this.props;
 
@@ -769,6 +806,13 @@ export default class RangePicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                [state.startValue, state.endValue],
+                obj.pickOthers(others, RangePicker.PropTypes)
+            );
         }
 
         const startDateInputValue =
@@ -1066,45 +1110,53 @@ export default class RangePicker extends Component {
             </div>
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(RangePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}range-picker-panel-header`}>
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
                             <div
-                                className={`${prefix}range-picker-panel-input`}
+                                className={`${prefix}range-picker-panel-header`}
                             >
-                                {startDateInput}
-                                {startTimeInput}
-                                <span
-                                    className={`${prefix}range-picker-panel-input-separator`}
+                                <div
+                                    className={`${prefix}range-picker-panel-input`}
                                 >
-                                    -
-                                </span>
-                                {endDateInput}
-                                {endTimeInput}
+                                    {startDateInput}
+                                    {startTimeInput}
+                                    <span
+                                        className={`${prefix}range-picker-panel-input-separator`}
+                                    >
+                                        -
+                                    </span>
+                                    {endDateInput}
+                                    {endTimeInput}
+                                </div>
                             </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

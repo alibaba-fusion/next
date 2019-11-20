@@ -56,6 +56,10 @@ export default class Drawer extends Component {
          */
         title: PropTypes.node,
         /**
+         * header上的样式
+         */
+        headerStyle: PropTypes.object,
+        /**
          * body上的样式
          */
         bodyStyle: PropTypes.object,
@@ -187,6 +191,7 @@ export default class Drawer extends Component {
             title,
             onClose,
             locale,
+            headerStyle,
             bodyStyle,
             placement,
             rtl,
@@ -202,6 +207,7 @@ export default class Drawer extends Component {
                 locale={locale}
                 closeable={closeable}
                 rtl={rtl}
+                headerStyle={headerStyle}
                 bodyStyle={bodyStyle}
                 placement={placement}
                 onClose={onClose.bind(this, 'closeClick')}

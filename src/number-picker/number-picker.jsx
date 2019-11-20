@@ -153,11 +153,16 @@ class NumberPicker extends React.Component {
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
             hasFocused: false,
+            reRender: true,
         };
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if ('value' in nextProps && nextProps.value !== prevState.value) {
+        if (
+            'value' in nextProps &&
+            nextProps.value !== prevState.value &&
+            prevState.reRender
+        ) {
             const value = nextProps.value;
             return {
                 value: value === undefined || value === null ? '' : value,
@@ -183,6 +188,7 @@ class NumberPicker extends React.Component {
                 if (value === '-' || this.state.value === '-') {
                     this.setState({
                         value,
+                        reRender: false,
                     });
                     return;
                 }
@@ -192,6 +198,7 @@ class NumberPicker extends React.Component {
                 if (Number(this.state.value) === Number(value)) {
                     this.setState({
                         value,
+                        reRender: false,
                     });
                     return;
                 }
@@ -199,6 +206,7 @@ class NumberPicker extends React.Component {
                 if (!isNaN(value) && Number(value) < this.props.min) {
                     this.setState({
                         value,
+                        reRender: false,
                     });
                     return;
                 }
@@ -291,6 +299,10 @@ class NumberPicker extends React.Component {
                 value: v,
             });
         }
+
+        this.setState({
+            reRender: true,
+        });
 
         this.props.onChange(isNaN(v) || v === '' ? undefined : v, {
             ...e,

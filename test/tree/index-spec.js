@@ -284,6 +284,41 @@ describe('Tree', () => {
         assertTree({ dataSource }, mountNode);
     });
 
+    it('should support render child nodes', () => {
+        ReactDOM.render(
+            <Tree
+                checkable
+                editable
+                defaultExpandAll
+                defaultSelectedKeys={['1']}
+                defaultCheckedKeys={['3']}
+                renderChildNodes={(nodes) => {
+                    if (
+                        nodes.filter(
+                            (node) => !node.props.children ||
+                                node.props.children.length === 0
+                        ).length !== nodes.length) {
+                        return <ul role="group" className={`next-tree-child-tree`}>{nodes}</ul>;
+                    }
+                    return <ul className="custom-child-tree">{nodes}</ul>;
+                }}
+            >
+                <TreeNode key="1" label="Component">
+                    <TreeNode key="2" label="Form" selectable={false}>
+                        <TreeNode key="4" label="Input" />
+                        <TreeNode aria-label="select one" key="5" label="Select" disabled />
+                    </TreeNode>
+                    <TreeNode key="3" label="Display">
+                        <TreeNode key="6" label="Table" />
+                    </TreeNode>
+                </TreeNode>
+            </Tree>,
+            mountNode
+        );
+
+        assert(!!document.querySelector('.custom-child-tree'));
+    })
+
     it('should support defaultExpandedKeys and onExpand', () => {
         let called = false;
         const handleExpand = (expandedKeys, extra) => {
