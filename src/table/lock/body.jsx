@@ -34,12 +34,15 @@ export default class LockBody extends React.Component {
     };
 
     render() {
-        return (
-            <FixedBody
-                {...this.props}
-                onScroll={this.onBodyScroll}
-                onWheel={this.onBodyWheel}
-            />
-        );
+        const { lockType } = this.context;
+
+        const events = lockType
+            ? {
+                  onWheel: this.onBodyWheel,
+              }
+            : {
+                  onScroll: this.onBodyScroll,
+              };
+        return <FixedBody {...this.props} {...events} />;
     }
 }
