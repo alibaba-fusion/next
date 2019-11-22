@@ -1065,7 +1065,7 @@ describe('Table', () => {
             .find('div.next-table-lock .next-table-body')
             .at(1)
             .props()
-            .onWheel({ deltaY: 200, deltaX: 5 });
+            .onScroll({ deltaY: 200, deltaX: 5 });
     });
 
     it('should support align alignHeader', () => {
