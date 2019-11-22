@@ -25,3 +25,15 @@
         }
     }
 }
+
+@mixin form-responsive-grid($item-margin-right, $element-height, $font-size) {
+    .#{$css-prefix}responsive-grid {
+        gap: $item-margin-right;
+    }
+
+    #{$form-prefix}-item.#{$css-prefix}left #{$form-prefix}-item-label {
+        line-height: 1.4;
+        margin-top: ($element-height - $font-size) / 2;
+        margin-bottom: ($element-height - $font-size) / 2;
+    }
+}

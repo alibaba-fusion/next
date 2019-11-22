@@ -7,6 +7,69 @@
 #{$form-prefix} {
     @include box-sizing;
 
+    &-responsive-grid {
+        #{$form-prefix}-item-control {
+            flex: 1;
+        }
+
+        #{$form-prefix}-item {
+            margin-bottom: 0;
+        }
+
+        #{$form-prefix}-item.#{$css-prefix}left {
+            display: flex;
+        }
+
+        &.#{$css-prefix}small {
+            @include form-responsive-grid(
+                $form-inline-s-item-margin-r,
+                $form-element-small-height,
+                $form-element-small-font-size
+            );
+        }
+
+        &.#{$css-prefix}medium {
+            @include form-responsive-grid(
+                $form-inline-m-item-margin-r,
+                $form-element-medium-height,
+                $form-element-medium-font-size
+            );
+        }
+
+        &.#{$css-prefix}large {
+            @include form-responsive-grid(
+                $form-inline-l-item-margin-r,
+                $form-element-large-height,
+                $form-element-large-font-size
+            );
+        }
+
+        // #{$form-prefix}-item.#{$css-prefix}left {
+        //     display: flex;
+        //     &:not(:last-child) {
+        //         #{$form-prefix}-item-label {
+        //             line-height: 1.4;
+        //             margin-top: ($form-element-medium-height - $form-element-medium-font-size) / 2;
+        //             margin-bottom: ($form-element-medium-height - $form-element-medium-font-size) / 2;
+        //         }
+        //     }
+        //     &.#{$css-prefix}large:not(:last-child) {
+        //         #{$form-prefix}-item-label {
+        //             line-height: 1.4;
+        //             margin-top: ($form-element-large-height - $form-element-large-font-size) / 2;
+        //             margin-bottom: ($form-element-large-height - $form-element-large-font-size) / 2;
+        //         }
+        //     }
+        //     &.#{$css-prefix}small:not(:last-child) {
+        //         #{$form-prefix}-item-label {
+        //             line-height: 1.4;
+        //             margin-top: ($form-element-small-height - $form-element-small-font-size) / 2;
+        //             margin-bottom: ($form-element-small-height - $form-element-small-font-size) / 2;
+        //         }
+        //     }
+        // }
+    }
+
     &-item {
         &.has-error {
             #{$form-prefix}-item-help {

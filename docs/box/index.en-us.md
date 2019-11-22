@@ -10,7 +10,7 @@
 ## Develop Guide
 
 ### When to Use
-Flex box
+Flex box, added in 1.19.0+
 
 ## API
 
