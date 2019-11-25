@@ -28,7 +28,7 @@ const formatDataSource = (data) => {
             children: formatDataSource(it.children || [])
         };
     });
-}
+};
 
 class Demo extends React.Component {
     constructor(props) {
@@ -47,14 +47,14 @@ class Demo extends React.Component {
     }
 
     render() {
-        return <Tree checkable renderChildNodes={(nodes) => {
+        return (<Tree checkable renderChildNodes={(nodes) => {
             if (nodes.filter((node) => !node.props.children || node.props.children.length === 0).length !== nodes.length) {
                 <ul role="group" className={`next-tree-child-tree`}>
                     {nodes}
-                </ul>
+                </ul>;
             }
             return <ul role="group" className="next-tree-child-tree custom-leaf-tree">{nodes}</ul>;
-        }} defaultExpandAll dataSource={this.state.data}/>;
+        }} defaultExpandAll dataSource={this.state.data}/>);
     }
 }
 

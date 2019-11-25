@@ -68,7 +68,7 @@ class Demo extends React.Component {
         });
     };
     ratingPreview = (value) => {
-        return <p>{value} {value > 2.5 ? <Icon type="smile" /> : <Icon type="cry"/>}</p>
+        return <p>{value} {value > 2.5 ? <Icon type="smile" /> : <Icon type="cry"/>}</p>;
     };
     render() {
         return (
