@@ -38,19 +38,23 @@ export default class Inner extends Component {
 
     renderHeader() {
         const { prefix, title, headerStyle } = this.props;
-        if (title) {
-            return (
-                <div
-                    className={`${prefix}drawer-header`}
-                    style={headerStyle}
-                    role="heading"
-                    aria-level="1"
-                >
-                    {title}
-                </div>
-            );
-        }
-        return null;
+        const closeLink = this.renderCloseLink();
+        const headerCls = cx({
+            [`${prefix}drawer-header`]: true,
+            [`${prefix}drawer-no-title`]: !title,
+        });
+
+        return (
+            <div
+                className={headerCls}
+                style={headerStyle}
+                role="heading"
+                aria-level="1"
+            >
+                {title}
+                {closeLink}
+            </div>
+        );
     }
 
     renderBody() {
@@ -112,7 +116,6 @@ export default class Inner extends Component {
 
         const header = this.renderHeader();
         const body = this.renderBody();
-        const closeLink = this.renderCloseLink();
 
         return (
             <div
@@ -124,7 +127,6 @@ export default class Inner extends Component {
                 <div style={{ height: '100%', overflow: 'auto' }}>
                     {header}
                     {body}
-                    {closeLink}
                 </div>
             </div>
         );
