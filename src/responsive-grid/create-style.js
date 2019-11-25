@@ -196,19 +196,19 @@ const getGridChildProps = (props, device) => {
         col = 'initial',
         rowSpan = 1,
         colSpan = 1,
-        tabletColSpan = 1,
-        phoneColSpan = 1,
-        justifySelf,
-        alignSelf,
+        // justifySelf,
+        // alignSelf,
     } = props;
 
-    let newColSpan = colSpan;
+    let newColSpan =
+        typeof colSpan === 'object' && 'desktop' in colSpan
+            ? colSpan.desktop
+            : colSpan;
 
     ['tablet', 'phone'].forEach(deviceKey => {
         if (deviceKey === device) {
-            const key = `${deviceKey}ColSpan`;
-            if (key in props && props[key]) {
-                newColSpan = props[key];
+            if (typeof colSpan === 'object' && device in colSpan) {
+                newColSpan = colSpan[device];
             } else {
                 switch (deviceKey) {
                     case 'tablet':
@@ -229,8 +229,8 @@ const getGridChildProps = (props, device) => {
         gridColumnEnd: `span ${newColSpan}`,
         // gridRow: `${row} / span ${rowSpan}`,
         // gridColumn: `${col} / span ${colSpan}`,
-        justifySelf,
-        alignSelf,
+        // justifySelf,
+        // alignSelf,
     });
 };
 
@@ -251,14 +251,12 @@ export default ({
     dense,
     rowSpan,
     colSpan,
-    tabletColSpan,
-    phoneColSpan,
     row,
     col,
     rows,
     columns,
     justify,
-    justifySelf,
+    // justifySelf,
     align,
     alignSelf,
     wrap,
@@ -296,8 +294,8 @@ export default ({
                 gridTemplateRows: getTemplateCount(rows),
                 gridTemplateColumns: getTemplateCount(newColumns),
                 gridAutoFlow: `${direction}${dense && ` dense`}`,
-                justifyItems: justify,
-                alignItems: align,
+                // justifyItems: justify,
+                // alignItems: align,
                 // child
                 ...getGridChildProps(
                     {
@@ -305,10 +303,8 @@ export default ({
                         rowSpan,
                         col,
                         colSpan,
-                        tabletColSpan,
-                        phoneColSpan,
-                        justifySelf,
-                        alignSelf,
+                        // justifySelf,
+                        // alignSelf,
                     },
                     device
                 ),
@@ -348,5 +344,5 @@ export {
     filterOuterStyle,
     filterHelperStyle,
     getGridChildProps,
-    getBoxChildProps,
+    // getBoxChildProps,
 };

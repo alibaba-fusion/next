@@ -44,7 +44,7 @@ ReactDOM.render(
                   <Cell className="mygrid grid-6" colSpan={6}>6</Cell>
                   <Cell className="mygrid grid-4" colSpan={4}>4</Cell>
                   <Cell className="mygrid grid-4" colSpan={4}>4</Cell>
-                  <Cell className="mygrid grid-4" colSpan={4} tabletColSpan={8}>4 tabletColSpan=8</Cell>
+                  <Cell className="mygrid grid-4" colSpan={{desktop: 4, tablet: 8}} >4 tablet: 8</Cell>
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
@@ -62,7 +62,7 @@ ReactDOM.render(
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
-                  <Cell className="mygrid grid-3" colSpan={3} phoneColSpan={2}>3 phoneColSpan=2</Cell>
+                  <Cell className="mygrid grid-3" colSpan={{desktop: 3, phone: 2}}>3 phone: 2</Cell>
                 </ResponsiveGrid>
               </div>
             </div>

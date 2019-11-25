@@ -54,7 +54,7 @@ class BoxDemo extends React.Component {
                         width: '50px',
                         border: '1px solid #000'
                     }} />
-                    <span alignSelf={'center'}>31242</span>
+                    <span>1234</span>
                     <Box className="border-box height-40 width-150" />
                     <div style={{
                         height: '100px',

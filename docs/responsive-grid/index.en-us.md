@@ -27,6 +27,4 @@ Css-grid, added in 1.19.0+
 | Param | Descripiton  | Type  | Default Value |
 | ------------- | ------------------------------------------------------------------------------- | ------ | --------- |
 | device        | device for responsive<br><br>**options**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum   | 'desktop' |
-| colSpan       | in hoz, how many columns it takes                                                                         | Number | -         |
-| tabletColSpan | in hoz, how many columns it takes in tablet                                                                    | Number | -         |
-| phoneColSpan  | in hoz, how many columns it takes in phone                                                                   | Number | -         |
+| colSpan       | in hoz, how many columns it takes                                         | Number/Object | -         |

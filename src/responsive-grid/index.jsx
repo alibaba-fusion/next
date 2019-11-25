@@ -88,8 +88,6 @@ class ResponsiveGrid extends Component {
             gap,
             rowSpan,
             colSpan,
-            tabletColSpan,
-            phoneColSpan,
             component,
         } = this.props;
         const styleProps = {
@@ -99,8 +97,6 @@ class ResponsiveGrid extends Component {
             device,
             rowSpan,
             colSpan,
-            tabletColSpan,
-            phoneColSpan,
             component,
         };
 

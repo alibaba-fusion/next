@@ -20,7 +20,7 @@ describe('Box A11y', () => {
     });
 
     it('should render', async () => {
-        wrapper = await testReact(<Box  />);
+        wrapper = await testReact(<Box />);
         return wrapper;
     });
 });

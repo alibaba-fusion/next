@@ -19,15 +19,7 @@ class Cell extends Component {
         /**
          * 横向，占据几列
          */
-        colSpan: PropTypes.number,
-        /**
-         * 横向，在平板下占据几列
-         */
-        tabletColSpan: PropTypes.number,
-        /**
-         * 横向，在手机下占据几列
-         */
-        phoneColSpan: PropTypes.number,
+        colSpan: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
         component: PropTypes.string,
     };
 

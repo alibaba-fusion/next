@@ -10,7 +10,7 @@ import createStyle, {
     filterInnerStyle,
     filterHelperStyle,
     filterOuterStyle,
-    getBoxChildProps,
+    // getBoxChildProps,
 } from '../responsive-grid/create-style';
 
 const { pickOthers } = obj;
@@ -56,7 +56,7 @@ const createChildren = (children, { spacing, direction, wrap }) => {
             return React.cloneElement(child, {
                 style: {
                     ...spacingMargin,
-                    ...getBoxChildProps(child.props),
+                    // ...getBoxChildProps(child.props),
                     ...childPropsMargin,
                     ...(child.props.style || {}),
                 },
@@ -142,6 +142,9 @@ class Box extends Component {
             PropTypes.arrayOf(PropTypes.number),
             PropTypes.number,
         ]),
+        /**
+         * 沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）
+         */
         justify: PropTypes.oneOf([
             'flex-start',
             'center',
@@ -149,6 +152,9 @@ class Box extends Component {
             'space-between',
             'space-around',
         ]),
+        /**
+         * 垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）
+         */
         align: PropTypes.oneOf([
             'flex-start',
             'center',
@@ -156,10 +162,6 @@ class Box extends Component {
             'baseline',
             'stretch',
         ]),
-        /**
-         * 设备，用来做自适应，默认为 PC
-         * @enumdesc 手机, 平板, PC
-         */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
     };
 
