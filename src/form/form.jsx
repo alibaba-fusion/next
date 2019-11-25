@@ -118,7 +118,6 @@ export default class Form extends React.Component {
         onChange: func.noop,
         component: 'form',
         saveField: func.noop,
-        labelWidth: 80,
         device: 'desktop',
     };
 

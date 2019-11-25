@@ -214,6 +214,7 @@ export default class Item extends React.Component {
     static defaultProps = {
         prefix: 'next-',
         hasFeedback: false,
+        labelWidth: 100,
     };
 
     static contextTypes = {

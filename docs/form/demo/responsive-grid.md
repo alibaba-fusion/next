@@ -27,7 +27,7 @@ const style = {
     margin: '20px'
 };
 const formItemLayout = {
-    labelWidth: "",
+    labelWidth: 100,
     colSpan: 4,
 };
 
