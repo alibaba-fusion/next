@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Grid from '../grid';
+import RGrid from '../responsive-grid';
 import { obj } from '../util';
 import Error from './error';
 import { getFieldInitCfg } from './enhance';
 
 const { Row, Col } = Grid;
+const { Cell } = RGrid;
 
 const { isNil } = obj;
 
@@ -198,11 +200,21 @@ export default class Item extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        responsive: PropTypes.bool,
+        /**
+         * 在响应式布局模式下，表单项占多少列
+         */
+        colSpan: PropTypes.number,
+        /**
+         * 在响应式布局下，且label在左边时，label的宽度是多少
+         */
+        labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     };
 
     static defaultProps = {
         prefix: 'next-',
         hasFeedback: false,
+        labelWidth: 100,
     };
 
     static contextTypes = {
@@ -285,6 +297,8 @@ export default class Item extends React.Component {
             labelCol,
             wrapperCol,
             prefix,
+            responsive,
+            labelWidth,
             labelTextAlign,
         } = this.props;
 
@@ -311,6 +325,14 @@ export default class Item extends React.Component {
             [`${prefix}form-item-label`]: true,
             [`${prefix}left`]: labelTextAlign === 'left',
         });
+
+        if (responsive && labelWidth && labelAlign !== 'top') {
+            return (
+                <div className={cls} style={{ width: labelWidth }}>
+                    {ele}
+                </div>
+            );
+        }
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
@@ -340,10 +362,15 @@ export default class Item extends React.Component {
 
         const state = this.getState();
 
+        const isPreview = this.getIsPreview();
         const childrenProps = {
             size: this.getSize(),
-            isPreview: this.getIsPreview(),
         };
+
+        if (isPreview) {
+            childrenProps.isPreview = true;
+        }
+
         if (state && (state === 'error' || hasFeedback)) {
             childrenProps.state = state;
         }
@@ -421,7 +448,14 @@ export default class Item extends React.Component {
     }
 
     render() {
-        const { className, style, prefix, wrapperCol, labelCol } = this.props;
+        const {
+            className,
+            style,
+            prefix,
+            wrapperCol,
+            labelCol,
+            responsive,
+        } = this.props;
 
         const labelAlign = this.getLabelAlign(
             this.props.labelAlign,
@@ -442,8 +476,11 @@ export default class Item extends React.Component {
         });
 
         // 垂直模式并且左对齐才用到
-        const Tag =
-            (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
+        const Tag = responsive
+            ? Cell
+            : (wrapperCol || labelCol) && labelAlign !== 'top'
+            ? Row
+            : 'div';
         const label = labelAlign === 'inset' ? null : this.getItemLabel();
 
         return (

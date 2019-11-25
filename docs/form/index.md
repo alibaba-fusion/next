@@ -43,6 +43,7 @@
 | onChange       | 表单变化回调<br><br>**签名**:<br>Function(values: Object, item: Object) => void<br>**参数**:<br>_values_: {Object} 表单数据<br>_item_: {Object} 详细<br>_item.name_: {String} 变化的组件名<br>_item.value_: {String} 变化的数据<br>_item.field_: {Object} field 实例 | Function        | func.noop                                              |
 | component      | 设置标签类型                                                                                                                                                                                                                                  | String/Function | 'form'                                                 |
 | device         | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                                                                                                                  | Enum            | 'desktop'                                              |
+| responsive     | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                         | Boolean         | -                                                      |
 
 ### Form.Item
 
@@ -56,7 +57,7 @@
 | wrapperCol          | 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol                                                                                       | Object             | -     |
 | help                | 自定义提示信息，如不设置，则会根据校验规则自动生成.                                                                                              | ReactNode          | -     |
 | extra               | 额外的提示信息，和 help 类似，当需要错误信息和提示文案同时出现时，可以使用这个。 位于错误信息后面                                                                    | ReactNode          | -     |
-| validateState       | 校验状态，如不设置，则会根据校验规则自动生成<br><br>**可选值**:<br>'error'(失败)<br>'success'(成功)<br>'loading'(校验中)                                | Enum               | -     |
+| validateState       | 校验状态，如不设置，则会根据校验规则自动生成<br><br>**可选值**:<br>'error'(失败)<br>'success'(成功)<br>'loading'(校验中)<br>'warning'(警告)               | Enum               | -     |
 | hasFeedback         | 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持                                                         | Boolean            | false |
 | children            | node 或者 function(values)                                                                                                | ReactNode/Function | -     |
 | fullWidth           | 单个 Item 中表单类组件宽度是否是100%                                                                                                 | Boolean            | -     |
@@ -87,6 +88,8 @@
 | validatorTrigger    | validator 自定义触发方式                                                                                                       | String/Array       | -     |
 | autoValidate        | 是否修改数据时自动触发校验                                                                                                           | Boolean            | -     |
 | device              | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                  | Enum               | -     |
+| colSpan             | 在响应式布局模式下，表单项占多少列                                                                                                       | Number             | -     |
+| labelWidth          | 在响应式布局下，且label在左边时，label的宽度是多少                                                                                          | String/Number      | -     |
 
 ### Form.Submit
 

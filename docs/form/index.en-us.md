@@ -41,6 +41,7 @@ Form layout, validation, data submission operations used.
 | value          | The value data of then form               | Object   | -    |
 | onChange       | Callback fuction trigget on form changed<br><br>**signatures**:<br>Function() => void | Function | func.noop |
 | component      | The html tag to be rendered | String   | 'form' |
+| responsive     | use ResponsiveGrid                                                                                                                                                                                                         | Boolean         | -                                                      |
 
 ### Form.Item
 
@@ -84,6 +85,9 @@ Form layout, validation, data submission operations used.
 | formatTrigger | custom trigger mode for `format` | String/Array | - |
 | validator | [validation] custom validation function <br><br> **signature **:<br>Function() => void | Function | - |
 | autoValidate | validate while value changed | Boolean            | -     |
+| colSpan             | when responsive，how many columns it takes                                                                                                       | Number             | -     |
+| labelWidth          | when responsiv and label is left, what's the label's width                                                                                          | String/Number      | -     |
+
 
 ### Form.Reset
 

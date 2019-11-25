@@ -54,3 +54,5 @@ export { default as Typography } from './typography';
 export { default as Field } from './field';
 export { default as Divider } from './divider';
 export { default as Avatar } from './avatar';
+export { default as ResponsiveGrid } from './responsive-grid';
+export { default as Box } from './box';

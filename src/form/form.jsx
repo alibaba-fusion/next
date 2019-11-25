@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { obj, func } from '../util';
 import Field from '../field';
+import RGrid from '../responsive-grid';
 
 function pickerDefined(obj) {
     const newObj = {};
@@ -103,6 +104,10 @@ export default class Form extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 是否开启内置的响应式布局 （使用ResponsiveGrid）
+         */
+        responsive: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -194,13 +199,44 @@ export default class Form extends React.Component {
             prefix,
             rtl,
             component: Tag,
+            responsive,
         } = this.props;
 
         const formClassName = classNames({
             [`${prefix}form`]: true,
             [`${prefix}inline`]: inline, // 内联
             [`${prefix}${size}`]: size,
+            [`${prefix}form-responsive-grid`]: responsive,
             [className]: !!className,
+        });
+
+        const newChildren = React.Children.map(children, child => {
+            if (
+                child &&
+                typeof child.type === 'function' &&
+                child.type._typeMark === 'form_item'
+            ) {
+                const childrenProps = {
+                    labelCol: child.props.labelCol
+                        ? child.props.labelCol
+                        : labelCol,
+                    wrapperCol: child.props.wrapperCol
+                        ? child.props.wrapperCol
+                        : wrapperCol,
+                    labelAlign: child.props.labelAlign
+                        ? child.props.labelAlign
+                        : device === 'phone'
+                        ? 'top'
+                        : labelAlign,
+                    labelTextAlign: child.props.labelTextAlign
+                        ? child.props.labelTextAlign
+                        : labelTextAlign,
+                    size: child.props.size ? child.props.size : size,
+                    responsive: responsive,
+                };
+                return React.cloneElement(child, pickerDefined(childrenProps));
+            }
+            return child;
         });
 
         return (
@@ -212,36 +248,7 @@ export default class Form extends React.Component {
                 dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}
             >
-                {React.Children.map(children, child => {
-                    if (
-                        child &&
-                        typeof child.type === 'function' &&
-                        child.type._typeMark === 'form_item'
-                    ) {
-                        const childrenProps = {
-                            labelCol: child.props.labelCol
-                                ? child.props.labelCol
-                                : labelCol,
-                            wrapperCol: child.props.wrapperCol
-                                ? child.props.wrapperCol
-                                : wrapperCol,
-                            labelAlign: child.props.labelAlign
-                                ? child.props.labelAlign
-                                : device === 'phone'
-                                ? 'top'
-                                : labelAlign,
-                            labelTextAlign: child.props.labelTextAlign
-                                ? child.props.labelTextAlign
-                                : labelTextAlign,
-                            size: child.props.size ? child.props.size : size,
-                        };
-                        return React.cloneElement(
-                            child,
-                            pickerDefined(childrenProps)
-                        );
-                    }
-                    return child;
-                })}
+                {responsive ? <RGrid>{newChildren}</RGrid> : newChildren}
             </Tag>
         );
     }

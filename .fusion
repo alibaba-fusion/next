@@ -50,6 +50,8 @@
     }
   },
   "variables": {
+    "box": "lib/box/scss/variable.scss",
+    "responsive-grid": "lib/responsive-grid/scss/variable.scss",
     "avatar": "lib/avatar/scss/variable.scss",
     "divider": "lib/divider/scss/variable.scss",
     "global": "lib/core/style/_global.scss",
