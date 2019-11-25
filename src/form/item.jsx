@@ -200,8 +200,15 @@ export default class Item extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
-        labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         responsive: PropTypes.bool,
+        /**
+         * 在响应式布局模式下，表单项占多少列
+         */
+        colSpan: PropTypes.number,
+        /**
+         * 在响应式布局下，且label在左边时，label的宽度是多少
+         */
+        labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     };
 
     static defaultProps = {

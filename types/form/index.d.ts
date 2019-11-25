@@ -193,6 +193,8 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 是否修改数据时自动触发校验
      */
     autoValidate?: boolean;
+    labelWidth?: number | string;
+    colSpan?: number;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -466,6 +468,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 设置标签类型
      */
     component?: string | (() => void);
+    responsive?: boolean;
 }
 
 export default class Form extends React.Component<FormProps, any> {

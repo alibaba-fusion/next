@@ -105,11 +105,7 @@ export default class Form extends React.Component {
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         /**
-         * 控制第一级 Item 的 label 的宽度
-         */
-        labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        /**
-         * 是否启用新的布局方式
+         * 是否开启内置的响应式布局 （使用ResponsiveGrid）
          */
         responsive: PropTypes.bool,
     };
@@ -204,7 +200,6 @@ export default class Form extends React.Component {
             prefix,
             rtl,
             component: Tag,
-            labelWidth,
             responsive,
         } = this.props;
 
@@ -239,7 +234,6 @@ export default class Form extends React.Component {
                         : labelTextAlign,
                     size: child.props.size ? child.props.size : size,
                     responsive: responsive,
-                    labelWidth: labelWidth,
                 };
                 return React.cloneElement(child, pickerDefined(childrenProps));
             }
