@@ -250,11 +250,11 @@ describe('form', () => {
 
         it('should supoort responsive', () => {
             const wrapper = mount(
-                <Form responsive>
-                    <FormItem colSpan={6}>
+                <Form responsive >
+                    <FormItem colSpan={6} labelWidth={80}>
                         <Input />
                     </FormItem>
-                    <FormItem colSpan={6}>
+                    <FormItem colSpan={6} labelWidth={100}>
                         <Input />
                     </FormItem>
                 </Form>
