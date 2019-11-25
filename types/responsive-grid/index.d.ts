@@ -14,7 +14,11 @@ export interface ResponsiveGridProps extends HTMLAttributes<HTMLElement>, Common
 export interface CellProps extends HTMLAttributes<HTMLElement>, CommonProps {
     component?: ElementType;
     rowSpan?: number;
-    colSpan?: number | {};
+    colSpan?: number | {
+        desktop?: number;
+        tablet?: number;
+        phone?: number;
+    };
 }
 
 export class Cell extends Component<CellProps, any>  {}
