@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { log, func } from '../../util';
+import { log, func, obj } from '../../util';
 import { uid } from '../util';
 
 const INPUT_STYLE = {
@@ -50,6 +50,7 @@ class IframeUploader extends React.Component {
             typeof document !== 'undefined' && document.domain
                 ? document.domain
                 : '';
+        this.uid = uid();
     }
 
     state = {
@@ -66,6 +67,7 @@ class IframeUploader extends React.Component {
 
     file = {};
 
+    uid = '';
     onLoad = () => {
         if (!this.state.uploading) {
             return;
@@ -100,7 +102,6 @@ class IframeUploader extends React.Component {
 
     startUpload() {
         this.upload(this.file);
-        this.file = {};
     }
 
     upload(file) {
@@ -110,22 +111,27 @@ class IframeUploader extends React.Component {
             this.setState({ uploading: true });
         }
 
-        const { beforeUpload } = this.props;
+        const { beforeUpload, action, name, data } = this.props;
         if (!beforeUpload) {
             return this.post(file);
         }
-        const before = beforeUpload(file);
+        const requestData = {
+            action,
+            name,
+            data,
+        };
+        const before = beforeUpload(file, requestData);
         if (before && before.then) {
             before.then(
-                () => {
-                    this.post(file);
+                data => {
+                    this.post(file, data);
                 },
                 () => {
                     this.endUpload();
                 }
             );
         } else if (before !== false) {
-            this.post(file);
+            this.post(file, obj.isPlainObject(before) ? before : undefined);
         } else {
             this.endUpload();
         }
@@ -161,21 +167,35 @@ class IframeUploader extends React.Component {
         }
     }
 
-    post(file) {
+    post(file, requestOption = {}) {
         const formNode = this.refs.form;
         const dataSpan = this.refs.data;
+        const fileInput = this.refs.input;
 
-        let data = this.props.data;
-        if (typeof data === 'function') {
-            data = data(file);
+        let propsData = this.props.data;
+        if (typeof propsData === 'function') {
+            propsData = propsData(file);
+        }
+
+        const { action, name, data } = requestOption;
+        if (name) {
+            fileInput.setAttribute('name', name);
+        }
+
+        if (action) {
+            formNode.setAttribute('action', action);
+        }
+
+        if (data) {
+            propsData = data;
         }
 
         const inputs = document.createDocumentFragment();
-        for (const key in data) {
+        for (const key in propsData) {
             if (data.hasOwnProperty(key)) {
                 const input = document.createElement('input');
                 input.setAttribute('name', key);
-                input.value = data[key];
+                input.value = propsData[key];
                 inputs.appendChild(input);
             }
         }
@@ -194,8 +214,8 @@ class IframeUploader extends React.Component {
             name,
             style,
         } = this.props;
-
-        const iframeName = `${name}-iframe`;
+        const { uid } = this;
+        const iframeName = `${name}-${uid}-iframe`;
 
         return (
             <span
@@ -223,6 +243,12 @@ class IframeUploader extends React.Component {
                     target={iframeName}
                 >
                     <input
+                        name="_documentDomain"
+                        value={this.domain}
+                        type="hidden"
+                    />
+                    <span ref="data" />
+                    <input
                         ref="input"
                         type="file"
                         accept={accept}
@@ -230,12 +256,6 @@ class IframeUploader extends React.Component {
                         onChange={this.onSelect}
                         style={INPUT_STYLE}
                     />
-                    <input
-                        name="_documentDomain"
-                        value={this.domain}
-                        type="hidden"
-                    />
-                    <span ref="data" />
                 </form>
                 {children}
             </span>
