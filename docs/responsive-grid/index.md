@@ -21,15 +21,17 @@ PC first，其他屏幕支持自适应，因此默认情况下 `device` 处于 `
 
 ### ResponsiveGrid
 
-| 参数      | 说明                                                                               | 类型                      | 默认值       |
-| ------- | -------------------------------------------------------------------------------- | ----------------------- | --------- |
-| columns | 分为几列， 默认是 12 列                                                                   | Number/String           | -         |
-| gap     | 每个 cell 之间的间距， [bottom&top, right&left]                                          | Array&lt;Number>/Number | -         |
-| device  | 设备，用来做自适应，默认为 PC<br><br>**可选值**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum                    | 'desktop' |
+| 参数        | 说明                                                                               | 类型                      | 默认值       |
+| --------- | -------------------------------------------------------------------------------- | ----------------------- | --------- |
+| device    | 设备，用来做自适应，默认为 PC<br><br>**可选值**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum                    | 'desktop' |
+| columns   | 分为几列， 默认是 12 列                                                                   | Number/String           | -         |
+| gap       | 每个 cell 之间的间距， [bottom&top, right&left]                                          | Array&lt;Number>/Number | -         |
+| component | 设置标签类型                                                                           | custom                  | 'div'     |
 
 ### ResponsiveGrid.Cell
 
-| 参数      | 说明                                                                              | 类型            | 默认值       |
-| ------- | ------------------------------------------------------------------------------- | ------------- | --------- |
-| device  | 设备，用来做自适应，默认为PC<br><br>**可选值**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum          | 'desktop' |
-| colSpan | 横向，占据几列                                                                         | Number/Object | -         |
+| 参数        | 说明                                                                              | 类型            | 默认值       |
+| --------- | ------------------------------------------------------------------------------- | ------------- | --------- |
+| colSpan   | 横向，占据几列                                                                         | Number/Object | -         |
+| rowSpan   | 纵向，占据几行                                                                         | Number        | -         |
+| component | 设置标签类型                                                                          | custom        | 'div'     |

@@ -49,6 +49,11 @@ class ResponsiveGrid extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.any,
+        /**
+         * 设备，用来做自适应，默认为 PC
+         * @enumdesc 手机, 平板, PC
+         */
+        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 分为几列， 默认是 12 列
@@ -62,11 +67,9 @@ class ResponsiveGrid extends Component {
             PropTypes.number,
         ]),
         /**
-         * 设备，用来做自适应，默认为 PC
-         * @enumdesc 手机, 平板, PC
+         * 设置标签类型
          */
-        device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
-        component: PropTypes.string,
+        component: PropTypes.elementType,
     };
 
     static defaultProps = {

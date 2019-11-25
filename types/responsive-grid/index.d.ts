@@ -12,12 +12,9 @@ export interface ResponsiveGridProps extends HTMLAttributes<HTMLElement>, Common
 }
 
 export interface CellProps extends HTMLAttributes<HTMLElement>, CommonProps {
-    device?: 'phone' | 'tablet' | 'desktop';
     component?: ElementType;
     rowSpan?: number;
-    colSpan?: number;
-    tabletColSpan?: number;
-    phoneColSpan?: number;
+    colSpan?: number | {};
 }
 
 export class Cell extends Component<CellProps, any>  {}

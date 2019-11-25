@@ -18,13 +18,16 @@ Css-grid, added in 1.19.0+
 
 | Param | Descripiton  | Type  | Default Value |
 | ------- | -------------------------------------------------------------------------------- | ----------------------- | --------- |
+| device  | device for responsive C<br><br>**options**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum                    | 'desktop' |
 | columns | how many columns in total, 12 by default                                                                   | Number/String           | -         |
 | gap     | gap among each cell [bottom&top, right&left]                                          | Array&lt;Number>/Number | -         |
-| device  | device for responsive C<br><br>**options**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum                    | 'desktop' |
+| component | The html tag to be rendered | custom | 'div' |
 
 ### ResponsiveGrid.Cell
 
 | Param | Descripiton  | Type  | Default Value |
 | ------------- | ------------------------------------------------------------------------------- | ------ | --------- |
-| device        | device for responsive<br><br>**options**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum   | 'desktop' |
 | colSpan       | in hoz, how many columns it takes                                         | Number/Object | -         |
+| rowSpan       | in ver, how many rows it takes                                                                       | Number        | -         |
+| component | The html tag to be rendered | custom | 'div' |
+

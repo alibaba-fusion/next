@@ -10,17 +10,19 @@ const { pickOthers } = obj;
 class Cell extends Component {
     static _typeMark = 'responsive_grid_cell';
     static propTypes = {
-        /**
-         * 设备，用来做自适应，默认为PC
-         * @enumdesc 手机, 平板, PC
-         */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
-        rowSpan: PropTypes.number,
         /**
          * 横向，占据几列
          */
         colSpan: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
-        component: PropTypes.string,
+        /**
+         * 纵向，占据几行
+         */
+        rowSpan: PropTypes.number,
+        /**
+         * 设置标签类型
+         */
+        component: PropTypes.elementType,
     };
 
     static defaultProps = {
