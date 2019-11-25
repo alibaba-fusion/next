@@ -97,6 +97,7 @@ export function getLocaleData(
     };
 }
 
+/* istanbul ignore next */
 export function getYears(yearRange, yearRangeOffset, year) {
     const options = [];
     let [startYear, endYear] = yearRange;
@@ -114,6 +115,7 @@ export function getYears(yearRange, yearRangeOffset, year) {
     return options;
 }
 
+/* istanbul ignore next */
 export function getMonths(momentLocale) {
     const localeMonths = momentLocale.monthsShort();
     const options = [];
