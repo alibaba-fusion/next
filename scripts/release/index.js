@@ -22,7 +22,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
 
     const publish = yield inquirer.prompt([
         {
@@ -43,9 +43,9 @@ co(function*() {
         },
     ]);
 
-    if (publish.normal === 'yes') {
-        yield pushMaster();
-    }
+    // if (publish.normal === 'yes') {
+    //     yield pushMaster();
+    // }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
 }).catch(err => {
@@ -86,8 +86,8 @@ function* pushMaster() {
 
 function* pushPlatformDocsBranch() {
     const docs = path.join(cwd, 'platform-docs');
-    yield runCommond(`git tag ${masterTag}`);
-    yield runCommond(`git push origin ${masterTag}`);
+    // yield runCommond(`git tag ${masterTag}`);
+    // yield runCommond(`git push origin ${masterTag}`);
 
     try {
         yield fs.ensureDir(docs);
