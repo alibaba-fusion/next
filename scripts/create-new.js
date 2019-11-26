@@ -38,7 +38,7 @@ co(function*() {
     const name = getComponentName(dashName);
 
     // copy src/ docs/ types/
-    glob(`scripts/create/**/**/*.*`, function(err, files) {
+    glob(`scripts/create/**/**/*.*`, function(_err, files) {
         files.forEach(oldPath => {
             const pathArray = oldPath.replace('scripts/create/', '').split('/');
             pathArray.splice(1, 0, dashName);
