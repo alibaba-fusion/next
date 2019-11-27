@@ -92,7 +92,7 @@ class Base extends React.Component {
          */
         name: PropTypes.string,
         rtl: PropTypes.bool,
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         locale: PropTypes.object,
         /**
          * 是否为预览态

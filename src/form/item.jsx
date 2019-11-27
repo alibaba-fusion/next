@@ -209,6 +209,15 @@ export default class Item extends React.Component {
          * 在响应式布局下，且label在左边时，label的宽度是多少
          */
         labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        /**
+         * 是否开启预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {any} value 根据包裹的组件的 value 类型而决定
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -279,7 +288,9 @@ export default class Item extends React.Component {
     }
 
     getIsPreview() {
-        return this.props.isPreview || this.context._formPreview;
+        return 'isPreview' in this.props
+            ? this.props.isPreview
+            : this.context._formPreview;
     }
 
     getFullWidth() {
@@ -353,6 +364,7 @@ export default class Item extends React.Component {
             children,
             extra,
             prefix,
+            renderPreview,
         } = this.props;
 
         const labelAlign = this.getLabelAlign(
@@ -369,6 +381,13 @@ export default class Item extends React.Component {
 
         if (isPreview) {
             childrenProps.isPreview = true;
+        }
+
+        if (
+            'renderPreview' in this.props &&
+            typeof renderPreview === 'function'
+        ) {
+            childrenProps.renderPreview = renderPreview;
         }
 
         if (state && (state === 'error' || hasFeedback)) {

@@ -51,7 +51,7 @@ export default class TextArea extends Base {
          * 状态
          * @enumdesc 错误
          */
-        state: PropTypes.oneOf(['error']),
+        state: PropTypes.oneOf(['error', 'warning']),
         /**
          * 自动高度 true / {minRows: 2, maxRows: 4}
          */

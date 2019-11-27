@@ -108,6 +108,10 @@ export default class Form extends React.Component {
          * 是否开启内置的响应式布局 （使用ResponsiveGrid）
          */
         responsive: PropTypes.bool,
+        /**
+         * 是否开启预览态
+         */
+        isPreview: PropTypes.bool,
     };
 
     static defaultProps = {
