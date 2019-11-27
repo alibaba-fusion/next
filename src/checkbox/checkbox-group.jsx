@@ -168,39 +168,25 @@ class CheckboxGroup extends Component {
         } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
-        if (isPreview) {
-            const previewCls = classnames(className, `${prefix}form-preview`);
-
-            if ('renderPreview' in this.props) {
-                return (
-                    <div
-                        {...others}
-                        dir={rtl ? 'rtl' : undefined}
-                        className={previewCls}
-                    >
-                        {renderPreview(this.state.value, this.props)}
-                    </div>
-                );
-            }
-
-            return (
-                <p
-                    {...others}
-                    dir={rtl ? 'rtl' : undefined}
-                    className={previewCls}
-                >
-                    {this.state.value.join(', ')}
-                </p>
-            );
-        }
-
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
         let children;
+        const previewed = [];
         if (this.props.children) {
             children = React.Children.map(this.props.children, child => {
                 if (!React.isValidElement(child)) {
                     return child;
                 }
+                const checked =
+                    this.state.value &&
+                    this.state.value.indexOf(child.props.value) > -1;
+
+                if (checked) {
+                    previewed.push({
+                        label: child.props.children,
+                        value: child.props.value,
+                    });
+                }
+
                 return React.cloneElement(
                     child,
                     child.props.rtl === undefined ? { rtl } : null
@@ -220,6 +206,13 @@ class CheckboxGroup extends Component {
                     this.state.value &&
                     this.state.value.indexOf(option.value) > -1;
 
+                if (checked) {
+                    previewed.push({
+                        label: option.label,
+                        value: option.value,
+                    });
+                }
+
                 return (
                     <Checkbox
                         key={index}
@@ -231,6 +224,32 @@ class CheckboxGroup extends Component {
                     />
                 );
             });
+        }
+
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div
+                        {...others}
+                        dir={rtl ? 'rtl' : undefined}
+                        className={previewCls}
+                    >
+                        {renderPreview(previewed, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p
+                    {...others}
+                    dir={rtl ? 'rtl' : undefined}
+                    className={previewCls}
+                >
+                    {previewed.map(item => item.label).join(', ')}
+                </p>
+            );
         }
 
         const cls = classnames({

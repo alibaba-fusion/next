@@ -192,25 +192,8 @@ class RadioGroup extends Component {
             others.dir = 'rtl';
         }
 
-        if (isPreview) {
-            const previewCls = classnames(className, `${prefix}form-preview`);
-
-            if ('renderPreview' in this.props) {
-                return (
-                    <div {...others} className={previewCls}>
-                        {renderPreview(this.state.value, this.props)}
-                    </div>
-                );
-            }
-
-            return (
-                <p {...others} className={previewCls}>
-                    {this.state.value}
-                </p>
-            );
-        }
-
         let children;
+        const previewed = {};
         if (this.props.children) {
             children = React.Children.map(
                 this.props.children,
@@ -219,6 +202,10 @@ class RadioGroup extends Component {
                         return child;
                     }
                     const checked = this.state.value === child.props.value;
+                    if (checked) {
+                        previewed.label = child.props.children;
+                        previewed.value = child.props.value;
+                    }
                     const tabIndex =
                         (index === 0 && !this.state.value) || checked ? 0 : -1;
                     const childrtl =
@@ -250,6 +237,10 @@ class RadioGroup extends Component {
                     };
                 }
                 const checked = this.state.value === option.value;
+                if (checked) {
+                    previewed.label = option.label;
+                    previewed.value = option.value;
+                }
                 return (
                     <Radio
                         key={index}
@@ -265,6 +256,24 @@ class RadioGroup extends Component {
                     />
                 );
             });
+        }
+
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(previewed, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p {...others} className={previewCls}>
+                    {previewed.label}
+                </p>
+            );
         }
 
         const isButtonShape = shape === 'button';
