@@ -211,7 +211,7 @@ export default class RangePicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {[MomentObject, MomentObject]} value 日期区间
+         * @param {Array<MomentObject, MomentObject>} value 日期区间
          */
         renderPreview: PropTypes.func,
         ranges: PropTypes.object,

@@ -104,7 +104,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error';
+    state?: 'error' | 'warning';
 
     /**
      * 是否有边框
@@ -252,7 +252,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error' | 'loading' | 'success';
+    state?: 'error' | 'loading' | 'success' | 'warning';
 
     /**
      * label

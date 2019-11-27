@@ -89,7 +89,7 @@
 | autoValidate        | 是否修改数据时自动触发校验                                                                                                           | Boolean            | -     |
 | device              | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                  | Enum               | -     |
 | colSpan             | 在响应式布局模式下，表单项占多少列                                                                                                       | Number             | -     |
-| labelWidth          | 在响应式布局下，且label在左边时，label的宽度是多少                                                                                          | String/Number      | -     |
+| labelWidth          | 在响应式布局下，且label在左边时，label的宽度是多少                                                                                          | String/Number      | 100   |
 
 ### Form.Submit
 
