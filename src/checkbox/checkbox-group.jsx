@@ -181,7 +181,10 @@ class CheckboxGroup extends Component {
                     this.state.value.indexOf(child.props.value) > -1;
 
                 if (checked) {
-                    previewed.push(child.props.children);
+                    previewed.push({
+                        label: child.props.children,
+                        value: child.props.value,
+                    });
                 }
 
                 return React.cloneElement(
@@ -204,7 +207,10 @@ class CheckboxGroup extends Component {
                     this.state.value.indexOf(option.value) > -1;
 
                 if (checked) {
-                    previewed.push(option.label);
+                    previewed.push({
+                        label: option.label,
+                        value: option.value,
+                    });
                 }
 
                 return (
@@ -230,7 +236,7 @@ class CheckboxGroup extends Component {
                         dir={rtl ? 'rtl' : undefined}
                         className={previewCls}
                     >
-                        {renderPreview(this.state.value, this.props)}
+                        {renderPreview(previewed, this.props)}
                     </div>
                 );
             }
@@ -241,7 +247,7 @@ class CheckboxGroup extends Component {
                     dir={rtl ? 'rtl' : undefined}
                     className={previewCls}
                 >
-                    {previewed.join(', ')}
+                    {previewed.map(item => item.label).join(', ')}
                 </p>
             );
         }

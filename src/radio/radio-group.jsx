@@ -193,7 +193,7 @@ class RadioGroup extends Component {
         }
 
         let children;
-        let previewed;
+        const previewed = {};
         if (this.props.children) {
             children = React.Children.map(
                 this.props.children,
@@ -203,7 +203,8 @@ class RadioGroup extends Component {
                     }
                     const checked = this.state.value === child.props.value;
                     if (checked) {
-                        previewed = child.props.children;
+                        previewed.label = child.props.children;
+                        previewed.value = child.props.value;
                     }
                     const tabIndex =
                         (index === 0 && !this.state.value) || checked ? 0 : -1;
@@ -237,7 +238,8 @@ class RadioGroup extends Component {
                 }
                 const checked = this.state.value === option.value;
                 if (checked) {
-                    previewed = option.label;
+                    previewed.label = option.label;
+                    previewed.value = option.value;
                 }
                 return (
                     <Radio
@@ -262,14 +264,14 @@ class RadioGroup extends Component {
             if ('renderPreview' in this.props) {
                 return (
                     <div {...others} className={previewCls}>
-                        {renderPreview(this.state.value, this.props)}
+                        {renderPreview(previewed, this.props)}
                     </div>
                 );
             }
 
             return (
                 <p {...others} className={previewCls}>
-                    {previewed}
+                    {previewed.label}
                 </p>
             );
         }
