@@ -113,7 +113,7 @@ class Demo extends React.Component {
                     </FormItem>
 
                     <FormItem required label="Checkbox:">
-                        <Checkbox.Group isPreview itemDirection="ver" value={['react', 'vue']}>
+                        <Checkbox.Group itemDirection="ver" value={['react', 'vue']}>
                             <Checkbox value="react">React</Checkbox>
                             <Checkbox value="vue">Vue</Checkbox>
                             <Checkbox value="angular">Angular</Checkbox>
@@ -129,7 +129,7 @@ class Demo extends React.Component {
                             <Radio value="angular">Angular</Radio>
                         </Radio.Group>
                     </FormItem>
-                    
+
                     <FormItem required label="Range:">
                         <Range slider="double" isPreview defaultValue={[10, 80]} />
                     </FormItem>

@@ -168,6 +168,58 @@ class CheckboxGroup extends Component {
         } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
+        // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
+        let children;
+        const previewed = [];
+        if (this.props.children) {
+            children = React.Children.map(this.props.children, child => {
+                if (!React.isValidElement(child)) {
+                    return child;
+                }
+                const checked =
+                    this.state.value &&
+                    this.state.value.indexOf(child.props.value) > -1;
+
+                if (checked) {
+                    previewed.push(child.props.children);
+                }
+
+                return React.cloneElement(
+                    child,
+                    child.props.rtl === undefined ? { rtl } : null
+                );
+            });
+        } else {
+            children = this.props.dataSource.map((item, index) => {
+                let option = item;
+                if (typeof item !== 'object') {
+                    option = {
+                        label: item,
+                        value: item,
+                        disabled,
+                    };
+                }
+                const checked =
+                    this.state.value &&
+                    this.state.value.indexOf(option.value) > -1;
+
+                if (checked) {
+                    previewed.push(option.label);
+                }
+
+                return (
+                    <Checkbox
+                        key={index}
+                        value={option.value}
+                        checked={checked}
+                        rtl={rtl}
+                        disabled={disabled || option.disabled}
+                        label={option.label}
+                    />
+                );
+            });
+        }
+
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
 
@@ -189,48 +241,9 @@ class CheckboxGroup extends Component {
                     dir={rtl ? 'rtl' : undefined}
                     className={previewCls}
                 >
-                    {this.state.value.join(', ')}
+                    {previewed.join(', ')}
                 </p>
             );
-        }
-
-        // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
-        let children;
-        if (this.props.children) {
-            children = React.Children.map(this.props.children, child => {
-                if (!React.isValidElement(child)) {
-                    return child;
-                }
-                return React.cloneElement(
-                    child,
-                    child.props.rtl === undefined ? { rtl } : null
-                );
-            });
-        } else {
-            children = this.props.dataSource.map((item, index) => {
-                let option = item;
-                if (typeof item !== 'object') {
-                    option = {
-                        label: item,
-                        value: item,
-                        disabled,
-                    };
-                }
-                const checked =
-                    this.state.value &&
-                    this.state.value.indexOf(option.value) > -1;
-
-                return (
-                    <Checkbox
-                        key={index}
-                        value={option.value}
-                        checked={checked}
-                        rtl={rtl}
-                        disabled={disabled || option.disabled}
-                        label={option.label}
-                    />
-                );
-            });
         }
 
         const cls = classnames({
