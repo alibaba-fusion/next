@@ -120,7 +120,7 @@ class Demo extends React.Component {
                         </Checkbox.Group>
                     </FormItem>
 
-                    <FormItem required label="Radio">
+                    <FormItem required label="Radio:">
                         <Radio.Group name="radio" defaultValue={'react'} >
                             <Radio value="react">React</Radio>
                             <Radio value="vue">Vue</Radio>
