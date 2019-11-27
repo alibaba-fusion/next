@@ -37,7 +37,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 校验状态，如不设置，则会根据校验规则自动生成
      */
-    validateState?: 'error' | 'success' | 'loading';
+    validateState?: 'error' | 'success' | 'loading' | 'warning';
 
     /**
      * 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持
@@ -195,6 +195,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     autoValidate?: boolean;
     labelWidth?: number | string;
     colSpan?: number;
+    isPreview?: boolean;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -469,6 +470,8 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      */
     component?: string | (() => void);
     responsive?: boolean;
+    isPreview?: boolean;
+    renderPreview?: (values: number | string | Array<number | string | any>, props: any) => void
 }
 
 export default class Form extends React.Component<FormProps, any> {

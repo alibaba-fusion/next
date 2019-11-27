@@ -29,9 +29,9 @@ export default class Input extends Base {
         hasBorder: PropTypes.bool,
         /**
          * 状态
-         * @enumdesc 错误, 校验中, 成功
+         * @enumdesc 错误, 校验中, 成功, 警告
          */
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
          * 尺寸
          * @enumdesc 小, 中, 大

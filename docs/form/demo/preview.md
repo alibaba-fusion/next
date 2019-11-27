@@ -74,8 +74,8 @@ class Demo extends React.Component {
         return (
             <div>
                 <Form {...formItemLayout} isPreview={this.state.preview} size={this.state.size} style={{maxWidth: '800px'}}>
-                    <FormItem label="preview: " style={{marginBottom: 0}}>
-                        <Switch isPreview={false} onChange={this.onPreviewChange} />
+                    <FormItem label="preview: " isPreview={false} size="small" style={{marginBottom: 0}}>
+                        <Switch size="large" onChange={this.onPreviewChange} />
                     </FormItem>
                     <div style={{height: 1, width: '100%', margin: '20px 0'}}/>
                     <FormItem required label="Username:">
@@ -90,48 +90,46 @@ class Demo extends React.Component {
                     </FormItem>
 
                     <FormItem required label="Number:">
-                        <NumberPicker name="number" isPreview defaultValue={1} />
+                        <NumberPicker name="number" defaultValue={1} />
                     </FormItem>
 
                     <FormItem required label="autoComplete:">
-                        <Select.AutoComplete name="autoComplete" isPreview defaultValue="selected" />
+                        <Select.AutoComplete name="autoComplete" defaultValue="selected" />
                     </FormItem>
 
                     <FormItem required label="multiple Select:">
-                        <Select name="select" isPreview defaultValue={["a", "b"]} mode="multiple" >
-                            <Select.Option value="a">a</Select.Option>
-                            <Select.Option value="b">b</Select.Option>
+                        <Select name="select" defaultValue={["apple", "banana"]} mode="multiple" >
+                            <Select.Option value="apple">Apple</Select.Option>
+                            <Select.Option value="banana">Banana</Select.Option>
                         </Select>
                     </FormItem>
 
                     <FormItem required label="Rating:">
-                        <Rating defaultValue={4.5} name="rate" isPreview aria-label="what's the rate score" />
+                        <Rating defaultValue={4.5} name="rate" aria-label="what's the rate score" />
                     </FormItem>
 
-                    <FormItem required label="Custom Render Rating:">
-                        <Rating defaultValue={4.5} name="rate2" isPreview aria-label="what's the rate2 score" renderPreview={this.ratingPreview}/>
+                    <FormItem required label="Custom Render Rating:" renderPreview={this.ratingPreview}>
+                        <Rating defaultValue={4.5} name="rate2" aria-label="what's the rate2 score" />
                     </FormItem>
 
                     <FormItem required label="Checkbox:">
-                        <Checkbox.Group isPreview itemDirection="ver" value={['react', 'vue']}>
+                        <Checkbox.Group name="checkbox" defaultValue={['react', 'vue']}>
                             <Checkbox value="react">React</Checkbox>
                             <Checkbox value="vue">Vue</Checkbox>
                             <Checkbox value="angular">Angular</Checkbox>
                         </Checkbox.Group>
                     </FormItem>
 
-                    <FormItem required label="Custom Render Rating:">
-                        <Radio.Group
-                            value="react"
-                        >
+                    <FormItem required label="Radio:">
+                        <Radio.Group name="radio" defaultValue={'react'} >
                             <Radio value="react">React</Radio>
                             <Radio value="vue">Vue</Radio>
                             <Radio value="angular">Angular</Radio>
                         </Radio.Group>
                     </FormItem>
-                    
+
                     <FormItem required label="Range:">
-                        <Range slider="double" isPreview defaultValue={[10, 80]} />
+                        <Range name="range" slider="double" defaultValue={[10, 80]} />
                     </FormItem>
 
                     <FormItem label="Note:">
@@ -139,10 +137,10 @@ class Demo extends React.Component {
                     </FormItem>
 
                     <FormItem label="Upload:">
-                        <Upload defaultValue={fileList} listType="text" />
+                        <Upload name="upload" defaultValue={fileList} listType="text" />
                     </FormItem>
                     <FormItem label="Upload:">
-                        <Upload defaultValue={fileList} listType="image" />
+                        <Upload name="upload2" defaultValue={fileList} listType="image" />
                     </FormItem>
                     <FormItem wrapperCol={{offset: 7}}>
                         <Form.Submit validate type="primary" onClick={this.submitHandler}>Submit</Form.Submit>
