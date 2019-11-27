@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const glob = require('glob');
 const cp = require('child_process');
 const co = require('co');
 const Github = require('@octokit/rest')();
@@ -23,6 +24,7 @@ const runCommond = function(cmd) {
 
 co(function*() {
     checkTags();
+    checkFiles();
 
     const publish = yield inquirer.prompt([
         {
@@ -71,6 +73,64 @@ function checkTags() {
             `There is no [${masterTag}] or [${buildTag}] exits`,
             '\n'
         );
+    }
+}
+
+function checkFiles() {
+    const paths = [
+        'dist/next.min.js',
+        'dist/next.min.css',
+        'dist/next.js',
+        'dist/next.css',
+        'dist/next-noreset.css',
+        'dist/next-noreset.min.css',
+        'dist/next.min-1.css',
+        'dist/next.min-2.css',
+        'dist/next-with-locales.js',
+        'dist/next-with-locales.min.js',
+        'es/index.js',
+        'lib/index.d.ts',
+        'lib/index.js',
+        'types/index.d.ts',
+        'index-noreset.scss',
+        'index-with-locales.js',
+        'index.js',
+        'index.scss',
+        'reset.scss',
+        'variables.scss',
+        '.fusion',
+    ];
+    paths.forEach(p => {
+        if (!fs.existsSync(p)) {
+            logger.error(`Missing: ${p}`);
+            process.exit(0);
+        }
+    });
+    const libPath = path.join(cwd, 'lib');
+    const srcPath = path.join(cwd, 'src');
+    const esPath = path.join(cwd, 'es');
+    const typesPath = path.join(cwd, 'types');
+
+    const libLen = fs.readdirSync(libPath).length;
+    const srcLen = fs.readdirSync(srcPath).length;
+    const esLen = fs.readdirSync(esPath).length;
+    const typesLen = fs.readdirSync(typesPath).length;
+
+    if (
+        !(
+            typesLen === srcLen - 7 &&
+            typesLen === libLen - 5 &&
+            typesLen === esLen - 3
+        )
+    ) {
+        // src : demo-helper / core / mixin-ui-state / validate / .editorconfig / .eslintrc / .stylelintrc
+        // lib : core / mixin-ui-state / validate / _components / index.d.ts
+        // es : core / mixin-ui-state / validate
+        // types: util.d.ts
+        logger.error(
+            `srcLen, libLen, esLen, typesLen: ${srcLen} ${libLen} ${esLen} ${typesLen}`
+        );
+        process.exit(0);
     }
 }
 
