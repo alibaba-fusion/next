@@ -44,6 +44,8 @@
 | fixedWidth     | 是否为拖动线段类型,默认slider为double, defaultValue必传且指定区间                                                                                                                              | Boolean                                | false          |
 | tooltipVisible | tooltip是否默认展示                                                                                                                                                               | Boolean                                | false          |
 | rtl            | 是否已rtl模式展示                                                                                                                                                                  | Boolean                                | false          |
+| isPreview      | 是否为预览态                                                                                                                                                                      | Boolean                                | false          |
+| renderPreview  | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                           | Function                               | -              |
 
 ## ARIA and KeyBoard
 

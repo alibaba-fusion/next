@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { data } from '../checkbox';
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -471,7 +472,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     component?: string | (() => void);
     responsive?: boolean;
     isPreview?: boolean;
-    renderPreview?: (values: number | string | Array<number | string | any>, props: any) => void
+    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => void
 }
 
 export default class Form extends React.Component<FormProps, any> {

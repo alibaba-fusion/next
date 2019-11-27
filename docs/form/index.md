@@ -44,6 +44,7 @@
 | component      | 设置标签类型                                                                                                                                                                                                                                  | String/Function | 'form'                                                 |
 | device         | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                                                                                                                  | Enum            | 'desktop'                                              |
 | responsive     | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                         | Boolean         | -                                                      |
+| isPreview      | 是否开启预览态                                                                                                                                                                                                                                 | Boolean         | -                                                      |
 
 ### Form.Item
 
@@ -90,6 +91,8 @@
 | device              | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                  | Enum               | -     |
 | colSpan             | 在响应式布局模式下，表单项占多少列                                                                                                       | Number             | -     |
 | labelWidth          | 在响应式布局下，且label在左边时，label的宽度是多少                                                                                          | String/Number      | 100   |
+| isPreview           | 是否开启预览态                                                                                                                 | Boolean            | -     |
+| renderPreview       | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: any) => void<br>**参数**:<br>_value_: {any} 根据包裹的组件的 value 类型而决定            | Function           | -     |
 
 ### Form.Submit
 
