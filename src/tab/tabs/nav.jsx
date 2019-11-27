@@ -229,12 +229,11 @@ class Nav extends React.Component {
         // TEMP: 这里会受 Animate 影响，re-render 过程中 this.nav 实际上指向的是上次的 tabList 元素，建议暂时关闭 animation 解决
         const navWH = getOffsetWH(this.nav, tabPosition);
         const wrapperWH = getOffsetWH(this.wrapper, tabPosition);
-        const navbarWH = getOffsetWH(this.navbar, tabPosition);
         const minOffset = wrapperWH - navWH;
 
         let next;
         let prev;
-        if (minOffset >= 0 || navWH <= navbarWH) {
+        if (minOffset >= 0 || navWH <= wrapperWH) {
             next = false;
             prev = false;
             this.setOffset(0, false); // no need to check slide again since this call is invoked from inside setSlideBtn
@@ -248,6 +247,7 @@ class Nav extends React.Component {
             prev = true;
             next = true;
         }
+
         if ((prev || next) !== this.state.showBtn) {
             this.setState({
                 showBtn: prev || next,
@@ -661,12 +661,7 @@ class Nav extends React.Component {
             }
         }
 
-        const navbarCls = classnames(
-            {
-                [`${prefix}tabs-bar`]: true,
-            },
-            className
-        );
+        const navbarCls = classnames(`${prefix}tabs-bar`, className);
 
         return (
             <div
