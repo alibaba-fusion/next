@@ -522,6 +522,10 @@ class Nav extends React.Component {
         this.wrapper = ref;
     };
 
+    navbarRefHandler = ref => {
+        this.navbar = ref;
+    };
+
     activeTabRefHandler = ref => {
         this.activeTab = ref;
     };
@@ -660,7 +664,11 @@ class Nav extends React.Component {
         const navbarCls = classnames(`${prefix}tabs-bar`, className);
 
         return (
-            <div className={navbarCls} style={style}>
+            <div
+                className={navbarCls}
+                style={style}
+                ref={this.navbarRefHandler}
+            >
                 {navChildren}
             </div>
         );
