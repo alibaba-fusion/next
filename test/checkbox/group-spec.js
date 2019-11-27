@@ -228,7 +228,7 @@ describe('Checkbox.Group', () => {
             const wrapper = mount(
                 <CheckboxGroup isPreview defaultValue={['apple']} dataSource={list} />
             );
-            assert(wrapper.getDOMNode().innerText === 'apple');
+            assert(wrapper.getDOMNode().innerText === '苹果');
         });
 
         it('should renderPreview', () => {
