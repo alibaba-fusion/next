@@ -246,13 +246,15 @@ export default class Dialog extends Component {
             maxBodyHeight = 1;
         }
 
-        this.dialogBodyStyleMaxHeight = bodyNode.style.maxHeight;
-        this.dialogBodyStyleOverflowY = bodyNode.style.overflowY;
+        if (bodyNode) {
+            this.dialogBodyStyleMaxHeight = bodyNode.style.maxHeight;
+            this.dialogBodyStyleOverflowY = bodyNode.style.overflowY;
 
-        setStyle(bodyNode, {
-            'max-height': `${maxBodyHeight}px`,
-            'overflow-y': 'auto',
-        });
+            setStyle(bodyNode, {
+                'max-height': `${maxBodyHeight}px`,
+                'overflow-y': 'auto',
+            });
+        }
     }
 
     revertSize(bodyNode) {
