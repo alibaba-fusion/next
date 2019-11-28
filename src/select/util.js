@@ -10,7 +10,7 @@ import { Children } from 'react';
  * @return {boolean} is single mode
  */
 export function isSingle(mode) {
-    return !mode || mode === 'single' || mode === 'combobox';
+    return !mode || mode === 'single';
 }
 
 /**

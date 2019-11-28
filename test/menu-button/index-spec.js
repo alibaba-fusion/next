@@ -45,7 +45,7 @@ describe('MenuButton', () => {
             wrapper.setProps({ selectedKeys: ['b'] });
             assert(
                 wrapper
-                    .find('li[title="b"][role="listitem"]')
+                    .find('li[title="b"][role="option"]')
                     .hasClass('next-selected')
             );
         });
@@ -82,10 +82,10 @@ describe('MenuButton', () => {
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('li[title="b"][role="listitem"]').simulate('click');
+            wrapper.find('li[title="b"][role="option"]').simulate('click');
             assert(
                 wrapper
-                    .find('li[title="b"][role="listitem"]')
+                    .find('li[title="b"][role="option"]')
                     .hasClass('next-selected')
             );
         });
@@ -101,10 +101,10 @@ describe('MenuButton', () => {
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('li[title="b"][role="listitem"]').simulate('click');
+            wrapper.find('li[title="b"][role="option"]').simulate('click');
             assert(
                 wrapper
-                    .find('li[title="a"][role="listitem"]')
+                    .find('li[title="a"][role="option"]')
                     .hasClass('next-selected')
             );
         });
@@ -117,7 +117,7 @@ describe('MenuButton', () => {
                     {menu}
                 </MenuButton>
             );
-            wrapper.find('li[title="b"][role="listitem"]').simulate('click');
+            wrapper.find('li[title="b"][role="option"]').simulate('click');
             assert(onItemClick.calledOnce);
             assert(onVisibleChange.notCalled);
         })

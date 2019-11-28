@@ -18,8 +18,8 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
     &-menu-wrapper {
         float: left;
         overflow: auto;
-        width: $s-25;
-        height: $s-8 * 6;
+        width: $cascader-menu-width;
+        height: $cascader-menu-height;
         overflow-x: hidden;
         overflow-y: auto;
         & + & {

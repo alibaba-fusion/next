@@ -124,9 +124,20 @@ class YearPicker extends Component {
          * 日期输入框的 aria-label 属性
          */
         dateInputAriaLabel: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 年份
+         */
+        renderPreview: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -293,6 +304,28 @@ class YearPicker extends Component {
         this.props.onVisibleChange(visible, reason);
     };
 
+    renderPreview(others) {
+        const { prefix, format, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames(className, `${prefix}form-preview`);
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -313,11 +346,14 @@ class YearPicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
             dateInputAriaLabel,
             yearCellRender,
+            isPreview,
             ...others
         } = this.props;
 
@@ -341,6 +377,12 @@ class YearPicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, YearPicker.PropTypes)
+            );
         }
 
         const panelInputCls = `${prefix}year-picker-panel-input`;
@@ -403,33 +445,41 @@ class YearPicker extends Component {
             </div>
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(YearPicker.propTypes, others)}
                 className={yearPickerCls}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}year-picker-panel-header`}>
-                            {dateInput}
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
+                            <div
+                                className={`${prefix}year-picker-panel-header`}
+                            >
+                                {dateInput}
+                            </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

@@ -304,7 +304,7 @@ describe('Nav', () => {
 
         let nav = wrapper.find('ul.next-nav');
         assert(nav.hasClass('next-icon-only'));
-        assert(nav.prop('style').width === '60px');
+        assert(nav.prop('style').width === '58px');
 
         let items = nav.find('li.next-nav-item');
         assert(items.at(0).find('i.next-nav-icon').length === 1);

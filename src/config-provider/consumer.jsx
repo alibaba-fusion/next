@@ -67,6 +67,7 @@ Consumer.contextTypes = {
     newRtl: PropTypes.bool,
     nextWarning: PropTypes.bool,
     nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
+    nextPopupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 };
 
 export default Consumer;

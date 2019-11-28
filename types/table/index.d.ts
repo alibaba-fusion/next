@@ -65,6 +65,11 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.
      */
     resizable?: boolean;
+
+    /**
+     * header cell 横跨的格数，设置为0表示不出现此 th
+     */
+    colSpan?: number;
 }
 
 export class Column extends React.Component<ColumnProps, any> {}
@@ -315,16 +320,19 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 是否启用选择模式
      */
     rowSelection?: {
-        getProps?: (record: object, index: number) => void;
+        getProps?: (record: {}, index: number) => void;
         onChange?: (selectedRowKeys: Array<any>, records: Array<any>) => void;
         onSelect?: (
             selected: boolean,
-            record: object,
+            record: {},
             records: Array<any>
         ) => void;
         onSelectAll?: (selected: boolean, records: Array<any>) => void;
         selectedRowKeys?: Array<any>;
         mode?: 'single' | 'multiple';
+        titleProps?: () => {};
+        columnProps?: () => {};
+        titleAddons?: () => {};
     };
 
     /**

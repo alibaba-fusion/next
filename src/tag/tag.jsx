@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Animate from '../animate';
 import Icon from '../icon';
-import { obj, func, support, KEYCODE } from '../util';
+import { func, KEYCODE, obj, support } from '../util';
 import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
 
 const { noop, bindCtx } = func;
+
+const PRESET_COLOR_REG = /blue|green|orange|red|turquoise|yellow/;
 
 /**
  * Tag
@@ -28,12 +30,16 @@ class Tag extends Component {
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
 
-        closable: PropTypes.bool,
+        /**
+         * 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效
+         */
+        color: PropTypes.string,
         /**
          * 是否开启动效
          */
         animation: PropTypes.bool,
         closeArea: PropTypes.oneOf(['tag', 'tail']),
+        closable: PropTypes.bool,
         onClose: PropTypes.func,
         afterClose: PropTypes.func,
         /**
@@ -184,11 +190,38 @@ class Tag extends Component {
             </span>
         );
     }
+
+    isPresetColor() {
+        const { color } = this.props;
+
+        if (!color) {
+            return false;
+        }
+
+        return PRESET_COLOR_REG.test(color);
+    }
+
+    getTagStyle() {
+        const { color = '', style } = this.props;
+        const isPresetColor = this.isPresetColor();
+        const customColorStyle = {
+            backgroundColor: color,
+            borderColor: color,
+            color: '#fff',
+        };
+
+        return {
+            ...(color && !isPresetColor ? customColorStyle : null),
+            ...style,
+        };
+    }
+
     render() {
         const {
             prefix,
             type,
             size,
+            color,
             _shape,
             closable,
             closeArea,
@@ -199,21 +232,25 @@ class Tag extends Component {
             rtl,
         } = this.props;
         const { visible } = this.state;
+        const isPresetColor = this.isPresetColor();
         const others = obj.pickOthers(Tag.propTypes, this.props);
+        // eslint-disable-next-line no-unused-vars
+        const { style, ...otherTagProps } = others;
         const shape = closable ? 'closable' : _shape;
         const bodyClazz = classNames(
-            [
-                `${prefix}tag`,
-                `${prefix}tag-${shape}`,
-                `${prefix}tag-level-${type}`,
-                `${prefix}tag-${size}`,
-            ],
+            [`${prefix}tag`, `${prefix}tag-${shape}`, `${prefix}tag-${size}`],
             {
+                [`${prefix}tag-level-${type}`]: !color,
                 [`${prefix}tag-closable`]: closable,
                 [`${prefix}tag-body-pointer`]: closable && closeArea === 'tag',
+                [`${prefix}tag-${color}`]:
+                    color && isPresetColor && type === 'primary',
+                [`${prefix}tag-${color}-inverse`]:
+                    color && isPresetColor && type === 'normal',
             },
             className
         );
+
         // close btn
         const tailNode = this.renderTailNode();
         // tag node
@@ -228,7 +265,8 @@ class Tag extends Component {
                 disabled={disabled}
                 dir={rtl ? 'rtl' : undefined}
                 ref={n => (this.tagNode = n)}
-                {...others}
+                style={this.getTagStyle()}
+                {...otherTagProps}
             >
                 <span className={`${prefix}tag-body`}>{children}</span>
                 {tailNode}

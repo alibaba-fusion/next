@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ConfigProvider from '../../config-provider';
 import Animate from '../../animate';
 import Icon from '../../icon';
 import Button from '../../button';
@@ -10,6 +11,7 @@ const { Expand } = Animate;
 /** Timeline.Item */
 class TimelineItem extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         index: PropTypes.number,
         total: PropTypes.number,

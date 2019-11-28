@@ -17,7 +17,6 @@ Response can be configured by `Grid.Col` property of `labelCol` `wrapperCol`.
 ````jsx
 import { Form, Input, Select } from '@alifd/next';
 
-
 const FormItem = Form.Item;
 
 const formItemLayout = {

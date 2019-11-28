@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Radio from '../../src/radio/index';
 import '../../src/radio/style.js';
@@ -147,7 +146,6 @@ describe('Radio.Group', () => {
         });
 
         describe('medium button', () => {
-            let wrapper;
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
@@ -166,16 +164,11 @@ describe('Radio.Group', () => {
                 );
             });
             it('should be 28px height', () => {
-                assert(
-                    container
-                        .querySelector('.next-radio-wrapper')
-                        .getBoundingClientRect().height === 28
-                );
+                assert(container.getBoundingClientRect().height === 28);
             });
         });
 
         describe('large button', () => {
-            let wrapper;
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
@@ -205,7 +198,6 @@ describe('Radio.Group', () => {
         });
 
         describe('default tagName', () => {
-            let wrapper;
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
@@ -229,7 +221,6 @@ describe('Radio.Group', () => {
         });
 
         describe('customer tagName(String)', () => {
-            let wrapper;
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
@@ -254,7 +245,6 @@ describe('Radio.Group', () => {
         });
 
         describe('customer tagName(Func)', () => {
-            let wrapper;
             const container = document.createElement('div');
             container.style.visibility = 'hidden';
             document.body.appendChild(container);
@@ -464,6 +454,30 @@ describe('Radio.Group', () => {
                 </RadioGroup>
             );
             assert(wrapper.find('label').length === 1);
+        });
+    });
+
+    describe('should render preview', () => {
+        it('should isPreview', () => {
+            const wrapper = mount(
+                <RadioGroup
+                    isPreview
+                    defaultValue="apple"
+                    dataSource={list}
+                />
+            );
+            assert(wrapper.getDOMNode().innerText === '苹果');
+        });
+
+        it('should renderPreview', () => {
+            const wrapper = mount(
+                <RadioGroup
+                    isPreview
+                    renderPreview={() => 'render preivew'}
+                    dataSource={numberList}
+                />
+            );
+            assert(wrapper.getDOMNode().innerText === 'render preivew');
         });
     });
 });

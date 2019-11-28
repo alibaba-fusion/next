@@ -18,6 +18,7 @@ export default class Circle extends Component {
         prefix: PropTypes.string,
         className: PropTypes.string,
         color: PropTypes.string,
+        backgroundColor: PropTypes.string,
         rtl: PropTypes.bool,
     };
 
@@ -87,6 +88,7 @@ export default class Circle extends Component {
             textRender,
             progressive,
             color,
+            backgroundColor,
             rtl,
             ...others
         } = this.props;
@@ -127,6 +129,8 @@ export default class Circle extends Component {
                 !color && progressive && percent >= 80,
         });
 
+        const underlayStyle = { stroke: backgroundColor };
+
         return (
             <div
                 className={wrapCls}
@@ -146,6 +150,7 @@ export default class Circle extends Component {
                         d={underlayPath}
                         fillOpacity="0"
                         ref={this._underlayRefHandler}
+                        style={underlayStyle}
                     />
                     <path
                         className={pathCls}

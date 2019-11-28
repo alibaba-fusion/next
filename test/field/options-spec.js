@@ -392,6 +392,12 @@ describe('options', () => {
             field.init('option[0]', { initValue: 'option1' });
             field.init('option[1]', { initValue: 'option2' });
 
+            let values = field.getValues();
+            assert(values.user.name === 'frankqian');
+            assert(values.user.pwd === 12345);
+            assert(values.option[0] === 'option1');
+            assert(values.option[1] === 'option2');
+
             field.setValues({
                 user: {
                     pwd: 'helloworld',
@@ -399,7 +405,7 @@ describe('options', () => {
                 option: ['test1', 'test2'],
             });
 
-            const values = field.getValues();
+            values = field.getValues();
 
             assert(Object.keys(values).length === 2);
 

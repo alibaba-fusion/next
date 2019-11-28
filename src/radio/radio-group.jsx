@@ -13,11 +13,11 @@ const { pickOthers } = obj;
  */
 class RadioGroup extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         /**
          * 样式类名的品牌前缀
          */
         prefix: PropTypes.string,
-        rtl: PropTypes.bool,
         /**
          * 自定义类名
          */
@@ -91,6 +91,15 @@ class RadioGroup extends Component {
          * - ver: 垂直排列
          */
         itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -100,6 +109,7 @@ class RadioGroup extends Component {
         prefix: 'next-',
         component: 'div',
         itemDirection: 'hoz',
+        isPreview: false,
     };
 
     static childContextTypes = {
@@ -127,12 +137,14 @@ class RadioGroup extends Component {
     }
 
     getChildContext() {
+        const { disabled } = this.props;
+
         return {
             __group__: true,
             isButton: this.props.shape === 'button',
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: this.props.disabled,
+            disabled: disabled,
         };
     }
 
@@ -168,6 +180,8 @@ class RadioGroup extends Component {
             prefix,
             itemDirection,
             component,
+            isPreview,
+            renderPreview,
         } = this.props;
         const others = pickOthers(
             Object.keys(RadioGroup.propTypes),
@@ -179,6 +193,7 @@ class RadioGroup extends Component {
         }
 
         let children;
+        const previewed = {};
         if (this.props.children) {
             children = React.Children.map(
                 this.props.children,
@@ -187,6 +202,10 @@ class RadioGroup extends Component {
                         return child;
                     }
                     const checked = this.state.value === child.props.value;
+                    if (checked) {
+                        previewed.label = child.props.children;
+                        previewed.value = child.props.value;
+                    }
                     const tabIndex =
                         (index === 0 && !this.state.value) || checked ? 0 : -1;
                     const childrtl =
@@ -218,6 +237,10 @@ class RadioGroup extends Component {
                     };
                 }
                 const checked = this.state.value === option.value;
+                if (checked) {
+                    previewed.label = option.label;
+                    previewed.value = option.value;
+                }
                 return (
                     <Radio
                         key={index}
@@ -233,6 +256,24 @@ class RadioGroup extends Component {
                     />
                 );
             });
+        }
+
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(previewed, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p {...others} className={previewCls}>
+                    {previewed.label}
+                </p>
+            );
         }
 
         const isButtonShape = shape === 'button';

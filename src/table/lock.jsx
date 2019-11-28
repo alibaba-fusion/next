@@ -256,14 +256,12 @@ export default function lock(BaseComponent) {
 
         onLockBodyWheel = e => {
             const y = e.deltaY;
-            const x = e.deltaX;
-            const thresholdX = 15;
-            const safeScrollX = x > -thresholdX && x < thresholdX;
+
             if (this.isLock()) {
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
                     scrollNode = this.bodyNode,
-                    { scrollTop, clientHeight, scrollHeight } = scrollNode;
+                    { scrollTop } = scrollNode;
 
                 if (lockLeftBody) {
                     lockLeftBody.scrollTop = y;
@@ -272,14 +270,6 @@ export default function lock(BaseComponent) {
                     lockRightBody.scrollTop = y;
                 }
                 scrollNode.scrollTop = scrollTop + y;
-                const { scrollTop: newScrollTop } = scrollNode;
-                if (
-                    newScrollTop + clientHeight < scrollHeight &&
-                    newScrollTop &&
-                    safeScrollX
-                ) {
-                    e.preventDefault();
-                }
             }
         };
 
@@ -514,28 +504,37 @@ export default function lock(BaseComponent) {
         adjustCellSize() {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
-                    const lockLeftRow = this.getCellNode(index, 0, 'left'),
-                        lockRightRow = this.getCellNode(index, 0, 'right'),
-                        row = this.getFirstNormalCellNode(index),
-                        rowHeight =
-                            (row && parseFloat(getComputedStyle(row).height)) ||
-                            0;
-                    let lockLeftHeight = 0,
-                        lockRightHeight = 0;
+                    // record may be a string
+                    const rowIndex =
+                        typeof record === 'object' && '__rowIndex' in item
+                            ? item.__rowIndex
+                            : index;
 
-                    if (lockLeftRow) {
-                        lockLeftHeight = lockLeftRow.offsetHeight;
-                    }
-                    if (lockRightRow) {
-                        lockRightHeight = lockRightRow.offsetHeight;
-                    }
-                    if (lockLeftRow && rowHeight !== lockLeftHeight) {
-                        dom.setStyle(lockLeftRow, 'height', rowHeight);
-                    }
-                    if (lockRightRow && rowHeight !== lockRightHeight) {
-                        dom.setStyle(lockRightRow, 'height', rowHeight);
-                    }
+                    // 同步最左侧的锁列
+                    this.lockLeftChildren.forEach((child, i) => {
+                        this.setCellSize(rowIndex, i, 'left');
+                    });
+                    // 同步最右侧的锁列
+                    this.lockRightChildren.forEach((child, i) => {
+                        this.setCellSize(rowIndex, i, 'right');
+                    });
                 });
+            }
+        }
+
+        setCellSize(index, i, dir) {
+            const lockRow = this.getCellNode(index, i, dir),
+                row = this.getCellNode(index, i),
+                rowHeight =
+                    (row && parseFloat(getComputedStyle(row).height)) || 0;
+            let lockHeight = 0;
+
+            if (lockRow) {
+                lockHeight = lockRow.offsetHeight;
+            }
+
+            if (lockRow && rowHeight !== lockHeight) {
+                dom.setStyle(lockRow, 'height', rowHeight);
             }
         }
 
@@ -551,19 +550,20 @@ export default function lock(BaseComponent) {
             }
         }
 
-        getFirstNormalCellNode(index) {
-            let i = 0;
-            let row;
-            do {
-                row = this.getCellNode(index, i);
-                i++;
-            } while (
-                (!row || (row && row.rowSpan && row.rowSpan > 1)) &&
-                this.tableInc.flatChildren.length > i
-            );
+        // remove this in next major version, keep this for temperary incase of using it
+        // getFirstNormalCellNode(index) {
+        //     let i = 0;
+        //     let row;
+        //     do {
+        //         row = this.getCellNode(index, i);
+        //         i++;
+        //     } while (
+        //         (!row || (row && row.rowSpan && row.rowSpan > 1)) &&
+        //         this.tableInc.flatChildren.length > i
+        //     );
 
-            return row;
-        }
+        //     return row;
+        // }
 
         getRowNode(index, type) {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';

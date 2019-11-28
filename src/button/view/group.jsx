@@ -8,6 +8,7 @@ import ConfigProvider from '../../config-provider';
  */
 class ButtonGroup extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         rtl: PropTypes.bool,
         prefix: PropTypes.string,
         /**

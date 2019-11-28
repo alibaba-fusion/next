@@ -451,6 +451,47 @@ describe('CascaderSelect', () => {
         const item00 = findItem(0, 0);
         ReactTestUtils.Simulate.click(item00);
     });
+
+    it('should support preview mode render', () => {
+        const dataSource = [
+            {
+                value: '2973',
+                label: '陕西',
+                children: [
+                    {
+                        value: '2974',
+                        label: '西安',
+                        children: [
+                            {
+                                value: '2975',
+                                label: '西安市',
+                            },
+                            {
+                                value: '2976',
+                                label: '高陵县',
+                            },
+                        ],
+                    },
+                    {
+                        value: '2980',
+                        label: '铜川',
+                    },
+                ],
+            },
+        ];
+
+        wrapper = mount(<CascaderSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
+        assert(wrapper.find('.next-form-preview').length > 0);
+        assert(wrapper.find('.next-form-preview').text() === '陕西 / 西安 / 西安市');
+        wrapper.setProps({
+            renderPreview: (items) => {
+                assert(items.length === 1);
+                assert(items[0].label === '陕西 / 西安 / 西安市');
+                return 'Hello World';
+            }
+        });
+        assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+    })
 });
 
 function findItem(menuIndex, itemIndex) {

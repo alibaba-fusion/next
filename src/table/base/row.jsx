@@ -102,7 +102,16 @@ export default class Row extends React.Component {
         const { lockType } = this.context;
         return columns.map((child, colIndex) => {
             /* eslint-disable no-unused-vars, prefer-const */
-            const { dataIndex, align, alignHeader, width, ...others } = child;
+            const {
+                dataIndex,
+                align,
+                alignHeader,
+                width,
+                colSpan,
+                ...others
+            } = child;
+            // colSpan should show in body td by the way of <Table.Column colSpan={2} />
+            // tbody's cell merge should only by the way of <Table cellProps={} />
 
             const value = fetchDataByPath(record, dataIndex);
             const attrs =

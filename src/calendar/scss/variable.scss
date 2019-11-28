@@ -176,13 +176,37 @@ $calendar-card-table-cell-font-size: $font-size-caption !default;
 /// @namespace size/table cell
 $calendar-card-table-cell-date-border-radius: $corner-1 !default;
 
+/// date width
+/// @namespace size/table cell
+$calendar-card-table-cell-date-width: $s-6 !default;
+
+/// date height
+/// @namespace size/table cell
+$calendar-card-table-cell-date-height: $s-6 !default;
+
 /// month corner
 /// @namespace size/table cell
 $calendar-card-table-cell-month-border-radius: $corner-1 !default;
 
+/// month width
+/// @namespace size/table cell
+$calendar-card-table-cell-month-width: $s-15 !default;
+
+/// month height
+/// @namespace size/table cell
+$calendar-card-table-cell-month-height: $s-6 !default;
+
 /// year corner
 /// @namespace size/table cell
 $calendar-card-table-cell-year-border-radius: $corner-1 !default;
+
+/// year width
+/// @namespace size/table cell
+$calendar-card-table-cell-year-width: $s-12 !default;
+
+/// year height
+/// @namespace size/table cell
+$calendar-card-table-cell-year-height: $s-6 !default;
 
 /// text
 /// @namespace statement/normal/table head

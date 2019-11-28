@@ -34,6 +34,8 @@
 | disabled          | 表示开关被禁用                                                                                                                                        | Boolean  | false    |
 | onClick           | 鼠标点击事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} DOM事件对象                                                         | Function | -        |
 | onKeyDown         | 键盘按键事件<br><br>**签名**:<br>Function(e: Event) => void<br>**参数**:<br>_e_: {Event} DOM事件对象                                                         | Function | -        |
+| isPreview         | 是否为预览态                                                                                                                                         | Boolean  | false    |
+| renderPreview     | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                              | Function | -        |
 
 ## 键盘支持
 

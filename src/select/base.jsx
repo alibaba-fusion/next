@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { func, dom, events } from '../util';
 import Menu from '../menu';
 import Overlay from '../overlay';
+import Input from '../input';
+
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
 import VirtualList from '../virtual-list';
@@ -96,6 +98,10 @@ export default class Base extends React.Component {
          */
         popupContent: PropTypes.node,
         /**
+         * 添加到菜单上的属性
+         */
+        menuProps: PropTypes.object,
+        /**
          * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
          */
         filterLocal: PropTypes.bool,
@@ -121,6 +127,15 @@ export default class Base extends React.Component {
         locale: PropTypes.object,
         rtl: PropTypes.bool,
         popupComponent: PropTypes.any,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -396,12 +411,13 @@ export default class Base extends React.Component {
             locale,
             notFoundContent,
             useVirtual,
+            menuProps,
         } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
 
-        if (isNull(value) || value.length === 0) {
+        if (isNull(value) || value.length === 0 || this.isAutoComplete) {
             selectedKeys = [];
         } else if (isSingle(mode)) {
             selectedKeys = [valueToSelectKey(value)];
@@ -424,7 +440,8 @@ export default class Base extends React.Component {
             );
         }
 
-        const menuProps = {
+        const customProps = {
+            ...menuProps,
             children,
             role: 'listbox',
             selectedKeys,
@@ -455,7 +472,7 @@ export default class Base extends React.Component {
                                     ref(c);
                                     this.menuRef = c;
                                 }}
-                                {...menuProps}
+                                {...customProps}
                             >
                                 {items}
                             </Menu>
@@ -466,7 +483,7 @@ export default class Base extends React.Component {
                 </VirtualList>
             </div>
         ) : (
-            <Menu {...menuProps} style={menuStyle} />
+            <Menu {...customProps} style={menuStyle} />
         );
     }
 
@@ -577,6 +594,10 @@ export default class Base extends React.Component {
             followTrigger,
             cache,
             popupComponent,
+            isPreview,
+            renderPreview,
+            style,
+            className,
         } = props;
 
         const cls = classNames(
@@ -587,6 +608,58 @@ export default class Base extends React.Component {
             },
             popupClassName || popupProps.className
         );
+
+        if (isPreview) {
+            if (this.isAutoComplete) {
+                return (
+                    <Input
+                        style={style}
+                        className={className}
+                        isPreview={isPreview}
+                        renderPreview={renderPreview}
+                        value={this.state.value}
+                    />
+                );
+            } else {
+                const valueDS = this.valueDataSource.valueDS;
+                if (typeof renderPreview === 'function') {
+                    const previewCls = classNames({
+                        [`${prefix}form-preview`]: true,
+                        [className]: !!className,
+                    });
+                    return (
+                        <div style={style} className={previewCls}>
+                            {renderPreview(valueDS, this.props)}
+                        </div>
+                    );
+                } else {
+                    const { fillProps } = this.props;
+                    if (mode === 'single') {
+                        return (
+                            <Input
+                                style={style}
+                                className={className}
+                                isPreview={isPreview}
+                                value={
+                                    fillProps
+                                        ? valueDS[fillProps]
+                                        : valueDS.label
+                                }
+                            />
+                        );
+                    } else {
+                        return (
+                            <Input
+                                style={style}
+                                className={className}
+                                isPreview={isPreview}
+                                value={valueDS.map(i => i.label).join(', ')}
+                            />
+                        );
+                    }
+                }
+            }
+        }
 
         const _props = {
             triggerType: 'click',

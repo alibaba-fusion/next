@@ -43,11 +43,15 @@ export interface ConfigProviderProps {
     /**
      * 设备类型，针对不同的设备类型组件做出对应的响应式变化
      */
-    device?: 'tablet' | 'desktop' | 'phone',
+    device?: 'tablet' | 'desktop' | 'phone';
     /**
      * 组件树
      */
     children?: React.ReactElement<any>;
+    /**
+     * 弹层挂载的容器节点
+     */
+    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
 }
 
 export default class ConfigProvider extends React.Component<

@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Input from '../../src/input';
 import Field from '../../src/field';
+import Select from '../../src/select';
 import Form from '../../src/form/index';
 
 const FormItem = Form.Item;
@@ -39,6 +40,21 @@ describe('form', () => {
                 </Form>
             );
             assert(wrapper.props().children.length === 3);
+        });
+
+        it('FormItem fullwidth', () => {
+            const wrapper = mount(
+                <Form>
+                    <FormItem>
+                        <Input />
+                    </FormItem>
+                    <FormItem fullWidth>
+                        <Select />
+                    </FormItem>
+                    <FormItem>test</FormItem>
+                </Form>
+            );
+            assert(wrapper.find('.next-form-item-fullwidth').exists());
         });
 
         it('should supoort Field', () => {
@@ -230,6 +246,22 @@ describe('form', () => {
                     .first()
                     .hasClass('has-success')
             );
+        });
+
+        it('should supoort responsive', () => {
+            const wrapper = mount(
+                <Form responsive >
+                    <FormItem colSpan={6} labelWidth={80}>
+                        <Input />
+                    </FormItem>
+                    <FormItem colSpan={6} labelWidth={100}>
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+
+            assert(wrapper.find('.next-responsive-grid'));
+            assert(wrapper.find('.next-form-responsive-grid'));
         });
         it('should supoort required', () => {
             const wrapper = mount(

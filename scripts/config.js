@@ -15,6 +15,10 @@ module.exports = {
         'Upload.Drager': 'Upload',
     },
     components: [
+        'box',
+        'responsive-grid',
+        'avatar',
+        'divider',
         'affix',
         'animate',
         'badge',
@@ -71,5 +75,8 @@ module.exports = {
         'upload',
         'validate',
         'virtual-list',
+        'shell',
+        'notification',
+        'typography',
     ],
 };

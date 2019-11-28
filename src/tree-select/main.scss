@@ -10,6 +10,8 @@
         border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
         border-radius: $popup-local-corner;
         box-shadow: $popup-local-shadow;
+        max-height: 260px;
+        overflow: auto;
     }
 
     &-not-found {

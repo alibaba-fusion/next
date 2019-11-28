@@ -39,7 +39,7 @@ class App extends React.Component {
     state = {
         dataSource: [],
         cols: [
-            <Table.Column title="Title" dataIndex="title.name" width={400} key="name1" lock/>,
+            <Table.Column title="Title" dataIndex="title.name" width={200} key="name1"/>,
             <Table.ColumnGroup title="abc" key="name-group">
                 <Table.Column title="Title" dataIndex="title.name" width={100} key="name2"/>
                 <Table.Column title="Title" dataIndex="title.name" width={400} key="name3"/>
@@ -58,8 +58,8 @@ class App extends React.Component {
     }
     reduceCol = () => {
         this.setState({
-            cols: [<Table.Column title="Title" dataIndex="title.name" width={400} key="name1" lock/>,
-                <Table.Column title="Time" dataIndex="time" width={100} key="time"/>]
+            cols: [<Table.Column title="Title" dataIndex="title.name" width={400} key="name1"/>,
+                <Table.Column title="Time" dataIndex="time" width={100} key="time" lock />]
         });
     }
     render() {

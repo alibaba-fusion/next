@@ -3,8 +3,8 @@
   "publish-template": "@alifd/next-theme-template@2x",
   "class-prefix": ".next",
   "icon": {
-    "iconfont-project-id": "544230",
-    "iconfont-path": "//at.alicdn.com/t/font_t6jzs3l3nwtmaemi"
+    "iconfont-project-id": "515771",
+    "iconfont-path": "//at.alicdn.com/t/font_515771_7u6frotlpa6"
   },
   "import": {
     "sources": {
@@ -50,6 +50,10 @@
     }
   },
   "variables": {
+    "box": "lib/box/scss/variable.scss",
+    "responsive-grid": "lib/responsive-grid/scss/variable.scss",
+    "avatar": "lib/avatar/scss/variable.scss",
+    "divider": "lib/divider/scss/variable.scss",
     "global": "lib/core/style/_global.scss",
     "size": "lib/core/style/_size.scss",
     "color": "lib/core/style/_color.scss",
@@ -95,6 +99,7 @@
     "range": "lib/range/scss/variable.scss",
     "rating": "lib/rating/scss/variable.scss",
     "search": "lib/search/scss/variable.scss",
+    "shell": "lib/shell/scss/variable.scss",
     "slider": "lib/slider/scss/variable.scss",
     "split-button": "lib/split-button/scss/variable.scss",
     "step": "lib/step/scss/variable.scss",
@@ -105,6 +110,7 @@
     "transfer": "lib/transfer/scss/variable.scss",
     "tree": "lib/tree/scss/variable.scss",
     "tree-select": "lib/tree-select/scss/variable.scss",
+    "typography": "lib/typography/scss/variable.scss",
     "upload": "lib/upload/scss/variable.scss"
   }
 }

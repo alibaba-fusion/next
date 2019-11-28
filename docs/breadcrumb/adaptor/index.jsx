@@ -21,7 +21,7 @@ export default {
         return (
             <Breadcrumb {...others} {...props}>
                 {
-                    list.map((item, index) => <Breadcrumb.Item key={`item_${index}`}>{item.value}</Breadcrumb.Item>)
+                    list.map((item, index) => <Breadcrumb.Item style={{ overflow: 'visible' }} key={`item_${index}`}>{item.value}</Breadcrumb.Item>)
                 }
             </Breadcrumb>
         );

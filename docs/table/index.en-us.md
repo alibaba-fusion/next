@@ -137,6 +137,7 @@ ReactDOM.render(
 | filterMenuProps | the props passed to Menu in filter mode, extend `Menu`'s API <br><br>**options**:<br>_subMenuSelectable_: {Boolean} default `false` subMenu can be selected or not<br>_isSelectIconRight_: {Boolean} default `false` select icon in right or not. (icon on SubMenu always in left) | Object                          | {     subMenuSelectable: false } |
 | lock       | whether the lock column is supported, the options are `left`, `right`, `true`                    | Boolean/String                  | -                |
 | resizable  | whether to support column resizing, when this value is set to true, the layout of the table will be modified to fixed              | Boolean                         | false            |
+| colSpan    | theader can merge cell by this API, 0 means no th of this column                                                                                                                                                                            | Number                          | -                                 |
 
 ### Table.ColumnGroup
 

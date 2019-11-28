@@ -495,8 +495,8 @@ describe('inner', () => {
         const cancel = footer.querySelectorAll('button')[1];
 
         assert(footer);
-        assert(ok.innerHTML === 'my ok');
-        assert(cancel.innerHTML === 'near cancel');
+        assert(ok.textContent === 'my ok');
+        assert(cancel.textContent === 'near cancel');
     });
 
     it("quick-calling should use root context's state if its exists", () => {
@@ -548,13 +548,27 @@ describe('inner', () => {
 
         assert(footer);
         assert(overlayWrapper);
-        assert(ok.innerHTML === 'far ok');
-        assert(cancel.innerHTML === 'my cancel');
+        assert(ok.textContent === 'far ok');
+        assert(cancel.textContent === 'my cancel');
 
         cancel.click();
         document.body.removeChild(overlayWrapper);
 
         assert(!document.querySelector('.far-overlay-wrapper'));
+    });
+
+    it('quick-calling should should support set prefix for dialog', () => {
+        const { hide } = Dialog.show({
+            prefix: 'test-',
+            title: 'Title',
+            content: 'Content',
+        });
+
+        assert(
+            hasClass(document.querySelector('.test-dialog'), 'test-closeable')
+        );
+
+        hide();
     });
 
     it('should throw error (async)', () => {

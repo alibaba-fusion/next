@@ -32,6 +32,7 @@ export default {
         datetimePlaceholder: 'Select Date And Time',
         monthPlaceholder: 'Select Month',
         yearPlaceholder: 'Select Year',
+        weekPlaceholder: 'Select week',
         now: 'Now',
         selectTime: 'Select Time',
         selectDate: 'Select Date',
@@ -127,5 +128,9 @@ export default {
     },
     Rating: {
         description: 'Rating Options',
+    },
+    Switch: {
+        on: 'on',
+        off: 'off',
     },
 };

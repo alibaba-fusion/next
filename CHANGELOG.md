@@ -1,5 +1,284 @@
 # Change Log 
 
+## [1.19.2](https://github.com/alibaba-fusion/next/compare/1.19.1...1.19.2) (2019-11-27)
+
+
+### Bug Fixes
+
+* **Radio:** fix radio group preview ([#1391](https://github.com/alibaba-fusion/next/issues/1391)) ([e993cdb](https://github.com/alibaba-fusion/next/commit/e993cdb))
+* **Tab:** calculate use wrapper width instead of navbar width ([#1385](https://github.com/alibaba-fusion/next/issues/1385)) ([ed9bf9a](https://github.com/alibaba-fusion/next/commit/ed9bf9a))
+
+
+
+
+## [1.19.1](https://github.com/alibaba-fusion/next/compare/1.19.0...1.19.1) (2019-11-26)
+
+
+
+
+# [1.19.0](https://github.com/alibaba-fusion/next/compare/1.18.16...1.19.0) (2019-11-25)
+
+### Bug Fixes
+
+* **Table:** bug of scrolling on node of cell, close [#1308](https://github.com/alibaba-fusion/next/issues/1308), [#1377](https://github.com/alibaba-fusion/next/issues/1377) ([73c9482](https://github.com/alibaba-fusion/next/commit/73c9482))
+* **Upload:** bugs of IE9  ([#1376](https://github.com/alibaba-fusion/next/issues/1376)) ([8e9cbae](https://github.com/alibaba-fusion/next/commit/8e9cbae))
+* **Button:** style vertical align middle ([c543b80](https://github.com/alibaba-fusion/next/commit/c543b80))
+* **Core:** add a new corner variables ([1645c10](https://github.com/alibaba-fusion/next/commit/1645c10))
+* **Drawer:** make it easy to set fixed footer, close [#1228](https://github.com/alibaba-fusion/next/issues/1228) ([8d35064](https://github.com/alibaba-fusion/next/commit/8d35064))
+* **Input:** render error in fusion cool ([117e784](https://github.com/alibaba-fusion/next/commit/117e784))
+* **Radio:** support config disabled & checked background/color/icon ([dfda93b](https://github.com/alibaba-fusion/next/commit/dfda93b))
+* **Timeline:** update lifecycle ([#1276](https://github.com/alibaba-fusion/next/issues/1276)) ([eb4ec42](https://github.com/alibaba-fusion/next/commit/eb4ec42))
+
+### Features
+* **Affix:** update lifecycle ([7ea7e4a](https://github.com/alibaba-fusion/next/commit/7ea7e4a))
+* **Avatar:** add Avatar ([082fd3c](https://github.com/alibaba-fusion/next/commit/082fd3c))
+* **CascaderSelect:** support preview mode ([5344693](https://github.com/alibaba-fusion/next/commit/5344693))
+* **Checkbox:** add preview mode ([#1351](https://github.com/alibaba-fusion/next/issues/1351)) ([69b8fa6](https://github.com/alibaba-fusion/next/commit/69b8fa6))
+* **ConfigProvider:** update lifecycle ([ca79c7e](https://github.com/alibaba-fusion/next/commit/ca79c7e))
+* **DatePicker:** Add WeekPicker ([#1284](https://github.com/alibaba-fusion/next/issues/1284)) ([42de085](https://github.com/alibaba-fusion/next/commit/42de085))
+* **DatePicker:** support preview mode ([f96462c](https://github.com/alibaba-fusion/next/commit/f96462c))
+* **Divider:** add divider component ([66886b3](https://github.com/alibaba-fusion/next/commit/66886b3))
+* **Form:** add preview ([5f497d7](https://github.com/alibaba-fusion/next/commit/5f497d7))
+* **Icon:** get svg icon from iconfont, close [#1209](https://github.com/alibaba-fusion/next/issues/1209) ([eb23d0b](https://github.com/alibaba-fusion/next/commit/eb23d0b))
+* **Icon:** size can be number ([df2cf0d](https://github.com/alibaba-fusion/next/commit/df2cf0d))
+* **Input:** add isPreview & renderPrevier API ([b70ff26](https://github.com/alibaba-fusion/next/commit/b70ff26))
+* **Input:** add warning state, close [#1188](https://github.com/alibaba-fusion/next/issues/1188) ([a4a66e8](https://github.com/alibaba-fusion/next/commit/a4a66e8))
+* **Message:** toast add style & className prop ([9a58a5e](https://github.com/alibaba-fusion/next/commit/9a58a5e))
+* **NumberPicker:** add small size, close [#1147](https://github.com/alibaba-fusion/next/issues/1147) ([1a81522](https://github.com/alibaba-fusion/next/commit/1a81522))
+* **Radio:** add preview mode ([#1352](https://github.com/alibaba-fusion/next/issues/1352)) ([83a10d2](https://github.com/alibaba-fusion/next/commit/83a10d2))
+* **Range:** add preview mode ([#1355](https://github.com/alibaba-fusion/next/issues/1355)) ([a302183](https://github.com/alibaba-fusion/next/commit/a302183))
+* **Rating:** add isPreview & renderPreview API ([0ba15f4](https://github.com/alibaba-fusion/next/commit/0ba15f4))
+* **Switch:** add preview mode ([#1354](https://github.com/alibaba-fusion/next/issues/1354)) ([613c778](https://github.com/alibaba-fusion/next/commit/613c778))
+* **Table:** add colSpan to merge cell of theader, close [#993](https://github.com/alibaba-fusion/next/issues/993) ([a2a1c11](https://github.com/alibaba-fusion/next/commit/a2a1c11))
+* **Tag:** support custom color ([09191b6](https://github.com/alibaba-fusion/next/commit/09191b6))
+* **TimePicker:** support preview mode ([3334263](https://github.com/alibaba-fusion/next/commit/3334263))
+* **Tree:** add renderChildNodes prop ([#1273](https://github.com/alibaba-fusion/next/issues/1273)) ([aede069](https://github.com/alibaba-fusion/next/commit/aede069))
+* **TreeSelect:** support preview mode ([d18b6f0](https://github.com/alibaba-fusion/next/commit/d18b6f0))
+* **Upload:** preview state for number-picker/select/upload ([#1374](https://github.com/alibaba-fusion/next/issues/1374)) ([7ee63e3](https://github.com/alibaba-fusion/next/commit/7ee63e3))
+
+
+## [1.18.16](https://github.com/alibaba-fusion/next/compare/1.18.15...1.18.16) (2019-11-15)
+
+
+### Bug Fixes
+
+* **Nav:** remove border-width when embeddable ([fb0b1bc](https://github.com/alibaba-fusion/next/commit/fb0b1bc))
+* **Slider:** ConfigProvider should work for innerSlider, close [#1358](https://github.com/alibaba-fusion/next/issues/1358) ([58ef17d](https://github.com/alibaba-fusion/next/commit/58ef17d))
+* **Typescript** Perfect d.ts for Field/Dialog ([4a901c8](https://github.com/alibaba-fusion/next/pull/1347/commits/4a901c8)) ([31b5c24](https://github.com/alibaba-fusion/next/pull/1361/commits/31b5c24))
+
+
+
+## [1.18.15](https://github.com/alibaba-fusion/next/compare/1.18.14...1.18.15) (2019-11-12)
+
+
+### Bug Fixes
+
+* **Cascader:** disable can`t change checked ([0c63ae6](https://github.com/alibaba-fusion/next/commit/0c63ae6))
+* **Checkbox:** fix style display ([2801eb0](https://github.com/alibaba-fusion/next/commit/2801eb0))
+* **Table:** item of dataSource may be a string ([73760fb](https://github.com/alibaba-fusion/next/commit/73760fb))
+* **TreeSelect:** add max height ([f1d2f06](https://github.com/alibaba-fusion/next/commit/f1d2f06))
+
+
+
+
+## [1.18.14](https://github.com/alibaba-fusion/next/compare/1.18.13...1.18.14) (2019-11-08)
+
+
+### Bug Fixes
+
+* **Menu:** group and its children should have the same inlineLevel ([228c6ad](https://github.com/alibaba-fusion/next/commit/228c6ad)), closes [#1330](https://github.com/alibaba-fusion/next/issues/1330)
+* **Table:** correct rowIndex when useVirtual ([6fc5259](https://github.com/alibaba-fusion/next/commit/6fc5259))
+* **TimePicker:** Can`t reset input props ([53354c0](https://github.com/alibaba-fusion/next/commit/53354c0))
+
+
+
+
+## [1.18.13](https://github.com/alibaba-fusion/next/compare/1.18.12...1.18.13) (2019-11-06)
+
+
+
+
+## [1.18.12](https://github.com/alibaba-fusion/next/compare/1.18.11...1.18.12) (2019-11-05)
+
+
+### Bug Fixes
+
+* **Checkbox:** fix nested checkbox style ([1088fbb](https://github.com/alibaba-fusion/next/commit/1088fbb))
+* **Input:** lifecycle for didUpdate close [#1301](https://github.com/alibaba-fusion/next/issues/1301) ([8e21cc8](https://github.com/alibaba-fusion/next/commit/8e21cc8))
+* **Menu:** make arrow in hoz configurable, [#1280](https://github.com/alibaba-fusion/next/issues/1280) ([b7c6322](https://github.com/alibaba-fusion/next/commit/b7c6322))
+* **Nav:** correct child selected state, close [#1280](https://github.com/alibaba-fusion/next/issues/1280) ([9d68697](https://github.com/alibaba-fusion/next/commit/9d68697))
+* **Nav:** icon is blocked 1px in iconOnly mode, close [#1278](https://github.com/alibaba-fusion/next/issues/1278) ([9c3fd0a](https://github.com/alibaba-fusion/next/commit/9c3fd0a))
+* **Notification:** title and content are not both required ([49b4b96](https://github.com/alibaba-fusion/next/commit/49b4b96))
+* **Switch:** update getDerivedStateFromProps logic ([638e6b1](https://github.com/alibaba-fusion/next/commit/638e6b1)) ([5ac62df](https://github.com/alibaba-fusion/next/commit/5ac62df))
+* **Table:** expanded trigger cell's width should be unchanged, close [#1281](https://github.com/alibaba-fusion/next/issues/1281) ([9fca31b](https://github.com/alibaba-fusion/next/commit/9fca31b))
+* **TreeSelect:** Can`t remove tag ([7ef73f0](https://github.com/alibaba-fusion/next/commit/7ef73f0))
+
+
+
+
+## [1.18.11](https://github.com/alibaba-fusion/next/compare/1.18.10...1.18.11) (2019-10-31)
+
+
+### Bug Fixes
+
+* **Range:** add window.pageXOffset when calculate  ([#1289](https://github.com/alibaba-fusion/next/issues/1289)) ([3460f0f](https://github.com/alibaba-fusion/next/commit/3460f0f))
+
+
+
+
+## [1.18.10](https://github.com/alibaba-fusion/next/compare/1.18.9...1.18.10) (2019-10-29)
+
+
+### Bug Fixes
+
+* **ConfigProvider:** warning when config function component ([6eb71b5](https://github.com/alibaba-fusion/next/commit/6eb71b5))
+* **NumberPicker:** under control input 0 => 0. ([60c0d86](https://github.com/alibaba-fusion/next/commit/60c0d86))
+
+
+
+
+## [1.18.9](https://github.com/alibaba-fusion/next/compare/1.18.8...1.18.9) (2019-10-28)
+
+
+### Bug Fixes
+
+* **Field:** validate bind ([3ad8068](https://github.com/alibaba-fusion/next/commit/3ad8068))
+
+
+
+
+## [1.18.8](https://github.com/alibaba-fusion/next/compare/1.18.7...1.18.8) (2019-10-25)
+
+
+### Bug Fixes
+
+* **Overlay:** use rgba instead of change-color to get a color with alpha ([e552a66](https://github.com/alibaba-fusion/next/commit/e552a66))
+* **Table:** reset style ([db24905](https://github.com/alibaba-fusion/next/commit/db24905))
+
+
+
+
+## [1.18.7](https://github.com/alibaba-fusion/next/compare/1.18.6...1.18.7) (2019-10-25)
+
+
+### Bug Fixes
+
+* **Cascader:** scroll focus error ([fa92198](https://github.com/alibaba-fusion/next/commit/fa92198))
+
+
+
+
+## [1.18.6](https://github.com/alibaba-fusion/next/compare/1.18.5...1.18.6) (2019-10-24)
+
+
+### Bug Fixes
+
+* **Affix:** fix recursive call in some situation ([633c3b6](https://github.com/alibaba-fusion/next/commit/633c3b6))
+* **Button:** style vertical align middle ([cec2e9a](https://github.com/alibaba-fusion/next/commit/cec2e9a))
+* **Shell:** config Shell.Page ([4249e0a](https://github.com/alibaba-fusion/next/commit/4249e0a))
+* **Tab:** make dropdown mode tab nav scroll to active ([881ce87](https://github.com/alibaba-fusion/next/commit/881ce87))
+
+
+
+
+## [1.18.5](https://github.com/alibaba-fusion/next/compare/1.18.4...1.18.5) (2019-10-17)
+
+
+### Bug Fixes
+
+* **Balloon:** Tooltip shoule support alignEdge, close [#1222](https://github.com/alibaba-fusion/next/issues/1222) ([3c6289a](https://github.com/alibaba-fusion/next/commit/3c6289a))
+* **Shell:** should support use nothing ([1c76aea](https://github.com/alibaba-fusion/next/commit/1c76aea))
+
+
+
+
+## [1.18.4](https://github.com/alibaba-fusion/next/compare/1.18.3...1.18.4) (2019-10-11)
+
+
+### Bug Fixes
+
+* **Breadcrumb:**  unused css-prefix ([b05cddf](https://github.com/alibaba-fusion/next/commit/b05cddf))
+* **Checkbox:** remove focused style ([2002161](https://github.com/alibaba-fusion/next/commit/2002161))
+* **Dialog:** quick-calling support set prefix to dialog ([7d458d4](https://github.com/alibaba-fusion/next/commit/7d458d4))
+* **Radio:** remove checked focused style ([e750cd6](https://github.com/alibaba-fusion/next/commit/e750cd6))
+* **Select:** add api menuProps for menu. close [#1141](https://github.com/alibaba-fusion/next/issues/1141) ([38fed47](https://github.com/alibaba-fusion/next/commit/38fed47))
+* **Select:** can re select in AutoComplete. close [#1199](https://github.com/alibaba-fusion/next/issues/1199) ([2814be4](https://github.com/alibaba-fusion/next/commit/2814be4))
+* **Select:** keep search value while unselect with Enter. fix [#1173](https://github.com/alibaba-fusion/next/issues/1173) ([a5f5519](https://github.com/alibaba-fusion/next/commit/a5f5519))
+* **Select:** should not del disabled item with backspace. fix [#1196](https://github.com/alibaba-fusion/next/issues/1196) ([81b0e75](https://github.com/alibaba-fusion/next/commit/81b0e75))
+* **Select:** should not del item while disabled/readonly .fix [#1022](https://github.com/alibaba-fusion/next/issues/1022) ([7c98e1c](https://github.com/alibaba-fusion/next/commit/7c98e1c))
+* **Shell:** header should be able to be removed ([c1ef847](https://github.com/alibaba-fusion/next/commit/c1ef847))
+* **Table:** remove warning, close [#644](https://github.com/alibaba-fusion/next/issues/644) ([56faee6](https://github.com/alibaba-fusion/next/commit/56faee6))
+* **Upload:** outline error ([2c53354](https://github.com/alibaba-fusion/next/commit/2c53354))
+
+
+
+
+## [1.18.3](https://github.com/alibaba-fusion/next/compare/1.18.2...1.18.3) (2019-09-30)
+
+
+### Bug Fixes
+
+* **Icon:** correct eye/eye-close's width ([19b7d04](https://github.com/alibaba-fusion/next/commit/19b7d04))
+* **NumberPicker:** corner config ([db5929f](https://github.com/alibaba-fusion/next/commit/db5929f))
+* **NumberPicker:** fix display valueunder controlled. fix [#1163](https://github.com/alibaba-fusion/next/issues/1163) ([7207532](https://github.com/alibaba-fusion/next/commit/7207532))
+* **NumberPicker:** up down key ([6edc9a6](https://github.com/alibaba-fusion/next/commit/6edc9a6))
+* **Progress:** backgroundColor is invalid ([#1180](https://github.com/alibaba-fusion/next/issues/1180)) ([b4ee796](https://github.com/alibaba-fusion/next/commit/b4ee796))
+* **Typescript:** add field ([01fdcd2](https://github.com/alibaba-fusion/next/commit/01fdcd2))
+
+
+
+
+## [1.18.2](https://github.com/alibaba-fusion/next/compare/1.18.1...1.18.2) (2019-09-26)
+
+
+
+
+## [1.18.2](https://github.com/alibaba-fusion/next/compare/1.18.1...1.18.2) (2019-09-26)
+
+
+
+
+## [1.18.2](https://github.com/alibaba-fusion/next/compare/1.18.1...1.18.2) (2019-09-26)
+
+
+
+
+## [1.18.1](https://github.com/alibaba-fusion/next/compare/1.17.12...1.18.1) (2019-09-26)
+
+
+### Bug Fixes
+
+* **ConfigProvider:** support component created by React.forwardRef() ([cc6d002](https://github.com/alibaba-fusion/next/commit/cc6d002))
+* **Dialog:** fullscreen mask click. fix [#927](https://github.com/alibaba-fusion/next/issues/927) ([#932](https://github.com/alibaba-fusion/next/issues/932)) ([e9b5d28](https://github.com/alibaba-fusion/next/commit/e9b5d28))
+* **Dialog:** option.type can only be set as alert or confirm ([be7d644](https://github.com/alibaba-fusion/next/commit/be7d644))
+* **Field:** spliceArray can remove a obj in array. close [#1091](https://github.com/alibaba-fusion/next/issues/1091) ([8cc5546](https://github.com/alibaba-fusion/next/commit/8cc5546))
+* **NumberPicker:** add variable for button corner. close [#1151](https://github.com/alibaba-fusion/next/issues/1151) ([882fa89](https://github.com/alibaba-fusion/next/commit/882fa89))
+* **Overlay:** fullscreen mask click issue with pr [#932](https://github.com/alibaba-fusion/next/issues/932) ([e117487](https://github.com/alibaba-fusion/next/commit/e117487))
+* **Tab:** all key should use string ([#1070](https://github.com/alibaba-fusion/next/issues/1070)) ([0d8396f](https://github.com/alibaba-fusion/next/commit/0d8396f))
+* **TimePicker:** support format HH ([e5924c2](https://github.com/alibaba-fusion/next/commit/e5924c2))
+
+### Deprecated
+
+* **ConfigProvider(pure):** deprecated API pure ([434e6e0](https://github.com/alibaba-fusion/next/commit/434e6e0))
+
+
+### Features
+
+* **Field** use field and validate npm packages ([6e70255](https://github.com/alibaba-fusion/next/commit/6e70255))
+* **Card:** add  free card ([5ee79c7](https://github.com/alibaba-fusion/next/commit/5ee79c7))
+* **ConfigProvider:** add popupContainer ([6631a55](https://github.com/alibaba-fusion/next/commit/6631a55))
+* **Field:** add api addArrayValue/deleteArrayValue for spliceArray ([ccc95e9](https://github.com/alibaba-fusion/next/commit/ccc95e9))
+* **Form:** add fullWidth prop ([c9e6ded](https://github.com/alibaba-fusion/next/commit/c9e6ded))
+* **Form:** api field={false} to disable inner field. fix [#1162](https://github.com/alibaba-fusion/next/issues/1162) ([4ed9cde](https://github.com/alibaba-fusion/next/commit/4ed9cde))
+* **Icon:** add new icon, close [#1114](https://github.com/alibaba-fusion/next/issues/1114) ([9651f2f](https://github.com/alibaba-fusion/next/commit/9651f2f))
+* **Transfer:** support customer panel ([7bef81e](https://github.com/alibaba-fusion/next/commit/7bef81e)) ([6a57e62](https://github.com/alibaba-fusion/next/commit/6a57e62))
+* **Notification:** add Notification Component ([f135a67](https://github.com/alibaba-fusion/next/commit/f135a67))
+* **Shell:** add Shell ([#1175](https://github.com/alibaba-fusion/next/issues/1175)) ([dd03a64](https://github.com/alibaba-fusion/next/commit/dd03a64))
+* **Typography:**  add Typography, deprecated Paragraph ([ed3afce](https://github.com/alibaba-fusion/next/commit/ed3afce))
+
+
+
+
 ## [1.17.12](https://github.com/alibaba-fusion/next/compare/1.17.11...1.17.12) (2019-09-19)
 
 

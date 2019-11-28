@@ -59,6 +59,9 @@ class App extends React.Component {
             <Button type="primary" onClick={this.showChildrenDrawer}>
                 Two-level drawer
             </Button>
+            <div style={{ height: 800, marginTop: 40}}>很长的内容</div>
+            <div style={{ marginBottom: 40}}>底部的内容</div>
+
             <Drawer
                 title="Two-level Drawer"
                 width={320}
@@ -82,15 +85,15 @@ class App extends React.Component {
                 }}
             >
                 <Button
-                style={{
-                    marginRight: 8,
-                }}
-                onClick={this.onClose}
+                    style={{
+                        marginRight: 8,
+                    }}
+                    onClick={this.onClose}
                 >
-                Cancel
+                    Cancel
                 </Button>
                 <Button onClick={this.onClose} type="primary">
-                Submit
+                    Submit
                 </Button>
             </div>
         </Drawer>

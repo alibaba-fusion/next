@@ -148,9 +148,6 @@ class AutoComplete extends Base {
 
     handleMenuSelect(keys) {
         const key = keys[0];
-        if (this.state.value === keys[0]) {
-            return this.setVisible(false, 'itemClick');
-        }
 
         const mapDS = this.dataStore.getMapDS();
 

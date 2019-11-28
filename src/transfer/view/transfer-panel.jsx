@@ -33,6 +33,7 @@ export default class TransferPanel extends Component {
         sortable: PropTypes.bool,
         onSort: PropTypes.func,
         baseId: PropTypes.string,
+        customerList: PropTypes.func,
     };
 
     constructor(props, context) {
@@ -190,12 +191,26 @@ export default class TransferPanel extends Component {
             listStyle,
             itemRender,
             sortable,
+            customerList,
         } = this.props;
         const { dragPosition, dragValue, dragOverValue } = this.state;
         const newClassName = cx({
             [`${prefix}transfer-panel-list`]: true,
             [listClassName]: !!listClassName,
         });
+
+        const customerPanel = customerList && customerList(this.props);
+        if (customerPanel) {
+            return (
+                <div
+                    className={newClassName}
+                    style={listStyle}
+                    ref={this.getListDOM}
+                >
+                    {customerPanel}
+                </div>
+            );
+        }
 
         return dataSource.length ? (
             <Menu

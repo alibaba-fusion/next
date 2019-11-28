@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
+import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
 import Calendar from '../calendar';
@@ -27,6 +28,7 @@ const { Popup } = Overlay;
  */
 export default class DatePicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -128,7 +130,7 @@ export default class DatePicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         /**
          * 弹层自定义样式
          */
@@ -170,9 +172,21 @@ export default class DatePicker extends Component {
          * 时间输入框的 aria-label 属性
          */
         timeInputAriaLabel: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 日期
+         */
+        renderPreview: PropTypes.func,
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
+        disableChangeMode: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -453,6 +467,28 @@ export default class DatePicker extends Component {
         this.onValueChange(this.state.value, 'onOk');
     };
 
+    renderPreview(others) {
+        const { prefix, format, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames(className, `${prefix}form-preview`);
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -475,6 +511,8 @@ export default class DatePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             inputProps,
@@ -483,6 +521,8 @@ export default class DatePicker extends Component {
             yearCellRender,
             dateInputAriaLabel,
             timeInputAriaLabel,
+            isPreview,
+            disableChangeMode,
             ...others
         } = this.props;
 
@@ -519,6 +559,12 @@ export default class DatePicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, DatePicker.PropTypes)
+            );
         }
 
         const sharedInputProps = {
@@ -560,6 +606,7 @@ export default class DatePicker extends Component {
                 defaultVisibleMonth={defaultVisibleMonth}
                 onVisibleMonthChange={onVisibleMonthChange}
                 disabledDate={disabledDate}
+                disableChangeMode={disableChangeMode}
             />
         );
 
@@ -579,6 +626,7 @@ export default class DatePicker extends Component {
             const timePanelProps = typeof showTime === 'object' ? showTime : {};
 
             const showSecond = this.timeFormat.indexOf('s') > -1;
+            const showMinute = this.timeFormat.indexOf('m') > -1;
 
             const panelTimeInputCls = classnames({
                 [`${prefix}date-picker-panel-input`]: true,
@@ -607,6 +655,7 @@ export default class DatePicker extends Component {
                     locale={locale}
                     className={`${prefix}date-picker-panel-time`}
                     showSecond={showSecond}
+                    showMinute={showMinute}
                     disabled={disabled}
                     prefix={prefix}
                     value={value}
@@ -654,34 +703,42 @@ export default class DatePicker extends Component {
                 />
             </div>
         );
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(DatePicker.propTypes, others)}
                 className={datePickerCls}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}date-picker-panel-header`}>
-                            {dateInput}
-                            {timeInput}
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
+                            <div
+                                className={`${prefix}date-picker-panel-header`}
+                            >
+                                {dateInput}
+                                {timeInput}
+                            </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }

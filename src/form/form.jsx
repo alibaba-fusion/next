@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { obj, func } from '../util';
 import Field from '../field';
+import RGrid from '../responsive-grid';
 
 function pickerDefined(obj) {
     const newObj = {};
@@ -35,6 +36,10 @@ export default class Form extends React.Component {
          */
         size: PropTypes.oneOf(['large', 'medium', 'small']),
         /**
+         * 单个 Item 中表单类组件宽度是否是100%
+         */
+        fullWidth: PropTypes.bool,
+        /**
          * 标签的位置
          * @enumdesc 上, 左, 内
          */
@@ -45,7 +50,7 @@ export default class Form extends React.Component {
          */
         labelTextAlign: PropTypes.oneOf(['left', 'right']),
         /**
-         * 经 `new Field(this)` 初始化后，直接传给 Form 即可 用到表单校验则不可忽略此项
+         * field 实例, 传 false 会禁用 field
          */
         field: PropTypes.any,
         /**
@@ -99,6 +104,14 @@ export default class Form extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 是否开启内置的响应式布局 （使用ResponsiveGrid）
+         */
+        responsive: PropTypes.bool,
+        /**
+         * 是否开启预览态
+         */
+        isPreview: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -115,43 +128,54 @@ export default class Form extends React.Component {
     static childContextTypes = {
         _formField: PropTypes.object,
         _formSize: PropTypes.string,
+        _formPreview: PropTypes.bool,
+        _formFullWidth: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
-        const options = {
-            ...props.fieldOptions,
-            onChange: this.onChange,
-        };
 
-        if (props.field) {
-            this._formField = props.field;
-            const onChange = this._formField.options.onChange;
-            options.onChange = func.makeChain(onChange, this.onChange);
-            this._formField.setOptions && this._formField.setOptions(options);
-        } else {
-            if ('value' in props) {
-                options.values = props.value;
+        this._formField = null;
+        if (props.field !== false) {
+            const options = {
+                ...props.fieldOptions,
+                onChange: this.onChange,
+            };
+
+            if (props.field) {
+                this._formField = props.field;
+                const onChange = this._formField.options.onChange;
+                options.onChange = func.makeChain(onChange, this.onChange);
+                this._formField.setOptions &&
+                    this._formField.setOptions(options);
+            } else {
+                if ('value' in props) {
+                    options.values = props.value;
+                }
+                this._formField = new Field(this, options);
             }
-            this._formField = new Field(this, options);
-        }
 
-        props.saveField(this._formField);
+            props.saveField(this._formField);
+        }
     }
 
     getChildContext() {
         return {
             _formField: this.props.field ? this.props.field : this._formField,
             _formSize: this.props.size,
+            _formPreview: this.props.isPreview,
+            _formFullWidth: this.props.fullWidth,
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this._formField.setValues(nextProps.value);
-        }
-        if ('error' in nextProps) {
-            this._formField.setErrors(nextProps.error);
+        if (this._formField) {
+            if ('value' in nextProps) {
+                this._formField.setValues(nextProps.value);
+            }
+            if ('error' in nextProps) {
+                this._formField.setErrors(nextProps.error);
+            }
         }
     }
 
@@ -179,13 +203,44 @@ export default class Form extends React.Component {
             prefix,
             rtl,
             component: Tag,
+            responsive,
         } = this.props;
 
         const formClassName = classNames({
             [`${prefix}form`]: true,
             [`${prefix}inline`]: inline, // 内联
             [`${prefix}${size}`]: size,
+            [`${prefix}form-responsive-grid`]: responsive,
             [className]: !!className,
+        });
+
+        const newChildren = React.Children.map(children, child => {
+            if (
+                child &&
+                typeof child.type === 'function' &&
+                child.type._typeMark === 'form_item'
+            ) {
+                const childrenProps = {
+                    labelCol: child.props.labelCol
+                        ? child.props.labelCol
+                        : labelCol,
+                    wrapperCol: child.props.wrapperCol
+                        ? child.props.wrapperCol
+                        : wrapperCol,
+                    labelAlign: child.props.labelAlign
+                        ? child.props.labelAlign
+                        : device === 'phone'
+                        ? 'top'
+                        : labelAlign,
+                    labelTextAlign: child.props.labelTextAlign
+                        ? child.props.labelTextAlign
+                        : labelTextAlign,
+                    size: child.props.size ? child.props.size : size,
+                    responsive: responsive,
+                };
+                return React.cloneElement(child, pickerDefined(childrenProps));
+            }
+            return child;
         });
 
         return (
@@ -197,36 +252,7 @@ export default class Form extends React.Component {
                 dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}
             >
-                {React.Children.map(children, child => {
-                    if (
-                        child &&
-                        typeof child.type === 'function' &&
-                        child.type._typeMark === 'form_item'
-                    ) {
-                        const childrenProps = {
-                            labelCol: child.props.labelCol
-                                ? child.props.labelCol
-                                : labelCol,
-                            wrapperCol: child.props.wrapperCol
-                                ? child.props.wrapperCol
-                                : wrapperCol,
-                            labelAlign: child.props.labelAlign
-                                ? child.props.labelAlign
-                                : device === 'phone'
-                                ? 'top'
-                                : labelAlign,
-                            labelTextAlign: child.props.labelTextAlign
-                                ? child.props.labelTextAlign
-                                : labelTextAlign,
-                            size: child.props.size ? child.props.size : size,
-                        };
-                        return React.cloneElement(
-                            child,
-                            pickerDefined(childrenProps)
-                        );
-                    }
-                    return child;
-                })}
+                {responsive ? <RGrid>{newChildren}</RGrid> : newChildren}
             </Tag>
         );
     }

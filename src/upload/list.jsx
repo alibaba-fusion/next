@@ -57,6 +57,7 @@ class List extends Component {
          */
         useDataURL: PropTypes.bool,
         rtl: PropTypes.bool,
+        isPreview: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -328,19 +329,17 @@ class List extends Component {
         );
     }
 
-    getPictureCardList(file) {
+    getPictureCardList(file, isPreview) {
         const { locale, progressProps } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(
             file
         );
+        const state = isPreview ? '' : file.state;
 
         let img = null;
 
-        if (
-            file.state === 'uploading' ||
-            (file.state === 'selected' && !imgURL)
-        ) {
+        if (state === 'uploading' || (state === 'selected' && !imgURL)) {
             img = (
                 <div className={`${prefixCls}-list-item-handler`}>
                     <Icon type="picture" />
@@ -349,7 +348,7 @@ class List extends Component {
                     </Button>
                 </div>
             );
-        } else if (file.state === 'error') {
+        } else if (state === 'error') {
             img = (
                 <div className={`${prefixCls}-list-item-handler`}>
                     <Icon type="cry" />
@@ -379,7 +378,7 @@ class List extends Component {
                     <div className={`${prefixCls}-list-item-thumbnail`}>
                         {img}
                     </div>
-                    {file.state === 'uploading' ? (
+                    {state === 'uploading' ? (
                         <div className={`${prefixCls}-list-item-progress`}>
                             <Progress
                                 size="medium"
@@ -389,11 +388,11 @@ class List extends Component {
                             />
                         </div>
                     ) : null}
-                    {file.state !== 'uploading' ? (
+                    {state !== 'uploading' ? (
                         <span
                             className={`${prefixCls}-tool ${
                                 !this.props.closable
-                                    ? '`${prefixCls}-noclose'
+                                    ? `${prefixCls}-noclose`
                                     : ''
                             }`}
                         >
@@ -413,7 +412,7 @@ class List extends Component {
                                 />
                             </a>
 
-                            {this.props.closable ? (
+                            {this.props.closable && !isPreview ? (
                                 <span className={`${prefixCls}-tool-close`}>
                                     <Icon
                                         type="ashbin"
@@ -439,27 +438,59 @@ class List extends Component {
     }
 
     render() {
-        const { listType, children, prefix, rtl, className } = this.props;
+        const {
+            listType,
+            children,
+            prefix,
+            rtl,
+            className,
+            isPreview,
+        } = this.props;
         const prefixCls = `${prefix}upload`;
 
-        let list = this.props.value.map(file => {
-            if (listType === 'text') {
-                return this.getTextList(file);
-            } else if (listType === 'image') {
-                return this.getImageList(file);
-            } else if (listType === 'card') {
-                return this.getPictureCardList(file);
-            }
-            return null;
-        });
+        let list = [];
+        if (isPreview) {
+            const previewCls = classNames({
+                [`${prefix}form-preview`]: true,
+                [className]: !!className,
+            });
+            list = this.props.value.map(file => {
+                const { downloadURL, imgURL, name } = file;
+                if (listType === 'text') {
+                    return (
+                        <div className={previewCls}>
+                            <a href={downloadURL} target="_blank">
+                                {name}
+                            </a>
+                        </div>
+                    );
+                } else if (listType === 'image' || listType === 'card') {
+                    return this.getPictureCardList(file, true);
+                }
+                return null;
+            });
+        } else {
+            list = this.props.value.map(file => {
+                if (listType === 'text') {
+                    return this.getTextList(file);
+                } else if (listType === 'image') {
+                    return this.getImageList(file);
+                } else if (listType === 'card') {
+                    return this.getPictureCardList(file);
+                }
+                return null;
+            });
+        }
 
         if (rtl && listType === 'card' && Array.isArray(list)) {
             list = list.reverse();
         }
+        const _listType =
+            isPreview && listType === 'image' ? 'card' : this.props.listType;
         const listclassNames = classNames(
             {
                 [`${prefixCls}-list`]: true,
-                [`${prefixCls}-list-${this.props.listType}`]: true,
+                [`${prefixCls}-list-${_listType}`]: true,
             },
             className
         );

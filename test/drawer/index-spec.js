@@ -13,7 +13,7 @@ Enzyme.configure({ adapter: new Adapter() });
 /* eslint-disable react/jsx-filename-extension */
 /* global describe it afterEach */
 /* global describe it beforeEach */
-const { hasClass } = dom;
+const { hasClass, getStyle } = dom;
 
 const render = element => {
     let inc;
@@ -123,6 +123,13 @@ describe('Drawer', () => {
     it('should hide close link if set closeable to false', () => {
         wrapper = render(<Drawer visible closeable={false} />);
         assert(!document.querySelector('.next-drawer-close'));
+    });
+
+    it('should support headerStyle/bodyStyle', () => {
+        wrapper = render(<Drawer visible title="test" headerStyle={{background: 'blue'}} bodyStyle={{background: 'red'}} closeable={false}>body</Drawer>);
+
+        assert(getStyle(document.querySelector('.next-drawer-header'), 'background'), 'blue');
+        assert(getStyle(document.querySelector('.next-drawer-body'), 'background'), 'red');
     });
 
 })

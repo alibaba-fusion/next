@@ -81,6 +81,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层id, 传入值才会支持无障碍
      */
     id?: string;
+    followTrigger?: boolean;
 }
 
 export class Tooltip extends React.Component<TooltipProps, any> {}
@@ -237,6 +238,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonP
      * 弹层id, 传入值才会支持无障碍
      */
     id?: string;
+    followTrigger?: boolean;
 }
 
 export default class Balloon extends React.Component<BalloonProps, any> {

@@ -17,6 +17,7 @@ function isChecked(selectedValue, value) {
 class Checkbox extends UIState {
     static displayName = 'Checkbox';
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -79,6 +80,15 @@ class Checkbox extends UIState {
          * name
          */
         name: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -88,6 +98,7 @@ class Checkbox extends UIState {
         onMouseEnter: noop,
         onMouseLeave: noop,
         prefix: 'next-',
+        isPreview: false,
     };
 
     static contextTypes = {
@@ -201,6 +212,8 @@ class Checkbox extends UIState {
             onMouseEnter,
             onMouseLeave,
             rtl,
+            isPreview,
+            renderPreview,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -238,6 +251,33 @@ class Checkbox extends UIState {
         });
         const labelCls = `${prefix}checkbox-label`;
         const type = indeterminate ? 'semi-select' : 'select';
+
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+            if ('renderPreview' in this.props) {
+                return (
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : undefined}
+                        {...othersData}
+                        className={previewCls}
+                    >
+                        {renderPreview(checked, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : undefined}
+                    {...othersData}
+                    className={previewCls}
+                >
+                    {checked && (children || label || this.state.value)}
+                </p>
+            );
+        }
 
         return (
             <label
