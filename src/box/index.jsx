@@ -233,7 +233,9 @@ class Box extends Component {
             return (
                 <View style={outerStyle} className={cls} {...others}>
                     <View style={helperStyle}>
-                        <View style={innerStyle}>{boxs}</View>
+                        <View style={innerStyle} className={`${prefix}box`}>
+                            {boxs}
+                        </View>
                     </View>
                 </View>
             );
