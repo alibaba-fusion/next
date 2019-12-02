@@ -9,4 +9,5 @@
 
 #{$responsive-grid-prefix} {
     @include box-sizing;
+    display: grid;
 }

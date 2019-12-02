@@ -86,7 +86,7 @@ export interface SliderProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义导航锚点
      */
-    dotRender?: () => void;
+    dotsRender?: (index: number, current: number) => void;
 
     /**
      * 是否可拖拽
