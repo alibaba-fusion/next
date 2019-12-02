@@ -102,6 +102,7 @@ class Box extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         style: PropTypes.object,
+        component: PropTypes.elementType,
         className: PropTypes.any,
         /**
          * 布局属性
@@ -174,6 +175,7 @@ class Box extends Component {
     render() {
         const {
             prefix,
+            component,
             direction,
             justify,
             align,
@@ -197,7 +199,7 @@ class Box extends Component {
             padding,
             margin,
         };
-        const View = 'Component' in this.props ? Component : 'div';
+        const View = 'component' in this.props ? component : 'div';
         const others = pickOthers(Object.keys(Box.propTypes), this.props);
         const styleSheet = getStyle(style, styleProps);
 
