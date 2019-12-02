@@ -23,7 +23,6 @@ const createChildren = (children, device) => {
             ) > -1
         ) {
             return React.cloneElement(child, {
-                // remove these props from children
                 style: {
                     ...getGridChildProps(child.props, device),
                     ...(child.props.style || {}),
@@ -46,6 +45,7 @@ const getStyle = (style = {}, props) => {
  * ResponsiveGrid
  */
 class ResponsiveGrid extends Component {
+    static _typeMark = 'responsive_grid';
     static propTypes = {
         prefix: PropTypes.string,
         className: PropTypes.any,

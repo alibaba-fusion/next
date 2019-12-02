@@ -10,12 +10,13 @@ import createStyle, {
     filterInnerStyle,
     filterHelperStyle,
     filterOuterStyle,
+    getGridChildProps,
     // getBoxChildProps,
 } from '../responsive-grid/create-style';
 
 const { pickOthers } = obj;
 
-const createChildren = (children, { spacing, direction, wrap }) => {
+const createChildren = (children, { spacing, direction, wrap, device }) => {
     const array = React.Children.toArray(children);
     if (!children) {
         return null;
@@ -52,12 +53,21 @@ const createChildren = (children, { spacing, direction, wrap }) => {
         if (React.isValidElement(child)) {
             const { margin: propsMargin } = child.props;
             const childPropsMargin = getMargin(propsMargin);
+            let gridProps = {};
+
+            if (
+                typeof child.type === 'function' &&
+                child.type._typeMark === 'responsive_grid'
+            ) {
+                gridProps = createStyle({ display: 'grid', ...child.props });
+            }
 
             return React.cloneElement(child, {
                 style: {
                     ...spacingMargin,
                     // ...getBoxChildProps(child.props),
                     ...childPropsMargin,
+                    ...gridProps,
                     ...(child.props.style || {}),
                 },
             });
@@ -102,7 +112,6 @@ class Box extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         style: PropTypes.object,
-        component: PropTypes.elementType,
         className: PropTypes.any,
         /**
          * 布局属性
@@ -175,7 +184,6 @@ class Box extends Component {
     render() {
         const {
             prefix,
-            component,
             direction,
             justify,
             align,
@@ -187,6 +195,7 @@ class Box extends Component {
             style,
             className,
             children,
+            device,
         } = this.props;
 
         const styleProps = {
@@ -199,11 +208,16 @@ class Box extends Component {
             padding,
             margin,
         };
-        const View = 'component' in this.props ? component : 'div';
+        const View = 'Component' in this.props ? Component : 'div';
         const others = pickOthers(Object.keys(Box.propTypes), this.props);
         const styleSheet = getStyle(style, styleProps);
 
-        const boxs = createChildren(children, { spacing, direction, wrap });
+        const boxs = createChildren(children, {
+            spacing,
+            direction,
+            wrap,
+            device,
+        });
 
         const cls = cx(
             {
