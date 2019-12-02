@@ -77,6 +77,12 @@ co(function*() {
     srcIndexJSContent += `export { default as ${name} } from './${dashName}';\n`;
     fs.writeFileSync(srcIndexJSPath, srcIndexJSContent);
 
+    // index-noreset.scss
+    const noresetScssPath = path.join(cwd, 'index-noreset.scss');
+    let noresetScssContent = fs.readFileSync(noresetScssPath, 'utf8');
+    noresetScssContent += `@import "lib/${dashName}/index.scss";\n`;
+    fs.writeFileSync(noresetScssPath, noresetScssContent);
+
     // types/index.d.ts
     const typesIndexJSPath = path.join(cwd, 'types', 'index.d.ts');
     let typesIndexJSContent = fs.readFileSync(typesIndexJSPath, 'utf8');

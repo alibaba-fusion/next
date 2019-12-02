@@ -9,4 +9,5 @@
 
 #{$box-prefix} {
     @include box-sizing;
+    display: flex;
 }
