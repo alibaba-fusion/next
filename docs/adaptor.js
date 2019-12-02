@@ -1,3 +1,4 @@
+import Avatar from './avatar/adaptor';
 import Badge from './badge/adaptor';
 import Balloon from './balloon/adaptor';
 import Breadcrumb from './breadcrumb/adaptor';
@@ -10,6 +11,7 @@ import Checkbox from './checkbox/adaptor';
 import Collapse from './collapse/adaptor';
 import DatePicker from './date-picker/adaptor';
 import Dialog from './dialog/adaptor';
+import Divider from './divider/adaptor';
 import Input from './input/adaptor';
 import Loading from './loading/adaptor';
 import Menu from './menu/adaptor';
@@ -40,6 +42,7 @@ import TreeSelect from './tree-select/adaptor';
 import Upload from './upload/adaptor';
 
 module.exports = {
+    Avatar,
     Badge,
     Balloon,
     Breadcrumb,
@@ -52,6 +55,7 @@ module.exports = {
     Collapse,
     DatePicker,
     Dialog,
+    Divider,
     Input,
     Loading,
     Menu,
