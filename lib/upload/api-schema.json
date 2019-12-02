@@ -1,0 +1,1349 @@
+{
+  "name": "Upload",
+  "props": {
+    "action": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "上传的地址",
+      "docblock": "上传的地址"
+    },
+    "accept": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)",
+      "docblock": "接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)"
+    },
+    "data": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "object"
+          },
+          {
+            "name": "func"
+          }
+        ]
+      },
+      "required": false,
+      "description": "上传额外传参",
+      "docblock": "上传额外传参"
+    },
+    "headers": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "设置上传的请求头部",
+      "docblock": "设置上传的请求头部",
+      "properties": []
+    },
+    "withCredentials": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否允许请求携带 cookie",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否允许请求携带 cookie"
+    },
+    "beforeUpload": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "可选参数, 详见 [beforeUpload](#beforeUpload)",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "可选参数, 详见 [beforeUpload](#beforeUpload)\n@param {Object} file 所有文件\n@param {Object} options 参数\n@returns {Boolean|Object|Promise} 返回值作用见demo",
+      "params": [
+        {
+          "name": "file",
+          "description": "所有文件",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "options",
+          "description": "参数",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回值作用见demo",
+        "type": {
+          "name": "union",
+          "value": [
+            "Boolean",
+            "Object",
+            "Promise"
+          ]
+        }
+      }
+    },
+    "onProgress": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "上传中",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "上传中",
+      "params": [],
+      "returns": null
+    },
+    "onSuccess": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "可选参数，上传成功回调函数，参数为请求下响应信息以及文件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "可选参数，上传成功回调函数，参数为请求下响应信息以及文件\n@param {Object} file 文件\n@param {Array<Object>} value 值",
+      "params": [
+        {
+          "name": "file",
+          "description": "文件",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "value",
+          "description": "值",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onError": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件\n@param {Object} file 出错的文件\n@param {Array} value 当前值",
+      "params": [
+        {
+          "name": "file",
+          "description": "出错的文件",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "value",
+          "description": "当前值",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "子元素",
+      "docblock": "子元素"
+    },
+    "timeout": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "设置上传超时,单位ms",
+      "docblock": "设置上传超时,单位ms"
+    },
+    "method": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'post'",
+            "computed": false
+          },
+          {
+            "value": "'put'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "上传方法",
+      "defaultValue": {
+        "value": "'post'",
+        "computed": false
+      },
+      "docblock": "上传方法"
+    },
+    "request": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义上传方法",
+      "docblock": "自定义上传方法\n@param {Object} option\n@return {Object} object with abort method",
+      "params": [
+        {
+          "name": "option",
+          "description": null,
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "object with abort method",
+        "type": {
+          "name": "Object"
+        }
+      }
+    },
+    "name": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "文件名字段",
+      "docblock": "文件名字段"
+    },
+    "onSelect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选择文件回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "选择文件回调",
+      "params": [],
+      "returns": null
+    },
+    "onDrop": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "放文件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "放文件",
+      "params": [],
+      "returns": null
+    },
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式前缀"
+    },
+    "value": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "文件列表",
+      "docblock": "文件列表"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "默认文件列表",
+      "docblock": "默认文件列表"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'card'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "上传按钮形状",
+      "docblock": "上传按钮形状"
+    },
+    "listType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'text'",
+            "computed": false,
+            "description": "文字"
+          },
+          {
+            "value": "'image'",
+            "computed": false,
+            "description": "图文"
+          },
+          {
+            "value": "'card'",
+            "computed": false,
+            "description": "卡片"
+          }
+        ]
+      },
+      "required": false,
+      "description": "上传列表的样式",
+      "docblock": "上传列表的样式\n@enumdesc 文字, 图文, 卡片",
+      "value": [
+        {
+          "value": "'text'",
+          "computed": false,
+          "description": "文字"
+        },
+        {
+          "value": "'image'",
+          "computed": false,
+          "description": "图文"
+        },
+        {
+          "value": "'card'",
+          "computed": false,
+          "description": "卡片"
+        }
+      ]
+    },
+    "formatter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)",
+      "docblock": "数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)\n@param {Object} response 返回\n@param {File} file 文件对象",
+      "params": [
+        {
+          "name": "response",
+          "description": "返回",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "file",
+          "description": "文件对象",
+          "type": {
+            "name": "File"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "limit": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最大文件上传个数",
+      "defaultValue": {
+        "value": "Infinity",
+        "computed": true
+      },
+      "docblock": "最大文件上传个数"
+    },
+    "dragable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "可选参数，是否支持拖拽上传，`ie10+` 支持。",
+      "docblock": "可选参数，是否支持拖拽上传，`ie10+` 支持。"
+    },
+    "useDataURL": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "可选参数，是否本地预览",
+      "docblock": "可选参数，是否本地预览"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "可选参数，是否禁用上传功能",
+      "docblock": "可选参数，是否禁用上传功能"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "上传文件改变时的状态",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "上传文件改变时的状态\n@param {Object} info 文件事件对象",
+      "params": [
+        {
+          "name": "info",
+          "description": "文件事件对象",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "afterSelect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.\n@param {Object} file\n@returns {Boolean} 返回false会阻止上传,其他则表示正常",
+      "params": [
+        {
+          "name": "file",
+          "description": null,
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回false会阻止上传,其他则表示正常",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "onRemove": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "移除文件回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "移除文件回调函数\n@param {Object} file 文件\n@returns {Boolean|Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除",
+      "params": [
+        {
+          "name": "file",
+          "description": "文件",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除",
+        "type": {
+          "name": "union",
+          "value": [
+            "Boolean",
+            "Promise"
+          ]
+        }
+      }
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义class",
+      "docblock": "自定义class"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内联样式",
+      "docblock": "自定义内联样式",
+      "properties": []
+    },
+    "autoUpload": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "自动上传",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "自动上传"
+    },
+    "progressProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传给Progress props",
+      "docblock": "透传给Progress props",
+      "properties": []
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "number"
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [
+    {
+      "name": "selectFiles",
+      "docblock": "对外暴露API, 添加文件\n@param files",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "files",
+          "description": null,
+          "type": null
+        }
+      ],
+      "returns": null,
+      "description": "对外暴露API, 添加文件"
+    },
+    {
+      "name": "startUpload",
+      "docblock": "对外暴露api，控制文件上传",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "对外暴露api，控制文件上传"
+    },
+    {
+      "name": "removeFile",
+      "docblock": "删除文件\n@param {File} file\n@return {void}",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "file",
+          "description": null,
+          "type": {
+            "name": "File"
+          }
+        }
+      ],
+      "returns": {
+        "description": null,
+        "type": {
+          "name": "void"
+        }
+      },
+      "description": "删除文件"
+    },
+    {
+      "name": "abort",
+      "docblock": "取消上传\n@param {File} file\n@return {void}",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "file",
+          "description": null,
+          "type": {
+            "name": "File"
+          }
+        }
+      ],
+      "returns": {
+        "description": null,
+        "type": {
+          "name": "void"
+        }
+      },
+      "description": "取消上传"
+    }
+  ],
+  "subComponents": [
+    {
+      "name": "Card",
+      "props": {
+        "action": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "上传的地址",
+          "docblock": "上传的地址"
+        },
+        "accept": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)",
+          "docblock": "接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)"
+        },
+        "data": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "object"
+              },
+              {
+                "name": "func"
+              }
+            ]
+          },
+          "required": false,
+          "description": "上传额外传参",
+          "docblock": "上传额外传参"
+        },
+        "headers": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "设置上传的请求头部",
+          "docblock": "设置上传的请求头部",
+          "properties": []
+        },
+        "withCredentials": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否允许请求携带 cookie",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "是否允许请求携带 cookie"
+        },
+        "beforeUpload": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "可选参数, 详见 [beforeUpload](#beforeUpload)",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "可选参数, 详见 [beforeUpload](#beforeUpload)\n@param {Object} file 所有文件\n@param {Object} options 参数\n@returns {Boolean|Object|Promise} 返回值作用见demo",
+          "params": [
+            {
+              "name": "file",
+              "description": "所有文件",
+              "type": {
+                "name": "Object"
+              }
+            },
+            {
+              "name": "options",
+              "description": "参数",
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": {
+            "description": "返回值作用见demo",
+            "type": {
+              "name": "union",
+              "value": [
+                "Boolean",
+                "Object",
+                "Promise"
+              ]
+            }
+          }
+        },
+        "onProgress": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "上传中",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "上传中",
+          "params": [],
+          "returns": null
+        },
+        "onSuccess": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "可选参数，上传成功回调函数，参数为请求下响应信息以及文件",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "可选参数，上传成功回调函数，参数为请求下响应信息以及文件\n@param {Object} file 文件\n@param {Array<Object>} value 值",
+          "params": [
+            {
+              "name": "file",
+              "description": "文件",
+              "type": {
+                "name": "Object"
+              }
+            },
+            {
+              "name": "value",
+              "description": "值",
+              "type": {
+                "name": "Array"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "onError": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件\n@param {Object} file 出错的文件\n@param {Array} value 当前值",
+          "params": [
+            {
+              "name": "file",
+              "description": "出错的文件",
+              "type": {
+                "name": "Object"
+              }
+            },
+            {
+              "name": "value",
+              "description": "当前值",
+              "type": {
+                "name": "Array"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "子元素",
+          "docblock": "子元素"
+        },
+        "timeout": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "设置上传超时,单位ms",
+          "docblock": "设置上传超时,单位ms"
+        },
+        "method": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'post'",
+                "computed": false
+              },
+              {
+                "value": "'put'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "上传方法",
+          "defaultValue": {
+            "value": "'post'",
+            "computed": false
+          },
+          "docblock": "上传方法"
+        },
+        "request": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "自定义上传方法",
+          "docblock": "自定义上传方法\n@param {Object} option\n@return {Object} object with abort method",
+          "params": [
+            {
+              "name": "option",
+              "description": null,
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": {
+            "description": "object with abort method",
+            "type": {
+              "name": "Object"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "文件名字段",
+          "docblock": "文件名字段"
+        },
+        "onSelect": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "选择文件回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "选择文件回调",
+          "params": [],
+          "returns": null
+        },
+        "onDrop": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "放文件",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "放文件",
+          "params": [],
+          "returns": null
+        },
+        "prefix": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "样式前缀",
+          "defaultValue": {
+            "value": "'next-'",
+            "computed": false
+          },
+          "docblock": "样式前缀"
+        },
+        "value": {
+          "type": {
+            "name": "array"
+          },
+          "required": false,
+          "description": "文件列表",
+          "docblock": "文件列表"
+        },
+        "defaultValue": {
+          "type": {
+            "name": "array"
+          },
+          "required": false,
+          "description": "默认文件列表",
+          "docblock": "默认文件列表"
+        },
+        "shape": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'card'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "上传按钮形状",
+          "docblock": "上传按钮形状"
+        },
+        "listType": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'text'",
+                "computed": false,
+                "description": "文字"
+              },
+              {
+                "value": "'image'",
+                "computed": false,
+                "description": "图文"
+              },
+              {
+                "value": "'card'",
+                "computed": false,
+                "description": "卡片"
+              }
+            ]
+          },
+          "required": false,
+          "description": "上传列表的样式",
+          "docblock": "上传列表的样式\n@enumdesc 文字, 图文, 卡片",
+          "value": [
+            {
+              "value": "'text'",
+              "computed": false,
+              "description": "文字"
+            },
+            {
+              "value": "'image'",
+              "computed": false,
+              "description": "图文"
+            },
+            {
+              "value": "'card'",
+              "computed": false,
+              "description": "卡片"
+            }
+          ]
+        },
+        "formatter": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)",
+          "docblock": "数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)\n@param {Object} response 返回\n@param {File} file 文件对象",
+          "params": [
+            {
+              "name": "response",
+              "description": "返回",
+              "type": {
+                "name": "Object"
+              }
+            },
+            {
+              "name": "file",
+              "description": "文件对象",
+              "type": {
+                "name": "File"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "limit": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "最大文件上传个数",
+          "defaultValue": {
+            "value": "Infinity",
+            "computed": true
+          },
+          "docblock": "最大文件上传个数"
+        },
+        "dragable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "可选参数，是否支持拖拽上传，`ie10+` 支持。",
+          "docblock": "可选参数，是否支持拖拽上传，`ie10+` 支持。"
+        },
+        "useDataURL": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "可选参数，是否本地预览",
+          "docblock": "可选参数，是否本地预览"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "可选参数，是否禁用上传功能",
+          "docblock": "可选参数，是否禁用上传功能"
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "改变时候的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "改变时候的回调",
+          "params": [],
+          "returns": null
+        },
+        "afterSelect": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.\n@param {Object} file\n@returns {Boolean} 返回false会阻止上传,其他则表示正常",
+          "params": [
+            {
+              "name": "file",
+              "description": null,
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": {
+            "description": "返回false会阻止上传,其他则表示正常",
+            "type": {
+              "name": "Boolean"
+            }
+          }
+        },
+        "onRemove": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "点击移除的回调",
+          "docblock": "点击移除的回调",
+          "params": [],
+          "returns": null
+        },
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义class",
+          "docblock": "自定义class"
+        },
+        "style": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "自定义内联样式",
+          "docblock": "自定义内联样式",
+          "properties": []
+        },
+        "autoUpload": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "自动上传",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "自动上传"
+        },
+        "progressProps": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "透传给Progress props",
+          "docblock": "透传给Progress props",
+          "properties": []
+        },
+        "isPreview": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否为预览态",
+          "docblock": "是否为预览态"
+        },
+        "renderPreview": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "预览态模式下渲染的内容",
+          "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+          "params": [
+            {
+              "name": "value",
+              "description": "评分值",
+              "type": {
+                "name": "number"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "onPreview": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "点击图片回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "点击图片回调",
+          "params": [],
+          "returns": null
+        },
+        "onCancel": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "取消上传的回调",
+          "docblock": "取消上传的回调",
+          "params": [],
+          "returns": null
+        }
+      },
+      "methods": [],
+      "description": "继承 Upload 的 API，除非特别说明"
+    },
+    {
+      "name": "Dragger",
+      "props": {
+        "prefix": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "样式前缀",
+          "defaultValue": {
+            "value": "'next-'",
+            "computed": false
+          },
+          "docblock": "样式前缀"
+        }
+      },
+      "methods": [],
+      "description": "IE10+ 支持。继承 Upload 的 API，除非特别说明"
+    },
+    {
+      "name": "Selecter",
+      "props": {
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁用上传功能",
+          "docblock": "是否禁用上传功能"
+        },
+        "multiple": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件"
+        },
+        "dragable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否支持拖拽上传，`ie10+` 支持。",
+          "docblock": "是否支持拖拽上传，`ie10+` 支持。"
+        },
+        "accept": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)",
+          "docblock": "接受上传的文件类型 (image/png, image/jpg, .doc, .ppt) 详见 [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept)"
+        },
+        "onSelect": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "文件选择回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "文件选择回调",
+          "params": [],
+          "returns": null
+        },
+        "onDragOver": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "拖拽经过回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "拖拽经过回调",
+          "params": [],
+          "returns": null
+        },
+        "onDragLeave": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "拖拽离开回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "拖拽离开回调",
+          "params": [],
+          "returns": null
+        },
+        "onDrop": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "拖拽完成回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "拖拽完成回调",
+          "params": [],
+          "returns": null
+        }
+      },
+      "methods": [
+        {
+          "name": "onClick",
+          "docblock": "点击上传按钮\n@return {void}",
+          "modifiers": [],
+          "params": [],
+          "returns": {
+            "description": null,
+            "type": {
+              "name": "void"
+            }
+          },
+          "description": "点击上传按钮"
+        },
+        {
+          "name": "onKeyDown",
+          "docblock": "键盘事件\n@param  {SyntheticEvent} e\n@return {void}",
+          "modifiers": [],
+          "params": [
+            {
+              "name": "e",
+              "description": null,
+              "type": {
+                "name": "SyntheticEvent"
+              }
+            }
+          ],
+          "returns": {
+            "description": null,
+            "type": {
+              "name": "void"
+            }
+          },
+          "description": "键盘事件"
+        },
+        {
+          "name": "onDrop",
+          "docblock": "拖拽\n@param  {SyntheticEvent} e\n@return {void}",
+          "modifiers": [],
+          "params": [
+            {
+              "name": "e",
+              "description": null,
+              "type": {
+                "name": "SyntheticEvent"
+              }
+            }
+          ],
+          "returns": {
+            "description": null,
+            "type": {
+              "name": "void"
+            }
+          },
+          "description": "拖拽"
+        }
+      ],
+      "description": "[底层能力] 可自定义样式的文件选择器"
+    }
+  ]
+}
