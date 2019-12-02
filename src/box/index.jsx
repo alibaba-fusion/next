@@ -10,12 +10,13 @@ import createStyle, {
     filterInnerStyle,
     filterHelperStyle,
     filterOuterStyle,
+    getGridChildProps,
     // getBoxChildProps,
 } from '../responsive-grid/create-style';
 
 const { pickOthers } = obj;
 
-const createChildren = (children, { spacing, direction, wrap }) => {
+const createChildren = (children, { spacing, direction, wrap, device }) => {
     const array = React.Children.toArray(children);
     if (!children) {
         return null;
@@ -52,12 +53,21 @@ const createChildren = (children, { spacing, direction, wrap }) => {
         if (React.isValidElement(child)) {
             const { margin: propsMargin } = child.props;
             const childPropsMargin = getMargin(propsMargin);
+            let gridProps = {};
+
+            if (
+                typeof child.type === 'function' &&
+                child.type._typeMark === 'responsive_grid'
+            ) {
+                gridProps = createStyle({ display: 'grid', ...child.props });
+            }
 
             return React.cloneElement(child, {
                 style: {
                     ...spacingMargin,
                     // ...getBoxChildProps(child.props),
                     ...childPropsMargin,
+                    ...gridProps,
                     ...(child.props.style || {}),
                 },
             });
@@ -185,6 +195,7 @@ class Box extends Component {
             style,
             className,
             children,
+            device,
         } = this.props;
 
         const styleProps = {
@@ -201,7 +212,12 @@ class Box extends Component {
         const others = pickOthers(Object.keys(Box.propTypes), this.props);
         const styleSheet = getStyle(style, styleProps);
 
-        const boxs = createChildren(children, { spacing, direction, wrap });
+        const boxs = createChildren(children, {
+            spacing,
+            direction,
+            wrap,
+            device,
+        });
 
         const cls = cx(
             {
