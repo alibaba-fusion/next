@@ -62,7 +62,8 @@
             display: block;
         }
 
-        &:hover #{$number-picker-prefix}-handler {
+        &:hover #{$number-picker-prefix}-handler,
+        &.hover #{$number-picker-prefix}-handler {
             opacity: 1;
         }
 
