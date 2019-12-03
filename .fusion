@@ -50,6 +50,7 @@
     }
   },
   "variables": {
+    "list": "lib/list/scss/variable.scss",
     "box": "lib/box/scss/variable.scss",
     "responsive-grid": "lib/responsive-grid/scss/variable.scss",
     "avatar": "lib/avatar/scss/variable.scss",
