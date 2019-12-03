@@ -22,30 +22,30 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
 
-    const publish = yield inquirer.prompt([
-        {
-            name: 'normal',
-            type: 'list',
-            choices: [
-                {
-                    name: 'Normal publish',
-                    value: 'yes',
-                },
-                {
-                    name: 'Beta / pre minor fix',
-                    value: 'no',
-                },
-            ],
-            default: 0,
-            message: 'Is this a normal publish?',
-        },
-    ]);
+    // const publish = yield inquirer.prompt([
+    //     {
+    //         name: 'normal',
+    //         type: 'list',
+    //         choices: [
+    //             {
+    //                 name: 'Normal publish',
+    //                 value: 'yes',
+    //             },
+    //             {
+    //                 name: 'Beta / pre minor fix',
+    //                 value: 'no',
+    //             },
+    //         ],
+    //         default: 0,
+    //         message: 'Is this a normal publish?',
+    //     },
+    // ]);
 
-    if (publish.normal === 'yes') {
-        yield pushMaster();
-    }
+    // if (publish.normal === 'yes') {
+    //     yield pushMaster();
+    // }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
 }).catch(err => {
@@ -86,7 +86,7 @@ function* pushMaster() {
 
 function* pushPlatformDocsBranch() {
     const docs = path.join(cwd, 'platform-docs');
-    yield runCommond(`git tag ${masterTag}`);
+    // yield runCommond(`git tag ${masterTag}`);
     yield runCommond(`git push origin ${masterTag}`);
 
     try {
