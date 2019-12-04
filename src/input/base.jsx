@@ -138,6 +138,12 @@ class Base extends React.Component {
     }
 
     onChange(e) {
+        if ('stopPropagation' in e) {
+            e.stopPropagation();
+        } else if ('cancelBubble' in e) {
+            e.cancelBubble();
+        }
+
         let value = e.target.value;
 
         if (this.props.trim) {
