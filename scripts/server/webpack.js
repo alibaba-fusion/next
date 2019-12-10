@@ -30,7 +30,15 @@ module.exports = function getWebpackConfig(options) {
     );
     const demoPaths = glob.sync(path.join(componentPath, 'demo', '*.md'));
     const themePaths = glob.sync(path.resolve(componentPath, 'theme/**/*.jsx'));
-    const entry = getEntry([indexPath, ...demoPaths, ...themePaths]);
+    const adaptorPaths = glob.sync(
+        path.resolve(componentPath, 'adaptor/*.jsx')
+    );
+    const entry = getEntry([
+        indexPath,
+        ...demoPaths,
+        ...themePaths,
+        ...adaptorPaths,
+    ]);
     config.entry = entry;
 
     config.output = {
@@ -97,6 +105,16 @@ module.exports = function getWebpackConfig(options) {
                 title: 'Config Theme Demo',
             });
         }
+    }
+
+    if (adaptorPaths.length) {
+        const docsPath = path.join(cwd, 'docs');
+        links.push({
+            href: path
+                .relative(docsPath, adaptorPaths[0])
+                .replace(/\.jsx$/, '.html'),
+            title: 'Adaptor Demo',
+        });
     }
 
     config.module.rules.push({
