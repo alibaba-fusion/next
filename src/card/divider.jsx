@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -7,13 +7,17 @@ import ConfigProvider from '../config-provider';
  * Card.Divider
  * @order 4
  */
-class CardDivider extends PureComponent {
+class CardDivider extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
          * 设置标签类型
          */
         component: PropTypes.elementType,
+        /**
+         * inset
+         */
+        inset: PropTypes.bool,
         className: PropTypes.string,
     };
 
@@ -26,15 +30,20 @@ class CardDivider extends PureComponent {
         const {
             prefix,
             component: Component,
+            inset,
             className,
             ...others
         } = this.props;
-        return (
-            <Component
-                {...others}
-                className={classNames(`${prefix}card-divider`, className)}
-            />
+
+        const dividerClassName = classNames(
+            `${prefix}card-divider`,
+            {
+                [`${prefix}card-divider--inset`]: inset,
+            },
+            className
         );
+
+        return <Component {...others} className={dividerClassName} />;
     }
 }
 

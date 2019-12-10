@@ -33,21 +33,22 @@ A card could contain a photo, text, and a link about a single subject.
 
 ### Card.Actions
 
-| 参数        | 说明     | 类型     | 默认值   |
+| Param     | Description           | Type            | Default Value  |
 | --------- | ------ | ------ | ----- |
 | component | The html tag to be rendered | custom | 'div' |
 
 ### Card.Content
 
-| 参数        | 说明     | 类型     | 默认值   |
+| Param     | Description           | Type            | Default Value  |
 | --------- | ------ | ------ | ----- |
 | component | The html tag to be rendered | custom | 'div' |
 
 ### Card.Divider
 
-| 参数        | 说明     | 类型     | 默认值  |
+| Param     | Description           | Type            | Default Value  |
 | --------- | ------ | ------ | ---- |
 | component | The html tag to be rendered | custom | 'hr' |
+| inset     | inset  | Boolean | -    |
 
 ### Card.Header
 
