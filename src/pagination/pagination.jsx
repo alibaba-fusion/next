@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
@@ -11,6 +12,16 @@ import zhCN from '../locale/zh-cn.js';
 
 const { Option } = Select;
 const noop = () => {};
+
+function correctCurrent(currentPage, total, currentPageSize) {
+    const totalPage = getTotalPage(total, currentPageSize);
+    return currentPage > totalPage ? totalPage : currentPage;
+}
+
+function getTotalPage(total, currentPageSize) {
+    const totalPage = Math.ceil(total / currentPageSize);
+    return totalPage <= 0 ? 1 : totalPage;
+}
 
 /**
  * Pagination
@@ -156,53 +167,34 @@ class Pagination extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const { current, defaultCurrent, total, pageSize } = props;
         this.state = {
-            current: this.correctCurrent(
-                current || defaultCurrent,
-                total,
-                pageSize
-            ),
-            currentPageSize: pageSize,
+            current: props.defaultCurrent || 1,
+            currentPageSize: 0,
         };
-        this.onJump = this.onJump.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { current, total, pageSize } = nextProps;
-
+    static getDerivedStateFromProps(props, state) {
+        const { current, total, pageSize } = props;
         const st = {};
-        const newCurrent = this.correctCurrent(
-            current || this.state.current,
+        const newCurrent = correctCurrent(
+            current || state.current,
             total,
             pageSize
         );
-        if (this.state.current !== newCurrent) {
+        if (state.current !== newCurrent) {
             st.current = newCurrent;
         }
-        if (this.state.currentPageSize !== pageSize) {
+        if (state.currentPageSize !== pageSize) {
             st.currentPageSize = pageSize;
         }
 
-        if (Object.keys(st).length) {
-            this.setState(st);
-        }
+        return st;
     }
 
-    correctCurrent(currentPage, total, currentPageSize) {
-        const totalPage = this.getTotalPage(total, currentPageSize);
-        return currentPage > totalPage ? totalPage : currentPage;
-    }
-
-    getTotalPage(total, currentPageSize) {
-        const totalPage = Math.ceil(total / currentPageSize);
-        return totalPage <= 0 ? 1 : totalPage;
-    }
-
-    onJump(e) {
+    handleJump = e => {
         const { total } = this.props;
         const { current, currentPageSize } = this.state;
-        const totalPage = this.getTotalPage(total, currentPageSize);
+        const totalPage = getTotalPage(total, currentPageSize);
         const value = parseInt(this.inputValue, 10);
         if (
             typeof value === 'number' &&
@@ -212,7 +204,7 @@ class Pagination extends Component {
         ) {
             this.onPageItemClick(value, e);
         }
-    }
+    };
     onPageItemClick(page, e) {
         if (!('current' in this.props)) {
             this.setState({
@@ -231,7 +223,7 @@ class Pagination extends Component {
             currentPageSize: pageSize,
         };
 
-        const totalPage = this.getTotalPage(this.props.total, pageSize);
+        const totalPage = getTotalPage(this.props.total, pageSize);
         if (this.state.current > totalPage) {
             newState.current = totalPage;
         }
@@ -267,7 +259,7 @@ class Pagination extends Component {
         } = this.props;
         const { current } = this.state;
 
-        const totalPage = this.getTotalPage(total, pageSize);
+        const totalPage = getTotalPage(total, pageSize);
         const isCurrent = parseInt(index, 10) === current;
         const props = {
             size,
@@ -384,7 +376,7 @@ class Pagination extends Component {
                 onChange={this.onInputChange.bind(this)}
                 onKeyDown={e => {
                     if (e.keyCode === KEYCODE.ENTER) {
-                        this.onJump(e);
+                        this.handleJump(e);
                     }
                 }}
             />,
@@ -394,7 +386,7 @@ class Pagination extends Component {
             <Button
                 className={`${prefix}pagination-jump-go`}
                 size={size}
-                onClick={this.onJump}
+                onClick={this.handleJump}
             >
                 {locale.go}
             </Button>,
@@ -603,7 +595,7 @@ class Pagination extends Component {
         } = this.props;
         /* eslint-enable */
         const { current: currentPage, currentPageSize } = this.state;
-        const totalPage = this.getTotalPage(total, currentPageSize);
+        const totalPage = getTotalPage(total, currentPageSize);
         const pageFirst = this.renderPageFirst(currentPage);
         const pageLast = this.renderPageLast(currentPage, totalPage);
         const sizeSelector = this.renderPageSizeSelector();
@@ -681,4 +673,4 @@ class Pagination extends Component {
     }
 }
 
-export default ConfigProvider.config(Pagination);
+export default ConfigProvider.config(polyfill(Pagination));
