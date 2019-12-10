@@ -49,8 +49,11 @@ class RangeCalendar extends React.Component {
         endValue: checkMomentObj,
         // 面板模式
         mode: PropTypes.oneOf(CALENDAR_MODES),
+        // 禁用更改面板模式，采用 dropdown 的方式切换显示日期 (暂不正式对外透出)
+        disableChangeMode: PropTypes.bool,
         // 日期值的格式（用于日期title显示的格式）
         format: PropTypes.string,
+        yearRange: PropTypes.arrayOf(PropTypes.number),
         /**
          * 是否显示非本月的日期
          */
@@ -96,6 +99,7 @@ class RangeCalendar extends React.Component {
         prefix: 'next-',
         rtl: false,
         mode: CALENDAR_MODE_DATE,
+        disableChangeMode: false,
         format: 'YYYY-MM-DD',
         dateCellRender: value => value.date(),
         onSelect: func.noop,
@@ -233,6 +237,8 @@ class RangeCalendar extends React.Component {
             locale,
             showOtherMonth,
             disabledDate,
+            disableChangeMode,
+            yearRange,
             ...others
         } = this.props;
         const {
@@ -268,7 +274,10 @@ class RangeCalendar extends React.Component {
             momentLocale: localeData,
             startVisibleMonth,
             endVisibleMonth,
+            changeVisibleMonth: this.changeVisibleMonth,
             changeMode: this.changeMode,
+            yearRange,
+            disableChangeMode,
         };
 
         const tableProps = {
