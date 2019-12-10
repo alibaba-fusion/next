@@ -1,4 +1,4 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../../config-provider';
@@ -157,7 +157,7 @@ export default class Button extends Component {
                 });
             }
 
-            if (typeof child === 'string' && child) {
+            if (!isValidElement(child)) {
                 return <span>{child}</span>;
             }
 
