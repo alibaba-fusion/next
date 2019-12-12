@@ -161,6 +161,8 @@ class Select extends Base {
          * 失去焦点事件
          */
         onBlur: PropTypes.func,
+        onMouseEnter: PropTypes.func,
+        onMouseLeave: PropTypes.func,
         onKeyDown: PropTypes.func,
         locale: PropTypes.object,
     };
@@ -183,6 +185,8 @@ class Select extends Base {
         onKeyDown: noop,
         onFocus: noop,
         onBlur: noop,
+        onMouseEnter: noop,
+        onMouseLeave: noop,
     };
 
     static displayName = 'Select';
@@ -970,6 +974,8 @@ class Select extends Base {
             state,
             onBlur,
             onFocus,
+            onMouseEnter,
+            onMouseLeave,
             rtl,
         } = this.props;
         const others = obj.pickOthers(Select.propTypes, this.props);
@@ -1030,6 +1036,8 @@ class Select extends Base {
                 dir={rtl ? 'rtl' : undefined}
                 ref={this.saveSelectRef}
                 onClick={this.handleWrapClick}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
                 onMouseDown={this.handleWrapClick}
             >
                 <Input
