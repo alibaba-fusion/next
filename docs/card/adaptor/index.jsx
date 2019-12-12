@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@alifd/next';
+import { Card, Button } from '@alifd/next';
 import { Types } from '@alifd/adaptor-helper';
 
 let index = 0;
@@ -7,26 +7,16 @@ export default {
     name: 'Card',
     editor: () => ({
         props: [{
-            name: 'bullet',
-            label: 'Label',
-            type: Types.bool,
-            default: false,
-        }, {
             name: 'divider',
             type: Types.bool,
             default: true,
-        }, {
-            name: 'expand',
-            label: 'Expanded',
-            type: Types.bool,
-            default: false
         }, {
             name: 'width',
             type: Types.number,
             default: 300,
         }, {
             name: 'height',
-            label: 'Content Height',
+            label: 'height',
             type: Types.number,
             default: 215,
         }, {
@@ -44,16 +34,24 @@ export default {
             type: Types.string,
             default: '',
         }],
+        data: {
+            default: '',
+        }
     }),
-    adaptor: ({ bullet, divider, expand, width, height, title, subTitle, extra, style, ...others }) => {
+    adaptor: ({ bullet, divider, expand, width, height, title, subTitle, extra, style, data, ...others }) => {
         const cardStyle = {
             width: width === 0 ? '' : width,
+            height: height === 0 ? 'auto' : height,
             ...style,
         };
 
         return (
-            <Card {...others} key={`${expand}_${index++}`} locale={{ expand: 'Fold' }} title={title} showTitleBullet={bullet} subTitle={subTitle} extra={extra} showHeadDivider={divider} contentHeight={expand ? 'auto' : height - 1} style={cardStyle}>
-                <div style={{ height }}></div>
+            <Card free style={cardStyle}>
+                <Card.Header title={title} subTitle={subTitle} extra={<Button text type="primary">{extra}</Button>} />
+                {divider && <Card.Divider />}
+                <Card.Content>
+                    {data}
+                </Card.Content>
             </Card>
         );
     },

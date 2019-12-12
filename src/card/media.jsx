@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -12,7 +12,7 @@ const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
  * Card.Media
  * @order 1
  */
-class CardMedia extends PureComponent {
+class CardMedia extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
