@@ -136,4 +136,13 @@ describe('src/dom.js', function() {
             assert(offset.left === 100);
         });
     });
+
+    describe('#getPixels', function() {
+        it('getPixels() should return number', function() {
+            assert(dom.getPixels('100') === 100);
+            assert(dom.getPixels(100) === 100);
+            assert(dom.getPixels('60px') === 60);
+            assert(dom.getPixels('100vh') === document.defaultView.innerHeight);
+        });
+    });
 });

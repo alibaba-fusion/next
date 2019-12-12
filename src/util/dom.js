@@ -296,20 +296,20 @@ export function getOffset(node) {
  */
 export function getPixels(len) {
     const win = document.defaultView;
-    if (typeof len === 'number') {
-        return len;
+    if (typeof +len === 'number' && !isNaN(+len)) {
+        return +len;
     }
 
     if (typeof len === 'string') {
         const PX_REG = /(\d+)px/;
         const VH_REG = /(\d+)vh/;
         if (Array.isArray(len.match(PX_REG))) {
-            return len.match(PX_REG)[1] || 0;
+            return +len.match(PX_REG)[1] || 0;
         }
 
         if (Array.isArray(len.match(VH_REG))) {
             const _1vh = win.innerHeight / 100;
-            return len.match(VH_REG)[1] * _1vh || 0;
+            return +(len.match(VH_REG)[1] * _1vh) || 0;
         }
     }
 
