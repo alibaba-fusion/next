@@ -115,8 +115,8 @@ export default class Cell extends React.Component {
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}
                 >
-                    {content}
                     {children}
+                    {content}
                 </div>
             </Tag>
         );

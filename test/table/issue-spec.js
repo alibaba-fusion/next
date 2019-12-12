@@ -338,14 +338,16 @@ describe('Issue', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
         ReactDOM.render(
-            <Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}>
+            <Table dataSource={[{ id: 1 }, { id: 2 }]}>
                 <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />
             </Table>,
             div
         );
         assert(
-            div.querySelectorAll('.next-table table td')[0].style.textAlign ===
-                'left'
+            div.querySelectorAll('.next-table table td')[0].style.textAlign === ''
+        );
+        assert(
+            div.querySelectorAll('.next-table table th')[0].style.textAlign === 'left'
         );
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
