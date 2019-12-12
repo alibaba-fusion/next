@@ -34,7 +34,7 @@ class Demo extends React.Component {
     };
     render() {
         const { device } = this.state;
-        return <div className="list">
+        return (<div className="list">
             <Radio.Group shape="button" onChange={this.onChange} dataSource={ds} defaultValue="desktop"/>
             <br />
             <br />
@@ -52,7 +52,7 @@ class Demo extends React.Component {
                   <Cell className="mygrid grid-3" colSpan={3}>3</Cell>
                 </ResponsiveGrid>
             </div>
-        </div>
+        </div>);
     }
 }
 

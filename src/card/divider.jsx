@@ -15,7 +15,7 @@ class CardDivider extends Component {
          */
         component: PropTypes.elementType,
         /**
-         * inset
+         * 分割线是否向内缩进
          */
         inset: PropTypes.bool,
         className: PropTypes.string,
