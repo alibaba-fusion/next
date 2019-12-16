@@ -43,8 +43,8 @@ class App extends React.Component {
                     signature,
                 };
 
-                // real url
-                this.url = `//${domain}/${key}`;
+                // save url to file object
+                file.tempUrl = `//${domain}/${key}`;
                 
                 resolve(options);
             }, 300);
@@ -55,7 +55,7 @@ class App extends React.Component {
     };
     formatter = (res, file) => ({
         success: true,
-        url: this.url
+        url: file.tempUrl
     });
     render() {
         return (
