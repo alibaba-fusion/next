@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
@@ -103,23 +104,23 @@ class MenuButton extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            selectedKeys: props.selectedKeys || props.defaultSelectedKeys,
-            visible: props.visible || props.defaultVisible,
+            selectedKeys: props.defaultSelectedKeys,
+            visible: props.defaultVisible,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+    static getDerivedStateFromProps(props) {
+        const st = {};
+
+        if ('visible' in props) {
+            st.visible = props.visible;
         }
 
-        if ('selectedKeys' in nextProps) {
-            this.setState({
-                selectedKeys: nextProps.selectedKeys,
-            });
+        if ('selectedKeys' in props) {
+            st.selectedKeys = props.selectedKeys;
         }
+
+        return st;
     }
 
     clickMenuItem = (key, ...others) => {
@@ -247,4 +248,4 @@ MenuButton.Item = Menu.Item;
 MenuButton.Group = Menu.Group;
 MenuButton.Divider = Menu.Divider;
 
-export default MenuButton;
+export default polyfill(MenuButton);
