@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
@@ -53,7 +54,7 @@ function getFormatValues(values, format) {
 /**
  * DatePicker.RangePicker
  */
-export default class RangePicker extends Component {
+class RangePicker extends Component {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -231,7 +232,7 @@ export default class RangePicker extends Component {
         size: 'medium',
         showTime: false,
         resetTime: false,
-        format: 'YYYY-MM-DD',
+        // format: 'YYYY-MM-DD',
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
@@ -247,17 +248,15 @@ export default class RangePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const dateTimeFormat = getDateTimeFormat(
+        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
             props.format,
             props.showTime,
             props.type
         );
-        extend(dateTimeFormat, this);
 
         const val = props.value || props.defaultValue;
-        const values = getFormatValues(val, this.dateTimeFormat);
-        this.inputAsString =
-            val && (typeof val[0] === 'string' || typeof val[1] === 'string');
+        const values = getFormatValues(val, dateTimeFormat);
+
         this.state = {
             visible: props.visible || props.defaultVisible,
             startValue: values[0],
@@ -269,49 +268,53 @@ export default class RangePicker extends Component {
             endTimeInputStr: '',
             inputing: false, // 当前是否处于输入状态
             panel: PANEL.DATE,
+            format,
+            timeFormat,
+            dateTimeFormat,
+            inputAsString:
+                val &&
+                (typeof val[0] === 'string' || typeof val[1] === 'string'),
         };
     }
+    static getDerivedStateFromProps(props) {
+        const formatStates = getDateTimeFormat(
+            props.format,
+            props.showTime,
+            props.type
+        );
+        const states = {};
 
-    componentWillReceiveProps(nextProps) {
-        if ('showTime' in nextProps) {
-            const dateTimeFormat = getDateTimeFormat(
-                nextProps.format || this.props.format,
-                nextProps.showTime,
-                nextProps.type
-            );
-            extend(dateTimeFormat, this);
-        }
-
-        if ('value' in nextProps) {
+        if ('value' in props) {
             const values = getFormatValues(
-                nextProps.value,
-                this.dateTimeFormat
+                props.value,
+                formatStates.dateTimeFormat
             );
-            this.setState({
-                startValue: values[0],
-                endValue: values[1],
-            });
-            this.inputAsString =
-                nextProps.value &&
-                (typeof nextProps.value[0] === 'string' ||
-                    typeof nextProps.value[1] === 'string');
+            states.startValue = values[0];
+            states.endValue = values[1];
+            states.inputAsString =
+                props.value &&
+                (typeof props.value[0] === 'string' ||
+                    typeof props.value[1] === 'string');
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if ('visible' in props) {
+            states.visible = props.visible;
         }
+
+        return {
+            ...states,
+            ...formatStates,
+        };
     }
 
     onValueChange = (values, handler = 'onChange') => {
         let ret;
-        if (!values.length || !this.inputAsString) {
+        if (!values.length || !this.state.inputAsString) {
             ret = values;
         } else {
             ret = [
-                values[0] ? values[0].format(this.dateTimeFormat) : null,
-                values[1] ? values[1].format(this.dateTimeFormat) : null,
+                values[0] ? values[0].format(this.state.dateTimeFormat) : null,
+                values[1] ? values[1].format(this.state.dateTimeFormat) : null,
             ];
         }
         this.props[handler](ret);
@@ -323,6 +326,7 @@ export default class RangePicker extends Component {
             activeDateInput: prevActiveDateInput,
             startValue: prevStartValue,
             endValue: prevEndValue,
+            timeFormat,
         } = this.state;
 
         const newState = {
@@ -348,7 +352,7 @@ export default class RangePicker extends Component {
                                 Array.isArray(showTime.defaultValue)
                                     ? showTime.defaultValue[0]
                                     : showTime.defaultValue,
-                                this.timeFormat
+                                timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
                         }
@@ -381,7 +385,7 @@ export default class RangePicker extends Component {
                                     ? showTime.defaultValue[1] ||
                                           showTime.defaultValue[0]
                                     : showTime.defaultValue,
-                                this.timeFormat
+                                timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
                         }
@@ -474,13 +478,13 @@ export default class RangePicker extends Component {
 
     onDateInputKeyDown = e => {
         const { type } = this.props;
-        const { activeDateInput } = this.state;
+        const { activeDateInput, format } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
         const dateStr = onDateKeydown(
             e,
             {
-                format: this.format,
+                format,
                 value: this.state[activeDateInput],
                 dateInputStr,
             },
@@ -556,7 +560,7 @@ export default class RangePicker extends Component {
         const stateName = mapInputStateName(this.state.activeDateInput);
         const timeInputStr = this.state[stateName];
         if (timeInputStr) {
-            const parsed = moment(timeInputStr, this.timeFormat, true);
+            const parsed = moment(timeInputStr, this.state.timeFormat, true);
 
             this.setState({
                 [stateName]: '',
@@ -581,7 +585,7 @@ export default class RangePicker extends Component {
 
     onTimeInputKeyDown = e => {
         const { showTime } = this.props;
-        const { activeDateInput } = this.state;
+        const { activeDateInput, timeFormat } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const timeInputStr = this.state[stateName];
         const {
@@ -600,7 +604,7 @@ export default class RangePicker extends Component {
         const timeStr = onTimeKeydown(
             e,
             {
-                format: this.timeFormat,
+                format: timeFormat,
                 timeInputStr,
                 value: this.state[
                     activeDateInput.indexOf('start') ? 'startValue' : 'endValue'
@@ -823,12 +827,12 @@ export default class RangePicker extends Component {
         const startDateInputValue =
             state.inputing === 'startValue'
                 ? state.startDateInputStr
-                : (state.startValue && state.startValue.format(this.format)) ||
+                : (state.startValue && state.startValue.format(state.format)) ||
                   '';
         const endDateInputValue =
             state.inputing === 'endValue'
                 ? state.endDateInputStr
-                : (state.endValue && state.endValue.format(this.format)) || '';
+                : (state.endValue && state.endValue.format(state.format)) || '';
 
         let startTriggerValue = startDateInputValue;
         let endTriggerValue = endDateInputValue;
@@ -847,7 +851,7 @@ export default class RangePicker extends Component {
             <Input
                 {...sharedInputProps}
                 aria-label={startDateInputAriaLabel}
-                placeholder={this.format}
+                placeholder={state.format}
                 value={startDateInputValue}
                 onFocus={() => this.onFocusDateInput('startValue')}
                 className={startDateInputCls}
@@ -858,7 +862,7 @@ export default class RangePicker extends Component {
             <Input
                 {...sharedInputProps}
                 aria-label={endDateInputAriaLabel}
-                placeholder={this.format}
+                placeholder={state.format}
                 value={endDateInputValue}
                 onFocus={() => this.onFocusDateInput('endValue')}
                 className={endDateInputCls}
@@ -870,7 +874,7 @@ export default class RangePicker extends Component {
             dateCellRender: dateCellRender,
             monthCellRender: monthCellRender,
             yearCellRender: yearCellRender,
-            format: this.format,
+            format: state.format,
             defaultVisibleMonth: defaultVisibleMonth,
             onVisibleMonthChange: onVisibleMonthChange,
         };
@@ -956,27 +960,27 @@ export default class RangePicker extends Component {
                 state.inputing === 'startTime'
                     ? state.startTimeInputStr
                     : (state.startValue &&
-                          state.startValue.format(this.timeFormat)) ||
+                          state.startValue.format(state.timeFormat)) ||
                       '';
             const endTimeInputValue =
                 state.inputing === 'endTime'
                     ? state.endTimeInputStr
                     : (state.endValue &&
-                          state.endValue.format(this.timeFormat)) ||
+                          state.endValue.format(state.timeFormat)) ||
                       '';
 
             startTriggerValue =
                 (state.startValue &&
-                    state.startValue.format(this.dateTimeFormat)) ||
+                    state.startValue.format(state.dateTimeFormat)) ||
                 '';
             endTriggerValue =
                 (state.endValue &&
-                    state.endValue.format(this.dateTimeFormat)) ||
+                    state.endValue.format(state.dateTimeFormat)) ||
                 '';
 
             const sharedTimeInputProps = {
                 size,
-                placeholder: this.timeFormat,
+                placeholder: state.timeFormat,
                 onFocus: this.onFocusTimeInput,
                 onBlur: this.onTimeInputBlur,
                 onPressEnter: this.onTimeInputBlur,
@@ -1016,8 +1020,8 @@ export default class RangePicker extends Component {
                 />
             );
 
-            const showSecond = this.timeFormat.indexOf('s') > -1;
-            const showMinute = this.timeFormat.indexOf('m') > -1;
+            const showSecond = state.timeFormat.indexOf('s') > -1;
+            const showMinute = state.timeFormat.indexOf('m') > -1;
 
             const sharedTimePickerProps = {
                 ...showTime,
@@ -1168,3 +1172,5 @@ export default class RangePicker extends Component {
         );
     }
 }
+
+export default polyfill(RangePicker);
