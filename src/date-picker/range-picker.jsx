@@ -15,7 +15,6 @@ import {
     PANEL,
     resetValueTime,
     formatDateValue,
-    extend,
     getDateTimeFormat,
     isFunction,
     onDateKeydown,
@@ -720,11 +719,12 @@ class RangePicker extends Component {
     };
 
     renderPreview([startValue, endValue], others) {
-        const { prefix, format, className, renderPreview } = this.props;
+        const { prefix, className, renderPreview } = this.props;
+        const { dateTimeFormat } = this.state;
 
         const previewCls = classnames(className, `${prefix}form-preview`);
-        const startLabel = startValue ? startValue.format(format) : '';
-        const endLabel = endValue ? endValue.format(format) : '';
+        const startLabel = startValue ? startValue.format(dateTimeFormat) : '';
+        const endLabel = endValue ? endValue.format(dateTimeFormat) : '';
 
         if (typeof renderPreview === 'function') {
             return (
