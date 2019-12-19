@@ -50,6 +50,10 @@ $card-head-main-margin-bottom: $s-zero !default;
 /// @namespace size/header
 $card-title-font-size: $font-size-subhead !default;
 
+/// title text weight
+/// @namespace size/header
+$card-title-font-weight: $font-weight-2 !default;
+
 /// sub title text
 /// @namespace size/header
 $card-sub-title-font-size: $font-size-caption !default;
@@ -81,6 +85,14 @@ $card-body-show-divider-padding-top: $s-3 !default;
 /// padding (t)
 /// @namespace size/content
 $card-body-hide-divider-padding-top: $s-zero !default;
+
+/// font size
+/// @namespace size/content
+$card-content-font-size: $font-size-body-1 !default;
+
+/// line height
+/// @namespace size/content
+$card-content-line-height: $font-lineheight-2 !default;
 
 /// padding (b)
 /// @namespace size/content
@@ -133,6 +145,10 @@ $card-title-extra-color: $color-link-1 !default;
 /// line color
 /// @namespace statement/normal/header
 $card-title-bullet-color: $color-brand1-6 !default;
+
+/// color
+/// @namespace statement/normal/content
+$card-content-color: $color-text1-3 !default;
 
 /// divider color
 /// @namespace statement/normal/header

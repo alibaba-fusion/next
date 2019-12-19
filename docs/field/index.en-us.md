@@ -215,7 +215,8 @@ The api interface provided by the object after `new` (eg `myfield.getValues()`) 
 |getState | Judge check status | Function(name: String)| 'error' 'success' 'loading' '' | '' |
 | getNames | Get the key of all components | Function()| ||
 |remove | Delete the data of a certain control or a group of controls. After deletion, the validate/value associated with it will be cleared. | Function(name: String/String[])|
-| spliceArray  | delete data of name like name.{index} | Function(keyMatch: String, index: Number)|  |  |
+| addArrayValue  | add data of name like name.{index} | Function(key: String, index: Number, value1, value2, ...)| | |
+| deleteArrayValue  | delete data of name like name.{index} | Function(key: String, index: Number, howmany)| | |
 
 #### init
 ```

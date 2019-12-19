@@ -1,5 +1,7 @@
 const path = require('path');
 const _ = require('lodash');
+const ejs = require('ejs');
+const { logger, replaceExt } = require('../../../utils');
 
 const cwd = process.cwd();
 const IMPORT_REG = /import {(.+)} from ['"]@alifd\/next['"];?/;
@@ -7,7 +9,7 @@ const IMPORT_LIB_REG = /import (.+) from ['"]@alifd\/next\/lib\/(.+)['"];?/;
 const IMPORT_LIB_REG_G = /^import .+ from ['"]@alifd\/next\/lib\/(.+)['"];?/gm;
 
 module.exports = function(content) {
-    return fixImport(content, this.resourcePath);
+    return fixImport.call(this, content, this.resourcePath);
 };
 
 function fixImport(code, resourcePath) {
@@ -57,6 +59,49 @@ import ${component} from'${newLibPath}'`;
 
             code = code.replace(IMPORT_LIB_REG, newLibStr);
         });
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+        const adaptorTplPath = path.resolve(
+            __dirname,
+            '../../tpls/adaptor.ejs'
+        );
+        this.addDependency(adaptorTplPath);
+
+        const scripts = [
+            '/common.js',
+            `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
+        ];
+
+        ejs.renderFile(
+            adaptorTplPath,
+            {
+                scripts,
+            },
+            (err, html) => {
+                if (err) {
+                    logger.error(`Render theme demo failed: ${err}`);
+                } else {
+                    const htmlPath = replaceExt(
+                        path.relative(
+                            path.join(cwd, 'docs'),
+                            this.resourcePath
+                        ),
+                        '.html'
+                    );
+                    this.emitFile(htmlPath, html);
+                }
+            }
+        );
+
+        return `
+        ${code.replace('export default', 'const Adaptor = ')};
+        import AdaptorGenerate from '@alifd/adaptor-generate';
+        AdaptorGenerate(Adaptor);
+        if (module.hot) {
+            module.hot.accept();
+        }
+        `;
     }
 
     return code;

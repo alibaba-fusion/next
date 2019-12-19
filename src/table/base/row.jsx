@@ -108,6 +108,7 @@ export default class Row extends React.Component {
                 alignHeader,
                 width,
                 colSpan,
+                style,
                 ...others
             } = child;
             // colSpan should show in body td by the way of <Table.Column colSpan={2} />

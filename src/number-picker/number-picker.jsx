@@ -592,6 +592,7 @@ class NumberPicker extends React.Component {
             >
                 <Input
                     {...others}
+                    hasClear={false}
                     aria-valuemax={max !== Infinity ? max : undefined}
                     aria-valuemin={min !== -Infinity ? min : undefined}
                     state={state === 'error' ? 'error' : null}

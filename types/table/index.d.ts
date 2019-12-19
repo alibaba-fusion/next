@@ -364,7 +364,12 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 是否开启虚拟滚动
      */
     useVirtual?: boolean;
-
+    
+    /**
+     * 滚动到指定行
+     */
+    scrollToRow?: number;
+    
     /**
      * 设置行高
      */

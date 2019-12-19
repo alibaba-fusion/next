@@ -314,6 +314,9 @@
     display: inline-block;
     vertical-align: middle;
     line-height: 1;
+    &:focus {
+        outline: 0;
+    }
     .#{$css-prefix}icon {
         position: absolute;
         left: 0;

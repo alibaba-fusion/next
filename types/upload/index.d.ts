@@ -219,7 +219,7 @@ export interface SelecterProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 文件选择回调
      */
-    onSelect?: () => void;
+    onSelect?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 拖拽经过回调
@@ -319,7 +319,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选择文件回调
      */
-    onSelect?: () => void;
+    onSelect?: (uploadFiles: Array<any>, value: Array<any>) => void;
 
     /**
      * 放文件

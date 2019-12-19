@@ -187,6 +187,7 @@ export default class DatePicker extends Component {
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
         disableChangeMode: PropTypes.bool,
+        yearRange: PropTypes.arrayOf(PropTypes.number),
     };
 
     static defaultProps = {
@@ -523,6 +524,7 @@ export default class DatePicker extends Component {
             timeInputAriaLabel,
             isPreview,
             disableChangeMode,
+            yearRange,
             ...others
         } = this.props;
 
@@ -607,6 +609,7 @@ export default class DatePicker extends Component {
                 onVisibleMonthChange={onVisibleMonthChange}
                 disabledDate={disabledDate}
                 disableChangeMode={disableChangeMode}
+                yearRange={yearRange}
             />
         );
 

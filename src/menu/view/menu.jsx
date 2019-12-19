@@ -306,22 +306,32 @@ export default class Menu extends Component {
     }
 
     adjustChildrenWidth() {
-        const { direction, prefix, hozInLine } = this.props;
+        const { direction, prefix, header, footer, hozInLine } = this.props;
         if (direction !== 'hoz' || !hozInLine) {
             return;
         }
 
-        if (!this.menuNode) {
+        if (!this.menuNode && !this.menuContent) {
             return;
         }
 
-        const children = this.menuNode.children;
+        let children = [],
+            spaceWidth;
+
+        if (header || footer) {
+            children = this.menuContent.children;
+            spaceWidth =
+                getWidth(this.menuNode) -
+                getWidth(this.menuHeader) -
+                getWidth(this.menuFooter);
+        } else {
+            children = this.menuNode.children;
+            spaceWidth = getWidth(this.menuNode);
+        }
 
         if (children.length < 2) {
             return;
         }
-
-        const spaceWidth = getWidth(this.menuNode);
 
         let currentSumWidth = 0,
             lastVisibleIndex = -1;
@@ -920,6 +930,18 @@ export default class Menu extends Component {
         }
     }
 
+    menuContentRef = ref => {
+        this.menuContent = ref;
+    };
+
+    menuHeaderRef = ref => {
+        this.menuHeader = ref;
+    };
+
+    menuFooterRef = ref => {
+        this.menuFooter = ref;
+    };
+
     render() {
         const {
             prefix,
@@ -952,16 +974,25 @@ export default class Menu extends Component {
         }
 
         const headerElement = header ? (
-            <li className={`${prefix}menu-header`}>{header}</li>
+            <li className={`${prefix}menu-header`} ref={this.menuHeaderRef}>
+                {header}
+            </li>
         ) : null;
         const itemsElement =
             header || footer ? (
-                <ul className={`${prefix}menu-content`}>{this.newChildren}</ul>
+                <ul
+                    className={`${prefix}menu-content`}
+                    ref={this.menuContentRef}
+                >
+                    {this.newChildren}
+                </ul>
             ) : (
                 this.newChildren
             );
         const footerElement = footer ? (
-            <li className={`${prefix}menu-footer`}>{footer}</li>
+            <li className={`${prefix}menu-footer`} ref={this.menuFooterRef}>
+                {footer}
+            </li>
         ) : null;
         const shouldWrapItemsAndFooter = hozAlign === 'right' && !!header;
 

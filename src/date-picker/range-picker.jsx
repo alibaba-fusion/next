@@ -214,7 +214,9 @@ export default class RangePicker extends Component {
          * @param {Array<MomentObject, MomentObject>} value 日期区间
          */
         renderPreview: PropTypes.func,
-        ranges: PropTypes.object,
+        disableChangeMode: PropTypes.bool,
+        yearRange: PropTypes.arrayOf(PropTypes.number),
+        ranges: PropTypes.object, // 兼容0.x版本
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
@@ -237,6 +239,7 @@ export default class RangePicker extends Component {
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
+        disableChangeMode: false,
         onChange: func.noop,
         onOk: func.noop,
         onVisibleChange: func.noop,
@@ -770,6 +773,8 @@ export default class RangePicker extends Component {
             endDateInputAriaLabel,
             endTimeInputAriaLabel,
             isPreview,
+            disableChangeMode,
+            yearRange,
             ...others
         } = this.props;
 
@@ -874,6 +879,8 @@ export default class RangePicker extends Component {
             type === 'date' ? (
                 <RangeCalendar
                     {...shareCalendarProps}
+                    yearRange={yearRange}
+                    disableChangeMode={disableChangeMode}
                     disabledDate={disabledDate}
                     onSelect={this.onSelectCalendarPanel}
                     startValue={state.startValue}

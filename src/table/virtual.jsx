@@ -165,7 +165,7 @@ export default function virtual(BaseComponent) {
                 // try get cell height;
                 end = 1;
             } else {
-                visibleCount = parseInt(height / rowHeight, 10);
+                visibleCount = parseInt(dom.getPixels(height) / rowHeight, 10);
 
                 if ('number' === typeof ExpectStart) {
                     start = ExpectStart < len ? ExpectStart : 0;

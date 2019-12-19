@@ -265,7 +265,6 @@ export default ({
     margin,
 }) => {
     let style = {
-        display,
         ...getPadding(padding),
     };
 

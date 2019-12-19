@@ -206,14 +206,19 @@ class Balloon extends React.Component {
         this._onVisibleChange = this._onVisibleChange.bind(this);
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         const nextState = {};
-        if ('visible' in props) {
-            nextState.visible = props.visible;
+        if ('visible' in nextProps) {
+            nextState.visible = nextProps.visible;
         }
 
-        if ('align' in props && alignList.includes(props.align)) {
-            nextState.align = props.align;
+        if (
+            !prevState.innerAlign &&
+            'align' in nextProps &&
+            alignList.includes(nextProps.align)
+        ) {
+            nextState.align = nextProps.align;
+            nextState.innerAlign = false;
         }
 
         return nextState;
@@ -264,6 +269,7 @@ class Balloon extends React.Component {
         if (resAlign !== this.state.align) {
             this.setState({
                 align: resAlign,
+                innerAlign: true,
             });
         }
     }

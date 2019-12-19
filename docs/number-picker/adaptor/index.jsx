@@ -19,8 +19,8 @@ export default {
             name: 'state',
             label: 'Status',
             type: Types.enum,
-            options: ['normal', 'disabled'],
-            default: 'normal'
+            options: ['normal', 'hover', 'disabled'],
+            default: 'hover'
         }, {
             name: 'width',
             type: Types.number,
@@ -31,7 +31,7 @@ export default {
             default: 1
         }]
     }),
-    adaptor: ({ level, size, state, width, value, style, ...others }) => {
-        return <NumberPicker {...others} style={{ minWidth: width, ...style }} disabled={state === 'disabled'} value={value} size={size} type={level} />
+    adaptor: ({ level, size, state, width, value, style, className, ...others }) => {
+        return <NumberPicker className={`${className} ${state === 'hover' ? 'hover' : ''}`} {...others} style={{ minWidth: width, ...style }} disabled={state === 'disabled'} value={value} size={size} type={level} />
     }
 };

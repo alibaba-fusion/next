@@ -1,6 +1,5 @@
 const fs = require('fs-extra');
 const path = require('path');
-const glob = require('glob');
 const cp = require('child_process');
 const co = require('co');
 const Github = require('@octokit/rest')();

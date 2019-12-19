@@ -251,9 +251,10 @@ export default class Cascader extends Component {
 
         const menusWidth = Math.ceil(
             menus.reduce((ret, menu) => {
-                return ret + menu.offsetWidth;
+                return ret + getStyle(menu, 'width');
             }, 0)
         );
+
         if (getStyle(this.cascaderInner, 'width') !== menusWidth) {
             setStyle(this.cascaderInner, 'width', menusWidth);
         }
