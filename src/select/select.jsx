@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { func, obj, KEYCODE, env, str } from '../util';
 import Tag from '../tag';
 import Input from '../input';
@@ -194,17 +196,32 @@ class Select extends Base {
     constructor(props) {
         super(props);
 
-        // @extend Base state
-        Object.assign(this.state, {
-            // search keyword
-            searchValue: 'searchValue' in props ? props.searchValue : '',
-        });
-
         // because dataSource maybe updated while select a item, so we should cache choosen value's item
         this.valueDataSource = {
             valueDS: [], // [{value,label}]
             mapValueDS: {}, // {value: {value,label}}
         };
+
+        const searchValue = 'searchValue' in props ? props.searchValue : '';
+
+        this.dataStore.setOptions({
+            key: searchValue,
+            addonKey: props.mode === 'tag', // tag 模式手动输入的数据
+        });
+
+        Object.assign(this.state, {
+            searchValue: searchValue,
+            dataSource: this.setDataSource(props),
+        });
+
+        // 根据value和计算后的dataSource，更新value对应的详细数据valueDataSource
+        if (typeof this.state.value !== 'undefined') {
+            this.valueDataSource = getValueDataSource(
+                this.state.value,
+                this.valueDataSource.mapValueDS,
+                this.dataStore.getMapDS()
+            );
+        }
 
         bindCtx(this, [
             'handleMenuSelect',
@@ -216,97 +233,100 @@ class Select extends Base {
         ]);
     }
 
-    componentWillMount() {
-        this.dataStore.setOptions({
-            key: this.state.searchValue,
-            addonKey: this.props.mode === 'tag', // tag 模式手动输入的数据
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
 
-        super.componentWillMount();
-
-        // 根据value和计算后的dataSource，更新value对应的详细数据valueDataSource
-        if (typeof this.state.value !== 'undefined') {
-            this.valueDataSource = getValueDataSource(
-                this.state.value,
-                this.valueDataSource.mapValueDS,
-                this.dataStore.getMapDS()
-            );
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
+            Object.assign(state, {
+                value: nextProps.value,
+            });
         }
 
-        if (isIE9) {
-            this.ie9Hack();
+        if ('searchValue' in nextProps && nextProps.searchValue !== prevState.searchValue) {
+            const searchValue = nextProps.searchValue;
+            Object.assign(state, {
+                searchValue: searchValue === undefined || searchValue === null ? '' : searchValue,
+            });
         }
+
+        if ('visible' in nextProps && nextProps.visible !== prevState.visible) {
+            Object.assign(state, {
+                visible: nextProps.visible,
+            });
+        }
+
+        if (Object.keys(state).length) {
+            return state;
+        }
+
+        return null;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('searchValue' in nextProps) {
-            this.dataStore.setOptions({ key: nextProps.searchValue });
-            this.setState({
-                searchValue:
-                    typeof nextProps.searchValue === 'undefined'
-                        ? ''
-                        : nextProps.searchValue,
-            });
+    componentDidUpdate(prevProps, prevState) {
+        const props = this.props;
+        if ('searchValue' in props && this.state.searchValue !== prevState.searchValue) {
+            this.dataStore.setOptions({ key: this.state.searchValue });
         }
-        if (this.props.mode !== nextProps.mode) {
+
+        if (props.mode !== prevProps.mode) {
             this.dataStore.setOptions({
-                addonKey: nextProps.mode === 'tag',
+                addonKey: props.mode === 'tag',
+            });
+        }
+        if (props.mode !== prevProps.mode) {
+            this.dataStore.setOptions({
+                addonKey: props.mode === 'tag',
+            });
+        }
+        if (props.filter !== prevProps.filter) {
+            this.dataStore.setOptions({
+                filter: props.filter,
+            });
+        }
+        if (props.filterLocal !== prevProps.filterLocal) {
+            this.dataStore.setOptions({
+                filterLocal: props.filterLocal,
             });
         }
 
-        this.dataStore.setOptions({
-            filter: nextProps.filter,
-            filterLocal: nextProps.filterLocal,
-        });
-
-        if (
-            nextProps.children !== this.props.children ||
-            nextProps.dataSource !== this.props.dataSource
-        ) {
-            const dataSource = this.setDataSource(nextProps);
+        if (prevProps.children !== props.children || prevProps.dataSource !== props.dataSource) {
+            /* eslint-disable react/no-did-update-set-state */
             this.setState({
-                dataSource,
+                dataSource: this.setDataSource(props),
             });
 
-            // 远程数据有更新，并且还有搜索框
-            if (
-                nextProps.showSearch &&
-                !nextProps.filterLocal &&
-                !nextProps.popupContent
-            ) {
+            if (!props.popupContent) {
                 this.setFirstHightLightKeyForMenu();
             }
         }
 
-        if ('value' in nextProps) {
-            this.setState({
-                value: nextProps.value,
-            });
-
+        if ('value' in props) {
             this.valueDataSource = getValueDataSource(
-                nextProps.value,
+                props.value,
                 this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
             this.updateSelectAllYet(this.valueDataSource.value);
         } else if (
-            'defaultValue' in nextProps &&
-            nextProps.defaultValue === this.valueDataSource.value &&
-            (nextProps.children !== this.props.children ||
-                nextProps.dataSource !== this.props.dataSource)
+            'defaultValue' in props &&
+            props.defaultValue === this.valueDataSource.value &&
+            (props.children !== prevProps.children || props.dataSource !== prevProps.dataSource)
         ) {
-            //has defaultValue and value not changed and dataSource changed
+            // has defaultValue and value not changed and dataSource changed
+            // fix: set defaultValue first, then update dataSource.
             this.valueDataSource = getValueDataSource(
-                nextProps.defaultValue,
+                props.defaultValue,
                 this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if (
+            prevProps.label !== this.props.label ||
+            prevState.value !== this.state.value ||
+            props.searchValue !== this.state.searchValue
+        ) {
+            this.syncWidth();
         }
     }
 
@@ -326,19 +346,6 @@ class Select extends Base {
             });
         } catch (e) {
             //
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const props = this.props;
-        // 随着输入自动伸展
-        if (
-            /tag|multiple/.test(props.mode) &&
-            prevState.searchValue !== this.state.searchValue
-        ) {
-            this.syncWidth();
-        } else {
-            return super.componentDidUpdate(prevProps, prevState);
         }
     }
 
@@ -372,11 +379,7 @@ class Select extends Base {
             return this.handleSingleSelect(keys[0], 'itemClick');
         } else {
             // 正常多选
-            return this.handleMultipleSelect(
-                keys,
-                'itemClick',
-                item.props && item.props._key
-            );
+            return this.handleMultipleSelect(keys, 'itemClick', item.props && item.props._key);
         }
     }
 
@@ -419,11 +422,7 @@ class Select extends Base {
      * 多选模式 multiple/tag
      */
     handleMultipleSelect(keys, triggerType, key, keepSearchValue) {
-        const itemObj = getValueDataSource(
-            keys,
-            this.valueDataSource.mapValueDS,
-            this.dataStore.getMapDS()
-        );
+        const itemObj = getValueDataSource(keys, this.valueDataSource.mapValueDS, this.dataStore.getMapDS());
 
         const { cacheValue, mode, hiddenSelected } = this.props;
 
@@ -453,11 +452,7 @@ class Select extends Base {
         this.updateSelectAllYet(itemObj.value);
 
         // 清空搜索
-        if (
-            !('searchValue' in this.props) &&
-            this.state.searchValue &&
-            !keepSearchValue
-        ) {
+        if (!('searchValue' in this.props) && this.state.searchValue && !keepSearchValue) {
             // 因为 SearchValue 被 clear 后会重新渲染 Menu，所以在 Overlay 检测 safeNode 的时候 e.target 可能会找不到导致弹窗关闭
             setTimeout(() => {
                 this.handleSearchClear(triggerType);
@@ -470,9 +465,7 @@ class Select extends Base {
         // is current state select all or not
         this.selectAllYet = false;
         if (this.props.hasSelectAll && Array.isArray(value)) {
-            const selectAllValues = this.dataStore
-                .getEnableDS()
-                .map(item => item.value);
+            const selectAllValues = this.dataStore.getEnableDS().map(item => item.value);
 
             if (selectAllValues.length <= value.length) {
                 this.selectAllYet = true;
@@ -580,18 +573,10 @@ class Select extends Base {
                 if ((mode === 'multiple' && showSearch) || mode === 'tag') {
                     // 在多选并且有搜索的情况下，删除最后一个 tag
                     const valueDS = this.valueDataSource.valueDS;
-                    if (
-                        valueDS &&
-                        valueDS.length &&
-                        !valueDS[valueDS.length - 1].disabled
-                    ) {
+                    if (valueDS && valueDS.length && !valueDS[valueDS.length - 1].disabled) {
                         this.handleDeleteTag(e);
                     }
-                } else if (
-                    mode === 'single' &&
-                    hasClear &&
-                    !this.state.visible
-                ) {
+                } else if (mode === 'single' && hasClear && !this.state.visible) {
                     // 单选、非展开、并且可清除的情况，允许按删除键清除
                     this.handleClear(e);
                 }
@@ -776,11 +761,7 @@ class Select extends Base {
             if (value === this.valueDataSource.value) {
                 value = this.valueDataSource.valueDS;
             } else {
-                value = getValueDataSource(
-                    value,
-                    this.valueDataSource.mapValueDS,
-                    this.dataStore.getMapDS()
-                ).valueDS;
+                value = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS()).valueDS;
             }
         }
 
@@ -789,36 +770,19 @@ class Select extends Base {
                 return null;
             }
 
-            const retvalue =
-                fillProps && fillProps in value
-                    ? value[fillProps]
-                    : valueRender(value);
+            const retvalue = fillProps && fillProps in value ? value[fillProps] : valueRender(value);
             // 0 => '0'
-            return typeof retvalue === 'number'
-                ? retvalue.toString()
-                : retvalue;
+            return typeof retvalue === 'number' ? retvalue.toString() : retvalue;
         } else if (value) {
             let limitedCountValue = value;
             let maxTagPlaceholderEl;
             const totalValue = this.dataStore.getFlattenDS();
-            const holder =
-                'maxTagPlaceholder' in this.props
-                    ? maxTagPlaceholder
-                    : this.maxTagPlaceholder;
+            const holder = 'maxTagPlaceholder' in this.props ? maxTagPlaceholder : this.maxTagPlaceholder;
 
-            if (
-                maxTagCount !== undefined &&
-                value.length > maxTagCount &&
-                !tagInline
-            ) {
+            if (maxTagCount !== undefined && value.length > maxTagCount && !tagInline) {
                 limitedCountValue = limitedCountValue.slice(0, maxTagCount);
                 maxTagPlaceholderEl = (
-                    <Tag
-                        key="_count"
-                        type="primary"
-                        size={size === 'large' ? 'medium' : 'small'}
-                        animation={false}
-                    >
+                    <Tag key="_count" type="primary" size={size === 'large' ? 'medium' : 'small'} animation={false}>
                         {holder(value, totalValue)}
                     </Tag>
                 );
@@ -924,12 +888,7 @@ class Select extends Base {
 
         if (hasArrow) {
             ret.push(
-                <span
-                    key="arrow"
-                    aria-hidden
-                    onClick={this.handleArrowClick}
-                    className={`${prefix}select-arrow`}
-                >
+                <span key="arrow" aria-hidden onClick={this.handleArrowClick} className={`${prefix}select-arrow`}>
                     <Icon type="arrow-down" />
                 </span>
             );
@@ -938,12 +897,7 @@ class Select extends Base {
         // do not use this.hasClear() here, to make sure clear btn always exists, can not influenced by apis like `disabled` `readOnly`
         if (hasClear) {
             ret.push(
-                <span
-                    key="clear"
-                    aria-hidden
-                    onClick={this.handleClear}
-                    className={`${prefix}select-clear`}
-                >
+                <span key="clear" aria-hidden onClick={this.handleClear} className={`${prefix}select-clear`}>
                     <Icon type="delete-filling" />
                 </span>
             );
@@ -987,19 +941,13 @@ class Select extends Base {
         const valueNodes = this.renderValues();
 
         // compatible with selectPlaceHolder. TODO: removed in 2.0 version
-        let _placeholder =
-            placeholder || locale.selectPlaceholder || locale.selectPlaceHolder;
+        let _placeholder = placeholder || locale.selectPlaceholder || locale.selectPlaceHolder;
         if (valueNodes && valueNodes.length) {
             _placeholder = null;
         }
 
         // 弹窗展开时将当前的值作为 placeholder，这个功能的前提是 valueNode 必须是一个字符串
-        if (
-            showSearch &&
-            visible &&
-            isSingle &&
-            typeof valueNodes === 'string'
-        ) {
+        if (showSearch && visible && isSingle && typeof valueNodes === 'string') {
             _placeholder = valueNodes;
         }
 
@@ -1007,13 +955,7 @@ class Select extends Base {
         const extra = this.renderExtraNode();
 
         const triggerClazz = classNames(
-            [
-                `${prefix}select`,
-                `${prefix}select-trigger`,
-                `${prefix}select-${mode}`,
-                `${prefix}${size}`,
-                className,
-            ],
+            [`${prefix}select`, `${prefix}select-trigger`, `${prefix}select-${mode}`, `${prefix}${size}`, className],
             {
                 [`${prefix}active`]: visible, // 用于设置 searchInput 样式
                 [`${prefix}inactive`]: !visible, // 用于设置 searchInput 样式
@@ -1025,9 +967,7 @@ class Select extends Base {
             }
         );
 
-        const valuetext = this.valueDataSource.valueDS
-            ? this.valueDataSource.valueDS.label
-            : '';
+        const valuetext = this.valueDataSource.valueDS ? this.valueDataSource.valueDS.label : '';
         return (
             <span
                 {...othersData}
@@ -1059,11 +999,7 @@ class Select extends Base {
                     hasClear={false}
                     htmlSize="1"
                     inputRender={inputEl => {
-                        return this.renderSearchInput(
-                            valueNodes,
-                            _placeholder,
-                            inputEl
-                        );
+                        return this.renderSearchInput(valueNodes, _placeholder, inputEl);
                     }}
                     onChange={this.handleSearch}
                     onKeyDown={this.handleSearchKeyDown}
@@ -1091,18 +1027,9 @@ class Select extends Base {
             [`${prefix}select-compact`]: !isSingle && tagInline,
         });
 
-        const searchInput = [
-            isSingle && valueNodes ? (
-                <em key="select-value">{valueNodes}</em>
-            ) : (
-                valueNodes
-            ),
-        ];
+        const searchInput = [isSingle && valueNodes ? <em key="select-value">{valueNodes}</em> : valueNodes];
         const triggerSearch = (
-            <span
-                key="trigger-search"
-                className={`${prefix}select-trigger-search`}
-            >
+            <span key="trigger-search" className={`${prefix}select-trigger-search`}>
                 {inputEl}
                 <span aria-hidden>{mirrorText || placeholder}&nbsp;</span>
             </span>
@@ -1131,8 +1058,7 @@ class Select extends Base {
             return null;
         }
 
-        const text =
-            typeof hasSelectAll === 'boolean' ? 'Select All' : hasSelectAll;
+        const text = typeof hasSelectAll === 'boolean' ? 'Select All' : hasSelectAll;
 
         const selectAllYet = this.selectAllYet;
 
@@ -1148,18 +1074,9 @@ class Select extends Base {
         // remove style={{'lineHeight': 'unset'}} in next Y
         // remove style={{'display': 'none'}} in next Y
         return (
-            <div
-                key="all"
-                onClick={this.handleSelectAll}
-                className={cls}
-                style={{ lineHeight: 'unset' }}
-            >
+            <div key="all" onClick={this.handleSelectAll} className={cls} style={{ lineHeight: 'unset' }}>
                 {selectAllYet ? (
-                    <Icon
-                        className={`${prefix}menu-icon-selected`}
-                        style={{ display: 'none' }}
-                        type="select"
-                    />
+                    <Icon className={`${prefix}menu-icon-selected`} style={{ display: 'none' }} type="select" />
                 ) : null}
                 <span className={clsInner}>{text}</span>
             </div>
@@ -1181,4 +1098,4 @@ class Select extends Base {
     }
 }
 
-export default Select;
+export default polyfill(Select);
