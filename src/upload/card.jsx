@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import zhCN from '../locale/zh-cn.js';
 import { func, obj } from '../util';
 import Base from './base';
@@ -57,10 +59,7 @@ class Card extends Base {
         }
 
         this.state = {
-            value:
-                typeof value === 'undefined'
-                    ? /* istanbul ignore next */ []
-                    : value,
+            value: typeof value === 'undefined' ? [] : value,
             uploaderRef: this.uploaderRef,
         };
     }
@@ -69,16 +68,14 @@ class Card extends Base {
         this.setState({ uploaderRef: this.uploaderRef });
     }
 
-    componentWillReceiveProps(nextProps) {
-        /* istanbul ignore if */
-        if ('value' in nextProps) {
-            this.setState({
-                value:
-                    typeof nextProps.value === 'undefined'
-                        ? []
-                        : nextProps.value,
-            });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
+            return {
+                value: typeof nextProps.value === 'undefined' ? [] : [].concat(nextProps.value),
+            };
         }
+
+        return null;
     }
 
     onProgress = value => {
@@ -163,4 +160,4 @@ class Card extends Base {
     }
 }
 
-export default Card;
+export default polyfill(Card);
