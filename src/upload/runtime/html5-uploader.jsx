@@ -84,7 +84,6 @@ export default class Html5Uploader extends Component {
         const preOptions = this.getUploadOptions(prevProps);
         const options = this.getUploadOptions(this.props);
 
-        let shouldUpdate = false;
         const keys = Object.keys(options);
 
         for (let i = 0; i < keys.length; i++) {

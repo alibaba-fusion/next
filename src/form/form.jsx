@@ -146,8 +146,7 @@ export default class Form extends React.Component {
                 this._formField = props.field;
                 const onChange = this._formField.options.onChange;
                 options.onChange = func.makeChain(onChange, this.onChange);
-                this._formField.setOptions &&
-                    this._formField.setOptions(options);
+                this._formField.setOptions && this._formField.setOptions(options);
             } else {
                 if ('value' in props) {
                     options.values = props.value;
@@ -168,13 +167,15 @@ export default class Form extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
+        const props = this.props;
+
         if (this._formField) {
-            if ('value' in nextProps) {
-                this._formField.setValues(nextProps.value);
+            if ('value' in props && props.value !== prevProps.value) {
+                this._formField.setValues(props.value);
             }
-            if ('error' in nextProps) {
-                this._formField.setErrors(nextProps.error);
+            if ('error' in props && props.error !== prevProps.error) {
+                this._formField.setValues(props.error);
             }
         }
     }
@@ -215,26 +216,16 @@ export default class Form extends React.Component {
         });
 
         const newChildren = React.Children.map(children, child => {
-            if (
-                child &&
-                typeof child.type === 'function' &&
-                child.type._typeMark === 'form_item'
-            ) {
+            if (child && typeof child.type === 'function' && child.type._typeMark === 'form_item') {
                 const childrenProps = {
-                    labelCol: child.props.labelCol
-                        ? child.props.labelCol
-                        : labelCol,
-                    wrapperCol: child.props.wrapperCol
-                        ? child.props.wrapperCol
-                        : wrapperCol,
+                    labelCol: child.props.labelCol ? child.props.labelCol : labelCol,
+                    wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,
                     labelAlign: child.props.labelAlign
                         ? child.props.labelAlign
                         : device === 'phone'
                         ? 'top'
                         : labelAlign,
-                    labelTextAlign: child.props.labelTextAlign
-                        ? child.props.labelTextAlign
-                        : labelTextAlign,
+                    labelTextAlign: child.props.labelTextAlign ? child.props.labelTextAlign : labelTextAlign,
                     size: child.props.size ? child.props.size : size,
                     responsive: responsive,
                 };
