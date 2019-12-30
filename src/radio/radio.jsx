@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import UIState from '../mixin-ui-state';
 import ConfigProvider from '../config-provider';
+import withContext from './with-context';
 import { obj, func } from '../util';
 
 const { makeChain, noop } = func;
@@ -102,9 +104,9 @@ class Radio extends UIState {
         disabled: PropTypes.bool,
     };
 
-    constructor(props, context) {
+    constructor(props) {
         super(props);
-
+        const { context } = props;
         let checked;
         if (context.__group__) {
             checked = context.selectedValue === props.value;
@@ -117,36 +119,43 @@ class Radio extends UIState {
         this.state = { checked };
 
         this.onChange = this.onChange.bind(this);
-        this.disabled =
-            props.disabled ||
-            (context.__group__ && 'disabled' in context && context.disabled);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    static getDerivedStateFromProps(nextProps) {
+        const { context: nextContext } = nextProps;
+        let state = {};
+
         if (nextContext.__group__) {
             const { selectedValue } = nextContext;
             if ('selectedValue' in nextContext) {
-                this.setState({
+                state = {
                     checked: selectedValue === nextProps.value,
-                });
+                };
             }
         } else if ('checked' in nextProps) {
-            this.setState({
+            state = {
                 checked: nextProps.checked,
-            });
+            };
         }
 
-        this.disabled =
-            nextProps.disabled ||
-            (nextContext.__group__ &&
-                'disabled' in nextContext &&
-                nextContext.disabled);
+        return state;
+    }
+
+    get disabled() {
+        const { props } = this;
+        const { context } = props;
+
+        const disabled =
+            props.disabled ||
+            (context.__group__ && 'disabled' in context && context.disabled);
 
         // when disabled, reset UIState
-        if (this.disabled) {
+        if (disabled) {
             // only class has an impact, no effect on visual
-            this.resetUIState();
+            // this.resetUIState();
         }
+
+        return disabled;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -154,16 +163,16 @@ class Radio extends UIState {
         return (
             !shallowEqual(this.props, nextProps) ||
             !shallowEqual(this.state, nextState) ||
-            !shallowEqual(this.nextContext, nextContext)
+            !shallowEqual(this.context, nextContext)
         );
     }
 
     onChange(e) {
         const checked = e.target.checked;
-        const value = this.props.value;
+        const { context, value } = this.props;
 
-        if (this.context.__group__) {
-            this.context.onChange(value, e);
+        if (context.__group__) {
+            context.onChange(value, e);
         } else if (this.state.checked !== checked) {
             if (!('checked' in this.props)) {
                 this.setState({
@@ -190,12 +199,13 @@ class Radio extends UIState {
             isPreview,
             renderPreview,
             value,
+            context,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
-        const isButton = this.context.isButton;
-        const prefix = this.context.prefix || this.props.prefix;
+        const isButton = context.isButton;
+        const prefix = context.prefix || this.props.prefix;
 
         const others = obj.pickOthers(Radio.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
@@ -309,4 +319,4 @@ class Radio extends UIState {
     }
 }
 
-export default ConfigProvider.config(Radio);
+export default ConfigProvider.config(withContext(polyfill(Radio)));
