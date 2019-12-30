@@ -296,10 +296,6 @@
 #{$table-prefix}-lock-right {
     right: 0;
     left: auto;
-    table tr td:first-child,
-    table tr th:first-child {
-        border-left-width: 1px;
-    }
     &.shadow {
         box-shadow: -2px 0 3px rgba(0, 0, 0, .12);
     }
