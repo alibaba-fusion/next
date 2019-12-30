@@ -11,6 +11,7 @@ export default class Cell extends React.Component {
         className: PropTypes.string,
         record: PropTypes.any,
         value: PropTypes.any,
+        isIconLeft: PropTypes.bool,
         colIndex: PropTypes.number,
         rowIndex: PropTypes.number,
         title: PropTypes.any,
@@ -40,6 +41,7 @@ export default class Cell extends React.Component {
     static defaultProps = {
         component: 'td',
         type: 'body',
+        isIconLeft: false,
         cell: value => value,
         prefix: 'next-',
     };
@@ -83,6 +85,7 @@ export default class Cell extends React.Component {
             locale,
             expandedIndexSimulate,
             rtl,
+            isIconLeft,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -115,8 +118,8 @@ export default class Cell extends React.Component {
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}
                 >
-                    {children}
-                    {content}
+                    {isIconLeft ? children : content}
+                    {isIconLeft ? content : children}
                 </div>
             </Tag>
         );

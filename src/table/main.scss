@@ -80,8 +80,7 @@
             .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
             .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow,
             #{$table-prefix}-tree-placeholder {
-                margin-right: 3px;
-                float: left;
+                margin-right: $table-header-icon-margin-left;
                 outline: 0;
                 cursor: pointer;
             }
@@ -332,7 +331,6 @@
 }
 
 #{$table-prefix}-filter {
-    margin-left: 5px;
     cursor: pointer;
     width: 20px;
     display: inline-block;
@@ -343,6 +341,10 @@
         @include icon-size($table-filter-icon-size);
         color: $table-sort-color;
     }
+}
+
+#{$table-prefix}-header-icon {
+    margin-left: $table-header-icon-margin-left;
 }
 
 #{$table-prefix}-expanded-ctrl {

@@ -116,6 +116,7 @@ export default class Header extends React.Component {
                         sortElement = (
                             <Sort
                                 prefix={prefix}
+                                className={`${prefix}table-header-icon`}
                                 dataIndex={dataIndex}
                                 onSort={this.onSort}
                                 sortIcons={sortIcons}
@@ -140,6 +141,7 @@ export default class Header extends React.Component {
                         filterElement = filters.length ? (
                             <Filter
                                 dataIndex={dataIndex}
+                                className={`${prefix}table-header-icon`}
                                 filters={filters}
                                 prefix={prefix}
                                 locale={locale}
