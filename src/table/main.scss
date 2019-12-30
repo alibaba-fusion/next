@@ -84,9 +84,18 @@
                 outline: 0;
                 cursor: pointer;
             }
-            .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
             .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow {
                 @include icon-size($table-tree-expanded-icon-size);
+                &::before {
+                    content: $table-tree-fold-icon-content;
+                }
+            }
+
+            .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow {
+                @include icon-size($table-tree-expanded-icon-size);
+                &::before {
+                    content: $table-tree-unfold-icon-content;
+                }
             }
         }
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {

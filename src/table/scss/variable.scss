@@ -140,3 +140,13 @@ $table-sort-color-current: $color-brand1-6 !default;
 /// expanded icon
 /// @namespace statement/disabled/body
 $table-expanded-ctrl-disabled-color: $color-text1-2 !default;
+
+/// tree fold icon
+/// @namespace statement/normal
+/// @type icon
+$table-tree-fold-icon-content: $icon-content-arrow-right !default;
+
+/// tree unfold icon
+/// @namespace statement/normal
+/// @type icon
+$table-tree-unfold-icon-content: $icon-content-arrow-down !default;
