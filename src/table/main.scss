@@ -55,6 +55,7 @@
     }
     &-affix {
         z-index: 1;
+        overflow: hidden;
     }
     &-header-resizable {
         position: relative;
@@ -212,8 +213,14 @@
     font-size: $table-th-font-size;
 }
 
+#{$table-prefix}-header {
+    margin-bottom: -20px;
+    padding-bottom: 20px;
+}
+
 #{$table-prefix}-body {
     font-size: $table-body-font-size;
+    position: relative;
 }
 
 #{$table-prefix}-fixed {
@@ -223,6 +230,8 @@
     }
     #{$table-prefix}-header {
         background: $table-th-bg;
+        padding-bottom: 20px;
+        margin-bottom: -20px;
     }
     @include table-border(0);
     &#{$table-prefix}-group {
@@ -274,8 +283,19 @@
     }
 }
 
-#{$table-prefix}-header-inner {
-    overflow: hidden;
+#{$table-prefix}-wrap-empty {
+    #{$table-prefix}-lock-left,
+    #{$table-prefix}-lock-right {
+        td {
+            border: none;
+        }
+        #{$table-prefix}-empty {
+            display: none;
+        }
+    }
+    > #{$table-prefix}-inner > #{$table-prefix}-body > table {
+        table-layout: auto;
+    }
 }
 
 #{$table-prefix}-lock-left,
@@ -285,17 +305,23 @@
     top: 0;
     z-index: 1;
     border: 0;
+    transition: box-shadow .3s ease;
+    overflow: hidden;
     table {
         width: auto;
     }
     #{$table-prefix}-body {
-        overflow: hidden;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin-right: -20px;
+        padding-right: 0;
     }
 }
 
 #{$table-prefix}-lock-right {
     right: 0;
     left: auto;
+
     &.shadow {
         box-shadow: -2px 0 3px rgba(0, 0, 0, .12);
     }
