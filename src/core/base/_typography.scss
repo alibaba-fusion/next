@@ -1,56 +1,58 @@
-@font-face {
-    font-family: "#{$font-custom-name}";
-    src: url("#{$font-custom-path}#{$font-name-thin}.eot");
-    src:
-        url("#{$font-custom-path}#{$font-name-thin}.eot?#iefix") format("embedded-opentype"),
-        url("#{$font-custom-path}#{$font-name-thin}.woff2") format("woff2"),
-        url("#{$font-custom-path}#{$font-name-thin}.woff") format("woff"),
-        url("#{$font-custom-path}#{$font-name-thin}.ttf") format("truetype");
-    font-weight: 200;
-}
+@if $font-custom-name != "" {
+    @font-face {
+        font-family: "#{$font-custom-name}";
+        src: url("#{$font-custom-path}#{$font-name-thin}.eot");
+        src:
+            url("#{$font-custom-path}#{$font-name-thin}.eot?#iefix") format("embedded-opentype"),
+            url("#{$font-custom-path}#{$font-name-thin}.woff2") format("woff2"),
+            url("#{$font-custom-path}#{$font-name-thin}.woff") format("woff"),
+            url("#{$font-custom-path}#{$font-name-thin}.ttf") format("truetype");
+        font-weight: 200;
+    }
 
-@font-face {
-    font-family: "#{$font-custom-name}";
-    src: url("#{$font-custom-path}#{$font-name-light}.eot");
-    src:
-        url("#{$font-custom-path}#{$font-name-light}.eot?#iefix") format("embedded-opentype"),
-        url("#{$font-custom-path}#{$font-name-light}.woff2") format("woff2"),
-        url("#{$font-custom-path}#{$font-name-light}.woff") format("woff"),
-        url("#{$font-custom-path}#{$font-name-light}.ttf") format("truetype");
-    font-weight: 300;
-}
+    @font-face {
+        font-family: "#{$font-custom-name}";
+        src: url("#{$font-custom-path}#{$font-name-light}.eot");
+        src:
+            url("#{$font-custom-path}#{$font-name-light}.eot?#iefix") format("embedded-opentype"),
+            url("#{$font-custom-path}#{$font-name-light}.woff2") format("woff2"),
+            url("#{$font-custom-path}#{$font-name-light}.woff") format("woff"),
+            url("#{$font-custom-path}#{$font-name-light}.ttf") format("truetype");
+        font-weight: 300;
+    }
 
-@font-face {
-    font-family: "#{$font-custom-name}";
-    src: url("#{$font-custom-path}#{$font-name-regular}.eot");
-    src:
-        url("#{$font-custom-path}#{$font-name-regular}.eot?#iefix") format("embedded-opentype"),
-        url("#{$font-custom-path}#{$font-name-regular}.woff2") format("woff2"),
-        url("#{$font-custom-path}#{$font-name-regular}.woff") format("woff"),
-        url("#{$font-custom-path}#{$font-name-regular}.ttf") format("truetype");
-    font-weight: 400;
-}
+    @font-face {
+        font-family: "#{$font-custom-name}";
+        src: url("#{$font-custom-path}#{$font-name-regular}.eot");
+        src:
+            url("#{$font-custom-path}#{$font-name-regular}.eot?#iefix") format("embedded-opentype"),
+            url("#{$font-custom-path}#{$font-name-regular}.woff2") format("woff2"),
+            url("#{$font-custom-path}#{$font-name-regular}.woff") format("woff"),
+            url("#{$font-custom-path}#{$font-name-regular}.ttf") format("truetype");
+        font-weight: 400;
+    }
 
-@font-face {
-    font-family: "#{$font-custom-name}";
-    src: url("#{$font-custom-path}#{$font-name-medium}.eot");
-    src:
-        url("#{$font-custom-path}#{$font-name-medium}.eot?#iefix") format("embedded-opentype"),
-        url("#{$font-custom-path}#{$font-name-medium}.woff2") format("woff2"),
-        url("#{$font-custom-path}#{$font-name-medium}.woff") format("woff"),
-        url("#{$font-custom-path}#{$font-name-medium}.ttf") format("truetype");
-    font-weight: 500;
-}
+    @font-face {
+        font-family: "#{$font-custom-name}";
+        src: url("#{$font-custom-path}#{$font-name-medium}.eot");
+        src:
+            url("#{$font-custom-path}#{$font-name-medium}.eot?#iefix") format("embedded-opentype"),
+            url("#{$font-custom-path}#{$font-name-medium}.woff2") format("woff2"),
+            url("#{$font-custom-path}#{$font-name-medium}.woff") format("woff"),
+            url("#{$font-custom-path}#{$font-name-medium}.ttf") format("truetype");
+        font-weight: 500;
+    }
 
-@font-face {
-    font-family: "#{$font-custom-name}";
-    src: url("#{$font-custom-path}#{$font-name-bold}.eot");
-    src:
-        url("#{$font-custom-path}#{$font-name-bold}.eot?#iefix") format("embedded-opentype"),
-        url("#{$font-custom-path}#{$font-name-bold}.woff2") format("woff2"),
-        url("#{$font-custom-path}#{$font-name-bold}.woff") format("woff"),
-        url("#{$font-custom-path}#{$font-name-bold}.ttf") format("truetype");
-    font-weight: 700;
+    @font-face {
+        font-family: "#{$font-custom-name}";
+        src: url("#{$font-custom-path}#{$font-name-bold}.eot");
+        src:
+            url("#{$font-custom-path}#{$font-name-bold}.eot?#iefix") format("embedded-opentype"),
+            url("#{$font-custom-path}#{$font-name-bold}.woff2") format("woff2"),
+            url("#{$font-custom-path}#{$font-name-bold}.woff") format("woff"),
+            url("#{$font-custom-path}#{$font-name-bold}.ttf") format("truetype");
+        font-weight: 700;
+    }
 }
 
 html {
