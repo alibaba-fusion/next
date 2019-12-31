@@ -123,22 +123,18 @@ class Radio extends UIState {
 
     static getDerivedStateFromProps(nextProps) {
         const { context: nextContext } = nextProps;
-        let state = {};
 
-        if (nextContext.__group__) {
-            const { selectedValue } = nextContext;
-            if ('selectedValue' in nextContext) {
-                state = {
-                    checked: selectedValue === nextProps.value,
-                };
-            }
+        if (nextContext.__group__ && 'selectedValue' in nextContext) {
+            return {
+                checked: nextContext.selectedValue === nextProps.value,
+            };
         } else if ('checked' in nextProps) {
-            state = {
+            return {
                 checked: nextProps.checked,
             };
         }
 
-        return state;
+        return null;
     }
 
     get disabled() {
@@ -148,12 +144,6 @@ class Radio extends UIState {
         const disabled =
             props.disabled ||
             (context.__group__ && 'disabled' in context && context.disabled);
-
-        // when disabled, reset UIState
-        if (disabled) {
-            // only class has an impact, no effect on visual
-            // this.resetUIState();
-        }
 
         return disabled;
     }
@@ -165,6 +155,14 @@ class Radio extends UIState {
             !shallowEqual(this.state, nextState) ||
             !shallowEqual(this.context, nextContext)
         );
+    }
+
+    componentDidUpdate() {
+        // when disabled, reset UIState
+        if (this.disabled) {
+            // only class has an impact, no effect on visual
+            this.resetUIState();
+        }
     }
 
     onChange(e) {
