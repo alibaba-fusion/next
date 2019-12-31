@@ -170,10 +170,10 @@ export default class Form extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this._formField) {
-            if ('value' in nextProps) {
+            if ('value' in nextProps && nextProps.value !== this.props.value) {
                 this._formField.setValues(nextProps.value);
             }
-            if ('error' in nextProps) {
+            if ('error' in nextProps && nextProps.error !== this.props.error) {
                 this._formField.setErrors(nextProps.error);
             }
         }
