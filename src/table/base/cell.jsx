@@ -117,6 +117,8 @@ export default class Cell extends React.Component {
                 <div
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}
+                    data-next-table-col={colIndex}
+                    data-next-table-row={rowIndex}
                 >
                     {isIconLeft ? children : content}
                     {isIconLeft ? content : children}

@@ -143,6 +143,10 @@
             background: $table-row-hover-bg;
             color: $table-row-hover-color;
         }
+        #{$table-prefix}-cell.hovered {
+            background: $table-row-hover-bg;
+            color: $table-row-hover-color;
+        }
         #{$table-prefix}-row.selected td {
             background: $table-row-selected-bg;
             color: $table-row-selected-color;
@@ -191,6 +195,12 @@
         &.selected {
             background: $table-row-selected-bg;
             color: $table-row-selected-color;
+        }
+    }
+    &-cell {
+        &.hovered {
+            background: $table-row-hover-bg;
+            color: $table-row-hover-color;
         }
     }
     &-tree-placeholder {
