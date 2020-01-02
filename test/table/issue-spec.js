@@ -533,6 +533,9 @@ describe('Issue', () => {
                     >
                         <Table.Column dataIndex="id" />
                         <Table.Column dataIndex="name" />
+                        <Table.Column dataIndex="name" cell={(val, i) => {
+                            return <a id={`name-${i}`} href="">val</a>
+                        }}/>
                     </Table>
                 );
             }
@@ -575,6 +578,31 @@ describe('Issue', () => {
                     'td.next-table-cell.hovered'
                 ).length === 0
             );
+
+            // target is in inner
+            const renderA = document.getElementById('name-0');
+            renderA.dispatchEvent(mouseover);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 2
+            );
+
+            assert(
+                document.querySelectorAll(
+                    'tr.next-table-row.hovered'
+                ).length === 1
+            );
+
+            renderA.dispatchEvent(mouseout);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 0
+            );
+
             ReactDOM.unmountComponentAtNode(container);
             document.body.removeChild(container);
             done();

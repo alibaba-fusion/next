@@ -1050,22 +1050,34 @@ describe('Table', () => {
     });
 
     it('should support lock scroll x', () => {
+        const ds = new Array(30).fill(1).map((val, i) => {
+           return { id: i, name: 'test' + i }
+        });
         wrapper.setProps({
             children: [
                 <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="name" width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
             ],
+            fixedHeader: true,
+            dataSource: ds,
         });
-        wrapper.debug();
+
         assert(wrapper.find('div.next-table-lock-left').length === 1);
         assert(wrapper.find('div.next-table-lock-right').length === 1);
 
         const body = wrapper
             .find('div.next-table-lock .next-table-body')
             .at(1)
-            .props()
-            .onScroll({ deltaY: 200, deltaX: 5 });
+            .simulate('scroll', {
+                target: {
+                    scrollLeft: 20,
+                    scrollTop: 10
+                },
+                deltaY: 20,
+                deltaX: 10,
+            });
+
     });
 
     it('should support align alignHeader', () => {
