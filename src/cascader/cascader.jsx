@@ -208,11 +208,15 @@ export default class Cascader extends Component {
                     state.value
                 );
             }
-            if (
-                !this.state.expandedValue.length &&
-                !('expandedValue' in nextProps)
-            ) {
-                state.expandedValue = this.getExpandedValue(state.value[0]);
+            if (!('expandedValue' in nextProps)) {
+                let expandedValue = this.getExpandedValue(state.value[0]);
+                if (
+                    this.state.expandedValue.length &&
+                    expandedValue.length &&
+                    expandedValue[0] !== this.state.expandedValue[0]
+                ) {
+                    state.expandedValue = expandedValue;
+                }
             }
         }
         if ('expandedValue' in nextProps) {
