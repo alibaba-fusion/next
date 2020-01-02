@@ -219,7 +219,8 @@ let myfield = Field.useField([options]); // 要求 react 版本 > 16.8
 | getState  | 判断校验状态 | Function(name: String)| 'error' 'success' 'loading' '' | '' |
 | getNames  | 获取所有组件的key | Function()|  |  |
 | remove  | 删除某一个或者一组控件的数据，删除后与之相关的validate/value都会被清空 | Function(name: String/String[])|  |  |
-| spliceArray  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(keyMatch: String, index: Number)|  |  |
+| addArrayValue  | 添加 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(key: String, index: Number, value1, value2, ...)|  |  |
+| deleteArrayValue  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(key: String, index: Number, howmany)|  |  |
 
 #### init
 ```
