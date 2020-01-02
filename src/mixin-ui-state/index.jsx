@@ -33,25 +33,19 @@ class UIState extends Component {
     }
     // 复原状态
     resetUIState() {
-        if (this.state.focused) {
-            this.setState({
-                focused: false,
-            });
-        }
+        this.setState({
+            focused: false,
+        });
     }
     _onUIFocus() {
-        if (this.state.focused) {
-            this.setState({
-                focused: false,
-            });
-        }
+        this.setState({
+            focused: true,
+        });
     }
     _onUIBlur() {
-        if (this.state.focused) {
-            this.setState({
-                focused: false,
-            });
-        }
+        this.setState({
+            focused: false,
+        });
     }
 }
 
