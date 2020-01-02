@@ -33,7 +33,7 @@ export default function lock(BaseComponent) {
             getTableInstance: PropTypes.func,
             getLockNode: PropTypes.func,
             onLockBodyScroll: PropTypes.func,
-            onLockBodyWheel: PropTypes.func,
+            onLockBodyLRScroll: PropTypes.func,
             onRowMouseEnter: PropTypes.func,
             onRowMouseLeave: PropTypes.func,
         };
@@ -48,8 +48,8 @@ export default function lock(BaseComponent) {
             return {
                 getTableInstance: this.getTableInstance,
                 getLockNode: this.getNode,
-                onLockBodyWheel: this.onLockBodyWheel,
                 onLockBodyScroll: this.onLockBodyScroll,
+                onLockBodyLRScroll: this.onLockBodyLRScroll,
                 onRowMouseEnter: this.onRowMouseEnter,
                 onRowMouseLeave: this.onRowMouseLeave,
             };
@@ -254,30 +254,39 @@ export default function lock(BaseComponent) {
             }
         }
 
-        onLockBodyWheel = e => {
-            const y = e.deltaY;
-
+        onLockBodyLRScroll = (event, lockType) => {
             if (this.isLock()) {
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
-                    scrollNode = this.bodyNode,
-                    { scrollTop } = scrollNode;
+                    bodyNode = this.bodyNode;
 
-                if (lockLeftBody) {
-                    lockLeftBody.scrollTop = y;
+                let arr = [],
+                    distScrollTop = 0;
+
+                // scroll on lock left columns
+                if (lockType === 'left') {
+                    arr = [bodyNode];
+                    distScrollTop = lockLeftBody.scrollTop;
+                    // scroll on lock left columns
+                } else if (lockType === 'right') {
+                    arr = [bodyNode];
+                    distScrollTop = lockRightBody.scrollTop;
                 }
-                if (lockRightBody) {
-                    lockRightBody.scrollTop = y;
-                }
-                scrollNode.scrollTop = scrollTop + y;
+
+                arr.forEach(node => {
+                    if (node && node.scrollTop !== distScrollTop) {
+                        node.scrollTop = distScrollTop;
+                    }
+                });
             }
         };
 
-        onLockBodyScroll = () => {
+        onLockBodyScroll = event => {
             if (this.isLock()) {
                 const { rtl } = this.props;
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
+                    bodyNode = this.bodyNode,
                     lockRightTable = rtl
                         ? this.getWrapperNode('left')
                         : this.getWrapperNode('right'),
@@ -286,14 +295,16 @@ export default function lock(BaseComponent) {
                         : this.getWrapperNode('left'),
                     shadowClassName = 'shadow';
 
-                const x = this.bodyNode.scrollLeft,
-                    y = this.bodyNode.scrollTop;
-                if (lockLeftBody) {
-                    lockLeftBody.scrollTop = y;
-                }
-                if (lockRightBody) {
-                    lockRightBody.scrollTop = y;
-                }
+                const x = this.bodyNode.scrollLeft;
+                const arr = [lockLeftBody, lockRightBody],
+                    distScrollTop = bodyNode.scrollTop;
+
+                arr.forEach(node => {
+                    if (node && node.scrollTop !== distScrollTop) {
+                        node.scrollTop = distScrollTop;
+                    }
+                });
+
                 if (x === 0) {
                     lockLeftTable &&
                         dom.removeClass(lockLeftTable, shadowClassName);

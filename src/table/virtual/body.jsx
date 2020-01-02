@@ -21,7 +21,7 @@ export default class VirtualBody extends React.Component {
         onScroll: PropTypes.func,
         onVirtualScroll: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
-        onLockBodyWheel: PropTypes.func,
+        onLockBodyLRScroll: PropTypes.func,
         bodyHeight: PropTypes.number,
         innerTop: PropTypes.number,
         getNode: PropTypes.func,
@@ -49,35 +49,26 @@ export default class VirtualBody extends React.Component {
     };
 
     onScroll = current => {
+        const { lockType } = this.context;
         // for fixed
         this.context.onScroll(current);
         // for lock
-        this.context.onLockBodyScroll();
+        lockType
+            ? this.context.onLockBodyLRScroll(current, lockType)
+            : this.context.onLockBodyScroll(current);
         // for virtual
         this.context.onVirtualScroll();
     };
 
-    onWheel = e => {
-        this.context.onLockBodyWheel(e);
-    };
-
     render() {
         const { prefix, className, colGroup, ...others } = this.props;
-        const { maxBodyHeight, bodyHeight, innerTop, lockType } = this.context;
-
-        const events = lockType
-            ? {
-                  onWheel: this.onWheel,
-              }
-            : {
-                  onScroll: this.onScroll,
-              };
+        const { maxBodyHeight, bodyHeight, innerTop } = this.context;
 
         return (
             <div
                 style={{ maxHeight: maxBodyHeight }}
                 className={className}
-                {...events}
+                onScroll={this.onScroll}
             >
                 <div
                     style={{
