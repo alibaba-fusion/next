@@ -21,7 +21,7 @@
         }
 
         #{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
-            padding: $s-3 $s-4;
+            padding: $s-2 $s-2;
         }
     }
 
@@ -103,6 +103,7 @@
             padding: $s-3 $s-4;
         }
     }
+
     #{$table-prefix}-expanded,
     #{$table-prefix}-selection {
         #{$table-prefix}-cell-wrapper {
@@ -396,8 +397,19 @@
     &.disabled {
         color: $table-expanded-ctrl-disabled-color;
     }
-    .#{$css-prefix}icon {
+
+    .#{$css-prefix}table-expand-unfold {
         @include icon-size($table-expanded-icon-size);
+        &::before {
+            content: $table-expand-unfold-icon-content;
+        }
+    }
+
+    .#{$css-prefix}table-expand-fold {
+        @include icon-size($table-expanded-icon-size);
+        &::before {
+            content: $table-expand-fold-icon-content;
+        }
     }
 }
 

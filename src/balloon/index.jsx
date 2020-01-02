@@ -2,7 +2,6 @@ import ConfigProvider from '../config-provider';
 import Balloon from './balloon';
 import Tooltip from './tooltip';
 import Inner from './inner';
-import { log } from '../util';
 
 Balloon.Tooltip = ConfigProvider.config(Tooltip, {
     transform: /* istanbul ignore next */ (props, deprecated) => {

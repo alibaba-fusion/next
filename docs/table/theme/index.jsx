@@ -389,6 +389,9 @@ class TableFunctionDemo extends React.Component {
                     <DemoGroup label="Selected & Expanded">
                         <Table rowSelection={rowSelection} expandedRowRender={(record) => record.price} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
+                    <DemoGroup label="Tree">
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasHeader={hasHeader} isZebra={isZebra} isTree>{cols.slice(1)}</Table>
+                    </DemoGroup>
                     <DemoGroup label="No Data">
                         <Table rowSelection={rowSelection} dataSource={[]} hasHeader={hasHeader} isZebra={isZebra}>{cols}</Table>
                     </DemoGroup>
