@@ -42,18 +42,6 @@ export default ConfigProvider.config(Balloon, {
             props = { onVisibleChange: newOnVisibleChange, ...others };
         }
 
-        if ('triggerType' in props) {
-            const triggerType = Array.isArray(props.triggerType)
-                ? [...props.triggerType]
-                : [props.triggerType];
-
-            if (triggerType.indexOf('focus') > -1) {
-                log.warning(
-                    'triggerType[focus] is deprecated at [Balloon], use triggerType[hover, click] instead of it. If focus is desired maybe you should use [Balloon.Tooltip]'
-                );
-            }
-        }
-
         return props;
     },
 });
