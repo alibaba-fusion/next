@@ -27,9 +27,8 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
-        onBodyMouseEnter: PropTypes.func,
-        onBodyMouseMove: PropTypes.func,
-        onBodyMouseLeave: PropTypes.func,
+        onBodyMouseOver: PropTypes.func,
+        onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
         crossline: PropTypes.bool,
     };
@@ -63,16 +62,12 @@ export default class Body extends React.Component {
         this.props.onRowMouseLeave(record, index, e);
     };
 
-    onBodyMouseEnter = e => {
-        this.props.onBodyMouseEnter(e);
+    onBodyMouseOver = e => {
+        this.props.onBodyMouseOver(e);
     };
 
-    onBodyMouseMove = e => {
-        this.props.onBodyMouseMove(e);
-    };
-
-    onBodyMouseLeave = e => {
-        this.props.onBodyMouseLeave(e);
+    onBodyMouseOut = e => {
+        this.props.onBodyMouseOut(e);
     };
 
     render() {
@@ -96,9 +91,8 @@ export default class Body extends React.Component {
             onRowClick,
             onRowMouseEnter,
             onRowMouseLeave,
-            onBodyMouseEnter,
-            onBodyMouseMove,
-            onBodyMouseLeave,
+            onBodyMouseOver,
+            onBodyMouseOut,
             locale,
             pure,
             expandedIndexSimulate,
@@ -182,9 +176,8 @@ export default class Body extends React.Component {
             <Tag
                 className={className}
                 {...others}
-                onMouseEnter={this.onBodyMouseEnter}
-                onMouseMove={this.onBodyMouseMove}
-                onMouseLeave={this.onBodyMouseLeave}
+                onMouseOver={this.onBodyMouseOver}
+                onMouseOut={this.onBodyMouseOut}
             >
                 {rows}
                 {children}

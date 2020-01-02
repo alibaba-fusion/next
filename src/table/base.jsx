@@ -575,9 +575,8 @@ export default class Table extends React.Component {
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
                         locale={locale}
-                        onBodyMouseEnter={this.onBodyMouseEnter}
-                        onBodyMouseMove={this.onBodyMouseMove}
-                        onBodyMouseLeave={this.onBodyMouseLeave}
+                        onBodyMouseOver={this.onBodyMouseOver}
+                        onBodyMouseOut={this.onBodyMouseOut}
                     />
                     {wrapperContent}
                 </Wrapper>
@@ -686,7 +685,7 @@ export default class Table extends React.Component {
         };
     };
 
-    onBodyMouseEnter = e => {
+    onBodyMouseOver = e => {
         const { colIndex, rowIndex } = this.findEventTarget(e);
 
         if (this.colIndex === colIndex && this.rowIndex === rowIndex) {
@@ -698,25 +697,10 @@ export default class Table extends React.Component {
         this.rowIndex = rowIndex;
     };
 
-    onBodyMouseMove = e => {
-        const { colIndex, rowIndex } = this.findEventTarget(e);
-
-        if (this.colIndex === colIndex && this.rowIndex === rowIndex) {
-            return;
-        }
-
-        // remove this.colIndex
+    onBodyMouseOut = e => {
         this.handleHoverClass(this.rowIndex, this.colIndex, false);
-        // add colIndex
-        this.handleHoverClass(rowIndex, colIndex, true);
 
-        this.colIndex = colIndex;
-        this.rowIndex = rowIndex;
-    };
-
-    onBodyMouseLeave = e => {
         const { colIndex, rowIndex } = this.findEventTarget(e);
-
         this.handleHoverClass(rowIndex, colIndex, false);
 
         this.colIndex = -1;
