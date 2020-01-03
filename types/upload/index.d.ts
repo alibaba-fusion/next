@@ -144,7 +144,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 改变时候的回调
      */
-    onChange?: () => void;
+    onChange?: (value: File[]) => void;
 
     /**
      * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
@@ -379,7 +379,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传文件改变时的状态
      */
-    onChange?: (info: {}) => void;
+    onChange?: (value: File[]) => void;
 
     /**
      * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
