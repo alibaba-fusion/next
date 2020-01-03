@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Dropdown from '../../dropdown';
 import Menu from '../../menu';
 import Button from '../../button';
@@ -123,6 +124,7 @@ export default class Filter extends React.Component {
             filters,
             prefix,
             locale,
+            className,
             filterMode,
             filterMenuProps,
             filterProps,
@@ -168,6 +170,11 @@ export default class Filter extends React.Component {
                 </div>
             );
 
+        const cls = classnames({
+            [`${prefix}table-filter`]: true,
+            [className]: className,
+        });
+
         return (
             <Dropdown
                 trigger={
@@ -176,7 +183,7 @@ export default class Filter extends React.Component {
                         aria-label={locale.filter}
                         onKeyDown={this.filterKeydown}
                         tabIndex="0"
-                        className={`${prefix}table-filter`}
+                        className={cls}
                     >
                         <Icon type="filter" size="small" />
                     </span>

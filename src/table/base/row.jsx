@@ -62,26 +62,14 @@ export default class Row extends React.Component {
     };
 
     onMouseEnter = e => {
-        const { record, rowIndex } = this.props;
-        this.onRowHover(record, rowIndex, true, e);
+        const { record, rowIndex, onMouseEnter } = this.props;
+        onMouseEnter(record, rowIndex, e);
     };
 
     onMouseLeave = e => {
-        const { record, rowIndex } = this.props;
-        this.onRowHover(record, rowIndex, false, e);
+        const { record, rowIndex, onMouseLeave } = this.props;
+        onMouseLeave(record, rowIndex, e);
     };
-
-    onRowHover(record, index, isEnter, e) {
-        const { onMouseEnter, onMouseLeave } = this.props,
-            currentRow = findDOMNode(this);
-        if (isEnter) {
-            onMouseEnter(record, index, e);
-            currentRow && dom.addClass(currentRow, 'hovered');
-        } else {
-            onMouseLeave(record, index, e);
-            currentRow && dom.removeClass(currentRow, 'hovered');
-        }
-    }
 
     renderCells(record, rowIndex) {
         const {
@@ -155,6 +143,8 @@ export default class Row extends React.Component {
                     key={colIndex}
                     {...others}
                     {...attrs}
+                    data-next-table-col={colIndex}
+                    data-next-table-row={rowIndex}
                     ref={cell => cellRef(rowIndex, colIndex, cell)}
                     prefix={prefix}
                     pure={pure}

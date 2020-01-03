@@ -111,9 +111,17 @@ export default function expanded(BaseComponent) {
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
                 switchNode = hasExpanded ? (
-                    <Icon type="minus" size="xs" />
+                    <Icon
+                        type="minus"
+                        size="xs"
+                        className={`${prefix}table-expand-unfold`}
+                    />
                 ) : (
-                    <Icon type="add" size="xs" />
+                    <Icon
+                        type="add"
+                        size="xs"
+                        className={`${prefix}table-expand-fold`}
+                    />
                 ),
                 attrs = getExpandedColProps(record, index) || {};
             const cls = classnames({
