@@ -65,7 +65,7 @@ class RadioGroup extends Component {
          * 可以设置成 button 展示形状
          * @enumdesc 按钮状
          */
-        shape: PropTypes.oneOf(['button']),
+        shape: PropTypes.oneOf(['normal', 'button']),
         /**
          * 与 `shape` 属性配套使用，shape设为button时有效
          * @enumdesc 大, 中, 小

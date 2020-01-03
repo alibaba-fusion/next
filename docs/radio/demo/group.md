@@ -18,7 +18,7 @@ Grouping `<Radio>` with `<Radio.Group>`.
 import { Radio } from '@alifd/next';
 
 const Shape = {
-    NORMAL: undefined,
+    NORMAL: 'normal',
     BUTTON: 'button'
 };
 
