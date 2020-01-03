@@ -3,7 +3,6 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Loading from '../../src/loading';
 import Icon from '../../src/icon';
@@ -1066,18 +1065,27 @@ describe('Table', () => {
         assert(wrapper.find('div.next-table-lock-left').length === 1);
         assert(wrapper.find('div.next-table-lock-right').length === 1);
 
-        const body = wrapper
-            .find('div.next-table-lock .next-table-body')
+        wrapper
+            .find('div.next-table-lock .next-table-inner .next-table-body')
             .at(1)
-            .simulate('scroll', {
+            .props()
+            .onScroll({
                 target: {
-                    scrollLeft: 20,
-                    scrollTop: 10
-                },
-                deltaY: 20,
-                deltaX: 10,
+                    scrollLeft: 30,
+                    scrollTop: 20
+                }
             });
 
+        wrapper
+            .find('div.next-table-lock-right .next-table-body')
+            .at(1)
+            .props()
+            .onScroll({
+                target: {
+                    scrollLeft: 30,
+                    scrollTop: 20
+                }
+            });
     });
 
     it('should support align alignHeader', () => {
