@@ -476,7 +476,7 @@ describe('YearPicker', () => {
                 .find('div.next-calendar-year')
                 .at(5)
                 .simulate('click');
-            assert(ret.format('YYYY') === '2014');
+            assert(ret.format('YYYY') === '2024');
         });
 
         it('should clear value', () => {
