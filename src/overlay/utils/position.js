@@ -102,6 +102,7 @@ export default class Position {
             this.container = document.body;
         }
 
+        this.autoFit = props.autoFit || false;
         this.align = props.align || 'tl tl';
         this.offset = props.offset || [0, 0];
         this.needAdjust = props.needAdjust || false;
@@ -216,7 +217,12 @@ export default class Position {
     _calPinOffset = align => {
         const offset = [...this.offset];
 
-        if (align && this.container && this.container !== document.body) {
+        if (
+            this.autoFit &&
+            align &&
+            this.container &&
+            this.container !== document.body
+        ) {
             const baseElementRect = _getElementRect(
                 this.baseElement,
                 this.container

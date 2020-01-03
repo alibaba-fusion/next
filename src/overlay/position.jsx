@@ -21,6 +21,7 @@ export default class Position extends Component {
         beforePosition: PropTypes.func,
         onPosition: PropTypes.func,
         needAdjust: PropTypes.bool,
+        autoFit: PropTypes.bool,
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -32,6 +33,7 @@ export default class Position extends Component {
         beforePosition: noop,
         onPosition: noop,
         needAdjust: true,
+        autoFit: false,
         needListenResize: true,
         shouldUpdatePosition: false,
         rtl: false,
@@ -84,6 +86,7 @@ export default class Position extends Component {
             needAdjust,
             container,
             rtl,
+            autoFit,
         } = this.props;
 
         beforePosition();
@@ -97,6 +100,7 @@ export default class Position extends Component {
                 baseElement: targetNode,
                 align,
                 offset,
+                autoFit,
                 container,
                 needAdjust,
                 isRtl: rtl,
