@@ -638,6 +638,37 @@ describe('Popup', () => {
         });
     });
 
+    it('should support setting custom container', () => {
+        return co(function*() {
+            wrapper = render(
+                <div id="myContainer">
+                    <Popup
+                        trigger={<button>Open</button>}
+                        triggerType="click"
+                        container={'myContainer'}
+                        canCloseByTrigger={false}
+                    >
+                        <span className="content">Hello World From Popup!</span>
+                    </Popup>
+                </div>
+            );
+
+            const btn = document.querySelector('button');
+
+            ReactTestUtils.Simulate.click(btn);
+            yield delay(300);
+
+            assert(
+                document.querySelector('.next-overlay-wrapper').parentElement
+                    .id === 'myContainer'
+            );
+
+            ReactTestUtils.Simulate.click(btn);
+            yield delay(300);
+            assert(document.querySelector('.next-overlay-wrapper'));
+        });
+    });
+
     it('should support controling', () => {
         return co(function*() {
             wrapper = render(<PopupControlDemo />);

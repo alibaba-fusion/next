@@ -15,6 +15,7 @@ export default class Position extends Component {
     static propTypes = {
         children: PropTypes.node,
         target: PropTypes.any,
+        container: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         offset: PropTypes.array,
         beforePosition: PropTypes.func,
@@ -81,6 +82,7 @@ export default class Position extends Component {
             beforePosition,
             onPosition,
             needAdjust,
+            container,
             rtl,
         } = this.props;
 
@@ -88,12 +90,14 @@ export default class Position extends Component {
 
         const contentNode = this.getContentNode();
         const targetNode = this.getTargetNode();
+
         if (contentNode && targetNode) {
             const resultAlign = place({
                 pinElement: contentNode,
                 baseElement: targetNode,
                 align,
                 offset,
+                container,
                 needAdjust,
                 isRtl: rtl,
             });
