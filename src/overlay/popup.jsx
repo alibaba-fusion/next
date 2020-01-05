@@ -51,6 +51,7 @@ export default class Popup extends Component {
          * 设置此属性，弹层无法显示或隐藏
          */
         disabled: PropTypes.bool,
+        autoFit: PropTypes.bool,
         /**
          * 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效
          */
@@ -81,6 +82,7 @@ export default class Popup extends Component {
         defaultVisible: false,
         onVisibleChange: noop,
         disabled: false,
+        autoFit: false,
         delay: 200,
         canCloseByTrigger: true,
         followTrigger: false,

@@ -12,7 +12,7 @@ const getPageY = () => window.pageYOffset || document.documentElement.scrollTop;
  * @param       {Element} elem
  * @return      {Object}
  */
-function _getElementRect(elem) {
+function _getElementRect(elem, container) {
     let offsetTop = 0,
         offsetLeft = 0,
         scrollTop = 0,
@@ -28,23 +28,42 @@ function _getElementRect(elem) {
         if (!isNaN(elem.offsetLeft)) {
             offsetLeft += elem.offsetLeft;
         }
-        if (!isNaN(elem.scrollTop) && elem !== document.body) {
-            scrollTop += elem.scrollTop;
+        if (elem && elem.offsetParent) {
+            if (
+                !isNaN(elem.offsetParent.scrollLeft) &&
+                elem.offsetParent !== document.body
+            ) {
+                scrollTop += elem.offsetParent.scrollLeft;
+            }
+
+            if (
+                !isNaN(elem.offsetParent.scrollTop) &&
+                elem.offsetParent !== document.body
+            ) {
+                scrollTop += elem.offsetParent.scrollTop;
+            }
         }
-        if (!isNaN(elem.scrollLeft) && elem !== document.body) {
-            scrollLeft += elem.scrollLeft;
-        }
-    } while ((elem = elem.offsetParent) !== null);
+
+        elem = elem.offsetParent;
+    } while (elem !== null && elem !== container);
+
+    // if container is body or invalid, treat as window, use client width & height
+    const treatAsWindow = !container || container === document.body;
 
     return {
         top:
             offsetTop -
             scrollTop -
-            (document.documentElement.scrollTop || document.body.scrollTop),
+            (treatAsWindow
+                ? document.documentElement.scrollTop || document.body.scrollTop
+                : 0),
         left:
             offsetLeft -
             scrollLeft -
-            (document.documentElement.scrollLeft || document.body.scrollLeft),
+            (treatAsWindow
+                ? document.documentElement.scrollLeft ||
+                  document.body.scrollLeft
+                : 0),
         height: offsetHeight,
         width: offsetWidth,
     };
@@ -54,13 +73,42 @@ function _getElementRect(elem) {
  * @private get viewport size
  * @return {Object}
  */
-function _getViewportSize() {
+function _getViewportSize(container) {
+    if (!container || container === document.body) {
+        return {
+            width: document.documentElement.clientWidth,
+            height: document.documentElement.clientHeight,
+        };
+    }
+
+    const { width, height } = container.getBoundingClientRect();
+
     return {
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight,
+        width,
+        height,
     };
 }
+
 export default class Position {
+    constructor(props) {
+        this.pinElement = props.pinElement;
+        this.baseElement = props.baseElement;
+
+        if (typeof props.container === 'string') {
+            this.container = document.getElementById(props.container);
+        } else if (typeof props.container === 'function') {
+            this.container = props.container(this.baseElement);
+        } else {
+            this.container = document.body;
+        }
+
+        this.autoFit = props.autoFit || false;
+        this.align = props.align || 'tl tl';
+        this.offset = props.offset || [0, 0];
+        this.needAdjust = props.needAdjust || false;
+        this.isRtl = props.isRtl || false;
+    }
+
     static VIEWPORT = VIEWPORT;
 
     /**
@@ -75,15 +123,6 @@ export default class Position {
      * @return {Position}
      */
     static place = props => new Position(props).setPosition();
-
-    constructor(props) {
-        this.pinElement = props.pinElement;
-        this.baseElement = props.baseElement;
-        this.align = props.align || 'tl tl';
-        this.offset = props.offset || [0, 0];
-        this.needAdjust = props.needAdjust || false;
-        this.isRtl = props.isRtl || false;
-    }
 
     setPosition() {
         const pinElement = this.pinElement;
@@ -107,6 +146,7 @@ export default class Position {
         } else {
             isBaseFixed = true;
         }
+
         // 根据期望的定位
         for (let i = 0; i < expectedAlign.length; i++) {
             const align = expectedAlign[i];
@@ -168,10 +208,55 @@ export default class Position {
         this._setPinElementPostion(
             pinElement,
             { left: inViewportLeft, top: inViewportTop },
-            this.offset
+            this._calPinOffset(expectedAlign[0])
         );
+
         return expectedAlign[0];
     }
+
+    _calPinOffset = align => {
+        const offset = [...this.offset];
+
+        if (
+            this.autoFit &&
+            align &&
+            this.container &&
+            this.container !== document.body
+        ) {
+            const baseElementRect = _getElementRect(
+                this.baseElement,
+                this.container
+            );
+            const pinElementRect = _getElementRect(
+                this.pinElement,
+                this.container
+            );
+            const viewportSize = _getViewportSize(this.container);
+            const pinAlign = align.split(' ')[0];
+            const x = pinAlign.charAt(1);
+            const y = pinAlign.charAt(0);
+
+            if (
+                pinElementRect.top < 0 ||
+                pinElementRect.top + pinElementRect.height > viewportSize.height
+            ) {
+                offset[1] =
+                    -baseElementRect.top -
+                    (y === 't' ? baseElementRect.height : 0);
+            }
+
+            if (
+                pinElementRect.left < 0 ||
+                pinElementRect.left + pinElementRect.width > viewportSize.width
+            ) {
+                offset[0] =
+                    -baseElementRect.left -
+                    (x === 'r' ? baseElementRect.width : 0);
+            }
+        }
+
+        return offset;
+    };
 
     _getParentOffset(element) {
         const parent = element.offsetParent || document.documentElement;
@@ -395,8 +480,8 @@ export default class Position {
 
     // Detecting element is in the window， we want to adjust position later.
     _isInViewport(element, align) {
-        const viewportSize = _getViewportSize();
-        const elementRect = _getElementRect(element);
+        const viewportSize = _getViewportSize(this.container);
+        const elementRect = _getElementRect(element, this.container);
 
         // https://github.com/alibaba-fusion/next/issues/853
         // Equality causes issues in Chrome when pin element is off screen to right or bottom.
