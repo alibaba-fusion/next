@@ -31,11 +31,11 @@ const dataSource = (length) => {
 };
 
 const render = (value, index, record) => {
-    return <Select popupContainer={node => node.parentNode} popupProps={{autoFit: true}} defaultValue="jack" aria-label="name is" showSearch hasClear>
+    return (<Select popupContainer={node => node.parentNode} popupProps={{autoFit: true}} defaultValue="jack" aria-label="name is" showSearch hasClear>
         <Option value="jack">Jack</Option>
         <Option value="frank">Frank</Option>
         <Option value="hugo">Hugo</Option>
-    </Select>
+    </Select>);
 };
 
 class App extends React.Component {
