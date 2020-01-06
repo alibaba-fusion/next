@@ -63,6 +63,12 @@ class FunctionDemo extends React.Component {
                     name: 'filters',
                     value: 'false',
                     enum: ['true', 'false']
+                },
+                {
+                    label: '排序',
+                    name: 'sortable',
+                    value: 'false',
+                    enum: ['true', 'false']
                 }
             ])
         };
@@ -86,9 +92,13 @@ class FunctionDemo extends React.Component {
             mode: functions.rowSelection,
             selectedRowKeys: [4]
         };
-        let filters;
+        let filters, sortable = false;
         if (functions.filters === 'true') {
             filters = [{ label: 'Option1', value: 'Option1' }, { label: 'Option2', value: 'Option2' }];
+        }
+
+        if (functions.sortable === 'true') {
+            sortable = true;
         }
 
         function productRender(product) {
@@ -176,7 +186,7 @@ class FunctionDemo extends React.Component {
             className: index === 1 ? 'selected' : ''
         });
         const cols = [
-            <Table.Column cell={priceRender} title={i18n.price} dataIndex="price" key="price" />,
+            <Table.Column cell={priceRender} title={i18n.price} dataIndex="price" key="price" sortable={sortable}/>,
             <Table.Column cell={statusRender} title={i18n.status} dataIndex="status" key="status" />,
             <Table.Column cell={operRender} title="" dataIndex="oper" key="oper" />
         ];
@@ -199,34 +209,34 @@ class FunctionDemo extends React.Component {
             <Demo title="List" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="List medium">
                     <DemoGroup label="Normal">
-                        <Table dataSource={listDataSource} hasBorder={false}>{cols}</Table>
+                        <Table dataSource={listDataSource} hasBorder={false} onSort={()=>{}}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={false} rowProps={getSelectedRowProps}>{cols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} hasBorder={false} rowProps={getSelectedRowProps} onSort={()=>{}}>{cols}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
-                        <Table dataSource={[]} hasBorder={false}>{cols}</Table>
+                        <Table dataSource={[]} hasBorder={false} onSort={()=>{}}>{cols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="List small">
                     <DemoGroup label="Normal">
-                        <Table size="small" dataSource={listDataSource} hasBorder={false}>{smallCols}</Table>
+                        <Table size="small" dataSource={listDataSource} hasBorder={false} onSort={()=>{}}>{smallCols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="Group medium">
                     <DemoGroup label="Normal">
-                        <Table dataSource={listDataSource}>{groupCols}</Table>
+                        <Table dataSource={listDataSource} onSort={()=>{}}>{groupCols}</Table>
                     </DemoGroup>
                     <DemoGroup label="Selected">
-                        <Table rowSelection={rowSelection} dataSource={listDataSource} rowProps={getSelectedRowProps}>{groupCols}</Table>
+                        <Table rowSelection={rowSelection} dataSource={listDataSource} rowProps={getSelectedRowProps} onSort={()=>{}}>{groupCols}</Table>
                     </DemoGroup>
                     <DemoGroup label="No Data">
-                        <Table dataSource={[]}>{groupCols}</Table>
+                        <Table dataSource={[]} onSort={()=>{}}>{groupCols}</Table>
                     </DemoGroup>
                 </Demo>
                 <Demo title="Group small">
                     <DemoGroup label="Normal">
-                        <Table size="small" dataSource={listDataSource}>{smallGroupCols}</Table>
+                        <Table size="small" dataSource={listDataSource} onSort={()=>{}}>{smallGroupCols}</Table>
                     </DemoGroup>
                 </Demo>
             </Demo>
@@ -372,7 +382,7 @@ class TableFunctionDemo extends React.Component {
             <Table.Column align={align} title={i18n.productDetail} key="product" dataIndex="product[0].title" filters={filters} />
             , cols);
 
-        cols.unshift(<Table.Column cell={productRender} align={align} title={i18n.productDetail} key="product" dataIndex="product" filters={filters} />);
+        cols.unshift(<Table.Column cell={productRender} align={align} title={i18n.productDetail} key="product" dataIndex="product" filters={filters}/>);
         const groupCols = cols.slice();
         groupCols.unshift(<Table.GroupHeader cell={groupHeaderRender} />);
         groupCols.push(<Table.GroupFooter cell={groupFooterRender} />);
