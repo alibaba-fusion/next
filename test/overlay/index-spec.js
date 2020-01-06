@@ -416,7 +416,7 @@ describe('Overlay', () => {
 
     it('should support autoFit', () => {
         wrapper = render(
-            <div style={{border: '1px solid #000', width: 300, height: 100, position: 'relative', overflow: 'auto'}}>
+            <div style={{width: 300, height: 100, position: 'relative', overflow: 'auto'}}>
                 <div style={{height: 200, width: 500}}>
                     <Popup animation={false} container={node => node.parentNode} autoFit trigger={<button id="overlay-autofit-btn" style={{margin: 220, marginRight: 0}}>Use Down Arrow to open</button>} triggerType="click" triggerClickKeycode={40}>
                         <span id="overlay-autofit-wrapper" style={{width: 120, height: 70, background: 'purple'}}>
