@@ -418,7 +418,7 @@ describe('Overlay', () => {
         wrapper = render(
             <div style={{width: 300, height: 100, position: 'relative', overflow: 'auto'}}>
                 <div style={{height: 200, width: 500}}>
-                    <Popup animation={false} container={node => node.parentNode} autoFit trigger={<button id="overlay-autofit-btn" style={{margin: 220, marginRight: 0}}>Use Down Arrow to open</button>} triggerType="click" triggerClickKeycode={40}>
+                    <Popup animation={false} container={node => node.parentNode} autoFit trigger={<button id="overlay-autofit-btn" style={{margin: 220, marginRight: 0, height: 25}}>Use Down Arrow to open</button>} triggerType="click" triggerClickKeycode={40}>
                         <span id="overlay-autofit-wrapper" style={{width: 120, height: 70, background: 'purple'}}>
                             Hello
                         </span>
@@ -430,7 +430,7 @@ describe('Overlay', () => {
 
         wrapper.instance().scrollTop = 220;
         document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '240px');
+        assert(document.getElementById('overlay-autofit-wrapper').style.top === '245px');
 
         document.body.click();
         wrapper.instance().scrollTop = 140;
