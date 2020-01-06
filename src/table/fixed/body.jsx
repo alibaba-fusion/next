@@ -44,6 +44,7 @@ export default class FixedBody extends React.Component {
         const style = {};
         if (fixedHeader) {
             style.maxHeight = maxBodyHeight;
+            style.position = 'relative';
         }
         return (
             <div
