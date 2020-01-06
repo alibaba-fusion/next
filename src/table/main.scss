@@ -232,6 +232,7 @@
 #{$table-prefix}-header {
     margin-bottom: -20px;
     padding-bottom: 20px;
+    opacity: .9999;
 }
 
 #{$table-prefix}-body {
@@ -246,8 +247,6 @@
     }
     #{$table-prefix}-header {
         background: $table-th-bg;
-        padding-bottom: 20px;
-        margin-bottom: -20px;
     }
     @include table-border(0);
     &#{$table-prefix}-group {

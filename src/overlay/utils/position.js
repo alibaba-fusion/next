@@ -33,7 +33,7 @@ function _getElementRect(elem, container) {
                 !isNaN(elem.offsetParent.scrollLeft) &&
                 elem.offsetParent !== document.body
             ) {
-                scrollTop += elem.offsetParent.scrollLeft;
+                scrollLeft += elem.offsetParent.scrollLeft;
             }
 
             if (
@@ -89,19 +89,35 @@ function _getViewportSize(container) {
     };
 }
 
+const getContainer = ({ container, autoFit, baseElement }) => {
+    let calcContainer;
+    if (typeof container === 'string') {
+        calcContainer = document.getElementById(container);
+    } else if (typeof container === 'function') {
+        calcContainer = container(baseElement);
+    } else {
+        return document.body;
+    }
+
+    if (!autoFit) {
+        return calcContainer;
+    }
+
+    while (dom.getStyle(calcContainer, 'position') === 'static') {
+        if (!calcContainer || calcContainer === document.body) {
+            return document.body;
+        }
+        calcContainer = calcContainer.parentNode;
+    }
+
+    return calcContainer;
+};
+
 export default class Position {
     constructor(props) {
         this.pinElement = props.pinElement;
         this.baseElement = props.baseElement;
-
-        if (typeof props.container === 'string') {
-            this.container = document.getElementById(props.container);
-        } else if (typeof props.container === 'function') {
-            this.container = props.container(this.baseElement);
-        } else {
-            this.container = document.body;
-        }
-
+        this.container = getContainer(props);
         this.autoFit = props.autoFit || false;
         this.align = props.align || 'tl tl';
         this.offset = props.offset || [0, 0];
@@ -243,15 +259,6 @@ export default class Position {
                 offset[1] =
                     -baseElementRect.top -
                     (y === 't' ? baseElementRect.height : 0);
-            }
-
-            if (
-                pinElementRect.left < 0 ||
-                pinElementRect.left + pinElementRect.width > viewportSize.width
-            ) {
-                offset[0] =
-                    -baseElementRect.left -
-                    (x === 'r' ? baseElementRect.width : 0);
             }
         }
 
@@ -492,6 +499,15 @@ export default class Position {
         const viewportHeight = this._isBottomAligned(align)
             ? viewportSize.height
             : viewportSize.height - 1;
+
+        // 临时方案，在 select + table 的场景下，不需要关注横向上是否在可视区域内
+        // 在 balloon 场景下需要关注
+        if (this.autoFit) {
+            return (
+                elementRect.top >= 0 &&
+                elementRect.top + element.offsetHeight <= viewportHeight
+            );
+        }
 
         // Avoid animate problem that use offsetWidth instead of getBoundingClientRect.
         return (
