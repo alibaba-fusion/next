@@ -517,7 +517,7 @@
 }
 
 @mixin font-face-handler($name, $url) {
-    @if ($name != Roboto) {
+    @if ($name != Roboto) and ($name != "") {
         @font-face {
             font-family: "#{$name}";
             src: url("#{$url}");
