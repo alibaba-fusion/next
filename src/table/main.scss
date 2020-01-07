@@ -303,6 +303,10 @@
     }
 }
 
+#{$table-prefix}-header-inner {
+    overflow: unset;
+}
+
 #{$table-prefix}-wrap-empty {
     #{$table-prefix}-lock-left,
     #{$table-prefix}-lock-right {
