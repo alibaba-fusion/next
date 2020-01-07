@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import UIState from '../mixin-ui-state';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
+import withContext from './with-context';
 import { obj, func } from '../util';
 
 const noop = func.noop;
@@ -101,17 +103,9 @@ class Checkbox extends UIState {
         isPreview: false,
     };
 
-    static contextTypes = {
-        onChange: PropTypes.func,
-        __group__: PropTypes.bool,
-        selectedValue: PropTypes.array,
-        disabled: PropTypes.bool,
-        prefix: PropTypes.string,
-    };
-
-    constructor(props, context) {
+    constructor(props) {
         super(props);
-
+        const { context } = props;
         let checked, indeterminate;
 
         if ('checked' in props) {
@@ -133,41 +127,37 @@ class Checkbox extends UIState {
             indeterminate,
         };
 
-        this.disabled =
-            props.disabled ||
-            (context.__group__ && 'disabled' in context && context.disabled);
         this.onChange = this.onChange.bind(this);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    static getDerivedStateFromProps(nextProps) {
+        const { context: nextContext } = nextProps;
+        const state = {};
         if (nextContext.__group__) {
             if ('selectedValue' in nextContext) {
-                this.setState({
-                    checked: isChecked(
-                        nextContext.selectedValue,
-                        nextProps.value
-                    ),
-                });
+                state.checked = isChecked(
+                    nextContext.selectedValue,
+                    nextProps.value
+                );
             }
-
-            this.disabled =
-                nextProps.disabled ||
-                ('disabled' in nextContext && nextContext.disabled);
-        } else {
-            if ('checked' in nextProps) {
-                this.setState({
-                    checked: nextProps.checked,
-                });
-            }
-            this.disabled = nextProps.disabled;
+        } else if ('checked' in nextProps) {
+            state.checked = nextProps.checked;
         }
 
         if ('indeterminate' in nextProps) {
-            this.setState({
-                indeterminate: nextProps.indeterminate,
-            });
+            state.indeterminate = nextProps.indeterminate;
         }
+
+        return state;
     }
+
+    get disabled() {
+        const { props } = this;
+        const { context } = props;
+
+        return props.disabled || ('disabled' in context && context.disabled);
+    }
+
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         const { shallowEqual } = obj;
         return (
@@ -178,13 +168,13 @@ class Checkbox extends UIState {
     }
 
     onChange(e) {
+        const { context, value } = this.props;
         const checked = e.target.checked;
-        const value = this.props.value;
         if (this.disabled) {
             return;
         }
-        if (this.context.__group__) {
-            this.context.onChange(value, e);
+        if (context.__group__) {
+            context.onChange(value, e);
         } else {
             if (!('checked' in this.props)) {
                 this.setState({
@@ -214,12 +204,13 @@ class Checkbox extends UIState {
             rtl,
             isPreview,
             renderPreview,
+            context,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
         const disabled = this.disabled;
         const indeterminate = !!this.state.indeterminate;
-        const prefix = this.context.prefix || this.props.prefix;
+        const prefix = context.prefix || this.props.prefix;
 
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
@@ -310,4 +301,4 @@ class Checkbox extends UIState {
     }
 }
 
-export default ConfigProvider.config(Checkbox);
+export default ConfigProvider.config(withContext(polyfill(Checkbox)));
