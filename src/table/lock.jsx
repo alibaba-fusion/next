@@ -447,7 +447,7 @@ export default function lock(BaseComponent) {
 
                 if (+scrollBarSize) {
                     style.marginBottom = -scrollBarSize;
-                    style.paddingBottom = 0;
+                    style.paddingBottom = scrollBarSize;
                 } else {
                     style.marginBottom = -20;
                     style.paddingBottom = 20;

@@ -125,7 +125,7 @@ export default function fixed(BaseComponent) {
                 if (+scrollBarSize) {
                     style.marginBottom = -scrollBarSize;
                     if (hasHozScroll) {
-                        style.paddingBottom = 0;
+                        style.paddingBottom = scrollBarSize;
                     } else {
                         style.paddingBottom = scrollBarSize;
                         style[marginName] = 0;
