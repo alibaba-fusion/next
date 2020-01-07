@@ -232,6 +232,12 @@
 #{$table-prefix}-header {
     margin-bottom: -20px;
     padding-bottom: 20px;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 #{$table-prefix}-body {
@@ -246,8 +252,6 @@
     }
     #{$table-prefix}-header {
         background: $table-th-bg;
-        padding-bottom: 20px;
-        margin-bottom: -20px;
     }
     @include table-border(0);
     &#{$table-prefix}-group {
@@ -359,16 +363,19 @@
 #{$table-prefix}-sort {
     position: relative;
     width: 16px;
-    height: 15px;
     display: inline-block;
-    vertical-align: middle;
     line-height: 1;
     &:focus {
         outline: 0;
     }
+    & > a::before {
+        content: ' ';
+        display: inline-block;
+        vertical-align: middle;
+    }
     .#{$css-prefix}icon {
         position: absolute;
-        left: 0;
+        left: -2px;
         @include icon-size($table-sort-icon-size);
         color: $table-sort-color;
     }
@@ -376,7 +383,7 @@
         color: $table-sort-color-current;
     }
     .#{$css-prefix}icon-ascending {
-        left: 4px;
+        left: 2px;
     }
 }
 

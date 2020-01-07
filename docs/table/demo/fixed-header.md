@@ -15,8 +15,9 @@ Table header can be fixed, support sticky.
 ---
 
 ````jsx
-import { Table, Button } from '@alifd/next';
+import { Table, Button, Select } from '@alifd/next';
 
+const Option = Select.Option;
 const dataSource = (length) => {
     const result = [];
     for (let i = 0; i < length; i++) {
@@ -27,6 +28,14 @@ const dataSource = (length) => {
         });
     }
     return result;
+};
+
+const render = (value, index, record) => {
+    return (<Select popupContainer={node => node.parentNode} popupProps={{autoFit: true}} defaultValue="jack" aria-label="name is" showSearch hasClear>
+        <Option value="jack">Jack</Option>
+        <Option value="frank">Frank</Option>
+        <Option value="hugo">Hugo</Option>
+    </Select>);
 };
 
 class App extends React.Component {
@@ -64,6 +73,7 @@ class App extends React.Component {
                 <Table.Column title="Id" dataIndex="id" width={200} lock={this.state.lock}/>
                 <Table.Column title="Title" dataIndex="title.name" width={200}/>
                 <Table.Column title="Time" dataIndex="time" width={200}/>
+                <Table.Column title="test" cell={render} width={200}/>
             </Table>
         </div>
         );
@@ -71,4 +81,9 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App/>, mountNode);
+````
+````css
+.next-table td .next-table-cell-wrapper {
+    overflow: visible;
+}
 ````

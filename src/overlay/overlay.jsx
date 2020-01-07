@@ -1,8 +1,8 @@
-import React, { Component, Children } from 'react';
+import React, { Children, Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { dom, events, func, support, focus, KEYCODE, guid } from '../util';
+import { dom, events, focus, func, guid, KEYCODE, support } from '../util';
 import overlayManager from './manager';
 import Gateway from './gateway';
 import Position from './position';
@@ -697,6 +697,7 @@ export default class Overlay extends Component {
             container,
             hasMask,
             needAdjust,
+            autoFit,
             beforePosition,
             onPosition,
             wrapperStyle,
@@ -753,6 +754,8 @@ export default class Overlay extends Component {
                             target,
                             align,
                             offset,
+                            autoFit,
+                            container,
                             needAdjust,
                             beforePosition,
                             onPosition: makeChain(

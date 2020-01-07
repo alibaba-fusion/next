@@ -29,7 +29,7 @@ class Mask extends React.Component {
         overlayProps: PropTypes.object,
         onClose: PropTypes.func,
         timeoutId: PropTypes.string,
-        style: PropTypes.style,
+        style: PropTypes.object,
         className: PropTypes.string,
     };
 

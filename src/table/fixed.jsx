@@ -144,6 +144,7 @@ export default function fixed(BaseComponent) {
                 prefix,
                 fixedHeader,
                 lockType,
+                dataSource,
                 maxBodyHeight,
                 ...others
             } = this.props;
@@ -160,6 +161,7 @@ export default function fixed(BaseComponent) {
                 }
                 className = classnames({
                     [`${prefix}table-fixed`]: true,
+                    [`${prefix}table-wrap-empty`]: !dataSource.length,
                     [className]: className,
                 });
             }
@@ -173,6 +175,7 @@ export default function fixed(BaseComponent) {
                 <BaseComponent
                     {...others}
                     {...event}
+                    dataSource={dataSource}
                     lockType={lockType}
                     components={components}
                     className={className}
