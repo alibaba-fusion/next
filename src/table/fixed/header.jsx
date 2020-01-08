@@ -21,11 +21,15 @@ export default class FixedHeader extends React.Component {
         this.context.getNode('header', findDOMNode(this));
     }
 
+    //  这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
     render() {
         const { prefix, className, colGroup, ...others } = this.props;
         return (
             <div className={className}>
-                <div className={`${prefix}table-header-inner`}>
+                <div
+                    className={`${prefix}table-header-inner`}
+                    style={{ overflow: 'unset' }}
+                >
                     <table>
                         {colGroup}
                         <HeaderComponent {...others} prefix={prefix} />
