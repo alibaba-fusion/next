@@ -382,12 +382,12 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 焦点事件
      */
-    onFocus?: () => void;
+    onFocus?: React.FocusEventHandler<HTMLSpanElement>;
 
     /**
      * 失去焦点事件
      */
-    onBlur?: () => void;
+    onBlur?: React.FocusEventHandler<HTMLSpanElement>;
 }
 
 export default class Select extends React.Component<SelectProps, any> {

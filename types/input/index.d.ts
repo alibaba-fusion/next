@@ -69,12 +69,12 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 获取焦点时候触发的回调
      */
-    onFocus?: () => void;
+    onFocus?: React.FocusEventHandler<HTMLSpanElement>;
 
     /**
      * 失去焦点时候触发的回调
      */
-    onBlur?: () => void;
+    onBlur?: React.FocusEventHandler<HTMLSpanElement>;
 
     /**
      * 自定义字符串计算长度方式
@@ -217,12 +217,12 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 获取焦点时候触发的回调
      */
-    onFocus?: () => void;
+    onFocus?: React.FocusEventHandler<HTMLSpanElement>;
 
     /**
      * 失去焦点时候触发的回调
      */
-    onBlur?: () => void;
+    onBlur?: React.FocusEventHandler<HTMLSpanElement>;
 
     /**
      * 自定义字符串计算长度方式
