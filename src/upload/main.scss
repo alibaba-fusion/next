@@ -105,6 +105,9 @@
             //  so  line-height = height / 2  - padding-top;
             line-height: $upload-text-list-height / 2 - $s-1;
             .#{$css-prefix}upload-list-item-progress {
+                line-height: 0;
+                padding-top: ($upload-text-list-height / 2 - $s-1 - $upload-text-list-progressbar-height) / 2;
+                padding-bottom: ($upload-text-list-height / 2 - $s-1 - $upload-text-list-progressbar-height) / 2;
                 .#{$css-prefix}progress-line-underlay {
                     height: $upload-text-list-progressbar-height;
                 }
@@ -251,8 +254,9 @@
                 margin-left: $upload-image-list-item-picture-size + $thumbnail-margin-right;
                 // 右边边 把 icon 的空间空出来
                 margin-right: $upload-image-list-close-icon-size + $upload-image-list-close-icon-right * 2;
-                height: $upload-image-list-item-picture-size / 2;
-                line-height: $upload-image-list-item-picture-size / 2;
+                line-height: 0;
+                padding-top: ($upload-image-list-item-picture-size / 2  - $upload-image-list-progressbar-height) / 2;
+                padding-bottom: ($upload-image-list-item-picture-size / 2  - $upload-image-list-progressbar-height) / 2;
 
                 .#{$css-prefix}progress-line-underlay {
                     height: $upload-image-list-progressbar-height;
