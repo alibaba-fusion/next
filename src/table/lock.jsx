@@ -56,12 +56,10 @@ export default function lock(BaseComponent) {
         }
 
         componentDidMount() {
-            this.adjustSize = this.adjustSize.bind(this);
-
-            this.adjustSize();
-            this.scroll();
-
             events.on(window, 'resize', this.adjustSize);
+
+            this.scroll();
+            this.adjustSize();
         }
 
         shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -339,14 +337,14 @@ export default function lock(BaseComponent) {
             return this._isLock;
         }
 
-        adjustSize() {
+        adjustSize = () => {
             if (!this.adjustIfTableNotNeedLock()) {
                 this.adjustHeaderSize();
                 this.adjustBodySize();
                 this.adjustCellSize();
                 this.onLockBodyScroll();
             }
-        }
+        };
 
         removeLockTable() {
             const lockLeftLen = this.lockLeftChildren.length;
@@ -546,14 +544,16 @@ export default function lock(BaseComponent) {
                             ? item.__rowIndex
                             : index;
 
+                    const { left, right, origin } = this.tableInc.props.lengths;
+
                     // 同步最左侧的锁列
-                    this.lockLeftChildren.forEach((child, i) => {
+                    for (let i = 0; i < left; i++) {
                         this.setCellSize(rowIndex, i, 'left');
-                    });
+                    }
                     // 同步最右侧的锁列
-                    this.lockRightChildren.forEach((child, i) => {
+                    for (let i = origin - right; i < origin; i++) {
                         this.setCellSize(rowIndex, i, 'right');
-                    });
+                    }
                 });
             }
         }
@@ -567,6 +567,8 @@ export default function lock(BaseComponent) {
 
             if (lockRow) {
                 lockHeight = lockRow.offsetHeight;
+                // in some case dom.offsetHeight !== getComputedStyle(dom).height
+                lockHeight = parseFloat(getComputedStyle(lockRow).height) || 0;
             }
 
             if (lockRow && rowHeight !== lockHeight) {
@@ -643,6 +645,22 @@ export default function lock(BaseComponent) {
             }
         }
 
+        getFlatenChildrenLength = (children = []) => {
+            const loop = arr => {
+                const newArray = [];
+                arr.forEach(child => {
+                    if (child.children) {
+                        newArray.push(...loop(child.children));
+                    } else {
+                        newArray.push(child);
+                    }
+                });
+                return newArray;
+            };
+
+            return loop(children).length;
+        };
+
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
             let {
@@ -658,6 +676,16 @@ export default function lock(BaseComponent) {
                 lockRightChildren,
                 children: normalizedChildren,
             } = this.normalizeChildrenState(this.props);
+
+            const leftLen = this.getFlatenChildrenLength(lockLeftChildren);
+            const rightLen = this.getFlatenChildrenLength(lockRightChildren);
+            const originLen = this.getFlatenChildrenLength(normalizedChildren);
+
+            const lengths = {
+                left: leftLen,
+                right: rightLen,
+                origin: originLen,
+            };
             if (this._notNeedAdjustLockLeft) {
                 lockLeftChildren = [];
             }
@@ -685,6 +713,7 @@ export default function lock(BaseComponent) {
                         key="lock-left"
                         columns={lockLeftChildren}
                         className={`${prefix}table-lock-left`}
+                        lengths={lengths}
                         prefix={prefix}
                         lockType="left"
                         components={components}
@@ -698,6 +727,7 @@ export default function lock(BaseComponent) {
                         key="lock-right"
                         columns={lockRightChildren}
                         className={`${prefix}table-lock-right`}
+                        lengths={lengths}
                         prefix={prefix}
                         lockType="right"
                         components={components}
@@ -712,6 +742,7 @@ export default function lock(BaseComponent) {
                         dataSource={dataSource}
                         columns={normalizedChildren}
                         prefix={prefix}
+                        lengths={lengths}
                         wrapperContent={content}
                         components={components}
                         className={className}

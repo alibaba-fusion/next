@@ -315,3 +315,51 @@ export function getPixels(len) {
 
     return 0;
 }
+
+/**
+ * 匹配特定选择器且离当前元素最近的祖先元素（也可以是当前元素本身），如果匹配不到，则返回 null
+ * @param {element} dom 待匹配的元素
+ * @param {string} selecotr 选择器
+ * @return {element} parent
+ */
+export function getClosest(dom, selector) {
+    /* istanbul ignore if */
+    if (!hasDOM || !dom) {
+        return null;
+    }
+
+    if (!Element.prototype.closest) {
+        // ie9
+        if (!document.documentElement.contains(dom)) return null;
+        do {
+            if (getMatches(dom, selector)) return dom;
+            dom = dom.parentElement;
+        } while (dom !== null);
+    } else {
+        return dom.closest(selector);
+    }
+    return null;
+}
+
+/**
+ * 如果元素被指定的选择器字符串选择，getMatches()  方法返回true; 否则返回false
+ * @param {element} dom 待匹配的元素
+ * @param {string} selecotr 选择器
+ * @return {element} parent
+ */
+export function getMatches(dom, selector) {
+    /* istanbul ignore if */
+    if (!hasDOM || !dom) {
+        return null;
+    }
+
+    if (Element.prototype.matches) {
+        return dom.matches(selector);
+    } else if (Element.prototype.msMatchesSelector) {
+        return dom.msMatchesSelector(selector);
+    } else if (Element.prototype.webkitMatchesSelector) {
+        return dom.webkitMatchesSelector(selector);
+    }
+
+    return null;
+}

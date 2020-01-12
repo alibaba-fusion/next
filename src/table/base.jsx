@@ -281,6 +281,7 @@ export default class Table extends React.Component {
          * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
          */
         crossline: PropTypes.bool,
+        lengths: PropTypes.object,
     };
 
     static defaultProps = {
@@ -445,6 +446,10 @@ export default class Table extends React.Component {
                 }
             });
         });
+
+        const { lockType, lengths } = this.props;
+        const start = lockType === 'right' ? lengths.origin - lengths.right : 0;
+        this.addColIndex(flatChildren, start);
 
         return {
             flatChildren,
@@ -624,10 +629,10 @@ export default class Table extends React.Component {
         this[cellRef] = cell;
     };
 
-    handleHoverClass = (rowIndex, colIndex, isAdd) => {
+    handleColHoverClass = (rowIndex, colIndex, isAdd) => {
         const { crossline } = this.props;
         const funcName = isAdd ? 'addClass' : 'removeClass';
-        crossline &&
+        if (crossline) {
             this.props.entireDataSource.forEach((val, index) => {
                 try {
                     // in case of finding an unmounted component due to cached data
@@ -641,70 +646,73 @@ export default class Table extends React.Component {
                     return null;
                 }
             });
+        }
+    };
+
+    /**
+     * @param event
+     * @returns {Object} { rowIndex: string; colIndex: string }
+     */
+    findEventTarget = e => {
+        const { prefix } = this.props;
+        const target = dom.getClosest(e.target, `td.${prefix}table-cell`);
+        const colIndex = target && target.getAttribute('data-next-table-col');
+        const rowIndex = target && target.getAttribute('data-next-table-row');
 
         try {
             // in case of finding an unmounted component due to cached data
             // need to clear refs of this.tableInc when dataSource Changed
             // in virtual table
-            const currentRow = findDOMNode(this.getRowRef(rowIndex));
-            currentRow && dom[funcName](currentRow, 'hovered');
+            const currentCol = findDOMNode(this.getCellRef(rowIndex, colIndex));
+            if (currentCol === target) {
+                return {
+                    colIndex,
+                    rowIndex,
+                };
+            }
         } catch (error) {
-            return null;
+            return {};
         }
-    };
 
-    findEventTarget = e => {
-        const { crossline } = this.props;
-        let colIndex = e.target.getAttribute('data-next-table-col'),
-            rowIndex = e.target.getAttribute('data-next-table-row');
-        crossline &&
-            (!colIndex && !rowIndex) &&
-            this.props.entireDataSource.forEach((val, row) => {
-                this.flatChildren.forEach((child, col) => {
-                    try {
-                        // in case of finding an unmounted component due to cached data
-                        // need to clear refs of this.tableInc when dataSource Changed
-                        // in virtual table
-                        const currentCol = findDOMNode(
-                            this.getCellRef(row, col)
-                        );
-                        if (currentCol && currentCol.contains(e.target)) {
-                            colIndex = col;
-                            rowIndex = row;
-                            return false;
-                        }
-                    } catch (error) {
-                        return null;
-                    }
-                });
-            });
-
-        return {
-            colIndex,
-            rowIndex,
-        };
+        return {};
     };
 
     onBodyMouseOver = e => {
-        const { colIndex, rowIndex } = this.findEventTarget(e);
-
-        if (this.colIndex === colIndex && this.rowIndex === rowIndex) {
+        const { crossline } = this.props;
+        if (!crossline) {
             return;
         }
-        this.handleHoverClass(rowIndex, colIndex, true);
 
+        const { colIndex, rowIndex } = this.findEventTarget(e);
+        // colIndex, rowIndex are string
+        if (!colIndex || !rowIndex) {
+            return;
+        }
+        this.handleColHoverClass(rowIndex, colIndex, true);
         this.colIndex = colIndex;
         this.rowIndex = rowIndex;
     };
 
     onBodyMouseOut = e => {
-        this.handleHoverClass(this.rowIndex, this.colIndex, false);
+        const { crossline } = this.props;
+        if (!crossline) {
+            return;
+        }
 
         const { colIndex, rowIndex } = this.findEventTarget(e);
-        this.handleHoverClass(rowIndex, colIndex, false);
-
+        // colIndex, rowIndex are string
+        if (!colIndex || !rowIndex) {
+            return;
+        }
+        this.handleColHoverClass(this.rowIndex, this.colIndex, false);
         this.colIndex = -1;
         this.rowIndex = -1;
+    };
+
+    addColIndex = (children, start = 0) => {
+        children.forEach((child, i) => {
+            child.__colIndex = start + i;
+        });
     };
 
     render() {
