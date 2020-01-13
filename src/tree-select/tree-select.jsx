@@ -167,7 +167,7 @@ export default class TreeSelect extends Component {
         /**
          * 下拉框挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 透传到 Popup 的属性对象
          */
