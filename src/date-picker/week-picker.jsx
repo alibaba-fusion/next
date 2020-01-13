@@ -107,7 +107,7 @@ class WeekPicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层自定义样式
          */

@@ -27,7 +27,10 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
+        onBodyMouseOver: PropTypes.func,
+        onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
+        crossline: PropTypes.bool,
     };
     static defaultProps = {
         loading: false,
@@ -59,6 +62,14 @@ export default class Body extends React.Component {
         this.props.onRowMouseLeave(record, index, e);
     };
 
+    onBodyMouseOver = e => {
+        this.props.onBodyMouseOver(e);
+    };
+
+    onBodyMouseOut = e => {
+        this.props.onBodyMouseOut(e);
+    };
+
     render() {
         /*eslint-disable no-unused-vars */
         const {
@@ -80,10 +91,13 @@ export default class Body extends React.Component {
             onRowClick,
             onRowMouseEnter,
             onRowMouseLeave,
+            onBodyMouseOver,
+            onBodyMouseOut,
             locale,
             pure,
             expandedIndexSimulate,
             rtl,
+            crossline,
             ...others
         } = this.props;
 
@@ -159,7 +173,12 @@ export default class Body extends React.Component {
             });
         }
         return (
-            <Tag className={className} {...others}>
+            <Tag
+                className={className}
+                {...others}
+                onMouseOver={this.onBodyMouseOver}
+                onMouseOut={this.onBodyMouseOut}
+            >
                 {rows}
                 {children}
             </Tag>

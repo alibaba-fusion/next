@@ -38,7 +38,7 @@ const onRowClick = function(record, index, e) {
 class App extends React.Component {
 
     state = {
-        dataSource: dataSource(200)
+        dataSource: dataSource(50)
     }
     onClick = () => {
         this.setState({

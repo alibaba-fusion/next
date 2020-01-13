@@ -21,7 +21,7 @@
         }
 
         #{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
-            padding: $s-3 $s-4;
+            padding: $s-2 $s-2;
         }
     }
 
@@ -55,6 +55,7 @@
     }
     &-affix {
         z-index: 1;
+        overflow: hidden;
     }
     &-header-resizable {
         position: relative;
@@ -80,20 +81,29 @@
             .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
             .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow,
             #{$table-prefix}-tree-placeholder {
-                margin-right: 3px;
-                float: left;
+                margin-right: $table-header-icon-margin-left;
                 outline: 0;
                 cursor: pointer;
             }
-            .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow,
             .#{$css-prefix}icon-arrow-right.#{$css-prefix}table-tree-arrow {
                 @include icon-size($table-tree-expanded-icon-size);
+                &::before {
+                    content: $table-tree-fold-icon-content;
+                }
+            }
+
+            .#{$css-prefix}icon-arrow-down.#{$css-prefix}table-tree-arrow {
+                @include icon-size($table-tree-expanded-icon-size);
+                &::before {
+                    content: $table-tree-unfold-icon-content;
+                }
             }
         }
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
         }
     }
+
     #{$table-prefix}-expanded,
     #{$table-prefix}-selection {
         #{$table-prefix}-cell-wrapper {
@@ -119,6 +129,11 @@
                 border-width: 0 0 $table-normal-border-width 0;
             }
         }
+
+        table tr td:first-child,
+        table tr th:first-child {
+            border-left-width: 0;
+        }
     }
     &-loading {
         display: block;
@@ -131,6 +146,10 @@
             background: $table-td-gray;
         }
         #{$table-prefix}-row.hovered td {
+            background: $table-row-hover-bg;
+            color: $table-row-hover-color;
+        }
+        #{$table-prefix}-cell.hovered {
             background: $table-row-hover-bg;
             color: $table-row-hover-color;
         }
@@ -184,6 +203,12 @@
             color: $table-row-selected-color;
         }
     }
+    &-cell {
+        &.hovered {
+            background: $table-row-hover-bg;
+            color: $table-row-hover-color;
+        }
+    }
     &-tree-placeholder {
         display: inline-block;
         width: 12px;
@@ -204,8 +229,20 @@
     font-size: $table-th-font-size;
 }
 
+#{$table-prefix}-header {
+    margin-bottom: -20px;
+    padding-bottom: 20px;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 #{$table-prefix}-body {
     font-size: $table-body-font-size;
+    position: relative;
 }
 
 #{$table-prefix}-fixed {
@@ -267,7 +304,22 @@
 }
 
 #{$table-prefix}-header-inner {
-    overflow: hidden;
+    overflow: unset;
+}
+
+#{$table-prefix}-wrap-empty {
+    #{$table-prefix}-lock-left,
+    #{$table-prefix}-lock-right {
+        td {
+            border: none;
+        }
+        #{$table-prefix}-empty {
+            display: none;
+        }
+    }
+    > #{$table-prefix}-inner > #{$table-prefix}-body > table {
+        table-layout: auto;
+    }
 }
 
 #{$table-prefix}-lock-left,
@@ -277,11 +329,16 @@
     top: 0;
     z-index: 1;
     border: 0;
+    transition: box-shadow .3s ease;
+    overflow: hidden;
     table {
         width: auto;
     }
     #{$table-prefix}-body {
-        overflow: hidden;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin-right: -20px;
+        padding-right: 0;
     }
 }
 
@@ -310,16 +367,19 @@
 #{$table-prefix}-sort {
     position: relative;
     width: 16px;
-    height: 15px;
     display: inline-block;
-    vertical-align: middle;
     line-height: 1;
     &:focus {
         outline: 0;
     }
+    & > a::before {
+        content: ' ';
+        display: inline-block;
+        vertical-align: middle;
+    }
     .#{$css-prefix}icon {
         position: absolute;
-        left: 0;
+        left: -2px;
         @include icon-size($table-sort-icon-size);
         color: $table-sort-color;
     }
@@ -327,12 +387,11 @@
         color: $table-sort-color-current;
     }
     .#{$css-prefix}icon-ascending {
-        left: 4px;
+        left: 2px;
     }
 }
 
 #{$table-prefix}-filter {
-    margin-left: 5px;
     cursor: pointer;
     width: 20px;
     display: inline-block;
@@ -345,6 +404,10 @@
     }
 }
 
+#{$table-prefix}-header-icon {
+    margin-left: $table-header-icon-margin-left;
+}
+
 #{$table-prefix}-expanded-ctrl {
     cursor: pointer;
     &:focus {
@@ -353,8 +416,19 @@
     &.disabled {
         color: $table-expanded-ctrl-disabled-color;
     }
-    .#{$css-prefix}icon {
+
+    .#{$css-prefix}table-expand-unfold {
         @include icon-size($table-expanded-icon-size);
+        &::before {
+            content: $table-expand-unfold-icon-content;
+        }
+    }
+
+    .#{$css-prefix}table-expand-fold {
+        @include icon-size($table-expanded-icon-size);
+        &::before {
+            content: $table-expand-fold-icon-content;
+        }
     }
 }
 

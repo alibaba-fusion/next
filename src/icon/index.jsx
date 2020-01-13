@@ -34,7 +34,7 @@ class Icon extends Component {
             PropTypes.number,
         ]),
         className: PropTypes.string,
-        style: PropTypes.string,
+        style: PropTypes.object,
     };
 
     static defaultProps = {
