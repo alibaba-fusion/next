@@ -328,8 +328,9 @@ export function getClosest(dom, selector) {
         return null;
     }
 
+    // ie9
+    /* istanbul ignore if */
     if (!Element.prototype.closest) {
-        // ie9
         if (!document.documentElement.contains(dom)) return null;
         do {
             if (getMatches(dom, selector)) return dom;
@@ -353,6 +354,7 @@ export function getMatches(dom, selector) {
         return null;
     }
 
+    /* istanbul ignore if */
     if (Element.prototype.matches) {
         return dom.matches(selector);
     } else if (Element.prototype.msMatchesSelector) {
