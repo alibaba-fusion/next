@@ -15,7 +15,7 @@ export default class Position extends Component {
     static propTypes = {
         children: PropTypes.node,
         target: PropTypes.any,
-        container: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        container: PropTypes.any,
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         offset: PropTypes.array,
         beforePosition: PropTypes.func,
