@@ -158,6 +158,7 @@ export default class Body extends React.Component {
                         primaryKey={primaryKey}
                         record={record}
                         rowIndex={rowIndex}
+                        __rowIndex={rowIndex}
                         prefix={prefix}
                         pure={pure}
                         cellRef={cellRef}
