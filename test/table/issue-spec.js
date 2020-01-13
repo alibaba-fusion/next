@@ -543,7 +543,7 @@ describe('Issue', () => {
 
         ReactDOM.render(<App />, container, function() {
             const cell = container.querySelector(
-                'td > [data-next-table-col="1"][data-next-table-row="1"]'
+                'td[data-next-table-col="1"][data-next-table-row="1"]'
             );
             const mouseover = new MouseEvent('mouseover', {
                 'view': window,
