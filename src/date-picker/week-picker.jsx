@@ -107,7 +107,7 @@ class WeekPicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层自定义样式
          */
@@ -176,10 +176,7 @@ class WeekPicker extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const value = formatDateValue(
-            props.value || props.defaultValue,
-            props.format
-        );
+        const value = formatDateValue(props.value || props.defaultValue, props.format);
 
         this.state = {
             value,
@@ -223,21 +220,12 @@ class WeekPicker extends Component {
     };
 
     onKeyDown = e => {
-        if (
-            [
-                KEYCODE.UP,
-                KEYCODE.DOWN,
-                KEYCODE.PAGE_UP,
-                KEYCODE.PAGE_DOWN,
-            ].indexOf(e.keyCode) === -1
-        ) {
+        if ([KEYCODE.UP, KEYCODE.DOWN, KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) {
             return;
         }
 
         if (
-            (e.altKey &&
-                [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) ===
-                    -1) ||
+            (e.altKey && [KEYCODE.PAGE_UP, KEYCODE.PAGE_DOWN].indexOf(e.keyCode) === -1) ||
             e.controlKey ||
             e.shiftKey
         ) {
@@ -310,29 +298,16 @@ class WeekPicker extends Component {
     dateRender = value => {
         const { prefix, dateCellRender } = this.props;
         const selectedValue = this.state.value;
-        const content =
-            dateCellRender && typeof dateCellRender === 'function'
-                ? dateCellRender(value)
-                : value.dates();
-        if (
-            selectedValue &&
-            selectedValue.years() === value.years() &&
-            selectedValue.weeks() === value.weeks()
-        ) {
+        const content = dateCellRender && typeof dateCellRender === 'function' ? dateCellRender(value) : value.dates();
+        if (selectedValue && selectedValue.years() === value.years() && selectedValue.weeks() === value.weeks()) {
             const firstDay = moment.localeData().firstDayOfWeek();
             const endDay = firstDay - 1 < 0 ? 6 : firstDay - 1;
             return (
                 <div
-                    className={classnames(
-                        `${prefix}calendar-week-active-date`,
-                        {
-                            [`${prefix}calendar-week-active-start`]:
-                                value.days() ===
-                                moment.localeData().firstDayOfWeek(),
-                            [`${prefix}calendar-week-active-end`]:
-                                value.days() === endDay,
-                        }
-                    )}
+                    className={classnames(`${prefix}calendar-week-active-date`, {
+                        [`${prefix}calendar-week-active-start`]: value.days() === moment.localeData().firstDayOfWeek(),
+                        [`${prefix}calendar-week-active-end`]: value.days() === endDay,
+                    })}
                 >
                     <span>{content}</span>
                 </div>
@@ -389,9 +364,7 @@ class WeekPicker extends Component {
         }
 
         if (isPreview) {
-            return this.renderPreview(
-                obj.pickOthers(others, WeekPicker.PropTypes)
-            );
+            return this.renderPreview(obj.pickOthers(others, WeekPicker.PropTypes));
         }
 
         const trigger = (
@@ -435,10 +408,7 @@ class WeekPicker extends Component {
                     {popupContent ? (
                         popupContent
                     ) : (
-                        <div
-                            dir={others.dir}
-                            className={`${prefix}week-picker-body`}
-                        >
+                        <div dir={others.dir} className={`${prefix}week-picker-body`}>
                             <Calendar
                                 shape="panel"
                                 value={value}

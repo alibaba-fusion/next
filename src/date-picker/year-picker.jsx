@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import Overlay from '../overlay';
@@ -98,7 +99,7 @@ class YearPicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.any,
         /**
          * 弹层自定义样式
          */
@@ -158,45 +159,31 @@ class YearPicker extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const value = formatDateValue(
-            props.value || props.defaultValue,
-            props.format
-        );
-
-        this.inputAsString =
-            typeof (props.value || props.defaultValue) === 'string'; // 判断用户输入是否是字符串
         this.state = {
-            value,
+            value: formatDateValue(props.defaultValue, props.format),
             dateInputStr: '',
             inputing: false,
-            visible: props.visible || props.defaultVisible,
+            visible: props.defaultVisible,
+            inputAsString: typeof props.defaultValue === 'string', // 判断用户输入是否是字符串
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            const value = formatDateValue(
-                nextProps.value,
-                nextProps.format || this.props.format
-            );
-            this.setState({
-                value,
-            });
-            this.inputAsString = typeof nextProps.value === 'string';
+    static getDerivedStateFromProps(props) {
+        const states = {};
+        if ('value' in props) {
+            states.value = formatDateValue(props.value, props.format);
+            states.inputAsString = typeof props.value === 'string';
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if ('visible' in props) {
+            states.visible = props.visible;
         }
+
+        return states;
     }
 
     onValueChange = newValue => {
-        const ret =
-            this.inputAsString && newValue
-                ? newValue.format(this.props.format)
-                : newValue;
+        const ret = this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
         this.props.onChange(ret);
     };
 
@@ -211,14 +198,9 @@ class YearPicker extends Component {
             .minute(0)
             .second(0);
 
-        this.handleChange(
-            selectedMonth,
-            prevSelectedMonth,
-            { inputing: false },
-            () => {
-                this.onVisibleChange(false, 'calendarSelect');
-            }
-        );
+        this.handleChange(selectedMonth, prevSelectedMonth, { inputing: false }, () => {
+            this.onVisibleChange(false, 'calendarSelect');
+        });
     };
 
     clearValue = () => {
@@ -261,11 +243,7 @@ class YearPicker extends Component {
     onKeyDown = e => {
         const { format } = this.props;
         const { dateInputStr, value } = this.state;
-        const dateStr = onDateKeydown(
-            e,
-            { format, dateInputStr, value },
-            'year'
-        );
+        const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'year');
         if (!dateStr) return;
         this.onDateInputChange(dateStr);
     };
@@ -380,9 +358,7 @@ class YearPicker extends Component {
         }
 
         if (isPreview) {
-            return this.renderPreview(
-                obj.pickOthers(others, YearPicker.PropTypes)
-            );
+            return this.renderPreview(obj.pickOthers(others, YearPicker.PropTypes));
         }
 
         const panelInputCls = `${prefix}year-picker-panel-input`;
@@ -397,9 +373,7 @@ class YearPicker extends Component {
             onKeyDown: this.onKeyDown,
         };
 
-        const dateInputValue = inputing
-            ? dateInputStr
-            : (value && value.format(format)) || '';
+        const dateInputValue = inputing ? dateInputStr : (value && value.format(format)) || '';
         const triggerInputValue = dateInputValue;
 
         const dateInput = (
@@ -448,10 +422,7 @@ class YearPicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div
-                {...obj.pickOthers(YearPicker.propTypes, others)}
-                className={yearPickerCls}
-            >
+            <div {...obj.pickOthers(YearPicker.propTypes, others)} className={yearPickerCls}>
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
@@ -470,11 +441,7 @@ class YearPicker extends Component {
                         popupContent
                     ) : (
                         <div dir={others.dir} className={panelBodyClassName}>
-                            <div
-                                className={`${prefix}year-picker-panel-header`}
-                            >
-                                {dateInput}
-                            </div>
+                            <div className={`${prefix}year-picker-panel-header`}>{dateInput}</div>
                             {panelBody}
                             {panelFooter}
                         </div>
@@ -485,4 +452,4 @@ class YearPicker extends Component {
     }
 }
 
-export default YearPicker;
+export default polyfill(YearPicker);

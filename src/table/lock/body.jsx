@@ -13,36 +13,28 @@ export default class LockBody extends React.Component {
         ...FixedBody.contextTypes,
         getLockNode: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
-        onLockBodyWheel: PropTypes.func,
+        onLockBodyLRScroll: PropTypes.func,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
     componentDidMount() {
-        this.context.getLockNode(
-            'body',
-            findDOMNode(this),
-            this.context.lockType
-        );
+        this.context.getLockNode('body', findDOMNode(this), this.context.lockType);
     }
 
-    onBodyScroll = () => {
-        this.context.onLockBodyScroll();
+    onBodyScroll = event => {
+        this.context.onLockBodyScroll(event);
     };
 
-    onBodyWheel = e => {
-        this.context.onLockBodyWheel(e);
+    onBodyLRScroll = event => {
+        const { lockType } = this.context;
+        this.context.onLockBodyLRScroll(event, lockType);
     };
 
     render() {
         const { lockType } = this.context;
-
-        const events = lockType
-            ? {
-                  onWheel: this.onBodyWheel,
-              }
-            : {
-                  onScroll: this.onBodyScroll,
-              };
-        return <FixedBody {...this.props} {...events} />;
+        const event = {
+            onScroll: lockType ? this.onBodyLRScroll : this.onBodyScroll,
+        };
+        return <FixedBody {...this.props} {...event} />;
     }
 }

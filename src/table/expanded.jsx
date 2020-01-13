@@ -111,9 +111,9 @@ export default function expanded(BaseComponent) {
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
                 switchNode = hasExpanded ? (
-                    <Icon type="minus" size="xs" />
+                    <Icon type="minus" size="xs" className={`${prefix}table-expand-unfold`} />
                 ) : (
-                    <Icon type="add" size="xs" />
+                    <Icon type="add" size="xs" className={`${prefix}table-expand-fold`} />
                 ),
                 attrs = getExpandedColProps(record, index) || {};
             const cls = classnames({
@@ -123,24 +123,14 @@ export default function expanded(BaseComponent) {
             });
 
             if (!attrs.disabled) {
-                attrs.onClick = this.onExpandedClick.bind(
-                    this,
-                    value,
-                    record,
-                    index
-                );
+                attrs.onClick = this.onExpandedClick.bind(this, value, record, index);
             }
             return (
                 <span
                     {...attrs}
                     role="button"
                     tabIndex="0"
-                    onKeyDown={this.expandedKeydown.bind(
-                        this,
-                        value,
-                        record,
-                        index
-                    )}
+                    onKeyDown={this.expandedKeydown.bind(this, value, record, index)}
                     aria-label={hasExpanded ? locale.expanded : locale.folded}
                     aria-expanded={hasExpanded}
                     className={cls}
@@ -224,11 +214,7 @@ export default function expanded(BaseComponent) {
             }
 
             return (
-                <BaseComponent
-                    {...others}
-                    dataSource={dataSource}
-                    components={components}
-                >
+                <BaseComponent {...others} dataSource={dataSource} components={components}>
                     {children}
                 </BaseComponent>
             );

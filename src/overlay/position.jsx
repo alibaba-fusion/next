@@ -15,11 +15,13 @@ export default class Position extends Component {
     static propTypes = {
         children: PropTypes.node,
         target: PropTypes.any,
+        container: PropTypes.any,
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         offset: PropTypes.array,
         beforePosition: PropTypes.func,
         onPosition: PropTypes.func,
         needAdjust: PropTypes.bool,
+        autoFit: PropTypes.bool,
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -31,6 +33,7 @@ export default class Position extends Component {
         beforePosition: noop,
         onPosition: noop,
         needAdjust: true,
+        autoFit: false,
         needListenResize: true,
         shouldUpdatePosition: false,
         rtl: false,
@@ -51,10 +54,7 @@ export default class Position extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (
-            ('align' in nextProps && nextProps.align !== this.props.align) ||
-            nextProps.shouldUpdatePosition
-        ) {
+        if (('align' in nextProps && nextProps.align !== this.props.align) || nextProps.shouldUpdatePosition) {
             this.shouldUpdatePosition = true;
         }
     }
@@ -75,25 +75,21 @@ export default class Position extends Component {
     }
 
     setPosition() {
-        const {
-            align,
-            offset,
-            beforePosition,
-            onPosition,
-            needAdjust,
-            rtl,
-        } = this.props;
+        const { align, offset, beforePosition, onPosition, needAdjust, container, rtl, autoFit } = this.props;
 
         beforePosition();
 
         const contentNode = this.getContentNode();
         const targetNode = this.getTargetNode();
+
         if (contentNode && targetNode) {
             const resultAlign = place({
                 pinElement: contentNode,
                 baseElement: targetNode,
                 align,
                 offset,
+                autoFit,
+                container,
                 needAdjust,
                 isRtl: rtl,
             });
@@ -118,9 +114,7 @@ export default class Position extends Component {
     getTargetNode() {
         const { target } = this.props;
 
-        return target === position.VIEWPORT
-            ? position.VIEWPORT
-            : findNode(target, this.props);
+        return target === position.VIEWPORT ? position.VIEWPORT : findNode(target, this.props);
     }
 
     handleResize() {

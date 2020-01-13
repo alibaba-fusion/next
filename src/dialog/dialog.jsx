@@ -131,6 +131,9 @@ export default class Dialog extends Component {
          * 对话框的高度样式属性
          */
         height: PropTypes.string,
+        // Do not remove this, it's for <ConfigProvider popupContainer={} />
+        // see https://github.com/alibaba-fusion/next/issues/1508
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -162,12 +165,7 @@ export default class Dialog extends Component {
 
     constructor(props, context) {
         super(props, context);
-        bindCtx(this, [
-            'onKeyDown',
-            'beforePosition',
-            'adjustPosition',
-            'getOverlayRef',
-        ]);
+        bindCtx(this, ['onKeyDown', 'beforePosition', 'adjustPosition', 'getOverlayRef']);
     }
 
     componentDidMount() {
@@ -219,8 +217,7 @@ export default class Dialog extends Component {
                 }
 
                 const height = getStyle(node, 'height');
-                const viewportHeight =
-                    window.innerHeight || document.documentElement.clientHeight;
+                const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
                 if (viewportHeight < height + top * 2) {
                     const expectHeight = viewportHeight - top * 2;
                     this.adjustSize(inner, node, expectHeight);
@@ -238,10 +235,8 @@ export default class Dialog extends Component {
 
         const headerHeight = headerNode ? getStyle(headerNode, 'height') : 0;
         const footerHeight = footerNode ? getStyle(footerNode, 'height') : 0;
-        const padding =
-            getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
-        let maxBodyHeight =
-            expectHeight - headerHeight - footerHeight - padding;
+        const padding = getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
+        let maxBodyHeight = expectHeight - headerHeight - footerHeight - padding;
         if (maxBodyHeight < 0) {
             maxBodyHeight = 1;
         }
@@ -267,10 +262,7 @@ export default class Dialog extends Component {
     mapcloseableToConfig(closeable) {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value =
-                typeof closeable === 'boolean'
-                    ? closeable
-                    : closeable.split(',').indexOf(option) > -1;
+            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -351,17 +343,16 @@ export default class Dialog extends Component {
             afterClose,
             shouldUpdatePosition,
             align,
+            popupContainer,
             overlayProps,
             rtl,
         } = this.props;
 
         const useCSS = this.useCSSToPosition();
-        const {
-            canCloseByCloseClick,
-            ...closeConfig
-        } = this.mapcloseableToConfig(closeable);
+        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(closeable);
         const newOverlayProps = {
             disableScroll: true,
+            container: popupContainer,
             ...overlayProps,
             prefix,
             visible,
@@ -393,10 +384,7 @@ export default class Dialog extends Component {
         return (
             <Overlay {...newOverlayProps}>
                 {useCSS && !hasMask ? (
-                    <div
-                        className={`${prefix}dialog-container`}
-                        dir={rtl ? 'rtl' : undefined}
-                    >
+                    <div className={`${prefix}dialog-container`} dir={rtl ? 'rtl' : undefined}>
                         {inner}
                     </div>
                 ) : (

@@ -33,7 +33,7 @@ export default function lock(BaseComponent) {
             getTableInstance: PropTypes.func,
             getLockNode: PropTypes.func,
             onLockBodyScroll: PropTypes.func,
-            onLockBodyWheel: PropTypes.func,
+            onLockBodyLRScroll: PropTypes.func,
             onRowMouseEnter: PropTypes.func,
             onRowMouseLeave: PropTypes.func,
         };
@@ -48,8 +48,8 @@ export default function lock(BaseComponent) {
             return {
                 getTableInstance: this.getTableInstance,
                 getLockNode: this.getNode,
-                onLockBodyWheel: this.onLockBodyWheel,
                 onLockBodyScroll: this.onLockBodyScroll,
+                onLockBodyLRScroll: this.onLockBodyLRScroll,
                 onRowMouseEnter: this.onRowMouseEnter,
                 onRowMouseLeave: this.onRowMouseLeave,
             };
@@ -67,9 +67,7 @@ export default function lock(BaseComponent) {
         shouldComponentUpdate(nextProps, nextState, nextContext) {
             if (nextProps.pure) {
                 const isEqual = shallowElementEquals(nextProps, this.props);
-                return !(
-                    isEqual && obj.shallowEqual(nextContext, this.context)
-                );
+                return !(isEqual && obj.shallowEqual(nextContext, this.context));
             }
 
             return true;
@@ -110,11 +108,7 @@ export default function lock(BaseComponent) {
                         if ([true, 'left', 'right'].indexOf(props.lock) > -1) {
                             isLock = true;
                             if (!('width' in props)) {
-                                log.warning(
-                                    `Should config width for lock column named [ ${
-                                        props.dataIndex
-                                    } ].`
-                                );
+                                log.warning(`Should config width for lock column named [ ${props.dataIndex} ].`);
                             }
                         }
                         ret.push(props);
@@ -175,11 +169,7 @@ export default function lock(BaseComponent) {
                 }
             });
             loop(originChildren, child => {
-                return (
-                    child.lock !== true &&
-                    child.lock !== 'left' &&
-                    child.lock !== 'right'
-                );
+                return child.lock !== true && child.lock !== 'left' && child.lock !== 'right';
             });
             return {
                 lockLeftChildren,
@@ -203,9 +193,7 @@ export default function lock(BaseComponent) {
         };
 
         getNode = (type, node, lockType) => {
-            lockType = lockType
-                ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
-                : '';
+            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
             this[`${type}${lockType}Node`] = node;
             if (type === 'header' && !this.innerHeaderNode && !lockType) {
                 this.innerHeaderNode = this.headerNode.querySelector('div');
@@ -254,74 +242,69 @@ export default function lock(BaseComponent) {
             }
         }
 
-        onLockBodyWheel = e => {
-            const y = e.deltaY;
-
+        onLockBodyLRScroll = (event, lockType) => {
             if (this.isLock()) {
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
-                    scrollNode = this.bodyNode,
-                    { scrollTop } = scrollNode;
+                    bodyNode = this.bodyNode;
 
-                if (lockLeftBody) {
-                    lockLeftBody.scrollTop = y;
+                let arr = [],
+                    distScrollTop = 0;
+
+                // scroll on lock left columns
+                if (lockType === 'left') {
+                    arr = [bodyNode];
+                    distScrollTop = lockLeftBody.scrollTop;
+                    // scroll on lock left columns
+                } else if (lockType === 'right') {
+                    arr = [bodyNode];
+                    distScrollTop = lockRightBody.scrollTop;
                 }
-                if (lockRightBody) {
-                    lockRightBody.scrollTop = y;
-                }
-                scrollNode.scrollTop = scrollTop + y;
+
+                arr.forEach(node => {
+                    if (node && node.scrollTop !== distScrollTop) {
+                        node.scrollTop = distScrollTop;
+                    }
+                });
             }
         };
 
-        onLockBodyScroll = () => {
+        onLockBodyScroll = event => {
             if (this.isLock()) {
                 const { rtl } = this.props;
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
-                    lockRightTable = rtl
-                        ? this.getWrapperNode('left')
-                        : this.getWrapperNode('right'),
-                    lockLeftTable = rtl
-                        ? this.getWrapperNode('right')
-                        : this.getWrapperNode('left'),
+                    bodyNode = this.bodyNode,
+                    lockRightTable = rtl ? this.getWrapperNode('left') : this.getWrapperNode('right'),
+                    lockLeftTable = rtl ? this.getWrapperNode('right') : this.getWrapperNode('left'),
                     shadowClassName = 'shadow';
 
-                const x = this.bodyNode.scrollLeft,
-                    y = this.bodyNode.scrollTop;
+                const x = this.bodyNode.scrollLeft;
+                const arr = [lockLeftBody, lockRightBody],
+                    distScrollTop = bodyNode.scrollTop;
 
-                if (lockLeftBody) {
-                    lockLeftBody.scrollTop = y;
-                }
-                if (lockRightBody) {
-                    lockRightBody.scrollTop = y;
-                }
+                arr.forEach(node => {
+                    if (node && node.scrollTop !== distScrollTop) {
+                        node.scrollTop = distScrollTop;
+                    }
+                });
+
                 if (x === 0) {
-                    lockLeftTable &&
-                        dom.removeClass(lockLeftTable, shadowClassName);
-                    lockRightTable &&
-                        dom.addClass(lockRightTable, shadowClassName);
-                } else if (
-                    x ===
-                    this.bodyNode.scrollWidth - this.bodyNode.clientWidth
-                ) {
-                    lockLeftTable &&
-                        dom.addClass(lockLeftTable, shadowClassName);
-                    lockRightTable &&
-                        dom.removeClass(lockRightTable, shadowClassName);
+                    lockLeftTable && dom.removeClass(lockLeftTable, shadowClassName);
+                    lockRightTable && dom.addClass(lockRightTable, shadowClassName);
+                } else if (x === this.bodyNode.scrollWidth - this.bodyNode.clientWidth) {
+                    lockLeftTable && dom.addClass(lockLeftTable, shadowClassName);
+                    lockRightTable && dom.removeClass(lockRightTable, shadowClassName);
                 } else {
-                    lockLeftTable &&
-                        dom.addClass(lockLeftTable, shadowClassName);
-                    lockRightTable &&
-                        dom.addClass(lockRightTable, shadowClassName);
+                    lockLeftTable && dom.addClass(lockLeftTable, shadowClassName);
+                    lockRightTable && dom.addClass(lockRightTable, shadowClassName);
                 }
             }
         };
 
         // Table处理过后真实的lock状态
         isLock() {
-            return (
-                this.lockLeftChildren.length || this.lockRightChildren.length
-            );
+            return this.lockLeftChildren.length || this.lockRightChildren.length;
         }
 
         // 用户设置的lock状态
@@ -359,8 +342,7 @@ export default function lock(BaseComponent) {
                 const widthObj = this.tableInc.flatChildren
                     .map((item, index) => {
                         const cell = this.getCellNode(0, index) || {};
-                        const headerCell =
-                            this.getHeaderCellNode(0, index) || {};
+                        const headerCell = this.getHeaderCellNode(0, index) || {};
 
                         return {
                             cellWidths: cell.clientWidth || 0,
@@ -388,15 +370,11 @@ export default function lock(BaseComponent) {
                     return true;
                 }
 
-                const configWidths =
-                    widthObj.cellWidths || widthObj.headerWidths;
+                const configWidths = widthObj.cellWidths || widthObj.headerWidths;
 
                 if (configWidths <= width && configWidths > 0) {
                     this.removeLockTable();
-                } else if (
-                    this._notNeedAdjustLockLeft ||
-                    this._notNeedAdjustLockRight
-                ) {
+                } else if (this._notNeedAdjustLockLeft || this._notNeedAdjustLockRight) {
                     this._notNeedAdjustLockLeft = this._notNeedAdjustLockRight = false;
                     this.forceUpdate();
                 } else {
@@ -409,92 +387,84 @@ export default function lock(BaseComponent) {
         }
 
         adjustBodySize() {
+            const { rtl } = this.props;
+            const header = this.headerNode;
+            const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
+            const marginName = rtl ? 'marginLeft' : 'marginRight';
+            const scrollBarSize = dom.scrollbar().width;
+            const style = {
+                [paddingName]: scrollBarSize,
+                [marginName]: scrollBarSize,
+            };
+
             if (this.isLock()) {
-                const { rtl } = this.props;
                 const body = this.bodyNode,
                     lockLeftBody = this.bodyLeftNode,
                     lockRightBody = this.bodyRightNode,
                     lockRightBodyWrapper = this.getWrapperNode('right'),
                     scrollbar = dom.scrollbar(),
                     bodyHeight = body.offsetHeight,
-                    hasHozScroll = body.scrollWidth > body.clientWidth,
                     hasVerScroll = body.scrollHeight > body.clientHeight,
-                    width = hasVerScroll ? scrollbar.width : 0,
-                    lockBodyHeight =
-                        bodyHeight - (hasHozScroll ? scrollbar.height : 0);
+                    width = hasVerScroll ? scrollBarSize : 0,
+                    lockBodyHeight = bodyHeight - scrollbar.height;
 
-                lockLeftBody &&
-                    dom.setStyle(lockLeftBody, 'max-height', lockBodyHeight);
-                lockRightBody &&
-                    dom.setStyle(lockRightBody, 'max-height', lockBodyHeight);
+                if (!hasVerScroll || !+scrollBarSize) {
+                    style[paddingName] = 0;
+                    style[marginName] = 0;
+                }
 
+                if (+scrollBarSize) {
+                    style.marginBottom = -scrollBarSize;
+                    style.paddingBottom = scrollBarSize;
+                } else {
+                    style.marginBottom = -20;
+                    style.paddingBottom = 20;
+                }
+
+                header && dom.setStyle(header, style);
+                lockLeftBody && dom.setStyle(lockLeftBody, 'max-height', lockBodyHeight);
+                lockRightBody && dom.setStyle(lockRightBody, 'max-height', lockBodyHeight);
                 lockRightBodyWrapper &&
-                    dom.setStyle(
-                        lockRightBodyWrapper,
-                        rtl ? 'left' : 'right',
-                        `${width}px`
-                    );
+                    +scrollBarSize &&
+                    dom.setStyle(lockRightBodyWrapper, rtl ? 'left' : 'right', `${width}px`);
+            } else {
+                style.marginBottom = -scrollBarSize;
+                style.paddingBottom = scrollBarSize;
+                style[marginName] = 0;
+                header && dom.setStyle(header, style);
             }
         }
 
         adjustHeaderSize() {
             if (this.isLock()) {
                 this.tableInc.groupChildren.forEach((child, index) => {
-                    const lastIndex =
-                        this.tableInc.groupChildren[index].length - 1;
-                    const headerRightRow = this.getHeaderCellNode(
-                            index,
-                            lastIndex
-                        ),
+                    const lastIndex = this.tableInc.groupChildren[index].length - 1;
+                    const headerRightRow = this.getHeaderCellNode(index, lastIndex),
                         headerLeftRow = this.getHeaderCellNode(index, 0),
-                        headerRightLockRow = this.getHeaderCellNode(
-                            index,
-                            0,
-                            'right'
-                        ),
-                        headerLeftLockRow = this.getHeaderCellNode(
-                            index,
-                            0,
-                            'left'
-                        );
+                        headerRightLockRow = this.getHeaderCellNode(index, 0, 'right'),
+                        headerLeftLockRow = this.getHeaderCellNode(index, 0, 'left');
 
                     if (headerRightRow && headerRightLockRow) {
                         const maxRightRowHeight = headerRightRow.offsetHeight;
 
-                        dom.setStyle(
-                            headerRightLockRow,
-                            'height',
-                            maxRightRowHeight
-                        );
+                        dom.setStyle(headerRightLockRow, 'height', maxRightRowHeight);
 
                         setTimeout(() => {
                             const affixRef = this.tableRightInc.affixRef;
                             // if rendered then update postion of affix
-                            return (
-                                affixRef &&
-                                affixRef.getInstance() &&
-                                affixRef.getInstance().updatePosition()
-                            );
+                            return affixRef && affixRef.getInstance() && affixRef.getInstance().updatePosition();
                         });
                     }
 
                     if (headerLeftRow && headerLeftLockRow) {
                         const maxLeftRowHeight = headerLeftRow.offsetHeight;
 
-                        dom.setStyle(
-                            headerLeftLockRow,
-                            'height',
-                            maxLeftRowHeight
-                        );
+                        dom.setStyle(headerLeftLockRow, 'height', maxLeftRowHeight);
 
                         setTimeout(() => {
                             const affixRef = this.tableLeftInc.affixRef;
                             // if rendered then update postion of affix
-                            return (
-                                affixRef &&
-                                affixRef.getInstance() &&
-                                affixRef.getInstance().updatePosition()
-                            );
+                            return affixRef && affixRef.getInstance() && affixRef.getInstance().updatePosition();
                         });
                     }
                 });
@@ -505,10 +475,7 @@ export default function lock(BaseComponent) {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
                     // record may be a string
-                    const rowIndex =
-                        typeof record === 'object' && '__rowIndex' in item
-                            ? item.__rowIndex
-                            : index;
+                    const rowIndex = typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index;
 
                     // 同步最左侧的锁列
                     this.lockLeftChildren.forEach((child, i) => {
@@ -525,8 +492,7 @@ export default function lock(BaseComponent) {
         setCellSize(index, i, dir) {
             const lockRow = this.getCellNode(index, i, dir),
                 row = this.getCellNode(index, i),
-                rowHeight =
-                    (row && parseFloat(getComputedStyle(row).height)) || 0;
+                rowHeight = (row && parseFloat(getComputedStyle(row).height)) || 0;
             let lockHeight = 0;
 
             if (lockRow) {
@@ -609,18 +575,10 @@ export default function lock(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let {
-                children,
-                prefix,
-                components,
-                className,
-                ...others
-            } = this.props;
-            let {
-                lockLeftChildren,
-                lockRightChildren,
-                children: normalizedChildren,
-            } = this.normalizeChildrenState(this.props);
+            let { children, prefix, components, className, dataSource, ...others } = this.props;
+            let { lockLeftChildren, lockRightChildren, children: normalizedChildren } = this.normalizeChildrenState(
+                this.props
+            );
             if (this._notNeedAdjustLockLeft) {
                 lockLeftChildren = [];
             }
@@ -638,11 +596,13 @@ export default function lock(BaseComponent) {
                 components.Row = components.Row || LockRow;
                 className = classnames({
                     [`${prefix}table-lock`]: true,
+                    [`${prefix}table-wrap-empty`]: !dataSource.length,
                     [className]: className,
                 });
                 const content = [
                     <BaseComponent
                         {...others}
+                        dataSource={dataSource}
                         key="lock-left"
                         columns={lockLeftChildren}
                         className={`${prefix}table-lock-left`}
@@ -655,6 +615,7 @@ export default function lock(BaseComponent) {
                     />,
                     <BaseComponent
                         {...others}
+                        dataSource={dataSource}
                         key="lock-right"
                         columns={lockRightChildren}
                         className={`${prefix}table-lock-right`}
@@ -669,6 +630,7 @@ export default function lock(BaseComponent) {
                 return (
                     <BaseComponent
                         {...others}
+                        dataSource={dataSource}
                         columns={normalizedChildren}
                         prefix={prefix}
                         wrapperContent={content}

@@ -1,9 +1,5 @@
-import React, {
-    Component,
-    Children,
-    isValidElement,
-    cloneElement,
-} from 'react';
+import React, { Component, Children, isValidElement, cloneElement } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Select from '../select';
@@ -22,10 +18,54 @@ const { Node: TreeNode } = Tree;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 
+const flatDataSource = props => {
+    const _k2n = {};
+    const _p2n = {};
+    const _v2n = {};
+
+    if ('dataSource' in props) {
+        const loop = (data, prefix = '0') =>
+            data.map((item, index) => {
+                const { value, children } = item;
+                const pos = `${prefix}-${index}`;
+                const key = item.key || pos;
+                const newItem = { ...item, key, pos };
+                if (children && children.length) {
+                    newItem.children = loop(children, pos);
+                }
+
+                _k2n[key] = _p2n[pos] = _v2n[value] = newItem;
+                return newItem;
+            });
+        loop(props.dataSource);
+    } else if ('children' in props) {
+        const loop = (children, prefix = '0') =>
+            Children.map(children, (node, index) => {
+                if (!React.isValidElement(node)) {
+                    return;
+                }
+
+                const { value, children } = node.props;
+                const pos = `${prefix}-${index}`;
+                const key = node.key || pos;
+                const newItem = { ...node.props, key, pos };
+                if (children && Children.count(children)) {
+                    newItem.children = loop(children, pos);
+                }
+
+                _k2n[key] = _p2n[pos] = _v2n[value] = newItem;
+                return newItem;
+            });
+        loop(props.children);
+    }
+
+    return { _k2n, _p2n, _v2n };
+};
+
 /**
  * TreeSelect
  */
-export default class TreeSelect extends Component {
+class TreeSelect extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -77,17 +117,11 @@ export default class TreeSelect extends Component {
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -167,7 +201,7 @@ export default class TreeSelect extends Component {
         /**
          * 下拉框挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 透传到 Popup 的属性对象
          */
@@ -219,12 +253,11 @@ export default class TreeSelect extends Component {
         const { defaultVisible, visible, defaultValue, value } = props;
         this.state = {
             visible: typeof visible === 'undefined' ? defaultVisible : visible,
-            value: normalizeToArray(
-                typeof value === 'undefined' ? defaultValue : value
-            ),
+            value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
             searchedValue: '',
             expandedKeys: [],
             autoExpandParent: false,
+            ...flatDataSource(props),
         };
 
         bindCtx(this, [
@@ -240,75 +273,27 @@ export default class TreeSelect extends Component {
             'saveTreeRef',
             'saveSelectRef',
         ]);
-
-        this.updateCache(props);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.updateCache(nextProps);
-
+    static getDerivedStateFromProps(props, state) {
         const st = {};
-        if ('value' in nextProps) {
-            st.value = normalizeToArray(nextProps.value);
+
+        if ('value' in props) {
+            st.value = normalizeToArray(props.value);
         }
-        if ('visible' in nextProps) {
-            st.visible = nextProps.visible;
+        if ('visible' in props) {
+            st.visible = props.visible;
         }
 
-        if (Object.keys(st).length) {
-            this.setState(st);
-        }
-    }
-
-    updateCache(props) {
-        this._k2n = {};
-        this._p2n = {};
-        this._v2n = {};
-
-        if ('dataSource' in props) {
-            const loop = (data, prefix = '0') =>
-                data.map((item, index) => {
-                    const { value, children } = item;
-                    const pos = `${prefix}-${index}`;
-                    const key = item.key || pos;
-                    const newItem = { ...item, key, pos };
-                    if (children && children.length) {
-                        newItem.children = loop(children, pos);
-                    }
-
-                    this._k2n[key] = this._p2n[pos] = this._v2n[
-                        value
-                    ] = newItem;
-                    return newItem;
-                });
-            loop(props.dataSource);
-        } else if ('children' in props) {
-            const loop = (children, prefix = '0') =>
-                Children.map(children, (node, index) => {
-                    if (!React.isValidElement(node)) {
-                        return;
-                    }
-
-                    const { value, children } = node.props;
-                    const pos = `${prefix}-${index}`;
-                    const key = node.key || pos;
-                    const newItem = { ...node.props, key, pos };
-                    if (children && Children.count(children)) {
-                        newItem.children = loop(children, pos);
-                    }
-
-                    this._k2n[key] = this._p2n[pos] = this._v2n[
-                        value
-                    ] = newItem;
-                    return newItem;
-                });
-            loop(props.children);
-        }
+        return {
+            ...st,
+            ...flatDataSource(props),
+        };
     }
 
     getKeysByValue(value) {
         return value.reduce((ret, v) => {
-            const k = this._v2n[v] && this._v2n[v].key;
+            const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
                 ret.push(k);
             }
@@ -318,21 +303,21 @@ export default class TreeSelect extends Component {
     }
 
     getValueByKeys(keys) {
-        return keys.map(k => this._k2n[k].value);
+        return keys.map(k => this.state._k2n[k].value);
     }
 
     getValueForSelect(value) {
         const { treeCheckedStrategy } = this.props;
 
         let keys = this.getKeysByValue(value);
-        keys = getAllCheckedKeys(keys, this._k2n, this._p2n);
+        keys = getAllCheckedKeys(keys, this.state._k2n, this.state._p2n);
 
         switch (treeCheckedStrategy) {
             case 'parent':
-                keys = filterChildKey(keys, this._k2n, this._p2n);
+                keys = filterChildKey(keys, this.state._k2n, this.state._p2n);
                 break;
             case 'child':
-                keys = filterParentKey(keys, this._k2n, this._p2n);
+                keys = filterParentKey(keys, this.state._k2n, this.state._p2n);
                 break;
             default:
                 break;
@@ -343,9 +328,9 @@ export default class TreeSelect extends Component {
 
     getData(value, forSelect) {
         return value.reduce((ret, v) => {
-            const k = this._v2n[v] && this._v2n[v].key;
+            const k = this.state._v2n[v] && this.state._v2n[v].key;
             if (k) {
-                const { label, pos, disabled, checkboxDisabled } = this._k2n[k];
+                const { label, pos, disabled, checkboxDisabled } = this.state._k2n[k];
                 const d = {
                     value: v,
                     label,
@@ -422,29 +407,20 @@ export default class TreeSelect extends Component {
 
     handleRemove(removedItem) {
         const { value: removedValue } = removedItem;
-        const {
-            treeCheckable,
-            treeCheckStrictly,
-            treeCheckedStrategy,
-            onChange,
-        } = this.props;
+        const { treeCheckable, treeCheckStrictly, treeCheckedStrategy, onChange } = this.props;
 
         let value;
-        if (
-            treeCheckable &&
-            !treeCheckStrictly &&
-            ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1
-        ) {
-            const removedPos = this._v2n[removedValue].pos;
+        if (treeCheckable && !treeCheckStrictly && ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1) {
+            const removedPos = this.state._v2n[removedValue].pos;
             value = this.state.value.filter(v => {
-                const p = this._v2n[v].pos;
+                const p = this.state._v2n[v].pos;
                 return !isDescendantOrSelf(removedPos, p);
             });
 
             const nums = removedPos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');
-                const parentValue = this._p2n[parentPos].value;
+                const parentValue = this.state._p2n[parentPos].value;
                 const parentIndex = value.indexOf(parentValue);
                 if (parentIndex > -1) {
                     value.splice(parentIndex, 1);
@@ -469,15 +445,15 @@ export default class TreeSelect extends Component {
     handleSearch(searchedValue) {
         const searchedKeys = [];
         const retainedKeys = [];
-        Object.keys(this._k2n).forEach(k => {
-            const { label, pos } = this._k2n[k];
+        Object.keys(this.state._k2n).forEach(k => {
+            const { label, pos } = this.state._k2n[k];
             if (this.isSearched(label, searchedValue)) {
                 searchedKeys.push(k);
                 const posArr = pos.split('-');
                 posArr.forEach((n, i) => {
                     if (i > 0) {
                         const p = posArr.slice(0, i + 1).join('-');
-                        const kk = this._p2n[p].key;
+                        const kk = this.state._p2n[p].key;
                         if (retainedKeys.indexOf(kk) === -1) {
                             retainedKeys.push(kk);
                         }
@@ -560,10 +536,7 @@ export default class TreeSelect extends Component {
         };
         loop(label);
 
-        if (
-            labelString.length >= searchedValue.length &&
-            labelString.indexOf(searchedValue) > -1
-        ) {
+        if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
             return true;
         }
 
@@ -601,25 +574,20 @@ export default class TreeSelect extends Component {
             data.forEach((item, index) => {
                 const { children, ...others } = item;
                 const pos = `${prefix}-${index}`;
-                const key = this._p2n[pos].key;
+                const key = this.state._p2n[pos].key;
                 const addNode = (isParentMatched, hide) => {
                     if (hide) {
                         others.style = { display: 'none' };
                     }
                     retainedNodes.push(
                         <TreeNode {...others} key={key}>
-                            {children && children.length
-                                ? loop(children, isParentMatched, pos)
-                                : null}
+                            {children && children.length ? loop(children, isParentMatched, pos) : null}
                         </TreeNode>
                     );
                 };
 
                 if (searching) {
-                    if (
-                        this.searchedKeys.indexOf(key) > -1 ||
-                        isParentMatched
-                    ) {
+                    if (this.searchedKeys.indexOf(key) > -1 || isParentMatched) {
                         addNode(true);
                     } else if (this.retainedKeys.indexOf(key) > -1) {
                         addNode(false);
@@ -660,12 +628,7 @@ export default class TreeSelect extends Component {
             readOnly,
             notFoundContent,
         } = this.props;
-        const {
-            value,
-            searchedValue,
-            expandedKeys,
-            autoExpandParent,
-        } = this.state;
+        const { value, searchedValue, expandedKeys, autoExpandParent } = this.state;
 
         const treeProps = {
             multiple,
@@ -679,9 +642,7 @@ export default class TreeSelect extends Component {
         if (treeCheckable) {
             treeProps.checkable = treeCheckable;
             treeProps.checkStrictly = treeCheckStrictly;
-            treeProps.checkedStrategy = treeCheckStrictly
-                ? 'all'
-                : treeCheckedStrategy;
+            treeProps.checkedStrategy = treeCheckStrictly ? 'all' : treeCheckedStrategy;
             treeProps.checkedKeys = keys;
             if (!readOnly) {
                 treeProps.onCheck = this.handleCheck;
@@ -704,9 +665,7 @@ export default class TreeSelect extends Component {
             };
 
             if (this.searchedKeys.length) {
-                newChildren = dataSource
-                    ? this.createNodesByData(dataSource, true)
-                    : this.searchNodes(children);
+                newChildren = dataSource ? this.createNodesByData(dataSource, true) : this.searchNodes(children);
             } else {
                 notFound = true;
             }
@@ -731,9 +690,7 @@ export default class TreeSelect extends Component {
         return (
             <div className={`${treeSelectPrefix}dropdown`}>
                 {notFound ? (
-                    <div className={`${treeSelectPrefix}not-found`}>
-                        {notFoundContent}
-                    </div>
+                    <div className={`${treeSelectPrefix}not-found`}>{notFoundContent}</div>
                 ) : (
                     <Tree {...customTreeProps} {...treeProps}>
                         {newChildren}
@@ -792,16 +749,10 @@ export default class TreeSelect extends Component {
             followTrigger,
             isPreview,
         } = this.props;
-        const others = pickOthers(
-            Object.keys(TreeSelect.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(TreeSelect.propTypes), this.props);
         const { value, visible } = this.state;
 
-        const valueForSelect =
-            treeCheckable && !treeCheckStrictly
-                ? this.getValueForSelect(value)
-                : value;
+        const valueForSelect = treeCheckable && !treeCheckStrictly ? this.getValueForSelect(value) : value;
         let data = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
             data = data[0];
@@ -848,3 +799,5 @@ export default class TreeSelect extends Component {
 }
 
 TreeSelect.Node = TreeNode;
+
+export default polyfill(TreeSelect);

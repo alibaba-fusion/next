@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import Select from '../select';
 import Cascader from '../cascader';
@@ -10,10 +11,22 @@ const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle } = dom;
 
+const normalizeValue = value => {
+    if (value) {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        return [value];
+    }
+
+    return [];
+};
+
 /**
  * CascaderSelect
  */
-export default class CascaderSelect extends Component {
+class CascaderSelect extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -57,17 +70,11 @@ export default class CascaderSelect extends Component {
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -196,7 +203,7 @@ export default class CascaderSelect extends Component {
         /**
          * 下拉框挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 透传到 Popup 的属性对象
          */
@@ -266,14 +273,9 @@ export default class CascaderSelect extends Component {
         super(props, context);
 
         this.state = {
-            value: this.normalizeValue(
-                'value' in props ? props.value : props.defaultValue
-            ),
+            value: normalizeValue('value' in props ? props.value : props.defaultValue),
             searchValue: '',
-            visible:
-                typeof props.visible === 'undefined'
-                    ? props.defaultVisible
-                    : props.visible,
+            visible: typeof props.visible === 'undefined' ? props.defaultVisible : props.visible,
         };
 
         bindCtx(this, [
@@ -291,31 +293,17 @@ export default class CascaderSelect extends Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props) {
         const st = {};
 
-        if ('value' in nextProps) {
-            st.value = this.normalizeValue(nextProps.value);
+        if ('value' in props) {
+            st.value = normalizeValue(props.value);
         }
-        if ('visible' in nextProps) {
-            st.visible = nextProps.visible;
-        }
-
-        if (Object.keys(st).length) {
-            this.setState(st);
-        }
-    }
-
-    normalizeValue(value) {
-        if (value) {
-            if (Array.isArray(value)) {
-                return value;
-            }
-
-            return [value];
+        if ('visible' in props) {
+            st.visible = props.visible;
         }
 
-        return [];
+        return st;
     }
 
     updateCache(dataSource) {
@@ -349,13 +337,7 @@ export default class CascaderSelect extends Component {
 
         for (let i = 0; i < newValue.length; i++) {
             for (let j = 0; j < newValue.length; j++) {
-                if (
-                    i !== j &&
-                    this.isDescendantOrSelf(
-                        this.getPos(newValue[i]),
-                        this.getPos(newValue[j])
-                    )
-                ) {
+                if (i !== j && this.isDescendantOrSelf(this.getPos(newValue[i]), this.getPos(newValue[j]))) {
                     newValue.splice(j, 1);
                     j--;
                 }
@@ -417,8 +399,7 @@ export default class CascaderSelect extends Component {
         }
 
         const labelPath = this.getLabelPath(data);
-        const displayRender =
-            this.props.displayRender || (labels => labels.join(' / '));
+        const displayRender = this.props.displayRender || (labels => labels.join(' / '));
 
         return {
             ...data,
@@ -432,10 +413,9 @@ export default class CascaderSelect extends Component {
         }
 
         const { checkStrictly, canOnlyCheckLeaf, displayRender } = this.props;
-        let data = (checkStrictly || canOnlyCheckLeaf
-            ? value
-            : this.flatValue(value)
-        ).map(v => this._v2n[v] || { value: v });
+        let data = (checkStrictly || canOnlyCheckLeaf ? value : this.flatValue(value)).map(
+            v => this._v2n[v] || { value: v }
+        );
 
         if (displayRender) {
             data = data.map(item => {
@@ -504,10 +484,7 @@ export default class CascaderSelect extends Component {
     }
 
     isLeaf(data) {
-        return !(
-            (data.children && data.children.length) ||
-            (!!this.props.loadData && !data.isLeaf)
-        );
+        return !((data.children && data.children.length) || (!!this.props.loadData && !data.isLeaf));
     }
 
     handleVisibleChange(visible, type) {
@@ -585,10 +562,7 @@ export default class CascaderSelect extends Component {
         const { multiple, changeOnSelect } = this.props;
         const { visible, searchValue } = this.state;
 
-        if (
-            !multiple &&
-            (!changeOnSelect || this.isLeaf(data) || !!searchValue)
-        ) {
+        if (!multiple && (!changeOnSelect || this.isLeaf(data) || !!searchValue)) {
             this.handleVisibleChange(!visible, 'fromCascader');
         }
     }
@@ -703,23 +677,14 @@ export default class CascaderSelect extends Component {
     }
 
     filterItems() {
-        const {
-            multiple,
-            changeOnSelect,
-            canOnlyCheckLeaf,
-            filter,
-        } = this.props;
+        const { multiple, changeOnSelect, canOnlyCheckLeaf, filter } = this.props;
         const { searchValue } = this.state;
         let items = Object.keys(this._p2n).map(p => this._p2n[p]);
         if ((!multiple && !changeOnSelect) || (multiple && canOnlyCheckLeaf)) {
-            items = items.filter(
-                item => !item.children || !item.children.length
-            );
+            items = items.filter(item => !item.children || !item.children.length);
         }
 
-        return items
-            .map(item => this.getPath(item.pos))
-            .filter(path => filter(searchValue, path));
+        return items.map(item => this.getPath(item.pos)).filter(path => filter(searchValue, path));
     }
 
     renderNotFound() {
@@ -812,10 +777,7 @@ export default class CascaderSelect extends Component {
         const { prefix, multiple, className, renderPreview } = this.props;
         const { value } = this.state;
         const previewCls = classNames(className, `${prefix}form-preview`);
-        let items =
-            (multiple
-                ? this.getMultipleData(value)
-                : this.getSignleData(value)) || [];
+        let items = (multiple ? this.getMultipleData(value) : this.getSignleData(value)) || [];
 
         if (!Array.isArray(items)) {
             items = [items];
@@ -859,10 +821,7 @@ export default class CascaderSelect extends Component {
             isPreview,
         } = this.props;
         const { value, searchValue, visible } = this.state;
-        const others = pickOthers(
-            Object.keys(CascaderSelect.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(CascaderSelect.propTypes), this.props);
 
         this.updateCache(dataSource);
 
@@ -886,9 +845,7 @@ export default class CascaderSelect extends Component {
             ref: this.saveSelectRef,
             autoWidth: false,
             mode: multiple ? 'multiple' : 'single',
-            value: multiple
-                ? this.getMultipleData(value)
-                : this.getSignleData(value),
+            value: multiple ? this.getMultipleData(value) : this.getSignleData(value),
             onChange: this.handleClear,
             onRemove: this.handleRemove,
             visible,
@@ -917,3 +874,5 @@ export default class CascaderSelect extends Component {
         return <Select {...props} {...others} />;
     }
 }
+
+export default polyfill(CascaderSelect);

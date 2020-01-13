@@ -13,13 +13,12 @@ export default class VirtualBody extends React.Component {
     };
 
     static contextTypes = {
-        maxBodyHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onBodyScroll: PropTypes.func,
+        onScroll: PropTypes.func,
         onVirtualScroll: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
+        onLockBodyLRScroll: PropTypes.func,
         bodyHeight: PropTypes.number,
         innerTop: PropTypes.number,
         getNode: PropTypes.func,
@@ -46,11 +45,12 @@ export default class VirtualBody extends React.Component {
         this.virtualScrollNode = virtualScroll;
     };
 
-    onScroll = () => {
+    onScroll = current => {
+        const { lockType } = this.context;
         // for fixed
-        this.context.onBodyScroll();
+        this.context.onScroll(current);
         // for lock
-        this.context.onLockBodyScroll();
+        lockType ? this.context.onLockBodyLRScroll(current, lockType) : this.context.onLockBodyScroll(current);
         // for virtual
         this.context.onVirtualScroll();
     };
@@ -58,12 +58,9 @@ export default class VirtualBody extends React.Component {
     render() {
         const { prefix, className, colGroup, ...others } = this.props;
         const { maxBodyHeight, bodyHeight, innerTop } = this.context;
+
         return (
-            <div
-                style={{ maxHeight: maxBodyHeight }}
-                className={className}
-                onScroll={this.onScroll}
-            >
+            <div style={{ maxHeight: maxBodyHeight }} className={className} onScroll={this.onScroll}>
                 <div
                     style={{
                         height: bodyHeight,

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Dropdown from '../../dropdown';
 import Menu from '../../menu';
 import Button from '../../button';
@@ -37,10 +38,7 @@ export default class Filter extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.hasOwnProperty('filterParams') &&
-            typeof nextProps.filterParams !== 'undefined'
-        ) {
+        if (nextProps.hasOwnProperty('filterParams') && typeof nextProps.filterParams !== 'undefined') {
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
@@ -119,15 +117,7 @@ export default class Filter extends React.Component {
     };
 
     render() {
-        const {
-            filters,
-            prefix,
-            locale,
-            filterMode,
-            filterMenuProps,
-            filterProps,
-            rtl,
-        } = this.props;
+        const { filters, prefix, locale, className, filterMode, filterMenuProps, filterProps, rtl } = this.props;
 
         const { visible, selectedKeys } = this.state;
         const { subMenuSelectable, ...others } = filterMenuProps;
@@ -138,11 +128,7 @@ export default class Filter extends React.Component {
 
         function renderSubMenu(parent, children) {
             return (
-                <Menu.SubMenu
-                    label={parent.label}
-                    key={parent.value}
-                    selectable={subMenuSelectable}
-                >
+                <Menu.SubMenu label={parent.label} key={parent.value} selectable={subMenuSelectable}>
                     {renderMenuContent(children)}
                 </Menu.SubMenu>
             );
@@ -168,6 +154,11 @@ export default class Filter extends React.Component {
                 </div>
             );
 
+        const cls = classnames({
+            [`${prefix}table-filter`]: true,
+            [className]: className,
+        });
+
         return (
             <Dropdown
                 trigger={
@@ -176,7 +167,7 @@ export default class Filter extends React.Component {
                         aria-label={locale.filter}
                         onKeyDown={this.filterKeydown}
                         tabIndex="0"
-                        className={`${prefix}table-filter`}
+                        className={cls}
                     >
                         <Icon type="filter" size="small" />
                     </span>
@@ -186,7 +177,6 @@ export default class Filter extends React.Component {
                 autoFocus
                 rtl={rtl}
                 needAdjust={false}
-                container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
                 {...filterProps}
             >

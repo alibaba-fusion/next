@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import moment from 'moment';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -135,29 +136,26 @@ class Calendar extends Component {
         this.state = {
             value,
             mode: props.mode || this.MODES[0],
+            MODES: this.MODES,
             visibleMonth,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            const value = formatDateValue(nextProps.value);
-            this.setState({
-                value,
-            });
-
+    static getDerivedStateFromProps(props, state) {
+        const st = {};
+        if ('value' in props) {
+            const value = formatDateValue(props.value);
+            st.value = value;
             if (value) {
-                this.setState({
-                    visibleMonth: value,
-                });
+                st.visibleMonth = value;
             }
         }
 
-        if (nextProps.mode && this.MODES.indexOf(nextProps.mode) > -1) {
-            this.setState({
-                mode: nextProps.mode,
-            });
+        if (props.mode && state.MODES.indexOf(props.mode) > -1) {
+            st.mode = props.mode;
         }
+
+        return st;
     }
 
     onSelectCell = (date, nextMode) => {
@@ -176,11 +174,7 @@ class Calendar extends Component {
     };
 
     changeMode = nextMode => {
-        if (
-            nextMode &&
-            this.MODES.indexOf(nextMode) > -1 &&
-            nextMode !== this.state.mode
-        ) {
+        if (nextMode && this.MODES.indexOf(nextMode) > -1 && nextMode !== this.state.mode) {
             this.setState({ mode: nextMode });
             this.props.onModeChange(nextMode);
         }
@@ -267,10 +261,7 @@ class Calendar extends Component {
             visibleMonth.locale(locale.momentLocale);
         }
 
-        const localeData = getLocaleData(
-            locale.format || {},
-            visibleMonth.localeData()
-        );
+        const localeData = getLocaleData(locale.format || {}, visibleMonth.localeData());
 
         const headerProps = {
             prefix,
@@ -310,23 +301,9 @@ class Calendar extends Component {
         };
 
         const tables = {
-            [CALENDAR_MODE_DATE]: (
-                <DateTable
-                    format={format}
-                    {...tableProps}
-                    onSelectDate={this.onSelectCell}
-                />
-            ),
-            [CALENDAR_MODE_MONTH]: (
-                <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />
-            ),
-            [CALENDAR_MODE_YEAR]: (
-                <YearTable
-                    {...tableProps}
-                    rtl={rtl}
-                    onSelectYear={this.onSelectCell}
-                />
-            ),
+            [CALENDAR_MODE_DATE]: <DateTable format={format} {...tableProps} onSelectDate={this.onSelectCell} />,
+            [CALENDAR_MODE_MONTH]: <MonthTable {...tableProps} onSelectMonth={this.onSelectCell} />,
+            [CALENDAR_MODE_YEAR]: <YearTable {...tableProps} rtl={rtl} onSelectYear={this.onSelectCell} />,
         };
 
         const panelHeaders = {
@@ -336,19 +313,12 @@ class Calendar extends Component {
         };
 
         return (
-            <div
-                {...obj.pickOthers(Calendar.propTypes, others)}
-                className={classNames}
-            >
-                {shape === 'panel' ? (
-                    panelHeaders[state.mode]
-                ) : (
-                    <CardHeader {...headerProps} />
-                )}
+            <div {...obj.pickOthers(Calendar.propTypes, others)} className={classNames}>
+                {shape === 'panel' ? panelHeaders[state.mode] : <CardHeader {...headerProps} />}
                 {tables[state.mode]}
             </div>
         );
     }
 }
 
-export default Calendar;
+export default polyfill(Calendar);

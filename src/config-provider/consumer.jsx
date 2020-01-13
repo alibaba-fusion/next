@@ -27,8 +27,7 @@ const mapKeys = (obj, fn) => {
  * @param {String} key
  * @return {String}
  */
-const replaceKey = key =>
-    key.replace(/^(next)([A-Z])/, (match, p1, p2) => p2.toLowerCase());
+const replaceKey = key => key.replace(/^(next)([A-Z])/, (match, p1, p2) => p2.toLowerCase());
 
 /**
  * @param {Object} source
@@ -67,7 +66,7 @@ Consumer.contextTypes = {
     newRtl: PropTypes.bool,
     nextWarning: PropTypes.bool,
     nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
-    nextPopupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    nextPopupContainer: PropTypes.any,
 };
 
 export default Consumer;

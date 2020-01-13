@@ -62,39 +62,17 @@ export default class Row extends React.Component {
     };
 
     onMouseEnter = e => {
-        const { record, rowIndex } = this.props;
-        this.onRowHover(record, rowIndex, true, e);
+        const { record, rowIndex, onMouseEnter } = this.props;
+        onMouseEnter(record, rowIndex, e);
     };
 
     onMouseLeave = e => {
-        const { record, rowIndex } = this.props;
-        this.onRowHover(record, rowIndex, false, e);
+        const { record, rowIndex, onMouseLeave } = this.props;
+        onMouseLeave(record, rowIndex, e);
     };
 
-    onRowHover(record, index, isEnter, e) {
-        const { onMouseEnter, onMouseLeave } = this.props,
-            currentRow = findDOMNode(this);
-        if (isEnter) {
-            onMouseEnter(record, index, e);
-            currentRow && dom.addClass(currentRow, 'hovered');
-        } else {
-            onMouseLeave(record, index, e);
-            currentRow && dom.removeClass(currentRow, 'hovered');
-        }
-    }
-
     renderCells(record, rowIndex) {
-        const {
-            Cell,
-            columns,
-            getCellProps,
-            cellRef,
-            prefix,
-            primaryKey,
-            pure,
-            locale,
-            rtl,
-        } = this.props;
+        const { Cell, columns, getCellProps, cellRef, prefix, primaryKey, pure, locale, rtl } = this.props;
 
         // use params first, it's for list
         rowIndex = rowIndex !== undefined ? rowIndex : this.props.rowIndex;
@@ -102,21 +80,12 @@ export default class Row extends React.Component {
         const { lockType } = this.context;
         return columns.map((child, colIndex) => {
             /* eslint-disable no-unused-vars, prefer-const */
-            const {
-                dataIndex,
-                align,
-                alignHeader,
-                width,
-                colSpan,
-                style,
-                ...others
-            } = child;
+            const { dataIndex, align, alignHeader, width, colSpan, style, ...others } = child;
             // colSpan should show in body td by the way of <Table.Column colSpan={2} />
             // tbody's cell merge should only by the way of <Table cellProps={} />
 
             const value = fetchDataByPath(record, dataIndex);
-            const attrs =
-                getCellProps(rowIndex, colIndex, dataIndex, record) || {};
+            const attrs = getCellProps(rowIndex, colIndex, dataIndex, record) || {};
 
             if (this.context.notRenderCellIndex) {
                 const matchCellIndex = this.context.notRenderCellIndex
@@ -127,16 +96,8 @@ export default class Row extends React.Component {
                     return null;
                 }
             }
-            if (
-                (attrs.colSpan && attrs.colSpan > 1) ||
-                (attrs.rowSpan && attrs.rowSpan > 1)
-            ) {
-                this._getNotRenderCellIndex(
-                    colIndex,
-                    rowIndex,
-                    attrs.colSpan || 1,
-                    attrs.rowSpan || 1
-                );
+            if ((attrs.colSpan && attrs.colSpan > 1) || (attrs.rowSpan && attrs.rowSpan > 1)) {
+                this._getNotRenderCellIndex(colIndex, rowIndex, attrs.colSpan || 1, attrs.rowSpan || 1);
             }
 
             const cellClass = attrs.className;
@@ -144,8 +105,7 @@ export default class Row extends React.Component {
                 first: lockType !== 'right' && colIndex === 0,
                 last:
                     lockType !== 'left' &&
-                    (colIndex === columns.length - 1 ||
-                        colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
+                    (colIndex === columns.length - 1 || colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
                 [child.className]: child.className,
                 [cellClass]: cellClass,
             });
@@ -155,6 +115,8 @@ export default class Row extends React.Component {
                     key={colIndex}
                     {...others}
                     {...attrs}
+                    data-next-table-col={colIndex}
+                    data-next-table-row={rowIndex}
                     ref={cell => cellRef(rowIndex, colIndex, cell)}
                     prefix={prefix}
                     pure={pure}

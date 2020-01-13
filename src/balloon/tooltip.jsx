@@ -31,20 +31,7 @@ export default class Tooltip extends React.Component {
          * 弹出层位置
          * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合
          */
-        align: PropTypes.oneOf([
-            't',
-            'r',
-            'b',
-            'l',
-            'tl',
-            'tr',
-            'bl',
-            'br',
-            'lt',
-            'lb',
-            'rt',
-            'rb',
-        ]),
+        align: PropTypes.oneOf(['t', 'r', 'b', 'l', 'tl', 'tr', 'bl', 'br', 'lt', 'lb', 'rt', 'rb']),
         /**
          * 触发元素
          */
@@ -73,7 +60,7 @@ export default class Tooltip extends React.Component {
         /**
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 是否跟随滚动
          */
@@ -150,16 +137,10 @@ export default class Tooltip extends React.Component {
             newTriggerType = ['focus', 'hover'];
         }
 
-        const ariaTrigger = id
-            ? React.cloneElement(trigger, triggerProps)
-            : trigger;
+        const ariaTrigger = id ? React.cloneElement(trigger, triggerProps) : trigger;
 
         const newTrigger = getDisabledCompatibleTrigger(
-            React.isValidElement(ariaTrigger) ? (
-                ariaTrigger
-            ) : (
-                <span>{ariaTrigger}</span>
-            )
+            React.isValidElement(ariaTrigger) ? ariaTrigger : <span>{ariaTrigger}</span>
         );
 
         return (

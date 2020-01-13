@@ -521,6 +521,94 @@ describe('Issue', () => {
         document.body.removeChild(div);
     });
 
+    it('should support crossline hover', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        class App extends React.Component {
+            render() {
+                return (
+                    <Table
+                        dataSource={dataSource}
+                        crossline
+                    >
+                        <Table.Column dataIndex="id" />
+                        <Table.Column dataIndex="name" />
+                        <Table.Column dataIndex="name" cell={(val, i) => {
+                            return <a id={`name-${i}`} href="">val</a>
+                        }}/>
+                    </Table>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+            const cell = container.querySelector(
+                'td > [data-next-table-col="1"][data-next-table-row="1"]'
+            );
+            const mouseover = new MouseEvent('mouseover', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true
+            });
+
+            cell.dispatchEvent(mouseover);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 2
+            );
+
+            assert(
+                document.querySelectorAll(
+                    'tr.next-table-row.hovered'
+                ).length === 1
+            );
+
+            const mouseout = new MouseEvent('mouseout', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true
+            });
+
+            cell.dispatchEvent(mouseout);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 0
+            );
+
+            // target is in inner
+            const renderA = document.getElementById('name-0');
+            renderA.dispatchEvent(mouseover);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 2
+            );
+
+            assert(
+                document.querySelectorAll(
+                    'tr.next-table-row.hovered'
+                ).length === 1
+            );
+
+            renderA.dispatchEvent(mouseout);
+
+            assert(
+                document.querySelectorAll(
+                    'td.next-table-cell.hovered'
+                ).length === 0
+            );
+
+            ReactDOM.unmountComponentAtNode(container);
+            document.body.removeChild(container);
+            done();
+        });
+    });
+
     it('should support useFirstLevelDataWhenNoChildren', () => {
         class App extends React.Component {
             render() {

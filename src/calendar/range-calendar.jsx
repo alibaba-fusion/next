@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
@@ -111,56 +112,41 @@ class RangeCalendar extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const startValue = formatDateValue(
-            props.startValue || props.defaultStartValue
-        );
-        const endValue = formatDateValue(
-            props.endValue || props.defaultEndValue
-        );
-        const visibleMonth = getVisibleMonth(
-            props.defaultVisibleMonth,
-            startValue
-        );
+        const startValue = formatDateValue(props.startValue || props.defaultStartValue);
+        const endValue = formatDateValue(props.endValue || props.defaultEndValue);
+        const visibleMonth = getVisibleMonth(props.defaultVisibleMonth, startValue);
 
         this.state = {
             startValue,
             endValue,
             mode: props.mode,
+            prevMode: props.mode,
             startVisibleMonth: visibleMonth,
             activePanel: undefined,
         };
         this.today = moment();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('startValue' in nextProps) {
-            const startValue = formatDateValue(nextProps.startValue);
-            this.setState({
-                startValue,
-            });
-
-            if (
-                startValue &&
-                !startValue.isSame(this.state.startValue, 'day')
-            ) {
-                this.setState({
-                    startVisibleMonth: startValue,
-                });
+    static getDerivedStateFromProps(props, state) {
+        const st = {};
+        if ('startValue' in props) {
+            const startValue = formatDateValue(props.startValue);
+            st.startValue = startValue;
+            if (startValue && !startValue.isSame(state.startValue, 'day')) {
+                st.startVisibleMonth = startValue;
             }
         }
 
-        if ('endValue' in nextProps) {
-            const endValue = formatDateValue(nextProps.endValue);
-            this.setState({
-                endValue,
-            });
+        if ('endValue' in props) {
+            st.endValue = formatDateValue(props.endValue);
         }
 
-        if ('mode' in nextProps) {
-            this.setState({
-                mode: nextProps.mode,
-            });
+        if ('mode' in props && state.prevMode !== props.mode) {
+            st.prevMode = props.mode;
+            st.mode = props.mode;
         }
+
+        return st;
     }
 
     onSelectCell = (date, nextMode) => {
@@ -195,9 +181,7 @@ class RangeCalendar extends React.Component {
      * @param {String} type 日期偏移类型 days, months, years
      */
     changeVisibleMonthByOffset = (offset, type) => {
-        const offsetDate = this.state.startVisibleMonth
-            .clone()
-            .add(offset, type);
+        const offsetDate = this.state.startVisibleMonth.clone().add(offset, type);
         this.changeVisibleMonth(offsetDate, 'buttonClick');
     };
 
@@ -241,13 +225,7 @@ class RangeCalendar extends React.Component {
             yearRange,
             ...others
         } = this.props;
-        const {
-            startValue,
-            endValue,
-            mode,
-            startVisibleMonth,
-            activePanel,
-        } = this.state;
+        const { startValue, endValue, mode, startVisibleMonth, activePanel } = this.state;
 
         // reset moment locale
         if (locale.momentLocale) {
@@ -259,10 +237,7 @@ class RangeCalendar extends React.Component {
         if (rtl) {
             others.dir = 'rtl';
         }
-        const localeData = getLocaleData(
-            locale.format || {},
-            startVisibleMonth.localeData()
-        );
+        const localeData = getLocaleData(locale.format || {}, startVisibleMonth.localeData());
 
         const endVisibleMonth = startVisibleMonth.clone().add(1, 'months');
 
@@ -311,10 +286,7 @@ class RangeCalendar extends React.Component {
         switch (mode) {
             case CALENDAR_MODE_DATE: {
                 table = [
-                    <div
-                        className={`${prefix}calendar-body-left`}
-                        key="left-panel"
-                    >
+                    <div className={`${prefix}calendar-body-left`} key="left-panel">
                         <DateTable
                             format={format}
                             {...tableProps}
@@ -322,10 +294,7 @@ class RangeCalendar extends React.Component {
                             onSelectDate={this.onSelectCell}
                         />
                     </div>,
-                    <div
-                        className={`${prefix}calendar-body-right`}
-                        key="right-panel"
-                    >
+                    <div className={`${prefix}calendar-body-right`} key="right-panel">
                         <DateTable
                             format={format}
                             {...tableProps}
@@ -346,13 +315,7 @@ class RangeCalendar extends React.Component {
                 break;
             }
             case CALENDAR_MODE_MONTH: {
-                table = (
-                    <MonthTable
-                        {...tableProps}
-                        visibleMonth={visibleMonth}
-                        onSelectMonth={this.onSelectCell}
-                    />
-                );
+                table = <MonthTable {...tableProps} visibleMonth={visibleMonth} onSelectMonth={this.onSelectCell} />;
                 header = (
                     <MonthPanelHeader
                         {...headerProps}
@@ -395,10 +358,7 @@ class RangeCalendar extends React.Component {
         );
 
         return (
-            <div
-                {...obj.pickOthers(RangeCalendar.propTypes, others)}
-                className={classNames}
-            >
+            <div {...obj.pickOthers(RangeCalendar.propTypes, others)} className={classNames}>
                 {header}
                 <div className={`${prefix}calendar-body`}>{table}</div>
             </div>
@@ -406,6 +366,6 @@ class RangeCalendar extends React.Component {
     }
 }
 
-export default ConfigProvider.config(RangeCalendar, {
+export default ConfigProvider.config(polyfill(RangeCalendar), {
     componentName: 'Calendar',
 });

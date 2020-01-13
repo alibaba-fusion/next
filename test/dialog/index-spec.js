@@ -431,6 +431,22 @@ describe('inner', () => {
         }, 1000);
     });
 
+    it('should work when set <ConfigProvider popupContainer/> ', () => {
+
+        wrapper = render(<ConfigProvider popupContainer={"dialog-popupcontainer"}>
+        <div id="dialog-popupcontainer" style={{height: 300, overflow: 'auto'}}>
+            <Dialog
+                title="Welcome to Alibaba.com"
+                visible>
+                Start your business here by searching a popular product
+            </Dialog>
+        </div>
+        </ConfigProvider>);
+
+        const overlay = document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper');
+        assert(overlay);
+    });
+
     it('should not close dialog if onOk return promise and reject', done => {
         const { hide } = Dialog.show({
             title: 'Title',

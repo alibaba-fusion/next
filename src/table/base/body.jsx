@@ -27,7 +27,10 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
+        onBodyMouseOver: PropTypes.func,
+        onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
+        crossline: PropTypes.bool,
     };
     static defaultProps = {
         loading: false,
@@ -59,6 +62,14 @@ export default class Body extends React.Component {
         this.props.onRowMouseLeave(record, index, e);
     };
 
+    onBodyMouseOver = e => {
+        this.props.onBodyMouseOver(e);
+    };
+
+    onBodyMouseOut = e => {
+        this.props.onBodyMouseOut(e);
+    };
+
     render() {
         /*eslint-disable no-unused-vars */
         const {
@@ -80,19 +91,18 @@ export default class Body extends React.Component {
             onRowClick,
             onRowMouseEnter,
             onRowMouseLeave,
+            onBodyMouseOver,
+            onBodyMouseOut,
             locale,
             pure,
             expandedIndexSimulate,
             rtl,
+            crossline,
             ...others
         } = this.props;
 
         const { Row = RowComponent, Cell = CellComponent } = components;
-        const empty = loading ? (
-            <span>&nbsp;</span>
-        ) : (
-            emptyContent || locale.empty
-        );
+        const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;
         let rows = (
             <tr>
                 <td colSpan={columns.length}>
@@ -111,15 +121,10 @@ export default class Body extends React.Component {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
                 // record may be a string
-                const rowIndex =
-                    typeof record === 'object' && '__rowIndex' in record
-                        ? record.__rowIndex
-                        : index;
+                const rowIndex = typeof record === 'object' && '__rowIndex' in record ? record.__rowIndex : index;
 
                 if (expandedIndexSimulate) {
-                    rowProps = record.__expanded
-                        ? {}
-                        : getRowProps(record, index / 2);
+                    rowProps = record.__expanded ? {} : getRowProps(record, index / 2);
                 } else {
                     rowProps = getRowProps(record, rowIndex);
                 }
@@ -159,7 +164,7 @@ export default class Body extends React.Component {
             });
         }
         return (
-            <Tag className={className} {...others}>
+            <Tag className={className} {...others} onMouseOver={this.onBodyMouseOver} onMouseOut={this.onBodyMouseOut}>
                 {rows}
                 {children}
             </Tag>

@@ -18,16 +18,14 @@ export default function virtual(BaseComponent) {
              * 设置行高
              */
             rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-            maxBodyHeight: PropTypes.oneOfType([
-                PropTypes.number,
-                PropTypes.string,
-            ]),
+            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             primaryKey: PropTypes.string,
             dataSource: PropTypes.array,
             /**
              * 在内容区域滚动的时候触发的函数
              */
             onBodyScroll: PropTypes.func,
+            onScroll: PropTypes.func,
             ...BaseComponent.propTypes,
         };
 
@@ -39,6 +37,7 @@ export default function virtual(BaseComponent) {
             components: {},
             prefix: 'next-',
             onBodyScroll: noop,
+            onScroll: noop,
         };
 
         static childContextTypes = {
@@ -70,8 +69,7 @@ export default function virtual(BaseComponent) {
         componentWillMount() {
             const { useVirtual, dataSource } = this.props;
 
-            this.hasVirtualData =
-                useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
         }
 
         componentDidMount() {
@@ -87,8 +85,7 @@ export default function virtual(BaseComponent) {
         componentWillReceiveProps(nextProps) {
             const { useVirtual, dataSource } = nextProps;
 
-            this.hasVirtualData =
-                useVirtual && dataSource && dataSource.length > 0;
+            this.hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
 
             if ('maxBodyHeight' in nextProps) {
                 if (this.state.height !== nextProps.maxBodyHeight) {
@@ -107,10 +104,7 @@ export default function virtual(BaseComponent) {
             if (this.state.rowHeight && 'rowHeight' in nextProps) {
                 const row = this.getRowNode();
                 const rowClientHeight = row && row.clientHeight;
-                if (
-                    rowClientHeight &&
-                    rowClientHeight !== this.state.rowHeight
-                ) {
+                if (rowClientHeight && rowClientHeight !== this.state.rowHeight) {
                     this.setState({
                         rowHeight: rowClientHeight,
                     });
@@ -151,6 +145,7 @@ export default function virtual(BaseComponent) {
             if (typeof rowHeight === 'function') {
                 return 0;
             }
+
             return this.start * rowHeight;
         }
 
@@ -184,8 +179,7 @@ export default function virtual(BaseComponent) {
         adjustScrollTop() {
             if (this.hasVirtualData) {
                 this.bodyNode.scrollTop =
-                    (this.lastScrollTop % this.state.rowHeight) +
-                    this.state.rowHeight * this.state.scrollToRow;
+                    (this.lastScrollTop % this.state.rowHeight) + this.state.rowHeight * this.state.scrollToRow;
             }
         }
 
@@ -198,23 +192,15 @@ export default function virtual(BaseComponent) {
                 const tableInc = this.tableInc;
                 const tableNode = findDOMNode(tableInc);
                 const { prefix } = this.props;
-                const headerNode = tableNode.querySelector(
-                    `.${prefix}table-header table`
-                );
+                const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
                 const headerClientWidth = headerNode && headerNode.clientWidth;
 
                 if (clientWidth < headerClientWidth) {
-                    dom.setStyle(
-                        virtualScrollNode,
-                        'min-width',
-                        headerClientWidth
-                    );
+                    dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
                     const leftNode = this.bodyLeftNode;
                     const rightNode = this.bodyRightNode;
-                    leftNode &&
-                        dom.setStyle(leftNode, 'max-height', clientHeight);
-                    rightNode &&
-                        dom.setStyle(rightNode, 'max-height', clientHeight);
+                    leftNode && dom.setStyle(leftNode, 'max-height', clientHeight);
+                    rightNode && dom.setStyle(rightNode, 'max-height', clientHeight);
                     this.hasScrollbar = true;
                 } else {
                     dom.setStyle(virtualScrollNode, 'min-width', 'auto');
@@ -247,9 +233,7 @@ export default function virtual(BaseComponent) {
         }
 
         getBodyNode = (node, lockType) => {
-            lockType = lockType
-                ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
-                : '';
+            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
             this[`body${lockType}Node`] = node;
         };
 
@@ -289,9 +273,7 @@ export default function virtual(BaseComponent) {
             if (this.hasVirtualData) {
                 newDataSource = [];
                 components = { ...components };
-                const { start, end } = this.getVisibleRange(
-                    this.state.scrollToRow
-                );
+                const { start, end } = this.getVisibleRange(this.state.scrollToRow);
                 dataSource.forEach((current, index, record) => {
                     if (index >= start && index < end) {
                         current.__rowIndex = index;
