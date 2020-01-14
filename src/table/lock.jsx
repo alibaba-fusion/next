@@ -33,7 +33,6 @@ export default function lock(BaseComponent) {
             getTableInstance: PropTypes.func,
             getLockNode: PropTypes.func,
             onLockBodyScroll: PropTypes.func,
-            onLockBodyLRScroll: PropTypes.func,
             onRowMouseEnter: PropTypes.func,
             onRowMouseLeave: PropTypes.func,
         };
@@ -49,7 +48,6 @@ export default function lock(BaseComponent) {
                 getTableInstance: this.getTableInstance,
                 getLockNode: this.getNode,
                 onLockBodyScroll: this.onLockBodyScroll,
-                onLockBodyLRScroll: this.onLockBodyLRScroll,
                 onRowMouseEnter: this.onRowMouseEnter,
                 onRowMouseLeave: this.onRowMouseLeave,
             };
@@ -252,40 +250,36 @@ export default function lock(BaseComponent) {
             }
         }
 
-        onLockBodyLRScroll = (event, lockType) => {
-            if (this.isLock()) {
+        onLockBodyScrollTop = event => {
+            // set scroll top for lock columns & main body
+            const target = event.target;
+            if (event.currentTarget !== target) {
+                return;
+            }
+            const distScrollTop = target.scrollTop;
+
+            if (this.isLock() && distScrollTop !== this.lastScrollTop) {
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
                     bodyNode = this.bodyNode;
 
-                let arr = [],
-                    distScrollTop = 0;
-
-                // scroll on lock left columns
-                if (lockType === 'left') {
-                    arr = [bodyNode];
-                    distScrollTop = lockLeftBody.scrollTop;
-                    // scroll on lock left columns
-                } else if (lockType === 'right') {
-                    arr = [bodyNode];
-                    distScrollTop = lockRightBody.scrollTop;
-                }
+                const arr = [lockLeftBody, lockRightBody, bodyNode];
 
                 arr.forEach(node => {
                     if (node && node.scrollTop !== distScrollTop) {
                         node.scrollTop = distScrollTop;
                     }
                 });
+
+                this.lastScrollTop = distScrollTop;
             }
         };
 
-        onLockBodyScroll = event => {
+        onLockBodyScrollLeft = () => {
+            // add shadow class for lock columns
             if (this.isLock()) {
                 const { rtl } = this.props;
-                const lockRightBody = this.bodyRightNode,
-                    lockLeftBody = this.bodyLeftNode,
-                    bodyNode = this.bodyNode,
-                    lockRightTable = rtl
+                const lockRightTable = rtl
                         ? this.getWrapperNode('left')
                         : this.getWrapperNode('right'),
                     lockLeftTable = rtl
@@ -294,14 +288,6 @@ export default function lock(BaseComponent) {
                     shadowClassName = 'shadow';
 
                 const x = this.bodyNode.scrollLeft;
-                const arr = [lockLeftBody, lockRightBody],
-                    distScrollTop = bodyNode.scrollTop;
-
-                arr.forEach(node => {
-                    if (node && node.scrollTop !== distScrollTop) {
-                        node.scrollTop = distScrollTop;
-                    }
-                });
 
                 if (x === 0) {
                     lockLeftTable &&
@@ -325,6 +311,11 @@ export default function lock(BaseComponent) {
             }
         };
 
+        onLockBodyScroll = event => {
+            this.onLockBodyScrollTop(event);
+            this.onLockBodyScrollLeft();
+        };
+
         // Table处理过后真实的lock状态
         isLock() {
             return (
@@ -342,7 +333,7 @@ export default function lock(BaseComponent) {
                 this.adjustHeaderSize();
                 this.adjustBodySize();
                 this.adjustCellSize();
-                this.onLockBodyScroll();
+                this.onLockBodyScrollLeft();
             }
         };
 
@@ -467,6 +458,7 @@ export default function lock(BaseComponent) {
                 style.marginBottom = -scrollBarSize;
                 style.paddingBottom = scrollBarSize;
                 style[marginName] = 0;
+                style[paddingName] = 0;
                 header && dom.setStyle(header, style);
             }
         }

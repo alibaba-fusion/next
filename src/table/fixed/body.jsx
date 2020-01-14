@@ -10,11 +10,7 @@ export default class FixedBody extends React.Component {
         prefix: PropTypes.string,
         className: PropTypes.string,
         colGroup: PropTypes.any,
-        onScroll: PropTypes.func,
-    };
-
-    static defaultProps = {
-        onScroll: () => {},
+        onLockScroll: PropTypes.func,
     };
 
     static contextTypes = {
@@ -23,7 +19,7 @@ export default class FixedBody extends React.Component {
             PropTypes.number,
             PropTypes.string,
         ]),
-        onBodyScroll: PropTypes.func,
+        onFixedScrollSync: PropTypes.func,
         getNode: PropTypes.func,
     };
 
@@ -32,14 +28,23 @@ export default class FixedBody extends React.Component {
         getNode && getNode('body', findDOMNode(this));
     }
 
-    onBodyScroll = () => {
-        const { onBodyScroll } = this.context;
-        onBodyScroll && onBodyScroll();
-        this.props.onScroll();
+    onBodyScroll = event => {
+        const { onFixedScrollSync } = this.context;
+        // sync scroll left to header
+        onFixedScrollSync && onFixedScrollSync(event);
+
+        // sync scroll left to lock columns
+        if (
+            'onLockScroll' in this.props &&
+            typeof this.props.onLockScroll === 'function'
+        ) {
+            this.props.onLockScroll(event);
+        }
     };
 
     render() {
-        const { className, colGroup, ...others } = this.props;
+        /*eslint-disable no-unused-vars */
+        const { className, colGroup, onLockScroll, ...others } = this.props;
         const { maxBodyHeight, fixedHeader } = this.context;
         const style = {};
         if (fixedHeader) {
