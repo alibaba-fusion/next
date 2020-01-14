@@ -173,13 +173,14 @@ export default class Body extends React.Component {
                 );
             });
         }
+        const event = crossline
+            ? {
+                  onMouseOver: this.onBodyMouseOver,
+                  onMouseOut: this.onBodyMouseOut,
+              }
+            : {};
         return (
-            <Tag
-                className={className}
-                {...others}
-                onMouseOver={this.onBodyMouseOver}
-                onMouseOut={this.onBodyMouseOut}
-            >
+            <Tag className={className} {...others} {...event}>
                 {rows}
                 {children}
             </Tag>

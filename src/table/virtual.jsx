@@ -28,7 +28,6 @@ export default function virtual(BaseComponent) {
              * 在内容区域滚动的时候触发的函数
              */
             onBodyScroll: PropTypes.func,
-            onScroll: PropTypes.func,
             ...BaseComponent.propTypes,
         };
 
@@ -40,7 +39,6 @@ export default function virtual(BaseComponent) {
             components: {},
             prefix: 'next-',
             onBodyScroll: noop,
-            onScroll: noop,
         };
 
         static childContextTypes = {

@@ -3,13 +3,14 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
-import { dom, log, obj, events } from '../util';
+import { dom, log, obj, events, env } from '../util';
 import LockRow from './lock/row';
 import LockBody from './lock/body';
 import LockHeader from './lock/header';
 import LockWrapper from './fixed/wrapper';
 import { statics } from './util';
 
+const { isIE } = env;
 export default function lock(BaseComponent) {
     /** Table */
     class LockTable extends React.Component {
@@ -33,7 +34,6 @@ export default function lock(BaseComponent) {
             getTableInstance: PropTypes.func,
             getLockNode: PropTypes.func,
             onLockBodyScroll: PropTypes.func,
-            onLockBodyLRScroll: PropTypes.func,
             onRowMouseEnter: PropTypes.func,
             onRowMouseLeave: PropTypes.func,
         };
@@ -49,7 +49,6 @@ export default function lock(BaseComponent) {
                 getTableInstance: this.getTableInstance,
                 getLockNode: this.getNode,
                 onLockBodyScroll: this.onLockBodyScroll,
-                onLockBodyLRScroll: this.onLockBodyLRScroll,
                 onRowMouseEnter: this.onRowMouseEnter,
                 onRowMouseLeave: this.onRowMouseLeave,
             };
@@ -252,40 +251,36 @@ export default function lock(BaseComponent) {
             }
         }
 
-        onLockBodyLRScroll = (event, lockType) => {
-            if (this.isLock()) {
+        onLockBodyScrollTop = event => {
+            // set scroll top for lock columns & main body
+            const target = event.target;
+            if (event.currentTarget !== target) {
+                return;
+            }
+            const distScrollTop = target.scrollTop;
+
+            if (this.isLock() && distScrollTop !== this.lastScrollTop) {
                 const lockRightBody = this.bodyRightNode,
                     lockLeftBody = this.bodyLeftNode,
                     bodyNode = this.bodyNode;
 
-                let arr = [],
-                    distScrollTop = 0;
-
-                // scroll on lock left columns
-                if (lockType === 'left') {
-                    arr = [bodyNode];
-                    distScrollTop = lockLeftBody.scrollTop;
-                    // scroll on lock left columns
-                } else if (lockType === 'right') {
-                    arr = [bodyNode];
-                    distScrollTop = lockRightBody.scrollTop;
-                }
+                const arr = [lockLeftBody, lockRightBody, bodyNode];
 
                 arr.forEach(node => {
                     if (node && node.scrollTop !== distScrollTop) {
                         node.scrollTop = distScrollTop;
                     }
                 });
+
+                this.lastScrollTop = distScrollTop;
             }
         };
 
-        onLockBodyScroll = event => {
+        onLockBodyScrollLeft = () => {
+            // add shadow class for lock columns
             if (this.isLock()) {
                 const { rtl } = this.props;
-                const lockRightBody = this.bodyRightNode,
-                    lockLeftBody = this.bodyLeftNode,
-                    bodyNode = this.bodyNode,
-                    lockRightTable = rtl
+                const lockRightTable = rtl
                         ? this.getWrapperNode('left')
                         : this.getWrapperNode('right'),
                     lockLeftTable = rtl
@@ -294,14 +289,6 @@ export default function lock(BaseComponent) {
                     shadowClassName = 'shadow';
 
                 const x = this.bodyNode.scrollLeft;
-                const arr = [lockLeftBody, lockRightBody],
-                    distScrollTop = bodyNode.scrollTop;
-
-                arr.forEach(node => {
-                    if (node && node.scrollTop !== distScrollTop) {
-                        node.scrollTop = distScrollTop;
-                    }
-                });
 
                 if (x === 0) {
                     lockLeftTable &&
@@ -325,6 +312,11 @@ export default function lock(BaseComponent) {
             }
         };
 
+        onLockBodyScroll = event => {
+            this.onLockBodyScrollTop(event);
+            this.onLockBodyScrollLeft();
+        };
+
         // Table处理过后真实的lock状态
         isLock() {
             return (
@@ -342,7 +334,7 @@ export default function lock(BaseComponent) {
                 this.adjustHeaderSize();
                 this.adjustBodySize();
                 this.adjustCellSize();
-                this.onLockBodyScroll();
+                this.onLockBodyScrollLeft();
             }
         };
 
@@ -421,28 +413,26 @@ export default function lock(BaseComponent) {
             const header = this.headerNode;
             const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
             const marginName = rtl ? 'marginLeft' : 'marginRight';
-            const scrollBarSize = dom.scrollbar().width;
+            const scrollBarSize = +dom.scrollbar().width || 0;
             const style = {
                 [paddingName]: scrollBarSize,
                 [marginName]: scrollBarSize,
             };
+            const body = this.bodyNode,
+                hasVerScroll = body && body.scrollHeight > body.clientHeight;
 
             if (this.isLock()) {
-                const body = this.bodyNode,
-                    lockLeftBody = this.bodyLeftNode,
+                const lockLeftBody = this.bodyLeftNode,
                     lockRightBody = this.bodyRightNode,
                     lockRightBodyWrapper = this.getWrapperNode('right'),
-                    scrollbar = dom.scrollbar(),
                     bodyHeight = body.offsetHeight,
-                    hasVerScroll = body.scrollHeight > body.clientHeight,
                     width = hasVerScroll ? scrollBarSize : 0,
-                    lockBodyHeight = bodyHeight - scrollbar.height;
+                    lockBodyHeight = bodyHeight - scrollBarSize;
 
-                if (!hasVerScroll || !+scrollBarSize) {
+                if (!hasVerScroll) {
                     style[paddingName] = 0;
                     style[marginName] = 0;
                 }
-
                 if (+scrollBarSize) {
                     style.marginBottom = -scrollBarSize;
                     style.paddingBottom = scrollBarSize;
@@ -451,7 +441,6 @@ export default function lock(BaseComponent) {
                     style.paddingBottom = 20;
                 }
 
-                header && dom.setStyle(header, style);
                 lockLeftBody &&
                     dom.setStyle(lockLeftBody, 'max-height', lockBodyHeight);
                 lockRightBody &&
@@ -467,8 +456,12 @@ export default function lock(BaseComponent) {
                 style.marginBottom = -scrollBarSize;
                 style.paddingBottom = scrollBarSize;
                 style[marginName] = 0;
-                header && dom.setStyle(header, style);
+                if (!hasVerScroll) {
+                    style[paddingName] = 0;
+                }
             }
+
+            header && dom.setStyle(header, style);
         }
 
         adjustHeaderSize() {
@@ -562,14 +555,14 @@ export default function lock(BaseComponent) {
             const lockRow = this.getCellNode(index, i, dir),
                 row = this.getCellNode(index, i),
                 rowHeight =
-                    (row && parseFloat(getComputedStyle(row).height)) || 0;
-            let lockHeight = 0;
-
-            if (lockRow) {
-                lockHeight = lockRow.offsetHeight;
-                // in some case dom.offsetHeight !== getComputedStyle(dom).height
-                lockHeight = parseFloat(getComputedStyle(lockRow).height) || 0;
-            }
+                    (isIE
+                        ? row && row.offsetHeight
+                        : row && parseFloat(getComputedStyle(row).height)) || 0,
+                lockHeight =
+                    (isIE
+                        ? lockRow && lockRow.offsetHeight
+                        : lockRow &&
+                          parseFloat(getComputedStyle(lockRow).height)) || 0;
 
             if (lockRow && rowHeight !== lockHeight) {
                 dom.setStyle(lockRow, 'height', rowHeight);
