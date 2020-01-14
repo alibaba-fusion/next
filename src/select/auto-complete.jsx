@@ -186,10 +186,10 @@ class AutoComplete extends Base {
         if (filterLocal) {
             this.setState({
                 dataSource: this.dataStore.updateByKey(value),
+                highlightKey: '',
             });
 
             this.shouldControlPopup(this.props, actionType);
-            this.setFirstHightLightKeyForMenu();
         }
 
         // 非受控模式清空内部数据
