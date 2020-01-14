@@ -1,0 +1,96 @@
+{
+  "name": "List",
+  "props": {
+    "header": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "列表头部",
+      "docblock": "列表头部"
+    },
+    "footer": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "列表尾部",
+      "docblock": "列表尾部"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'small'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "列表尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "列表尺寸"
+    },
+    "divider": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示分割线",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示分割线"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列表元素的标题",
+          "docblock": "列表元素的标题"
+        },
+        "description": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列表元素的描述内容",
+          "docblock": "列表元素的描述内容"
+        },
+        "media": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列表元素的头像 / 图标 / 图片内容",
+          "docblock": "列表元素的头像 / 图标 / 图片内容"
+        },
+        "extra": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "额外内容",
+          "docblock": "额外内容"
+        }
+      },
+      "methods": []
+    }
+  ]
+}

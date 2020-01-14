@@ -1,0 +1,145 @@
+{
+  "name": "ResponsiveGrid",
+  "props": {
+    "device": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'phone'",
+            "computed": false,
+            "description": "手机"
+          },
+          {
+            "value": "'tablet'",
+            "computed": false,
+            "description": "平板"
+          },
+          {
+            "value": "'desktop'",
+            "computed": false,
+            "description": "PC"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设备，用来做自适应，默认为 PC",
+      "defaultValue": {
+        "value": "'desktop'",
+        "computed": false
+      },
+      "docblock": "设备，用来做自适应，默认为 PC\n@enumdesc 手机, 平板, PC",
+      "value": [
+        {
+          "value": "'phone'",
+          "computed": false,
+          "description": "手机"
+        },
+        {
+          "value": "'tablet'",
+          "computed": false,
+          "description": "平板"
+        },
+        {
+          "value": "'desktop'",
+          "computed": false,
+          "description": "PC"
+        }
+      ]
+    },
+    "columns": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "分为几列， 默认是 12 列",
+      "docblock": "分为几列， 默认是 12 列"
+    },
+    "gap": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "每个 cell 之间的间距， [bottom&top, right&left]",
+      "docblock": "每个 cell 之间的间距， [bottom&top, right&left]"
+    },
+    "component": {
+      "type": {
+        "name": "custom",
+        "raw": "PropTypes.elementType"
+      },
+      "required": false,
+      "description": "设置标签类型",
+      "defaultValue": {
+        "value": "'div'",
+        "computed": false
+      },
+      "docblock": "设置标签类型"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Cell",
+      "props": {
+        "colSpan": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": "横向，占据几列",
+          "docblock": "横向，占据几列"
+        },
+        "rowSpan": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "纵向，占据几行",
+          "docblock": "纵向，占据几行"
+        },
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
