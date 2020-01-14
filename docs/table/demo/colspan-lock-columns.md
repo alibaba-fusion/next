@@ -18,7 +18,7 @@ Merging column through cellProps.
 ````jsx
 import { Table, Button } from '@alifd/next';
 
-let columns = new Array(4).fill({
+const columns = new Array(4).fill({
     dataIndex: 'data',
     title: 'Data',
     width: 200,
@@ -78,7 +78,7 @@ ReactDOM.render(
    >
    {
         columns.map((col, i) => {
-            return <Table.Column key={i} {...col} />
+            return <Table.Column key={i} {...col} />;
         })
    }
   </Table>,
