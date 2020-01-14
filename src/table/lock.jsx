@@ -3,13 +3,14 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
-import { dom, log, obj, events } from '../util';
+import { dom, log, obj, events, env } from '../util';
 import LockRow from './lock/row';
 import LockBody from './lock/body';
 import LockHeader from './lock/header';
 import LockWrapper from './fixed/wrapper';
 import { statics } from './util';
 
+const { isIE } = env;
 export default function lock(BaseComponent) {
     /** Table */
     class LockTable extends React.Component {
@@ -554,14 +555,14 @@ export default function lock(BaseComponent) {
             const lockRow = this.getCellNode(index, i, dir),
                 row = this.getCellNode(index, i),
                 rowHeight =
-                    (row && parseFloat(getComputedStyle(row).height)) || 0;
-            let lockHeight = 0;
-
-            if (lockRow) {
-                lockHeight = lockRow.offsetHeight;
-                // in some case dom.offsetHeight !== getComputedStyle(dom).height
-                lockHeight = parseFloat(getComputedStyle(lockRow).height) || 0;
-            }
+                    (isIE
+                        ? row && row.offsetHeight
+                        : row && parseFloat(getComputedStyle(row).height)) || 0,
+                lockHeight =
+                    (isIE
+                        ? lockRow && lockRow.offsetHeight
+                        : lockRow &&
+                          parseFloat(getComputedStyle(lockRow).height)) || 0;
 
             if (lockRow && rowHeight !== lockHeight) {
                 dom.setStyle(lockRow, 'height', rowHeight);
