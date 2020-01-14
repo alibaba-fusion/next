@@ -33,7 +33,7 @@ export default class FixedBody extends React.Component {
         // sync scroll left to header
         onFixedScrollSync && onFixedScrollSync(event);
 
-        // sync scroll left to lock columns
+        // sync scroll top/left to lock columns
         if (
             'onLockScroll' in this.props &&
             typeof this.props.onLockScroll === 'function'
