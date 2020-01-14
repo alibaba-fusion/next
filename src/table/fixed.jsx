@@ -104,7 +104,7 @@ export default function fixed(BaseComponent) {
             const body = this.bodyNode;
 
             if (hasHeader && !this.props.lockType && body) {
-                const scrollBarSize = dom.scrollbar().width;
+                const scrollBarSize = +dom.scrollbar().width || 0;
                 const hasVerScroll = body.scrollHeight > body.clientHeight,
                     hasHozScroll = body.scrollWidth > body.clientWidth;
                 const style = {
@@ -112,7 +112,7 @@ export default function fixed(BaseComponent) {
                     [marginName]: scrollBarSize,
                 };
 
-                if (!hasVerScroll || !+scrollBarSize) {
+                if (!hasVerScroll) {
                     style[paddingName] = 0;
                     style[marginName] = 0;
                 }

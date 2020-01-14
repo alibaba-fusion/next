@@ -412,28 +412,26 @@ export default function lock(BaseComponent) {
             const header = this.headerNode;
             const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
             const marginName = rtl ? 'marginLeft' : 'marginRight';
-            const scrollBarSize = dom.scrollbar().width;
+            const scrollBarSize = +dom.scrollbar().width || 0;
             const style = {
                 [paddingName]: scrollBarSize,
                 [marginName]: scrollBarSize,
             };
+            const body = this.bodyNode,
+                hasVerScroll = body && body.scrollHeight > body.clientHeight;
 
             if (this.isLock()) {
-                const body = this.bodyNode,
-                    lockLeftBody = this.bodyLeftNode,
+                const lockLeftBody = this.bodyLeftNode,
                     lockRightBody = this.bodyRightNode,
                     lockRightBodyWrapper = this.getWrapperNode('right'),
-                    scrollbar = dom.scrollbar(),
                     bodyHeight = body.offsetHeight,
-                    hasVerScroll = body.scrollHeight > body.clientHeight,
                     width = hasVerScroll ? scrollBarSize : 0,
-                    lockBodyHeight = bodyHeight - scrollbar.height;
+                    lockBodyHeight = bodyHeight - scrollBarSize;
 
-                if (!hasVerScroll || !+scrollBarSize) {
+                if (!hasVerScroll) {
                     style[paddingName] = 0;
                     style[marginName] = 0;
                 }
-
                 if (+scrollBarSize) {
                     style.marginBottom = -scrollBarSize;
                     style.paddingBottom = scrollBarSize;
@@ -442,7 +440,6 @@ export default function lock(BaseComponent) {
                     style.paddingBottom = 20;
                 }
 
-                header && dom.setStyle(header, style);
                 lockLeftBody &&
                     dom.setStyle(lockLeftBody, 'max-height', lockBodyHeight);
                 lockRightBody &&
@@ -458,9 +455,12 @@ export default function lock(BaseComponent) {
                 style.marginBottom = -scrollBarSize;
                 style.paddingBottom = scrollBarSize;
                 style[marginName] = 0;
-                style[paddingName] = 0;
-                header && dom.setStyle(header, style);
+                if (!hasVerScroll) {
+                    style[paddingName] = 0;
+                }
             }
+
+            header && dom.setStyle(header, style);
         }
 
         adjustHeaderSize() {
