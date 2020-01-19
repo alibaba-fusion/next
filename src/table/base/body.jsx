@@ -149,7 +149,10 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] || rowIndex}${expanded}`}
+                        key={`${record[primaryKey] ||
+                            (record[primaryKey] === 0
+                                ? 0
+                                : rowIndex)}${expanded}`}
                         {...rowProps}
                         ref={this.getRowRef.bind(this, rowIndex)}
                         colGroup={colGroup}
