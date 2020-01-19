@@ -135,7 +135,10 @@ class Checkbox extends UIState {
         const state = {};
         if (nextContext.__group__) {
             if ('selectedValue' in nextContext) {
-                state.checked = isChecked(nextContext.selectedValue, nextProps.value);
+                state.checked = isChecked(
+                    nextContext.selectedValue,
+                    nextProps.value
+                );
             }
         } else if ('checked' in nextProps) {
             state.checked = nextProps.checked;
@@ -244,14 +247,24 @@ class Checkbox extends UIState {
             const previewCls = classnames(className, `${prefix}form-preview`);
             if ('renderPreview' in this.props) {
                 return (
-                    <div id={id} dir={rtl ? 'rtl' : undefined} {...othersData} className={previewCls}>
+                    <div
+                        id={id}
+                        dir={rtl ? 'rtl' : undefined}
+                        {...othersData}
+                        className={previewCls}
+                    >
                         {renderPreview(checked, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p id={id} dir={rtl ? 'rtl' : undefined} {...othersData} className={previewCls}>
+                <p
+                    id={id}
+                    dir={rtl ? 'rtl' : undefined}
+                    {...othersData}
+                    className={previewCls}
+                >
                     {checked && (children || label || this.state.value)}
                 </p>
             );
@@ -268,7 +281,11 @@ class Checkbox extends UIState {
             >
                 <span className={`${prefix}checkbox`}>
                     <span className={`${prefix}checkbox-inner`}>
-                        <Icon type={type} size="xs" className={indeterminate ? 'zoomIn' : ''} />
+                        <Icon
+                            type={type}
+                            size="xs"
+                            className={indeterminate ? 'zoomIn' : ''}
+                        />
                     </span>
                     {childInput}
                 </span>

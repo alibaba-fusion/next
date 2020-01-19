@@ -26,7 +26,10 @@ export default class FixedHeader extends React.Component {
         const { prefix, className, colGroup, ...others } = this.props;
         return (
             <div className={className}>
-                <div className={`${prefix}table-header-inner`} style={{ overflow: 'unset' }}>
+                <div
+                    className={`${prefix}table-header-inner`}
+                    style={{ overflow: 'unset' }}
+                >
                     <table>
                         {colGroup}
                         <HeaderComponent {...others} prefix={prefix} />

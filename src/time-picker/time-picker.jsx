@@ -184,8 +184,12 @@ class TimePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const value = formatDateValue(props.value || props.defaultValue, props.format);
-        this.inputAsString = typeof (props.value || props.defaultValue) === 'string';
+        const value = formatDateValue(
+            props.value || props.defaultValue,
+            props.format
+        );
+        this.inputAsString =
+            typeof (props.value || props.defaultValue) === 'string';
         this.state = {
             value,
             inputStr: '',
@@ -209,7 +213,10 @@ class TimePicker extends Component {
     }
 
     onValueChange(newValue) {
-        const ret = this.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
+        const ret =
+            this.inputAsString && newValue
+                ? newValue.format(this.props.format)
+                : newValue;
         this.props.onChange(ret);
     }
 
@@ -260,7 +267,14 @@ class TimePicker extends Component {
 
     onKeyown = e => {
         const { value, inputStr } = this.state;
-        const { format, hourStep = 1, minuteStep = 1, secondStep = 1, disabledMinutes, disabledSeconds } = this.props;
+        const {
+            format,
+            hourStep = 1,
+            minuteStep = 1,
+            secondStep = 1,
+            disabledMinutes,
+            disabledSeconds,
+        } = this.props;
 
         let unit = 'second';
 
@@ -294,7 +308,10 @@ class TimePicker extends Component {
                 inputing: false,
             });
         }
-        if (!this.state.value || value.valueOf() !== this.state.value.valueOf()) {
+        if (
+            !this.state.value ||
+            value.valueOf() !== this.state.value.valueOf()
+        ) {
             this.onValueChange(value);
         }
     };
@@ -375,10 +392,14 @@ class TimePicker extends Component {
         }
 
         if (isPreview) {
-            return this.renderPreview(obj.pickOthers(others, TimePicker.PropTypes));
+            return this.renderPreview(
+                obj.pickOthers(others, TimePicker.PropTypes)
+            );
         }
 
-        const inputValue = inputing ? inputStr : (value && value.format(format)) || '';
+        const inputValue = inputing
+            ? inputStr
+            : (value && value.format(format)) || '';
         const sharedInputProps = {
             ...inputProps,
             size,
@@ -434,7 +455,10 @@ class TimePicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div {...obj.pickOthers(TimePicker.propTypes, others)} className={classNames}>
+            <div
+                {...obj.pickOthers(TimePicker.propTypes, others)}
+                className={classNames}
+            >
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
@@ -452,8 +476,13 @@ class TimePicker extends Component {
                     {popupContent ? (
                         popupContent
                     ) : (
-                        <div dir={others.dir} className={`${prefix}time-picker-body`}>
-                            <div className={`${prefix}time-picker-panel-header`}>
+                        <div
+                            dir={others.dir}
+                            className={`${prefix}time-picker-body`}
+                        >
+                            <div
+                                className={`${prefix}time-picker-panel-header`}
+                            >
                                 <Input
                                     {...sharedInputProps}
                                     placeholder={format}

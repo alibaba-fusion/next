@@ -13,8 +13,14 @@ const { makeChain, noop, bindCtx } = func;
 
 const isScrollDisplay = function(element) {
     try {
-        const scrollbarStyle = window.getComputedStyle(element, '::-webkit-scrollbar');
-        return !scrollbarStyle || scrollbarStyle.getPropertyValue('display') !== 'none';
+        const scrollbarStyle = window.getComputedStyle(
+            element,
+            '::-webkit-scrollbar'
+        );
+        return (
+            !scrollbarStyle ||
+            scrollbarStyle.getPropertyValue('display') !== 'none'
+        );
     } catch (e) {
         // ignore error for firefox
     }
@@ -380,10 +386,17 @@ export default class Overlay extends Component {
             if (node) {
                 const id = guid();
 
-                this._animation = events.on(node, support.animation.end, this.handleAnimateEnd.bind(this, id));
+                this._animation = events.on(
+                    node,
+                    support.animation.end,
+                    this.handleAnimateEnd.bind(this, id)
+                );
 
-                const animationDelay = parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
-                const animationDuration = parseFloat(getStyleProperty(node, 'animation-duration')) || 0;
+                const animationDelay =
+                    parseFloat(getStyleProperty(node, 'animation-delay')) || 0;
+                const animationDuration =
+                    parseFloat(getStyleProperty(node, 'animation-duration')) ||
+                    0;
                 const time = animationDelay + animationDuration;
                 if (time) {
                     this.timeoutMap[id] = setTimeout(() => {
@@ -397,7 +410,11 @@ export default class Overlay extends Component {
     handlePosition(config) {
         const align = config.align.join(' ');
 
-        if (!('animation' in this.props) && this.props.needAdjust && this.lastAlign !== align) {
+        if (
+            !('animation' in this.props) &&
+            this.props.needAdjust &&
+            this.lastAlign !== align
+        ) {
             this.setState({
                 animation: this.getAnimationByAlign(align),
             });
@@ -503,7 +520,8 @@ export default class Overlay extends Component {
                 bodyOverflowY = body.style.overflowY;
                 if (hasScroll()) {
                     bodyPaddingRight = body.style.paddingRight;
-                    style.paddingRight = `${dom.getStyle(body, 'paddingRight') + dom.scrollbar().width}px`;
+                    style.paddingRight = `${dom.getStyle(body, 'paddingRight') +
+                        dom.scrollbar().width}px`;
                 }
 
                 dom.setStyle(body, style);
@@ -574,12 +592,24 @@ export default class Overlay extends Component {
 
     addDocumentEvents() {
         if (this.props.canCloseByEsc) {
-            this._keydownEvents = events.on(document, 'keydown', this.handleDocumentKeyDown);
+            this._keydownEvents = events.on(
+                document,
+                'keydown',
+                this.handleDocumentKeyDown
+            );
         }
         if (this.props.canCloseByOutSideClick) {
-            this._clickEvents = events.on(document, 'click', this.handleDocumentClick);
+            this._clickEvents = events.on(
+                document,
+                'click',
+                this.handleDocumentClick
+            );
 
-            this._touchEvents = events.on(document, 'touchend', this.handleDocumentClick);
+            this._touchEvents = events.on(
+                document,
+                'touchend',
+                this.handleDocumentClick
+            );
         }
     }
 
@@ -600,7 +630,11 @@ export default class Overlay extends Component {
     }
 
     handleDocumentKeyDown(e) {
-        if (this.state.visible && e.keyCode === KEYCODE.ESC && overlayManager.isCurrentOverlay(this)) {
+        if (
+            this.state.visible &&
+            e.keyCode === KEYCODE.ESC &&
+            overlayManager.isCurrentOverlay(this)
+        ) {
             this.props.onRequestClose('keyboard', e);
         }
     }
@@ -608,7 +642,9 @@ export default class Overlay extends Component {
     handleDocumentClick(e) {
         if (this.state.visible) {
             const { safeNode } = this.props;
-            const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
+            const safeNodes = Array.isArray(safeNode)
+                ? [...safeNode]
+                : [safeNode];
             safeNodes.unshift(() => this.getWrapperNode());
 
             for (let i = 0; i < safeNodes.length; i++) {
@@ -619,7 +655,8 @@ export default class Overlay extends Component {
                     node &&
                     (node === e.target ||
                         node.contains(e.target) ||
-                        (e.target !== document && !document.documentElement.contains(e.target)))
+                        (e.target !== document &&
+                            !document.documentElement.contains(e.target)))
                 ) {
                     return;
                 }
@@ -675,11 +712,15 @@ export default class Overlay extends Component {
         } = this.props;
         const { visible: stateVisible, status, animation } = this.state;
 
-        let children = stateVisible || (cache && this._isMounted) ? propChildren : null;
+        let children =
+            stateVisible || (cache && this._isMounted) ? propChildren : null;
         if (children) {
             let child = Children.only(children);
             // if chlild is a functional component wrap in a component to allow a ref to be set
-            if (typeof child.type === 'function' && !(child.type.prototype instanceof Component)) {
+            if (
+                typeof child.type === 'function' &&
+                !(child.type.prototype instanceof Component)
+            ) {
                 child = <div role="none">{child}</div>;
             }
             const childClazz = classnames({
@@ -690,7 +731,9 @@ export default class Overlay extends Component {
                 [className]: !!className,
             });
             if (typeof child.ref === 'string') {
-                throw new Error('Can not set ref by string in Overlay, use function instead.');
+                throw new Error(
+                    'Can not set ref by string in Overlay, use function instead.'
+                );
             }
 
             children = React.cloneElement(child, {
@@ -702,7 +745,8 @@ export default class Overlay extends Component {
             });
 
             if (align) {
-                const shouldUpdatePosition = status === 'leaving' ? false : propShouldUpdatePosition;
+                const shouldUpdatePosition =
+                    status === 'leaving' ? false : propShouldUpdatePosition;
                 children = (
                     <Position
                         {...{
@@ -714,7 +758,10 @@ export default class Overlay extends Component {
                             container,
                             needAdjust,
                             beforePosition,
-                            onPosition: makeChain(this.handlePosition, onPosition),
+                            onPosition: makeChain(
+                                this.handlePosition,
+                                onPosition
+                            ),
                             shouldUpdatePosition,
                             rtl,
                         }}
@@ -722,7 +769,10 @@ export default class Overlay extends Component {
                 );
             }
 
-            const wrapperClazz = classnames([`${prefix}overlay-wrapper`, wrapperClassName]);
+            const wrapperClazz = classnames([
+                `${prefix}overlay-wrapper`,
+                wrapperClassName,
+            ]);
             const newWrapperStyle = Object.assign(
                 {},
                 {
@@ -737,7 +787,11 @@ export default class Overlay extends Component {
             });
 
             children = (
-                <div className={wrapperClazz} style={newWrapperStyle} dir={rtl ? 'rtl' : undefined}>
+                <div
+                    className={wrapperClazz}
+                    style={newWrapperStyle}
+                    dir={rtl ? 'rtl' : undefined}
+                >
                     {hasMask ? (
                         <div
                             className={maskClazz}
@@ -754,6 +808,11 @@ export default class Overlay extends Component {
             );
         }
 
-        return <Gateway {...{ container, target, children }} ref={this.saveGatewayRef} />;
+        return (
+            <Gateway
+                {...{ container, target, children }}
+                ref={this.saveGatewayRef}
+            />
+        );
     }
 }

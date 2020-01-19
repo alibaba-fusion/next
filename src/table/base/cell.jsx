@@ -17,7 +17,11 @@ export default class Cell extends React.Component {
         title: PropTypes.any,
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         context: PropTypes.any,
-        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
+        cell: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.node,
+            PropTypes.func,
+        ]),
         align: PropTypes.oneOf(['left', 'center', 'right']),
         component: PropTypes.oneOf(['td', 'th', 'div']),
         children: PropTypes.any,
@@ -95,7 +99,12 @@ export default class Cell extends React.Component {
         if (align) {
             tagStyle.textAlign = align;
             if (rtl) {
-                tagStyle.textAlign = align === 'left' ? 'right' : align === 'right' ? 'left' : align;
+                tagStyle.textAlign =
+                    align === 'left'
+                        ? 'right'
+                        : align === 'right'
+                        ? 'left'
+                        : align;
             }
         }
         const cls = classnames({

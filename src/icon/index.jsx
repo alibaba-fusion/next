@@ -20,7 +20,17 @@ class Icon extends Component {
          * <br/>**可选值**<br/> xxs, xs, small, medium, large, xl, xxl, xxxl, inherit
          */
         size: PropTypes.oneOfType([
-            PropTypes.oneOf(['xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl', 'inherit']),
+            PropTypes.oneOf([
+                'xxs',
+                'xs',
+                'small',
+                'medium',
+                'large',
+                'xl',
+                'xxl',
+                'xxxl',
+                'inherit',
+            ]),
             PropTypes.number,
         ]),
         className: PropTypes.string,
@@ -36,8 +46,19 @@ class Icon extends Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        const { prefix, type, size, className, rtl, style, children } = this.props;
-        const others = obj.pickOthers(Object.assign({}, Icon.propTypes), this.props);
+        const {
+            prefix,
+            type,
+            size,
+            className,
+            rtl,
+            style,
+            children,
+        } = this.props;
+        const others = obj.pickOthers(
+            Object.assign({}, Icon.propTypes),
+            this.props
+        );
 
         const classes = cx({
             [`${prefix}icon`]: true,
@@ -73,7 +94,11 @@ class Icon extends Component {
                 : {};
 
         return (
-            <i {...others} style={{ ...sizeStyle, ...style }} className={classes}>
+            <i
+                {...others}
+                style={{ ...sizeStyle, ...style }}
+                className={classes}
+            >
                 {children}
             </i>
         );

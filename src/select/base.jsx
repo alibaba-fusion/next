@@ -192,7 +192,10 @@ export default class Base extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.label !== this.props.label || prevState.value !== this.state.value) {
+        if (
+            prevProps.label !== this.props.label ||
+            prevState.value !== this.state.value
+        ) {
             this.syncWidth();
         }
     }
@@ -208,7 +211,10 @@ export default class Base extends React.Component {
      */
     syncWidth() {
         const { popupStyle, popupProps } = this.props;
-        if ((popupStyle && 'width' in popupStyle) || (popupProps && popupProps.style && 'width' in popupProps.style)) {
+        if (
+            (popupStyle && 'width' in popupStyle) ||
+            (popupProps && popupProps.style && 'width' in popupProps.style)
+        ) {
             return;
         }
 
@@ -283,7 +289,10 @@ export default class Base extends React.Component {
 
     setFirstHightLightKeyForMenu() {
         // 设置高亮 item key
-        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
+        if (
+            this.dataStore.getMenuDS().length &&
+            this.dataStore.getEnableDS().length
+        ) {
             this.setState({
                 highlightKey: `${this.dataStore.getEnableDS()[0].value}`,
             });
@@ -365,7 +374,9 @@ export default class Base extends React.Component {
         this.highlightTimer = setTimeout(() => {
             try {
                 const menuNode = findDOMNode(this.menuRef);
-                const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);
+                const itemNode = menuNode.querySelector(
+                    `.${prefix}select-menu-item.${prefix}focused`
+                );
                 itemNode && itemNode.scrollIntoViewIfNeeded();
             } catch (ex) {
                 // I don't care...
@@ -389,7 +400,14 @@ export default class Base extends React.Component {
      * @param {object} props
      */
     renderMenu() {
-        const { prefix, mode, locale, notFoundContent, useVirtual, menuProps } = this.props;
+        const {
+            prefix,
+            mode,
+            locale,
+            notFoundContent,
+            useVirtual,
+            menuProps,
+        } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
@@ -432,10 +450,15 @@ export default class Base extends React.Component {
             onMouseDown: preventDefault,
             className: menuClassName,
         };
-        const menuStyle = this.shouldAutoWidth() ? { width: this.width } : { minWidth: this.width };
+        const menuStyle = this.shouldAutoWidth()
+            ? { width: this.width }
+            : { minWidth: this.width };
 
         return useVirtual && children.length ? (
-            <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
+            <div
+                className={`${prefix}select-menu-wrapper`}
+                style={{ position: 'relative', ...menuStyle }}
+            >
                 <VirtualList
                     itemsRenderer={(items, ref) => {
                         return (
@@ -496,7 +519,11 @@ export default class Base extends React.Component {
                     itemProps.title = item.title;
                 }
 
-                return <MenuItem {...itemProps}>{itemRender(item, searchKey)}</MenuItem>;
+                return (
+                    <MenuItem {...itemProps}>
+                        {itemRender(item, searchKey)}
+                    </MenuItem>
+                );
             }
         });
     }
@@ -533,7 +560,10 @@ export default class Base extends React.Component {
 
     savePopupRef = ref => {
         this.popupRef = ref;
-        if (this.props.popupProps && typeof this.props.popupProps.ref === 'function') {
+        if (
+            this.props.popupProps &&
+            typeof this.props.popupProps.ref === 'function'
+        ) {
             this.props.popupProps.ref(ref);
         }
     };
@@ -567,7 +597,8 @@ export default class Base extends React.Component {
 
         const cls = classNames(
             {
-                [`${prefix}select-auto-complete-menu`]: !popupContent && this.isAutoComplete,
+                [`${prefix}select-auto-complete-menu`]:
+                    !popupContent && this.isAutoComplete,
                 [`${prefix}select-${mode}-menu`]: !popupContent && !!mode,
             },
             popupClassName || popupProps.className
@@ -604,7 +635,11 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={fillProps ? valueDS[fillProps] : valueDS.label}
+                                value={
+                                    fillProps
+                                        ? valueDS[fillProps]
+                                        : valueDS.label
+                                }
                             />
                         );
                     } else {
@@ -645,11 +680,17 @@ export default class Base extends React.Component {
         const Tag = popupComponent ? popupComponent : Popup;
 
         return (
-            <Tag {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
+            <Tag
+                {..._props}
+                trigger={this.renderSelect()}
+                ref={this.savePopupRef}
+            >
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
-                        style={this.shouldAutoWidth() ? { width: this.width } : {}}
+                        style={
+                            this.shouldAutoWidth() ? { width: this.width } : {}
+                        }
                     >
                         {popupContent}
                     </div>

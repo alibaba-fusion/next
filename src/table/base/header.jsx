@@ -128,7 +128,12 @@ export default class Header extends React.Component {
                     }
                     if (resizable) {
                         resizeElement = (
-                            <Resize prefix={prefix} rtl={rtl} dataIndex={dataIndex} onChange={onResizeChange} />
+                            <Resize
+                                prefix={prefix}
+                                rtl={rtl}
+                                dataIndex={dataIndex}
+                                onChange={onResizeChange}
+                            />
                         );
                     }
 

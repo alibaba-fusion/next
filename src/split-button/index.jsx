@@ -253,7 +253,11 @@ class SplitButton extends React.Component {
         });
 
         const trigger = (
-            <Button {...triggerProps} {...sharedBtnProps} className={triggerClassNames}>
+            <Button
+                {...triggerProps}
+                {...sharedBtnProps}
+                className={triggerClassNames}
+            >
                 <Icon type="arrow-down" />
             </Button>
         );

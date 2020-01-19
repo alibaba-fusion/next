@@ -25,7 +25,10 @@ export default function fixed(BaseComponent) {
             /**
              * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
              */
-            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            maxBodyHeight: PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.string,
+            ]),
             ...BaseComponent.propTypes,
         };
 
@@ -43,7 +46,10 @@ export default function fixed(BaseComponent) {
             fixedHeader: PropTypes.bool,
             getNode: PropTypes.func,
             onScroll: PropTypes.func,
-            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            maxBodyHeight: PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.string,
+            ]),
         };
 
         getChildContext() {
@@ -64,7 +70,9 @@ export default function fixed(BaseComponent) {
         }
 
         getNode = (type, node, lockType) => {
-            lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
+            lockType = lockType
+                ? lockType.charAt(0).toUpperCase() + lockType.substr(1)
+                : '';
             this[`${type}${lockType}Node`] = node;
         };
 
@@ -81,7 +89,10 @@ export default function fixed(BaseComponent) {
                 if (this.bodyNode && scrollTop !== this.bodyNode.scrollTop) {
                     this.bodyNode.scrollTop = scrollTop;
                 }
-                if (this.headerNode && scrollLeft !== this.headerNode.scrollLeft) {
+                if (
+                    this.headerNode &&
+                    scrollLeft !== this.headerNode.scrollLeft
+                ) {
                     this.headerNode.scrollLeft = scrollLeft;
                 }
             } else if (current.target === this.headerNode) {

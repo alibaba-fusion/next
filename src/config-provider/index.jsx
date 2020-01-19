@@ -91,7 +91,10 @@ class ConfigProvider extends Component {
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
-        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+        nextErrorBoundary: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.object,
+        ]),
     };
 
     /**
@@ -111,7 +114,11 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(props, childContextCache.root() || {}, displayName);
+        return getContextProps(
+            props,
+            childContextCache.root() || {},
+            displayName
+        );
     };
 
     static initLocales = initLocales;
@@ -150,7 +157,14 @@ class ConfigProvider extends Component {
 
     constructor(...args) {
         super(...args);
-        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
+        childContextCache.add(
+            this,
+            Object.assign(
+                {},
+                childContextCache.get(this, {}),
+                this.getChildContext()
+            )
+        );
 
         this.state = {
             locale: this.props.locale,
@@ -158,7 +172,16 @@ class ConfigProvider extends Component {
     }
 
     getChildContext() {
-        const { prefix, locale, pure, warning, rtl, device, popupContainer, errorBoundary } = this.props;
+        const {
+            prefix,
+            locale,
+            pure,
+            warning,
+            rtl,
+            device,
+            popupContainer,
+            errorBoundary,
+        } = this.props;
 
         return {
             nextPrefix: prefix,
@@ -185,7 +208,14 @@ class ConfigProvider extends Component {
     }
 
     componentDidUpdate() {
-        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
+        childContextCache.add(
+            this,
+            Object.assign(
+                {},
+                childContextCache.get(this, {}),
+                this.getChildContext()
+            )
+        );
     }
 
     componentWillUnmount() {

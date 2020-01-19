@@ -285,15 +285,23 @@ class TreeNode extends Component {
         const { disabled, root } = this.props;
         if (!disabled) {
             const selectable =
-                typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
+                typeof this.props.selectable !== 'undefined'
+                    ? this.props.selectable
+                    : root.props.selectable;
             if (selectable) {
                 props.onClick = this.handleSelect;
             }
-            const editable = typeof this.props.editable !== 'undefined' ? this.props.editable : root.props.editable;
+            const editable =
+                typeof this.props.editable !== 'undefined'
+                    ? this.props.editable
+                    : root.props.editable;
             if (editable) {
                 props.onDoubleClick = this.handleEditStart;
             }
-            const draggable = typeof this.props.draggable !== 'undefined' ? this.props.draggable : root.props.draggable;
+            const draggable =
+                typeof this.props.draggable !== 'undefined'
+                    ? this.props.draggable
+                    : root.props.draggable;
             if (draggable) {
                 props.draggable = true;
                 props.onDragStart = this.handleDragStart;
@@ -318,13 +326,26 @@ class TreeNode extends Component {
             [`${prefix}loading`]: loading,
             [`${prefix}loading-${lineState}`]: loading,
         });
-        const iconType = loadData && loading ? 'loading' : showLine ? (expanded ? 'minus' : 'add') : 'arrow-down';
+        const iconType =
+            loadData && loading
+                ? 'loading'
+                : showLine
+                ? expanded
+                    ? 'minus'
+                    : 'add'
+                : 'arrow-down';
 
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-            <span className={className} onClick={disabled ? null : this.handleExpand}>
+            <span
+                className={className}
+                onClick={disabled ? null : this.handleExpand}
+            >
                 {this.renderRightAngle()}
-                <Icon className={`${prefix}tree-switcher-icon`} type={iconType} />
+                <Icon
+                    className={`${prefix}tree-switcher-icon`}
+                    type={iconType}
+                />
             </span>
         );
     }
@@ -345,11 +366,18 @@ class TreeNode extends Component {
 
     renderRightAngle() {
         const { prefix, pos } = this.props;
-        return this.showLine && !isRoot(pos) ? <span className={`${prefix}tree-right-angle`} /> : null;
+        return this.showLine && !isRoot(pos) ? (
+            <span className={`${prefix}tree-right-angle`} />
+        ) : null;
     }
 
     renderCheckbox() {
-        const { checked, indeterminate, disabled, checkboxDisabled } = this.props;
+        const {
+            checked,
+            indeterminate,
+            disabled,
+            checkboxDisabled,
+        } = this.props;
         const { label } = this.state;
 
         return (
@@ -368,11 +396,15 @@ class TreeNode extends Component {
         const { prefix, root, disabled } = this.props;
         const { isNodeBlock } = root.props;
         const { label } = this.state;
-        const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
+        const selectable =
+            typeof this.props.selectable !== 'undefined'
+                ? this.props.selectable
+                : root.props.selectable;
         const labelProps = {
             className: cx({
                 [`${prefix}tree-node-label`]: true,
-                [`${prefix}tree-node-label-selectable`]: selectable && !disabled,
+                [`${prefix}tree-node-label-selectable`]:
+                    selectable && !disabled,
             }),
         };
 
@@ -381,7 +413,10 @@ class TreeNode extends Component {
         }
 
         return (
-            <div className={`${prefix}tree-node-label-wrapper`} ref="labelWrapper">
+            <div
+                className={`${prefix}tree-node-label-wrapper`}
+                ref="labelWrapper"
+            >
                 <div {...labelProps}>{label}</div>
             </div>
         );
@@ -391,7 +426,10 @@ class TreeNode extends Component {
         const { prefix } = this.props;
         const { label } = this.state;
         return (
-            <div className={`${prefix}tree-node-label-wrapper`} ref="labelWrapper">
+            <div
+                className={`${prefix}tree-node-label-wrapper`}
+                ref="labelWrapper"
+            >
                 <TreeNodeInput
                     prefix={prefix}
                     defaultValue={label}
@@ -448,7 +486,13 @@ class TreeNode extends Component {
             _key,
             size,
         } = this.props;
-        const { loadData, isNodeBlock, showLine, draggable: rootDraggable, filterTreeNode } = root.props;
+        const {
+            loadData,
+            isNodeBlock,
+            showLine,
+            draggable: rootDraggable,
+            filterTreeNode,
+        } = root.props;
         const { label } = this.state;
 
         this.showLine = !isNodeBlock && showLine;
@@ -473,7 +517,8 @@ class TreeNode extends Component {
         }
         const newClassName = cx({
             [`${prefix}tree-node`]: true,
-            [`${prefix}filtered`]: !!filterTreeNode && !!root.filterTreeNode(this),
+            [`${prefix}filtered`]:
+                !!filterTreeNode && !!root.filterTreeNode(this),
             [className]: !!className,
         });
 
@@ -486,12 +531,20 @@ class TreeNode extends Component {
             [`${prefix}drag-over-gap-bottom`]: dragOverGapBottom,
         });
 
-        const defaultPaddingLeft = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.defaultPaddingLeft || 0) : 0;
-        const indent = typeof isNodeBlock === 'object' ? parseInt(isNodeBlock.indent || 24) : 24;
+        const defaultPaddingLeft =
+            typeof isNodeBlock === 'object'
+                ? parseInt(isNodeBlock.defaultPaddingLeft || 0)
+                : 0;
+        const indent =
+            typeof isNodeBlock === 'object'
+                ? parseInt(isNodeBlock.indent || 24)
+                : 24;
         const level = indexArr.length - 2;
         const paddingLeftProp = rtl ? 'paddingRight' : 'paddingLeft';
 
-        const innerStyle = isNodeBlock ? { [paddingLeftProp]: `${indent * level + defaultPaddingLeft}px` } : null;
+        const innerStyle = isNodeBlock
+            ? { [paddingLeftProp]: `${indent * level + defaultPaddingLeft}px` }
+            : null;
 
         const innerProps = {
             className: innerClassName,
@@ -505,7 +558,10 @@ class TreeNode extends Component {
 
         const hasChildTree = children && Children.count(children);
         const canExpand = hasChildTree || (loadData && !isLeaf);
-        const checkable = typeof this.props.checkable !== 'undefined' ? this.props.checkable : root.props.checkable;
+        const checkable =
+            typeof this.props.checkable !== 'undefined'
+                ? this.props.checkable
+                : root.props.checkable;
         const { editing } = this.state;
 
         innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
@@ -529,7 +585,9 @@ class TreeNode extends Component {
                     aria-setsize={size}
                     {...innerProps}
                 >
-                    {canExpand ? this.renderSwitcher() : this.renderNoopSwitcher()}
+                    {canExpand
+                        ? this.renderSwitcher()
+                        : this.renderNoopSwitcher()}
                     {checkable ? this.renderCheckbox() : null}
                     {editing ? this.renderInput() : this.renderLabel()}
                 </div>

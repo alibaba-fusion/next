@@ -183,7 +183,10 @@ class YearPicker extends Component {
     }
 
     onValueChange = newValue => {
-        const ret = this.state.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
+        const ret =
+            this.state.inputAsString && newValue
+                ? newValue.format(this.props.format)
+                : newValue;
         this.props.onChange(ret);
     };
 
@@ -198,9 +201,14 @@ class YearPicker extends Component {
             .minute(0)
             .second(0);
 
-        this.handleChange(selectedMonth, prevSelectedMonth, { inputing: false }, () => {
-            this.onVisibleChange(false, 'calendarSelect');
-        });
+        this.handleChange(
+            selectedMonth,
+            prevSelectedMonth,
+            { inputing: false },
+            () => {
+                this.onVisibleChange(false, 'calendarSelect');
+            }
+        );
     };
 
     clearValue = () => {
@@ -243,7 +251,11 @@ class YearPicker extends Component {
     onKeyDown = e => {
         const { format } = this.props;
         const { dateInputStr, value } = this.state;
-        const dateStr = onDateKeydown(e, { format, dateInputStr, value }, 'year');
+        const dateStr = onDateKeydown(
+            e,
+            { format, dateInputStr, value },
+            'year'
+        );
         if (!dateStr) return;
         this.onDateInputChange(dateStr);
     };
@@ -358,7 +370,9 @@ class YearPicker extends Component {
         }
 
         if (isPreview) {
-            return this.renderPreview(obj.pickOthers(others, YearPicker.PropTypes));
+            return this.renderPreview(
+                obj.pickOthers(others, YearPicker.PropTypes)
+            );
         }
 
         const panelInputCls = `${prefix}year-picker-panel-input`;
@@ -373,7 +387,9 @@ class YearPicker extends Component {
             onKeyDown: this.onKeyDown,
         };
 
-        const dateInputValue = inputing ? dateInputStr : (value && value.format(format)) || '';
+        const dateInputValue = inputing
+            ? dateInputStr
+            : (value && value.format(format)) || '';
         const triggerInputValue = dateInputValue;
 
         const dateInput = (
@@ -422,7 +438,10 @@ class YearPicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div {...obj.pickOthers(YearPicker.propTypes, others)} className={yearPickerCls}>
+            <div
+                {...obj.pickOthers(YearPicker.propTypes, others)}
+                className={yearPickerCls}
+            >
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
@@ -441,7 +460,11 @@ class YearPicker extends Component {
                         popupContent
                     ) : (
                         <div dir={others.dir} className={panelBodyClassName}>
-                            <div className={`${prefix}year-picker-panel-header`}>{dateInput}</div>
+                            <div
+                                className={`${prefix}year-picker-panel-header`}
+                            >
+                                {dateInput}
+                            </div>
                             {panelBody}
                             {panelFooter}
                         </div>

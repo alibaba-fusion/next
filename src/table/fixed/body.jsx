@@ -19,7 +19,10 @@ export default class FixedBody extends React.Component {
 
     static contextTypes = {
         fixedHeader: PropTypes.bool,
-        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        maxBodyHeight: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+        ]),
         onBodyScroll: PropTypes.func,
         getNode: PropTypes.func,
     };
@@ -44,7 +47,11 @@ export default class FixedBody extends React.Component {
             style.position = 'relative';
         }
         return (
-            <div style={style} className={className} onScroll={this.onBodyScroll}>
+            <div
+                style={style}
+                className={className}
+                onScroll={this.onBodyScroll}
+            >
                 <table>
                     {colGroup}
                     <BodyComponent {...others} colGroup={colGroup} />

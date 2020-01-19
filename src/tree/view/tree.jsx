@@ -73,7 +73,12 @@ const getExpandedKeys = (props, willReceiveProps, _k2n, _p2n) => {
             return children && children.length;
         });
     } else {
-        expandedKeys = 'expandedKeys' in props ? props.expandedKeys : willReceiveProps ? [] : props.defaultExpandedKeys;
+        expandedKeys =
+            'expandedKeys' in props
+                ? props.expandedKeys
+                : willReceiveProps
+                ? []
+                : props.defaultExpandedKeys;
         expandedKeys = normalizeToArray(expandedKeys);
 
         if (props.autoExpandParent) {
@@ -110,7 +115,12 @@ const getExpandedKeys = (props, willReceiveProps, _k2n, _p2n) => {
 };
 
 const getSelectedKeys = (props, willReceiveProps, _k2n) => {
-    let selectedKeys = 'selectedKeys' in props ? props.selectedKeys : willReceiveProps ? [] : props.defaultSelectedKeys;
+    let selectedKeys =
+        'selectedKeys' in props
+            ? props.selectedKeys
+            : willReceiveProps
+            ? []
+            : props.defaultSelectedKeys;
     selectedKeys = normalizeToArray(selectedKeys);
 
     return selectedKeys.filter(key => _k2n[key]);
@@ -126,7 +136,12 @@ const getIndeterminateKeys = (checkedKeys, checkStrictly, _k2n, _p2n) => {
     const poss = filterChildKey(
         checkedKeys
             .filter(key => !!_k2n[key])
-            .filter(key => !_k2n[key].disabled && !_k2n[key].checkboxDisabled && _k2n[key].checkable !== false),
+            .filter(
+                key =>
+                    !_k2n[key].disabled &&
+                    !_k2n[key].checkboxDisabled &&
+                    _k2n[key].checkable !== false
+            ),
         _k2n,
         _p2n
     ).map(key => _k2n[key].pos);
@@ -171,7 +186,12 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
         checkedKeys = getAllCheckedKeys(checkedKeys, _k2n, _p2n);
         checkedKeys = checkedKeys.filter(key => !!_k2n[key]);
 
-        indeterminateKeys = getIndeterminateKeys(checkedKeys, props.checkStrictly, _k2n, _p2n);
+        indeterminateKeys = getIndeterminateKeys(
+            checkedKeys,
+            props.checkStrictly,
+            _k2n,
+            _p2n
+        );
     }
 
     return { checkedKeys, indeterminateKeys };
@@ -229,7 +249,10 @@ class Tree extends Component {
         /**
          * （用于受控）当前勾选复选框节点 key 的数组或 `{checked: Array, indeterminate: Array}` 的对象
          */
-        checkedKeys: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.object]),
+        checkedKeys: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.object,
+        ]),
         /**
          * （用于非受控）默认勾选复选框节点 key 的数组
          */
@@ -442,7 +465,12 @@ class Tree extends Component {
         const { focusable, autoFocus, focusedKey } = this.props;
         const willReceiveProps = false;
 
-        const { checkedKeys, indeterminateKeys = [] } = getCheckedKeys(props, willReceiveProps, k2n, p2n);
+        const { checkedKeys, indeterminateKeys = [] } = getCheckedKeys(
+            props,
+            willReceiveProps,
+            k2n,
+            p2n
+        );
 
         this.state = {
             _k2n: k2n,
@@ -458,9 +486,19 @@ class Tree extends Component {
             this.tabbableKey = this.getFirstAvaliablelChildKey('0');
         }
 
-        this.state.focusedKey = 'focusedKey' in props ? focusedKey : focusable && autoFocus ? this.tabbableKey : null;
+        this.state.focusedKey =
+            'focusedKey' in props
+                ? focusedKey
+                : focusable && autoFocus
+                ? this.tabbableKey
+                : null;
 
-        bindCtx(this, ['handleExpand', 'handleSelect', 'handleCheck', 'handleBlur']);
+        bindCtx(this, [
+            'handleExpand',
+            'handleSelect',
+            'handleCheck',
+            'handleBlur',
+        ]);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -476,15 +514,29 @@ class Tree extends Component {
         }
 
         if ('expandedKeys' in props) {
-            st.expandedKeys = getExpandedKeys(props, state.willReceiveProps, k2n, p2n);
+            st.expandedKeys = getExpandedKeys(
+                props,
+                state.willReceiveProps,
+                k2n,
+                p2n
+            );
         }
 
         if ('selectedKeys' in props) {
-            st.selectedKeys = getSelectedKeys(props, state.willReceiveProps, k2n);
+            st.selectedKeys = getSelectedKeys(
+                props,
+                state.willReceiveProps,
+                k2n
+            );
         }
 
         if ('checkedKeys' in props) {
-            const { checkedKeys } = getCheckedKeys(props, state.willReceiveProps, k2n, p2n);
+            const { checkedKeys } = getCheckedKeys(
+                props,
+                state.willReceiveProps,
+                k2n,
+                p2n
+            );
             st.checkedKeys = checkedKeys;
         }
 
@@ -505,12 +557,17 @@ class Tree extends Component {
     setFocusKey() {
         const { selectedKeys = [] } = this.state;
         this.setState({
-            focusedKey: selectedKeys.length > 0 ? selectedKeys[0] : this.getFirstAvaliablelChildKey('0'),
+            focusedKey:
+                selectedKeys.length > 0
+                    ? selectedKeys[0]
+                    : this.getFirstAvaliablelChildKey('0'),
         });
     }
 
     getAvailableKey(pos, prev) {
-        const ps = Object.keys(this.state._p2n).filter(p => this.isAvailablePos(pos, p));
+        const ps = Object.keys(this.state._p2n).filter(p =>
+            this.isAvailablePos(pos, p)
+        );
         if (ps.length > 1) {
             const index = ps.indexOf(pos);
             let targetIndex;
@@ -527,7 +584,9 @@ class Tree extends Component {
     }
 
     getFirstAvaliablelChildKey(parentPos) {
-        const pos = Object.keys(this.state._p2n).find(p => this.isAvailablePos(`${parentPos}-0`, p));
+        const pos = Object.keys(this.state._p2n).find(p =>
+            this.isAvailablePos(`${parentPos}-0`, p)
+        );
         return pos ? this.state._p2n[pos].key : null;
     }
 
@@ -565,9 +624,15 @@ class Tree extends Component {
     /*eslint-disable max-statements*/
     handleItemKeyDown(key, item, e) {
         if (
-            [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.RIGHT, KEYCODE.LEFT, KEYCODE.ENTER, KEYCODE.ESC, KEYCODE.SPACE].indexOf(
-                e.keyCode
-            ) > -1
+            [
+                KEYCODE.UP,
+                KEYCODE.DOWN,
+                KEYCODE.RIGHT,
+                KEYCODE.LEFT,
+                KEYCODE.ENTER,
+                KEYCODE.ESC,
+                KEYCODE.SPACE,
+            ].indexOf(e.keyCode) > -1
         ) {
             e.preventDefault();
             e.stopPropagation();
@@ -618,8 +683,10 @@ class Tree extends Component {
 
             case KEYCODE.ENTER:
             case KEYCODE.SPACE: {
-                const checkable = item.props.checkable === true || this.props.checkable;
-                const selectable = item.props.selectable === true || this.props.selectable;
+                const checkable =
+                    item.props.checkable === true || this.props.checkable;
+                const selectable =
+                    item.props.selectable === true || this.props.selectable;
 
                 if (checkable) {
                     this.handleCheck(!item.props.checked, key, node);
@@ -761,15 +828,24 @@ class Tree extends Component {
             for (let j = 0; j < ps.length; j++) {
                 const p = ps[j];
                 const pnode = this.state._p2n[p];
-                if (isSiblingOrSelf(currentPos, p) && !pnode.disabled && !pnode.checkboxDisabled) {
+                if (
+                    isSiblingOrSelf(currentPos, p) &&
+                    !pnode.disabled &&
+                    !pnode.checkboxDisabled
+                ) {
                     const k = pnode.key;
                     if (pnode.checkable === false) {
                         // eslint-disable-next-line max-depth
-                        if (!pnode.children || pnode.children.length === 0) continue;
+                        if (!pnode.children || pnode.children.length === 0)
+                            continue;
 
                         // eslint-disable-next-line max-depth
                         for (let m = 0; m < pnode.children.length; m++) {
-                            if (!pnode.children.every(child => isNodeChecked(child, checkedKeys))) {
+                            if (
+                                !pnode.children.every(child =>
+                                    isNodeChecked(child, checkedKeys)
+                                )
+                            ) {
                                 parentCheck = false;
                                 break;
                             }
@@ -787,7 +863,12 @@ class Tree extends Component {
             currentPos = parentPos;
         }
 
-        const indeterminateKeys = getIndeterminateKeys(checkedKeys, checkStrictly, this.state._k2n, this.state._p2n);
+        const indeterminateKeys = getIndeterminateKeys(
+            checkedKeys,
+            checkStrictly,
+            this.state._k2n,
+            this.state._p2n
+        );
         if (!('checkedKeys' in this.props)) {
             this.setState({
                 checkedKeys,
@@ -798,10 +879,18 @@ class Tree extends Component {
         let newCheckedKeys;
         switch (checkedStrategy) {
             case 'parent':
-                newCheckedKeys = filterChildKey(checkedKeys, this.state._k2n, this.state._p2n);
+                newCheckedKeys = filterChildKey(
+                    checkedKeys,
+                    this.state._k2n,
+                    this.state._p2n
+                );
                 break;
             case 'child':
-                newCheckedKeys = filterParentKey(checkedKeys, this.state._k2n, this.state._p2n);
+                newCheckedKeys = filterParentKey(
+                    checkedKeys,
+                    this.state._k2n,
+                    this.state._p2n
+                );
                 break;
             default:
                 newCheckedKeys = checkedKeys;
@@ -825,7 +914,12 @@ class Tree extends Component {
     /*eslint-enable*/
     getNodeProps(key) {
         const { prefix } = this.props;
-        const { expandedKeys, selectedKeys, checkedKeys, dragOverNodeKey } = this.state;
+        const {
+            expandedKeys,
+            selectedKeys,
+            checkedKeys,
+            dragOverNodeKey,
+        } = this.state;
         const pos = this.state._k2n[key].pos;
 
         return {
@@ -839,7 +933,8 @@ class Tree extends Component {
             indeterminate: this.state.indeterminateKeys.indexOf(key) > -1,
             dragOver: dragOverNodeKey === key && this.dropPosition === 0,
             dragOverGapTop: dragOverNodeKey === key && this.dropPosition === -1,
-            dragOverGapBottom: dragOverNodeKey === key && this.dropPosition === 1,
+            dragOverGapBottom:
+                dragOverNodeKey === key && this.dropPosition === 1,
         };
     }
 
@@ -856,17 +951,26 @@ class Tree extends Component {
     }
 
     getNodes(keys) {
-        return keys.map(key => this.state._k2n[key] && this.state._k2n[key].node).filter(v => !!v);
+        return keys
+            .map(key => this.state._k2n[key] && this.state._k2n[key].node)
+            .filter(v => !!v);
     }
 
     handleDragStart(e, node) {
         const dragNodeKey = node.props.eventKey;
         this.dragNode = node;
         this.dragNodesKeys = Object.keys(this.state._k2n).filter(k => {
-            return isDescendantOrSelf(this.state._k2n[dragNodeKey].pos, this.state._k2n[k].pos);
+            return isDescendantOrSelf(
+                this.state._k2n[dragNodeKey].pos,
+                this.state._k2n[k].pos
+            );
         });
 
-        const expandedKeys = this.processKey([...this.state.expandedKeys], dragNodeKey, false);
+        const expandedKeys = this.processKey(
+            [...this.state.expandedKeys],
+            dragNodeKey,
+            false
+        );
         this.setState({ expandedKeys });
 
         this.props.onDragStart({
@@ -879,14 +983,22 @@ class Tree extends Component {
     handleDragEnter(e, node) {
         const dragOverNodeKey = node.props.eventKey;
         this.dropPosition = this.getDropPosition(e, node);
-        if (this.dragNode && this.dragNode.props.eventKey === dragOverNodeKey && this.dropPosition === 0) {
+        if (
+            this.dragNode &&
+            this.dragNode.props.eventKey === dragOverNodeKey &&
+            this.dropPosition === 0
+        ) {
             this.setState({
                 dragOverNodeKey: null,
             });
             return;
         }
 
-        const expandedKeys = this.processKey([...this.state.expandedKeys], dragOverNodeKey, true);
+        const expandedKeys = this.processKey(
+            [...this.state.expandedKeys],
+            dragOverNodeKey,
+            true
+        );
         this.setState({
             dragOverNodeKey,
             expandedKeys,
@@ -985,7 +1097,14 @@ class Tree extends Component {
                 if (children && children.length) {
                     props.children = loop(children, pos);
                 }
-                const node = <TreeNode rtl={rtl} key={key} size={data.length} {...props} />;
+                const node = (
+                    <TreeNode
+                        rtl={rtl}
+                        key={key}
+                        size={data.length}
+                        {...props}
+                    />
+                );
                 // eslint-disable-next-line
                 this.state._k2n[key].node = node;
                 return node;
@@ -1024,7 +1143,16 @@ class Tree extends Component {
     }
 
     render() {
-        const { prefix, rtl, className, dataSource, showLine, isNodeBlock, isLabelBlock, multiple } = this.props;
+        const {
+            prefix,
+            rtl,
+            className,
+            dataSource,
+            showLine,
+            isNodeBlock,
+            isLabelBlock,
+            multiple,
+        } = this.props;
         const others = pickOthers(Object.keys(Tree.propTypes), this.props);
 
         if (rtl) {
@@ -1048,7 +1176,9 @@ class Tree extends Component {
                 className={newClassName}
                 {...others}
             >
-                {dataSource ? this.renderByDataSource() : this.renderByChildren()}
+                {dataSource
+                    ? this.renderByDataSource()
+                    : this.renderByChildren()}
             </ul>
         );
     }

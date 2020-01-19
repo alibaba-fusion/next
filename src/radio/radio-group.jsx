@@ -34,11 +34,19 @@ class RadioGroup extends Component {
         /**
          * radio group的选中项的值
          */
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         /**
          * radio group的默认值
          */
-        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        defaultValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         /**
          * 设置标签类型
          */
@@ -66,11 +74,17 @@ class RadioGroup extends Component {
         /**
          * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`
          */
-        dataSource: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
+        dataSource: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object),
+        ]),
         /**
          * 通过子元素方式设置内部radio
          */
-        children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element]),
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.element),
+            PropTypes.element,
+        ]),
 
         /**
          * 子项目的排列方式
@@ -103,7 +117,11 @@ class RadioGroup extends Component {
         onChange: PropTypes.func,
         __group__: PropTypes.bool,
         isButton: PropTypes.bool,
-        selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        selectedValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
         disabled: PropTypes.bool,
     };
 
@@ -165,7 +183,10 @@ class RadioGroup extends Component {
             isPreview,
             renderPreview,
         } = this.props;
-        const others = pickOthers(Object.keys(RadioGroup.propTypes), this.props);
+        const others = pickOthers(
+            Object.keys(RadioGroup.propTypes),
+            this.props
+        );
 
         if (rtl) {
             others.dir = 'rtl';
@@ -174,29 +195,37 @@ class RadioGroup extends Component {
         let children;
         const previewed = {};
         if (this.props.children) {
-            children = React.Children.map(this.props.children, (child, index) => {
-                if (!React.isValidElement(child)) {
-                    return child;
-                }
-                const checked = this.state.value === child.props.value;
-                if (checked) {
-                    previewed.label = child.props.children;
-                    previewed.value = child.props.value;
-                }
-                const tabIndex = (index === 0 && !this.state.value) || checked ? 0 : -1;
-                const childrtl = child.props.rtl === undefined ? rtl : child.props.rtl;
-                if (child.type && child.type.displayName === 'Config(Radio)') {
+            children = React.Children.map(
+                this.props.children,
+                (child, index) => {
+                    if (!React.isValidElement(child)) {
+                        return child;
+                    }
+                    const checked = this.state.value === child.props.value;
+                    if (checked) {
+                        previewed.label = child.props.children;
+                        previewed.value = child.props.value;
+                    }
+                    const tabIndex =
+                        (index === 0 && !this.state.value) || checked ? 0 : -1;
+                    const childrtl =
+                        child.props.rtl === undefined ? rtl : child.props.rtl;
+                    if (
+                        child.type &&
+                        child.type.displayName === 'Config(Radio)'
+                    ) {
+                        return React.cloneElement(child, {
+                            checked,
+                            tabIndex,
+                            rtl: childrtl,
+                        });
+                    }
                     return React.cloneElement(child, {
                         checked,
-                        tabIndex,
                         rtl: childrtl,
                     });
                 }
-                return React.cloneElement(child, {
-                    checked,
-                    rtl: childrtl,
-                });
-            });
+            );
         } else {
             children = this.props.dataSource.map((item, index) => {
                 let option = item;
@@ -215,7 +244,11 @@ class RadioGroup extends Component {
                 return (
                     <Radio
                         key={index}
-                        tabIndex={(index === 0 && !this.state.value) || checked ? 0 : -1}
+                        tabIndex={
+                            (index === 0 && !this.state.value) || checked
+                                ? 0
+                                : -1
+                        }
                         value={option.value}
                         checked={checked}
                         label={option.label}
@@ -256,7 +289,13 @@ class RadioGroup extends Component {
 
         const TagName = component;
         return (
-            <TagName {...others} aria-disabled={disabled} role="radiogroup" className={cls} style={style}>
+            <TagName
+                {...others}
+                aria-disabled={disabled}
+                role="radiogroup"
+                className={cls}
+                style={style}
+            >
                 {children}
             </TagName>
         );

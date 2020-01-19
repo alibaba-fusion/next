@@ -18,7 +18,11 @@ export default class LockBody extends React.Component {
     };
 
     componentDidMount() {
-        this.context.getLockNode('body', findDOMNode(this), this.context.lockType);
+        this.context.getLockNode(
+            'body',
+            findDOMNode(this),
+            this.context.lockType
+        );
     }
 
     onBodyScroll = event => {

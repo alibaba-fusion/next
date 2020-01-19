@@ -54,7 +54,10 @@ export default class Position extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (('align' in nextProps && nextProps.align !== this.props.align) || nextProps.shouldUpdatePosition) {
+        if (
+            ('align' in nextProps && nextProps.align !== this.props.align) ||
+            nextProps.shouldUpdatePosition
+        ) {
             this.shouldUpdatePosition = true;
         }
     }
@@ -75,7 +78,16 @@ export default class Position extends Component {
     }
 
     setPosition() {
-        const { align, offset, beforePosition, onPosition, needAdjust, container, rtl, autoFit } = this.props;
+        const {
+            align,
+            offset,
+            beforePosition,
+            onPosition,
+            needAdjust,
+            container,
+            rtl,
+            autoFit,
+        } = this.props;
 
         beforePosition();
 
@@ -114,7 +126,9 @@ export default class Position extends Component {
     getTargetNode() {
         const { target } = this.props;
 
-        return target === position.VIEWPORT ? position.VIEWPORT : findNode(target, this.props);
+        return target === position.VIEWPORT
+            ? position.VIEWPORT
+            : findNode(target, this.props);
     }
 
     handleResize() {
