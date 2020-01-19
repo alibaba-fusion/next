@@ -333,7 +333,7 @@ export default function lock(BaseComponent) {
             if (!this.adjustIfTableNotNeedLock()) {
                 this.adjustHeaderSize();
                 this.adjustBodySize();
-                this.adjustCellSize();
+                this.adjustRowHeight();
                 this.onLockBodyScrollLeft();
             }
         };
@@ -528,7 +528,7 @@ export default function lock(BaseComponent) {
             }
         }
 
-        adjustCellSize() {
+        adjustRowHeight() {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
                     // record may be a string
@@ -537,32 +537,28 @@ export default function lock(BaseComponent) {
                             ? item.__rowIndex
                             : index;
 
-                    const { left, right, origin } = this.tableInc.props.lengths;
-
-                    // 同步最左侧的锁列
-                    for (let i = 0; i < left; i++) {
-                        this.setCellSize(rowIndex, i, 'left');
-                    }
-                    // 同步最右侧的锁列
-                    for (let i = origin - right; i < origin; i++) {
-                        this.setCellSize(rowIndex, i, 'right');
-                    }
+                    // 同步左侧的锁列
+                    this.setRowHeight(rowIndex, 'left');
+                    // 同步右侧的锁列
+                    this.setRowHeight(rowIndex, 'right');
                 });
             }
         }
 
-        setCellSize(index, i, dir) {
-            const lockRow = this.getCellNode(index, i, dir),
-                row = this.getCellNode(index, i),
+        setRowHeight(rowIndex, dir) {
+            const lockRow = this.getRowNode(rowIndex, dir),
+                row = this.getRowNode(rowIndex),
                 rowHeight =
                     (ieVersion
                         ? row && row.offsetHeight
-                        : row && parseFloat(getComputedStyle(row).height)) || 0,
+                        : row && parseFloat(getComputedStyle(row).height)) ||
+                    'auto',
                 lockHeight =
                     (ieVersion
                         ? lockRow && lockRow.offsetHeight
                         : lockRow &&
-                          parseFloat(getComputedStyle(lockRow).height)) || 0;
+                          parseFloat(getComputedStyle(lockRow).height)) ||
+                    'auto';
 
             if (lockRow && rowHeight !== lockHeight) {
                 dom.setStyle(lockRow, 'height', rowHeight);
