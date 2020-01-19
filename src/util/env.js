@@ -6,10 +6,6 @@
 export const ieVersion =
     typeof document !== 'undefined' ? document.documentMode : undefined;
 
-export const isIE =
-    !!document.defaultView.ActiveXObject ||
-    'ActiveXObject' in document.defaultView;
-
 /**
  * 判断是否是生产环境
  * @type {Boolean}
@@ -40,6 +36,5 @@ export const isProduction = () => {
 
 export default {
     ieVersion,
-    isIE,
     isProduction,
 };

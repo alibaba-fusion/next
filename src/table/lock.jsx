@@ -10,7 +10,7 @@ import LockHeader from './lock/header';
 import LockWrapper from './fixed/wrapper';
 import { statics } from './util';
 
-const { isIE } = env;
+const { ieVersion } = env;
 export default function lock(BaseComponent) {
     /** Table */
     class LockTable extends React.Component {
@@ -555,11 +555,11 @@ export default function lock(BaseComponent) {
             const lockRow = this.getCellNode(index, i, dir),
                 row = this.getCellNode(index, i),
                 rowHeight =
-                    (isIE
+                    (ieVersion
                         ? row && row.offsetHeight
                         : row && parseFloat(getComputedStyle(row).height)) || 0,
                 lockHeight =
-                    (isIE
+                    (ieVersion
                         ? lockRow && lockRow.offsetHeight
                         : lockRow &&
                           parseFloat(getComputedStyle(lockRow).height)) || 0;
