@@ -409,7 +409,7 @@ export default function lock(BaseComponent) {
         }
 
         adjustBodySize() {
-            const { rtl } = this.props;
+            const { rtl, hasHeader } = this.props;
             const header = this.headerNode;
             const paddingName = rtl ? 'paddingLeft' : 'paddingRight';
             const marginName = rtl ? 'marginLeft' : 'marginRight';
@@ -441,10 +441,17 @@ export default function lock(BaseComponent) {
                     style.paddingBottom = 20;
                 }
 
-                lockLeftBody &&
-                    dom.setStyle(lockLeftBody, 'max-height', lockBodyHeight);
-                lockRightBody &&
-                    dom.setStyle(lockRightBody, 'max-height', lockBodyHeight);
+                const lockStyle = {
+                    'max-height': lockBodyHeight,
+                };
+                if (!hasHeader && !+scrollBarSize) {
+                    lockStyle[marginName] = 0;
+                }
+                if (+scrollBarSize) {
+                    lockStyle[marginName] = -scrollBarSize;
+                }
+                lockLeftBody && dom.setStyle(lockLeftBody, lockStyle);
+                lockRightBody && dom.setStyle(lockRightBody, lockStyle);
                 lockRightBodyWrapper &&
                     +scrollBarSize &&
                     dom.setStyle(
