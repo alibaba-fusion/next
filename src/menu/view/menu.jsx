@@ -147,6 +147,7 @@ export default class Menu extends Component {
          * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction='hoz' mode='popup' 时生效
          */
         hozInLine: PropTypes.bool,
+        renderMore: PropTypes.func,
         /**
          * 自定义菜单头部
          */
@@ -411,7 +412,7 @@ export default class Menu extends Component {
     }
 
     getIndicatorsItem(items, isPlaceholder) {
-        const { prefix } = this.props;
+        const { prefix, renderMore } = this.props;
         const moreCls = cx({
             [`${prefix}menu-more`]: true,
         });
@@ -420,9 +421,17 @@ export default class Menu extends Component {
         // keep placehold to get width
         if (isPlaceholder) {
             style.visibility = 'hidden';
+            style.display = 'unset';
             // indicators which not in use, just display: none
         } else if (items && items.length === 0) {
             style.display = 'none';
+            style.visibility = 'unset';
+        }
+
+        if (renderMore && typeof renderMore === 'function') {
+            return React.cloneElement(renderMore(items), {
+                style,
+            });
         }
 
         return (
