@@ -1,14 +1,20 @@
 # Latest Log 
 
-## [1.19.9](https://github.com/alibaba-fusion/next/compare/1.19.8...1.19.9) (2020-01-14)
+## [1.19.10](https://github.com/alibaba-fusion/next/compare/1.19.9...1.19.10) (2020-01-20)
 
 
 ### Bug Fixes
 
-* **Dialog:** popupContainer of ConfigProvider should work, close [#1508](https://github.com/alibaba-fusion/next/issues/1508) ([67caa94](https://github.com/alibaba-fusion/next/commit/67caa94))
-* **Shell:** change default navigation background-color ([7e811ed](https://github.com/alibaba-fusion/next/commit/7e811ed))
-* **Table:** lock height sync fail in ie ([d450505](https://github.com/alibaba-fusion/next/commit/d450505))
-* **Table:** support lock columns with colspan, close [#1452](https://github.com/alibaba-fusion/next/issues/1452) ([8ae3e21](https://github.com/alibaba-fusion/next/commit/8ae3e21))
-* **Upload:** progressbar layout exception in fusion-cool tool ([1f4d97a](https://github.com/alibaba-fusion/next/commit/1f4d97a))
+* **Select:** add one key clear. close [#1422](https://github.com/alibaba-fusion/next/issues/1422) ([7d0a66f](https://github.com/alibaba-fusion/next/commit/7d0a66f))
+* **Table:** fix ssr ([cebb6e6](https://github.com/alibaba-fusion/next/commit/cebb6e6))
+* **Table:** lock columns disorder when no header, close [#1543](https://github.com/alibaba-fusion/next/issues/1543) ([af405c2](https://github.com/alibaba-fusion/next/commit/af405c2))
+* **Table:** primaryKey is 0 ([67ce931](https://github.com/alibaba-fusion/next/commit/67ce931))
+* **Upload:** bugs of IE ([7e83236](https://github.com/alibaba-fusion/next/commit/7e83236))
+
+
+### Features
+
+* **Form:** make preview configurable ([03c8326](https://github.com/alibaba-fusion/next/commit/03c8326))
+* **Menu:** add render more ([67cb1a0](https://github.com/alibaba-fusion/next/commit/67cb1a0))
 
 

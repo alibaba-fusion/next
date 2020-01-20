@@ -63,41 +63,41 @@ const ds = [{
 const Panel = props => {
     const { dataSource, ...others } = props;
 
-    return <div className="my-custom-content" {...others}>
+    return (<div className="my-custom-content" {...others}>
         <Box direction="row">
             {dataSource.map((item, i) => {
-                return <Menu embeddable key={i}>
+                return (<Menu embeddable key={i}>
                 <Menu.Item><div className="title">{item.title}</div></Menu.Item>
                 <Divider />
                 {item.dataSource.map((child, g) => {
                     const a = child.children && child.children.map((c, j) => {
-                        return <Menu.Item key={j}><a href={c.link}>{c.title}</a></Menu.Item>
-                    })
-                    return [<div className="sub-title" key={`title-${g}`}>{child.title}</div>, ...a]
+                        return <Menu.Item key={j}><a href={c.link}>{c.title}</a></Menu.Item>;
+                    });
+                    return [<div className="sub-title" key={`title-${g}`}>{child.title}</div>, ...a];
                 })}
-                </Menu>
+                </Menu>);
             })}
         </Box>
-    </div>;
-}
+    </div>);
+};
 
 
 const SubPanel = props => {
     const { dataSource, ...others } = props;
 
-    return <div className="my-custom-content" {...others}>
+    return (<div className="my-custom-content" {...others}>
         <Box direction="row">
             {dataSource.map((item, i) => {
-                return <Menu embeddable key={i}>
+                return (<Menu embeddable key={i}>
                 <div className="sub-title">{item.title}</div>
                 {item.children.map((child, j) => {
-                    return <Menu.Item key={j}><a href={child.link}>{child.title}</a></Menu.Item>
+                    return <Menu.Item key={j}><a href={child.link}>{child.title}</a></Menu.Item>;
                 })}
-                </Menu>
+                </Menu>);
             })}
         </Box>
-    </div>;
-}
+    </div>);
+};
 ReactDOM.render(
     <Menu hozInLine direction="hoz" mode="popup" className="my-hoz-menu" popupClassName="my-hoz-menu"  popupProps={popupProps}
         renderMore={(more) => {
@@ -106,12 +106,12 @@ ReactDOM.render(
                 return {
                     title: item.props.label,
                     dataSource: data.dataSource
-                }
+                };
             });
 
-            return <PopupItem triggerType="click" key="0-more" label="更多" >
+            return (<PopupItem triggerType="click" key="0-more" label="更多" >
                 <Panel dataSource={newDs}/>
-            </PopupItem>
+            </PopupItem>);
         }}>
                 <PopupItem key="0" label="Popup item 1" noIcon>
                     <SubPanel dataSource={ds}/>
