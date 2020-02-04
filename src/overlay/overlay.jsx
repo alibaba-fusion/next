@@ -583,6 +583,9 @@ export default class Overlay extends Component {
     }
 
     getContentNode() {
+        if (!this.contentRef) {
+            return null;
+        }
         return findDOMNode(this.contentRef);
     }
 

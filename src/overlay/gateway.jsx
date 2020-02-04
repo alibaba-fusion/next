@@ -23,7 +23,7 @@ export default class Gateway extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.containerNode = this.getContainerNode(nextProps);
+        this.containerNode = nextProps ? this.getContainerNode(nextProps) : null;
     }
 
     getContainerNode(props) {
@@ -32,7 +32,7 @@ export default class Gateway extends Component {
     }
 
     getChildNode() {
-        return findDOMNode(this.child);
+        return this.child ? findDOMNode(this.child) : null;
     }
 
     saveChildRef = ref => {

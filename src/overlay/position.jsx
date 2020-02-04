@@ -120,13 +120,18 @@ export default class Position extends Component {
     }
 
     getContentNode() {
+        if (!this) {
+            return null;
+        }
         return findDOMNode(this);
     }
 
     getTargetNode() {
         const { target } = this.props;
-
-        return target === position.VIEWPORT
+        if (!target) {
+            return null;
+        }
+        return (target === position.VIEWPORT)
             ? position.VIEWPORT
             : findNode(target, this.props);
     }
