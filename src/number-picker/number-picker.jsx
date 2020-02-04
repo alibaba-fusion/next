@@ -514,7 +514,6 @@ class NumberPicker extends React.Component {
                             upDisabled ? 'disabled' : ''
                         }`}
                         onClick={this.up.bind(this, upDisabled)}
-                        iconSize="xxs"
                     >
                         <Icon type="arrow-up" />
                     </Button>
@@ -526,7 +525,6 @@ class NumberPicker extends React.Component {
                             downDisabled ? 'disabled' : ''
                         }`}
                         onClick={this.down.bind(this, downDisabled)}
-                        iconSize="xxs"
                     >
                         <Icon type="arrow-down" />
                     </Button>
@@ -542,7 +540,6 @@ class NumberPicker extends React.Component {
                         downDisabled ? 'disabled' : ''
                     }`}
                     onClick={this.down.bind(this, downDisabled)}
-                    iconSize="xs"
                 >
                     <Icon type="minus" />
                 </Button>
@@ -556,7 +553,6 @@ class NumberPicker extends React.Component {
                         upDisabled ? 'disabled' : ''
                     }`}
                     onClick={this.up.bind(this, upDisabled)}
-                    iconSize="xs"
                 >
                     <Icon type="add" />
                 </Button>
