@@ -160,7 +160,7 @@ class NumberPicker extends React.Component {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: value === undefined || value === null ? '' : value,
             hasFocused: false,
             reRender: true,
         };
