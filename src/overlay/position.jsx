@@ -120,7 +120,11 @@ export default class Position extends Component {
     }
 
     getContentNode() {
-        return findDOMNode(this);
+        try {
+            return findDOMNode(this);
+        } catch (err) {
+            return null;
+        }
     }
 
     getTargetNode() {
