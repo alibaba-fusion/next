@@ -191,7 +191,7 @@
         border-bottom: $menu-divider-width $menu-divider-style $menu-divider-color;
     }
 
-    & &-icon-selected.#{$css-prefix}icon {
+    & &-icon-selected {
         position: absolute;
         top: 0;
         @include icon-size($menu-icon-selected-size, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
@@ -199,6 +199,9 @@
         &#{$menu-prefix}-icon-right {
             right: $menu-icon-selected-right;
         }
+    }
+    & &-symbol-icon-selected::before {
+        content: $menu-select-icon-content;
     }
 
     & &-icon-arrow.#{$css-prefix}icon {
@@ -234,6 +237,10 @@
     }
 
     & &-hoz-icon-arrow.#{$css-prefix}open {
+        // &::before {
+        //     content: $icon-content-arrow-up;
+        //     transition: content $motion-duration-immediately $motion-linear;
+        // }
         @include icon-size(
             $size: $menu-hoz-icon-size,
             $transform: rotate(180deg)
