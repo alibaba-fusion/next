@@ -380,15 +380,15 @@ export default function lock(BaseComponent) {
                         }
                     );
 
-                let node;
+                let node, width;
 
                 try {
                     node = findDOMNode(this);
+                    width = node.clientWidth;
                 } catch (err) {
                     node = null;
+                    width = 0;
                 }
-
-                const width = node.clientWidth;
 
                 // if the table doesn't exist, there is no need to adjust
                 if (width === 0) {
