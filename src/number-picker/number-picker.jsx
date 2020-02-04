@@ -201,10 +201,9 @@ class NumberPicker extends React.Component {
                     });
                     return;
                 }
-                // ignore when next value = prev value.
-                // ps: Number('0.')=0 ; Number('0.0')=0;
+                // ignore when input 0./0.0/0.00 to 0.001
                 // but take care of Number('')=0;
-                if (Number(this.state.value) === Number(value)) {
+                if (value.match(/\.0*$/)) {
                     this.setState({
                         value,
                         reRender: false,
@@ -515,8 +514,9 @@ class NumberPicker extends React.Component {
                             upDisabled ? 'disabled' : ''
                         }`}
                         onClick={this.up.bind(this, upDisabled)}
+                        iconSize="xxs"
                     >
-                        <Icon size="xxs" type="arrow-up" />
+                        <Icon type="arrow-up" />
                     </Button>
                     <Button
                         {...downBtnProps}
@@ -526,8 +526,9 @@ class NumberPicker extends React.Component {
                             downDisabled ? 'disabled' : ''
                         }`}
                         onClick={this.down.bind(this, downDisabled)}
+                        iconSize="xxs"
                     >
-                        <Icon size="xxs" type="arrow-down" />
+                        <Icon type="arrow-down" />
                     </Button>
                 </span>
             );
@@ -541,8 +542,9 @@ class NumberPicker extends React.Component {
                         downDisabled ? 'disabled' : ''
                     }`}
                     onClick={this.down.bind(this, downDisabled)}
+                    iconSize="xs"
                 >
-                    <Icon type="minus" size="xs" />
+                    <Icon type="minus" />
                 </Button>
             );
             addonAfter = (
@@ -554,8 +556,9 @@ class NumberPicker extends React.Component {
                         upDisabled ? 'disabled' : ''
                     }`}
                     onClick={this.up.bind(this, upDisabled)}
+                    iconSize="xs"
                 >
-                    <Icon type="add" size="xs" />
+                    <Icon type="add" />
                 </Button>
             );
         }
