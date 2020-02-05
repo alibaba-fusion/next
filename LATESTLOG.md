@@ -1,20 +1,14 @@
 # Latest Log 
 
-## [1.19.10](https://github.com/alibaba-fusion/next/compare/1.19.9...1.19.10) (2020-01-20)
+## [1.19.11](https://github.com/alibaba-fusion/next/compare/1.19.10...1.19.11) (2020-02-05)
 
 
 ### Bug Fixes
 
-* **Select:** add one key clear. close [#1422](https://github.com/alibaba-fusion/next/issues/1422) ([7d0a66f](https://github.com/alibaba-fusion/next/commit/7d0a66f))
-* **Table:** fix ssr ([cebb6e6](https://github.com/alibaba-fusion/next/commit/cebb6e6))
-* **Table:** lock columns disorder when no header, close [#1543](https://github.com/alibaba-fusion/next/issues/1543) ([af405c2](https://github.com/alibaba-fusion/next/commit/af405c2))
-* **Table:** primaryKey is 0 ([67ce931](https://github.com/alibaba-fusion/next/commit/67ce931))
-* **Upload:** bugs of IE ([7e83236](https://github.com/alibaba-fusion/next/commit/7e83236))
-
-
-### Features
-
-* **Form:** make preview configurable ([03c8326](https://github.com/alibaba-fusion/next/commit/03c8326))
-* **Menu:** add render more ([67cb1a0](https://github.com/alibaba-fusion/next/commit/67cb1a0))
+* **NumberPicker:** bug of delete like 0.01 => 0.0 ([7377629](https://github.com/alibaba-fusion/next/commit/7377629))
+* **NumberPicker:** can input char while value=null ([be34205](https://github.com/alibaba-fusion/next/commit/be34205))
+* **NumberPicker:** remove iconSize ([030cb2c](https://github.com/alibaba-fusion/next/commit/030cb2c))
+* **Table:** add title for table header, close [#1550](https://github.com/alibaba-fusion/next/issues/1550) ([1fe345c](https://github.com/alibaba-fusion/next/commit/1fe345c))
+* **Upload:** Compatibility in ie/firefox ([23083ee](https://github.com/alibaba-fusion/next/commit/23083ee))
 
 
