@@ -10,7 +10,11 @@ export default function findNode(target, param) {
     }
 
     if (typeof target === 'function') {
-        target = target(param);
+        try {
+            target = target(param);
+        } catch (err) {
+            target = null;
+        }
     }
 
     if (!target) {
