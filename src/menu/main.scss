@@ -213,11 +213,25 @@
         transition: all $motion-duration-immediately $motion-linear;
     }
 
+    & &-icon-arrow-down::before {
+        content: $menu-fold-icon-content;
+    }
+
     & &-icon-arrow-down.#{$css-prefix}open {
-        @include icon-size(
-            $size: $menu-icon-size,
-            $transform: rotate(180deg)
-        );
+        @if $menu-unfold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
+    }
+
+    & &-symbol-popupfold::before {
+        content: $menu-popupfold-icon-content;
     }
 
     & &-icon-arrow-right.#{$css-prefix}open {
@@ -234,17 +248,31 @@
         @include icon-size($menu-hoz-icon-size);
         color: $menu-arrow-color;
         transition: all $motion-duration-immediately $motion-linear;
+
+        @if $menu-fold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-fold-icon-content;
+            }
+        }
     }
 
+    // --------- this is for config platform
+    &-unfold-icon::before {
+        content: $menu-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
     & &-hoz-icon-arrow.#{$css-prefix}open {
-        // &::before {
-        //     content: $icon-content-arrow-up;
-        //     transition: content $motion-duration-immediately $motion-linear;
-        // }
-        @include icon-size(
-            $size: $menu-hoz-icon-size,
-            $transform: rotate(180deg)
-        );
+        @if $menu-unfold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-hoz-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
     }
 
     &.#{$css-prefix}context {

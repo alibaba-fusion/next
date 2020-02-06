@@ -175,7 +175,7 @@ export default class Menu extends Component {
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
         /**
-         * 可配置的icons，包括 selected 等
+         * 可配置的icons，包括 select 等
          */
         icons: PropTypes.object,
     };

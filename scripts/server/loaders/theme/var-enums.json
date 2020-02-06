@@ -126,7 +126,8 @@
       "$icon-content-lock": "lock",
       "$icon-content-exit": "exit",
       "$icon-content-chart-bar": "chart-bar",
-      "$icon-content-chart-pie": "chart-pie"
+      "$icon-content-chart-pie": "chart-pie",
+      "$icon-reset": ""
   },
   "line.width": {
     "$line-zero": "line-zero",
