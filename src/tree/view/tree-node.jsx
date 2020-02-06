@@ -331,6 +331,10 @@ export default class TreeNode extends Component {
                     ? 'minus'
                     : 'add'
                 : 'arrow-down';
+        const iconCls = cx({
+            [`${prefix}tree-switcher-icon`]: true,
+            [`${prefix}tree-fold-icon`]: iconType === 'arrow-down',
+        });
 
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -339,10 +343,7 @@ export default class TreeNode extends Component {
                 onClick={disabled ? null : this.handleExpand}
             >
                 {this.renderRightAngle()}
-                <Icon
-                    className={`${prefix}tree-switcher-icon`}
-                    type={iconType}
-                />
+                <Icon className={iconCls} type={iconType} />
             </span>
         );
     }
