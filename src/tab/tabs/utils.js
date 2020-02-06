@@ -36,6 +36,7 @@ export function toArray(children) {
             ret.push(
                 React.cloneElement(child, {
                     key: child.key || index,
+                    title: child.props.title || child.props.tab,
                 })
             );
         }

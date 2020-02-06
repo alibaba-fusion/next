@@ -1,5 +1,9 @@
 import ConfigProvider from '../config-provider';
 import Tab from './tab';
+import Item from './tabs/tab-item';
+
+Tab.Item = Item;
+Tab.TabPane = Item;
 
 export default ConfigProvider.config(Tab, {
     transform: /* istanbul ignore next */ (props, deprecated) => {
