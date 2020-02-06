@@ -233,7 +233,11 @@ class FunctionDemoNest extends FunctionDemo {
                                 {this.renderItem('2-2', { disabled: true })}
                                 {this.renderItem('2-3')}
                                 {this.renderItem('2-4')}
-                                <Menu.Item style={{display: "none"}}><Icon type="arrow-right" className='next-menu-unfold-icon'/></Menu.Item>
+                                {/* --------- this is for config platform ----------- */}
+                                <div style={{display: "none"}}>
+                                    <div type="arrow-right" className='next-menu-unfold-icon'/>
+                                </div>
+                                {/* --------- this is for config platform ----------- */}
                             </Menu.SubMenu>
                             <Menu.SubMenu key="3" label="Sub 3">
                                 <Menu.Item key="3-1">{`${i18n.option}1`}</Menu.Item>

@@ -28,7 +28,7 @@
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-collapsed));
+        @include icon-size($collapse-icon-size, 0, 0);
     }
 
     &-panel-title {
@@ -72,9 +72,25 @@
         }
     }
 
+    // --------- this is for config platform
+    #{$collapse-prefix}-unfold-icon::before {
+        content: $collapse-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
     #{$collapse-prefix}-panel-icon {
+        &::before {
+            content: $collapse-fold-icon-content;
+        }
+
         &#{$collapse-prefix}-panel-icon-expanded {
-            @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-expanded));
+            @if $collapse-unfold-icon-content != $icon-reset {
+                &::before {
+                    content: $collapse-unfold-icon-content;
+                }
+            } @else {
+                @include icon-size($collapse-icon-size, 0, 0, rotate(90deg));
+            }
         }
     }
 
