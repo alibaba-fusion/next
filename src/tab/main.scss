@@ -397,7 +397,7 @@
             }
 
             &:hover {
-                z-index: 1;
+                z-index: 2;
                 border-right: $tab-capsule-tab-border;
                 border-color: $tab-capsule-tab-border-line-color-hover;
             }
