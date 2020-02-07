@@ -45,7 +45,7 @@ export default function fixed(BaseComponent) {
         static childContextTypes = {
             fixedHeader: PropTypes.bool,
             getNode: PropTypes.func,
-            onScroll: PropTypes.func,
+            onFixedScrollSync: PropTypes.func,
             maxBodyHeight: PropTypes.oneOfType([
                 PropTypes.number,
                 PropTypes.string,
@@ -56,7 +56,7 @@ export default function fixed(BaseComponent) {
             return {
                 fixedHeader: this.props.fixedHeader,
                 maxBodyHeight: this.props.maxBodyHeight,
-                onScroll: this.onScroll,
+                onFixedScrollSync: this.onFixedScrollSync,
                 getNode: this.getNode,
             };
         }
@@ -76,28 +76,23 @@ export default function fixed(BaseComponent) {
             this[`${type}${lockType}Node`] = node;
         };
 
-        onScroll = (current = {}) => {
-            const { onScroll, lockType } = this.props;
-            onScroll && onScroll(current);
-
-            if (lockType || !current.target) {
+        // for fixed header scroll left
+        onFixedScrollSync = (current = {}) => {
+            if (current.currentTarget !== current.target) {
                 return;
             }
+            const target = current.target,
+                headerNode = this.headerNode,
+                bodyNode = this.bodyNode;
 
-            const { scrollLeft, scrollTop } = current.target;
-            if (current.target === this.bodyNode) {
-                if (this.bodyNode && scrollTop !== this.bodyNode.scrollTop) {
-                    this.bodyNode.scrollTop = scrollTop;
+            const { scrollLeft } = target;
+            if (target === bodyNode) {
+                if (headerNode && scrollLeft !== headerNode.scrollLeft) {
+                    headerNode.scrollLeft = scrollLeft;
                 }
-                if (
-                    this.headerNode &&
-                    scrollLeft !== this.headerNode.scrollLeft
-                ) {
-                    this.headerNode.scrollLeft = scrollLeft;
-                }
-            } else if (current.target === this.headerNode) {
-                if (this.bodyNode && scrollLeft !== this.bodyNode.scrollLeft) {
-                    this.bodyNode.scrollLeft = scrollLeft;
+            } else if (target === headerNode) {
+                if (bodyNode && scrollLeft !== bodyNode.scrollLeft) {
+                    bodyNode.scrollLeft = scrollLeft;
                 }
             }
         };
@@ -109,7 +104,7 @@ export default function fixed(BaseComponent) {
             const body = this.bodyNode;
 
             if (hasHeader && !this.props.lockType && body) {
-                const scrollBarSize = dom.scrollbar().width;
+                const scrollBarSize = +dom.scrollbar().width || 0;
                 const hasVerScroll = body.scrollHeight > body.clientHeight,
                     hasHozScroll = body.scrollWidth > body.clientWidth;
                 const style = {
@@ -117,7 +112,7 @@ export default function fixed(BaseComponent) {
                     [marginName]: scrollBarSize,
                 };
 
-                if (!hasVerScroll || !+scrollBarSize) {
+                if (!hasVerScroll) {
                     style[paddingName] = 0;
                     style[marginName] = 0;
                 }
@@ -165,16 +160,10 @@ export default function fixed(BaseComponent) {
                     [className]: className,
                 });
             }
-            const event = lockType
-                ? {}
-                : {
-                      onScroll: this.onScroll,
-                  };
 
             return (
                 <BaseComponent
                     {...others}
-                    {...event}
                     dataSource={dataSource}
                     lockType={lockType}
                     components={components}
