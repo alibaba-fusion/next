@@ -13,7 +13,6 @@ export default class LockBody extends React.Component {
         ...FixedBody.contextTypes,
         getLockNode: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
-        onLockBodyWheel: PropTypes.func,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
@@ -25,24 +24,14 @@ export default class LockBody extends React.Component {
         );
     }
 
-    onBodyScroll = () => {
-        this.context.onLockBodyScroll();
-    };
-
-    onBodyWheel = e => {
-        this.context.onLockBodyWheel(e);
+    onBodyScroll = event => {
+        this.context.onLockBodyScroll(event);
     };
 
     render() {
-        const { lockType } = this.context;
-
-        const events = lockType
-            ? {
-                  onWheel: this.onBodyWheel,
-              }
-            : {
-                  onScroll: this.onBodyScroll,
-              };
-        return <FixedBody {...this.props} {...events} />;
+        const event = {
+            onLockScroll: this.onBodyScroll,
+        };
+        return <FixedBody {...this.props} {...event} />;
     }
 }

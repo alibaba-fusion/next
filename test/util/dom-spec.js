@@ -145,4 +145,30 @@ describe('src/dom.js', function() {
             assert(dom.getPixels('100vh') === document.defaultView.innerHeight);
         });
     });
+
+    describe('#getClosest', function() {
+        it('getClosest() should return number', function() {
+            const parent = document.createElement('div');
+            const child = document.createElement('div');
+            const grandChild = document.createElement('div');
+
+            parent.id = "dom-closest-parent";
+            child.id = "dom-closest-child";
+            grandChild.id = "dom-closest-grandChild";
+
+            parent.setAttribute('data-level3', 'abc');
+            child.setAttribute('data-level3', 'abc');
+            grandChild.setAttribute('data-level3', 'abc');
+
+            parent.setAttribute('data-level2', 'abc');
+            child.setAttribute('data-level2', 'abc');
+
+            document.body.appendChild(parent);
+            parent.appendChild(child);
+            child.appendChild(grandChild);
+
+            assert(dom.getClosest(grandChild, 'div[data-level3]'), grandChild);
+            assert(dom.getClosest(grandChild, 'div[data-level2]'), child);
+        });
+    });
 });

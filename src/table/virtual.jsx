@@ -135,6 +135,7 @@ export default function virtual(BaseComponent) {
             if (typeof rowHeight === 'function') {
                 return 0;
             }
+
             return this.start * rowHeight;
         }
 

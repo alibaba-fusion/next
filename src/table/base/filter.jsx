@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
+import classnames from 'classnames';
 import Dropdown from '../../dropdown';
 import Menu from '../../menu';
 import Button from '../../button';
@@ -129,6 +130,7 @@ class Filter extends React.Component {
             filters,
             prefix,
             locale,
+            className,
             filterMode,
             filterMenuProps,
             filterProps,
@@ -174,6 +176,11 @@ class Filter extends React.Component {
                 </div>
             );
 
+        const cls = classnames({
+            [`${prefix}table-filter`]: true,
+            [className]: className,
+        });
+
         return (
             <Dropdown
                 trigger={
@@ -182,7 +189,7 @@ class Filter extends React.Component {
                         aria-label={locale.filter}
                         onKeyDown={this.filterKeydown}
                         tabIndex="0"
-                        className={`${prefix}table-filter`}
+                        className={cls}
                     >
                         <Icon type="filter" size="small" />
                     </span>
@@ -192,7 +199,6 @@ class Filter extends React.Component {
                 autoFocus
                 rtl={rtl}
                 needAdjust={false}
-                container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
                 {...filterProps}
             >

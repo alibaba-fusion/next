@@ -114,9 +114,17 @@ export default function expanded(BaseComponent) {
                 { primaryKey } = this.props,
                 hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1,
                 switchNode = hasExpanded ? (
-                    <Icon type="minus" size="xs" />
+                    <Icon
+                        type="minus"
+                        size="xs"
+                        className={`${prefix}table-expand-unfold`}
+                    />
                 ) : (
-                    <Icon type="add" size="xs" />
+                    <Icon
+                        type="add"
+                        size="xs"
+                        className={`${prefix}table-expand-fold`}
+                    />
                 ),
                 attrs = getExpandedColProps(record, index) || {};
             const cls = classnames({
@@ -211,6 +219,7 @@ export default function expanded(BaseComponent) {
                 hasExpandedRowCtrl,
                 children,
                 dataSource,
+                entireDataSource,
                 getExpandedColProps,
                 expandedRowIndent,
                 onRowOpen,
@@ -221,6 +230,7 @@ export default function expanded(BaseComponent) {
                 components = { ...components };
                 components.Row = RowComponent;
                 dataSource = this.normalizeDataSource(dataSource);
+                entireDataSource = this.normalizeDataSource(entireDataSource);
             }
             if (expandedRowRender && hasExpandedRowCtrl) {
                 children = this.normalizeChildren(children);
@@ -230,6 +240,7 @@ export default function expanded(BaseComponent) {
                 <BaseComponent
                     {...others}
                     dataSource={dataSource}
+                    entireDataSource={entireDataSource}
                     components={components}
                 >
                     {children}

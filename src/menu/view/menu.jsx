@@ -20,7 +20,7 @@ const { pickOthers, isNil } = obj;
 const noop = () => {};
 const MENUITEM_OVERFLOWED_CLASSNAME = 'menuitem-overflowed';
 
-const getIndicatorsItem = (items, isPlaceholder, prefix = '') => {
+const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
     const moreCls = cx({
         [`${prefix}menu-more`]: true,
     });
@@ -29,9 +29,17 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '') => {
     // keep placehold to get width
     if (isPlaceholder) {
         style.visibility = 'hidden';
+        style.display = 'unset';
         // indicators which not in use, just display: none
     } else if (items && items.length === 0) {
         style.display = 'none';
+        style.visibility = 'unset';
+    }
+
+    if (renderMore && typeof renderMore === 'function') {
+        return React.cloneElement(renderMore(items), {
+            style,
+        });
     }
 
     return (
@@ -41,7 +49,7 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '') => {
     );
 };
 
-const addIndicators = ({ children, lastVisibleIndex, prefix }) => {
+const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
     const arr = [];
 
     children.forEach((child, index) => {
@@ -64,13 +72,15 @@ const addIndicators = ({ children, lastVisibleIndex, prefix }) => {
                         key: `more-${index}-${i}`,
                     });
                 });
-            arr.push(getIndicatorsItem(overflowedItems, false, prefix));
+            arr.push(
+                getIndicatorsItem(overflowedItems, false, prefix, renderMore)
+            );
         }
 
         arr.push(child);
     });
 
-    arr.push(getIndicatorsItem([], true, prefix));
+    arr.push(getIndicatorsItem([], true, prefix, renderMore));
 
     return arr;
 };
@@ -81,6 +91,7 @@ const getNewChildren = ({
     lastVisibleIndex,
     hozInLine,
     prefix,
+    renderMore,
 }) => {
     const k2n = {};
     const p2n = {};
@@ -90,6 +101,7 @@ const getNewChildren = ({
               children,
               lastVisibleIndex,
               prefix,
+              renderMore,
           })
         : children;
 
@@ -342,6 +354,7 @@ class Menu extends Component {
          * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction='hoz' mode='popup' 时生效
          */
         hozInLine: PropTypes.bool,
+        renderMore: PropTypes.func,
         /**
          * 自定义菜单头部
          */
@@ -414,6 +427,7 @@ class Menu extends Component {
             focusable,
             autoFocus,
             hozInLine,
+            renderMore,
         } = this.props;
 
         this.state = {
@@ -425,6 +439,7 @@ class Menu extends Component {
             hozInLine,
             prefix,
             children,
+            renderMore,
         });
 
         const tabbableKey = focusable
@@ -472,13 +487,14 @@ class Menu extends Component {
             state.focusedKey = nextProps.focusedKey;
         }
 
-        const { hozInLine, children, prefix } = nextProps;
+        const { hozInLine, children, prefix, renderMore } = nextProps;
         const { newChildren, _k2n, _p2n } = getNewChildren({
             root: prevState.root,
             hozInLine,
             lastVisibleIndex: prevState.lastVisibleIndex,
             prefix,
             children,
+            renderMore,
         });
 
         state.newChildren = newChildren;
@@ -586,6 +602,7 @@ class Menu extends Component {
 
         this.setState({
             lastVisibleIndex,
+            ...this.getUpdateChildren(),
         });
     }
     onBlur(e) {
@@ -625,7 +642,7 @@ class Menu extends Component {
 
     getUpdateChildren = () => {
         const { root, lastVisibleIndex } = this.state;
-        const { prefix, hozInLine, children } = this.props;
+        const { prefix, hozInLine, children, renderMore } = this.props;
 
         return getNewChildren({
             root,
@@ -633,6 +650,7 @@ class Menu extends Component {
             lastVisibleIndex,
             prefix,
             children,
+            renderMore,
         });
     };
 

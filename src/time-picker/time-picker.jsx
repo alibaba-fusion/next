@@ -112,7 +112,7 @@ class TimePicker extends Component {
          * @param {Object} target 目标节点
          * @return {ReactNode} 容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层对齐方式, 详情见Overlay 文档
          */

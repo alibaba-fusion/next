@@ -898,7 +898,7 @@ class Select extends Base {
     };
 
     hasClear() {
-        const { hasClear, readOnly, disabled, mode, showSearch } = this.props;
+        const { hasClear, readOnly, disabled, showSearch } = this.props;
         const { value, visible } = this.state;
 
         return (
@@ -907,7 +907,6 @@ class Select extends Base {
             hasClear &&
             !readOnly &&
             !disabled &&
-            mode === 'single' &&
             !(showSearch && visible)
         );
     }

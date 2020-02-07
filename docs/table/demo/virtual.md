@@ -43,7 +43,7 @@ class App extends React.Component {
         });
     }
     render() {
-        return (<Table dataSource={dataSource(1000)} maxBodyHeight={400} useVirtual scrollToRow={this.state.scrollToRow} onBodyScroll={this.onBodyScroll}>
+        return (<Table dataSource={dataSource(200)} maxBodyHeight={400} useVirtual scrollToRow={this.state.scrollToRow} onBodyScroll={this.onBodyScroll}>
             <Table.Column title="Id1" dataIndex="id" width={100}/>
             <Table.Column title="Index" dataIndex="index" width={200}/>
             <Table.Column title="Time" dataIndex="time" width={200}/>
