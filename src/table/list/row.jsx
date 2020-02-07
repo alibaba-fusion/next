@@ -24,6 +24,7 @@ export default class GroupListRow extends Row {
             columns,
             Cell,
             rowIndex,
+            __rowIndex,
             record,
             children,
             primaryKey,

@@ -1069,7 +1069,7 @@ describe('Table', () => {
             .find('div.next-table-lock .next-table-inner .next-table-body')
             .at(1)
             .props()
-            .onScroll({
+            .onLockScroll({
                 target: {
                     scrollLeft: 30,
                     scrollTop: 20
@@ -1080,7 +1080,7 @@ describe('Table', () => {
             .find('div.next-table-lock-right .next-table-body')
             .at(1)
             .props()
-            .onScroll({
+            .onLockScroll({
                 target: {
                     scrollLeft: 30,
                     scrollTop: 20

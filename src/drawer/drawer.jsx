@@ -80,6 +80,8 @@ export default class Drawer extends Component {
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         locale: PropTypes.object,
+        // for ConfigProvider
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -234,6 +236,7 @@ export default class Drawer extends Component {
             onVisibleChange,
             closeable,
             rtl,
+            popupContainer,
             ...others
         } = this.props;
 
@@ -265,6 +268,7 @@ export default class Drawer extends Component {
             target: 'viewport',
             style: newStyle,
             needAdjust: false,
+            container: popupContainer,
         };
 
         const inner = this.renderInner(canCloseByCloseClick);

@@ -6,6 +6,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import Adapter from 'enzyme-adapter-react-16';
 import { dom } from '../../src/util';
 import Drawer from '../../src/drawer/index';
+import ConfigProvider from '../../src/config-provider';
 import '../../src/drawer/style.js';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -118,6 +119,22 @@ describe('Drawer', () => {
                 )
             );
         });
+    });
+
+    it('should work when set <ConfigProvider popupContainer/> ', () => {
+
+        wrapper = render(<ConfigProvider popupContainer={"dialog-popupcontainer"}>
+        <div id="dialog-popupcontainer" style={{height: 300, overflow: 'auto'}}>
+            <Drawer
+                title="Welcome to Alibaba.com"
+                visible>
+                Start your business here by searching a popular product
+            </Drawer>
+        </div>
+        </ConfigProvider>);
+
+        const overlay = document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper');
+        assert(overlay);
     });
 
     it('should hide close link if set closeable to false', () => {

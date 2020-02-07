@@ -216,6 +216,7 @@ export default function expanded(BaseComponent) {
                 hasExpandedRowCtrl,
                 children,
                 dataSource,
+                entireDataSource,
                 getExpandedColProps,
                 expandedRowIndent,
                 onRowOpen,
@@ -226,6 +227,7 @@ export default function expanded(BaseComponent) {
                 components = { ...components };
                 components.Row = RowComponent;
                 dataSource = this.normalizeDataSource(dataSource);
+                entireDataSource = this.normalizeDataSource(entireDataSource);
             }
             if (expandedRowRender && hasExpandedRowCtrl) {
                 children = this.normalizeChildren(children);
@@ -235,6 +237,7 @@ export default function expanded(BaseComponent) {
                 <BaseComponent
                     {...others}
                     dataSource={dataSource}
+                    entireDataSource={entireDataSource}
                     components={components}
                 >
                     {children}
