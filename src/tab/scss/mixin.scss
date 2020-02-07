@@ -23,7 +23,6 @@
     }
 
     &.active {
-        z-index: 1;
         color: $tab-color-active;
         background-color: $tab-bg-color-active;
     }
