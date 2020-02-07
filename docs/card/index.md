@@ -56,10 +56,10 @@
 
 ### Card.Divider
 
-| 参数        | 说明     | 类型      | 默认值  |
-| --------- | ------ | ------- | ---- |
-| component | 设置标签类型 | custom  | 'hr' |
-| inset     | 分割线是否向内缩进  | Boolean | -    |
+| 参数        | 说明        | 类型      | 默认值  |
+| --------- | --------- | ------- | ---- |
+| component | 设置标签类型    | custom  | 'hr' |
+| inset     | 分割线是否向内缩进 | Boolean | -    |
 
 ### Card.Actions
 

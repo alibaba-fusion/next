@@ -96,10 +96,7 @@ export function config(Component, options = {}) {
             pure: PropTypes.bool,
             rtl: PropTypes.bool,
             device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
-            popupContainer: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.func,
-            ]),
+            popupContainer: PropTypes.any,
             errorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -113,10 +110,7 @@ export function config(Component, options = {}) {
             nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool,
             nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
-            nextPopupContainer: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.func,
-            ]),
+            nextPopupContainer: PropTypes.any,
             nextErrorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,

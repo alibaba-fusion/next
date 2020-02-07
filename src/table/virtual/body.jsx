@@ -18,6 +18,7 @@ export default class VirtualBody extends React.Component {
             PropTypes.string,
         ]),
         onBodyScroll: PropTypes.func,
+        onFixedScrollSync: PropTypes.func,
         onVirtualScroll: PropTypes.func,
         onLockBodyScroll: PropTypes.func,
         bodyHeight: PropTypes.number,
@@ -46,11 +47,11 @@ export default class VirtualBody extends React.Component {
         this.virtualScrollNode = virtualScroll;
     };
 
-    onScroll = () => {
+    onScroll = current => {
         // for fixed
-        this.context.onBodyScroll();
+        this.context.onFixedScrollSync(current);
         // for lock
-        this.context.onLockBodyScroll();
+        this.context.onLockBodyScroll(current);
         // for virtual
         this.context.onVirtualScroll();
     };
@@ -58,6 +59,7 @@ export default class VirtualBody extends React.Component {
     render() {
         const { prefix, className, colGroup, ...others } = this.props;
         const { maxBodyHeight, bodyHeight, innerTop } = this.context;
+
         return (
             <div
                 style={{ maxHeight: maxBodyHeight }}

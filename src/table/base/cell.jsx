@@ -11,8 +11,11 @@ export default class Cell extends React.Component {
         className: PropTypes.string,
         record: PropTypes.any,
         value: PropTypes.any,
+        isIconLeft: PropTypes.bool,
         colIndex: PropTypes.number,
         rowIndex: PropTypes.number,
+        // 经过锁列调整后的列索引，lock right的列会从非0开始
+        __colIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         title: PropTypes.any,
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         context: PropTypes.any,
@@ -40,6 +43,7 @@ export default class Cell extends React.Component {
     static defaultProps = {
         component: 'td',
         type: 'body',
+        isIconLeft: false,
         cell: value => value,
         prefix: 'next-',
     };
@@ -62,6 +66,7 @@ export default class Cell extends React.Component {
             resizable,
             colIndex,
             rowIndex,
+            __colIndex,
             record,
             context,
             align,
@@ -83,6 +88,8 @@ export default class Cell extends React.Component {
             locale,
             expandedIndexSimulate,
             rtl,
+            isIconLeft,
+            type,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -114,9 +121,12 @@ export default class Cell extends React.Component {
                 <div
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}
+                    title={type === 'header' ? content : null}
+                    data-next-table-col={__colIndex}
+                    data-next-table-row={rowIndex}
                 >
-                    {children}
-                    {content}
+                    {isIconLeft ? children : content}
+                    {isIconLeft ? content : children}
                 </div>
             </Tag>
         );

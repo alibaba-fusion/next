@@ -113,7 +113,7 @@ export default class Tree extends Component {
          */
         defaultExpandAll: PropTypes.bool,
         /**
-         * 是否自动展开父节点
+         * 是否自动展开父节点，建议受控时设置为false
          */
         autoExpandParent: PropTypes.bool,
         /**
