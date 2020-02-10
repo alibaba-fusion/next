@@ -3,7 +3,13 @@ import Tab from './tab';
 import Item from './tabs/tab-item';
 
 Tab.Item = Item;
-Tab.TabPane = Item;
+
+Tab.TabPane = ConfigProvider.config(Item, {
+    transform: (props, deprecated) => {
+        deprecated('Tab.TabPane', 'Tab.Item', 'Tab');
+        return props;
+    },
+});
 
 export default ConfigProvider.config(Tab, {
     transform: /* istanbul ignore next */ (props, deprecated) => {
