@@ -223,6 +223,9 @@ class Checkbox extends UIState {
 
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
+        if (otherProps.title) {
+            othersData.title = otherProps.title;
+        }
 
         let childInput = (
             <input
