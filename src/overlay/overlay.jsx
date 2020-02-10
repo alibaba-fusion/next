@@ -2,6 +2,7 @@ import React, { Children, Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { dom, events, focus, func, guid, KEYCODE, support } from '../util';
 import overlayManager from './manager';
 import Gateway from './gateway';
@@ -55,7 +56,7 @@ let bodyOverflowY, bodyPaddingRight;
 /**
  * Overlay
  * */
-export default class Overlay extends Component {
+class Overlay extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -189,7 +190,6 @@ export default class Overlay extends Component {
         maskClass: PropTypes.string,
         isChildrenInMask: PropTypes.bool,
     };
-
     static defaultProps = {
         prefix: 'next-',
         pure: false,
@@ -226,7 +226,7 @@ export default class Overlay extends Component {
         super(props);
 
         this.state = {
-            visible: props.visible,
+            visible: false,
             status: 'none',
             animation: this.getAnimation(props),
         };
@@ -246,15 +246,36 @@ export default class Overlay extends Component {
         this.timeoutMap = {};
     }
 
-    componentWillMount() {
-        if (this.props.visible) {
-            this.beforeOpen();
-            this.props.beforeOpen();
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const willOpen = !prevState.visible && nextProps.visible;
+        const willClose = prevState.visible && !nextProps.visible;
 
-            if (this.state.animation && support.animation) {
-                this.enter();
-            }
+        if (willOpen) {
+            nextProps.beforeOpen();
+        } else if (willClose) {
+            nextProps.beforeClose();
         }
+
+        const nextState = {};
+
+        if (nextProps.animation || nextProps.animation === false) {
+            nextState.animation = nextProps.animation;
+        }
+
+        if (nextProps.animation !== false && support.animation) {
+            if (willOpen) {
+                nextState.visible = true;
+                nextState.status = 'mounting';
+            } else if (willClose) {
+                nextState.status = 'leaving';
+            }
+        } else {
+            nextState.visible = nextProps.visible;
+        }
+
+        return {
+            ...nextState,
+        };
     }
 
     componentDidMount() {
@@ -268,48 +289,27 @@ export default class Overlay extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!this._isMounted && nextProps.visible) {
+    componentDidUpdate(prevProps, prevState) {
+        if (!this._isMounted && this.props.visible) {
             this._isMounted = true;
         }
 
-        const willOpen = !this.props.visible && nextProps.visible;
-        const willClose = this.props.visible && !nextProps.visible;
-
-        if (nextProps.align !== this.props.align) {
-            this.lastAlign = this.props.align;
+        if (this.props.align !== prevProps.align) {
+            this.lastAlign = prevProps.align;
         }
 
-        if (willOpen) {
-            this.beforeOpen();
-            nextProps.beforeOpen();
-        } else if (willClose) {
-            this.beforeClose();
-            nextProps.beforeClose();
-        }
-
-        if (nextProps.animation || nextProps.animation === false) {
-            this.setState({
-                animation: nextProps.animation,
-            });
-        }
-
-        if (nextProps.animation !== false && support.animation) {
-            if (willOpen) {
-                this.enter();
-            } else if (willClose) {
-                this.leave();
-            }
-        } else {
-            this.setState({
-                visible: nextProps.visible,
-            });
-        }
-    }
-
-    componentDidUpdate(prevProps) {
         const open = !prevProps.visible && this.props.visible;
         const close = prevProps.visible && !this.props.visible;
+
+        if (open && !this._isDestroyed) {
+            this.beforeOpen();
+            this.onEntering();
+        }
+        if (close) {
+            this.beforeClose();
+            this.onLeaving();
+        }
+
         if (this.state.animation && support.animation) {
             if (open || close) {
                 this.addAnimationEvents();
@@ -583,7 +583,11 @@ export default class Overlay extends Component {
     }
 
     getContentNode() {
-        return findDOMNode(this.contentRef);
+        try {
+            return findDOMNode(this.contentRef);
+        } catch (err) {
+            return null;
+        }
     }
 
     getWrapperNode() {
@@ -816,3 +820,5 @@ export default class Overlay extends Component {
         );
     }
 }
+
+export default polyfill(Overlay);

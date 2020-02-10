@@ -53,16 +53,16 @@ export default class Position extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+
         if (
-            ('align' in nextProps && nextProps.align !== this.props.align) ||
-            nextProps.shouldUpdatePosition
+            ('align' in props && props.align !== prevProps.align) ||
+            props.shouldUpdatePosition
         ) {
             this.shouldUpdatePosition = true;
         }
-    }
 
-    componentDidUpdate() {
         if (this.shouldUpdatePosition) {
             this.setPosition();
             this.shouldUpdatePosition = false;
