@@ -29,7 +29,7 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
     // keep placehold to get width
     if (isPlaceholder) {
         style.visibility = 'hidden';
-        style.display = 'unset';
+        style.display = 'inline-block';
         // indicators which not in use, just display: none
     } else if (items && items.length === 0) {
         style.display = 'none';
