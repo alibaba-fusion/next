@@ -153,7 +153,9 @@ $input-s-icon-padding-right: $s-1 !default;
 
 // feedback
 // --------------------------------------------------
-
+/// warning
+/// @namespace statement/normal/feedback
+$input-feedback-warning-color: $color-warning-3 !default;
 /// success
 /// @namespace statement/normal/feedback
 $input-feedback-success-color: $color-success-3 !default;
@@ -171,12 +173,25 @@ $color-calculate-input-feedback-error-shadow: rgba($input-feedback-error-border-
 /// @namespace statement/error
 $input-feedback-error-bg-color: $color-white !default;
 
+/// border
+/// @namespace statement/warning
+$input-feedback-warning-border-color: $color-warning-3 !default;
+$color-calculate-input-feedback-warning-shadow: rgba($input-feedback-warning-border-color, .2);
+
+/// background
+/// @namespace statement/warning
+$input-feedback-warning-bg-color: $color-white !default;
+
 // maxlen
 // --------------------------------------------------
 
 /// error
 /// @namespace statement/normal/maxlen
 $input-maxlen-error-color: $color-error-3 !default;
+
+/// warning
+/// @namespace statement/normal/maxlen
+$input-maxlen-warning-color: $color-warning-3 !default;
 
 /// text
 /// @namespace statement/normal/maxlen

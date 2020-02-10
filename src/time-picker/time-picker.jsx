@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
+import ConfigProvider from '../config-provider';
 import Input from '../input';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
@@ -17,8 +19,9 @@ const timePickerLocale = nextLocale.TimePicker;
 /**
  * TimePicker
  */
-export default class TimePicker extends Component {
+class TimePicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -109,7 +112,7 @@ export default class TimePicker extends Component {
          * @param {Object} target 目标节点
          * @return {ReactNode} 容器节点
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.any,
         /**
          * 弹层对齐方式, 详情见Overlay 文档
          */
@@ -145,12 +148,24 @@ export default class TimePicker extends Component {
          */
         disabled: PropTypes.bool,
         /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 时间
+         */
+        renderPreview: PropTypes.func,
+        /**
          * 时间值改变时的回调
          * @param {Object|String} value 时间对象或时间字符串
          */
         onChange: PropTypes.func,
         className: PropTypes.string,
         name: PropTypes.string,
+        inputProps: PropTypes.object,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -183,22 +198,18 @@ export default class TimePicker extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            const value = formatDateValue(
-                nextProps.value,
-                nextProps.format || this.props.format
-            );
-            this.setState({
-                value,
-            });
+    static getDerivedStateFromProps(props) {
+        const state = {};
+
+        if ('value' in props) {
+            state.value = formatDateValue(props.value, props.format);
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if ('visible' in props) {
+            state.visible = props.visible;
         }
+
+        return state;
     }
 
     onValueChange(newValue) {
@@ -314,6 +325,28 @@ export default class TimePicker extends Component {
         this.props.onVisibleChange(visible, type);
     };
 
+    renderPreview(others) {
+        const { prefix, format, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classnames(className, `${prefix}form-preview`);
+
+        const label = value ? value.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {label}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -330,17 +363,21 @@ export default class TimePicker extends Component {
             disabledMinutes,
             disabledSeconds,
             renderTimeMenuItems,
+            inputProps,
             popupAlign,
             popupTriggerType,
             popupContainer,
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             disabled,
             className,
             locale,
             rtl,
+            isPreview,
             ...others
         } = this.props;
 
@@ -354,10 +391,17 @@ export default class TimePicker extends Component {
             others.dir = 'rtl';
         }
 
+        if (isPreview) {
+            return this.renderPreview(
+                obj.pickOthers(others, TimePicker.PropTypes)
+            );
+        }
+
         const inputValue = inputing
             ? inputStr
             : (value && value.format(format)) || '';
         const sharedInputProps = {
+            ...inputProps,
             size,
             disabled,
             value: inputValue,
@@ -408,13 +452,16 @@ export default class TimePicker extends Component {
             className
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(TimePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     visible={visible}
@@ -422,26 +469,33 @@ export default class TimePicker extends Component {
                     trigger={triggerInput}
                     container={popupContainer}
                     disabled={disabled}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     style={popupStyle}
                     className={popupClassName}
                 >
-                    <div
-                        dir={others.dir}
-                        className={`${prefix}time-picker-body`}
-                    >
-                        <div className={`${prefix}time-picker-panel-header`}>
-                            <Input
-                                {...sharedInputProps}
-                                placeholder={format}
-                                className={`${prefix}time-picker-panel-input`}
-                            />
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div
+                            dir={others.dir}
+                            className={`${prefix}time-picker-body`}
+                        >
+                            <div
+                                className={`${prefix}time-picker-panel-header`}
+                            >
+                                <Input
+                                    {...sharedInputProps}
+                                    placeholder={format}
+                                    className={`${prefix}time-picker-panel-input`}
+                                />
+                            </div>
+                            <TimePickerPanel {...panelProps} />
                         </div>
-                        <TimePickerPanel {...panelProps} />
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }
 }
+
+export default polyfill(TimePicker);

@@ -27,7 +27,10 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
+        onBodyMouseOver: PropTypes.func,
+        onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
+        crossline: PropTypes.bool,
     };
     static defaultProps = {
         loading: false,
@@ -59,6 +62,14 @@ export default class Body extends React.Component {
         this.props.onRowMouseLeave(record, index, e);
     };
 
+    onBodyMouseOver = e => {
+        this.props.onBodyMouseOver(e);
+    };
+
+    onBodyMouseOut = e => {
+        this.props.onBodyMouseOut(e);
+    };
+
     render() {
         /*eslint-disable no-unused-vars */
         const {
@@ -80,10 +91,13 @@ export default class Body extends React.Component {
             onRowClick,
             onRowMouseEnter,
             onRowMouseLeave,
+            onBodyMouseOver,
+            onBodyMouseOut,
             locale,
             pure,
             expandedIndexSimulate,
             rtl,
+            crossline,
             ...others
         } = this.props;
 
@@ -110,13 +124,18 @@ export default class Body extends React.Component {
         if (dataSource.length) {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
+                // record may be a string
+                const rowIndex =
+                    typeof record === 'object' && '__rowIndex' in record
+                        ? record.__rowIndex
+                        : index;
 
                 if (expandedIndexSimulate) {
                     rowProps = record.__expanded
                         ? {}
                         : getRowProps(record, index / 2);
                 } else {
-                    rowProps = getRowProps(record, index);
+                    rowProps = getRowProps(record, rowIndex);
                 }
 
                 rowProps = rowProps || {};
@@ -130,15 +149,19 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] || index}${expanded}`}
+                        key={`${record[primaryKey] ||
+                            (record[primaryKey] === 0
+                                ? 0
+                                : rowIndex)}${expanded}`}
                         {...rowProps}
-                        ref={this.getRowRef.bind(this, index)}
+                        ref={this.getRowRef.bind(this, rowIndex)}
                         colGroup={colGroup}
                         rtl={rtl}
                         columns={columns}
                         primaryKey={primaryKey}
                         record={record}
-                        rowIndex={index}
+                        rowIndex={rowIndex}
+                        __rowIndex={rowIndex}
                         prefix={prefix}
                         pure={pure}
                         cellRef={cellRef}
@@ -153,8 +176,14 @@ export default class Body extends React.Component {
                 );
             });
         }
+        const event = crossline
+            ? {
+                  onMouseOver: this.onBodyMouseOver,
+                  onMouseOut: this.onBodyMouseOut,
+              }
+            : {};
         return (
-            <Tag className={className} {...others}>
+            <Tag className={className} {...others} {...event}>
                 {rows}
                 {children}
             </Tag>

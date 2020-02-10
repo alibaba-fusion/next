@@ -10,7 +10,6 @@
 
     border: $collapse-border-width solid $collapse-border-color;
     border-radius: $collapse-border-corner;
-    overflow: hidden;
     &:focus,
     & *:focus {
         outline: 0;
@@ -55,7 +54,6 @@
     }
 
     &-panel-content {
-        overflow: hidden;
         height: 0;
         padding: 0 $collapse-content-padding-x;
         background: $collapse-content-bg-color;
@@ -85,7 +83,6 @@
     }
 
     &-panel-disabled {
-        overflow: hidden;
         &:not(:first-child) {
             border-color: $collapse-disabled-border-color;
         }

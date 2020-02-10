@@ -131,6 +131,9 @@ export default class Dialog extends Component {
          * 对话框的高度样式属性
          */
         height: PropTypes.string,
+        // Do not remove this, it's for <ConfigProvider popupContainer={} />
+        // see https://github.com/alibaba-fusion/next/issues/1508
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -246,13 +249,15 @@ export default class Dialog extends Component {
             maxBodyHeight = 1;
         }
 
-        this.dialogBodyStyleMaxHeight = bodyNode.style.maxHeight;
-        this.dialogBodyStyleOverflowY = bodyNode.style.overflowY;
+        if (bodyNode) {
+            this.dialogBodyStyleMaxHeight = bodyNode.style.maxHeight;
+            this.dialogBodyStyleOverflowY = bodyNode.style.overflowY;
 
-        setStyle(bodyNode, {
-            'max-height': `${maxBodyHeight}px`,
-            'overflow-y': 'auto',
-        });
+            setStyle(bodyNode, {
+                'max-height': `${maxBodyHeight}px`,
+                'overflow-y': 'auto',
+            });
+        }
     }
 
     revertSize(bodyNode) {
@@ -349,6 +354,7 @@ export default class Dialog extends Component {
             afterClose,
             shouldUpdatePosition,
             align,
+            popupContainer,
             overlayProps,
             rtl,
         } = this.props;
@@ -360,6 +366,7 @@ export default class Dialog extends Component {
         } = this.mapcloseableToConfig(closeable);
         const newOverlayProps = {
             disableScroll: true,
+            container: popupContainer,
             ...overlayProps,
             prefix,
             visible,

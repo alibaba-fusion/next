@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { data } from '../checkbox';
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -37,7 +38,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * 校验状态，如不设置，则会根据校验规则自动生成
      */
-    validateState?: 'error' | 'success' | 'loading';
+    validateState?: 'error' | 'success' | 'loading' | 'warning';
 
     /**
      * 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持
@@ -193,6 +194,9 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 是否修改数据时自动触发校验
      */
     autoValidate?: boolean;
+    labelWidth?: number | string;
+    colSpan?: number;
+    isPreview?: boolean;
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -466,6 +470,9 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 设置标签类型
      */
     component?: string | (() => void);
+    responsive?: boolean;
+    isPreview?: boolean;
+    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => void
 }
 
 export default class Form extends React.Component<FormProps, any> {

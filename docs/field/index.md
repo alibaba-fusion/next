@@ -219,7 +219,8 @@ let myfield = Field.useField([options]); // 要求 react 版本 > 16.8
 | getState  | 判断校验状态 | Function(name: String)| 'error' 'success' 'loading' '' | '' |
 | getNames  | 获取所有组件的key | Function()|  |  |
 | remove  | 删除某一个或者一组控件的数据，删除后与之相关的validate/value都会被清空 | Function(name: String/String[])|  |  |
-| spliceArray  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(keyMatch: String, index: Number)|  |  |
+| addArrayValue  | 添加 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(key: String, index: Number, value1, value2, ...)|  |  |
+| deleteArrayValue  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(key: String, index: Number, howmany)|  |  |
 
 #### init
 ```
@@ -270,7 +271,7 @@ init(name, options, props)
 | min | 最小值 | Number | | String/Number |
 | max | 最大值 | Number | | String/Number |
 | format | 对常用 pattern 的总结	 | String | url、email、tel、number | String |
-| validator | 自定义校验,(校验成功的时候不要忘记执行 `callback()`,否则会校验不返回) | Function(rule,value,callback) | | |
+| validator | 自定义校验, 校验的结果通过用户传递给 callback 的参数决定(校验成功的时候不要忘记执行 `callback()`,否则会校验不返回): <br/> - callback() 无参数表示校验成功 <br/> - callback('this is a error msg') 有参数表示校验失败，并且参数为错误信息 | Function(rule,value,callback) | | |
 | trigger | 触发校验的事件名称 | String/Array | onChange/onBlur/... | onChange |
 | message | 出错时候信息 | String | | |
 

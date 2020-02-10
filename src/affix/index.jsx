@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
+import { findDOMNode } from 'react-dom';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { obj, events, func } from '../util';
 import ConfigProvider from '../config-provider';
 import { getScroll, getRect, getNodeHeight } from './util';
@@ -44,13 +46,49 @@ class Affix extends React.Component {
         onAffix: func.noop,
     };
 
+    static _getAffixMode(nextProps) {
+        const affixMode = {
+            top: false,
+            bottom: false,
+            offset: 0,
+        };
+        if (!nextProps) {
+            return affixMode;
+        }
+        const { offsetTop, offsetBottom } = nextProps;
+
+        if (typeof offsetTop !== 'number' && typeof offsetBottom !== 'number') {
+            // set default
+            affixMode.top = true;
+        } else if (typeof offsetTop === 'number') {
+            affixMode.top = true;
+            affixMode.bottom = false;
+            affixMode.offset = offsetTop;
+        } else if (typeof offsetBottom === 'number') {
+            affixMode.bottom = true;
+            affixMode.top = false;
+            affixMode.offset = offsetBottom;
+        }
+
+        return affixMode;
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = {
             style: null,
             containerStyle: null,
+            affixMode: Affix._getAffixMode(props),
         };
-        this.affixMode = this._getAffixMode(props);
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('offsetTop' in nextProps || 'offsetBottom' in nextProps) {
+            return {
+                affixMode: Affix._getAffixMode(nextProps),
+            };
+        }
+        return null;
     }
 
     componentDidMount() {
@@ -62,11 +100,8 @@ class Affix extends React.Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('offsetTop' in nextProps || 'offsetBottom' in nextProps) {
-            this.affixMode = this._getAffixMode(nextProps);
-            this._updateNodePosition();
-        }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        setTimeout(this._updateNodePosition);
     }
 
     componentWillUnmount() {
@@ -100,6 +135,7 @@ class Affix extends React.Component {
     };
 
     _updateNodePosition = () => {
+        const { affixMode } = this.state;
         const { container, useAbsolute } = this.props;
         const affixContainer = container();
 
@@ -114,7 +150,6 @@ class Affix extends React.Component {
 
         const affixChildHeight = this.affixChildNode.offsetHeight;
 
-        const affixMode = this.affixMode;
         const affixStyle = {
             width: affixOffset.width,
         };
@@ -122,7 +157,6 @@ class Affix extends React.Component {
             width: affixOffset.width,
             height: affixChildHeight,
         };
-
         if (
             affixMode.top &&
             containerScrollTop > affixOffset.top - affixMode.offset
@@ -170,31 +204,6 @@ class Affix extends React.Component {
         }
     };
 
-    _getAffixMode(nextProps) {
-        const props = nextProps || this.props;
-        const { offsetTop, offsetBottom } = props;
-        const affixMode = {
-            top: false,
-            bottom: false,
-            offset: 0,
-        };
-
-        if (typeof offsetTop !== 'number' && typeof offsetBottom !== 'number') {
-            // set default
-            affixMode.top = true;
-        } else if (typeof offsetTop === 'number') {
-            affixMode.top = true;
-            affixMode.bottom = false;
-            affixMode.offset = offsetTop;
-        } else if (typeof offsetBottom === 'number') {
-            affixMode.bottom = true;
-            affixMode.top = false;
-            affixMode.offset = offsetBottom;
-        }
-
-        return affixMode;
-    }
-
     _setAffixStyle(affixStyle, affixed = false) {
         if (obj.shallowEqual(affixStyle, this.state.style)) {
             return;
@@ -207,9 +216,9 @@ class Affix extends React.Component {
         const { onAffix } = this.props;
 
         if (affixed) {
-            onAffix(true);
+            setTimeout(() => onAffix(true));
         } else if (!affixStyle) {
-            onAffix(false);
+            setTimeout(() => onAffix(false));
         }
     }
 
@@ -243,12 +252,13 @@ class Affix extends React.Component {
     };
 
     render() {
+        const { affixMode } = this.state;
         const { prefix, className, style, children } = this.props;
         const state = this.state;
         const classNames = classnames({
             [`${prefix}affix`]: state.style,
-            [`${prefix}affix-top`]: !state.style && this.affixMode.top,
-            [`${prefix}affix-bottom`]: !state.style && this.affixMode.bottom,
+            [`${prefix}affix-top`]: !state.style && affixMode.top,
+            [`${prefix}affix-bottom`]: !state.style && affixMode.bottom,
             [className]: className,
         });
         const combinedStyle = { ...state.containerStyle, ...style };
@@ -267,4 +277,4 @@ class Affix extends React.Component {
     }
 }
 
-export default ConfigProvider.config(Affix);
+export default ConfigProvider.config(polyfill(Affix));

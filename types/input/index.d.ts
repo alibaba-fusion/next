@@ -104,7 +104,7 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error';
+    state?: 'error' | 'warning';
 
     /**
      * 是否有边框
@@ -252,7 +252,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 状态
      */
-    state?: 'error' | 'loading' | 'success';
+    state?: 'error' | 'loading' | 'success' | 'warning';
 
     /**
      * label
@@ -324,8 +324,17 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
      */
     autoFocus?: boolean;
 }
+export interface PasswordProps extends InputProps {
+    /**
+     * 是否展示切换按钮
+     */
+    showToggle?: boolean;
+}
+export class Password extends React.Component<PasswordProps, any> {}
 
 export default class Input extends React.Component<InputProps, any> {
     static TextArea: typeof TextArea;
     static Group: typeof Group;
+    static Password: typeof Password;
 }
+

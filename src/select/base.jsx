@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { func, dom, events } from '../util';
 import Menu from '../menu';
 import Overlay from '../overlay';
+import Input from '../input';
+
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
 import VirtualList from '../virtual-list';
@@ -74,7 +76,7 @@ export default class Base extends React.Component {
         /**
          * 弹层挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层的 className
          */
@@ -125,6 +127,15 @@ export default class Base extends React.Component {
         locale: PropTypes.object,
         rtl: PropTypes.bool,
         popupComponent: PropTypes.any,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -583,6 +594,10 @@ export default class Base extends React.Component {
             followTrigger,
             cache,
             popupComponent,
+            isPreview,
+            renderPreview,
+            style,
+            className,
         } = props;
 
         const cls = classNames(
@@ -593,6 +608,58 @@ export default class Base extends React.Component {
             },
             popupClassName || popupProps.className
         );
+
+        if (isPreview) {
+            if (this.isAutoComplete) {
+                return (
+                    <Input
+                        style={style}
+                        className={className}
+                        isPreview={isPreview}
+                        renderPreview={renderPreview}
+                        value={this.state.value}
+                    />
+                );
+            } else {
+                const valueDS = this.valueDataSource.valueDS;
+                if (typeof renderPreview === 'function') {
+                    const previewCls = classNames({
+                        [`${prefix}form-preview`]: true,
+                        [className]: !!className,
+                    });
+                    return (
+                        <div style={style} className={previewCls}>
+                            {renderPreview(valueDS, this.props)}
+                        </div>
+                    );
+                } else {
+                    const { fillProps } = this.props;
+                    if (mode === 'single') {
+                        return (
+                            <Input
+                                style={style}
+                                className={className}
+                                isPreview={isPreview}
+                                value={
+                                    fillProps
+                                        ? valueDS[fillProps]
+                                        : valueDS.label
+                                }
+                            />
+                        );
+                    } else {
+                        return (
+                            <Input
+                                style={style}
+                                className={className}
+                                isPreview={isPreview}
+                                value={valueDS.map(i => i.label).join(', ')}
+                            />
+                        );
+                    }
+                }
+            }
+        }
 
         const _props = {
             triggerType: 'click',

@@ -71,6 +71,11 @@
         }
     }
 
+    &-panel-menu {
+        max-height: 210px;
+        overflow: auto;
+        text-align: left;
+    }
     // panel components
     // ------------------------
     &-btn {
@@ -84,6 +89,9 @@
 
         & > #{$calendar-icon-prefix}#{$calendar-icon-prefix} {
             @include icon-size($calendar-btn-arrow-size);
+        }
+        .#{$css-prefix}icon {
+            margin-left: $s-1;
         }
     }
 

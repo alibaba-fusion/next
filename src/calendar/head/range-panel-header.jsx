@@ -1,12 +1,37 @@
+/* istanbul ignore file */
 import React from 'react';
 import Icon from '../../icon';
+import Dropdown from '../../dropdown';
+import SelectMenu from './menu';
+import { getMonths, getYears } from '../utils';
 
+/* eslint-disable */
 class RangePanelHeader extends React.PureComponent {
+    static defaultProps = {
+        yearRangeOffset: 10,
+    };
+
+    selectContainerHandler = target => {
+        return target.parentNode;
+    };
+
+    onYearChange = (visibleMonth, year) => {
+        const { changeVisibleMonth } = this.props;
+        changeVisibleMonth(visibleMonth.clone().year(year), 'yearSelect');
+    };
+
+    changeVisibleMonth = (visibleMonth, month) => {
+        const { changeVisibleMonth } = this.props;
+        changeVisibleMonth(visibleMonth.clone().month(month), 'monthSelect');
+    };
+
     render() {
         const {
             prefix,
             startVisibleMonth,
             endVisibleMonth,
+            yearRange = [],
+            yearRangeOffset,
             momentLocale,
             locale,
             changeMode,
@@ -14,14 +39,27 @@ class RangePanelHeader extends React.PureComponent {
             goNextYear,
             goPrevMonth,
             goPrevYear,
+            disableChangeMode,
         } = this.props;
 
         const localedMonths = momentLocale.months();
         const startMonthLabel = localedMonths[startVisibleMonth.month()];
         const endMonthLabel = localedMonths[endVisibleMonth.month()];
-        const startYearLable = startVisibleMonth.year();
+        const startYearLabel = startVisibleMonth.year();
         const endYearLabel = endVisibleMonth.year();
         const btnCls = `${prefix}calendar-btn`;
+
+        const months = getMonths(momentLocale);
+        const startYears = getYears(
+            yearRange,
+            yearRangeOffset,
+            startVisibleMonth.year()
+        );
+        const endYears = getYears(
+            yearRange,
+            yearRangeOffset,
+            endVisibleMonth.year()
+        );
 
         return (
             <div className={`${prefix}calendar-panel-header`}>
@@ -42,40 +80,154 @@ class RangePanelHeader extends React.PureComponent {
                     <Icon type="arrow-left" />
                 </button>
                 <div className={`${prefix}calendar-panel-header-left`}>
-                    <button
-                        role="button"
-                        title={startMonthLabel}
-                        className={btnCls}
-                        onClick={() => changeMode('month', 'start')}
-                    >
-                        {startMonthLabel}
-                    </button>
-                    <button
-                        role="button"
-                        title={startYearLable}
-                        className={btnCls}
-                        onClick={() => changeMode('year', 'start')}
-                    >
-                        {startYearLable}
-                    </button>
+                    {disableChangeMode ? (
+                        <Dropdown
+                            align="tc bc"
+                            container={this.selectContainerHandler}
+                            trigger={
+                                <button
+                                    role="button"
+                                    className={btnCls}
+                                    title={startMonthLabel}
+                                >
+                                    {startMonthLabel}
+                                    <Icon type="arrow-down" />
+                                </button>
+                            }
+                            triggerType="click"
+                        >
+                            <SelectMenu
+                                prefix={prefix}
+                                value={startVisibleMonth.month()}
+                                dataSource={months}
+                                onChange={value =>
+                                    this.changeVisibleMonth(
+                                        startVisibleMonth,
+                                        value
+                                    )
+                                }
+                            />
+                        </Dropdown>
+                    ) : (
+                        <button
+                            role="button"
+                            title={startMonthLabel}
+                            className={btnCls}
+                            onClick={() => changeMode('month', 'start')}
+                        >
+                            {startMonthLabel}
+                        </button>
+                    )}
+                    {disableChangeMode ? (
+                        <Dropdown
+                            align="tc bc"
+                            container={this.selectContainerHandler}
+                            trigger={
+                                <button
+                                    role="button"
+                                    className={btnCls}
+                                    title={startYearLabel}
+                                >
+                                    {startYearLabel}
+                                    <Icon type="arrow-down" />
+                                </button>
+                            }
+                            triggerType="click"
+                        >
+                            <SelectMenu
+                                prefix={prefix}
+                                value={startVisibleMonth.year()}
+                                dataSource={startYears}
+                                onChange={v =>
+                                    this.onYearChange(startVisibleMonth, v)
+                                }
+                            />
+                        </Dropdown>
+                    ) : (
+                        <button
+                            role="button"
+                            title={startYearLabel}
+                            className={btnCls}
+                            onClick={() => changeMode('year', 'start')}
+                        >
+                            {startYearLabel}
+                        </button>
+                    )}
                 </div>
                 <div className={`${prefix}calendar-panel-header-right`}>
-                    <button
-                        role="button"
-                        title={endMonthLabel}
-                        className={btnCls}
-                        onClick={() => changeMode('month', 'end')}
-                    >
-                        {endMonthLabel}
-                    </button>
-                    <button
-                        role="button"
-                        title={endYearLabel}
-                        className={btnCls}
-                        onClick={() => changeMode('year', 'end')}
-                    >
-                        {endYearLabel}
-                    </button>
+                    {disableChangeMode ? (
+                        <Dropdown
+                            align="tc bc"
+                            container={this.selectContainerHandler}
+                            trigger={
+                                <button
+                                    role="button"
+                                    className={btnCls}
+                                    title={endMonthLabel}
+                                >
+                                    {endMonthLabel}
+                                    <Icon type="arrow-down" />
+                                </button>
+                            }
+                            triggerType="click"
+                        >
+                            <SelectMenu
+                                prefix={prefix}
+                                value={endVisibleMonth.month()}
+                                dataSource={months}
+                                onChange={value =>
+                                    this.changeVisibleMonth(
+                                        endVisibleMonth,
+                                        value
+                                    )
+                                }
+                            />
+                        </Dropdown>
+                    ) : (
+                        <button
+                            role="button"
+                            title={endMonthLabel}
+                            className={btnCls}
+                            onClick={() => changeMode('month', 'end')}
+                        >
+                            {endMonthLabel}
+                        </button>
+                    )}
+                    {disableChangeMode ? (
+                        <Dropdown
+                            align="tc bc"
+                            container={this.selectContainerHandler}
+                            trigger={
+                                <button
+                                    role="button"
+                                    className={btnCls}
+                                    title={endYearLabel}
+                                >
+                                    {endYearLabel}
+                                    <Icon type="arrow-down" />
+                                </button>
+                            }
+                            triggerType="click"
+                        >
+                            <SelectMenu
+                                prefix={prefix}
+                                value={endVisibleMonth.year()}
+                                dataSource={endYears}
+                                onChange={v =>
+                                    this.onYearChange(endVisibleMonth, v)
+                                }
+                            />
+                        </Dropdown>
+                    ) : (
+                        <button
+                            role="button"
+                            title={endYearLabel}
+                            className={btnCls}
+                            onClick={() => changeMode('year', 'end')}
+                        >
+                            {endYearLabel}
+                        </button>
+                    )}
                 </div>
                 <button
                     role="button"

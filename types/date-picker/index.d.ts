@@ -143,6 +143,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
+    type?: 'date' | 'month' | 'year',
     /**
      * 默认展示的起始月份
      */
@@ -580,4 +581,5 @@ export default class DatePicker extends React.Component<DatePickerProps, any> {
     static MonthPicker: typeof MonthPicker;
     static RangePicker: typeof RangePicker;
     static YearPicker: typeof YearPicker;
+    static WeekPicker: React.ComponentType<DatePickerProps>;
 }

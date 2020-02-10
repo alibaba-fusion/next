@@ -61,9 +61,6 @@ ReactDOM.render(<Table
                 align: 'center'
             };
         },
-        titleAddons: () => {
-            return <div>请选择</div>;
-        },
         titleProps: () => {
             return {
                 // remove the select all button

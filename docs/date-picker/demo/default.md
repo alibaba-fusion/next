@@ -28,6 +28,8 @@ ReactDOM.render(<div>
     <DatePicker defaultValue={startValue} onChange={onChange} /><br /><br />
     <MonthPicker defaultValue={startValue} onChange={onChange} /><br /><br />
     <YearPicker defaultValue={startValue} onChange={onChange} /><br /><br />
+    <RangePicker type="year" defaultValue={[startValue, endValue]} onChange={onChange} /><br /><br />
+    <RangePicker type="month" defaultValue={[startValue, endValue]} onChange={onChange} /><br /><br />
     <RangePicker defaultValue={[startValue, endValue]} onChange={onChange} />
 </div>, mountNode);
 ````

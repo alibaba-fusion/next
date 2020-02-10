@@ -56,6 +56,10 @@ export default class Drawer extends Component {
          */
         title: PropTypes.node,
         /**
+         * header上的样式
+         */
+        headerStyle: PropTypes.object,
+        /**
          * body上的样式
          */
         bodyStyle: PropTypes.object,
@@ -76,6 +80,8 @@ export default class Drawer extends Component {
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         locale: PropTypes.object,
+        // for ConfigProvider
+        popupContainer: PropTypes.any,
     };
 
     static defaultProps = {
@@ -187,6 +193,7 @@ export default class Drawer extends Component {
             title,
             onClose,
             locale,
+            headerStyle,
             bodyStyle,
             placement,
             rtl,
@@ -202,6 +209,7 @@ export default class Drawer extends Component {
                 locale={locale}
                 closeable={closeable}
                 rtl={rtl}
+                headerStyle={headerStyle}
                 bodyStyle={bodyStyle}
                 placement={placement}
                 onClose={onClose.bind(this, 'closeClick')}
@@ -228,6 +236,7 @@ export default class Drawer extends Component {
             onVisibleChange,
             closeable,
             rtl,
+            popupContainer,
             ...others
         } = this.props;
 
@@ -259,6 +268,7 @@ export default class Drawer extends Component {
             target: 'viewport',
             style: newStyle,
             needAdjust: false,
+            container: popupContainer,
         };
 
         const inner = this.renderInner(canCloseByCloseClick);

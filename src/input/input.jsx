@@ -29,9 +29,9 @@ export default class Input extends Base {
         hasBorder: PropTypes.bool,
         /**
          * 状态
-         * @enumdesc 错误, 校验中, 成功
+         * @enumdesc 错误, 校验中, 成功, 警告
          */
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
          * 尺寸
          * @enumdesc 小, 中, 大
@@ -88,6 +88,15 @@ export default class Input extends Base {
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
         innerAfterClassName: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -95,6 +104,7 @@ export default class Input extends Base {
         size: 'medium',
         autoComplete: 'off',
         hasBorder: true,
+        isPreview: false,
         onPressEnter: func.noop,
         inputRender: el => el,
     };
@@ -144,6 +154,8 @@ export default class Input extends Base {
             stateWrap = <Icon type="success-filling" />;
         } else if (state === 'loading') {
             stateWrap = <Icon type="loading" />;
+        } else if (state === 'warning') {
+            stateWrap = <Icon type="warning" />;
         }
 
         let clearWrap = null;
@@ -261,6 +273,8 @@ export default class Input extends Base {
             className,
             hasBorder,
             prefix,
+            isPreview,
+            renderPreview,
             addonBefore,
             addonAfter,
             addonTextBefore,
@@ -290,6 +304,10 @@ export default class Input extends Base {
             [`${prefix}after`]: true,
             [innerAfterClassName]: innerAfterClassName,
         });
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
 
         const props = this.getProps();
         // custom data attributes are assigned to the top parent node
@@ -301,6 +319,28 @@ export default class Input extends Base {
             Object.assign({}, dataProps, Input.propTypes),
             this.props
         );
+
+        if (isPreview) {
+            const { value } = props;
+            const { label } = this.props;
+            if (typeof renderPreview === 'function') {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+            return (
+                <div {...others} className={previewCls}>
+                    {addonBefore || addonTextBefore}
+                    {label}
+                    {innerBefore}
+                    {value}
+                    {innerAfter}
+                    {addonAfter || addonTextAfter}
+                </div>
+            );
+        }
 
         const inputEl = (
             <input

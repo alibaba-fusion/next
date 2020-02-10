@@ -51,7 +51,15 @@ export function checkDateValue(props, propName, componentName) {
     }
 }
 
-export function getDateTimeFormat(format, showTime) {
+export function getDateTimeFormat(format, showTime, type) {
+    if (!format && type) {
+        format = {
+            date: 'YYYY-MM-DD',
+            month: 'YYYY-MM',
+            year: 'YYYY',
+            time: '',
+        }[type];
+    }
     const timeFormat = showTime ? showTime.format || DEFAULT_TIME_FORMAT : '';
     const dateTimeFormat = timeFormat ? `${format} ${timeFormat}` : format;
     return {

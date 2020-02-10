@@ -50,6 +50,8 @@
 | onRemove        | 移除文件回调函数<br><br>**签名**:<br>Function(file: Object) => Boolean/Promise<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Boolean/Promise} 返回 false、Promise.resolve(false)、 Promise.reject() 将阻止文件删除<br>                                           | Function        | func.noop |
 | autoUpload      | 自动上传                                                                                                                                                                                                                                            | Boolean         | true      |
 | progressProps   | 透传给Progress props                                                                                                                                                                                                                               | Object          | -         |
+| isPreview       | 是否为预览态                                                                                                                                                                                                                                          | Boolean         | -         |
+| renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                                               | Function        | -         |
 
 ### Upload.Card
 

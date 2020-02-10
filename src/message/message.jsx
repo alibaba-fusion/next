@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import nextLocale from '../locale/zh-cn';
 import Icon from '../icon';
 import Animate from '../animate';
 import ConfigProvider from '../config-provider';
+import { obj } from '../util';
 
 const noop = () => {};
 
@@ -97,12 +99,14 @@ class Message extends Component {
                 : this.props.visible,
     };
 
-    componentWillReceiveProps(nextProps) {
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+    static getDerivedStateFromProps(props) {
+        if ('visible' in props) {
+            return {
+                visible: props.visible,
+            };
         }
+
+        return {};
     }
 
     onClose = () => {
@@ -120,6 +124,7 @@ class Message extends Component {
             prefix,
             pure,
             className,
+            style,
             type,
             shape,
             size,
@@ -134,8 +139,10 @@ class Message extends Component {
             animation,
             rtl,
             locale,
-            ...others
         } = this.props;
+        const others = {
+            ...obj.pickOthers(Object.keys(Message.propTypes), this.props),
+        };
         /* eslint-enable */
         const { visible } = this.state;
         const messagePrefix = `${prefix}message`;
@@ -153,6 +160,7 @@ class Message extends Component {
         const newChildren = visible ? (
             <div
                 role="alert"
+                style={style}
                 {...others}
                 className={classes}
                 dir={rtl ? 'rtl' : undefined}
@@ -193,4 +201,4 @@ class Message extends Component {
     }
 }
 
-export default ConfigProvider.config(Message);
+export default ConfigProvider.config(polyfill(Message));

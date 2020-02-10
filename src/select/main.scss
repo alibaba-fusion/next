@@ -52,7 +52,7 @@
 
         .#{$css-prefix}input.#{$css-prefix}disabled {
             em {
-                color: $color-text1-1;
+                color: $input-disabled-color;
             }
             #{$select-prefix}-arrow {
                 cursor: not-allowed;

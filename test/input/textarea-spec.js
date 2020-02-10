@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
@@ -8,6 +9,39 @@ import Input from '../../src/input/index';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('TextArea', () => {
+    describe('render', () => {
+        let parent;
+
+        beforeEach(() => {
+            parent = document.createElement('div');
+            document.body.appendChild(parent);
+        });
+
+        afterEach(() => {
+            document.body.removeChild(parent);
+            parent = null;
+        });
+
+        it('should textarea isPreview', () => {
+            ReactDOM.render(<Input.TextArea id="ispreview-input" isPreview defaultValue="abc"/>, parent);
+            assert(
+                document.querySelectorAll(
+                    '#ispreview-input'
+                )[0].innerText === 'abc'
+            );
+        });
+
+        it('should textarea renderPreview', () => {
+            ReactDOM.render(<Input.TextArea id="renderpreview-input" isPreview defaultValue="abc" renderPreview={() => 'ddd'}/>, parent);
+
+            assert(
+                document.querySelectorAll(
+                    '#renderpreview-input'
+                )[0].innerText === 'ddd'
+            );
+        });
+    });
+
     describe('behavior', () => {
         // 判断事件是否执行
         it('should support onChange/onFocus/onBlur events', () => {
@@ -46,6 +80,9 @@ describe('TextArea', () => {
                 .simulate('change', { target: { value: '20' } });
             assert(wrapper.find('textarea').prop('value') === '20');
 
+            wrapper.setProps({value: 'helloworld'});
+            assert(wrapper.find('textarea').prop('value') === 'helloworld');
+
             done();
         });
 
@@ -63,6 +100,9 @@ describe('TextArea', () => {
                 .find('textarea')
                 .simulate('change', { target: { value: '20' } });
             assert(wrapper.find('textarea').prop('value') === '123');
+
+            wrapper.setProps({value: 'helloworld'});
+            assert(wrapper.find('textarea').prop('value') === 'helloworld');
 
             done();
         });
@@ -88,7 +128,7 @@ describe('TextArea', () => {
                 }
             }
 
-            let wrapper = mount(<App />);
+            const wrapper = mount(<App />);
 
             assert(wrapper.find('textarea').prop('value') === '123');
 
@@ -101,14 +141,14 @@ describe('TextArea', () => {
         });
 
         it('should support dsiabled', done => {
-            let wrapper = mount(<Input.TextArea disabled />);
+            const wrapper = mount(<Input.TextArea disabled />);
 
             assert(wrapper.find('textarea').prop('disabled'));
             done();
         });
 
         it('should support maxLength & hasLimitHint', done => {
-            let wrapper = mount(
+            const wrapper = mount(
                 <Input.TextArea
                     defaultValue={'abcd'}
                     maxLength={10}
@@ -122,7 +162,7 @@ describe('TextArea', () => {
                 .simulate('change', { target: { value: '12345678901' } });
             assert(wrapper.find('.next-input-len').hasClass('next-error'));
 
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input.TextArea maxLength={10} hasLimitHint />
             );
             wrapper2
@@ -136,12 +176,12 @@ describe('TextArea', () => {
         });
 
         it('should support state', () => {
-            let wrapper = mount(<Input.TextArea state="error" />);
+            const wrapper = mount(<Input.TextArea state="error" />);
             assert(wrapper.find('.next-input').hasClass('next-error'));
         });
 
         it('should support onFocus & onBlur', done => {
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input.TextArea
                     defaultValue={'123'}
                     onFocus={e => {
@@ -151,7 +191,7 @@ describe('TextArea', () => {
             );
             wrapper2.find('textarea').simulate('focus');
 
-            let wrapper3 = mount(
+            const wrapper3 = mount(
                 <Input.TextArea
                     defaultValue={'123'}
                     onBlur={e => {
@@ -181,7 +221,7 @@ describe('TextArea', () => {
                     );
                 }
             }
-            let wrapper = mount(<App />);
+            const wrapper = mount(<App />);
 
             wrapper.find('textarea').simulate('focus');
 
@@ -189,7 +229,7 @@ describe('TextArea', () => {
         });
 
         it('should support getValueLength', done => {
-            let getValueLength = sinon.spy();
+            const getValueLength = sinon.spy();
             mount(
                 <Input.TextArea
                     defaultValue="abcdef"
@@ -212,7 +252,7 @@ describe('TextArea', () => {
                 );
             assert(wrapper.find('.next-input-len').text() === '1/10');
 
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input.TextArea
                     defaultValue="abcdef"
                     maxLength={10}
@@ -226,7 +266,7 @@ describe('TextArea', () => {
         });
 
         it('should support autoHeight', done => {
-            let wrapper = mount(
+            const wrapper = mount(
                 <Input.TextArea defaultValue="abcdef" autoHeight />
             );
             // console.log(wrapper.find('textarea[data-real]').instance().clientHeight)
@@ -237,7 +277,7 @@ describe('TextArea', () => {
 
             // assert(wrapper.find('textarea[data-real]').at(0).getElement().clientHeight > originHeight);
 
-            let wrapper2 = mount(
+            const wrapper2 = mount(
                 <Input.TextArea
                     defaultValue="abcdef"
                     autoHeight={{ minRows: 2, maxRows: 4 }}
@@ -263,7 +303,7 @@ describe('TextArea', () => {
                     return <Input.TextArea ref="textarea" />;
                 }
             }
-            let wrapper = mount(<App />);
+            const wrapper = mount(<App />);
             wrapper
                 .ref('textarea')
                 .getInstance()
@@ -276,7 +316,7 @@ describe('TextArea', () => {
     });
     describe('react api', () => {
         it('calls componentWillReceiveProps', done => {
-            let wrapper = mount(
+            const wrapper = mount(
                 <Input.TextArea autoHeight defaultValue={19} />
             );
             wrapper.setProps({ value: '30' });
@@ -290,7 +330,7 @@ describe('TextArea', () => {
         });
 
         it('support null to reset', done => {
-            let wrapper = mount(<Input.TextArea defaultValue={19} />);
+            const wrapper = mount(<Input.TextArea defaultValue={19} />);
 
             // value = null 时候清空数据
             wrapper.setProps({ value: null });

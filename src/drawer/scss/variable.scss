@@ -46,10 +46,10 @@ $drawer-content-padding-bottom: $s-5 !default;
 $drawer-content-padding-left-right: $s-5 !default;
 /// position (t)
 /// @namespace size/close
-$drawer-close-top: $s-4 !default;
+$drawer-close-top: $s-3 !default;
 /// position (r)
 /// @namespace size/close
-$drawer-close-right: $s-4 !default;
+$drawer-close-right: $s-3 !default;
 $drawer-close-width: $s-4 !default;
 /// icon
 /// @namespace size/close
@@ -83,7 +83,7 @@ $drawer-shadow: $shadow-2-down !default;
 $drawer-title-color: $color-text1-4 !default;
 /// background
 /// @namespace statement/normal/title
-$drawer-title-bg-color: $color-transparent !default;
+$drawer-title-bg-color: $color-white !default;
 /// divider
 /// @namespace statement/normal/title
 $drawer-title-border-color: $color-line1-2 !default;

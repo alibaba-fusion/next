@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import Icon from '../icon';
 import Button from '../button';
 import Input from '../input';
@@ -116,6 +118,15 @@ class NumberPicker extends React.Component {
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
         /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
@@ -149,18 +160,25 @@ class NumberPicker extends React.Component {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: value === undefined || value === null ? '' : value,
             hasFocused: false,
+            reRender: true,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (
+            'value' in nextProps &&
+            nextProps.value !== prevState.value &&
+            prevState.reRender
+        ) {
             const value = nextProps.value;
-            this.setState({
+            return {
                 value: value === undefined || value === null ? '' : value,
-            });
+            };
         }
+
+        return null;
     }
 
     onChange(value, e) {
@@ -179,15 +197,16 @@ class NumberPicker extends React.Component {
                 if (value === '-' || this.state.value === '-') {
                     this.setState({
                         value,
+                        reRender: false,
                     });
                     return;
                 }
-                // ignore when next value = prev value.
-                // ps: Number('0.')=0 ; Number('0.0')=0;
+                // ignore when input 0./0.0/0.00 to 0.001
                 // but take care of Number('')=0;
-                if (Number(this.state.value) === Number(value)) {
+                if (value.match(/\.0*$/)) {
                     this.setState({
                         value,
+                        reRender: false,
                     });
                     return;
                 }
@@ -195,6 +214,7 @@ class NumberPicker extends React.Component {
                 if (!isNaN(value) && Number(value) < this.props.min) {
                     this.setState({
                         value,
+                        reRender: false,
                     });
                     return;
                 }
@@ -287,6 +307,10 @@ class NumberPicker extends React.Component {
                 value: v,
             });
         }
+
+        this.setState({
+            reRender: true,
+        });
 
         this.props.onChange(isNaN(v) || v === '' ? undefined : v, {
             ...e,
@@ -447,9 +471,11 @@ class NumberPicker extends React.Component {
             upBtnProps = {},
             downBtnProps = {},
             innerAfter,
+            isPreview,
+            renderPreview,
         } = this.props;
 
-        let type = device === 'phone' ? 'inline' : this.props.type;
+        const type = device === 'phone' ? 'inline' : this.props.type;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -489,7 +515,7 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.up.bind(this, upDisabled)}
                     >
-                        <Icon size="xxs" type="arrow-up" />
+                        <Icon type="arrow-up" />
                     </Button>
                     <Button
                         {...downBtnProps}
@@ -500,7 +526,7 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.down.bind(this, downDisabled)}
                     >
-                        <Icon size="xxs" type="arrow-down" />
+                        <Icon type="arrow-down" />
                     </Button>
                 </span>
             );
@@ -515,7 +541,7 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.down.bind(this, downDisabled)}
                 >
-                    <Icon type="minus" size="xs" />
+                    <Icon type="minus" />
                 </Button>
             );
             addonAfter = (
@@ -528,13 +554,33 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.up.bind(this, upDisabled)}
                 >
-                    <Icon type="add" size="xs" />
+                    <Icon type="add" />
                 </Button>
             );
         }
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
+
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                return (
+                    <div {...others} style={style} className={previewCls}>
+                        {renderPreview(this.renderValue(), this.props)}
+                    </div>
+                );
+            }
+            return (
+                <p {...others} style={{ style }} className={previewCls}>
+                    {this.renderValue()}
+                </p>
+            );
+        }
 
         return (
             <span
@@ -545,6 +591,7 @@ class NumberPicker extends React.Component {
             >
                 <Input
                     {...others}
+                    hasClear={false}
                     aria-valuemax={max !== Infinity ? max : undefined}
                     aria-valuemin={min !== -Infinity ? min : undefined}
                     state={state === 'error' ? 'error' : null}
@@ -569,4 +616,4 @@ class NumberPicker extends React.Component {
     }
 }
 
-export default NumberPicker;
+export default polyfill(NumberPicker);

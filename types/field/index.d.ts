@@ -27,4 +27,10 @@ export default class Field extends innerField{
         names?: string[] | string,
         callback?: (errors: object[], values: ValidateResults) => void
     ): void;
+
+    /**
+     * react hooks 风格使用 Field
+     * @param options
+     */
+    static useField(options?: FieldOption): Field;
 }

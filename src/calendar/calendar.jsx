@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classnames from 'classnames';
+import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
 import CardHeader from './head/card-header';
@@ -26,6 +27,7 @@ import {
 /** Calendar */
 class Calendar extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -42,6 +44,8 @@ class Calendar extends Component {
         mode: PropTypes.oneOf(CALENDAR_MODES), // 生成 API 文档需要手动改回 ['date', 'month', 'year']
         // 面板可变化的模式列表，仅初始化时接收一次
         modes: PropTypes.array,
+        // 禁用更改面板模式，采用 dropdown 的方式切换显示日期 (暂不正式对外透出)
+        disableChangeMode: PropTypes.bool,
         // 日期值的格式（用于日期title显示的格式）
         format: PropTypes.string,
         /**
@@ -111,6 +115,7 @@ class Calendar extends Component {
         rtl: false,
         shape: 'fullscreen',
         modes: CALENDAR_MODES,
+        disableChangeMode: false,
         format: 'YYYY-MM-DD',
         onSelect: func.noop,
         onVisibleMonthChange: func.noop,
@@ -237,6 +242,7 @@ class Calendar extends Component {
             yearCellRender,
             disabledDate,
             yearRange,
+            disableChangeMode,
             ...others
         } = this.props;
         const state = this.state;
@@ -270,6 +276,8 @@ class Calendar extends Component {
             prefix,
             value: state.value,
             mode: state.mode,
+            disableChangeMode,
+            yearRange,
             locale,
             rtl,
             visibleMonth,
@@ -335,7 +343,7 @@ class Calendar extends Component {
                 {shape === 'panel' ? (
                     panelHeaders[state.mode]
                 ) : (
-                    <CardHeader {...headerProps} yearRange={yearRange} />
+                    <CardHeader {...headerProps} />
                 )}
                 {tables[state.mode]}
             </div>

@@ -27,7 +27,7 @@ class StepItem extends Component {
          */
         icon: PropTypes.string,
         /**
-         * 内容，用于垂直状态下的内容填充
+         * 内容填充, shape为 arrow 时无效
          */
         content: PropTypes.node,
         /**

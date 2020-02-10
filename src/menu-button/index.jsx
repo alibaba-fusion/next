@@ -31,7 +31,7 @@ class MenuButton extends React.Component {
         /**
          * 弹层容器
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.any,
         /**
          * 弹层展开状态
          */

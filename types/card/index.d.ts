@@ -126,6 +126,10 @@ export interface CardActionsProps extends HTMLAttributesWeak, CommonProps {
 }
 
 export interface CardDividerProps extends HTMLAttributesWeak, CommonProps {
+    /**
+     * 分割线是否向内缩进
+     */
+    inset?: boolean;
 }
 
 export default class Card extends React.Component<CardProps, any> {

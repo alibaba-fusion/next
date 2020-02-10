@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import ConfigProvider from '../config-provider';
 import Icon from '../icon';
-import { isBoolean, getCollapseMap } from './util';
 import { KEYCODE } from '../util';
+
+import { isBoolean, getCollapseMap } from './util';
 
 /**
  * Shell
@@ -16,6 +18,7 @@ export default function ShellBase(props) {
         static _typeMark = componentName;
 
         static propTypes = {
+            ...ConfigProvider.propTypes,
             prefix: PropTypes.string,
             /**
              * 设备类型
@@ -35,10 +38,6 @@ export default function ShellBase(props) {
             type: 'light',
         };
 
-        static childContextTypes = {
-            shellPrefix: PropTypes.string,
-        };
-
         constructor(props) {
             super(props);
 
@@ -49,12 +48,6 @@ export default function ShellBase(props) {
                 controll: false,
                 collapseMap: deviceMap,
                 device: props.device,
-            };
-        }
-
-        getChildContext() {
-            return {
-                shellPrefix: this.props.prefix,
             };
         }
 
@@ -202,6 +195,7 @@ export default function ShellBase(props) {
             const { device } = this.state;
 
             const layout = {};
+            layout.header = {};
             let hasToolDock = false,
                 needNavigationTrigger = false,
                 needDockTrigger = false;
@@ -212,9 +206,6 @@ export default function ShellBase(props) {
                     switch (mark) {
                         case 'Branding':
                         case 'Action':
-                            if (!layout.header) {
-                                layout.header = {};
-                            }
                             layout.header[mark] = child;
                             break;
                         case 'MultiTask':
@@ -243,10 +234,6 @@ export default function ShellBase(props) {
                             const childT = this.setChildCollapse(child, mark);
                             layout[mark] = childT;
 
-                            if (!layout.header && device === 'phone') {
-                                layout.header = {};
-                            }
-
                             break;
                         case 'AppBar':
                         case 'Content':
@@ -259,10 +246,6 @@ export default function ShellBase(props) {
                             layout.page = child;
                             break;
                         case 'Navigation':
-                            if (!layout.header) {
-                                layout.header = {};
-                            }
-
                             if (child.props.direction === 'hoz') {
                                 layout.header[mark] = child;
                             } else {
@@ -353,7 +336,7 @@ export default function ShellBase(props) {
 
             // 如果存在 toolDock, 则需要在 Action 上出现 trigger
             if (needDockTrigger) {
-                const action = layout.header && layout.header.Action;
+                const action = layout.header.Action;
                 let { trigger, collapse } = layout.ToolDock.props;
 
                 if ('trigger' in layout.ToolDock.props) {

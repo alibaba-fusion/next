@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import Overlay from '../overlay';
 import { func, obj, log } from '../util';
 import BalloonInner from './inner';
@@ -27,7 +28,7 @@ const alignList = [
 let alignMap = normalMap;
 
 /** Balloon */
-export default class Balloon extends React.Component {
+class Balloon extends React.Component {
     static contextTypes = {
         prefix: PropTypes.string,
     };
@@ -67,7 +68,7 @@ export default class Balloon extends React.Component {
          */
         onVisibleChange: PropTypes.func,
         /**
-         * 弹出层对齐方式
+         * 弹出层对齐方式, 是否为边缘对齐
          */
         alignEdge: PropTypes.bool,
         /**
@@ -142,8 +143,8 @@ export default class Balloon extends React.Component {
         /**
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-        container: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
+        container: PropTypes.any,
         /**
          * 弹层组件style，透传给Popup
          */
@@ -205,18 +206,22 @@ export default class Balloon extends React.Component {
         this._onVisibleChange = this._onVisibleChange.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const nextState = {};
         if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+            nextState.visible = nextProps.visible;
         }
 
-        if ('align' in nextProps && alignList.includes(nextProps.align)) {
-            this.setState({
-                align: nextProps.align,
-            });
+        if (
+            !prevState.innerAlign &&
+            'align' in nextProps &&
+            alignList.includes(nextProps.align)
+        ) {
+            nextState.align = nextProps.align;
+            nextState.innerAlign = false;
         }
+
+        return nextState;
     }
 
     _onVisibleChange(visible, trigger) {
@@ -264,6 +269,7 @@ export default class Balloon extends React.Component {
         if (resAlign !== this.state.align) {
             this.setState({
                 align: resAlign,
+                innerAlign: true,
             });
         }
     }
@@ -388,3 +394,5 @@ export default class Balloon extends React.Component {
         );
     }
 }
+
+export default polyfill(Balloon);

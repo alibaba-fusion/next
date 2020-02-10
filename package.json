@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.18.4",
+  "version": "1.19.12",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -37,6 +37,7 @@
     "dev": "node ./scripts/server/index.js",
     "build": "node ./scripts/build/index.js",
     "check": "node ./scripts/check/index.js",
+    "create": "node ./scripts/create-new.js",
     "check-sass": "node ./scripts/check/sass.js",
     "docs": "node ./scripts/docs/index.js",
     "api": "node ./scripts/api.js",
@@ -72,8 +73,8 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "^1.3.0",
-    "@alifd/validate": "^1.1.3",
+    "@alifd/field": "~1.3.3",
+    "@alifd/validate": "~1.1.4",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.3",
     "hoist-non-react-statics": "^2.1.0",
@@ -93,7 +94,7 @@
     "@alifd/stylelint-config-next": "^1.0.0",
     "@commitlint/cli": "^7.0.0",
     "@no-repeat/sass-mapper": "^0.0.6",
-    "@no-repeat/sass-tracker": "^0.0.10",
+    "@no-repeat/sass-tracker": "^0.1.0",
     "@no-repeat/sassdoc-parser": "^0.0.11",
     "@octokit/rest": "^15.15.1",
     "@types/react": "^16.8.13",
@@ -156,6 +157,7 @@
     "moment": "^2.20.1",
     "node-sass": "4.6.0",
     "node-sass-package-importer": "^5.2.0",
+    "nunjucks": "^3.2.0",
     "postcss-loader": "^2.0.6",
     "postcss-scss": "1.0.2",
     "power-assert": "^1.5.0",

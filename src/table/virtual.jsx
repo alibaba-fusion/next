@@ -151,6 +151,7 @@ export default function virtual(BaseComponent) {
             if (typeof rowHeight === 'function') {
                 return 0;
             }
+
             return this.start * rowHeight;
         }
 
@@ -165,7 +166,7 @@ export default function virtual(BaseComponent) {
                 // try get cell height;
                 end = 1;
             } else {
-                visibleCount = parseInt(height / rowHeight, 10);
+                visibleCount = parseInt(dom.getPixels(height) / rowHeight, 10);
 
                 if ('number' === typeof ExpectStart) {
                     start = ExpectStart < len ? ExpectStart : 0;
@@ -283,14 +284,21 @@ export default function virtual(BaseComponent) {
             } = this.props;
 
             const entireDataSource = dataSource;
+            let newDataSource = dataSource;
 
             this.rowSelection = this.props.rowSelection;
             if (this.hasVirtualData) {
+                newDataSource = [];
                 components = { ...components };
                 const { start, end } = this.getVisibleRange(
                     this.state.scrollToRow
                 );
-                dataSource = dataSource.slice(start, end);
+                dataSource.forEach((current, index, record) => {
+                    if (index >= start && index < end) {
+                        current.__rowIndex = index;
+                        newDataSource.push(current);
+                    }
+                });
 
                 if (!components.Body) {
                     components.Body = VirtualBody;
@@ -301,7 +309,7 @@ export default function virtual(BaseComponent) {
             return (
                 <BaseComponent
                     {...others}
-                    dataSource={dataSource}
+                    dataSource={newDataSource}
                     entireDataSource={entireDataSource}
                     components={components}
                     fixedHeader={fixedHeader}

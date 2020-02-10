@@ -113,7 +113,7 @@ export default class Tree extends Component {
          */
         defaultExpandAll: PropTypes.bool,
         /**
-         * 是否自动展开父节点
+         * 是否自动展开父节点，建议受控时设置为false
          */
         autoExpandParent: PropTypes.bool,
         /**
@@ -229,6 +229,12 @@ export default class Tree extends Component {
          * 当前获得焦点的子菜单或菜单项 key 值
          */
         focusedKey: PropTypes.string,
+        /**
+         * 渲染子节点
+         * @param {Array<ReactNode>} nodes 所有的子节点
+         * @return {ReactNode} 返回节点
+         */
+        renderChildNodes: PropTypes.func,
         focusable: PropTypes.bool,
         autoFocus: PropTypes.bool,
         onItemFocus: PropTypes.func,

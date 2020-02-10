@@ -71,22 +71,21 @@ class Component extends React.Component {
         return (
             <div>
                 <div className="custom-step-option">
-                    <Select placeholder="Choose the dispaly type" onChange={this.onStepTypeChange.bind(this)} className="custom-select" defaultValue="circle">
+                    <Select innerBefore="shape:" placeholder="Choose the dispaly type" onChange={this.onStepTypeChange.bind(this)} className="custom-select" defaultValue="circle">
                         {
                             ['circle', 'arrow', 'dot'].map(item => <Select.Option value={item} key={item}>{item}</Select.Option>)
                         }
                     </Select>
 
-                    <Select placeholder="Label placement" onChange={this.onLabelPlacementChange.bind(this)} className="custom-select" defaultValue="ver">
+                    <Select innerBefore="labelPlacement:" placeholder="Label placement" onChange={this.onLabelPlacementChange.bind(this)} className="custom-select" defaultValue="hoz">
                         {
                             ['hoz', 'ver'].map(item => <Select.Option value={item} key={item}>{item}</Select.Option>)
                         }
                     </Select>
 
-
-                    <Select placeholder="Enable animation" onChange={this.onStepAnimation.bind(this)} className="custom-select" defaultValue>
+                    <Select innerBefore="animation:" placeholder="Enable animation" onChange={this.onStepAnimation.bind(this)} className="custom-select" defaultValue>
                         {
-                            [true, false].map((item, index) => <Select.Option value={item} key={index}>{item ? 'animation on' : 'animation off'}</Select.Option>)
+                            [true, false].map((item, index) => <Select.Option value={item} key={index}>{item ? 'on' : 'off'}</Select.Option>)
                         }
                     </Select>
                 </div>
@@ -120,5 +119,8 @@ ReactDOM.render(<Component />, mountNode);
 
 .custom-select {
     margin-right: 20px;
+}
+.next-input-inner.next-before {
+    margin-left: 8px;
 }
 ````

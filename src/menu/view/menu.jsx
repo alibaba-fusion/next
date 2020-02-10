@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import SubMenu from './sub-menu';
+import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
 import { getWidth } from './util';
 
@@ -18,6 +19,7 @@ export default class Menu extends Component {
     static isNextMenu = true;
 
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -145,6 +147,7 @@ export default class Menu extends Component {
          * 横向菜单模式下，是否维持在一行，即超出一行折叠成 SubMenu 显示， 仅在 direction='hoz' mode='popup' 时生效
          */
         hozInLine: PropTypes.bool,
+        renderMore: PropTypes.func,
         /**
          * 自定义菜单头部
          */
@@ -304,22 +307,32 @@ export default class Menu extends Component {
     }
 
     adjustChildrenWidth() {
-        const { direction, prefix, hozInLine } = this.props;
+        const { direction, prefix, header, footer, hozInLine } = this.props;
         if (direction !== 'hoz' || !hozInLine) {
             return;
         }
 
-        if (!this.menuNode) {
+        if (!this.menuNode && !this.menuContent) {
             return;
         }
 
-        const children = this.menuNode.children;
+        let children = [],
+            spaceWidth;
+
+        if (header || footer) {
+            children = this.menuContent.children;
+            spaceWidth =
+                getWidth(this.menuNode) -
+                getWidth(this.menuHeader) -
+                getWidth(this.menuFooter);
+        } else {
+            children = this.menuNode.children;
+            spaceWidth = getWidth(this.menuNode);
+        }
 
         if (children.length < 2) {
             return;
         }
-
-        const spaceWidth = getWidth(this.menuNode);
 
         let currentSumWidth = 0,
             lastVisibleIndex = -1;
@@ -399,7 +412,7 @@ export default class Menu extends Component {
     }
 
     getIndicatorsItem(items, isPlaceholder) {
-        const { prefix } = this.props;
+        const { prefix, renderMore } = this.props;
         const moreCls = cx({
             [`${prefix}menu-more`]: true,
         });
@@ -408,9 +421,17 @@ export default class Menu extends Component {
         // keep placehold to get width
         if (isPlaceholder) {
             style.visibility = 'hidden';
+            style.display = 'unset';
             // indicators which not in use, just display: none
         } else if (items && items.length === 0) {
             style.display = 'none';
+            style.visibility = 'unset';
+        }
+
+        if (renderMore && typeof renderMore === 'function') {
+            return React.cloneElement(renderMore(items), {
+                style,
+            });
         }
 
         return (
@@ -553,7 +574,7 @@ export default class Menu extends Component {
                                     child.props.children,
                                     posPrefix,
                                     indexWrapper,
-                                    childLevel
+                                    props.level
                                 )
                             );
                             break;
@@ -918,6 +939,18 @@ export default class Menu extends Component {
         }
     }
 
+    menuContentRef = ref => {
+        this.menuContent = ref;
+    };
+
+    menuHeaderRef = ref => {
+        this.menuHeader = ref;
+    };
+
+    menuFooterRef = ref => {
+        this.menuFooter = ref;
+    };
+
     render() {
         const {
             prefix,
@@ -950,16 +983,25 @@ export default class Menu extends Component {
         }
 
         const headerElement = header ? (
-            <li className={`${prefix}menu-header`}>{header}</li>
+            <li className={`${prefix}menu-header`} ref={this.menuHeaderRef}>
+                {header}
+            </li>
         ) : null;
         const itemsElement =
             header || footer ? (
-                <ul className={`${prefix}menu-content`}>{this.newChildren}</ul>
+                <ul
+                    className={`${prefix}menu-content`}
+                    ref={this.menuContentRef}
+                >
+                    {this.newChildren}
+                </ul>
             ) : (
                 this.newChildren
             );
         const footerElement = footer ? (
-            <li className={`${prefix}menu-footer`}>{footer}</li>
+            <li className={`${prefix}menu-footer`} ref={this.menuFooterRef}>
+                {footer}
+            </li>
         ) : null;
         const shouldWrapItemsAndFooter = hozAlign === 'right' && !!header;
 

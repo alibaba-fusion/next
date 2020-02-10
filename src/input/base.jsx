@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
+import ConfigProvider from '../config-provider';
 import { func } from '../util';
 import zhCN from '../locale/zh-cn';
 
 class Base extends React.Component {
     static propTypes = {
-        prefix: PropTypes.string,
+        ...ConfigProvider.propTypes,
         /**
          * 当前值
          */
@@ -89,8 +92,17 @@ class Base extends React.Component {
          */
         name: PropTypes.string,
         rtl: PropTypes.bool,
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         locale: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -100,6 +112,7 @@ class Base extends React.Component {
         hasLimitHint: false,
         cutString: true,
         readOnly: false,
+        isPreview: false,
         trim: false,
         onFocus: func.noop,
         onBlur: func.noop,
@@ -109,13 +122,15 @@ class Base extends React.Component {
         locale: zhCN.Input,
     };
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
             const value = nextProps.value;
-            this.setState({
+            return {
                 value: value === undefined || value === null ? '' : value,
-            });
+            };
         }
+
+        return null;
     }
 
     ieHack(value) {
@@ -123,6 +138,12 @@ class Base extends React.Component {
     }
 
     onChange(e) {
+        if ('stopPropagation' in e) {
+            e.stopPropagation();
+        } else if ('cancelBubble' in e) {
+            e.cancelBubble();
+        }
+
         let value = e.target.value;
 
         if (this.props.trim) {
@@ -221,6 +242,7 @@ class Base extends React.Component {
             [`${prefix}input`]: true,
             [`${prefix}disabled`]: !!disabled,
             [`${prefix}error`]: state === 'error',
+            [`${prefix}warning`]: state === 'warning',
             [`${prefix}focus`]: this.state.focus,
         });
     }
@@ -275,4 +297,4 @@ class Base extends React.Component {
     }
 }
 
-export default Base;
+export default polyfill(Base);

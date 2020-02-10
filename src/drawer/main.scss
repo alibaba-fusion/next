@@ -44,6 +44,11 @@
         color: $drawer-title-color;
     }
 
+    &-no-title {
+        padding: 0;
+        border-bottom: 0;
+    }
+
     &-body {
         padding: $drawer-content-padding-top $drawer-content-padding-left-right $drawer-content-padding-bottom $drawer-content-padding-left-right;
         font-size: $drawer-content-font-size;

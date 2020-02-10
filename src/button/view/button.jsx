@@ -1,6 +1,8 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ConfigProvider from '../../config-provider';
+import { obj, log } from '../../util';
 
 function mapIconSize(size) {
     return {
@@ -13,6 +15,7 @@ function mapIconSize(size) {
 /** Button */
 export default class Button extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
         /**
@@ -113,6 +116,8 @@ export default class Button extends Component {
             ghost,
             component,
             iconSize,
+            disabled,
+            onClick,
             children,
             rtl,
             ...others
@@ -146,10 +151,26 @@ export default class Button extends Component {
                     [`${prefix}icon-alone`]: count === 1,
                     [child.props.className]: !!child.props.className,
                 });
+
+                if ('size' in child.props) {
+                    log.warning(
+                        `The size of Icon will not take effect, when Icon is the [direct child element] of Button(<Button><Icon size="${
+                            child.props.size
+                        }" /></Button>), use <Button iconSize="${
+                            child.props.size
+                        }"> or <Button><div><Icon size="${
+                            child.props.size
+                        }" /></div></Button> instead of.`
+                    );
+                }
                 return React.cloneElement(child, {
                     className: iconCls,
                     size: iconSize || mapIconSize(size),
                 });
+            }
+
+            if (!isValidElement(child)) {
+                return <span>{child}</span>;
             }
 
             return child;
@@ -157,8 +178,10 @@ export default class Button extends Component {
 
         const TagName = component;
         const tagAttrs = {
-            ...others,
+            ...obj.pickOthers(Object.keys(Button.propTypes), others),
             type: htmlType,
+            disabled: disabled,
+            onClick: onClick,
             className: btnCls,
         };
 

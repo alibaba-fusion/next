@@ -5,7 +5,7 @@ import { obj, log } from '../util';
 import getContextProps from './get-context-props';
 import ErrorBoundary from './error-boundary';
 
-const { shallowEqual, typeOf } = obj;
+const { shallowEqual } = obj;
 
 function getDisplayName(Component) {
     return Component.displayName || Component.name || 'Component';
@@ -69,8 +69,7 @@ export function getDirection() {
 export function config(Component, options = {}) {
     // 非 forwardRef 创建的 class component
     if (
-        typeOf(Component) === 'Function' &&
-        Component.prototype.isReactComponent !== undefined &&
+        obj.isClassComponent(Component) &&
         Component.prototype.shouldComponentUpdate === undefined
     ) {
         // class component: 通过定义 shouldComponentUpdate 改写成 pure component, 有refs
@@ -97,10 +96,7 @@ export function config(Component, options = {}) {
             pure: PropTypes.bool,
             rtl: PropTypes.bool,
             device: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
-            popupContainer: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.func,
-            ]),
+            popupContainer: PropTypes.any,
             errorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -114,10 +110,7 @@ export function config(Component, options = {}) {
             nextRtl: PropTypes.bool,
             nextWarning: PropTypes.bool,
             nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
-            nextPopupContainer: PropTypes.oneOfType([
-                PropTypes.string,
-                PropTypes.func,
-            ]),
+            nextPopupContainer: PropTypes.any,
             nextErrorBoundary: PropTypes.oneOfType([
                 PropTypes.bool,
                 PropTypes.object,
@@ -235,7 +228,11 @@ export function config(Component, options = {}) {
                 <Component
                     {...newOthers}
                     {...newContextProps}
-                    ref={this._getInstance}
+                    ref={
+                        obj.isClassComponent(Component)
+                            ? this._getInstance
+                            : null
+                    }
                 />
             );
 

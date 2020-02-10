@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import moment from 'moment';
+import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
+import Calendar from '../calendar';
 import RangeCalendar from '../calendar/range-calendar';
 import TimePickerPanel from '../time-picker/panel';
 import nextLocale from '../locale/zh-cn';
@@ -53,8 +55,13 @@ function getFormatValues(values, format) {
  */
 export default class RangePicker extends Component {
     static propTypes = {
+        ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
+        /**
+         * 日期范围类型
+         */
+        type: PropTypes.oneOf(['date', 'month', 'year']),
         /**
          * 默认展示的起始月份
          * @return {MomentObject} 返回包含指定月份的 moment 对象实例
@@ -150,7 +157,7 @@ export default class RangePicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.func,
+        popupContainer: PropTypes.any,
         /**
          * 弹层自定义样式
          */
@@ -198,19 +205,33 @@ export default class RangePicker extends Component {
          * 结束时间输入框的 aria-label 属性
          */
         endTimeInputAriaLabel: PropTypes.string,
-        ranges: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {Array<MomentObject, MomentObject>} value 日期区间
+         */
+        renderPreview: PropTypes.func,
+        disableChangeMode: PropTypes.bool,
+        yearRange: PropTypes.arrayOf(PropTypes.number),
+        ranges: PropTypes.object, // 兼容0.x版本
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
         prefix: 'next-',
         rtl: false,
-        format: 'YYYY-MM-DD',
+        type: 'date',
         size: 'medium',
         showTime: false,
         resetTime: false,
+        format: 'YYYY-MM-DD',
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
@@ -218,6 +239,7 @@ export default class RangePicker extends Component {
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
+        disableChangeMode: false,
         onChange: func.noop,
         onOk: func.noop,
         onVisibleChange: func.noop,
@@ -225,7 +247,11 @@ export default class RangePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const dateTimeFormat = getDateTimeFormat(props.format, props.showTime);
+        const dateTimeFormat = getDateTimeFormat(
+            props.format,
+            props.showTime,
+            props.type
+        );
         extend(dateTimeFormat, this);
 
         const val = props.value || props.defaultValue;
@@ -250,7 +276,8 @@ export default class RangePicker extends Component {
         if ('showTime' in nextProps) {
             const dateTimeFormat = getDateTimeFormat(
                 nextProps.format || this.props.format,
-                nextProps.showTime
+                nextProps.showTime,
+                nextProps.type
             );
             extend(dateTimeFormat, this);
         }
@@ -290,20 +317,21 @@ export default class RangePicker extends Component {
         this.props[handler](ret);
     };
 
-    onSelectCalendarPanel = value => {
+    onSelectCalendarPanel = (value, active) => {
         const { showTime, resetTime } = this.props;
         const {
             activeDateInput: prevActiveDateInput,
             startValue: prevStartValue,
             endValue: prevEndValue,
         } = this.state;
+
         const newState = {
-            activeDateInput: prevActiveDateInput,
+            activeDateInput: active || prevActiveDateInput,
             inputing: false,
         };
 
         let newValue = value;
-        switch (prevActiveDateInput) {
+        switch (active || prevActiveDateInput) {
             case 'startValue': {
                 if (
                     !prevEndValue ||
@@ -445,14 +473,18 @@ export default class RangePicker extends Component {
     };
 
     onDateInputKeyDown = e => {
+        const { type } = this.props;
         const { activeDateInput } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
-        const { format } = this.props;
         const dateStr = onDateKeydown(
             e,
-            { format, value: this.state[activeDateInput], dateInputStr },
-            'day'
+            {
+                format: this.format,
+                value: this.state[activeDateInput],
+                dateInputStr,
+            },
+            type === 'date' ? 'day' : type
         );
         if (!dateStr) return;
 
@@ -683,10 +715,33 @@ export default class RangePicker extends Component {
         return disabledTime;
     };
 
+    renderPreview([startValue, endValue], others) {
+        const { prefix, format, className, renderPreview } = this.props;
+
+        const previewCls = classnames(className, `${prefix}form-preview`);
+        const startLabel = startValue ? startValue.format(format) : '';
+        const endLabel = endValue ? endValue.format(format) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview([startValue, endValue], this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {startLabel} - {endLabel}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
             rtl,
+            type,
             defaultVisibleMonth,
             onVisibleMonthChange,
             showTime,
@@ -704,6 +759,8 @@ export default class RangePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             locale,
@@ -715,6 +772,9 @@ export default class RangePicker extends Component {
             startTimeInputAriaLabel,
             endDateInputAriaLabel,
             endTimeInputAriaLabel,
+            isPreview,
+            disableChangeMode,
+            yearRange,
             ...others
         } = this.props;
 
@@ -751,6 +811,13 @@ export default class RangePicker extends Component {
 
         if (rtl) {
             others.dir = 'rtl';
+        }
+
+        if (isPreview) {
+            return this.renderPreview(
+                [state.startValue, state.endValue],
+                obj.pickOthers(others, RangePicker.PropTypes)
+            );
         }
 
         const startDateInputValue =
@@ -798,21 +865,86 @@ export default class RangePicker extends Component {
             />
         );
 
-        const datePanel = (
-            <RangeCalendar
-                showOtherMonth
-                dateCellRender={dateCellRender}
-                monthCellRender={monthCellRender}
-                yearCellRender={yearCellRender}
-                format={this.format}
-                defaultVisibleMonth={defaultVisibleMonth}
-                onVisibleMonthChange={onVisibleMonthChange}
-                disabledDate={disabledDate}
-                onSelect={this.onSelectCalendarPanel}
-                startValue={state.startValue}
-                endValue={state.endValue}
-            />
-        );
+        const shareCalendarProps = {
+            showOtherMonth: true,
+            dateCellRender: dateCellRender,
+            monthCellRender: monthCellRender,
+            yearCellRender: yearCellRender,
+            format: this.format,
+            defaultVisibleMonth: defaultVisibleMonth,
+            onVisibleMonthChange: onVisibleMonthChange,
+        };
+
+        const datePanel =
+            type === 'date' ? (
+                <RangeCalendar
+                    {...shareCalendarProps}
+                    yearRange={yearRange}
+                    disableChangeMode={disableChangeMode}
+                    disabledDate={disabledDate}
+                    onSelect={this.onSelectCalendarPanel}
+                    startValue={state.startValue}
+                    endValue={state.endValue}
+                />
+            ) : (
+                <div className={`${prefix}range-picker-panel-body`}>
+                    <Calendar
+                        shape="panel"
+                        modes={type === 'month' ? ['month', 'year'] : ['year']}
+                        {...{ ...shareCalendarProps }}
+                        disabledDate={date => {
+                            return (
+                                state.endValue &&
+                                date.isAfter(state.endValue, type)
+                            );
+                        }}
+                        onSelect={value => {
+                            const selectedValue = value
+                                .clone()
+                                .date(1)
+                                .hour(0)
+                                .minute(0)
+                                .second(0);
+                            if (type === 'year') {
+                                selectedValue.month(0);
+                            }
+                            this.onSelectCalendarPanel(
+                                selectedValue,
+                                'startValue'
+                            );
+                        }}
+                        value={state.startValue}
+                    />
+                    <Calendar
+                        shape="panel"
+                        modes={type === 'month' ? ['month', 'year'] : ['year']}
+                        {...shareCalendarProps}
+                        disabledDate={date => {
+                            return (
+                                state.startValue &&
+                                date.isBefore(state.startValue, type)
+                            );
+                        }}
+                        onSelect={value => {
+                            const selectedValue = value
+                                .clone()
+                                .hour(23)
+                                .minute(59)
+                                .second(59);
+                            if (type === 'year') {
+                                selectedValue.month(11).date(31);
+                            } else {
+                                selectedValue.date(selectedValue.daysInMonth());
+                            }
+                            this.onSelectCalendarPanel(
+                                selectedValue,
+                                'endValue'
+                            );
+                        }}
+                        value={state.endValue}
+                    />
+                </div>
+            );
 
         let startTimeInput = null;
         let endTimeInput = null;
@@ -985,45 +1117,53 @@ export default class RangePicker extends Component {
             </div>
         );
 
+        const PopupComponent = popupComponent ? popupComponent : Popup;
+
         return (
             <div
                 {...obj.pickOthers(RangePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}range-picker-panel-header`}>
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
                             <div
-                                className={`${prefix}range-picker-panel-input`}
+                                className={`${prefix}range-picker-panel-header`}
                             >
-                                {startDateInput}
-                                {startTimeInput}
-                                <span
-                                    className={`${prefix}range-picker-panel-input-separator`}
+                                <div
+                                    className={`${prefix}range-picker-panel-input`}
                                 >
-                                    -
-                                </span>
-                                {endDateInput}
-                                {endTimeInput}
+                                    {startDateInput}
+                                    {startTimeInput}
+                                    <span
+                                        className={`${prefix}range-picker-panel-input-separator`}
+                                    >
+                                        -
+                                    </span>
+                                    {endDateInput}
+                                    {endTimeInput}
+                                </div>
                             </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }
