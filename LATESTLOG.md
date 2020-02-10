@@ -1,14 +1,11 @@
 # Latest Log 
 
-## [1.19.11](https://github.com/alibaba-fusion/next/compare/1.19.10...1.19.11) (2020-02-05)
+## [1.19.12](https://github.com/alibaba-fusion/next/compare/1.19.11...1.19.12) (2020-02-10)
 
 
 ### Bug Fixes
 
-* **NumberPicker:** bug of delete like 0.01 => 0.0 ([7377629](https://github.com/alibaba-fusion/next/commit/7377629))
-* **NumberPicker:** can input char while value=null ([be34205](https://github.com/alibaba-fusion/next/commit/be34205))
-* **NumberPicker:** remove iconSize ([030cb2c](https://github.com/alibaba-fusion/next/commit/030cb2c))
-* **Table:** add title for table header, close [#1550](https://github.com/alibaba-fusion/next/issues/1550) ([1fe345c](https://github.com/alibaba-fusion/next/commit/1fe345c))
-* **Upload:** Compatibility in ie/firefox ([23083ee](https://github.com/alibaba-fusion/next/commit/23083ee))
+* **Checkbox:** allow pass title to label ([fd36f8c](https://github.com/alibaba-fusion/next/commit/fd36f8c))
+* **Tab:** fix tab hover shake ([#1563](https://github.com/alibaba-fusion/next/issues/1563)) ([c921c89](https://github.com/alibaba-fusion/next/commit/c921c89))
 
 
