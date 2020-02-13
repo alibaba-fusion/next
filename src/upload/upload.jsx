@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { func, obj } from '../util';
 import Icon from '../icon';
 import Base from './base';
@@ -196,20 +198,25 @@ class Upload extends Base {
 
         this.state = {
             value: typeof value === 'undefined' ? [] : [].concat(value),
+            uploading: false,
         };
-
-        this.uploading = false;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps && !this.uploading) {
-            this.setState({
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (
+            'value' in nextProps &&
+            nextProps.value !== prevState.value &&
+            !prevState.uploading
+        ) {
+            return {
                 value:
                     typeof nextProps.value === 'undefined'
                         ? []
-                        : [].concat(nextProps.value),
-            });
+                        : nextProps.value,
+            };
         }
+
+        return null;
     }
 
     onSelect = files => {
@@ -285,7 +292,7 @@ class Upload extends Base {
 
     uploadFiles(files) {
         // NOTE: drag上传，当鼠标松开的时候回执行 onDrop，但此时onChange还没出发所以 value=[], 必须提前标识上传中
-        this.uploading = true;
+        this.state.uploading = true;
         const fileList = files
             .filter(file => {
                 if (file.state === 'selected') {
@@ -319,11 +326,11 @@ class Upload extends Base {
     }
 
     isUploading() {
-        return this.uploading;
+        return this.state.uploading;
     }
 
     onProgress = (e, file) => {
-        this.uploading = true;
+        this.state.uploading = true;
 
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
@@ -345,7 +352,7 @@ class Upload extends Base {
     };
 
     onSuccess = (response, file) => {
-        this.uploading = false;
+        this.state.uploading = false;
 
         const { formatter } = this.props;
 
@@ -391,7 +398,7 @@ class Upload extends Base {
     };
 
     onError = (err, response, file) => {
-        this.uploading = false;
+        this.state.uploading = false;
 
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
@@ -579,4 +586,4 @@ class Upload extends Base {
     }
 }
 
-export default Upload;
+export default polyfill(Upload);

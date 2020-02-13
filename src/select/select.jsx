@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { func, obj, KEYCODE, env, str } from '../util';
 import Tag from '../tag';
 import Input from '../input';
@@ -194,17 +196,32 @@ class Select extends Base {
     constructor(props) {
         super(props);
 
-        // @extend Base state
-        Object.assign(this.state, {
-            // search keyword
-            searchValue: 'searchValue' in props ? props.searchValue : '',
-        });
-
         // because dataSource maybe updated while select a item, so we should cache choosen value's item
         this.valueDataSource = {
             valueDS: [], // [{value,label}]
             mapValueDS: {}, // {value: {value,label}}
         };
+
+        const searchValue = 'searchValue' in props ? props.searchValue : '';
+
+        this.dataStore.setOptions({
+            key: searchValue,
+            addonKey: props.mode === 'tag', // tag 模式手动输入的数据
+        });
+
+        Object.assign(this.state, {
+            searchValue: searchValue,
+            dataSource: this.setDataSource(props),
+        });
+
+        // 根据value和计算后的dataSource，更新value对应的详细数据valueDataSource
+        if (typeof this.state.value !== 'undefined') {
+            this.valueDataSource = getValueDataSource(
+                this.state.value,
+                this.valueDataSource.mapValueDS,
+                this.dataStore.getMapDS()
+            );
+        }
 
         bindCtx(this, [
             'handleMenuSelect',
@@ -216,97 +233,113 @@ class Select extends Base {
         ]);
     }
 
-    componentWillMount() {
-        this.dataStore.setOptions({
-            key: this.state.searchValue,
-            addonKey: this.props.mode === 'tag', // tag 模式手动输入的数据
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
 
-        super.componentWillMount();
-
-        // 根据value和计算后的dataSource，更新value对应的详细数据valueDataSource
-        if (typeof this.state.value !== 'undefined') {
-            this.valueDataSource = getValueDataSource(
-                this.state.value,
-                this.valueDataSource.mapValueDS,
-                this.dataStore.getMapDS()
-            );
-        }
-
-        if (isIE9) {
-            this.ie9Hack();
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ('searchValue' in nextProps) {
-            this.dataStore.setOptions({ key: nextProps.searchValue });
-            this.setState({
-                searchValue:
-                    typeof nextProps.searchValue === 'undefined'
-                        ? ''
-                        : nextProps.searchValue,
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
+            Object.assign(state, {
+                value: nextProps.value,
             });
         }
-        if (this.props.mode !== nextProps.mode) {
-            this.dataStore.setOptions({
-                addonKey: nextProps.mode === 'tag',
-            });
-        }
-
-        this.dataStore.setOptions({
-            filter: nextProps.filter,
-            filterLocal: nextProps.filterLocal,
-        });
 
         if (
-            nextProps.children !== this.props.children ||
-            nextProps.dataSource !== this.props.dataSource
+            'searchValue' in nextProps &&
+            nextProps.searchValue !== prevState.searchValue
         ) {
-            const dataSource = this.setDataSource(nextProps);
+            const searchValue = nextProps.searchValue;
+            Object.assign(state, {
+                searchValue:
+                    searchValue === undefined || searchValue === null
+                        ? ''
+                        : searchValue,
+            });
+        }
+
+        if ('visible' in nextProps && nextProps.visible !== prevState.visible) {
+            Object.assign(state, {
+                visible: nextProps.visible,
+            });
+        }
+
+        if (Object.keys(state).length) {
+            return state;
+        }
+
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const props = this.props;
+        if (
+            'searchValue' in props &&
+            this.state.searchValue !== prevState.searchValue
+        ) {
+            this.dataStore.setOptions({ key: this.state.searchValue });
+        }
+
+        if (props.mode !== prevProps.mode) {
+            this.dataStore.setOptions({
+                addonKey: props.mode === 'tag',
+            });
+        }
+        if (props.mode !== prevProps.mode) {
+            this.dataStore.setOptions({
+                addonKey: props.mode === 'tag',
+            });
+        }
+        if (props.filter !== prevProps.filter) {
+            this.dataStore.setOptions({
+                filter: props.filter,
+            });
+        }
+        if (props.filterLocal !== prevProps.filterLocal) {
+            this.dataStore.setOptions({
+                filterLocal: props.filterLocal,
+            });
+        }
+
+        if (
+            prevProps.children !== props.children ||
+            prevProps.dataSource !== props.dataSource
+        ) {
+            /* eslint-disable react/no-did-update-set-state */
             this.setState({
-                dataSource,
+                dataSource: this.setDataSource(props),
             });
 
-            // 远程数据有更新，并且还有搜索框
-            if (
-                nextProps.showSearch &&
-                !nextProps.filterLocal &&
-                !nextProps.popupContent
-            ) {
+            if (!props.popupContent) {
                 this.setFirstHightLightKeyForMenu();
             }
         }
 
-        if ('value' in nextProps) {
-            this.setState({
-                value: nextProps.value,
-            });
-
+        if ('value' in props) {
             this.valueDataSource = getValueDataSource(
-                nextProps.value,
+                props.value,
                 this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
             this.updateSelectAllYet(this.valueDataSource.value);
         } else if (
-            'defaultValue' in nextProps &&
-            nextProps.defaultValue === this.valueDataSource.value &&
-            (nextProps.children !== this.props.children ||
-                nextProps.dataSource !== this.props.dataSource)
+            'defaultValue' in props &&
+            props.defaultValue === this.valueDataSource.value &&
+            (props.children !== prevProps.children ||
+                props.dataSource !== prevProps.dataSource)
         ) {
-            //has defaultValue and value not changed and dataSource changed
+            // has defaultValue and value not changed and dataSource changed
+            // fix: set defaultValue first, then update dataSource.
             this.valueDataSource = getValueDataSource(
-                nextProps.defaultValue,
+                props.defaultValue,
                 this.valueDataSource.mapValueDS,
                 this.dataStore.getMapDS()
             );
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if (
+            prevProps.label !== this.props.label ||
+            prevState.value !== this.state.value ||
+            props.searchValue !== this.state.searchValue
+        ) {
+            this.syncWidth();
         }
     }
 
@@ -326,19 +359,6 @@ class Select extends Base {
             });
         } catch (e) {
             //
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const props = this.props;
-        // 随着输入自动伸展
-        if (
-            /tag|multiple/.test(props.mode) &&
-            prevState.searchValue !== this.state.searchValue
-        ) {
-            this.syncWidth();
-        } else {
-            return super.componentDidUpdate(prevProps, prevState);
         }
     }
 
@@ -1180,4 +1200,4 @@ class Select extends Base {
     }
 }
 
-export default Select;
+export default polyfill(Select);
