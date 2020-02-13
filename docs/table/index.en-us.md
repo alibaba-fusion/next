@@ -128,6 +128,7 @@ ReactDOM.render(
 | dataIndex  | specify the column corresponding field, support the fast value of `a.b` format                               | String                          | -                |
 | cell       | cell rendering logic<br>Function(value, index, record) => Element   | ReactElement/ReactNode/Function | (value) => value |
 | title      | content of table header                                               | ReactElement/ReactNode/Function | -                |
+| htmlTitle  | the props of title, which will be writen on header cells' dom                                                                                                                                                                                    | String                          | -                                 |
 | sortable   | whether to support sorting                                                | Boolean                         | -                |
 | width      | width of column，width needs to be set in lock style                                  | Number/String                   | -                |
 | align      | alignment of cell<br><br>**options**:<br>'left', 'center', 'right' | Enum                            | -                |
