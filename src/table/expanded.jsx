@@ -1,6 +1,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import { KEYCODE } from '../util';
 import RowComponent from './expanded/row';
@@ -86,13 +87,15 @@ export default function expanded(BaseComponent) {
             };
         }
 
-        componentWillReceiveProps(nextProps) {
+        static getDerivedStateFromProps(nextProps) {
             if ('openRowKeys' in nextProps) {
                 const { openRowKeys } = nextProps;
-                this.setState({
+                return {
                     openRowKeys,
-                });
+                };
             }
+
+            return null;
         }
 
         expandedKeydown = (value, record, index, e) => {
@@ -246,5 +249,5 @@ export default function expanded(BaseComponent) {
         }
     }
     statics(ExpandedTable, BaseComponent);
-    return ExpandedTable;
+    return polyfill(ExpandedTable);
 }

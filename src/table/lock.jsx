@@ -72,10 +72,6 @@ export default function lock(BaseComponent) {
             return true;
         }
 
-        componentWillUpdate() {
-            this._isLock = false;
-        }
-
         componentDidUpdate() {
             this.adjustSize();
         }

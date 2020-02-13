@@ -91,14 +91,14 @@ export default class SubMenu extends Component {
     getChildSelected() {
         const { _key, root } = this.props;
         const { selectMode } = root.props;
-        const { selectedKeys } = root.state;
+        const { selectedKeys, _k2n } = root.state;
 
-        const _keyPos = root.k2n[_key].pos;
+        const _keyPos = _k2n[_key].pos;
 
         return (
             !!selectMode &&
             selectedKeys.some(
-                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
+                key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0
             )
         );
     }
