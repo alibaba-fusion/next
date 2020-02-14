@@ -1,11 +1,16 @@
 # Latest Log 
 
-## [1.19.12](https://github.com/alibaba-fusion/next/compare/1.19.11...1.19.12) (2020-02-10)
+## [1.19.13](https://github.com/alibaba-fusion/next/compare/1.19.12...1.19.13) (2020-02-14)
 
 
 ### Bug Fixes
 
-* **Checkbox:** allow pass title to label ([fd36f8c](https://github.com/alibaba-fusion/next/commit/fd36f8c))
-* **Tab:** fix tab hover shake ([#1563](https://github.com/alibaba-fusion/next/issues/1563)) ([c921c89](https://github.com/alibaba-fusion/next/commit/c921c89))
+* **Collapse:** collapsed panel should be overflow hidden, close [#1569](https://github.com/alibaba-fusion/next/issues/1569) ([c2767ec](https://github.com/alibaba-fusion/next/commit/c2767ec))
+
+
+### Features
+
+* **Shell:** add align for Shell.Navigaiton ([#1576](https://github.com/alibaba-fusion/next/issues/1576)) ([e6318c3](https://github.com/alibaba-fusion/next/commit/e6318c3))
+* **Table:** add htmlTitle for header ([8a89c0a](https://github.com/alibaba-fusion/next/commit/8a89c0a))
 
 
