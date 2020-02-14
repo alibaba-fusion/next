@@ -16,18 +16,23 @@ export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonPro
 export interface ShellNavigationProps extends ShellCommonProps {
     collapse?: boolean;
     direction?: 'hoz' | 'ver';
+    align?: 'left' | 'right' | 'center';
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export interface ShellLocalNavigationProps extends ShellCommonProps {
     collapse?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export interface ShellToolDockProps extends ShellCommonProps {
     collapse?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export interface ShellAncillaryProps extends ShellCommonProps {
     collapse?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export default class Shell extends Component<ShellProps, any> {
