@@ -538,6 +538,17 @@
         }
     }
 
+    &-header #{$shell-prefix}-navigation {
+        &#{$shell-prefix}-nav-left {
+            justify-content: flex-start;
+        }
+        &#{$shell-prefix}-nav-right {
+            justify-content: flex-end;
+        }
+        &#{$shell-prefix}-nav-center {
+            justify-content: center;
+        }
+    }
 
     &#{$shell-prefix}-phone {
 
