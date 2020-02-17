@@ -130,6 +130,14 @@ class NumberPicker extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 是否展示点击按钮
+         */
+        hasBtnTrigger: PropTypes.bool,
+        /**
+         * 是否一直显示点击按钮
+         */
+        alwaysShowBtnTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -147,6 +155,8 @@ class NumberPicker extends React.Component {
         onBlur: func.noop,
         onCorrect: func.noop,
         onDisabled: func.noop,
+        hasBtnTrigger: true,
+        alwaysShowBtnTrigger: false,
     };
 
     constructor(props) {
@@ -473,6 +483,8 @@ class NumberPicker extends React.Component {
             innerAfter,
             isPreview,
             renderPreview,
+            hasBtnTrigger,
+            alwaysShowBtnTrigger,
         } = this.props;
 
         const type = device === 'phone' ? 'inline' : this.props.type;
@@ -483,6 +495,8 @@ class NumberPicker extends React.Component {
             [prefixCls]: true,
             [`${prefixCls}-${type}`]: type,
             [`${prefix}${size}`]: true,
+            [`${prefixCls}-show-trigger`]: alwaysShowBtnTrigger,
+            [`${prefixCls}-no-trigger`]: !hasBtnTrigger,
             [className]: className,
         });
 
@@ -607,7 +621,7 @@ class NumberPicker extends React.Component {
                     ref={this.saveInputRef.bind(this)}
                     label={label}
                     innerAfter={innerAfter}
-                    extra={extra}
+                    extra={hasBtnTrigger ? extra : null}
                     addonBefore={addonBefore}
                     addonAfter={addonAfter}
                 />

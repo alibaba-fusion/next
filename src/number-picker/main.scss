@@ -19,13 +19,13 @@
         .#{$css-prefix}input {
             width: 100%;
 
-            input {
-                padding-right: 2px;
-            }
-
             .#{$css-prefix}input-control {
                 padding-right: 0;
             }
+        }
+
+        &:not(#{$number-picker-prefix}-no-trigger) .#{$css-prefix}input input {
+            padding-right: 2px;
         }
 
         .#{$css-prefix}btn {
@@ -56,10 +56,12 @@
         }
 
         #{$number-picker-prefix}-handler {
-            opacity: 0;
             transition: opacity $motion-duration-immediately $motion-linear;
             height: 100%;
             display: block;
+        }
+        &:not(#{$number-picker-prefix}-show-trigger) #{$number-picker-prefix}-handler {
+            opacity: 0;
         }
 
         &:hover #{$number-picker-prefix}-handler,
