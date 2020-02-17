@@ -131,4 +131,7 @@ export default {
         on: '已打开',
         off: '已关闭',
     },
+    Tab: {
+        closeAriaLabel: '关闭',
+    },
 };

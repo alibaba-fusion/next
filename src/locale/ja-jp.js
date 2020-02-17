@@ -131,4 +131,7 @@ export default {
         on: '開いています',
         off: '閉じられました',
     },
+    Tab: {
+        closeAriaLabel: '閉じられました',
+    },
 };

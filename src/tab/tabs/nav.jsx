@@ -36,6 +36,7 @@ class Nav extends React.Component {
         onClose: PropTypes.func,
         style: PropTypes.object,
         className: PropTypes.string,
+        locale: PropTypes.object,
     };
 
     constructor(props, context) {
@@ -299,8 +300,10 @@ class Nav extends React.Component {
     };
 
     defaultTabTemplateRender = (key, { prefix, title, closeable }) => {
+        const { locale } = this.props;
         const tail = closeable ? (
             <Icon
+                aria-label={locale.closeAriaLabel}
                 type="close"
                 tabIndex="0"
                 onKeyDown={e => this.onCloseKeyDown(key, e)}
@@ -319,6 +322,7 @@ class Nav extends React.Component {
     renderTabList(props) {
         const { prefix, tabs, activeKey, tabRender } = props;
         const tabTemplateFn = tabRender || this.defaultTabTemplateRender;
+        const { locale } = this.props;
 
         const rst = [];
         React.Children.forEach(tabs, child => {
