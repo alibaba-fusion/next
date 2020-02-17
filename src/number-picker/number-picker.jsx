@@ -135,7 +135,7 @@ class NumberPicker extends React.Component {
          */
         hasBtnTrigger: PropTypes.bool,
         /**
-         * 是否一直显示点击按钮
+         * 是否一直显示点击按钮(无须hover)
          */
         alwaysShowBtnTrigger: PropTypes.bool,
     };

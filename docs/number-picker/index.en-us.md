@@ -43,6 +43,8 @@ Number input and auto correct data.
 | max          | maximum value                                                                                                       | Number        | Infinity  |
 | min          | minimum value                                                                                                        | Number        | -Infinity |
 | format       | format value for display<br><br>**signature**:<br>Function(value: Number) => String/Number<br>**params**:<br>_value_: {Number} current value<br>**return**:<br>{String/Number} formatted value<br> | Function      | -         |
+| hasBtnTrigger        | display btn trigger | Boolean       | true      |
+| alwaysShowBtnTrigger | always show btn trigger without hover | Boolean       | false     |
 
 ## ARIA and KeyBoard
 
