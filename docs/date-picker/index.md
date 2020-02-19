@@ -71,6 +71,10 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 <DatePicker defaultValue="2018-01-23" onChange={val => console.log(val)} />
 // select 2019-01-23
 // >> "2019-01-23"
+
+<DatePicker defaultValue="1581938105" onChange={val => console.log(val)} />
+// select 2019-01-23
+// >> "2019-01-23"
 ```
 
 标准受控
@@ -81,6 +85,10 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 // >> MomentObject
 
 <DatePicker value="2018-01-23" onChange={val => console.log(val)} />
+// setProps({ value: '2019-01-23' })
+// >> "2019-01-23"
+
+<DatePicker value="1581938105" onChange={val => console.log(val)} />
 // setProps({ value: '2019-01-23' })
 // >> "2019-01-23"
 ```
