@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE, obj } from '../util';
 import TabNav from './tabs/nav';
 import TabContent from './tabs/content';
-import TabItem from './tabs/tab-item';
 import { toArray } from './tabs/utils';
 import zhCN from '../locale/zh-cn';
 
@@ -329,5 +327,3 @@ export default class Tab extends Component {
         );
     }
 }
-
-Tab.Item = polyfill(TabItem);
