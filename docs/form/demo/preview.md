@@ -17,10 +17,8 @@ You can switch to preview state. Preview state and editor state share the same l
 ---
 
 ````jsx
-import { Form, Input, Switch, Rating, Grid, Field, Icon, Radio, Range, Checkbox, NumberPicker, Select, Upload } from '@alifd/next';
+import { Form, Input, Switch, Rating, Field, Icon, Radio, Range, Checkbox, NumberPicker, Select, Upload } from '@alifd/next';
 
-
-const {Row, Col} = Grid;
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: {

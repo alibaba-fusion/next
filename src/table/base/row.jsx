@@ -62,13 +62,15 @@ export default class Row extends React.Component {
     };
 
     onMouseEnter = e => {
-        const { record, rowIndex } = this.props;
-        this.onRowHover(record, rowIndex, true, e);
+        const { record, rowIndex, __rowIndex } = this.props;
+        const row = __rowIndex || rowIndex;
+        this.onRowHover(record, row, true, e);
     };
 
     onMouseLeave = e => {
-        const { record, rowIndex } = this.props;
-        this.onRowHover(record, rowIndex, false, e);
+        const { record, rowIndex, __rowIndex } = this.props;
+        const row = __rowIndex || rowIndex;
+        this.onRowHover(record, row, false, e);
     };
 
     onRowHover(record, index, isEnter, e) {
@@ -91,6 +93,8 @@ export default class Row extends React.Component {
             cellRef,
             prefix,
             primaryKey,
+            // __rowIndex 是连贯的table行的索引，只有在开启expandedIndexSimulate的ExpandedTable模式下__rowIndex可能会不等于rowIndex
+            __rowIndex,
             pure,
             locale,
             rtl,
@@ -100,7 +104,7 @@ export default class Row extends React.Component {
         rowIndex = rowIndex !== undefined ? rowIndex : this.props.rowIndex;
 
         const { lockType } = this.context;
-        return columns.map((child, colIndex) => {
+        return columns.map((child, index) => {
             /* eslint-disable no-unused-vars, prefer-const */
             const {
                 dataIndex,
@@ -109,8 +113,10 @@ export default class Row extends React.Component {
                 width,
                 colSpan,
                 style,
+                __colIndex,
                 ...others
             } = child;
+            const colIndex = '__colIndex' in child ? __colIndex : index;
             // colSpan should show in body td by the way of <Table.Column colSpan={2} />
             // tbody's cell merge should only by the way of <Table cellProps={} />
 
@@ -152,10 +158,12 @@ export default class Row extends React.Component {
 
             return (
                 <Cell
-                    key={colIndex}
+                    key={`${__rowIndex}-${colIndex}`}
                     {...others}
                     {...attrs}
-                    ref={cell => cellRef(rowIndex, colIndex, cell)}
+                    data-next-table-col={colIndex}
+                    data-next-table-row={rowIndex}
+                    ref={cell => cellRef(__rowIndex, colIndex, cell)}
                     prefix={prefix}
                     pure={pure}
                     primaryKey={primaryKey}
@@ -198,6 +206,7 @@ export default class Row extends React.Component {
             getCellProps,
             rowIndex,
             record,
+            __rowIndex,
             children,
             primaryKey,
             cellRef,

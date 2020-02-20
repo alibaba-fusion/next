@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
-import ReactTestUtils from 'react-dom/test-utils';
 import Checkbox from '../../src/checkbox/index';
 
 /* eslint-disable */
@@ -95,14 +94,14 @@ describe('Checkbox', () => {
 
     describe('[behavior] controlled', () => {
         it('should support controlled `checked` and `indeterminate`', () => {
-            const wrapper = shallow(<Checkbox checked />).dive();
-            assert(wrapper.state().checked);
+            const wrapper = mount(<Checkbox checked />);
+            assert(wrapper.find('input').props().checked);
             assert(wrapper.find('.checked').length === 1);
 
             wrapper.setProps({
                 checked: false,
             });
-            assert(!wrapper.state().checked);
+            assert(!wrapper.find('input').props().checked);
             assert(wrapper.find('.checked').length === 0);
             wrapper.setProps({
                 indeterminate: true,

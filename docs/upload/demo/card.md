@@ -44,13 +44,27 @@ ReactDOM.render(
         }, {
             uid: '1',
             name: 'IMG.png',
+            state: 'done',
+            url: 'https://gw.alicdn.com/tfs/TB1Y4ucuAL0gK0jSZFtXXXQCXXa-1020-510.jpg',
+            downloadURL: 'https://gw.alicdn.com/tfs/TB1Y4ucuAL0gK0jSZFtXXXQCXXa-1020-510.jpg',
+            imgURL: 'https://gw.alicdn.com/tfs/TB1Y4ucuAL0gK0jSZFtXXXQCXXa-1020-510.jpg'
+        }, {
+            uid: '2',
+            name: 'IMG.png',
+            state: 'done',
+            url: 'https://img.alicdn.com/tfs/TB1Y8vPtKbviK0jSZFNXXaApXXa-216-460.png',
+            downloadURL: 'https://img.alicdn.com/tfs/TB1Y8vPtKbviK0jSZFNXXaApXXa-216-460.png',
+            imgURL: 'https://img.alicdn.com/tfs/TB1Y8vPtKbviK0jSZFNXXaApXXa-216-460.png'
+        }, {
+            uid: '3',
+            name: 'IMG.png',
             percent: 50,
             state: 'uploading',
             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
             imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
         }, {
-            uid: '2',
+            uid: '4',
             name: 'IMG.png',
             state: 'error',
             url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',

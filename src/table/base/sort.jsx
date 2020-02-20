@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Icon from '../../icon';
 import { KEYCODE } from '../../util';
 
@@ -20,7 +21,15 @@ export default class Sort extends React.Component {
     };
     // 渲染排序
     renderSort() {
-        const { prefix, sort, sortIcons, dataIndex, locale, rtl } = this.props,
+        const {
+                prefix,
+                sort,
+                sortIcons,
+                className,
+                dataIndex,
+                locale,
+                rtl,
+            } = this.props,
             sortStatus = sort[dataIndex],
             map = {
                 desc: 'descending',
@@ -42,12 +51,17 @@ export default class Sort extends React.Component {
             );
         });
 
+        const cls = classnames({
+            [`${prefix}table-sort`]: true,
+            [className]: className,
+        });
+
         return (
             <span
                 role="button"
                 tabIndex="0"
                 aria-label={locale[sortStatus]}
-                className={`${prefix}table-sort`}
+                className={cls}
                 onClick={this.handleClick.bind(this)}
                 onKeyDown={this.keydownHandler}
             >

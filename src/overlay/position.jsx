@@ -15,11 +15,13 @@ export default class Position extends Component {
     static propTypes = {
         children: PropTypes.node,
         target: PropTypes.any,
+        container: PropTypes.any,
         align: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         offset: PropTypes.array,
         beforePosition: PropTypes.func,
         onPosition: PropTypes.func,
         needAdjust: PropTypes.bool,
+        autoFit: PropTypes.bool,
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
         rtl: PropTypes.bool,
@@ -31,6 +33,7 @@ export default class Position extends Component {
         beforePosition: noop,
         onPosition: noop,
         needAdjust: true,
+        autoFit: false,
         needListenResize: true,
         shouldUpdatePosition: false,
         rtl: false,
@@ -81,19 +84,24 @@ export default class Position extends Component {
             beforePosition,
             onPosition,
             needAdjust,
+            container,
             rtl,
+            autoFit,
         } = this.props;
 
         beforePosition();
 
         const contentNode = this.getContentNode();
         const targetNode = this.getTargetNode();
+
         if (contentNode && targetNode) {
             const resultAlign = place({
                 pinElement: contentNode,
                 baseElement: targetNode,
                 align,
                 offset,
+                autoFit,
+                container,
                 needAdjust,
                 isRtl: rtl,
             });
@@ -112,7 +120,11 @@ export default class Position extends Component {
     }
 
     getContentNode() {
-        return findDOMNode(this);
+        try {
+            return findDOMNode(this);
+        } catch (err) {
+            return null;
+        }
     }
 
     getTargetNode() {

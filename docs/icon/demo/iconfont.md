@@ -24,7 +24,7 @@ const CustomIcon = Icon.createFromIconfontCN({
 
 ReactDOM.render(
     <div>
-        <div className="icon-list">
+        <div className="icon-list-2">
             <CustomIcon type="icon-store"/>
             <CustomIcon type="icon-pic"/>
             <CustomIcon type="icon-gift"/>
@@ -40,7 +40,7 @@ ReactDOM.render(
     </div>, mountNode);
 ````
 ````css
-.icon-list i {
+.icon-list-2 i {
     margin: 0 10px;
 }
 .icon-sizes {

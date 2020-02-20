@@ -45,7 +45,7 @@ class RadioGroup extends React.Component {
         return (
             <div>
                 <h5>Choose a shape</h5>
-                <p>
+                <div>
                     <Radio.Group
                         shape="button"
                         value={this.state.shape}
@@ -54,9 +54,9 @@ class RadioGroup extends React.Component {
                         <Radio value={Shape.NORMAL}>Normal</Radio>
                         <Radio value={Shape.BUTTON}>Button</Radio>
                     </Radio.Group>
-                </p>
+                </div>
                 <h5>Choose an align-type of the item</h5>
-                <p>
+                <div>
                     <Radio.Group
                         shape="button"
                         value={this.state.itemDirection}
@@ -68,7 +68,7 @@ class RadioGroup extends React.Component {
                             disabled={this.state.shape === Shape.BUTTON}
                         >Vertical</Radio>
                     </Radio.Group>
-                </p>
+                </div>
                 <div className="rendered-container">
                     <h3>Rendered Result</h3>
                     <Radio.Group

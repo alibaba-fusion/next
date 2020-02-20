@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE, obj } from '../util';
 import TabNav from './tabs/nav';
 import TabContent from './tabs/content';
@@ -129,14 +130,14 @@ export default class Tab extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props, state) {
         if (
-            nextProps.activeKey !== undefined &&
-            this.state.activeKey !== `${nextProps.activeKey}`
+            props.activeKey !== undefined &&
+            state.activeKey !== `${props.activeKey}`
         ) {
-            this.setState({
-                activeKey: `${nextProps.activeKey}`,
-            });
+            return {
+                activeKey: `${props.activeKey}`,
+            };
         }
     }
 
@@ -324,4 +325,4 @@ export default class Tab extends Component {
     }
 }
 
-Tab.Item = TabItem;
+Tab.Item = polyfill(TabItem);

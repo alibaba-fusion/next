@@ -143,8 +143,8 @@ class Balloon extends React.Component {
         /**
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-        container: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
+        container: PropTypes.any,
         /**
          * 弹层组件style，透传给Popup
          */

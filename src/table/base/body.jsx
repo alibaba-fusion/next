@@ -27,7 +27,10 @@ export default class Body extends React.Component {
         onRowClick: PropTypes.func,
         onRowMouseEnter: PropTypes.func,
         onRowMouseLeave: PropTypes.func,
+        onBodyMouseOver: PropTypes.func,
+        onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
+        crossline: PropTypes.bool,
     };
     static defaultProps = {
         loading: false,
@@ -59,6 +62,14 @@ export default class Body extends React.Component {
         this.props.onRowMouseLeave(record, index, e);
     };
 
+    onBodyMouseOver = e => {
+        this.props.onBodyMouseOver(e);
+    };
+
+    onBodyMouseOut = e => {
+        this.props.onBodyMouseOut(e);
+    };
+
     render() {
         /*eslint-disable no-unused-vars */
         const {
@@ -80,10 +91,13 @@ export default class Body extends React.Component {
             onRowClick,
             onRowMouseEnter,
             onRowMouseLeave,
+            onBodyMouseOver,
+            onBodyMouseOut,
             locale,
             pure,
             expandedIndexSimulate,
             rtl,
+            crossline,
             ...others
         } = this.props;
 
@@ -135,7 +149,10 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] || rowIndex}${expanded}`}
+                        key={`${record[primaryKey] ||
+                            (record[primaryKey] === 0
+                                ? 0
+                                : rowIndex)}${expanded}`}
                         {...rowProps}
                         ref={this.getRowRef.bind(this, rowIndex)}
                         colGroup={colGroup}
@@ -144,6 +161,7 @@ export default class Body extends React.Component {
                         primaryKey={primaryKey}
                         record={record}
                         rowIndex={rowIndex}
+                        __rowIndex={rowIndex}
                         prefix={prefix}
                         pure={pure}
                         cellRef={cellRef}
@@ -158,8 +176,14 @@ export default class Body extends React.Component {
                 );
             });
         }
+        const event = crossline
+            ? {
+                  onMouseOver: this.onBodyMouseOver,
+                  onMouseOut: this.onBodyMouseOut,
+              }
+            : {};
         return (
-            <Tag className={className} {...others}>
+            <Tag className={className} {...others} {...event}>
                 {rows}
                 {children}
             </Tag>

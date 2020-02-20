@@ -8,6 +8,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 弹层内容
      */
     children?: React.ReactNode;
+    autoFit?: boolean;
 
     /**
      * 弹层当前是否显示
