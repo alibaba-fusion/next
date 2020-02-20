@@ -54,20 +54,24 @@ It will tell his children whether it's collapse or not by `isCollapse` via Conte
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | collapse or not  | Boolean         | false     |
 | direction  | header or asider<br><br>**option**:<br>'hoz', 'ver'    | Enum         |  hoz    |
+| align      | Arrangement of Navigation when direction is hoz<br><br>**option**:<br>'left', 'right', 'center'   | Enum        |  right  |
+| onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |
 
 
 ### Shell.LocalNavigation
 | Param                | Description  | Type              | Default Value      |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | collapse or not    | Boolean         | false     |
+| onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |
 
 ### Shell.ToolDock
 | Param                | Description  | Type              | Default Value      |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | collapse or not   | Boolean         | false     |
+| onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |
 
 ### Shell.Ancillary
 | Param                | Description  | Type              | Default Value      |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | collapse or not   | Boolean         | false     |
-
+| onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |

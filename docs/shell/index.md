@@ -55,6 +55,7 @@ Shell 是整个应用的基础结构框架。它体现应用的结构形式和�
 | -------------------- | ------------ | ----------------- | ------------------ |
 | direction  | 方向<br><br>**可选值**:<br>'hoz', 'ver'    | Enum         |  hoz    |
 | collapse   | 是否折叠(折叠成只有icon状态)   | Boolean         | false     |
+| align   | 横向模式下，导航排布的位置<br><br>**可选值**:<br>'left', 'right', 'center'   | Enum        |  right  |
 | onCollapseChange   | 默认按钮触发的展开收起状态   | Function        | () => {}   |
 
 
