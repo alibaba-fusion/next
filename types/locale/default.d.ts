@@ -131,4 +131,7 @@ export interface locale {
         on: string;
         off: string;
     };
+    Tab: {
+        closeAriaLabel: string;
+    };
 }
