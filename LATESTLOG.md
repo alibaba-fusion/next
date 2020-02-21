@@ -1,14 +1,16 @@
 # Latest Log 
 
-## [1.19.11](https://github.com/alibaba-fusion/next/compare/1.19.10...1.19.11) (2020-02-05)
+## [1.19.13](https://github.com/alibaba-fusion/next/compare/1.19.12...1.19.13) (2020-02-14)
 
 
 ### Bug Fixes
 
-* **NumberPicker:** bug of delete like 0.01 => 0.0 ([7377629](https://github.com/alibaba-fusion/next/commit/7377629))
-* **NumberPicker:** can input char while value=null ([be34205](https://github.com/alibaba-fusion/next/commit/be34205))
-* **NumberPicker:** remove iconSize ([030cb2c](https://github.com/alibaba-fusion/next/commit/030cb2c))
-* **Table:** add title for table header, close [#1550](https://github.com/alibaba-fusion/next/issues/1550) ([1fe345c](https://github.com/alibaba-fusion/next/commit/1fe345c))
-* **Upload:** Compatibility in ie/firefox ([23083ee](https://github.com/alibaba-fusion/next/commit/23083ee))
+* **Collapse:** collapsed panel should be overflow hidden, close [#1569](https://github.com/alibaba-fusion/next/issues/1569) ([c2767ec](https://github.com/alibaba-fusion/next/commit/c2767ec))
+
+
+### Features
+
+* **Shell:** add align for Shell.Navigaiton ([#1576](https://github.com/alibaba-fusion/next/issues/1576)) ([e6318c3](https://github.com/alibaba-fusion/next/commit/e6318c3))
+* **Table:** add htmlTitle for header ([8a89c0a](https://github.com/alibaba-fusion/next/commit/8a89c0a))
 
 

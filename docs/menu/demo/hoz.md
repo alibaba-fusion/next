@@ -49,6 +49,6 @@ ReactDOM.render(
     width: 160px;
 }
 .my-hoz-menu .next-menu-item.next-menu-more {
-    width: 40px;
+    width: 60px;
 }
 ````

@@ -72,6 +72,12 @@
         }
     }
 
+    &-panel-hidden {
+        > #{$collapse-prefix}-panel-content {
+            overflow: hidden;
+        }
+    }
+
     #{$collapse-prefix}-panel-icon {
         &#{$collapse-prefix}-panel-icon-expanded {
             @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-expanded));
