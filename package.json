@@ -7,7 +7,12 @@
     "fusion design",
     "next",
     "component",
-    "ui tookit"
+    "ui tookit",
+    "react",
+    "react-components",
+    "components",
+    "design",
+    "frontend"
   ],
   "homepage": "https://github.com/alibaba-fusion/next",
   "bugs": "https://github.com/alibaba-fusion/next/issues",
@@ -32,6 +37,12 @@
     "type": "git",
     "url": "https://github.com/alibaba-fusion/next.git"
   },
+  "sideEffects": [
+    "dist/*",
+    "es/**/style/*",
+    "lib/**/style/*",
+    "*.scss"
+  ],
   "scripts": {
     "report-coverage": "codecov",
     "dev": "node ./scripts/server/index.js",
