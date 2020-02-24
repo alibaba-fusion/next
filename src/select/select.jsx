@@ -1122,7 +1122,11 @@ class Select extends Base {
      * @param {object} props
      */
     renderMenuHeader() {
-        const { prefix, hasSelectAll, mode } = this.props;
+        const { prefix, hasSelectAll, mode, menuProps } = this.props;
+
+        if (menuProps && 'header' in menuProps) {
+            return menuProps.header;
+        }
 
         const sourceCount = this.dataStore.getEnableDS().length;
         // 多选模式下才有全选
