@@ -25,8 +25,8 @@ function onCorrect(obj) {
 }
 ReactDOM.render(
     <div>
-        <NumberPicker alwaysShowBtnTrigger/>
+        <NumberPicker alwaysShowTrigger/>
         <br/><br/>
-        <NumberPicker hasBtnTrigger={false}/>
+        <NumberPicker hasTrigger={false}/>
     </div>, mountNode);
 ````

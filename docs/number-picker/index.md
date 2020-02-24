@@ -54,8 +54,8 @@
 | isPreview            | 是否为预览态                                                                                                                                         | Boolean       | -         |
 | renderPreview        | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                              | Function      | -         |
 | device               | 预设屏幕宽度<br><br>**可选值**:<br>'phone', 'tablet', 'desktop'                                                                                         | Enum          | -         |
-| hasBtnTrigger        | 是否展示点击按钮                                                                                                                                       | Boolean       | true      |
-| alwaysShowBtnTrigger | 是否一直显示点击按钮(无须hover)                                                                                                                            | Boolean       | false     |
+| hasTrigger        | 是否展示点击按钮                                                                                                                                       | Boolean       | true      |
+| alwaysShowTrigger | 是否一直显示点击按钮(无须hover)                                                                                                                            | Boolean       | false     |
 
 ## ARIA and KeyBoard
 

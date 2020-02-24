@@ -133,11 +133,11 @@ class NumberPicker extends React.Component {
         /**
          * 是否展示点击按钮
          */
-        hasBtnTrigger: PropTypes.bool,
+        hasTrigger: PropTypes.bool,
         /**
          * 是否一直显示点击按钮(无须hover)
          */
-        alwaysShowBtnTrigger: PropTypes.bool,
+        alwaysShowTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -155,8 +155,8 @@ class NumberPicker extends React.Component {
         onBlur: func.noop,
         onCorrect: func.noop,
         onDisabled: func.noop,
-        hasBtnTrigger: true,
-        alwaysShowBtnTrigger: false,
+        hasTrigger: true,
+        alwaysShowTrigger: false,
     };
 
     constructor(props) {
@@ -483,8 +483,8 @@ class NumberPicker extends React.Component {
             innerAfter,
             isPreview,
             renderPreview,
-            hasBtnTrigger,
-            alwaysShowBtnTrigger,
+            hasTrigger,
+            alwaysShowTrigger,
         } = this.props;
 
         const type = device === 'phone' ? 'inline' : this.props.type;
@@ -495,8 +495,8 @@ class NumberPicker extends React.Component {
             [prefixCls]: true,
             [`${prefixCls}-${type}`]: type,
             [`${prefix}${size}`]: true,
-            [`${prefixCls}-show-trigger`]: alwaysShowBtnTrigger,
-            [`${prefixCls}-no-trigger`]: !hasBtnTrigger,
+            [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
+            [`${prefixCls}-no-trigger`]: !hasTrigger,
             [className]: className,
         });
 
@@ -621,7 +621,7 @@ class NumberPicker extends React.Component {
                     ref={this.saveInputRef.bind(this)}
                     label={label}
                     innerAfter={innerAfter}
-                    extra={hasBtnTrigger ? extra : null}
+                    extra={hasTrigger ? extra : null}
                     addonBefore={addonBefore}
                     addonAfter={addonAfter}
                 />
