@@ -1,0 +1,87 @@
+{
+  "name": "Paragraph",
+  "props": {
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "额外的样式名 会附加到 root dom 上",
+      "docblock": "额外的样式名 会附加到 root dom 上"
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'long'",
+            "computed": false,
+            "description": "展示所有文本"
+          },
+          {
+            "value": "'short'",
+            "computed": false,
+            "description": "展示三行以内（非强制）"
+          }
+        ]
+      },
+      "required": false,
+      "description": "什么方式展示段落",
+      "defaultValue": {
+        "value": "'long'",
+        "computed": false
+      },
+      "docblock": "什么方式展示段落\n@enumdesc 展示所有文本, 展示三行以内（非强制）",
+      "value": [
+        {
+          "value": "'long'",
+          "computed": false,
+          "description": "展示所有文本"
+        },
+        {
+          "value": "'short'",
+          "computed": false,
+          "description": "展示三行以内（非强制）"
+        }
+      ]
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'medium'",
+            "computed": false,
+            "description": "中号"
+          },
+          {
+            "value": "'small'",
+            "computed": false,
+            "description": "小号"
+          }
+        ]
+      },
+      "required": false,
+      "description": "组件大小。",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "组件大小。\n@enumdesc 中号, 小号",
+      "value": [
+        {
+          "value": "'medium'",
+          "computed": false,
+          "description": "中号"
+        },
+        {
+          "value": "'small'",
+          "computed": false,
+          "description": "小号"
+        }
+      ]
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
