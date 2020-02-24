@@ -23,6 +23,14 @@ class Gateway extends Component {
         container: () => document.body,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            containerNode: null,
+        };
+    }
+
     static getDerivedStateFromProps(nextProps) {
         return {
             containerNode: getContainerNode(nextProps),

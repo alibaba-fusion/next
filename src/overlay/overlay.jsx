@@ -303,7 +303,7 @@ class Overlay extends Component {
 
         if (open && !this._isDestroyed) {
             this.beforeOpen();
-            this.onEntering();
+            this.enter();
         }
         if (close) {
             this.beforeClose();
