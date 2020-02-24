@@ -346,7 +346,7 @@ class Popup extends Component {
             ...others
         } = this.props;
         let { container } = this.props;
-        const findTriggerNode = () => findDOMNode(this) || {};
+        const findTriggerNode = () => findDOMNode(this);
         const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
         safeNodes.unshift(findTriggerNode);
 
