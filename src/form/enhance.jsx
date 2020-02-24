@@ -32,7 +32,7 @@ function getValueName(props, displayName) {
     return 'value';
 }
 
-export function getRules(props) {
+export function getRules(props, labelForErrorMessage) {
     const result = [];
 
     // required
@@ -99,14 +99,20 @@ export function getRules(props) {
         });
     }
 
+    if (labelForErrorMessage) {
+        result.forEach(r => {
+            r.aliasName = labelForErrorMessage;
+        });
+    }
+
     return result;
 }
 
-export function getFieldInitCfg(props, displayName) {
+export function getFieldInitCfg(props, displayName, labelForErrorMessage) {
     return {
         valueName: getValueName(props, displayName),
         trigger: props.trigger ? props.trigger : 'onChange',
         autoValidate: props.autoValidate,
-        rules: getRules(props),
+        rules: getRules(props, labelForErrorMessage),
     };
 }
