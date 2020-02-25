@@ -2,23 +2,15 @@
 
 - order: 10
 
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
+提供了两种方案，如果不需要支持 IE 推荐方案1
 
 :::lang=en-us
 # Crop
 
 - order: 10
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
+transfor dataURL to Blob to File
 
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
@@ -28,26 +20,43 @@ import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
 
-function convertBase64UrlToFile(urlData) {
-
-    const bytes = window.atob(urlData.split(',')[1]);
-
-    const ab = new ArrayBuffer(bytes.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i);
+// 方案1: 通过new File()将base64转换成file文件。简单，但是 IE/Edge 因为不支持 File Constructor 无法使用
+function dataURL2File(dataURL, filename) { 
+    const arr = dataURL.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        u8arr = new Uint8Array(bstr.length);
+    let n = bstr.length;
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
     }
-
-    const blob = new Blob([ab], {type: 'image/png'});
-
-    return new File([blob], 'test.png', {type: 'image/png'});
+    return new File([u8arr], filename, { type: mime });
 }
+
+// 方案2: 将base64转换成blob，再将blob转换成file文件
+function dataURL2Blob(dataURL) { 
+    const arr = dataURL.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        u8arr = new Uint8Array(bstr.length);
+    let n = bstr.length;
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+};
+function dataURL2Blob2File(dataURL, fileName){
+    const blob = dataURL2Blob(dataURL);
+    blob.lastModifiedDate = new Date();
+    blob.name = fileName;
+    return blob;
+};
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.uploader = new Upload.Uploader({
-            action: 'https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload',
+            action: 'http://127.0.0.1:6001/upload.do',
             onSuccess: this.onSuccess,
             name: 'file'
         });
@@ -87,8 +96,8 @@ class App extends React.Component {
 
         const data = this.cropperRef.getCroppedCanvas().toDataURL();
 
-        const blob = convertBase64UrlToFile(data);
-        const file = new File([blob], 'test.png', {type: 'image/png'});
+        // const file = dataURL2File(data, 'test.png');
+        const file = dataURL2Blob2File(data, 'test.png');
 
         // start upload
         this.uploader.startUpload(file);
