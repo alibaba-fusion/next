@@ -19,9 +19,7 @@ import { Upload, Button, Dialog } from '@alifd/next';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
-
-// 方案1: 通过new File()将base64转换成file文件。简单，但是 IE/Edge 因为不支持 File Constructor 无法使用
-function dataURL2File(dataURL, filename) { 
+function dataURL2File(dataURL, fileName){
     const arr = dataURL.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
@@ -30,23 +28,8 @@ function dataURL2File(dataURL, filename) {
     while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, { type: mime });
-}
-
-// 方案2: 将base64转换成blob，再将blob转换成file文件
-function dataURL2Blob(dataURL) { 
-    const arr = dataURL.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]),
-        u8arr = new Uint8Array(bstr.length);
-    let n = bstr.length;
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-};
-function dataURL2Blob2File(dataURL, fileName){
-    const blob = dataURL2Blob(dataURL);
+    const blob = new Blob([u8arr], { type: mime });
+    // to File
     blob.lastModifiedDate = new Date();
     blob.name = fileName;
     return blob;
@@ -95,9 +78,7 @@ class App extends React.Component {
     onOk = () => {
 
         const data = this.cropperRef.getCroppedCanvas().toDataURL();
-
-        // const file = dataURL2File(data, 'test.png');
-        const file = dataURL2Blob2File(data, 'test.png');
+        const file = dataURL2File(data, 'test.png');
 
         // start upload
         this.uploader.startUpload(file);
