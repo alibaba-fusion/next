@@ -301,10 +301,17 @@ class Overlay extends Component {
         const open = !prevProps.visible && this.props.visible;
         const close = prevProps.visible && !this.props.visible;
 
-        if (open && !this._isDestroyed) {
+        if (open) {
             this.beforeOpen();
-            this.onEntering();
+            if (
+                !this._isDestroyed &&
+                (this.state.status === 'entering' ||
+                    (prevState && prevState.status === 'mounting'))
+            ) {
+                this.onEntering();
+            }
         }
+
         if (close) {
             this.beforeClose();
             this.onLeaving();
