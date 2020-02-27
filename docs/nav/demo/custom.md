@@ -25,7 +25,8 @@ class App extends React.Component {
         type: 'normal',
         direction: 'hoz',
         activeDirection: null,
-        triggerType: 'click'
+        triggerType: 'click',
+        mode: 'inline'
     }
 
     setValue(name, value) {
@@ -40,8 +41,14 @@ class App extends React.Component {
         });
     }
 
+    setModeType(mode) {
+        this.setState({
+            mode
+        });
+    }
+
     render() {
-        const { type, direction, activeDirection, triggerType } = this.state;
+        const { type, direction, activeDirection, triggerType, mode } = this.state;
 
         return (
             <div>
@@ -67,8 +74,12 @@ class App extends React.Component {
                         <Radio value="click">triggerType="click"</Radio>
                         <Radio value="hover">triggerType="hover"</Radio>
                     </Radio.Group>
+                    <Radio.Group shape="button" size="medium" value={mode} onChange={this.setModeType.bind(this)}>
+                        <Radio value="inline">mode="inline"</Radio>
+                        <Radio value="popup">mode="popup"</Radio>
+                    </Radio.Group>
                 </div>
-                <Nav className="custom-nav" type={type} direction={direction} activeDirection={activeDirection} triggerType={triggerType}>
+                <Nav className="custom-nav fixedd" popupClassName={"fixedd"} mode={mode} type={type} direction={direction} activeDirection={activeDirection} triggerType={triggerType}>
                     <Item>Item 1</Item>
                     <Item>Item 2</Item>
                     <SubNav label="Sub Nav">
@@ -92,6 +103,9 @@ ReactDOM.render(<App />, mountNode);
 ````
 
 ````css
+.fixedd {
+    position: fixed;
+}
 .demo-ctl {
     background-color: #F1F1F1;
     border-left: 4px solid #0D599A;
