@@ -79,6 +79,12 @@ describe('Checkbox', () => {
             wrapper.find('input').simulate('change');
             assert(onChange.calledOnce);
         });
+        it('should return the passed value', () => {
+            const onChange = sinon.spy();
+            const wrapper = mount(<Checkbox onChange={onChange} value="banana" />);
+            wrapper.find('input').simulate('change');
+            assert(onChange.getCalls()[0].args[1].target.value === 'banana');
+        });
         it('should call `onMouseEnter`', () => {
             const onMouseEnter = sinon.spy();
             const wrapper1 = mount(<Checkbox onMouseEnter={onMouseEnter} />);
