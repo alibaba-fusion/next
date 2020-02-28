@@ -65,7 +65,13 @@ class SubNav extends Component {
             ) : (
                 icon
             );
-        if (iconOnly && hasArrow && level === 1) {
+        // 这里是为 iconOnly 模式下，添加默认的展开按钮
+        // 只有在 inline 模式下 或 popup模式的第一层级，才需要添加默认的按钮
+        if (
+            iconOnly &&
+            hasArrow &&
+            (mode === 'inline' || (level === 1 && mode === 'popup'))
+        ) {
             iconEl = (
                 <Icon
                     className={`${prefix}nav-icon-only-arrow`}
