@@ -133,4 +133,7 @@ export default {
         on: 'on',
         off: 'off',
     },
+    Tab: {
+        closeAriaLabel: 'close',
+    },
 };
