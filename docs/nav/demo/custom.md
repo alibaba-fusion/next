@@ -103,9 +103,6 @@ ReactDOM.render(<App />, mountNode);
 ````
 
 ````css
-.fixedd {
-    position: fixed;
-}
 .demo-ctl {
     background-color: #F1F1F1;
     border-left: 4px solid #0D599A;
