@@ -1,5 +1,7 @@
 import moment from 'moment';
-import { KEYCODE } from '../../util';
+import { KEYCODE, obj } from '../../util';
+
+const { typeOf } = obj;
 
 export const PANEL = {
     TIME: 'time-panel',
@@ -29,26 +31,24 @@ export function resetValueTime(source, target) {
 }
 
 export function formatDateValue(value, format) {
-    let val = value;
-    if (typeof value === 'string') {
-        val = moment(value, format, false);
-        if (!val.isValid() && Number(value)) {
-            val = moment(Number(value));
-        }
-    }
+    const val =
+        typeof value === 'string'
+            ? moment(value, format, false)
+            : typeof value === 'number'
+            ? moment(value, null, false)
+            : value;
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
     }
-
     return null;
 }
 
 export function checkDateValue(props, propName, componentName) {
-    // 支持传入 moment 对象或字符串，字符串不检测是否为日期字符串
+    // 支持传入 moment 对象或字符串 数字时间戳，字符串不检测是否为日期字符串
     if (
         props[propName] &&
         !moment.isMoment(props[propName]) &&
-        typeof props[propName] !== 'string'
+        ['String', 'Number'].indexOf(typeOf(props[propName])) === -1
     ) {
         return new Error(
             `Invalid prop ${propName} supplied to ${componentName}. Required a moment object or format date string!`
