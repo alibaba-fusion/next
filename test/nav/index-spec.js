@@ -414,7 +414,7 @@ describe('Nav', () => {
     it('should support fixed', () => {
         wrapper = render(
             <Nav
-                style={{ left: 0, top: 0, position: 'fixed'}}
+                style={{ left: 0, top: 0, position: 'fixed', width: 70}}
                 popupStyle={{position: 'fixed'}}
                 popupClassName="fixed-popup-sub3"
                 type="primary"
@@ -441,6 +441,6 @@ describe('Nav', () => {
 
         const popup = document.querySelectorAll('.fixed-popup-sub3');
         assert(popup[0].style.top === '80px');
-        assert(popup[0].style.left === '69px');
+        assert(popup[0].style.left === '68px');
     });
 });
