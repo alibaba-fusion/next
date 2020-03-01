@@ -37,6 +37,7 @@ class Nav extends React.Component {
         style: PropTypes.object,
         className: PropTypes.string,
         locale: PropTypes.object,
+        icons: PropTypes.object,
     };
 
     constructor(props, context) {
@@ -322,7 +323,6 @@ class Nav extends React.Component {
     renderTabList(props) {
         const { prefix, tabs, activeKey, tabRender } = props;
         const tabTemplateFn = tabRender || this.defaultTabTemplateRender;
-        const { locale } = this.props;
 
         const rst = [];
         React.Children.forEach(tabs, child => {
@@ -458,11 +458,22 @@ class Nav extends React.Component {
             return null;
         }
 
-        const { prefix, activeKey, triggerType, popupProps, rtl } = this.props;
+        const {
+            prefix,
+            activeKey,
+            triggerType,
+            popupProps,
+            rtl,
+            icons,
+        } = this.props;
+        const dropdownIcon =
+            typeof icons.dropdown === 'string' ? (
+                <Icon type={icons.dropdown} />
+            ) : (
+                icons.dropdown
+            );
         const trigger = (
-            <button className={`${prefix}tabs-btn-down`}>
-                <Icon type="arrow-down" />
-            </button>
+            <button className={`${prefix}tabs-btn-down`}>{dropdownIcon}</button>
         );
 
         return (
@@ -553,6 +564,7 @@ class Nav extends React.Component {
             style,
             className,
             rtl,
+            icons,
         } = this.props;
         const state = this.state;
 
@@ -571,23 +583,35 @@ class Nav extends React.Component {
             prevButton = null;
             nextButton = null;
         } else if (showNextPrev) {
+            const prevIcon =
+                typeof icons.prev === 'string' ? (
+                    <Icon rtl={rtl} type={icons.prev} />
+                ) : (
+                    React.cloneElement(icons.prev, { rtl })
+                );
             prevButton = (
                 <button
                     onClick={this.onPrevClick}
                     className={`${prefix}tabs-btn-prev`}
                     ref={this.prevBtnHandler}
                 >
-                    <Icon rtl={rtl} type="arrow-left" />
+                    {prevIcon}
                 </button>
             );
 
+            const nextIcon =
+                typeof icons.next === 'string' ? (
+                    <Icon rtl={rtl} type={icons.next} />
+                ) : (
+                    React.cloneElement(icons.next, { rtl })
+                );
             nextButton = (
                 <button
                     onClick={this.onNextClick}
                     className={`${prefix}tabs-btn-next`}
                     ref={this.nextBtnHandler}
                 >
-                    <Icon rtl={rtl} type="arrow-right" />
+                    {nextIcon}
                 </button>
             );
             restButton = null;
