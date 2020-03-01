@@ -9,6 +9,7 @@ export default function withContext(Checkbox) {
             selectedValue: PropTypes.array,
             disabled: PropTypes.bool,
             prefix: PropTypes.string,
+            icons: PropTypes.object,
         };
 
         render() {

@@ -74,6 +74,7 @@ class CheckboxGroup extends Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -82,6 +83,10 @@ class CheckboxGroup extends Component {
         prefix: 'next-',
         itemDirection: 'hoz',
         isPreview: false,
+        icons: {
+            indeterminate: 'semi-select',
+            select: 'select',
+        },
     };
 
     static childContextTypes = {
@@ -89,6 +94,7 @@ class CheckboxGroup extends Component {
         __group__: PropTypes.bool,
         selectedValue: PropTypes.array,
         disabled: PropTypes.bool,
+        icons: PropTypes.object,
     };
 
     constructor(props) {
@@ -120,6 +126,7 @@ class CheckboxGroup extends Component {
             onChange: this.onChange,
             selectedValue: this.state.value,
             disabled: this.props.disabled,
+            icons: this.props.icons,
         };
     }
 

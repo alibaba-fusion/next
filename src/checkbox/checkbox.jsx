@@ -101,6 +101,10 @@ class Checkbox extends UIState {
         onMouseLeave: noop,
         prefix: 'next-',
         isPreview: false,
+        icons: {
+            indeterminate: 'semi-select',
+            select: 'select',
+        },
     };
 
     constructor(props) {
@@ -211,6 +215,7 @@ class Checkbox extends UIState {
         const disabled = this.disabled;
         const indeterminate = !!this.state.indeterminate;
         const prefix = context.prefix || this.props.prefix;
+        const icons = this.props.icons || context.icons;
 
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
@@ -244,7 +249,7 @@ class Checkbox extends UIState {
             [this.getStateClassName()]: true,
         });
         const labelCls = `${prefix}checkbox-label`;
-        const type = indeterminate ? 'semi-select' : 'select';
+        const type = indeterminate ? icons.indeterminate : icons.select;
 
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
