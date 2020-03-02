@@ -31,12 +31,18 @@ export function resetValueTime(source, target) {
 }
 
 export function formatDateValue(value, format) {
-    const val =
+    let val =
         typeof value === 'string'
             ? moment(value, format, false)
             : typeof value === 'number'
             ? moment(value, null, false)
             : value;
+    if (
+        typeof value === 'string' &&
+        (!moment.isMoment(val) || !val.isValid())
+    ) {
+        val = moment(Number(value), null, false);
+    }
     if (val && moment.isMoment(val) && val.isValid()) {
         return val;
     }
