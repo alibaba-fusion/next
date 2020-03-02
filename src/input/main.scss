@@ -115,7 +115,9 @@
         }
     }
 
-    .#{$css-prefix}icon-delete-filling, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
+
+
+    #{$input-prefix}-clear-icon, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
         &:hover {
             cursor: pointer;
             color: $input-hint-hover-color;
@@ -218,14 +220,29 @@
             color: $input-hint-color;
         }
 
-        .#{$css-prefix}icon-warning {
+        #{$input-prefix}-warning-icon {
             color: $input-feedback-warning-color;
+            &::before {
+                content: $input-feedback-warning-icon;
+            }
         }
-        .#{$css-prefix}icon-success-filling {
+        #{$input-prefix}-success-icon {
             color: $input-feedback-success-color;
+            &::before {
+                content: $input-feedback-success-icon;
+            }
         }
-        .#{$css-prefix}icon-loading {
+        #{$input-prefix}-loading-icon {
             color: $input-feedback-loading-color;
+            &::before {
+                content: $input-feedback-loading-icon;
+                animation: loadingCircle 1s infinite linear;
+            }
+        }
+        #{$input-prefix}-clear-icon {
+            &::before {
+                content: $input-feedback-clear-icon;
+            }
         }
     }
 
@@ -268,7 +285,7 @@
 
             color: $input-disabled-color;
 
-            .#{$css-prefix}icon-delete-filling:hover {
+            #{$input-prefix}-clear-icon:hover {
                 cursor: not-allowed;
                 color: $input-disabled-color;
             }
