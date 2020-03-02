@@ -434,6 +434,9 @@
 
     .#{$css-prefix}icon {
         color: $upload-card-icon-color;
+        &::before {
+            content: $upload-card-add-icon;
+        }
         @include icon-size($upload-card-add-icon-size);
     }
 
@@ -475,7 +478,7 @@
 
             #{$upload-prefix}-drag-upload-icon::before {
                 content: $upload-drag-zone-upload-icon;
-                font-size: $upload-drag-zone-icon-size;
+                @include icon-size($upload-drag-zone-icon-size);
             }
         }
 
