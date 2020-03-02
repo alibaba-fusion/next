@@ -16,7 +16,7 @@ Button has a inner state `loading` to control if a Button is in loading. It coul
 ---
 
 ````jsx
-import { Button } from '@alifd/next';
+import { Button, Icon } from '@alifd/next';
 
 class Demo extends React.Component {
     constructor(props, context) {
@@ -34,7 +34,9 @@ class Demo extends React.Component {
     render() {
         return (<div>
             <Button type="secondary" loading>Loading</Button>&nbsp;&nbsp;
-            <Button type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
+            <Button type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>&nbsp;&nbsp;
+            <Button type="secondary" iconSize="xs" loading icons={{ loading: <Icon type="loading" /> }}>Custom loading icon</Button>&nbsp;&nbsp;
+            <Button type="primary" loading={this.state.loading} onClick={this.setLoading} icons={{ loading: <Icon type="loading" /> }}>Click to loading and show loading icon</Button>
         </div>);
     }
 }

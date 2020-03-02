@@ -40,6 +40,10 @@
             display: none;
         }
     }
+
+    & > #{$btn-prefix}-custom-loading-icon {
+        margin-right: $icon-margin;
+    }
 }
 
 @keyframes loadingCircle {

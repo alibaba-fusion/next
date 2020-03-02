@@ -27,6 +27,12 @@ export default class Button extends Component {
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
         /**
+         * 按钮中可配置的 Icon，格式为 { loading: <Icon type="loading" /> }
+         */
+        icons: PropTypes.shape({
+            loading: PropTypes.node,
+        }),
+        /**
          * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
          */
         iconSize: PropTypes.oneOf([
@@ -81,6 +87,7 @@ export default class Button extends Component {
         prefix: 'next-',
         type: 'normal',
         size: 'medium',
+        icons: {},
         htmlType: 'button',
         component: 'button',
         loading: false,
@@ -116,6 +123,7 @@ export default class Button extends Component {
             ghost,
             component,
             iconSize,
+            icons,
             disabled,
             onClick,
             children,
@@ -125,7 +133,7 @@ export default class Button extends Component {
         const ghostType =
             ['light', 'dark'].indexOf(ghost) >= 0 ? ghost : 'dark';
 
-        const btnCls = classNames({
+        const btnClsObj = {
             [`${prefix}btn`]: true,
             [`${prefix}${size}`]: size,
             [`${prefix}btn-${type}`]: type && !ghost,
@@ -135,7 +143,25 @@ export default class Button extends Component {
             [`${prefix}btn-ghost`]: ghost,
             [`${prefix}btn-${ghostType}`]: ghost,
             [className]: className,
-        });
+        };
+
+        let loadingIcon = null;
+
+        // 如果传入了 loading 的 icons，使用该节点来渲染
+        if (
+            loading &&
+            icons &&
+            icons.loading &&
+            isValidElement(icons.loading)
+        ) {
+            delete btnClsObj[`${prefix}btn-loading`];
+
+            const loadingSize = iconSize || mapIconSize(size);
+            loadingIcon = React.cloneElement(icons.loading, {
+                className: `${prefix}btn-custom-loading-icon`,
+                size: loadingSize,
+            });
+        }
 
         const count = Children.count(children);
         const clonedChildren = Children.map(children, (child, index) => {
@@ -182,7 +208,7 @@ export default class Button extends Component {
             type: htmlType,
             disabled: disabled,
             onClick: onClick,
-            className: btnCls,
+            className: classNames(btnClsObj),
         };
 
         if (TagName !== 'button') {
@@ -201,6 +227,7 @@ export default class Button extends Component {
                 onMouseUp={this.onMouseUp}
                 ref={this.buttonRefHandler}
             >
+                {loadingIcon}
                 {clonedChildren}
             </TagName>
         );
