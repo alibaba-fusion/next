@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
 import Radio from './radio';
@@ -64,7 +65,7 @@ class RadioGroup extends Component {
          * 可以设置成 button 展示形状
          * @enumdesc 按钮状
          */
-        shape: PropTypes.oneOf(['button']),
+        shape: PropTypes.oneOf(['normal', 'button']),
         /**
          * 与 `shape` 属性配套使用，shape设为button时有效
          * @enumdesc 大, 中, 小
@@ -132,8 +133,19 @@ class RadioGroup extends Component {
         } else if ('defaultValue' in props) {
             value = props.defaultValue;
         }
+
         this.state = { value };
         this.onChange = this.onChange.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if ('value' in props && props.value !== state.value) {
+            return {
+                value: props.value,
+            };
+        }
+
+        return null;
     }
 
     getChildContext() {
@@ -146,18 +158,6 @@ class RadioGroup extends Component {
             selectedValue: this.state.value,
             disabled: disabled,
         };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let { value } = nextProps;
-        if ('value' in nextProps) {
-            if (value === undefined) {
-                value = '';
-            }
-            this.setState({
-                value,
-            });
-        }
     }
 
     onChange(currentValue, e) {
@@ -302,4 +302,4 @@ class RadioGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(RadioGroup);
+export default ConfigProvider.config(polyfill(RadioGroup));

@@ -366,6 +366,7 @@ describe('Cascader', () => {
         const handleChange = (v, d, e) => {
             d.forEach(d => delete d._source);
             e.checkedData.forEach(d => delete d._source);
+            delete e.currentData._source;
             assert.deepEqual(value, sortByValue(v, true));
             assert.deepEqual(data, sortByValue(d));
             e.checkedData = sortByValue(e.checkedData);

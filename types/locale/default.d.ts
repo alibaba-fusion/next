@@ -76,6 +76,7 @@ export interface locale {
         autoCompletePlaceholder: string;
         notFoundContent: string;
         maxTagPlaceholder: string;
+        selectAll: string;
     };
     Table: {
         empty: string;
@@ -130,5 +131,8 @@ export interface locale {
     Switch: {
         on: string;
         off: string;
+    };
+    Tab: {
+        closeAriaLabel: string;
     };
 }

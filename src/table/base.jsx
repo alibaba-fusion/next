@@ -213,12 +213,6 @@ export default class Table extends React.Component {
          * @param {Object} currentRecord 当前点击额外渲染行的记录
          */
         onRowOpen: PropTypes.func,
-        /**
-         * 点击额外渲染行触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
-         */
         onExpandedRowClick: PropTypes.func,
         /**
          * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条

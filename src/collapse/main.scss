@@ -78,6 +78,12 @@
     }
     // --------- this is for config platform
 
+    &-panel-hidden {
+        > #{$collapse-prefix}-panel-content {
+            overflow: hidden;
+        }
+    }
+
     #{$collapse-prefix}-panel-icon {
         &::before {
             content: $collapse-fold-icon-content;

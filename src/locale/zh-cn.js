@@ -76,6 +76,7 @@ export default {
         autoCompletePlaceholder: '请输入',
         notFoundContent: '无选项',
         maxTagPlaceholder: '已选择 {selected}/{total} 项',
+        selectAll: '全选',
     },
     Table: {
         empty: '没有数据',
@@ -130,5 +131,8 @@ export default {
     Switch: {
         on: '已打开',
         off: '已关闭',
+    },
+    Tab: {
+        closeAriaLabel: '关闭',
     },
 };
