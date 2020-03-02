@@ -68,6 +68,12 @@ export interface CalendarProps extends HTMLAttributesWeak, CommonProps {
      * 国际化配置
      */
     locale?: {};
+    icons?: {
+        left?: React.ReactNode;
+        right?: React.ReactNode;
+        doubleLeft?: React.ReactNode;
+        doubleRight?: React.ReactNode;
+    };
 }
 
 export default class Calendar extends React.Component<CalendarProps, any> {}
