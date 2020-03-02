@@ -65,6 +65,11 @@ describe('Search', () => {
             assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 0);
             assert(wrapper.dive().find(`[aria-label="a11y search"]`).length === 1);
         });
+
+        it('should support icons', () => {
+            const wrapper = mount(<Search icons={{search: <span id="icon-text">sc</span>}} aria-label="a11y search"/>);
+            assert(wrapper.find('.next-search-btn span').at(0).text() === 'sc');
+        });
     });
 
     describe('behavior', () => {
