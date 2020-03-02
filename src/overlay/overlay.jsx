@@ -249,10 +249,10 @@ class Overlay extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        const state = {};
+        const nextState = {};
 
         if (nextProps.animation || nextProps.animation === false) {
-            state.animation = nextProps.animation;
+            nextState.animation = nextProps.animation;
         }
 
         const willOpen = !prevState.visible && nextProps.visible;
@@ -268,21 +268,21 @@ class Overlay extends Component {
 
         if (nextProps.animation !== false && support.animation) {
             if (willOpen) {
-                state.visible = true;
-                state.status = 'mounting';
+                nextState.visible = true;
+                nextState.status = 'mounting';
             } else if (willClose) {
                 // can not set visible=false directly, otherwise animation not work without dom
-                // state.visible = false;
-                state.status = 'leaving';
+                // nextState.visible = false;
+                nextState.status = 'leaving';
             }
         } else if (
             'visible' in nextProps &&
             nextProps.visible !== prevState.visible
         ) {
-            state.visible = nextProps.visible;
+            nextState.visible = nextProps.visible;
         }
 
-        return state;
+        return nextState;
     }
 
     componentDidMount() {
