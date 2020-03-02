@@ -1052,6 +1052,7 @@ describe('RangePicker', () => {
             wrapper = mount(<RangePicker type="year" followTrigger visible defaultValue={['2018', '2019']} />);
             assert(wrapper.find('.next-calendar').length === 2);
         });
+
         it('should support preview mode render', () => {
             wrapper = mount(<RangePicker defaultValue={[startValue, endValue]} isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
@@ -1063,6 +1064,14 @@ describe('RangePicker', () => {
                 }
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
+
+        it('should support to set placeholder', () => {
+            const placeholder = ['开始日期', '结束日期']
+            wrapper = mount(<RangePicker placeholder={placeholder} />)
+            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
+            assert(startPlaceholder === placeholder[0])
+            assert(endPlaceholder === placeholder[1])
         });
     });
 
