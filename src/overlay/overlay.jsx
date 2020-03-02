@@ -249,12 +249,6 @@ class Overlay extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        const nextState = {};
-
-        if (nextProps.animation || nextProps.animation === false) {
-            nextState.animation = nextProps.animation;
-        }
-
         const willOpen = !prevState.visible && nextProps.visible;
         const willClose = prevState.visible && !nextProps.visible;
 
@@ -264,6 +258,12 @@ class Overlay extends Component {
         } else if (willClose) {
             prevState.beforeClose();
             nextProps.beforeClose();
+        }
+
+        const nextState = {};
+
+        if (nextProps.animation || nextProps.animation === false) {
+            nextState.animation = nextProps.animation;
         }
 
         if (nextProps.animation !== false && support.animation) {
