@@ -222,6 +222,7 @@ export default class RangePicker extends Component {
         name: PropTypes.string,
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
+        placeholder: PropTypes.arrayOf(PropTypes.string),
     };
 
     static defaultProps = {
@@ -775,6 +776,7 @@ export default class RangePicker extends Component {
             isPreview,
             disableChangeMode,
             yearRange,
+            placeholder,
             ...others
         } = this.props;
 
@@ -1084,6 +1086,8 @@ export default class RangePicker extends Component {
         }[state.panel];
 
         const allowClear = state.startValue && state.endValue && hasClear;
+        const [startPlaceholder, endPlaceholder] = placeholder || [];
+
         const trigger = (
             <div className={triggerCls}>
                 <Input
@@ -1092,7 +1096,7 @@ export default class RangePicker extends Component {
                     role="combobox"
                     aria-expanded={state.visible}
                     label={label}
-                    placeholder={locale.startPlaceholder}
+                    placeholder={startPlaceholder || locale.startPlaceholder}
                     value={startTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
@@ -1106,7 +1110,7 @@ export default class RangePicker extends Component {
                     readOnly
                     role="combobox"
                     aria-expanded={state.visible}
-                    placeholder={locale.endPlaceholder}
+                    placeholder={endPlaceholder || locale.endPlaceholder}
                     value={endTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
