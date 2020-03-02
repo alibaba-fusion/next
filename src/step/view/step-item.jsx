@@ -186,7 +186,7 @@ class StepItem extends Component {
             nodeElement = icon ? (
                 <Icon type={icon} />
             ) : (
-                <div className={`${prefix}step-item-node-dot`}> </div>
+                <Icon className={`${prefix}step-item-node-dot`} />
             );
         } else if (shape === 'circle' && percent) {
             nodeElement = (
@@ -242,6 +242,12 @@ class StepItem extends Component {
                         ref={this._refHandlerCreator('stepNode')}
                         onTransitionEnd={this.removeClickedCls}
                     >
+                        <div
+                            style={{ display: 'none' }}
+                            className={`${prefix}step-item-node-dot-icon`}
+                        >
+                            {' '}
+                        </div>
                         {nodeElement}
                     </div>
                 </div>
