@@ -131,6 +131,7 @@ class FunctionDemo extends React.Component {
                             {
                                 itemData.normalItems.map((v, index) => this.itemRender({ ...v, flag, index }))
                             }
+                            <TimelineItem style={{ display: 'none' }} className="next-timeline-item-node-dot-icon" key={itemData.errorItems.length} />
                         </Timeline>
                     </DemoGroup>
                     <DemoGroup label={i18n.success}>
@@ -138,6 +139,7 @@ class FunctionDemo extends React.Component {
                             {
                                 itemData.successItems.map((v, index) => this.itemRender({ ...v, flag, index }))
                             }
+                            <TimelineItem style={{ display: 'none' }} className="next-timeline-item-node-dot-icon" key={itemData.errorItems.length} />
                         </Timeline>
                     </DemoGroup>
                     <DemoGroup label={i18n.error}>
@@ -145,12 +147,14 @@ class FunctionDemo extends React.Component {
                             {
                                 itemData.errorItems.map((v, index) => this.itemRender({ ...v, flag, index }))
                             }
+                            <TimelineItem style={{ display: 'none' }} className="next-timeline-item-node-dot-icon" key={itemData.errorItems.length} />
                         </Timeline>
                     </DemoGroup>
                     <DemoGroup label={i18n.expand}>
                         <Timeline fold={[{ foldArea: [1, 2], foldShow: true }, { foldArea: [4], foldShow: true }]}>
+                            <TimelineItem style={{ display: 'none' }} className="next-timeline-item-node-dot-icon" key={0} />
                             {
-                                itemData.expandItems.map((v, index) => this.itemRender({ ...v, flag, index }))
+                                itemData.expandItems.map((v, index) => this.itemRender({ ...v, flag, index: index + 1 }))
                             }
                         </Timeline>
                     </DemoGroup>

@@ -5,7 +5,7 @@
 /// @family data-display
 /// @varPrefix $timeline-
 /// @classPrefix {prefix}-timeline
-/// @order {"size/node":10,"size/divider":11,"size/content":12,"size/expand button":13,"statement/normal":10,"statement/normal/content":100,"statement/normal/divider":101,"statement/normal/expand button":102,"statement/hover":11,"statement/hover/expand button":110,"statement/done":12,"statement/done/node":120,"statement/process":13,"statement/process/node":130,"statement/success":14,"statement/success/node":140,"statement/error":15,"statement/error/node":150}
+/// @order {"size/node":10,"size/divider":11,"size/content":12,"size/expand button":13,"statement/normal":10,"statement/normal/content":100,"statement/normal/divider":101,"statement/normal/expand button":102, "statement/normal/node": 103, "statement/hover":11,"statement/hover/expand button":110,"statement/done":12,"statement/done/node":120,"statement/process":13,"statement/process/node":130,"statement/success":14,"statement/success/node":140,"statement/error":15,"statement/error/node":150}
 ////
 
 $timeline-prefix: '.' + $css-prefix + 'timeline';
@@ -107,6 +107,10 @@ $timeline-item-body-color: $color-text1-3 !default;
 /// left body text
 /// @namespace statement/normal/content
 $timeline-item-left-body-color: $color-text1-2 !default;
+
+/// dot icon
+/// @namespace statement/normal/node
+$timeline-item-dot-icon: $icon-reset !default;
 
 /// time text
 /// @namespace statement/normal/content

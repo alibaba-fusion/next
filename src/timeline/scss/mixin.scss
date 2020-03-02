@@ -44,15 +44,21 @@
         }
 
         #{$timeline-prefix}-item-dot {
-            display: block;
-            position: absolute;
-            width: $dot-size;
-            height: $dot-size;
-            border-radius: 100%;
-            top: 50%;
-            margin-top: -$dot-size/2;
-            left: 50%;
-            margin-left: -$dot-size/2;
+            @if $timeline-item-dot-icon != $icon-reset {
+                &::before {
+                    content: $timeline-item-dot-icon;
+                }
+            } @else {
+                display: block;
+                position: absolute;
+                width: $dot-size;
+                height: $dot-size;
+                border-radius: 100%;
+                top: 50%;
+                margin-top: -$dot-size/2;
+                left: 50%;
+                margin-left: -$dot-size/2;
+            }
         }
 
         #{$timeline-prefix}-item-icon {
@@ -189,7 +195,11 @@
         }
     }
     #{$timeline-prefix}-item-dot {
-        background: $background;
+        @if $timeline-item-dot-icon != $icon-reset {
+            color: $background;
+        } @else {
+            background: $background;
+        }
     }
 
     #{$timeline-prefix}-item-icon {

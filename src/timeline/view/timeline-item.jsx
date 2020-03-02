@@ -97,7 +97,7 @@ class TimelineItem extends Component {
                 <Icon type={icon} size="xs" />
             </span>
         ) : (
-            <span className={`${prefix}timeline-item-dot`} />
+            <Icon size="xs" className={`${prefix}timeline-item-dot`} />
         );
         const itemCls = classNames({
             [`${prefix}timeline-item`]: true,

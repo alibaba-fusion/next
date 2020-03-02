@@ -51,6 +51,10 @@
     }
 }
 
+#{$timeline-prefix}-item-node-dot-icon::before {
+    content: $timeline-item-dot-icon;
+}
+
 #{$timeline-prefix}-item-done {
     @include node-state('ltr', $timeline-item-done-background, $timeline-item-done-color, $timeline-item-done-dot-size);
 }
