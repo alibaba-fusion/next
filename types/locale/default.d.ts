@@ -76,6 +76,7 @@ export interface locale {
         autoCompletePlaceholder: string;
         notFoundContent: string;
         maxTagPlaceholder: string;
+        selectAll: string;
     };
     Table: {
         empty: string;
