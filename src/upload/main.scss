@@ -478,11 +478,9 @@
 
             #{$upload-prefix}-drag-upload-icon::before {
                 content: $upload-drag-zone-upload-icon;
-                @include icon-size($upload-drag-zone-icon-size);
+                font-size: $upload-drag-zone-icon-size;
             }
         }
-
-
 
         &-text {
             margin: $s-3 0 0;
