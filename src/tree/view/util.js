@@ -42,6 +42,7 @@ export function forEachEnableNode(node, callback = () => {}) {
         node.children.forEach(child => forEachEnableNode(child, callback));
     }
 }
+
 /**
  * 判断节点是否禁用checked
  * @param {Node} node
@@ -81,6 +82,7 @@ export function getCheckableParentNode(node, _p2n) {
 
     return parentNode;
 }
+
 /**
  * 过滤子节点
  * @param {Array} keys
@@ -151,12 +153,15 @@ export function isSiblingOrSelf(currentPos, targetPos) {
 export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     checkedKeys = normalizeToArray(checkedKeys);
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);
-    const flatKeys = [
-        ...filterChildKey(filteredKeys, _k2n, _p2n),
-        ...filteredKeys.filter(
-            key => _k2n[key].disabled || _k2n[key].checkboxDisabled
-        ),
-    ];
+    const flatKeys = Array.from(
+        new Set([
+            ...filterChildKey(filteredKeys, _k2n, _p2n),
+            ...filteredKeys.filter(
+                key => _k2n[key].disabled || _k2n[key].checkboxDisabled
+            ),
+        ])
+    );
+
     const removeKey = child => {
         if (child.disabled || child.checkboxDisabled) return;
         if (
@@ -168,7 +173,6 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
         }
         flatKeys.splice(flatKeys.indexOf(child.key), 1);
     };
-
     const addParentKey = (i, parent) => flatKeys.splice(i, 0, parent.key);
 
     const keys = [...flatKeys];
@@ -185,8 +189,10 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
                 parent.checkable === false ||
                 parent.disabled ||
                 parent.checkboxDisabled
-            )
+            ) {
                 continue;
+            }
+
             const parentChecked = parent.children.every(child =>
                 isNodeChecked(child, flatKeys)
             );

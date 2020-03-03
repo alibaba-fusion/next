@@ -25,7 +25,8 @@ const treeData = [{
         value: '2',
         children: [{
             label: 'Input',
-            value: '4'
+            value: '4',
+            disabled: true
         }, {
             label: 'Select',
             value: '5'
@@ -43,17 +44,25 @@ const treeData = [{
 class Demo extends React.Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            value: ['4']
+        }
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(value, data) {
-        console.log(value, data);
+        this.setState({value})
     }
 
     render() {
         return (
-            <TreeSelect treeDefaultExpandAll treeCheckable dataSource={treeData} onChange={this.handleChange} style={{ width: 200 }} />
+            <TreeSelect
+                value={this.state.value}
+                treeDefaultExpandAll
+                treeCheckable
+                dataSource={treeData}
+                onChange={this.handleChange}
+                style={{ width: 200 }} />
         );
     }
 }
