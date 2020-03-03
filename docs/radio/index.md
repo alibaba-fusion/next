@@ -40,7 +40,7 @@
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------- |
 | name          | name                                                                                                                                               | String                              | -        |
 | size          | 与 `shape` 属性配套使用，shape设为button时有效<br><br>**可选值**:<br>'large'(大)<br>'medium'(中)<br>'small'(小)                                                       | Enum                                | 'medium' |
-| shape         | 可以设置成 button 展示形状<br><br>**可选值**:<br>'button'(按钮状)                                                                                                 | Enum                                | -        |
+| shape         | 可以设置成 button 展示形状<br><br>**可选值**:<br>'normal'(按钮状)<br>'button'                                                                                     | Enum                                | -        |
 | value         | radio group的选中项的值                                                                                                                                  | String/Number/Boolean               | -        |
 | defaultValue  | radio group的默认值                                                                                                                                    | String/Number/Boolean               | -        |
 | component     | 设置标签类型                                                                                                                                             | String/Function                     | 'div'    |

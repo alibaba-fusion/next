@@ -287,7 +287,7 @@ export default class PopupItem extends Component {
 
             arrowProps = {
                 type: 'arrow-right',
-                className: `${prefix}menu-icon-arrow`,
+                className: `${prefix}menu-icon-arrow ${prefix}menu-symbol-popupfold`,
             };
         }
 

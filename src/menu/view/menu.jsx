@@ -174,6 +174,10 @@ export default class Menu extends Component {
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
+        /**
+         * 可配置的icons，包括 select 等
+         */
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -206,6 +210,7 @@ export default class Menu extends Component {
         onItemKeyDown: noop,
         onItemClick: noop,
         expandAnimation: true,
+        icons: {},
     };
 
     constructor(props) {
