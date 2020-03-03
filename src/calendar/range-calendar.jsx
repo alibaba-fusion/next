@@ -93,7 +93,6 @@ class RangeCalendar extends React.Component {
         yearCellRender: PropTypes.func, // 兼容 0.x yearCellRender
         locale: PropTypes.object,
         className: PropTypes.string,
-        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -107,7 +106,6 @@ class RangeCalendar extends React.Component {
         onVisibleMonthChange: func.noop,
         locale: nextLocale.Calendar,
         showOtherMonth: false,
-        icons: {},
     };
 
     constructor(props, context) {
@@ -241,7 +239,6 @@ class RangeCalendar extends React.Component {
             disabledDate,
             disableChangeMode,
             yearRange,
-            icons,
             ...others
         } = this.props;
         const {
@@ -281,7 +278,6 @@ class RangeCalendar extends React.Component {
             changeMode: this.changeMode,
             yearRange,
             disableChangeMode,
-            icons,
         };
 
         const tableProps = {

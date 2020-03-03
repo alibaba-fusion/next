@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import React, { isValidElement } from 'react';
+import React from 'react';
 import Icon from '../../icon';
 import Dropdown from '../../dropdown';
 import SelectMenu from './menu';
@@ -40,29 +40,7 @@ class RangePanelHeader extends React.PureComponent {
             goPrevMonth,
             goPrevYear,
             disableChangeMode,
-            icons,
         } = this.props;
-
-        let iconLeft = icons.left,
-            iconRight = icons.right,
-            iconDoubleLeft = icons.doubleLeft,
-            iconDoubleRight = icons.doubleRight;
-
-        if (!isValidElement(icons.right) && icons.right) {
-            iconRight = <span>{icons.right}</span>;
-        }
-
-        if (!isValidElement(icons.left) && icons.left) {
-            iconLeft = <span>{icons.left}</span>;
-        }
-
-        if (!isValidElement(icons.doubleLeft) && icons.doubleLeft) {
-            iconDoubleLeft = <span>{icons.doubleLeft}</span>;
-        }
-
-        if (!isValidElement(icons.doubleRight) && icons.doubleRight) {
-            iconDoubleRight = <span>{icons.doubleRight}</span>;
-        }
 
         const localedMonths = momentLocale.months();
         const startMonthLabel = localedMonths[startVisibleMonth.month()];
@@ -91,10 +69,7 @@ class RangePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-prev-year`}
                     onClick={goPrevYear}
                 >
-                    {React.cloneElement(
-                        iconDoubleLeft || <Icon type="arrow-double-left" />,
-                        {}
-                    )}
+                    <Icon type="arrow-double-left" />
                 </button>
                 <button
                     role="button"
@@ -102,10 +77,7 @@ class RangePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-prev-month`}
                     onClick={goPrevMonth}
                 >
-                    {React.cloneElement(
-                        iconLeft || <Icon type="arrow-left" />,
-                        {}
-                    )}
+                    <Icon type="arrow-left" />
                 </button>
                 <div className={`${prefix}calendar-panel-header-left`}>
                     {disableChangeMode ? (
@@ -263,10 +235,7 @@ class RangePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-next-month`}
                     onClick={goNextMonth}
                 >
-                    {React.cloneElement(
-                        iconRight || <Icon type="arrow-right" />,
-                        {}
-                    )}
+                    <Icon type="arrow-right" />
                 </button>
                 <button
                     role="button"
@@ -274,10 +243,7 @@ class RangePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-next-year`}
                     onClick={goNextYear}
                 >
-                    {React.cloneElement(
-                        iconDoubleRight || <Icon type="arrow-double-right" />,
-                        {}
-                    )}
+                    <Icon type="arrow-double-right" />
                 </button>
             </div>
         );
