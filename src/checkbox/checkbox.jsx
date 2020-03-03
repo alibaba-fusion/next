@@ -278,6 +278,12 @@ class Checkbox extends UIState {
             );
         }
 
+        const iconCls = classnames({
+            zoomIn: indeterminate,
+            [`${prefix}checkbox-semi-select-icon`]: indeterminate,
+            [`${prefix}checkbox-select-icon`]: !indeterminate,
+        });
+
         return (
             <label
                 {...othersData}
@@ -289,11 +295,7 @@ class Checkbox extends UIState {
             >
                 <span className={`${prefix}checkbox`}>
                     <span className={`${prefix}checkbox-inner`}>
-                        <Icon
-                            type={type}
-                            size="xs"
-                            className={indeterminate ? 'zoomIn' : ''}
-                        />
+                        <Icon type={type} size="xs" className={iconCls} />
                     </span>
                     {childInput}
                 </span>
