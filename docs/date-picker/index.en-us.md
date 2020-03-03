@@ -55,6 +55,7 @@ DatePicker are used to select a single date for an input.
 | value               | Range value `[moment, moment]` | Array          | -            |
 | defaultValue        | Default range value `[moment, moment]`    | Array          | - |
 | format              | Date format    | String         | 'YYYY-MM-DD' |
+| placeholder              | input hints:`['start date', 'end date']`    | Array         | - |
 | showTime            | Enable time picker  | Object/Boolean | false        |
 | resetTime           | If reset time for every select     | Boolean        | false        |
 | disabledDate        | Function to disable dates <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>_view_: {Enum} current view type: 'year', 'month', 'date'<br>**return**:<br>{Boolean} if disabled<br>                     | Function       | () => false  |
