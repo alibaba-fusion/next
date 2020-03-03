@@ -170,6 +170,7 @@ class Checkbox extends UIState {
     onChange(e) {
         const { context, value } = this.props;
         const checked = e.target.checked;
+
         if (this.disabled) {
             return;
         }
@@ -205,6 +206,8 @@ class Checkbox extends UIState {
             isPreview,
             renderPreview,
             context,
+            value,
+            name,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -222,6 +225,8 @@ class Checkbox extends UIState {
             <input
                 {...obj.pickOthers(Checkbox.propTypes, otherProps)}
                 id={id}
+                value={value}
+                name={name}
                 disabled={disabled}
                 checked={checked}
                 type="checkbox"

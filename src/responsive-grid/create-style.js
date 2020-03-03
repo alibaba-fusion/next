@@ -133,7 +133,7 @@ const getGridGap = gap => {
 
 const getTemplateCount = counts => {
     if (!isNaN(counts)) {
-        return `repeat(${counts}, 1fr)`;
+        return `repeat(${counts}, minmax(0,1fr))`;
     }
 
     return counts;

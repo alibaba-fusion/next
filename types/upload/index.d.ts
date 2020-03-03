@@ -392,6 +392,10 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     onRemove?: (file: {}) => boolean | any;
 
     /**
+     * 自定义额外渲染
+     */
+    extraRender?: (file: File) => any;
+    /**
      * 自定义class
      */
     className?: string;
