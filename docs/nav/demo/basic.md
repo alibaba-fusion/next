@@ -26,7 +26,7 @@ const footer = <a className="login-in" href="javascript:;">Login in</a>;
 ReactDOM.render(
     <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
         <Item key="home">Home</Item>
-        <SubNav label="Component" selectable>
+        <SubNav label="Component">
             <Item key="next">Next</Item>
             <Item key="mext">Mext</Item>
         </SubNav>
