@@ -73,6 +73,13 @@
             opacity: 0;
         }
 
+        #{$number-picker-prefix}-up-icon::before {
+            content: $number-picker-normal-up-icon;
+        }
+        #{$number-picker-prefix}-down-icon::before {
+            content: $number-picker-normal-down-icon;
+        }
+
         &.#{$css-prefix}small {
             width: 68px;
             .#{$css-prefix}btn {
@@ -138,6 +145,13 @@
 
         .#{$css-prefix}input input {
             padding: 0;
+        }
+
+        #{$number-picker-prefix}-add-icon::before {
+            content: $number-picker-inline-add-icon;
+        }
+        #{$number-picker-prefix}-minus-icon::before {
+            content: $number-picker-inline-minus-icon;
         }
 
         &.#{$css-prefix}small {
