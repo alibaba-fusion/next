@@ -109,6 +109,10 @@ class Calendar extends Component {
          * 国际化配置
          */
         locale: PropTypes.object,
+        /**
+         * 可替换图标
+         */
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -124,6 +128,7 @@ class Calendar extends Component {
         dateCellRender: value => value.date(),
         locale: nextLocale.Calendar,
         showOtherMonth: true,
+        icons: {},
     };
 
     constructor(props, context) {
@@ -241,6 +246,7 @@ class Calendar extends Component {
             disabledDate,
             yearRange,
             disableChangeMode,
+            icons,
             ...others
         } = this.props;
         const state = this.state;
@@ -288,6 +294,7 @@ class Calendar extends Component {
             goPrevDecade: this.goPrevDecade,
             goPrevYear: this.goPrevYear,
             goPrevMonth: this.goPrevMonth,
+            icons,
         };
 
         const tableProps = {
