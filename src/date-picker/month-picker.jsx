@@ -214,7 +214,6 @@ class MonthPicker extends Component {
     };
 
     onSelectCalendarPanel = value => {
-        // const { format } = this.props;
         const prevSelectedMonth = this.state.value;
         const selectedMonth = value
             .clone()

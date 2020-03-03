@@ -892,10 +892,11 @@ export default class RangePicker extends Component {
                         shape="panel"
                         modes={type === 'month' ? ['month', 'year'] : ['year']}
                         {...{ ...shareCalendarProps }}
-                        disabledDate={date => {
+                        disabledDate={(date, ...args) => {
                             return (
-                                state.endValue &&
-                                date.isAfter(state.endValue, type)
+                                (state.endValue &&
+                                    date.isAfter(state.endValue, type)) ||
+                                (disabledDate && disabledDate(date, ...args))
                             );
                         }}
                         onSelect={value => {
@@ -919,10 +920,11 @@ export default class RangePicker extends Component {
                         shape="panel"
                         modes={type === 'month' ? ['month', 'year'] : ['year']}
                         {...shareCalendarProps}
-                        disabledDate={date => {
+                        disabledDate={(date, ...args) => {
                             return (
-                                state.startValue &&
-                                date.isBefore(state.startValue, type)
+                                (state.startValue &&
+                                    date.isBefore(state.startValue, type)) ||
+                                (disabledDate && disabledDate(date, ...args))
                             );
                         }}
                         onSelect={value => {

@@ -1052,6 +1052,7 @@ describe('RangePicker', () => {
             wrapper = mount(<RangePicker type="year" followTrigger visible defaultValue={['2018', '2019']} />);
             assert(wrapper.find('.next-calendar').length === 2);
         });
+
         it('should support preview mode render', () => {
             wrapper = mount(<RangePicker defaultValue={[startValue, endValue]} isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
@@ -1063,6 +1064,45 @@ describe('RangePicker', () => {
                 }
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
+
+        it('should support disableData funtion', () => {
+            const disabledDateFn  = date => date.valueOf() < (new Date('2020-03-04 00:00')).valueOf()
+
+            // type date
+            wrapper = mount(
+                <RangePicker
+                    visible
+                    defaultValue={['2020-03-05', '2020-03-25']}
+                    disabledDate={disabledDateFn} />
+            );
+            assert(
+                wrapper.find('[title="2020-03-03"]').at(0).hasClass('next-disabled')
+            );
+
+            // type month
+            wrapper = mount(
+                <RangePicker
+                    visible
+                    type="month"
+                    defaultValue={['2020-03', '2020-08']}
+                    disabledDate={disabledDateFn} />
+            );
+            assert(
+                wrapper.find('[title="Feb"]').everyWhere(n => n.hasClass('next-disabled'))
+            );
+
+            // type year
+            wrapper = mount(
+                <RangePicker
+                    visible
+                    type="year"
+                    defaultValue={['2021', '2024']}
+                    disabledDate={disabledDateFn} />
+            );
+            assert(
+                wrapper.find('[title=2020]').everyWhere(n => n.parent().hasClass('next-disabled'))
+            );
         });
     });
 
