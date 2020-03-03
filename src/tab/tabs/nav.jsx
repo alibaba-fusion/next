@@ -453,25 +453,29 @@ class Nav extends React.Component {
         }, 100);
     };
 
+    getIcon(type) {
+        const { prefix, icons } = this.props;
+        let icon = <Icon type="" className={`${prefix}tab-icon-${type}`} />;
+        if (icons[type]) {
+            icon =
+                typeof icons[type] === 'string' ? (
+                    <Icon type={icons[type]} />
+                ) : (
+                    icons[type]
+                );
+        }
+
+        return icon;
+    }
+
     renderDropdownTabs(tabs = []) {
         if (!tabs.length) {
             return null;
         }
 
-        const {
-            prefix,
-            activeKey,
-            triggerType,
-            popupProps,
-            rtl,
-            icons,
-        } = this.props;
-        const dropdownIcon =
-            typeof icons.dropdown === 'string' ? (
-                <Icon type={icons.dropdown} />
-            ) : (
-                icons.dropdown
-            );
+        const { prefix, activeKey, triggerType, popupProps, rtl } = this.props;
+        const dropdownIcon = this.getIcon('dropdown');
+
         const trigger = (
             <button className={`${prefix}tabs-btn-down`}>{dropdownIcon}</button>
         );
@@ -564,7 +568,6 @@ class Nav extends React.Component {
             style,
             className,
             rtl,
-            icons,
         } = this.props;
         const state = this.state;
 
@@ -583,12 +586,7 @@ class Nav extends React.Component {
             prevButton = null;
             nextButton = null;
         } else if (showNextPrev) {
-            const prevIcon =
-                typeof icons.prev === 'string' ? (
-                    <Icon rtl={rtl} type={icons.prev} />
-                ) : (
-                    React.cloneElement(icons.prev, { rtl })
-                );
+            const prevIcon = this.getIcon('prev');
             prevButton = (
                 <button
                     onClick={this.onPrevClick}
@@ -599,12 +597,7 @@ class Nav extends React.Component {
                 </button>
             );
 
-            const nextIcon =
-                typeof icons.next === 'string' ? (
-                    <Icon rtl={rtl} type={icons.next} />
-                ) : (
-                    React.cloneElement(icons.next, { rtl })
-                );
+            const nextIcon = this.getIcon('next');
             nextButton = (
                 <button
                     onClick={this.onNextClick}

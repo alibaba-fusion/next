@@ -106,6 +106,9 @@ export default class Tab extends Component {
         children: PropTypes.any,
         className: PropTypes.string,
         locale: PropTypes.object,
+        /**
+         * 自定义组件内 icon
+         */
         icons: PropTypes.object,
     };
 
@@ -123,11 +126,7 @@ export default class Tab extends Component {
         onChange: noop,
         onClose: noop,
         locale: zhCN.Tab,
-        icons: {
-            dropdown: 'arrow-down',
-            prev: 'arrow-left',
-            next: 'arrow-right',
-        },
+        icons: {},
     };
 
     constructor(props, context) {
