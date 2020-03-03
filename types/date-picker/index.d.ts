@@ -133,15 +133,6 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
      * 日期输入框的 aria-label 属性
      */
     dateInputAriaLabel?: string;
-    /**
-     * 可替换图标
-     */
-    icons?: {
-        left?: React.ReactNode;
-        right?: React.ReactNode;
-        doubleLeft?: React.ReactNode;
-        doubleRight?: React.ReactNode;
-    };
 }
 
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
@@ -302,15 +293,6 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
      * 结束时间输入框的 aria-label 属性
      */
     endTimeInputAriaLabel?: string;
-    /**
-     * 可替换图标
-     */
-    icons?: {
-        left?: React.ReactNode;
-        right?: React.ReactNode;
-        doubleLeft?: React.ReactNode;
-        doubleRight?: React.ReactNode;
-    };
 }
 
 export class RangePicker extends React.Component<RangePickerProps, any> {}
@@ -435,15 +417,6 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
      * 日期输入框的 aria-label 属性
      */
     dateInputAriaLabel?: string;
-    /**
-     * 可替换图标
-     */
-    icons?: {
-        left?: React.ReactNode;
-        right?: React.ReactNode;
-        doubleLeft?: React.ReactNode;
-        doubleRight?: React.ReactNode;
-    };
 }
 
 export class YearPicker extends React.Component<YearPickerProps, any> {}
@@ -602,15 +575,6 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
      * 时间输入框的 aria-label 属性
      */
     timeInputAriaLabel?: string;
-    /**
-     * 可替换图标
-     */
-    icons?: {
-        left?: React.ReactNode;
-        right?: React.ReactNode;
-        doubleLeft?: React.ReactNode;
-        doubleRight?: React.ReactNode;
-    };
 }
 
 export default class DatePicker extends React.Component<DatePickerProps, any> {

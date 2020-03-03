@@ -1,4 +1,4 @@
-import React, { isValidElement } from 'react';
+import React from 'react';
 import Icon from '../../icon';
 
 class YearPanelHeader extends React.PureComponent {
@@ -16,21 +16,9 @@ class YearPanelHeader extends React.PureComponent {
             locale,
             goPrevDecade,
             goNextDecade,
-            icons,
         } = this.props;
         const decadeLable = this.getDecadeLabel(visibleMonth);
         const btnCls = `${prefix}calendar-btn`;
-
-        let iconDoubleLeft = icons.doubleLeft;
-        let iconDoubleRight = icons.doubleRight;
-
-        if (!isValidElement(icons.doubleLeft) && icons.doubleLeft) {
-            iconDoubleLeft = <span>{icons.doubleLeft}</span>;
-        }
-
-        if (!isValidElement(icons.doubleRight) && icons.doubleRight) {
-            iconDoubleRight = <span>{icons.doubleRight}</span>;
-        }
 
         return (
             <div className={`${prefix}calendar-panel-header`}>
@@ -40,10 +28,10 @@ class YearPanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-prev-decade`}
                     onClick={goPrevDecade}
                 >
-                    {React.cloneElement(
-                        iconDoubleLeft || <Icon type="arrow-double-left" />,
-                        {}
-                    )}
+                    <Icon
+                        type="arrow-double-left"
+                        className={[`${prefix}calendar-symbol-icon-dl`]}
+                    />
                 </button>
                 <div className={`${prefix}calendar-panel-header-full`}>
                     <button
@@ -60,10 +48,10 @@ class YearPanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-next-decade`}
                     onClick={goNextDecade}
                 >
-                    {React.cloneElement(
-                        iconDoubleRight || <Icon type="arrow-double-right" />,
-                        {}
-                    )}
+                    <Icon
+                        type="arrow-double-right"
+                        className={[`${prefix}calendar-symbol-icon-dr`]}
+                    />
                 </button>
             </div>
         );

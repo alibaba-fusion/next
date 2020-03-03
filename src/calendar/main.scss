@@ -35,4 +35,17 @@
             @include clearfix;
         }
     }
+
+    &-symbol-icon-l::before {
+        content: $calendar-btn-arrow-content-l;
+    }
+    &-symbol-icon-r::before {
+        content: $calendar-btn-arrow-content-r;
+    }
+    &-symbol-icon-dl::before {
+        content: $calendar-btn-arrow-content-dl;
+    }
+    &-symbol-icon-dr::before {
+        content: $calendar-btn-arrow-content-dr;
+    }
 }
