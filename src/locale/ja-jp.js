@@ -76,6 +76,7 @@ export default {
         autoCompletePlaceholder: '入力',
         notFoundContent: '選択肢なし',
         maxTagPlaceholder: '選択済み {selected}/{total}',
+        selectAll: '全選',
     },
     Table: {
         empty: 'データなし',
