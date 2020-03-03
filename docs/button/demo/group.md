@@ -1,13 +1,13 @@
 # 按钮组
 
-- order: 7
+- order: 8
 
 `Button.Group` 子组件用于将多个按钮组合在一个容器中。
 
 :::lang=en-us
 # Button group
 
-- order: 7
+- order: 8
 
 `Button.Group` could be used to combine multiple Buttons.
 

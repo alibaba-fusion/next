@@ -29,7 +29,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
-    icons?: { loading: React.ReactNode };
+    icons?: { loading?: React.ReactNode };
     /**
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
