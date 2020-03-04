@@ -36,16 +36,16 @@
         }
     }
 
-    &-symbol-icon-l::before {
-        content: $calendar-btn-arrow-content-l;
+    &-symbol-prev::before {
+        content: $calendar-btn-arrow-content-prev;
     }
-    &-symbol-icon-r::before {
-        content: $calendar-btn-arrow-content-r;
+    &-symbol-next::before {
+        content: $calendar-btn-arrow-content-next;
     }
-    &-symbol-icon-dl::before {
-        content: $calendar-btn-arrow-content-dl;
+    &-symbol-prev-super::before {
+        content: $calendar-btn-arrow-content-prev-super;
     }
-    &-symbol-icon-dr::before {
-        content: $calendar-btn-arrow-content-dr;
+    &-symbol-next-super::before {
+        content: $calendar-btn-arrow-content-next-super;
     }
 }
