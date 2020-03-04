@@ -163,7 +163,7 @@ class DatePanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-right"
-                        className={[`${prefix}calendar-symbol-icon-next`]}
+                        className={[`${prefix}calendar-symbol-next`]}
                     />
                 </button>
                 <button
@@ -174,7 +174,7 @@ class DatePanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-double-right"
-                        className={[`${prefix}calendar-symbol-icon-next-super`]}
+                        className={[`${prefix}calendar-symbol-next-super`]}
                     />
                 </button>
             </div>
