@@ -54,10 +54,10 @@ function render(i18n) {
         <Demo title="Textfield" block>
             <DemoHead cols={['L', 'M', 'S']}/>
 
-            <DemoGroup label="Normal">
-                <Input placeholder={i18n.large} size="large"/>
-                <Input placeholder={i18n.medium}/>
-                <Input placeholder={i18n.small} size="small"/>
+            <DemoGroup label="Normal" id="test">
+                <Input placeholder={i18n.large} size="large" style={{pointerEvents: 'none'}}/>
+                <Input placeholder={i18n.medium} style={{pointerEvents: 'none'}}/>
+                <Input placeholder={i18n.small} size="small" style={{pointerEvents: 'none'}}/>
             </DemoGroup>
             <DemoGroup label="Focused">
                 <Input value={i18n.focus} size="large" className="next-focus"/>
