@@ -396,14 +396,14 @@ $tab-text-text-color-selected: $color-brand1-6 !default;
 /// @namespace statement/disabled/tab
 $tab-text-text-color-disabled: $color-text1-1 !default;
 
-/// icon
+/// icon dropdown
 /// @namespace statement/normal/icon
-$tab-dropdown-icon-content: $icon-content-arrow-down !default;
+$tab-icon-dropdown-content: $icon-content-arrow-down !default;
 
-/// icon
+/// icon prev
 /// @namespace statement/normal/icon
-$tab-prev-icon-content: $icon-content-arrow-left !default;
+$tab-icon-prev-content: $icon-content-arrow-left !default;
 
-/// icon
+/// icon next
 /// @namespace statement/normal/icon
-$tab-next-icon-content: $icon-content-arrow-right !default;
+$tab-icon-next-content: $icon-content-arrow-right !default;

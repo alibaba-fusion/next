@@ -148,15 +148,15 @@
     }
 
     & .#{$css-prefix}tab-icon-dropdown::before {
-        content: $tab-dropdown-icon-content;
+        content: $tab-icon-dropdown-content;
     }
 
     & .#{$css-prefix}tab-icon-prev::before {
-        content: $tab-prev-icon-content;
+        content: $tab-icon-prev-content;
     }
 
     & .#{$css-prefix}tab-icon-next::before {
-        content: $tab-next-icon-content;
+        content: $tab-icon-next-content;
     }
 
     &-content {
