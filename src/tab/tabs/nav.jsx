@@ -16,6 +16,11 @@ import {
 
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
+const iconTypeMap = {
+    dropdown: 'arrow-down',
+    prev: 'arrow-left',
+    next: 'arrow-right',
+};
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
@@ -455,7 +460,14 @@ class Nav extends React.Component {
 
     getIcon(type) {
         const { prefix, icons, rtl } = this.props;
-        let icon = <Icon rtl={rtl} className={`${prefix}tab-icon-${type}`} />;
+        const iconType = iconTypeMap[type];
+        let icon = (
+            <Icon
+                type={iconType}
+                rtl={rtl}
+                className={`${prefix}tab-icon-${type}`}
+            />
+        );
         if (icons[type]) {
             icon =
                 typeof icons[type] === 'string' ? (
