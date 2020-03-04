@@ -75,10 +75,6 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 <DatePicker defaultValue={moment(1581938105000)} onChange={val => console.log(val)} />
 // select 2020-02-17
 // >> "2020-02-17"
-
-<DatePicker defaultValue={1581938105000} onChange={val => console.log(val)} />
-// select 2020-02-17
-// >> "2020-02-17"
 ```
 
 标准受控
