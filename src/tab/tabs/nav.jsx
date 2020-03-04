@@ -454,12 +454,12 @@ class Nav extends React.Component {
     };
 
     getIcon(type) {
-        const { prefix, icons } = this.props;
-        let icon = <Icon type="" className={`${prefix}tab-icon-${type}`} />;
+        const { prefix, icons, rtl } = this.props;
+        let icon = <Icon rtl={rtl} className={`${prefix}tab-icon-${type}`} />;
         if (icons[type]) {
             icon =
                 typeof icons[type] === 'string' ? (
-                    <Icon type={icons[type]} />
+                    <Icon rtl={rtl} type={icons[type]} />
                 ) : (
                     icons[type]
                 );

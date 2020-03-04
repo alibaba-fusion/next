@@ -109,7 +109,11 @@ export default class Tab extends Component {
         /**
          * 自定义组件内 icon
          */
-        icons: PropTypes.object,
+        icons: PropTypes.shape({
+            prev: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            next: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            dropdown: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+        }),
     };
 
     static defaultProps = {
