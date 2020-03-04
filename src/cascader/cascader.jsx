@@ -272,12 +272,12 @@ export default class Cascader extends Component {
         data.forEach((item, index) => {
             const { value, children } = item;
             const pos = `${prefix}-${index}`;
-            const newValue = String(value);
-            item.value = newValue;
-            this._v2n[newValue] = this._p2n[pos] = {
-                ...item,
+            const newItem = { ...item, value: String(value) };
+
+            this._v2n[newItem.value] = this._p2n[pos] = {
+                ...newItem,
                 pos,
-                _source: item,
+                _source: newItem,
             };
 
             if (children && children.length) {
@@ -328,10 +328,12 @@ export default class Cascader extends Component {
             );
         });
     }
+
     /*eslint-disable max-statements*/
     completeValue(dataSource, value) {
         return getAllCheckedValues(value, this._v2n, this._p2n);
     }
+
     /*eslint-enable*/
     flatValue(value) {
         return filterChildValue(value, this._v2n, this._p2n);

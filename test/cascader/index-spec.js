@@ -614,6 +614,15 @@ describe('Cascader', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
     });
+
+    it('should keep data object immutable', () => {
+        wrapper = mount(
+            <Cascader
+                dataSource={deepFreeze(ChinaArea)}
+            />
+        );
+        assert(wrapper.find('.next-menu-item').length > 0)
+    });
 });
 
 function compareDOMAndData(wrapper, value, expandedValue) {
@@ -700,7 +709,7 @@ function findRealItem(listIndex, itemIndex) {
         [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
 }
 
-function filter$Source (data) {
+function filter$Source(data) {
     if (!data) return;
 
     return [...data].map((it) => {
@@ -710,4 +719,23 @@ function filter$Source (data) {
         delete item._source;
         return item;
     })
+}
+
+function deepFreeze(o) {
+    const _type = Object.prototype.toString.call(o).slice(8, -1)
+    if (!['Array', 'Object'].includes(_type)) {
+        return o;
+    }
+
+    const keys = Object.keys(o);
+    const newObj = _type === 'Array' ? [] : {}
+    keys.forEach(key => {
+        const val = o[key];
+        if (typeof val === 'object' && !Object.isFrozen(val)) {
+            newObj[key] = deepFreeze(val);
+        } else {
+            newObj[key] = val;
+        }
+    })
+    return Object.freeze(newObj);
 }
