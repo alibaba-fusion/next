@@ -158,7 +158,6 @@
             white-space: nowrap;
 
             #{$menu-prefix}-more {
-                padding: 0;
                 text-align: center;
             }
         }
@@ -191,7 +190,7 @@
         border-bottom: $menu-divider-width $menu-divider-style $menu-divider-color;
     }
 
-    & &-icon-selected.#{$css-prefix}icon {
+    & &-icon-selected {
         position: absolute;
         top: 0;
         @include icon-size($menu-icon-selected-size, -($menu-padding-horizontal + $menu-icon-selected-size) / 2);
@@ -199,6 +198,9 @@
         &#{$menu-prefix}-icon-right {
             right: $menu-icon-selected-right;
         }
+    }
+    & &-symbol-icon-selected::before {
+        content: $menu-select-icon-content;
     }
 
     & &-icon-arrow.#{$css-prefix}icon {
@@ -210,11 +212,25 @@
         transition: all $motion-duration-immediately $motion-linear;
     }
 
+    & &-icon-arrow-down::before {
+        content: $menu-fold-icon-content;
+    }
+
     & &-icon-arrow-down.#{$css-prefix}open {
-        @include icon-size(
-            $size: $menu-icon-size,
-            $transform: rotate(180deg)
-        );
+        @if $menu-unfold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
+    }
+
+    & &-symbol-popupfold::before {
+        content: $menu-popupfold-icon-content;
     }
 
     & &-icon-arrow-right.#{$css-prefix}open {
@@ -231,13 +247,31 @@
         @include icon-size($menu-hoz-icon-size);
         color: $menu-arrow-color;
         transition: all $motion-duration-immediately $motion-linear;
+
+        @if $menu-fold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-fold-icon-content;
+            }
+        }
     }
 
+    // --------- this is for config platform
+    &-unfold-icon::before {
+        content: $menu-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
     & &-hoz-icon-arrow.#{$css-prefix}open {
-        @include icon-size(
-            $size: $menu-hoz-icon-size,
-            $transform: rotate(180deg)
-        );
+        @if $menu-unfold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-unfold-icon-content;
+            }
+        } @else {
+            @include icon-size(
+                $size: $menu-hoz-icon-size,
+                $transform: rotate(180deg)
+            );
+        }
     }
 
     &.#{$css-prefix}context {

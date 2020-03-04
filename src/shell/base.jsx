@@ -19,6 +19,7 @@ export default function Base(props) {
             trigger: PropTypes.node,
             triggerProps: PropTypes.object,
             direction: PropTypes.oneOf(['hoz', 'ver']),
+            align: PropTypes.oneOf(['left', 'right', 'center']),
             /**
              * 弹层显示或隐藏时触发的回调函数
              * @param {Boolean} collapse 弹层是否显示
@@ -56,6 +57,7 @@ export default function Base(props) {
                 triggerProps,
                 onCollapseChange,
                 component,
+                align,
                 ...others
             } = this.props;
 
@@ -65,6 +67,10 @@ export default function Base(props) {
                 [`${prefix}shell-${componentName.toLowerCase()}`]: true,
                 [`${prefix}shell-collapse`]: !!collapse,
                 [`${prefix}shell-mini`]: miniable,
+                [`${prefix}shell-nav-${align}`]:
+                    componentName === 'Navigation' &&
+                    direction === 'hoz' &&
+                    align,
                 [className]: !!className,
             });
 

@@ -95,7 +95,7 @@ export default ${exportName};
     });
 
     // generate d.ts for locale
-    ['zh-cn', 'en-us', 'ja-jp', 'zh-tw'].forEach(file => {
+    ['zh-cn', 'en-us', 'ja-jp', 'zh-hk', 'zh-tw'].forEach(file => {
         const localePath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
         fs.writeFileSync(
             localePath,

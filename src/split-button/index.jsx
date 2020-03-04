@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import Icon from '../icon';
 import Button from '../button';
@@ -133,29 +134,29 @@ class SplitButton extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            selectedKeys: props.selectedKeys || props.defaultSelectedKeys,
-            visible: props.visible || props.defaultVisible,
+            selectedKeys: props.defaultSelectedKeys,
+            visible: props.defaultVisible,
         };
+    }
+
+    static getDerivedStateFromProps(props) {
+        const st = {};
+
+        if ('visible' in props) {
+            st.visible = props.visible;
+        }
+
+        if ('selectedKeys' in props) {
+            st.selectedKeys = props.selectedKeys;
+        }
+
+        return st;
     }
 
     componentDidMount() {
         // 由于定位目标是 wrapper，如果弹层默认展开，wrapper 还未渲染，didMount 后强制再渲染一次，弹层重新定位
         if (this.state.visible) {
             this.forceUpdate();
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
-        }
-
-        if ('selectedKeys' in nextProps) {
-            this.setState({
-                selectedKeys: nextProps.selectedKeys,
-            });
         }
     }
 
@@ -306,4 +307,4 @@ SplitButton.Item = Menu.Item;
 SplitButton.Divider = Menu.Divider;
 SplitButton.Group = Menu.Group;
 
-export default ConfigProvider.config(SplitButton);
+export default ConfigProvider.config(polyfill(SplitButton));

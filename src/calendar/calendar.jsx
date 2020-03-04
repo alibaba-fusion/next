@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import moment from 'moment';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -135,29 +136,26 @@ class Calendar extends Component {
         this.state = {
             value,
             mode: props.mode || this.MODES[0],
+            MODES: this.MODES,
             visibleMonth,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            const value = formatDateValue(nextProps.value);
-            this.setState({
-                value,
-            });
-
+    static getDerivedStateFromProps(props, state) {
+        const st = {};
+        if ('value' in props) {
+            const value = formatDateValue(props.value);
+            st.value = value;
             if (value) {
-                this.setState({
-                    visibleMonth: value,
-                });
+                st.visibleMonth = value;
             }
         }
 
-        if (nextProps.mode && this.MODES.indexOf(nextProps.mode) > -1) {
-            this.setState({
-                mode: nextProps.mode,
-            });
+        if (props.mode && state.MODES.indexOf(props.mode) > -1) {
+            st.mode = props.mode;
         }
+
+        return st;
     }
 
     onSelectCell = (date, nextMode) => {
@@ -351,4 +349,4 @@ class Calendar extends Component {
     }
 }
 
-export default Calendar;
+export default polyfill(Calendar);

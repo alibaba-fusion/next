@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
@@ -126,6 +126,10 @@ class Search extends React.Component {
         disabled: PropTypes.bool,
         locale: PropTypes.object,
         rtl: PropTypes.bool,
+        /**
+         * 可配置的icons，包括 search 等
+         */
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -142,6 +146,7 @@ class Search extends React.Component {
         onFilterChange: func.noop,
         hasClear: false,
         disabled: false,
+        icons: {},
     };
 
     constructor(props) {
@@ -237,6 +242,7 @@ class Search extends React.Component {
             visible,
             locale,
             rtl,
+            icons,
             ...others
         } = this.props;
 
@@ -250,26 +256,31 @@ class Search extends React.Component {
 
         let searchIcon = null,
             filterSelect = null,
-            searchBtn = null;
+            searchBtn = null,
+            iconsSearch = icons.search;
+
+        if (!isValidElement(icons.search) && icons.search) {
+            iconsSearch = <span>{icons.search}</span>;
+        }
 
         if (shape === 'simple') {
             const cls = classNames({
                 [`${prefix}search-icon`]: true,
                 [buttonProps.className]: !!buttonProps.className,
+                [`${prefix}search-symbol-icon`]: !iconsSearch,
             });
             hasIcon &&
-                (searchIcon = (
-                    <Icon
-                        type="search"
-                        tabIndex="0"
-                        role="button"
-                        aria-disabled={disabled}
-                        aria-label={locale.buttonText}
-                        {...buttonProps}
-                        className={cls}
-                        onClick={this.onSearch}
-                        onKeyDown={this.onKeyDown}
-                    />
+                (searchIcon = React.cloneElement(
+                    iconsSearch || <Icon type="search" />,
+                    {
+                        role: 'button',
+                        'aria-disabled': disabled,
+                        'aria-label': locale.buttonText,
+                        ...buttonProps,
+                        className: cls,
+                        onClick: this.onSearch,
+                        onKeyDown: this.onKeyDown,
+                    }
                 ));
         } else {
             const cls = classNames({
@@ -287,7 +298,14 @@ class Search extends React.Component {
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
                 >
-                    {hasIcon ? <Icon type="search" /> : null}
+                    {hasIcon
+                        ? iconsSearch || (
+                              <Icon
+                                  type="search"
+                                  className={`${prefix}search-symbol-icon`}
+                              />
+                          )
+                        : null}
                     {searchText ? (
                         <span className={`${prefix}search-btn-text`}>
                             {searchText}

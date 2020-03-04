@@ -79,7 +79,6 @@ describe('Radio', () => {
         it('should support controlled `checked`', () => {
             const wrapper = mount(<Radio checked={true} />);
             assert(wrapper.find('input').props().checked);
-            // assert(wrapper.state().checked);
             assert(wrapper.find('.checked').length !== 0);
 
             wrapper.setProps({

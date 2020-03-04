@@ -130,9 +130,6 @@ class App extends React.Component {
         console.log('rowProps', record, index);
         return {className: `next-myclass-${index}`};
     }
-    onExpandedRowClick(record, index) {
-        console.log('onExpandedRowClick', record, index);
-    }
     render() {
         const renderTitle = (value, index, record) => {
             return <div>{value}<span onClick={this.toggleExpand.bind(this, record)}>index:{index} +++++</span></div>;
@@ -153,7 +150,6 @@ class App extends React.Component {
                     hasExpandedRowCtrl={this.state.hasExpandedRowCtrl}
                     onRowOpen={this.onRowOpen.bind(this)}
                     rowProps={this.rowProps.bind(this)}
-                    onExpandedRowClick={this.onExpandedRowClick.bind(this)}
                 >
                     <Table.Column title="Id" dataIndex="id" sortable/>
                     <Table.Column title="Title" dataIndex="title" cell={renderTitle}/>

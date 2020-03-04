@@ -15,6 +15,14 @@ $number-picker-prefix: '.#{$css-prefix}number-picker';
 // Normal
 // --------------------------------------------------
 
+/// up icon
+/// @namespace statement/normal
+/// @type icon
+$number-picker-normal-up-icon: $icon-content-arrow-up !default;
+/// down icon
+/// @namespace statement/normal
+/// @type icon
+$number-picker-normal-down-icon: $icon-content-arrow-down !default;
 /// width
 /// @namespace size/button
 $number-picker-normal-s-button-width: $s-5 !default;
@@ -46,8 +54,15 @@ $number-picker-normal-l-button-icon-size: $icon-xxs !default;
 
 // inline
 // --------------------------------------------------
-
-/// icon
+/// add icon
+/// @namespace statement/normal
+/// @type icon
+$number-picker-inline-add-icon: $icon-content-add !default;
+/// minus icon
+/// @namespace statement/normal
+/// @type icon
+$number-picker-inline-minus-icon: $icon-content-minus !default;
+/// icon size
 /// @namespace size/button
 $number-picker-inline-s-button-icon-size: $icon-xs !default;
 /// margin

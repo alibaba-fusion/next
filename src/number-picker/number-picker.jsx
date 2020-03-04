@@ -130,6 +130,14 @@ class NumberPicker extends React.Component {
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 是否展示点击按钮
+         */
+        hasTrigger: PropTypes.bool,
+        /**
+         * 是否一直显示点击按钮(无须hover)
+         */
+        alwaysShowTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -147,6 +155,8 @@ class NumberPicker extends React.Component {
         onBlur: func.noop,
         onCorrect: func.noop,
         onDisabled: func.noop,
+        hasTrigger: true,
+        alwaysShowTrigger: false,
     };
 
     constructor(props) {
@@ -473,6 +483,8 @@ class NumberPicker extends React.Component {
             innerAfter,
             isPreview,
             renderPreview,
+            hasTrigger,
+            alwaysShowTrigger,
         } = this.props;
 
         const type = device === 'phone' ? 'inline' : this.props.type;
@@ -483,6 +495,8 @@ class NumberPicker extends React.Component {
             [prefixCls]: true,
             [`${prefixCls}-${type}`]: type,
             [`${prefix}${size}`]: true,
+            [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
+            [`${prefixCls}-no-trigger`]: !hasTrigger,
             [className]: className,
         });
 
@@ -515,7 +529,7 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.up.bind(this, upDisabled)}
                     >
-                        <Icon type="arrow-up" />
+                        <Icon className={`${prefixCls}-up-icon`} />
                     </Button>
                     <Button
                         {...downBtnProps}
@@ -526,7 +540,7 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.down.bind(this, downDisabled)}
                     >
-                        <Icon type="arrow-down" />
+                        <Icon className={`${prefixCls}-down-icon`} />
                     </Button>
                 </span>
             );
@@ -541,7 +555,7 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.down.bind(this, downDisabled)}
                 >
-                    <Icon type="minus" />
+                    <Icon className={`${prefixCls}-minus-icon`} />
                 </Button>
             );
             addonAfter = (
@@ -554,7 +568,7 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.up.bind(this, upDisabled)}
                 >
-                    <Icon type="add" />
+                    <Icon className={`${prefixCls}-add-icon`} />
                 </Button>
             );
         }
@@ -607,7 +621,7 @@ class NumberPicker extends React.Component {
                     ref={this.saveInputRef.bind(this)}
                     label={label}
                     innerAfter={innerAfter}
-                    extra={extra}
+                    extra={hasTrigger ? extra : null}
                     addonBefore={addonBefore}
                     addonAfter={addonAfter}
                 />

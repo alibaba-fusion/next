@@ -101,7 +101,6 @@ class Rating extends Component {
         defaultValue: 0,
         readAs: val => val,
         allowHalf: false,
-        iconType: 'favorites-filling',
         onChange: noop,
         onHoverChange: noop,
         locale: zhCN.Rating,
@@ -399,9 +398,16 @@ class Rating extends Component {
             const iconCls = classNames({
                 hover: hoverValue > 0 && isCurrent,
                 clicked: clicked && isCurrent,
+                [`${prefix}rating-symbol-icon`]: !iconType,
             });
-            const iconNode = (
+            const iconNode = iconType ? (
                 <Icon type={iconType} size={sizeMap} className={iconCls} />
+            ) : (
+                <Icon
+                    type="favorites-filling"
+                    size={sizeMap}
+                    className={iconCls}
+                />
             );
 
             underlay.push(

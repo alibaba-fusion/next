@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
 import Icon from '../../icon';
 import Checkbox from '../../checkbox';
@@ -16,7 +17,7 @@ const isRoot = pos => /^0-(\d)+$/.test(pos);
 /**
  * Tree.Node
  */
-export default class TreeNode extends Component {
+class TreeNode extends Component {
     static propTypes = {
         _key: PropTypes.string,
         prefix: PropTypes.string,
@@ -109,17 +110,19 @@ export default class TreeNode extends Component {
         ]);
     }
 
+    static getDerivedStateFromProps(props) {
+        if ('label' in props) {
+            return {
+                label: props.label,
+            };
+        }
+
+        return null;
+    }
+
     componentDidMount() {
         this.itemNode = findDOMNode(this.refs.node);
         this.setFocus();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ('label' in nextProps) {
-            this.setState({
-                label: nextProps.label,
-            });
-        }
     }
 
     componentDidUpdate() {
@@ -331,6 +334,10 @@ export default class TreeNode extends Component {
                     ? 'minus'
                     : 'add'
                 : 'arrow-down';
+        const iconCls = cx({
+            [`${prefix}tree-switcher-icon`]: true,
+            [`${prefix}tree-fold-icon`]: iconType === 'arrow-down',
+        });
 
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -339,10 +346,7 @@ export default class TreeNode extends Component {
                 onClick={disabled ? null : this.handleExpand}
             >
                 {this.renderRightAngle()}
-                <Icon
-                    className={`${prefix}tree-switcher-icon`}
-                    type={iconType}
-                />
+                <Icon className={iconCls} type={iconType} />
             </span>
         );
     }
@@ -593,3 +597,5 @@ export default class TreeNode extends Component {
         );
     }
 }
+
+export default polyfill(TreeNode);

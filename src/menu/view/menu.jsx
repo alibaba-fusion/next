@@ -174,6 +174,10 @@ export default class Menu extends Component {
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
+        /**
+         * 可配置的icons，包括 select 等
+         */
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -206,6 +210,7 @@ export default class Menu extends Component {
         onItemKeyDown: noop,
         onItemClick: noop,
         expandAnimation: true,
+        icons: {},
     };
 
     constructor(props) {
@@ -421,7 +426,7 @@ export default class Menu extends Component {
         // keep placehold to get width
         if (isPlaceholder) {
             style.visibility = 'hidden';
-            style.display = 'unset';
+            style.display = 'inline-block';
             // indicators which not in use, just display: none
         } else if (items && items.length === 0) {
             style.display = 'none';
