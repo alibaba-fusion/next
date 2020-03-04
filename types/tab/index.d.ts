@@ -135,9 +135,9 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 自定义 icon
      */
     icons?: {
-        dropdown?: string | React.ReactNode,
-        prev?: string | React.ReactNode,
-        next?: string | React.ReactNode,
+        dropdown?: string | React.ReactNode;
+        prev?: string | React.ReactNode;
+        next?: string | React.ReactNode;
     }
 }
 
