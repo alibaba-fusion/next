@@ -30,7 +30,7 @@ class YearPanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-double-left"
-                        className={[`${prefix}calendar-symbol-icon-dl`]}
+                        className={[`${prefix}calendar-symbol-prev-super`]}
                     />
                 </button>
                 <div className={`${prefix}calendar-panel-header-full`}>
@@ -50,7 +50,7 @@ class YearPanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-double-right"
-                        className={[`${prefix}calendar-symbol-icon-dr`]}
+                        className={[`${prefix}calendar-symbol-next-super`]}
                     />
                 </button>
             </div>
