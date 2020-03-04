@@ -27,6 +27,7 @@ Now support four languages: Simplified Chinese, Traditional Chinese, English and
 import { ConfigProvider, DatePicker } from '@alifd/next';
 import enUS from '@alifd/next/lib/locale/en-us';
 // import zhCN from '@alifd/next/lib/locale/zh-cn';
+// import zhHK from '@alifd/next/lib/locale/zh-hk';
 // import zhTW from '@alifd/next/lib/locale/zh-tw';
 // import jaJP from '@alifd/next/lib/locale/ja-jp';
 
