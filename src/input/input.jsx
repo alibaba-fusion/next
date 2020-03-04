@@ -151,11 +151,11 @@ export default class Input extends Base {
 
         let stateWrap = null;
         if (state === 'success') {
-            stateWrap = <Icon className={`${prefix}input-success-icon`} />;
+            stateWrap = <Icon type="success-filling" className={`${prefix}input-success-icon`} />;
         } else if (state === 'loading') {
-            stateWrap = <Icon className={`${prefix}input-loading-icon`} />;
+            stateWrap = <Icon type="loading" className={`${prefix}input-loading-icon`} />;
         } else if (state === 'warning') {
-            stateWrap = <Icon className={`${prefix}input-warning-icon`} />;
+            stateWrap = <Icon type="warning" className={`${prefix}input-warning-icon`} />;
         }
 
         let clearWrap = null;
@@ -170,6 +170,7 @@ export default class Input extends Base {
             } else {
                 hintIcon = (
                     <Icon
+                        type="delete-filling"
                         role="button"
                         tabIndex="0"
                         className={`${prefix}input-hint ${prefix}input-clear-icon`}
@@ -185,6 +186,7 @@ export default class Input extends Base {
                 <span className={`${prefix}input-hint-wrap`}>
                     {hasClear && hint ? (
                         <Icon
+                            type="delete-filling"
                             role="button"
                             tabIndex="0"
                             className={`${prefix}input-clear ${prefix}input-clear-icon`}
