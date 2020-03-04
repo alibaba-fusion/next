@@ -76,6 +76,7 @@ export default {
         autoCompletePlaceholder: '請輸入',
         notFoundContent: '無選項',
         maxTagPlaceholder: '已選擇 {selected}/{total} 項',
+        selectAll: '全選',
     },
     Table: {
         empty: '沒有數據',
@@ -130,5 +131,8 @@ export default {
     Switch: {
         on: '已打開',
         off: '已關閉',
+    },
+    Tab: {
+        closeAriaLabel: '關閉',
     },
 };
