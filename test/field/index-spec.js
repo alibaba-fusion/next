@@ -316,7 +316,7 @@ describe('field', () => {
             done();
         });
 
-        it('getValueFromEvent', function(done) {
+        it('getValueFormatter & setValueFormatter', function(done) {
             const field = new Field(this, {
                 onChange: (name, value) => {
                     assert(value === 'test!');
@@ -324,10 +324,15 @@ describe('field', () => {
             });
 
             const inited = field.init('input', {
-                getValueFromEvent: a => {
+                initValue: 'abcd',
+                getValueFormatter: a => {
                     assert(a === 'test');
-                    return `${a  }!`;
+                    return `test!`;
                 },
+                setValueFormatter: a => {
+                    assert(a === 'abcd');
+                    return `test!!`
+                }
             });
 
             const wrapper = mount(<Input {...inited} />);
