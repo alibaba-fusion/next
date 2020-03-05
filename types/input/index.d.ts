@@ -282,7 +282,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 水印 (Icon的type类型，和hasClear占用一个地方)
      */
-    hint?: string;
+    hint?: string | React.ReactNode;
 
     /**
      * 文字前附加内容
