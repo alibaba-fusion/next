@@ -2,16 +2,17 @@
 
 - order: 2
 
-通过 `getValueFormatter` 自定义从组件获取 `value` 
-通过 `setValueFormatter` 自定义转换 `value` 到组件
+当组件返回的数据和最终期望提交的格式不一致的时候，可以使用 `getValueFormatter` 和 `setValueFormatter` 两个函数做转换。
+
+比如 switch 组件期望上报 0/1, date-picker 组件期望上报 YYYY-MM-DD 这种字符串格式
 
 :::lang=en-us
 # custom event value
 
 - order: 2
 
-custom get `value` by api `getValueFormatter`
-custom set `value` by api `setValueFormatter`
+eg: you want get 0/1 from switch, or YYYY-MM-DD string from date-picker, you can use `getValueFormatter` 和 `setValueFormatter`
+
 :::
 ---
 
