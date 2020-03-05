@@ -135,6 +135,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
+
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
