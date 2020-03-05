@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
+import Icon from '../icon';
 import Input from '../input';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
@@ -443,7 +444,12 @@ class MonthPicker extends Component {
                     readOnly
                     value={triggerInputValue}
                     placeholder={placeholder || locale.monthPlaceholder}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}input-hint ${prefix}symble-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

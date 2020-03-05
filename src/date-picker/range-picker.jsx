@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
+import Icon from '../icon';
 import Input from '../input';
 import Calendar from '../calendar';
 import RangeCalendar from '../calendar/range-calendar';
@@ -1120,7 +1121,12 @@ class RangePicker extends Component {
                     className={`${prefix}range-picker-trigger-input`}
                     onFocus={() => this.onFocusDateInput('endValue')}
                     hasClear={allowClear}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}input-hint ${prefix}symble-calendar-icon`}
+                        />
+                    }
                 />
             </div>
         );

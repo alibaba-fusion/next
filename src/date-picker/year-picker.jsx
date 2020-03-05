@@ -4,6 +4,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import Overlay from '../overlay';
+import Icon from '../icon';
 import Input from '../input';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
@@ -428,7 +429,12 @@ class YearPicker extends Component {
                     aria-expanded={visible}
                     readOnly
                     placeholder={placeholder || locale.yearPlaceholder}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}input-hint ${prefix}symble-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

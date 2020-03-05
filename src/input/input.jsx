@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -179,7 +179,9 @@ export default class Input extends Base {
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon = (
+                hintIcon = isValidElement(hint) ? (
+                    hint
+                ) : (
                     <Icon type={hint} className={`${prefix}input-hint`} />
                 );
             } else {
