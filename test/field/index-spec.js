@@ -315,7 +315,31 @@ describe('field', () => {
 
             done();
         });
+        it('getValueFromEvent', function(done) {
+            const field = new Field(this, {
+                onChange: (name, value) => {
+                    assert(value === 'test!');
+                },
+            });
 
+            const inited = field.init('input', {
+                getValueFromEvent: a => {
+                    assert(a === 'test');
+                    return `${a  }!`;
+                },
+            });
+
+            const wrapper = mount(<Input {...inited} />);
+            wrapper.find('input').simulate('change', {
+                target: {
+                    value: 'test',
+                },
+            });
+
+            assert(field.getValue('input') === 'test!');
+
+            done();
+        });
         it('getValueFormatter & setValueFormatter', function(done) {
             const field = new Field(this, {
                 onChange: (name, value) => {
