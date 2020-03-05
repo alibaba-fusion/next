@@ -19,7 +19,7 @@ eg: you want get 0/1 from switch, or YYYY-MM-DD string from date-picker, you can
 
 ````jsx
 import { Field, DatePicker, Switch } from '@alifd/next';
-
+import moment from 'moment';
 
 class App extends React.Component {
 
