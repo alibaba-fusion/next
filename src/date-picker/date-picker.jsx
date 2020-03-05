@@ -6,6 +6,7 @@ import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
+import Icon from '../icon';
 import Calendar from '../calendar';
 import TimePickerPanel from '../time-picker/panel';
 import nextLocale from '../locale/zh-cn';
@@ -700,7 +701,12 @@ class DatePicker extends Component {
                             ? locale.datetimePlaceholder
                             : locale.placeholder)
                     }
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symble-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

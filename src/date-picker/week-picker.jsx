@@ -5,6 +5,7 @@ import moment from 'moment';
 import { polyfill } from 'react-lifecycles-compat';
 import Overlay from '../overlay';
 import Input from '../input';
+import Icon from '../icon';
 import Calendar from '../calendar';
 import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
@@ -405,7 +406,12 @@ class WeekPicker extends Component {
                     aria-expanded={visible}
                     readOnly
                     placeholder={placeholder || locale.weekPlaceholder}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symble-calendar-icon`}
+                        />
+                    }
                     hasClear={value && hasClear}
                     className={`${prefix}week-picker-input`}
                 />
