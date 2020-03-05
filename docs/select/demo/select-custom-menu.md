@@ -2,7 +2,7 @@
 
 - order: 7
 
-简单
+通过 `MenuProps` 自定义 `Select` 弹窗的头部和底部（注意 `MenuProps.header` 不能与 `hasSelectAll` 同时出现, `MenuProps.header` 优先级更高）
 
 :::lang=en-us
 # custom popup render
@@ -14,34 +14,47 @@ simple usage
 ---
 
 ````jsx
-import { Select, Divider, Icon } from '@alifd/next';
-
+import { Select, Divider, Icon, Button } from '@alifd/next';
 const Option = Select.Option;
 
-const onChange = function (value) {
-    console.log(value);
-};
-const onBlur = function (e) {
-    console.log(/onblur/,e);
-};
+const dataSource = [
+    {value: '10001', label: 'Lucy King'},
+    {value: 10002, label: 'Lily King'},
+    {value: 10003, label: 'Tom Cat', disabled: true},
+];
 
-const onToggleHighlightItem = function (item, type) {
-    console.log(item, type);
-};
+const generateData = (base, total) => {
+    const arr = [];
+    for(let i = 0; i< total; i++) {
+        arr.push(`extra-${base + i}`);
+    }
+    return arr;
+}
 
-ReactDOM.render(<Select id="basic-demo" onChange={onChange} menuProps={{
-    header: <div  style={{padding: '0 4px', textAlign:'center'}} >
-                <div>custom header</div>
+class App extends React.Component {
+    state = {
+        dataSource,
+    };
+    loadMore = () => {
+        const ds = this.state.dataSource;
+        this.setState({
+            dataSource: [ ...ds, ...generateData(ds.length, 5)]
+        });
+    }
+    render() {
+        const menuProps = {
+            header: <div style={{padding: '0 4px', textAlign:'center'}}>
+                <div>Header</div>
                 <Divider style={{marginTop:0, marginBottom: 4}}/>
             </div>,
-    footer: <div  style={{padding: '0 4px', textAlign:'center'}}>
+            footer: <div style={{padding: '0 4px', textAlign:'center'}}>
                 <Divider style={{marginBottom:0, marginTop: 4}}/>
-                <div>custom footer</div>
-            </div>,
-}}
->
-    <Option value="jack">Jack</Option>
-    <Option value="frank">Frank</Option>
-    <Option value="hugo">Hugo</Option>
-</Select>, mountNode);
+                <Button text type="primary" onClick={this.loadMore}>Load More...</Button>
+            </div>
+        };
+        return <Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}} menuProps={menuProps}/ >
+    }
+};
+
+ReactDOM.render(<App />, mountNode);
 ````
