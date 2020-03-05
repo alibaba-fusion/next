@@ -106,6 +106,14 @@ export default class Tab extends Component {
         children: PropTypes.any,
         className: PropTypes.string,
         locale: PropTypes.object,
+        /**
+         * 自定义组件内 icon
+         */
+        icons: PropTypes.shape({
+            prev: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            next: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            dropdown: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+        }),
     };
 
     static defaultProps = {
@@ -122,6 +130,7 @@ export default class Tab extends Component {
         onChange: noop,
         onClose: noop,
         locale: zhCN.Tab,
+        icons: {},
     };
 
     constructor(props, context) {
@@ -252,6 +261,7 @@ export default class Tab extends Component {
             rtl,
             device,
             locale,
+            icons,
             ...others
         } = this.props;
         const { activeKey } = this.state;
@@ -294,6 +304,7 @@ export default class Tab extends Component {
             style: navStyle,
             className: navClassName,
             locale,
+            icons,
         };
 
         const contentProps = {

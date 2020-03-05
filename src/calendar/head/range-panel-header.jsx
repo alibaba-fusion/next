@@ -71,7 +71,7 @@ class RangePanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-double-left"
-                        className={[`${prefix}calendar-symbol-icon-dl`]}
+                        className={[`${prefix}calendar-symbol-prev-super`]}
                     />
                 </button>
                 <button
@@ -82,7 +82,7 @@ class RangePanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-left"
-                        className={[`${prefix}calendar-symbol-icon-l`]}
+                        className={[`${prefix}calendar-symbol-prev`]}
                     />
                 </button>
                 <div className={`${prefix}calendar-panel-header-left`}>
@@ -243,7 +243,7 @@ class RangePanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-right"
-                        className={[`${prefix}calendar-symbol-icon-r`]}
+                        className={[`${prefix}calendar-symbol-next`]}
                     />
                 </button>
                 <button
@@ -254,7 +254,7 @@ class RangePanelHeader extends React.PureComponent {
                 >
                     <Icon
                         type="arrow-double-right"
-                        className={[`${prefix}calendar-symbol-icon-dr`]}
+                        className={[`${prefix}calendar-symbol-next-super`]}
                     />
                 </button>
             </div>

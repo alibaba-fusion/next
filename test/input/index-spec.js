@@ -157,10 +157,10 @@ describe('input', () => {
             assert(wrapper.find('.next-input').hasClass('next-error'));
 
             const wrapper2 = mount(<Input state="success" />);
-            assert(wrapper2.find('.next-icon-success-filling').length === 1);
+            assert(wrapper2.find('i.next-input-success-icon').length === 1);
 
             const wrapper3 = mount(<Input state="loading" />);
-            assert(wrapper3.find('.next-icon-loading').length === 1);
+            assert(wrapper3.find('i.next-input-loading-icon').length === 1);
 
             done();
         });
@@ -206,7 +206,7 @@ describe('input', () => {
                 );
 
             assert(
-                wrapper.find('.next-icon').hasClass('next-icon-delete-filling')
+                wrapper.find('.next-icon').hasClass('next-input-clear-icon')
             );
             wrapper.find('.next-icon').simulate('click');
             assert(wrapper.find('input').prop('value') === '');

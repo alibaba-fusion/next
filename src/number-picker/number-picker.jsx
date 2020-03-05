@@ -529,7 +529,7 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.up.bind(this, upDisabled)}
                     >
-                        <Icon type="arrow-up" />
+                        <Icon className={`${prefixCls}-up-icon`} />
                     </Button>
                     <Button
                         {...downBtnProps}
@@ -540,7 +540,7 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.down.bind(this, downDisabled)}
                     >
-                        <Icon type="arrow-down" />
+                        <Icon className={`${prefixCls}-down-icon`} />
                     </Button>
                 </span>
             );
@@ -555,7 +555,7 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.down.bind(this, downDisabled)}
                 >
-                    <Icon type="minus" />
+                    <Icon className={`${prefixCls}-minus-icon`} />
                 </Button>
             );
             addonAfter = (
@@ -568,7 +568,7 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.up.bind(this, upDisabled)}
                 >
-                    <Icon type="add" />
+                    <Icon className={`${prefixCls}-add-icon`} />
                 </Button>
             );
         }

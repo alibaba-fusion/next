@@ -370,18 +370,18 @@ $calendar-btn-date-color: $color-white !default;
 /// @namespace statement/hover/header
 $calendar-btn-date-color-hover: $color-white !default;
 
-/// l-icon type
-/// @namespace size/header
-$calendar-btn-arrow-content-l: $icon-content-arrow-left !default;
+/// prev
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-prev: $icon-content-arrow-left !default;
 
-/// r-icon type
-/// @namespace size/header
-$calendar-btn-arrow-content-r: $icon-content-arrow-right !default;
+/// next
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-next: $icon-content-arrow-right !default;
 
-/// dl-icon type
-/// @namespace size/header
-$calendar-btn-arrow-content-dl: $icon-content-arrow-double-left !default;
+/// prev super
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-prev-super: $icon-content-arrow-double-left !default;
 
-/// dr-icon type
-/// @namespace size/header
-$calendar-btn-arrow-content-dr: $icon-content-arrow-double-right !default;
+/// next super
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-next-super: $icon-content-arrow-double-right !default;
