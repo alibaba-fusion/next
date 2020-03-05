@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import assert from 'power-assert';
 import Input from '../../src/input/index';
+import Icon from '../../src/icon/index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -125,6 +126,20 @@ describe('input', () => {
             const wrapper = mount(<Input disabled />);
 
             assert(wrapper.find('input').prop('disabled'));
+            done();
+        });
+
+        it('should support string hint', done => {
+            const wrapper = mount(<Input hint="calendar" />);
+            assert(wrapper.find('input .next-icon-calendar'));
+
+            done();
+        });
+
+        it('should support node hint', done => {
+            const wrapper = mount(<Input hint={<Icon type="smile" />} />);
+            assert(wrapper.find('input .next-icon-smile'));
+
             done();
         });
 
