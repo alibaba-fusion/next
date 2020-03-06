@@ -1,0 +1,518 @@
+{
+  "name": "TreeSelect",
+  "props": {
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "树节点",
+      "docblock": "树节点"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "选择框大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "选择框大小"
+    },
+    "placeholder": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "选择框占位符",
+      "docblock": "选择框占位符"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否禁用"
+    },
+    "hasArrow": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有下拉箭头",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否有下拉箭头"
+    },
+    "hasBorder": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有边框",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否有边框"
+    },
+    "hasClear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有清空按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否有清空按钮"
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义内联 label",
+      "docblock": "自定义内联 label"
+    },
+    "readOnly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否只读，只读模式下可以展开弹层但不能选择",
+      "docblock": "是否只读，只读模式下可以展开弹层但不能选择"
+    },
+    "autoWidth": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "下拉框是否与选择器对齐",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "下拉框是否与选择器对齐"
+    },
+    "dataSource": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "object"
+        }
+      },
+      "required": false,
+      "description": "数据源，该属性优先级高于 children",
+      "docblock": "数据源，该属性优先级高于 children"
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "（受控）当前值",
+      "docblock": "（受控）当前值"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "（非受控）默认值",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "（非受控）默认值"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选中值改变时触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "选中值改变时触发的回调函数\n@param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组\n@param {Object|Array} data 选中的数据，包括 value, label, pos, key属性，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点",
+      "params": [
+        {
+          "name": "value",
+          "description": "选中的值，单选时返回单个值，多选时返回数组",
+          "type": {
+            "name": "union",
+            "value": [
+              "String",
+              "Array"
+            ]
+          }
+        },
+        {
+          "name": "data",
+          "description": "选中的数据，包括 value, label, pos, key属性，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点",
+          "type": {
+            "name": "union",
+            "value": [
+              "Object",
+              "Array"
+            ]
+          }
+        }
+      ],
+      "returns": null
+    },
+    "showSearch": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示搜索框",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示搜索框"
+    },
+    "onSearch": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "在搜索框中输入时触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "在搜索框中输入时触发的回调函数\n@param {String} keyword 输入的关键字",
+      "params": [
+        {
+          "name": "keyword",
+          "description": "输入的关键字",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "notFoundContent": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "无数据时显示内容",
+      "defaultValue": {
+        "value": "'Not Found'",
+        "computed": false
+      },
+      "docblock": "无数据时显示内容"
+    },
+    "multiple": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持多选",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否支持多选"
+    },
+    "treeCheckable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "下拉框中的树是否支持勾选节点的复选框",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "下拉框中的树是否支持勾选节点的复选框"
+    },
+    "treeCheckStrictly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "下拉框中的树勾选节点复选框是否完全受控（父子节点选中状态不再关联）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "下拉框中的树勾选节点复选框是否完全受控（父子节点选中状态不再关联）"
+    },
+    "treeCheckedStrategy": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'all'",
+            "computed": false,
+            "description": "返回所有选中的节点"
+          },
+          {
+            "value": "'parent'",
+            "computed": false,
+            "description": "父子节点都选中时只返回父节点"
+          },
+          {
+            "value": "'child'",
+            "computed": false,
+            "description": "父子节点都选中时只返回子节点"
+          }
+        ]
+      },
+      "required": false,
+      "description": "定义选中时回填的方式",
+      "defaultValue": {
+        "value": "'parent'",
+        "computed": false
+      },
+      "docblock": "定义选中时回填的方式\n@enumdesc 返回所有选中的节点, 父子节点都选中时只返回父节点, 父子节点都选中时只返回子节点",
+      "value": [
+        {
+          "value": "'all'",
+          "computed": false,
+          "description": "返回所有选中的节点"
+        },
+        {
+          "value": "'parent'",
+          "computed": false,
+          "description": "父子节点都选中时只返回父节点"
+        },
+        {
+          "value": "'child'",
+          "computed": false,
+          "description": "父子节点都选中时只返回子节点"
+        }
+      ]
+    },
+    "treeDefaultExpandAll": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "下拉框中的树是否默认展开所有节点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "下拉框中的树是否默认展开所有节点"
+    },
+    "treeDefaultExpandedKeys": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "下拉框中的树默认展开节点key的数组",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "下拉框中的树默认展开节点key的数组"
+    },
+    "treeLoadData": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)",
+      "docblock": "下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)\n@param {ReactElement} node 被点击展开的节点",
+      "params": [
+        {
+          "name": "node",
+          "description": "被点击展开的节点",
+          "type": {
+            "name": "ReactElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "treeProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传到 Tree 的属性对象",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "透传到 Tree 的属性对象",
+      "properties": []
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "初始下拉框是否显示",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "初始下拉框是否显示"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当前下拉框是否显示",
+      "docblock": "当前下拉框是否显示"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "下拉框显示或关闭时触发事件的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "下拉框显示或关闭时触发事件的回调函数\n@param {Boolean} visible 是否显示\n@param {String} type 触发显示关闭的操作类型",
+      "params": [
+        {
+          "name": "visible",
+          "description": "是否显示",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "type",
+          "description": "触发显示关闭的操作类型",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "popupStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "下拉框自定义样式对象",
+      "docblock": "下拉框自定义样式对象",
+      "properties": []
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "下拉框样式自定义类名",
+      "docblock": "下拉框样式自定义类名"
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "下拉框挂载的容器节点",
+      "docblock": "下拉框挂载的容器节点"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传到 Popup 的属性对象",
+      "docblock": "透传到 Popup 的属性对象",
+      "properties": []
+    },
+    "followTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否跟随滚动",
+      "docblock": "是否跟随滚动"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {Array<data>} value 选择值 { label: , value:}",
+      "params": [
+        {
+          "name": "value",
+          "description": "选择值 { label: , value:}",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
