@@ -289,9 +289,25 @@
     }
 
     &.#{$css-prefix}active {
-        #{$select-prefix}-arrow .#{$css-prefix}icon-arrow-down {
-            transform: rotate(180deg);
+        @if $select-unfold-icon-content != $icon-reset {
+            #{$select-prefix}-symbol-fold::before {
+                content: $select-unfold-icon-content;
+            }
+        } @else {
+            #{$select-prefix}-arrow .#{$css-prefix}icon-arrow-down {
+                transform: rotate(180deg);
+            }
         }
+    }
+
+    // --------- this is for config platform
+    #{$select-prefix}-unfold-icon::before {
+        content: $select-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
+    &-symbol-fold::before {
+        content: $select-fold-icon-content;
     }
 
     &-arrow {
