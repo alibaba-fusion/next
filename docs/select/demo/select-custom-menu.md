@@ -15,6 +15,7 @@ simple usage
 
 ````jsx
 import { Select, Divider, Icon, Button } from '@alifd/next';
+
 const Option = Select.Option;
 
 const dataSource = [
@@ -29,7 +30,7 @@ const generateData = (base, total) => {
         arr.push(`extra-${base + i}`);
     }
     return arr;
-}
+};
 
 class App extends React.Component {
     state = {
@@ -52,7 +53,7 @@ class App extends React.Component {
                 <Button text type="primary" onClick={this.loadMore}>Load More...</Button>
             </div>
         };
-        return <Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}} menuProps={menuProps}/ >
+        return <Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}} menuProps={menuProps}/ >;
     }
 };
 
