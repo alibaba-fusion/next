@@ -79,7 +79,7 @@ class App extends React.Component {
                         <Radio value="popup">mode="popup"</Radio>
                     </Radio.Group>
                 </div>
-                <Nav className="custom-nav fixedd" popupClassName={"fixedd"} mode={mode} type={type} direction={direction} activeDirection={activeDirection} triggerType={triggerType}>
+                <Nav className="custom-nav" mode={mode} type={type} direction={direction} activeDirection={activeDirection} triggerType={triggerType}>
                     <Item>Item 1</Item>
                     <Item>Item 2</Item>
                     <SubNav label="Sub Nav">
