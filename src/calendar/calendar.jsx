@@ -146,7 +146,7 @@ class Calendar extends Component {
                 value,
             });
 
-            if (value) {
+            if (value && value !== this.state.value) {
                 this.setState({
                     visibleMonth: value,
                 });
