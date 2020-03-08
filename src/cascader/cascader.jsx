@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Menu from '../menu';
-import { func, obj, dom, log } from '../util';
+import { func, obj, dom } from '../util';
 import CascaderMenu from './menu';
 import CascaderMenuItem from './item';
 import {
