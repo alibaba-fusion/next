@@ -58,7 +58,7 @@ class Demo extends React.Component {
         return (
             <div className="control-multiple-demo">
                 <label className="strictly-check">
-                    <Checkbox value={this.state.checkStrictly} onChange={this.handleCheck} />
+                    <Checkbox checked={this.state.checkStrictly} onChange={this.handleCheck} />
                     <span className="strictly-text">Enable checkStrictly</span>
                 </label>
                 <Cascader multiple checkStrictly={this.state.checkStrictly} value={this.state.value} dataSource={this.state.data} onChange={this.handleChange} />
