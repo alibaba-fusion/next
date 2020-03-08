@@ -615,7 +615,7 @@ describe('Cascader', () => {
         document.body.removeChild(div);
     });
 
-    it('should keep data object immutable', () => {
+    it('should keep data source immutable', () => {
         wrapper = mount(
             <Cascader
                 dataSource={deepFreeze(ChinaArea)}
@@ -623,6 +623,36 @@ describe('Cascader', () => {
         );
         assert(wrapper.find('.next-menu-item').length > 0)
     });
+    it('should be compatible with the non-string type of value', () => {
+        const dataSource = [{
+            value: 2973,
+            label: '陕西',
+            children: [{
+                value: 2974,
+                label: '西安',
+                children: [
+                    { value: 2975, label: '西安市' },
+                    { value: 2976, label: '高陵县' },
+                ]
+            }]
+        },
+        {
+            value: 3078,
+            label: '四川',
+        }]
+        wrapper = mount(
+            <Cascader
+                dataSource={dataSource}
+                onChange={(value, source) => {
+                    assert(typeof value === 'string')
+                    assert(source.value === value)
+                }}
+            />
+        );
+        findItem(wrapper, 0, 0).simulate('click');
+        findItem(wrapper, 1, 0).simulate('click');
+        findItem(wrapper, 2, 0).simulate('click');
+    })
 });
 
 function compareDOMAndData(wrapper, value, expandedValue) {

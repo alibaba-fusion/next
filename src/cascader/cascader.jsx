@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Menu from '../menu';
-import { func, obj, dom } from '../util';
+import { func, obj, dom, log } from '../util';
 import CascaderMenu from './menu';
 import CascaderMenuItem from './item';
 import {
@@ -171,7 +171,7 @@ export default class Cascader extends Component {
             expandedValue: realExpandedValue,
         };
         if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
-            st.value = this.completeValue(props.dataSource, st.value);
+            st.value = this.completeValue(this._dataSource, st.value);
         }
 
         this.state = st;
@@ -203,10 +203,7 @@ export default class Cascader extends Component {
 
             const { multiple, checkStrictly, canOnlyCheckLeaf } = nextProps;
             if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
-                state.value = this.completeValue(
-                    nextProps.dataSource,
-                    state.value
-                );
+                state.value = this.completeValue(this._dataSource, state.value);
             }
             if (
                 !this.state.expandedValue.length &&
@@ -272,13 +269,9 @@ export default class Cascader extends Component {
         data.forEach((item, index) => {
             const { value, children } = item;
             const pos = `${prefix}-${index}`;
-            const newItem = { ...item, value: String(value) };
 
-            this._v2n[newItem.value] = this._p2n[pos] = {
-                ...newItem,
-                pos,
-                _source: newItem,
-            };
+            item.value = String(value);
+            this._v2n[value] = this._p2n[pos] = { ...item, pos, _source: item };
 
             if (children && children.length) {
                 this.setCache(children, pos);
@@ -289,7 +282,11 @@ export default class Cascader extends Component {
     updateCache(dataSource) {
         this._v2n = {};
         this._p2n = {};
-        this.setCache(dataSource);
+        // # fix-issue-1558
+        // 用户传入的dataSource会在setCache中对value字段做了转换
+        // 为了避免对传入的引用类型数据进行修改 这里重新拷贝一份
+        this._dataSource = dataSource && JSON.parse(JSON.stringify(dataSource));
+        this.setCache(this._dataSource);
     }
 
     normalizeValue(value) {
@@ -613,10 +610,10 @@ export default class Cascader extends Component {
     }
 
     getFirstFocusKey() {
-        const { dataSource, searchValue, filteredPaths } = this.props;
+        const { searchValue, filteredPaths } = this.props;
 
         return !searchValue
-            ? this.getFirstFocusKeyByDataSource(dataSource)
+            ? this.getFirstFocusKeyByDataSource(this._dataSource)
             : this.getFirstFocusKeyByFilteredPaths(filteredPaths);
     }
 
@@ -761,11 +758,10 @@ export default class Cascader extends Component {
     }
 
     renderMenus() {
-        const { dataSource } = this.props;
         const { expandedValue } = this.state;
 
         const menus = [];
-        let data = dataSource;
+        let data = this._dataSource;
 
         for (let i = 0; i <= expandedValue.length; i++) {
             if (!data) {
@@ -845,7 +841,6 @@ export default class Cascader extends Component {
             className,
             expandTriggerType,
             multiple,
-            dataSource,
             checkStrictly,
             canOnlyCheckLeaf,
             searchValue,
@@ -878,7 +873,7 @@ export default class Cascader extends Component {
             <div {...props} ref={this.getCascaderNode}>
                 {!searchValue ? (
                     <div className={`${prefix}cascader-inner`}>
-                        {dataSource && dataSource.length
+                        {this._dataSource && this._dataSource.length
                             ? this.renderMenus()
                             : null}
                     </div>
