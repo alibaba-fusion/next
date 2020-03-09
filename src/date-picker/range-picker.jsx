@@ -222,7 +222,10 @@ export default class RangePicker extends Component {
         name: PropTypes.string,
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
-        placeholder: PropTypes.arrayOf(PropTypes.string),
+        placeholder: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.string,
+        ]),
     };
 
     static defaultProps = {
@@ -1086,7 +1089,12 @@ export default class RangePicker extends Component {
         }[state.panel];
 
         const allowClear = state.startValue && state.endValue && hasClear;
-        const [startPlaceholder, endPlaceholder] = placeholder || [];
+        let [startPlaceholder, endPlaceholder] = placeholder || [];
+
+        if (typeof placeholder === 'string') {
+            startPlaceholder = placeholder;
+            endPlaceholder = placeholder;
+        }
 
         const trigger = (
             <div className={triggerCls}>

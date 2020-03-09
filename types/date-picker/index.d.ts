@@ -155,7 +155,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入提示
      */
-    placeholder?: Array<string>;
+    placeholder?: Array<string> | string;
 
     /**
      * 日期范围值数组 [moment, moment]

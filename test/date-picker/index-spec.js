@@ -1083,6 +1083,14 @@ describe('RangePicker', () => {
             assert(startPlaceholder === placeholder[0])
             assert(endPlaceholder === placeholder[1])
         });
+
+        it('should support to set placeholder string', () => {
+            const placeholder = 'Please select range'
+            wrapper = mount(<RangePicker placeholder={placeholder} />)
+            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
+            assert(startPlaceholder === placeholder)
+            assert(endPlaceholder === placeholder)
+        });
     });
 
     describe('action', () => {
