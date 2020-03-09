@@ -23,6 +23,7 @@ const onChange = val => console.log(val);
 
 ReactDOM.render(<div>
     <DatePicker onChange={onChange} /> <br /><br />
+    <DatePicker showTime onChange={onChange} /> <br /><br />
     <MonthPicker onChange={onChange} /> <br /><br />
     <YearPicker onChange={onChange} /> <br /><br />
     <WeekPicker onChange={onChange} /> <br /><br />
