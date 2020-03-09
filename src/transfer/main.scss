@@ -117,10 +117,8 @@
 
     &-move.#{$css-prefix}icon {
         color: $transfer-simple-move-icon-color;
-        @if $transfer-simple-move-icon != $icon-reset {
-            &::before {
-                content: $transfer-simple-move-icon;
-            }
+        &::before {
+            content: $transfer-simple-move-icon;
         }
     }
 
