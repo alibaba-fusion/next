@@ -139,7 +139,7 @@ class Affix extends React.Component {
         const { container, useAbsolute } = this.props;
         const affixContainer = container();
 
-        if (!affixContainer) {
+        if (!affixContainer || !this.affixNode) {
             return false;
         }
         const containerScrollTop = getScroll(affixContainer, true); // 容器在垂直位置上的滚动 offset
