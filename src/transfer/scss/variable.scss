@@ -5,7 +5,7 @@
 /// @family data-entry
 /// @varPrefix $transfer-
 /// @classPrefix {prefix}-transfer
-/// @order {"size/move":10,"size/panel":11,"size/header":12,"size/search":13,"size/footer":14,"statement/normal":10,"statement/normal/move":100,"statement/normal/panel":101,"statement/normal/header":102,"statement/normal/item":103,"statement/normal/footer":104,"statement/hover":11,"statement/hover/item":110}
+/// @order {"size/move":10,"size/panel":11,"size/header":12,"size/search":13,"size/footer":14,"size/list":15,"statement/normal":10,"statement/normal/move":100,"statement/normal/panel":101,"statement/normal/header":102,"statement/normal/item":103,"statement/normal/footer":104,"statement/hover":11,"statement/hover/item":110}
 ////
 
 // transfer variables
@@ -77,6 +77,10 @@ $transfer-panel-footer-padding-left-right: $s-5 !default;
 // ----------------------------------------
 
 /// icon
+/// @namespace statement/normal/move
+$transfer-simple-move-icon: $icon-content-switch !default;
+
+/// icon color
 /// @namespace statement/normal/move
 $transfer-simple-move-icon-color: $color-line1-3 !default;
 

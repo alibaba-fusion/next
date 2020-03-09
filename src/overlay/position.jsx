@@ -25,6 +25,7 @@ export default class Position extends Component {
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
         rtl: PropTypes.bool,
+        pinFollowBaseElementWhenFixed: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -86,6 +87,7 @@ export default class Position extends Component {
             needAdjust,
             container,
             rtl,
+            pinFollowBaseElementWhenFixed,
             autoFit,
         } = this.props;
 
@@ -98,6 +100,7 @@ export default class Position extends Component {
             const resultAlign = place({
                 pinElement: contentNode,
                 baseElement: targetNode,
+                pinFollowBaseElementWhenFixed,
                 align,
                 offset,
                 autoFit,

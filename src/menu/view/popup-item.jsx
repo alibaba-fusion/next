@@ -200,6 +200,7 @@ export default class PopupItem extends Component {
                 trigger={trigger}
                 triggerType={triggerType}
                 visible={open}
+                pinFollowBaseElementWhenFixed
                 onVisibleChange={this.handleOpen}
                 onOpen={this.handlePopupOpen}
                 onClose={this.handlePopupClose}

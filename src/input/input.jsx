@@ -51,7 +51,7 @@ export default class Input extends Base {
         /**
          * 水印 (Icon的type类型，和hasClear占用一个地方)
          */
-        hint: PropTypes.string,
+        hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         /**
          * 文字前附加内容
          */
@@ -151,11 +151,26 @@ export default class Input extends Base {
 
         let stateWrap = null;
         if (state === 'success') {
-            stateWrap = <Icon type="success-filling" className={`${prefix}input-success-icon`} />;
+            stateWrap = (
+                <Icon
+                    type="success-filling"
+                    className={`${prefix}input-success-icon`}
+                />
+            );
         } else if (state === 'loading') {
-            stateWrap = <Icon type="loading" className={`${prefix}input-loading-icon`} />;
+            stateWrap = (
+                <Icon
+                    type="loading"
+                    className={`${prefix}input-loading-icon`}
+                />
+            );
         } else if (state === 'warning') {
-            stateWrap = <Icon type="warning" className={`${prefix}input-warning-icon`} />;
+            stateWrap = (
+                <Icon
+                    type="warning"
+                    className={`${prefix}input-warning-icon`}
+                />
+            );
         }
 
         let clearWrap = null;
@@ -164,9 +179,12 @@ export default class Input extends Base {
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon = (
-                    <Icon type={hint} className={`${prefix}input-hint`} />
-                );
+                hintIcon =
+                    typeof hint === 'string' ? (
+                        <Icon type={hint} className={`${prefix}input-hint`} />
+                    ) : (
+                        hint
+                    );
             } else {
                 hintIcon = (
                     <Icon

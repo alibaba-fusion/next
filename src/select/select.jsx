@@ -929,7 +929,10 @@ class Select extends Base {
                     onClick={this.handleArrowClick}
                     className={`${prefix}select-arrow`}
                 >
-                    <Icon type="arrow-down" />
+                    <Icon
+                        type="arrow-down"
+                        className={`${prefix}select-symbol-fold`}
+                    />
                 </span>
             );
         }
