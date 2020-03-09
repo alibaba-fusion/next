@@ -424,40 +424,6 @@ describe('Menu', () => {
         assert(subItems.length === 2);
     });
 
-    it('should support triggerType under popup mode', done => {
-        if (env.ieVersion === 9) {
-            return done();
-        }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
-            <Menu mode="popup" triggerType="hover">
-                <SubMenu key="sub" label="Sub Menu">
-                    <Item key="1">1</Item>
-                    <Item key="2">2</Item>
-                </SubMenu>
-            </Menu>,
-            div
-        );
-
-        ReactTestUtils.Simulate.mouseEnter(
-            document.querySelector('.next-menu-item')
-        );
-
-        setTimeout(() => {
-            const subMenu = document.querySelector(
-                '.next-overlay-inner.next-menu'
-            );
-            assert(subMenu);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 500);
-    });
-
     it('should support popupAutoWidth and popupAlign', done => {
         if (env.ieVersion === 9) {
             return done();
@@ -873,6 +839,40 @@ describe('Menu', () => {
         document.body.removeChild(div);
     });
 
+    it('should support triggerType under popup mode', done => {
+        if (env.ieVersion === 9) {
+            return done();
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu mode="popup" triggerType="hover">
+                <SubMenu key="sub" label="Sub Menu">
+                    <Item key="1">1</Item>
+                    <Item key="2">2</Item>
+                </SubMenu>
+            </Menu>,
+            div
+        );
+
+        ReactTestUtils.Simulate.mouseEnter(
+            document.querySelector('.next-menu-item')
+        );
+
+        setTimeout(() => {
+            const subMenu = document.querySelector(
+                '.next-overlay-inner.next-menu'
+            );
+            assert(subMenu);
+
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            done();
+        }, 500);
+    });
+
     it('should support keyboard if direction is hoz', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
@@ -913,7 +913,7 @@ describe('Menu', () => {
                 mode="popup"
                 hozInLine
             >
-                <Item key="0" style={{width: 100}}>0</Item>
+                <Item key="0" style={{width: 60}}>0</Item>
                 <Item key="1" style={{width: 60}}>1</Item>
                 <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
                     <Item key="2">2</Item>
@@ -976,7 +976,7 @@ describe('Menu', () => {
         const overlay = document.querySelector('.next-overlay-wrapper');
 
         assert(overlay);
-        assert(overlay.querySelectorAll('li').length === 3);
+        assert(overlay.querySelectorAll('li').length === 4);
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
