@@ -117,6 +117,8 @@ export default class Position {
     constructor(props) {
         this.pinElement = props.pinElement;
         this.baseElement = props.baseElement;
+        this.pinFollowBaseElementWhenFixed =
+            props.pinFollowBaseElementWhenFixed;
         this.container = getContainer(props);
         this.autoFit = props.autoFit || false;
         this.align = props.align || 'tl tl';
@@ -143,6 +145,8 @@ export default class Position {
     setPosition() {
         const pinElement = this.pinElement;
         const baseElement = this.baseElement;
+        const pinFollowBaseElementWhenFixed = this
+            .pinFollowBaseElementWhenFixed;
         const expectedAlign = this._getExpectedAlign();
         let isPinFixed, isBaseFixed, firstPositionResult;
         if (pinElement === VIEWPORT) {
@@ -174,8 +178,10 @@ export default class Position {
             const baseElementPoints = this._normalizePosition(
                 baseElement,
                 align.split(' ')[1],
-                isPinFixed
+                // 忽略元素位置，发生在类似dialog的场景下
+                (isPinFixed && !pinFollowBaseElementWhenFixed) || isBaseFixed
             );
+
             const pinElementParentOffset = this._getParentOffset(pinElement);
             const pinElementParentScrollOffset = this._getParentScrollOffset(
                 pinElement
@@ -184,7 +190,10 @@ export default class Position {
             const baseElementOffset =
                 isPinFixed && isBaseFixed
                     ? this._getLeftTop(baseElement)
-                    : baseElementPoints.offset();
+                    : // 在 pin 是 fixed 布局，并且又需要根据 base 计算位置时，计算 base 的 offset 需要忽略页面滚动
+                      baseElementPoints.offset(
+                          isPinFixed && pinFollowBaseElementWhenFixed
+                      );
             const top =
                 baseElementOffset.top +
                 baseElementPoints.y -
@@ -338,8 +347,9 @@ export default class Position {
         return number < 0 && isPinFixed ? 0 : number;
     }
 
-    _normalizePosition(element, align, isPinFixed) {
-        const points = this._normalizeElement(element, isPinFixed);
+    // 这里的第三个参数真实含义为：是否为fixed布局，并且像dialog一样，不跟随trigger元素
+    _normalizePosition(element, align, ignoreElementOffset) {
+        const points = this._normalizeElement(element, ignoreElementOffset);
         this._normalizeXY(points, align);
 
         return points;
@@ -374,7 +384,7 @@ export default class Position {
         };
     }
 
-    _normalizeElement(element, isPinFixed) {
+    _normalizeElement(element, ignoreElementOffset) {
         const result = {
                 element: element,
                 x: 0,
@@ -383,8 +393,9 @@ export default class Position {
             isViewport = element === VIEWPORT,
             docElement = document.documentElement;
 
-        result.offset = () => {
-            if (isPinFixed) {
+        result.offset = ignoreScroll => {
+            // 这里是关键，第二个参数的含义以ing该是：是否为 fixed 布局，并且像 dialog 一样，不跟随 trigger 元素
+            if (ignoreElementOffset) {
                 return {
                     left: 0,
                     top: 0,
@@ -395,7 +406,7 @@ export default class Position {
                     top: getPageY(),
                 };
             } else {
-                return this._getElementOffset(element);
+                return this._getElementOffset(element, ignoreScroll);
             }
         };
 
@@ -416,7 +427,9 @@ export default class Position {
         return result;
     }
 
-    _getElementOffset(element) {
+    // ignoreScroll 在 pin 元素为 fixed 的时候生效，此时需要忽略页面滚动
+    // 对 fixed 模式下 subNav 弹层的计算很重要，只有在这种情况下，才同时需要元素的相对位置，又不关心页面滚动
+    _getElementOffset(element, ignoreScroll) {
         const rect = element.getBoundingClientRect();
         const docElement = document.documentElement;
         const body = document.body;
@@ -424,8 +437,8 @@ export default class Position {
         const docClientTop = docElement.clientTop || body.clientTop || 0;
 
         return {
-            left: rect.left + (getPageX() - docClientLeft),
-            top: rect.top + (getPageY() - docClientTop),
+            left: rect.left + (ignoreScroll ? 0 : getPageX()) - docClientLeft,
+            top: rect.top + (ignoreScroll ? 0 : getPageY()) - docClientTop,
         };
     }
 
