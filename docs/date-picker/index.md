@@ -71,6 +71,10 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 <DatePicker defaultValue="2018-01-23" onChange={val => console.log(val)} />
 // select 2019-01-23
 // >> "2019-01-23"
+
+<DatePicker defaultValue={moment(1581938105000)} onChange={val => console.log(val)} />
+// select 2020-02-17
+// >> "2020-02-17"
 ```
 
 标准受控
@@ -83,6 +87,10 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 <DatePicker value="2018-01-23" onChange={val => console.log(val)} />
 // setProps({ value: '2019-01-23' })
 // >> "2019-01-23"
+
+<DatePicker value={moment(1581938105000)} onChange={val => console.log(val)} />
+// setProps({ value: moment(1581938105000) })
+// >> "2020-02-17"
 ```
 
 ## API
@@ -167,7 +175,7 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 | defaultVisibleMonth     | 默认展示的起始月份<br><br>**签名**:<br>Function() => MomentObject<br>**返回值**:<br>{MomentObject} 返回包含指定月份的 moment 对象实例<br>                                                                                                                          | Function             | -                                                                                            |          |           |
 | value                   | 日期范围值数组 [moment, moment]                                                                                                                                                                                                                | Array                | -                                                                                            |          |           |
 | defaultValue            | 初始的日期范围值数组 [moment, moment]                                                                                                                                                                                                             | Array                | -                                                                                            |          |           |
-| format                  | 日期格式                                                                                                                                                                                                                                    | String               | -                                                                                            |          |           |
+| format                  | 日期格式                                                                                                                                                                                                                                    | String               | 'YYYY-MM-DD'                                                                                 |          |           |
 | showTime                | 是否使用时间控件，支持传入 TimePicker 的属性                                                                                                                                                                                                            | Object/Boolean       | false                                                                                        |          |           |
 | resetTime               | 每次选择是否重置时间（仅在 showTime 开启时有效）                                                                                                                                                                                                           | Boolean              | false                                                                                        |          |           |
 | disabledDate            | 禁用日期函数<br><br>**签名**:<br>Function(日期值: MomentObject, view: String) => Boolean<br>**参数**:<br>_日期值_: {MomentObject} null<br>_view_: {String} 当前视图类型，year: 年， month: 月, date: 日<br>**返回值**:<br>{Boolean} 是否禁用<br>                          | Function             | () => false                                                                                  |          |           |

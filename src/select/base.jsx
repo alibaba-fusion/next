@@ -394,6 +394,12 @@ export default class Base extends React.Component {
      * @abstract
      */
     renderMenuHeader() {
+        const { menuProps } = this.props;
+
+        if (menuProps && 'header' in menuProps) {
+            return menuProps.header;
+        }
+
         return null;
     }
 
