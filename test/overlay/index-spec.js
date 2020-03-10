@@ -149,6 +149,31 @@ describe('Overlay', () => {
             wrapper = null;
         }
     });
+    it('should support rendering overlay', () => {
+        return co(function*() {
+            wrapper = render(
+                <Overlay visible={true}>
+                    <div className="content" />
+                </Overlay>
+            );
+            yield delay(500);
+            assert(document.querySelector('.next-overlay-wrapper.opened'));
+            assert(document.querySelector('.next-overlay-inner.content'));
+
+            wrapper.setProps({
+                visible: false,
+            });
+            yield delay(500);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            wrapper.setProps({
+                visible: true,
+            });
+            yield delay(500);
+            assert(document.querySelector('.next-overlay-wrapper.opened'));
+            assert(document.querySelector('.next-overlay-inner.content'));
+        });
+    });
 
     it('should support rendering overlay and mask', () => {
         return co(function*() {

@@ -89,9 +89,8 @@ export default function expanded(BaseComponent) {
 
         static getDerivedStateFromProps(nextProps) {
             if ('openRowKeys' in nextProps) {
-                const { openRowKeys } = nextProps;
                 return {
-                    openRowKeys,
+                    openRowKeys: nextProps.openRowKeys || [],
                 };
             }
 
