@@ -147,6 +147,18 @@
         right: $tab-nav-arrow-down-positon-right;
     }
 
+    & .#{$css-prefix}tab-icon-dropdown::before {
+        content: $tab-icon-dropdown-content;
+    }
+
+    & .#{$css-prefix}tab-icon-prev::before {
+        content: $tab-icon-prev-content;
+    }
+
+    & .#{$css-prefix}tab-icon-next::before {
+        content: $tab-icon-next-content;
+    }
+
     &-content {
         overflow: hidden;
     }
@@ -374,9 +386,9 @@
     &-capsule > #{$tab-prefix}-bar {
         #{$tab-prefix}-tab {
             transition: background-color $motion-duration-immediately $motion-linear;
-            border-top: $tab-capsule-tab-border;
-            border-bottom: $tab-capsule-tab-border;
-            border-left: $tab-capsule-tab-border;
+            border: $tab-capsule-tab-border;
+            border-right-color: transparent;
+            margin-right: -$tab-capsule-tab-border-line-width;
 
             &:first-child {
                 border-radius: $tab-capsule-corner-radius 0 0 $tab-capsule-corner-radius;
@@ -388,7 +400,6 @@
             }
 
             &.active {
-                margin-right: -$tab-capsule-tab-border-line-width;
                 border-right: $tab-capsule-tab-border;
                 border-color: $tab-capsule-tab-border-line-color-active;
             }
@@ -398,9 +409,8 @@
             }
 
             &:hover {
-                z-index: 1;
+                z-index: 2;
                 border-right: $tab-capsule-tab-border;
-                margin-right: -$tab-capsule-tab-border-line-width;
                 border-color: $tab-capsule-tab-border-line-color-hover;
             }
 

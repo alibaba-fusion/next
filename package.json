@@ -1,13 +1,18 @@
 {
   "name": "@alifd/next",
-  "version": "1.19.11",
+  "version": "1.19.16",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
     "fusion design",
     "next",
     "component",
-    "ui tookit"
+    "ui tookit",
+    "react",
+    "react-components",
+    "components",
+    "design",
+    "frontend"
   ],
   "homepage": "https://github.com/alibaba-fusion/next",
   "bugs": "https://github.com/alibaba-fusion/next/issues",
@@ -32,6 +37,12 @@
     "type": "git",
     "url": "https://github.com/alibaba-fusion/next.git"
   },
+  "sideEffects": [
+    "dist/*",
+    "es/**/style.js",
+    "lib/**/style.js",
+    "*.scss"
+  ],
   "scripts": {
     "report-coverage": "codecov",
     "dev": "node ./scripts/server/index.js",
@@ -73,8 +84,8 @@
     ]
   },
   "dependencies": {
-    "@alifd/field": "~1.3.3",
-    "@alifd/validate": "~1.1.4",
+    "@alifd/field": "~1.4.1",
+    "@alifd/validate": "~1.2.0",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.3",
     "hoist-non-react-statics": "^2.1.0",

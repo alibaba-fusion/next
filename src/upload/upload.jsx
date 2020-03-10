@@ -506,7 +506,7 @@ class Upload extends Base {
             });
             children = (
                 <div className={cardCls}>
-                    <Icon type="add" size="large" />
+                    <Icon size="large" className={`${prefix}upload-add-icon`} />
                     <div
                         tabIndex="0"
                         role="button"

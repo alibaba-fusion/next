@@ -381,6 +381,10 @@ class Menu extends Component {
         onItemKeyDown: PropTypes.func,
         expandAnimation: PropTypes.bool,
         itemClassName: PropTypes.string,
+        /**
+         * 可配置的icons，包括 select 等
+         */
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
@@ -413,6 +417,7 @@ class Menu extends Component {
         onItemKeyDown: noop,
         onItemClick: noop,
         expandAnimation: true,
+        icons: {},
     };
 
     constructor(props) {
@@ -638,6 +643,36 @@ class Menu extends Component {
         }
 
         return normalizeToArray(initOpenKeys);
+    }
+
+    getIndicatorsItem(items, isPlaceholder) {
+        const { prefix, renderMore } = this.props;
+        const moreCls = cx({
+            [`${prefix}menu-more`]: true,
+        });
+
+        const style = {};
+        // keep placehold to get width
+        if (isPlaceholder) {
+            style.visibility = 'hidden';
+            style.display = 'inline-block';
+            // indicators which not in use, just display: none
+        } else if (items && items.length === 0) {
+            style.display = 'none';
+            style.visibility = 'unset';
+        }
+
+        if (renderMore && typeof renderMore === 'function') {
+            return React.cloneElement(renderMore(items), {
+                style,
+            });
+        }
+
+        return (
+            <SubMenu label="···" noIcon className={moreCls} style={style}>
+                {items}
+            </SubMenu>
+        );
     }
 
     getUpdateChildren = () => {

@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import Overlay from '../overlay';
 import Input from '../input';
+import Icon from '../icon';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
@@ -428,7 +429,12 @@ class YearPicker extends Component {
                     aria-expanded={visible}
                     readOnly
                     placeholder={placeholder || locale.yearPlaceholder}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symble-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

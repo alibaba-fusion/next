@@ -47,7 +47,14 @@ class SubNav extends Component {
 
     render() {
         const { prefix, iconOnly, hasArrow, mode } = this.context;
-        const { className, icon, label, children, ...others } = this.props;
+        const {
+            className,
+            icon,
+            label,
+            children,
+            level,
+            ...others
+        } = this.props;
         const cls = classNames({
             [`${prefix}nav-sub-nav-item`]: true,
             [className]: !!className,
@@ -58,15 +65,19 @@ class SubNav extends Component {
             ) : (
                 icon
             );
-        if (iconOnly) {
-            if (hasArrow) {
-                iconEl = (
-                    <Icon
-                        className={`${prefix}nav-icon-only-arrow`}
-                        type={mode === 'popup' ? 'arrow-right' : 'arrow-down'}
-                    />
-                );
-            }
+        // 这里是为 iconOnly 模式下，添加默认的展开按钮
+        // 只有在 inline 模式下 或 popup模式的第一层级，才需要添加默认的按钮
+        if (
+            iconOnly &&
+            hasArrow &&
+            (mode === 'inline' || (level === 1 && mode === 'popup'))
+        ) {
+            iconEl = (
+                <Icon
+                    className={`${prefix}nav-icon-only-arrow`}
+                    type={mode === 'popup' ? 'arrow-right' : 'arrow-down'}
+                />
+            );
         }
         const newLabel = [
             iconEl ? cloneElement(iconEl, { key: 'icon' }) : null,
@@ -74,7 +85,12 @@ class SubNav extends Component {
         ];
 
         return (
-            <Menu.SubMenu className={cls} label={newLabel} {...others}>
+            <Menu.SubMenu
+                className={cls}
+                label={newLabel}
+                level={level}
+                {...others}
+            >
                 {children}
             </Menu.SubMenu>
         );

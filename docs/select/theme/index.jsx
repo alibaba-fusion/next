@@ -71,10 +71,13 @@ class FunctionDemo extends React.Component {
 
         const comboboxSource = ['Canada', 'China', 'Colombia', 'Congo', 'Georgia', 'Germany', 'Greece', 'Grenada', 'Guam', 'Singapore', 'South Korea', 'Switzerland', 'Uganda', 'United Kingdom', 'United States'];
 
+        const iconsConfigHelper = (<div className="next-select" style={{display: 'none'}}>
+            <div className="next-select-unfold-icon"/>
+        </div>);
         const selectProps = {
             dataSource,
             popupProps: {needAdjust: false},
-            label: getValue('demo').label.value === 'true' ? 'Label' : undefined
+            label: getValue('demo').label.value === 'true' ? 'Label' : undefined,
         };
 
         const comboboxProps = {
@@ -101,12 +104,18 @@ class FunctionDemo extends React.Component {
                                     <Select size="small" {...selectProps} />
                                 </DemoGroup>
                                 <DemoGroup label="Expand" height={200}>
-                                    <Select value="lucy" className="next-focus" visible
-                                        size="large" {...selectProps} />
-                                    <Select value="lucy" className="next-focus" visible
-                                        size="medium" {...selectProps} />
-                                    <Select value="lucy" className="next-focus" visible
-                                        size="small" {...selectProps} />
+                                    <div>
+                                        <Select value="lucy" className="next-focus" visible size="large" {...selectProps} />
+                                        {iconsConfigHelper}
+                                    </div>
+                                    <div>
+                                        <Select value="lucy" className="next-focus" visible size="medium" {...selectProps} />
+                                        {iconsConfigHelper}
+                                    </div>
+                                    <div>
+                                        <Select value="lucy" className="next-focus" visible size="small" {...selectProps} />
+                                        {iconsConfigHelper}
+                                    </div>
                                 </DemoGroup>
                                 <DemoGroup label="Disabled">
                                     <Select size="large" value="lucy" disabled {...selectProps} />

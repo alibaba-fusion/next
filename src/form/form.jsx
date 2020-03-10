@@ -112,6 +112,10 @@ export default class Form extends React.Component {
          * 是否开启预览态
          */
         isPreview: PropTypes.bool,
+        /**
+         * 是否使用 label 替换校验信息的 name 字段
+         */
+        useLabelForErrorMessage: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -130,6 +134,7 @@ export default class Form extends React.Component {
         _formSize: PropTypes.string,
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
+        _formLabelForErrorMessage: PropTypes.bool,
     };
 
     constructor(props) {
@@ -165,6 +170,7 @@ export default class Form extends React.Component {
             _formSize: this.props.size,
             _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
+            _formLabelForErrorMessage: this.props.useLabelForErrorMessage,
         };
     }
 

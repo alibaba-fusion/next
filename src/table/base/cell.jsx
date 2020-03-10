@@ -90,6 +90,7 @@ export default class Cell extends React.Component {
             rtl,
             isIconLeft,
             type,
+            htmlTitle,
             ...others
         } = this.props;
         const tagStyle = { ...style };
@@ -121,7 +122,7 @@ export default class Cell extends React.Component {
                 <div
                     className={`${prefix}table-cell-wrapper`}
                     style={innerStyle}
-                    title={type === 'header' ? content : null}
+                    title={htmlTitle}
                     data-next-table-col={__colIndex}
                     data-next-table-row={rowIndex}
                 >

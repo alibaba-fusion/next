@@ -1,14 +1,11 @@
 # Latest Log 
 
-## [1.19.11](https://github.com/alibaba-fusion/next/compare/1.19.10...1.19.11) (2020-02-05)
+## [1.19.16](https://github.com/alibaba-fusion/next/compare/1.19.15...1.19.16) (2020-02-27)
 
 
 ### Bug Fixes
 
-* **NumberPicker:** bug of delete like 0.01 => 0.0 ([7377629](https://github.com/alibaba-fusion/next/commit/7377629))
-* **NumberPicker:** can input char while value=null ([be34205](https://github.com/alibaba-fusion/next/commit/be34205))
-* **NumberPicker:** remove iconSize ([030cb2c](https://github.com/alibaba-fusion/next/commit/030cb2c))
-* **Table:** add title for table header, close [#1550](https://github.com/alibaba-fusion/next/issues/1550) ([1fe345c](https://github.com/alibaba-fusion/next/commit/1fe345c))
-* **Upload:** Compatibility in ie/firefox ([23083ee](https://github.com/alibaba-fusion/next/commit/23083ee))
+* **Card:** bad time of warning, close [#1612](https://github.com/alibaba-fusion/next/issues/1612) ([02e63e4](https://github.com/alibaba-fusion/next/commit/02e63e4))
+* **Checkbox:** pass value and name to input dom ([3e8f2d9](https://github.com/alibaba-fusion/next/commit/3e8f2d9))
 
 

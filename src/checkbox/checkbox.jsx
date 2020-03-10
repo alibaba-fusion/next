@@ -170,6 +170,7 @@ class Checkbox extends UIState {
     onChange(e) {
         const { context, value } = this.props;
         const checked = e.target.checked;
+
         if (this.disabled) {
             return;
         }
@@ -205,6 +206,8 @@ class Checkbox extends UIState {
             isPreview,
             renderPreview,
             context,
+            value,
+            name,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -214,11 +217,16 @@ class Checkbox extends UIState {
 
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
+        if (otherProps.title) {
+            othersData.title = otherProps.title;
+        }
 
         let childInput = (
             <input
                 {...obj.pickOthers(Checkbox.propTypes, otherProps)}
                 id={id}
+                value={value}
+                name={name}
                 disabled={disabled}
                 checked={checked}
                 type="checkbox"
@@ -270,6 +278,12 @@ class Checkbox extends UIState {
             );
         }
 
+        const iconCls = classnames({
+            zoomIn: indeterminate,
+            [`${prefix}checkbox-semi-select-icon`]: indeterminate,
+            [`${prefix}checkbox-select-icon`]: !indeterminate,
+        });
+
         return (
             <label
                 {...othersData}
@@ -281,11 +295,7 @@ class Checkbox extends UIState {
             >
                 <span className={`${prefix}checkbox`}>
                     <span className={`${prefix}checkbox-inner`}>
-                        <Icon
-                            type={type}
-                            size="xs"
-                            className={indeterminate ? 'zoomIn' : ''}
-                        />
+                        <Icon type={type} size="xs" className={iconCls} />
                     </span>
                     {childInput}
                 </span>

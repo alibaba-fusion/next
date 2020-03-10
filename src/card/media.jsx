@@ -48,10 +48,11 @@ class CardMedia extends Component {
             ...others
         } = this.props;
 
-        warning(
-            'children' in others || Boolean(image || src),
-            'either `children`, `image` or `src` prop must be specified.'
-        );
+        if (!('children' in others || Boolean(image || src))) {
+            warning(
+                'either `children`, `image` or `src` prop must be specified.'
+            );
+        }
 
         const isMediaComponent = MEDIA_COMPONENTS.indexOf(Component) !== -1;
         const composedStyle =

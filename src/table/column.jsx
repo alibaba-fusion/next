@@ -30,6 +30,10 @@ export default class Column extends React.Component {
             PropTypes.func,
         ]),
         /**
+         * 写到 header 单元格上的title属性
+         */
+        htmlTitle: PropTypes.string,
+        /**
          * 是否支持排序
          */
         sortable: PropTypes.bool,

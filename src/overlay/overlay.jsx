@@ -189,6 +189,9 @@ class Overlay extends Component {
         onClick: PropTypes.func,
         maskClass: PropTypes.string,
         isChildrenInMask: PropTypes.bool,
+        // 当 pin 元素（一般是弹层）是 fixed 布局的时候，pin 元素是否要跟随 base 元素（一般是trigger）
+        // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
+        pinFollowBaseElementWhenFixed: PropTypes.bool,
     };
     static defaultProps = {
         prefix: 'next-',
@@ -700,6 +703,7 @@ class Overlay extends Component {
             onMaskMouseLeave,
             maskClass,
             isChildrenInMask,
+            pinFollowBaseElementWhenFixed,
         } = this.props;
         const { visible: stateVisible, status, animation } = this.state;
 
@@ -748,6 +752,7 @@ class Overlay extends Component {
                             autoFit,
                             container,
                             needAdjust,
+                            pinFollowBaseElementWhenFixed,
                             beforePosition,
                             onPosition: makeChain(
                                 this.handlePosition,

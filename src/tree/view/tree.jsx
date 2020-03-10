@@ -746,7 +746,7 @@ class Tree extends Component {
         if (multiple) {
             this.processKey(selectedKeys, key, select);
         } else {
-            selectedKeys = [key];
+            selectedKeys = select ? [key] : [];
         }
 
         if (!('selectedKeys' in this.props)) {

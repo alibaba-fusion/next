@@ -109,7 +109,7 @@ ReactDOM.render(
                 };
             });
 
-            return (<PopupItem triggerType="click" key="0-more" label="更多" >
+            return (<PopupItem noIcon triggerType="click" key="0-more" label="更多" >
                 <Panel dataSource={newDs}/>
             </PopupItem>);
         }}>

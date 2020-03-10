@@ -6,6 +6,7 @@ import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
+import Icon from '../icon';
 import Calendar from '../calendar';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
@@ -443,7 +444,12 @@ class MonthPicker extends Component {
                     readOnly
                     value={triggerInputValue}
                     placeholder={placeholder || locale.monthPlaceholder}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symble-calendar-icon`}
+                        />
+                    }
                     hasClear={allowClear}
                     className={triggerInputCls}
                 />

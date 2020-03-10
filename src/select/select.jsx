@@ -949,7 +949,10 @@ class Select extends Base {
                     onClick={this.handleArrowClick}
                     className={`${prefix}select-arrow`}
                 >
-                    <Icon type="arrow-down" />
+                    <Icon
+                        type="arrow-down"
+                        className={`${prefix}select-symbol-fold`}
+                    />
                 </span>
             );
         }
@@ -1142,7 +1145,7 @@ class Select extends Base {
      * @param {object} props
      */
     renderMenuHeader() {
-        const { prefix, hasSelectAll, mode } = this.props;
+        const { prefix, hasSelectAll, mode, locale } = this.props;
 
         const sourceCount = this.dataStore.getEnableDS().length;
         // 多选模式下才有全选
@@ -1151,7 +1154,7 @@ class Select extends Base {
         }
 
         const text =
-            typeof hasSelectAll === 'boolean' ? 'Select All' : hasSelectAll;
+            typeof hasSelectAll === 'boolean' ? locale.selectAll : hasSelectAll;
 
         const selectAllYet = this.selectAllYet;
 

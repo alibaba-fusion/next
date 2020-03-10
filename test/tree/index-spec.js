@@ -403,7 +403,7 @@ describe('Tree', () => {
         assertSelected('3', true);
 
         selectTreeNode('3');
-        assertSelected('3', true);
+        assertSelected('3', false);
     });
 
     it('should support selectedKeys and onSelect', () => {

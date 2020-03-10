@@ -218,6 +218,10 @@ export default class Item extends React.Component {
          * @param {any} value 根据包裹的组件的 value 类型而决定
          */
         renderPreview: PropTypes.func,
+        /**
+         * 是否使用 label 替换校验信息的 name 字段
+         */
+        useLabelForErrorMessage: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -231,6 +235,7 @@ export default class Item extends React.Component {
         _formSize: PropTypes.oneOf(['large', 'small', 'medium']),
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
+        _formLabelForErrorMessage: PropTypes.bool,
     };
 
     static _typeMark = 'form_item';
@@ -297,6 +302,26 @@ export default class Item extends React.Component {
         return isNil(this.props.fullWidth)
             ? !!this.context._formFullWidth
             : this.props.fullWidth;
+    }
+
+    getLabelForErrorMessage() {
+        let label = this.props.label;
+
+        if (!label || typeof label !== 'string') {
+            return null;
+        }
+
+        label = label.replace(':', '').replace('：', '');
+
+        const labelForErrorMessage =
+            'useLabelForErrorMessage' in this.props
+                ? this.props.useLabelForErrorMessage
+                : this.context._formLabelForErrorMessage;
+        if (labelForErrorMessage && label) {
+            return label;
+        }
+
+        return null;
     }
 
     getItemLabel() {
@@ -403,6 +428,8 @@ export default class Item extends React.Component {
             childrenNode = children(this.context._formField.getValues());
         }
 
+        const labelForErrorMessage = this.getLabelForErrorMessage();
+
         const ele = React.Children.map(childrenNode, child => {
             if (
                 child &&
@@ -421,7 +448,8 @@ export default class Item extends React.Component {
                         {
                             ...getFieldInitCfg(
                                 this.props,
-                                child.type.displayName
+                                child.type.displayName,
+                                labelForErrorMessage
                             ),
                             props: { ...child.props, ref: child.ref },
                         },
