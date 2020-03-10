@@ -148,17 +148,18 @@ export default class Button extends Component {
         let loadingIcon = null;
 
         // 如果传入了 loading 的 icons，使用该节点来渲染
-        if (
-            loading &&
-            icons &&
-            icons.loading &&
-            isValidElement(icons.loading)
-        ) {
-            delete btnClsObj[`${prefix}btn-loading`];
+        if (icons && icons.loading && isValidElement(icons.loading)) {
+            if (loading) {
+                delete btnClsObj[`${prefix}btn-loading`];
+                btnClsObj[`${prefix}btn-custom-loading`] = true;
+            }
 
             const loadingSize = iconSize || mapIconSize(size);
             loadingIcon = React.cloneElement(icons.loading, {
-                className: `${prefix}btn-custom-loading-icon`,
+                className: classNames({
+                    [`${prefix}btn-custom-loading-icon`]: true,
+                    show: loading,
+                }),
                 size: loadingSize,
             });
         }
