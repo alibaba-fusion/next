@@ -424,82 +424,7 @@ describe('Menu', () => {
         assert(subItems.length === 2);
     });
 
-    it('should support triggerType under popup mode', done => {
-        if (env.ieVersion === 9) {
-            return done();
-        }
 
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
-            <Menu mode="popup" triggerType="hover">
-                <SubMenu key="sub" label="Sub Menu">
-                    <Item key="1">1</Item>
-                    <Item key="2">2</Item>
-                </SubMenu>
-            </Menu>,
-            div
-        );
-
-        ReactTestUtils.Simulate.mouseEnter(
-            document.querySelector('.next-menu-item')
-        );
-
-        setTimeout(() => {
-            const subMenu = document.querySelector(
-                '.next-overlay-inner.next-menu'
-            );
-            assert(subMenu);
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 500);
-    });
-
-    it('should support popupAutoWidth and popupAlign', done => {
-        if (env.ieVersion === 9) {
-            return done();
-        }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-
-        ReactDOM.render(
-            <Menu
-                mode="popup"
-                popupAutoWidth
-                popupAlign="outside"
-                defaultOpenKeys={['sub']}
-                style={{ width: '300px', height: '300px' }}
-            >
-                <SubMenu
-                    key="sub"
-                    label="Sub Menu"
-                    className="custom"
-                    style={{ color: 'red' }}
-                >
-                    <Item key="1">1</Item>
-                    <Item key="2">2</Item>
-                </SubMenu>
-            </Menu>,
-            div
-        );
-
-        setTimeout(() => {
-            const subMenu = document.querySelector(
-                '.next-overlay-inner.next-menu'
-            );
-
-            assert(subMenu.style.width === '300px');
-            assert(subMenu.style.height === '300px');
-
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 500);
-    });
 
     it('can not select item if not set selectMode', () => {
         wrapper = mount(
@@ -830,6 +755,83 @@ describe('Menu', () => {
         assert('target' in event);
     });
 
+    it('should support triggerType under popup mode', done => {
+        if (env.ieVersion === 9) {
+            return done();
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu mode="popup" triggerType="hover">
+                <SubMenu key="sub" label="Sub Menu">
+                    <Item key="1">1</Item>
+                    <Item key="2">2</Item>
+                </SubMenu>
+            </Menu>,
+            div
+        );
+
+        ReactTestUtils.Simulate.mouseEnter(
+            document.querySelector('.next-menu-item')
+        );
+
+        setTimeout(() => {
+            const subMenu = document.querySelector(
+                '.next-overlay-inner.next-menu'
+            );
+            assert(subMenu);
+
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            done();
+        }, 500);
+    });
+
+    it('should support popupAutoWidth and popupAlign', done => {
+        if (env.ieVersion === 9) {
+            return done();
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu
+                mode="popup"
+                popupAutoWidth
+                popupAlign="outside"
+                defaultOpenKeys={['sub']}
+                style={{ width: '300px', height: '300px' }}
+            >
+                <SubMenu
+                    key="sub"
+                    label="Sub Menu"
+                    className="custom"
+                    style={{ color: 'red' }}
+                >
+                    <Item key="1">1</Item>
+                    <Item key="2">2</Item>
+                </SubMenu>
+            </Menu>,
+            div
+        );
+
+        setTimeout(() => {
+            const subMenu = document.querySelector(
+                '.next-overlay-inner.next-menu'
+            );
+
+            assert(subMenu.style.width === '300px');
+            assert(subMenu.style.height === '300px');
+
+            ReactDOM.unmountComponentAtNode(div);
+            document.body.removeChild(div);
+            done();
+        }, 500);
+    });
+
     it('should support keyboard', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
@@ -913,7 +915,7 @@ describe('Menu', () => {
                 mode="popup"
                 hozInLine
             >
-                <Item key="0" style={{width: 100}}>0</Item>
+                <Item key="0" style={{width: 60}}>0</Item>
                 <Item key="1" style={{width: 60}}>1</Item>
                 <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
                     <Item key="2">2</Item>
@@ -934,7 +936,7 @@ describe('Menu', () => {
         const overlay = document.querySelector('.next-overlay-wrapper');
 
         assert(overlay);
-        assert(overlay.querySelectorAll('li').length === 2);
+        assert(overlay.querySelectorAll('li').length === 1);
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);

@@ -44,6 +44,8 @@ export default function lock(BaseComponent) {
             this.lockRightChildren = [];
         }
 
+        state = {};
+
         getChildContext() {
             return {
                 getTableInstance: this.getTableInstance,

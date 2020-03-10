@@ -341,7 +341,9 @@ class Table extends React.Component {
     static getDerivedStateFromProps(nextProps) {
         const state = {};
 
-        state.sort = nextProps.sort;
+        if (typeof nextProps.sort !== 'undefined') {
+            state.sort = nextProps.sort;
+        }
 
         return state;
     }
