@@ -122,6 +122,7 @@ describe('slider', function () {
                 </Slider>
             );
             wrapper.setProps({ activeIndex: 2 });
+            wrapper.update();
             assert(
                 wrapper
                     .find('.next-slick-slide')
