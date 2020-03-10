@@ -249,8 +249,8 @@ class TimePicker extends Component {
     };
 
     onInputBlur = () => {
-        const { value, inputStr } = this.state;
-        if (!value && inputStr) {
+        const { inputStr } = this.state;
+        if (inputStr) {
             const { format } = this.props;
             const parsed = moment(inputStr, format, true);
             if (parsed.isValid()) {

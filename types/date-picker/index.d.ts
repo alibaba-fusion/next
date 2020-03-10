@@ -135,6 +135,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
+
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
@@ -154,7 +155,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入提示
      */
-    placeholder?: Array<string>;
+    placeholder?: Array<string> | string;
 
     /**
      * 日期范围值数组 [moment, moment]

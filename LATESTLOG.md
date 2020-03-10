@@ -1,11 +1,13 @@
 # Latest Log 
 
-## [1.19.16](https://github.com/alibaba-fusion/next/compare/1.19.15...1.19.16) (2020-02-27)
+## [1.19.18](https://github.com/alibaba-fusion/next/compare/1.19.17...1.19.18) (2020-03-09)
 
 
 ### Bug Fixes
 
-* **Card:** bad time of warning, close [#1612](https://github.com/alibaba-fusion/next/issues/1612) ([02e63e4](https://github.com/alibaba-fusion/next/commit/02e63e4))
-* **Checkbox:** pass value and name to input dom ([3e8f2d9](https://github.com/alibaba-fusion/next/commit/3e8f2d9))
+* **DatePicker:** support string placeholder ([4316946](https://github.com/alibaba-fusion/next/commit/4316946))
+* **Icon:** add className when use iconfont ([face9a4](https://github.com/alibaba-fusion/next/commit/face9a4))
+* **TimePicker:** resolve bugs on blur handler, close [#1533](https://github.com/alibaba-fusion/next/issues/1533) ([ca450ab](https://github.com/alibaba-fusion/next/commit/ca450ab))
+* **Typescript:** second params is not required in ts ([#1657](https://github.com/alibaba-fusion/next/issues/1657)) ([5aa47ba](https://github.com/alibaba-fusion/next/commit/5aa47ba))
 
 
