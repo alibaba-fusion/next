@@ -40,7 +40,7 @@ describe('notification', () => {
         Notification.open({
             title: '哈哈',
             content: '嘿嘿',
-            duration: 3000,
+            duration: 200,
             onClose: () => {
                 called = true;
             }
@@ -48,6 +48,6 @@ describe('notification', () => {
         setTimeout(() => {
             assert(called);
             done();
-        }, 5001)
+        }, 501)
     });
 })

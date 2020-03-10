@@ -936,7 +936,7 @@ describe('Menu', () => {
         const overlay = document.querySelector('.next-overlay-wrapper');
 
         assert(overlay);
-        assert(overlay.querySelectorAll('li').length === 1);
+        assert(overlay.querySelectorAll('li').length === 2);
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
