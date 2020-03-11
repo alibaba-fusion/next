@@ -13,6 +13,7 @@ const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
 const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
+const timeStamp = 1581938105000;
 
 // 禁止选择 startValue 之前的所有日期
 const disabledDate = function(date, view) {
@@ -42,6 +43,15 @@ describe('DatePicker', () => {
             assert(
                 wrapper.find('.next-date-picker-input input').instance()
                     .value === '2017-11-20'
+            );
+            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+        });
+
+        it('should render string unix defaultValue of DatePicker', () => {
+            wrapper = mount(<DatePicker defaultValue={moment(timeStamp)} />);
+            assert(
+                wrapper.find('.next-date-picker-input input').instance()
+                    .value === '2020-02-17'
             );
             assert(wrapper.find('.next-icon-delete-filling').length === 1);
         });
@@ -1052,6 +1062,7 @@ describe('RangePicker', () => {
             wrapper = mount(<RangePicker type="year" followTrigger visible defaultValue={['2018', '2019']} />);
             assert(wrapper.find('.next-calendar').length === 2);
         });
+
         it('should support preview mode render', () => {
             wrapper = mount(<RangePicker defaultValue={[startValue, endValue]} isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
@@ -1063,6 +1074,22 @@ describe('RangePicker', () => {
                 }
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
+
+        it('should support to set placeholder', () => {
+            const placeholder = ['开始日期', '结束日期']
+            wrapper = mount(<RangePicker placeholder={placeholder} />)
+            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
+            assert(startPlaceholder === placeholder[0])
+            assert(endPlaceholder === placeholder[1])
+        });
+
+        it('should support to set placeholder string', () => {
+            const placeholder = 'Please select range'
+            wrapper = mount(<RangePicker placeholder={placeholder} />)
+            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
+            assert(startPlaceholder === placeholder)
+            assert(endPlaceholder === placeholder)
         });
     });
 
