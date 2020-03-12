@@ -90,6 +90,7 @@
     font-size: $balloon-tooltip-content-font-size;
     font-weight: $balloon-tooltip-content-font-weight;
     z-index: 0;
+    word-wrap: break-word;
 
     @include tooltip-state(
         $balloon-tooltip-color,
