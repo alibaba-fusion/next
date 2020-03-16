@@ -14,7 +14,7 @@
 ### 何时使用
 
 -   当用户与被说明对象（文字，图片，输入框等）发生交互行为的action开始时, 即刻跟随动作出现一种辅助或帮助的提示信息。
--   其中Balloon.Tooltip是简化版本，主要用于hover时显示简单文案。
+-   其中Balloon.Tooltip是简化版本，主要用于hover时显示简单文案，如果想让内容可被点击 可以设置`<Balloon.Tootip delay={100} />`
 
 ### 使用注意
 
@@ -70,6 +70,7 @@
 | popupContainer | 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。                                                                                                                                   | any          | -           |
 | followTrigger  | 是否跟随滚动                                                                                                                                                                | Boolean      | -           |
 | id             | 弹层id, 传入值才会支持无障碍                                                                                                                                                      | String       | -           |
+| delay          | 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100                                                                                                                                  | Number       | 0           |
 
 ## 已知问题
 
