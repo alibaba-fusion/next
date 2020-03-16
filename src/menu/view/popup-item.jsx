@@ -200,6 +200,7 @@ export default class PopupItem extends Component {
                 trigger={trigger}
                 triggerType={triggerType}
                 visible={open}
+                pinFollowBaseElementWhenFixed
                 onVisibleChange={this.handleOpen}
                 onOpen={this.handlePopupOpen}
                 onClose={this.handlePopupClose}
@@ -287,7 +288,7 @@ export default class PopupItem extends Component {
 
             arrowProps = {
                 type: 'arrow-right',
-                className: `${prefix}menu-icon-arrow`,
+                className: `${prefix}menu-icon-arrow ${prefix}menu-symbol-popupfold`,
             };
         }
 

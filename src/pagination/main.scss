@@ -245,4 +245,16 @@
             @include mini-size($s-2);
         }
     }
+
+    &-icon-prev::before {
+        content: $pagination-icon-prev-content;
+    }
+
+    &-icon-next::before {
+        content: $pagination-icon-next-content;
+    }
+
+    &-icon-ellipsis::before {
+        content: $pagination-icon-ellipsis-content;
+    }
 }

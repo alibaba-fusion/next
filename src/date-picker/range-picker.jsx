@@ -6,6 +6,7 @@ import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
+import Icon from '../icon';
 import Calendar from '../calendar';
 import RangeCalendar from '../calendar/range-calendar';
 import TimePickerPanel from '../time-picker/panel';
@@ -222,6 +223,10 @@ class RangePicker extends Component {
         name: PropTypes.string,
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
+        placeholder: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.string,
+        ]),
     };
 
     static defaultProps = {
@@ -779,6 +784,7 @@ class RangePicker extends Component {
             isPreview,
             disableChangeMode,
             yearRange,
+            placeholder,
             ...others
         } = this.props;
 
@@ -1088,6 +1094,13 @@ class RangePicker extends Component {
         }[state.panel];
 
         const allowClear = state.startValue && state.endValue && hasClear;
+        let [startPlaceholder, endPlaceholder] = placeholder || [];
+
+        if (typeof placeholder === 'string') {
+            startPlaceholder = placeholder;
+            endPlaceholder = placeholder;
+        }
+
         const trigger = (
             <div className={triggerCls}>
                 <Input
@@ -1096,7 +1109,7 @@ class RangePicker extends Component {
                     role="combobox"
                     aria-expanded={state.visible}
                     label={label}
-                    placeholder={locale.startPlaceholder}
+                    placeholder={startPlaceholder || locale.startPlaceholder}
                     value={startTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
@@ -1110,13 +1123,18 @@ class RangePicker extends Component {
                     readOnly
                     role="combobox"
                     aria-expanded={state.visible}
-                    placeholder={locale.endPlaceholder}
+                    placeholder={endPlaceholder || locale.endPlaceholder}
                     value={endTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
                     onFocus={() => this.onFocusDateInput('endValue')}
                     hasClear={allowClear}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symble-calendar-icon`}
+                        />
+                    }
                 />
             </div>
         );

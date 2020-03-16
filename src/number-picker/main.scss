@@ -19,13 +19,13 @@
         .#{$css-prefix}input {
             width: 100%;
 
-            input {
-                padding-right: 2px;
-            }
-
             .#{$css-prefix}input-control {
                 padding-right: 0;
             }
+        }
+
+        &:not(#{$number-picker-prefix}-no-trigger) .#{$css-prefix}input input {
+            padding-right: 2px;
         }
 
         .#{$css-prefix}btn {
@@ -56,10 +56,12 @@
         }
 
         #{$number-picker-prefix}-handler {
-            opacity: 0;
             transition: opacity $motion-duration-immediately $motion-linear;
             height: 100%;
             display: block;
+        }
+        &:not(#{$number-picker-prefix}-show-trigger) #{$number-picker-prefix}-handler {
+            opacity: 0;
         }
 
         &:hover #{$number-picker-prefix}-handler,
@@ -69,6 +71,13 @@
 
         .#{$css-prefix}input.#{$css-prefix}disabled #{$number-picker-prefix}-handler {
             opacity: 0;
+        }
+
+        #{$number-picker-prefix}-up-icon::before {
+            content: $number-picker-normal-up-icon;
+        }
+        #{$number-picker-prefix}-down-icon::before {
+            content: $number-picker-normal-down-icon;
         }
 
         &.#{$css-prefix}small {
@@ -138,8 +147,16 @@
             padding: 0;
         }
 
+        #{$number-picker-prefix}-add-icon::before {
+            content: $number-picker-inline-add-icon;
+        }
+        #{$number-picker-prefix}-minus-icon::before {
+            content: $number-picker-inline-minus-icon;
+        }
+
         &.#{$css-prefix}small {
             width: 68px;
+            min-width: $form-element-small-height * 3;
 
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-s-button-icon-size);
@@ -164,6 +181,7 @@
 
         &.#{$css-prefix}medium {
             width: $number-picker-inline-m-input-width;
+            min-width: $form-element-medium-height * 3;
 
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-m-button-icon-size);
@@ -188,6 +206,7 @@
 
         &.#{$css-prefix}large {
             width: $number-picker-inline-l-input-width;
+            min-width: $form-element-large-height * 3;
 
             .#{$css-prefix}icon {
                 @include icon-size($number-picker-inline-l-button-icon-size);

@@ -203,6 +203,9 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
      * 是否显示搜索按钮
      */
     hasIcon?: boolean;
+    icons?: {
+        search?: React.ReactNode;
+    };
 }
 
 export default class Search extends React.Component<SearchProps, any> {}

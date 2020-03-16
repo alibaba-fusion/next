@@ -298,6 +298,9 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
      * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
      */
     embeddable?: boolean;
+    icons?: {
+        select?: React.ReactNode;
+    };
 }
 
 export default class Menu extends React.Component<MenuProps, any> {

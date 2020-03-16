@@ -135,19 +135,27 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
+
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
+    placeholder?: any;
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     type?: 'date' | 'month' | 'year',
+
     /**
      * 默认展示的起始月份
      */
     defaultVisibleMonth?: () => {};
+
+    /**
+     * 输入提示
+     */
+    placeholder?: Array<string> | string;
 
     /**
      * 日期范围值数组 [moment, moment]

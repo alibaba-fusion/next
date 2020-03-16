@@ -130,6 +130,15 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
      * 弹层属性透传, 只有当 excessMode 为 dropdown 时生效
      */
     popupProps?: {};
+
+    /**
+     * 自定义 icon
+     */
+    icons?: {
+        dropdown?: string | React.ReactNode;
+        prev?: string | React.ReactNode;
+        next?: string | React.ReactNode;
+    }
 }
 
 export default class Tab extends React.Component<TabProps, any> {

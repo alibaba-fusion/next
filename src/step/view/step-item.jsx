@@ -228,9 +228,12 @@ class StepItem extends Component {
         } = this.props;
         const { others, stepCls, overlayCls } = args;
         const nodeElement = this._getNode();
+        const containerStyle =
+            (shape === 'dot' && { fontSize: 'initial' }) || {};
         let finalNodeElement = (
             <div
                 className={`${prefix}step-item-container`}
+                style={containerStyle}
                 ref={this._refHandlerCreator('container')}
             >
                 <div
@@ -251,7 +254,10 @@ class StepItem extends Component {
         if (!nodeElement) {
             // 需要自定义子节点
             finalNodeElement = (
-                <div className={`${prefix}step-item-container`}>
+                <div
+                    className={`${prefix}step-item-container`}
+                    style={containerStyle}
+                >
                     <div
                         className={`${prefix}step-item-node-placeholder`}
                         onClick={this.onClick}

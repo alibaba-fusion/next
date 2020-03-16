@@ -16,7 +16,7 @@ Button has a inner state `loading` to control if a Button is in loading. It coul
 ---
 
 ````jsx
-import { Button } from '@alifd/next';
+import { Button, Icon } from '@alifd/next';
 
 class Demo extends React.Component {
     constructor(props, context) {

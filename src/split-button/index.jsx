@@ -252,13 +252,17 @@ class SplitButton extends React.Component {
             opened: state.visible,
         });
 
+        const iconCls = classnames({
+            [`${prefix}split-btn-symbol-fold`]: true,
+        });
+
         const trigger = (
             <Button
                 {...triggerProps}
                 {...sharedBtnProps}
                 className={triggerClassNames}
             >
-                <Icon type="arrow-down" />
+                <Icon type="arrow-down" className={iconCls} />
             </Button>
         );
 

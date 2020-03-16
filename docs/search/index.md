@@ -44,6 +44,7 @@
 | hasClear           | 是否显示清除按钮                                                                                                                                              | Boolean       | false     |
 | hasIcon            | 是否显示搜索按钮                                                                                                                                              | Boolean       | true      |
 | disabled           | 是否禁用                                                                                                                                                  | Boolean       | false     |
+| icons              | 可配置的icons，包括 search 等                                                                                                                                 | Object        | {}        |
 
 ## ARIA and KeyBoard
 

@@ -88,6 +88,7 @@ export default class Step extends Component {
                 current: newProps.current,
             });
         }
+        this.adjustHeight();
     }
 
     componentDidUpdate() {
@@ -109,13 +110,15 @@ export default class Step extends Component {
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
             const step = ReactDOM.findDOMNode(this.step);
-            // just resize when init
-            if (step.style.height) return;
             const height = Array.prototype.slice
                 .call(step.getElementsByClassName(`${prefix}step-item`))
                 .reduce((ret, re) => {
                     const itemHeight =
-                        getHeight(re) +
+                        getHeight(
+                            re.getElementsByClassName(
+                                `${prefix}step-item-container`
+                            )[0]
+                        ) +
                         getHeight(
                             re.getElementsByClassName(
                                 `${prefix}step-item-body`

@@ -94,7 +94,7 @@ class Panel extends React.Component {
                     role="button"
                 >
                     <Icon
-                        type="arrow-up"
+                        type="arrow-right"
                         className={iconCls}
                         aria-hidden="true"
                     />

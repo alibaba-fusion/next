@@ -16,6 +16,11 @@ import {
 
 const floatRight = { float: 'right', zIndex: 1 };
 const floatLeft = { float: 'left', zIndex: 1 };
+const iconTypeMap = {
+    dropdown: 'arrow-down',
+    prev: 'arrow-left',
+    next: 'arrow-right',
+};
 const { Popup } = Overlay;
 
 class Nav extends React.Component {
@@ -37,6 +42,7 @@ class Nav extends React.Component {
         style: PropTypes.object,
         className: PropTypes.string,
         locale: PropTypes.object,
+        icons: PropTypes.object,
     };
 
     constructor(props, context) {
@@ -322,7 +328,6 @@ class Nav extends React.Component {
     renderTabList(props) {
         const { prefix, tabs, activeKey, tabRender } = props;
         const tabTemplateFn = tabRender || this.defaultTabTemplateRender;
-        const { locale } = this.props;
 
         const rst = [];
         React.Children.forEach(tabs, child => {
@@ -453,16 +458,38 @@ class Nav extends React.Component {
         }, 100);
     };
 
+    getIcon(type) {
+        const { prefix, icons, rtl } = this.props;
+        const iconType = iconTypeMap[type];
+        let icon = (
+            <Icon
+                type={iconType}
+                rtl={rtl}
+                className={`${prefix}tab-icon-${type}`}
+            />
+        );
+        if (icons[type]) {
+            icon =
+                typeof icons[type] === 'string' ? (
+                    <Icon rtl={rtl} type={icons[type]} />
+                ) : (
+                    icons[type]
+                );
+        }
+
+        return icon;
+    }
+
     renderDropdownTabs(tabs = []) {
         if (!tabs.length) {
             return null;
         }
 
         const { prefix, activeKey, triggerType, popupProps, rtl } = this.props;
+        const dropdownIcon = this.getIcon('dropdown');
+
         const trigger = (
-            <button className={`${prefix}tabs-btn-down`}>
-                <Icon type="arrow-down" />
-            </button>
+            <button className={`${prefix}tabs-btn-down`}>{dropdownIcon}</button>
         );
 
         return (
@@ -571,23 +598,25 @@ class Nav extends React.Component {
             prevButton = null;
             nextButton = null;
         } else if (showNextPrev) {
+            const prevIcon = this.getIcon('prev');
             prevButton = (
                 <button
                     onClick={this.onPrevClick}
                     className={`${prefix}tabs-btn-prev`}
                     ref={this.prevBtnHandler}
                 >
-                    <Icon rtl={rtl} type="arrow-left" />
+                    {prevIcon}
                 </button>
             );
 
+            const nextIcon = this.getIcon('next');
             nextButton = (
                 <button
                     onClick={this.onNextClick}
                     className={`${prefix}tabs-btn-next`}
                     ref={this.nextBtnHandler}
                 >
-                    <Icon rtl={rtl} type="arrow-right" />
+                    {nextIcon}
                 </button>
             );
             restButton = null;
