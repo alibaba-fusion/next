@@ -165,6 +165,10 @@ class Select extends Base {
         onMouseLeave: PropTypes.func,
         onKeyDown: PropTypes.func,
         locale: PropTypes.object,
+        /**
+         * 展开下拉菜单时是否自动焦点到弹层
+         */
+        popupAutoFocus: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -187,6 +191,7 @@ class Select extends Base {
         onBlur: noop,
         onMouseEnter: noop,
         onMouseLeave: noop,
+        popupAutoFocus: false,
     };
 
     static displayName = 'Select';
@@ -381,13 +386,16 @@ class Select extends Base {
     }
 
     handleItemClick() {
-        this.focusInput();
+        if (!this.props.popupAutoFocus) {
+            this.focusInput();
+        }
     }
 
     /**
      * 单选模式
      */
     handleSingleSelect(key, triggerType) {
+        // TODO: 这里 cacheValue=false 有问题，dataSource 更新的时候就应该处理
         const { cacheValue } = this.props;
         // get data only from dataStore while cacheValue=false
         const itemObj = getValueDataSource(
