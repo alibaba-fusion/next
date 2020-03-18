@@ -105,6 +105,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | onBlur          | blur event<br><br>**签名**:<br>Function() => void | Function | func.noop |
 | onToggleHighlightItem | callback func while highlight item changed <br><br>**签名**:<br>Function() => void | Function| func.noop |
 | hiddenSelected | hide menu after selected (only mode="multiple" or "tag") | Boolean                                | -                                  |
+| popupAutoFocus        | whether autofocus to popup                                                                                                                        | Boolean                                | false                              |
 
 ### Select.AutoComplete
 | Param | Descripiton  | Type  | Default Value |
