@@ -234,10 +234,10 @@ export default class TreeNode extends Component {
     handleDragOver(e) {
         if (this.props.root.canDrop(this)) {
             e.preventDefault();
-            e.stopPropagation();
 
             this.props.root.handleDragOver(e, this);
         }
+        e.stopPropagation();
     }
 
     handleDragLeave(e) {
