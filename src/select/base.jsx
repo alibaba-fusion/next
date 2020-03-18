@@ -664,7 +664,7 @@ export default class Base extends React.Component {
 
         const _props = {
             triggerType: 'click',
-            autoFocus: false,
+            autoFocus: !!this.props.popupAutoFocus,
             cache: cache,
             // Put `popupProps` into here for covering above props.
             ...popupProps,

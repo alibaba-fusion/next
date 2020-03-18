@@ -113,6 +113,7 @@ const dataSource = [
 | onRemove              | tag 删除回调<br><br>**签名**:<br>Function(item: object) => void<br>**参数**:<br>_item_: {object} 渲染节点的item                                                                                                                                                        | Function                               | func.noop                          |
 | onFocus               | 焦点事件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                                 | Function                               | func.noop                          |
 | onBlur                | 失去焦点事件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                               | Function                               | func.noop                          |
+| popupAutoFocus        | 展开下拉菜单时是否自动焦点到弹层                                                                                                                                                                                                                                          | Boolean                                | false                              |
 
 ### Select.AutoComplete
 
