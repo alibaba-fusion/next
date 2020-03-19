@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import propTypes from 'prop-types';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
 import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
 import '../../src/tree/style.js';
+
+
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it beforeEach afterEach */
@@ -39,7 +42,7 @@ const dataSource = [
                     {
                         label: '裙子',
                         key: '6',
-                    },
+                    }
                 ],
             },
         ],
@@ -122,11 +125,19 @@ class CheckDemo extends Component {
 }
 
 class DragDemo extends React.Component {
+    static propTypes = {
+        canDrop: propTypes.func
+    }
+
+    static defaultProps = {
+        canDrop: () => true
+    }
+    
     constructor(props) {
         super(props);
 
         this.state = {
-            gData: cloneData(dataSource),
+            gData: cloneData(dataSource)
         };
     }
 
@@ -172,6 +183,7 @@ class DragDemo extends React.Component {
             gData: data,
         });
     }
+
     render() {
         return (
             <Tree
@@ -180,6 +192,7 @@ class DragDemo extends React.Component {
                 defaultExpandAll
                 dataSource={this.state.gData}
                 onDrop={this.onDrop.bind(this)}
+                canDrop={this.props.canDrop.bind(this)}
             />
         );
     }
@@ -238,10 +251,9 @@ describe('Tree', () => {
 
     it('should render by children', () => {
         const loop = data =>
-            data.map(item => {
-                // eslint-disable-next-line
+            data.map((item, index) => {
                 return (
-                    <TreeNode {...item}>
+                    <TreeNode {...item} key={index}>
                         {item.children ? loop(item.children) : null}
                     </TreeNode>
                 );
@@ -669,7 +681,7 @@ describe('Tree', () => {
         );
     });
 
-    it('should support dragging node before drop mode', () => {
+    it('should support dragging node before drop node', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
         dragTreeNode('6', '2', -1);
@@ -689,6 +701,22 @@ describe('Tree', () => {
                 .children[1].querySelector('.next-tree-node-label')
                 .textContent.trim() === '裙子'
         );
+    });
+
+    it('should stop dragover event propagation whatever could drop or not', () => {
+        let isCanDrop = false
+
+        function canDrop({node}) {
+            assert(node.props.eventKey === '2')
+            return isCanDrop
+        }
+        ReactDOM.render(<DragDemo canDrop={canDrop} />, mountNode);
+        
+        // 禁止拖拽
+        dragTreeNode('6', '2', 1, isCanDrop);
+        // 允许拖拽
+        isCanDrop = true
+        dragTreeNode('6', '2', 1, isCanDrop);
     });
 
     it('should load data asynchronously', done => {
@@ -977,7 +1005,7 @@ function rightClickTreeNode(key) {
     );
 }
 
-function dragTreeNode(dragKey, dropKey, dropPosition) {
+function dragTreeNode(dragKey, dropKey, dropPosition, isCanDrop=true) {
     const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector(
         '.next-tree-node-label'
     );
@@ -991,8 +1019,11 @@ function dragTreeNode(dragKey, dropKey, dropPosition) {
     ReactTestUtils.Simulate.dragStart(dragNodeLabel);
     ReactTestUtils.Simulate.dragEnter(dropNode, { pageY });
     ReactTestUtils.Simulate.dragOver(dropNode);
-    ReactTestUtils.Simulate.drop(dropNode);
-    ReactTestUtils.Simulate.dragEnd(dragNodeLabel);
+    // 禁止拖拽的情况 不需要模拟drop dragEnd方法
+    if (isCanDrop) {
+        ReactTestUtils.Simulate.drop(dropNode);
+        ReactTestUtils.Simulate.dragEnd(dragNodeLabel);
+    }
 }
 
 function assertExpanded(key, expanded) {
