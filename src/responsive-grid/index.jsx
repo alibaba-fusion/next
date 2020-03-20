@@ -6,7 +6,7 @@ import { obj } from '../util';
 import createStyle, { getGridChildProps } from './create-style';
 import Cell from './cell';
 
-const { pickOthers } = obj;
+const { pickOthers, isReactFragment } = obj;
 
 const createChildren = (children, device) => {
     const array = React.Children.toArray(children);
@@ -15,6 +15,10 @@ const createChildren = (children, device) => {
     }
 
     return array.map(child => {
+        if (isReactFragment(child)) {
+            return createChildren(child.props.children, device);
+        }
+
         if (
             React.isValidElement(child) &&
             typeof child.type === 'function' &&
