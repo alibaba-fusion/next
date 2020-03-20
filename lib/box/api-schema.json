@@ -1,0 +1,185 @@
+{
+  "name": "Box",
+  "props": {
+    "flex": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "union",
+              "value": [
+                {
+                  "name": "number"
+                },
+                {
+                  "name": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "布局属性",
+      "docblock": "布局属性"
+    },
+    "direction": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'row'",
+            "computed": false
+          },
+          {
+            "value": "'column'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "布局方向，默认为 column ，一个元素占据一整行",
+      "defaultValue": {
+        "value": "column",
+        "computed": false
+      },
+      "docblock": "布局方向，默认为 column ，一个元素占据一整行\n@default column"
+    },
+    "wrap": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否折行",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否折行"
+    },
+    "spacing": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "元素之间的间距 [bottom&top, right&left]",
+      "docblock": "元素之间的间距 [bottom&top, right&left]"
+    },
+    "margin": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置 margin [bottom&top, right&left]",
+      "docblock": "设置 margin [bottom&top, right&left]"
+    },
+    "padding": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置 padding [bottom&top, right&left]",
+      "docblock": "设置 padding [bottom&top, right&left]"
+    },
+    "justify": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'flex-start'",
+            "computed": false
+          },
+          {
+            "value": "'center'",
+            "computed": false
+          },
+          {
+            "value": "'flex-end'",
+            "computed": false
+          },
+          {
+            "value": "'space-between'",
+            "computed": false
+          },
+          {
+            "value": "'space-around'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）",
+      "docblock": "沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）"
+    },
+    "align": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'flex-start'",
+            "computed": false
+          },
+          {
+            "value": "'center'",
+            "computed": false
+          },
+          {
+            "value": "'flex-end'",
+            "computed": false
+          },
+          {
+            "value": "'baseline'",
+            "computed": false
+          },
+          {
+            "value": "'stretch'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）",
+      "docblock": "垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
