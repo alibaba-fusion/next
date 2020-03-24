@@ -70,6 +70,7 @@ class ResponsiveGrid extends Component {
          * 设置标签类型
          */
         component: PropTypes.elementType,
+        style: PropTypes.object,
     };
 
     static defaultProps = {
