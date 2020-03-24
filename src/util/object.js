@@ -293,3 +293,14 @@ export function isClassComponent(component) {
         component.prototype.isReactComponent !== undefined
     );
 }
+
+/**
+ * 判断是否为 ReactFragment
+ * @param {*} component  传入的组件
+ */
+export function isReactFragment(component) {
+    if (component.type) {
+        return component.type === React.Fragment;
+    }
+    return component === React.Fragment;
+}
