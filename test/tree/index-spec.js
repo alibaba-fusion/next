@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 import propTypes from 'prop-types';
 import assert from 'power-assert';
@@ -602,6 +602,28 @@ describe('Tree', () => {
         ['2', '3', '4'].forEach(key => assertChecked(key, false));
         ['2', '3', '4'].forEach(key => assertIndeterminate(key, false));
         ['1', '5', '6'].forEach(key => assertChecked(key, true));
+    });
+
+    it('should support setting indeterminate key when checkStrictly is true', done => {
+        function CheckStrictlyDemo() {
+            const [checkedKeys, setCheckedKeys] = useState({})
+
+            setTimeout(() => {
+                setCheckedKeys({
+                    checked: ['2'],
+                    indeterminate: ['3']
+                })
+            }, 100);
+            
+            return <CheckDemo checkStrictly checkedKeys={checkedKeys}/>;
+        }
+        ReactDOM.render(<CheckStrictlyDemo/>, mountNode);
+
+        setTimeout(() => {
+            assertChecked('2', true);
+            assertIndeterminate('3', true);
+            done();
+        }, 120);
     });
 
     it('should support editing node', () => {

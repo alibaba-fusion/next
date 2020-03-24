@@ -327,9 +327,11 @@ export default class Tree extends Component {
             st.checkedKeys = this.getCheckedKeys(nextProps, true);
         }
 
-        this.indeterminateKeys = this.getIndeterminateKeys(
-            st.checkedKeys || this.state.checkedKeys || []
-        );
+        this.indeterminateKeys =
+            (nextProps.checkStrictly
+                ? nextProps.checkedKeys && nextProps.checkedKeys.indeterminate
+                : st.checkedKeys &&
+                  this.getIndeterminateKeys(st.checkedKeys)) || [];
 
         if (Object.keys(st).length) {
             this.setState(st);
@@ -540,6 +542,7 @@ export default class Tree extends Component {
         }
         return keys;
     }
+
     /*eslint-disable max-statements*/
     handleItemKeyDown(key, item, e) {
         if (
@@ -705,6 +708,7 @@ export default class Tree extends Component {
                 node,
                 indeterminateKeys: this.indeterminateKeys,
                 checked: check,
+                key,
             });
 
             return;
@@ -718,11 +722,6 @@ export default class Tree extends Component {
         });
 
         const ps = Object.keys(this._p2n);
-        // ps.forEach(p => {
-        //     if (this._p2n[p].checkable !== false && !this._p2n[p].disabled && isDescendantOrSelf(pos, p)) {
-        //         this.processKey(checkedKeys, this._p2n[p].key, check);
-        //     }
-        // });
 
         let currentPos = pos;
         const nums = pos.split('-');
@@ -823,6 +822,7 @@ export default class Tree extends Component {
             node,
             indeterminateKeys,
             checked: check,
+            key,
         });
     }
     /*eslint-enable*/
@@ -834,7 +834,7 @@ export default class Tree extends Component {
             checkedKeys,
             dragOverNodeKey,
         } = this.state;
-        const pos = this._k2n[key].pos;
+        const { pos } = this._k2n[key];
 
         return {
             prefix,
