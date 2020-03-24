@@ -327,12 +327,6 @@ export default class Tree extends Component {
             st.checkedKeys = this.getCheckedKeys(nextProps, true);
         }
 
-        this.indeterminateKeys =
-            (nextProps.checkStrictly
-                ? nextProps.checkedKeys && nextProps.checkedKeys.indeterminate
-                : st.checkedKeys &&
-                  this.getIndeterminateKeys(st.checkedKeys)) || [];
-
         if (Object.keys(st).length) {
             this.setState(st);
         }
