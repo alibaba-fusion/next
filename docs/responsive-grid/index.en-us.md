@@ -22,6 +22,7 @@ Css-grid, added in 1.19.0+
 | columns | how many columns in total, 12 by default                                                                   | Number/String           | -         |
 | gap     | gap among each cell [bottom&top, right&left]                                          | Array&lt;Number>/Number | -         |
 | component | The html tag to be rendered | custom | 'div' |
+| dense     | Fill as closely as possible without spaces                                                     | Boolean                 | false     |
 
 ### ResponsiveGrid.Cell
 
