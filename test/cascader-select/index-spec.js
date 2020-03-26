@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import ReactDOM from 'react-dom';
+import ReactTestUtils, { act } from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -437,7 +438,12 @@ describe('CascaderSelect', () => {
             assert(item.value === VALUE);
             called = true;
         }
-        wrapper = mount(<CascaderSelect multiple displayRender={(displayPath, item) => item.label || ''} dataSource={ChinaArea} valueRender={valueRender} />);
+        wrapper = mount(<CascaderSelect
+            multiple
+            displayRender={(displayPath, item) => item.label || ''}
+            dataSource={ChinaArea}
+            valueRender={valueRender}
+        />);
         wrapper.setProps({
             value: VALUE,
         });
@@ -491,6 +497,44 @@ describe('CascaderSelect', () => {
             }
         });
         assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+    });
+
+    it('should support setting resultAutoWidth to false', (done) => {
+
+        const width = '120px';
+        const container = document.createElement('div');
+
+        document.body.appendChild(container);
+
+        act(() => {
+            ReactDOM.render(<CascaderSelect
+                popupProps={{ className: 'result-auto-width-popup' }}
+                className="cs-auto-width"
+                style={{ width }}
+                multiple
+                resultAutoWidth={false}
+                showSearch
+                defaultVisible
+                defaultValue="2975"
+                dataSource={ChinaArea}
+            />, container);
+        });
+
+        const iptElem = document.querySelector('.cs-auto-width input');
+
+        ReactTestUtils.Simulate.input(iptElem);
+        iptElem.value = '杭州';
+        ReactTestUtils.Simulate.change(iptElem);
+
+        setTimeout(() => {
+            const popEl = document.querySelector('.result-auto-width-popup');
+
+            assert(popEl.style.width === '');
+
+            popEl.remove();
+            container.remove();
+            done();
+        }, 50)
     })
 });
 
