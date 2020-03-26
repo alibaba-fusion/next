@@ -1,12 +1,21 @@
 # Latest Log 
 
-## [1.19.19](https://github.com/alibaba-fusion/next/compare/1.19.18...1.19.19) (2020-03-20)
+## [1.19.20](https://github.com/alibaba-fusion/next/compare/1.19.19...1.19.20) (2020-03-26)
 
 
 ### Bug Fixes
 
-* **Balloon:** add break-word to Tooltip, close [#1680](https://github.com/alibaba-fusion/next/issues/1680) ([#1681](https://github.com/alibaba-fusion/next/issues/1681)) ([f0a5c64](https://github.com/alibaba-fusion/next/commit/f0a5c64))
-* **Menu:** 0-1 is not parent of 0-10, close [#1701](https://github.com/alibaba-fusion/next/issues/1701) ([9b2b74a](https://github.com/alibaba-fusion/next/commit/9b2b74a))
-* **Tree:** stop dragover event propagation, close [#1662](https://github.com/alibaba-fusion/next/issues/1662) ([22afc6b](https://github.com/alibaba-fusion/next/commit/22afc6b))
+* **CascaderSelect:** resolve resultAutoWidth prop unuseless, close [#1710](https://github.com/alibaba-fusion/next/issues/1710) ([#1713](https://github.com/alibaba-fusion/next/issues/1713)) ([f343444](https://github.com/alibaba-fusion/next/commit/f343444))
+* **Form:** Form adapts to React.Fragment, close[#1702](https://github.com/alibaba-fusion/next/issues/1702) ([cc7121a](https://github.com/alibaba-fusion/next/commit/cc7121a))
+* **Form:** textarea font size in preview, close [#1711](https://github.com/alibaba-fusion/next/issues/1711) ([dd4a973](https://github.com/alibaba-fusion/next/commit/dd4a973))
+* **ResponsiveGrid:** merge style, close [#1707](https://github.com/alibaba-fusion/next/issues/1707) ([70cb3ab](https://github.com/alibaba-fusion/next/commit/70cb3ab))
+* **Tab:** wait until animation end, close [#1674](https://github.com/alibaba-fusion/next/issues/1674) ([#1677](https://github.com/alibaba-fusion/next/issues/1677)) ([bd666f7](https://github.com/alibaba-fusion/next/commit/bd666f7))
+* **Typescript:** update type of menu onOpen arguments ([#1714](https://github.com/alibaba-fusion/next/issues/1714)) ([418f370](https://github.com/alibaba-fusion/next/commit/418f370))
+
+
+### Features
+
+* **Box:** add component api ([111d1ea](https://github.com/alibaba-fusion/next/commit/111d1ea))
+* **ResponsiveGrid:** add dense ([d0dd1bc](https://github.com/alibaba-fusion/next/commit/d0dd1bc))
 
 
