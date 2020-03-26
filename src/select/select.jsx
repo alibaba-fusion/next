@@ -898,7 +898,7 @@ class Select extends Base {
     };
 
     hasClear() {
-        const { hasClear, readOnly, disabled, mode, showSearch } = this.props;
+        const { hasClear, readOnly, disabled, showSearch } = this.props;
         const { value, visible } = this.state;
 
         return (
@@ -907,7 +907,6 @@ class Select extends Base {
             hasClear &&
             !readOnly &&
             !disabled &&
-            mode === 'single' &&
             !(showSearch && visible)
         );
     }
@@ -1123,7 +1122,11 @@ class Select extends Base {
      * @param {object} props
      */
     renderMenuHeader() {
-        const { prefix, hasSelectAll, mode } = this.props;
+        const { prefix, hasSelectAll, mode, menuProps } = this.props;
+
+        if (menuProps && 'header' in menuProps) {
+            return menuProps.header;
+        }
 
         const sourceCount = this.dataStore.getEnableDS().length;
         // 多选模式下才有全选

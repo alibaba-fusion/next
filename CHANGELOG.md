@@ -1,5 +1,163 @@
 # Change Log 
 
+## [1.19.18](https://github.com/alibaba-fusion/next/compare/1.19.17...1.19.18) (2020-03-09)
+
+
+### Bug Fixes
+
+* **DatePicker:** support string placeholder ([4316946](https://github.com/alibaba-fusion/next/commit/4316946))
+* **Icon:** add className when use iconfont ([face9a4](https://github.com/alibaba-fusion/next/commit/face9a4))
+* **TimePicker:** resolve bugs on blur handler, close [#1533](https://github.com/alibaba-fusion/next/issues/1533) ([ca450ab](https://github.com/alibaba-fusion/next/commit/ca450ab))
+* **Typescript:** second params is not required in ts ([#1657](https://github.com/alibaba-fusion/next/issues/1657)) ([5aa47ba](https://github.com/alibaba-fusion/next/commit/5aa47ba))
+
+
+
+
+## [1.19.17](https://github.com/alibaba-fusion/next/compare/1.19.16...1.19.17) (2020-03-06)
+
+
+### Bug Fixes
+
+* **DatePicker:** support placeholder prop for range-picker fix [#1610](https://github.com/alibaba-fusion/next/issues/1610) ([1f7f8eb](https://github.com/alibaba-fusion/next/commit/1f7f8eb))
+* **Overlay:** close [#1604](https://github.com/alibaba-fusion/next/issues/1604) ([dfbbe2a](https://github.com/alibaba-fusion/next/commit/dfbbe2a))
+* **Select:** support header&footer for popup menu fix [#1583](https://github.com/alibaba-fusion/next/issues/1583) ([#1598](https://github.com/alibaba-fusion/next/issues/1598)) ([784714a](https://github.com/alibaba-fusion/next/commit/784714a))
+
+
+
+
+## [1.19.16](https://github.com/alibaba-fusion/next/compare/1.19.15...1.19.16) (2020-02-27)
+
+
+### Bug Fixes
+
+* **Card:** bad time of warning, close [#1612](https://github.com/alibaba-fusion/next/issues/1612) ([02e63e4](https://github.com/alibaba-fusion/next/commit/02e63e4))
+* **Checkbox:** pass value and name to input dom ([3e8f2d9](https://github.com/alibaba-fusion/next/commit/3e8f2d9))
+
+
+
+
+## [1.19.15](https://github.com/alibaba-fusion/next/compare/1.19.14...1.19.15) (2020-02-24)
+
+
+### Bug Fixes
+
+* correct sideEffect path ([9e52828](https://github.com/alibaba-fusion/next/commit/9e52828))
+
+
+
+
+## [1.19.14](https://github.com/alibaba-fusion/next/compare/1.19.13...1.19.14) (2020-02-21)
+
+
+### Bug Fixes
+
+* **Tree:** bug of selected close [#1578](https://github.com/alibaba-fusion/next/issues/1578) ([4455570](https://github.com/alibaba-fusion/next/commit/4455570))
+
+
+
+
+## [1.19.13](https://github.com/alibaba-fusion/next/compare/1.19.12...1.19.13) (2020-02-14)
+
+
+### Bug Fixes
+
+* **Collapse:** collapsed panel should be overflow hidden, close [#1569](https://github.com/alibaba-fusion/next/issues/1569) ([c2767ec](https://github.com/alibaba-fusion/next/commit/c2767ec))
+
+
+### Features
+
+* **Shell:** add align for Shell.Navigaiton ([#1576](https://github.com/alibaba-fusion/next/issues/1576)) ([e6318c3](https://github.com/alibaba-fusion/next/commit/e6318c3))
+* **Table:** add htmlTitle for header ([8a89c0a](https://github.com/alibaba-fusion/next/commit/8a89c0a))
+
+
+
+
+## [1.19.12](https://github.com/alibaba-fusion/next/compare/1.19.11...1.19.12) (2020-02-10)
+
+
+### Bug Fixes
+
+* **Checkbox:** allow pass title to label ([fd36f8c](https://github.com/alibaba-fusion/next/commit/fd36f8c))
+* **Tab:** fix tab hover shake ([#1563](https://github.com/alibaba-fusion/next/issues/1563)) ([c921c89](https://github.com/alibaba-fusion/next/commit/c921c89))
+
+
+
+
+## [1.19.11](https://github.com/alibaba-fusion/next/compare/1.19.10...1.19.11) (2020-02-05)
+
+
+### Bug Fixes
+
+* **NumberPicker:** bug of delete like 0.01 => 0.0 ([7377629](https://github.com/alibaba-fusion/next/commit/7377629))
+* **NumberPicker:** can input char while value=null ([be34205](https://github.com/alibaba-fusion/next/commit/be34205))
+* **NumberPicker:** remove iconSize ([030cb2c](https://github.com/alibaba-fusion/next/commit/030cb2c))
+* **Table:** add title for table header, close [#1550](https://github.com/alibaba-fusion/next/issues/1550) ([1fe345c](https://github.com/alibaba-fusion/next/commit/1fe345c))
+* **Upload:** Compatibility in ie/firefox ([23083ee](https://github.com/alibaba-fusion/next/commit/23083ee))
+
+
+
+
+## [1.19.10](https://github.com/alibaba-fusion/next/compare/1.19.9...1.19.10) (2020-01-20)
+
+
+### Bug Fixes
+
+* **Select:** add one key clear. close [#1422](https://github.com/alibaba-fusion/next/issues/1422) ([7d0a66f](https://github.com/alibaba-fusion/next/commit/7d0a66f))
+* **Table:** fix ssr ([cebb6e6](https://github.com/alibaba-fusion/next/commit/cebb6e6))
+* **Table:** lock columns disorder when no header, close [#1543](https://github.com/alibaba-fusion/next/issues/1543) ([af405c2](https://github.com/alibaba-fusion/next/commit/af405c2))
+* **Table:** primaryKey is 0 ([67ce931](https://github.com/alibaba-fusion/next/commit/67ce931))
+* **Upload:** bugs of IE ([7e83236](https://github.com/alibaba-fusion/next/commit/7e83236))
+
+
+### Features
+
+* **Form:** make preview configurable ([03c8326](https://github.com/alibaba-fusion/next/commit/03c8326))
+* **Menu:** add render more ([67cb1a0](https://github.com/alibaba-fusion/next/commit/67cb1a0))
+
+
+
+
+## [1.19.9](https://github.com/alibaba-fusion/next/compare/1.19.8...1.19.9) (2020-01-14)
+
+
+### Bug Fixes
+
+* **Dialog:** popupContainer of ConfigProvider should work, close [#1508](https://github.com/alibaba-fusion/next/issues/1508) ([67caa94](https://github.com/alibaba-fusion/next/commit/67caa94))
+* **Shell:** change default navigation background-color ([7e811ed](https://github.com/alibaba-fusion/next/commit/7e811ed))
+* **Table:** lock height sync fail in ie ([d450505](https://github.com/alibaba-fusion/next/commit/d450505))
+* **Table:** support lock columns with colspan, close [#1452](https://github.com/alibaba-fusion/next/issues/1452) ([8ae3e21](https://github.com/alibaba-fusion/next/commit/8ae3e21))
+* **Upload:** progressbar layout exception in fusion-cool tool ([1f4d97a](https://github.com/alibaba-fusion/next/commit/1f4d97a))
+
+
+
+
+## [1.19.8](https://github.com/alibaba-fusion/next/compare/1.19.7...1.19.8) (2020-01-07)
+
+
+### Bug Fixes
+
+* **Table:** disorder with mouse ([14dce9d](https://github.com/alibaba-fusion/next/commit/14dce9d))
+
+
+
+
+## [1.19.7](https://github.com/alibaba-fusion/next/compare/1.19.6...1.19.7) (2020-01-07)
+
+
+### Bug Fixes
+
+* **Core:** close [#1447](https://github.com/alibaba-fusion/next/issues/1447) ([8c82065](https://github.com/alibaba-fusion/next/commit/8c82065))
+* **Table:** lock columns disordered with hasBorder false, close [#1471](https://github.com/alibaba-fusion/next/issues/1471) ([03244b8](https://github.com/alibaba-fusion/next/commit/03244b8)) ([361d0a5](https://github.com/alibaba-fusion/next/commit/361d0a5))
+* **Table:** make marginLeft of icon be congifurable, close [#1474](https://github.com/alibaba-fusion/next/issues/1474) ([84a0c69](https://github.com/alibaba-fusion/next/commit/84a0c69))
+* **Table:** make tree&expand icon configurable ([f765ace](https://github.com/alibaba-fusion/next/commit/f765ace)) ([75a07d3](https://github.com/alibaba-fusion/next/commit/75a07d3))
+* **Table:** scroll and empty content issues ([8348b6a](https://github.com/alibaba-fusion/next/commit/8348b6a))
+
+### Features
+
+* **Table:** support crossline ([fbe4b4e](https://github.com/alibaba-fusion/next/commit/fbe4b4e))
+* **Overlay:** auto fit container, close [#1350](https://github.com/alibaba-fusion/next/issues/1350) ([010e0c8](https://github.com/alibaba-fusion/next/commit/010e0c8))
+
+
 ## [1.19.6](https://github.com/alibaba-fusion/next/compare/1.19.5...1.19.6) (2020-01-02)
 
 

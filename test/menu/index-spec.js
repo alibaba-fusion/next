@@ -913,7 +913,7 @@ describe('Menu', () => {
                 mode="popup"
                 hozInLine
             >
-                <Item key="0" style={{width: 100}}>0</Item>
+                <Item key="0" style={{width: 60}}>0</Item>
                 <Item key="1" style={{width: 60}}>1</Item>
                 <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
                     <Item key="2">2</Item>
@@ -976,7 +976,7 @@ describe('Menu', () => {
         const overlay = document.querySelector('.next-overlay-wrapper');
 
         assert(overlay);
-        assert(overlay.querySelectorAll('li').length === 3);
+        assert(overlay.querySelectorAll('li').length === 4);
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);

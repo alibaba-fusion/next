@@ -1,15 +1,15 @@
-# 简单
+# 十字参考轴
 
-- order: 0
+- order: 25
 
-简单的表格渲染
+适用于表头比较复杂，需要做表头分类的场景。
 
 :::lang=en-us
-# Simple
+# Crossline
 
-- order: 0
+- order: 25
 
-Simple table usage.
+It is usually used in the case of header is complex and needs to be classified.
 :::
 
 ---
@@ -28,13 +28,14 @@ const dataSource = () => {
     }
     return result;
 };
-const render = (value, index, record) => {
-    return <a href="javascript:;">Remove({record.id})</a>;
+const render = (current) => {
+    return <a> remove {current}</a>;
 };
-ReactDOM.render(<Table dataSource={dataSource()}>
-    <Table.Column title="Id" htmlTitle="Unique Id" dataIndex="id"/>
+
+ReactDOM.render(<Table dataSource={dataSource()} crossline>
+    <Table.Column title="Id" dataIndex="id"/>
     <Table.Column title="Title" dataIndex="title.name" />
     <Table.Column title="Time" dataIndex="time"/>
-    <Table.Column cell={render}/>
+    <Table.Column title="Operation" dataIndex="id" cell={render}/>
 </Table>, mountNode);
 ````

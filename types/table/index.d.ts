@@ -26,6 +26,7 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      */
     title?: React.ReactElement<any> | React.ReactNode | (() => void);
 
+    htmlTitle?: string;
     /**
      * 是否支持排序
      */
@@ -364,12 +365,12 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 是否开启虚拟滚动
      */
     useVirtual?: boolean;
-    
+
     /**
      * 滚动到指定行
      */
     scrollToRow?: number;
-    
+
     /**
      * 设置行高
      */
@@ -384,6 +385,10 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 开启时，getExpandedColProps() / getRowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
      */
     expandedIndexSimulate?: boolean;
+     /**
+     * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
+     */
+    crossline?: boolean;
 }
 
 export default class Table extends React.Component<TableProps, any> {

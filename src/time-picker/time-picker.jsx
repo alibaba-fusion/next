@@ -112,7 +112,7 @@ class TimePicker extends Component {
          * @param {Object} target 目标节点
          * @return {ReactNode} 容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层对齐方式, 详情见Overlay 文档
          */
@@ -248,8 +248,8 @@ class TimePicker extends Component {
     };
 
     onInputBlur = () => {
-        const { value, inputStr } = this.state;
-        if (!value && inputStr) {
+        const { inputStr } = this.state;
+        if (inputStr) {
             const { format } = this.props;
             const parsed = moment(inputStr, format, true);
             if (parsed.isValid()) {

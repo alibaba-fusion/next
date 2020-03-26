@@ -30,7 +30,14 @@ export default function createFromIconfontCN(options = {}) {
     }
 
     const Iconfont = props => {
-        const { type, size, children, prefix = 'next-', ...others } = props;
+        const {
+            type,
+            size,
+            children,
+            className,
+            prefix = 'next-',
+            ...others
+        } = props;
 
         // component > children > type
         let content = null;
@@ -41,9 +48,12 @@ export default function createFromIconfontCN(options = {}) {
             content = children;
         }
 
-        const classes = cx({
-            [`${prefix}icon-remote`]: true,
-        });
+        const classes = cx(
+            {
+                [`${prefix}icon-remote`]: true,
+            },
+            className
+        );
 
         return (
             <Icon size={size}>

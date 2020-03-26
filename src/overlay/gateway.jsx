@@ -32,7 +32,11 @@ export default class Gateway extends Component {
     }
 
     getChildNode() {
-        return findDOMNode(this.child);
+        try {
+            return findDOMNode(this.child);
+        } catch (err) {
+            return null;
+        }
     }
 
     saveChildRef = ref => {

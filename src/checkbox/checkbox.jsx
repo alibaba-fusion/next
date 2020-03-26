@@ -180,6 +180,7 @@ class Checkbox extends UIState {
     onChange(e) {
         const checked = e.target.checked;
         const value = this.props.value;
+
         if (this.disabled) {
             return;
         }
@@ -214,6 +215,8 @@ class Checkbox extends UIState {
             rtl,
             isPreview,
             renderPreview,
+            value,
+            name,
             ...otherProps
         } = this.props;
         const checked = !!this.state.checked;
@@ -223,11 +226,16 @@ class Checkbox extends UIState {
 
         const others = obj.pickOthers(Checkbox.propTypes, otherProps);
         const othersData = obj.pickAttrsWith(others, 'data-');
+        if (otherProps.title) {
+            othersData.title = otherProps.title;
+        }
 
         let childInput = (
             <input
                 {...obj.pickOthers(Checkbox.propTypes, otherProps)}
                 id={id}
+                value={value}
+                name={name}
                 disabled={disabled}
                 checked={checked}
                 type="checkbox"

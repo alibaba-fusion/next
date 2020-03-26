@@ -76,7 +76,7 @@ export default class Base extends React.Component {
         /**
          * 弹层挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层的 className
          */
@@ -394,6 +394,12 @@ export default class Base extends React.Component {
      * @abstract
      */
     renderMenuHeader() {
+        const { menuProps } = this.props;
+
+        if (menuProps && 'header' in menuProps) {
+            return menuProps.header;
+        }
+
         return null;
     }
 

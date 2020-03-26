@@ -157,7 +157,7 @@ class RangePicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层自定义样式
          */
@@ -222,6 +222,10 @@ class RangePicker extends Component {
         name: PropTypes.string,
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
+        placeholder: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.string,
+        ]),
     };
 
     static defaultProps = {
@@ -779,6 +783,7 @@ class RangePicker extends Component {
             isPreview,
             disableChangeMode,
             yearRange,
+            placeholder,
             ...others
         } = this.props;
 
@@ -1088,6 +1093,13 @@ class RangePicker extends Component {
         }[state.panel];
 
         const allowClear = state.startValue && state.endValue && hasClear;
+        let [startPlaceholder, endPlaceholder] = placeholder || [];
+
+        if (typeof placeholder === 'string') {
+            startPlaceholder = placeholder;
+            endPlaceholder = placeholder;
+        }
+
         const trigger = (
             <div className={triggerCls}>
                 <Input
@@ -1096,7 +1108,7 @@ class RangePicker extends Component {
                     role="combobox"
                     aria-expanded={state.visible}
                     label={label}
-                    placeholder={locale.startPlaceholder}
+                    placeholder={startPlaceholder || locale.startPlaceholder}
                     value={startTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
@@ -1110,7 +1122,7 @@ class RangePicker extends Component {
                     readOnly
                     role="combobox"
                     aria-expanded={state.visible}
-                    placeholder={locale.endPlaceholder}
+                    placeholder={endPlaceholder || locale.endPlaceholder}
                     value={endTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
