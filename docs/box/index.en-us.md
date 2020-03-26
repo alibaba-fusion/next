@@ -27,3 +27,4 @@ Flex box, added in 1.19.0+
 | device    | device for responsive <br><br>**options**:<br>'phone'(手机)<br>'tablet'(平板)<br>'desktop'(PC) | Enum                           | -      |
 | justify   | justify-content <br><br>**options**:<br>'flex-start', 'center', 'flex-end', 'space-between', 'space-around' | Enum                           | -      |
 | align     | align-items <br><br>**options**:<br>'flex-start', 'center', 'flex-end', 'baseline', 'stretch'               | Enum                           | -      |
+| component | change the html tag, for example section                                                                                                               | String                         | 'div'  |

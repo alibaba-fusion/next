@@ -27,6 +27,7 @@ PC first，其他屏幕支持自适应，因此默认情况下 `device` 处于 `
 | columns   | 分为几列， 默认是 12 列                                                                   | Number/String           | -         |
 | gap       | 每个 cell 之间的间距， [bottom&top, right&left]                                          | Array&lt;Number>/Number | -         |
 | component | 设置标签类型                                                                           | custom                  | 'div'     |
+| dense     | 是否开启紧密模式，开启后尽可能能紧密填满，尽量不出现空格                                                     | Boolean                 | false     |
 
 ### ResponsiveGrid.Cell
 

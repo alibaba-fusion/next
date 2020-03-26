@@ -173,12 +173,17 @@ class Box extends Component {
             'stretch',
         ]),
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 定制标签名， 例如section等
+         */
+        component: PropTypes.string,
     };
 
     static defaultProps = {
         prefix: 'next-',
         direction: 'column',
         wrap: false,
+        component: 'div',
     };
 
     render() {
@@ -196,6 +201,7 @@ class Box extends Component {
             className,
             children,
             device,
+            component,
         } = this.props;
 
         const styleProps = {
@@ -208,7 +214,7 @@ class Box extends Component {
             padding,
             margin,
         };
-        const View = 'Component' in this.props ? Component : 'div';
+        const View = component;
         const others = pickOthers(Object.keys(Box.propTypes), this.props);
         const styleSheet = getStyle(style, styleProps);
 
@@ -232,11 +238,11 @@ class Box extends Component {
 
             return (
                 <View style={outerStyle} className={cls} {...others}>
-                    <View style={helperStyle}>
-                        <View style={innerStyle} className={`${prefix}box`}>
+                    <div style={helperStyle}>
+                        <div style={innerStyle} className={`${prefix}box`}>
                             {boxs}
-                        </View>
-                    </View>
+                        </div>
+                    </div>
                 </View>
             );
         }
