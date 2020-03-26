@@ -65,7 +65,7 @@ class Nav extends React.Component {
         clearTimeout(this.slideTimer);
         this.slideTimer = setTimeout(() => {
             this.setSlideBtn();
-        }, 200);
+        }, 410);
     }
 
     componentWillUnmount() {

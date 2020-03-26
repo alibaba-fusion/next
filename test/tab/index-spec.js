@@ -400,7 +400,7 @@ describe('Tab', () => {
                 );
                 assert(wrapper.find('.next-tabs-btn-next').length === 1);
                 done();
-            }, 300);
+            }, 420);
         });
 
         it('should click prev/next to slide', done => {
@@ -432,7 +432,7 @@ describe('Tab', () => {
                     )
                 );
                 done();
-            }, 300);
+            }, 420);
         });
 
         it('should not render dropdown if not excessed', () => {
