@@ -518,15 +518,21 @@ describe('CascaderSelect', () => {
                 defaultValue="2975"
                 dataSource={ChinaArea}
             />, container);
-        })
+        });
 
         const iptElem = document.querySelector('.cs-auto-width input');
 
         ReactTestUtils.Simulate.input(iptElem);
         iptElem.value = '杭州';
         ReactTestUtils.Simulate.change(iptElem);
+
         setTimeout(() => {
-            assert(document.querySelector('.result-auto-width-popup').style.width === '');
+            const popEl = document.querySelector('.result-auto-width-popup');
+
+            assert(popEl.style.width === '');
+
+            popEl.remove();
+            container.remove();
             done();
         }, 50)
     })
