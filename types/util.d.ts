@@ -16,11 +16,6 @@ export default interface CommonProps {
     locale?: {};
 
     /**
-     * 组件上可配置的icons变量
-     */
-    icons?: IconsType;
-
-    /**
      * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用
      */
     pure?: boolean;
