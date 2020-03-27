@@ -152,7 +152,9 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     checkedKeys = normalizeToArray(checkedKeys);
     const filteredKeys = checkedKeys.filter(key => !!_k2n[key]);
     const flatKeys = [
-        ...filterChildKey(filteredKeys, _k2n, _p2n),
+        ...filterChildKey(filteredKeys, _k2n, _p2n).filter(
+            key => !(_k2n[key].disabled || _k2n[key].checkboxDisabled)
+        ),
         ...filteredKeys.filter(
             key => _k2n[key].disabled || _k2n[key].checkboxDisabled
         ),
