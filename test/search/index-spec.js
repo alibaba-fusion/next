@@ -140,6 +140,42 @@ describe('Search', () => {
             done();
         });
 
+        it('should support onChange/onSearch ', done => {
+            let dataSource = [
+                {
+                    label: 'AAAAA',
+                    value: 'AAAAA',
+                },
+                {
+                    label: 'AAAAA12345',
+                    value: 'AAAAA12345',
+                },
+                {
+                    label: 'CCCC',
+                    value: 'CCCC',
+                },
+            ];
+
+            const FILTER_INDEX = 1;
+            const onSearch = value => {
+                assert(value === 'AAAAA');
+                done();
+            };
+
+            wrapper = mount(
+                <Search
+                    dataSource={dataSource}
+                    onSearch={onSearch}
+                />
+            );
+            // 点击
+            wrapper.find('.next-search input').simulate('click');
+            wrapper.find('.next-search input').simulate('change', { target: { value: 'A' } });
+            wrapper.update();
+            
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
+        });
+
         it('should support filter ', done => {
             let filter = [
                 {
