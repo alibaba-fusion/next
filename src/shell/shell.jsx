@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import Icon from '../icon';
 import { KEYCODE } from '../util';
@@ -51,29 +52,36 @@ export default function ShellBase(props) {
             };
         }
 
-        componentWillReceiveProps(nextProps) {
-            const { device } = this.props;
+        static getDerivedStateFromProps(nextProps, prevState) {
+            const { device } = prevState;
 
             if (nextProps.device !== device) {
                 const deviceMap = getCollapseMap(nextProps.device);
-                const { collapseMap } = this.state;
+                return {
+                    controll: false,
+                    collapseMap: deviceMap,
+                    device: nextProps.device,
+                };
+            }
 
-                Object.keys(deviceMap).forEach(block => {
+            return {};
+        }
+
+        componentDidUpdate(prevProps) {
+            if (prevProps.device !== this.props.device) {
+                const deviceMapBefore = getCollapseMap(prevProps.device);
+                const deviceMapAfter = getCollapseMap(this.props.device);
+
+                Object.keys(deviceMapAfter).forEach(block => {
                     const { props } = this.layout[block] || {};
-                    if (collapseMap[block] !== deviceMap[block]) {
+                    if (deviceMapBefore[block] !== deviceMapAfter[block]) {
                         if (
                             props &&
                             typeof props.onCollapseChange === 'function'
                         ) {
-                            props.onCollapseChange(deviceMap[block]);
+                            props.onCollapseChange(deviceMapAfter[block]);
                         }
                     }
-                });
-
-                this.setState({
-                    controll: false,
-                    collapseMap: deviceMap,
-                    device: nextProps.device,
                 });
             }
         }
@@ -571,5 +579,5 @@ export default function ShellBase(props) {
         }
     }
 
-    return Shell;
+    return polyfill(Shell);
 }
