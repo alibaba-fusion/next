@@ -299,6 +299,10 @@ export function isClassComponent(component) {
  * @param {*} component  传入的组件
  */
 export function isReactFragment(component) {
+    if (isNil(component)) {
+        return false;
+    }
+
     if (component.type) {
         return component.type === React.Fragment;
     }
