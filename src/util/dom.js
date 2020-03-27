@@ -201,6 +201,14 @@ export function getStyle(node, name) {
         return style;
     }
 
+    // fix: issue #1609
+    if (
+        ['width', 'height'].includes(name) &&
+        style.boxSizing === 'border-box'
+    ) {
+        return node.getBoundingClientRect()[name];
+    }
+
     name = floatMap[name]
         ? 'cssFloat' in node.style
             ? 'cssFloat'

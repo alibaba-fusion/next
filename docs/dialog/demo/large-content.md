@@ -18,8 +18,8 @@ When the height of the dialog exceeds the viewport height of the browser, the de
 import { Switch, Button, Dialog } from '@alifd/next';
 
 
-const largeContent = new Array(30).fill(
-    <p>Start your business here by searching a popular product</p>
+const largeContent = new Array(30).fill('').map(
+    (__, index) => <p key={index}>Start your business here by searching a popular product</p>
 );
 
 class Demo extends React.Component {
