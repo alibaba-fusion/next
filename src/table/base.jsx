@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
+import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
@@ -29,7 +30,7 @@ const Children = React.Children,
 //</Table>
 
 /** Table */
-export default class Table extends React.Component {
+class Table extends React.Component {
     static Column = Column;
     static ColumnGroup = ColumnGroup;
     static Header = HeaderComponent;
@@ -326,17 +327,19 @@ export default class Table extends React.Component {
 
     getChildContext() {
         return {
-            notRenderCellIndex: this.notRenderCellIndex,
+            notRenderCellIndex: this.notRenderCellIndex || [],
             lockType: this.props.lockType,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (typeof this.props.sort !== 'undefined') {
-            this.setState({
-                sort: nextProps.sort,
-            });
+    static getDerivedStateFromProps(nextProps) {
+        const state = {};
+
+        if (typeof nextProps.sort !== 'undefined') {
+            state.sort = nextProps.sort;
         }
+
+        return state;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -349,10 +352,6 @@ export default class Table extends React.Component {
         }
 
         return true;
-    }
-
-    componentWillUpdate() {
-        this.notRenderCellIndex = [];
     }
 
     normalizeChildrenState(props) {
@@ -783,3 +782,5 @@ export default class Table extends React.Component {
         return content;
     }
 }
+
+export default polyfill(Table);

@@ -168,9 +168,10 @@ export default class Base extends React.Component {
         });
 
         this.state = {
+            dataStore: this.dataStore,
             value: 'value' in props ? props.value : props.defaultValue,
             visible: 'visible' in props ? props.visible : props.defaultVisible,
-            dataSource: [],
+            dataSource: this.setDataSource(this.props),
             width: 100,
             // current highlight key
             highlightKey: null,
@@ -186,12 +187,6 @@ export default class Base extends React.Component {
             'afterClose',
             'handleResize',
         ]);
-    }
-
-    componentWillMount() {
-        this.setState({
-            dataSource: this.setDataSource(this.props),
-        });
     }
 
     componentDidMount() {
@@ -684,7 +679,7 @@ export default class Base extends React.Component {
 
         const _props = {
             triggerType: 'click',
-            autoFocus: false,
+            autoFocus: !!this.props.popupAutoFocus,
             cache: cache,
             // Put `popupProps` into here for covering above props.
             ...popupProps,

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import RowComponent from './tree/row';
 import CellComponent from './tree/cell';
 import { statics } from './util';
@@ -72,13 +73,14 @@ export default function tree(BaseComponent) {
             };
         }
 
-        componentWillReceiveProps(nextProps) {
+        static getDerivedStateFromProps(nextProps) {
             if ('openRowKeys' in nextProps) {
-                const { openRowKeys } = nextProps;
-                this.setState({
-                    openRowKeys,
-                });
+                return {
+                    openRowKeys: nextProps.openRowKeys || [],
+                };
             }
+
+            return null;
         }
 
         normalizeDataSource(dataSource) {
@@ -194,5 +196,5 @@ export default function tree(BaseComponent) {
         }
     }
     statics(TreeTable, BaseComponent);
-    return TreeTable;
+    return polyfill(TreeTable);
 }

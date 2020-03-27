@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import { events, func, obj } from '../../util';
 import EventHandlersMixin from './mixins/event-handlers';
 import HelpersMixin from './mixins/helpers';
@@ -103,11 +104,11 @@ class InnerSlider extends React.Component {
         ]);
     }
 
-    componentWillMount() {
-        this.hasMounted = true;
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
 
-        const { lazyLoad, children, slidesToShow } = this.props;
-        const { currentSlide } = this.state;
+        const { lazyLoad, children, slidesToShow, activeIndex } = nextProps;
+        const { currentSlide } = prevState;
         const lazyLoadedList = [];
 
         if (lazyLoad) {
@@ -123,15 +124,17 @@ class InnerSlider extends React.Component {
                 }
             }
 
-            if (this.state.lazyLoadedList.length === 0) {
-                this.setState({
-                    lazyLoadedList,
-                });
+            if (prevState.lazyLoadedList.length === 0) {
+                state.lazyLoadedList = lazyLoadedList;
             }
         }
+
+        return state;
     }
 
     componentDidMount() {
+        this.hasMounted = true;
+
         // TODO Hack for autoplay -- Inspect Later
         this.initialize(this.props);
         this.adaptHeight();
@@ -147,35 +150,27 @@ class InnerSlider extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.defaultActiveIndex !== nextProps.defaultActiveIndex) {
-            this.setState({
-                currentSlide: nextProps.defaultActiveIndex,
-            });
-        }
-
-        if (this.props.activeIndex !== nextProps.activeIndex) {
-            this.slickGoTo(nextProps.activeIndex);
-        } else if (this.state.currentSlide >= nextProps.children.length) {
-            this.update(nextProps);
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.activeIndex !== this.props.activeIndex) {
+            this.slickGoTo(this.props.activeIndex);
+        } else if (prevState.currentSlide >= this.props.children.length) {
+            this.update(this.props);
             this.changeSlide({
                 message: 'index',
-                index: nextProps.children.length - nextProps.slidesToShow,
+                index: this.props.children.length - this.props.slidesToShow,
                 currentSlide: this.state.currentSlide,
             });
         } else {
             const others = ['children'];
             const update = !obj.shallowEqual(
-                obj.pickOthers(others, this.props),
-                obj.pickOthers(others, nextProps)
+                obj.pickOthers(others, prevProps),
+                obj.pickOthers(others, this.props)
             );
             if (update) {
-                this.update(nextProps);
+                this.update(this.props);
             }
         }
-    }
 
-    componentDidUpdate() {
         this.adaptHeight();
     }
 
@@ -409,4 +404,4 @@ class InnerSlider extends React.Component {
 Object.assign(InnerSlider.prototype, HelpersMixin);
 Object.assign(InnerSlider.prototype, EventHandlersMixin);
 
-export default InnerSlider;
+export default polyfill(InnerSlider);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import { dom } from '../util';
 import VirtualBody from './virtual/body';
 import { statics } from './util';
@@ -50,6 +51,14 @@ export default function virtual(BaseComponent) {
             rowSelection: PropTypes.object,
         };
 
+        constructor(props, context) {
+            super(props, context);
+            const { useVirtual, dataSource } = props;
+
+            this.hasVirtualData =
+                useVirtual && dataSource && dataSource.length > 0;
+        }
+
         state = {
             rowHeight: this.props.rowHeight,
             scrollToRow: this.props.scrollToRow,
@@ -67,11 +76,20 @@ export default function virtual(BaseComponent) {
             };
         }
 
-        componentWillMount() {
-            const { useVirtual, dataSource } = this.props;
+        static getDerivedStateFromProps(nextProps, prevState) {
+            const state = {};
 
-            this.hasVirtualData =
-                useVirtual && dataSource && dataSource.length > 0;
+            if ('maxBodyHeight' in nextProps) {
+                if (prevState.height !== nextProps.maxBodyHeight) {
+                    state.height = nextProps.maxBodyHeight;
+                }
+            }
+
+            if ('scrollToRow' in nextProps) {
+                state.scrollToRow = nextProps.scrollToRow;
+            }
+
+            return state;
         }
 
         componentDidMount() {
@@ -82,40 +100,6 @@ export default function virtual(BaseComponent) {
             this.adjustScrollTop();
             this.adjustSize();
             this.reComputeSize();
-        }
-
-        componentWillReceiveProps(nextProps) {
-            const { useVirtual, dataSource } = nextProps;
-
-            this.hasVirtualData =
-                useVirtual && dataSource && dataSource.length > 0;
-
-            if ('maxBodyHeight' in nextProps) {
-                if (this.state.height !== nextProps.maxBodyHeight) {
-                    this.setState({
-                        height: nextProps.maxBodyHeight,
-                    });
-                }
-            }
-
-            if ('scrollToRow' in nextProps) {
-                this.setState({
-                    scrollToRow: nextProps.scrollToRow,
-                });
-            }
-
-            if (this.state.rowHeight && 'rowHeight' in nextProps) {
-                const row = this.getRowNode();
-                const rowClientHeight = row && row.clientHeight;
-                if (
-                    rowClientHeight &&
-                    rowClientHeight !== this.state.rowHeight
-                ) {
-                    this.setState({
-                        rowHeight: rowClientHeight,
-                    });
-                }
-            }
         }
 
         componentDidUpdate() {
@@ -318,5 +302,5 @@ export default function virtual(BaseComponent) {
         }
     }
     statics(VirtualTable, BaseComponent);
-    return VirtualTable;
+    return polyfill(VirtualTable);
 }

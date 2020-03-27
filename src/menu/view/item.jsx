@@ -191,7 +191,7 @@ export default class Item extends Component {
             others['aria-hidden'] = true;
         }
 
-        others.tabIndex = root.tabbableKey === _key ? '0' : '-1';
+        others.tabIndex = root.state.tabbableKey === _key ? '0' : '-1';
 
         if (
             parentMode === 'inline' &&

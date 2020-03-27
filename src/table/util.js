@@ -4,6 +4,7 @@ const blackList = [
     'contextTypes',
     'childContextTypes',
     'displayName',
+    'getDerivedStateFromProps',
 ];
 
 export const statics = (Target, Component) => {

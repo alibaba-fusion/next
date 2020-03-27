@@ -2,20 +2,227 @@ import React, { Component, Children, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
 import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
-import { getWidth } from './util';
+import {
+    getWidth,
+    normalizeToArray,
+    isSibling,
+    isAncestor,
+    isAvailablePos,
+    getFirstAvaliablelChildKey,
+} from './util';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;
 const noop = () => {};
 const MENUITEM_OVERFLOWED_CLASSNAME = 'menuitem-overflowed';
 
+const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
+    const moreCls = cx({
+        [`${prefix}menu-more`]: true,
+    });
+
+    const style = {};
+    // keep placehold to get width
+    if (isPlaceholder) {
+        style.visibility = 'hidden';
+        style.display = 'inline-block';
+        // indicators which not in use, just display: none
+    } else if (items && items.length === 0) {
+        style.display = 'none';
+        style.visibility = 'unset';
+    }
+
+    if (renderMore && typeof renderMore === 'function') {
+        return React.cloneElement(renderMore(items), {
+            style,
+        });
+    }
+
+    return (
+        <SubMenu label="···" noIcon className={moreCls} style={style}>
+            {items}
+        </SubMenu>
+    );
+};
+
+const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
+    const arr = [];
+
+    children.forEach((child, index) => {
+        let overflowedItems = [];
+
+        if (index > lastVisibleIndex) {
+            child = React.cloneElement(child, {
+                key: `more-${index}`,
+                style: { display: 'none' },
+                className: `${child.className ||
+                    ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
+            });
+        }
+
+        if (index === lastVisibleIndex + 1) {
+            overflowedItems = children
+                .slice(lastVisibleIndex + 1)
+                .map((c, i) => {
+                    return React.cloneElement(c, {
+                        key: `more-${index}-${i}`,
+                    });
+                });
+            arr.push(
+                getIndicatorsItem(overflowedItems, false, prefix, renderMore)
+            );
+        }
+
+        arr.push(child);
+    });
+
+    arr.push(getIndicatorsItem([], true, prefix, renderMore));
+
+    return arr;
+};
+
+const getNewChildren = ({
+    children,
+    root,
+    lastVisibleIndex,
+    hozInLine,
+    prefix,
+    renderMore,
+}) => {
+    const k2n = {};
+    const p2n = {};
+
+    const arr = hozInLine
+        ? addIndicators({
+              children,
+              lastVisibleIndex,
+              prefix,
+              renderMore,
+          })
+        : children;
+
+    const loop = (
+        children,
+        posPrefix,
+        indexWrapper = { index: 0 },
+        inlineLevel = 1
+    ) => {
+        const keyArray = [];
+        return Children.map(children, child => {
+            if (
+                child &&
+                (typeof child.type === 'function' ||
+                    // `React.forwardRef(render)` returns a forwarding
+                    // object that includes `render` method, and the specific
+                    // `child.type` will be an object instead of a class or
+                    // function.
+                    typeof child.type === 'object') &&
+                'menuChildType' in child.type
+            ) {
+                let newChild;
+
+                let pos;
+                const props = { root };
+
+                if (
+                    ['item', 'submenu', 'group'].indexOf(
+                        child.type.menuChildType
+                    ) > -1
+                ) {
+                    pos = `${posPrefix}-${indexWrapper.index++}`;
+                    const key = typeof child.key === 'string' ? child.key : pos;
+
+                    // filter out duplicate keys
+                    if (keyArray.indexOf(key) > -1) {
+                        return;
+                    }
+
+                    keyArray.push(key);
+
+                    const level = pos.split('-').length - 1;
+                    k2n[key] = p2n[pos] = {
+                        key,
+                        pos,
+                        mode: child.props.mode,
+                        type: child.type.menuChildType,
+                        disabled: child.props.disabled,
+                        label: child.props.label || child.props.children,
+                    };
+
+                    props.level = level;
+                    props.inlineLevel = inlineLevel;
+                    props._key = key;
+                    props.groupIndent =
+                        child.type.menuChildType === 'group' ? 1 : 0;
+                }
+
+                // paddingLeft(or paddingRight in rtl) only make sense in inline mode
+                // parent know children's inlineLevel
+                // if parent's mode is popup, then children's inlineLevel must be 1;
+                // else inlineLevel should add 1
+                const childLevel =
+                    (child.props.mode || props.root.props.mode) === 'popup'
+                        ? 1
+                        : inlineLevel + 1;
+
+                switch (child.type.menuChildType) {
+                    case 'submenu':
+                        newChild = cloneElement(
+                            child,
+                            props,
+                            loop(
+                                child.props.children,
+                                pos,
+                                undefined,
+                                childLevel
+                            )
+                        );
+                        break;
+                    case 'group':
+                        newChild = cloneElement(
+                            child,
+                            props,
+                            loop(
+                                child.props.children,
+                                posPrefix,
+                                indexWrapper,
+                                props.level
+                            )
+                        );
+                        break;
+                    case 'item':
+                    case 'divider':
+                        newChild = cloneElement(child, props);
+                        break;
+                    default:
+                        newChild = child;
+                        break;
+                }
+
+                return newChild;
+            }
+
+            return child;
+        });
+    };
+
+    const newChildren = loop(arr, '0');
+
+    return {
+        newChildren,
+        _k2n: k2n,
+        _p2n: p2n,
+    };
+};
+
 /**
  * Menu
  */
-export default class Menu extends Component {
+class Menu extends Component {
     static isNextMenu = true;
 
     static propTypes = {
@@ -217,6 +424,7 @@ export default class Menu extends Component {
         super(props);
 
         const {
+            prefix,
             children,
             selectedKeys,
             defaultSelectedKeys,
@@ -224,28 +432,38 @@ export default class Menu extends Component {
             focusable,
             autoFocus,
             hozInLine,
+            renderMore,
         } = this.props;
 
         this.state = {
             lastVisibleIndex: undefined,
         };
 
-        this.newChildren = this.getNewChildren({ children, hozInLine });
+        const { newChildren, _k2n, _p2n } = getNewChildren({
+            root: this,
+            hozInLine,
+            prefix,
+            children,
+            renderMore,
+        });
 
-        if (focusable) {
-            this.tabbableKey = this.getFirstAvaliablelChildKey('0');
-        }
+        const tabbableKey = focusable
+            ? getFirstAvaliablelChildKey('0', _p2n)
+            : undefined;
 
         this.state = {
+            root: this,
             lastVisibleIndex: undefined,
-            openKeys: this.getInitOpenKeys(props),
-            selectedKeys: this.normalizeToArray(
-                selectedKeys || defaultSelectedKeys
-            ),
+            newChildren,
+            _k2n,
+            _p2n,
+            tabbableKey,
+            openKeys: this.getInitOpenKeys(props, _k2n, _p2n),
+            selectedKeys: normalizeToArray(selectedKeys || defaultSelectedKeys),
             focusedKey: !isNil(this.props.focusedKey)
                 ? focusedKey
                 : focusable && autoFocus
-                ? this.tabbableKey
+                ? tabbableKey
                 : null,
         };
 
@@ -261,6 +479,46 @@ export default class Menu extends Component {
         this.popupNodes = [];
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
+
+        if ('openKeys' in nextProps) {
+            state.openKeys = normalizeToArray(nextProps.openKeys);
+        }
+        if ('selectedKeys' in nextProps) {
+            state.selectedKeys = normalizeToArray(nextProps.selectedKeys);
+        }
+        if ('focusedKey' in nextProps) {
+            state.focusedKey = nextProps.focusedKey;
+        }
+
+        const { hozInLine, children, prefix, renderMore } = nextProps;
+        const { newChildren, _k2n, _p2n } = getNewChildren({
+            root: prevState.root,
+            hozInLine,
+            lastVisibleIndex: prevState.lastVisibleIndex,
+            prefix,
+            children,
+            renderMore,
+        });
+
+        state.newChildren = newChildren;
+        state._k2n = _k2n;
+        state._p2n = _p2n;
+
+        if (nextProps.focusable) {
+            if (prevState.tabbableKey in _k2n) {
+                if (prevState.focusedKey) {
+                    state.tabbableKey = prevState.focusedKey;
+                }
+            } else {
+                state.tabbableKey = getFirstAvaliablelChildKey('0', _p2n);
+            }
+        }
+
+        return state;
+    }
+
     componentDidMount() {
         this.menuNode = findDOMNode(this);
 
@@ -271,39 +529,9 @@ export default class Menu extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const state = {};
-
-        if ('openKeys' in nextProps) {
-            state.openKeys = this.normalizeToArray(nextProps.openKeys);
-        }
-        if ('selectedKeys' in nextProps) {
-            state.selectedKeys = this.normalizeToArray(nextProps.selectedKeys);
-        }
-        if ('focusedKey' in nextProps) {
-            state.focusedKey = nextProps.focusedKey;
-        }
-
-        if (Object.keys(state).length) {
-            this.setState(state);
-        }
-    }
-
-    componentWillUpdate(nextProps, nextState) {
-        if (this.state.lastVisibleIndex !== nextState.lastVisibleIndex) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.lastVisibleIndex !== this.state.lastVisibleIndex) {
             this.adjustChildrenWidth();
-        }
-
-        this.newChildren = this.getNewChildren(nextProps);
-
-        if (this.props.focusable) {
-            if (this.tabbableKey in this.k2n) {
-                if (this.state.focusedKey) {
-                    this.tabbableKey = this.state.focusedKey;
-                }
-            } else {
-                this.tabbableKey = this.getFirstAvaliablelChildKey('0');
-            }
         }
     }
 
@@ -379,6 +607,7 @@ export default class Menu extends Component {
 
         this.setState({
             lastVisibleIndex,
+            ...this.getUpdateChildren(),
         });
     }
     onBlur(e) {
@@ -389,7 +618,7 @@ export default class Menu extends Component {
         this.props.onBlur && this.props.onBlur(e);
     }
 
-    getInitOpenKeys(props) {
+    getInitOpenKeys(props, _k2n, _p2n) {
         let initOpenKeys;
 
         const {
@@ -406,14 +635,14 @@ export default class Menu extends Component {
             mode === 'inline' &&
             openMode === 'multiple'
         ) {
-            initOpenKeys = Object.keys(this.k2n).filter(key => {
-                return this.k2n[key].type === 'submenu';
+            initOpenKeys = Object.keys(_k2n).filter(key => {
+                return _k2n[key].type === 'submenu';
             });
         } else {
             initOpenKeys = defaultOpenKeys;
         }
 
-        return this.normalizeToArray(initOpenKeys);
+        return normalizeToArray(initOpenKeys);
     }
 
     getIndicatorsItem(items, isPlaceholder) {
@@ -446,210 +675,31 @@ export default class Menu extends Component {
         );
     }
 
-    addIndicators = children => {
-        const arr = [];
-        const { lastVisibleIndex } = this.state;
+    getUpdateChildren = () => {
+        const { root, lastVisibleIndex } = this.state;
+        const { prefix, hozInLine, children, renderMore } = this.props;
 
-        children.forEach((child, index) => {
-            let overflowedItems = [];
-
-            if (index > lastVisibleIndex) {
-                child = React.cloneElement(child, {
-                    key: `more-${index}`,
-                    style: { display: 'none' },
-                    className: `${child.className ||
-                        ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
-                });
-            }
-
-            if (index === lastVisibleIndex + 1) {
-                overflowedItems = children
-                    .slice(lastVisibleIndex + 1)
-                    .map((c, i) => {
-                        return React.cloneElement(c, {
-                            key: `more-${index}-${i}`,
-                        });
-                    });
-                arr.push(this.getIndicatorsItem(overflowedItems));
-            }
-
-            arr.push(child);
-        });
-
-        arr.push(this.getIndicatorsItem([], true));
-
-        return arr;
-    };
-
-    getNewChildren({ children, hozInLine }) {
-        this.k2n = {};
-        this.p2n = {};
-
-        let arr = [];
-
-        if (hozInLine) {
-            arr = this.addIndicators(children);
-        } else {
-            arr = children;
-        }
-
-        const loop = (
+        return getNewChildren({
+            root,
+            hozInLine,
+            lastVisibleIndex,
+            prefix,
             children,
-            posPrefix,
-            indexWrapper = { index: 0 },
-            inlineLevel = 1
-        ) => {
-            const keyArray = [];
-            return Children.map(children, child => {
-                if (
-                    child &&
-                    (typeof child.type === 'function' ||
-                        // `React.forwardRef(render)` returns a forwarding
-                        // object that includes `render` method, and the specific
-                        // `child.type` will be an object instead of a class or
-                        // function.
-                        typeof child.type === 'object') &&
-                    'menuChildType' in child.type
-                ) {
-                    let newChild;
-
-                    let pos;
-                    const props = { root: this };
-
-                    if (
-                        ['item', 'submenu', 'group'].indexOf(
-                            child.type.menuChildType
-                        ) > -1
-                    ) {
-                        pos = `${posPrefix}-${indexWrapper.index++}`;
-                        const key =
-                            typeof child.key === 'string' ? child.key : pos;
-
-                        // filter out duplicate keys
-                        if (keyArray.indexOf(key) > -1) {
-                            return;
-                        }
-
-                        keyArray.push(key);
-
-                        const level = pos.split('-').length - 1;
-                        this.k2n[key] = this.p2n[pos] = {
-                            key,
-                            pos,
-                            mode: child.props.mode,
-                            type: child.type.menuChildType,
-                            disabled: child.props.disabled,
-                            label: child.props.label || child.props.children,
-                        };
-
-                        props.level = level;
-                        props.inlineLevel = inlineLevel;
-                        props._key = key;
-                        props.groupIndent =
-                            child.type.menuChildType === 'group' ? 1 : 0;
-                    }
-
-                    // paddingLeft(or paddingRight in rtl) only make sense in inline mode
-                    // parent know children's inlineLevel
-                    // if parent's mode is popup, then children's inlineLevel must be 1;
-                    // else inlineLevel should add 1
-                    const childLevel =
-                        (child.props.mode || props.root.props.mode) === 'popup'
-                            ? 1
-                            : inlineLevel + 1;
-
-                    switch (child.type.menuChildType) {
-                        case 'submenu':
-                            newChild = cloneElement(
-                                child,
-                                props,
-                                loop(
-                                    child.props.children,
-                                    pos,
-                                    undefined,
-                                    childLevel
-                                )
-                            );
-                            break;
-                        case 'group':
-                            newChild = cloneElement(
-                                child,
-                                props,
-                                loop(
-                                    child.props.children,
-                                    posPrefix,
-                                    indexWrapper,
-                                    props.level
-                                )
-                            );
-                            break;
-                        case 'item':
-                        case 'divider':
-                            newChild = cloneElement(child, props);
-                            break;
-                        default:
-                            newChild = child;
-                            break;
-                    }
-
-                    return newChild;
-                }
-
-                return child;
-            });
-        };
-
-        return loop(arr, '0');
-    }
-
-    normalizeToArray(items) {
-        if (items) {
-            if (Array.isArray(items)) {
-                return items;
-            }
-            return [items];
-        }
-
-        return [];
-    }
-
-    isSibling(currentPos, targetPos) {
-        const currentNums = currentPos.split('-').slice(0, -1);
-        const targetNums = targetPos.split('-').slice(0, -1);
-
-        return (
-            currentNums.length === targetNums.length &&
-            currentNums.every((num, index) => {
-                return num === targetNums[index];
-            })
-        );
-    }
-
-    isAncestor(currentPos, targetPos) {
-        const currentNums = currentPos.split('-');
-        const targetNums = targetPos.split('-');
-
-        return (
-            currentNums.length > targetNums.length &&
-            targetNums.every((num, index) => {
-                return num === currentNums[index];
-            })
-        );
-    }
+            renderMore,
+        });
+    };
 
     handleOpen(key, open, triggerType, e) {
         let newOpenKeys;
 
         const { mode, openMode } = this.props;
-        const { openKeys } = this.state;
+        const { openKeys, _k2n } = this.state;
         const index = openKeys.indexOf(key);
         if (open && index === -1) {
             if (mode === 'inline') {
                 if (openMode === 'single') {
                     newOpenKeys = openKeys.filter(
-                        k =>
-                            this.k2n[k] &&
-                            !this.isSibling(this.k2n[key].pos, this.k2n[k].pos)
+                        k => _k2n[k] && !isSibling(_k2n[key].pos, _k2n[k].pos)
                     );
                     newOpenKeys.push(key);
                 } else {
@@ -657,10 +707,7 @@ export default class Menu extends Component {
                 }
             } else {
                 newOpenKeys = openKeys.filter(k => {
-                    return (
-                        this.k2n[k] &&
-                        this.isAncestor(this.k2n[key].pos, this.k2n[k].pos)
-                    );
+                    return _k2n[k] && isAncestor(_k2n[key].pos, _k2n[k].pos);
                 });
                 newOpenKeys.push(key);
             }
@@ -682,8 +729,8 @@ export default class Menu extends Component {
                 newOpenKeys = openKeys.filter(k => {
                     return (
                         k !== key &&
-                        this.k2n[k] &&
-                        !this.isAncestor(this.k2n[k].pos, this.k2n[key].pos)
+                        _k2n[k] &&
+                        !isAncestor(_k2n[k].pos, _k2n[key].pos)
                     );
                 });
             }
@@ -693,6 +740,7 @@ export default class Menu extends Component {
             if (isNil(this.props.openKeys)) {
                 this.setState({
                     openKeys: newOpenKeys,
+                    ...this.getUpdateChildren(),
                 });
             }
 
@@ -703,16 +751,16 @@ export default class Menu extends Component {
         }
     }
 
-    getPath(key) {
+    getPath(key, _k2n, _p2n) {
         const keyPath = [];
         const labelPath = [];
 
-        const pos = this.k2n[key].pos;
+        const pos = _k2n[key].pos;
         const nums = pos.split('-');
         for (let i = 1; i < nums.length - 1; i++) {
             const parentNums = nums.slice(0, i + 1);
             const parentPos = parentNums.join('-');
-            const parent = this.p2n[parentPos];
+            const parent = _p2n[parentPos];
             keyPath.push(parent.key);
             labelPath.push(parent.label);
         }
@@ -724,7 +772,8 @@ export default class Menu extends Component {
     }
 
     handleSelect(key, select, menuItem) {
-        const pos = this.k2n[key].pos;
+        const { _k2n, _p2n } = this.state;
+        const pos = _k2n[key].pos;
         const level = pos.split('-').length - 1;
         if (this.props.shallowSelect && level > 1) {
             return;
@@ -758,13 +807,14 @@ export default class Menu extends Component {
             this.props.onSelect(newSelectedKeys, menuItem, {
                 key,
                 select,
-                label: this.k2n[key].label,
-                ...this.getPath(key),
+                label: _k2n[key].label,
+                ...this.getPath(key, _k2n, _p2n),
             });
         }
     }
 
     handleItemClick(key, item, e) {
+        const { _k2n } = this.state;
         if (this.props.focusable) {
             if (isNil(this.props.focusedKey)) {
                 this.setState({
@@ -789,8 +839,8 @@ export default class Menu extends Component {
                 this.props.onOpen([], {
                     key: this.state.openKeys.sort(
                         (prevKey, nextKey) =>
-                            this.k2n[nextKey].pos.split('-').length -
-                            this.k2n[prevKey].pos.split('-').length
+                            _k2n[nextKey].pos.split('-').length -
+                            _k2n[prevKey].pos.split('-').length
                     )[0],
                     open: false,
                 });
@@ -800,19 +850,9 @@ export default class Menu extends Component {
         }
     }
 
-    isAvailablePos(refPos, targetPos) {
-        const { type, disabled } = this.p2n[targetPos];
-
-        return (
-            this.isSibling(refPos, targetPos) &&
-            ((type === 'item' && !disabled) || type === 'submenu')
-        );
-    }
-
     getAvailableKey(pos, prev) {
-        const ps = Object.keys(this.p2n).filter(p =>
-            this.isAvailablePos(pos, p)
-        );
+        const { _p2n } = this.state;
+        const ps = Object.keys(_p2n).filter(p => isAvailablePos(pos, p, _p2n));
         if (ps.length > 1) {
             const index = ps.indexOf(pos);
             let targetIndex;
@@ -822,21 +862,14 @@ export default class Menu extends Component {
                 targetIndex = index === ps.length - 1 ? 0 : index + 1;
             }
 
-            return this.p2n[ps[targetIndex]].key;
+            return _p2n[ps[targetIndex]].key;
         }
 
         return null;
     }
 
-    getFirstAvaliablelChildKey(parentPos) {
-        const pos = Object.keys(this.p2n).find(p =>
-            this.isAvailablePos(`${parentPos}-0`, p)
-        );
-        return pos ? this.p2n[pos].key : null;
-    }
-
     getParentKey(pos) {
-        return this.p2n[pos.slice(0, pos.length - 2)].key;
+        return this.state._p2n[pos.slice(0, pos.length - 2)].key;
     }
 
     handleItemKeyDown(key, type, item, e) {
@@ -856,9 +889,10 @@ export default class Menu extends Component {
         }
 
         let focusedKey = this.state.focusedKey;
+        const { _p2n, _k2n } = this.state;
 
         const { direction } = this.props;
-        const pos = this.k2n[key].pos;
+        const pos = _k2n[key].pos;
         const level = pos.split('-').length - 1;
         switch (e.keyCode) {
             case KEYCODE.UP: {
@@ -872,7 +906,7 @@ export default class Menu extends Component {
                 let avaliableKey;
                 if (direction === 'hoz' && level === 1 && type === 'submenu') {
                     this.handleOpen(key, true);
-                    avaliableKey = this.getFirstAvaliablelChildKey(pos);
+                    avaliableKey = getFirstAvaliablelChildKey(pos, _p2n);
                 } else {
                     avaliableKey = this.getAvailableKey(pos, false);
                 }
@@ -887,7 +921,7 @@ export default class Menu extends Component {
                     avaliableKey = this.getAvailableKey(pos, false);
                 } else if (type === 'submenu') {
                     this.handleOpen(key, true);
-                    avaliableKey = this.getFirstAvaliablelChildKey(pos);
+                    avaliableKey = getFirstAvaliablelChildKey(pos, _p2n);
                 }
                 if (avaliableKey) {
                     focusedKey = avaliableKey;
@@ -897,7 +931,7 @@ export default class Menu extends Component {
             case KEYCODE.ENTER: {
                 if (type === 'submenu') {
                     this.handleOpen(key, true);
-                    const avaliableKey = this.getFirstAvaliablelChildKey(pos);
+                    const avaliableKey = getFirstAvaliablelChildKey(pos, _p2n);
                     if (avaliableKey) {
                         focusedKey = avaliableKey;
                     }
@@ -969,6 +1003,7 @@ export default class Menu extends Component {
             hozInLine,
             rtl,
         } = this.props;
+        const { newChildren } = this.state;
         const others = pickOthers(Object.keys(Menu.propTypes), this.props);
 
         const newClassName = cx({
@@ -998,10 +1033,10 @@ export default class Menu extends Component {
                     className={`${prefix}menu-content`}
                     ref={this.menuContentRef}
                 >
-                    {this.newChildren}
+                    {newChildren}
                 </ul>
             ) : (
-                this.newChildren
+                newChildren
             );
         const footerElement = footer ? (
             <li className={`${prefix}menu-footer`} ref={this.menuFooterRef}>
@@ -1036,3 +1071,5 @@ export default class Menu extends Component {
         );
     }
 }
+
+export default polyfill(Menu);

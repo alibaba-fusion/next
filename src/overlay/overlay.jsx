@@ -2,6 +2,7 @@ import React, { Children, Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { dom, events, focus, func, guid, KEYCODE, support } from '../util';
 import overlayManager from './manager';
 import Gateway from './gateway';
@@ -55,7 +56,7 @@ let bodyOverflowY, bodyPaddingRight;
 /**
  * Overlay
  * */
-export default class Overlay extends Component {
+class Overlay extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -192,7 +193,6 @@ export default class Overlay extends Component {
         // 举例来说，dialog/drawer 这类组件弹层是不跟随trigger的，而 fixed 布局下的subNav是跟随trigger的
         pinFollowBaseElementWhenFixed: PropTypes.bool,
     };
-
     static defaultProps = {
         prefix: 'next-',
         pure: false,
@@ -228,12 +228,6 @@ export default class Overlay extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            visible: props.visible,
-            status: 'none',
-            animation: this.getAnimation(props),
-        };
-
         this.lastAlign = props.align;
 
         bindCtx(this, [
@@ -246,94 +240,78 @@ export default class Overlay extends Component {
             'beforeClose',
         ]);
 
+        this.state = {
+            visible: false,
+            status: 'none',
+            animation: this.getAnimation(props),
+            beforeOpen: this.beforeOpen,
+            beforeClose: this.beforeClose,
+        };
+
         this.timeoutMap = {};
     }
 
-    componentWillMount() {
-        if (this.props.visible) {
-            this.beforeOpen();
-            this.props.beforeOpen();
-
-            if (this.state.animation && support.animation) {
-                this.enter();
-            }
-        }
-    }
-
-    componentDidMount() {
-        this.componentDidUpdate({ visible: false });
-        this.addDocumentEvents();
-
-        overlayManager.addOverlay(this);
-
-        if (this.state.visible) {
-            this._isMounted = true;
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!this._isMounted && nextProps.visible) {
-            this._isMounted = true;
-        }
-
-        const willOpen = !this.props.visible && nextProps.visible;
-        const willClose = this.props.visible && !nextProps.visible;
-
-        if (nextProps.align !== this.props.align) {
-            this.lastAlign = this.props.align;
-        }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const willOpen = !prevState.visible && nextProps.visible;
+        const willClose = prevState.visible && !nextProps.visible;
 
         if (willOpen) {
-            this.beforeOpen();
+            prevState.beforeOpen();
             nextProps.beforeOpen();
         } else if (willClose) {
-            this.beforeClose();
+            prevState.beforeClose();
             nextProps.beforeClose();
         }
 
+        const nextState = {};
+
         if (nextProps.animation || nextProps.animation === false) {
-            this.setState({
-                animation: nextProps.animation,
-            });
+            nextState.animation = nextProps.animation;
         }
 
         if (nextProps.animation !== false && support.animation) {
             if (willOpen) {
-                this.enter();
+                nextState.visible = true;
+                nextState.status = 'mounting';
             } else if (willClose) {
-                this.leave();
+                // can not set visible=false directly, otherwise animation not work without dom
+                // nextState.visible = false;
+                nextState.status = 'leaving';
             }
-        } else {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        } else if (
+            'visible' in nextProps &&
+            nextProps.visible !== prevState.visible
+        ) {
+            nextState.visible = nextProps.visible;
         }
+
+        return nextState;
+    }
+
+    componentDidMount() {
+        if (this.state.visible) {
+            this.doAnimation(true, false);
+            this._isMounted = true;
+        }
+
+        this.addDocumentEvents();
+
+        overlayManager.addOverlay(this);
     }
 
     componentDidUpdate(prevProps) {
-        const open = !prevProps.visible && this.props.visible;
-        const close = prevProps.visible && !this.props.visible;
-        if (this.state.animation && support.animation) {
-            if (open || close) {
-                this.addAnimationEvents();
-            }
-        } else {
-            const wrapperNode = this.getWrapperNode();
-            if (open) {
-                setTimeout(() => {
-                    this.props.onOpen();
-                    this.props.afterOpen();
-                    dom.addClass(wrapperNode, 'opened');
-                    overlayManager.addOverlay(this);
-                });
-            } else if (close) {
-                this.props.onClose();
-                this.props.afterClose();
-                dom.removeClass(wrapperNode, 'opened');
-                overlayManager.removeOverlay(this);
-            }
-            this.setFocusNode();
+        if (!this._isMounted && this.props.visible) {
+            this._isMounted = true;
         }
+
+        if (this.props.align !== prevProps.align) {
+            this.lastAlign = prevProps.align;
+        }
+
+        const willOpen = !prevProps.visible && this.props.visible;
+        const willClose = prevProps.visible && !this.props.visible;
+
+        (willOpen || willClose) && this.doAnimation(willOpen, willClose);
     }
 
     componentWillUnmount() {
@@ -349,6 +327,31 @@ export default class Overlay extends Component {
             this._animation = null;
         }
         this.beforeClose();
+    }
+
+    doAnimation(open, close) {
+        if (this.state.animation && support.animation) {
+            if (open) {
+                this.onEntering();
+            } else if (close) {
+                this.onLeaving();
+            }
+            this.addAnimationEvents();
+        } else {
+            const wrapperNode = this.getWrapperNode();
+            if (open) {
+                this.props.onOpen();
+                this.props.afterOpen();
+                dom.addClass(wrapperNode, 'opened');
+                overlayManager.addOverlay(this);
+            } else if (close) {
+                this.props.onClose();
+                this.props.afterClose();
+                dom.removeClass(wrapperNode, 'opened');
+                overlayManager.removeOverlay(this);
+            }
+            this.setFocusNode();
+        }
     }
 
     getAnimation(props) {
@@ -464,35 +467,16 @@ export default class Overlay extends Component {
         }
     }
 
-    enter() {
-        this.setState(
-            {
-                visible: true,
-                status: 'mounting',
-            },
-            () => {
-                // NOTE: setState callback (second argument) now fires immediately after componentDidMount / componentDidUpdate instead of after all components have rendered.
-                setTimeout(() => {
-                    if (!this._isDestroyed) {
-                        this.onEntering();
-                    }
-                });
-            }
-        );
-    }
-
-    leave() {
-        this.setState({
-            status: 'leaving',
-        });
-
-        this.onLeaving();
-    }
-
     onEntering() {
-        const wrapperNode = this.getWrapperNode();
-        dom.addClass(wrapperNode, 'opened');
-        this.props.onOpen();
+        if (this._isDestroyed) {
+            return;
+        }
+        // make sure overlay.ref has been called (eg: menu/popup-item called overlay.getInstance().getContentNode().)
+        setTimeout(() => {
+            const wrapperNode = this.getWrapperNode();
+            dom.addClass(wrapperNode, 'opened');
+            this.props.onOpen();
+        });
     }
 
     onLeaving() {
@@ -597,6 +581,9 @@ export default class Overlay extends Component {
         return this.gatewayRef ? this.gatewayRef.getChildNode() : null;
     }
 
+    /**
+     * document global event
+     */
     addDocumentEvents() {
         if (this.props.canCloseByEsc) {
             this._keydownEvents = events.on(
@@ -825,3 +812,5 @@ export default class Overlay extends Component {
         );
     }
 }
+
+export default polyfill(Overlay);

@@ -149,6 +149,8 @@ export default class Tab extends Component {
                 activeKey: `${props.activeKey}`,
             };
         }
+
+        return {};
     }
 
     getDefaultActiveKey(props) {
