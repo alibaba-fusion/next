@@ -80,17 +80,10 @@ class Demo extends React.Component {
         return (
             <div className="control-check-demo">
                 <label className="strictly-check">
-                    <Checkbox checked={checkStrictly} onChange={this.handleCheckStrictly} />
+                    <Checkbox value={checkStrictly} onChange={this.handleCheckStrictly} />
                     <span className="strictly-text">Enable checkStrictly</span>
                 </label>
-                <Tree
-                    defaultExpandAll
-                    checkable
-                    checkStrictly={checkStrictly}
-                    checkedKeys={checkedKeys}
-                    onCheck={this.handleCheck}
-                    dataSource={data}
-                />
+                <Tree defaultExpandAll checkable checkStrictly={checkStrictly} checkedKeys={checkedKeys} onCheck={this.handleCheck} dataSource={data} />
             </div>
         );
     }
