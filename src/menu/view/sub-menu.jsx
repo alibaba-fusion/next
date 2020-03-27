@@ -8,6 +8,7 @@ import { func, obj } from '../../util';
 import Item from './item';
 import SelectabelItem from './selectable-item';
 import PopupItem from './popup-item';
+import { getChildSelected } from './util';
 
 const { Expand } = Animate;
 const { bindCtx } = func;
@@ -88,21 +89,6 @@ export default class SubMenu extends Component {
         return openKeys.indexOf(_key) > -1;
     }
 
-    getChildSelected() {
-        const { _key, root } = this.props;
-        const { selectMode } = root.props;
-        const { selectedKeys } = root.state;
-
-        const _keyPos = root.k2n[_key].pos;
-
-        return (
-            !!selectMode &&
-            selectedKeys.some(
-                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
-            )
-        );
-    }
-
     handleMouseEnter(e) {
         this.handleOpen(true);
 
@@ -172,7 +158,14 @@ export default class SubMenu extends Component {
         } = root.props;
         const triggerType = propsTriggerType || rootTriggerType;
         const open = this.getOpen();
-        const isChildSelected = this.getChildSelected();
+
+        const { selectedKeys } = root.state;
+        const isChildSelected = getChildSelected({
+            _key,
+            root,
+            selectMode,
+            selectedKeys,
+        });
 
         const others = obj.pickOthers(
             Object.keys(SubMenu.propTypes),

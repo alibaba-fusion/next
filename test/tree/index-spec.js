@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 import propTypes from 'prop-types';
 import assert from 'power-assert';
@@ -603,6 +603,95 @@ describe('Tree', () => {
         ['2', '3', '4'].forEach(key => assertIndeterminate(key, false));
         ['1', '5', '6'].forEach(key => assertChecked(key, true));
     });
+
+    it('should support setting indeterminate key when checkStrictly true', done => {
+        class Demo extends Component {
+            constructor () {
+                super();
+
+                setTimeout(() => {
+                    ['1', '2', '3'].forEach(key => assertChecked(key, true));
+                    ['4', '5', '6'].forEach(key => assertIndeterminate(key, true));
+
+                    this.setState({ checkedKeys: [] });
+                    ['4', '5', '6'].forEach(key => assertChecked(key, false));
+
+                    this.setState({
+                        checkedKeys: {
+                            checked: '1',
+                            indeterminate: '2'
+                        }
+                    });
+                    assertChecked('1', true);
+                    assertIndeterminate('2', true);
+
+                    done();
+                }, 100)
+            }
+
+            state = {
+                checkedKeys: {
+                    checked: ['1', '2', '3'],
+                    indeterminate: ['4', '5', '6']
+                }
+            }
+
+            render() {
+                return (
+                    <Tree
+                        defaultExpandAll
+                        checkable
+                        checkStrictly
+                        checkedKeys={this.state.checkedKeys}
+                        dataSource={cloneData(dataSource, {
+                            2: { disabled: false }
+                        })}
+                    />
+                );
+            }
+        }
+
+        ReactDOM.render(<Demo />, mountNode);
+    });
+
+    it('should support update indeterminate key when dataSource change', done => {
+        class Demo extends Component {
+            constructor () {
+                super();
+
+                setTimeout(() => {
+                    ['1', '2', '3'].forEach(key => assertChecked(key, false));
+
+                    checkTreeNode('5');
+                    assertIndeterminate('2', true);
+
+                    this.state.data[0].children[0].children.length = 1;
+                    this.setState({ data: this.state.data });
+                    assertIndeterminate('2', false)
+                    
+                    done();
+                }, 100);
+            }
+
+            state = {
+                data: cloneData(dataSource, {
+                    2: { disabled: false }
+                })
+            }
+
+            render() {
+                return (
+                    <Tree
+                        defaultExpandAll
+                        checkable
+                        dataSource={this.state.data}
+                    />
+                );
+            }
+        }
+        ReactDOM.render(<Demo/>, mountNode);
+    });
+
 
     it('should support editing node', () => {
         let called = false;
