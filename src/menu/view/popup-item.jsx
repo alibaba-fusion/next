@@ -7,6 +7,7 @@ import Overlay from '../../overlay';
 import { func, obj, dom } from '../../util';
 import Item from './item';
 import SelectableItem from './selectable-item';
+import { getChildSelected } from './util';
 
 const { bindCtx } = func;
 const { setStyle } = dom;
@@ -66,21 +67,6 @@ export default class PopupItem extends Component {
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
-    }
-
-    getChildSelected() {
-        const { _key, root } = this.props;
-        const { selectMode } = root.props;
-        const { selectedKeys, _k2n } = root.state;
-
-        const _keyPos = _k2n[_key].pos;
-
-        return (
-            !!selectMode &&
-            selectedKeys.some(
-                key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0
-            )
-        );
     }
 
     getPopupProps() {
@@ -152,10 +138,17 @@ export default class PopupItem extends Component {
 
     renderItem(selectable, children, others) {
         const { _key, root, level, inlineLevel, label, className } = this.props;
-        const { prefix } = root.props;
+        const { prefix, selectMode } = root.props;
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
-        const isChildSelected = this.getChildSelected();
+
+        const { selectedKeys } = root.state;
+        const isChildSelected = getChildSelected({
+            _key,
+            root,
+            selectMode,
+            selectedKeys,
+        });
 
         const itemProps = {
             'aria-haspopup': true,

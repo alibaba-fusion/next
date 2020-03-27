@@ -453,7 +453,7 @@ export default function ShellBase(props) {
 
             if (layout.content) {
                 innerArr.push(
-                    <section key="submain" className={submainCls} tabIndex={0}>
+                    <section key="submain" className={submainCls}>
                         {layout.content}
                     </section>
                 );

@@ -181,7 +181,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 打开或关闭子菜单触发的回调函数
      */
-    onOpen?: (key: string, extra: {}) => void;
+    onOpen?: (key: string[], extra: {}) => void;
 
     /**
      * 子菜单打开的模式

@@ -259,7 +259,7 @@ class Menu extends Component {
         defaultOpenAll: PropTypes.bool,
         /**
          * 打开或关闭子菜单触发的回调函数
-         * @param {String} key 打开的所有子菜单的 key 值
+         * @param {Array} key 打开的所有子菜单的 key 值
          * @param {Object} extra 额外参数
          * @param {String} extra.key 当前操作子菜单的 key 值
          * @param {Boolean} extra.open 是否是打开

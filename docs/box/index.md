@@ -27,3 +27,4 @@
 | padding   | 设置 padding [bottom&top, right&left]                                                                                             | Array&lt;Number>/Number        | -      |
 | justify   | 沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）<br><br>**可选值**:<br>'flex-start', 'center', 'flex-end', 'space-between', 'space-around' | Enum                           | -      |
 | align     | 垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）<br><br>**可选值**:<br>'flex-start', 'center', 'flex-end', 'baseline', 'stretch'               | Enum                           | -      |
+| component | 定制标签名， 例如section等                                                                                                               | String                         | 'div'  |
