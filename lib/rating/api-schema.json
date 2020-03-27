@@ -1,0 +1,214 @@
+{
+  "name": "Rating",
+  "props": {
+    "defaultValue": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "默认值",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "默认值"
+    },
+    "value": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "值",
+      "docblock": "值"
+    },
+    "count": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "评分的总数",
+      "defaultValue": {
+        "value": "5",
+        "computed": false
+      },
+      "docblock": "评分的总数"
+    },
+    "showGrade": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示 grade",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示 grade"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "尺寸"
+    },
+    "allowHalf": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否允许半星评分",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否允许半星评分"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "用户点击评分时触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "用户点击评分时触发的回调\n@param {String} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onHoverChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "用户hover评分时触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "用户hover评分时触发的回调\n@param {String} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否禁用"
+    },
+    "readAs": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "评分文案生成方法，传入id支持无障碍时，读屏软件可读",
+      "defaultValue": {
+        "value": "val => val",
+        "computed": false
+      },
+      "docblock": "评分文案生成方法，传入id支持无障碍时，读屏软件可读",
+      "params": [],
+      "returns": null
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义国际化文案对象",
+      "defaultValue": {
+        "value": "zhCN.Rating",
+        "computed": true
+      },
+      "docblock": "自定义国际化文案对象",
+      "properties": []
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "readOnly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为只读态，效果上同 disabeld",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为只读态，效果上同 disabeld"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
