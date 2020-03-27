@@ -246,6 +246,17 @@ class Search extends React.Component {
         }
         this.onSearch();
     };
+
+    saveInputRef = ref => {
+        if (ref && ref.getInstance()) {
+            this.inputRef = ref.getInstance();
+        }
+    };
+
+    focus(...args) {
+        this.inputRef.focus(...args);
+    }
+
     render() {
         const {
             shape,
@@ -388,6 +399,7 @@ class Search extends React.Component {
                     autoHighlightFirstItem={autoHighlightFirstItem}
                     popupContent={popupContent}
                     disabled={disabled}
+                    ref={this.saveInputRef}
                 />
             </Group>
         );

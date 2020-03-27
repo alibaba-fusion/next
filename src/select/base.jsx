@@ -564,8 +564,12 @@ export default class Base extends React.Component {
      * 点击 arrow 或 label 的时候焦点切到 input 中
      * @override
      */
-    focusInput() {
-        this.inputRef.focus();
+    focusInput(...args) {
+        this.inputRef.focus(...args);
+    }
+
+    focus(...args) {
+        this.focusInput(...args);
     }
 
     beforeOpen() {
