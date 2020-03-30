@@ -50,6 +50,14 @@ class Table extends React.Component {
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
         /**
+         *
+         */
+        tableLayout: PropTypes.oneOf(['fix', 'auto']),
+        /**
+         *
+         */
+        tableWidth: PropTypes.number,
+        /**
          * 自定义类名
          */
         className: PropTypes.string,
@@ -516,6 +524,7 @@ class Table extends React.Component {
                 rtl,
                 crossline,
                 sortIcons,
+                tableWidth,
             } = this.props;
             const { sort } = this.state;
             const {
@@ -530,6 +539,7 @@ class Table extends React.Component {
                     colGroup={colGroup}
                     ref={this.getWrapperRef}
                     prefix={prefix}
+                    tableWidth={tableWidth}
                 >
                     {hasHeader ? (
                         <Header
@@ -549,6 +559,7 @@ class Table extends React.Component {
                             onResizeChange={this.onResizeChange}
                             onSort={this.onSort}
                             sortIcons={sortIcons}
+                            tableWidth={tableWidth}
                         />
                     ) : null}
                     <Body
@@ -575,6 +586,7 @@ class Table extends React.Component {
                         locale={locale}
                         onBodyMouseOver={this.onBodyMouseOver}
                         onBodyMouseOut={this.onBodyMouseOut}
+                        tableWidth={tableWidth}
                     />
                     {wrapperContent}
                 </Wrapper>
@@ -747,11 +759,14 @@ class Table extends React.Component {
                 columns,
                 sortIcons,
                 loadingComponent: LoadingComponent = Loading,
+                tableLayout,
+                tableWidth,
                 ...others
             } = this.props,
             cls = classnames({
                 [`${prefix}table`]: true,
                 [`${prefix}table-${size}`]: size,
+                [`${prefix}table-layout-${tableLayout}`]: tableLayout,
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,

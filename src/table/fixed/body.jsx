@@ -11,6 +11,7 @@ export default class FixedBody extends React.Component {
         className: PropTypes.string,
         colGroup: PropTypes.any,
         onLockScroll: PropTypes.func,
+        tableWidth: PropTypes.number,
     };
 
     static contextTypes = {
@@ -44,7 +45,13 @@ export default class FixedBody extends React.Component {
 
     render() {
         /*eslint-disable no-unused-vars */
-        const { className, colGroup, onLockScroll, ...others } = this.props;
+        const {
+            className,
+            colGroup,
+            onLockScroll,
+            tableWidth,
+            ...others
+        } = this.props;
         const { maxBodyHeight, fixedHeader } = this.context;
         const style = {};
         if (fixedHeader) {
@@ -57,7 +64,7 @@ export default class FixedBody extends React.Component {
                 className={className}
                 onScroll={this.onBodyScroll}
             >
-                <table>
+                <table style={{ width: tableWidth }}>
                     {colGroup}
                     <BodyComponent {...others} colGroup={colGroup} />
                 </table>
