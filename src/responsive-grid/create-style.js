@@ -292,7 +292,7 @@ export default ({
                 ...getGridGap(gap),
                 gridTemplateRows: getTemplateCount(rows),
                 gridTemplateColumns: getTemplateCount(newColumns),
-                gridAutoFlow: `${direction}${dense && ` dense`}`,
+                gridAutoFlow: `${direction || ''}${dense && ` dense`}`,
                 // justifyItems: justify,
                 // alignItems: align,
                 // child
