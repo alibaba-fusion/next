@@ -1132,7 +1132,7 @@ class RangePicker extends Component {
                     hint={
                         <Icon
                             type="calendar"
-                            className={`${prefix}date-picker-symble-calendar-icon`}
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
                 />

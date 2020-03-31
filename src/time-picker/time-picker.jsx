@@ -414,7 +414,7 @@ class TimePicker extends Component {
             hint: (
                 <Icon
                     type="clock"
-                    className={`${prefix}time-picker-symble-clock-icon`}
+                    className={`${prefix}time-picker-symbol-clock-icon`}
                 />
             ),
         };

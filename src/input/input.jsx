@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -179,12 +179,20 @@ export default class Input extends Base {
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon =
-                    typeof hint === 'string' ? (
+                if (typeof hint === 'string') {
+                    hintIcon = (
                         <Icon type={hint} className={`${prefix}input-hint`} />
-                    ) : (
-                        hint
                     );
+                } else if (isValidElement(hint)) {
+                    hintIcon = cloneElement(hint, {
+                        className: classNames(
+                            hint.props.className,
+                            `${prefix}input-hint`
+                        ),
+                    });
+                } else {
+                    hintIcon = hint;
+                }
             } else {
                 hintIcon = (
                     <Icon
