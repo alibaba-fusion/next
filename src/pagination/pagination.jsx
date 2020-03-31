@@ -131,7 +131,7 @@ class Pagination extends Component {
          */
         showJump: PropTypes.bool,
         /**
-         * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：http://www.taobao.com/{page}
+         * 设置页码按钮的跳转链接，它的值为一个包含 {page} 的模版字符串，如：https://www.taobao.com/{page}
          */
         link: PropTypes.string,
         selectPopupContiner: PropTypes.any,
