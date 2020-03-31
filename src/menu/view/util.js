@@ -71,6 +71,10 @@ export const getFirstAvaliablelChildKey = (parentPos, _p2n) => {
  * @return bool 当前元素是否有孩子被选中
  */
 export const getChildSelected = ({ selectMode, selectedKeys, root, _key }) => {
+    if (!(root && root.k2n)) {
+        return false;
+    }
+
     const _keyPos = `${root.k2n[_key].pos}-`;
 
     return (
