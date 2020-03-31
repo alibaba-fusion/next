@@ -930,14 +930,17 @@ describe('WeekPicker', () => {
             assert(instance.state.value.format('YYYY-MM-DD') === moment().add(1, 'w').format('YYYY-MM-DD'));
             input.simulate('keydown', { keyCode: KEYCODE.UP });
             assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+
+            const curMoment = moment().add(1, 'month').subtract(1, 'month');
+
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().add(1, 'month').format('YYYY-MM-DD'));
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.add(1, 'month').format('YYYY-MM-DD'));
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.subtract(1, 'month').format('YYYY-MM-DD'));
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().add(1, 'year').format('YYYY-MM-DD'));
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.add(1, 'year').format('YYYY-MM-DD'));
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.subtract(1, 'year').format('YYYY-MM-DD'));
         });
     });
 
@@ -1656,15 +1659,18 @@ describe('RangePicker', () => {
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(instance.state.startDateInputStr === moment().add(1, 'day').format('YYYY-MM-DD'));
             input.simulate('keydown', { keyCode: KEYCODE.UP });
-            // assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            // assert(instance.state.startDateInputStr === moment().add(1, 'month').format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            // assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            // assert(instance.state.startDateInputStr === moment().add(1, 'year').format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            // assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            
+            const curMoment = moment().add('month', 1).subtract('month', 1);
+
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.startDateInputStr === curMoment.add(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.startDateInputStr === curMoment.subtract(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.startDateInputStr === curMoment.add(1, 'year').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.startDateInputStr === curMoment.subtract(1, 'year').format('YYYY-MM-DD'));
         });
 
         it('should keyboard date time input', () => {
