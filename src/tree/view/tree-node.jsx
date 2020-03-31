@@ -121,7 +121,7 @@ class TreeNode extends Component {
     }
 
     componentDidMount() {
-        this.itemNode = findDOMNode(this.refs.node);
+        this.itemNode = findDOMNode(this.nodeEl);
         this.setFocus();
     }
 
@@ -414,10 +414,7 @@ class TreeNode extends Component {
         }
 
         return (
-            <div
-                className={`${prefix}tree-node-label-wrapper`}
-                ref="labelWrapper"
-            >
+            <div className={`${prefix}tree-node-label-wrapper`}>
                 <div {...labelProps}>{label}</div>
             </div>
         );
@@ -427,10 +424,7 @@ class TreeNode extends Component {
         const { prefix } = this.props;
         const { label } = this.state;
         return (
-            <div
-                className={`${prefix}tree-node-label-wrapper`}
-                ref="labelWrapper"
-            >
+            <div className={`${prefix}tree-node-label-wrapper`}>
                 <TreeNodeInput
                     prefix={prefix}
                     defaultValue={label}
@@ -467,6 +461,10 @@ class TreeNode extends Component {
 
         return childTree;
     }
+
+    saveRef = ref => {
+        this.nodeEl = ref;
+    };
 
     render() {
         const {
@@ -574,7 +572,7 @@ class TreeNode extends Component {
         return (
             <li role="presentation" className={newClassName} {...others}>
                 <div
-                    ref="node"
+                    ref={this.saveRef}
                     role="treeitem"
                     aria-selected={selected}
                     aria-disabled={disabled}
