@@ -234,7 +234,6 @@ export default class SubMenu extends Component {
             <ul
                 role={roleMenu}
                 dir={rtl ? 'rtl' : undefined}
-                ref="subMenu"
                 className={newSubMenuContentClassName}
             >
                 {this.passParentToChildren(children)}
