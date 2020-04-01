@@ -50,11 +50,11 @@ class Table extends React.Component {
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
         /**
-         *
+         * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
          */
         tableLayout: PropTypes.oneOf(['fix', 'auto']),
         /**
-         *
+         * 表格的总长度，可以这么用：设置表格总长度 、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
          */
         tableWidth: PropTypes.number,
         /**
