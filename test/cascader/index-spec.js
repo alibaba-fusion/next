@@ -195,6 +195,26 @@ describe('Cascader', () => {
         findItem(wrapper, 1, 1).simulate('click');
     });
 
+    it('should support remove title', () => {
+        ChinaArea[0].title = '';
+        wrapper = mount(<Cascader dataSource={ChinaArea} />);
+        assert(
+            wrapper
+                .find('.next-menu-item')
+                .at(0)
+                .getDOMNode()
+                .getAttribute('title') === ''
+        );
+        assert(
+            wrapper
+                .find('.next-menu-item')
+                .at(1)
+                .getDOMNode()
+                .getAttribute('title') === '四川'
+        );
+        delete ChinaArea[0].title;
+    });
+
     it('could only select leaf item when set canOnlySelectLeaf to true', () => {
         const handleChange = () => {
             assert(false);
@@ -342,12 +362,14 @@ describe('Cascader', () => {
 
         setTimeout(() => {
             (value = ['2980']),
-            (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
+                (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
             extra = {
                 checked: false,
                 currentData: { value: '2974', label: '西安', pos: '0-0-0' },
                 checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
-                indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
+                indeterminateData: [
+                    { value: '2973', label: '陕西', pos: '0-0' },
+                ],
             };
             checkItem(findItem(wrapper, 1, 0), false);
             compareIndeterminate(findItem(wrapper, 0, 0));
@@ -355,7 +377,7 @@ describe('Cascader', () => {
             findItem(wrapper, 2).forEach(compareNotChecked);
             assert(changeCalled);
             done();
-        }, 20)
+        }, 20);
     });
 
     it('should render multiple cascader when set checkStrictly to true', () => {
@@ -700,14 +722,14 @@ function findRealItem(listIndex, itemIndex) {
         [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
 }
 
-function filter$Source (data) {
+function filter$Source(data) {
     if (!data) return;
 
-    return [...data].map((it) => {
+    return [...data].map(it => {
         const item = {
-            ...it
+            ...it,
         };
         delete item._source;
         return item;
-    })
+    });
 }

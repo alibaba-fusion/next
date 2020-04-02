@@ -728,6 +728,10 @@ export default class Cascader extends Component {
                         onFold: this.handleFold,
                     };
 
+                    if ('title' in item) {
+                        props.title = item.title;
+                    }
+
                     if (multiple) {
                         props.checkable = !(canOnlyCheckLeaf && canExpand);
                         props.checked =
