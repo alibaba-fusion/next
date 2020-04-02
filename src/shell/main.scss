@@ -42,6 +42,11 @@
             margin-left: 10px;
         }
 
+        &#{$shell-prefix}-fixed-header {
+            position: sticky;
+            top: 0;
+        }
+
         #{$shell-prefix}-navigation {
             flex: 1;
             display: flex;
@@ -93,6 +98,23 @@
             align-items: center;
             width: 100%;
         }
+    }
+
+    .#{$css-prefix}aside-navigation,
+    .#{$css-prefix}aside-tooldock {
+        display: flex;
+        &.fixed {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+        }
+    }
+
+    .#{$css-prefix}aside-navigation.fixed {
+        left: 0;
+    }
+    .#{$css-prefix}aside-tooldock.fixed {
+        right: 0;
     }
 
     &-aside {
