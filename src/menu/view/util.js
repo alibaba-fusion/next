@@ -65,22 +65,22 @@ export const getFirstAvaliablelChildKey = (parentPos, _p2n) => {
  *
  * selectMode?: string; 当前的选择模式，一般为 multiple single
  * selectedKeys?: string[]; 选中的key值
- * root?: any;
+ * k2n?: object[] mapping;
  * _key?: string; 待测试的key值
  *
  * @return bool 当前元素是否有孩子被选中
  */
-export const getChildSelected = ({ selectMode, selectedKeys, root, _key }) => {
-    if (!(root && root.k2n)) {
+export const getChildSelected = ({ selectMode, selectedKeys, _k2n, _key }) => {
+    if (!_k2n) {
         return false;
     }
 
-    const _keyPos = `${root.k2n[_key].pos}-`;
+    const _keyPos = `${_k2n[_key].pos}-`;
 
     return (
         !!selectMode &&
         selectedKeys.some(
-            key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
+            key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0
         )
     );
 };
