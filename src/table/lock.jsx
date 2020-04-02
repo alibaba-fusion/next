@@ -670,6 +670,7 @@ export default function lock(BaseComponent) {
                 components,
                 className,
                 dataSource,
+                tableWidth,
                 ...others
             } = this.props;
             let {
@@ -740,6 +741,7 @@ export default function lock(BaseComponent) {
                 return (
                     <BaseComponent
                         {...others}
+                        tableWidth={tableWidth}
                         dataSource={dataSource}
                         columns={normalizedChildren}
                         prefix={prefix}
