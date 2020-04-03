@@ -142,10 +142,10 @@ export default class PopupItem extends Component {
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
 
-        const { selectedKeys } = root.state;
+        const { selectedKeys, _k2n } = root.state;
         const isChildSelected = getChildSelected({
             _key,
-            root,
+            _k2n,
             selectMode,
             selectedKeys,
         });
