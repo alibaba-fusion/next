@@ -1,0 +1,775 @@
+{
+  "name": "Balloon",
+  "props": {
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内敛样式",
+      "docblock": "自定义内敛样式",
+      "properties": []
+    },
+    "children": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "浮层的内容",
+      "docblock": "浮层的内容"
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'primary'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "样式类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "样式类型"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层当前显示的状态",
+      "docblock": "弹层当前显示的状态"
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层默认显示的状态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "弹层默认显示的状态"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层在显示和隐藏触发的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层在显示和隐藏触发的事件\n@param {Boolean} visible 弹层是否隐藏和显示\n@param {String} type 触发弹层显示或隐藏的来源， closeClick 表示由自带的关闭按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+      "params": [
+        {
+          "name": "visible",
+          "description": "弹层是否隐藏和显示",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "type",
+          "description": "触发弹层显示或隐藏的来源， closeClick 表示由自带的关闭按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "alignEdge": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹出层对齐方式, 是否为边缘对齐",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "弹出层对齐方式, 是否为边缘对齐"
+    },
+    "closable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示关闭按钮",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示关闭按钮"
+    },
+    "align": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'t'",
+            "computed": false,
+            "description": "上"
+          },
+          {
+            "value": "'r'",
+            "computed": false,
+            "description": "右"
+          },
+          {
+            "value": "'b'",
+            "computed": false,
+            "description": "下"
+          },
+          {
+            "value": "'l'",
+            "computed": false,
+            "description": "左"
+          },
+          {
+            "value": "'tl'",
+            "computed": false,
+            "description": "上左"
+          },
+          {
+            "value": "'tr'",
+            "computed": false,
+            "description": "上右"
+          },
+          {
+            "value": "'bl'",
+            "computed": false,
+            "description": "下左"
+          },
+          {
+            "value": "'br'",
+            "computed": false,
+            "description": "下右"
+          },
+          {
+            "value": "'lt'",
+            "computed": false,
+            "description": "左上"
+          },
+          {
+            "value": "'lb'",
+            "computed": false,
+            "description": "左下"
+          },
+          {
+            "value": "'rt'",
+            "computed": false,
+            "description": "右上"
+          },
+          {
+            "value": "'rb'",
+            "computed": false,
+            "description": "右下 及其 两两组合"
+          }
+        ]
+      },
+      "required": false,
+      "description": "弹出层位置",
+      "defaultValue": {
+        "value": "'b'",
+        "computed": false
+      },
+      "docblock": "弹出层位置\n@enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合",
+      "value": [
+        {
+          "value": "'t'",
+          "computed": false,
+          "description": "上"
+        },
+        {
+          "value": "'r'",
+          "computed": false,
+          "description": "右"
+        },
+        {
+          "value": "'b'",
+          "computed": false,
+          "description": "下"
+        },
+        {
+          "value": "'l'",
+          "computed": false,
+          "description": "左"
+        },
+        {
+          "value": "'tl'",
+          "computed": false,
+          "description": "上左"
+        },
+        {
+          "value": "'tr'",
+          "computed": false,
+          "description": "上右"
+        },
+        {
+          "value": "'bl'",
+          "computed": false,
+          "description": "下左"
+        },
+        {
+          "value": "'br'",
+          "computed": false,
+          "description": "下右"
+        },
+        {
+          "value": "'lt'",
+          "computed": false,
+          "description": "左上"
+        },
+        {
+          "value": "'lb'",
+          "computed": false,
+          "description": "左下"
+        },
+        {
+          "value": "'rt'",
+          "computed": false,
+          "description": "右上"
+        },
+        {
+          "value": "'rb'",
+          "computed": false,
+          "description": "右下 及其 两两组合"
+        }
+      ]
+    },
+    "offset": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px",
+      "defaultValue": {
+        "value": "[0, 0]",
+        "computed": false
+      },
+      "docblock": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px"
+    },
+    "trigger": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "触发元素",
+      "defaultValue": {
+        "value": "<span />",
+        "computed": false
+      },
+      "docblock": "触发元素"
+    },
+    "triggerType": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "array"
+          }
+        ]
+      },
+      "required": false,
+      "description": "触发行为\n鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click",
+      "defaultValue": {
+        "value": "'hover'",
+        "computed": false
+      },
+      "docblock": "触发行为\n鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click"
+    },
+    "onClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "任何visible为false时会触发的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "任何visible为false时会触发的事件",
+      "params": [],
+      "returns": null
+    },
+    "needAdjust": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否进行自动位置调整",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否进行自动位置调整"
+    },
+    "delay": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "弹层在触发以后的延时显示, 单位毫秒 ms",
+      "docblock": "弹层在触发以后的延时显示, 单位毫秒 ms"
+    },
+    "afterClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "浮层关闭后触发的事件, 如果有动画，则在动画结束后触发",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "浮层关闭后触发的事件, 如果有动画，则在动画结束后触发",
+      "params": [],
+      "returns": null
+    },
+    "shouldUpdatePosition": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "强制更新定位信息",
+      "docblock": "强制更新定位信息"
+    },
+    "autoFocus": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层出现后是否自动focus到内部第一个元素",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "弹层出现后是否自动focus到内部第一个元素"
+    },
+    "safeNode": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "安全节点:对于triggetType为click的浮层,会在点击除了浮层外的其它区域时关闭浮层.safeNode用于添加不触发关闭的节点, 值可以是dom节点的id或者是节点的dom对象",
+      "defaultValue": {
+        "value": "undefined",
+        "computed": true
+      },
+      "docblock": "安全节点:对于triggetType为click的浮层,会在点击除了浮层外的其它区域时关闭浮层.safeNode用于添加不触发关闭的节点, 值可以是dom节点的id或者是节点的dom对象"
+    },
+    "safeId": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "用来指定safeNode节点的id，和safeNode配合使用",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "用来指定safeNode节点的id，和safeNode配合使用"
+    },
+    "animation": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "object"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "配置动画的播放方式",
+      "defaultValue": {
+        "value": "{\n    in: 'zoomIn',\n    out: 'zoomOut',\n}",
+        "computed": false
+      },
+      "docblock": "配置动画的播放方式\n@param {String} in 进场动画\n@param {String} out 出场动画"
+    },
+    "cache": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层的dom节点关闭时是否删除",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "弹层的dom节点关闭时是否删除"
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。",
+      "docblock": "指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。"
+    },
+    "popupStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层组件style，透传给Popup",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "弹层组件style，透传给Popup",
+      "properties": []
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层组件className，透传给Popup",
+      "defaultValue": {
+        "value": "''",
+        "computed": false
+      },
+      "docblock": "弹层组件className，透传给Popup"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层组件属性，透传给Popup",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "弹层组件属性，透传给Popup",
+      "properties": []
+    },
+    "followTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否跟随滚动",
+      "docblock": "是否跟随滚动"
+    },
+    "id": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层id, 传入值才会支持无障碍",
+      "docblock": "弹层id, 传入值才会支持无障碍"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Tooltip",
+      "props": {
+        "prefix": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "样式类名的品牌前缀",
+          "defaultValue": {
+            "value": "'next-'",
+            "computed": false
+          },
+          "docblock": "样式类名的品牌前缀"
+        },
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义类名",
+          "docblock": "自定义类名"
+        },
+        "style": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "自定义内联样式",
+          "docblock": "自定义内联样式",
+          "properties": []
+        },
+        "children": {
+          "type": {
+            "name": "any"
+          },
+          "required": false,
+          "description": "tooltip的内容",
+          "docblock": "tooltip的内容"
+        },
+        "align": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'t'",
+                "computed": false,
+                "description": "上"
+              },
+              {
+                "value": "'r'",
+                "computed": false,
+                "description": "右"
+              },
+              {
+                "value": "'b'",
+                "computed": false,
+                "description": "下"
+              },
+              {
+                "value": "'l'",
+                "computed": false,
+                "description": "左"
+              },
+              {
+                "value": "'tl'",
+                "computed": false,
+                "description": "上左"
+              },
+              {
+                "value": "'tr'",
+                "computed": false,
+                "description": "上右"
+              },
+              {
+                "value": "'bl'",
+                "computed": false,
+                "description": "下左"
+              },
+              {
+                "value": "'br'",
+                "computed": false,
+                "description": "下右"
+              },
+              {
+                "value": "'lt'",
+                "computed": false,
+                "description": "左上"
+              },
+              {
+                "value": "'lb'",
+                "computed": false,
+                "description": "左下"
+              },
+              {
+                "value": "'rt'",
+                "computed": false,
+                "description": "右上"
+              },
+              {
+                "value": "'rb'",
+                "computed": false,
+                "description": "右下 及其 两两组合"
+              }
+            ]
+          },
+          "required": false,
+          "description": "弹出层位置",
+          "defaultValue": {
+            "value": "'b'",
+            "computed": false
+          },
+          "docblock": "弹出层位置\n@enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合",
+          "value": [
+            {
+              "value": "'t'",
+              "computed": false,
+              "description": "上"
+            },
+            {
+              "value": "'r'",
+              "computed": false,
+              "description": "右"
+            },
+            {
+              "value": "'b'",
+              "computed": false,
+              "description": "下"
+            },
+            {
+              "value": "'l'",
+              "computed": false,
+              "description": "左"
+            },
+            {
+              "value": "'tl'",
+              "computed": false,
+              "description": "上左"
+            },
+            {
+              "value": "'tr'",
+              "computed": false,
+              "description": "上右"
+            },
+            {
+              "value": "'bl'",
+              "computed": false,
+              "description": "下左"
+            },
+            {
+              "value": "'br'",
+              "computed": false,
+              "description": "下右"
+            },
+            {
+              "value": "'lt'",
+              "computed": false,
+              "description": "左上"
+            },
+            {
+              "value": "'lb'",
+              "computed": false,
+              "description": "左下"
+            },
+            {
+              "value": "'rt'",
+              "computed": false,
+              "description": "右上"
+            },
+            {
+              "value": "'rb'",
+              "computed": false,
+              "description": "右下 及其 两两组合"
+            }
+          ]
+        },
+        "trigger": {
+          "type": {
+            "name": "any"
+          },
+          "required": false,
+          "description": "触发元素",
+          "defaultValue": {
+            "value": "<span />",
+            "computed": false
+          },
+          "docblock": "触发元素"
+        },
+        "triggerType": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "array"
+              }
+            ]
+          },
+          "required": false,
+          "description": "触发行为\n鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件",
+          "defaultValue": {
+            "value": "'hover'",
+            "computed": false
+          },
+          "docblock": "触发行为\n鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件"
+        },
+        "popupStyle": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层组件style，透传给Popup",
+          "docblock": "弹层组件style，透传给Popup",
+          "properties": []
+        },
+        "popupClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层组件className，透传给Popup",
+          "docblock": "弹层组件className，透传给Popup"
+        },
+        "popupProps": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层组件属性，透传给Popup",
+          "docblock": "弹层组件属性，透传给Popup",
+          "properties": []
+        },
+        "pure": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否pure render",
+          "docblock": "是否pure render"
+        },
+        "popupContainer": {
+          "type": {
+            "name": "any"
+          },
+          "required": false,
+          "description": "指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。",
+          "docblock": "指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。"
+        },
+        "followTrigger": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否跟随滚动",
+          "docblock": "是否跟随滚动"
+        },
+        "id": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层id, 传入值才会支持无障碍",
+          "docblock": "弹层id, 传入值才会支持无障碍"
+        },
+        "delay": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100",
+          "defaultValue": {
+            "value": "0",
+            "computed": false
+          },
+          "docblock": "如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
