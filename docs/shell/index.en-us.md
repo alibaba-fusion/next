@@ -46,6 +46,9 @@ Shell is the infrastructure framework of the whole application. It embodies the 
 | Param                | Description  | Type              | Default Value      |
 | -------------------- | ------------ | ----------------- | ------------------ |
 | device             | Preset screen width, tt determines whether `Navigation` `LocalNavigation` `Ancillary`take space or not<br><br>**option**:<br>'phone', 'tablet', 'desktop'     | Enum         |  desktop    |
+| type             | type of Shell <br><br>**可选值**:<br>'light', 'dark', 'brand'     | Enum         |  light    |
+| fixedHeader   | fixed header or not. Doesn't work under IE11    | Boolean         | false     |
+
 
 ### Shell.Navigation
 It will tell his children whether it's collapse or not by `isCollapse` via Context.
@@ -56,7 +59,7 @@ It will tell his children whether it's collapse or not by `isCollapse` via Conte
 | direction  | header or asider<br><br>**option**:<br>'hoz', 'ver'    | Enum         |  hoz    |
 | align      | Arrangement of Navigation when direction is hoz<br><br>**option**:<br>'left', 'right', 'center'   | Enum        |  right  |
 | onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |
-
+| fixed   | fixed or not, only worked when Shell fixedHeader is true   | Boolean         | false     |
 
 ### Shell.LocalNavigation
 | Param                | Description  | Type              | Default Value      |
@@ -69,6 +72,7 @@ It will tell his children whether it's collapse or not by `isCollapse` via Conte
 | -------------------- | ------------ | ----------------- | ------------------ |
 | collapse   | collapse or not   | Boolean         | false     |
 | onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |
+| fixed   | fixed or not, only worked when Shell fixedHeader is true   | Boolean         | false     |
 
 ### Shell.Ancillary
 | Param                | Description  | Type              | Default Value      |
