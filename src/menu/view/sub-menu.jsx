@@ -159,10 +159,10 @@ export default class SubMenu extends Component {
         const triggerType = propsTriggerType || rootTriggerType;
         const open = this.getOpen();
 
-        const { selectedKeys } = root.state;
+        const { selectedKeys, _k2n } = root.state;
         const isChildSelected = getChildSelected({
             _key,
-            root,
+            _k2n,
             selectMode,
             selectedKeys,
         });
