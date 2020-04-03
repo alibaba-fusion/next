@@ -150,7 +150,7 @@ $nav-icononly-width: 58px;
 
         #{$menu-prefix}-sub-menu #{$menu-prefix}-item-inner {
             height: $nav-ver-sub-nav-height;
-            line-height: $nav-ver-sub-nav-height;
+            // line-height: $nav-ver-sub-nav-height;
             font-size: $nav-ver-sub-nav-font-size;
         }
 
