@@ -414,7 +414,10 @@ class TreeNode extends Component {
         }
 
         return (
-            <div className={`${prefix}tree-node-label-wrapper`}>
+            <div
+                className={`${prefix}tree-node-label-wrapper`}
+                ref={this.saveLabelWrapperRef}
+            >
                 <div {...labelProps}>{label}</div>
             </div>
         );
@@ -424,7 +427,10 @@ class TreeNode extends Component {
         const { prefix } = this.props;
         const { label } = this.state;
         return (
-            <div className={`${prefix}tree-node-label-wrapper`}>
+            <div
+                className={`${prefix}tree-node-label-wrapper`}
+                ref={this.saveLabelWrapperRef}
+            >
                 <TreeNodeInput
                     prefix={prefix}
                     defaultValue={label}
@@ -464,6 +470,10 @@ class TreeNode extends Component {
 
     saveRef = ref => {
         this.nodeEl = ref;
+    };
+
+    saveLabelWrapperRef = ref => {
+        this.labelWrapperEl = ref;
     };
 
     render() {
