@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
+import Affix from '../affix';
 import Icon from '../icon';
-import { KEYCODE, dom } from '../util';
+import { KEYCODE, dom, env } from '../util';
 
 import { isBoolean, getCollapseMap } from './util';
 /**
@@ -31,7 +32,7 @@ export default function ShellBase(props) {
              */
             type: PropTypes.oneOf(['light', 'dark', 'brand']),
             /**
-             * 是否固定 header, 不支持 IE11
+             * 是否固定 header, 用sticky实现，IE下降级为Affix
              */
             fixedHeader: PropTypes.bool,
         };
@@ -603,7 +604,7 @@ export default function ShellBase(props) {
 
             // 按照dom结构, arr 包括 header Navigation ToolDock 和 innerArr
             if (Object.keys(layout.header).length > 0) {
-                headerDom = (
+                const dom = (
                     <header
                         key="header"
                         className={headerCls}
@@ -614,6 +615,11 @@ export default function ShellBase(props) {
                         {layout.header.Action}
                     </header>
                 );
+                if (fixedHeader && env.ieVersion) {
+                    headerDom = <Affix style={{ zIndex: 9 }}>{dom}</Affix>;
+                } else {
+                    headerDom = dom;
+                }
             }
 
             layout.Navigation &&
