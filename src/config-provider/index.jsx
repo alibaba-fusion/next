@@ -83,6 +83,20 @@ class ConfigProvider extends Component {
         errorBoundary: false,
     };
 
+    static contextTypes = {
+        nextPrefix: PropTypes.string,
+        nextLocale: PropTypes.object,
+        nextPure: PropTypes.bool,
+        nextRtl: PropTypes.bool,
+        nextWarning: PropTypes.bool,
+        nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
+        nextPopupContainer: PropTypes.any,
+        nextErrorBoundary: PropTypes.oneOfType([
+            PropTypes.bool,
+            PropTypes.object,
+        ]),
+    };
+
     static childContextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
@@ -183,15 +197,26 @@ class ConfigProvider extends Component {
             errorBoundary,
         } = this.props;
 
+        const {
+            nextPrefix,
+            nextLocale,
+            nextPure,
+            nextRtl,
+            nextWarning,
+            nextDevice,
+            nextPopupContainer,
+            nextErrorBoundary,
+        } = this.context;
+
         return {
-            nextPrefix: prefix,
-            nextLocale: locale,
-            nextPure: pure,
-            nextRtl: rtl,
-            nextWarning: warning,
-            nextDevice: device,
-            nextPopupContainer: popupContainer,
-            nextErrorBoundary: errorBoundary,
+            nextPrefix: prefix || nextPrefix,
+            nextLocale: locale || nextLocale,
+            nextPure: typeof pure === 'boolean' ? pure : nextPure,
+            nextRtl: typeof rtl === 'boolean' ? rtl : nextRtl,
+            nextWarning: typeof warning === 'boolean' ? warning : nextWarning,
+            nextDevice: device || nextDevice,
+            nextPopupContainer: popupContainer || nextPopupContainer,
+            nextErrorBoundary: errorBoundary || nextErrorBoundary,
         };
     }
 
