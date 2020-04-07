@@ -20,6 +20,12 @@ Menu.create = create;
 
 /* istanbul ignore next */
 const transform = (props, deprecated) => {
+    if ('onClick' in props) {
+        deprecated('onClick', 'onItemClick', 'Menu');
+        const { onClick, ...others } = props;
+        props = { onItemClick: onClick, ...others };
+    }
+
     if ('indentSize' in props) {
         deprecated('indentSize', 'inlineIndent', 'Menu');
 
