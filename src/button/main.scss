@@ -41,8 +41,13 @@
             vertical-align: middle;
         }
 
-        > span,
         > div {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        > #{$btn-prefix}-helper {
+            text-decoration: inherit;
             display: inline-block;
             vertical-align: middle;
         }
