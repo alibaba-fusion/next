@@ -170,7 +170,7 @@ export default class Button extends Component {
             }
 
             if (!isValidElement(child)) {
-                return <span>{child}</span>;
+                return <span className={`${prefix}btn-helper`}>{child}</span>;
             }
 
             return child;
