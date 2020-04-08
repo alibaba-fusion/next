@@ -712,4 +712,33 @@ describe('Popup', () => {
             assert(!document.querySelector('.next-overlay-wrapper'));
         });
     });
+
+    it('should support render in shadow dom', () => {
+        return co(function*() {
+            const host = document.createElement('div');
+            const shadowRoot = host.attachShadow({ mode: 'open' });
+            document.body.appendChild(host);
+
+            ReactDOM.render((
+                <Popup trigger={<button>Open</button>} triggerType="click">
+                    <span className="content">Hello World From Popup!</span>
+                </Popup>
+            ), shadowRoot);
+
+            yield delay(300);
+            const btn = shadowRoot.querySelector('button');
+            // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
+            btn.click();
+
+            yield delay(300);
+            assert(document.querySelector('.next-overlay-wrapper'));
+
+            btn.click();
+            yield delay(300);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            ReactDOM.unmountComponentAtNode(shadowRoot);
+            document.body.removeChild(host);
+        });
+    })
 });
