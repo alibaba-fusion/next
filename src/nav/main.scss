@@ -148,9 +148,12 @@ $nav-icononly-width: 58px;
             margin-bottom: $nav-ver-item-margin-tb;
         }
 
+        #{$menu-prefix}-sub-menu {
+            line-height: $nav-ver-sub-nav-height;
+        }
+
         #{$menu-prefix}-sub-menu #{$menu-prefix}-item-inner {
             height: $nav-ver-sub-nav-height;
-            // line-height: $nav-ver-sub-nav-height;
             font-size: $nav-ver-sub-nav-font-size;
         }
 
