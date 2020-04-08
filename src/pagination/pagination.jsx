@@ -170,6 +170,7 @@ class Pagination extends Component {
         this.state = {
             current: props.defaultCurrent || 1,
             currentPageSize: 0,
+            inputValue: '',
         };
     }
 
@@ -193,17 +194,25 @@ class Pagination extends Component {
 
     handleJump = e => {
         const { total } = this.props;
-        const { current, currentPageSize } = this.state;
+        const { current, currentPageSize, inputValue } = this.state;
         const totalPage = getTotalPage(total, currentPageSize);
-        const value = parseInt(this.inputValue, 10);
-        if (
-            typeof value === 'number' &&
-            value >= 1 &&
-            value <= totalPage &&
-            value !== current
-        ) {
+        let value = parseInt(inputValue, 10);
+
+        if (isNaN(value)) {
+            value = '';
+        } else if (value < 1) {
+            value = 1;
+        } else if (value > totalPage) {
+            value = totalPage;
+        }
+
+        if (value && value !== current) {
             this.onPageItemClick(value, e);
         }
+
+        this.setState({
+            inputValue: '',
+        });
     };
     onPageItemClick(page, e) {
         if (!('current' in this.props)) {
@@ -215,7 +224,9 @@ class Pagination extends Component {
     }
 
     onInputChange(value) {
-        this.inputValue = value;
+        this.setState({
+            inputValue: value,
+        });
     }
 
     onSelectSize(pageSize) {
@@ -362,6 +373,7 @@ class Pagination extends Component {
 
     renderPageJump() {
         const { prefix, size, locale } = this.props;
+        const { inputValue } = this.state;
 
         /* eslint-disable react/jsx-key */
         return [
@@ -373,6 +385,7 @@ class Pagination extends Component {
                 type="text"
                 aria-label={locale.inputAriaLabel}
                 size={size}
+                value={inputValue}
                 onChange={this.onInputChange.bind(this)}
                 onKeyDown={e => {
                     if (e.keyCode === KEYCODE.ENTER) {
