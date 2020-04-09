@@ -33,11 +33,11 @@ export default class CascaderMenu extends Component {
         }
 
         if (useVirtual) {
-            const instance = this.refs.virtual.getInstance();
+            const instance = this.virtualEl.getInstance();
             setTimeout(() => instance.scrollTo(selectedIndex), 0);
         } else {
             const itemSelector = `.${prefix}menu-item`;
-            const menu = findDOMNode(this.refs.menu);
+            const menu = findDOMNode(this.menuEl);
             const targetItem = menu.querySelectorAll(itemSelector)[
                 selectedIndex
             ];
@@ -71,6 +71,14 @@ export default class CascaderMenu extends Component {
         );
     }
 
+    saveMenuRef = ref => {
+        this.menuEl = ref;
+    };
+
+    saveVirtualRef = ref => {
+        this.virtualEl = ref;
+    };
+
     render() {
         const {
             prefix,
@@ -87,7 +95,7 @@ export default class CascaderMenu extends Component {
         };
         return (
             <div
-                ref="menu"
+                ref={this.saveMenuRef}
                 className={`${prefix}cascader-menu-wrapper ${
                     className ? className : ''
                 }`}
@@ -95,7 +103,7 @@ export default class CascaderMenu extends Component {
             >
                 {useVirtual ? (
                     <VirtualList
-                        ref="virtual"
+                        ref={this.saveVirtualRef}
                         itemsRenderer={(items, ref) =>
                             this.renderMenu(items, ref, menuProps)
                         }

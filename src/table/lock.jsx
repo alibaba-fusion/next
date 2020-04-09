@@ -583,7 +583,7 @@ export default function lock(BaseComponent) {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of table when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(this.refs[`lock${type}`]);
+                return findDOMNode(this[`lock${type}El`]);
             } catch (error) {
                 return null;
             }
@@ -662,6 +662,14 @@ export default function lock(BaseComponent) {
             return loop(children).length;
         };
 
+        saveLockLeftRef = ref => {
+            this.lockLeftEl = ref;
+        };
+
+        saveLockRightRef = ref => {
+            this.lockRightEl = ref;
+        };
+
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
             let {
@@ -719,7 +727,7 @@ export default function lock(BaseComponent) {
                         prefix={prefix}
                         lockType="left"
                         components={components}
-                        ref="lockLeft"
+                        ref={this.saveLockLeftRef}
                         loading={false}
                         aria-hidden
                     />,
@@ -733,7 +741,7 @@ export default function lock(BaseComponent) {
                         prefix={prefix}
                         lockType="right"
                         components={components}
-                        ref="lockRight"
+                        ref={this.saveLockRightRef}
                         loading={false}
                         aria-hidden
                     />,
