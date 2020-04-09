@@ -44,8 +44,8 @@ $nav-icononly-width: 58px;
             #{$menu-prefix}-hoz-icon-arrow.#{$css-prefix}icon,
             #{$menu-prefix}-icon-arrow.#{$css-prefix}icon {
                 color: inherit;
-                top: 2px;
-                transform-origin: center 47%;
+                top: 0;
+                transform-origin: center 50%;
             }
         }
     }
@@ -364,7 +364,7 @@ $nav-icononly-width: 58px;
                 $marginRight: (18px - $nav-icon-only-font-size) / 2
             );
             transition: all $motion-duration-immediately $motion-linear;
-            transform-origin: center 46%;
+            transform-origin: center 50%;
         }
 
         #{$nav-prefix}-item.#{$css-prefix}opened #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon-arrow-down {
