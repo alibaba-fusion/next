@@ -48,6 +48,7 @@ const render = element => {
 class Demo extends React.Component {
     state = {
         visible: false,
+        content: '开启您的贸易生活从 Alibaba.com 开始',
     };
 
     onOpen = () => {
@@ -59,6 +60,18 @@ class Demo extends React.Component {
     onClose = () => {
         this.setState({
             visible: false,
+        });
+    };
+
+    onChangeContent = () => {
+        this.setState({
+            content: new Array(30)
+                .fill('')
+                .map((__, index) => (
+                    <p key={index}>
+                        Start your business here by searching a popular product
+                    </p>
+                )),
         });
     };
 
@@ -76,7 +89,14 @@ class Demo extends React.Component {
                     onClose={this.onClose}
                     {...this.props}
                 >
-                    开启您的贸易生活从 Alibaba.com 开始
+                    <Button
+                        className="contentChangeBt"
+                        onClick={this.onChangeContent}
+                        type="primary"
+                    >
+                        修改内容
+                    </Button>
+                    {this.state.content}
                 </Dialog>
             </div>
         );
@@ -190,7 +210,11 @@ describe('inner', () => {
         assert(!document.querySelector('.next-dialog-footer'));
 
         wrapper.setProps({
-            footer: <a className="custom">Link</a>,
+            footer: (
+                <a className="custom" href>
+                    Link
+                </a>
+            ),
         });
         assert(
             document
@@ -200,17 +224,23 @@ describe('inner', () => {
     });
 
     it('should support custom footer button text', () => {
-        wrapper = render(<Dialog visible okProps={{className: 'custom-ok', children: 'my ok'}} cancelProps={{className: 'custom-cancel', children: 'my cancel'}} />);
+        wrapper = render(
+            <Dialog
+                visible
+                okProps={{ className: 'custom-ok', children: 'my ok' }}
+                cancelProps={{
+                    className: 'custom-cancel',
+                    children: 'my cancel',
+                }}
+            />
+        );
         assert(
-            document
-                .querySelector('.custom-ok')
-                .textContent.trim() === 'my ok'
+            document.querySelector('.custom-ok').textContent.trim() === 'my ok'
         );
 
         assert(
-            document
-                .querySelector('.custom-cancel')
-                .textContent.trim() === 'my cancel'
+            document.querySelector('.custom-cancel').textContent.trim() ===
+                'my cancel'
         );
     });
 
@@ -222,11 +252,45 @@ describe('inner', () => {
     it('should adjust position and size if not use css to position', () => {
         const viewportHeight =
             window.innerHeight || document.documentElement.clientHeight;
-        const dialogHeight = viewportHeight - 40 + 20;
-        wrapper = render(<Demo style={{ height: dialogHeight }} />);
+        const dialogHeight = viewportHeight - 80 + 20;
+
+        wrapper = render(<Demo height={`${dialogHeight}px`} />);
+
         const btn = document.querySelector('button');
         ReactTestUtils.Simulate.click(btn);
-        assert(getStyle(document.querySelector('.next-dialog'), 'top'), '40');
+        assert(getStyle(document.querySelector('.next-dialog'), 'top') === 40);
+    });
+
+    it('should update position and size when dailog content has been changed', () => {
+        const viewportHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+
+        wrapper = render(<Demo />);
+        wrapper.setProps({
+            shouldUpdatePosition: true,
+        });
+
+        const btn = document.querySelector('button');
+        ReactTestUtils.Simulate.click(btn);
+
+        const contentChangeBt = document.querySelector('.contentChangeBt');
+        ReactTestUtils.Simulate.click(contentChangeBt);
+
+        const inner = document.querySelector('.next-dialog');
+        const top = getStyle(inner, 'top');
+        const footerHeight = getStyle(
+            document.querySelector('.next-dialog-footer'),
+            'height'
+        );
+        const headerHeight = getStyle(
+            document.querySelector('.next-dialog-header'),
+            'height'
+        );
+
+        assert(
+            getStyle(document.querySelector('.next-dialog-body'), 'height') ===
+                viewportHeight - footerHeight - headerHeight - top * 2
+        );
     });
 
     it('should hide close link if set closeable to false', () => {
@@ -324,14 +388,12 @@ describe('inner', () => {
     });
 
     it('should support height', () => {
-        wrapper = render(<Dialog visible/>);
+        wrapper = render(<Dialog visible />);
         assert(!document.querySelector('.next-dialog').style.height);
 
         assert(
             !hasClass(
-                document.querySelector(
-                    '.next-dialog-footer'
-                ),
+                document.querySelector('.next-dialog-footer'),
                 'next-dialog-footer-fixed-height'
             )
         );
@@ -343,9 +405,7 @@ describe('inner', () => {
 
         assert(
             hasClass(
-                document.querySelector(
-                    '.next-dialog-footer'
-                ),
+                document.querySelector('.next-dialog-footer'),
                 'next-dialog-footer-fixed-height'
             )
         );
@@ -432,18 +492,22 @@ describe('inner', () => {
     });
 
     it('should work when set <ConfigProvider popupContainer/> ', () => {
+        wrapper = render(
+            <ConfigProvider popupContainer={'dialog-popupcontainer'}>
+                <div
+                    id="dialog-popupcontainer"
+                    style={{ height: 300, overflow: 'auto' }}
+                >
+                    <Dialog title="Welcome to Alibaba.com" visible>
+                        Start your business here by searching a popular product
+                    </Dialog>
+                </div>
+            </ConfigProvider>
+        );
 
-        wrapper = render(<ConfigProvider popupContainer={"dialog-popupcontainer"}>
-        <div id="dialog-popupcontainer" style={{height: 300, overflow: 'auto'}}>
-            <Dialog
-                title="Welcome to Alibaba.com"
-                visible>
-                Start your business here by searching a popular product
-            </Dialog>
-        </div>
-        </ConfigProvider>);
-
-        const overlay = document.querySelector('#dialog-popupcontainer > .next-overlay-wrapper');
+        const overlay = document.querySelector(
+            '#dialog-popupcontainer > .next-overlay-wrapper'
+        );
         assert(overlay);
     });
 
@@ -697,7 +761,7 @@ describe('Quick', () => {
                 type="confirm"
                 title="quick confirm modal inner"
                 locale={zhCN}
-                messageProps={{testProp: 'test'}}
+                messageProps={{ testProp: 'test' }}
                 content={<span>Modal Content</span>}
             />
         );
@@ -735,8 +799,7 @@ describe('Quick', () => {
         const message = wrapper.find(Message);
         assert(message.children().type() === 'span');
     });
-
-})
+});
 
 function assertOkBtn(btn) {
     assert(hasClass(btn, 'next-btn-primary'));

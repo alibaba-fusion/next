@@ -148,9 +148,12 @@ $nav-icononly-width: 58px;
             margin-bottom: $nav-ver-item-margin-tb;
         }
 
+        #{$menu-prefix}-sub-menu {
+            line-height: $nav-ver-sub-nav-height;
+        }
+
         #{$menu-prefix}-sub-menu #{$menu-prefix}-item-inner {
             height: $nav-ver-sub-nav-height;
-            line-height: $nav-ver-sub-nav-height;
             font-size: $nav-ver-sub-nav-font-size;
         }
 
@@ -391,13 +394,13 @@ $nav-icononly-width: 58px;
         &.#{$css-prefix}secondary,
         &.#{$css-prefix}normal {
             height: 100%;
-            background: initial;
+            background: transparent;
             box-shadow: none;
             border: none;
 
             #{$menu-prefix}-sub-menu #{$menu-prefix}-item,
             #{$nav-prefix}-item#{$menu-prefix}-item {
-                background: initial;
+                background: transparent;
             }
 
             &.#{$css-prefix}icon-only {
@@ -420,7 +423,7 @@ $nav-icononly-width: 58px;
     &-embeddable,
     &-embeddable &-item.#{$css-prefix}disabled,
     &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
-        background: initial;
+        background: transparent;
         border: none;
     }
 }
