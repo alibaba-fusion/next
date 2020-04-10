@@ -1,0 +1,992 @@
+{
+  "name": "Input",
+  "props": {
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "当前值",
+      "docblock": "当前值"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "初始化值",
+      "docblock": "初始化值"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "发生改变的时候触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "发生改变的时候触发的回调\n@param {String} value 数据\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "value",
+          "description": "数据",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onKeyDown": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "键盘按下的时候触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "键盘按下的时候触发的回调\n@param {Event} e DOM事件对象\n@param {Object} opts 可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理",
+      "params": [
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        },
+        {
+          "name": "opts",
+          "description": "可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "禁用状态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "禁用状态"
+    },
+    "maxLength": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最大长度",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "最大长度"
+    },
+    "hasLimitHint": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否展现最大长度样式",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否展现最大长度样式"
+    },
+    "cutString": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当设置了maxLength时，是否截断超出字符串",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "当设置了maxLength时，是否截断超出字符串"
+    },
+    "readOnly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "只读",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "只读"
+    },
+    "trim": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "onChange返回会自动去除头尾空字符",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "onChange返回会自动去除头尾空字符"
+    },
+    "placeholder": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "输入提示",
+      "docblock": "输入提示"
+    },
+    "onFocus": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "获取焦点时候触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "获取焦点时候触发的回调\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onBlur": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "失去焦点时候触发的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "失去焦点时候触发的回调\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "getValueLength": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义字符串计算长度方式",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "自定义字符串计算长度方式\n@param {String} value 数据\n@returns {Number} 自定义长度",
+      "params": [
+        {
+          "name": "value",
+          "description": "数据",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": {
+        "description": "自定义长度",
+        "type": {
+          "name": "Number"
+        }
+      }
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义class",
+      "docblock": "自定义class"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内联样式",
+      "docblock": "自定义内联样式",
+      "properties": []
+    },
+    "htmlType": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "原生type",
+      "docblock": "原生type"
+    },
+    "name": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "name",
+      "docblock": "name"
+    },
+    "state": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'error'",
+            "computed": false,
+            "description": "错误"
+          },
+          {
+            "value": "'loading'",
+            "computed": false,
+            "description": "校验中"
+          },
+          {
+            "value": "'success'",
+            "computed": false,
+            "description": "成功"
+          },
+          {
+            "value": "'warning'",
+            "computed": false,
+            "description": "警告"
+          }
+        ]
+      },
+      "required": false,
+      "description": "状态",
+      "docblock": "状态\n@enumdesc 错误, 校验中, 成功, 警告",
+      "value": [
+        {
+          "value": "'error'",
+          "computed": false,
+          "description": "错误"
+        },
+        {
+          "value": "'loading'",
+          "computed": false,
+          "description": "校验中"
+        },
+        {
+          "value": "'success'",
+          "computed": false,
+          "description": "成功"
+        },
+        {
+          "value": "'warning'",
+          "computed": false,
+          "description": "警告"
+        }
+      ]
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "label",
+      "docblock": "label"
+    },
+    "hasClear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否出现clear按钮",
+      "docblock": "是否出现clear按钮"
+    },
+    "hasBorder": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有边框",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否有边框"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false,
+            "description": "小"
+          },
+          {
+            "value": "'medium'",
+            "computed": false,
+            "description": "中"
+          },
+          {
+            "value": "'large'",
+            "computed": false,
+            "description": "大"
+          }
+        ]
+      },
+      "required": false,
+      "description": "尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "尺寸\n@enumdesc 小, 中, 大",
+      "value": [
+        {
+          "value": "'small'",
+          "computed": false,
+          "description": "小"
+        },
+        {
+          "value": "'medium'",
+          "computed": false,
+          "description": "中"
+        },
+        {
+          "value": "'large'",
+          "computed": false,
+          "description": "大"
+        }
+      ]
+    },
+    "onPressEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "按下回车的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "按下回车的回调",
+      "params": [],
+      "returns": null
+    },
+    "hint": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "node"
+          }
+        ]
+      },
+      "required": false,
+      "description": "水印 (Icon的type类型，和hasClear占用一个地方)",
+      "docblock": "水印 (Icon的type类型，和hasClear占用一个地方)"
+    },
+    "innerBefore": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "文字前附加内容",
+      "docblock": "文字前附加内容"
+    },
+    "innerAfter": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "文字后附加内容",
+      "docblock": "文字后附加内容"
+    },
+    "addonBefore": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "输入框前附加内容",
+      "docblock": "输入框前附加内容"
+    },
+    "addonAfter": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "输入框后附加内容",
+      "docblock": "输入框后附加内容"
+    },
+    "addonTextBefore": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "输入框前附加文字",
+      "docblock": "输入框前附加文字"
+    },
+    "addonTextAfter": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "输入框后附加文字",
+      "docblock": "输入框后附加文字"
+    },
+    "autoComplete": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "(原生input支持)",
+      "defaultValue": {
+        "value": "'off'",
+        "computed": false
+      },
+      "docblock": "(原生input支持)"
+    },
+    "autoFocus": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "自动聚焦(原生input支持)",
+      "docblock": "自动聚焦(原生input支持)"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "TextArea",
+      "props": {
+        "value": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "当前值",
+          "docblock": "当前值"
+        },
+        "defaultValue": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "初始化值",
+          "docblock": "初始化值"
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "发生改变的时候触发的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "发生改变的时候触发的回调\n@param {String} value 数据\n@param {Event} e DOM事件对象",
+          "params": [
+            {
+              "name": "value",
+              "description": "数据",
+              "type": {
+                "name": "String"
+              }
+            },
+            {
+              "name": "e",
+              "description": "DOM事件对象",
+              "type": {
+                "name": "Event"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "onKeyDown": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "键盘按下的时候触发的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "键盘按下的时候触发的回调\n@param {Event} e DOM事件对象\n@param {Object} opts 可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理",
+          "params": [
+            {
+              "name": "e",
+              "description": "DOM事件对象",
+              "type": {
+                "name": "Event"
+              }
+            },
+            {
+              "name": "opts",
+              "description": "可扩展的附加信息：<br> - opts.overMaxLength: {Boolean} 已超出最大长度<br> - opts.beTrimed: {Boolean} 输入的空格被清理",
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "禁用状态",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "禁用状态"
+        },
+        "maxLength": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "最大长度",
+          "defaultValue": {
+            "value": "null",
+            "computed": false
+          },
+          "docblock": "最大长度"
+        },
+        "hasLimitHint": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否展现最大长度样式",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否展现最大长度样式"
+        },
+        "cutString": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "当设置了maxLength时，是否截断超出字符串",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "当设置了maxLength时，是否截断超出字符串"
+        },
+        "readOnly": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "只读",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "只读"
+        },
+        "trim": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "onChange返回会自动去除头尾空字符",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "onChange返回会自动去除头尾空字符"
+        },
+        "placeholder": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "输入提示",
+          "docblock": "输入提示"
+        },
+        "onFocus": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "获取焦点时候触发的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "获取焦点时候触发的回调\n@param {Event} e DOM事件对象",
+          "params": [
+            {
+              "name": "e",
+              "description": "DOM事件对象",
+              "type": {
+                "name": "Event"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "onBlur": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "失去焦点时候触发的回调",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "失去焦点时候触发的回调\n@param {Event} e DOM事件对象",
+          "params": [
+            {
+              "name": "e",
+              "description": "DOM事件对象",
+              "type": {
+                "name": "Event"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "getValueLength": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "自定义字符串计算长度方式",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "自定义字符串计算长度方式\n@param {String} value 数据\n@returns {Number} 自定义长度",
+          "params": [
+            {
+              "name": "value",
+              "description": "数据",
+              "type": {
+                "name": "String"
+              }
+            }
+          ],
+          "returns": {
+            "description": "自定义长度",
+            "type": {
+              "name": "Number"
+            }
+          }
+        },
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义class",
+          "docblock": "自定义class"
+        },
+        "style": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "自定义内联样式",
+          "docblock": "自定义内联样式",
+          "properties": []
+        },
+        "htmlType": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "原生type",
+          "docblock": "原生type"
+        },
+        "name": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "name",
+          "docblock": "name"
+        },
+        "state": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'error'",
+                "computed": false,
+                "description": "错误"
+              },
+              {
+                "value": "'warning'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "状态",
+          "docblock": "状态\n@enumdesc 错误",
+          "value": [
+            {
+              "value": "'error'",
+              "computed": false,
+              "description": "错误"
+            },
+            {
+              "value": "'warning'",
+              "computed": false
+            }
+          ]
+        },
+        "isPreview": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否为预览态",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否为预览态"
+        },
+        "renderPreview": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "预览态模式下渲染的内容",
+          "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+          "params": [
+            {
+              "name": "value",
+              "description": "评分值",
+              "type": {
+                "name": "number"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "hasBorder": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否有边框",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "是否有边框"
+        },
+        "autoHeight": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "bool"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": "自动高度 true / {minRows: 2, maxRows: 4}",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "自动高度 true / {minRows: 2, maxRows: 4}"
+        },
+        "rows": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)",
+          "defaultValue": {
+            "value": "4",
+            "computed": false
+          },
+          "docblock": "多行文本框高度 <br />(不要直接用height设置多行文本框的高度, ie9 10会有兼容性问题)"
+        }
+      },
+      "methods": [
+        {
+          "name": "getValueLength",
+          "docblock": "value.length !== maxLength  in ie/safari(mac) while value has `Enter`\nabout maxLength compute: `Enter` was considered to be one char(\\n) in chrome , but two chars(\\r\\n) in ie/safari(mac).\nso while value has `Enter`, we should let display length + 1",
+          "modifiers": [],
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "returns": null,
+          "description": "value.length !== maxLength  in ie/safari(mac) while value has `Enter`\nabout maxLength compute: `Enter` was considered to be one char(\\n) in chrome , but two chars(\\r\\n) in ie/safari(mac).\nso while value has `Enter`, we should let display length + 1"
+        }
+      ],
+      "order": 2
+    },
+    {
+      "name": "Group",
+      "props": {
+        "prefix": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "样式前缀",
+          "defaultValue": {
+            "value": "'next-'",
+            "computed": false
+          },
+          "docblock": "样式前缀"
+        },
+        "addonBefore": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "输入框前附加内容",
+          "docblock": "输入框前附加内容"
+        },
+        "addonBeforeClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "输入框前附加内容css",
+          "docblock": "输入框前附加内容css"
+        },
+        "addonAfter": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "输入框后附加内容",
+          "docblock": "输入框后附加内容"
+        },
+        "addonAfterClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "输入框后额外css",
+          "docblock": "输入框后额外css"
+        },
+        "rtl": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "rtl",
+          "docblock": "rtl"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
