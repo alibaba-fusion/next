@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 
 /** Tab.Item */
 class TabItem extends React.Component {
@@ -64,4 +65,4 @@ class TabItem extends React.Component {
     }
 }
 
-export default TabItem;
+export default polyfill(TabItem);

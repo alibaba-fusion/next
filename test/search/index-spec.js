@@ -65,6 +65,11 @@ describe('Search', () => {
             assert(wrapper.dive().find(`[aria-label="${enUS.Search.buttonText}"]`).length === 0);
             assert(wrapper.dive().find(`[aria-label="a11y search"]`).length === 1);
         });
+
+        it('should support icons', () => {
+            const wrapper = mount(<Search icons={{search: <span id="icon-text">sc</span>}} aria-label="a11y search"/>);
+            assert(wrapper.find('.next-search-btn span').at(0).text() === 'sc');
+        });
     });
 
     describe('behavior', () => {
@@ -133,6 +138,42 @@ describe('Search', () => {
             wrapper.find('input').simulate('keydown', { keyCode: 13 });
 
             done();
+        });
+
+        it('should support onChange/onSearch ', done => {
+            let dataSource = [
+                {
+                    label: 'AAAAA',
+                    value: 'AAAAA',
+                },
+                {
+                    label: 'AAAAA12345',
+                    value: 'AAAAA12345',
+                },
+                {
+                    label: 'CCCC',
+                    value: 'CCCC',
+                },
+            ];
+
+            const FILTER_INDEX = 1;
+            const onSearch = value => {
+                assert(value === 'AAAAA');
+                done();
+            };
+
+            wrapper = mount(
+                <Search
+                    dataSource={dataSource}
+                    onSearch={onSearch}
+                />
+            );
+            // 点击
+            wrapper.find('.next-search input').simulate('click');
+            wrapper.find('.next-search input').simulate('change', { target: { value: 'A' } });
+            wrapper.update();
+            
+            wrapper.find('input').simulate('keydown', { keyCode: 13 });
         });
 
         it('should support filter ', done => {

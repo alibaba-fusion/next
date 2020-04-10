@@ -28,10 +28,11 @@ const dataSource = [{
 
 class App extends React.Component {
     onSearch(value, filterValue) {
-        console.log(value, filterValue);
+        console.log('onSearch', value, filterValue);
     }
 
-    onChange(value) {
+    onChange(value, type, e) {
+        console.log('onChange', value, type, e)
         this.setState({
             value: value
         });
@@ -39,8 +40,18 @@ class App extends React.Component {
 
     render() {
         return (
-            <Search dataSource={dataSource} onChange={this.onChange.bind(this)}
-                onSearch={this.onSearch.bind(this)}/>
+            <div>
+                auto highlight first item
+                <br/>
+                <Search dataSource={dataSource} onChange={this.onChange.bind(this)}
+                    onSearch={this.onSearch.bind(this)}/>
+                <br/>
+                <br/>
+                no default highlight item, should use UP/DOWN
+                <br/>
+                <Search autoHighlightFirstItem={false}  dataSource={dataSource} onChange={this.onChange.bind(this)}
+                    onSearch={this.onSearch.bind(this)}/>
+            </div>
         );
     }
 }

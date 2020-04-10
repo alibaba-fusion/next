@@ -14,7 +14,7 @@ simple usage
 ---
 
 ````jsx
-import { Select, Divider, Icon, Button } from '@alifd/next';
+import { Select, Divider, Icon, Button, Input } from '@alifd/next';
 
 const Option = Select.Option;
 
@@ -42,10 +42,18 @@ class App extends React.Component {
             dataSource: [ ...ds, ...generateData(ds.length, 5)]
         });
     }
+    
     render() {
         const menuProps = {
+            focusable: false,
             header: <div style={{padding: '0 4px', textAlign:'center'}}>
-                <div>Header</div>
+                <div style={{paddingBottom: 4}}>
+                    <Input style={{width: '100%'}} 
+                    ref={ref => this.inputRef = ref}
+                        onClick={e => console.log(/onclick/)} 
+                        onMouseDown={e => {console.log(/onMouseDown/); this.inputRef.focus()}} 
+                        />
+                </div>
                 <Divider style={{marginTop:0, marginBottom: 4}}/>
             </div>,
             footer: <div style={{padding: '0 4px', textAlign:'center'}}>
@@ -53,7 +61,10 @@ class App extends React.Component {
                 <Button text type="primary" onClick={this.loadMore}>Load More...</Button>
             </div>
         };
-        return <Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}} menuProps={menuProps}/ >;
+        return <Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}}
+            menuProps={menuProps} 
+            popupAutoFocus
+         / >;
     }
 };
 

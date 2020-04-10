@@ -80,6 +80,7 @@ const options = {
                 'lib/en-us.js',
                 'lib/ja-jp.js',
                 'lib/zh-cn.js',
+                'lib/zh-hk.js',
                 'lib/zh-tw.js',
             ],
         },

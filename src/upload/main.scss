@@ -434,6 +434,9 @@
 
     .#{$css-prefix}icon {
         color: $upload-card-icon-color;
+        &::before {
+            content: $upload-card-add-icon;
+        }
         @include icon-size($upload-card-add-icon-size);
     }
 
@@ -478,8 +481,6 @@
                 font-size: $upload-drag-zone-icon-size;
             }
         }
-
-
 
         &-text {
             margin: $s-3 0 0;

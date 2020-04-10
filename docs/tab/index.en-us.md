@@ -41,6 +41,7 @@ Disable animation with `animation={false}`
 | onClose             | Callback when close the tab<br><br>**signature**:<br>Function(key: String/Number)) => void<br>**parameter**:<br>_key_: {String/Number)} theClosedKey  | Function      | () => {} |
 | tabRender           | Custom template render for tab <br><br>**signature**:<br>Function(key: String, props: Object) => ReactNode<br>**parameter**:<br>_key_: {String} tabKey <br>_props_: {Object} propsOfTabItem <br>**return**:<br>{ReactNode} the rendered tab item<br> | Function      | -        |
 | popupProps            | properties pass down to Popup Menu in dropdown excess mode  | Object        | -        |
+| icons    | customize icons used in tab nav  | Object        | {}       |
 
 ### Tab.Item
 

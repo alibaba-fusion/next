@@ -58,6 +58,10 @@
     #{$date-picker-input-prefix} input {
         vertical-align: baseline;
     }
+
+    &-symbol-calendar-icon::before {
+        content: $date-picker-calendar-icon;
+    }
 }
 
 #{$range-picker-prefix}-panel-body {

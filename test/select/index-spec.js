@@ -822,11 +822,7 @@ describe('Select Controlled', () => {
         wrapper.update();
 
         assert(wrapper.find('.next-select input').prop('value') === 'xy');
-        assert(
-            document.querySelectorAll(
-                '.next-select-menu .next-select-menu-empty-content'
-            ).length === 1
-        );
+        assert(document.querySelectorAll('.next-select-menu .next-select-menu-empty-content' ).length === 1 );
 
         wrapper.setState({
             searchValue: undefined,
@@ -900,9 +896,6 @@ describe('AutoComplete', () => {
             visible: true,
             onChange,
         });
-        ReactTestUtils.Simulate.click(
-            document.querySelectorAll('.next-menu-item')[0]
-        );
         ReactTestUtils.Simulate.click(
             document.querySelectorAll('.next-menu-item')[0]
         );

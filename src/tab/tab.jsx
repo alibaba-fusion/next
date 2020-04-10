@@ -5,6 +5,7 @@ import { KEYCODE, obj } from '../util';
 import TabNav from './tabs/nav';
 import TabContent from './tabs/content';
 import { toArray } from './tabs/utils';
+import zhCN from '../locale/zh-cn';
 
 const noop = () => {};
 
@@ -104,6 +105,15 @@ export default class Tab extends Component {
         popupProps: PropTypes.object,
         children: PropTypes.any,
         className: PropTypes.string,
+        locale: PropTypes.object,
+        /**
+         * 自定义组件内 icon
+         */
+        icons: PropTypes.shape({
+            prev: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            next: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+            dropdown: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+        }),
     };
 
     static defaultProps = {
@@ -119,6 +129,8 @@ export default class Tab extends Component {
         onClick: noop,
         onChange: noop,
         onClose: noop,
+        locale: zhCN.Tab,
+        icons: {},
     };
 
     constructor(props, context) {
@@ -128,15 +140,17 @@ export default class Tab extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props, state) {
         if (
-            nextProps.activeKey !== undefined &&
-            this.state.activeKey !== `${nextProps.activeKey}`
+            props.activeKey !== undefined &&
+            state.activeKey !== `${props.activeKey}`
         ) {
-            this.setState({
-                activeKey: `${nextProps.activeKey}`,
-            });
+            return {
+                activeKey: `${props.activeKey}`,
+            };
         }
+
+        return {};
     }
 
     getDefaultActiveKey(props) {
@@ -248,6 +262,8 @@ export default class Tab extends Component {
             children,
             rtl,
             device,
+            locale,
+            icons,
             ...others
         } = this.props;
         const { activeKey } = this.state;
@@ -289,6 +305,8 @@ export default class Tab extends Component {
             onKeyDown: this.onNavKeyDown,
             style: navStyle,
             className: navClassName,
+            locale,
+            icons,
         };
 
         const contentProps = {

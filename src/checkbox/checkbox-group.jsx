@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
 import Checkbox from './checkbox';
@@ -122,7 +123,7 @@ class CheckboxGroup extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps) {
         if ('value' in nextProps) {
             let { value } = nextProps;
             if (!Array.isArray(value)) {
@@ -132,10 +133,11 @@ class CheckboxGroup extends Component {
                     value = [value];
                 }
             }
-            this.setState({
-                value,
-            });
+
+            return { value };
         }
+
+        return null;
     }
 
     onChange(currentValue, e) {
@@ -272,4 +274,4 @@ class CheckboxGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(CheckboxGroup);
+export default ConfigProvider.config(polyfill(CheckboxGroup));

@@ -147,6 +147,18 @@
         right: $tab-nav-arrow-down-positon-right;
     }
 
+    & .#{$css-prefix}tab-icon-dropdown::before {
+        content: $tab-icon-dropdown-content;
+    }
+
+    & .#{$css-prefix}tab-icon-prev::before {
+        content: $tab-icon-prev-content;
+    }
+
+    & .#{$css-prefix}tab-icon-next::before {
+        content: $tab-icon-next-content;
+    }
+
     &-content {
         overflow: hidden;
     }

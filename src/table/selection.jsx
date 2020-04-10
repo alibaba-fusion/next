@@ -1,5 +1,6 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import Checkbox from '../checkbox';
 import Radio from '../radio';
 import { func, log } from '../util';
@@ -85,17 +86,19 @@ export default function selection(BaseComponent) {
             };
         }
 
-        componentWillReceiveProps(nextProps) {
+        static getDerivedStateFromProps(nextProps) {
             if (
                 nextProps.rowSelection &&
                 'selectedRowKeys' in nextProps.rowSelection
             ) {
                 const selectedRowKeys =
                     nextProps.rowSelection.selectedRowKeys || [];
-                this.setState({
+                return {
                     selectedRowKeys,
-                });
+                };
             }
+
+            return null;
         }
 
         normalizeChildren(children) {
@@ -337,5 +340,5 @@ export default function selection(BaseComponent) {
         }
     }
     statics(SelectionTable, BaseComponent);
-    return SelectionTable;
+    return polyfill(SelectionTable);
 }

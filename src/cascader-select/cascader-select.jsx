@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import Select from '../select';
 import Cascader from '../cascader';
@@ -10,10 +11,22 @@ const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle } = dom;
 
+const normalizeValue = value => {
+    if (value) {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        return [value];
+    }
+
+    return [];
+};
+
 /**
  * CascaderSelect
  */
-export default class CascaderSelect extends Component {
+class CascaderSelect extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -266,7 +279,7 @@ export default class CascaderSelect extends Component {
         super(props, context);
 
         this.state = {
-            value: this.normalizeValue(
+            value: normalizeValue(
                 'value' in props ? props.value : props.defaultValue
             ),
             searchValue: '',
@@ -291,31 +304,17 @@ export default class CascaderSelect extends Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props) {
         const st = {};
 
-        if ('value' in nextProps) {
-            st.value = this.normalizeValue(nextProps.value);
+        if ('value' in props) {
+            st.value = normalizeValue(props.value);
         }
-        if ('visible' in nextProps) {
-            st.visible = nextProps.visible;
-        }
-
-        if (Object.keys(st).length) {
-            this.setState(st);
-        }
-    }
-
-    normalizeValue(value) {
-        if (value) {
-            if (Array.isArray(value)) {
-                return value;
-            }
-
-            return [value];
+        if ('visible' in props) {
+            st.visible = props.visible;
         }
 
-        return [];
+        return st;
     }
 
     updateCache(dataSource) {
@@ -918,3 +917,5 @@ export default class CascaderSelect extends Component {
         return <Select {...props} {...others} />;
     }
 }
+
+export default polyfill(CascaderSelect);

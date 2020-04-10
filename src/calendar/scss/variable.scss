@@ -369,3 +369,19 @@ $calendar-btn-date-color: $color-white !default;
 /// text
 /// @namespace statement/hover/header
 $calendar-btn-date-color-hover: $color-white !default;
+
+/// prev
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-prev: $icon-content-arrow-left !default;
+
+/// next
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-next: $icon-content-arrow-right !default;
+
+/// prev super
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-prev-super: $icon-content-arrow-double-left !default;
+
+/// next super
+/// @namespace statement/normal/table head
+$calendar-btn-arrow-content-next-super: $icon-content-arrow-double-right !default;

@@ -318,6 +318,11 @@
         }
     }
 
+    /* custom loading */
+    &-custom-loading {
+        pointer-events: none;
+    }
+
     /* 幽灵按钮 */
     &-ghost {
         box-shadow: none;

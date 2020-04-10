@@ -32,6 +32,10 @@
         cursor: not-allowed;
     }
 
+    &-symbol-icon::before {
+        content: $rating-grade-icon-content;
+    }
+
     &-underlay {
         white-space: nowrap;
         overflow: hidden;

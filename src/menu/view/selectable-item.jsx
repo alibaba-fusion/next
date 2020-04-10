@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from '../../icon';
@@ -39,11 +39,13 @@ export default class SelectableItem extends Component {
         needIndent: PropTypes.bool,
         hasSelectedIcon: PropTypes.bool,
         isSelectIconRight: PropTypes.bool,
+        icons: PropTypes.object,
     };
 
     static defaultProps = {
         disabled: false,
         needIndent: true,
+        icons: {},
     };
 
     constructor(props) {
@@ -95,10 +97,18 @@ export default class SelectableItem extends Component {
             prefix,
             hasSelectedIcon: rootSelectedIcon,
             isSelectIconRight: rootSelectIconRight,
+            icons,
         } = root.props;
+
+        let iconsSelect = icons.select;
+
+        if (!isValidElement(icons.select) && icons.select) {
+            iconsSelect = <span>{icons.select}</span>;
+        }
 
         const cls = cx({
             [`${prefix}menu-icon-selected`]: true,
+            [`${prefix}menu-symbol-icon-selected`]: !iconsSelect,
             [`${prefix}menu-icon-right`]:
                 ('isSelectIconRight' in this.props
                     ? isSelectIconRight
@@ -107,17 +117,15 @@ export default class SelectableItem extends Component {
 
         return ('hasSelectedIcon' in this.props
             ? hasSelectedIcon
-            : rootSelectedIcon) && selected ? (
-            <Icon
-                style={
-                    needIndent && inlineIndent > 0
-                        ? { left: `${inlineIndent}px` }
-                        : null
-                }
-                className={cls}
-                type="select"
-            />
-        ) : null;
+            : rootSelectedIcon) && selected
+            ? React.cloneElement(iconsSelect || <Icon type="select" />, {
+                  style:
+                      needIndent && inlineIndent > 0
+                          ? { left: `${inlineIndent}px` }
+                          : null,
+                  className: cls,
+              })
+            : null;
     }
 
     render() {
