@@ -102,7 +102,7 @@ const dataSource = [
 | onSearch               | 当搜索框值变化时回调<br><br>**签名**:<br>Function(value: String) => void<br>**参数**:<br>_value_: {String} 数据                                                                                                                                                           | Function                               | func.noop                          |
 | onSearchClear          | 当搜索框值被清空时候的回调<br><br>**签名**:<br>Function(actionType: String) => void<br>**参数**:<br>_actionType_: {String} 触发的方式, 'select'(选择清空), 'popupClose'(弹窗关闭清空)                                                                                                     | Function                               | func.noop                          |
 | hasSelectAll           | 多选模式下是否有全选功能                                                                                                                                                                                                                                              | Boolean/String                         | -                                  |
-| fillProps              | 填充到选择框里的值的 key                                                                                                                                                                                                                                        | String                                 | -                                  |
+| fillProps              | 填充到选择框里的值的 key                                                                                                                                                                                                                                          | String                                 | -                                  |
 | useDetailValue         | onChange 返回的 value 使用 dataSource 的对象                                                                                                                                                                                                                      | Boolean                                | -                                  |
 | cacheValue             | dataSource 变化的时是否保留已选的内容                                                                                                                                                                                                                                  | Boolean                                | true                               |
 | valueRender            | 渲染 Select 展现内容的方法<br><br>**签名**:<br>Function(item: Object) => ReactNode<br>**参数**:<br>_item_: {Object} 渲染节点的item<br>**返回值**:<br>{ReactNode} 展现内容<br>                                                                                                      | Function                               | item => item.label \|\| item.value |
@@ -114,8 +114,7 @@ const dataSource = [
 | onRemove               | tag 删除回调<br><br>**签名**:<br>Function(item: object) => void<br>**参数**:<br>_item_: {object} 渲染节点的item                                                                                                                                                        | Function                               | func.noop                          |
 | onFocus                | 焦点事件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                                 | Function                               | func.noop                          |
 | onBlur                 | 失去焦点事件<br><br>**签名**:<br>Function() => void                                                                                                                                                                                                               | Function                               | func.noop                          |
-| popupAutoFocus        | 展开下拉菜单时是否自动焦点到弹层                                                                                                                                                                                                                                          | Boolean                                | false                              |
-
+| popupAutoFocus         | 展开下拉菜单时是否自动焦点到弹层                                                                                                                                                                                                                                          | Boolean                                | false                              |
 
 ### Select.AutoComplete
 
@@ -168,9 +167,9 @@ const dataSource = [
 
 ## Select/AutoComplete 内部函数(通过refs获取)
 
-| 参数           | 说明                                                                                                                           | 类型       | 默认值 |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
-| focus        | 获取焦点<br><br>**签名**:<br> Function(start:Number, end: Number)<br>**参数**:<br>_start_: {Number} 光标起始位置<br>_end_: {Number} 选择结束位置 | Function |     |
+| 参数    | 说明                                                                                                                           | 类型       | 默认值 |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
+| focus | 获取焦点<br><br>**签名**:<br> Function(start:Number, end: Number)<br>**参数**:<br>_start_: {Number} 光标起始位置<br>_end_: {Number} 选择结束位置 | Function |     |
 
 ## ARIA and KeyBoard
 

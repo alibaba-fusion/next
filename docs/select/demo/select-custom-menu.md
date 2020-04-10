@@ -51,7 +51,7 @@ class App extends React.Component {
                     <Input style={{width: '100%'}} 
                     ref={ref => this.inputRef = ref}
                         onClick={e => console.log(/onclick/)} 
-                        onMouseDown={e => {console.log(/onMouseDown/); this.inputRef.focus()}} 
+                        onMouseDown={e => {console.log(/onMouseDown/); this.inputRef.focus();}} 
                         />
                 </div>
                 <Divider style={{marginTop:0, marginBottom: 4}}/>
@@ -61,10 +61,10 @@ class App extends React.Component {
                 <Button text type="primary" onClick={this.loadMore}>Load More...</Button>
             </div>
         };
-        return <Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}}
+        return (<Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}}
             menuProps={menuProps} 
             popupAutoFocus
-         / >;
+         / >);
     }
 };
 

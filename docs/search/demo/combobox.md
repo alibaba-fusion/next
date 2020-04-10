@@ -32,7 +32,7 @@ class App extends React.Component {
     }
 
     onChange(value, type, e) {
-        console.log('onChange', value, type, e)
+        console.log('onChange', value, type, e);
         this.setState({
             value: value
         });
