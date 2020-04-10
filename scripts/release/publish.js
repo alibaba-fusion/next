@@ -29,6 +29,8 @@ module.exports = function*() {
     "name": "@alifd/next-docs",
     "version": "${version}",
     "description": "fusion next doc pages for material center and setting platform",
+    "originNpm": "@alifd/next",
+    "repository": "https://github.com/alibaba-fusion/next.git",
     "publishConfig": {
         "access": "public"
     }
