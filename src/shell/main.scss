@@ -52,7 +52,6 @@
             display: flex;
             align-items: center;
             flex-direction: row;
-            overflow: hidden;
         }
         #{$shell-prefix}-branding {
             display: flex;
@@ -107,6 +106,7 @@
             position: fixed;
             top: 0;
             bottom: 0;
+            z-index: 1;
         }
     }
 
