@@ -360,6 +360,10 @@ export default function ShellBase(props) {
                 [`${prefix}shell-main`]: true,
             });
 
+            const pageCls = classnames({
+                [`${prefix}shell-page`]: true,
+            });
+
             const submainCls = classnames({
                 [`${prefix}shell-sub-main`]: true,
             });
@@ -644,7 +648,17 @@ export default function ShellBase(props) {
 
             // contentArr.push(contentArea);
             contentArr = contentArr.concat(
-                innerArr.length > 0 ? innerArr : [layout.page]
+                innerArr.length > 0
+                    ? innerArr
+                    : [
+                          <section
+                              key="page"
+                              ref={this.saveSubmainRef}
+                              className={submainCls}
+                          >
+                              {layout.page}
+                          </section>,
+                      ]
             );
 
             layout.ToolDock &&
@@ -672,7 +686,7 @@ export default function ShellBase(props) {
             });
 
             if (componentName === 'Page') {
-                return <section className={mainCls}>{contentArr}</section>;
+                return <section className={pageCls}>{children}</section>;
             }
 
             this.layout = layout;

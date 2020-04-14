@@ -63,6 +63,7 @@ export default function Base(props) {
                 onCollapseChange,
                 component,
                 align,
+                fixed,
                 ...others
             } = this.props;
 
