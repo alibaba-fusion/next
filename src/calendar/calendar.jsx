@@ -145,8 +145,7 @@ class Calendar extends Component {
             this.setState({
                 value,
             });
-
-            if (value) {
+            if (value && this.isValueChanged(value, this.state.value)) {
                 this.setState({
                     visibleMonth: value,
                 });
@@ -157,6 +156,20 @@ class Calendar extends Component {
             this.setState({
                 mode: nextProps.mode,
             });
+        }
+    }
+
+    isValueChanged(value, oldVlaue) {
+        if (value && oldVlaue) {
+            if (!moment.isMoment(value)) {
+                value = moment(value);
+            }
+            if (!moment.isMoment(oldVlaue)) {
+                oldVlaue = moment(oldVlaue);
+            }
+            return value.valueOf() !== oldVlaue.valueOf();
+        } else {
+            return value !== oldVlaue;
         }
     }
 
