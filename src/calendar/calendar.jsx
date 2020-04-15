@@ -169,7 +169,7 @@ class Calendar extends Component {
             }
             return value.valueOf() !== oldVlaue.valueOf();
         } else {
-            return value === oldVlaue;
+            return value !== oldVlaue;
         }
     }
 
