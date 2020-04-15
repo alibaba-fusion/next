@@ -1,4 +1,5 @@
 import { dom } from '../../util';
+import findNode from './find-node';
 
 const VIEWPORT = 'viewport';
 
@@ -90,13 +91,10 @@ function _getViewportSize(container) {
 }
 
 const getContainer = ({ container, autoFit, baseElement }) => {
-    let calcContainer;
-    if (typeof container === 'string') {
-        calcContainer = document.getElementById(container);
-    } else if (typeof container === 'function') {
-        calcContainer = container(baseElement);
-    } else {
-        return document.body;
+    let calcContainer = findNode(container, baseElement);
+
+    if (!calcContainer) {
+        calcContainer = document.body;
     }
 
     if (!autoFit) {
