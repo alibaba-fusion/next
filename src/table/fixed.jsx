@@ -52,6 +52,8 @@ export default function fixed(BaseComponent) {
             ]),
         };
 
+        state = {};
+
         getChildContext() {
             return {
                 fixedHeader: this.props.fixedHeader,

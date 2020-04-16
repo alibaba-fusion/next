@@ -132,7 +132,7 @@ class DragDemo extends React.Component {
     static defaultProps = {
         canDrop: () => true
     }
-    
+
     constructor(props) {
         super(props);
 
@@ -668,7 +668,7 @@ describe('Tree', () => {
                     this.state.data[0].children[0].children.length = 1;
                     this.setState({ data: this.state.data });
                     assertIndeterminate('2', false)
-                    
+
                     done();
                 }, 100);
             }
@@ -800,7 +800,7 @@ describe('Tree', () => {
             return isCanDrop
         }
         ReactDOM.render(<DragDemo canDrop={canDrop} />, mountNode);
-        
+
         // 禁止拖拽
         dragTreeNode('6', '2', 1, isCanDrop);
         // 允许拖拽

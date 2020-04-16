@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Input from '../input';
+import Icon from '../icon';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
 import { func, obj } from '../util';
@@ -410,7 +411,12 @@ class TimePicker extends Component {
             onBlur: this.onInputBlur,
             onPressEnter: this.onInputBlur,
             onKeyDown: this.onKeyown,
-            hint: 'clock',
+            hint: (
+                <Icon
+                    type="clock"
+                    className={`${prefix}time-picker-symbol-clock-icon`}
+                />
+            ),
         };
 
         const triggerInput = (

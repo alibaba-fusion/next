@@ -135,7 +135,10 @@ class DatePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-prev-year`}
                     onClick={goPrevYear}
                 >
-                    <Icon type="arrow-double-left" />
+                    <Icon
+                        type="arrow-double-left"
+                        className={[`${prefix}calendar-symbol-prev-super`]}
+                    />
                 </button>
                 <button
                     role="button"
@@ -143,7 +146,10 @@ class DatePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-prev-month`}
                     onClick={goPrevMonth}
                 >
-                    <Icon type="arrow-left" />
+                    <Icon
+                        type="arrow-left"
+                        className={[`${prefix}calendar-symbol-prev`]}
+                    />
                 </button>
                 <div className={`${prefix}calendar-panel-header-full`}>
                     {monthButton}
@@ -155,7 +161,10 @@ class DatePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-next-month`}
                     onClick={goNextMonth}
                 >
-                    <Icon type="arrow-right" />
+                    <Icon
+                        type="arrow-right"
+                        className={[`${prefix}calendar-symbol-next`]}
+                    />
                 </button>
                 <button
                     role="button"
@@ -163,7 +172,10 @@ class DatePanelHeader extends React.PureComponent {
                     className={`${btnCls} ${btnCls}-next-year`}
                     onClick={goNextYear}
                 >
-                    <Icon type="arrow-double-right" />
+                    <Icon
+                        type="arrow-double-right"
+                        className={[`${prefix}calendar-symbol-next-super`]}
+                    />
                 </button>
             </div>
         );

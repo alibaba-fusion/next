@@ -223,6 +223,27 @@ describe('Table', () => {
             }
         );
     });
+
+    it('should support tableLayout&tableWidth', done => {
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
+                tableLayout: 'fixed',
+                tableWidth: 1200
+            },
+            () => {
+                const tablewrapper = wrapper.find('.next-table');
+                const table = wrapper.find('.next-table table');
+
+                assert(tablewrapper.hasClass('next-table-layout-fixed'));
+                assert(table.at(0).props().style.width === 1200)
+                done();
+            }
+        );
+    });
     it('should support sortIcons', done => {
         const onSort = (dataIndex, order) => {
             assert(dataIndex === 'id');

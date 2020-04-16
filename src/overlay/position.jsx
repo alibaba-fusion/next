@@ -25,6 +25,7 @@ export default class Position extends Component {
         needListenResize: PropTypes.bool,
         shouldUpdatePosition: PropTypes.bool,
         rtl: PropTypes.bool,
+        pinFollowBaseElementWhenFixed: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -53,16 +54,16 @@ export default class Position extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+
         if (
-            ('align' in nextProps && nextProps.align !== this.props.align) ||
-            nextProps.shouldUpdatePosition
+            ('align' in props && props.align !== prevProps.align) ||
+            props.shouldUpdatePosition
         ) {
             this.shouldUpdatePosition = true;
         }
-    }
 
-    componentDidUpdate() {
         if (this.shouldUpdatePosition) {
             this.setPosition();
             this.shouldUpdatePosition = false;
@@ -86,6 +87,7 @@ export default class Position extends Component {
             needAdjust,
             container,
             rtl,
+            pinFollowBaseElementWhenFixed,
             autoFit,
         } = this.props;
 
@@ -98,6 +100,7 @@ export default class Position extends Component {
             const resultAlign = place({
                 pinElement: contentNode,
                 baseElement: targetNode,
+                pinFollowBaseElementWhenFixed,
                 align,
                 offset,
                 autoFit,

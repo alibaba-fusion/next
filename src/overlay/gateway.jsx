@@ -1,12 +1,18 @@
 import React, { Component, Children } from 'react';
 import { findDOMNode, createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import { func } from '../util';
 import findNode from './utils/find-node';
 
 const { makeChain } = func;
 
-export default class Gateway extends Component {
+const getContainerNode = props => {
+    const targetNode = findNode(props.target);
+    return findNode(props.container, targetNode);
+};
+
+class Gateway extends Component {
     static propTypes = {
         children: PropTypes.node,
         container: PropTypes.any,
@@ -17,18 +23,22 @@ export default class Gateway extends Component {
         container: () => document.body,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            containerNode: null,
+        };
+    }
+
+    static getDerivedStateFromProps(nextProps) {
+        return {
+            containerNode: getContainerNode(nextProps),
+        };
+    }
+
     componentDidMount() {
-        this.containerNode = this.getContainerNode(this.props);
         this.forceUpdate();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.containerNode = this.getContainerNode(nextProps);
-    }
-
-    getContainerNode(props) {
-        const targetNode = findNode(props.target);
-        return findNode(props.container, targetNode);
     }
 
     getChildNode() {
@@ -44,7 +54,9 @@ export default class Gateway extends Component {
     };
 
     render() {
-        if (!this.containerNode) {
+        const { containerNode } = this.state;
+
+        if (!containerNode) {
             return null;
         }
 
@@ -63,6 +75,8 @@ export default class Gateway extends Component {
             ref: makeChain(this.saveChildRef, child.ref),
         });
 
-        return createPortal(child, this.containerNode);
+        return createPortal(child, containerNode);
     }
 }
+
+export default polyfill(Gateway);

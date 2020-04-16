@@ -136,6 +136,10 @@ export default class Base extends React.Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        /**
+         * 自动高亮第一个元素
+         */
+        autoHighlightFirstItem: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -152,6 +156,7 @@ export default class Base extends React.Component {
             return item.label || item.value;
         },
         locale: zhCN.Select,
+        autoHighlightFirstItem: true,
     };
 
     constructor(props) {
@@ -163,9 +168,10 @@ export default class Base extends React.Component {
         });
 
         this.state = {
+            dataStore: this.dataStore,
             value: 'value' in props ? props.value : props.defaultValue,
             visible: 'visible' in props ? props.visible : props.defaultVisible,
-            dataSource: [],
+            dataSource: this.setDataSource(this.props),
             width: 100,
             // current highlight key
             highlightKey: null,
@@ -181,12 +187,6 @@ export default class Base extends React.Component {
             'afterClose',
             'handleResize',
         ]);
-    }
-
-    componentWillMount() {
-        this.setState({
-            dataSource: this.setDataSource(this.props),
-        });
     }
 
     componentDidMount() {
@@ -293,14 +293,20 @@ export default class Base extends React.Component {
     }
 
     setFirstHightLightKeyForMenu() {
+        if (!this.props.autoHighlightFirstItem) {
+            return;
+        }
+
         // 设置高亮 item key
         if (
             this.dataStore.getMenuDS().length &&
             this.dataStore.getEnableDS().length
         ) {
+            const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
             this.setState({
-                highlightKey: `${this.dataStore.getEnableDS()[0].value}`,
+                highlightKey,
             });
+            this.props.onToggleHighlightItem(highlightKey, 'autoFirstItem');
         }
     }
 
@@ -553,8 +559,12 @@ export default class Base extends React.Component {
      * 点击 arrow 或 label 的时候焦点切到 input 中
      * @override
      */
-    focusInput() {
-        this.inputRef.focus();
+    focusInput(...args) {
+        this.inputRef.focus(...args);
+    }
+
+    focus(...args) {
+        this.focusInput(...args);
     }
 
     beforeOpen() {
@@ -669,7 +679,7 @@ export default class Base extends React.Component {
 
         const _props = {
             triggerType: 'click',
-            autoFocus: false,
+            autoFocus: !!this.props.popupAutoFocus,
             cache: cache,
             // Put `popupProps` into here for covering above props.
             ...popupProps,

@@ -10,7 +10,7 @@
 /// @family data-display
 /// @varPrefix $list-
 /// @classPrefix {prefix}-list
-/// @order {}
+/// @order {"size/title":10,"size/item":11,"size/item/title":110,"size/item/content":111,"statement/normal":10,"statement/normal/divider":100,"statement/normal/title":101,"statement/normal/content":102,"statement/normal/extra":103}
 ////
 
 // Unconfigurable
@@ -21,65 +21,73 @@ $list-prefix: ".#{$css-prefix}list";
 // ----------------------------------------
 
 /// font-size
-/// @namespace size/title
+/// @namespace size/header
 $list-size-s-title-font-size: $font-size-subhead !default;
 /// font-weight
-/// @namespace size/title
+/// @namespace size/header
 $list-size-s-title-font-weight: $font-weight-3 !default;
+
 /// padding(l, r)
 /// @namespace size/item
-$list-size-s-item-padding-lr: $s-0 !default;
+$list-size-s-item-padding-lr: $s-zero !default;
 /// padding(t, b)
 /// @namespace size/item
-$list-size-s-item-padding-tb: $s-3 !default;
+$list-size-s-item-padding-tb: $s-2 !default;
 /// margin(l, r)
 /// @namespace size/item
 $list-size-s-item-media-margin: $s-2 !default;
-/// font size
-/// @namespace size/item/title
-$list-size-s-item-title-font-size: $font-size-body-2 !default;
-/// line height
-/// @namespace size/item/title
-$list-size-s-item-title-line-height: $font-lineheight-2 !default;
-/// font size
-/// @namespace size/item/content
+
+/// font-size
+/// @namespace size/item content
 $list-size-s-item-content-font-size: $font-size-body-1 !default;
-/// line height
-/// @namespace size/item/content
+/// line-height
+/// @namespace size/item content
 $list-size-s-item-content-line-height: $font-lineheight-1 !default;
 /// font-weight
-/// @namespace size/item/title
-$list-size-s-item-title-font-weight: $font-weight-3 !default;
+/// @namespace size/item title
+$list-size-s-item-title-font-weight: $font-weight-2 !default;
 /// font-size
-/// @namespace size/title
+/// @namespace size/item title
+$list-size-s-item-title-font-size: $font-size-body-2 !default;
+/// line-height
+/// @namespace size/item title
+$list-size-s-item-title-line-height: $font-lineheight-2 !default;
+
+
+
+/// font-size
+/// @namespace size/header
 $list-size-m-title-font-size: $font-size-title !default;
 /// font-weight
-/// @namespace size/title
+/// @namespace size/header
 $list-size-m-title-font-weight: $font-weight-3 !default;
 /// padding(l, r)
 /// @namespace size/item
-$list-size-m-item-padding-lr: $s-0 !default;
+$list-size-m-item-padding-lr: $s-zero !default;
 /// padding(t, b)
 /// @namespace size/item
 $list-size-m-item-padding-tb: $s-4 !default;
 /// margin(l, r)
 /// @namespace size/item
 $list-size-m-item-media-margin: $s-2 !default;
-/// font size
-/// @namespace size/item/title
-$list-size-m-item-title-font-size: $font-size-subhead !default;
-/// line height
-/// @namespace size/item/title
-$list-size-m-item-title-line-height: $font-lineheight-2 !default;
-/// font size
-/// @namespace size/item/content
+
+/// font-size
+/// @namespace size/item content
 $list-size-m-item-content-font-size: $font-size-body-2 !default;
-/// line height
-/// @namespace size/item/content
+/// line-height
+/// @namespace size/item content
 $list-size-m-item-content-line-height: $font-lineheight-2 !default;
+
+/// font-size
+/// @namespace size/item title
+$list-size-m-item-title-font-size: $font-size-subhead !default;
+/// line-height
+/// @namespace size/item title
+$list-size-m-item-title-line-height: $font-lineheight-2 !default;
 /// font-weight
-/// @namespace size/item/title
-$list-size-m-item-title-font-weight: $font-weight-3 !default;
+/// @namespace size/item title
+$list-size-m-item-title-font-weight: $font-weight-2 !default;
+
 /// color
 /// @namespace statement/normal/divider
 $list-divider-color: $color-line1-2 !default;

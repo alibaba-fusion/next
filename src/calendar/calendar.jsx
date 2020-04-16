@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import moment from 'moment';
 import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
@@ -23,6 +24,20 @@ import {
     CALENDAR_MODE_YEAR,
     getLocaleData,
 } from './utils';
+
+const isValueChanged = (value, oldVlaue) => {
+    if (value && oldVlaue) {
+        if (!moment.isMoment(value)) {
+            value = moment(value);
+        }
+        if (!moment.isMoment(oldVlaue)) {
+            oldVlaue = moment(oldVlaue);
+        }
+        return value.valueOf() !== oldVlaue.valueOf();
+    } else {
+        return value !== oldVlaue;
+    }
+};
 
 /** Calendar */
 class Calendar extends Component {
@@ -135,42 +150,27 @@ class Calendar extends Component {
         this.state = {
             value,
             mode: props.mode || this.MODES[0],
+            MODES: this.MODES,
             visibleMonth,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            const value = formatDateValue(nextProps.value);
-            this.setState({
-                value,
-            });
-            if (value && this.isValueChanged(value, this.state.value)) {
-                this.setState({
-                    visibleMonth: value,
-                });
+
+    static getDerivedStateFromProps(props, state) {
+        const st = {};
+        if ('value' in props) {
+            const value = formatDateValue(props.value);
+            if (value && isValueChanged(props.value, state.value)) {
+                st.visibleMonth = value;
             }
+            st.value = value;
         }
 
-        if (nextProps.mode && this.MODES.indexOf(nextProps.mode) > -1) {
-            this.setState({
-                mode: nextProps.mode,
-            });
+        if (props.mode && state.MODES.indexOf(props.mode) > -1) {
+            st.mode = props.mode;
         }
-    }
 
-    isValueChanged(value, oldVlaue) {
-        if (value && oldVlaue) {
-            if (!moment.isMoment(value)) {
-                value = moment(value);
-            }
-            if (!moment.isMoment(oldVlaue)) {
-                oldVlaue = moment(oldVlaue);
-            }
-            return value.valueOf() !== oldVlaue.valueOf();
-        } else {
-            return value !== oldVlaue;
-        }
+        return st;
     }
 
     onSelectCell = (date, nextMode) => {
@@ -364,4 +364,4 @@ class Calendar extends Component {
     }
 }
 
-export default Calendar;
+export default polyfill(Calendar);

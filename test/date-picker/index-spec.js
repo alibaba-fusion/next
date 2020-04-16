@@ -44,7 +44,7 @@ describe('DatePicker', () => {
                 wrapper.find('.next-date-picker-input input').instance()
                     .value === '2017-11-20'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should render string unix defaultValue of DatePicker', () => {
@@ -60,7 +60,7 @@ describe('DatePicker', () => {
             wrapper = mount(
                 <DatePicker defaultValue={startValue} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of DatePicker', () => {
@@ -134,7 +134,7 @@ describe('DatePicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -371,7 +371,7 @@ describe('DatePicker', () => {
                 wrapper.find('.next-date-picker-input input').instance()
                     .value === '2018-01-23'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should value as string', () => {
@@ -428,14 +428,14 @@ describe('YearPicker', () => {
                 wrapper.find('.next-year-picker-input input').instance()
                     .value === '2018'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should set hasClear to false', () => {
             wrapper = mount(
                 <YearPicker defaultValue={startYear} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of YearPicker', () => {
@@ -497,7 +497,7 @@ describe('YearPicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -590,7 +590,7 @@ describe('YearPicker', () => {
                 wrapper.find('.next-year-picker-input input').instance()
                     .value === '2018'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should value as string', () => {
@@ -627,14 +627,14 @@ describe('MonthPicker', () => {
                 wrapper.find('.next-month-picker-input input').instance()
                     .value === '2018-01'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should set hasClear to false', () => {
             wrapper = mount(
                 <MonthPicker defaultValue={startMonth} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of MonthPicker', () => {
@@ -701,7 +701,7 @@ describe('MonthPicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -802,7 +802,7 @@ describe('MonthPicker', () => {
                 wrapper.find('.next-month-picker-input input').instance()
                     .value === '2018-01'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should value as string', () => {
@@ -837,14 +837,14 @@ describe('WeekPicker', () => {
             assert(
                 wrapper.find('.next-week-picker-input input').instance().value.indexOf('2018-') !== -1
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should set hasClear to false', () => {
             wrapper = mount(
                 <WeekPicker defaultValue={startWeek} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of YearPicker', () => {
@@ -904,7 +904,7 @@ describe('WeekPicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -987,7 +987,7 @@ describe('RangePicker', () => {
                     hasClear={false}
                 />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of RangePicker', () => {
@@ -1223,7 +1223,7 @@ describe('RangePicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(!ret[0]);
             assert(!ret[1]);
         });

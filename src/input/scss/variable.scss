@@ -7,7 +7,7 @@
 /// @family data-entry
 /// @varPrefix $input-
 /// @classPrefix {prefix}-input
-/// @order {"statement/normal":10,"statement/normal/addon":100,"statement/normal/feedback":101,"statement/normal/maxlen":102,"statement/normal/clear":103,"statement/hover":11,"statement/hover/clear":110,"statement/focus":12,"statement/disabled":13,"statement/error":14,"size/bounding":10,"size/bounding/addon":100,"size/label":11,"size/maxlen":12}
+/// @order {"statement/normal":10,"statement/normal/addon":100,"statement/normal/warning":101,"statement/normal/success":102,"statement/normal/loading":103,"statement/normal/maxlen":104,"statement/normal/clear":105,"statement/hover":11,"statement/hover/clear":110,"statement/focus":12,"statement/disabled":13,"statement/error":14,"size/bounding":10,"size/bounding/addon":100,"size/label":11,"size/maxlen":12}
 ////
 
 $input-prefix: '.#{$css-prefix}input';
@@ -153,16 +153,34 @@ $input-s-icon-padding-right: $s-1 !default;
 
 // feedback
 // --------------------------------------------------
-/// warning
-/// @namespace statement/normal/feedback
+/// border
+/// @namespace statement/normal/warning
+$input-feedback-warning-border-color: $color-warning-3 !default;
+$color-calculate-input-feedback-warning-shadow: rgba($input-feedback-warning-border-color, .2);
+/// background
+/// @namespace statement/normal/warning
+$input-feedback-warning-bg-color: $color-white !default;
+/// icon color
+/// @namespace statement/normal/warning
 $input-feedback-warning-color: $color-warning-3 !default;
-/// success
-/// @namespace statement/normal/feedback
+/// icon
+/// @namespace statement/normal/warning
+/// @type icon
+$input-feedback-warning-icon: $icon-content-warning !default;
+/// icon color
+/// @namespace statement/normal/success
 $input-feedback-success-color: $color-success-3 !default;
-
-/// loading
-/// @namespace statement/normal/feedback
+/// icon
+/// @namespace statement/normal/success
+/// @type icon
+$input-feedback-success-icon: $icon-content-success-filling !default;
+/// icon color
+/// @namespace statement/normal/loading
 $input-feedback-loading-color: $color-notice-3 !default;
+/// icon
+/// @namespace statement/normal/loading
+/// @type icon
+$input-feedback-loading-icon: $icon-content-loading !default;
 
 /// border
 /// @namespace statement/error
@@ -172,15 +190,6 @@ $color-calculate-input-feedback-error-shadow: rgba($input-feedback-error-border-
 /// background
 /// @namespace statement/error
 $input-feedback-error-bg-color: $color-white !default;
-
-/// border
-/// @namespace statement/warning
-$input-feedback-warning-border-color: $color-warning-3 !default;
-$color-calculate-input-feedback-warning-shadow: rgba($input-feedback-warning-border-color, .2);
-
-/// background
-/// @namespace statement/warning
-$input-feedback-warning-bg-color: $color-white !default;
 
 // maxlen
 // --------------------------------------------------
@@ -211,3 +220,8 @@ $input-hint-color: $color-text1-2 !default;
 /// background
 /// @namespace statement/hover/clear
 $input-hint-hover-color: $color-text1-3 !default;
+
+/// clear icon
+/// @namespace statement/normal/clear
+/// @type icon
+$input-feedback-clear-icon: $icon-content-delete-filling !default;

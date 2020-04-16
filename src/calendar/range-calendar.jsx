@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
@@ -126,41 +127,33 @@ class RangeCalendar extends React.Component {
             startValue,
             endValue,
             mode: props.mode,
+            prevMode: props.mode,
             startVisibleMonth: visibleMonth,
             activePanel: undefined,
         };
         this.today = moment();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('startValue' in nextProps) {
-            const startValue = formatDateValue(nextProps.startValue);
-            this.setState({
-                startValue,
-            });
-
-            if (
-                startValue &&
-                !startValue.isSame(this.state.startValue, 'day')
-            ) {
-                this.setState({
-                    startVisibleMonth: startValue,
-                });
+    static getDerivedStateFromProps(props, state) {
+        const st = {};
+        if ('startValue' in props) {
+            const startValue = formatDateValue(props.startValue);
+            st.startValue = startValue;
+            if (startValue && !startValue.isSame(state.startValue, 'day')) {
+                st.startVisibleMonth = startValue;
             }
         }
 
-        if ('endValue' in nextProps) {
-            const endValue = formatDateValue(nextProps.endValue);
-            this.setState({
-                endValue,
-            });
+        if ('endValue' in props) {
+            st.endValue = formatDateValue(props.endValue);
         }
 
-        if ('mode' in nextProps) {
-            this.setState({
-                mode: nextProps.mode,
-            });
+        if ('mode' in props && state.prevMode !== props.mode) {
+            st.prevMode = props.mode;
+            st.mode = props.mode;
         }
+
+        return st;
     }
 
     onSelectCell = (date, nextMode) => {
@@ -406,6 +399,6 @@ class RangeCalendar extends React.Component {
     }
 }
 
-export default ConfigProvider.config(RangeCalendar, {
+export default ConfigProvider.config(polyfill(RangeCalendar), {
     componentName: 'Calendar',
 });

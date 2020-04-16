@@ -97,6 +97,9 @@
         &:hover {
             color: $icon-color-hover;
         }
+        &:focus {
+            outline: none;
+        }
     }
 
     &.active {

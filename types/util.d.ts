@@ -1,3 +1,9 @@
+import { ReactNode } from "react";
+
+export interface IconsType {
+    [key: string]: ReactNode;
+}
+
 export default interface CommonProps {
     /**
      * 样式类名的品牌前缀

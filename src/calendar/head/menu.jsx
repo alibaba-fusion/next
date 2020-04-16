@@ -30,7 +30,7 @@ export default class SelectMenu extends Component {
         }
 
         const itemSelector = `.${prefix}menu-item`;
-        const menu = findDOMNode(this.refs.menu);
+        const menu = findDOMNode(this.menuEl);
         const targetItem = menu.querySelectorAll(itemSelector)[selectedIndex];
         if (targetItem) {
             menu.scrollTop =
@@ -41,6 +41,10 @@ export default class SelectMenu extends Component {
                     targetItem.clientHeight;
         }
     }
+
+    saveRef = ref => {
+        this.menuEl = ref;
+    };
 
     render() {
         const {
@@ -54,7 +58,7 @@ export default class SelectMenu extends Component {
         return (
             <Menu
                 {...others}
-                ref="menu"
+                ref={this.saveRef}
                 selectMode="single"
                 selectedKeys={[String(value)]}
                 onSelect={selectKeys => onChange(Number(selectKeys[0]))}

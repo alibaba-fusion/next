@@ -6,6 +6,7 @@ const Github = require('@octokit/rest')();
 const inquirer = require('inquirer');
 const { logger, runCmd } = require('../utils');
 const { execSync } = require('child_process');
+const publishToDocs = require('./publish');
 
 const cwd = process.cwd();
 const packagePath = path.resolve('package.json');
@@ -49,6 +50,7 @@ co(function*() {
     }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
+    yield publishToNextDocs();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
@@ -217,9 +219,37 @@ function* publishToNpm() {
     if (pubNpm.pub.toLowerCase() === 'yes') {
         logger.success('publishing ...');
         yield runCommond(`npm publish --tag ${distTags.tag}`);
+        yield runCommond(`tnpm sync @alifd/next`);
         yield triggerRelease();
     } else {
         logger.success('publish abort.');
+    }
+}
+
+function* publishToNextDocs() {
+    const publish = yield inquirer.prompt([
+        {
+            name: 'docs',
+            type: 'list',
+            choices: [
+                {
+                    name: 'yes',
+                    value: 'yes',
+                },
+                {
+                    name: 'no',
+                    value: 'no',
+                },
+            ],
+            default: 0,
+            message: 'Are you sure to publish docs to @alifd/next-docs?',
+        },
+    ]);
+
+    if (publish.docs.toLowerCase() === 'yes') {
+        yield* publishToDocs();
+    } else {
+        logger.success('publish docs abort.');
     }
 }
 

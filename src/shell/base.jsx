@@ -25,12 +25,17 @@ export default function Base(props) {
              * @param {Boolean} collapse 弹层是否显示
              */
             onCollapseChange: PropTypes.func,
+            /**
+             * 是否固定，仅对 Shell.Navigation Shell.ToolDock 生效，且需要在在 Shell fixedHeader时生效
+             */
+            fixed: PropTypes.bool,
         };
 
         static defaultProps = {
             prefix: 'next-',
             component: 'div',
             onCollapseChange: () => {},
+            fixed: false,
         };
 
         static childContextTypes = {
@@ -61,7 +66,7 @@ export default function Base(props) {
                 ...others
             } = this.props;
 
-            let Tag = component;
+            const Tag = component;
 
             const cls = classnames({
                 [`${prefix}shell-${componentName.toLowerCase()}`]: true,
@@ -85,13 +90,6 @@ export default function Base(props) {
 
             if (componentName === 'Page') {
                 return children;
-            }
-
-            if (
-                ['ToolDock'].indexOf(componentName) > -1 ||
-                (componentName === 'Navigation' && direction === 'ver')
-            ) {
-                Tag = 'aside';
             }
 
             return (

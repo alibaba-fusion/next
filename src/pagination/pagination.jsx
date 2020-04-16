@@ -313,7 +313,12 @@ class Pagination extends Component {
             onClick: this.onPageItemClick.bind(this, current - 1),
         };
 
-        const icon = <Icon type="arrow-left" />;
+        const icon = (
+            <Icon
+                type="arrow-left"
+                className={[`${prefix}pagination-icon-prev`]}
+            />
+        );
 
         return (
             <Button
@@ -344,7 +349,12 @@ class Pagination extends Component {
             onClick: this.onPageItemClick.bind(this, current + 1),
         };
 
-        const icon = <Icon type="arrow-right" />;
+        const icon = (
+            <Icon
+                type="arrow-right"
+                className={[`${prefix}pagination-icon-next`]}
+            />
+        );
 
         return (
             <Button
@@ -364,7 +374,7 @@ class Pagination extends Component {
 
         return (
             <Icon
-                className={`${prefix}pagination-ellipsis`}
+                className={`${prefix}pagination-ellipsis ${prefix}pagination-icon-ellipsis`}
                 type="ellipsis"
                 key={`ellipsis-${idx}`}
             />
