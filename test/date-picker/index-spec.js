@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -1742,4 +1742,38 @@ describe('RangePicker', () => {
             );
         });
     });
+
+    describe('with hooks', () => {
+        // fix #1640: 修复在blur事件中使用hooks方式导致组件re-render，日期的月份被重置
+        it('should be compatible with hooks', () => {
+            function App() {
+                const [value, setValue] = useState('2020-03-09');
+                const [count, setCount] = useState(0)
+                return <DatePicker
+                    value={ value }
+                    onBlur={() => setCount(count + 1)}
+                    onChange={val => setValue(val)}
+                />
+            }
+            wrapper = mount(<App/>);
+            wrapper
+                .find('.next-date-picker-trigger input')
+                .first()
+                .simulate('click')
+            wrapper
+                .find('.next-calendar-btn-next-month')
+                .first()
+                .simulate('click')
+            wrapper
+                .find('.next-calendar-btn-next-month')
+                .first()
+                .simulate('blur')
+            assert(
+                wrapper
+                    .find('.next-calendar-panel-header-full .next-calendar-btn')
+                    .first()
+                    .text() === 'April'
+            )
+        })
+    })
 });

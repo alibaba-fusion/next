@@ -6,6 +6,8 @@ import co from 'co';
 import assert from 'power-assert';
 import { dom, KEYCODE, env } from '../../src/util';
 import Overlay from '../../src/overlay/index';
+import Balloon from '../../src/balloon/index';
+import Button from '../../src/button/index';
 import '../../src/overlay/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -149,6 +151,7 @@ describe('Overlay', () => {
             wrapper = null;
         }
     });
+
     it('should support rendering overlay', () => {
         return co(function*() {
             wrapper = render(
@@ -736,5 +739,37 @@ describe('Popup', () => {
             yield delay(300);
             assert(!document.querySelector('.next-overlay-wrapper'));
         });
+    });
+
+    // https://riddle.alibaba-inc.com/riddles/b58b48a6
+    it('should support container return a react component', () => {
+        class App extends React.Component {
+            render() {
+                const innerButton = (
+                    <Button
+                      id="balloon-button-container"
+                      className="btrigger"
+                      ref={n => { this.downloadRef = n; }}
+                    >
+                        Show Inner Balloon\
+                    </Button>
+                );
+                return (
+                    <div className="container nested">
+                    <Balloon
+                        type="primary" trigger={innerButton} closable={false} triggerType="click"
+                        popupContainer={() => this.downloadRef}
+                    >
+                        12121
+                    </Balloon>
+                </div>
+                )
+            }
+        }
+        const wrapper = render(<App />);
+        wrapper.find('#balloon-button-container')[0].click();
+        assert(document.querySelector('.next-balloon') !== null);
+        assert(wrapper.find('#balloon-button-container .next-balloon'));
+        wrapper.unmount();
     });
 });
