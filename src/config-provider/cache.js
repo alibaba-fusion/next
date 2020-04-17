@@ -32,6 +32,13 @@ class Cache {
 
     remove(key) {
         this._store.delete(key);
+
+        if (key === this._root) {
+            const maps = this._store.keys();
+            // 如果当前销毁的实例刚好是root，那么从map中取下一个加入的节点当作root
+            const nextkey = maps.next().value;
+            this._root = nextkey;
+        }
     }
 
     root() {
