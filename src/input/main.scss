@@ -242,6 +242,7 @@
         @include input-disabled();
 
         input, textarea {
+            color: $input-disabled-color;
             @include input-placeholder($input-disabled-color);
         }
 
@@ -250,12 +251,6 @@
         }
         #{$input-prefix}-len {
             color: $input-disabled-color;
-        }
-        background-color: $input-disabled-bg-color;
-
-        input,
-        textarea {
-            @include input-disabled();
         }
 
         #{$input-prefix}-hint-wrap {
