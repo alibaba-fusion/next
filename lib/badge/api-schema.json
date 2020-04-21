@@ -1,0 +1,87 @@
+{
+  "name": "Badge",
+  "props": {
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "徽章依托的内容",
+      "docblock": "徽章依托的内容"
+    },
+    "count": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时默认隐藏",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时默认隐藏"
+    },
+    "showZero": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当count为0时，是否显示count",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "当count为0时，是否显示count"
+    },
+    "content": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义节点内容",
+      "docblock": "自定义节点内容"
+    },
+    "overflowCount": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "展示的封顶的数字",
+      "defaultValue": {
+        "value": "99",
+        "computed": false
+      },
+      "docblock": "展示的封顶的数字"
+    },
+    "dot": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "不展示数字，只展示一个小红点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "不展示数字，只展示一个小红点"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
