@@ -51,7 +51,7 @@ const getStyleProperty = (node, name) => {
 };
 
 const modals = [];
-let bodyOverflowY, bodyPaddingRight;
+let bodyOverflow, bodyPaddingRight;
 
 /**
  * Overlay
@@ -501,10 +501,10 @@ class Overlay extends Component {
         if (this.props.disableScroll) {
             if (modals.length === 0) {
                 const style = {
-                    overflowY: 'hidden',
+                    overflow: 'hidden',
                 };
                 const body = document.body;
-                bodyOverflowY = body.style.overflowY;
+                bodyOverflow = body.style.overflow;
                 if (hasScroll()) {
                     bodyPaddingRight = body.style.paddingRight;
                     style.paddingRight = `${dom.getStyle(body, 'paddingRight') +
@@ -523,7 +523,7 @@ class Overlay extends Component {
             if (index > -1) {
                 if (modals.length === 1) {
                     const style = {
-                        overflowY: bodyOverflowY,
+                        overflow: bodyOverflow,
                     };
                     if (hasScroll()) {
                         style.paddingRight = bodyPaddingRight;
@@ -531,7 +531,7 @@ class Overlay extends Component {
 
                     dom.setStyle(document.body, style);
 
-                    bodyOverflowY = undefined;
+                    bodyOverflow = undefined;
                     bodyPaddingRight = undefined;
                 }
 
