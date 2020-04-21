@@ -10,7 +10,7 @@
 ## Develop Guide
 
 ### When to Use
-Css-grid, added in 1.19.0+
+Based on `display: grid`, added in 1.19.0+, doesn't support IE yet.
 
 ## API
 
