@@ -2,14 +2,14 @@
 
 - order: 4
 
-默认不折行，可以通过设置 `wrap` 控制折行
+默认不折行，可以通过设置 `wrap` 控制折行。 受浏览器限制，本功能支持到IE11+
 
 :::lang=en-us
 # wrap
 
 - order: 4
 
-`wrap` is false by default.
+`wrap` is false by default. Support IE11+.
 
 :::
 ---

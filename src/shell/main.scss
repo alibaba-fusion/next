@@ -43,7 +43,7 @@
         }
 
         #{$shell-prefix}-navigation {
-            flex: 1;
+            flex: auto;
             display: flex;
             align-items: center;
             flex-direction: row;
@@ -60,7 +60,7 @@
     }
 
     &-sub-main {
-        flex: 1;
+        flex: auto;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -69,7 +69,7 @@
     }
     &-main {
         display: flex;
-        flex: 1;
+        flex: auto;
         flex-direction: row;
         position: relative;
         height: 100%;
@@ -78,7 +78,7 @@
         transition: all .2s $motion-ease;
 
         #{$shell-prefix}-content {
-            flex: 1;
+            flex: auto;
         }
 
         #{$shell-prefix}-content-inner {
