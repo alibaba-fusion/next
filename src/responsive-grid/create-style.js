@@ -313,9 +313,13 @@ export default ({
         case 'flex':
             style = {
                 // parent
+                msFlexDirection: direction,
                 flexDirection: direction,
+                msFlexWrap: wrap ? 'wrap' : 'none',
                 flexWrap: wrap ? 'wrap' : 'nowrap',
+                msFlexPack: justify,
                 justifyContent: justify,
+                msFlexAlign: align,
                 alignItems: align,
                 ...getMargin(margin),
                 // child
