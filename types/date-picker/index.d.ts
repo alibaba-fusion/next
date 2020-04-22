@@ -1,5 +1,5 @@
 /// <reference types="react" />
-
+import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
 
@@ -47,7 +47,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -185,7 +185,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -344,7 +344,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -482,7 +482,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
