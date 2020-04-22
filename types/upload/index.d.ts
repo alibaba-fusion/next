@@ -144,7 +144,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 改变时候的回调
      */
-    onChange?: () => void;
+    onChange?: (value: File[]) => void;
 
     /**
      * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
@@ -219,7 +219,7 @@ export interface SelecterProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 文件选择回调
      */
-    onSelect?: () => void;
+    onSelect?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * 拖拽经过回调
@@ -319,7 +319,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选择文件回调
      */
-    onSelect?: () => void;
+    onSelect?: (uploadFiles: Array<any>, value: Array<any>) => void;
 
     /**
      * 放文件
@@ -379,7 +379,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传文件改变时的状态
      */
-    onChange?: (info: {}) => void;
+    onChange?: (value: File[]) => void;
 
     /**
      * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
@@ -391,6 +391,10 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      */
     onRemove?: (file: {}) => boolean | any;
 
+    /**
+     * 自定义额外渲染
+     */
+    extraRender?: (file: File) => any;
     /**
      * 自定义class
      */

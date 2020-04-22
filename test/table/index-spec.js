@@ -3,7 +3,6 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
 import Promise from 'promise-polyfill';
-import ReactTestUtils from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Loading from '../../src/loading';
 import Icon from '../../src/icon';
@@ -90,6 +89,21 @@ describe('Table', () => {
                 assert(
                     wrapper.find('.next-checkbox-wrapper.checked').length === 1
                 );
+                done();
+            }
+        );
+    });
+
+    it('should render when dataSource is made of string', done => {
+        timeout(
+            {
+                dataSource: ['string1', 'string2'],
+                children: [<Table.Column
+                    cell={(value, index, record) => record}
+                />],
+            },
+            () => {
+                assert(wrapper);
                 done();
             }
         );
@@ -205,6 +219,27 @@ describe('Table', () => {
                     '.next-table-header .next-table-sort'
                 );
                 sortNode.simulate('click');
+                done();
+            }
+        );
+    });
+
+    it('should support tableLayout&tableWidth', done => {
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
+                tableLayout: 'fixed',
+                tableWidth: 1200
+            },
+            () => {
+                const tablewrapper = wrapper.find('.next-table');
+                const table = wrapper.find('.next-table table');
+
+                assert(tablewrapper.hasClass('next-table-layout-fixed'));
+                assert(table.at(0).props().style.width === 1200)
                 done();
             }
         );
@@ -656,6 +691,35 @@ describe('Table', () => {
         );
     });
 
+    it('header should support colspan', done => {
+        wrapper.setProps({});
+
+        timeout(
+            {
+                children: [
+                    <Table.Column dataIndex="id" />,
+                    <Table.Column dataIndex="name" />,
+                ]
+            },
+            () => {
+                assert(wrapper.find('.next-table-header th').length === 2);
+            }
+        ).then(() => {
+            timeout(
+                {
+                    children: [
+                        <Table.Column dataIndex="id" colSpan="2" />,
+                        <Table.Column dataIndex="name" colSpan="0" />,
+                    ]
+                },
+                () => {
+                    assert(wrapper.find('.next-table-header th').length === 1);
+                    done();
+                }
+            )
+        });
+    });
+
     it('should support colspan & rowspan', done => {
         wrapper.setProps({});
         timeout(
@@ -1006,22 +1070,43 @@ describe('Table', () => {
     });
 
     it('should support lock scroll x', () => {
+        const ds = new Array(30).fill(1).map((val, i) => {
+           return { id: i, name: 'test' + i }
+        });
         wrapper.setProps({
             children: [
                 <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="name" width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
             ],
+            fixedHeader: true,
+            dataSource: ds,
         });
-        wrapper.debug();
+
         assert(wrapper.find('div.next-table-lock-left').length === 1);
         assert(wrapper.find('div.next-table-lock-right').length === 1);
 
-        const body = wrapper
-            .find('div.next-table-lock .next-table-body')
+        wrapper
+            .find('div.next-table-lock .next-table-inner .next-table-body')
             .at(1)
             .props()
-            .onWheel({ deltaY: 200, deltaX: 5 });
+            .onLockScroll({
+                target: {
+                    scrollLeft: 30,
+                    scrollTop: 20
+                }
+            });
+
+        wrapper
+            .find('div.next-table-lock-right .next-table-body')
+            .at(1)
+            .props()
+            .onLockScroll({
+                target: {
+                    scrollLeft: 30,
+                    scrollTop: 20
+                }
+            });
     });
 
     it('should support align alignHeader', () => {

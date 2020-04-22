@@ -19,6 +19,7 @@ export default class Inner extends Component {
         rtl: PropTypes.bool,
         onClose: PropTypes.func,
         locale: PropTypes.object,
+        headerStyle: PropTypes.object,
         bodyStyle: PropTypes.object,
         afterClose: PropTypes.func,
         beforeOpen: PropTypes.func,
@@ -36,19 +37,24 @@ export default class Inner extends Component {
     };
 
     renderHeader() {
-        const { prefix, title } = this.props;
-        if (title) {
-            return (
-                <div
-                    className={`${prefix}drawer-header`}
-                    role="heading"
-                    aria-level="1"
-                >
-                    {title}
-                </div>
-            );
-        }
-        return null;
+        const { prefix, title, headerStyle } = this.props;
+        const closeLink = this.renderCloseLink();
+        const headerCls = cx({
+            [`${prefix}drawer-header`]: true,
+            [`${prefix}drawer-no-title`]: !title,
+        });
+
+        return (
+            <div
+                className={headerCls}
+                style={headerStyle}
+                role="heading"
+                aria-level="1"
+            >
+                {title}
+                {closeLink}
+            </div>
+        );
     }
 
     renderBody() {
@@ -110,7 +116,6 @@ export default class Inner extends Component {
 
         const header = this.renderHeader();
         const body = this.renderBody();
-        const closeLink = this.renderCloseLink();
 
         return (
             <div
@@ -119,9 +124,10 @@ export default class Inner extends Component {
                 {...others}
                 dir={rtl ? 'rtl' : undefined}
             >
-                {header}
-                {body}
-                {closeLink}
+                <div style={{ height: '100%', overflow: 'auto' }}>
+                    {header}
+                    {body}
+                </div>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import assert from 'power-assert';
@@ -7,12 +7,13 @@ import DatePicker from '../../src/date-picker/index';
 import { KEYCODE } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
-const { RangePicker, MonthPicker, YearPicker } = DatePicker;
+const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;
 
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
 const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
+const timeStamp = 1581938105000;
 
 // 禁止选择 startValue 之前的所有日期
 const disabledDate = function(date, view) {
@@ -43,6 +44,15 @@ describe('DatePicker', () => {
                 wrapper.find('.next-date-picker-input input').instance()
                     .value === '2017-11-20'
             );
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
+        });
+
+        it('should render string unix defaultValue of DatePicker', () => {
+            wrapper = mount(<DatePicker defaultValue={moment(timeStamp)} />);
+            assert(
+                wrapper.find('.next-date-picker-input input').instance()
+                    .value === '2020-02-17'
+            );
             assert(wrapper.find('.next-icon-delete-filling').length === 1);
         });
 
@@ -50,7 +60,7 @@ describe('DatePicker', () => {
             wrapper = mount(
                 <DatePicker defaultValue={startValue} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of DatePicker', () => {
@@ -86,6 +96,18 @@ describe('DatePicker', () => {
             assert(wrapper.find('.next-date-picker-panel-input input').at(0).prop('aria-label') === 'Ho Ho Ho!');
             assert(wrapper.find('.next-date-picker-panel-input input').at(1).prop('aria-label') === 'Ho Ho Ho!');
         });
+        it('should support preview mode render', () => {
+            wrapper = mount(<DatePicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-11-11');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY-MM-DD') === '2018-11-11');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {
@@ -112,7 +134,7 @@ describe('DatePicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -349,7 +371,7 @@ describe('DatePicker', () => {
                 wrapper.find('.next-date-picker-input input').instance()
                     .value === '2018-01-23'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should value as string', () => {
@@ -406,14 +428,14 @@ describe('YearPicker', () => {
                 wrapper.find('.next-year-picker-input input').instance()
                     .value === '2018'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should set hasClear to false', () => {
             wrapper = mount(
                 <YearPicker defaultValue={startYear} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of YearPicker', () => {
@@ -441,6 +463,18 @@ describe('YearPicker', () => {
 
             assert(wrapper.find('.test-aria .next-year-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
         });
+        it('should support preview mode render', () => {
+            wrapper = mount(<YearPicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY') === '2018');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {
@@ -452,7 +486,7 @@ describe('YearPicker', () => {
                 .find('div.next-calendar-year')
                 .at(5)
                 .simulate('click');
-            assert(ret.format('YYYY') === '2014');
+            assert(ret.format('YYYY') === '2024');
         });
 
         it('should clear value', () => {
@@ -463,7 +497,7 @@ describe('YearPicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -556,7 +590,7 @@ describe('YearPicker', () => {
                 wrapper.find('.next-year-picker-input input').instance()
                     .value === '2018'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should value as string', () => {
@@ -593,14 +627,14 @@ describe('MonthPicker', () => {
                 wrapper.find('.next-month-picker-input input').instance()
                     .value === '2018-01'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should set hasClear to false', () => {
             wrapper = mount(
                 <MonthPicker defaultValue={startMonth} hasClear={false} />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of MonthPicker', () => {
@@ -628,6 +662,19 @@ describe('MonthPicker', () => {
 
             assert(wrapper.find('.test-aria .next-month-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
         });
+
+        it('should support preview mode render', () => {
+            wrapper = mount(<MonthPicker defaultValue="2018-11-11" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-11');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY-MM') === '2018-11');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {
@@ -654,7 +701,7 @@ describe('MonthPicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(ret === null);
         });
 
@@ -755,7 +802,7 @@ describe('MonthPicker', () => {
                 wrapper.find('.next-month-picker-input input').instance()
                     .value === '2018-01'
             );
-            assert(wrapper.find('.next-icon-delete-filling').length === 1);
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
         });
 
         it('should value as string', () => {
@@ -772,6 +819,132 @@ describe('MonthPicker', () => {
         });
     });
 });
+
+describe('WeekPicker', () => {
+    const startWeek = moment('2018-01-08', 'YYYY-MM-DD', true);
+    const endWeek = moment('2019-10-08', 'YYYY-MM-DD', true);
+    let wrapper;
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.unmount();
+        }
+        wrapper = null;
+    });
+
+    describe('render with props', () => {
+        it('should render with defaultValue', () => {
+            wrapper = mount(<WeekPicker defaultValue={startWeek} />);
+            assert(
+                wrapper.find('.next-week-picker-input input').instance().value.indexOf('2018-') !== -1
+            );
+            assert(wrapper.find('i.next-input-clear-icon').length === 1);
+        });
+
+        it('should set hasClear to false', () => {
+            wrapper = mount(
+                <WeekPicker defaultValue={startWeek} hasClear={false} />
+            );
+            assert(!wrapper.find('i.next-input-clear-icon').length);
+        });
+
+        it('should render controlled value of YearPicker', () => {
+            wrapper = mount(<WeekPicker value={startWeek} />);
+            assert(
+                wrapper.find('.next-week-picker-input input').instance()
+                .value.indexOf('2018-') !== -1
+            );
+            wrapper.setProps({ value: endWeek });
+            assert(
+                wrapper.find('.next-week-picker-input input').instance()
+                .value.indexOf('2019-') !== -1
+            );
+        });
+
+        it('should render controlled visible of YearPicker', () => {
+            wrapper = mount(<WeekPicker visible={false} />);
+            assert(wrapper.find('.next-week-picker-body').length === 0);
+            wrapper.setProps({ visible: true });
+            assert(wrapper.find('.next-week-picker-body').length === 1);
+        });
+
+        it('should support preview mode render', () => {
+            wrapper = mount(<WeekPicker defaultValue="2018-48" format="YYYY-w" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2018-48');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('YYYY') === '2018');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
+    });
+
+    describe('action', () => {
+        it('should select', () => {
+            let ret;
+            wrapper = mount(
+                <WeekPicker
+                    format="YYYY-w"
+                    defaultVisibleMonth={() => startWeek}
+                    onChange={val => (ret = val)}
+                />
+            );
+            wrapper.find('.next-week-picker-input input').simulate('click');
+            wrapper.find('td[title="2018-3"] .next-calendar-date').at(0).simulate('click');
+            assert(ret.format('YYYY-w') === '2018-3');
+        });
+
+        it('should clear value', () => {
+            let ret = 'hello';
+            wrapper = mount(
+                <WeekPicker
+                    defaultValue={startWeek}
+                    onChange={val => (ret = val)}
+                />
+            );
+            wrapper.find('i.next-input-clear-icon').simulate('click');
+            assert(ret === null);
+        });
+
+        it('should keyboard input', () => {
+            let ret;
+            wrapper = mount(
+                <WeekPicker
+                    onChange={val => (ret = val)}
+                    defaultVisible
+                />
+            );
+            const input = wrapper.find('.next-week-picker-input input');
+            const instance = wrapper.instance().getInstance();
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.LEFT });
+            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.DOWN });
+            assert(instance.state.value.format('YYYY-MM-DD') === moment().add(1, 'w').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.UP });
+            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+
+            const curMoment = moment().add(1, 'month').subtract(1, 'month');
+
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.add(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.subtract(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.add(1, 'year').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.subtract(1, 'year').format('YYYY-MM-DD'));
+        });
+    });
+
+})
 
 describe('RangePicker', () => {
     let wrapper;
@@ -814,7 +987,7 @@ describe('RangePicker', () => {
                     hasClear={false}
                 />
             );
-            assert(!wrapper.find('.next-icon-delete-filling').length);
+            assert(!wrapper.find('i.next-input-clear-icon').length);
         });
 
         it('should render controlled value of RangePicker', () => {
@@ -881,6 +1054,45 @@ describe('RangePicker', () => {
 
             wrapper.find('.next-date-picker-panel-tools .next-btn').at(1).simulate('click');
             // assert(wrapper.instance().getInstance().startValue && wrapper.instance().getInstance().startValue.isSame(start));
+        });
+
+        it('should render type month', () => {
+            wrapper = mount(<RangePicker type="month" followTrigger visible defaultValue={['2018-03', '2018-08']} />);
+            assert(wrapper.find('.next-calendar').length === 2);
+        });
+
+        it('should render type year', () => {
+            wrapper = mount(<RangePicker type="year" followTrigger visible defaultValue={['2018', '2019']} />);
+            assert(wrapper.find('.next-calendar').length === 2);
+        });
+
+        it('should support preview mode render', () => {
+            wrapper = mount(<RangePicker defaultValue={[startValue, endValue]} isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '2017-11-20 - 2017-12-15');
+            wrapper.setProps({
+                renderPreview: ([start]) => {
+                    assert(start.format('YYYY-MM-DD') === '2017-11-20');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
+
+        it('should support to set placeholder', () => {
+            const placeholder = ['开始日期', '结束日期']
+            wrapper = mount(<RangePicker placeholder={placeholder} />)
+            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
+            assert(startPlaceholder === placeholder[0])
+            assert(endPlaceholder === placeholder[1])
+        });
+
+        it('should support to set placeholder string', () => {
+            const placeholder = 'Please select range'
+            wrapper = mount(<RangePicker placeholder={placeholder} />)
+            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
+            assert(startPlaceholder === placeholder)
+            assert(endPlaceholder === placeholder)
         });
     });
 
@@ -958,6 +1170,26 @@ describe('RangePicker', () => {
             assert(ret[1].format('YYYY-MM-DD') === '2017-12-15');
         });
 
+        it('should select in type range', () => {
+            let ret;
+            wrapper = mount(
+                <RangePicker
+                    type="month"
+                    defaultValue={[startValue, endValue]}
+                    onChange={val => (ret = val)}
+                />
+            );
+
+            wrapper
+                .find('.next-range-picker-trigger-input input')
+                .at(0)
+                .simulate('click');
+            wrapper
+                .find('td[title="Aug"] .next-calendar-month').at(0)
+                .simulate('click');
+            assert(ret[0].format('YYYY-MM-DD') === '2017-08-01');
+        })
+
         it('should slect range with same day', () => {
             let ret;
             wrapper = mount(
@@ -991,7 +1223,7 @@ describe('RangePicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
-            wrapper.find('.next-icon-delete-filling').simulate('click');
+            wrapper.find('i.next-input-clear-icon').simulate('click');
             assert(!ret[0]);
             assert(!ret[1]);
         });
@@ -1427,15 +1659,18 @@ describe('RangePicker', () => {
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(instance.state.startDateInputStr === moment().add(1, 'day').format('YYYY-MM-DD'));
             input.simulate('keydown', { keyCode: KEYCODE.UP });
-            // assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            // assert(instance.state.startDateInputStr === moment().add(1, 'month').format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            // assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            // assert(instance.state.startDateInputStr === moment().add(1, 'year').format('YYYY-MM-DD'));
-            // input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            // assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            
+            const curMoment = moment().add('month', 1).subtract('month', 1);
+
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
+            assert(instance.state.startDateInputStr === curMoment.add(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
+            assert(instance.state.startDateInputStr === curMoment.subtract(1, 'month').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
+            assert(instance.state.startDateInputStr === curMoment.add(1, 'year').format('YYYY-MM-DD'));
+            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            assert(instance.state.startDateInputStr === curMoment.subtract(1, 'year').format('YYYY-MM-DD'));
         });
 
         it('should keyboard date time input', () => {
@@ -1507,4 +1742,38 @@ describe('RangePicker', () => {
             );
         });
     });
+
+    describe('with hooks', () => {
+        // fix #1640: 修复在blur事件中使用hooks方式导致组件re-render，日期的月份被重置
+        it('should be compatible with hooks', () => {
+            function App() {
+                const [value, setValue] = useState('2020-03-09');
+                const [count, setCount] = useState(0)
+                return <DatePicker
+                    value={ value }
+                    onBlur={() => setCount(count + 1)}
+                    onChange={val => setValue(val)}
+                />
+            }
+            wrapper = mount(<App/>);
+            wrapper
+                .find('.next-date-picker-trigger input')
+                .first()
+                .simulate('click')
+            wrapper
+                .find('.next-calendar-btn-next-month')
+                .first()
+                .simulate('click')
+            wrapper
+                .find('.next-calendar-btn-next-month')
+                .first()
+                .simulate('blur')
+            assert(
+                wrapper
+                    .find('.next-calendar-panel-header-full .next-calendar-btn')
+                    .first()
+                    .text() === 'April'
+            )
+        })
+    })
 });

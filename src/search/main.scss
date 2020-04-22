@@ -58,6 +58,11 @@
     #{$search-prefix}-btn {
         box-shadow: none;
     }
+
+    #{$search-prefix}-symbol-icon::before {
+        content: $search-search-icon-content;
+    }
+
     &-normal {
         width: 600px;
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import ConfigProvider from '../config-provider';
 import { obj } from '../util';
 import Radio from './radio';
@@ -64,7 +65,7 @@ class RadioGroup extends Component {
          * 可以设置成 button 展示形状
          * @enumdesc 按钮状
          */
-        shape: PropTypes.oneOf(['button']),
+        shape: PropTypes.oneOf(['normal', 'button']),
         /**
          * 与 `shape` 属性配套使用，shape设为button时有效
          * @enumdesc 大, 中, 小
@@ -91,6 +92,15 @@ class RadioGroup extends Component {
          * - ver: 垂直排列
          */
         itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -100,6 +110,7 @@ class RadioGroup extends Component {
         prefix: 'next-',
         component: 'div',
         itemDirection: 'hoz',
+        isPreview: false,
     };
 
     static childContextTypes = {
@@ -122,30 +133,31 @@ class RadioGroup extends Component {
         } else if ('defaultValue' in props) {
             value = props.defaultValue;
         }
+
         this.state = { value };
         this.onChange = this.onChange.bind(this);
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if ('value' in props && props.value !== state.value) {
+            return {
+                value: props.value,
+            };
+        }
+
+        return null;
+    }
+
     getChildContext() {
+        const { disabled } = this.props;
+
         return {
             __group__: true,
             isButton: this.props.shape === 'button',
             onChange: this.onChange,
             selectedValue: this.state.value,
-            disabled: this.props.disabled,
+            disabled: disabled,
         };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let { value } = nextProps;
-        if ('value' in nextProps) {
-            if (value === undefined) {
-                value = '';
-            }
-            this.setState({
-                value,
-            });
-        }
     }
 
     onChange(currentValue, e) {
@@ -168,6 +180,8 @@ class RadioGroup extends Component {
             prefix,
             itemDirection,
             component,
+            isPreview,
+            renderPreview,
         } = this.props;
         const others = pickOthers(
             Object.keys(RadioGroup.propTypes),
@@ -179,6 +193,7 @@ class RadioGroup extends Component {
         }
 
         let children;
+        const previewed = {};
         if (this.props.children) {
             children = React.Children.map(
                 this.props.children,
@@ -187,6 +202,10 @@ class RadioGroup extends Component {
                         return child;
                     }
                     const checked = this.state.value === child.props.value;
+                    if (checked) {
+                        previewed.label = child.props.children;
+                        previewed.value = child.props.value;
+                    }
                     const tabIndex =
                         (index === 0 && !this.state.value) || checked ? 0 : -1;
                     const childrtl =
@@ -218,6 +237,10 @@ class RadioGroup extends Component {
                     };
                 }
                 const checked = this.state.value === option.value;
+                if (checked) {
+                    previewed.label = option.label;
+                    previewed.value = option.value;
+                }
                 return (
                     <Radio
                         key={index}
@@ -233,6 +256,24 @@ class RadioGroup extends Component {
                     />
                 );
             });
+        }
+
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(previewed, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p {...others} className={previewCls}>
+                    {previewed.label}
+                </p>
+            );
         }
 
         const isButtonShape = shape === 'button';
@@ -261,4 +302,4 @@ class RadioGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(RadioGroup);
+export default ConfigProvider.config(polyfill(RadioGroup));

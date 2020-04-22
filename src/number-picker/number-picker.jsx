@@ -118,9 +118,26 @@ class NumberPicker extends React.Component {
         innerAfter: PropTypes.node,
         rtl: PropTypes.bool,
         /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
          * 预设屏幕宽度
          */
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
+        /**
+         * 是否展示点击按钮
+         */
+        hasTrigger: PropTypes.bool,
+        /**
+         * 是否一直显示点击按钮(无须hover)
+         */
+        alwaysShowTrigger: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -138,6 +155,8 @@ class NumberPicker extends React.Component {
         onBlur: func.noop,
         onCorrect: func.noop,
         onDisabled: func.noop,
+        hasTrigger: true,
+        alwaysShowTrigger: false,
     };
 
     constructor(props) {
@@ -151,7 +170,7 @@ class NumberPicker extends React.Component {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? '' : value,
+            value: value === undefined || value === null ? '' : value,
             hasFocused: false,
             reRender: true,
         };
@@ -192,10 +211,9 @@ class NumberPicker extends React.Component {
                     });
                     return;
                 }
-                // ignore when next value = prev value.
-                // ps: Number('0.')=0 ; Number('0.0')=0;
+                // ignore when input 0./0.0/0.00 to 0.001
                 // but take care of Number('')=0;
-                if (Number(this.state.value) === Number(value)) {
+                if (value.match(/\.0*$/)) {
                     this.setState({
                         value,
                         reRender: false,
@@ -463,9 +481,13 @@ class NumberPicker extends React.Component {
             upBtnProps = {},
             downBtnProps = {},
             innerAfter,
+            isPreview,
+            renderPreview,
+            hasTrigger,
+            alwaysShowTrigger,
         } = this.props;
 
-        let type = device === 'phone' ? 'inline' : this.props.type;
+        const type = device === 'phone' ? 'inline' : this.props.type;
 
         const prefixCls = `${prefix}number-picker`;
 
@@ -473,6 +495,8 @@ class NumberPicker extends React.Component {
             [prefixCls]: true,
             [`${prefixCls}-${type}`]: type,
             [`${prefix}${size}`]: true,
+            [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
+            [`${prefixCls}-no-trigger`]: !hasTrigger,
             [className]: className,
         });
 
@@ -505,7 +529,10 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.up.bind(this, upDisabled)}
                     >
-                        <Icon size="xxs" type="arrow-up" />
+                        <Icon
+                            type="arrow-up"
+                            className={`${prefixCls}-up-icon`}
+                        />
                     </Button>
                     <Button
                         {...downBtnProps}
@@ -516,7 +543,10 @@ class NumberPicker extends React.Component {
                         }`}
                         onClick={this.down.bind(this, downDisabled)}
                     >
-                        <Icon size="xxs" type="arrow-down" />
+                        <Icon
+                            type="arrow-down"
+                            className={`${prefixCls}-down-icon`}
+                        />
                     </Button>
                 </span>
             );
@@ -531,7 +561,7 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.down.bind(this, downDisabled)}
                 >
-                    <Icon type="minus" size="xs" />
+                    <Icon type="minus" className={`${prefixCls}-minus-icon`} />
                 </Button>
             );
             addonAfter = (
@@ -544,13 +574,33 @@ class NumberPicker extends React.Component {
                     }`}
                     onClick={this.up.bind(this, upDisabled)}
                 >
-                    <Icon type="add" size="xs" />
+                    <Icon type="add" className={`${prefixCls}-add-icon`} />
                 </Button>
             );
         }
 
         const others = obj.pickOthers(NumberPicker.propTypes, this.props);
         const dataAttrs = obj.pickAttrsWith(this.props, 'data-');
+
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                return (
+                    <div {...others} style={style} className={previewCls}>
+                        {renderPreview(this.renderValue(), this.props)}
+                    </div>
+                );
+            }
+            return (
+                <p {...others} style={{ style }} className={previewCls}>
+                    {this.renderValue()}
+                </p>
+            );
+        }
 
         return (
             <span
@@ -561,6 +611,7 @@ class NumberPicker extends React.Component {
             >
                 <Input
                     {...others}
+                    hasClear={false}
                     aria-valuemax={max !== Infinity ? max : undefined}
                     aria-valuemin={min !== -Infinity ? min : undefined}
                     state={state === 'error' ? 'error' : null}
@@ -576,7 +627,7 @@ class NumberPicker extends React.Component {
                     ref={this.saveInputRef.bind(this)}
                     label={label}
                     innerAfter={innerAfter}
-                    extra={extra}
+                    extra={hasTrigger ? extra : null}
                     addonBefore={addonBefore}
                     addonAfter={addonAfter}
                 />

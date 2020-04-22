@@ -52,3 +52,8 @@ export { default as Typography } from './typography';
 export { default as Upload } from './upload';
 export { default as VirtualList } from './virtual-list';
 export { default as Notification } from './notification';
+export { default as Divider } from './divider';
+export { default as Avatar } from './avatar';
+export { default as ResponsiveGrid } from './responsive-grid';
+export { default as Box } from './box';
+export { default as List } from './list';

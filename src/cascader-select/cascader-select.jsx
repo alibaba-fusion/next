@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
+import classNames from 'classnames';
 import Select from '../select';
 import Cascader from '../cascader';
 import Menu from '../menu';
@@ -9,10 +11,22 @@ const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle } = dom;
 
+const normalizeValue = value => {
+    if (value) {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        return [value];
+    }
+
+    return [];
+};
+
 /**
  * CascaderSelect
  */
-export default class CascaderSelect extends Component {
+class CascaderSelect extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -195,7 +209,7 @@ export default class CascaderSelect extends Component {
         /**
          * 下拉框挂载的容器节点
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 透传到 Popup 的属性对象
          */
@@ -204,6 +218,15 @@ export default class CascaderSelect extends Component {
          * 是否跟随滚动
          */
         followTrigger: PropTypes.bool,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {Array<data>} value 选择值 { label: , value:}
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -256,7 +279,7 @@ export default class CascaderSelect extends Component {
         super(props, context);
 
         this.state = {
-            value: this.normalizeValue(
+            value: normalizeValue(
                 'value' in props ? props.value : props.defaultValue
             ),
             searchValue: '',
@@ -281,31 +304,17 @@ export default class CascaderSelect extends Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props) {
         const st = {};
 
-        if ('value' in nextProps) {
-            st.value = this.normalizeValue(nextProps.value);
+        if ('value' in props) {
+            st.value = normalizeValue(props.value);
         }
-        if ('visible' in nextProps) {
-            st.visible = nextProps.visible;
-        }
-
-        if (Object.keys(st).length) {
-            this.setState(st);
-        }
-    }
-
-    normalizeValue(value) {
-        if (value) {
-            if (Array.isArray(value)) {
-                return value;
-            }
-
-            return [value];
+        if ('visible' in props) {
+            st.visible = props.visible;
         }
 
-        return [];
+        return st;
     }
 
     updateCache(dataSource) {
@@ -798,6 +807,34 @@ export default class CascaderSelect extends Component {
         );
     }
 
+    renderPreview(others) {
+        const { prefix, multiple, className, renderPreview } = this.props;
+        const { value } = this.state;
+        const previewCls = classNames(className, `${prefix}form-preview`);
+        let items =
+            (multiple
+                ? this.getMultipleData(value)
+                : this.getSignleData(value)) || [];
+
+        if (!Array.isArray(items)) {
+            items = [items];
+        }
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview(items, this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {items.map(({ label }) => label).join(', ')}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
@@ -818,15 +855,22 @@ export default class CascaderSelect extends Component {
             popupContainer,
             popupProps,
             followTrigger,
+            isPreview,
+            resultAutoWidth,
         } = this.props;
         const { value, searchValue, visible } = this.state;
         const others = pickOthers(
             Object.keys(CascaderSelect.propTypes),
             this.props
         );
-        const popupContent = this.renderPopupContent();
 
         this.updateCache(dataSource);
+
+        if (isPreview) {
+            return this.renderPreview(others);
+        }
+
+        const popupContent = this.renderPopupContent();
 
         const props = {
             prefix,
@@ -867,9 +911,11 @@ export default class CascaderSelect extends Component {
                 ref: this.getPopup,
                 afterOpen: this.handleAfterOpen,
             };
-            props.autoWidth = showSearch && !!searchValue;
+            props.autoWidth = resultAutoWidth && !!searchValue;
         }
 
         return <Select {...props} {...others} />;
     }
 }
+
+export default polyfill(CascaderSelect);

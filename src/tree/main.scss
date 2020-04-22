@@ -46,6 +46,12 @@
         margin-right: $tree-switch-margint-right;
     }
 
+    // --------- this is for config platform
+    .#{$css-prefix}tree-unfold-icon::before {
+        content: $tree-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
     &-switcher.#{$css-prefix}noline {
         width: $tree-switch-arrow-size;
         height: $tree-switch-arrow-size;
@@ -58,11 +64,21 @@
             color: $tree-switch-arrow-color;
         }
 
+        .#{$css-prefix}tree-fold-icon::before {
+            content: $tree-fold-icon-content;
+        }
+
         &.#{$css-prefix}close #{$tree-prefix}-switcher-icon {
-            @include icon-size(
-                $size: $tree-switch-arrow-size,
-                $transform: rotate(-90deg)
-            );
+            @if $tree-unfold-icon-content != $icon-reset {
+                &::before {
+                    content: $tree-unfold-icon-content;
+                }
+            } @else {
+                @include icon-size(
+                    $size: $tree-switch-arrow-size,
+                    $transform: rotate(-90deg)
+                );
+            }
         }
 
         &:not(.#{$css-prefix}disabled):hover #{$tree-prefix}-switcher-icon {

@@ -247,6 +247,47 @@ describe('form', () => {
                     .hasClass('has-success')
             );
         });
+
+        it('should supoort responsive', () => {
+            const wrapper = mount(
+                <Form responsive >
+                    <FormItem colSpan={6} labelWidth={80}>
+                        <Input />
+                    </FormItem>
+                    <FormItem colSpan={6} labelWidth={100}>
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+
+            assert(wrapper.find('.next-responsive-grid'));
+            assert(wrapper.find('.next-form-responsive-grid'));
+        });
+
+        it('should supoort responsive with react fragment', () => {
+            const wrapper = mount(
+                <Form responsive >
+                    <FormItem colSpan={4} labelWidth={80}>
+                        <Input />
+                    </FormItem>
+                    <FormItem colSpan={4} labelWidth={100}>
+                        <Input />
+                    </FormItem>
+                    <React.Fragment>
+                        <FormItem colSpan={4} labelWidth={100}>
+                            <Input />
+                        </FormItem>
+                    </React.Fragment>
+                    <FormItem colSpan={12} labelWidth={100}>
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+
+            assert(wrapper.find('.next-responsive-grid'));
+            assert(wrapper.find('.next-form-responsive-grid'));
+        });
+
         it('should supoort required', () => {
             const wrapper = mount(
                 <Form>

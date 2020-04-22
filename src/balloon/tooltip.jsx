@@ -73,7 +73,7 @@ export default class Tooltip extends React.Component {
         /**
          * 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 是否跟随滚动
          */
@@ -82,11 +82,16 @@ export default class Tooltip extends React.Component {
          * 弹层id, 传入值才会支持无障碍
          */
         id: PropTypes.string,
+        /**
+         * 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100
+         */
+        delay: PropTypes.number,
     };
     static defaultProps = {
         triggerType: 'hover',
         prefix: 'next-',
         align: 'b',
+        delay: 0,
         trigger: <span />,
     };
 
@@ -108,6 +113,7 @@ export default class Tooltip extends React.Component {
             autoFocus,
             alignEdge,
             rtl,
+            delay,
             ...others
         } = this.props;
 
@@ -171,7 +177,7 @@ export default class Tooltip extends React.Component {
                 triggerType={newTriggerType}
                 align={alignMap[align].align}
                 offset={_offset}
-                delay={0}
+                delay={delay}
                 className={popupClassName}
                 style={popupStyle}
                 rtl={rtl}

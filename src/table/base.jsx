@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
+import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
-import { log, obj } from '../util';
+import { log, obj, dom } from '../util';
 import BodyComponent from './base/body';
 import HeaderComponent from './base/header';
 import WrapperComponent from './base/wrapper';
@@ -28,7 +30,7 @@ const Children = React.Children,
 //</Table>
 
 /** Table */
-export default class Table extends React.Component {
+class Table extends React.Component {
     static Column = Column;
     static ColumnGroup = ColumnGroup;
     static Header = HeaderComponent;
@@ -47,6 +49,14 @@ export default class Table extends React.Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
+        /**
+         * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
+         */
+        tableLayout: PropTypes.oneOf(['fixed', 'auto']),
+        /**
+         * 表格的总长度，可以这么用：设置表格总长度 、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
+         */
+        tableWidth: PropTypes.number,
         /**
          * 自定义类名
          */
@@ -212,12 +222,6 @@ export default class Table extends React.Component {
          * @param {Object} currentRecord 当前点击额外渲染行的记录
          */
         onRowOpen: PropTypes.func,
-        /**
-         * 点击额外渲染行触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
-         */
         onExpandedRowClick: PropTypes.func,
         /**
          * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
@@ -276,6 +280,11 @@ export default class Table extends React.Component {
          * 开启时，getExpandedColProps() / rowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
          */
         expandedIndexSimulate: PropTypes.bool,
+        /**
+         * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
+         */
+        crossline: PropTypes.bool,
+        lengths: PropTypes.object,
     };
 
     static defaultProps = {
@@ -298,6 +307,7 @@ export default class Table extends React.Component {
         primaryKey: 'id',
         components: {},
         locale: zhCN.Table,
+        crossline: false,
     };
 
     static childContextTypes = {
@@ -325,17 +335,19 @@ export default class Table extends React.Component {
 
     getChildContext() {
         return {
-            notRenderCellIndex: this.notRenderCellIndex,
+            notRenderCellIndex: this.notRenderCellIndex || [],
             lockType: this.props.lockType,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (typeof this.props.sort !== 'undefined') {
-            this.setState({
-                sort: nextProps.sort,
-            });
+    static getDerivedStateFromProps(nextProps) {
+        const state = {};
+
+        if (typeof nextProps.sort !== 'undefined') {
+            state.sort = nextProps.sort;
         }
+
+        return state;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -348,10 +360,6 @@ export default class Table extends React.Component {
         }
 
         return true;
-    }
-
-    componentWillUpdate() {
-        this.notRenderCellIndex = [];
     }
 
     normalizeChildrenState(props) {
@@ -440,6 +448,10 @@ export default class Table extends React.Component {
             });
         });
 
+        const { lockType, lengths } = this.props;
+        const start = lockType === 'right' ? lengths.origin - lengths.right : 0;
+        this.addColIndex(flatChildren, start);
+
         return {
             flatChildren,
             groupChildren,
@@ -510,7 +522,9 @@ export default class Table extends React.Component {
                 expandedIndexSimulate,
                 pure,
                 rtl,
+                crossline,
                 sortIcons,
+                tableWidth,
             } = this.props;
             const { sort } = this.state;
             const {
@@ -525,6 +539,7 @@ export default class Table extends React.Component {
                     colGroup={colGroup}
                     ref={this.getWrapperRef}
                     prefix={prefix}
+                    tableWidth={tableWidth}
                 >
                     {hasHeader ? (
                         <Header
@@ -544,12 +559,14 @@ export default class Table extends React.Component {
                             onResizeChange={this.onResizeChange}
                             onSort={this.onSort}
                             sortIcons={sortIcons}
+                            tableWidth={tableWidth}
                         />
                     ) : null}
                     <Body
                         prefix={prefix}
                         rtl={rtl}
                         pure={pure}
+                        crossline={crossline}
                         colGroup={colGroup}
                         className={`${prefix}table-body`}
                         components={components}
@@ -567,6 +584,9 @@ export default class Table extends React.Component {
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
                         locale={locale}
+                        onBodyMouseOver={this.onBodyMouseOver}
+                        onBodyMouseOut={this.onBodyMouseOut}
+                        tableWidth={tableWidth}
                     />
                     {wrapperContent}
                 </Wrapper>
@@ -614,6 +634,92 @@ export default class Table extends React.Component {
         this[cellRef] = cell;
     };
 
+    handleColHoverClass = (rowIndex, colIndex, isAdd) => {
+        const { crossline } = this.props;
+        const funcName = isAdd ? 'addClass' : 'removeClass';
+        if (crossline) {
+            this.props.entireDataSource.forEach((val, index) => {
+                try {
+                    // in case of finding an unmounted component due to cached data
+                    // need to clear refs of this.tableInc when dataSource Changed
+                    // in virtual table
+                    const currentCol = findDOMNode(
+                        this.getCellRef(index, colIndex)
+                    );
+                    currentCol && dom[funcName](currentCol, 'hovered');
+                } catch (error) {
+                    return null;
+                }
+            });
+        }
+    };
+
+    /**
+     * @param event
+     * @returns {Object} { rowIndex: string; colIndex: string }
+     */
+    findEventTarget = e => {
+        const { prefix } = this.props;
+        const target = dom.getClosest(e.target, `td.${prefix}table-cell`);
+        const colIndex = target && target.getAttribute('data-next-table-col');
+        const rowIndex = target && target.getAttribute('data-next-table-row');
+
+        try {
+            // in case of finding an unmounted component due to cached data
+            // need to clear refs of this.tableInc when dataSource Changed
+            // in virtual table
+            const currentCol = findDOMNode(this.getCellRef(rowIndex, colIndex));
+            if (currentCol === target) {
+                return {
+                    colIndex,
+                    rowIndex,
+                };
+            }
+        } catch (error) {
+            return {};
+        }
+
+        return {};
+    };
+
+    onBodyMouseOver = e => {
+        const { crossline } = this.props;
+        if (!crossline) {
+            return;
+        }
+
+        const { colIndex, rowIndex } = this.findEventTarget(e);
+        // colIndex, rowIndex are string
+        if (!colIndex || !rowIndex) {
+            return;
+        }
+        this.handleColHoverClass(rowIndex, colIndex, true);
+        this.colIndex = colIndex;
+        this.rowIndex = rowIndex;
+    };
+
+    onBodyMouseOut = e => {
+        const { crossline } = this.props;
+        if (!crossline) {
+            return;
+        }
+
+        const { colIndex, rowIndex } = this.findEventTarget(e);
+        // colIndex, rowIndex are string
+        if (!colIndex || !rowIndex) {
+            return;
+        }
+        this.handleColHoverClass(this.rowIndex, this.colIndex, false);
+        this.colIndex = -1;
+        this.rowIndex = -1;
+    };
+
+    addColIndex = (children, start = 0) => {
+        children.forEach((child, i) => {
+            child.__colIndex = start + i;
+        });
+    };
+
     render() {
         const ret = this.normalizeChildrenState(this.props);
         this.groupChildren = ret.groupChildren;
@@ -653,11 +759,14 @@ export default class Table extends React.Component {
                 columns,
                 sortIcons,
                 loadingComponent: LoadingComponent = Loading,
+                tableLayout,
+                tableWidth,
                 ...others
             } = this.props,
             cls = classnames({
                 [`${prefix}table`]: true,
                 [`${prefix}table-${size}`]: size,
+                [`${prefix}table-layout-${tableLayout}`]: tableLayout,
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,
@@ -688,3 +797,5 @@ export default class Table extends React.Component {
         return content;
     }
 }
+
+export default polyfill(Table);

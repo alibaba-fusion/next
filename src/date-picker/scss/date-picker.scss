@@ -1,7 +1,10 @@
 //
 // date-picker 样式
 //
-#{$date-picker-prefix}, #{$month-picker-prefix}, #{$year-picker-prefix} {
+#{$date-picker-prefix},
+#{$month-picker-prefix},
+#{$year-picker-prefix},
+#{$week-picker-prefix} {
     display: inline-block;
     width: $s-50;
 

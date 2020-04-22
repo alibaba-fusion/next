@@ -35,6 +35,11 @@ function render(i18n) {
                         </Panel>
                         <Panel title={`${title}2`}>
                             {content}
+                            {/* --------- this is for config platform ----------- */}
+                            <div style={{display: "none"}}>
+                                <div type="arrow-right" className='next-collapse-unfold-icon'/>
+                            </div>
+                            {/* --------- this is for config platform ----------- */}
                         </Panel>
                         <Panel title={`${title}3`}>
                             {content}

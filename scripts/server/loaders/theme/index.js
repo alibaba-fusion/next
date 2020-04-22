@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'development';
 const path = require('path');
 const loaderUtils = require('loader-utils');
 const ejs = require('ejs');

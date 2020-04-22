@@ -31,6 +31,8 @@
 | disabled       | radio是否被禁用                                                                                                                                 | Boolean               | -         |
 | value          | radio 的value                                                                                                                               | String/Number/Boolean | -         |
 | name           | name                                                                                                                                       | String                | -         |
+| isPreview      | 是否为预览态                                                                                                                                     | Boolean               | false     |
+| renderPreview  | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                          | Function              | -         |
 
 ### Radio.Group
 
@@ -38,7 +40,7 @@
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------- |
 | name          | name                                                                                                                                               | String                              | -        |
 | size          | 与 `shape` 属性配套使用，shape设为button时有效<br><br>**可选值**:<br>'large'(大)<br>'medium'(中)<br>'small'(小)                                                       | Enum                                | 'medium' |
-| shape         | 可以设置成 button 展示形状<br><br>**可选值**:<br>'button'(按钮状)                                                                                                 | Enum                                | -        |
+| shape         | 可以设置成 button 展示形状<br><br>**可选值**:<br>'normal'(按钮状)<br>'button'                                                                                     | Enum                                | -        |
 | value         | radio group的选中项的值                                                                                                                                  | String/Number/Boolean               | -        |
 | defaultValue  | radio group的默认值                                                                                                                                    | String/Number/Boolean               | -        |
 | component     | 设置标签类型                                                                                                                                             | String/Function                     | 'div'    |
@@ -47,6 +49,8 @@
 | dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`                                                                                     | Array&lt;String>/Array&lt;Object>   | \[]      |
 | children      | 通过子元素方式设置内部radio                                                                                                                                   | Array&lt;ReactElement>/ReactElement | -        |
 | itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                   | Enum                                | 'hoz'    |
+| isPreview     | 是否为预览态                                                                                                                                             | Boolean                             | false    |
+| renderPreview | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                  | Function                            | -        |
 
 ## ARIA and KeyBoard
 

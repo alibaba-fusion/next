@@ -1,19 +1,85 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
 import Menu from '../menu';
 import { func, obj, dom } from '../util';
 import CascaderMenu from './menu';
 import CascaderMenuItem from './item';
+import {
+    filterChildValue,
+    getAllCheckedValues,
+    forEachEnableNode,
+    isSiblingOrSelf,
+    isDescendantOrSelf,
+    isNodeChecked,
+} from './utils';
 
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { addClass, removeClass, setStyle, getStyle } = dom;
 
+const flatDataSource = (data, prefix = '0', v2n = {}, p2n = {}) => {
+    data.forEach((item, index) => {
+        const { value, children } = item;
+        const pos = `${prefix}-${index}`;
+        const newValue = String(value);
+        item.value = newValue;
+        v2n[newValue] = p2n[pos] = {
+            ...item,
+            pos,
+            _source: item,
+        };
+
+        if (children && children.length) {
+            flatDataSource(children, pos, v2n, p2n);
+        }
+    });
+
+    return { v2n, p2n };
+};
+
+const getExpandedValue = (v, _v2n, _p2n) => {
+    if (!v || !_v2n[v]) {
+        return [];
+    }
+
+    const pos = _v2n[v].pos;
+    if (pos.split('-').length === 2) {
+        return [];
+    }
+
+    const expandedMap = {};
+    Object.keys(_p2n).forEach(p => {
+        if (isDescendantOrSelf(p, pos) && p !== pos) {
+            expandedMap[_p2n[p].value] = p;
+        }
+    });
+
+    return Object.keys(expandedMap).sort((prev, next) => {
+        return (
+            expandedMap[prev].split('-').length -
+            expandedMap[next].split('-').length
+        );
+    });
+};
+
+const normalizeValue = value => {
+    if (value) {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        return [value];
+    }
+
+    return [];
+};
+
 /**
  * Cascader
  */
-export default class Cascader extends Component {
+class Cascader extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -144,32 +210,36 @@ export default class Cascader extends Component {
             loadData,
         } = props;
 
-        this.updateCache(dataSource);
+        const { v2n, p2n } = flatDataSource(dataSource);
 
-        let normalizedValue = this.normalizeValue(
+        let normalizedValue = normalizeValue(
             typeof value === 'undefined' ? defaultValue : value
         );
+
         if (!loadData) {
-            normalizedValue = normalizedValue.filter(v => this._v2n[v]);
+            normalizedValue = normalizedValue.filter(v => v2n[v]);
         }
-        // TODO loadData
+
         const realExpandedValue =
             typeof expandedValue === 'undefined'
                 ? typeof defaultExpandedValue === 'undefined'
-                    ? this.getExpandedValue(normalizedValue[0])
-                    : this.normalizeValue(defaultExpandedValue)
-                : this.normalizeValue(expandedValue);
+                    ? getExpandedValue(normalizedValue[0], v2n, p2n)
+                    : normalizeValue(defaultExpandedValue)
+                : normalizeValue(expandedValue);
         const st = {
             value: normalizedValue,
             expandedValue: realExpandedValue,
         };
         if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
-            st.value = this.completeValue(props.dataSource, st.value);
+            st.value = getAllCheckedValues(st.value, v2n, p2n);
         }
 
-        this.state = st;
-
-        this.lastExpandedValue = [...this.state.expandedValue];
+        this.lastExpandedValue = [...st.expandedValue];
+        this.state = {
+            ...st,
+            _v2n: v2n,
+            _p2n: p2n,
+        };
 
         bindCtx(this, [
             'handleMouseLeave',
@@ -180,40 +250,42 @@ export default class Cascader extends Component {
         ]);
     }
 
-    componentDidMount() {
-        this.setCascaderInnerWidth();
-    }
+    static getDerivedStateFromProps(props, state) {
+        const { v2n, p2n } = flatDataSource(props.dataSource);
+        const states = {};
 
-    componentWillReceiveProps(nextProps) {
-        this.updateCache(nextProps.dataSource);
-
-        const state = {};
-        if ('value' in nextProps) {
-            state.value = this.normalizeValue(nextProps.value);
-            if (!nextProps.loadData) {
-                state.value = state.value.filter(v => this._v2n[v]);
+        if ('value' in props) {
+            states.value = normalizeValue(props.value);
+            if (!props.loadData) {
+                states.value = states.value.filter(v => v2n[v]);
             }
 
-            const { multiple, checkStrictly, canOnlyCheckLeaf } = nextProps;
+            const { multiple, checkStrictly, canOnlyCheckLeaf } = props;
             if (multiple && !checkStrictly && !canOnlyCheckLeaf) {
-                state.value = this.completeValue(
-                    nextProps.dataSource,
-                    state.value
+                states.value = getAllCheckedValues(states.value, v2n, p2n);
+            }
+
+            if (!state.expandedValue.length && !('expandedValue' in props)) {
+                states.expandedValue = getExpandedValue(
+                    states.value[0],
+                    v2n,
+                    p2n
                 );
             }
-            if (
-                !this.state.expandedValue.length &&
-                !('expandedValue' in nextProps)
-            ) {
-                state.expandedValue = this.getExpandedValue(state.value[0]);
-            }
         }
-        if ('expandedValue' in nextProps) {
-            state.expandedValue = this.normalizeValue(nextProps.expandedValue);
+
+        if ('expandedValue' in props) {
+            states.expandedValue = normalizeValue(props.expandedValue);
         }
-        if (Object.keys(state).length) {
-            this.setState(state);
-        }
+
+        return {
+            ...states,
+            _v2n: v2n,
+            _p2n: p2n,
+        };
+    }
+    componentDidMount() {
+        this.setCascaderInnerWidth();
     }
 
     componentDidUpdate() {
@@ -244,9 +316,10 @@ export default class Cascader extends Component {
 
         const menusWidth = Math.ceil(
             menus.reduce((ret, menu) => {
-                return ret + menu.offsetWidth;
+                return ret + getStyle(menu, 'width');
             }, 0)
         );
+
         if (getStyle(this.cascaderInner, 'width') !== menusWidth) {
             setStyle(this.cascaderInner, 'width', menusWidth);
         }
@@ -260,181 +333,21 @@ export default class Cascader extends Component {
         }
     }
 
-    setCache(data, prefix = '0') {
-        data.forEach((item, index) => {
-            const { value, children } = item;
-            const pos = `${prefix}-${index}`;
-            const newValue = String(value);
-            item.value = newValue;
-            this._v2n[newValue] = this._p2n[pos] = {
-                ...item,
-                pos,
-                _source: item,
-            };
-
-            if (children && children.length) {
-                this.setCache(children, pos);
-            }
-        });
-    }
-
-    updateCache(dataSource) {
-        this._v2n = {};
-        this._p2n = {};
-        this.setCache(dataSource);
-    }
-
-    normalizeValue(value) {
-        if (value) {
-            if (Array.isArray(value)) {
-                return value;
-            }
-
-            return [value];
-        }
-
-        return [];
-    }
-
-    getExpandedValue(v) {
-        if (!v || !this._v2n[v]) {
-            return [];
-        }
-
-        const pos = this._v2n[v].pos;
-        if (pos.split('-').length === 2) {
-            return [];
-        }
-
-        const expandedMap = {};
-        Object.keys(this._p2n).forEach(p => {
-            if (this.isDescendantOrSelf(p, pos) && p !== pos) {
-                expandedMap[this._p2n[p].value] = p;
-            }
-        });
-
-        return Object.keys(expandedMap).sort((prev, next) => {
-            return (
-                expandedMap[prev].split('-').length -
-                expandedMap[next].split('-').length
-            );
-        });
-    }
-    /*eslint-disable max-statements*/
-    completeValue(dataSource, value) {
-        const filterValue = value.filter(
-            v => typeof this._v2n[v] !== 'undefined'
-        );
-        const flatValue = this.flatValue(filterValue);
-
-        const childChecked = child => flatValue.indexOf(child.value) > -1;
-        const removeValue = child =>
-            flatValue.splice(flatValue.indexOf(child.value), 1);
-        const addParentValue = (i, parent) =>
-            flatValue.splice(i, 0, parent.value);
-        for (let i = 0; i < flatValue.length; i++) {
-            const pos = this.getPos(flatValue[i]);
-            const nums = pos.split('-');
-            if (nums.length === 2) {
-                break;
-            }
-            for (let j = nums.length - 2; j > 0; j--) {
-                const parent = nums
-                    .slice(1, j + 1)
-                    .reduce((ret, num) => ret.children[num], {
-                        children: dataSource,
-                    });
-                const parentChecked = parent.children.every(childChecked);
-                if (parentChecked) {
-                    parent.children.forEach(removeValue);
-                    addParentValue(i, parent);
-                } else {
-                    break;
-                }
-            }
-        }
-
-        const newValue = [];
-        if (flatValue.length) {
-            // flatValue = flatValue.reverse(); TODO 后续检测大数据性能问题
-            const ps = Object.keys(this._p2n);
-            for (let i = 0; i < flatValue.length; i++) {
-                const pos = this.getPos(flatValue[i]);
-                for (let j = 0; j < ps.length; j++) {
-                    if (this.isDescendantOrSelf(pos, ps[j])) {
-                        newValue.push(this.getValue(ps[j]));
-                        ps.splice(j, 1);
-                        j--;
-                    }
-                }
-            }
-        }
-
-        return newValue;
-    }
     /*eslint-enable*/
     flatValue(value) {
-        const getDepth = v => this.getPos(v).split('-').length;
-        const newValue = value.slice(0).sort((prev, next) => {
-            return getDepth(prev) - getDepth(next);
-        });
-
-        for (let i = 0; i < newValue.length; i++) {
-            for (let j = 0; j < newValue.length; j++) {
-                if (
-                    i !== j &&
-                    this.isDescendantOrSelf(
-                        this.getPos(newValue[i]),
-                        this.getPos(newValue[j])
-                    )
-                ) {
-                    newValue.splice(j, 1);
-                    j--;
-                }
-            }
-        }
-
-        return newValue;
+        return filterChildValue(value, this.state._v2n, this.state._p2n);
     }
 
     getValue(pos) {
-        return this._p2n[pos] ? this._p2n[pos].value : null;
+        return this.state._p2n[pos] ? this.state._p2n[pos].value : null;
     }
 
     getPos(value) {
-        return this._v2n[value] ? this._v2n[value].pos : null;
+        return this.state._v2n[value] ? this.state._v2n[value].pos : null;
     }
 
     getData(value) {
-        return value.map(v => this._v2n[v]);
-    }
-
-    isDescendantOrSelf(currentPos, targetPos) {
-        if (!currentPos || !targetPos) {
-            return false;
-        }
-
-        const currentNums = currentPos.split('-');
-        const targetNums = targetPos.split('-');
-
-        return (
-            currentNums.length <= targetNums.length &&
-            currentNums.every((num, index) => {
-                return num === targetNums[index];
-            })
-        );
-    }
-
-    isSiblingOrSelf(currentPos, targetPos) {
-        const currentNums = currentPos.split('-').slice(0, -1);
-        const targetNums = targetPos.split('-').slice(0, -1);
-
-        return (
-            currentNums.length === targetNums.length &&
-            currentNums.every((num, index) => {
-                return num === targetNums[index];
-            })
-        );
+        return value.map(v => this.state._v2n[v]);
     }
 
     processValue(value, v, checked) {
@@ -448,11 +361,11 @@ export default class Cascader extends Component {
 
     handleSelect(v, canExpand) {
         if (!(this.props.canOnlySelectLeaf && canExpand)) {
-            const data = this._v2n[v];
+            const data = this.state._v2n[v];
             const nums = data.pos.split('-');
             const selectedPath = nums.slice(1).reduce((ret, num, index) => {
                 const p = nums.slice(0, index + 2).join('-');
-                ret.push(this._p2n[p]);
+                ret.push(this.state._p2n[p]);
                 return ret;
             }, []);
 
@@ -495,34 +408,73 @@ export default class Cascader extends Component {
         } else {
             const pos = this.getPos(v);
 
-            const ps = Object.keys(this._p2n);
-            ps.forEach(p => {
-                if (this.isDescendantOrSelf(pos, p)) {
-                    this.processValue(value, this.getValue(p), checked);
-                }
+            const ps = Object.keys(this.state._p2n);
+
+            forEachEnableNode(this.state._v2n[v], node => {
+                if (node.checkable === false) return;
+                this.processValue(value, node.value, checked);
             });
 
             let currentPos = pos;
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
-                let parentChecked = true;
+                let parentCheck = true;
+
+                const parentPos = nums.slice(0, i - 1).join('-');
+                if (
+                    this.state._p2n[parentPos].disabled ||
+                    this.state._p2n[parentPos].checkboxDisabled ||
+                    this.state._p2n[parentPos].checkable === false
+                ) {
+                    currentPos = parentPos;
+                    continue;
+                }
+
+                const parentValue = this.state._p2n[parentPos].value;
+                const parentChecked = value.indexOf(parentValue) > -1;
+                if (!checked && !parentChecked) {
+                    break;
+                }
+
                 for (let j = 0; j < ps.length; j++) {
                     const p = ps[j];
-                    if (!this.isSiblingOrSelf(currentPos, p)) {
-                        continue;
-                    }
-                    const v = this.getValue(p);
-                    if (value.indexOf(v) === -1) {
-                        parentChecked = false;
-                        break;
+                    const pnode = this.state._p2n[p];
+                    if (
+                        isSiblingOrSelf(currentPos, p) &&
+                        !pnode.disabled &&
+                        !pnode.checkboxDisabled
+                    ) {
+                        const k = pnode.value;
+                        // eslint-disable-next-line max-depth
+                        if (pnode.checkable === false) {
+                            // eslint-disable-next-line max-depth
+                            if (
+                                !pnode.children ||
+                                pnode.children.length === 0
+                            ) {
+                                continue;
+                            }
+                            // eslint-disable-next-line max-depth
+                            for (let m = 0; m < pnode.children.length; m++) {
+                                // eslint-disable-next-line max-depth
+                                if (
+                                    !pnode.children.every(child =>
+                                        isNodeChecked(child, value)
+                                    )
+                                ) {
+                                    parentCheck = false;
+                                    break;
+                                }
+                            }
+                        } else if (value.indexOf(k) === -1) {
+                            parentCheck = false;
+                        }
+
+                        if (!parentCheck) break;
                     }
                 }
-                const parentPos = nums.slice(0, i - 1).join('-');
-                this.processValue(
-                    value,
-                    this.getValue(parentPos),
-                    parentChecked
-                );
+
+                this.processValue(value, parentValue, parentCheck);
 
                 currentPos = parentPos;
             }
@@ -539,7 +491,7 @@ export default class Cascader extends Component {
                 const data = this.getData(value);
                 this.props.onChange(value, data, {
                     checked,
-                    currentData: this._v2n[v],
+                    currentData: this.state._v2n[v],
                     checkedData: data,
                 });
             } else {
@@ -550,7 +502,7 @@ export default class Cascader extends Component {
                 const indeterminateData = this.getData(indeterminateValue);
                 this.props.onChange(flatValue, flatData, {
                     checked,
-                    currentData: this._v2n[v],
+                    currentData: this.state._v2n[v],
                     checkedData,
                     indeterminateData,
                 });
@@ -581,15 +533,15 @@ export default class Cascader extends Component {
                     const endExpandedValue =
                         expandedValue[expandedValue.length - 1];
                     this.setState({
-                        focusedValue: this._v2n[endExpandedValue].children[0]
-                            .value,
+                        focusedValue: this.state._v2n[endExpandedValue]
+                            .children[0].value,
                     });
                 }
             };
 
             const { loadData } = this.props;
             if (canExpand && loadData) {
-                const data = this._v2n[value];
+                const data = this.state._v2n[value];
                 return loadData(data, data._source).then(callback);
             } else {
                 return callback();
@@ -675,23 +627,34 @@ export default class Cascader extends Component {
     }
 
     getIndeterminate(value) {
-        const indeterminate = [];
+        const indeterminateValues = [];
 
-        const positions = this.flatValue(value).map(value =>
-            this.getPos(value)
-        );
-        positions.forEach(pos => {
+        const poss = filterChildValue(
+            value
+                .filter(v => !!this.state._v2n[v])
+                .filter(
+                    v =>
+                        !this.state._v2n[v].disabled &&
+                        !this.state._v2n[v].checkboxDisabled &&
+                        this.state._v2n[v].checkable !== false
+                ),
+            this.state._v2n,
+            this.state._p2n
+        ).map(v => this.state._v2n[v].pos);
+        poss.forEach(pos => {
             const nums = pos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');
-                const parentValue = this.getValue(parentPos);
-                if (indeterminate.indexOf(parentValue) === -1) {
-                    indeterminate.push(parentValue);
+                const parent = this.state._p2n[parentPos];
+                if (parent.disabled || parent.checkboxDisabled) break;
+                const parentValue = parent.value;
+                if (indeterminateValues.indexOf(parentValue) === -1) {
+                    indeterminateValues.push(parentValue);
                 }
             }
         });
 
-        return indeterminate;
+        return indeterminateValues;
     }
 
     onBlur(e) {
@@ -750,13 +713,19 @@ export default class Cascader extends Component {
                         onFold: this.handleFold,
                     };
 
+                    if ('title' in item) {
+                        props.title = item.title;
+                    }
+
                     if (multiple) {
                         props.checkable = !(canOnlyCheckLeaf && canExpand);
-                        props.checked = value.indexOf(item.value) > -1;
+                        props.checked =
+                            value.indexOf(item.value) > -1 || !!item.checked;
                         props.indeterminate =
-                            checkStrictly || canOnlyCheckLeaf
+                            (checkStrictly || canOnlyCheckLeaf
                                 ? false
-                                : this.indeterminate.indexOf(item.value) > -1;
+                                : this.indeterminate.indexOf(item.value) >
+                                  -1) || !!item.indeterminate;
                         props.checkboxDisabled = !!item.checkboxDisabled;
                         props.onCheck = this.handleCheck.bind(this, item.value);
                     } else {
@@ -907,3 +876,5 @@ export default class Cascader extends Component {
         );
     }
 }
+
+export default polyfill(Cascader);

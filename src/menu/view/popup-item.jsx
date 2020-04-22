@@ -7,6 +7,7 @@ import Overlay from '../../overlay';
 import { func, obj, dom } from '../../util';
 import Item from './item';
 import SelectableItem from './selectable-item';
+import { getChildSelected } from './util';
 
 const { bindCtx } = func;
 const { setStyle } = dom;
@@ -66,21 +67,6 @@ export default class PopupItem extends Component {
         const { openKeys } = root.state;
 
         return openKeys.indexOf(_key) > -1;
-    }
-
-    getChildSelected() {
-        const { _key, root } = this.props;
-        const { selectMode } = root.props;
-        const { selectedKeys } = root.state;
-
-        const _keyPos = root.k2n[_key].pos;
-
-        return (
-            !!selectMode &&
-            selectedKeys.some(
-                key => root.k2n[key] && root.k2n[key].pos.indexOf(_keyPos) === 0
-            )
-        );
     }
 
     getPopupProps() {
@@ -152,10 +138,17 @@ export default class PopupItem extends Component {
 
     renderItem(selectable, children, others) {
         const { _key, root, level, inlineLevel, label, className } = this.props;
-        const { prefix } = root.props;
+        const { prefix, selectMode } = root.props;
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
-        const isChildSelected = this.getChildSelected();
+
+        const { selectedKeys, _k2n } = root.state;
+        const isChildSelected = getChildSelected({
+            _key,
+            _k2n,
+            selectMode,
+            selectedKeys,
+        });
 
         const itemProps = {
             'aria-haspopup': true,
@@ -200,6 +193,7 @@ export default class PopupItem extends Component {
                 trigger={trigger}
                 triggerType={triggerType}
                 visible={open}
+                pinFollowBaseElementWhenFixed
                 onVisibleChange={this.handleOpen}
                 onOpen={this.handlePopupOpen}
                 onClose={this.handlePopupClose}
@@ -287,7 +281,7 @@ export default class PopupItem extends Component {
 
             arrowProps = {
                 type: 'arrow-right',
-                className: `${prefix}menu-icon-arrow`,
+                className: `${prefix}menu-icon-arrow ${prefix}menu-symbol-popupfold`,
             };
         }
 

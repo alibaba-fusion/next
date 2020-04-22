@@ -219,7 +219,8 @@ let myfield = Field.useField([options]); // 要求 react 版本 > 16.8
 | getState  | 判断校验状态 | Function(name: String)| 'error' 'success' 'loading' '' | '' |
 | getNames  | 获取所有组件的key | Function()|  |  |
 | remove  | 删除某一个或者一组控件的数据，删除后与之相关的validate/value都会被清空 | Function(name: String/String[])|  |  |
-| spliceArray  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(keyMatch: String, index: Number)|  |  |
+| addArrayValue  | 添加 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(key: String, index: Number, value1, value2, ...)|  |  |
+| deleteArrayValue  | 删除 name 是数组格式的数据, 并且自动处理其他 name 的数组错位问题 | Function(key: String, index: Number, howmany)|  |  |
 
 #### init
 ```
@@ -233,7 +234,8 @@ init(name, options, props)
 | options.initValue | 组件初始值(组件第一次render的时候才会读取，后面再修改此值无效),类似defaultValue | any | | |
 | options.trigger | 触发数据变化的事件名称 | String | | 'onChange' |
 | options.rules | 校验规则 | Array/Object | | | |
-| options.getValueFromEvent | 自定义从`onChange`事件中获取value的方式，一般不需要设置. 详细用法查看demo `自定义数据获取` | Function(value,...args) 参数顺序和组件是完全一致的 | | | |
+| options.getValueFormatter | 自定义从组件获取 `value`  ，详细用法查看demo `自定义数据获取` | Function(value,...args) 参数顺序和组件是完全一致的 | | | |
+| options.setValueFormatter | 自定义转换 `value` 到组件 ，详细用法查看demo `自定义数据获取` | Function(value)  | | | |
 | props | 组件自定义的事件可以写在这里  | Object | | | |
 | autoValidate | 是否修改数据的时候自动触发校验单个组件的校验, 设为 false 后只能通过 validate() 来触发校验 | Boolean  |true|
 

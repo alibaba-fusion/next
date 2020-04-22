@@ -3,6 +3,7 @@ import assert from 'power-assert';
 import US from '../../src/locale/en-us';
 import JP from '../../src/locale/ja-jp';
 import CN from '../../src/locale/zh-cn';
+import HK from '../../src/locale/zh-hk';
 import TW from '../../src/locale/zh-tw';
 
 describe('Locale', () => {
@@ -10,9 +11,10 @@ describe('Locale', () => {
         const usKeys = getKeys(US);
         const jpKeys = getKeys(JP);
         const cnKeys = getKeys(CN);
+        const hkKeys = getKeys(HK);
         const twKeys = getKeys(TW);
 
-        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === twKeys);
+        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys);
     });
 });
 

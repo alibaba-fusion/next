@@ -4,7 +4,7 @@
   "class-prefix": ".next",
   "icon": {
     "iconfont-project-id": "515771",
-    "iconfont-path": "//at.alicdn.com/t/font_515771_7u6frotlpa6"
+    "iconfont-path": "//at.alicdn.com/t/font_515771_xjdbujl2iu"
   },
   "import": {
     "sources": {
@@ -50,6 +50,11 @@
     }
   },
   "variables": {
+    "list": "lib/list/scss/variable.scss",
+    "box": "lib/box/scss/variable.scss",
+    "responsive-grid": "lib/responsive-grid/scss/variable.scss",
+    "avatar": "lib/avatar/scss/variable.scss",
+    "divider": "lib/divider/scss/variable.scss",
     "global": "lib/core/style/_global.scss",
     "size": "lib/core/style/_size.scss",
     "color": "lib/core/style/_color.scss",

@@ -72,7 +72,7 @@ export default class Slider extends Component {
         /**
          * 自定义导航锚点
          */
-        dotRender: PropTypes.func,
+        dotsRender: PropTypes.func,
         /**
          * 是否可拖拽
          */
@@ -213,6 +213,11 @@ export default class Slider extends Component {
             children,
         } = this.props;
 
+        const globalProps = {};
+        Object.keys(ConfigProvider.propTypes).forEach(key => {
+            globalProps[key] = this.props[key];
+        });
+
         const sliderProps = obj.pickOthers(
             ['className', 'style', 'slideDirection'],
             this.props
@@ -245,7 +250,7 @@ export default class Slider extends Component {
         }
 
         return (
-            <ConfigProvider rtl={false}>
+            <ConfigProvider {...globalProps} rtl={false}>
                 <div
                     dir="ltr"
                     className={clazz}

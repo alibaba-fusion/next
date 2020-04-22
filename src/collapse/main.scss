@@ -10,7 +10,6 @@
 
     border: $collapse-border-width solid $collapse-border-color;
     border-radius: $collapse-border-corner;
-    overflow: hidden;
     &:focus,
     & *:focus {
         outline: 0;
@@ -29,7 +28,7 @@
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-collapsed));
+        @include icon-size($collapse-icon-size, 0, 0);
     }
 
     &-panel-title {
@@ -55,7 +54,6 @@
     }
 
     &-panel-content {
-        overflow: hidden;
         height: 0;
         padding: 0 $collapse-content-padding-x;
         background: $collapse-content-bg-color;
@@ -74,9 +72,31 @@
         }
     }
 
+    // --------- this is for config platform
+    #{$collapse-prefix}-unfold-icon::before {
+        content: $collapse-unfold-icon-content;
+    }
+    // --------- this is for config platform
+
+    &-panel-hidden {
+        > #{$collapse-prefix}-panel-content {
+            overflow: hidden;
+        }
+    }
+
     #{$collapse-prefix}-panel-icon {
+        &::before {
+            content: $collapse-fold-icon-content;
+        }
+
         &#{$collapse-prefix}-panel-icon-expanded {
-            @include icon-size($collapse-icon-size, 0, 0, rotate($collapse-icon-rotation-expanded));
+            @if $collapse-unfold-icon-content != $icon-reset {
+                &::before {
+                    content: $collapse-unfold-icon-content;
+                }
+            } @else {
+                @include icon-size($collapse-icon-size, 0, 0, rotate(90deg));
+            }
         }
     }
 
@@ -85,7 +105,6 @@
     }
 
     &-panel-disabled {
-        overflow: hidden;
         &:not(:first-child) {
             border-color: $collapse-disabled-border-color;
         }

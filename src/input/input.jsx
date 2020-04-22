@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -29,9 +29,9 @@ export default class Input extends Base {
         hasBorder: PropTypes.bool,
         /**
          * 状态
-         * @enumdesc 错误, 校验中, 成功
+         * @enumdesc 错误, 校验中, 成功, 警告
          */
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
          * 尺寸
          * @enumdesc 小, 中, 大
@@ -51,7 +51,7 @@ export default class Input extends Base {
         /**
          * 水印 (Icon的type类型，和hasClear占用一个地方)
          */
-        hint: PropTypes.string,
+        hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         /**
          * 文字前附加内容
          */
@@ -88,6 +88,15 @@ export default class Input extends Base {
         extra: PropTypes.node,
         innerBeforeClassName: PropTypes.string,
         innerAfterClassName: PropTypes.string,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -95,6 +104,7 @@ export default class Input extends Base {
         size: 'medium',
         autoComplete: 'off',
         hasBorder: true,
+        isPreview: false,
         onPressEnter: func.noop,
         inputRender: el => el,
     };
@@ -141,9 +151,26 @@ export default class Input extends Base {
 
         let stateWrap = null;
         if (state === 'success') {
-            stateWrap = <Icon type="success-filling" />;
+            stateWrap = (
+                <Icon
+                    type="success-filling"
+                    className={`${prefix}input-success-icon`}
+                />
+            );
         } else if (state === 'loading') {
-            stateWrap = <Icon type="loading" />;
+            stateWrap = (
+                <Icon
+                    type="loading"
+                    className={`${prefix}input-loading-icon`}
+                />
+            );
+        } else if (state === 'warning') {
+            stateWrap = (
+                <Icon
+                    type="warning"
+                    className={`${prefix}input-warning-icon`}
+                />
+            );
         }
 
         let clearWrap = null;
@@ -152,16 +179,27 @@ export default class Input extends Base {
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon = (
-                    <Icon type={hint} className={`${prefix}input-hint`} />
-                );
+                if (typeof hint === 'string') {
+                    hintIcon = (
+                        <Icon type={hint} className={`${prefix}input-hint`} />
+                    );
+                } else if (isValidElement(hint)) {
+                    hintIcon = cloneElement(hint, {
+                        className: classNames(
+                            hint.props.className,
+                            `${prefix}input-hint`
+                        ),
+                    });
+                } else {
+                    hintIcon = hint;
+                }
             } else {
                 hintIcon = (
                     <Icon
                         type="delete-filling"
                         role="button"
                         tabIndex="0"
-                        className={`${prefix}input-hint`}
+                        className={`${prefix}input-hint ${prefix}input-clear-icon`}
                         aria-label={locale.clear}
                         onClick={this.onClear.bind(this)}
                         onMouseDown={preventDefault}
@@ -177,7 +215,7 @@ export default class Input extends Base {
                             type="delete-filling"
                             role="button"
                             tabIndex="0"
-                            className={`${prefix}input-clear`}
+                            className={`${prefix}input-clear ${prefix}input-clear-icon`}
                             aria-label={locale.clear}
                             onClick={this.onClear.bind(this)}
                             onMouseDown={preventDefault}
@@ -261,6 +299,8 @@ export default class Input extends Base {
             className,
             hasBorder,
             prefix,
+            isPreview,
+            renderPreview,
             addonBefore,
             addonAfter,
             addonTextBefore,
@@ -290,6 +330,10 @@ export default class Input extends Base {
             [`${prefix}after`]: true,
             [innerAfterClassName]: innerAfterClassName,
         });
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
 
         const props = this.getProps();
         // custom data attributes are assigned to the top parent node
@@ -301,6 +345,28 @@ export default class Input extends Base {
             Object.assign({}, dataProps, Input.propTypes),
             this.props
         );
+
+        if (isPreview) {
+            const { value } = props;
+            const { label } = this.props;
+            if (typeof renderPreview === 'function') {
+                return (
+                    <div {...others} className={previewCls}>
+                        {renderPreview(value, this.props)}
+                    </div>
+                );
+            }
+            return (
+                <div {...others} className={previewCls}>
+                    {addonBefore || addonTextBefore}
+                    {label}
+                    {innerBefore}
+                    {value}
+                    {innerAfter}
+                    {addonAfter || addonTextAfter}
+                </div>
+            );
+        }
 
         const inputEl = (
             <input

@@ -157,6 +157,34 @@ describe('src/object.js', function() {
         });
     });
 
+    describe('#isReactFragment', function() {
+        it('is isReactFragment', function() {
+            const frag = React.Fragment;
+            assert(object.isReactFragment(frag));
+
+            const frag2 = (<React.Fragment>
+                <div>abc</div>
+            </React.Fragment>);
+            assert(object.isReactFragment(frag2));
+        });
+
+        it('not isReactFragment', function() {
+            const frag = React.Component;
+            const string = 'abc';
+            const number = 321;
+            const obj = {a: 3};
+            const arr = [1,2,6];
+            const n = null;
+            assert(!object.isReactFragment(frag));
+            assert(!object.isReactFragment(string));
+            assert(!object.isReactFragment(number));
+            assert(!object.isReactFragment(obj));
+            assert(!object.isReactFragment(arr));
+            assert(!object.isReactFragment(n));
+            assert(!object.isReactFragment());
+        });
+    });
+
     describe('#isNil', function () {
         it(
             'should returns `true` if passing `null` or `undefined`',

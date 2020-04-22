@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
 import Icon from '../../icon';
 import Checkbox from '../../checkbox';
@@ -16,7 +17,7 @@ const isRoot = pos => /^0-(\d)+$/.test(pos);
 /**
  * Tree.Node
  */
-export default class TreeNode extends Component {
+class TreeNode extends Component {
     static propTypes = {
         _key: PropTypes.string,
         prefix: PropTypes.string,
@@ -109,17 +110,19 @@ export default class TreeNode extends Component {
         ]);
     }
 
-    componentDidMount() {
-        this.itemNode = findDOMNode(this.refs.node);
-        this.setFocus();
+    static getDerivedStateFromProps(props) {
+        if ('label' in props) {
+            return {
+                label: props.label,
+            };
+        }
+
+        return null;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if ('label' in nextProps) {
-            this.setState({
-                label: nextProps.label,
-            });
-        }
+    componentDidMount() {
+        this.itemNode = findDOMNode(this.nodeEl);
+        this.setFocus();
     }
 
     componentDidUpdate() {
@@ -234,10 +237,10 @@ export default class TreeNode extends Component {
     handleDragOver(e) {
         if (this.props.root.canDrop(this)) {
             e.preventDefault();
-            e.stopPropagation();
 
             this.props.root.handleDragOver(e, this);
         }
+        e.stopPropagation();
     }
 
     handleDragLeave(e) {
@@ -331,6 +334,10 @@ export default class TreeNode extends Component {
                     ? 'minus'
                     : 'add'
                 : 'arrow-down';
+        const iconCls = cx({
+            [`${prefix}tree-switcher-icon`]: true,
+            [`${prefix}tree-fold-icon`]: iconType === 'arrow-down',
+        });
 
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -339,10 +346,7 @@ export default class TreeNode extends Component {
                 onClick={disabled ? null : this.handleExpand}
             >
                 {this.renderRightAngle()}
-                <Icon
-                    className={`${prefix}tree-switcher-icon`}
-                    type={iconType}
-                />
+                <Icon className={iconCls} type={iconType} />
             </span>
         );
     }
@@ -412,7 +416,7 @@ export default class TreeNode extends Component {
         return (
             <div
                 className={`${prefix}tree-node-label-wrapper`}
-                ref="labelWrapper"
+                ref={this.saveLabelWrapperRef}
             >
                 <div {...labelProps}>{label}</div>
             </div>
@@ -425,7 +429,7 @@ export default class TreeNode extends Component {
         return (
             <div
                 className={`${prefix}tree-node-label-wrapper`}
-                ref="labelWrapper"
+                ref={this.saveLabelWrapperRef}
             >
                 <TreeNodeInput
                     prefix={prefix}
@@ -439,20 +443,38 @@ export default class TreeNode extends Component {
 
     renderChildTree(hasChildTree) {
         const { prefix, children, expanded, root } = this.props;
-        const { animation } = root.props;
+        const { animation, renderChildNodes } = root.props;
 
-        let childTree =
-            expanded && hasChildTree ? (
+        if (!expanded || !hasChildTree) {
+            return null;
+        }
+
+        let childTree;
+
+        if (renderChildNodes) {
+            childTree = renderChildNodes(children);
+        } else {
+            childTree = (
                 <ul role="group" className={`${prefix}tree-child-tree`}>
                     {children}
                 </ul>
-            ) : null;
+            );
+        }
+
         if (animation) {
             childTree = <Expand animationAppear={false}>{childTree}</Expand>;
         }
 
         return childTree;
     }
+
+    saveRef = ref => {
+        this.nodeEl = ref;
+    };
+
+    saveLabelWrapperRef = ref => {
+        this.labelWrapperEl = ref;
+    };
 
     render() {
         const {
@@ -560,7 +582,7 @@ export default class TreeNode extends Component {
         return (
             <li role="presentation" className={newClassName} {...others}>
                 <div
-                    ref="node"
+                    ref={this.saveRef}
                     role="treeitem"
                     aria-selected={selected}
                     aria-disabled={disabled}
@@ -583,3 +605,5 @@ export default class TreeNode extends Component {
         );
     }
 }
+
+export default polyfill(TreeNode);

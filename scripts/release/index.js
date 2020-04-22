@@ -6,6 +6,7 @@ const Github = require('@octokit/rest')();
 const inquirer = require('inquirer');
 const { logger, runCmd } = require('../utils');
 const { execSync } = require('child_process');
+const publishToDocs = require('./publish');
 
 const cwd = process.cwd();
 const packagePath = path.resolve('package.json');
@@ -23,6 +24,7 @@ const runCommond = function(cmd) {
 
 co(function*() {
     checkTags();
+    checkFiles();
 
     const publish = yield inquirer.prompt([
         {
@@ -48,6 +50,7 @@ co(function*() {
     }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
+    yield publishToNextDocs();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
@@ -71,6 +74,64 @@ function checkTags() {
             `There is no [${masterTag}] or [${buildTag}] exits`,
             '\n'
         );
+    }
+}
+
+function checkFiles() {
+    const paths = [
+        'dist/next.min.js',
+        'dist/next.min.css',
+        'dist/next.js',
+        'dist/next.css',
+        'dist/next-noreset.css',
+        'dist/next-noreset.min.css',
+        'dist/next.min-1.css',
+        'dist/next.min-2.css',
+        'dist/next-with-locales.js',
+        'dist/next-with-locales.min.js',
+        'es/index.js',
+        'lib/index.d.ts',
+        'lib/index.js',
+        'types/index.d.ts',
+        'index-noreset.scss',
+        'index-with-locales.js',
+        'index.js',
+        'index.scss',
+        'reset.scss',
+        'variables.scss',
+        '.fusion',
+    ];
+    paths.forEach(p => {
+        if (!fs.existsSync(p)) {
+            logger.error(`Missing: ${p}`);
+            process.exit(0);
+        }
+    });
+    const libPath = path.join(cwd, 'lib');
+    const srcPath = path.join(cwd, 'src');
+    const esPath = path.join(cwd, 'es');
+    const typesPath = path.join(cwd, 'types');
+
+    const libLen = fs.readdirSync(libPath).length;
+    const srcLen = fs.readdirSync(srcPath).length;
+    const esLen = fs.readdirSync(esPath).length;
+    const typesLen = fs.readdirSync(typesPath).length;
+
+    if (
+        !(
+            typesLen === srcLen - 7 &&
+            typesLen === libLen - 5 &&
+            typesLen === esLen - 3
+        )
+    ) {
+        // src : demo-helper / core / mixin-ui-state / validate / .editorconfig / .eslintrc / .stylelintrc
+        // lib : core / mixin-ui-state / validate / _components / index.d.ts
+        // es : core / mixin-ui-state / validate
+        // types: util.d.ts
+        logger.error(
+            `srcLen, libLen, esLen, typesLen: ${srcLen} ${libLen} ${esLen} ${typesLen}`
+        );
+        process.exit(0);
     }
 }
 
@@ -158,9 +219,37 @@ function* publishToNpm() {
     if (pubNpm.pub.toLowerCase() === 'yes') {
         logger.success('publishing ...');
         yield runCommond(`npm publish --tag ${distTags.tag}`);
+        yield runCommond(`tnpm sync @alifd/next`);
         yield triggerRelease();
     } else {
         logger.success('publish abort.');
+    }
+}
+
+function* publishToNextDocs() {
+    const publish = yield inquirer.prompt([
+        {
+            name: 'docs',
+            type: 'list',
+            choices: [
+                {
+                    name: 'yes',
+                    value: 'yes',
+                },
+                {
+                    name: 'no',
+                    value: 'no',
+                },
+            ],
+            default: 0,
+            message: 'Are you sure to publish docs to @alifd/next-docs?',
+        },
+    ]);
+
+    if (publish.docs.toLowerCase() === 'yes') {
+        yield* publishToDocs();
+    } else {
+        logger.success('publish docs abort.');
     }
 }
 

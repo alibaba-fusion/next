@@ -31,6 +31,7 @@ export interface locale {
         placeholder: string;
         datetimePlaceholder: string;
         monthPlaceholder: string;
+        weekPlaceholder: string;
         yearPlaceholder: string;
         now: string;
         selectTime: string;
@@ -75,6 +76,7 @@ export interface locale {
         autoCompletePlaceholder: string;
         notFoundContent: string;
         maxTagPlaceholder: string;
+        selectAll: string;
     };
     Table: {
         empty: string;
@@ -125,5 +127,12 @@ export interface locale {
     };
     Rating: {
         description: string;
+    };
+    Switch: {
+        on: string;
+        off: string;
+    };
+    Tab: {
+        closeAriaLabel: string;
     };
 }

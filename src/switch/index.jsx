@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import { KEYCODE } from '../util';
 import ConfigProvider from '../config-provider';
+import zhCN from '../locale/zh-cn';
 
 /** Switch*/
 class Switch extends React.Component {
@@ -63,13 +64,29 @@ class Switch extends React.Component {
          * @param {Event} e DOM事件对象
          */
         onKeyDown: PropTypes.func,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 国际化配置
+         */
+        locale: PropTypes.object,
     };
     static defaultProps = {
         prefix: 'next-',
-        disabled: false,
         size: 'medium',
+        disabled: false,
         defaultChecked: false,
+        isPreview: false,
+        readOnly: false,
         onChange: () => {},
+        locale: zhCN.Switch,
     };
 
     constructor(props, context) {
@@ -113,21 +130,23 @@ class Switch extends React.Component {
     }
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
-                prefix,
-                className,
-                disabled,
-                size,
-                checkedChildren,
-                unCheckedChildren,
-                rtl,
-                ...others
-            } = this.props,
-            status = this.state.checked ? 'on' : 'off';
-        const children = this.state.checked
-            ? checkedChildren
-            : unCheckedChildren;
+            prefix,
+            className,
+            disabled,
+            readOnly,
+            size,
+            checkedChildren,
+            unCheckedChildren,
+            rtl,
+            isPreview,
+            renderPreview,
+            locale,
+            ...others
+        } = this.props;
+        const { checked } = this.state;
+        const status = checked ? 'on' : 'off';
+        const children = checked ? checkedChildren : unCheckedChildren;
 
         let _size = size;
         if (_size !== 'small' && _size !== 'medium') {
@@ -141,18 +160,39 @@ class Switch extends React.Component {
             [className]: className,
         });
         let attrs;
+        const isDisabled = disabled || readOnly;
 
-        if (!disabled) {
+        if (!isDisabled) {
             attrs = {
                 onClick: this.onChange,
                 tabIndex: 0,
                 onKeyDown: this.onKeyDown,
-                disabled: disabled,
+                disabled: false,
             };
         } else {
             attrs = {
-                disabled: disabled,
+                disabled: true,
             };
+        }
+
+        if (isPreview) {
+            const previewCls = classNames(className, {
+                [`${prefix}form-preview`]: true,
+            });
+
+            if ('renderPreview' in this.props) {
+                return (
+                    <div className={previewCls} {...others}>
+                        {renderPreview(checked, this.props)}
+                    </div>
+                );
+            }
+
+            return (
+                <p className={previewCls} {...others}>
+                    {locale[status]}
+                </p>
+            );
         }
 
         return (
@@ -163,11 +203,9 @@ class Switch extends React.Component {
                 {...others}
                 className={classes}
                 {...attrs}
-                aria-checked={this.state.checked}
+                aria-checked={checked}
             >
-                <div className={`${this.props.prefix}switch-children`}>
-                    {children}
-                </div>
+                <div className={`${prefix}switch-children`}>{children}</div>
             </div>
         );
     }

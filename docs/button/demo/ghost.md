@@ -1,13 +1,13 @@
 # 幽灵按钮
 
-- order: 4
+- order: 5
 
 幽灵按钮通常用在有色背景下，可以使用 `ghost` 属性开启，此时 Button 为透明背景。对于浅色背景和深色背景，通过取值 `light`, `dark` 可以配置使用幽灵按钮的场景。
 
 :::lang=en-us
 # Ghost
 
-- order: 4
+- order: 5
 
 Ghost button is usually used for colored backgrounds. Change a Button to ghost by adding `ghost` attribute,
 and set the attribute's value to `light` or `darked` based on the color depth.

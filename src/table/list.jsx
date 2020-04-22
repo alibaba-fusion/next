@@ -28,6 +28,8 @@ export default function list(BaseComponent) {
             rowSelection: PropTypes.object,
         };
 
+        state = {};
+
         getChildContext() {
             return {
                 listHeader: this.listHeader,

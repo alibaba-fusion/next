@@ -44,7 +44,11 @@ search data in forms or pages.
 | hasIcon           | show find button                                                                                                                   | Boolean       | true     |
 | disabled           | disabled or not                                                                                                                   | Boolean       | false     |
 
+## Search Inner Methods(Got by refs)
 
+| Param | Descripiton  | Type  | Default Value |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
+| focus        | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |     |
 
 ## ARIA and KeyBoard
 

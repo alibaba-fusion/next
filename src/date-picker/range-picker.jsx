@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import moment from 'moment';
 import ConfigProvider from '../config-provider';
 import Overlay from '../overlay';
 import Input from '../input';
+import Icon from '../icon';
+import Calendar from '../calendar';
 import RangeCalendar from '../calendar/range-calendar';
 import TimePickerPanel from '../time-picker/panel';
 import nextLocale from '../locale/zh-cn';
@@ -13,7 +16,6 @@ import {
     PANEL,
     resetValueTime,
     formatDateValue,
-    extend,
     getDateTimeFormat,
     isFunction,
     onDateKeydown,
@@ -52,11 +54,15 @@ function getFormatValues(values, format) {
 /**
  * DatePicker.RangePicker
  */
-export default class RangePicker extends Component {
+class RangePicker extends Component {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
+        /**
+         * 日期范围类型
+         */
+        type: PropTypes.oneOf(['date', 'month', 'year']),
         /**
          * 默认展示的起始月份
          * @return {MomentObject} 返回包含指定月份的 moment 对象实例
@@ -152,7 +158,7 @@ export default class RangePicker extends Component {
          * @param {Element} target 目标元素
          * @return {Element} 弹层的容器元素
          */
-        popupContainer: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        popupContainer: PropTypes.any,
         /**
          * 弹层自定义样式
          */
@@ -200,19 +206,37 @@ export default class RangePicker extends Component {
          * 结束时间输入框的 aria-label 属性
          */
         endTimeInputAriaLabel: PropTypes.string,
-        ranges: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {Array<MomentObject, MomentObject>} value 日期区间
+         */
+        renderPreview: PropTypes.func,
+        disableChangeMode: PropTypes.bool,
+        yearRange: PropTypes.arrayOf(PropTypes.number),
+        ranges: PropTypes.object, // 兼容0.x版本
         locale: PropTypes.object,
         className: PropTypes.string,
         name: PropTypes.string,
+        popupComponent: PropTypes.elementType,
+        popupContent: PropTypes.node,
+        placeholder: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.string,
+        ]),
     };
 
     static defaultProps = {
         prefix: 'next-',
         rtl: false,
-        format: 'YYYY-MM-DD',
+        type: 'date',
         size: 'medium',
         showTime: false,
         resetTime: false,
+        // format: 'YYYY-MM-DD',
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
@@ -220,6 +244,7 @@ export default class RangePicker extends Component {
         popupTriggerType: 'click',
         popupAlign: 'tl tl',
         locale: nextLocale.DatePicker,
+        disableChangeMode: false,
         onChange: func.noop,
         onOk: func.noop,
         onVisibleChange: func.noop,
@@ -227,13 +252,15 @@ export default class RangePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const dateTimeFormat = getDateTimeFormat(props.format, props.showTime);
-        extend(dateTimeFormat, this);
+        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
+            props.format,
+            props.showTime,
+            props.type
+        );
 
         const val = props.value || props.defaultValue;
-        const values = getFormatValues(val, this.dateTimeFormat);
-        this.inputAsString =
-            val && (typeof val[0] === 'string' || typeof val[1] === 'string');
+        const values = getFormatValues(val, dateTimeFormat);
+
         this.state = {
             visible: props.visible || props.defaultVisible,
             startValue: values[0],
@@ -245,67 +272,74 @@ export default class RangePicker extends Component {
             endTimeInputStr: '',
             inputing: false, // 当前是否处于输入状态
             panel: PANEL.DATE,
+            format,
+            timeFormat,
+            dateTimeFormat,
+            inputAsString:
+                val &&
+                (typeof val[0] === 'string' || typeof val[1] === 'string'),
         };
     }
+    static getDerivedStateFromProps(props) {
+        const formatStates = getDateTimeFormat(
+            props.format,
+            props.showTime,
+            props.type
+        );
+        const states = {};
 
-    componentWillReceiveProps(nextProps) {
-        if ('showTime' in nextProps) {
-            const dateTimeFormat = getDateTimeFormat(
-                nextProps.format || this.props.format,
-                nextProps.showTime
-            );
-            extend(dateTimeFormat, this);
-        }
-
-        if ('value' in nextProps) {
+        if ('value' in props) {
             const values = getFormatValues(
-                nextProps.value,
-                this.dateTimeFormat
+                props.value,
+                formatStates.dateTimeFormat
             );
-            this.setState({
-                startValue: values[0],
-                endValue: values[1],
-            });
-            this.inputAsString =
-                nextProps.value &&
-                (typeof nextProps.value[0] === 'string' ||
-                    typeof nextProps.value[1] === 'string');
+            states.startValue = values[0];
+            states.endValue = values[1];
+            states.inputAsString =
+                props.value &&
+                (typeof props.value[0] === 'string' ||
+                    typeof props.value[1] === 'string');
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
-                visible: nextProps.visible,
-            });
+        if ('visible' in props) {
+            states.visible = props.visible;
         }
+
+        return {
+            ...states,
+            ...formatStates,
+        };
     }
 
     onValueChange = (values, handler = 'onChange') => {
         let ret;
-        if (!values.length || !this.inputAsString) {
+        if (!values.length || !this.state.inputAsString) {
             ret = values;
         } else {
             ret = [
-                values[0] ? values[0].format(this.dateTimeFormat) : null,
-                values[1] ? values[1].format(this.dateTimeFormat) : null,
+                values[0] ? values[0].format(this.state.dateTimeFormat) : null,
+                values[1] ? values[1].format(this.state.dateTimeFormat) : null,
             ];
         }
         this.props[handler](ret);
     };
 
-    onSelectCalendarPanel = value => {
+    onSelectCalendarPanel = (value, active) => {
         const { showTime, resetTime } = this.props;
         const {
             activeDateInput: prevActiveDateInput,
             startValue: prevStartValue,
             endValue: prevEndValue,
+            timeFormat,
         } = this.state;
+
         const newState = {
-            activeDateInput: prevActiveDateInput,
+            activeDateInput: active || prevActiveDateInput,
             inputing: false,
         };
 
         let newValue = value;
-        switch (prevActiveDateInput) {
+        switch (active || prevActiveDateInput) {
             case 'startValue': {
                 if (
                     !prevEndValue ||
@@ -322,7 +356,7 @@ export default class RangePicker extends Component {
                                 Array.isArray(showTime.defaultValue)
                                     ? showTime.defaultValue[0]
                                     : showTime.defaultValue,
-                                this.timeFormat
+                                timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
                         }
@@ -355,7 +389,7 @@ export default class RangePicker extends Component {
                                     ? showTime.defaultValue[1] ||
                                           showTime.defaultValue[0]
                                     : showTime.defaultValue,
-                                this.timeFormat
+                                timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
                         }
@@ -447,14 +481,18 @@ export default class RangePicker extends Component {
     };
 
     onDateInputKeyDown = e => {
-        const { activeDateInput } = this.state;
+        const { type } = this.props;
+        const { activeDateInput, format } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
-        const { format } = this.props;
         const dateStr = onDateKeydown(
             e,
-            { format, value: this.state[activeDateInput], dateInputStr },
-            'day'
+            {
+                format,
+                value: this.state[activeDateInput],
+                dateInputStr,
+            },
+            type === 'date' ? 'day' : type
         );
         if (!dateStr) return;
 
@@ -526,7 +564,7 @@ export default class RangePicker extends Component {
         const stateName = mapInputStateName(this.state.activeDateInput);
         const timeInputStr = this.state[stateName];
         if (timeInputStr) {
-            const parsed = moment(timeInputStr, this.timeFormat, true);
+            const parsed = moment(timeInputStr, this.state.timeFormat, true);
 
             this.setState({
                 [stateName]: '',
@@ -551,7 +589,7 @@ export default class RangePicker extends Component {
 
     onTimeInputKeyDown = e => {
         const { showTime } = this.props;
-        const { activeDateInput } = this.state;
+        const { activeDateInput, timeFormat } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const timeInputStr = this.state[stateName];
         const {
@@ -570,7 +608,7 @@ export default class RangePicker extends Component {
         const timeStr = onTimeKeydown(
             e,
             {
-                format: this.timeFormat,
+                format: timeFormat,
                 timeInputStr,
                 value: this.state[
                     activeDateInput.indexOf('start') ? 'startValue' : 'endValue'
@@ -685,10 +723,34 @@ export default class RangePicker extends Component {
         return disabledTime;
     };
 
+    renderPreview([startValue, endValue], others) {
+        const { prefix, className, renderPreview } = this.props;
+        const { dateTimeFormat } = this.state;
+
+        const previewCls = classnames(className, `${prefix}form-preview`);
+        const startLabel = startValue ? startValue.format(dateTimeFormat) : '';
+        const endLabel = endValue ? endValue.format(dateTimeFormat) : '';
+
+        if (typeof renderPreview === 'function') {
+            return (
+                <div {...others} className={previewCls}>
+                    {renderPreview([startValue, endValue], this.props)}
+                </div>
+            );
+        }
+
+        return (
+            <p {...others} className={previewCls}>
+                {startLabel} - {endLabel}
+            </p>
+        );
+    }
+
     render() {
         const {
             prefix,
             rtl,
+            type,
             defaultVisibleMonth,
             onVisibleMonthChange,
             showTime,
@@ -706,6 +768,8 @@ export default class RangePicker extends Component {
             popupStyle,
             popupClassName,
             popupProps,
+            popupComponent,
+            popupContent,
             followTrigger,
             className,
             locale,
@@ -717,6 +781,10 @@ export default class RangePicker extends Component {
             startTimeInputAriaLabel,
             endDateInputAriaLabel,
             endTimeInputAriaLabel,
+            isPreview,
+            disableChangeMode,
+            yearRange,
+            placeholder,
             ...others
         } = this.props;
 
@@ -755,15 +823,22 @@ export default class RangePicker extends Component {
             others.dir = 'rtl';
         }
 
+        if (isPreview) {
+            return this.renderPreview(
+                [state.startValue, state.endValue],
+                obj.pickOthers(others, RangePicker.PropTypes)
+            );
+        }
+
         const startDateInputValue =
             state.inputing === 'startValue'
                 ? state.startDateInputStr
-                : (state.startValue && state.startValue.format(this.format)) ||
+                : (state.startValue && state.startValue.format(state.format)) ||
                   '';
         const endDateInputValue =
             state.inputing === 'endValue'
                 ? state.endDateInputStr
-                : (state.endValue && state.endValue.format(this.format)) || '';
+                : (state.endValue && state.endValue.format(state.format)) || '';
 
         let startTriggerValue = startDateInputValue;
         let endTriggerValue = endDateInputValue;
@@ -782,7 +857,7 @@ export default class RangePicker extends Component {
             <Input
                 {...sharedInputProps}
                 aria-label={startDateInputAriaLabel}
-                placeholder={this.format}
+                placeholder={state.format}
                 value={startDateInputValue}
                 onFocus={() => this.onFocusDateInput('startValue')}
                 className={startDateInputCls}
@@ -793,28 +868,93 @@ export default class RangePicker extends Component {
             <Input
                 {...sharedInputProps}
                 aria-label={endDateInputAriaLabel}
-                placeholder={this.format}
+                placeholder={state.format}
                 value={endDateInputValue}
                 onFocus={() => this.onFocusDateInput('endValue')}
                 className={endDateInputCls}
             />
         );
 
-        const datePanel = (
-            <RangeCalendar
-                showOtherMonth
-                dateCellRender={dateCellRender}
-                monthCellRender={monthCellRender}
-                yearCellRender={yearCellRender}
-                format={this.format}
-                defaultVisibleMonth={defaultVisibleMonth}
-                onVisibleMonthChange={onVisibleMonthChange}
-                disabledDate={disabledDate}
-                onSelect={this.onSelectCalendarPanel}
-                startValue={state.startValue}
-                endValue={state.endValue}
-            />
-        );
+        const shareCalendarProps = {
+            showOtherMonth: true,
+            dateCellRender: dateCellRender,
+            monthCellRender: monthCellRender,
+            yearCellRender: yearCellRender,
+            format: state.format,
+            defaultVisibleMonth: defaultVisibleMonth,
+            onVisibleMonthChange: onVisibleMonthChange,
+        };
+
+        const datePanel =
+            type === 'date' ? (
+                <RangeCalendar
+                    {...shareCalendarProps}
+                    yearRange={yearRange}
+                    disableChangeMode={disableChangeMode}
+                    disabledDate={disabledDate}
+                    onSelect={this.onSelectCalendarPanel}
+                    startValue={state.startValue}
+                    endValue={state.endValue}
+                />
+            ) : (
+                <div className={`${prefix}range-picker-panel-body`}>
+                    <Calendar
+                        shape="panel"
+                        modes={type === 'month' ? ['month', 'year'] : ['year']}
+                        {...{ ...shareCalendarProps }}
+                        disabledDate={date => {
+                            return (
+                                state.endValue &&
+                                date.isAfter(state.endValue, type)
+                            );
+                        }}
+                        onSelect={value => {
+                            const selectedValue = value
+                                .clone()
+                                .date(1)
+                                .hour(0)
+                                .minute(0)
+                                .second(0);
+                            if (type === 'year') {
+                                selectedValue.month(0);
+                            }
+                            this.onSelectCalendarPanel(
+                                selectedValue,
+                                'startValue'
+                            );
+                        }}
+                        value={state.startValue}
+                    />
+                    <Calendar
+                        shape="panel"
+                        modes={type === 'month' ? ['month', 'year'] : ['year']}
+                        {...shareCalendarProps}
+                        disabledDate={date => {
+                            return (
+                                state.startValue &&
+                                date.isBefore(state.startValue, type)
+                            );
+                        }}
+                        onSelect={value => {
+                            const selectedValue = value
+                                .clone()
+                                .hour(23)
+                                .minute(59)
+                                .second(59);
+                            if (type === 'year') {
+                                selectedValue.month(11).date(31);
+                            } else {
+                                selectedValue.date(selectedValue.daysInMonth());
+                            }
+                            this.onSelectCalendarPanel(
+                                selectedValue,
+                                'endValue'
+                            );
+                        }}
+                        value={state.endValue}
+                    />
+                </div>
+            );
 
         let startTimeInput = null;
         let endTimeInput = null;
@@ -826,27 +966,27 @@ export default class RangePicker extends Component {
                 state.inputing === 'startTime'
                     ? state.startTimeInputStr
                     : (state.startValue &&
-                          state.startValue.format(this.timeFormat)) ||
+                          state.startValue.format(state.timeFormat)) ||
                       '';
             const endTimeInputValue =
                 state.inputing === 'endTime'
                     ? state.endTimeInputStr
                     : (state.endValue &&
-                          state.endValue.format(this.timeFormat)) ||
+                          state.endValue.format(state.timeFormat)) ||
                       '';
 
             startTriggerValue =
                 (state.startValue &&
-                    state.startValue.format(this.dateTimeFormat)) ||
+                    state.startValue.format(state.dateTimeFormat)) ||
                 '';
             endTriggerValue =
                 (state.endValue &&
-                    state.endValue.format(this.dateTimeFormat)) ||
+                    state.endValue.format(state.dateTimeFormat)) ||
                 '';
 
             const sharedTimeInputProps = {
                 size,
-                placeholder: this.timeFormat,
+                placeholder: state.timeFormat,
                 onFocus: this.onFocusTimeInput,
                 onBlur: this.onTimeInputBlur,
                 onPressEnter: this.onTimeInputBlur,
@@ -886,8 +1026,8 @@ export default class RangePicker extends Component {
                 />
             );
 
-            const showSecond = this.timeFormat.indexOf('s') > -1;
-            const showMinute = this.timeFormat.indexOf('m') > -1;
+            const showSecond = state.timeFormat.indexOf('s') > -1;
+            const showMinute = state.timeFormat.indexOf('m') > -1;
 
             const sharedTimePickerProps = {
                 ...showTime,
@@ -954,6 +1094,13 @@ export default class RangePicker extends Component {
         }[state.panel];
 
         const allowClear = state.startValue && state.endValue && hasClear;
+        let [startPlaceholder, endPlaceholder] = placeholder || [];
+
+        if (typeof placeholder === 'string') {
+            startPlaceholder = placeholder;
+            endPlaceholder = placeholder;
+        }
+
         const trigger = (
             <div className={triggerCls}>
                 <Input
@@ -962,7 +1109,7 @@ export default class RangePicker extends Component {
                     role="combobox"
                     aria-expanded={state.visible}
                     label={label}
-                    placeholder={locale.startPlaceholder}
+                    placeholder={startPlaceholder || locale.startPlaceholder}
                     value={startTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
@@ -976,57 +1123,72 @@ export default class RangePicker extends Component {
                     readOnly
                     role="combobox"
                     aria-expanded={state.visible}
-                    placeholder={locale.endPlaceholder}
+                    placeholder={endPlaceholder || locale.endPlaceholder}
                     value={endTriggerValue}
                     hasBorder={false}
                     className={`${prefix}range-picker-trigger-input`}
                     onFocus={() => this.onFocusDateInput('endValue')}
                     hasClear={allowClear}
-                    hint="calendar"
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
+                        />
+                    }
                 />
             </div>
         );
+
+        const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
             <div
                 {...obj.pickOthers(RangePicker.propTypes, others)}
                 className={classNames}
             >
-                <Popup
+                <PopupComponent
                     autoFocus
+                    align={popupAlign}
                     {...popupProps}
                     followTrigger={followTrigger}
                     disabled={disabled}
                     visible={state.visible}
                     onVisibleChange={this.onVisibleChange}
-                    align={popupAlign}
                     triggerType={popupTriggerType}
                     container={popupContainer}
                     style={popupStyle}
                     className={popupClassName}
                     trigger={trigger}
                 >
-                    <div dir={others.dir} className={panelBodyClassName}>
-                        <div className={`${prefix}range-picker-panel-header`}>
+                    {popupContent ? (
+                        popupContent
+                    ) : (
+                        <div dir={others.dir} className={panelBodyClassName}>
                             <div
-                                className={`${prefix}range-picker-panel-input`}
+                                className={`${prefix}range-picker-panel-header`}
                             >
-                                {startDateInput}
-                                {startTimeInput}
-                                <span
-                                    className={`${prefix}range-picker-panel-input-separator`}
+                                <div
+                                    className={`${prefix}range-picker-panel-input`}
                                 >
-                                    -
-                                </span>
-                                {endDateInput}
-                                {endTimeInput}
+                                    {startDateInput}
+                                    {startTimeInput}
+                                    <span
+                                        className={`${prefix}range-picker-panel-input-separator`}
+                                    >
+                                        -
+                                    </span>
+                                    {endDateInput}
+                                    {endTimeInput}
+                                </div>
                             </div>
+                            {panelBody}
+                            {panelFooter}
                         </div>
-                        {panelBody}
-                        {panelFooter}
-                    </div>
-                </Popup>
+                    )}
+                </PopupComponent>
             </div>
         );
     }
 }
+
+export default polyfill(RangePicker);

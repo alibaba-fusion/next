@@ -133,6 +133,18 @@ describe('TimePicker', () => {
                 ).at(10).text() === '10'
             );
         });
+        it('should support preview mode render', () => {
+            wrapper = mount(<TimePicker defaultValue="12:00:00" isPreview />);
+            assert(wrapper.find('.next-form-preview').length > 0);
+            assert(wrapper.find('.next-form-preview').text() === '12:00:00');
+            wrapper.setProps({
+                renderPreview: (value) => {
+                    assert(value.format('HH:mm:ss') === '12:00:00');
+                    return 'Hello World';
+                }
+            });
+            assert(wrapper.find('.next-form-preview').text() === 'Hello World');
+        });
     });
 
     describe('action', () => {
@@ -191,24 +203,33 @@ describe('TimePicker', () => {
         });
 
         it('should input value in panel', () => {
+            // 封装交互：click -> change -> blur
+            function wrapperAsserts(inputVal, retVal) {
+                const inputSelector = '.next-time-picker-input input';
+                const panelInputSelector = '.next-time-picker-panel-input input';
+
+                wrapper.find(inputSelector).simulate('click');
+                wrapper.find(panelInputSelector).simulate('change', { target: { value: inputVal } });
+                wrapper.find(panelInputSelector).simulate('blur');
+                assert(wrapper.find(inputSelector).instance().value === (retVal || ''));
+                assert(wrapper.find(panelInputSelector).instance().value === (retVal || ''));
+                assert(ret === retVal);
+            }
+
             wrapper = mount(
-                <TimePicker
-                    onChange={val => {
-                        ret = val.format('HH:mm:ss');
+                <TimePicker onChange={value => {
+                        ret = value.format('HH:mm:ss');
                     }}
                 />
             );
-            wrapper.find('.next-time-picker-input input').simulate('click');
-            wrapper
-                .find('.next-time-picker-panel-input input')
-                .simulate('change', { target: { value: '20:00:00' } });
-            wrapper
-                .find('.next-time-picker-panel-input input')
-                .simulate('blur');
-            assert(
-                wrapper.find('.next-time-picker-panel-input input').instance()
-                    .value === '20:00:00'
-            );
+            // 无效值输入
+            wrapperAsserts('Invalid value', null)
+            // 空值状态下 有效值输入
+            wrapperAsserts('12:20:24', '12:20:24')
+            // 非空值状态下 有效值输入 
+            wrapperAsserts('12:20:40', '12:20:40')
+            // 非空值状态下 无效值输入
+            wrapperAsserts('Invalid value', '12:20:40')
         });
 
         it('should select time-picker panel', () => {
@@ -240,6 +261,7 @@ describe('TimePicker', () => {
                 .simulate('click');
             assert(ret === '02:02:02');
         });
+        
         it('should keyboard date time input', () => {
             wrapper = mount(
                 <TimePicker />

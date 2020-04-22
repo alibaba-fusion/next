@@ -76,11 +76,11 @@ describe('Tooltip', () => {
             ),
         });
         // hover on the <span> which is specially added for disabled pattern
-        defaultWrapper.find('span').simulate('mouseenter');
+        defaultWrapper.find('span').at(0).simulate('mouseenter');
         setTimeout(function() {
             assert(document.querySelector('.next-balloon-tooltip') !== null);
 
-            defaultWrapper.find('span').simulate('mouseleave');
+            defaultWrapper.find('span').at(0).simulate('mouseleave');
 
             setTimeout(function() {
                 assert(

@@ -1,8 +1,8 @@
-import React, { Component, Children } from 'react';
+import React, { Component, Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../../config-provider';
-import { obj } from '../../util';
+import { obj, log } from '../../util';
 
 function mapIconSize(size) {
     return {
@@ -26,6 +26,12 @@ export default class Button extends Component {
          * 按钮的尺寸
          */
         size: PropTypes.oneOf(['small', 'medium', 'large']),
+        /**
+         * 按钮中可配置的 Icon，格式为 { loading: <Icon type="loading" /> }
+         */
+        icons: PropTypes.shape({
+            loading: PropTypes.node,
+        }),
         /**
          * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
          */
@@ -81,6 +87,7 @@ export default class Button extends Component {
         prefix: 'next-',
         type: 'normal',
         size: 'medium',
+        icons: {},
         htmlType: 'button',
         component: 'button',
         loading: false,
@@ -116,6 +123,7 @@ export default class Button extends Component {
             ghost,
             component,
             iconSize,
+            icons,
             disabled,
             onClick,
             children,
@@ -125,7 +133,7 @@ export default class Button extends Component {
         const ghostType =
             ['light', 'dark'].indexOf(ghost) >= 0 ? ghost : 'dark';
 
-        const btnCls = classNames({
+        const btnClsObj = {
             [`${prefix}btn`]: true,
             [`${prefix}${size}`]: size,
             [`${prefix}btn-${type}`]: type && !ghost,
@@ -135,7 +143,26 @@ export default class Button extends Component {
             [`${prefix}btn-ghost`]: ghost,
             [`${prefix}btn-${ghostType}`]: ghost,
             [className]: className,
-        });
+        };
+
+        let loadingIcon = null;
+
+        // 如果传入了 loading 的 icons，使用该节点来渲染
+        if (icons && icons.loading && isValidElement(icons.loading)) {
+            if (loading) {
+                delete btnClsObj[`${prefix}btn-loading`];
+                btnClsObj[`${prefix}btn-custom-loading`] = true;
+            }
+
+            const loadingSize = iconSize || mapIconSize(size);
+            loadingIcon = React.cloneElement(icons.loading, {
+                className: classNames({
+                    [`${prefix}btn-custom-loading-icon`]: true,
+                    show: loading,
+                }),
+                size: loadingSize,
+            });
+        }
 
         const count = Children.count(children);
         const clonedChildren = Children.map(children, (child, index) => {
@@ -151,10 +178,26 @@ export default class Button extends Component {
                     [`${prefix}icon-alone`]: count === 1,
                     [child.props.className]: !!child.props.className,
                 });
+
+                if ('size' in child.props) {
+                    log.warning(
+                        `The size of Icon will not take effect, when Icon is the [direct child element] of Button(<Button><Icon size="${
+                            child.props.size
+                        }" /></Button>), use <Button iconSize="${
+                            child.props.size
+                        }"> or <Button><div><Icon size="${
+                            child.props.size
+                        }" /></div></Button> instead of.`
+                    );
+                }
                 return React.cloneElement(child, {
                     className: iconCls,
                     size: iconSize || mapIconSize(size),
                 });
+            }
+
+            if (!isValidElement(child)) {
+                return <span className={`${prefix}btn-helper`}>{child}</span>;
             }
 
             return child;
@@ -166,7 +209,7 @@ export default class Button extends Component {
             type: htmlType,
             disabled: disabled,
             onClick: onClick,
-            className: btnCls,
+            className: classNames(btnClsObj),
         };
 
         if (TagName !== 'button') {
@@ -185,6 +228,7 @@ export default class Button extends Component {
                 onMouseUp={this.onMouseUp}
                 ref={this.buttonRefHandler}
             >
+                {loadingIcon}
                 {clonedChildren}
             </TagName>
         );

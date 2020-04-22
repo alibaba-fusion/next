@@ -75,18 +75,32 @@ class Rating extends Component {
          * 自定义国际化文案对象
          */
         locale: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
+        /**
+         * 是否为只读态，效果上同 disabeld
+         */
+        readOnly: PropTypes.bool,
     };
 
     static defaultProps = {
         prefix: 'next-',
         size: 'medium',
         disabled: false,
+        readOnly: false,
+        isPreview: false,
         count: 5,
         showGrade: false,
         defaultValue: 0,
         readAs: val => val,
         allowHalf: false,
-        iconType: 'favorites-filling',
         onChange: noop,
         onHoverChange: noop,
         locale: zhCN.Rating,
@@ -122,12 +136,24 @@ class Rating extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
         if ('value' in nextProps) {
-            return {
-                value: nextProps.value || 0,
-            };
+            state.value = nextProps.value || 0;
         }
-        return null;
+
+        if (
+            'disabled' in nextProps ||
+            'readOnly' in nextProps ||
+            'isPreview' in nextProps ||
+            'renderPreview' in nextProps
+        ) {
+            state.disabled =
+                nextProps.disabled ||
+                nextProps.readOnly ||
+                (nextProps.isPreview && !('renderPreview' in nextProps));
+        }
+
+        return state;
     }
 
     componentDidMount() {
@@ -149,7 +175,7 @@ class Rating extends Component {
     getRenderResult() {
         const { count } = this.props;
         const { iconSpace, iconSize } = this.state;
-        const icon = this.refs['rating-icon-0'];
+        const icon = this['refs-rating-icon-0'];
 
         if (icon && this.underlayNode) {
             const newIconSize = icon.offsetWidth;
@@ -201,6 +227,10 @@ class Rating extends Component {
     }
 
     handleHover(e) {
+        if (this.state.disabled) {
+            return;
+        }
+
         const value = this.getValue(e);
         const { onHoverChange } = this.props;
         if (value !== this.state.hoverValue) {
@@ -215,6 +245,10 @@ class Rating extends Component {
     }
 
     handleLeave() {
+        if (this.state.disabled) {
+            return;
+        }
+
         this.clearTimer();
 
         this.setState({
@@ -223,7 +257,12 @@ class Rating extends Component {
     }
 
     onKeyDown(e) {
-        const { disabled, onKeyDown, count } = this.props;
+        if (this.state.disabled) {
+            return;
+        }
+
+        const { onKeyDown, count } = this.props;
+        const { disabled } = this.state;
         if (disabled || supportKeys.indexOf(e.keyCode) < 0) {
             return !onKeyDown || onKeyDown(e);
         }
@@ -265,10 +304,17 @@ class Rating extends Component {
     }
 
     handleChecked(index) {
+        if (this.state.disabled) {
+            return;
+        }
+
         this.setState({ hoverValue: index });
     }
 
     handleClick(e) {
+        if (this.state.disabled) {
+            return;
+        }
         const value = this.getValue(e);
         if (value < 0) {
             return;
@@ -311,6 +357,10 @@ class Rating extends Component {
         return iconSize * (ceilValue - 1) + ceilValue * iconSpace;
     }
 
+    saveRef = (ref, i) => {
+        this[`refs-rating-icon-${i}`] = ref;
+    };
+
     render() {
         const {
             id,
@@ -321,11 +371,14 @@ class Rating extends Component {
             size,
             iconType,
             strokeMode,
-            disabled,
             readAs,
             rtl,
+            isPreview,
+            renderPreview,
             locale,
         } = this.props;
+
+        const { disabled } = this.state;
         const others = obj.pickOthers(Rating.propTypes, this.props);
         const { hoverValue, clicked } = this.state;
         const underlay = [],
@@ -349,14 +402,25 @@ class Rating extends Component {
             const iconCls = classNames({
                 hover: hoverValue > 0 && isCurrent,
                 clicked: clicked && isCurrent,
+                [`${prefix}rating-symbol-icon`]: !iconType,
             });
-            const iconNode = (
+            const iconNode = iconType ? (
                 <Icon type={iconType} size={sizeMap} className={iconCls} />
+            ) : (
+                <Icon
+                    type="favorites-filling"
+                    size={sizeMap}
+                    className={iconCls}
+                />
             );
+
+            const saveRefs = ref => {
+                this.saveRef(ref, i);
+            };
 
             underlay.push(
                 <span
-                    ref={`rating-icon-${i}`}
+                    ref={saveRefs}
                     key={`underlay-${i}`}
                     className={`${prefix}rating-icon`}
                 >
@@ -409,6 +473,11 @@ class Rating extends Component {
             [`${prefix}rating-base-disabled`]: disabled,
         });
 
+        const previewCls = classNames({
+            [`${prefix}form-preview`]: true,
+            [className]: !!className,
+        });
+
         const overlayStyle = {
             width: this.getOverlayWidth(),
         };
@@ -430,9 +499,17 @@ class Rating extends Component {
             others.dir = 'rtl';
         }
 
+        if (isPreview && 'renderPreview' in this.props) {
+            return (
+                <div id={id} {...others} className={previewCls}>
+                    {renderPreview(value, this.props)}
+                </div>
+            );
+        }
+
         return (
             <div
-                id={id ? id : null}
+                id={id}
                 {...others}
                 className={ratingCls}
                 onKeyDown={this.onKeyDown}

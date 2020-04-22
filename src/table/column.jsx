@@ -30,6 +30,10 @@ export default class Column extends React.Component {
             PropTypes.func,
         ]),
         /**
+         * 写到 header 单元格上的title属性
+         */
+        htmlTitle: PropTypes.string,
+        /**
          * 是否支持排序
          */
         sortable: PropTypes.bool,
@@ -73,6 +77,10 @@ export default class Column extends React.Component {
          * 是否支持列宽调整, 当该值设为true，table的布局方式会修改为fixed.
          */
         resizable: PropTypes.bool,
+        /**
+         * header cell 横跨的格数，设置为0表示不出现此 th
+         */
+        colSpan: PropTypes.number,
     };
 
     static contextTypes = {

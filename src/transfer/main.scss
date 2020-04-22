@@ -29,9 +29,9 @@
     }
 
     & &-panel-list {
-        width: $s-45;
+        width: $transfer-panel-list-width;
         /* TODO */
-        height: $s-8 * 5;
+        height: $transfer-panel-list-height;
         padding: 0;
         border: none;
         box-shadow: none;
@@ -117,6 +117,9 @@
 
     &-move.#{$css-prefix}icon {
         color: $transfer-simple-move-icon-color;
+        &::before {
+            content: $transfer-simple-move-icon;
+        }
     }
 
     &-operation.#{$css-prefix}btn {

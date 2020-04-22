@@ -26,8 +26,19 @@ describe('Collapse', () => {
             assert(wrapper.find(Panel).length === 2);
         });
 
+        it('hidden panel should be hidden', () => {
+            const wrapper = mount(
+                <Collapse>
+                    <Panel title="Pannel Title">Pannel Content</Panel>
+                    <Panel title="Pannel Title">Pannel Content</Panel>
+                </Collapse>
+            );
+            const el = wrapper.find('.next-collapse-panel-hidden');
+            assert(el.length === 2);
+        });
+
         it('Should render from dataSource', () => {
-            let list = [
+            const list = [
                 {
                     title: 'Well, hello there',
                     content:
@@ -65,7 +76,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -74,7 +85,7 @@ describe('Collapse', () => {
                     .at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
-    
+
             it('should expand panel with number key', () => {
                 const wrapper = mount(
                     <Collapse defaultExpandedKeys={[2]}>
@@ -82,7 +93,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -91,7 +102,7 @@ describe('Collapse', () => {
                     .at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
-    
+
             it('should close default expanded string keys', () => {
                 const wrapper = mount(
                     <Collapse defaultExpandedKeys={["2"]}>
@@ -99,7 +110,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -109,7 +120,7 @@ describe('Collapse', () => {
                     .simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
-    
+
             it('should close default expanded number keys', () => {
                 const wrapper = mount(
                     <Collapse defaultExpandedKeys={[2]}>
@@ -117,7 +128,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -127,7 +138,7 @@ describe('Collapse', () => {
                     .simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
-    
+
             it('should open default expanded datasource using number keys', () => {
                 const list = [
                     {
@@ -149,7 +160,7 @@ describe('Collapse', () => {
                     .at(1);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
-    
+
             it('should close default expanded datasource using number keys on click', () => {
                 const list = [
                     {
@@ -182,7 +193,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -191,7 +202,7 @@ describe('Collapse', () => {
                     .at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
-    
+
             it('should expand panel with number key', () => {
                 const wrapper = mount(
                     <Collapse defaultExpandedKeys={[2]} accordion>
@@ -199,7 +210,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -208,7 +219,7 @@ describe('Collapse', () => {
                     .at(2);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
-    
+
             it('should close default expanded string keys', () => {
                 const wrapper = mount(
                     <Collapse defaultExpandedKeys={["2"]} accordion>
@@ -216,7 +227,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -226,7 +237,7 @@ describe('Collapse', () => {
                     .simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
-    
+
             it('should close default expanded number keys', () => {
                 const wrapper = mount(
                     <Collapse defaultExpandedKeys={[2]} accordion>
@@ -234,7 +245,7 @@ describe('Collapse', () => {
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
                         <Panel title="Pannel Title">Pannel Content</Panel>
-                        
+
                         <div>others</div>
                     </Collapse>
                 );
@@ -244,7 +255,7 @@ describe('Collapse', () => {
                     .simulate('click');
                 assert(wrapper.find('.next-collapse-panel-expanded').length === 0);
             });
-    
+
             it('should open default expanded datasource using number keys', () => {
                 const list = [
                     {
@@ -266,7 +277,7 @@ describe('Collapse', () => {
                     .at(1);
                 assert(el.hasClass('next-collapse-panel-expanded'));
             });
-    
+
             it('should close default expanded datasource using number keys on click', () => {
                 const list = [
                     {

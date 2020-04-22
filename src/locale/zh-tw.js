@@ -32,6 +32,7 @@ export default {
         datetimePlaceholder: '請選擇日期和時間',
         monthPlaceholder: '請選擇月',
         yearPlaceholder: '請選擇年',
+        weekPlaceholder: '請選擇周',
         now: '此刻',
         selectTime: '選擇時間',
         selectDate: '選擇日期',
@@ -75,6 +76,7 @@ export default {
         autoCompletePlaceholder: '請輸入',
         notFoundContent: '無選項',
         maxTagPlaceholder: '已選擇 {selected}/{total} 項',
+        selectAll: '全選',
     },
     Table: {
         empty: '沒有數據',
@@ -125,5 +127,12 @@ export default {
     },
     Rating: {
         description: '評分選項',
+    },
+    Switch: {
+        on: '已打開',
+        off: '已關閉',
+    },
+    Tab: {
+        closeAriaLabel: '關閉',
     },
 };

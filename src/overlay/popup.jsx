@@ -1,5 +1,6 @@
 import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
+import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import { func, KEYCODE } from '../util';
 import Overlay from './overlay';
@@ -10,7 +11,7 @@ const { noop, makeChain, bindCtx } = func;
  * Overlay.Popup
  * @description 继承 Overlay 的 API，除非特别说明
  * */
-export default class Popup extends Component {
+class Popup extends Component {
     static propTypes = {
         /**
          * 弹层内容
@@ -51,6 +52,7 @@ export default class Popup extends Component {
          * 设置此属性，弹层无法显示或隐藏
          */
         disabled: PropTypes.bool,
+        autoFit: PropTypes.bool,
         /**
          * 弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效
          */
@@ -81,6 +83,7 @@ export default class Popup extends Component {
         defaultVisible: false,
         onVisibleChange: noop,
         disabled: false,
+        autoFit: false,
         delay: 200,
         canCloseByTrigger: true,
         followTrigger: false,
@@ -114,12 +117,15 @@ export default class Popup extends Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         if ('visible' in nextProps) {
-            this.setState({
+            return {
+                ...prevState,
                 visible: nextProps.visible,
-            });
+            };
         }
+
+        return null;
     }
 
     componentWillUnmount() {
@@ -340,7 +346,7 @@ export default class Popup extends Component {
             ...others
         } = this.props;
         let { container } = this.props;
-        const findTriggerNode = () => findDOMNode(this) || {};
+        const findTriggerNode = () => findDOMNode(this);
         const safeNodes = Array.isArray(safeNode) ? [...safeNode] : [safeNode];
         safeNodes.unshift(findTriggerNode);
 
@@ -379,3 +385,5 @@ export default class Popup extends Component {
         return [this.renderTrigger(), this.renderPortal()];
     }
 }
+
+export default polyfill(Popup);

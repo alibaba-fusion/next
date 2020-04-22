@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
+import classnames from 'classnames';
 import Dropdown from '../../dropdown';
 import Menu from '../../menu';
 import Button from '../../button';
@@ -7,7 +9,7 @@ import Icon from '../../icon';
 import { KEYCODE } from '../../util';
 
 // 共享状态的组件需要变成非受控组件
-export default class Filter extends React.Component {
+class Filter extends React.Component {
     static propTypes = {
         dataIndex: PropTypes.string,
         filters: PropTypes.array,
@@ -36,7 +38,8 @@ export default class Filter extends React.Component {
         this._selectedKeys = [...this.state.selectedKeys];
     }
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
         if (
             nextProps.hasOwnProperty('filterParams') &&
             typeof nextProps.filterParams !== 'undefined'
@@ -45,11 +48,15 @@ export default class Filter extends React.Component {
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
             const selectedKeys = filterConfig.selectedKeys || [];
-            this.setState({
-                selectedKeys,
-            });
-            this._selectedKeys = [...selectedKeys];
+            state.selectedKeys = selectedKeys;
         }
+
+        return state;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { selectedKeys } = prevState;
+        this._selectedKeys = [...selectedKeys];
     }
 
     filterKeydown = e => {
@@ -123,6 +130,7 @@ export default class Filter extends React.Component {
             filters,
             prefix,
             locale,
+            className,
             filterMode,
             filterMenuProps,
             filterProps,
@@ -168,6 +176,11 @@ export default class Filter extends React.Component {
                 </div>
             );
 
+        const cls = classnames({
+            [`${prefix}table-filter`]: true,
+            [className]: className,
+        });
+
         return (
             <Dropdown
                 trigger={
@@ -176,7 +189,7 @@ export default class Filter extends React.Component {
                         aria-label={locale.filter}
                         onKeyDown={this.filterKeydown}
                         tabIndex="0"
-                        className={`${prefix}table-filter`}
+                        className={cls}
                     >
                         <Icon type="filter" size="small" />
                     </span>
@@ -186,7 +199,6 @@ export default class Filter extends React.Component {
                 autoFocus
                 rtl={rtl}
                 needAdjust={false}
-                container={node => node.parentNode}
                 onVisibleChange={this.onFilterVisible}
                 {...filterProps}
             >
@@ -204,3 +216,5 @@ export default class Filter extends React.Component {
         );
     }
 }
+
+export default polyfill(Filter);

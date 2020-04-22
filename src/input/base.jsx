@@ -92,8 +92,17 @@ class Base extends React.Component {
          */
         name: PropTypes.string,
         rtl: PropTypes.bool,
-        state: PropTypes.oneOf(['error', 'loading', 'success']),
+        state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         locale: PropTypes.object,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PropTypes.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {number} value 评分值
+         */
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -103,6 +112,7 @@ class Base extends React.Component {
         hasLimitHint: false,
         cutString: true,
         readOnly: false,
+        isPreview: false,
         trim: false,
         onFocus: func.noop,
         onBlur: func.noop,
@@ -128,6 +138,12 @@ class Base extends React.Component {
     }
 
     onChange(e) {
+        if ('stopPropagation' in e) {
+            e.stopPropagation();
+        } else if ('cancelBubble' in e) {
+            e.cancelBubble();
+        }
+
         let value = e.target.value;
 
         if (this.props.trim) {
@@ -226,6 +242,7 @@ class Base extends React.Component {
             [`${prefix}input`]: true,
             [`${prefix}disabled`]: !!disabled,
             [`${prefix}error`]: state === 'error',
+            [`${prefix}warning`]: state === 'warning',
             [`${prefix}focus`]: this.state.focus,
         });
     }

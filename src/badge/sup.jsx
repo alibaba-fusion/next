@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import Animate from '../animate';
 import { support, dom } from '../util';
@@ -16,7 +17,7 @@ const getDigitArray = num =>
         .reverse()
         .map(i => parseInt(i, 10));
 
-export default class Sup extends Component {
+class Sup extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         count: PropTypes.number,
@@ -59,20 +60,26 @@ export default class Sup extends Component {
     constructor(props) {
         super(props);
 
-        // 记录最后一次显示的数字
-        this.lastCount = 0;
+        // render 时， 上一次的渲染数字 和 当前渲染的数字
+        this.state = {
+            lastCount: 0,
+            currentCount: props.count,
+        };
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ('count' in nextProps) {
+            return {
+                lastCount: prevState.currentCount,
+                currentCount: nextProps.count,
+            };
+        }
+
+        return null;
     }
 
     componentDidMount() {
         this.computeStyle(true);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ('count' in nextProps) {
-            if (nextProps.count !== this.props.count) {
-                this.lastCount = this.props.count;
-            }
-        }
     }
 
     componentDidUpdate(prevProps) {
@@ -88,10 +95,12 @@ export default class Sup extends Component {
 
     computeStyle(removeTransition, revert) {
         const { prefix, count, overflowCount } = this.props;
+        const { lastCount } = this.state;
+
         if (count < 0) {
             return;
         }
-        const supNode = this.refs.sup;
+        const supNode = this.supEl;
 
         if (supNode && dom.hasClass(supNode, `${prefix}badge-count`)) {
             let scrollNums = supNode.querySelectorAll(
@@ -109,10 +118,9 @@ export default class Sup extends Component {
 
                     removeTransition =
                         removeTransition ||
-                        typeof getDigitArray(this.lastCount)[i] ===
-                            'undefined' ||
-                        this.lastCount > overflowCount ||
-                        this.lastCount <= 0;
+                        typeof getDigitArray(lastCount)[i] === 'undefined' ||
+                        lastCount > overflowCount ||
+                        lastCount <= 0;
 
                     const scrollStyle = support.animation
                         ? {
@@ -139,12 +147,13 @@ export default class Sup extends Component {
     }
 
     getPositionByDigit(digit, i, revert) {
+        const { lastCount } = this.state;
         if (revert) {
             return 10 + digit;
         }
-        const lastDigit = getDigitArray(this.lastCount)[i] || 0;
+        const lastDigit = getDigitArray(lastCount)[i] || 0;
 
-        if (this.props.count > this.lastCount) {
+        if (this.props.count > lastCount) {
             return (digit >= lastDigit ? 10 : 20) + digit;
         }
 
@@ -154,6 +163,10 @@ export default class Sup extends Component {
 
         return digit;
     }
+
+    saveRef = ref => {
+        this.supEl = ref;
+    };
 
     render() {
         const {
@@ -200,7 +213,7 @@ export default class Sup extends Component {
             <span />
         );
         const element = show ? (
-            <sup ref="sup" className={supClasses} style={style}>
+            <sup ref={this.saveRef} className={supClasses} style={style}>
                 {children}
             </sup>
         ) : null;
@@ -208,3 +221,5 @@ export default class Sup extends Component {
         return React.cloneElement(wrapper, {}, element);
     }
 }
+
+export default polyfill(Sup);

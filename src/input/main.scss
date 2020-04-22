@@ -115,7 +115,9 @@
         }
     }
 
-    .#{$css-prefix}icon-delete-filling, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
+
+
+    #{$input-prefix}-clear-icon, .#{$css-prefix}icon-eye, .#{$css-prefix}icon-eye-close {
         &:hover {
             cursor: pointer;
             color: $input-hint-hover-color;
@@ -147,6 +149,20 @@
         border-color: $input-focus-border-color;
         background-color: $input-focus-bg-color;
         box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
+    }
+
+    &.#{$css-prefix}warning {
+        border-color: $input-feedback-warning-border-color;
+        background-color: $input-feedback-warning-bg-color;
+
+        &.#{$css-prefix}focus,
+        &:hover {
+            border-color: $input-feedback-warning-border-color;
+        }
+
+        &.#{$css-prefix}focus {
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-feedback-warning-shadow;
+        }
     }
 
     &.#{$css-prefix}error {
@@ -183,6 +199,10 @@
             &.#{$css-prefix}error {
                 color: $input-maxlen-error-color;
             }
+
+            &.#{$css-prefix}warning {
+                color: $input-maxlen-warning-color;
+            }
         }
 
         > * {
@@ -200,11 +220,29 @@
             color: $input-hint-color;
         }
 
-        .#{$css-prefix}icon-success-filling {
-            color: $input-feedback-success-color;
+        #{$input-prefix}-warning-icon {
+            color: $input-feedback-warning-color;
+            &::before {
+                content: $input-feedback-warning-icon;
+            }
         }
-        .#{$css-prefix}icon-loading {
+        #{$input-prefix}-success-icon {
+            color: $input-feedback-success-color;
+            &::before {
+                content: $input-feedback-success-icon;
+            }
+        }
+        #{$input-prefix}-loading-icon {
             color: $input-feedback-loading-color;
+            &::before {
+                content: $input-feedback-loading-icon;
+                animation: loadingCircle 1s infinite linear;
+            }
+        }
+        #{$input-prefix}-clear-icon {
+            &::before {
+                content: $input-feedback-clear-icon;
+            }
         }
     }
 
@@ -221,6 +259,7 @@
         @include input-disabled();
 
         input, textarea {
+            color: $input-disabled-color;
             @include input-placeholder($input-disabled-color);
         }
 
@@ -229,12 +268,6 @@
         }
         #{$input-prefix}-len {
             color: $input-disabled-color;
-        }
-        background-color: $input-disabled-bg-color;
-
-        input,
-        textarea {
-            @include input-disabled();
         }
 
         #{$input-prefix}-hint-wrap {
@@ -247,7 +280,7 @@
 
             color: $input-disabled-color;
 
-            .#{$css-prefix}icon-delete-filling:hover {
+            #{$input-prefix}-clear-icon:hover {
                 cursor: not-allowed;
                 color: $input-disabled-color;
             }
