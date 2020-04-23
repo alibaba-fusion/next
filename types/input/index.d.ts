@@ -69,12 +69,12 @@ export interface TextAreaProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 获取焦点时候触发的回调
      */
-    onFocus?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 
     /**
      * 失去焦点时候触发的回调
      */
-    onBlur?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 
     /**
      * 自定义字符串计算长度方式
@@ -217,12 +217,12 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 获取焦点时候触发的回调
      */
-    onFocus?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 失去焦点时候触发的回调
      */
-    onBlur?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 自定义字符串计算长度方式
@@ -277,7 +277,7 @@ export interface InputProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按下回车的回调
      */
-    onPressEnter?: () => void;
+    onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
     /**
      * 水印 (Icon的type类型，和hasClear占用一个地方)
