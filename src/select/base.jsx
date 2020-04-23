@@ -525,10 +525,8 @@ export default class Base extends React.Component {
                     key: item.value,
                     className: `${prefix}select-menu-item`,
                     disabled: item.disabled,
+                    title: item.title,
                 };
-                if (item.title) {
-                    itemProps.title = item.title;
-                }
 
                 return (
                     <MenuItem {...itemProps}>

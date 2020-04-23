@@ -88,6 +88,29 @@ describe('Select', () => {
         assert(wrapper.find('.next-select em').text() === 'TT2');
     });
 
+    it('should support custom title', () => {
+        const dataSource = [
+            { label: 'xxx', value: 'yyy', title: "abc" },
+            { label: 'empty ', value: ' ', title: "" },
+            { label: 'empty undefined', value: 'undefined', title: undefined },
+            { label: 'empty null', value: 'null', title: null },
+        ];
+        wrapper.setProps({
+            dataSource,
+            visible: true,
+        });
+        assert(document.querySelectorAll('.next-menu-item').length === 4);
+        ReactTestUtils.Simulate.click(
+            document.querySelectorAll('.next-menu-item')[0]
+        );
+        wrapper.update();
+
+        assert(wrapper.find('ul li').at(0).instance().title === 'abc');
+        assert(wrapper.find('ul li').at(1).instance().title === '');
+        assert(wrapper.find('ul li').at(2).instance().title === '');
+        assert(wrapper.find('ul li').at(3).instance().title === '');
+    });
+
     it('should change display text while choose item and change dataSource', () => {
         const dataSource = ['abc', 'bbb'];
         class App extends React.Component {
@@ -455,7 +478,7 @@ describe('Select', () => {
 
         wrapper.find('div.next-tag .next-tag-close-btn').first().simulate('click');
     });
-    
+
     it('should support mode=tag with visible=false', done => {
         wrapper.setProps({
             mode: 'tag',
