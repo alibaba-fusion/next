@@ -68,17 +68,17 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 键盘按下
      */
-    onKeyDown?: () => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
     /**
      * 焦点获得
      */
-    onFocus?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 焦点失去
      */
-    onBlur?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 
     /**
      * 数值订正后的回调
