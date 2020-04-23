@@ -128,7 +128,7 @@ class Box extends Component {
          */
         direction: PropTypes.oneOf(['row', 'column']),
         /**
-         * 是否折行
+         * 是否折行 支持IE11+
          */
         wrap: PropTypes.bool,
         /**
