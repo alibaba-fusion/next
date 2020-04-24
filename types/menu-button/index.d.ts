@@ -78,7 +78,7 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击菜单项后的回调，同 Menu
      */
-    onItemClick?: () => void;
+    onItemClick?: (key: string, item: {}, event: {}) => void;
 
     /**
      * 选择菜单后的回调，同 Menu
