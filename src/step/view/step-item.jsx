@@ -257,6 +257,7 @@ class StepItem extends Component {
                 <div
                     className={`${prefix}step-item-container`}
                     style={containerStyle}
+                    ref={this._refHandlerCreator('container')}
                 >
                     <div
                         className={`${prefix}step-item-node-placeholder`}
