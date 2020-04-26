@@ -8,9 +8,12 @@
 ---
 
 ## Develop Guide
+Partition line of partition content, supported in 1.19+
 
 ### When to Use
+It can divide text paragraphs of different chapters.
 
+Splits text / links within a row, such as the action column of a table.
 
 ## API
 
