@@ -1,0 +1,67 @@
+{
+  "name": "Divider",
+  "props": {
+    "dashed": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为虚线",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为虚线"
+    },
+    "direction": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false
+          },
+          {
+            "value": "'ver'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "线是水平还是垂直类型",
+      "defaultValue": {
+        "value": "'hoz'",
+        "computed": false
+      },
+      "docblock": "线是水平还是垂直类型"
+    },
+    "orientation": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'left'",
+            "computed": false
+          },
+          {
+            "value": "'right'",
+            "computed": false
+          },
+          {
+            "value": "'center'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "分割线标题的位置",
+      "defaultValue": {
+        "value": "'center'",
+        "computed": false
+      },
+      "docblock": "分割线标题的位置"
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
