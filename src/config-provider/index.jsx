@@ -180,6 +180,8 @@ class ConfigProvider extends Component {
             )
         );
 
+        setMomentLocale(this.props.locale);
+
         this.state = {
             locale: this.props.locale,
         };
