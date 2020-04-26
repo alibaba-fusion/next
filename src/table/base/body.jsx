@@ -31,6 +31,7 @@ export default class Body extends React.Component {
         onBodyMouseOut: PropTypes.func,
         locale: PropTypes.object,
         crossline: PropTypes.bool,
+        tableWidth: PropTypes.number,
     };
     static defaultProps = {
         loading: false,
@@ -98,6 +99,7 @@ export default class Body extends React.Component {
             expandedIndexSimulate,
             rtl,
             crossline,
+            tableWidth,
             ...others
         } = this.props;
 

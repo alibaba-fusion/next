@@ -316,7 +316,7 @@ class Pagination extends Component {
         const icon = (
             <Icon
                 type="arrow-left"
-                className={[`${prefix}pagination-icon-prev`]}
+                className={`${prefix}pagination-icon-prev`}
             />
         );
 
@@ -352,7 +352,7 @@ class Pagination extends Component {
         const icon = (
             <Icon
                 type="arrow-right"
-                className={[`${prefix}pagination-icon-next`]}
+                className={`${prefix}pagination-icon-next`}
             />
         );
 
