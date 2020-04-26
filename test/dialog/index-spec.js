@@ -105,6 +105,7 @@ class Demo extends React.Component {
 
 describe('inner', () => {
     let wrapper;
+    const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
     beforeEach(() => {
         ConfigProvider.initLocales({
@@ -579,7 +580,7 @@ describe('inner', () => {
         assert(cancel.textContent === 'near cancel');
     });
 
-    it("quick-calling should use root context's state if its exists", () => {
+    it("quick-calling should use root context's state if its exists", async () => {
         wrapper = render(
             <ConfigProvider
                 prefix="far-"
@@ -632,7 +633,7 @@ describe('inner', () => {
         assert(cancel.textContent === 'my cancel');
 
         cancel.click();
-        document.body.removeChild(overlayWrapper);
+        await delay(800);
 
         assert(!document.querySelector('.far-overlay-wrapper'));
     });
