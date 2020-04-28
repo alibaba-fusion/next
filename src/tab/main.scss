@@ -129,7 +129,7 @@
         outline: none;
         height: 100%;
 
-        @include button-color($tab-nav-arrow-color-normal, $tab-nav-arrow-color-hover);
+        @include button-color($tab-nav-arrow-color-normal, $tab-nav-arrow-color-hover, $tab-nav-arrow-color-hover);
 
         &.disabled {
             cursor: not-allowed;
