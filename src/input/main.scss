@@ -59,30 +59,6 @@
     border: $input-border-width solid $input-border-color;
     background-color: $input-bg-color;
 
-    &#{$input-prefix}-textarea {
-        textarea {
-            color: $input-text-color;
-            padding: $input-multiple-padding-tb $input-multiple-padding-lr;
-            font-size: $input-multiple-font-size;
-            border-radius: $input-multiple-corner;
-        }
-
-        #{$input-prefix}-control {
-            display: block;
-            width: auto;
-            border-radius: $input-multiple-corner;
-        }
-
-        #{$input-prefix}-len {
-            padding: 0 $input-l-icon-padding-right 4px;
-            display: block;
-            text-align: right;
-            width: auto;
-        }
-        border-radius: $input-multiple-corner;
-        font-size: 0;
-    }
-
     &.#{$css-prefix}small {
         @include input-size($form-element-small-height, $input-s-padding, $form-element-small-font-size, $input-s-label-padding-left, $input-s-icon-padding-right);
         @include input-icon-size($form-element-small-icon-size);
@@ -99,6 +75,39 @@
         @include input-size($form-element-large-height, $input-l-padding, $form-element-large-font-size, $input-l-label-padding-left, $input-l-icon-padding-right);
         @include input-icon-size($form-element-large-icon-size);
         @include input-border-radius($form-element-large-corner);
+    }
+
+    &#{$input-prefix}-textarea {
+        height: auto;
+
+        textarea {
+            color: $input-text-color;
+            padding: $input-multiple-padding-tb $input-multiple-padding-lr;
+            font-size: $input-multiple-font-size;
+            border-radius: $input-multiple-corner;
+        }
+
+        &.#{$css-prefix}small textarea {
+            font-size: $form-element-medium-font-size;
+        }
+        &.#{$css-prefix}large textarea {
+            font-size: $form-element-large-font-size;
+        }
+
+        #{$input-prefix}-control {
+            display: block;
+            width: auto;
+            border-radius: $input-multiple-corner;
+        }
+
+        #{$input-prefix}-len {
+            padding: 0 $input-l-icon-padding-right 4px;
+            display: block;
+            text-align: right;
+            width: auto;
+        }
+        border-radius: $input-multiple-corner;
+        font-size: 0;
     }
 
     &-hint-wrap {

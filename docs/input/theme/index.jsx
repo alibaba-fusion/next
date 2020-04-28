@@ -111,8 +111,11 @@ function render(i18n) {
             </DemoGroup>
         </Demo>
         <Demo title="Textarea" block>
+            <DemoHead cols={['M', 'L', 'S']}/>
             <DemoGroup label="Textarea">
-                <Input.TextArea placeholder={i18n.multiple}/>
+                <Input.TextArea placeholder={i18n.multiple} size="medium"/>
+                <Input.TextArea placeholder={i18n.multiple} size="large"/>
+                <Input.TextArea placeholder={i18n.multiple} size="small"/>
             </DemoGroup>
             <DemoGroup label="Disabled">
                 <Input.TextArea disabled value={i18n.multiple} />
