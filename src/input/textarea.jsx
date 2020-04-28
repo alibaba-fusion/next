@@ -222,9 +222,11 @@ export default class TextArea extends Base {
             prefix,
             rtl,
             hasBorder,
+            size,
         } = this.props;
 
         const cls = classNames(this.getClass(), {
+            [`${prefix}${size}`]: size === 'large' || 'size' === 'small',
             [`${prefix}input-textarea`]: true,
             [`${prefix}noborder`]: !hasBorder,
             [className]: !!className,

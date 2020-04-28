@@ -33,11 +33,6 @@ export default class Input extends Base {
          */
         state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
         /**
-         * 尺寸
-         * @enumdesc 小, 中, 大
-         */
-        size: PropTypes.oneOf(['small', 'medium', 'large']),
-        /**
          * 按下回车的回调
          */
         onPressEnter: PropTypes.func,
@@ -101,7 +96,6 @@ export default class Input extends Base {
 
     static defaultProps = {
         ...Base.defaultProps,
-        size: 'medium',
         autoComplete: 'off',
         hasBorder: true,
         isPreview: false,
