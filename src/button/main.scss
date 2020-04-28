@@ -108,10 +108,13 @@
             @include button-color(
                 $btn-pure-normal-color,
                 $btn-pure-normal-color-hover,
+                $btn-pure-normal-color-active,
                 $btn-pure-normal-bg,
                 $btn-pure-normal-bg-hover,
+                $btn-pure-normal-bg-active,
                 $btn-pure-normal-border-color,
-                $btn-pure-normal-border-color-hover
+                $btn-pure-normal-border-color-hover,
+                $btn-pure-normal-border-color-active
             );
         }
 
@@ -121,10 +124,13 @@
             @include button-color(
                 $btn-pure-primary-color,
                 $btn-pure-primary-color-hover,
+                $btn-pure-primary-color-active,
                 $btn-pure-primary-bg,
                 $btn-pure-primary-bg-hover,
+                $btn-pure-primary-bg-active,
                 $btn-pure-primary-border-color,
-                $btn-pure-primary-border-color-hover
+                $btn-pure-primary-border-color-hover,
+                $btn-pure-primary-border-color-active
             );
         }
 
@@ -134,10 +140,13 @@
             @include button-color(
                 $btn-pure-secondary-color,
                 $btn-pure-secondary-color-hover,
+                $btn-pure-secondary-color-active,
                 $btn-pure-secondary-bg,
                 $btn-pure-secondary-bg-hover,
+                $btn-pure-secondary-bg-active,
                 $btn-pure-secondary-border-color,
-                $btn-pure-secondary-border-color-hover
+                $btn-pure-secondary-border-color-hover,
+                $btn-pure-secondary-border-color-active
             );
         }
     }
@@ -151,8 +160,11 @@
             @include button-color(
                 $btn-pure-normal-color-disabled,
                 $btn-pure-normal-color-disabled,
+                $btn-pure-normal-color-disabled,
                 $btn-pure-normal-bg-disabled,
                 $btn-pure-normal-bg-disabled,
+                $btn-pure-normal-bg-disabled,
+                $btn-pure-normal-border-color-disabled,
                 $btn-pure-normal-border-color-disabled,
                 $btn-pure-normal-border-color-disabled
             );
@@ -162,8 +174,11 @@
             @include button-color(
                 $btn-pure-primary-color-disabled,
                 $btn-pure-primary-color-disabled,
+                $btn-pure-primary-color-disabled,
                 $btn-pure-primary-bg-disabled,
                 $btn-pure-primary-bg-disabled,
+                $btn-pure-primary-bg-disabled,
+                $btn-pure-primary-border-color-disabled,
                 $btn-pure-primary-border-color-disabled,
                 $btn-pure-primary-border-color-disabled
             );
@@ -173,8 +188,11 @@
             @include button-color(
                 $btn-pure-secondary-color-disabled,
                 $btn-pure-secondary-color-disabled,
+                $btn-pure-secondary-color-disabled,
                 $btn-pure-secondary-bg-disabled,
                 $btn-pure-secondary-bg-disabled,
+                $btn-pure-secondary-bg-disabled,
+                $btn-pure-secondary-border-color-disabled,
                 $btn-pure-secondary-border-color-disabled,
                 $btn-pure-secondary-border-color-disabled
             );
@@ -189,18 +207,24 @@
             @include button-color(
                 $btn-warning-primary-color,
                 $btn-warning-primary-color-hover,
+                $btn-warning-primary-color-active,
                 $btn-warning-primary-bg,
                 $btn-warning-primary-bg-hover,
+                $btn-warning-primary-bg-active,
                 $btn-warning-primary-border-color,
-                $btn-warning-primary-border-color-hover
+                $btn-warning-primary-border-color-hover,
+                $btn-warning-primary-border-color-active
             );
             &.disabled,
             &[disabled] {
                 @include button-color(
                     $btn-warning-primary-color-disabled,
                     $btn-warning-primary-color-disabled,
+                    $btn-warning-primary-color-disabled,
                     $btn-warning-primary-bg-disabled,
                     $btn-warning-primary-bg-disabled,
+                    $btn-warning-primary-bg-disabled,
+                    $btn-warning-primary-border-color-disabled,
                     $btn-warning-primary-border-color-disabled,
                     $btn-warning-primary-border-color-disabled
                 );
@@ -211,10 +235,13 @@
             @include button-color(
                 $btn-warning-normal-color,
                 $btn-warning-normal-color-hover,
+                $btn-warning-normal-color-active,
                 $btn-warning-normal-bg,
                 $btn-warning-normal-bg-hover,
+                $btn-warning-normal-bg-active,
                 $btn-warning-normal-border-color,
-                $btn-warning-normal-border-color-hover
+                $btn-warning-normal-border-color-hover,
+                $btn-warning-normal-border-color-active
             );
 
             &.disabled,
@@ -222,8 +249,11 @@
                 @include button-color(
                     $btn-warning-normal-color-disabled,
                     $btn-warning-normal-color-disabled,
+                    $btn-warning-normal-color-disabled,
                     $btn-warning-normal-bg-disabled,
                     $btn-warning-normal-bg-disabled,
+                    $btn-warning-normal-bg-disabled,
+                    $btn-warning-normal-border-color-disabled,
                     $btn-warning-normal-border-color-disabled,
                     $btn-warning-normal-border-color-disabled
                 );
@@ -245,6 +275,9 @@
             @include button-color(
                 $btn-text-primary-color,
                 $btn-text-primary-color-hover,
+                $btn-text-primary-color-hover,
+                transparent,
+                transparent,
                 transparent,
                 transparent,
                 transparent,
@@ -255,6 +288,9 @@
                 @include button-color(
                     $btn-text-disabled-color,
                     $btn-text-disabled-color,
+                    $btn-text-disabled-color,
+                    transparent,
+                    transparent,
                     transparent,
                     transparent,
                     transparent,
@@ -266,6 +302,9 @@
             @include button-color(
                 $btn-text-secondary-color,
                 $btn-text-secondary-color-hover,
+                $btn-text-secondary-color-hover,
+                transparent,
+                transparent,
                 transparent,
                 transparent,
                 transparent,
@@ -276,6 +315,9 @@
                 @include button-color(
                     $btn-text-disabled-color,
                     $btn-text-disabled-color,
+                    $btn-text-disabled-color,
+                    transparent,
+                    transparent,
                     transparent,
                     transparent,
                     transparent,
@@ -287,6 +329,9 @@
             @include button-color(
                 $btn-text-normal-color,
                 $btn-text-normal-color-hover,
+                $btn-text-normal-color-hover,
+                transparent,
+                transparent,
                 transparent,
                 transparent,
                 transparent,
@@ -297,6 +342,9 @@
                 @include button-color(
                     $btn-text-disabled-color,
                     $btn-text-disabled-color,
+                    $btn-text-disabled-color,
+                    transparent,
+                    transparent,
                     transparent,
                     transparent,
                     transparent,
@@ -344,6 +392,9 @@
             @include button-color(
                 $btn-text-loading-color,
                 $btn-text-loading-color,
+                $btn-text-loading-color,
+                transparent,
+                transparent,
                 transparent,
                 transparent,
                 transparent,
@@ -375,17 +426,17 @@
         box-shadow: none;
         border-style: $btn-ghost-border-style;
         &#{$btn-prefix}-dark {
-            @include button-color( $btn-ghost-dark-color, $btn-ghost-dark-color-hover, $btn-ghost-dark-bg-normal, $btn-ghost-dark-bg-hover, $btn-ghost-dark-border-color, $btn-ghost-dark-border-color-hover);
+            @include button-color( $btn-ghost-dark-color, $btn-ghost-dark-color-hover, $btn-ghost-dark-color-hover, $btn-ghost-dark-bg-normal, $btn-ghost-dark-bg-hover, $btn-ghost-dark-bg-hover, $btn-ghost-dark-border-color, $btn-ghost-dark-border-color-hover, $btn-ghost-dark-border-color-hover);
             &.disabled,
             &[disabled] {
-                @include button-color( $btn-ghost-dark-color-disabled, $btn-ghost-dark-color-disabled, $btn-ghost-dark-bg-disabled, $btn-ghost-dark-bg-disabled, $btn-ghost-dark-border-color-disabled, $btn-ghost-dark-border-color-disabled);
+                @include button-color( $btn-ghost-dark-color-disabled, $btn-ghost-dark-color-disabled, $btn-ghost-dark-color-disabled, $btn-ghost-dark-bg-disabled, $btn-ghost-dark-bg-disabled, $btn-ghost-dark-bg-disabled, $btn-ghost-dark-border-color-disabled, $btn-ghost-dark-border-color-disabled, $btn-ghost-dark-border-color-disabled);
             }
         }
         &#{$btn-prefix}-light {
-            @include button-color( $btn-ghost-light-color, $btn-ghost-light-color-hover, $btn-ghost-light-bg-normal, $btn-ghost-light-bg-hover, $btn-ghost-light-border-color, $btn-ghost-light-border-color-hover);
+            @include button-color( $btn-ghost-light-color, $btn-ghost-light-color-hover, $btn-ghost-light-color-hover, $btn-ghost-light-bg-normal, $btn-ghost-light-bg-hover, $btn-ghost-light-bg-hover, $btn-ghost-light-border-color, $btn-ghost-light-border-color-hover, $btn-ghost-light-border-color-hover);
             &.disabled,
             &[disabled] {
-                @include button-color( $btn-ghost-light-color-disabled, $btn-ghost-light-color-disabled, $btn-ghost-light-bg-disabled, $btn-ghost-light-bg-disabled, $btn-ghost-light-border-color-disabled, $btn-ghost-light-border-color-disabled);
+                @include button-color( $btn-ghost-light-color-disabled, $btn-ghost-light-color-disabled, $btn-ghost-light-color-disabled, $btn-ghost-light-bg-disabled, $btn-ghost-light-bg-disabled, $btn-ghost-light-bg-disabled, $btn-ghost-light-border-color-disabled, $btn-ghost-light-border-color-disabled, $btn-ghost-light-border-color-disabled);
             }
         }
     }
