@@ -147,14 +147,38 @@
     &[disabled] {
         cursor: not-allowed;
 
-        @include button-color(
-            $btn-pure-color-disabled,
-            $btn-pure-color-disabled,
-            $btn-pure-bg-disabled,
-            $btn-pure-bg-disabled,
-            $btn-pure-border-color-disabled,
-            $btn-pure-border-color-disabled
-        );
+        &#{$btn-prefix}-normal {
+            @include button-color(
+                $btn-pure-normal-color-disabled,
+                $btn-pure-normal-color-disabled,
+                $btn-pure-normal-bg-disabled,
+                $btn-pure-normal-bg-disabled,
+                $btn-pure-normal-border-color-disabled,
+                $btn-pure-normal-border-color-disabled
+            );
+        }
+
+        &#{$btn-prefix}-primary {
+            @include button-color(
+                $btn-pure-primary-color-disabled,
+                $btn-pure-primary-color-disabled,
+                $btn-pure-primary-bg-disabled,
+                $btn-pure-primary-bg-disabled,
+                $btn-pure-primary-border-color-disabled,
+                $btn-pure-primary-border-color-disabled
+            );
+        }
+
+        &#{$btn-prefix}-secondary {
+            @include button-color(
+                $btn-pure-secondary-color-disabled,
+                $btn-pure-secondary-color-disabled,
+                $btn-pure-secondary-bg-disabled,
+                $btn-pure-secondary-bg-disabled,
+                $btn-pure-secondary-border-color-disabled,
+                $btn-pure-secondary-border-color-disabled
+            );
+        }
     }
 
     /* 警告按钮 */
@@ -226,6 +250,17 @@
                 transparent,
                 transparent
             );
+            &.disabled,
+            &[disabled] {
+                @include button-color(
+                    $btn-text-disabled-color,
+                    $btn-text-disabled-color,
+                    transparent,
+                    transparent,
+                    transparent,
+                    transparent
+                );
+            }
         }
         &#{$btn-prefix}-secondary {
             @include button-color(
@@ -236,6 +271,17 @@
                 transparent,
                 transparent
             );
+            &.disabled,
+            &[disabled] {
+                @include button-color(
+                    $btn-text-disabled-color,
+                    $btn-text-disabled-color,
+                    transparent,
+                    transparent,
+                    transparent,
+                    transparent
+                );
+            }
         }
         &#{$btn-prefix}-normal {
             @include button-color(
@@ -246,6 +292,17 @@
                 transparent,
                 transparent
             );
+            &.disabled,
+            &[disabled] {
+                @include button-color(
+                    $btn-text-disabled-color,
+                    $btn-text-disabled-color,
+                    transparent,
+                    transparent,
+                    transparent,
+                    transparent
+                );
+            }
         }
         &.#{$css-prefix}large {
             @include next-button-size(
@@ -281,17 +338,6 @@
                 $btn-text-icon-s-margin,
                 $btn-size-s-icon-size,
                 $btn-size-s-icon-split-size
-            );
-        }
-        &.disabled,
-        &[disabled] {
-            @include button-color(
-                $btn-text-disabled-color,
-                $btn-text-disabled-color,
-                transparent,
-                transparent,
-                transparent,
-                transparent
             );
         }
         &#{$btn-prefix}-loading {

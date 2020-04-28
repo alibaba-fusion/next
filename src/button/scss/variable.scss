@@ -142,6 +142,15 @@ $btn-pure-bg-disabled: $color-fill1-1 !default;
 $btn-pure-border-color-disabled: $color-line1-1 !default;
 
 /// text
+/// @namespace statement/disabled
+$btn-pure-normal-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-pure-normal-bg-disabled: $color-fill1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-pure-normal-border-color-disabled: $color-line1-1 !default;
+/// text
 /// @namespace statement/normal
 $btn-pure-normal-color: $color-text1-4 !default;
 /// text
@@ -166,6 +175,15 @@ $btn-pure-normal-border-style: $line-solid !default;
 // Secondary
 // ----------------------------------------
 /// text
+/// @namespace statement/disabled
+$btn-pure-secondary-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-pure-secondary-bg-disabled: $color-fill1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-pure-secondary-border-color-disabled: $color-line1-1 !default;
+/// text
 /// @namespace statement/normal
 $btn-pure-secondary-color: $color-brand1-6 !default;
 /// text
@@ -189,6 +207,15 @@ $btn-pure-secondary-border-style: $line-solid !default;
 
 // Primary
 // ----------------------------------------
+/// text
+/// @namespace statement/disabled
+$btn-pure-primary-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-pure-primary-bg-disabled: $color-fill1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-pure-primary-border-color-disabled: $color-line1-1 !default;
 /// text
 /// @namespace statement/normal
 $btn-pure-primary-color: $color-white !default;
