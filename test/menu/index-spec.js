@@ -77,7 +77,7 @@ describe('Menu', () => {
         );
         const item = wrapper.find('.next-menu-item');
         assert(item.find('.next-menu-item-text').text() === 'item');
-        assert(item.prop('title') === 'itemhelper');
+        assert(item.prop('title') === 'item');
         assert(item.prop('role') === 'menuitem');
         assert(item.hasClass('custom'));
         assert(item.prop('style').color === 'red');
