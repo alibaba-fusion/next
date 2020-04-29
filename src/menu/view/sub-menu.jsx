@@ -50,6 +50,7 @@ export default class SubMenu extends Component {
         triggerType: PropTypes.oneOf(['click', 'hover']),
         align: PropTypes.oneOf(['outside', 'follow']),
         parentMode: PropTypes.oneOf(['inline', 'popup']),
+        parent: PropTypes.any,
     };
 
     static defaultProps = {
@@ -193,6 +194,11 @@ export default class SubMenu extends Component {
                 [`${prefix}child-selected`]: isChildSelected,
             }),
         };
+
+        if (typeof label === 'string') {
+            itemProps.title = label;
+        }
+
         const arrorProps = {
             type:
                 inlineArrowDirection === 'right' ? 'arrow-right' : 'arrow-down',
