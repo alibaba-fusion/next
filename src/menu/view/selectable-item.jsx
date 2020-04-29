@@ -157,6 +157,7 @@ export default class SelectableItem extends Component {
             onKeyDown: this.handleKeyDown,
             onClick: !disabled ? this.handleClick : this.props.onClick,
             needIndent,
+            title: typeof children === 'string' && children,
             ...others,
         };
 

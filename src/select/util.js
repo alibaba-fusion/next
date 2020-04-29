@@ -127,7 +127,6 @@ export function parseDataSourceFromChildren(children, deep = 0) {
 
             item2.label =
                 childProps.label || childProps.children || `${item2.value}`;
-            item2.title = childProps.title;
             childProps.disabled === true && (item2.disabled = true);
             // You can put your extra data here, and use it in `itemRender` or `labelRender`
             Object.assign(item2, childProps['data-extra'] || {});
@@ -179,10 +178,9 @@ export function normalizeDataSource(dataSource, deep = 0) {
             // parse children
             item2.children = normalizeDataSource(item.children, deep + 1);
         } else {
-            const { value, label, title, disabled, ...others } = item;
+            const { value, label, disabled, ...others } = item;
             item2.value = !isNull(value) ? value : `${index}`;
             item2.label = label || `${item2.value}`;
-            item2.title = title;
             disabled === true && (item2.disabled = true);
 
             Object.assign(item2, others);
@@ -235,7 +233,6 @@ export function filterDataSource(dataSource, key, filter, addonKey) {
         menuDataSource.unshift({
             value: key,
             label: key,
-            title: key,
             __isAddon: true,
         });
     }
