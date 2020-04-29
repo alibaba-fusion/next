@@ -41,7 +41,7 @@
             vertical-align: middle;
             @extend %ellipsis;
             max-width: 100%;
-            user-select: none;
+            cursor: default;
 
             > a {
                 text-decoration: none;
