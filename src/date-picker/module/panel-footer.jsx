@@ -6,7 +6,6 @@ import { PANEL } from '../util';
 
 class PanelFooter extends React.PureComponent {
     static defaultProps = {
-        // onPanelChange: func.noop,
         onOk: func.noop,
     };
 
@@ -26,8 +25,10 @@ class PanelFooter extends React.PureComponent {
             <div className={`${prefix}date-picker-panel-tools`}>
                 {ranges.map(({ label, value = [], onChange }) => {
                     const handleClick = () => {
-                        onChange(value.map(v => moment(v)));
-                        onOk();
+                        const momentValue = value.map(v => moment(v));
+
+                        onChange(momentValue);
+                        onOk(momentValue);
                     };
                     return (
                         <Button
@@ -66,6 +67,7 @@ class PanelFooter extends React.PureComponent {
             type: 'primary',
             disabled: !value,
         };
+        const onClick = () => onOk();
 
         return (
             <div className={`${prefix}date-picker-panel-footer`}>
@@ -78,7 +80,7 @@ class PanelFooter extends React.PureComponent {
                 <Button
                     {...sharedBtnProps}
                     disabled={disabledOk || !value}
-                    onClick={onOk}
+                    onClick={onClick}
                 >
                     {locale.ok}
                 </Button>
