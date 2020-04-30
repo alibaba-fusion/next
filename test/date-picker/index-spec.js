@@ -12,7 +12,10 @@ const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;
 const startValue = moment('2017-11-20', 'YYYY-MM-DD', true);
 const endValue = moment('2017-12-15', 'YYYY-MM-DD', true);
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
-const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
+const defaultTimeValues = [
+    moment('09:00:00', 'HH:mm:ss', true),
+    moment('23:59:59', 'HH:mm:ss', true),
+];
 const timeStamp = 1581938105000;
 
 // 禁止选择 startValue 之前的所有日期
@@ -91,20 +94,37 @@ describe('DatePicker', () => {
         });
 
         it('should render dateInputAriaLabel & timeInputAriaLabel', () => {
-            wrapper = mount(<DatePicker dateInputAriaLabel="Ho Ho Ho!" timeInputAriaLabel="Ho Ho Ho!" defaultVisible showTime={{ format: 'HH:mm' }} />);
+            wrapper = mount(
+                <DatePicker
+                    dateInputAriaLabel="Ho Ho Ho!"
+                    timeInputAriaLabel="Ho Ho Ho!"
+                    defaultVisible
+                    showTime={{ format: 'HH:mm' }}
+                />
+            );
 
-            assert(wrapper.find('.next-date-picker-panel-input input').at(0).prop('aria-label') === 'Ho Ho Ho!');
-            assert(wrapper.find('.next-date-picker-panel-input input').at(1).prop('aria-label') === 'Ho Ho Ho!');
+            assert(
+                wrapper
+                    .find('.next-date-picker-panel-input input')
+                    .at(0)
+                    .prop('aria-label') === 'Ho Ho Ho!'
+            );
+            assert(
+                wrapper
+                    .find('.next-date-picker-panel-input input')
+                    .at(1)
+                    .prop('aria-label') === 'Ho Ho Ho!'
+            );
         });
         it('should support preview mode render', () => {
             wrapper = mount(<DatePicker defaultValue="2018-11-11" isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
             assert(wrapper.find('.next-form-preview').text() === '2018-11-11');
             wrapper.setProps({
-                renderPreview: (value) => {
+                renderPreview: value => {
                     assert(value.format('YYYY-MM-DD') === '2018-11-11');
                     return 'Hello World';
-                }
+                },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
@@ -307,23 +327,42 @@ describe('DatePicker', () => {
         });
 
         it('should keyboard date input', () => {
-            wrapper = mount(
-                <DatePicker defaultVisible />
-            );
-            const input = wrapper.find('.next-date-picker-panel-input input').at(0);
+            wrapper = mount(<DatePicker defaultVisible />);
+            const input = wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(0);
             const instance = wrapper.instance().getInstance();
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.dateInputStr === moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.LEFT });
-            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.dateInputStr === moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
+            assert(
+                instance.state.dateInputStr === moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.dateInputStr === moment().add(1, 'day').format('YYYY-MM-DD'));
+            assert(
+                instance.state.dateInputStr ===
+                    moment()
+                        .add(1, 'day')
+                        .format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.dateInputStr === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.dateInputStr === moment().format('YYYY-MM-DD')
+            );
             // input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
             // assert(instance.state.dateInputStr === moment().add(1, 'month').format('YYYY-MM-DD'));
             // input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
@@ -336,31 +375,57 @@ describe('DatePicker', () => {
 
         it('should keyboard date time input', () => {
             wrapper = mount(
-                <DatePicker showTime={{ format: 'HH:mm:ss' }} defaultVisible defaultValue={moment().hours(0).minutes(0).seconds(0)}/>
+                <DatePicker
+                    showTime={{ format: 'HH:mm:ss' }}
+                    defaultVisible
+                    defaultValue={moment()
+                        .hours(0)
+                        .minutes(0)
+                        .seconds(0)}
+                />
             );
 
-            const dateInput = wrapper.find('.next-date-picker-panel-input input').at(0);
-            const timeInput = wrapper.find('.next-date-picker-panel-input input').at(1);
+            const dateInput = wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(0);
+            const timeInput = wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(1);
             const instance = wrapper.instance().getInstance();
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.timeInputStr === ('00:00:00'));
+            assert(instance.state.timeInputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.timeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                altKey: true,
+            });
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
+            assert(instance.state.timeInputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.timeInputStr === ('00:00:01'));
+            assert(instance.state.timeInputStr === '00:00:01');
             timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.timeInputStr === ('00:00:00'));
+            assert(instance.state.timeInputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.timeInputStr === ('00:01:00'));
+            assert(instance.state.timeInputStr === '00:01:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.timeInputStr === ('00:00:00'));
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.timeInputStr === ('01:00:00'));
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.timeInputStr === ('00:00:00'));
+            assert(instance.state.timeInputStr === '00:00:00');
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_DOWN,
+                altKey: true,
+            });
+            assert(instance.state.timeInputStr === '01:00:00');
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_UP,
+                altKey: true,
+            });
+            assert(instance.state.timeInputStr === '00:00:00');
         });
     });
 
@@ -459,19 +524,29 @@ describe('YearPicker', () => {
         });
 
         it('should render dateInputAriaLabel', () => {
-            wrapper = mount(<YearPicker popupClassName="test-aria" visible={true} dateInputAriaLabel="Ho Ho Ho!" />);
+            wrapper = mount(
+                <YearPicker
+                    popupClassName="test-aria"
+                    visible={true}
+                    dateInputAriaLabel="Ho Ho Ho!"
+                />
+            );
 
-            assert(wrapper.find('.test-aria .next-year-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
+            assert(
+                wrapper
+                    .find('.test-aria .next-year-picker-panel-input input')
+                    .prop('aria-label') === 'Ho Ho Ho!'
+            );
         });
         it('should support preview mode render', () => {
             wrapper = mount(<YearPicker defaultValue="2018-11-11" isPreview />);
             assert(wrapper.find('.next-form-preview').length > 0);
             assert(wrapper.find('.next-form-preview').text() === '2018');
             wrapper.setProps({
-                renderPreview: (value) => {
+                renderPreview: value => {
                     assert(value.format('YYYY') === '2018');
                     return 'Hello World';
-                }
+                },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
@@ -535,7 +610,8 @@ describe('YearPicker', () => {
                 .simulate('blur');
 
             wrapper
-                .find('.next-calendar-year').at(3)
+                .find('.next-calendar-year')
+                .at(3)
                 .simulate('click');
             assert(ret === '2012');
         });
@@ -573,11 +649,22 @@ describe('YearPicker', () => {
             input.simulate('keydown', { keyCode: KEYCODE.LEFT });
             assert(instance.state.dateInputStr === moment().format('YYYY'));
             input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
             assert(instance.state.dateInputStr === moment().format('YYYY'));
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.dateInputStr === moment().add(1, 'year').format('YYYY'));
+            assert(
+                instance.state.dateInputStr ===
+                    moment()
+                        .add(1, 'year')
+                        .format('YYYY')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.UP });
             assert(instance.state.dateInputStr === moment().format('YYYY'));
         });
@@ -658,20 +745,32 @@ describe('MonthPicker', () => {
         });
 
         it('should render dateInputAriaLabel', () => {
-            wrapper = mount(<MonthPicker popupClassName="test-aria" visible={true} dateInputAriaLabel="Ho Ho Ho!" />);
+            wrapper = mount(
+                <MonthPicker
+                    popupClassName="test-aria"
+                    visible={true}
+                    dateInputAriaLabel="Ho Ho Ho!"
+                />
+            );
 
-            assert(wrapper.find('.test-aria .next-month-picker-panel-input input').prop('aria-label') === 'Ho Ho Ho!');
+            assert(
+                wrapper
+                    .find('.test-aria .next-month-picker-panel-input input')
+                    .prop('aria-label') === 'Ho Ho Ho!'
+            );
         });
 
         it('should support preview mode render', () => {
-            wrapper = mount(<MonthPicker defaultValue="2018-11-11" isPreview />);
+            wrapper = mount(
+                <MonthPicker defaultValue="2018-11-11" isPreview />
+            );
             assert(wrapper.find('.next-form-preview').length > 0);
             assert(wrapper.find('.next-form-preview').text() === '2018-11');
             wrapper.setProps({
-                renderPreview: (value) => {
+                renderPreview: value => {
                     assert(value.format('YYYY-MM') === '2018-11');
                     return 'Hello World';
-                }
+                },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
@@ -739,7 +838,8 @@ describe('MonthPicker', () => {
                 .simulate('blur');
 
             wrapper
-                .find('.next-calendar-month').at(3)
+                .find('.next-calendar-month')
+                .at(3)
                 .simulate('click');
             assert(ret === '2018-04');
         });
@@ -777,20 +877,47 @@ describe('MonthPicker', () => {
             input.simulate('keydown', { keyCode: KEYCODE.LEFT });
             assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
             input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
             assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.dateInputStr === moment().add(1, 'month').format('YYYY-MM'));
+            assert(
+                instance.state.dateInputStr ===
+                    moment()
+                        .add(1, 'month')
+                        .format('YYYY-MM')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.UP });
             assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.dateInputStr === moment().add(1, 'month').format('YYYY-MM'));
+            assert(
+                instance.state.dateInputStr ===
+                    moment()
+                        .add(1, 'month')
+                        .format('YYYY-MM')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
             assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
-            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.dateInputStr === moment().add(1, 'year').format('YYYY-MM'));
-            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_DOWN,
+                altKey: true,
+            });
+            assert(
+                instance.state.dateInputStr ===
+                    moment()
+                        .add(1, 'year')
+                        .format('YYYY-MM')
+            );
+            input.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_UP,
+                altKey: true,
+            });
             assert(instance.state.dateInputStr === moment().format('YYYY-MM'));
         });
     });
@@ -835,7 +962,10 @@ describe('WeekPicker', () => {
         it('should render with defaultValue', () => {
             wrapper = mount(<WeekPicker defaultValue={startWeek} />);
             assert(
-                wrapper.find('.next-week-picker-input input').instance().value.indexOf('2018-') !== -1
+                wrapper
+                    .find('.next-week-picker-input input')
+                    .instance()
+                    .value.indexOf('2018-') !== -1
             );
             assert(wrapper.find('.next-icon-delete-filling').length === 1);
         });
@@ -850,13 +980,17 @@ describe('WeekPicker', () => {
         it('should render controlled value of YearPicker', () => {
             wrapper = mount(<WeekPicker value={startWeek} />);
             assert(
-                wrapper.find('.next-week-picker-input input').instance()
-                .value.indexOf('2018-') !== -1
+                wrapper
+                    .find('.next-week-picker-input input')
+                    .instance()
+                    .value.indexOf('2018-') !== -1
             );
             wrapper.setProps({ value: endWeek });
             assert(
-                wrapper.find('.next-week-picker-input input').instance()
-                .value.indexOf('2019-') !== -1
+                wrapper
+                    .find('.next-week-picker-input input')
+                    .instance()
+                    .value.indexOf('2019-') !== -1
             );
         });
 
@@ -868,14 +1002,16 @@ describe('WeekPicker', () => {
         });
 
         it('should support preview mode render', () => {
-            wrapper = mount(<WeekPicker defaultValue="2018-48" format="YYYY-w" isPreview />);
+            wrapper = mount(
+                <WeekPicker defaultValue="2018-48" format="YYYY-w" isPreview />
+            );
             assert(wrapper.find('.next-form-preview').length > 0);
             assert(wrapper.find('.next-form-preview').text() === '2018-48');
             wrapper.setProps({
-                renderPreview: (value) => {
+                renderPreview: value => {
                     assert(value.format('YYYY') === '2018');
                     return 'Hello World';
-                }
+                },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
@@ -892,7 +1028,10 @@ describe('WeekPicker', () => {
                 />
             );
             wrapper.find('.next-week-picker-input input').simulate('click');
-            wrapper.find('td[title="2018-3"] .next-calendar-date').at(0).simulate('click');
+            wrapper
+                .find('td[title="2018-3"] .next-calendar-date')
+                .at(0)
+                .simulate('click');
             assert(ret.format('YYYY-w') === '2018-3');
         });
 
@@ -911,43 +1050,91 @@ describe('WeekPicker', () => {
         it('should keyboard input', () => {
             let ret;
             wrapper = mount(
-                <WeekPicker
-                    onChange={val => (ret = val)}
-                    defaultVisible
-                />
+                <WeekPicker onChange={val => (ret = val)} defaultVisible />
             );
             const input = wrapper.find('.next-week-picker-input input');
             const instance = wrapper.instance().getInstance();
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.LEFT });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().add(1, 'w').format('YYYY-MM-DD'));
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    moment()
+                        .add(1, 'w')
+                        .format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.value.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    moment().format('YYYY-MM-DD')
+            );
 
-            const curMoment = moment().add(1, 'month').subtract(1, 'month');
+            const curMoment = moment()
+                .add(1, 'month')
+                .subtract(1, 'month');
 
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.add(1, 'month').format('YYYY-MM-DD'));
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    curMoment.add(1, 'month').format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.subtract(1, 'month').format('YYYY-MM-DD'));
-            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.add(1, 'year').format('YYYY-MM-DD'));
-            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.value.format('YYYY-MM-DD') === curMoment.subtract(1, 'year').format('YYYY-MM-DD'));
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    curMoment.subtract(1, 'month').format('YYYY-MM-DD')
+            );
+            input.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_DOWN,
+                altKey: true,
+            });
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    curMoment.add(1, 'year').format('YYYY-MM-DD')
+            );
+            input.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_UP,
+                altKey: true,
+            });
+            assert(
+                instance.state.value.format('YYYY-MM-DD') ===
+                    curMoment.subtract(1, 'year').format('YYYY-MM-DD')
+            );
         });
     });
-
-})
+});
 
 describe('RangePicker', () => {
     let wrapper;
+
+    // 打开日期面板
+    function openPanel(isStart = true) {
+        wrapper &&
+            wrapper
+                .find('.next-range-picker-trigger-input input')
+                .at(isStart ? 0 : 1)
+                .simulate('click');
+    }
 
     afterEach(() => {
         if (wrapper) {
@@ -1027,72 +1214,129 @@ describe('RangePicker', () => {
         });
 
         it('should render dateInputAriaLabel & timeInputAriaLabel', () => {
-            wrapper = mount(<RangePicker startDateInputAriaLabel="Ho Ho Ho1!" startTimeInputAriaLabel="Ho Ho Ho2!" endDateInputAriaLabel="Ho Ho Ho3!" endTimeInputAriaLabel="Ho Ho Ho4!" defaultVisible showTime={{ format: 'HH:mm' }} />);
+            wrapper = mount(
+                <RangePicker
+                    startDateInputAriaLabel="Ho Ho Ho1!"
+                    startTimeInputAriaLabel="Ho Ho Ho2!"
+                    endDateInputAriaLabel="Ho Ho Ho3!"
+                    endTimeInputAriaLabel="Ho Ho Ho4!"
+                    defaultVisible
+                    showTime={{ format: 'HH:mm' }}
+                />
+            );
 
-            assert(wrapper.find('.next-range-picker-panel-input-start-date input').prop('aria-label') === 'Ho Ho Ho1!');
-            assert(wrapper.find('.next-range-picker-panel-input-start-time input').prop('aria-label') === 'Ho Ho Ho2!');
-            assert(wrapper.find('.next-range-picker-panel-input-end-date input').prop('aria-label') === 'Ho Ho Ho3!');
-            assert(wrapper.find('.next-range-picker-panel-input-end-time input').prop('aria-label') === 'Ho Ho Ho4!');
+            assert(
+                wrapper
+                    .find('.next-range-picker-panel-input-start-date input')
+                    .prop('aria-label') === 'Ho Ho Ho1!'
+            );
+            assert(
+                wrapper
+                    .find('.next-range-picker-panel-input-start-time input')
+                    .prop('aria-label') === 'Ho Ho Ho2!'
+            );
+            assert(
+                wrapper
+                    .find('.next-range-picker-panel-input-end-date input')
+                    .prop('aria-label') === 'Ho Ho Ho3!'
+            );
+            assert(
+                wrapper
+                    .find('.next-range-picker-panel-input-end-time input')
+                    .prop('aria-label') === 'Ho Ho Ho4!'
+            );
         });
 
         it('should support ranges', () => {
             const now = new Date();
-            const start = (new Date()).setDate(1);
-            const end = (new Date()).setDate(7);
+            const start = new Date().setDate(1);
+            const end = new Date().setDate(7);
 
             const quickRanges = {
-                Today: [ now, now ],
-                'First Week': [ start, end ],
+                Today: [now, now],
+                'First Week': [start, end],
             };
-            const handleChange = (values) => {
+            const handleChange = values => {
                 assert(values[0].isSame(start));
                 assert(values[1].isSame(end));
-            }
-            wrapper = mount(<RangePicker defaultVisible onChange={handleChange} ranges={quickRanges} />);
+            };
+            wrapper = mount(
+                <RangePicker
+                    defaultVisible
+                    onChange={handleChange}
+                    ranges={quickRanges}
+                />
+            );
 
             assert(wrapper.find('.next-date-picker-panel-tools').length > 0);
 
-            wrapper.find('.next-date-picker-panel-tools .next-btn').at(1).simulate('click');
+            wrapper
+                .find('.next-date-picker-panel-tools .next-btn')
+                .at(1)
+                .simulate('click');
             // assert(wrapper.instance().getInstance().startValue && wrapper.instance().getInstance().startValue.isSame(start));
         });
 
         it('should render type month', () => {
-            wrapper = mount(<RangePicker type="month" followTrigger visible defaultValue={['2018-03', '2018-08']} />);
+            wrapper = mount(
+                <RangePicker
+                    type="month"
+                    followTrigger
+                    visible
+                    defaultValue={['2018-03', '2018-08']}
+                />
+            );
             assert(wrapper.find('.next-calendar').length === 2);
         });
 
         it('should render type year', () => {
-            wrapper = mount(<RangePicker type="year" followTrigger visible defaultValue={['2018', '2019']} />);
+            wrapper = mount(
+                <RangePicker
+                    type="year"
+                    followTrigger
+                    visible
+                    defaultValue={['2018', '2019']}
+                />
+            );
             assert(wrapper.find('.next-calendar').length === 2);
         });
 
         it('should support preview mode render', () => {
-            wrapper = mount(<RangePicker defaultValue={[startValue, endValue]} isPreview />);
+            wrapper = mount(
+                <RangePicker defaultValue={[startValue, endValue]} isPreview />
+            );
             assert(wrapper.find('.next-form-preview').length > 0);
-            assert(wrapper.find('.next-form-preview').text() === '2017-11-20 - 2017-12-15');
+            assert(
+                wrapper.find('.next-form-preview').text() ===
+                    '2017-11-20 - 2017-12-15'
+            );
             wrapper.setProps({
                 renderPreview: ([start]) => {
                     assert(start.format('YYYY-MM-DD') === '2017-11-20');
                     return 'Hello World';
-                }
+                },
             });
             assert(wrapper.find('.next-form-preview').text() === 'Hello World');
         });
 
         it('should support to set placeholder', () => {
-            const placeholder = ['开始日期', '结束日期']
-            wrapper = mount(<RangePicker placeholder={placeholder} />)
-            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
-            assert(startPlaceholder === placeholder[0])
-            assert(endPlaceholder === placeholder[1])
+            const placeholder = ['开始日期', '结束日期'];
+            wrapper = mount(<RangePicker placeholder={placeholder} />);
+            const [startPlaceholder, endPlaceholder] = wrapper
+                .find('.next-range-picker input')
+                .map(node => node.prop('placeholder'));
+            assert(startPlaceholder === placeholder[0]);
+            assert(endPlaceholder === placeholder[1]);
         });
 
         it('should support to set placeholder string', () => {
-            const placeholder = 'Please select range'
-            wrapper = mount(<RangePicker placeholder={placeholder} />)
-            const [startPlaceholder, endPlaceholder] = wrapper.find('.next-range-picker input').map(node =>  node.prop('placeholder'))
-            assert(startPlaceholder === placeholder)
-            assert(endPlaceholder === placeholder)
+            const placeholder = 'Please select range';
+            wrapper = mount(<RangePicker placeholder={placeholder} />);
+            const [startPlaceholder, endPlaceholder] = wrapper
+                .find('.next-range-picker input')
+                .map(node => node.prop('placeholder'));
+            assert(startPlaceholder === placeholder);
+            assert(endPlaceholder === placeholder);
         });
     });
 
@@ -1185,10 +1429,11 @@ describe('RangePicker', () => {
                 .at(0)
                 .simulate('click');
             wrapper
-                .find('td[title="Aug"] .next-calendar-month').at(0)
+                .find('td[title="Aug"] .next-calendar-month')
+                .at(0)
                 .simulate('click');
             assert(ret[0].format('YYYY-MM-DD') === '2017-08-01');
-        })
+        });
 
         it('should slect range with same day', () => {
             let ret;
@@ -1353,12 +1598,16 @@ describe('RangePicker', () => {
                 <RangePicker
                     showTime
                     defaultVisible
-                    defaultVisibleMonth={() => moment('2019-08-01', 'YYYY-MM-DD')}
+                    defaultVisibleMonth={() =>
+                        moment('2019-08-01', 'YYYY-MM-DD')
+                    }
                     onChange={val => (ret = val)}
                 />
             );
 
-            wrapper.find('.next-calendar-cell[title="2019-08-06"]').simulate('click');
+            wrapper
+                .find('.next-calendar-cell[title="2019-08-06"]')
+                .simulate('click');
             wrapper
                 .find('.next-range-picker-panel-input-start-time input')
                 .simulate('focus');
@@ -1369,12 +1618,12 @@ describe('RangePicker', () => {
                 .at(3)
                 .simulate('click');
             wrapper
-                .find(
-                    '.next-date-picker-panel-footer .next-btn'
-                )
+                .find('.next-date-picker-panel-footer .next-btn')
                 .at(0)
                 .simulate('click');
-            wrapper.find('.next-calendar-cell[title="2019-08-09"]').simulate('click');
+            wrapper
+                .find('.next-calendar-cell[title="2019-08-09"]')
+                .simulate('click');
             wrapper
                 .find('.next-range-picker-panel-input-end-time input')
                 .simulate('focus');
@@ -1584,14 +1833,19 @@ describe('RangePicker', () => {
                 />
             );
             wrapper
-                .find('.next-calendar-panel-header-left .next-calendar-btn').at(1)
+                .find('.next-calendar-panel-header-left .next-calendar-btn')
+                .at(1)
                 .simulate('click');
 
             wrapper
-                .find('.next-calendar-year').at(5)
+                .find('.next-calendar-year')
+                .at(5)
                 .simulate('click');
-            assert(wrapper
-                .find('.next-calendar-panel-header-full .next-calendar-btn').text() === '2014')
+            assert(
+                wrapper
+                    .find('.next-calendar-panel-header-full .next-calendar-btn')
+                    .text() === '2014'
+            );
         });
 
         it('should select time panel', () => {
@@ -1642,65 +1896,161 @@ describe('RangePicker', () => {
             );
         });
 
-        it('should keyboard date input', () => {
+        // fix issue: https://github.com/alibaba-fusion/next/issues/1799
+        it('should call onOk handler after setting state effective', () => {
+            let value;
+            const onOk = val => (value = val.map(v => v.toString()));
+            const curMoment = moment(new Date());
+
             wrapper = mount(
-                <RangePicker defaultVisible />
+                <RangePicker
+                    ranges={{ 快捷选择: [curMoment, curMoment] }}
+                    onOk={onOk}
+                />
             );
-            const input = wrapper.find('.next-range-picker-panel-input-start-date input').at(0);
+
+            openPanel();
+            wrapper
+                .find('.next-date-picker-panel-tools .next-btn-text')
+                .simulate('click');
+
+            assert(value[0] === curMoment.toString());
+            assert(value[1] === curMoment.toString());
+        });
+
+        it('should keyboard date input', () => {
+            wrapper = mount(<RangePicker defaultVisible />);
+            const input = wrapper
+                .find('.next-range-picker-panel-input-start-date input')
+                .at(0);
             const instance = wrapper.instance().getInstance();
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.startDateInputStr ===
+                    moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.LEFT });
-            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            assert(
+                instance.state.startDateInputStr ===
+                    moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            input.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            input.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
+            assert(
+                instance.state.startDateInputStr ===
+                    moment().format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.startDateInputStr === moment().add(1, 'day').format('YYYY-MM-DD'));
+            assert(
+                instance.state.startDateInputStr ===
+                    moment()
+                        .add(1, 'day')
+                        .format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.startDateInputStr === moment().format('YYYY-MM-DD'));
-            
-            const curMoment = moment().add('month', 1).subtract('month', 1);
+            assert(
+                instance.state.startDateInputStr ===
+                    moment().format('YYYY-MM-DD')
+            );
+
+            const curMoment = moment()
+                .add('month', 1)
+                .subtract('month', 1);
 
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.startDateInputStr === curMoment.add(1, 'month').format('YYYY-MM-DD'));
+            assert(
+                instance.state.startDateInputStr ===
+                    curMoment.add(1, 'month').format('YYYY-MM-DD')
+            );
             input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.startDateInputStr === curMoment.subtract(1, 'month').format('YYYY-MM-DD'));
-            input.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.startDateInputStr === curMoment.add(1, 'year').format('YYYY-MM-DD'));
-            input.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.startDateInputStr === curMoment.subtract(1, 'year').format('YYYY-MM-DD'));
+            assert(
+                instance.state.startDateInputStr ===
+                    curMoment.subtract(1, 'month').format('YYYY-MM-DD')
+            );
+            input.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_DOWN,
+                altKey: true,
+            });
+            assert(
+                instance.state.startDateInputStr ===
+                    curMoment.add(1, 'year').format('YYYY-MM-DD')
+            );
+            input.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_UP,
+                altKey: true,
+            });
+            assert(
+                instance.state.startDateInputStr ===
+                    curMoment.subtract(1, 'year').format('YYYY-MM-DD')
+            );
         });
 
         it('should keyboard date time input', () => {
             wrapper = mount(
-                <RangePicker showTime={{ format: 'HH:mm:ss' }} defaultVisible value={[moment().hours(0).minutes(0).seconds(0), moment().hours(0).minutes(0).seconds(0).add(1, 'month')]}/>
+                <RangePicker
+                    showTime={{ format: 'HH:mm:ss' }}
+                    defaultVisible
+                    value={[
+                        moment()
+                            .hours(0)
+                            .minutes(0)
+                            .seconds(0),
+                        moment()
+                            .hours(0)
+                            .minutes(0)
+                            .seconds(0)
+                            .add(1, 'month'),
+                    ]}
+                />
             );
 
-            const timeInput = wrapper.find('.next-range-picker-panel-input-start-time input');
+            const timeInput = wrapper.find(
+                '.next-range-picker-panel-input-start-time input'
+            );
             const instance = wrapper.instance().getInstance();
 
             instance.state.activeDateInput = 'startTime';
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            assert(instance.state.startTimeInputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.LEFT });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, altKey: true });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, shiftKey: true });
-            timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN, controlKey: true });
-            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                altKey: true,
+            });
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                shiftKey: true,
+            });
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.DOWN,
+                controlKey: true,
+            });
+            assert(instance.state.startTimeInputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.DOWN });
-            assert(instance.state.startTimeInputStr === ('00:00:01'));
+            assert(instance.state.startTimeInputStr === '00:00:01');
             timeInput.simulate('keydown', { keyCode: KEYCODE.UP });
-            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            assert(instance.state.startTimeInputStr === '00:00:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN });
-            assert(instance.state.startTimeInputStr === ('00:01:00'));
+            assert(instance.state.startTimeInputStr === '00:01:00');
             timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP });
-            assert(instance.state.startTimeInputStr === ('00:00:00'));
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_DOWN, altKey: true });
-            assert(instance.state.startTimeInputStr === ('01:00:00'));
-            timeInput.simulate('keydown', { keyCode: KEYCODE.PAGE_UP, altKey: true });
-            assert(instance.state.startTimeInputStr === ('00:00:00'));
+            assert(instance.state.startTimeInputStr === '00:00:00');
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_DOWN,
+                altKey: true,
+            });
+            assert(instance.state.startTimeInputStr === '01:00:00');
+            timeInput.simulate('keydown', {
+                keyCode: KEYCODE.PAGE_UP,
+                altKey: true,
+            });
+            assert(instance.state.startTimeInputStr === '00:00:00');
         });
     });
 
@@ -1748,32 +2098,34 @@ describe('RangePicker', () => {
         it('should be compatible with hooks', () => {
             function App() {
                 const [value, setValue] = useState('2020-03-09');
-                const [count, setCount] = useState(0)
-                return <DatePicker
-                    value={ value }
-                    onBlur={() => setCount(count + 1)}
-                    onChange={val => setValue(val)}
-                />
+                const [count, setCount] = useState(0);
+                return (
+                    <DatePicker
+                        value={value}
+                        onBlur={() => setCount(count + 1)}
+                        onChange={val => setValue(val)}
+                    />
+                );
             }
-            wrapper = mount(<App/>);
+            wrapper = mount(<App />);
             wrapper
                 .find('.next-date-picker-trigger input')
                 .first()
-                .simulate('click')
+                .simulate('click');
             wrapper
                 .find('.next-calendar-btn-next-month')
                 .first()
-                .simulate('click')
+                .simulate('click');
             wrapper
                 .find('.next-calendar-btn-next-month')
                 .first()
-                .simulate('blur')
+                .simulate('blur');
             assert(
                 wrapper
                     .find('.next-calendar-panel-header-full .next-calendar-btn')
                     .first()
                     .text() === 'April'
-            )
-        })
-    })
+            );
+        });
+    });
 });

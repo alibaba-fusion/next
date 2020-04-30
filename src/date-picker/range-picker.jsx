@@ -660,10 +660,10 @@ export default class RangePicker extends Component {
         });
     };
 
-    onOk = () => {
+    onOk = value => {
         this.onVisibleChange(false, 'okBtnClick');
         this.onValueChange(
-            [this.state.startValue, this.state.endValue],
+            value || [this.state.startValue, this.state.endValue],
             'onOk'
         );
     };
