@@ -152,6 +152,10 @@ export default class SelectableItem extends Component {
             ...others,
         };
 
+        if (!('title' in newProps) && typeof children === 'string') {
+            newProps.title = children;
+        }
+
         const textProps = {};
 
         if ('selectMode' in root.props) {
