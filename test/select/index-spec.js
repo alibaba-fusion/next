@@ -94,12 +94,15 @@ describe('Select', () => {
             { label: 'empty ', value: ' ', title: "" },
             { label: 'empty undefined', value: 'undefined', title: undefined },
             { label: 'empty null', value: 'null', title: null },
+            { label: 'bbbbb', value: 'bbbbb' },
+            { label: 'cccc', value: 'cccc' },
+            { label: <span>dasbx</span>, value: 'ddddd' },
         ];
         wrapper.setProps({
             dataSource,
             visible: true,
         });
-        assert(document.querySelectorAll('.next-menu-item').length === 4);
+        assert(document.querySelectorAll('.next-menu-item').length === 7);
         ReactTestUtils.Simulate.click(
             document.querySelectorAll('.next-menu-item')[0]
         );
@@ -109,6 +112,49 @@ describe('Select', () => {
         assert(wrapper.find('ul li').at(1).instance().title === '');
         assert(wrapper.find('ul li').at(2).instance().title === '');
         assert(wrapper.find('ul li').at(3).instance().title === '');
+        assert(wrapper.find('ul li').at(4).instance().title === 'bbbbb');
+        assert(wrapper.find('ul li').at(5).instance().title === 'cccc');
+        assert(wrapper.find('ul li').at(6).instance().title === '');
+    });
+
+    it('should support title in valueRender', () => {
+        const arr = [];
+        const strarr = [];
+        const dataSource = [
+            { label: 'xxx', value: 'yyy', title: "abc" },
+            { label: 'empty ', value: ' ', title: "" },
+            { label: 'empty undefined', value: 'undefined', title: undefined },
+            { label: 'empty null', value: 'null', title: null },
+            { label: <span>dasbx</span>, value: 'ddddd' },
+        ];
+
+        class App extends React.Component {
+            render() {
+                return (
+                    <Select
+                        mode="multiple"
+                        dataSource={dataSource}
+                        defaultValue={['yyy', ' ', 'undefined', 'null', 'ddddd']}
+                        valueRender={item => {
+                            arr.push(item.title);
+                            strarr.push(`pre-${item.title}`);
+                            return item.label;}
+                        }
+                    />
+                );
+            }
+        }
+
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        ReactDOM.render(<App />, div);
+
+        assert(arr[0] === 'abc' && arr[1] === '' && arr[2] === undefined && arr[3] === null && arr[ 4] === undefined);
+
+        assert(strarr[0] === 'pre-abc' && strarr[1] === 'pre-' && strarr[2] === 'pre-undefined' && strarr[3] === 'pre-null' && strarr[4] === 'pre-undefined');
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
     });
 
     it('should change display text while choose item and change dataSource', () => {
