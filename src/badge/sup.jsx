@@ -100,7 +100,7 @@ class Sup extends Component {
         if (count < 0) {
             return;
         }
-        const supNode = this.refs.sup;
+        const supNode = this.supEl;
 
         if (supNode && dom.hasClass(supNode, `${prefix}badge-count`)) {
             let scrollNums = supNode.querySelectorAll(
@@ -164,6 +164,10 @@ class Sup extends Component {
         return digit;
     }
 
+    saveRef = ref => {
+        this.supEl = ref;
+    };
+
     render() {
         const {
             prefix,
@@ -209,7 +213,7 @@ class Sup extends Component {
             <span />
         );
         const element = show ? (
-            <sup ref="sup" className={supClasses} style={style}>
+            <sup ref={this.saveRef} className={supClasses} style={style}>
                 {children}
             </sup>
         ) : null;

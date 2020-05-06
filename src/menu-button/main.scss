@@ -11,9 +11,24 @@
         transition: transform $motion-duration-immediately $motion-linear;
     }
 
-    &.#{$css-prefix}expand .#{$css-prefix}menu-btn-arrow {
-        transform: rotate(180deg);
+    .#{$css-prefix}menu-btn-arrow::before {
+        content: $menu-btn-fold-icon-content;
     }
+
+    &.#{$css-prefix}expand .#{$css-prefix}menu-btn-arrow {
+        @if $menu-btn-unfold-icon-content != $icon-reset {
+            &::before {
+                content: $menu-btn-unfold-icon-content;
+            }
+        } @else {
+            transform: rotate(180deg);
+        }
+    }
+    // --------- this is for config platform
+    &-symbol-unfold::before {
+        content: $menu-btn-unfold-icon-content;
+    }
+    // --------- this is for config platform
 
     &.#{$css-prefix}btn-normal .#{$css-prefix}menu-btn-arrow {
         color: $menu-btn-pure-text-normal-icon-color;

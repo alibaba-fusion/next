@@ -6,7 +6,7 @@ import { obj } from '../util';
 import createStyle, { getGridChildProps } from './create-style';
 import Cell from './cell';
 
-const { pickOthers } = obj;
+const { pickOthers, isReactFragment } = obj;
 
 const createChildren = (children, device) => {
     const array = React.Children.toArray(children);
@@ -15,6 +15,10 @@ const createChildren = (children, device) => {
     }
 
     return array.map(child => {
+        if (isReactFragment(child)) {
+            return createChildren(child.props.children, device);
+        }
+
         if (
             React.isValidElement(child) &&
             typeof child.type === 'function' &&
@@ -70,12 +74,18 @@ class ResponsiveGrid extends Component {
          * 设置标签类型
          */
         component: PropTypes.elementType,
+        /**
+         * 是否开启紧密模式，开启后尽可能能紧密填满，尽量不出现空格
+         */
+        dense: PropTypes.bool,
+        style: PropTypes.object,
     };
 
     static defaultProps = {
         prefix: 'next-',
         component: 'div',
         device: 'desktop',
+        dense: false,
     };
 
     render() {
@@ -92,6 +102,7 @@ class ResponsiveGrid extends Component {
             rowSpan,
             colSpan,
             component,
+            dense,
         } = this.props;
         const styleProps = {
             rows,
@@ -101,6 +112,7 @@ class ResponsiveGrid extends Component {
             rowSpan,
             colSpan,
             component,
+            dense,
         };
 
         const others = pickOthers(

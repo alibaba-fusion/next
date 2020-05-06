@@ -8,7 +8,8 @@
         vertical-align: middle;
         position: relative;
         padding: 0 $step-dot-item-dot-padding;
-        font-size: 0;
+        margin-top: -1px;
+        margin-bottom: -1px;
 
         #{$step-prefix}-item-node-placeholder {
             display: inline-block;

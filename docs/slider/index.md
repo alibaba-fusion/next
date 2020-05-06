@@ -42,7 +42,7 @@
 | centerMode         | 是否启用居中模式                                                                                           | Boolean        | false    |
 | dots               | 是否显示导航锚点                                                                                           | Boolean        | true     |
 | dotsDirection      | 导航锚点位置<br><br>**可选值**:<br>'hoz', 'ver'                                                             | Enum           | 'hoz'    |
-| dotRender          | 自定义导航锚点<br><br>**签名**:<br>Function() => void                                                       | Function       | -        |
+| dotsRender         | 自定义导航锚点<br><br>**签名**:<br>Function() => void                                                       | Function       | null     |
 | draggable          | 是否可拖拽                                                                                              | Boolean        | true     |
 | infinite           | 是否使用无穷循环模式                                                                                         | Boolean        | true     |
 | defaultActiveIndex | 初始被激活的轮播图                                                                                          | Number         | 0        |

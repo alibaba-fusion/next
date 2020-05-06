@@ -41,8 +41,14 @@ class Item extends Component {
                 icon
             );
 
+        let title;
+
+        if (typeof children === 'string') {
+            title = children;
+        }
+
         const item = (
-            <Menu.Item {...others}>
+            <Menu.Item title={title} {...others}>
                 {iconEl}
                 {children}
             </Menu.Item>

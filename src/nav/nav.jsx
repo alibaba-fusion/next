@@ -59,7 +59,7 @@ class Nav extends Component {
          */
         inlineIndent: PropTypes.number,
         /**
-         * 初始展开所有的子导航，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效
+         * 首次渲染展开所有的子导航，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效
          */
         defaultOpenAll: PropTypes.bool,
         /**

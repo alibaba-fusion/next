@@ -103,11 +103,17 @@ class Base extends React.Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        /**
+         * 尺寸
+         * @enumdesc 小, 中, 大
+         */
+        size: PropTypes.oneOf(['small', 'medium', 'large']),
     };
 
     static defaultProps = {
         disabled: false,
         prefix: 'next-',
+        size: 'medium',
         maxLength: null,
         hasLimitHint: false,
         cutString: true,

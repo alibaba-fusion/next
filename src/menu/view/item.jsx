@@ -135,21 +135,10 @@ export default class Item extends Component {
     }
 
     getTitle(children) {
-        let labelString = '';
-
-        const loop = children => {
-            Children.forEach(children, child => {
-                if (isValidElement(child) && child.props.children) {
-                    loop(child.props.children);
-                } else if (typeof child === 'string') {
-                    labelString += child;
-                }
-            });
-        };
-
-        loop(children);
-
-        return labelString;
+        if (typeof children === 'string') {
+            return children;
+        }
+        return;
     }
 
     render() {
@@ -191,7 +180,7 @@ export default class Item extends Component {
             others['aria-hidden'] = true;
         }
 
-        others.tabIndex = root.tabbableKey === _key ? '0' : '-1';
+        others.tabIndex = root.state.tabbableKey === _key ? '0' : '-1';
 
         if (
             parentMode === 'inline' &&

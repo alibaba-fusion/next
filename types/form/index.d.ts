@@ -400,6 +400,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 内联表单
      */
     inline?: boolean;
+    fullWidth?: boolean;
 
     /**
      * 单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。

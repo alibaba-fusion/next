@@ -62,6 +62,8 @@ typings/
 .next
 next/
 
+.history
+
 # special demo file for locally reappear issue
 docs/**/demo/issues.md
 

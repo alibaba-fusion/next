@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Overlay from '../overlay';
 import zhCN from '../locale/zh-cn';
-import { focus, obj, func, events, dom } from '../util';
+import { focus, obj, func, events, dom, env } from '../util';
 import Inner from './inner';
 
 const noop = () => {};
@@ -10,6 +10,22 @@ const { limitTabRange } = focus;
 const { bindCtx } = func;
 const { pickOthers } = obj;
 const { getStyle, setStyle } = dom;
+
+// [fix issue #1609](https://github.com/alibaba-fusion/next/issues/1609)
+// https://stackoverflow.com/questions/19717907/getcomputedstyle-reporting-different-heights-between-chrome-safari-firefox-and-i
+function _getSize(dom, name) {
+    const boxSizing = getStyle(dom, 'boxSizing');
+
+    if (
+        env.ieVersion &&
+        ['width', 'height'].indexOf(name) !== -1 &&
+        boxSizing === 'border-box'
+    ) {
+        return parseFloat(dom.getBoundingClientRect()[name].toFixed(1));
+    } else {
+        return getStyle(dom, name);
+    }
+}
 
 /**
  * Dialog
@@ -201,7 +217,7 @@ export default class Dialog extends Component {
             const inner = this.getInner();
             if (inner) {
                 const node = this.getInnerNode();
-                if (this._lastDialogHeight !== getStyle(node, 'height')) {
+                if (this._lastDialogHeight !== _getSize(node, 'height')) {
                     this.revertSize(inner.bodyNode);
                 }
             }
@@ -221,10 +237,12 @@ export default class Dialog extends Component {
                     setStyle(node, 'top', `${minMargin}px`);
                 }
 
-                const height = getStyle(node, 'height');
+                const height = _getSize(node, 'height');
                 const viewportHeight =
                     window.innerHeight || document.documentElement.clientHeight;
-                if (viewportHeight < height + top * 2) {
+
+                // 分辨率和精确度的原因 高度计算的时候 可能会有1px内的偏差
+                if (viewportHeight < height + top * 2 - 1) {
                     const expectHeight = viewportHeight - top * 2;
                     this.adjustSize(inner, node, expectHeight);
                 } else {
@@ -239,8 +257,8 @@ export default class Dialog extends Component {
     adjustSize(inner, node, expectHeight) {
         const { headerNode, bodyNode, footerNode } = inner;
 
-        const headerHeight = headerNode ? getStyle(headerNode, 'height') : 0;
-        const footerHeight = footerNode ? getStyle(footerNode, 'height') : 0;
+        const headerHeight = headerNode ? _getSize(headerNode, 'height') : 0;
+        const footerHeight = footerNode ? _getSize(footerNode, 'height') : 0;
         const padding =
             getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
         let maxBodyHeight =
