@@ -385,6 +385,8 @@ class Menu extends Component {
          * 可配置的icons，包括 select 等
          */
         icons: PropTypes.object,
+        // content 是否为单层模式，目前主要在有 header 或 footer 的时候有意义
+        flatenContent: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -1002,6 +1004,7 @@ class Menu extends Component {
             selectMode,
             hozInLine,
             rtl,
+            flatenContent,
         } = this.props;
         const { newChildren } = this.state;
         const others = pickOthers(Object.keys(Menu.propTypes), this.props);
@@ -1028,7 +1031,7 @@ class Menu extends Component {
             </li>
         ) : null;
         const itemsElement =
-            header || footer ? (
+            !flatenContent && (header || footer) ? (
                 <ul
                     className={`${prefix}menu-content`}
                     ref={this.menuContentRef}
