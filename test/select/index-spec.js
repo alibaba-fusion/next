@@ -1158,6 +1158,9 @@ describe('virtual list', () => {
             <Select
                 placeholder="选择尺寸"
                 useVirtual
+                hasSelectAll
+                tagInline
+                mode="multiple"
                 showSearch
                 style={{ float: 'right' }}
                 dataSource={dataSource}

@@ -484,6 +484,7 @@ export default class Base extends React.Component {
                                     ref(c);
                                     this.menuRef = c;
                                 }}
+                                flatenContent
                                 {...customProps}
                             >
                                 {items}
