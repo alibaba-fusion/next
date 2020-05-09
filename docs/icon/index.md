@@ -25,24 +25,3 @@
 | ---- | --------------------------------------------------------------------------------- | ----------- | -------- |
 | size | 指定图标大小<br><br/>**可选值**<br/> xxs, xs, small, medium, large, xl, xxl, xxxl, inherit | Enum/Number | 'medium' |
 | type | 指定显示哪种图标                                                                          | String      | -        |
-
-### Icon.createFromIconfontCN
-
-通过自定义 iconfont源来使用使用svg格式的图片，默认有缓存处理，也可以通过设置 id 手动进行缓存（注意若页面上已经有同名 id 的 dom 元素，Icon将不再加载当前远程icon资源）
-
-```js
-import { Icon } from '@alifd/next';
-
-const CustomIcon = Icon.createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
-});
-
-// 同 Icon 基础元素一样，有相同的 size 设定
-ReactDOM.render(
-    <div>
-        <CustomIcon type="icon-store" size="small"/>
-        <CustomIcon type="icon-gift"/>
-        <CustomIcon type="icon-pic" size="large"/>
-    </div>
-, mountNode);
-```
