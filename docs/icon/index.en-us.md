@@ -16,9 +16,11 @@
 | size | To set the icon size<br><br>**option**:<br>'xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl', 'inherit' | Enum   | 'medium' |
 | type | Specify which icon to display                         | String   | -        |
 
+<!-- api-extra-start -->
+
 ### Icon.createFromIconfontCN
 
-If you want to use svg icon, use `Icon.createFromIconfontCN`. There is cache processing by default, or you can manually cache by setting `id` (note that if there is DOM element with the same `id` on the page, icon will not load the current remote icon resource)
+If you want to use svg icon, use `Icon.createFromIconfontCN`.
 
 ```js
 import { Icon } from '@alifd/next';
@@ -36,3 +38,4 @@ ReactDOM.render(
     </div>
 , mountNode);
 ```
+<!-- api-extra-end -->
