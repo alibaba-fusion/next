@@ -1,0 +1,968 @@
+{
+  "name": "Overlay",
+  "props": {
+    "children": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "弹层内容",
+      "docblock": "弹层内容"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示弹层",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示弹层"
+    },
+    "onRequestClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层请求关闭时触发事件的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层请求关闭时触发事件的回调函数\n@param {String} type 弹层关闭的来源\n@param {Object} e DOM 事件",
+      "params": [
+        {
+          "name": "type",
+          "description": "弹层关闭的来源",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "e",
+          "description": "DOM 事件",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "target": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "弹层定位的参照元素",
+      "defaultValue": {
+        "value": "Position.VIEWPORT",
+        "computed": true
+      },
+      "docblock": "弹层定位的参照元素"
+    },
+    "align": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)",
+      "defaultValue": {
+        "value": "'tl bl'",
+        "computed": false
+      },
+      "docblock": "弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)"
+    },
+    "offset": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px",
+      "defaultValue": {
+        "value": "[0, 0]",
+        "computed": false
+      },
+      "docblock": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px"
+    },
+    "container": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点",
+      "docblock": "渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点"
+    },
+    "hasMask": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示遮罩",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示遮罩"
+    },
+    "canCloseByEsc": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否支持 esc 按键关闭弹层",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否支持 esc 按键关闭弹层"
+    },
+    "canCloseByOutSideClick": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "点击弹层外的区域是否关闭弹层，不显示遮罩时生效",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "点击弹层外的区域是否关闭弹层，不显示遮罩时生效"
+    },
+    "canCloseByMask": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "点击遮罩区域是否关闭弹层，显示遮罩时生效",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "点击遮罩区域是否关闭弹层，显示遮罩时生效"
+    },
+    "beforeOpen": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层打开前触发事件的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层打开前触发事件的回调函数",
+      "params": [],
+      "returns": null
+    },
+    "onOpen": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层打开时触发事件的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层打开时触发事件的回调函数",
+      "params": [],
+      "returns": null
+    },
+    "afterOpen": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+      "params": [],
+      "returns": null
+    },
+    "beforeClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层关闭前触发事件的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层关闭前触发事件的回调函数",
+      "params": [],
+      "returns": null
+    },
+    "onClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层关闭时触发事件的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层关闭时触发事件的回调函数",
+      "params": [],
+      "returns": null
+    },
+    "afterClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+      "params": [],
+      "returns": null
+    },
+    "beforePosition": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层定位完成前触发的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层定位完成前触发的事件",
+      "params": [],
+      "returns": null
+    },
+    "onPosition": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层定位完成时触发的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层定位完成时触发的事件\n@param {Object} config 定位的参数\n@param {Array} config.align 对齐方式，如 ['cc', 'cc']（如果开启 needAdjust，可能和预先设置的 align 不同）\n@param {Number} config.top 距离视口顶部距离\n@param {Number} config.left 距离视口左侧距离\n@param {Object} node 定位参照的容器节点",
+      "params": [
+        {
+          "name": "config",
+          "description": "定位的参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "config.align",
+          "description": "对齐方式，如 ['cc', 'cc']（如果开启 needAdjust，可能和预先设置的 align 不同）",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "config.top",
+          "description": "距离视口顶部距离",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "config.left",
+          "description": "距离视口左侧距离",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "node",
+          "description": "定位参照的容器节点",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "shouldUpdatePosition": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式"
+    },
+    "autoFocus": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层打开时是否让其中的元素自动获取焦点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "弹层打开时是否让其中的元素自动获取焦点"
+    },
+    "needAdjust": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域"
+    },
+    "disableScroll": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用页面滚动",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否禁用页面滚动"
+    },
+    "cache": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "隐藏时是否保留子节点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "隐藏时是否保留子节点"
+    },
+    "safeNode": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组",
+      "docblock": "安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组"
+    },
+    "wrapperClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层的根节点的样式类",
+      "docblock": "弹层的根节点的样式类"
+    },
+    "wrapperStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层的根节点的内联样式",
+      "docblock": "弹层的根节点的内联样式",
+      "properties": []
+    },
+    "animation": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "object"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名",
+      "docblock": "配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名\n@default { in: 'expandInDown', out: 'expandOutUp' }",
+      "defaultValue": {
+        "value": "{ in: 'expandInDown', out: 'expandOutUp' }",
+        "computed": false
+      }
+    }
+  },
+  "methods": [
+    {
+      "name": "addDocumentEvents",
+      "docblock": "document global event",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "document global event"
+    }
+  ],
+  "subComponents": [
+    {
+      "name": "Popup",
+      "props": {
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "弹层内容",
+          "docblock": "弹层内容"
+        },
+        "visible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层当前是否显示",
+          "docblock": "弹层当前是否显示"
+        },
+        "onRequestClose": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层请求关闭时触发事件的回调函数",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层请求关闭时触发事件的回调函数\n@param {String} type 弹层关闭的来源\n@param {Object} e DOM 事件",
+          "params": [
+            {
+              "name": "type",
+              "description": "弹层关闭的来源",
+              "type": {
+                "name": "String"
+              }
+            },
+            {
+              "name": "e",
+              "description": "DOM 事件",
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "target": {
+          "type": {
+            "name": "any"
+          },
+          "required": false,
+          "description": "弹层定位的参照元素",
+          "docblock": "弹层定位的参照元素\n@default target 属性，即触发元素",
+          "defaultValue": {
+            "value": "target 属性，即触发元素",
+            "computed": false
+          }
+        },
+        "align": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "bool"
+              }
+            ]
+          },
+          "required": false,
+          "description": "弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)",
+          "defaultValue": {
+            "value": "'tl bl'",
+            "computed": false
+          },
+          "docblock": "弹层相对于参照元素的定位, 详见开发指南的[定位部分](#定位)"
+        },
+        "offset": {
+          "type": {
+            "name": "array"
+          },
+          "required": false,
+          "description": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px",
+          "defaultValue": {
+            "value": "[0, 0]",
+            "computed": false
+          },
+          "docblock": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px"
+        },
+        "container": {
+          "type": {
+            "name": "any"
+          },
+          "required": false,
+          "description": "渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点",
+          "docblock": "渲染组件的容器，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点"
+        },
+        "hasMask": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否显示遮罩",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否显示遮罩"
+        },
+        "canCloseByEsc": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否支持 esc 按键关闭弹层",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "是否支持 esc 按键关闭弹层"
+        },
+        "canCloseByOutSideClick": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "点击弹层外的区域是否关闭弹层，不显示遮罩时生效",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "点击弹层外的区域是否关闭弹层，不显示遮罩时生效"
+        },
+        "canCloseByMask": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "点击遮罩区域是否关闭弹层，显示遮罩时生效",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "点击遮罩区域是否关闭弹层，显示遮罩时生效"
+        },
+        "beforeOpen": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层打开前触发事件的回调函数",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层打开前触发事件的回调函数",
+          "params": [],
+          "returns": null
+        },
+        "onOpen": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层打开时触发事件的回调函数",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层打开时触发事件的回调函数",
+          "params": [],
+          "returns": null
+        },
+        "afterOpen": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层打开后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+          "params": [],
+          "returns": null
+        },
+        "beforeClose": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层关闭前触发事件的回调函数",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层关闭前触发事件的回调函数",
+          "params": [],
+          "returns": null
+        },
+        "onClose": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层关闭时触发事件的回调函数",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层关闭时触发事件的回调函数",
+          "params": [],
+          "returns": null
+        },
+        "afterClose": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层关闭后触发事件的回调函数, 如果有动画，则在动画结束后触发",
+          "params": [],
+          "returns": null
+        },
+        "beforePosition": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层定位完成前触发的事件",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层定位完成前触发的事件",
+          "params": [],
+          "returns": null
+        },
+        "onPosition": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层定位完成时触发的事件",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层定位完成时触发的事件\n@param {Object} config 定位的参数\n@param {Array} config.align 对齐方式，如 ['cc', 'cc']（如果开启 needAdjust，可能和预先设置的 align 不同）\n@param {Number} config.top 距离视口顶部距离\n@param {Number} config.left 距离视口左侧距离\n@param {Object} node 定位参照的容器节点",
+          "params": [
+            {
+              "name": "config",
+              "description": "定位的参数",
+              "type": {
+                "name": "Object"
+              }
+            },
+            {
+              "name": "config.align",
+              "description": "对齐方式，如 ['cc', 'cc']（如果开启 needAdjust，可能和预先设置的 align 不同）",
+              "type": {
+                "name": "Array"
+              }
+            },
+            {
+              "name": "config.top",
+              "description": "距离视口顶部距离",
+              "type": {
+                "name": "Number"
+              }
+            },
+            {
+              "name": "config.left",
+              "description": "距离视口左侧距离",
+              "type": {
+                "name": "Number"
+              }
+            },
+            {
+              "name": "node",
+              "description": "定位参照的容器节点",
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "shouldUpdatePosition": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式"
+        },
+        "autoFocus": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层打开时是否让其中的元素自动获取焦点",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "弹层打开时是否让其中的元素自动获取焦点"
+        },
+        "needAdjust": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "当弹层由于页面滚动等情况不在可视区域时，是否自动调整定位以出现在可视区域"
+        },
+        "disableScroll": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁用页面滚动",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否禁用页面滚动"
+        },
+        "cache": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "隐藏时是否保留子节点",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "隐藏时是否保留子节点"
+        },
+        "safeNode": {
+          "type": {
+            "name": "any"
+          },
+          "required": false,
+          "description": "安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组",
+          "docblock": "安全节点，当点击 document 的时候，如果包含该节点则不会关闭弹层，如果是函数需要返回 ref，如果是字符串则是该 DOM 的 id，也可以直接传入 DOM 节点，或者以上值组成的数组"
+        },
+        "wrapperClassName": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "弹层的根节点的样式类",
+          "docblock": "弹层的根节点的样式类"
+        },
+        "wrapperStyle": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "弹层的根节点的内联样式",
+          "docblock": "弹层的根节点的内联样式",
+          "properties": []
+        },
+        "animation": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "object"
+              },
+              {
+                "name": "bool"
+              }
+            ]
+          },
+          "required": false,
+          "description": "配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名",
+          "docblock": "配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名\n@default { in: 'expandInDown', out: 'expandOutUp' }",
+          "defaultValue": {
+            "value": "{ in: 'expandInDown', out: 'expandOutUp' }",
+            "computed": false
+          }
+        },
+        "trigger": {
+          "type": {
+            "name": "element"
+          },
+          "required": false,
+          "description": "触发弹层显示或隐藏的元素",
+          "docblock": "触发弹层显示或隐藏的元素"
+        },
+        "triggerType": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "array"
+              }
+            ]
+          },
+          "required": false,
+          "description": "触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']",
+          "defaultValue": {
+            "value": "'hover'",
+            "computed": false
+          },
+          "docblock": "触发弹层显示或隐藏的操作类型，可以是 'click'，'hover'，'focus'，或者它们组成的数组，如 ['hover', 'focus']"
+        },
+        "triggerClickKeycode": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "number"
+              },
+              {
+                "name": "array"
+              }
+            ]
+          },
+          "required": false,
+          "description": "当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码",
+          "defaultValue": {
+            "value": "[KEYCODE.SPACE, KEYCODE.ENTER]",
+            "computed": false
+          },
+          "docblock": "当 triggerType 为 click 时才生效，可自定义触发弹层显示的键盘码"
+        },
+        "defaultVisible": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "弹层默认是否显示",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "弹层默认是否显示"
+        },
+        "onVisibleChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "弹层显示或隐藏时触发的回调函数",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "弹层显示或隐藏时触发的回调函数\n@param {Boolean} visible 弹层是否显示\n@param {String} type 触发弹层显示或隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发\n@param {Object} e DOM事件",
+          "params": [
+            {
+              "name": "visible",
+              "description": "弹层是否显示",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            {
+              "name": "type",
+              "description": "触发弹层显示或隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+              "type": {
+                "name": "String"
+              }
+            },
+            {
+              "name": "e",
+              "description": "DOM事件",
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "设置此属性，弹层无法显示或隐藏",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "设置此属性，弹层无法显示或隐藏"
+        },
+        "delay": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效",
+          "defaultValue": {
+            "value": "200",
+            "computed": false
+          },
+          "docblock": "弹层显示或隐藏的延时时间（以毫秒为单位），在 triggerType 被设置为 hover 时生效"
+        },
+        "canCloseByTrigger": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "trigger 是否可以关闭弹层",
+          "defaultValue": {
+            "value": "true",
+            "computed": false
+          },
+          "docblock": "trigger 是否可以关闭弹层"
+        },
+        "followTrigger": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否跟随trigger滚动",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否跟随trigger滚动"
+        }
+      },
+      "methods": [],
+      "description": "继承 Overlay 的 API，除非特别说明"
+    }
+  ]
+}
