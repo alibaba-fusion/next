@@ -22,6 +22,10 @@ const CustomIcon = Icon.createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
 });
 
+const CustomIcon2 = Icon.createFromIconfontCN({
+    scriptUrl: '//at.alicdn.com/t/font_1464085_egnk4s8yv2f.js',
+});
+
 ReactDOM.render(
     <div>
         <div className="icon-list-2">
