@@ -6,14 +6,14 @@ import Icon from './index';
 const customCache = new Set();
 
 /** Icon.createFromIconfontCN
- *  @description 通过自定义 iconfont源来使用使用svg格式的图片，默认有缓存处理，也可以通过设置 id 手动进行缓存（注意若页面上已经有同名 id 的 dom 元素，Icon将不再加载当前远程icon资源）
+ *  @description 通过自定义 iconfont源来使用使用svg格式的图片
  *  @order 1
  */
 export default function createFromIconfontCN(options = {}) {
-    const { scriptUrl, extraCommonProps = {}, id } = options;
+    const { scriptUrl, extraCommonProps = {} } = options;
     let hasExist = customCache.has(scriptUrl);
 
-    if ('id' in options && document.getElementById(id)) {
+    if (document.querySelector(`script[data-namespace="${scriptUrl}"]`)) {
         hasExist = true;
     }
 
@@ -34,10 +34,6 @@ export default function createFromIconfontCN(options = {}) {
         const script = document.createElement('script');
         script.setAttribute('src', scriptUrl);
         script.setAttribute('data-namespace', scriptUrl);
-        if ('id' in options) {
-            script.setAttribute('id', id);
-        }
-
         customCache.add(scriptUrl);
         document.body.appendChild(script);
     }
