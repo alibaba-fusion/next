@@ -72,6 +72,10 @@ describe('CardUpload', () => {
     });
 
     describe('[behavior]', () => {
+        it('should support prefix', () => {
+            const wrapper = mount(<CardUpload prefix="test-" />);
+            assert(wrapper.find('div.test-upload').length === 1);
+        });
         it('should support controlled `value`', () => {
             const wrapper = mount(<CardUpload value={[]} />);
             assert(wrapper.props().value.length === 0);
