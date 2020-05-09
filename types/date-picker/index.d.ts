@@ -9,6 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -145,6 +146,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     type?: 'date' | 'month' | 'year',
 
     /**
@@ -311,6 +313,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -434,6 +437,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */

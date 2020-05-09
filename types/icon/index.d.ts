@@ -25,4 +25,16 @@ export interface IconProps extends React.HTMLAttributes<HTMLElement>, CommonProp
         | 'inherit';
 }
 
-export default class Icon extends React.Component<IconProps, any> {}
+export interface iconOptions {
+    /**
+     * 如果页面上已经有同 id 的标签，那么不会再加载这个图标库
+     */
+    id?: string;
+    scriptUrl: string;
+}
+
+export class CustomIcon extends React.Component<IconProps, any> {}
+
+export default class Icon extends React.Component<IconProps, any> {
+    static createFromIconfontCN(options: iconOptions): typeof CustomIcon;
+}
