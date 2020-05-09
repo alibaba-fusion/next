@@ -147,6 +147,7 @@ class Card extends Base {
                 <Upload
                     {...othersForUpload}
                     shape="card"
+                    prefix={prefix}
                     disabled={disabled}
                     action={action}
                     timeout={timeout}
