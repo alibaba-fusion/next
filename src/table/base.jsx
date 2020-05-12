@@ -362,6 +362,10 @@ class Table extends React.Component {
         return true;
     }
 
+    componentDidUpdate() {
+        this.notRenderCellIndex = [];
+    }
+
     normalizeChildrenState(props) {
         let columns = props.columns;
         if (props.children) {

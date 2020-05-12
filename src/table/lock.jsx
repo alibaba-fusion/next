@@ -76,6 +76,7 @@ export default function lock(BaseComponent) {
 
         componentDidUpdate() {
             this.adjustSize();
+            this._isLock = false;
         }
 
         componentWillUnmount() {
