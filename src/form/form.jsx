@@ -84,7 +84,7 @@ export default class Form extends React.Component {
          */
         fullWidth: PropTypes.bool,
         /**
-         * 标签的位置
+         * 标签的位置, 如果不设置 labelCol 和 wrapperCol 那么默认是标签在上
          * @enumdesc 上, 左, 内
          */
         labelAlign: PropTypes.oneOf(['top', 'left', 'inset']),
