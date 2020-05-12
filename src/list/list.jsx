@@ -58,7 +58,7 @@ class List extends Component {
         const classes = classNames(
             `${prefix}list`,
             {
-                [`${prefix}list-small`]: size === 'small',
+                [`${prefix}list-${size}`]: size,
                 [`${prefix}list-divider`]: divider,
             },
             className

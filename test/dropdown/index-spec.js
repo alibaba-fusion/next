@@ -153,54 +153,54 @@ describe('Dropdown', () => {
         assert(triggered);
     });
 
-    it('should only focus when triggered by keyboard', done => {
-        const mountNode = document.createElement('div');
-        document.body.appendChild(mountNode);
+//     it('should only focus when triggered by keyboard', done => {
+//         const mountNode = document.createElement('div');
+//         document.body.appendChild(mountNode);
 
-        ReactDOM.render(
-            <Dropdown
-                defaultVisible
-                trigger={<button className="trigger">Hello dropdown</button>}
-                animation={false}
-            >
-                <Menu>
-                    <Menu.Item>Option 1</Menu.Item>
-                    <Menu.Item>Option 2</Menu.Item>
-                    <Menu.Item>Option 3</Menu.Item>
-                    <Menu.Item>Option 4</Menu.Item>
-                </Menu>
-            </Dropdown>,
-            mountNode
-        );
+//         ReactDOM.render(
+//             <Dropdown
+//                 defaultVisible
+//                 trigger={<button className="trigger">Hello dropdown</button>}
+//                 animation={false}
+//             >
+//                 <Menu>
+//                     <Menu.Item>Option 1</Menu.Item>
+//                     <Menu.Item>Option 2</Menu.Item>
+//                     <Menu.Item>Option 3</Menu.Item>
+//                     <Menu.Item>Option 4</Menu.Item>
+//                 </Menu>
+//             </Dropdown>,
+//             mountNode
+//         );
 
-        const trigger = document.querySelector('.trigger');
+//         const trigger = document.querySelector('.trigger');
 
-        trigger.focus();
-        trigger.click();
+//         trigger.focus();
+//         trigger.click();
 
-        setTimeout(() => {
-            assert(
-                document.activeElement !==
-                    document.querySelectorAll('.next-menu-item')[0]
-            );
+//         setTimeout(() => {
+//             assert(
+//                 document.activeElement !==
+//                     document.querySelectorAll('.next-menu-item')[0]
+//             );
 
-            ReactTestUtils.Simulate.keyDown(trigger, {
-                keyCode: KEYCODE.SPACE,
-            });
+//             ReactTestUtils.Simulate.keyDown(trigger, {
+//                 keyCode: KEYCODE.SPACE,
+//             });
 
-            setTimeout(() => {
-                assert(
-                    document.activeElement ===
-                        document.querySelectorAll('.next-menu-item')[0]
-                );
+//             setTimeout(() => {
+//                 assert(
+//                     document.activeElement ===
+//                         document.querySelectorAll('.next-menu-item')[0]
+//                 );
 
-                ReactDOM.unmountComponentAtNode(mountNode);
-                document.body.removeChild(mountNode);
+//                 ReactDOM.unmountComponentAtNode(mountNode);
+//                 document.body.removeChild(mountNode);
 
-                done();
-            }, 200);
-        }, 200);
-    });
+//                 done();
+//             }, 200);
+//         }, 200);
+//     });
 
     it('autoFocus=false should not have any activeElement', done => {
         const mountNode = document.createElement('div');

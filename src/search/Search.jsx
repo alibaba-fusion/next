@@ -130,6 +130,10 @@ class Search extends React.Component {
          * 可配置的icons，包括 search 等
          */
         icons: PropTypes.object,
+        /**
+         * 是否自动高亮第一个元素
+         */
+        autoHighlightFirstItem: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -147,6 +151,7 @@ class Search extends React.Component {
         hasClear: false,
         disabled: false,
         icons: {},
+        autoHighlightFirstItem: true,
     };
 
     constructor(props) {
@@ -162,6 +167,8 @@ class Search extends React.Component {
             value: typeof value === 'undefined' ? '' : value,
             filterValue,
         };
+
+        this.highlightKey = null;
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -188,12 +195,27 @@ class Search extends React.Component {
         return null;
     }
 
-    onChange = (value, ...argv) => {
+    onChange = (value, type, ...argv) => {
+        if (this.props.disabled) {
+            return;
+        }
+
         if (!('value' in this.props)) {
             this.setState({ value });
         }
 
-        this.props.onChange(value, ...argv);
+        this.props.onChange(value, type, ...argv);
+        if (type === 'enter') {
+            this.highlightKey = '';
+            this.props.onSearch(value, this.state.filterValue);
+        }
+    };
+
+    onPressEnter = () => {
+        if (this.highlightKey) {
+            return;
+        }
+        this.onSearch();
     };
 
     onSearch = () => {
@@ -211,6 +233,10 @@ class Search extends React.Component {
         this.props.onFilterChange(filterValue);
     };
 
+    onToggleHighlightItem = highlightKey => {
+        this.highlightKey = highlightKey;
+    };
+
     onKeyDown = e => {
         if (this.props.disabled) {
             return;
@@ -220,6 +246,17 @@ class Search extends React.Component {
         }
         this.onSearch();
     };
+
+    saveInputRef = ref => {
+        if (ref && ref.getInstance()) {
+            this.inputRef = ref.getInstance();
+        }
+    };
+
+    focus(...args) {
+        this.inputRef.focus(...args);
+    }
+
     render() {
         const {
             shape,
@@ -243,6 +280,7 @@ class Search extends React.Component {
             locale,
             rtl,
             icons,
+            autoHighlightFirstItem,
             ...others
         } = this.props;
 
@@ -354,11 +392,14 @@ class Search extends React.Component {
                     placeholder={placeholder}
                     dataSource={dataSource}
                     innerAfter={searchIcon}
-                    onPressEnter={this.onSearch}
+                    onPressEnter={this.onPressEnter}
                     value={this.state.value}
                     onChange={this.onChange}
+                    onToggleHighlightItem={this.onToggleHighlightItem}
+                    autoHighlightFirstItem={autoHighlightFirstItem}
                     popupContent={popupContent}
                     disabled={disabled}
+                    ref={this.saveInputRef}
                 />
             </Group>
         );

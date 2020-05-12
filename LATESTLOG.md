@@ -1,13 +1,13 @@
 # Latest Log 
 
-## [1.19.18](https://github.com/alibaba-fusion/next/compare/1.19.17...1.19.18) (2020-03-09)
+## [1.20.3](https://github.com/alibaba-fusion/next/compare/1.20.2...1.20.3) (2020-05-09)
 
 
 ### Bug Fixes
 
-* **DatePicker:** support string placeholder ([4316946](https://github.com/alibaba-fusion/next/commit/4316946))
-* **Icon:** add className when use iconfont ([face9a4](https://github.com/alibaba-fusion/next/commit/face9a4))
-* **TimePicker:** resolve bugs on blur handler, close [#1533](https://github.com/alibaba-fusion/next/issues/1533) ([ca450ab](https://github.com/alibaba-fusion/next/commit/ca450ab))
-* **Typescript:** second params is not required in ts ([#1657](https://github.com/alibaba-fusion/next/issues/1657)) ([5aa47ba](https://github.com/alibaba-fusion/next/commit/5aa47ba))
+* **Icon:** add id for custom icon ([e852745](https://github.com/alibaba-fusion/next/commit/e852745))
+* **Select:** error when useVirtual with header or footer, close [#1821](https://github.com/alibaba-fusion/next/issues/1821) ([3af6d61](https://github.com/alibaba-fusion/next/commit/3af6d61))
+* **Select:** item should stay in valueRender props ([abfb3f6](https://github.com/alibaba-fusion/next/commit/abfb3f6))
+* **Typescript:**  add followTrigger for cascader-select([#1822](https://github.com/alibaba-fusion/next/issues/1822)) ([6e1d222](https://github.com/alibaba-fusion/next/commit/6e1d222))
 
 

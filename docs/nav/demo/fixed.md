@@ -25,7 +25,7 @@ const footer = <a className="login-in" href="javascript:;">Login in</a>;
 
 ReactDOM.render(
     <div>
-    请查看 <a href="https://codepen.io/aboutblank/pen/JjdNKrm">https://codepen.io/aboutblank/pen/JjdNKrm</a>
+    请查看 <a target="_blank" rel="noopener noreferrer" href="https://codepen.io/aboutblank/pen/JjdNKrm">https://codepen.io/aboutblank/pen/JjdNKrm</a>
     </div>
     , mountNode);
 ````

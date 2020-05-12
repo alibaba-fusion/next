@@ -175,7 +175,7 @@ class Rating extends Component {
     getRenderResult() {
         const { count } = this.props;
         const { iconSpace, iconSize } = this.state;
-        const icon = this.refs['rating-icon-0'];
+        const icon = this['refs-rating-icon-0'];
 
         if (icon && this.underlayNode) {
             const newIconSize = icon.offsetWidth;
@@ -357,6 +357,10 @@ class Rating extends Component {
         return iconSize * (ceilValue - 1) + ceilValue * iconSpace;
     }
 
+    saveRef = (ref, i) => {
+        this[`refs-rating-icon-${i}`] = ref;
+    };
+
     render() {
         const {
             id,
@@ -410,9 +414,13 @@ class Rating extends Component {
                 />
             );
 
+            const saveRefs = ref => {
+                this.saveRef(ref, i);
+            };
+
             underlay.push(
                 <span
-                    ref={`rating-icon-${i}`}
+                    ref={saveRefs}
                     key={`underlay-${i}`}
                     className={`${prefix}rating-icon`}
                 >

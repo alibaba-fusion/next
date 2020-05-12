@@ -462,9 +462,9 @@ class DatePicker extends Component {
         });
     };
 
-    onOk = () => {
+    onOk = value => {
         this.onVisibleChange(false, 'okBtnClick');
-        this.onValueChange(this.state.value, 'onOk');
+        this.onValueChange(value || this.state.value, 'onOk');
     };
 
     renderPreview(others) {
@@ -704,7 +704,7 @@ class DatePicker extends Component {
                     hint={
                         <Icon
                             type="calendar"
-                            className={`${prefix}date-picker-symble-calendar-icon`}
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
                     hasClear={allowClear}

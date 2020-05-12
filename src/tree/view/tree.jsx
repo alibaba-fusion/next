@@ -556,12 +556,14 @@ class Tree extends Component {
             st.checkedKeys = checkedKeys;
         }
 
-        st.indeterminateKeys = getIndeterminateKeys(
-            st.checkedKeys || state.checkedKeys || [],
-            props.checkStrictly,
-            k2n,
-            p2n
-        );
+        st.indeterminateKeys = props.checkStrictly
+            ? (props.checkedKeys && props.checkedKeys.indeterminate) || []
+            : getIndeterminateKeys(
+                  st.checkedKeys || state.checkedKeys || [],
+                  props.checkStrictly,
+                  k2n,
+                  p2n
+              );
 
         return {
             ...st,
@@ -819,6 +821,7 @@ class Tree extends Component {
         });
 
         const ps = Object.keys(_p2n);
+
         let currentPos = pos;
         const nums = pos.split('-');
 
@@ -930,6 +933,7 @@ class Tree extends Component {
             _k2n,
             indeterminateKeys,
         } = this.state;
+
         const pos = _k2n[key].pos;
 
         return {
@@ -1010,7 +1014,7 @@ class Tree extends Component {
     }
 
     getDropPosition(e, node) {
-        const labelWrapperNode = node.refs.labelWrapper;
+        const labelWrapperNode = node.labelWrapperEl;
         const offsetTop = getOffset(labelWrapperNode).top;
         const offsetHeight = labelWrapperNode.offsetHeight;
         const pageY = e.pageY;

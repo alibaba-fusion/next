@@ -5,8 +5,17 @@ import Icon from './index';
 
 const customCache = new Set();
 
+/** Icon.createFromIconfontCN
+ *  @description 通过自定义 iconfont源来使用使用svg格式的图片
+ *  @order 1
+ */
 export default function createFromIconfontCN(options = {}) {
     const { scriptUrl, extraCommonProps = {} } = options;
+    let hasExist = customCache.has(scriptUrl);
+
+    if (document.querySelector(`script[data-namespace="${scriptUrl}"]`)) {
+        hasExist = true;
+    }
 
     /**
      * DOM API required.
@@ -20,7 +29,7 @@ export default function createFromIconfontCN(options = {}) {
         typeof document.createElement === 'function' &&
         typeof scriptUrl === 'string' &&
         scriptUrl.length &&
-        !customCache.has(scriptUrl)
+        !hasExist
     ) {
         const script = document.createElement('script');
         script.setAttribute('src', scriptUrl);

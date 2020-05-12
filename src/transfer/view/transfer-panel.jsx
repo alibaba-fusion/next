@@ -218,29 +218,39 @@ export default class TransferPanel extends Component {
                 style={listStyle}
                 ref={this.getListDOM}
             >
-                {dataSource.map(item => (
-                    <TransferItem
-                        key={item.value}
-                        prefix={prefix}
-                        mode={mode}
-                        checked={value.indexOf(item.value) > -1}
-                        disabled={disabled || item.disabled}
-                        item={item}
-                        onCheck={this.handleCheck}
-                        onClick={onMove}
-                        needHighlight={!this.firstRender && !this.searched}
-                        itemRender={itemRender}
-                        draggable={sortable}
-                        onDragStart={this.handleItemDragStart}
-                        onDragOver={this.handleItemDragOver}
-                        onDragEnd={this.handleItemDragEnd}
-                        onDrop={this.handleItemDrop}
-                        dragPosition={dragPosition}
-                        dragValue={dragValue}
-                        dragOverValue={dragOverValue}
-                        panelPosition={position}
-                    />
-                ))}
+                {dataSource.map(item => {
+                    const others =
+                        'title' in item
+                            ? {
+                                  title: item.title,
+                              }
+                            : {};
+
+                    return (
+                        <TransferItem
+                            key={item.value}
+                            prefix={prefix}
+                            mode={mode}
+                            checked={value.indexOf(item.value) > -1}
+                            disabled={disabled || item.disabled}
+                            item={item}
+                            onCheck={this.handleCheck}
+                            onClick={onMove}
+                            needHighlight={!this.firstRender && !this.searched}
+                            itemRender={itemRender}
+                            draggable={sortable}
+                            onDragStart={this.handleItemDragStart}
+                            onDragOver={this.handleItemDragOver}
+                            onDragEnd={this.handleItemDragEnd}
+                            onDrop={this.handleItemDrop}
+                            dragPosition={dragPosition}
+                            dragValue={dragValue}
+                            dragOverValue={dragOverValue}
+                            panelPosition={position}
+                            {...others}
+                        />
+                    );
+                })}
             </Menu>
         ) : (
             <div className={newClassName} style={listStyle}>

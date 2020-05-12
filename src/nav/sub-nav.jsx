@@ -84,11 +84,18 @@ class SubNav extends Component {
             <span key="label">{label}</span>,
         ];
 
+        let title;
+
+        if (typeof label === 'string') {
+            title = label;
+        }
+
         return (
             <Menu.SubMenu
                 className={cls}
                 label={newLabel}
                 level={level}
+                title={title}
                 {...others}
             >
                 {children}

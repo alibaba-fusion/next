@@ -1,5 +1,5 @@
 /// <reference types="react" />
-
+import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
 
@@ -9,6 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -47,7 +48,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -145,6 +146,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     type?: 'date' | 'month' | 'year',
 
     /**
@@ -185,7 +187,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -311,6 +313,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -344,7 +347,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -434,6 +437,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -482,7 +486,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚

@@ -411,7 +411,7 @@ describe('Nav', () => {
         }, 500);
     });
 
-    it('should support fixed', () => {
+    it('should support fixed', (done) => {
         wrapper = render(
             <Nav
                 style={{ left: 0, top: 0, position: 'fixed', width: 70}}
@@ -439,8 +439,13 @@ describe('Nav', () => {
             </Nav>
         );
 
-        const popup = document.querySelectorAll('.fixed-popup-sub3');
-        assert(popup[0].style.top === '80px');
-        assert(popup[0].style.left === '68px');
+        setTimeout(() => {
+            const popup = document.querySelectorAll('.fixed-popup-sub3');
+            assert(popup[0].style.top === '80px');
+            assert(popup[0].style.left === '68px');
+
+            done();
+        }, 500);
+
     });
 });

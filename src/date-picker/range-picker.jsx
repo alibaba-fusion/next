@@ -664,10 +664,10 @@ class RangePicker extends Component {
         });
     };
 
-    onOk = () => {
+    onOk = value => {
         this.onVisibleChange(false, 'okBtnClick');
         this.onValueChange(
-            [this.state.startValue, this.state.endValue],
+            value || [this.state.startValue, this.state.endValue],
             'onOk'
         );
     };
@@ -1132,7 +1132,7 @@ class RangePicker extends Component {
                     hint={
                         <Icon
                             type="calendar"
-                            className={`${prefix}date-picker-symble-calendar-icon`}
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
                         />
                     }
                 />

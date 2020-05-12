@@ -1,14 +1,15 @@
-import React, { Component, Children } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import React, { Component, Children } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
 import { support, events, dom } from '../../util';
 
 const getHeight = el => dom.getStyle(el, 'height');
 const setHeight = (el, height) => dom.setStyle(el, 'height', height);
 
 /** Step */
-export default class Step extends Component {
+class Step extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -63,6 +64,14 @@ export default class Step extends Component {
         prefix: PropTypes.string,
     };
 
+    static getDerivedStateFromProps(newProps) {
+        if ('current' in newProps) {
+            return {
+                current: newProps.current,
+            };
+        }
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -78,15 +87,6 @@ export default class Step extends Component {
         if (!support.flex) {
             this.resize();
             events.on(window, 'resize', this.resize);
-        }
-        this.adjustHeight();
-    }
-
-    componentWillReceiveProps(newProps) {
-        if ('current' in newProps) {
-            this.setState({
-                current: newProps.current,
-            });
         }
         this.adjustHeight();
     }
@@ -270,3 +270,5 @@ export default class Step extends Component {
         );
     }
 }
+
+export default polyfill(Step);

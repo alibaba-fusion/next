@@ -74,7 +74,7 @@ export default class Dots extends React.Component {
             };
 
             let docIndex = i;
-            let currentSlideIndex = i;
+            let currentSlideIndex = currentSlide;
             if (rtl) {
                 docIndex = dotCount - 1 - i;
                 currentSlideIndex = dotCount - 1 - currentSlide;

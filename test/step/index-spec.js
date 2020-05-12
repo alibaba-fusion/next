@@ -126,6 +126,23 @@ describe('Step', () => {
             assert(wrapper2.find('.next-step-label-horizontal').length === 1);
         });
 
+        it('should render when direction and labelPlacement are both hoz', () => {
+            const steps = [
+                "知道自己不懂",
+                "不知道自己懂",
+                "知道自己懂了"
+            ].map((item, index) => <Step.Item key={index} title={item} itemRender={() => (
+                <Icon type="smile" />
+            )} />);
+            const wrapper = mount(
+                <Step current={1} shape="circle" direction="hoz" labelPlacement="hoz">
+                    {steps}
+                </Step>
+            );
+            assert(wrapper.find('.next-step-horizontal').length === 1);
+            assert(wrapper.find('.next-step-label-horizontal').length === 1);
+        });
+
         it('should render with icon ', () => {
             const wrapper = mount(
                 <Step current={1}>
@@ -285,7 +302,7 @@ describe('Step', () => {
                 // 重新设置为垂直居中 应该去掉 next-step-item-tail 的宽度值
                 wrapper.setProps({labelPlacement: 'ver'}, () => {
                     assert(
-                        $tail.length === 3 && 
+                        $tail.length === 3 &&
                         $tail.at(0).instance().style.width === ""
                     );
                 });
@@ -342,7 +359,7 @@ describe('Step', () => {
         //     wrapper
         //         .find('.next-step-item-first')
         //         .simulate('keydown', {keyCode: 40});
-            
+
         //     assert(wrapper.find('.next-step-item-body').at(1).instance().getAttribute('tabindex')==='0');
 
         //     wrapper
@@ -359,7 +376,7 @@ describe('Step', () => {
         //         .find('.next-step-item-first')
         //         .simulate('keydown', {keyCode: 37});
         //     assert(wrapper.find('.next-step-item-body').at(0).instance().getAttribute('tabindex')==='0');
-            
+
         // });
     });
 });

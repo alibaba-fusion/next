@@ -128,8 +128,13 @@ export default class CheckableItem extends Component {
             newProps.onClick = this.handleClick;
         }
 
+        let title;
+        if (typeof children === 'string') {
+            title = children;
+        }
+
         return (
-            <Item aria-checked={checked} {...newProps}>
+            <Item aria-checked={checked} title={title} {...newProps}>
                 {this.renderCheck()}
                 <span className={`${prefix}menu-item-text`} id={this.id}>
                     {children}

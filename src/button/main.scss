@@ -47,6 +47,12 @@
             vertical-align: middle;
         }
 
+        > #{$btn-prefix}-helper {
+            text-decoration: inherit;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
         &.hover,
         &:hover {
             box-shadow: $btn-shadow-hover;

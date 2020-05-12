@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
@@ -32,11 +32,6 @@ export default class Input extends Base {
          * @enumdesc 错误, 校验中, 成功, 警告
          */
         state: PropTypes.oneOf(['error', 'loading', 'success', 'warning']),
-        /**
-         * 尺寸
-         * @enumdesc 小, 中, 大
-         */
-        size: PropTypes.oneOf(['small', 'medium', 'large']),
         /**
          * 按下回车的回调
          */
@@ -101,7 +96,6 @@ export default class Input extends Base {
 
     static defaultProps = {
         ...Base.defaultProps,
-        size: 'medium',
         autoComplete: 'off',
         hasBorder: true,
         isPreview: false,
@@ -179,12 +173,20 @@ export default class Input extends Base {
         if (hint || showClear) {
             let hintIcon = null;
             if (hint) {
-                hintIcon =
-                    typeof hint === 'string' ? (
+                if (typeof hint === 'string') {
+                    hintIcon = (
                         <Icon type={hint} className={`${prefix}input-hint`} />
-                    ) : (
-                        hint
                     );
+                } else if (isValidElement(hint)) {
+                    hintIcon = cloneElement(hint, {
+                        className: classNames(
+                            hint.props.className,
+                            `${prefix}input-hint`
+                        ),
+                    });
+                } else {
+                    hintIcon = hint;
+                }
             } else {
                 hintIcon = (
                     <Icon

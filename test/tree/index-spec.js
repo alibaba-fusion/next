@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
+import propTypes from 'prop-types';
 import assert from 'power-assert';
 import ReactTestUtils from 'react-dom/test-utils';
 import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
 import Button from '../../src/button/index';
 import '../../src/tree/style.js';
+
+
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it beforeEach afterEach */
@@ -46,7 +49,7 @@ const dataSource = [
                         label: '裙子',
                         className: 'k-6',
                         key: '6',
-                    },
+                    }
                 ],
             },
         ],
@@ -129,11 +132,19 @@ class CheckDemo extends Component {
 }
 
 class DragDemo extends React.Component {
+    static propTypes = {
+        canDrop: propTypes.func
+    }
+
+    static defaultProps = {
+        canDrop: () => true
+    }
+
     constructor(props) {
         super(props);
 
         this.state = {
-            gData: cloneData(dataSource),
+            gData: cloneData(dataSource)
         };
     }
 
@@ -179,6 +190,7 @@ class DragDemo extends React.Component {
             gData: data,
         });
     }
+
     render() {
         return (
             <Tree
@@ -187,6 +199,7 @@ class DragDemo extends React.Component {
                 defaultExpandAll
                 dataSource={this.state.gData}
                 onDrop={this.onDrop.bind(this)}
+                canDrop={this.props.canDrop.bind(this)}
             />
         );
     }
@@ -248,6 +261,7 @@ describe('Tree', () => {
 
     it('should render by children', () => {
         const loop = data =>
+
             data.map(item => {
                 return (
                     <TreeNode
@@ -255,6 +269,7 @@ describe('Tree', () => {
                         {...item}
                         className={`k-${item.key}`}
                     >
+
                         {item.children ? loop(item.children) : null}
                     </TreeNode>
                 );
@@ -632,6 +647,95 @@ describe('Tree', () => {
         ['1', '5', '6'].forEach(key => assertChecked(key, true));
     });
 
+    it('should support setting indeterminate key when checkStrictly true', done => {
+        class Demo extends Component {
+            constructor () {
+                super();
+
+                setTimeout(() => {
+                    ['1', '2', '3'].forEach(key => assertChecked(key, true));
+                    ['4', '5', '6'].forEach(key => assertIndeterminate(key, true));
+
+                    this.setState({ checkedKeys: [] });
+                    ['4', '5', '6'].forEach(key => assertChecked(key, false));
+
+                    this.setState({
+                        checkedKeys: {
+                            checked: '1',
+                            indeterminate: '2'
+                        }
+                    });
+                    assertChecked('1', true);
+                    assertIndeterminate('2', true);
+
+                    done();
+                }, 100)
+            }
+
+            state = {
+                checkedKeys: {
+                    checked: ['1', '2', '3'],
+                    indeterminate: ['4', '5', '6']
+                }
+            }
+
+            render() {
+                return (
+                    <Tree
+                        defaultExpandAll
+                        checkable
+                        checkStrictly
+                        checkedKeys={this.state.checkedKeys}
+                        dataSource={cloneData(dataSource, {
+                            2: { disabled: false }
+                        })}
+                    />
+                );
+            }
+        }
+
+        ReactDOM.render(<Demo />, mountNode);
+    });
+
+    it('should support update indeterminate key when dataSource change', done => {
+        class Demo extends Component {
+            constructor () {
+                super();
+
+                setTimeout(() => {
+                    ['1', '2', '3'].forEach(key => assertChecked(key, false));
+
+                    checkTreeNode('5');
+                    assertIndeterminate('2', true);
+
+                    this.state.data[0].children[0].children.length = 1;
+                    this.setState({ data: this.state.data });
+                    assertIndeterminate('2', false)
+
+                    done();
+                }, 100);
+            }
+
+            state = {
+                data: cloneData(dataSource, {
+                    2: { disabled: false }
+                })
+            }
+
+            render() {
+                return (
+                    <Tree
+                        defaultExpandAll
+                        checkable
+                        dataSource={this.state.data}
+                    />
+                );
+            }
+        }
+        ReactDOM.render(<Demo/>, mountNode);
+    });
+
+
     it('should support editing node', () => {
         let called = false;
         const handleEditFinish = (key, label, node) => {
@@ -708,7 +812,7 @@ describe('Tree', () => {
         assert(labels[4] === '裙子' && labels[5] === '女装');
     });
 
-    it('should support dragging node before drop mode', () => {
+    it('should support dragging node before drop node', () => {
         ReactDOM.render(<DragDemo />, mountNode);
 
         let labels = getAllLabels();
@@ -731,6 +835,22 @@ describe('Tree', () => {
 
         labels = getAllLabels();
         assert(labels[4] === '裙子');
+    });
+
+    it('should stop dragover event propagation whatever could drop or not', () => {
+        let isCanDrop = false
+
+        function canDrop({node}) {
+            assert(node.props.eventKey === '2')
+            return isCanDrop
+        }
+        ReactDOM.render(<DragDemo canDrop={canDrop} />, mountNode);
+
+        // 禁止拖拽
+        dragTreeNode('6', '2', 1, isCanDrop);
+        // 允许拖拽
+        isCanDrop = true
+        dragTreeNode('6', '2', 1, isCanDrop);
     });
 
     it('should load data asynchronously', done => {
@@ -1084,7 +1204,7 @@ function rightClickTreeNode(key) {
     );
 }
 
-function dragTreeNode(dragKey, dropKey, dropPosition) {
+function dragTreeNode(dragKey, dropKey, dropPosition, isCanDrop=true) {
     const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector(
         '.next-tree-node-label'
     );
@@ -1098,8 +1218,11 @@ function dragTreeNode(dragKey, dropKey, dropPosition) {
     ReactTestUtils.Simulate.dragStart(dragNodeLabel);
     ReactTestUtils.Simulate.dragEnter(dropNode, { pageY });
     ReactTestUtils.Simulate.dragOver(dropNode);
-    ReactTestUtils.Simulate.drop(dropNode);
-    ReactTestUtils.Simulate.dragEnd(dragNodeLabel);
+    // 禁止拖拽的情况 不需要模拟drop dragEnd方法
+    if (isCanDrop) {
+        ReactTestUtils.Simulate.drop(dropNode);
+        ReactTestUtils.Simulate.dragEnd(dragNodeLabel);
+    }
 }
 
 function assertExpanded(key, expanded, childrenKeys) {

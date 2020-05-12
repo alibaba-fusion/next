@@ -856,6 +856,7 @@ class CascaderSelect extends Component {
             popupProps,
             followTrigger,
             isPreview,
+            resultAutoWidth,
         } = this.props;
         const { value, searchValue, visible } = this.state;
         const others = pickOthers(
@@ -910,7 +911,7 @@ class CascaderSelect extends Component {
                 ref: this.getPopup,
                 afterOpen: this.handleAfterOpen,
             };
-            props.autoWidth = showSearch && !!searchValue;
+            props.autoWidth = resultAutoWidth && !!searchValue;
         }
 
         return <Select {...props} {...others} />;

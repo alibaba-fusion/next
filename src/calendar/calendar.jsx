@@ -25,6 +25,20 @@ import {
     getLocaleData,
 } from './utils';
 
+const isValueChanged = (value, oldVlaue) => {
+    if (value && oldVlaue) {
+        if (!moment.isMoment(value)) {
+            value = moment(value);
+        }
+        if (!moment.isMoment(oldVlaue)) {
+            oldVlaue = moment(oldVlaue);
+        }
+        return value.valueOf() !== oldVlaue.valueOf();
+    } else {
+        return value !== oldVlaue;
+    }
+};
+
 /** Calendar */
 class Calendar extends Component {
     static propTypes = {
@@ -141,14 +155,15 @@ class Calendar extends Component {
         };
     }
 
+
     static getDerivedStateFromProps(props, state) {
         const st = {};
         if ('value' in props) {
             const value = formatDateValue(props.value);
-            st.value = value;
-            if (value) {
+            if (value && isValueChanged(props.value, state.value)) {
                 st.visibleMonth = value;
             }
+            st.value = value;
         }
 
         if (props.mode && state.MODES.indexOf(props.mode) > -1) {

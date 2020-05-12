@@ -1,9 +1,10 @@
 /// <reference types="react" />
 
 import * as React from 'react';
-import { Item, Group, Divider } from '../menu';
+import { Item, Group, Divider, MenuProps } from '../menu';
 import CommonProps from '../util';
 import { ButtonProps } from '../button';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
@@ -43,12 +44,12 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层在显示和隐藏触发的事件
      */
-    onVisibleChange?: () => void;
+    onVisibleChange?: (visible: boolean, type: string) => void;
 
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -58,7 +59,7 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层属性透传
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 默认激活的菜单项（用法同 Menu 非受控）
@@ -78,17 +79,17 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击菜单项后的回调，同 Menu
      */
-    onItemClick?: () => void;
+    onItemClick?: (key: string, item: {}, event: React.MouseEvent<HTMLElement>) => void;
 
     /**
      * 选择菜单后的回调，同 Menu
      */
-    onSelect?: () => void;
+    onSelect?: (selectedKeys: Array<any>, item: any, extra: any) => void;
 
     /**
      * 菜单属性透传
      */
-    menuProps?: {};
+    menuProps?: MenuProps;
 }
 
 export default class MenuButton extends React.Component<MenuButtonProps, any> {

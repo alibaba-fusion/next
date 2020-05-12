@@ -150,7 +150,7 @@ function _getComputedStyle(node) {
         : {};
 }
 
-const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size/i;
+const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size|top/i;
 const removePixel = { left: 1, top: 1, right: 1, bottom: 1 };
 
 /**
