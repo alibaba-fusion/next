@@ -236,7 +236,6 @@ class RangePicker extends Component {
         size: 'medium',
         showTime: false,
         resetTime: false,
-        // format: 'YYYY-MM-DD',
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
@@ -406,8 +405,16 @@ class RangePicker extends Component {
                     prevStartValue &&
                     value.valueOf() < prevStartValue.valueOf()
                 ) {
-                    newState.startValue = value;
-                    newState.endValue = null;
+                    // resetTime: 是否将Time重置为00:00:00
+                    // resetValueTime(source, target)：将 source 的 time 替换为 target 的 time
+                    const shouldClearTime = showTime && resetTime;
+
+                    newState.startValue = shouldClearTime
+                        ? value
+                        : resetValueTime(value, prevStartValue);
+                    newState.endValue = shouldClearTime
+                        ? value
+                        : resetValueTime(value, prevEndValue);
                 }
                 break;
         }
@@ -460,8 +467,11 @@ class RangePicker extends Component {
     };
 
     onDateInputBlur = () => {
-        const stateName = mapInputStateName(this.state.activeDateInput);
+        const { resetTime } = this.props;
+        const { activeDateInput } = this.state;
+        const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
+
         if (dateInputStr) {
             const { format, disabledDate } = this.props;
             const parsed = moment(dateInputStr, format, true);
@@ -472,8 +482,10 @@ class RangePicker extends Component {
             });
 
             if (parsed.isValid() && !disabledDate(parsed, 'date')) {
-                const valueName = this.state.activeDateInput;
-                const newValue = parsed;
+                const valueName = activeDateInput;
+                const newValue = resetTime
+                    ? parsed
+                    : resetValueTime(parsed, this.state[activeDateInput]);
 
                 this.handleChange(valueName, newValue);
             }
@@ -634,12 +646,11 @@ class RangePicker extends Component {
             });
         }
 
-        const startValue =
-            valueName === 'startValue' ? newValue : this.state.startValue;
-        const endValue =
-            valueName === 'endValue' ? newValue : this.state.endValue;
+        const values = ['startValue', 'endValue'].map(name =>
+            valueName === name ? newValue : this.state[name]
+        );
 
-        this.onValueChange([startValue, endValue]);
+        this.onValueChange(values);
     };
 
     onVisibleChange = (visible, type) => {

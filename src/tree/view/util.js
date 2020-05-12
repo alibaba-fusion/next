@@ -1,3 +1,5 @@
+import TreeNode from './tree-node';
+
 /* eslint-disable valid-jsdoc */
 export function normalizeToArray(keys) {
     if (keys !== undefined && keys !== null) {
@@ -214,4 +216,62 @@ export function getAllCheckedKeys(checkedKeys, _k2n, _p2n) {
     });
 
     return newKeys;
+}
+
+/**
+ * Convert children of Tree into DataSource
+ * @param  {React.ReactNode} children
+ * @return {Array}
+ */
+export function convertChildren2Data(children) {
+    function convert(treeNodes) {
+        treeNodes = normalizeToArray(treeNodes);
+
+        return treeNodes
+            .map(node => {
+                if (node.type !== TreeNode) {
+                    // 为了兼容之前的实现 保留非法节点
+                    return {
+                        illegalFlag: true,
+                        node: node,
+                    };
+                }
+                const {
+                    key,
+                    props: { children, ...rest },
+                } = node;
+
+                const nodeData = { key, ...rest };
+
+                if (
+                    children &&
+                    !(Array.isArray(children) && !children.length)
+                ) {
+                    nodeData.children = convert(children);
+                }
+
+                return nodeData;
+            })
+            .filter(treeNodeData => treeNodeData);
+    }
+    return convert(children);
+}
+
+/**
+ * get all descendant`s keys of current node
+ * @param  {Object} nodeData
+ * @param  {Object} p2n
+ * @return {Array}
+ */
+export function getAllDescendantKeys(nodeData, p2n) {
+    const posList = nodeData.pos.split('-');
+    const keys = [];
+    let pos = posList[0];
+
+    for (let i = 1; i < posList.length - 1; i++) {
+        pos = [pos, posList[i]].join('-');
+        keys.push(p2n[pos].key);
+    }
+
+    return keys;
 }

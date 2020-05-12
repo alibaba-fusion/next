@@ -1,4 +1,4 @@
-import React, { Component, Children } from 'react';
+import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
@@ -8,6 +8,7 @@ import Checkbox from '../../checkbox';
 import Animate from '../../animate';
 import { func, obj, KEYCODE } from '../../util';
 import TreeNodeInput from './tree-node-input';
+import TreeNodeIndent from './tree-node-indent';
 
 const { Expand } = Animate;
 const { bindCtx } = func;
@@ -19,9 +20,9 @@ const isRoot = pos => /^0-(\d)+$/.test(pos);
  */
 class TreeNode extends Component {
     static propTypes = {
-        _key: PropTypes.string,
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
+        _key: PropTypes.string,
         className: PropTypes.string,
         /**
          * 树节点
@@ -71,7 +72,12 @@ class TreeNode extends Component {
         dragOverGapBottom: PropTypes.bool,
         parentNode: PropTypes.object,
         onKeyDown: PropTypes.func,
+        // 无障碍化属性：aria-setsize
         size: PropTypes.number,
+        // 无障碍化属性：aria-posinset
+        posinset: PropTypes.number,
+        // 是否是最后一个子节点，数组类型，包含对祖先节点的判断
+        isLastChild: PropTypes.arrayOf(PropTypes.bool),
     };
 
     static defaultProps = {
@@ -81,6 +87,7 @@ class TreeNode extends Component {
         checkboxDisabled: false,
         isLeaf: false,
         size: 1,
+        posinset: 1,
     };
 
     constructor(props) {
@@ -311,11 +318,10 @@ class TreeNode extends Component {
         }
     }
 
-    renderSwitcher() {
+    renderSwitcher(showLine) {
         const { prefix, disabled, expanded, root } = this.props;
         const { loadData } = root.props;
         const { loading } = this.state;
-        const showLine = this.showLine;
 
         const lineState = showLine ? 'line' : 'noline';
         const className = cx({
@@ -345,15 +351,14 @@ class TreeNode extends Component {
                 className={className}
                 onClick={disabled ? null : this.handleExpand}
             >
-                {this.renderRightAngle()}
+                {this.renderRightAngle(showLine)}
                 <Icon className={iconCls} type={iconType} />
             </span>
         );
     }
 
-    renderNoopSwitcher() {
+    renderNoopSwitcher(showLine) {
         const { prefix, pos } = this.props;
-        const showLine = this.showLine;
 
         const lineState = showLine ? 'line' : 'noline';
         const className = cx({
@@ -362,12 +367,15 @@ class TreeNode extends Component {
             [`${prefix}noop-line-noroot`]: showLine && !isRoot(pos),
         });
 
-        return <span className={className}>{this.renderRightAngle()}</span>;
+        return (
+            <span className={className}>{this.renderRightAngle(showLine)}</span>
+        );
     }
 
-    renderRightAngle() {
+    renderRightAngle(showLine) {
         const { prefix, pos } = this.props;
-        return this.showLine && !isRoot(pos) ? (
+
+        return showLine && !isRoot(pos) ? (
             <span className={`${prefix}tree-right-angle`} />
         ) : null;
     }
@@ -441,31 +449,27 @@ class TreeNode extends Component {
         );
     }
 
-    renderChildTree(hasChildTree) {
-        const { prefix, children, expanded, root } = this.props;
-        const { animation, renderChildNodes } = root.props;
+    renderChildTree() {
+        const { prefix, children } = this.props;
 
-        if (!expanded || !hasChildTree) {
-            return null;
-        }
-
-        let childTree;
-
-        if (renderChildNodes) {
-            childTree = renderChildNodes(children);
-        } else {
-            childTree = (
+        return (
+            children &&
+            this.addAnimationIfNeeded(
                 <ul role="group" className={`${prefix}tree-child-tree`}>
                     {children}
                 </ul>
-            );
-        }
+            )
+        );
+    }
 
-        if (animation) {
-            childTree = <Expand animationAppear={false}>{childTree}</Expand>;
-        }
+    addAnimationIfNeeded(node) {
+        const { root } = this.props;
 
-        return childTree;
+        return root && root.props.animation ? (
+            <Expand animationAppear={false}>{node}</Expand>
+        ) : (
+            node
+        );
     }
 
     saveRef = ref => {
@@ -481,22 +485,23 @@ class TreeNode extends Component {
             prefix,
             rtl,
             className,
-            children,
             isLeaf,
+            level,
             root,
-            pos,
             selected,
             checked,
             disabled,
-            expanded,
             dragOver,
             dragOverGapTop,
             dragOverGapBottom,
             _key,
             size,
+            posinset,
+            children,
+            expanded,
+            isLastChild,
         } = this.props;
         const {
-            loadData,
             isNodeBlock,
             showLine,
             draggable: rootDraggable,
@@ -504,12 +509,14 @@ class TreeNode extends Component {
         } = root.props;
         const { label } = this.state;
 
-        this.showLine = !isNodeBlock && showLine;
-        const indexArr = pos.split('-');
-
         const ARIA_PREFIX = 'aria-';
         const ariaProps = pickAttrsWith(this.props, ARIA_PREFIX);
         const others = pickOthers(Object.keys(TreeNode.propTypes), this.props);
+
+        const hasRenderChildNodes = root && root.props.renderChildNodes;
+        const shouldShouldLine =
+            !isNodeBlock && showLine && !hasRenderChildNodes;
+        const useVirtual = root && root.props.useVirtual;
 
         // remove aria keys
         Object.keys(others).forEach(key => {
@@ -544,15 +551,18 @@ class TreeNode extends Component {
             typeof isNodeBlock === 'object'
                 ? parseInt(isNodeBlock.defaultPaddingLeft || 0)
                 : 0;
+        const paddingLeftProp = rtl ? 'paddingRight' : 'paddingLeft';
+
         const indent =
             typeof isNodeBlock === 'object'
                 ? parseInt(isNodeBlock.indent || 24)
                 : 24;
-        const level = indexArr.length - 2;
-        const paddingLeftProp = rtl ? 'paddingRight' : 'paddingLeft';
-
         const innerStyle = isNodeBlock
-            ? { [paddingLeftProp]: `${indent * level + defaultPaddingLeft}px` }
+            ? {
+                  [paddingLeftProp]: `${(useVirtual
+                      ? 0
+                      : indent * (level - 1)) + defaultPaddingLeft}px`,
+              }
             : null;
 
         const innerProps = {
@@ -561,16 +571,16 @@ class TreeNode extends Component {
             onKeyDown: this.handleKeyDown,
             ...ariaProps,
         };
+
         if (isNodeBlock) {
             this.addCallbacks(innerProps);
         }
 
-        const hasChildTree = children && Children.count(children);
-        const canExpand = hasChildTree || (loadData && !isLeaf);
         const checkable =
             typeof this.props.checkable !== 'undefined'
                 ? this.props.checkable
                 : root.props.checkable;
+
         const { editing } = this.state;
 
         innerProps.tabIndex = root.tabbableKey === _key ? '0' : '-1';
@@ -579,7 +589,7 @@ class TreeNode extends Component {
             others.dir = 'rtl';
         }
 
-        return (
+        return this.addAnimationIfNeeded(
             <li role="presentation" className={newClassName} {...others}>
                 <div
                     ref={this.saveRef}
@@ -587,20 +597,31 @@ class TreeNode extends Component {
                     aria-selected={selected}
                     aria-disabled={disabled}
                     aria-checked={checked}
-                    aria-expanded={expanded && !!hasChildTree}
+                    aria-expanded={!isLeaf}
                     aria-label={typeof label === 'string' ? label : null}
-                    aria-level={level + 1}
-                    aria-posinset={Number(indexArr[indexArr.length - 1]) + 1}
+                    aria-level={level}
+                    aria-posinset={posinset}
                     aria-setsize={size}
                     {...innerProps}
                 >
-                    {canExpand
-                        ? this.renderSwitcher()
-                        : this.renderNoopSwitcher()}
+                    {useVirtual && !hasRenderChildNodes && (
+                        <TreeNodeIndent
+                            prefix={prefix}
+                            level={level}
+                            isLastChild={isLastChild}
+                            showLine={shouldShouldLine}
+                        />
+                    )}
+                    {isLeaf
+                        ? this.renderNoopSwitcher(shouldShouldLine)
+                        : this.renderSwitcher(shouldShouldLine)}
                     {checkable ? this.renderCheckbox() : null}
                     {editing ? this.renderInput() : this.renderLabel()}
                 </div>
-                {this.renderChildTree(hasChildTree)}
+                {expanded &&
+                    (hasRenderChildNodes
+                        ? children
+                        : this.renderChildTree(children))}
             </li>
         );
     }

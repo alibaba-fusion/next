@@ -19,19 +19,23 @@ const { hasClass } = dom;
 const dataSource = [
     {
         label: '服装',
+        className: 'k-1',
         value: '1',
         children: [
             {
                 label: '男装',
                 value: '2',
+                className: 'k-2',
                 disabled: true,
                 children: [
                     {
                         label: '外套',
+                        className: 'k-4',
                         value: '4',
                     },
                     {
                         label: '夹克',
+                        className: 'k-5',
                         value: '5',
                     },
                 ],
@@ -39,9 +43,11 @@ const dataSource = [
             {
                 label: '女装',
                 value: '3',
+                className: 'k-3',
                 children: [
                     {
                         label: '裙子',
+                        className: 'k-6',
                         value: '6',
                     },
                 ],
@@ -94,7 +100,6 @@ describe('TreeSelect', () => {
                     </TreeNode>
                 );
             });
-
         wrapper = mount(
             <TreeSelect defaultVisible treeDefaultExpandAll>
                 {loop(dataSource)}
@@ -322,7 +327,7 @@ describe('TreeSelect', () => {
                 treeCheckable
                 treeDefaultExpandAll
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 value={initValue}
                 onChange={handleChange}
@@ -363,7 +368,7 @@ describe('TreeSelect', () => {
             <TreeSelect
                 treeCheckable
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 defaultValue={['6']}
                 treeCheckedStrategy="parent"
@@ -391,7 +396,7 @@ describe('TreeSelect', () => {
                 treeDefaultExpandAll
                 treeCheckable
                 dataSource={cloneData(dataSource, {
-                    2: { disabled: false }
+                    2: { disabled: false },
                 })}
                 defaultValue={['6']}
                 treeCheckedStrategy="all"
@@ -436,18 +441,24 @@ describe('TreeSelect', () => {
             },
         ];
 
-        wrapper = mount(<TreeSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
+        wrapper = mount(
+            <TreeSelect
+                dataSource={dataSource}
+                isPreview
+                defaultValue={'2975'}
+            />
+        );
         assert(wrapper.find('.next-form-preview').length > 0);
         assert(wrapper.find('.next-form-preview').text() === '西安市');
         wrapper.setProps({
-            renderPreview: (items) => {
+            renderPreview: items => {
                 assert(items.length === 1);
                 assert(items[0].label === '西安市');
                 return 'Hello World';
-            }
+            },
         });
         assert(wrapper.find('.next-form-preview').text() === 'Hello World');
-    })
+    });
 
     it('should trigger onChange when remove tag', () => {
         let triggered = false;
@@ -505,6 +516,7 @@ describe('TreeSelect', () => {
                         label={<i>react-element</i>}
                         value="react-element"
                         key="react-element"
+                        className="react-element"
                     />
                 </TreeNode>
             </TreeSelect>
@@ -514,8 +526,7 @@ describe('TreeSelect', () => {
             .find('.next-select-trigger-search input')
             .simulate('change', { target: { value: 'element' } });
         wrapper.update();
-
-        const node = findTreeNodeByPos('0-0-0');
+        const node = document.querySelector('.react-element');
         assert(hasClass(node, 'next-filtered'));
     });
 
@@ -633,43 +644,36 @@ function cloneData(data, valueMap = {}) {
     return loop(data);
 }
 
-function assertDataAndNodes(dataSource) {
-    const loop = (data, nodes) =>
-        data.forEach((item, index) => {
-            const node = nodes[index];
-            const labelElement = findChild(node, 'next-tree-node-inner');
-            assert(labelElement.textContent.trim() === item.label);
-
-            if (item.children) {
-                const childTree = findChild(node, 'next-tree-child-tree');
-                loop(item.children, childTree.children);
-            }
+function flattenData(dataSource) {
+    const flattenList = [];
+    const drill = data => {
+        data.forEach(item => {
+            const { children, ...newItem } = item;
+            flattenList.push(newItem);
+            children && children.length && drill(children);
         });
-    loop(dataSource, document.querySelector('.next-tree').children);
+    };
+
+    drill(dataSource);
+
+    return flattenList;
 }
 
-function findChild(node, className) {
-    for (let i = 0; i < node.children.length; i++) {
-        const child = node.children[i];
-        if (hasClass(child, className)) {
-            return child;
-        }
-    }
-}
+function assertDataAndNodes(dataSource) {
+    const labels = Array.prototype.map.call(
+        document.querySelectorAll('li.next-tree-node .next-tree-node-label'),
+        item => item.textContent
+    );
 
-function findTreeNodeByPos(pos) {
-    return pos
-        .split('-')
-        .slice(1)
-        .reduce((ret, num, i) => {
-            return ret.querySelector(
-                i === 0 ? '.next-tree' : '.next-tree-child-tree'
-            ).children[num];
-        }, document);
+    assert(
+        flattenData(dataSource).every(
+            (item, index) => item.label === labels[index]
+        )
+    );
 }
 
 function findTreeNodeByValue(value) {
-    return findTreeNodeByPos(_v2n[value].pos);
+    return document.querySelector(`.k-${value}`);
 }
 
 function createMap(data) {
