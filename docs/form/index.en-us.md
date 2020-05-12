@@ -30,7 +30,7 @@ Form layout, validation, data submission operations used.
 | inline             | Inline form                                 | Boolean    | -           |
 | size               | Customization of a single Item's size takes precedence over Form's size, and when the component is used with Item, the component itself sets the size attribute to be invalid. <br><br>**option**:<br>'large'<br>'medium'<br>'small' | Enum     | 'medium'                                               |
 | fullWidth           | Set a single Item's is full width                                                                                                 | Boolean            | -     |
-| labelAlign     | To set the position align of label<br><br>**option**:<br>'top'<br>'left'<br>'inset'  | Enum     | 'left'           |
+| labelAlign     | To set the position align of label. If labelcol and wrappercol are not set, the value is 'top' by default<br><br>**option**:<br>'top'<br>'left'<br>'inset'  | Enum     | 'left'           |
 | labelTextAlign | To set the position align of text in label<br><br>**option**:<br>'left'<br>'right'                  | Enum     | -                   |
 | field          | By the initialization of `new Field(this)`, set to Form right. Do not ignore specify this, when use validation on form.             | any      | -             |
 | saveField      | save field which create by Form<br><br>**签名**:<br>Function() => void | Function | func.noop |
@@ -58,7 +58,7 @@ Form layout, validation, data submission operations used.
 | validateState  | Set the validation state, if not set, it will be automatically generated according to the check rule<br><br>**option**:<br>'error'<br>'success'<br>'loading'             | Enum      | -     |
 | hasFeedback    | Used with the validateState property, whether to display the success/loading check status icon. Currently only Input support                                                  | Boolean   | false |
 | extra          | Additional prompt information, similar to help, can be used when error messages and prompts are required to appear at the same time. Behind the error message                                                                       | ReactNode | -     |
-| labelAlign     | Position align of label<br><br>**option**:<br>'top'<br>'left'<br>'inset'                                                     | Enum      | -     |
+| labelAlign     | Position align of label. If labelcol and wrappercol are not set, the value is 'top' by default<br><br>**option**:<br>'top'<br>'left'<br>'inset'                                                     | Enum      | -     |
 | labelTextAlign | Position align of label's text<br><br>**option**:<br>'left'<br>'right'                                                       | Enum      | -     |
 | required | [validation] cannot be empty | Boolean | - |
 | asterisk | required asterisk is displayed | Boolean | true |
