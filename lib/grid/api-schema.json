@@ -1,0 +1,562 @@
+{
+  "name": "Grid",
+  "subComponents": [
+    {
+      "name": "Row",
+      "props": {
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "行内容",
+          "docblock": "行内容"
+        },
+        "gutter": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "列间隔",
+          "defaultValue": {
+            "value": "0",
+            "computed": false
+          },
+          "docblock": "列间隔"
+        },
+        "wrap": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "列在行中宽度溢出后是否换行",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "列在行中宽度溢出后是否换行"
+        },
+        "fixed": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "行在某一断点下宽度是否保持不变（默认行宽度随视口变化而变化）",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "行在某一断点下宽度是否保持不变（默认行宽度随视口变化而变化）"
+        },
+        "fixedWidth": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'xxs'",
+                "computed": false,
+                "description": "320px"
+              },
+              {
+                "value": "'xs'",
+                "computed": false,
+                "description": "480px"
+              },
+              {
+                "value": "'s'",
+                "computed": false,
+                "description": "720px"
+              },
+              {
+                "value": "'m'",
+                "computed": false,
+                "description": "990px"
+              },
+              {
+                "value": "'l'",
+                "computed": false,
+                "description": "1200px"
+              },
+              {
+                "value": "'xl'",
+                "computed": false,
+                "description": "1500px"
+              }
+            ]
+          },
+          "required": false,
+          "description": "固定行的宽度为某一断点的宽度，不受视口影响而变动",
+          "docblock": "固定行的宽度为某一断点的宽度，不受视口影响而变动\n@enumdesc 320px, 480px, 720px, 990px, 1200px, 1500px",
+          "value": [
+            {
+              "value": "'xxs'",
+              "computed": false,
+              "description": "320px"
+            },
+            {
+              "value": "'xs'",
+              "computed": false,
+              "description": "480px"
+            },
+            {
+              "value": "'s'",
+              "computed": false,
+              "description": "720px"
+            },
+            {
+              "value": "'m'",
+              "computed": false,
+              "description": "990px"
+            },
+            {
+              "value": "'l'",
+              "computed": false,
+              "description": "1200px"
+            },
+            {
+              "value": "'xl'",
+              "computed": false,
+              "description": "1500px"
+            }
+          ]
+        },
+        "align": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'top'",
+                "computed": false,
+                "description": "顶部对齐"
+              },
+              {
+                "value": "'center'",
+                "computed": false,
+                "description": "居中对齐"
+              },
+              {
+                "value": "'bottom'",
+                "computed": false,
+                "description": "底部对齐"
+              },
+              {
+                "value": "'baseline'",
+                "computed": false,
+                "description": "按第一行文字基线对齐"
+              },
+              {
+                "value": "'stretch'",
+                "computed": false,
+                "description": "未设置高度或设为 auto，将占满整个容器的高度"
+              }
+            ]
+          },
+          "required": false,
+          "description": "（不支持IE9浏览器）多列垂直方向对齐方式",
+          "docblock": "（不支持IE9浏览器）多列垂直方向对齐方式\n@enumdesc 顶部对齐, 居中对齐, 底部对齐, 按第一行文字基线对齐, 未设置高度或设为 auto，将占满整个容器的高度",
+          "value": [
+            {
+              "value": "'top'",
+              "computed": false,
+              "description": "顶部对齐"
+            },
+            {
+              "value": "'center'",
+              "computed": false,
+              "description": "居中对齐"
+            },
+            {
+              "value": "'bottom'",
+              "computed": false,
+              "description": "底部对齐"
+            },
+            {
+              "value": "'baseline'",
+              "computed": false,
+              "description": "按第一行文字基线对齐"
+            },
+            {
+              "value": "'stretch'",
+              "computed": false,
+              "description": "未设置高度或设为 auto，将占满整个容器的高度"
+            }
+          ]
+        },
+        "justify": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'start'",
+                "computed": false,
+                "description": "左对齐"
+              },
+              {
+                "value": "'center'",
+                "computed": false,
+                "description": "居中对齐"
+              },
+              {
+                "value": "'end'",
+                "computed": false,
+                "description": "右对齐"
+              },
+              {
+                "value": "'space-between'",
+                "computed": false,
+                "description": "两端对齐，列之间间距相等"
+              },
+              {
+                "value": "'space-around'",
+                "computed": false,
+                "description": "每列具有相同的左右间距，行两端间距是列间距的二分之一"
+              }
+            ]
+          },
+          "required": false,
+          "description": "（不支持IE9浏览器）行内具有多余空间时的布局方式",
+          "docblock": "（不支持IE9浏览器）行内具有多余空间时的布局方式\n@enumdesc 左对齐, 居中对齐, 右对齐, 两端对齐，列之间间距相等, 每列具有相同的左右间距，行两端间距是列间距的二分之一",
+          "value": [
+            {
+              "value": "'start'",
+              "computed": false,
+              "description": "左对齐"
+            },
+            {
+              "value": "'center'",
+              "computed": false,
+              "description": "居中对齐"
+            },
+            {
+              "value": "'end'",
+              "computed": false,
+              "description": "右对齐"
+            },
+            {
+              "value": "'space-between'",
+              "computed": false,
+              "description": "两端对齐，列之间间距相等"
+            },
+            {
+              "value": "'space-around'",
+              "computed": false,
+              "description": "每列具有相同的左右间距，行两端间距是列间距的二分之一"
+            }
+          ]
+        },
+        "hidden": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "bool"
+              },
+              {
+                "name": "string"
+              },
+              {
+                "name": "array"
+              }
+            ]
+          },
+          "required": false,
+          "description": "行在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）",
+          "docblock": "行在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）"
+        },
+        "component": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "func"
+              }
+            ]
+          },
+          "required": false,
+          "description": "指定以何种元素渲染该节点\n- 默认为 'div'",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "指定以何种元素渲染该节点\n- 默认为 'div'"
+        }
+      },
+      "methods": [],
+      "order": 1
+    },
+    {
+      "name": "Col",
+      "props": {
+        "children": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列内容",
+          "docblock": "列内容"
+        },
+        "span": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "列宽度<br><br>**可选值**:<br>1, 2, 3, ..., 22, 23, 24",
+          "docblock": "列宽度<br><br>**可选值**:<br>1, 2, 3, ..., 22, 23, 24"
+        },
+        "fixedSpan": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "固定列宽度，宽度值为20 * 栅格数<br><br>**可选值**:<br>1, 2, 3, ..., 28, 29, 30",
+          "docblock": "固定列宽度，宽度值为20 * 栅格数<br><br>**可选值**:<br>1, 2, 3, ..., 28, 29, 30"
+        },
+        "offset": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "（不支持IE9浏览器）列偏移<br><br>**可选值**:<br>1, 2, 3, ..., 22, 23, 24",
+          "docblock": "（不支持IE9浏览器）列偏移<br><br>**可选值**:<br>1, 2, 3, ..., 22, 23, 24"
+        },
+        "fixedOffset": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              }
+            ]
+          },
+          "required": false,
+          "description": "（不支持IE9浏览器）固定列偏移，宽度值为20 * 栅格数<br><br>**可选值**:<br>1, 2, 3, ..., 28, 29, 30",
+          "docblock": "（不支持IE9浏览器）固定列偏移，宽度值为20 * 栅格数<br><br>**可选值**:<br>1, 2, 3, ..., 28, 29, 30"
+        },
+        "align": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'top'",
+                "computed": false
+              },
+              {
+                "value": "'center'",
+                "computed": false
+              },
+              {
+                "value": "'bottom'",
+                "computed": false
+              },
+              {
+                "value": "'baseline'",
+                "computed": false
+              },
+              {
+                "value": "'stretch'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "（不支持IE9浏览器）多列垂直方向对齐方式，可覆盖Row的align属性",
+          "docblock": "（不支持IE9浏览器）多列垂直方向对齐方式，可覆盖Row的align属性"
+        },
+        "hidden": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "bool"
+              },
+              {
+                "name": "string"
+              },
+              {
+                "name": "array"
+              }
+            ]
+          },
+          "required": false,
+          "description": "列在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）",
+          "docblock": "列在不同断点下的显示与隐藏<br><br>**可选值**:<br>true(在所有断点下隐藏)<br>false(在所有断点下显示)<br>'xs'(在 xs 断点下隐藏）<br>['xxs', 'xs', 's', 'm', 'l', 'xl'](在 xxs, xs, s, m, l, xl 断点下隐藏）"
+        },
+        "xxs": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": ">=320px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象",
+          "docblock": ">=320px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象"
+        },
+        "xs": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": ">=480px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象",
+          "docblock": ">=480px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象"
+        },
+        "s": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": ">=720px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象",
+          "docblock": ">=720px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象"
+        },
+        "m": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": ">=990px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象",
+          "docblock": ">=990px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象"
+        },
+        "l": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": ">=1200px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象",
+          "docblock": ">=1200px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象"
+        },
+        "xl": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "object"
+              }
+            ]
+          },
+          "required": false,
+          "description": ">=1500px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象",
+          "docblock": ">=1500px，响应式栅格，可为栅格数（span）或一个包含栅格数（span）和偏移栅格数（offset）对象"
+        },
+        "component": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "string"
+              },
+              {
+                "name": "func"
+              }
+            ]
+          },
+          "required": false,
+          "description": "指定以何种元素渲染该节点，默认为 'div'",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "指定以何种元素渲染该节点，默认为 'div'"
+        }
+      },
+      "methods": [],
+      "order": 2
+    }
+  ],
+  "methods": []
+}
