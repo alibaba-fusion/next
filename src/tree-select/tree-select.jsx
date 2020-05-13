@@ -38,7 +38,7 @@ const flatDataSource = props => {
                 if (children && children.length) {
                     newItem.children = loop(children, pos);
                 }
-
+                newItem.rawData = item;
                 _k2n[key] = _p2n[pos] = _v2n[value] = newItem;
                 return newItem;
             });
@@ -136,7 +136,7 @@ class TreeSelect extends Component {
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
-         * @param {Object|Array} data 选中的数据，包括 value, label, pos, key属性，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
+         * @param {Object|Array} data 选中的数据，包括 value, label, pos, key, rawData 属性，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点
          */
         onChange: PropTypes.func,
         /**
@@ -288,7 +288,7 @@ class TreeSelect extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props) {
         const st = {};
 
         if ('value' in props) {
@@ -348,11 +348,13 @@ class TreeSelect extends Component {
                     pos,
                     disabled,
                     checkboxDisabled,
+                    rawData,
                 } = this.state._k2n[k];
                 const d = {
                     value: v,
                     label,
                     pos,
+                    rawData,
                 };
                 if (forSelect) {
                     d.disabled = disabled || checkboxDisabled;
@@ -361,7 +363,6 @@ class TreeSelect extends Component {
                 }
                 ret.push(d);
             }
-
             return ret;
         }, []);
     }
@@ -425,6 +426,7 @@ class TreeSelect extends Component {
 
     handleRemove(removedItem) {
         const { value: removedValue } = removedItem;
+        const { _v2n, _p2n } = this.state;
         const {
             treeCheckable,
             treeCheckStrictly,
@@ -438,16 +440,16 @@ class TreeSelect extends Component {
             !treeCheckStrictly &&
             ['parent', 'all'].indexOf(treeCheckedStrategy) !== -1
         ) {
-            const removedPos = this.state._v2n[removedValue].pos;
+            const removedPos = _v2n[removedValue].pos;
             value = this.state.value.filter(v => {
-                const p = this.state._v2n[v].pos;
+                const p = _v2n[v].pos;
                 return !isDescendantOrSelf(removedPos, p);
             });
 
             const nums = removedPos.split('-');
             for (let i = nums.length; i > 2; i--) {
                 const parentPos = nums.slice(0, i - 1).join('-');
-                const parentValue = this.state._p2n[parentPos].value;
+                const parentValue = _p2n[parentPos].value;
                 const parentIndex = value.indexOf(parentValue);
                 if (parentIndex > -1) {
                     value.splice(parentIndex, 1);

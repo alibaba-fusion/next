@@ -218,6 +218,7 @@ describe('TreeSelect', () => {
         let triggered = false;
         const expectValue = '4';
         const expectItem = _v2n[expectValue];
+
         const handleChange = (value, data) => {
             triggered = true;
             assert(value === expectValue);
@@ -683,7 +684,7 @@ function createMap(data) {
         data.forEach((item, index) => {
             const { value, label, children } = item;
             const pos = `${prefix}-${index}`;
-            map[value] = { value, label, pos, key: pos };
+            map[value] = { value, label, pos, key: pos, rawData: item };
             if (children && children.length) {
                 loop(children, pos);
             }
