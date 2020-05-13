@@ -98,6 +98,10 @@ class CascaderSelect extends Component {
          */
         defaultExpandedValue: PropTypes.arrayOf(PropTypes.string),
         /**
+         * （受控）当前展开值
+         */
+        expandedValue: PropTypes.arrayOf(PropTypes.string),
+        /**
          * 展开触发的方式
          */
         expandTriggerType: PropTypes.oneOf(['click', 'hover']),
@@ -782,6 +786,11 @@ class CascaderSelect extends Component {
             loadData,
             itemRender,
         };
+
+        if ('expandedValue' in this.props) {
+            props.expandedValue = this.props.expandedValue;
+        }
+
         if (!readOnly) {
             props.onChange = this.handleChange;
             props.onSelect = this.handleSelect;
