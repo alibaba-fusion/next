@@ -77,7 +77,7 @@ class Balloon extends React.Component {
         closable: PropTypes.bool,
         /**
          * 弹出层位置
-         * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合
+         * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下
          */
         align: PropTypes.oneOf(alignList),
         /**
