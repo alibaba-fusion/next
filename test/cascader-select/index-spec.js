@@ -421,38 +421,46 @@ describe('CascaderSelect', () => {
     it('should support signle value not in dataSource', () => {
         const VALUE = '222333';
         let called = false;
-        const valueRender = (item) => {
+        const valueRender = item => {
             assert(!item.label);
             assert(item.value === VALUE);
             called = true;
-        }
-        wrapper = mount(<CascaderSelect dataSource={ChinaArea} defaultValue={VALUE} valueRender={valueRender} />);
+        };
+        wrapper = mount(
+            <CascaderSelect
+                dataSource={ChinaArea}
+                defaultValue={VALUE}
+                valueRender={valueRender}
+            />
+        );
         assert(called);
     });
 
     it('should support multiple value not in dataSource', () => {
         const VALUE = '222333';
         let called = false;
-        const valueRender = (item) => {
+        const valueRender = item => {
             assert(!item.label);
             assert(item.value === VALUE);
             called = true;
-        }
-        wrapper = mount(<CascaderSelect
-            multiple
-            displayRender={(displayPath, item) => item.label || ''}
-            dataSource={ChinaArea}
-            valueRender={valueRender}
-        />);
+        };
+        wrapper = mount(
+            <CascaderSelect
+                multiple
+                displayRender={(displayPath, item) => item.label || ''}
+                dataSource={ChinaArea}
+                valueRender={valueRender}
+            />
+        );
         wrapper.setProps({
             value: VALUE,
         });
         assert(called);
         wrapper.setProps({
             valueRender: item => item.label,
-            onChange: (value) => {
+            onChange: value => {
                 assert.deepEqual(value, [VALUE, '2973']);
-            }
+            },
         });
         const item00 = findItem(0, 0);
         ReactTestUtils.Simulate.click(item00);
@@ -486,38 +494,48 @@ describe('CascaderSelect', () => {
             },
         ];
 
-        wrapper = mount(<CascaderSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
+        wrapper = mount(
+            <CascaderSelect
+                dataSource={dataSource}
+                isPreview
+                defaultValue={'2975'}
+            />
+        );
         assert(wrapper.find('.next-form-preview').length > 0);
-        assert(wrapper.find('.next-form-preview').text() === '陕西 / 西安 / 西安市');
+        assert(
+            wrapper.find('.next-form-preview').text() === '陕西 / 西安 / 西安市'
+        );
         wrapper.setProps({
-            renderPreview: (items) => {
+            renderPreview: items => {
                 assert(items.length === 1);
                 assert(items[0].label === '陕西 / 西安 / 西安市');
                 return 'Hello World';
-            }
+            },
         });
         assert(wrapper.find('.next-form-preview').text() === 'Hello World');
     });
 
-    it('should support setting resultAutoWidth to false', (done) => {
-
+    it('should support setting resultAutoWidth to false', done => {
         const width = '120px';
         const container = document.createElement('div');
 
         document.body.appendChild(container);
 
         act(() => {
-            ReactDOM.render(<CascaderSelect
-                popupProps={{ className: 'result-auto-width-popup' }}
-                className="cs-auto-width"
-                style={{ width }}
-                multiple
-                resultAutoWidth={false}
-                showSearch
-                defaultVisible
-                defaultValue="2975"
-                dataSource={ChinaArea}
-            />, container);
+            ReactDOM.render(
+                <CascaderSelect
+                    popupProps={{ className: 'result-auto-width-popup' }}
+                    className="cs-auto-width"
+                    style={{ width }}
+                    multiple
+                    resultAutoWidth={false}
+                    showSearch
+                    defaultVisible
+                    defaultValue="2975"
+                    dataSource={ChinaArea}
+                />,
+                container
+            );
         });
 
         const iptElem = document.querySelector('.cs-auto-width input');
@@ -534,8 +552,20 @@ describe('CascaderSelect', () => {
             popEl.remove();
             container.remove();
             done();
-        }, 50)
-    })
+        }, 50);
+    });
+
+    it('should support expandedValue', () => {
+        wrapper = mount(
+            <CascaderSelect
+                popupProps={{ className: 'myCascaderSelect' }}
+                dataSource={ChinaArea}
+                expandedValue={['2973', '2974']}
+                defaultVisible
+            />
+        );
+        assert(findRealItem(document.querySelector('.myCascaderSelect'), 2, 1));
+    });
 });
 
 function findItem(menuIndex, itemIndex) {
