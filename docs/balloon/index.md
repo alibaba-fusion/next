@@ -34,7 +34,7 @@
 | onVisibleChange      | 弹层在显示和隐藏触发的事件<br><br>**签名**:<br>Function(visible: Boolean, type: String) => void<br>**参数**:<br>_visible_: {Boolean} 弹层是否隐藏和显示<br>_type_: {String} 触发弹层显示或隐藏的来源， closeClick 表示由自带的关闭按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发 | Function       | func.noop                                 |
 | alignEdge            | 弹出层对齐方式, 是否为边缘对齐                                                                                                                                                                                                                                | Boolean        | false                                     |
 | closable             | 是否显示关闭按钮                                                                                                                                                                                                                                        | Boolean        | true                                      |
-| align                | 弹出层位置<br><br>**可选值**:<br>'t'(上)<br>'r'(右)<br>'b'(下)<br>'l'(左)<br>'tl'(上左)<br>'tr'(上右)<br>'bl'(下左)<br>'br'(下右)<br>'lt'(左上)<br>'lb'(左下)<br>'rt'(右上)<br>'rb'(右下 及其 两两组合)                                                                           | Enum           | 'b'                                       |
+| align                | 弹出层位置<br><br>**可选值**:<br>'t'(上)<br>'r'(右)<br>'b'(下)<br>'l'(左)<br>'tl'(上左)<br>'tr'(上右)<br>'bl'(下左)<br>'br'(下右)<br>'lt'(左上)<br>'lb'(左下)<br>'rt'(右上)<br>'rb'(右下)                                                                                   | Enum           | 'b'                                       |
 | offset               | 弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量<br>e.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px                                                                                                                                       | Array          | [0, 0]                                    |
 | trigger              | 触发元素                                                                                                                                                                                                                                            | any            | &lt;span />                               |
 | triggerType          | 触发行为<br>鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click                                                                                                                                            | String/Array   | 'hover'                                   |
@@ -57,20 +57,20 @@
 
 ### Balloon.Tooltip
 
-| 参数             | 说明                                                                                                                                                                    | 类型           | 默认值         |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ----------- |
-| children       | tooltip的内容                                                                                                                                                            | any          | -           |
-| align          | 弹出层位置<br><br>**可选值**:<br>'t'(上)<br>'r'(右)<br>'b'(下)<br>'l'(左)<br>'tl'(上左)<br>'tr'(上右)<br>'bl'(下左)<br>'br'(下右)<br>'lt'(左上)<br>'lb'(左下)<br>'rt'(右上)<br>'rb'(右下 及其 两两组合) | Enum         | 'b'         |
-| trigger        | 触发元素                                                                                                                                                                  | any          | &lt;span /> |
-| triggerType    | 触发行为<br>鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件                                            | String/Array | 'hover'     |
-| popupStyle     | 弹层组件style，透传给Popup                                                                                                                                                    | Object       | -           |
-| popupClassName | 弹层组件className，透传给Popup                                                                                                                                                | String       | -           |
-| popupProps     | 弹层组件属性，透传给Popup                                                                                                                                                       | Object       | -           |
-| pure           | 是否pure render                                                                                                                                                         | Boolean      | -           |
-| popupContainer | 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。                                                                                                                                   | any          | -           |
-| followTrigger  | 是否跟随滚动                                                                                                                                                                | Boolean      | -           |
-| id             | 弹层id, 传入值才会支持无障碍                                                                                                                                                      | String       | -           |
-| delay          | 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100                                                                                                                                  | Number       | 0           |
+| 参数             | 说明                                                                                                                                                            | 类型           | 默认值         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ----------- |
+| children       | tooltip的内容                                                                                                                                                    | any          | -           |
+| align          | 弹出层位置<br><br>**可选值**:<br>'t'(上)<br>'r'(右)<br>'b'(下)<br>'l'(左)<br>'tl'(上左)<br>'tr'(上右)<br>'bl'(下左)<br>'br'(下右)<br>'lt'(左上)<br>'lb'(左下)<br>'rt'(右上)<br>'rb'(右下) | Enum         | 'b'         |
+| trigger        | 触发元素                                                                                                                                                          | any          | &lt;span /> |
+| triggerType    | 触发行为<br>鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件                                    | String/Array | 'hover'     |
+| popupStyle     | 弹层组件style，透传给Popup                                                                                                                                            | Object       | -           |
+| popupClassName | 弹层组件className，透传给Popup                                                                                                                                        | String       | -           |
+| popupProps     | 弹层组件属性，透传给Popup                                                                                                                                               | Object       | -           |
+| pure           | 是否pure render                                                                                                                                                 | Boolean      | -           |
+| popupContainer | 指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数。                                                                                                                           | any          | -           |
+| followTrigger  | 是否跟随滚动                                                                                                                                                        | Boolean      | -           |
+| id             | 弹层id, 传入值才会支持无障碍                                                                                                                                              | String       | -           |
+| delay          | 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100                                                                                                                          | Number       | 0           |
 
 ## 已知问题
 
