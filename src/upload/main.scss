@@ -434,10 +434,13 @@
 
     .#{$css-prefix}icon {
         color: $upload-card-icon-color;
+        @include icon-size($upload-card-add-icon-size);
+    }
+
+    .#{$css-prefix}upload-add-icon {
         &::before {
             content: $upload-card-add-icon;
         }
-        @include icon-size($upload-card-add-icon-size);
     }
 
     .#{$css-prefix}upload-text {
