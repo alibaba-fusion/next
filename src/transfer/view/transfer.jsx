@@ -175,6 +175,10 @@ class Transfer extends Component {
          * 接收 children 自定义渲染列表
          */
         children: PropTypes.func,
+        /**
+         * 是否开启虚拟滚动
+         */
+        useVirtual: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -556,6 +560,7 @@ class Transfer extends Component {
             listStyle,
             itemRender,
             sortable,
+            useVirtual,
             rtl,
             id,
             children,
@@ -593,6 +598,7 @@ class Transfer extends Component {
             onMoveAll: this.handleSimpleMoveAll,
             onChange: this.handlePanelChange,
             sortable,
+            useVirtual,
             onSort: this.handlePanelSort,
             baseId: id,
             customerList: children,

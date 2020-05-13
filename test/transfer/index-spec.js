@@ -641,6 +641,34 @@ describe('Transfer', () => {
         );
         wrapper.find('.next-checkbox').at(0).simulate('click');
     });
+    it('should support virtual list', () => {
+        const dataSource = (() => {
+            const dataSource = [];
+
+            for (let i = 0; i < 10000; i++) {
+                dataSource.push({
+                    label: `content${i}`,
+                    value: `${i}`,
+                    disabled: i % 4 === 0
+                });
+            }
+
+            return dataSource;
+        })();
+
+        wrapper = mount(
+            <Transfer
+                mode="simple"
+                useVirtual
+                dataSource={dataSource}
+            />
+        );
+        assert(
+            wrapper.find('div.next-transfer-operations i.next-icon-switch')
+                .length
+        );
+        assert(findItems(wrapper, 0).length === 10);
+    });
 });
 
 function findPanel(wrapper, panelIndex) {
