@@ -10,7 +10,8 @@
 ## Develop Guide
 
 ### When to Use
-Flex box, added in 1.19.0+
+Flex box, added in 1.19.0+, support IE10+
+`display: flex` of IE docs: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85)
 
 ## API
 
@@ -20,7 +21,7 @@ Flex box, added in 1.19.0+
 | --------- | -------------------------------------------------------------------------------- | ------------------------------ | ------ |
 | flex      | flex                                                                             | Array<Number/String>/Number | -      |
 | direction | direction, column by default<br><br>**options**:<br>'row', 'column'                    | Enum                           | column |
-| wrap      | wrap or not                                                                             | Boolean                        | false  |
+| wrap      | wrap or not, support IE11+                                                                             | Boolean                        | false  |
 | spacing   | spaceing of element [bottom&top, right&left]                                                 | Array<Number>/Number        | -      |
 | margin    | css margin [bottom&top, right&left]                                               | Array<Number>/Number        | -      |
 | padding   | css padding [bottom&top, right&left]                                              | Array<Number>/Number        | -      |

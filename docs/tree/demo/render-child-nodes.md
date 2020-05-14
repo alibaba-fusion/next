@@ -48,7 +48,7 @@ class Demo extends React.Component {
 
     render() {
         return (<Tree checkable renderChildNodes={(nodes) => {
-            if (nodes.filter((node) => !node.props.children || node.props.children.length === 0).length !== nodes.length) {
+            if (nodes.find(node => node.props.children && node.props.children.length)) {
                 <ul role="group" className={`next-tree-child-tree`}>
                     {nodes}
                 </ul>;

@@ -23,4 +23,8 @@
         background: $time-picker-panel-background;
         box-shadow: $time-picker-panel-shadow;
     }
+
+    &-symbol-clock-icon::before {
+        content: $time-picker-clock-icon;
+    }
 }

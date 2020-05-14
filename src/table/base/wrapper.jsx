@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class Wrapper extends Component {
+    static propTypes = {
+        tableWidth: PropTypes.number,
+    };
+
     render() {
-        const { colGroup, children, component: Tag } = this.props;
+        const { colGroup, children, tableWidth, component: Tag } = this.props;
         return (
-            <Tag role="table">
+            <Tag role="table" style={{ width: tableWidth }}>
                 {colGroup}
                 {children}
             </Tag>

@@ -40,6 +40,18 @@
             display: none;
         }
     }
+
+    & > #{$btn-prefix}-custom-loading-icon {
+        opacity: 0;
+        width: 0;
+
+        &.show {
+            width: $icon-size;
+            margin-right: $icon-margin;
+            opacity: 1;
+            transition: all $motion-duration-immediately $motion-linear;
+        }
+    }
 }
 
 @keyframes loadingCircle {

@@ -84,7 +84,7 @@ export default class Form extends React.Component {
          */
         fullWidth: PropTypes.bool,
         /**
-         * 标签的位置
+         * 标签的位置, 如果不设置 labelCol 和 wrapperCol 那么默认是标签在上
          * @enumdesc 上, 左, 内
          */
         labelAlign: PropTypes.oneOf(['top', 'left', 'inset']),
@@ -156,6 +156,10 @@ export default class Form extends React.Component {
          * 是否开启预览态
          */
         isPreview: PropTypes.bool,
+        /**
+         * 是否使用 label 替换校验信息的 name 字段
+         */
+        useLabelForErrorMessage: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -174,6 +178,7 @@ export default class Form extends React.Component {
         _formSize: PropTypes.string,
         _formPreview: PropTypes.bool,
         _formFullWidth: PropTypes.bool,
+        _formLabelForErrorMessage: PropTypes.bool,
     };
 
     constructor(props) {
@@ -209,16 +214,19 @@ export default class Form extends React.Component {
             _formSize: this.props.size,
             _formPreview: this.props.isPreview,
             _formFullWidth: this.props.fullWidth,
+            _formLabelForErrorMessage: this.props.useLabelForErrorMessage,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
+        const props = this.props;
+
         if (this._formField) {
-            if ('value' in nextProps && nextProps.value !== this.props.value) {
-                this._formField.setValues(nextProps.value);
+            if ('value' in props && props.value !== prevProps.value) {
+                this._formField.setValues(props.value);
             }
-            if ('error' in nextProps && nextProps.error !== this.props.error) {
-                this._formField.setErrors(nextProps.error);
+            if ('error' in props && props.error !== prevProps.error) {
+                this._formField.setValues(props.error);
             }
         }
     }

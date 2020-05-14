@@ -100,7 +100,7 @@ export default class TreeCell extends React.Component {
             <CellComponent
                 {...this.props}
                 innerStyle={firstCellStyle}
-                isIconLeft
+                isIconLeft={!!treeArrowNode}
             >
                 {children}
                 {treeArrowNode}

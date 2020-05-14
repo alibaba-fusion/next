@@ -39,12 +39,34 @@
         margin: 0 $tree-node-title-margin;
     }
 
+    &-node-indent-unit {
+        display: inline-block;
+        width: $tree-child-indent;
+        vertical-align: middle;
+        position: relative;
+
+        &.#{$css-prefix}line::before {
+            content: '';
+            position: absolute;
+            display: inline-block;
+            border-left: $tree-line;
+            height: $tree-node-padding + $line-2 * 2 + $tree-node-title-height;
+            left: ($tree-switch-size - $tree-line-width) / 2;
+        }
+    }
+
     &-switcher {
         position: relative;
         display: inline-block;
         vertical-align: middle;
         margin-right: $tree-switch-margint-right;
     }
+
+    // --------- this is for config platform
+    .#{$css-prefix}tree-unfold-icon::before {
+        content: $tree-unfold-icon-content;
+    }
+    // --------- this is for config platform
 
     &-switcher.#{$css-prefix}noline {
         width: $tree-switch-arrow-size;
@@ -58,11 +80,21 @@
             color: $tree-switch-arrow-color;
         }
 
+        .#{$css-prefix}tree-fold-icon::before {
+            content: $tree-fold-icon-content;
+        }
+
         &.#{$css-prefix}close #{$tree-prefix}-switcher-icon {
-            @include icon-size(
-                $size: $tree-switch-arrow-size,
-                $transform: rotate(-90deg)
-            );
+            @if $tree-unfold-icon-content != $icon-reset {
+                &::before {
+                    content: $tree-unfold-icon-content;
+                }
+            } @else {
+                @include icon-size(
+                    $size: $tree-switch-arrow-size,
+                    $transform: rotate(-90deg)
+                );
+            }
         }
 
         &:not(.#{$css-prefix}disabled):hover #{$tree-prefix}-switcher-icon {
@@ -174,7 +206,6 @@
             flex: 1 1 auto;
         }
     }
-
 
     &.#{$css-prefix}node-indent {
         #{$tree-prefix}-node #{$tree-prefix}-node {

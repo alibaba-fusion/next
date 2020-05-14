@@ -7,6 +7,13 @@
     @include box-sizing;
     position: relative;
 
+    &#{$table-prefix}-layout-fixed table {
+        table-layout: fixed;
+    }
+    &#{$table-prefix}-layout-auto table {
+        table-layout: auto;
+    }
+
     &#{$table-prefix}-small {
         th {
             #{$table-prefix}-cell-wrapper {

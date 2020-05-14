@@ -15,7 +15,7 @@ the simplest usage: can be expanded, selectable, checkable, editable, can be rig
 ---
 
 ````jsx
-import { Tree } from '@alifd/next';
+import { Tree, Button } from '@alifd/next';
 
 const TreeNode = Tree.Node;
 

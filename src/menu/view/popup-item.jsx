@@ -142,10 +142,10 @@ export default class PopupItem extends Component {
         const NewItem = selectable ? SelectableItem : Item;
         const open = this.getOpen();
 
-        const { selectedKeys } = root.state;
+        const { selectedKeys, _k2n } = root.state;
         const isChildSelected = getChildSelected({
             _key,
-            root,
+            _k2n,
             selectMode,
             selectedKeys,
         });
@@ -193,6 +193,7 @@ export default class PopupItem extends Component {
                 trigger={trigger}
                 triggerType={triggerType}
                 visible={open}
+                pinFollowBaseElementWhenFixed
                 onVisibleChange={this.handleOpen}
                 onOpen={this.handlePopupOpen}
                 onClose={this.handlePopupClose}
@@ -280,7 +281,7 @@ export default class PopupItem extends Component {
 
             arrowProps = {
                 type: 'arrow-right',
-                className: `${prefix}menu-icon-arrow`,
+                className: `${prefix}menu-icon-arrow ${prefix}menu-symbol-popupfold`,
             };
         }
 

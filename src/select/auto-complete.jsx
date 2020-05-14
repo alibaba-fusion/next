@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
+
 import { func, obj, KEYCODE } from '../util';
 import Input from '../input';
 import Base from './base';
@@ -72,6 +74,11 @@ class AutoComplete extends Base {
         this.isAutoComplete = true;
         this.isInputing = false;
 
+        this.dataStore.setOptions({ key: this.state.value });
+        Object.assign(this.state, {
+            dataSource: this.setDataSource(props),
+        });
+
         bindCtx(this, [
             'handleTriggerKeyDown',
             'handleMenuSelect',
@@ -79,59 +86,62 @@ class AutoComplete extends Base {
         ]);
     }
 
-    componentWillMount() {
-        this.dataStore.setOptions({ key: this.state.value });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const state = {};
 
-        super.componentWillMount();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) {
-            this.dataStore.setOptions({ key: nextProps.value });
-            this.setState({
+        if ('value' in nextProps && nextProps.value !== prevState.value) {
+            Object.assign(state, {
                 value: nextProps.value,
             });
         }
 
-        if ('visible' in nextProps) {
-            this.setState({
+        if ('visible' in nextProps && nextProps.visible !== prevState.visible) {
+            Object.assign(state, {
                 visible: nextProps.visible,
             });
         }
 
-        this.dataStore.setOptions({
-            filter: nextProps.filter,
-            filterLocal: nextProps.filterLocal,
-        });
+        if (Object.keys(state).length) {
+            return state;
+        }
 
-        if (
-            nextProps.children !== this.props.children ||
-            nextProps.dataSource !== this.props.dataSource
-        ) {
-            const dataSource = this.setDataSource(nextProps);
-            this.setState({
-                dataSource,
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const props = this.props;
+
+        if ('value' in props) {
+            this.dataStore.setOptions({ key: props.value });
+        }
+
+        if (props.filter !== prevProps.filter) {
+            this.dataStore.setOptions({
+                filter: props.filter,
+            });
+        }
+        if (props.filterLocal !== prevProps.filterLocal) {
+            this.dataStore.setOptions({
+                filterLocal: props.filterLocal,
             });
         }
 
-        // remote dataSource and focused
-        // 因为autoComplete没有下拉数据不展示，搜索并且有数据了需要自动展示下拉
-        if (!nextProps.filterLocal && this.isInputing) {
-            this.shouldControlPopup(nextProps, 'update');
-        }
+        if (
+            prevProps.children !== props.children ||
+            prevProps.dataSource !== props.dataSource
+        ) {
+            /* eslint-disable react/no-did-update-set-state */
+            this.setState({
+                dataSource: this.setDataSource(props),
+            });
 
-        if (!nextProps.filterLocal && !nextProps.popupContent) {
-            this.setFirstHightLightKeyForMenu();
-        }
-    }
-
-    componentWillUpdate() {
-        if (this.hasClear()) {
-            const inputNode = ReactDOM.findDOMNode(this.inputRef);
-            if (inputNode) {
-                this.clearNode = inputNode.querySelector(
-                    `.${this.props.prefix}input-control`
-                );
+            // remote dataSource and focused
+            // 因为autoComplete没有下拉数据不展示，搜索并且有数据了需要自动展示下拉
+            if (!props.filterLocal && this.isInputing) {
+                this.shouldControlPopup(props, 'update');
+            }
+            if (!props.filterLocal && !props.popupContent) {
+                this.setFirstHightLightKeyForMenu();
             }
         }
     }
@@ -398,4 +408,4 @@ class AutoComplete extends Base {
     }
 }
 
-export default AutoComplete;
+export default polyfill(AutoComplete);

@@ -75,7 +75,7 @@ class IframeUploader extends React.Component {
         const { props, file } = this;
         let response;
         try {
-            const doc = this.refs.iframe.contentDocument;
+            const doc = this.iFrameEl.contentDocument;
             const script = doc.getElementsByTagName('script')[0];
             if (script && script.parentNode === doc.body) {
                 doc.body.removeChild(script);
@@ -148,7 +148,7 @@ class IframeUploader extends React.Component {
 
     updateInputWH() {
         const rootNode = ReactDOM.findDOMNode(this);
-        const inputNode = this.refs.input;
+        const inputNode = this.inputEl;
         inputNode.style.height = `${rootNode.offsetHeight}px`;
         inputNode.style.width = `${rootNode.offsetWidth}px`;
     }
@@ -168,9 +168,9 @@ class IframeUploader extends React.Component {
     }
 
     post(file, requestOption = {}) {
-        const formNode = this.refs.form;
-        const dataSpan = this.refs.data;
-        const fileInput = this.refs.input;
+        const formNode = this.formEl;
+        const dataSpan = this.dataEl;
+        const fileInput = this.inputEl;
 
         let propsData = this.props.data;
         if (typeof propsData === 'function') {
@@ -205,6 +205,22 @@ class IframeUploader extends React.Component {
         this.props.onStart(file);
     }
 
+    saveIFrameRef = ref => {
+        this.iFrameEl = ref;
+    };
+
+    saveFormRef = ref => {
+        this.formEl = ref;
+    };
+
+    saveDataRef = ref => {
+        this.dataEl = ref;
+    };
+
+    saveInputRef = ref => {
+        this.inputEl = ref;
+    };
+
     render() {
         const {
             disabled,
@@ -229,14 +245,14 @@ class IframeUploader extends React.Component {
             >
                 {!disabled ? (
                     <iframe
-                        ref="iframe"
+                        ref={this.saveIFrameRef}
                         name={iframeName}
                         onLoad={this.onLoad}
                         style={{ display: 'none' }}
                     />
                 ) : null}
                 <form
-                    ref="form"
+                    ref={this.saveFormRef}
                     method="post"
                     action={this.props.action}
                     encType="multipart/form-data"
@@ -247,9 +263,9 @@ class IframeUploader extends React.Component {
                         value={this.domain}
                         type="hidden"
                     />
-                    <span ref="data" />
+                    <span ref={this.saveDataRef} />
                     <input
-                        ref="input"
+                        ref={this.saveInputRef}
                         type="file"
                         accept={accept}
                         name={name}

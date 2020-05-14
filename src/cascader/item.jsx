@@ -139,7 +139,7 @@ export default class CascaderMenuItem extends Component {
             }
         }
 
-        let Item;
+        let Item, title;
         if (checkable) {
             Item = Menu.CheckboxItem;
             itemProps.checked = checked;
@@ -152,8 +152,12 @@ export default class CascaderMenuItem extends Component {
             itemProps.onSelect = onSelect;
         }
 
+        if (typeof children === 'string') {
+            title = children;
+        }
+
         return (
-            <Item {...itemProps}>
+            <Item title={title} {...itemProps}>
                 {children}
                 {canExpand ? (
                     loading ? (
