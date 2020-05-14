@@ -117,6 +117,7 @@ class Card extends Base {
             onRemove,
             onCancel,
             timeout,
+            isPreview,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
@@ -151,6 +152,7 @@ class Card extends Base {
                     disabled={disabled}
                     action={action}
                     timeout={timeout}
+                    isPreview={isPreview}
                     value={this.state.value}
                     onProgress={this.onProgress}
                     onChange={this.onChange}
