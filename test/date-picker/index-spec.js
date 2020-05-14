@@ -186,7 +186,7 @@ describe('DatePicker', () => {
             assert(ret.format('YYYY-MM-DD HH:mm:ss') === '2017-11-11 11:11:11');
         });
 
-        it('should not resetTime as a default', () => {
+        it('should not resetTime as default', () => {
             let ret;
             wrapper = mount(
                 <DatePicker
@@ -1755,7 +1755,7 @@ describe('RangePicker', () => {
             );
         });
 
-        it('should not resetTime as a default', () => {
+        it('should not resetTime as default', () => {
             let ret;
 
             wrapper = mount(

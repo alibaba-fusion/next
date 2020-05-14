@@ -155,17 +155,10 @@
         <% } else { %>
         <div class="container">
             <div class="left">
-                <% if (hasRubySass) { %>
                 <div class="loading">
                     正在获取scss变量与css规则映射表，比较耗时，请勿重复刷新页面...
                 </div>
                 <iframe class="demo" frameborder="0" scrolling="yes"></iframe>
-                <% } else { %>
-                <div class="notice">
-                    如果想调试配置平台 Demo，请执行 `sudo gem install sass`
-                    命令安装 ruby-sass 后刷新页面。
-                </div>
-                <% } %>
             </div>
             <div class="right">
                 <div class="language">
@@ -192,7 +185,6 @@
             </div>
         </div>
 
-        <% if (hasRubySass) { %>
         <script>
             <%- trackerJS %>
         </script>
@@ -576,6 +568,6 @@
                 }
             })();
         </script>
-        <% } %> <% } %>
+        <% } %>
     </body>
 </html>
