@@ -177,7 +177,7 @@ export default class Position {
                 baseElement,
                 align.split(' ')[1],
                 // 忽略元素位置，发生在类似dialog的场景下
-                (isPinFixed && !pinFollowBaseElementWhenFixed) || isBaseFixed
+                isPinFixed && !pinFollowBaseElementWhenFixed
             );
 
             const pinElementParentOffset = this._getParentOffset(pinElement);
