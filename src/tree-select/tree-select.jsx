@@ -179,7 +179,7 @@ class TreeSelect extends Component {
          */
         treeDefaultExpandedKeys: PropTypes.arrayOf(PropTypes.string),
         /**
-         * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)
+         * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/pc/component/basic/tree#%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE)
          * @param {ReactElement} node 被点击展开的节点
          */
         treeLoadData: PropTypes.func,
