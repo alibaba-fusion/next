@@ -74,4 +74,19 @@ describe('Box', () => {
 
         assert(wrapper.find('.next-box'));
     });
+
+    it("justify should work when wrap and spacing setted", () => {
+        wrapper = mount(
+            <Box className="test" wrap spacing={20} direction="row" justify="center">
+                <Box className="box-180-50" />
+                <Box className="box-180-50" />
+                <Box className="box-180-50" />
+                <Box className="box-180-50" />
+            </Box>
+        );
+
+        const style = wrapper.find('.test').at(2).prop('style');
+        const {justifyContent} = style;
+        assert(justifyContent === "center")
+    });
 });
