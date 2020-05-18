@@ -72,7 +72,7 @@ class RadioGroup extends Component {
          */
         size: PropTypes.oneOf(['large', 'medium', 'small']),
         /**
-         * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`
+         * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` `[{label: 'apply', value: 'apple'}]`
          */
         dataSource: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string),

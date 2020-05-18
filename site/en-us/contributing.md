@@ -77,7 +77,7 @@ After doing all the stuff above and install the dependencies with `npm install`,
         ```
     - Avoid mounting timers (possible memory leaks) to global objects such as windows
     - Avoid uncertain outputs such as random () (the output is predictable, independent of environment, etc.)
-2. The variable of SASS color calculation needs to start with `$color-calcualte-`, and should be written to `variable.scss` (not to `main.scss`), refer to `Search`, see #1029.
+2. The variable of SASS color calculation needs to start with `$color-calcualte-`, and should be written to `variable.scss` (not to `main.scss`), refer to `Search`, see [#1029](https://github.com/alibaba-fusion/next/issues/1029).
 
 ## Release Schedule
 

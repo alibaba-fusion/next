@@ -50,7 +50,6 @@ co(function*() {
     }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
-    yield publishToNextDocs();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
@@ -220,6 +219,7 @@ function* publishToNpm() {
         logger.success('publishing ...');
         yield runCommond(`npm publish --tag ${distTags.tag}`);
         yield runCommond(`tnpm sync @alifd/next`);
+        yield publishToNextDocs();
         yield triggerRelease();
     } else {
         logger.success('publish abort.');
