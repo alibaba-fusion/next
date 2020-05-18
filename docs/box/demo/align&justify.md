@@ -41,7 +41,7 @@ class BoxDemo extends React.Component {
             </div>
 
             <div className="list-item">
-                <Box direction="row" justify="center" padding={20}>
+                <Box wrap spacing={10} direction="row" justify="center" padding={20}>
                     <Box className="box-180-50" />
                     <Box className="box-180-50" />
                     <Box className="box-180-50" />

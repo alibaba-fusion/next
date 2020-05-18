@@ -152,7 +152,7 @@ const helperProps = [
 const innerProps = [
     'flexDirection',
     'flexWrap',
-    'justifyContent',
+    // 'justifyContent',
     'alignContent',
     'alignItems',
     'display',
