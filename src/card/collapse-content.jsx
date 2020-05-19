@@ -7,10 +7,10 @@ import ConfigProvider from '../config-provider';
 import nextLocale from '../locale/zh-cn';
 
 /**
- * Card.CollaspeContent
+ * Card.CollapseContent
  * @order 3
  */
-class CardCollaspeContent extends Component {
+class CardCollapseContent extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
@@ -131,7 +131,6 @@ class CardCollaspeContent extends Component {
                             {expand ? locale.fold : locale.expand}
                             <Icon
                                 type="arrow-down"
-                                size="xs"
                                 className={expand ? 'expand' : ''}
                             />
                         </Button>
@@ -142,6 +141,6 @@ class CardCollaspeContent extends Component {
     }
 }
 
-export default ConfigProvider.config(CardCollaspeContent, {
+export default ConfigProvider.config(CardCollapseContent, {
     componentName: 'Card',
 });
