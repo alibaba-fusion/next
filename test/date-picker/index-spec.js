@@ -186,6 +186,28 @@ describe('DatePicker', () => {
             assert(ret.format('YYYY-MM-DD HH:mm:ss') === '2017-11-11 11:11:11');
         });
 
+        it('should not resetTime as default', () => {
+            let ret;
+            wrapper = mount(
+                <DatePicker
+                    onChange={val => (ret = val)}
+                    defaultValue="2017-11-11 11:11:11"
+                    showTime
+                    defaultVisible
+                />
+            );
+
+            wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(0)
+                .simulate('change', { target: { value: '2017-11-12' } });
+            wrapper
+                .find('.next-date-picker-panel-input input')
+                .at(0)
+                .simulate('blur');
+            assert(ret === '2017-11-12 11:11:11');
+        });
+
         it('should input null value in picker', () => {
             let ret;
             wrapper = mount(
@@ -1439,7 +1461,7 @@ describe('RangePicker', () => {
             assert(ret[0].format('YYYY-MM-DD') === '2017-08-01');
         });
 
-        it('should slect range with same day', () => {
+        it('should select range with same day', () => {
             let ret;
             wrapper = mount(
                 <RangePicker
@@ -1652,6 +1674,7 @@ describe('RangePicker', () => {
                     onChange={val => (ret = val)}
                 />
             );
+
             wrapper
                 .find('td[title="2017-11-09"] .next-calendar-date')
                 .simulate('click');
@@ -1733,7 +1756,7 @@ describe('RangePicker', () => {
             );
         });
 
-        it('should not resetTime', () => {
+        it('should not resetTime as default', () => {
             let ret;
 
             wrapper = mount(
@@ -1771,6 +1794,20 @@ describe('RangePicker', () => {
             assert(
                 ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-12-09 11:11:11'
             );
+            // 选择了一个比开始日期更小的结束日期，此时表示用户重新选择了
+            // 结束日期等于开始日期 不修改时间
+            wrapper
+                .find('.next-range-picker-panel-input-end-date input')
+                .simulate('focus');
+            wrapper
+                .find('td[title="2017-11-08"] .next-calendar-date')
+                .simulate('click');
+            assert(
+                ret[0].format('YYYY-MM-DD HH:mm:ss') === '2017-11-08 10:10:10'
+            );
+            assert(
+                ret[1].format('YYYY-MM-DD HH:mm:ss') === '2017-11-08 11:11:11'
+            );
         });
 
         it('should select a endDay less than the previous startDay', () => {
@@ -1804,10 +1841,12 @@ describe('RangePicker', () => {
                 .find('.next-range-picker-panel-input-start-date input')
                 .simulate('focus');
             wrapper
-                .find('td[title="2017-12-30"] .next-calendar-date')
+                .find('td[title="2017-12-25"] .next-calendar-date')
                 .simulate('click');
-            assert(ret[0].format('YYYY-MM-DD') === '2017-12-30');
-            assert(ret[1] === null);
+            assert.deepEqual(ret.map(m => m.format('YYYY-MM-DD')), [
+                '2017-12-25',
+                '2017-12-25',
+            ]);
         });
 
         it('should select endDate firstly', () => {
