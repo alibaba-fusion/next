@@ -46,7 +46,7 @@
 | component     | 设置标签类型                                                                                                                                             | String/Function                     | 'div'    |
 | onChange      | 选中值改变时的事件<br><br>**签名**:<br>Function(value: String/Number, e: Event) => void<br>**参数**:<br>_value_: {String/Number} 选中项的值<br>_e_: {Event} Dom 事件对象 | Function                            | () => {} |
 | disabled      | 表示radio被禁用                                                                                                                                         | Boolean                             | -        |
-| dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']`                                                                                     | Array&lt;String>/Array&lt;Object>   | \[]      |
+| dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` `[{label: 'apply', value: 'apple'}]`                                                | Array&lt;String>/Array&lt;Object>   | \[]      |
 | children      | 通过子元素方式设置内部radio                                                                                                                                   | Array&lt;ReactElement>/ReactElement | -        |
 | itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                   | Enum                                | 'hoz'    |
 | isPreview     | 是否为预览态                                                                                                                                             | Boolean                             | false    |

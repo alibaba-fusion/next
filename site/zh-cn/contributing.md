@@ -81,7 +81,7 @@ git checkout -b fix-issue-100
         ```
     - 避免往window等全局对象挂载定时器 (可能内存泄漏)
     - 避免random()等不确定性输出(输出结果可预期，不依赖于环境等)
-2. sass 颜色变量计算的结果，需要以 `$color-calcualte-` 开头，写到组件的 variable.scss 中(不能写到main.scss中)，参考`Search`组件，#1029
+2. sass 颜色变量计算的结果，需要以 `$color-calcualte-` 开头，写到组件的 variable.scss 中(不能写到main.scss中)，参考`Search`组件，[#1029](https://github.com/alibaba-fusion/next/issues/1029)
 
 
 ## 发布周期
