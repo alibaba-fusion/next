@@ -323,16 +323,18 @@ class DatePicker extends Component {
 
     onDateInputBlur = () => {
         const { dateInputStr, value, format } = this.state;
+        const { resetTime } = this.props;
+
         if (dateInputStr) {
             const { disabledDate } = this.props;
-            const parsed = moment(dateInputStr, format, true);
+            let parsed = moment(dateInputStr, format, true);
 
             this.setState({
                 dateInputStr: '',
                 inputing: false,
             });
-
             if (parsed.isValid() && !disabledDate(parsed, 'date')) {
+                parsed = resetTime ? parsed : resetValueTime(parsed, value);
                 this.handleChange(parsed, value);
             }
         }

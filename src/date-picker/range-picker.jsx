@@ -236,7 +236,6 @@ class RangePicker extends Component {
         size: 'medium',
         showTime: false,
         resetTime: false,
-        // format: 'YYYY-MM-DD',
         disabledDate: () => false,
         footerRender: () => null,
         hasClear: true,
@@ -368,8 +367,20 @@ class RangePicker extends Component {
 
                 newState.startValue = newValue;
 
+                // 如果起始日期大于结束日期
                 if (prevEndValue && value.valueOf() > prevEndValue.valueOf()) {
-                    newState.endValue = null;
+                    // 将结束日期设置为起始日期 如果需要的话保留时间
+                    newState.endValue = resetTime
+                        ? newValue
+                        : resetValueTime(value, prevEndValue);
+
+                    // 如果起始日期还是大于结束日期则清空结束日期
+                    if (
+                        newState.startValue.valueOf() >
+                        newState.endValue.valueOf()
+                    ) {
+                        newState.endValue = null;
+                    }
                     newState.activeDateInput = 'endValue';
                 }
                 break;
@@ -404,10 +415,22 @@ class RangePicker extends Component {
                 // 选择了一个比开始日期更小的结束日期，此时表示用户重新选择了
                 if (
                     prevStartValue &&
-                    value.valueOf() < prevStartValue.valueOf()
+                    value.valueOf() <= prevStartValue.valueOf()
                 ) {
-                    newState.startValue = value;
-                    newState.endValue = null;
+                    newState.startValue = resetTime
+                        ? value
+                        : resetValueTime(value, prevStartValue);
+                    newState.endValue = resetTime
+                        ? value
+                        : resetValueTime(value, prevEndValue);
+
+                    // 如果结束日期不大于起始日期则清空结束日期
+                    if (
+                        newState.endValue.valueOf() <
+                        newState.startValue.valueOf()
+                    ) {
+                        newState.endValue = null;
+                    }
                 }
                 break;
         }
@@ -460,8 +483,11 @@ class RangePicker extends Component {
     };
 
     onDateInputBlur = () => {
-        const stateName = mapInputStateName(this.state.activeDateInput);
+        const { resetTime } = this.props;
+        const { activeDateInput } = this.state;
+        const stateName = mapInputStateName(activeDateInput);
         const dateInputStr = this.state[stateName];
+
         if (dateInputStr) {
             const { format, disabledDate } = this.props;
             const parsed = moment(dateInputStr, format, true);
@@ -472,8 +498,10 @@ class RangePicker extends Component {
             });
 
             if (parsed.isValid() && !disabledDate(parsed, 'date')) {
-                const valueName = this.state.activeDateInput;
-                const newValue = parsed;
+                const valueName = activeDateInput;
+                const newValue = resetTime
+                    ? parsed
+                    : resetValueTime(parsed, this.state[activeDateInput]);
 
                 this.handleChange(valueName, newValue);
             }
@@ -628,18 +656,26 @@ class RangePicker extends Component {
     };
 
     handleChange = (valueName, newValue) => {
+        const values = ['startValue', 'endValue'].map(name =>
+            valueName === name ? newValue : this.state[name]
+        );
+
+        // 判断起始时间是否大于结束时间
+        if (
+            values[0] &&
+            values[1] &&
+            values[0].valueOf() > values[1].valueOf()
+        ) {
+            return;
+        }
+
         if (!('value' in this.props)) {
             this.setState({
                 [valueName]: newValue,
             });
         }
 
-        const startValue =
-            valueName === 'startValue' ? newValue : this.state.startValue;
-        const endValue =
-            valueName === 'endValue' ? newValue : this.state.endValue;
-
-        this.onValueChange([startValue, endValue]);
+        this.onValueChange(values);
     };
 
     onVisibleChange = (visible, type) => {
@@ -672,7 +708,7 @@ class RangePicker extends Component {
         );
     };
 
-    // 如果用户没有给定时间禁用逻辑，则给默认到禁用逻辑，即如果是同一天，则时间不能是同样的
+    // 如果用户没有给定时间禁用逻辑，则给默认到禁用逻辑
     getDisabledTime = ({ startValue, endValue }) => {
         const { disabledHours, disabledMinutes, disabledSeconds } =
             this.props.showTime || {};
@@ -708,7 +744,7 @@ class RangePicker extends Component {
                           isSameDay &&
                           startValue.hour() === endValue.hour() &&
                           startValue.minute() === endValue.minute() &&
-                          index <= startValue.second()
+                          index < startValue.second()
                       ) {
                           return true;
                       }
