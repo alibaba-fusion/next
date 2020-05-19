@@ -91,7 +91,7 @@ export default class TransferPanel extends Component {
         this.list = ref;
     }
 
-    getListData(dataSource) {
+    getListData(dataSource, disableHighlight) {
         const {
             prefix,
             position,
@@ -121,7 +121,9 @@ export default class TransferPanel extends Component {
                     item={item}
                     onCheck={this.handleCheck}
                     onClick={onMove}
-                    needHighlight={!this.firstRender && !this.searched}
+                    needHighlight={
+                        !this.firstRender && !this.searched && !disableHighlight
+                    }
                     itemRender={itemRender}
                     draggable={sortable}
                     onDragStart={this.handleItemDragStart}
@@ -275,7 +277,7 @@ export default class TransferPanel extends Component {
                             </Menu>
                         )}
                     >
-                        {this.getListData(dataSource)}
+                        {this.getListData(dataSource, true)}
                     </VirtualList>
                 </div>
             );
