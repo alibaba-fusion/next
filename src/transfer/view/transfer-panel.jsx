@@ -6,6 +6,7 @@ import Search from '../../search';
 import Menu from '../../menu';
 import { func, htmlId } from '../../util';
 import TransferItem from './transfer-item';
+import VirtualList from '../../virtual-list';
 
 const { bindCtx } = func;
 
@@ -34,6 +35,7 @@ export default class TransferPanel extends Component {
         onSort: PropTypes.func,
         baseId: PropTypes.string,
         customerList: PropTypes.func,
+        useVirtual: PropTypes.bool,
     };
 
     constructor(props, context) {
@@ -87,6 +89,55 @@ export default class TransferPanel extends Component {
 
     getListDOM(ref) {
         this.list = ref;
+    }
+
+    getListData(dataSource, disableHighlight) {
+        const {
+            prefix,
+            position,
+            mode,
+            value,
+            onMove,
+            disabled,
+            itemRender,
+            sortable,
+        } = this.props;
+        const { dragPosition, dragValue, dragOverValue } = this.state;
+        return dataSource.map(item => {
+            const others =
+                'title' in item
+                    ? {
+                          title: item.title,
+                      }
+                    : {};
+
+            return (
+                <TransferItem
+                    key={item.value}
+                    prefix={prefix}
+                    mode={mode}
+                    checked={value.indexOf(item.value) > -1}
+                    disabled={disabled || item.disabled}
+                    item={item}
+                    onCheck={this.handleCheck}
+                    onClick={onMove}
+                    needHighlight={
+                        !this.firstRender && !this.searched && !disableHighlight
+                    }
+                    itemRender={itemRender}
+                    draggable={sortable}
+                    onDragStart={this.handleItemDragStart}
+                    onDragOver={this.handleItemDragOver}
+                    onDragEnd={this.handleItemDragEnd}
+                    onDrop={this.handleItemDrop}
+                    dragPosition={dragPosition}
+                    dragValue={dragValue}
+                    dragOverValue={dragOverValue}
+                    panelPosition={position}
+                    {...others}
+                />
+            );
+        });
     }
 
     handleAllCheck(allChecked) {
@@ -182,18 +233,11 @@ export default class TransferPanel extends Component {
     renderList(dataSource) {
         const {
             prefix,
-            position,
-            mode,
-            value,
-            onMove,
-            disabled,
             listClassName,
             listStyle,
-            itemRender,
-            sortable,
             customerList,
+            useVirtual,
         } = this.props;
-        const { dragPosition, dragValue, dragOverValue } = this.state;
         const newClassName = cx({
             [`${prefix}transfer-panel-list`]: true,
             [listClassName]: !!listClassName,
@@ -212,50 +256,41 @@ export default class TransferPanel extends Component {
             );
         }
 
-        return dataSource.length ? (
+        if (!dataSource.length) {
+            return (
+                <div className={newClassName} style={listStyle}>
+                    {this.renderNotFoundContent()}
+                </div>
+            );
+        }
+
+        if (useVirtual) {
+            return (
+                <div
+                    className={newClassName}
+                    style={{ position: 'relative', ...listStyle }}
+                >
+                    <VirtualList
+                        itemsRenderer={(items, ref) => (
+                            <Menu style={{ border: 'none' }} ref={ref}>
+                                {items}
+                            </Menu>
+                        )}
+                    >
+                        {this.getListData(dataSource, true)}
+                    </VirtualList>
+                </div>
+            );
+        }
+
+        return (
             <Menu
                 className={newClassName}
                 style={listStyle}
                 ref={this.getListDOM}
             >
-                {dataSource.map(item => {
-                    const others =
-                        'title' in item
-                            ? {
-                                  title: item.title,
-                              }
-                            : {};
-
-                    return (
-                        <TransferItem
-                            key={item.value}
-                            prefix={prefix}
-                            mode={mode}
-                            checked={value.indexOf(item.value) > -1}
-                            disabled={disabled || item.disabled}
-                            item={item}
-                            onCheck={this.handleCheck}
-                            onClick={onMove}
-                            needHighlight={!this.firstRender && !this.searched}
-                            itemRender={itemRender}
-                            draggable={sortable}
-                            onDragStart={this.handleItemDragStart}
-                            onDragOver={this.handleItemDragOver}
-                            onDragEnd={this.handleItemDragEnd}
-                            onDrop={this.handleItemDrop}
-                            dragPosition={dragPosition}
-                            dragValue={dragValue}
-                            dragOverValue={dragOverValue}
-                            panelPosition={position}
-                            {...others}
-                        />
-                    );
-                })}
+                {this.getListData(dataSource)}
             </Menu>
-        ) : (
-            <div className={newClassName} style={listStyle}>
-                {this.renderNotFoundContent()}
-            </div>
         );
     }
 
