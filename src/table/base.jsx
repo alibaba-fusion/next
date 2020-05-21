@@ -350,6 +350,10 @@ class Table extends React.Component {
         return state;
     }
 
+    componentDidMount() {
+        this.notRenderCellIndex = [];
+    }
+
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         if (nextProps.pure) {
             const isEqual =
