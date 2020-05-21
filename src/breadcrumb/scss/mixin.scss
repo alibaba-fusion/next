@@ -11,16 +11,17 @@
 
     .#{$css-prefix}breadcrumb-item {
         display: inline-block;
+        vertical-align: middle;
 
         .#{$css-prefix}breadcrumb-text {
             display: inline-block;
+            vertical-align: middle;
             text-decoration: none;
             text-align: center;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             transition: all $motion-duration-immediately $motion-linear;
-
             > b {
                 font-weight: normal;
             }
