@@ -13,6 +13,7 @@ function preventDefault(e) {
 
 /** Input */
 export default class Input extends Base {
+    static getDerivedStateFromProps = Base.getDerivedStateFromProps;
     static propTypes = {
         ...Base.propTypes,
         /**
