@@ -70,8 +70,9 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
      * 如 'close' 或 'close,esc,mask'
      * 如果设置为 true，则以上关闭方式全部生效
      * 如果设置为 false，则以上关闭方式全部失效
+     * 2.x 要改成支持string[]
      */
-    closeable?: 'close' | 'mask' | 'esc' | boolean;
+    closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
 
     /**
      * 对话框关闭时触发的回调函数

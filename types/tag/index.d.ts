@@ -13,6 +13,8 @@ export interface CloseableProps extends HTMLAttributesWeak, CommonProps {
      */
     closeArea?: 'tag' | 'tail';
 
+    type?: 'normal' | 'primary';
+
     /**
      * 点击关闭按钮时的回调
      */
@@ -47,6 +49,7 @@ export interface SelectableProps extends HTMLAttributesWeak, CommonProps {
      */
     checked?: boolean;
 
+    type?: 'normal' | 'primary';
     /**
      * 标签是否默认被选中，非受控用法
      * tag checked or not by default, a uncontrolled way

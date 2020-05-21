@@ -106,7 +106,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: () => void;
+    filter?: (key:string, item: any) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
