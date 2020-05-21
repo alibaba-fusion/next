@@ -117,6 +117,9 @@
 
     &-move.#{$css-prefix}icon {
         color: $transfer-simple-move-icon-color;
+        &::before {
+            content: $transfer-simple-move-icon;
+        }
     }
 
     &-operation.#{$css-prefix}btn {

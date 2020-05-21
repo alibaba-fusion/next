@@ -105,6 +105,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | onBlur          | blur event<br><br>**签名**:<br>Function() => void | Function | func.noop |
 | onToggleHighlightItem | callback func while highlight item changed <br><br>**签名**:<br>Function() => void | Function| func.noop |
 | hiddenSelected | hide menu after selected (only mode="multiple" or "tag") | Boolean                                | -                                  |
+| popupAutoFocus        | whether autofocus to popup                                                                                                                        | Boolean                                | false                              |
 
 ### Select.AutoComplete
 | Param | Descripiton  | Type  | Default Value |
@@ -149,6 +150,11 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | disabled | disabled | Boolean | - |
 
 
+## Select/AutoComplete Inner Methods(Got by refs)
+
+| Param | Descripiton  | Type  | Default Value |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------ | -------- | --- |
+| focus        | get foucs<br><br>**signature**:<br> Function(start:Number, end: Number)<br>**params**:<br>_start_: {Number} cursor postion<br>_end_: {Number} select end postion | Function |     |
 
 ## ARIA and KeyBoard
 

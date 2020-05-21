@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cx from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import { findDOMNode } from 'react-dom';
 import { events } from '../util';
 
@@ -17,8 +18,27 @@ const isEqualSubset = (a, b) => {
     return true;
 };
 
+const getOffset = el => {
+    let offset = el.clientLeft || 0;
+    do {
+        offset += el.offsetTop || 0;
+        el = el.offsetParent;
+    } while (el);
+    return offset;
+};
+
+const constrain = (from, size, { children, minSize }) => {
+    const length = children && children.length;
+    size = Math.max(size, minSize);
+    if (size > length) {
+        size = length;
+    }
+    from = from ? Math.max(Math.min(from, length - size), 0) : 0;
+
+    return { from, size };
+};
 /** VirtualList */
-export default class VirtualList extends Component {
+class VirtualList extends Component {
     static displayName = 'VirtualList';
 
     static propTypes = {
@@ -66,13 +86,19 @@ export default class VirtualList extends Component {
     constructor(props) {
         super(props);
         const { jumpIndex } = props;
-        const { from, size } = this.constrain(jumpIndex, 0, props);
+        const { from, size } = constrain(jumpIndex, 0, props);
         this.state = { from, size };
         this.cache = {};
         this.scrollTo = this.scrollTo.bind(this);
         this.cachedScroll = null;
         this.unstable = false;
         this.updateCounter = 0;
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { from, size } = prevState;
+
+        return constrain(from, size, nextProps);
     }
 
     componentDidMount() {
@@ -87,20 +113,14 @@ export default class VirtualList extends Component {
         this.updateFrame(this.scrollTo.bind(this, jumpIndex));
     }
 
-    componentWillReceiveProps(next) {
-        const { from, size } = this.state;
-
-        const oldIndex = this.props.jumpIndex;
-        const newIndex = next.jumpIndex;
+    componentDidUpdate(prevProps) {
+        const oldIndex = prevProps.jumpIndex;
+        const newIndex = this.props.jumpIndex;
 
         if (oldIndex !== newIndex) {
             this.updateFrame(this.scrollTo.bind(this, newIndex));
         }
 
-        this.maybeSetState(this.constrain(from, size, next), NOOP);
-    }
-
-    componentDidUpdate() {
         // If the list has reached an unstable state, prevent an infinite loop.
         if (this.unstable) {
             return;
@@ -133,15 +153,6 @@ export default class VirtualList extends Component {
         }
 
         this.setState(b, cb);
-    }
-
-    getOffset(el) {
-        let offset = el.clientLeft || 0;
-        do {
-            offset += el.offsetTop || 0;
-            el = el.offsetParent;
-        } while (el);
-        return offset;
     }
 
     getEl() {
@@ -182,20 +193,19 @@ export default class VirtualList extends Component {
 
         const scroll = Math.max(0, Math.min(actual, max));
         const el = this.getEl();
-        this.cachedScroll =
-            this.getOffset(scrollParent) + scroll - this.getOffset(el);
+        this.cachedScroll = getOffset(scrollParent) + scroll - getOffset(el);
 
         return this.cachedScroll;
     }
 
     setScroll(offset) {
         const { scrollParent } = this;
-        offset += this.getOffset(this.getEl());
+        offset += getOffset(this.getEl());
         if (scrollParent === window) {
             return window.scrollTo(0, offset);
         }
 
-        offset -= this.getOffset(this.scrollParent);
+        offset -= getOffset(this.scrollParent);
         scrollParent.scrollTop = offset;
     }
 
@@ -372,17 +382,6 @@ export default class VirtualList extends Component {
         }
     }
 
-    constrain(from, size, { children, minSize }) {
-        const length = children && children.length;
-        size = Math.max(size, minSize);
-        if (size > length) {
-            size = length;
-        }
-        from = from ? Math.max(Math.min(from, length - size), 0) : 0;
-
-        return { from, size };
-    }
-
     scrollTo(index) {
         this.setScroll(this.getSpaceBefore(index));
     }
@@ -443,3 +442,5 @@ export default class VirtualList extends Component {
         );
     }
 }
+
+export default polyfill(VirtualList);

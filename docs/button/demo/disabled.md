@@ -1,13 +1,13 @@
 # 不可用状态
 
-- order: 5
+- order: 6
 
 添加 `disabled` 属性即可让按钮处于不可用状态，同时按钮样式也会改变。
 
 :::lang=en-us
 # Disabled
 
-- order: 5
+- order: 6
 
 Disable a Button by adding `disabled` attribute.
 

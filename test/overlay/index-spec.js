@@ -6,6 +6,8 @@ import co from 'co';
 import assert from 'power-assert';
 import { dom, KEYCODE, env } from '../../src/util';
 import Overlay from '../../src/overlay/index';
+import Balloon from '../../src/balloon/index';
+import Button from '../../src/button/index';
 import '../../src/overlay/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -148,6 +150,32 @@ describe('Overlay', () => {
             wrapper.unmount();
             wrapper = null;
         }
+    });
+
+    it('should support rendering overlay', () => {
+        return co(function*() {
+            wrapper = render(
+                <Overlay visible>
+                    <div className="content" />
+                </Overlay>
+            );
+            yield delay(500);
+            assert(document.querySelector('.next-overlay-wrapper.opened'));
+            assert(document.querySelector('.next-overlay-inner.content'));
+
+            wrapper.setProps({
+                visible: false,
+            });
+            yield delay(500);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            wrapper.setProps({
+                visible: true,
+            });
+            yield delay(500);
+            assert(document.querySelector('.next-overlay-wrapper.opened'));
+            assert(document.querySelector('.next-overlay-inner.content'));
+        });
     });
 
     it('should support rendering overlay and mask', () => {
@@ -416,44 +444,82 @@ describe('Overlay', () => {
 
     it('should support autoFit', () => {
         wrapper = render(
-            <div style={{width: 300, height: 100, position: 'relative', overflow: 'auto'}}>
-                <div style={{height: 200, width: 500}}>
-                    <Popup animation={false} container={node => node.parentNode} autoFit trigger={<button id="overlay-autofit-btn" style={{margin: 220, marginRight: 0, height: 25}}>Use Down Arrow to open</button>} triggerType="click" triggerClickKeycode={40}>
-                        <span id="overlay-autofit-wrapper" style={{width: 120, height: 70, background: 'purple'}}>
+            <div
+                style={{
+                    width: 300,
+                    height: 100,
+                    position: 'relative',
+                    overflow: 'auto',
+                }}
+            >
+                <div style={{ height: 200, width: 500 }}>
+                    <Popup
+                        animation={false}
+                        container={node => node.parentNode}
+                        autoFit
+                        trigger={
+                            <button
+                                id="overlay-autofit-btn"
+                                style={{
+                                    margin: 220,
+                                    marginRight: 0,
+                                    height: 25,
+                                }}
+                            >
+                                Use Down Arrow to open
+                            </button>
+                        }
+                        triggerType="click"
+                        triggerClickKeycode={40}
+                    >
+                        <span
+                            id="overlay-autofit-wrapper"
+                            style={{
+                                width: 120,
+                                height: 70,
+                                background: 'purple',
+                            }}
+                        >
                             Hello
                         </span>
                     </Popup>
-                    <div style={{height: 50, width: 10}}/>
+                    <div style={{ height: 50, width: 10 }} />
                 </div>
             </div>
         );
 
         wrapper.instance().scrollTop = 220;
         document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '245px');
+        assert(
+            document.getElementById('overlay-autofit-wrapper').style.top ===
+                '245px'
+        );
 
         document.body.click();
         wrapper.instance().scrollTop = 140;
         document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '150px');
+        assert(
+            document.getElementById('overlay-autofit-wrapper').style.top ===
+                '150px'
+        );
 
         document.body.click();
         wrapper.instance().scrollTop = 170;
         document.getElementById('overlay-autofit-btn').click();
-        assert(document.getElementById('overlay-autofit-wrapper').style.top === '170px');
+        assert(
+            document.getElementById('overlay-autofit-wrapper').style.top ===
+                '170px'
+        );
     });
 
-    it('should support onClick', (done) => {
-        const handleClick = (e) => {
+    it('should support onClick', done => {
+        const handleClick = e => {
             assert('target' in e);
             done();
         };
 
         wrapper = render(
-            <Overlay
-                visible
-                onClick={handleClick}
-            >
+            <Overlay visible onClick={handleClick}>
                 <div className="content" />
             </Overlay>
         );
@@ -461,10 +527,10 @@ describe('Overlay', () => {
         simulateEvent.simulate(document.querySelector('.content'), 'click');
     });
 
-    it('should support stop Child Click propagation by default', (done) => {
+    it('should support stop Child Click propagation by default', done => {
         const clickHandler = () => {
             assert(false);
-        }
+        };
 
         wrapper = render(
             <div id="overlay-container" onClick={clickHandler}>
@@ -484,7 +550,7 @@ describe('Overlay', () => {
     it('should support function children', () => {
         const MyFuncComp = () => {
             return 'content';
-        }
+        };
         wrapper = render(
             <Overlay visible>
                 <MyFuncComp />
@@ -494,7 +560,7 @@ describe('Overlay', () => {
         const overlay = wrapper.instance().getInstance();
         const content = overlay.getContent();
         assert(content.textContent.trim() === 'content');
-    })
+    });
 });
 
 describe('Popup', () => {
@@ -612,7 +678,11 @@ describe('Popup', () => {
     it('should support setting triggerType to click with custom triggerClickKeycode', () => {
         return co(function*() {
             wrapper = render(
-                <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
+                <Popup
+                    trigger={<button>Open</button>}
+                    triggerType="click"
+                    triggerClickKeycode={40}
+                >
                     <span className="content">Hello World From Popup!</span>
                 </Popup>
             );
@@ -626,11 +696,15 @@ describe('Popup', () => {
             yield delay(300);
             assert(!document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.DOWN_ARROW });
+            ReactTestUtils.Simulate.keyDown(btn, {
+                keyCode: KEYCODE.DOWN_ARROW,
+            });
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.keyDown(btn, { keyCode: KEYCODE.DOWN_ARROW });
+            ReactTestUtils.Simulate.keyDown(btn, {
+                keyCode: KEYCODE.DOWN_ARROW,
+            });
             yield delay(300);
             assert(!document.querySelector('.next-overlay-wrapper'));
 
@@ -711,5 +785,84 @@ describe('Popup', () => {
             yield delay(300);
             assert(!document.querySelector('.next-overlay-wrapper'));
         });
+    });
+
+    // https://riddle.alibaba-inc.com/riddles/b58b48a6
+    it('should support container return a react component', () => {
+        class App extends React.Component {
+            render() {
+                const innerButton = (
+                    <Button
+                        id="balloon-button-container"
+                        className="btrigger"
+                        ref={n => {
+                            this.downloadRef = n;
+                        }}
+                    >
+                        Show Inner Balloon\
+                    </Button>
+                );
+                return (
+                    <div className="container nested">
+                        <Balloon
+                            type="primary"
+                            trigger={innerButton}
+                            closable={false}
+                            triggerType="click"
+                            popupContainer={() => this.downloadRef}
+                        >
+                            12121
+                        </Balloon>
+                    </div>
+                );
+            }
+        }
+        const wrapper = render(<App />);
+        wrapper.find('#balloon-button-container')[0].click();
+        assert(document.querySelector('.next-balloon') !== null);
+        assert(wrapper.find('#balloon-button-container .next-balloon'));
+        wrapper.unmount();
+    });
+
+    // https://riddle.alibaba-inc.com/riddles/10f7eac1
+    it('should base on BaseElement`offset event when BaseElement is fixed', () => {
+        wrapper = render(
+            <div
+                className="container"
+                style={{ height: '400px', overflow: 'auto' }}
+            >
+                <div
+                    style={{ height: 1200, width: '100%', background: 'red' }}
+                />
+                <Balloon
+                    align="l"
+                    triggerType="click"
+                    popupClassName="fb-pop"
+                    trigger={
+                        <div
+                            style={{
+                                position: 'fixed',
+                                top: '100px',
+                                left: '100px',
+                                width: '10px',
+                                height: '10px',
+                            }}
+                            className="aem-feedback"
+                        >
+                            trigger
+                        </div>
+                    }
+                    closable={false}
+                >
+                    <p>用户钉钉群</p>
+                    <p>问题反馈</p>
+                </Balloon>
+            </div>
+        );
+        const triggerEl = document.querySelector('.aem-feedback');
+        ReactTestUtils.Simulate.click(triggerEl);
+
+        const overlayInner = document.querySelector('.next-overlay-inner');
+        assert(overlayInner.style.top !== '0px');
     });
 });

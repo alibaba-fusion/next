@@ -85,7 +85,7 @@ const Panel = props => {
 const SubPanel = props => {
     const { dataSource, ...others } = props;
 
-    return (<div className="my-custom-content" {...others}>
+    return (<div className="my-custom-content2" {...others}>
         <Box direction="row">
             {dataSource.map((item, i) => {
                 return (<Menu embeddable key={i}>
@@ -109,7 +109,7 @@ ReactDOM.render(
                 };
             });
 
-            return (<PopupItem triggerType="click" key="0-more" label="更多" >
+            return (<PopupItem noIcon triggerType="click" key="0-more" label="更多" >
                 <Panel dataSource={newDs}/>
             </PopupItem>);
         }}>
@@ -154,7 +154,7 @@ ReactDOM.render(
     text-align: left;
 }
 
-.my-custom-content {
+.my-custom-content2 {
     background: #fff;
     border: 1px solid #ccc;
     text-align: center;

@@ -125,7 +125,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     treeDefaultExpandedKeys?: Array<any>;
 
     /**
-     * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/component/tree)
+     * 下拉框中的树异步加载数据的函数，使用请参考[Tree的异步加载数据Demo](https://fusion.design/pc/component/basic/tree#%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE)
      */
     treeLoadData?: (node: React.ReactElement<any>) => void;
 
@@ -162,7 +162,10 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 下拉框挂载的容器节点
      */
-    popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
+    popupContainer?:
+        | string
+        | HTMLElement
+        | ((target: HTMLElement) => HTMLElement);
 
     /**
      * 透传到 Popup 的属性对象

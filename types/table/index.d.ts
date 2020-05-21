@@ -26,6 +26,7 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      */
     title?: React.ReactElement<any> | React.ReactNode | (() => void);
 
+    htmlTitle?: string;
     /**
      * 是否支持排序
      */

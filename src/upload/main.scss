@@ -437,6 +437,12 @@
         @include icon-size($upload-card-add-icon-size);
     }
 
+    .#{$css-prefix}upload-add-icon {
+        &::before {
+            content: $upload-card-add-icon;
+        }
+    }
+
     .#{$css-prefix}upload-text {
         font-size: $upload-card-add-text-size;
         margin-top: $upload-card-add-text-margin-top;
@@ -478,8 +484,6 @@
                 font-size: $upload-drag-zone-icon-size;
             }
         }
-
-
 
         &-text {
             margin: $s-3 0 0;

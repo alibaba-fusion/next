@@ -7,6 +7,7 @@ export interface ShellProps extends HTMLAttributes<HTMLElement>, CommonProps {
      */
     device?: 'tablet' | 'desktop' | 'phone';
     type?: 'light' | 'dark' | 'brand';
+    fixedHeader?: boolean;
 }
 
 export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonProps {
@@ -16,18 +17,25 @@ export interface ShellCommonProps extends HTMLAttributes<HTMLElement>, CommonPro
 export interface ShellNavigationProps extends ShellCommonProps {
     collapse?: boolean;
     direction?: 'hoz' | 'ver';
+    align?: 'left' | 'right' | 'center';
+    fixed?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export interface ShellLocalNavigationProps extends ShellCommonProps {
     collapse?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export interface ShellToolDockProps extends ShellCommonProps {
     collapse?: boolean;
+    fixed?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export interface ShellAncillaryProps extends ShellCommonProps {
     collapse?: boolean;
+    onCollapseChange?: (collapse?: boolean) => {};
 }
 
 export default class Shell extends Component<ShellProps, any> {

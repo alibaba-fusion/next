@@ -25,6 +25,7 @@ export default class Header extends React.Component {
         sortIcons: PropTypes.object,
         onSort: PropTypes.func,
         onResizeChange: PropTypes.func,
+        tableWidth: PropTypes.number,
     };
     static defaultProps = {
         component: 'thead',
@@ -65,6 +66,7 @@ export default class Header extends React.Component {
             onResizeChange,
             pure,
             rtl,
+            tableWidth,
             ...others
         } = this.props;
 

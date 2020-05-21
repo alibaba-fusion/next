@@ -1,9 +1,11 @@
 /* eslint-disable max-depth */
-import React, { Component, Children, cloneElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
 import { func, dom, obj, KEYCODE } from '../../util';
 import TreeNode from './tree-node';
+import VirtualList from '../../virtual-list';
 import {
     normalizeToArray,
     isDescendantOrSelf,
@@ -13,16 +15,202 @@ import {
     getAllCheckedKeys,
     forEachEnableNode,
     isNodeChecked,
+    convertChildren2Data,
+    getAllDescendantKeys,
 } from './util';
 
 const { bindCtx, noop } = func;
 const { getOffset } = dom;
 const { pickOthers, isPlainObject } = obj;
 
+const getExpandedKeys = (props, willReceiveProps, _k2n, _p2n) => {
+    let expandedKeys;
+
+    if (!willReceiveProps && props.defaultExpandAll) {
+        expandedKeys = Object.keys(_k2n).filter(key => {
+            const children = _k2n[key].children;
+            return children && children.length;
+        });
+    } else {
+        expandedKeys =
+            'expandedKeys' in props
+                ? props.expandedKeys
+                : willReceiveProps
+                ? []
+                : props.defaultExpandedKeys;
+        expandedKeys = normalizeToArray(expandedKeys);
+
+        if (props.autoExpandParent) {
+            const newExpandedKeys = [];
+
+            const expandedPoss = expandedKeys.reduce((ret, key) => {
+                const pos = _k2n[key] && _k2n[key].pos;
+                if (pos) {
+                    ret.push(pos);
+                    newExpandedKeys.push(key);
+                }
+                return ret;
+            }, []);
+
+            expandedPoss.forEach(pos => {
+                const nums = pos.split('-');
+                if (nums.length === 2) {
+                    return;
+                }
+                for (let i = 1; i <= nums.length - 2; i++) {
+                    const ancestorPos = nums.slice(0, i + 1).join('-');
+                    const ancestorKey = _p2n[ancestorPos].key;
+                    if (newExpandedKeys.indexOf(ancestorKey) === -1) {
+                        newExpandedKeys.push(ancestorKey);
+                    }
+                }
+            });
+
+            return newExpandedKeys;
+        }
+    }
+
+    return expandedKeys;
+};
+
+const getSelectedKeys = (props, willReceiveProps, _k2n) => {
+    let selectedKeys =
+        'selectedKeys' in props
+            ? props.selectedKeys
+            : willReceiveProps
+            ? []
+            : props.defaultSelectedKeys;
+    selectedKeys = normalizeToArray(selectedKeys);
+
+    return selectedKeys.filter(key => _k2n[key]);
+};
+
+const getIndeterminateKeys = (checkedKeys, checkStrictly, _k2n, _p2n) => {
+    if (checkStrictly) {
+        return [];
+    }
+
+    const indeterminateKeys = [];
+
+    const poss = filterChildKey(
+        checkedKeys
+            .filter(key => !!_k2n[key])
+            .filter(
+                key =>
+                    !_k2n[key].disabled &&
+                    !_k2n[key].checkboxDisabled &&
+                    _k2n[key].checkable !== false
+            ),
+        _k2n,
+        _p2n
+    ).map(key => _k2n[key].pos);
+
+    poss.forEach(pos => {
+        const nums = pos.split('-');
+        for (let i = nums.length; i > 2; i--) {
+            const parentPos = nums.slice(0, i - 1).join('-');
+            const parent = _p2n[parentPos];
+            if (parent.disabled || parent.checkboxDisabled) break;
+            const parentKey = parent.key;
+            if (indeterminateKeys.indexOf(parentKey) === -1) {
+                indeterminateKeys.push(parentKey);
+            }
+        }
+    });
+
+    return indeterminateKeys;
+};
+
+const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
+    let checkedKeys = props.defaultCheckedKeys;
+    let indeterminateKeys;
+
+    if ('checkedKeys' in props) {
+        checkedKeys = props.checkedKeys;
+    } else if (willReceiveProps) {
+        checkedKeys = [];
+    }
+
+    const { checkStrictly } = props; // TODO TEST
+    if (checkStrictly) {
+        if (isPlainObject(checkedKeys)) {
+            const { checked, indeterminate } = checkedKeys;
+            checkedKeys = normalizeToArray(checked);
+            indeterminateKeys = normalizeToArray(indeterminate);
+        } else {
+            checkedKeys = normalizeToArray(checkedKeys);
+        }
+
+        checkedKeys = checkedKeys.filter(key => !!_k2n[key]);
+    } else {
+        checkedKeys = getAllCheckedKeys(checkedKeys, _k2n, _p2n);
+        checkedKeys = checkedKeys.filter(key => !!_k2n[key]);
+
+        indeterminateKeys = getIndeterminateKeys(
+            checkedKeys,
+            props.checkStrictly,
+            _k2n,
+            _p2n
+        );
+    }
+
+    return { checkedKeys, indeterminateKeys };
+};
+
+const preHandleData = (props, dataSource) => {
+    const k2n = {};
+    const p2n = {};
+
+    const drill = (data = [], level = 1, prefix = '0', parent) =>
+        data.map((item, index) => {
+            // 为了兼容之前的实现 保留非法节点
+            if (item.illegalFlag) {
+                return item;
+            }
+
+            const { children } = item;
+            const pos = `${prefix}-${index}`;
+            let { key } = item;
+
+            item.pos = pos;
+            item.level = level;
+            // 判断为叶子节点
+            // - loadData模式下 没有指定isLeaf为true
+            // - 存在children元素
+            item.isLeaf = !(
+                (props.loadData && item.isLeaf !== true) ||
+                (children && children.length)
+            );
+            item.isLastChild = parent
+                ? [].concat(parent.isLastChild || [], index === data.length - 1)
+                : [];
+
+            if (key === undefined || key === null) {
+                item.key = key = pos;
+            }
+
+            !item.isLeaf && drill(children, level + 1, pos, item);
+
+            k2n[key] = p2n[pos] = { ...item };
+
+            return item;
+        });
+
+    return { dataSource: drill(dataSource), k2n, p2n };
+};
+
+const getData = props => {
+    const dataSource =
+        props.dataSource && props.dataSource.length
+            ? props.dataSource
+            : convertChildren2Data(props.children || []);
+    return preHandleData(props, dataSource);
+};
+
 /**
  * Tree
  */
-export default class Tree extends Component {
+class Tree extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         rtl: PropTypes.bool,
@@ -240,6 +428,7 @@ export default class Tree extends Component {
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
+        useVirtual: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -278,31 +467,47 @@ export default class Tree extends Component {
         autoFocus: false,
         onItemFocus: noop,
         onItemKeyDown: noop,
+        useVirtual: false,
     };
 
     constructor(props) {
         super(props);
 
-        this.updateCache(props);
-
+        const { dataSource, k2n, p2n } = getData(props);
         const { focusable, autoFocus, focusedKey } = this.props;
+        const willReceiveProps = false;
+        const { checkedKeys, indeterminateKeys = [] } = getCheckedKeys(
+            props,
+            willReceiveProps,
+            k2n,
+            p2n
+        );
+
+        this.state = {
+            _k2n: k2n,
+            _p2n: p2n,
+            dataSource,
+            willReceiveProps,
+            expandedKeys: getExpandedKeys(props, willReceiveProps, k2n, p2n),
+            selectedKeys: getSelectedKeys(props, willReceiveProps, k2n, p2n),
+            checkedKeys,
+            indeterminateKeys,
+        };
 
         if (focusable) {
             this.tabbableKey = this.getFirstAvaliablelChildKey('0');
         }
 
-        this.indeterminateKeys = [];
-        this.state = {
-            expandedKeys: this.getExpandedKeys(props),
-            selectedKeys: this.getSelectedKeys(props),
-            checkedKeys: this.getCheckedKeys(props),
-            focusedKey:
-                'focusedKey' in this.props
-                    ? focusedKey
-                    : focusable && autoFocus
-                    ? this.tabbableKey
-                    : null,
-        };
+        this.state.focusedKey =
+            'focusedKey' in props
+                ? focusedKey
+                : focusable && autoFocus
+                ? this.tabbableKey
+                : null;
+
+        if (focusable) {
+            this.tabbableKey = this.getFirstAvaliablelChildKey('0');
+        }
 
         bindCtx(this, [
             'handleExpand',
@@ -312,69 +517,60 @@ export default class Tree extends Component {
         ]);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.updateCache(nextProps);
-
+    static getDerivedStateFromProps(props, state) {
+        const { dataSource, k2n, p2n } = getData(props);
         const st = {};
 
-        if ('expandedKeys' in nextProps) {
-            st.expandedKeys = this.getExpandedKeys(nextProps, true);
-        }
-        if ('selectedKeys' in nextProps) {
-            st.selectedKeys = this.getSelectedKeys(nextProps, true);
-        }
-        if ('checkedKeys' in nextProps) {
-            st.checkedKeys = this.getCheckedKeys(nextProps, true);
+        if (!state.willReceiveProps) {
+            return {
+                willReceiveProps: true,
+                _k2n: k2n,
+                _p2n: p2n,
+            };
         }
 
-        this.indeterminateKeys = this.getIndeterminateKeys(
-            st.checkedKeys || this.state.checkedKeys || []
-        );
-
-        if (Object.keys(st).length) {
-            this.setState(st);
+        if ('expandedKeys' in props) {
+            st.expandedKeys = getExpandedKeys(
+                props,
+                state.willReceiveProps,
+                k2n,
+                p2n
+            );
         }
-    }
 
-    updateCache(props) {
-        this._k2n = {};
-        this._p2n = {};
-
-        if ('dataSource' in props) {
-            const loop = (data, prefix = '0') =>
-                data.forEach((item, index) => {
-                    const pos = `${prefix}-${index}`;
-                    let { key } = item;
-                    key = key || pos;
-                    const newItem = { ...item, key, pos };
-                    const { children } = item;
-                    if (children && children.length) {
-                        loop(children, pos);
-                    }
-                    this._k2n[key] = this._p2n[pos] = newItem;
-                });
-            loop(props.dataSource);
-        } else if ('children' in props) {
-            const loop = (children, prefix = '0') =>
-                Children.map(children, (node, index) => {
-                    if (!React.isValidElement(node)) {
-                        return;
-                    }
-
-                    const pos = `${prefix}-${index}`;
-                    let { key } = node;
-                    key = key || pos;
-                    const newItem = { ...node.props, key, pos };
-
-                    const { children } = node.props;
-                    if (children && Children.count(children)) {
-                        newItem.children = loop(children, pos);
-                    }
-                    this._k2n[key] = this._p2n[pos] = newItem;
-                    return newItem;
-                });
-            loop(props.children);
+        if ('selectedKeys' in props) {
+            st.selectedKeys = getSelectedKeys(
+                props,
+                state.willReceiveProps,
+                k2n
+            );
         }
+
+        if ('checkedKeys' in props) {
+            const { checkedKeys } = getCheckedKeys(
+                props,
+                state.willReceiveProps,
+                k2n,
+                p2n
+            );
+            st.checkedKeys = checkedKeys;
+        }
+
+        st.indeterminateKeys = props.checkStrictly
+            ? (props.checkedKeys && props.checkedKeys.indeterminate) || []
+            : getIndeterminateKeys(
+                  st.checkedKeys || state.checkedKeys || [],
+                  props.checkStrictly,
+                  k2n,
+                  p2n
+              );
+
+        return {
+            ...st,
+            dataSource,
+            _k2n: k2n,
+            _p2n: p2n,
+        };
     }
 
     setFocusKey() {
@@ -387,58 +583,8 @@ export default class Tree extends Component {
         });
     }
 
-    getExpandedKeys(props, willReceiveProps) {
-        let expandedKeys;
-
-        if (!willReceiveProps && props.defaultExpandAll) {
-            expandedKeys = Object.keys(this._k2n).filter(key => {
-                const children = this._k2n[key].children;
-                return children && children.length;
-            });
-        } else {
-            expandedKeys =
-                'expandedKeys' in props
-                    ? props.expandedKeys
-                    : willReceiveProps
-                    ? []
-                    : props.defaultExpandedKeys;
-            expandedKeys = normalizeToArray(expandedKeys);
-
-            if (props.autoExpandParent) {
-                const newExpandedKeys = [];
-
-                const expandedPoss = expandedKeys.reduce((ret, key) => {
-                    const pos = this._k2n[key] && this._k2n[key].pos;
-                    if (pos) {
-                        ret.push(pos);
-                        newExpandedKeys.push(key);
-                    }
-                    return ret;
-                }, []);
-
-                expandedPoss.forEach(pos => {
-                    const nums = pos.split('-');
-                    if (nums.length === 2) {
-                        return;
-                    }
-                    for (let i = 1; i <= nums.length - 2; i++) {
-                        const ancestorPos = nums.slice(0, i + 1).join('-');
-                        const ancestorKey = this._p2n[ancestorPos].key;
-                        if (newExpandedKeys.indexOf(ancestorKey) === -1) {
-                            newExpandedKeys.push(ancestorKey);
-                        }
-                    }
-                });
-
-                return newExpandedKeys;
-            }
-        }
-
-        return expandedKeys;
-    }
-
     getAvailableKey(pos, prev) {
-        const ps = Object.keys(this._p2n).filter(p =>
+        const ps = Object.keys(this.state._p2n).filter(p =>
             this.isAvailablePos(pos, p)
         );
         if (ps.length > 1) {
@@ -450,21 +596,21 @@ export default class Tree extends Component {
                 targetIndex = index === ps.length - 1 ? 0 : index + 1;
             }
 
-            return this._p2n[ps[targetIndex]].key;
+            return this.state._p2n[ps[targetIndex]].key;
         }
 
         return null;
     }
 
     getFirstAvaliablelChildKey(parentPos) {
-        const pos = Object.keys(this._p2n).find(p =>
+        const pos = Object.keys(this.state._p2n).find(p =>
             this.isAvailablePos(`${parentPos}-0`, p)
         );
-        return pos ? this._p2n[pos].key : null;
+        return pos ? this.state._p2n[pos].key : null;
     }
 
     isAvailablePos(refPos, targetPos) {
-        const { disabled } = this._p2n[targetPos];
+        const { disabled } = this.state._p2n[targetPos];
 
         return this.isSibling(refPos, targetPos) && !disabled;
     }
@@ -482,53 +628,7 @@ export default class Tree extends Component {
     }
 
     getParentKey(pos) {
-        return this._p2n[pos.slice(0, pos.length - 2)].key;
-    }
-
-    getSelectedKeys(props, willReceiveProps) {
-        let selectedKeys =
-            'selectedKeys' in props
-                ? props.selectedKeys
-                : willReceiveProps
-                ? []
-                : props.defaultSelectedKeys;
-        selectedKeys = normalizeToArray(selectedKeys);
-
-        const newSelectKeys = selectedKeys.filter(key => {
-            return this._k2n[key];
-        });
-        return newSelectKeys;
-    }
-
-    /* istanbul ignore next */
-    getCheckedKeys(props, willReceiveProps) {
-        let checkedKeys = props.defaultCheckedKeys;
-
-        if ('checkedKeys' in props) {
-            checkedKeys = props.checkedKeys;
-        } else if (willReceiveProps) {
-            checkedKeys = [];
-        }
-
-        const { checkStrictly } = this.props;
-        if (checkStrictly) {
-            if (isPlainObject(checkedKeys)) {
-                const { checked, indeterminate } = checkedKeys;
-                checkedKeys = normalizeToArray(checked);
-                this.indeterminateKeys = normalizeToArray(indeterminate);
-            } else {
-                checkedKeys = normalizeToArray(checkedKeys);
-            }
-
-            checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
-        } else {
-            checkedKeys = getAllCheckedKeys(checkedKeys, this._k2n, this._p2n);
-            checkedKeys = checkedKeys.filter(key => !!this._k2n[key]);
-
-            this.indeterminateKeys = this.getIndeterminateKeys(checkedKeys);
-        }
-
-        return checkedKeys;
+        return this.state._p2n[pos.slice(0, pos.length - 2)].key;
     }
 
     processKey(keys, key, add) {
@@ -540,6 +640,7 @@ export default class Tree extends Component {
         }
         return keys;
     }
+
     /*eslint-disable max-statements*/
     handleItemKeyDown(key, item, e) {
         if (
@@ -559,8 +660,8 @@ export default class Tree extends Component {
 
         let focusedKey = this.state.focusedKey;
 
-        const node = this._k2n[key];
-        const pos = this._k2n[key].pos;
+        const node = this.state._k2n[key];
+        const pos = this.state._k2n[key].pos;
         const level = pos.split('-').length - 1;
         switch (e.keyCode) {
             case KEYCODE.UP: {
@@ -665,7 +766,7 @@ export default class Tree extends Component {
         if (multiple) {
             this.processKey(selectedKeys, key, select);
         } else {
-            selectedKeys = [key];
+            selectedKeys = select ? [key] : [];
         }
 
         if (!('selectedKeys' in this.props)) {
@@ -682,6 +783,7 @@ export default class Tree extends Component {
     // eslint-disable-next-line max-statements
     handleCheck(check, key, node) {
         const { checkStrictly, checkedStrategy, onCheck } = this.props;
+        const { _k2n, _p2n } = this.state;
         const checkedKeys = [...this.state.checkedKeys];
 
         if (checkStrictly) {
@@ -689,7 +791,7 @@ export default class Tree extends Component {
             const newCheckedKeys = isPlainObject(this.props.checkedKeys)
                 ? {
                       checked: checkedKeys,
-                      indeterminate: this.indeterminateKeys,
+                      indeterminate: this.state.indeterminateKeys,
                   }
                 : checkedKeys;
 
@@ -697,48 +799,45 @@ export default class Tree extends Component {
                 checkedNodes: this.getNodes(checkedKeys),
                 checkedNodesPositions: checkedKeys
                     .map(key => {
-                        if (!this._k2n[key]) return null;
-                        const { node, pos } = this._k2n[key];
+                        if (!_k2n[key]) return null;
+                        const { node, pos } = _k2n[key];
                         return { node, pos };
                     })
                     .filter(v => !!v),
                 node,
-                indeterminateKeys: this.indeterminateKeys,
+                indeterminateKeys: this.state.indeterminateKeys,
                 checked: check,
+                key,
             });
 
             return;
         }
 
-        const pos = this._k2n[key].pos;
+        const pos = _k2n[key].pos;
 
-        forEachEnableNode(this._k2n[key], node => {
+        forEachEnableNode(_k2n[key], node => {
             if (node.checkable === false) return;
             this.processKey(checkedKeys, node.key, check);
         });
 
-        const ps = Object.keys(this._p2n);
-        // ps.forEach(p => {
-        //     if (this._p2n[p].checkable !== false && !this._p2n[p].disabled && isDescendantOrSelf(pos, p)) {
-        //         this.processKey(checkedKeys, this._p2n[p].key, check);
-        //     }
-        // });
+        const ps = Object.keys(_p2n);
 
         let currentPos = pos;
         const nums = pos.split('-');
+
         for (let i = nums.length; i > 2; i--) {
             let parentCheck = true;
 
             const parentPos = nums.slice(0, i - 1).join('-');
             if (
-                this._p2n[parentPos].disabled ||
-                this._p2n[parentPos].checkboxDisabled ||
-                this._p2n[parentPos].checkable === false
+                _p2n[parentPos].disabled ||
+                _p2n[parentPos].checkboxDisabled ||
+                _p2n[parentPos].checkable === false
             ) {
                 currentPos = parentPos;
                 continue;
             }
-            const parentKey = this._p2n[parentPos].key;
+            const parentKey = _p2n[parentPos].key;
             const parentChecked = checkedKeys.indexOf(parentKey) > -1;
             if (!check && !parentChecked) {
                 break;
@@ -746,7 +845,7 @@ export default class Tree extends Component {
 
             for (let j = 0; j < ps.length; j++) {
                 const p = ps[j];
-                const pnode = this._p2n[p];
+                const pnode = _p2n[p];
                 if (
                     isSiblingOrSelf(currentPos, p) &&
                     !pnode.disabled &&
@@ -782,29 +881,26 @@ export default class Tree extends Component {
             currentPos = parentPos;
         }
 
-        const indeterminateKeys = this.getIndeterminateKeys(checkedKeys);
+        const indeterminateKeys = getIndeterminateKeys(
+            checkedKeys,
+            checkStrictly,
+            _k2n,
+            _p2n
+        );
         if (!('checkedKeys' in this.props)) {
             this.setState({
                 checkedKeys,
+                indeterminateKeys,
             });
-            this.indeterminateKeys = indeterminateKeys;
         }
 
         let newCheckedKeys;
         switch (checkedStrategy) {
             case 'parent':
-                newCheckedKeys = filterChildKey(
-                    checkedKeys,
-                    this._k2n,
-                    this._p2n
-                );
+                newCheckedKeys = filterChildKey(checkedKeys, _k2n, _p2n);
                 break;
             case 'child':
-                newCheckedKeys = filterParentKey(
-                    checkedKeys,
-                    this._k2n,
-                    this._p2n
-                );
+                newCheckedKeys = filterParentKey(checkedKeys, _k2n, _p2n);
                 break;
             default:
                 newCheckedKeys = checkedKeys;
@@ -815,17 +911,18 @@ export default class Tree extends Component {
             checkedNodes: this.getNodes(newCheckedKeys),
             checkedNodesPositions: newCheckedKeys
                 .map(key => {
-                    if (!this._k2n[key]) return null;
-                    const { node, pos } = this._k2n[key];
+                    if (!_k2n[key]) return null;
+                    const { node, pos } = _k2n[key];
                     return { node, pos };
                 })
                 .filter(v => !!v),
             node,
             indeterminateKeys,
             checked: check,
+            key,
         });
     }
-    /*eslint-enable*/
+
     getNodeProps(key) {
         const { prefix } = this.props;
         const {
@@ -833,8 +930,11 @@ export default class Tree extends Component {
             selectedKeys,
             checkedKeys,
             dragOverNodeKey,
+            _k2n,
+            indeterminateKeys,
         } = this.state;
-        const pos = this._k2n[key].pos;
+
+        const pos = _k2n[key].pos;
 
         return {
             prefix,
@@ -844,7 +944,7 @@ export default class Tree extends Component {
             expanded: expandedKeys.indexOf(key) > -1,
             selected: selectedKeys.indexOf(key) > -1,
             checked: checkedKeys.indexOf(key) > -1,
-            indeterminate: this.indeterminateKeys.indexOf(key) > -1,
+            indeterminate: indeterminateKeys.indexOf(key) > -1,
             dragOver: dragOverNodeKey === key && this.dropPosition === 0,
             dragOverGapTop: dragOverNodeKey === key && this.dropPosition === -1,
             dragOverGapBottom:
@@ -852,66 +952,19 @@ export default class Tree extends Component {
         };
     }
 
-    getParentNode(pos) {
-        const parentPos = pos
-            .split('-')
-            .slice(0, -1)
-            .join('-');
-        if (parentPos.length === 1) {
-            return null;
-        }
-
-        return this._p2n[parentPos].node;
-    }
-
     getNodes(keys) {
         return keys
-            .map(key => this._k2n[key] && this._k2n[key].node)
+            .map(key => this.state._k2n[key] && this.state._k2n[key].node)
             .filter(v => !!v);
-    }
-
-    getIndeterminateKeys(checkedKeys) {
-        if (this.props.checkStrictly) {
-            return [];
-        }
-
-        const indeterminateKeys = [];
-
-        const poss = filterChildKey(
-            checkedKeys
-                .filter(key => !!this._k2n[key])
-                .filter(
-                    key =>
-                        !this._k2n[key].disabled &&
-                        !this._k2n[key].checkboxDisabled &&
-                        this._k2n[key].checkable !== false
-                ),
-            this._k2n,
-            this._p2n
-        ).map(key => this._k2n[key].pos);
-        poss.forEach(pos => {
-            const nums = pos.split('-');
-            for (let i = nums.length; i > 2; i--) {
-                const parentPos = nums.slice(0, i - 1).join('-');
-                const parent = this._p2n[parentPos];
-                if (parent.disabled || parent.checkboxDisabled) break;
-                const parentKey = parent.key;
-                if (indeterminateKeys.indexOf(parentKey) === -1) {
-                    indeterminateKeys.push(parentKey);
-                }
-            }
-        });
-
-        return indeterminateKeys;
     }
 
     handleDragStart(e, node) {
         const dragNodeKey = node.props.eventKey;
         this.dragNode = node;
-        this.dragNodesKeys = Object.keys(this._k2n).filter(k => {
+        this.dragNodesKeys = Object.keys(this.state._k2n).filter(k => {
             return isDescendantOrSelf(
-                this._k2n[dragNodeKey].pos,
-                this._k2n[k].pos
+                this.state._k2n[dragNodeKey].pos,
+                this.state._k2n[k].pos
             );
         });
 
@@ -961,7 +1014,7 @@ export default class Tree extends Component {
     }
 
     getDropPosition(e, node) {
-        const labelWrapperNode = node.refs.labelWrapper;
+        const labelWrapperNode = node.labelWrapperEl;
         const offsetTop = getOffset(labelWrapperNode).top;
         const offsetHeight = labelWrapperNode.offsetHeight;
         const pageY = e.pageY;
@@ -996,8 +1049,8 @@ export default class Tree extends Component {
         if (
             this.dragNode &&
             isDescendantOrSelf(
-                this._k2n[this.dragNode.props.eventKey].pos,
-                this._k2n[node.props.eventKey].pos
+                this.state._k2n[this.dragNode.props.eventKey].pos,
+                this.state._k2n[node.props.eventKey].pos
             )
         ) {
             return;
@@ -1032,10 +1085,100 @@ export default class Tree extends Component {
         return this.props.filterTreeNode.call(this, node);
     }
 
-    renderByDataSource() {
+    shouldNodeShow(nodeData) {
+        const { expandedKeys, _p2n } = this.state;
+
+        return getAllDescendantKeys(nodeData, _p2n).every(k =>
+            expandedKeys.includes(k)
+        );
+    }
+
+    renderTreeNode(props, childNodes) {
         const { rtl } = this.props;
-        const loop = (data, prefix = '0') => {
+        const { key } = props;
+        const nodeProps = {
+            _key: key,
+            ...props,
+            ...this.getNodeProps(key),
+        };
+
+        return (
+            <TreeNode rtl={rtl} key={key} {...nodeProps}>
+                {childNodes}
+            </TreeNode>
+        );
+    }
+
+    renderNodeList(dataSource) {
+        const nodeList = [];
+        const { _k2n } = this.state;
+        const drill = list => {
+            list.forEach(item => {
+                // 为了兼容之前的实现 保留非法节点
+                if (item.illegalFlag) {
+                    nodeList.push(item);
+                    return;
+                }
+
+                const { children, ...nodeProps } = item;
+
+                if (!this.shouldNodeShow(item)) {
+                    return;
+                }
+
+                nodeList.push(nodeProps);
+                children && children.length && drill(children);
+            });
+        };
+
+        drill(dataSource);
+
+        return nodeList.map((nodeProps, index) => {
+            // 为了兼容之前的实现 保留非法节点
+            if (nodeProps.illegalFlag) {
+                return nodeProps.node;
+            }
+            // aria props
+            nodeProps.size = nodeList.length;
+            nodeProps.posinset = index + 1;
+
+            return (_k2n[nodeProps.key].node = this.renderTreeNode(nodeProps));
+        });
+    }
+
+    renderWithCustomChildNodes(dataSource) {
+        const { renderChildNodes } = this.props;
+        const { _k2n } = this.state;
+
+        const drill = list =>
+            list.map(({ children, ...nodeProps }, index) => {
+                let childNodes;
+
+                if (children && children.length) {
+                    childNodes = renderChildNodes(drill(children));
+                }
+
+                // aria props
+                nodeProps.size = list.length;
+                nodeProps.posinset = index + 1;
+
+                return (_k2n[nodeProps.key].node = this.renderTreeNode(
+                    nodeProps,
+                    childNodes
+                ));
+            });
+        return drill(dataSource);
+    }
+
+    renderByDataSource(dataSource) {
+        const { rtl } = this.props;
+        const drill = (data, prefix = '0') => {
             return data.map((item, index) => {
+                // 为了兼容之前的实现 保留非法节点
+                if (item.illegalFlag) {
+                    return item.node;
+                }
+
                 const pos = `${prefix}-${index}`;
                 const { key = pos, children, ...others } = item;
                 const props = {
@@ -1044,7 +1187,7 @@ export default class Tree extends Component {
                     _key: key,
                 };
                 if (children && children.length) {
-                    props.children = loop(children, pos);
+                    props.children = drill(children, pos);
                 }
                 const node = (
                     <TreeNode
@@ -1054,39 +1197,13 @@ export default class Tree extends Component {
                         {...props}
                     />
                 );
-                this._k2n[key].node = node;
+                // eslint-disable-next-line
+                this.state._k2n[key].node = node;
                 return node;
             });
         };
 
-        return loop(this.props.dataSource);
-    }
-
-    renderByChildren() {
-        const { rtl } = this.props;
-        const loop = (children, prefix = '0') => {
-            return Children.map(children, (child, index) => {
-                if (!React.isValidElement(child)) {
-                    return;
-                }
-                const pos = `${prefix}-${index}`;
-                const key = child.key || pos;
-                const props = this.getNodeProps(`${key}`);
-                if (child.props.children) {
-                    props.children = loop(child.props.children, pos);
-                }
-
-                props._key = key;
-                props.rtl = rtl;
-                props.size = Children.count(children);
-
-                const node = cloneElement(child, props);
-                this._k2n[key].node = node;
-                return node;
-            });
-        };
-
-        return loop(this.props.children);
+        return drill(dataSource);
     }
 
     render() {
@@ -1094,13 +1211,18 @@ export default class Tree extends Component {
             prefix,
             rtl,
             className,
-            dataSource,
             showLine,
             isNodeBlock,
             isLabelBlock,
             multiple,
+            useVirtual,
+            renderChildNodes,
         } = this.props;
-        const others = pickOthers(Object.keys(Tree.propTypes), this.props);
+        const { dataSource } = this.state;
+        const { style, ...others } = pickOthers(
+            Object.keys(Tree.propTypes),
+            this.props
+        );
 
         if (rtl) {
             others.dir = 'rtl';
@@ -1115,18 +1237,43 @@ export default class Tree extends Component {
             [className]: !!className,
         });
 
-        return (
-            <ul
-                role="tree"
-                aria-multiselectable={multiple}
-                onBlur={this.handleBlur}
-                className={newClassName}
-                {...others}
-            >
-                {dataSource
-                    ? this.renderByDataSource()
-                    : this.renderByChildren()}
-            </ul>
-        );
+        const treeRender = (items, ref) => {
+            return (
+                <ul
+                    role="tree"
+                    ref={ref}
+                    aria-multiselectable={multiple}
+                    onBlur={this.handleBlur}
+                    className={newClassName}
+                    style={useVirtual ? null : style}
+                    {...others}
+                >
+                    {items}
+                </ul>
+            );
+        };
+
+        const virtualTreeRender = dataSource => {
+            return (
+                <div
+                    className={`${prefix}virtual-tree-container`}
+                    style={style}
+                >
+                    <VirtualList
+                        itemsRenderer={(items, ref) => treeRender(items, ref)}
+                    >
+                        {this.renderNodeList(dataSource)}
+                    </VirtualList>
+                </div>
+            );
+        };
+
+        return useVirtual
+            ? virtualTreeRender(dataSource)
+            : renderChildNodes
+            ? treeRender(this.renderWithCustomChildNodes(dataSource))
+            : treeRender(this.renderByDataSource(dataSource));
     }
 }
+
+export default polyfill(Tree);

@@ -15,6 +15,7 @@ Card.Content = CardContent;
 Card.Actions = CardActions;
 Card.BulletHeader = CardBulletHeader;
 Card.CollaspeContent = CollaspeContent;
+Card.CollapseContent = CollaspeContent;
 
 export default ConfigProvider.config(Card, {
     transform: /* istanbul ignore next */ (props, deprecated) => {

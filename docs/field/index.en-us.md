@@ -230,7 +230,8 @@ init(name, options, props)
 | options.initValue | The initial value of the component (the component will be read only when rendering for the first time, and later modifying this value is invalid), similar to defaultValue | any | | |
 |options.trigger | Name of the event that triggered the data change | String | | 'onChange' |
 | options.rules | Checksum Rules | Array/Object | | | |
-| options.getValueFromEvent | custom way to get value from `onChange` event, generally do not need to set. Detailed usage see demo `custom data get` | Function(value, ...args) parameter order and components are exactly the same The | | | |
+| options.getValueFormatter | custom way to get value from `onChange` event, Detailed usage see demo `custom data get` | Function(value, ...args) parameter order and components are exactly the same The | | | |
+| options.getValueFormatter | custom way to set value. Detailed usage see demo `custom data get` | Function(values) | | | |
 |props | Component-defined events can be written here | Object | | | |
 | autoValidate | Automatically validate while value changed | Boolean  |true|
 

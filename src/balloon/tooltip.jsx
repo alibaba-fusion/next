@@ -29,7 +29,7 @@ export default class Tooltip extends React.Component {
         children: PropTypes.any,
         /**
          * 弹出层位置
-         * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合
+         * @enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下
          */
         align: PropTypes.oneOf([
             't',
@@ -82,11 +82,16 @@ export default class Tooltip extends React.Component {
          * 弹层id, 传入值才会支持无障碍
          */
         id: PropTypes.string,
+        /**
+         * 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100
+         */
+        delay: PropTypes.number,
     };
     static defaultProps = {
         triggerType: 'hover',
         prefix: 'next-',
         align: 'b',
+        delay: 0,
         trigger: <span />,
     };
 
@@ -108,6 +113,7 @@ export default class Tooltip extends React.Component {
             autoFocus,
             alignEdge,
             rtl,
+            delay,
             ...others
         } = this.props;
 
@@ -171,7 +177,7 @@ export default class Tooltip extends React.Component {
                 triggerType={newTriggerType}
                 align={alignMap[align].align}
                 offset={_offset}
-                delay={0}
+                delay={delay}
                 className={popupClassName}
                 style={popupStyle}
                 rtl={rtl}

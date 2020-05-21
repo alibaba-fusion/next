@@ -72,7 +72,7 @@ export default class Slider extends Component {
         /**
          * 自定义导航锚点
          */
-        dotRender: PropTypes.func,
+        dotsRender: PropTypes.func,
         /**
          * 是否可拖拽
          */

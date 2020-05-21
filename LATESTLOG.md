@@ -1,11 +1,10 @@
 # Latest Log 
 
-## [1.19.12](https://github.com/alibaba-fusion/next/compare/1.19.11...1.19.12) (2020-02-10)
+## [1.20.5](https://github.com/alibaba-fusion/next/compare/1.20.4...1.20.5) (2020-05-15)
 
 
 ### Bug Fixes
 
-* **Checkbox:** allow pass title to label ([fd36f8c](https://github.com/alibaba-fusion/next/commit/fd36f8c))
-* **Tab:** fix tab hover shake ([#1563](https://github.com/alibaba-fusion/next/issues/1563)) ([c921c89](https://github.com/alibaba-fusion/next/commit/c921c89))
+* correct Checkbox&Radio's display name ([02d8d1b](https://github.com/alibaba-fusion/next/commit/02d8d1b))
 
 

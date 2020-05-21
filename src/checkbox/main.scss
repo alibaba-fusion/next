@@ -37,7 +37,6 @@
         transition: all $motion-duration-immediately $motion-linear;
         text-align: left; /* 防止继承父级 */
         box-shadow: $checkbox-shadow;
-        /* box-sizing: content-box; */
 
         > .#{$css-prefix}icon {
             transform: scale(0);
@@ -56,6 +55,12 @@
         > .#{$css-prefix}icon::before {
             vertical-align: top;
             margin-top: 0;
+        }
+        > .#{$css-prefix}checkbox-select-icon::before {
+            content: $checkbox-select-icon-content;
+        }
+        > .#{$css-prefix}checkbox-semi-select-icon::before {
+            content: $checkbox-semi-select-icon-content;
         }
     }
 

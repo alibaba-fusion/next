@@ -1,6 +1,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 import Icon from '../icon';
 import { KEYCODE } from '../util';
 import RowComponent from './expanded/row';
@@ -45,12 +46,6 @@ export default function expanded(BaseComponent) {
              * @param {Object} currentRecord 当前点击额外渲染行的记录
              */
             onRowOpen: PropTypes.func,
-            /**
-             * 点击额外渲染行触发的事件
-             * @param {Object} record 该行所对应的数据
-             * @param {Number} index 该行所对应的序列
-             * @param {Event} e DOM事件对象
-             */
             onExpandedRowClick: PropTypes.func,
             locale: PropTypes.object,
             ...BaseComponent.propTypes,
@@ -86,13 +81,14 @@ export default function expanded(BaseComponent) {
             };
         }
 
-        componentWillReceiveProps(nextProps) {
+        static getDerivedStateFromProps(nextProps) {
             if ('openRowKeys' in nextProps) {
-                const { openRowKeys } = nextProps;
-                this.setState({
-                    openRowKeys,
-                });
+                return {
+                    openRowKeys: nextProps.openRowKeys || [],
+                };
             }
+
+            return null;
         }
 
         expandedKeydown = (value, record, index, e) => {
@@ -246,5 +242,5 @@ export default function expanded(BaseComponent) {
         }
     }
     statics(ExpandedTable, BaseComponent);
-    return ExpandedTable;
+    return polyfill(ExpandedTable);
 }

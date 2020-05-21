@@ -77,6 +77,7 @@ export default {
         autoCompletePlaceholder: 'Please Input',
         notFoundContent: 'No Options',
         maxTagPlaceholder: 'Selected {selected}/{total} Total',
+        selectAll: 'Select All',
     },
     Table: {
         empty: 'No Data',
@@ -132,5 +133,8 @@ export default {
     Switch: {
         on: 'on',
         off: 'off',
+    },
+    Tab: {
+        closeAriaLabel: 'close',
     },
 };

@@ -6,6 +6,8 @@ import assert from 'power-assert';
 import Input from '../../src/input';
 import Field from '../../src/field';
 import Select from '../../src/select';
+import Radio from '../../src/radio';
+import Checkbox from '../../src/checkbox';
 import Form from '../../src/form/index';
 
 const FormItem = Form.Item;
@@ -263,6 +265,31 @@ describe('form', () => {
             assert(wrapper.find('.next-responsive-grid'));
             assert(wrapper.find('.next-form-responsive-grid'));
         });
+
+        it('should supoort responsive with react fragment', () => {
+            const wrapper = mount(
+                <Form responsive >
+                    <FormItem colSpan={4} labelWidth={80}>
+                        <Input />
+                    </FormItem>
+                    <FormItem colSpan={4} labelWidth={100}>
+                        <Input />
+                    </FormItem>
+                    <React.Fragment>
+                        <FormItem colSpan={4} labelWidth={100}>
+                            <Input />
+                        </FormItem>
+                    </React.Fragment>
+                    <FormItem colSpan={12} labelWidth={100}>
+                        <Input />
+                    </FormItem>
+                </Form>
+            );
+
+            assert(wrapper.find('.next-responsive-grid'));
+            assert(wrapper.find('.next-form-responsive-grid'));
+        });
+
         it('should supoort required', () => {
             const wrapper = mount(
                 <Form>
@@ -287,6 +314,26 @@ describe('form', () => {
             );
             assert(saveRef.calledOnce);
         });
+
+        it('should supoort defaultvalue', () => {
+            const value = {
+                'checkbox-1':true,
+                'radio-1': true,
+            };
+            const wrapper = mount(
+                <Form value={value}>
+                    <FormItem label="不支持购物车下单:">
+                        <Checkbox name="checkbox-1">（商品标签[6658]）</Checkbox>
+                    </FormItem>
+                    <FormItem label="不支持购物车下单:">
+                        <Radio name="radio-1">（商品标签[6658]）</Radio>
+                    </FormItem>
+                </Form>
+            );
+            assert(wrapper.find('input#checkbox-1').props().checked);
+            assert(wrapper.find('input#radio-1').props().checked);
+        });
+
         it('should supoort function children', () => {
             const wrapper = mount(
                 <Form>

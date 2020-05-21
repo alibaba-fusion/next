@@ -5,8 +5,17 @@ import Icon from './index';
 
 const customCache = new Set();
 
+/** Icon.createFromIconfontCN
+ *  @description 通过自定义 iconfont源来使用使用svg格式的图片
+ *  @order 1
+ */
 export default function createFromIconfontCN(options = {}) {
     const { scriptUrl, extraCommonProps = {} } = options;
+    let hasExist = customCache.has(scriptUrl);
+
+    if (document.querySelector(`script[data-namespace="${scriptUrl}"]`)) {
+        hasExist = true;
+    }
 
     /**
      * DOM API required.
@@ -20,7 +29,7 @@ export default function createFromIconfontCN(options = {}) {
         typeof document.createElement === 'function' &&
         typeof scriptUrl === 'string' &&
         scriptUrl.length &&
-        !customCache.has(scriptUrl)
+        !hasExist
     ) {
         const script = document.createElement('script');
         script.setAttribute('src', scriptUrl);
@@ -30,7 +39,14 @@ export default function createFromIconfontCN(options = {}) {
     }
 
     const Iconfont = props => {
-        const { type, size, children, prefix = 'next-', ...others } = props;
+        const {
+            type,
+            size,
+            children,
+            className,
+            prefix = 'next-',
+            ...others
+        } = props;
 
         // component > children > type
         let content = null;
@@ -41,9 +57,12 @@ export default function createFromIconfontCN(options = {}) {
             content = children;
         }
 
-        const classes = cx({
-            [`${prefix}icon-remote`]: true,
-        });
+        const classes = cx(
+            {
+                [`${prefix}icon-remote`]: true,
+            },
+            className
+        );
 
         return (
             <Icon size={size}>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
 import shallowElementEquals from 'shallow-element-equals';
+import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
@@ -29,7 +30,7 @@ const Children = React.Children,
 //</Table>
 
 /** Table */
-export default class Table extends React.Component {
+class Table extends React.Component {
     static Column = Column;
     static ColumnGroup = ColumnGroup;
     static Header = HeaderComponent;
@@ -48,6 +49,14 @@ export default class Table extends React.Component {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
+        /**
+         * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
+         */
+        tableLayout: PropTypes.oneOf(['fixed', 'auto']),
+        /**
+         * 表格的总长度，可以这么用：设置表格总长度 、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
+         */
+        tableWidth: PropTypes.number,
         /**
          * 自定义类名
          */
@@ -213,12 +222,6 @@ export default class Table extends React.Component {
          * @param {Object} currentRecord 当前点击额外渲染行的记录
          */
         onRowOpen: PropTypes.func,
-        /**
-         * 点击额外渲染行触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
-         */
         onExpandedRowClick: PropTypes.func,
         /**
          * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
@@ -332,17 +335,19 @@ export default class Table extends React.Component {
 
     getChildContext() {
         return {
-            notRenderCellIndex: this.notRenderCellIndex,
+            notRenderCellIndex: this.notRenderCellIndex || [],
             lockType: this.props.lockType,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (typeof this.props.sort !== 'undefined') {
-            this.setState({
-                sort: nextProps.sort,
-            });
+    static getDerivedStateFromProps(nextProps) {
+        const state = {};
+
+        if (typeof nextProps.sort !== 'undefined') {
+            state.sort = nextProps.sort;
         }
+
+        return state;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -357,7 +362,7 @@ export default class Table extends React.Component {
         return true;
     }
 
-    componentWillUpdate() {
+    componentDidUpdate() {
         this.notRenderCellIndex = [];
     }
 
@@ -523,6 +528,7 @@ export default class Table extends React.Component {
                 rtl,
                 crossline,
                 sortIcons,
+                tableWidth,
             } = this.props;
             const { sort } = this.state;
             const {
@@ -537,6 +543,7 @@ export default class Table extends React.Component {
                     colGroup={colGroup}
                     ref={this.getWrapperRef}
                     prefix={prefix}
+                    tableWidth={tableWidth}
                 >
                     {hasHeader ? (
                         <Header
@@ -556,6 +563,7 @@ export default class Table extends React.Component {
                             onResizeChange={this.onResizeChange}
                             onSort={this.onSort}
                             sortIcons={sortIcons}
+                            tableWidth={tableWidth}
                         />
                     ) : null}
                     <Body
@@ -582,6 +590,7 @@ export default class Table extends React.Component {
                         locale={locale}
                         onBodyMouseOver={this.onBodyMouseOver}
                         onBodyMouseOut={this.onBodyMouseOut}
+                        tableWidth={tableWidth}
                     />
                     {wrapperContent}
                 </Wrapper>
@@ -754,11 +763,14 @@ export default class Table extends React.Component {
                 columns,
                 sortIcons,
                 loadingComponent: LoadingComponent = Loading,
+                tableLayout,
+                tableWidth,
                 ...others
             } = this.props,
             cls = classnames({
                 [`${prefix}table`]: true,
                 [`${prefix}table-${size}`]: size,
+                [`${prefix}table-layout-${tableLayout}`]: tableLayout,
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,
@@ -789,3 +801,5 @@ export default class Table extends React.Component {
         return content;
     }
 }
+
+export default polyfill(Table);

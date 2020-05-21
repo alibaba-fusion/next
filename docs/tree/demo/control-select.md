@@ -80,7 +80,7 @@ class Demo extends React.Component {
         return (
             <div className="control-select-demo">
                 <label className="multiple-check">
-                    <Checkbox value={multiple} onChange={this.handleCheck} />
+                    <Checkbox checked={multiple} onChange={this.handleCheck} />
                     <span className="multiple-text">Enable multiple</span>
                 </label>
                 <Tree defaultExpandAll multiple={multiple} selectedKeys={selectedKeys} onSelect={this.handleSelect} dataSource={data} />

@@ -54,10 +54,10 @@ function render(i18n) {
         <Demo title="Textfield" block>
             <DemoHead cols={['L', 'M', 'S']}/>
 
-            <DemoGroup label="Normal">
-                <Input placeholder={i18n.large} size="large"/>
-                <Input placeholder={i18n.medium}/>
-                <Input placeholder={i18n.small} size="small"/>
+            <DemoGroup label="Normal" id="test">
+                <Input placeholder={i18n.large} size="large" style={{pointerEvents: 'none'}}/>
+                <Input placeholder={i18n.medium} style={{pointerEvents: 'none'}}/>
+                <Input placeholder={i18n.small} size="small" style={{pointerEvents: 'none'}}/>
             </DemoGroup>
             <DemoGroup label="Focused">
                 <Input value={i18n.focus} size="large" className="next-focus"/>
@@ -111,14 +111,21 @@ function render(i18n) {
             </DemoGroup>
         </Demo>
         <Demo title="Textarea" block>
+            <DemoHead cols={['L', 'M', 'S']}/>
             <DemoGroup label="Textarea">
-                <Input.TextArea placeholder={i18n.multiple}/>
+                <Input.TextArea placeholder={i18n.multiple} size="large"/>
+                <Input.TextArea placeholder={i18n.multiple} />
+                <Input.TextArea placeholder={i18n.multiple} size="small"/>
             </DemoGroup>
             <DemoGroup label="Disabled">
+                <Input.TextArea disabled value={i18n.multiple} size="large"/>
                 <Input.TextArea disabled value={i18n.multiple} />
+                <Input.TextArea disabled value={i18n.multiple} size="small"/>
             </DemoGroup>
             <DemoGroup label="Max Length">
+                <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20} size="large"/>
                 <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20}/>
+                <Input.TextArea value={i18n.multiple} hasLimitHint maxLength={20} size="small"/>
             </DemoGroup>
         </Demo>
         <Demo title="Addon" block>

@@ -133,7 +133,7 @@ const getGridGap = gap => {
 
 const getTemplateCount = counts => {
     if (!isNaN(counts)) {
-        return `repeat(${counts}, 1fr)`;
+        return `repeat(${counts}, minmax(0,1fr))`;
     }
 
     return counts;
@@ -152,7 +152,7 @@ const helperProps = [
 const innerProps = [
     'flexDirection',
     'flexWrap',
-    'justifyContent',
+    // 'justifyContent',
     'alignContent',
     'alignItems',
     'display',
@@ -292,7 +292,7 @@ export default ({
                 ...getGridGap(gap),
                 gridTemplateRows: getTemplateCount(rows),
                 gridTemplateColumns: getTemplateCount(newColumns),
-                gridAutoFlow: `${direction}${dense && ` dense`}`,
+                gridAutoFlow: `${direction || ''}${dense && ` dense`}`,
                 // justifyItems: justify,
                 // alignItems: align,
                 // child
@@ -313,9 +313,13 @@ export default ({
         case 'flex':
             style = {
                 // parent
+                msFlexDirection: direction,
                 flexDirection: direction,
+                msFlexWrap: wrap ? 'wrap' : 'none',
                 flexWrap: wrap ? 'wrap' : 'nowrap',
+                msFlexPack: justify,
                 justifyContent: justify,
+                msFlexAlign: align,
                 alignItems: align,
                 ...getMargin(margin),
                 // child

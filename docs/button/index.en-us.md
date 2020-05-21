@@ -23,6 +23,7 @@ Buttons are used for emphasizing important functions on your page.
 | --------- | ------------------------------------------------------------------------------------------------------------ | -------- | -------- |
 | size      | Size of button<br><br>**return**:<br>'small', 'medium', 'large'                                                          | Enum     | 'medium' |
 | type      | Typeo of button<br><br>**return**:<br>'primary', 'secondary', 'normal'                                                    | Enum     | 'normal' |
+| icons     | custom icons in button in the format { loading: <Icon type="loading" /> }                                                        | Object   | {}       |
 | iconSize  | Size of icon in button <br><br>**return**:<br>'xxs', 'xs', 'small', 'medium', 'large', 'xl', 'xxl', 'xxxl' | Enum     | -        |
 | htmlType  | Original html type <br><br>**return**:<br>'submit', 'reset', 'button'  | Enum     | 'button' |
 | component | The html tag to be rendered <br><br>**return**:<br>'button', 'a', 'div', 'span'                                                                       | Enum     | 'button' |

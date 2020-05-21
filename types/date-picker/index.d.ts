@@ -1,5 +1,5 @@
 /// <reference types="react" />
-
+import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
 
@@ -9,6 +9,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -47,7 +48,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -135,19 +136,28 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     dateInputAriaLabel?: string;
 }
 
+
 export class MonthPicker extends React.Component<MonthPickerProps, any> {}
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
+    placeholder?: any;
 }
 
 export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     type?: 'date' | 'month' | 'year',
+
     /**
      * 默认展示的起始月份
      */
     defaultVisibleMonth?: () => {};
+
+    /**
+     * 输入提示
+     */
+    placeholder?: Array<string> | string;
 
     /**
      * 日期范围值数组 [moment, moment]
@@ -177,7 +187,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -303,6 +313,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -336,7 +347,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚
@@ -426,6 +437,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
+    name?: string;
     /**
      * 输入框内置标签
      */
@@ -474,7 +486,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 禁用日期函数
      */
-    disabledDate?: (日期值: {}, view: string) => boolean;
+    disabledDate?: (date: Moment, view: string) => boolean;
 
     /**
      * 自定义面板页脚

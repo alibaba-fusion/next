@@ -44,6 +44,8 @@ export default function lock(BaseComponent) {
             this.lockRightChildren = [];
         }
 
+        state = {};
+
         getChildContext() {
             return {
                 getTableInstance: this.getTableInstance,
@@ -72,12 +74,9 @@ export default function lock(BaseComponent) {
             return true;
         }
 
-        componentWillUpdate() {
-            this._isLock = false;
-        }
-
         componentDidUpdate() {
             this.adjustSize();
+            this._isLock = false;
         }
 
         componentWillUnmount() {
@@ -362,10 +361,24 @@ export default function lock(BaseComponent) {
                         const headerCell =
                             this.getHeaderCellNode(0, index) || {};
 
-                        return {
-                            cellWidths: cell.clientWidth || 0,
-                            headerWidths: headerCell.clientWidth || 0,
-                        };
+                        // fix https://codesandbox.io/s/fusion-next-template-d9bu8
+                        // close #1832
+                        try {
+                            return {
+                                cellWidths:
+                                    parseFloat(getComputedStyle(cell).width) ||
+                                    0,
+                                headerWidths:
+                                    parseFloat(
+                                        getComputedStyle(headerCell).width
+                                    ) || 0,
+                            };
+                        } catch (error) {
+                            return {
+                                cellWidths: cell.clientWidth || 0,
+                                headerWidths: headerCell.clientWidth || 0,
+                            };
+                        }
                     })
                     .reduce(
                         (a, b) => {
@@ -396,7 +409,8 @@ export default function lock(BaseComponent) {
                 }
 
                 const configWidths =
-                    widthObj.cellWidths || widthObj.headerWidths;
+                    parseInt(widthObj.cellWidths) ||
+                    parseInt(widthObj.headerWidths);
 
                 if (configWidths <= width && configWidths > 0) {
                     this.removeLockTable();
@@ -585,7 +599,7 @@ export default function lock(BaseComponent) {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of table when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(this.refs[`lock${type}`]);
+                return findDOMNode(this[`lock${type}El`]);
             } catch (error) {
                 return null;
             }
@@ -664,6 +678,14 @@ export default function lock(BaseComponent) {
             return loop(children).length;
         };
 
+        saveLockLeftRef = ref => {
+            this.lockLeftEl = ref;
+        };
+
+        saveLockRightRef = ref => {
+            this.lockRightEl = ref;
+        };
+
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
             let {
@@ -672,6 +694,7 @@ export default function lock(BaseComponent) {
                 components,
                 className,
                 dataSource,
+                tableWidth,
                 ...others
             } = this.props;
             let {
@@ -720,7 +743,7 @@ export default function lock(BaseComponent) {
                         prefix={prefix}
                         lockType="left"
                         components={components}
-                        ref="lockLeft"
+                        ref={this.saveLockLeftRef}
                         loading={false}
                         aria-hidden
                     />,
@@ -734,7 +757,7 @@ export default function lock(BaseComponent) {
                         prefix={prefix}
                         lockType="right"
                         components={components}
-                        ref="lockRight"
+                        ref={this.saveLockRightRef}
                         loading={false}
                         aria-hidden
                     />,
@@ -742,6 +765,7 @@ export default function lock(BaseComponent) {
                 return (
                     <BaseComponent
                         {...others}
+                        tableWidth={tableWidth}
                         dataSource={dataSource}
                         columns={normalizedChildren}
                         prefix={prefix}
