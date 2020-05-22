@@ -58,6 +58,9 @@
         line-height: $height;
 
         .#{$css-prefix}icon {
+            &:before {
+                display: block;
+            }
             @include icon-size($separatorSize);
         }
     }
