@@ -36,6 +36,7 @@ export default class TransferPanel extends Component {
         baseId: PropTypes.string,
         customerList: PropTypes.func,
         useVirtual: PropTypes.bool,
+        showCheckAll: PropTypes.bool,
     };
 
     constructor(props, context) {
@@ -307,7 +308,14 @@ export default class TransferPanel extends Component {
     }
 
     renderFooter() {
-        const { prefix, position, mode, disabled, locale } = this.props;
+        const {
+            prefix,
+            position,
+            mode,
+            disabled,
+            locale,
+            showCheckAll,
+        } = this.props;
         if (mode === 'simple') {
             const { onMoveAll } = this.props;
             const classNames = cx({
@@ -344,13 +352,15 @@ export default class TransferPanel extends Component {
 
         return (
             <div className={`${prefix}transfer-panel-footer`}>
-                <Checkbox
-                    disabled={disabled}
-                    checked={checked}
-                    indeterminate={indeterminate}
-                    onChange={this.handleAllCheck}
-                    aria-labelledby={this.footerId}
-                />
+                {showCheckAll && (
+                    <Checkbox
+                        disabled={disabled}
+                        checked={checked}
+                        indeterminate={indeterminate}
+                        onChange={this.handleAllCheck}
+                        aria-labelledby={this.footerId}
+                    />
+                )}
                 <span
                     className={`${prefix}transfer-panel-count`}
                     id={this.footerId}

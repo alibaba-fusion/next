@@ -179,6 +179,10 @@ class Transfer extends Component {
          * 是否开启虚拟滚动
          */
         useVirtual: PropTypes.bool,
+        /**
+         * 是否显示底部全选 checkbox
+         */
+        showCheckAll: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -190,6 +194,7 @@ class Transfer extends Component {
         disabled: false,
         leftDisabled: false,
         rightDisabled: false,
+        showCheckAll: true,
         itemRender: data => data.label,
         showSearch: false,
         filter: (searchedValue, data) => {
@@ -564,6 +569,7 @@ class Transfer extends Component {
             rtl,
             id,
             children,
+            showCheckAll,
         } = this.props;
         const {
             value,
@@ -602,6 +608,7 @@ class Transfer extends Component {
             onSort: this.handlePanelSort,
             baseId: id,
             customerList: children,
+            showCheckAll,
         };
         const others = pickOthers(Object.keys(Transfer.propTypes), this.props);
 
