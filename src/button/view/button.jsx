@@ -44,6 +44,8 @@ export default class Button extends Component {
             'xl',
             'xxl',
             'xxxl',
+            'inherit',
+            PropTypes.number,
         ]),
         /**
          * 当 component = 'button' 时，设置 button 标签的 type 值
