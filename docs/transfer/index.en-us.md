@@ -44,6 +44,7 @@ Move the items in two panels in an intuitive way to select.
 | id                  | unique id to make component accessible                                                                                                                                                                                                                                                                                                                                                                      | String              | -                                                                     |
 | children            | customer panel<br><br>**signatures**:<br>Function(props: TransferPanelProps) => ReactNode                                                                                                                                                                                                                                                                                                                                     | Function            | -                                                                     |
 | useVirtual          | whether use virtual | Boolean         | false         |
+| showCheckAll | whether show footer's check-all checkbox | Boolean | true  |
 
 ## ARIA and KeyBoard
 
