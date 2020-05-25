@@ -14,7 +14,7 @@ export default class Inner extends Component {
         className: PropTypes.string,
         closeable: PropTypes.bool,
         role: PropTypes.string,
-        title: PropTypes.string,
+        title: PropTypes.node,
         placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
         rtl: PropTypes.bool,
         onClose: PropTypes.func,
