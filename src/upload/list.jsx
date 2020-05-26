@@ -455,6 +455,10 @@ class List extends Component {
                 [className]: !!className,
             });
             list = this.props.value.map(file => {
+                if (!file) {
+                    return null;
+                }
+
                 const { downloadURL, imgURL, name } = file;
                 if (listType === 'text') {
                     return (
@@ -471,6 +475,10 @@ class List extends Component {
             });
         } else {
             list = this.props.value.map(file => {
+                if (!file) {
+                    return null;
+                }
+
                 if (listType === 'text') {
                     return this.getTextList(file);
                 } else if (listType === 'image') {
