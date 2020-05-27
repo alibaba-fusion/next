@@ -126,6 +126,7 @@ export default class Html5Uploader extends Component {
         const {
             accept,
             multiple,
+            webkitdirectory,
             children,
             id,
             disabled,
@@ -144,6 +145,7 @@ export default class Html5Uploader extends Component {
                 id={id}
                 accept={accept}
                 multiple={multiple}
+                webkitdirectory={webkitdirectory}
                 dragable={dragable}
                 disabled={disabled}
                 className={className}
