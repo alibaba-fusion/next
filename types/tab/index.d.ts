@@ -109,7 +109,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击单个选项卡时触发的回调
      */
-    onClick?: () => void;
+    onClick?: (key: string | number) => void;
 
     /**
      * 选项卡发生切换时的事件回调

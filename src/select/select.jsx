@@ -138,8 +138,8 @@ class Select extends Base {
         maxTagCount: PropTypes.number,
         /**
          * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
-         * @param {number} selectedValues 当前已选中的元素
-         * @param {number} totalValues 总待选元素
+         * @param {object} selectedValues 当前已选中的元素
+         * @param {object} totalValues 总待选元素
          */
         maxTagPlaceholder: PropTypes.func,
         /**

@@ -28,7 +28,7 @@ export interface CloseableProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击回调
      */
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler;
 
     /**
      * 标签的尺寸（large 尺寸为兼容表单场景 large = medium）
@@ -116,7 +116,7 @@ export interface TagProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击回调
      */
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler;
 }
 
 export default class Tag extends React.Component<TagProps, any> {

@@ -18,7 +18,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 弹层请求关闭时触发事件的回调函数
      */
-    onRequestClose?: (type: string, e: {}) => void;
+    onRequestClose?: (type: string, e: React.MouseEvent) => void;
 
     /**
      * 弹层定位的参照元素
@@ -206,7 +206,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层请求关闭时触发事件的回调函数
      */
-    onRequestClose?: (type: string, e: {}) => void;
+    onRequestClose?: (type: string, e: React.MouseEvent) => void;
 
     /**
      * 弹层定位的参照元素
@@ -326,12 +326,12 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层的根节点的内联样式
      */
-    wrapperStyle?: {};
+    wrapperStyle?: React.CSSProperties;
 
     /**
      * 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
      */
-    animation?: {} | boolean;
+    animation?: { in: string; out: string;} | boolean;
 }
 
 export default class Overlay extends React.Component<OverlayProps, any> {
