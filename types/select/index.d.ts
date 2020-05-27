@@ -277,7 +277,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: () => void;
+    filter?: (key:string, item: any) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
@@ -368,6 +368,20 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      * 受控搜索值，一般不需要设置
      */
     searchValue?: string;
+    /**
+     * 是否一行显示，仅在 mode 为 multiple 的时候生效
+     */
+    tagInline?: boolean;
+    /**
+     * 最多显示多少个 tag
+     */
+    maxTagCount?: number;
+    /**
+     * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
+     * @param {object} selectedValues 当前已选中的元素
+     * @param {object} totalValues 总待选元素
+     */
+    maxTagPlaceholder?: (selectedValues?: any[], totalValues?: any[]) => React.ReactNode | HTMLElement;
 
     /**
      * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
