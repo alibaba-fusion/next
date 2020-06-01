@@ -203,10 +203,6 @@ class Table extends React.Component {
          */
         expandedRowIndent: PropTypes.array,
         /**
-         * 默认情况下展开的渲染行或者Tree, 传入此属性为受控状态
-         */
-        openRowKeys: PropTypes.array,
-        /**
          * 是否显示点击展开额外渲染行的+号按钮
          */
         hasExpandedRowCtrl: PropTypes.bool,
@@ -215,7 +211,11 @@ class Table extends React.Component {
          */
         getExpandedColProps: PropTypes.func,
         /**
-         * 在额外渲染行或者Tree展开或者收起的时候触发的事件
+         * 默认情况下展开的 Expand行 或者 Tree行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
+         */
+        openRowKeys: PropTypes.array,
+        /**
+         * 在 Expand行 或者 Tree行 展开或者收起的时候触发的事件
          * @param {Array} openRowKeys 展开的渲染行的key
          * @param {String} currentRowKey 当前点击的渲染行的key
          * @param {Boolean} expanded 当前点击是展开还是收起
