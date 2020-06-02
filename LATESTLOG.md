@@ -1,22 +1,12 @@
 # Latest Log 
 
-## [1.20.7](https://github.com/alibaba-fusion/next/compare/1.20.6...1.20.7) (2020-05-28)
+## [1.20.8](https://github.com/alibaba-fusion/next/compare/1.20.7...1.20.8) (2020-06-02)
 
 
 ### Bug Fixes
 
-* **Breadcrumb:** separator icon's vertical align should be middle ([6f947a5](https://github.com/alibaba-fusion/next/commit/6f947a5))
-* **Drawer:** title should be react node ([080ac7b](https://github.com/alibaba-fusion/next/commit/080ac7b))
-* **Input:** IE10 can't find getDerivedStateFromProps ([8ef2c4c](https://github.com/alibaba-fusion/next/commit/8ef2c4c))
-* **Typescript:** add types for Button iconSize ([#1882](https://github.com/alibaba-fusion/next/issues/1882)) ([8df9bac](https://github.com/alibaba-fusion/next/commit/8df9bac))
-* **Typescript:** update typescript, close [#1875](https://github.com/alibaba-fusion/next/issues/1875) ([b3a3a26](https://github.com/alibaba-fusion/next/commit/b3a3a26))
-* **Upload:** enhance robustness ([53b3cd7](https://github.com/alibaba-fusion/next/commit/53b3cd7))
-* **Upload:** support upload a directory, close [#1877](https://github.com/alibaba-fusion/next/issues/1877) ([c3a2b7b](https://github.com/alibaba-fusion/next/commit/c3a2b7b))
-
-
-### Features
-
-* **Overlay:** support render overlay in shadow dom ([#1869](https://github.com/alibaba-fusion/next/issues/1869)) ([ba100cc](https://github.com/alibaba-fusion/next/commit/ba100cc))
-* **Transfer:** add API showCheckAll & add demo ([d55c82d](https://github.com/alibaba-fusion/next/commit/d55c82d))
+* **DatePicker:** icon className should be string ([80fc6cb](https://github.com/alibaba-fusion/next/commit/80fc6cb))
+* **Overlay:** dom should ready before onOpen, close [#1901](https://github.com/alibaba-fusion/next/issues/1901) ([6ac02c0](https://github.com/alibaba-fusion/next/commit/6ac02c0))
+* **Util:** adapt to  rollup, close [#1898](https://github.com/alibaba-fusion/next/issues/1898) ([e22e4a4](https://github.com/alibaba-fusion/next/commit/e22e4a4))
 
 
