@@ -424,7 +424,25 @@ describe('Menu', () => {
         assert(subItems.length === 2);
     });
 
+    it('should render popup sub menu with no animation', () => {
+        if (env.ieVersion === 9) {
+            return;
+        }
 
+        wrapper = mount(
+            <Menu mode="popup" popupProps={{animation: false}} defaultOpenKeys={['sub-1']}>
+                <SubMenu key="sub-1" label="Popup menu 1">
+                    <Item key="popup-1-2">Popup option 2</Item>
+                </SubMenu>
+                <SubMenu key="sub-2" label="Popup menu 2">
+                    <Item key="popup-2-2">Popup option 2</Item>
+                </SubMenu>
+            </Menu>
+        );
+
+        const overlay = wrapper.find('.next-overlay-wrapper');
+        assert(overlay.length === 1);
+    });
 
     it('can not select item if not set selectMode', () => {
         wrapper = mount(

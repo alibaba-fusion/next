@@ -340,10 +340,13 @@ class Overlay extends Component {
         } else {
             const wrapperNode = this.getWrapperNode();
             if (open) {
-                this.props.onOpen();
-                this.props.afterOpen();
-                dom.addClass(wrapperNode, 'opened');
-                overlayManager.addOverlay(this);
+                // fix https://github.com/alibaba-fusion/next/issues/1901
+                setTimeout(() => {
+                    this.props.onOpen();
+                    this.props.afterOpen();
+                    dom.addClass(wrapperNode, 'opened');
+                    overlayManager.addOverlay(this);
+                });
             } else if (close) {
                 this.props.onClose();
                 this.props.afterClose();
