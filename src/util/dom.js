@@ -265,7 +265,7 @@ export function scrollbar() {
         overflow: 'scroll',
         top: '-9999px',
     });
-    document.body.appendChild(scrollDiv);
+    document.body && document.body.appendChild(scrollDiv);
     const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
     const scrollbarHeight = scrollDiv.offsetHeight - scrollDiv.clientHeight;
     document.body.removeChild(scrollDiv);
