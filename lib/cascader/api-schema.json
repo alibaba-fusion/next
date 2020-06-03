@@ -1,0 +1,330 @@
+{
+  "name": "Cascader",
+  "props": {
+    "dataSource": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "object"
+        }
+      },
+      "required": false,
+      "description": "数据源，结构可参考下方说明",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "数据源，结构可参考下方说明"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "（非受控）默认值",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "（非受控）默认值"
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "（受控）当前值",
+      "docblock": "（受控）当前值"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选中值改变时触发的回调函数",
+      "docblock": "选中值改变时触发的回调函数\n@param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组\n@param {Object|Array} data 选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点\n@param {Object} extra 额外参数\n@param {Array} extra.selectedPath 单选时选中的数据的路径\n@param {Boolean} extra.checked 多选时当前的操作是选中还是取消选中\n@param {Object} extra.currentData 多选时当前操作的数据\n@param {Array} extra.checkedData 多选时所有被选中的数据\n@param {Array} extra.indeterminateData 多选时半选的数据",
+      "params": [
+        {
+          "name": "value",
+          "description": "选中的值，单选时返回单个值，多选时返回数组",
+          "type": {
+            "name": "union",
+            "value": [
+              "String",
+              "Array"
+            ]
+          }
+        },
+        {
+          "name": "data",
+          "description": "选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点",
+          "type": {
+            "name": "union",
+            "value": [
+              "Object",
+              "Array"
+            ]
+          }
+        },
+        {
+          "name": "extra",
+          "description": "额外参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.selectedPath",
+          "description": "单选时选中的数据的路径",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.checked",
+          "description": "多选时当前的操作是选中还是取消选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "extra.currentData",
+          "description": "多选时当前操作的数据",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.checkedData",
+          "description": "多选时所有被选中的数据",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.indeterminateData",
+          "description": "多选时半选的数据",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "defaultExpandedValue": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（非受控）默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置",
+      "docblock": "（非受控）默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置"
+    },
+    "expandedValue": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（受控）当前展开值",
+      "docblock": "（受控）当前展开值"
+    },
+    "expandTriggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "展开触发的方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "展开触发的方式"
+    },
+    "onExpand": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "展开时触发的回调函数",
+      "docblock": "展开时触发的回调函数\n@param {Array} expandedValue 各列展开值的数组",
+      "params": [
+        {
+          "name": "expandedValue",
+          "description": "各列展开值的数组",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "useVirtual": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启虚拟滚动",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否开启虚拟滚动"
+    },
+    "multiple": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否多选",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否多选"
+    },
+    "canOnlySelectLeaf": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "单选时是否只能选中叶子节点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "单选时是否只能选中叶子节点"
+    },
+    "canOnlyCheckLeaf": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "多选时是否只能选中叶子节点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "多选时是否只能选中叶子节点"
+    },
+    "checkStrictly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "父子节点是否选中不关联",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "父子节点是否选中不关联"
+    },
+    "listStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "每列列表样式对象",
+      "docblock": "每列列表样式对象",
+      "properties": []
+    },
+    "listClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "每列列表类名",
+      "docblock": "每列列表类名"
+    },
+    "itemRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "每列列表项渲染函数",
+      "defaultValue": {
+        "value": "item => item.label",
+        "computed": false
+      },
+      "docblock": "每列列表项渲染函数\n@param {Object} data 数据\n@return {ReactNode} 列表项内容",
+      "params": [
+        {
+          "name": "data",
+          "description": "数据",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "列表项内容",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "loadData": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "异步加载数据函数",
+      "docblock": "异步加载数据函数\n@param {Object} data 当前点击异步加载的数据\n@param {Object} source 当前点击数据，source是原始对象",
+      "params": [
+        {
+          "name": "data",
+          "description": "当前点击异步加载的数据",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "source",
+          "description": "当前点击数据，source是原始对象",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
