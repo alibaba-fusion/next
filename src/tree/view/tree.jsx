@@ -1,5 +1,5 @@
 /* eslint-disable max-depth */
-import React, { Component } from 'react';
+import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
@@ -15,8 +15,8 @@ import {
     getAllCheckedKeys,
     forEachEnableNode,
     isNodeChecked,
-    convertChildren2Data,
     getAllDescendantKeys,
+    convertChildren2Data,
 } from './util';
 
 const { bindCtx, noop } = func;
@@ -157,7 +157,7 @@ const getCheckedKeys = (props, willReceiveProps, _k2n, _p2n) => {
     return { checkedKeys, indeterminateKeys };
 };
 
-const preHandleData = (props, dataSource) => {
+const preHandleData = (dataSource, props) => {
     const k2n = {};
     const p2n = {};
 
@@ -199,12 +199,48 @@ const preHandleData = (props, dataSource) => {
     return { dataSource: drill(dataSource), k2n, p2n };
 };
 
+const preHandleChildren = props => {
+    const k2n = {};
+    const p2n = {};
+
+    const loop = (children, prefix = '0', level = 1) =>
+        Children.map(children, (node, index) => {
+            if (!React.isValidElement(node)) {
+                return;
+            }
+
+            const pos = `${prefix}-${index}`;
+            let { key } = node;
+            key = key || pos;
+            const newItem = { ...node.props, key, pos, level };
+
+            const { children } = node.props;
+            if (children && Children.count(children)) {
+                newItem.children = loop(children, pos, ++level);
+            }
+
+            newItem.isLeaf = !(
+                (props.loadData && props.isLeaf !== true) ||
+                Children.count(children)
+            );
+            k2n[key] = p2n[pos] = newItem;
+            return newItem;
+        });
+    loop(props.children);
+
+    return { k2n, p2n };
+};
+
 const getData = props => {
-    const dataSource =
-        props.dataSource && props.dataSource.length
-            ? props.dataSource
-            : convertChildren2Data(props.children || []);
-    return preHandleData(props, dataSource);
+    const { dataSource, renderChildNodes, children = [], useVirtual } = props;
+    let data = dataSource;
+
+    if ((renderChildNodes || useVirtual) && !(data && data.length)) {
+        data = convertChildren2Data(children);
+    }
+    return data && data.length
+        ? preHandleData(data, props)
+        : preHandleChildren(props);
 };
 
 /**
@@ -473,7 +509,7 @@ class Tree extends Component {
     constructor(props) {
         super(props);
 
-        const { dataSource, k2n, p2n } = getData(props);
+        const { dataSource = [], k2n, p2n } = getData(props);
         const { focusable, autoFocus, focusedKey } = this.props;
         const willReceiveProps = false;
         const { checkedKeys, indeterminateKeys = [] } = getCheckedKeys(
@@ -934,13 +970,15 @@ class Tree extends Component {
             indeterminateKeys,
         } = this.state;
 
-        const pos = _k2n[key].pos;
+        const { pos, isLeaf, level } = _k2n[key];
 
         return {
             prefix,
             root: this,
             eventKey: key,
             pos,
+            isLeaf,
+            level,
             expanded: expandedKeys.indexOf(key) > -1,
             selected: selectedKeys.indexOf(key) > -1,
             checked: checkedKeys.indexOf(key) > -1,
@@ -1206,6 +1244,34 @@ class Tree extends Component {
         return drill(dataSource);
     }
 
+    renderByChildren() {
+        const { rtl } = this.props;
+        const { _k2n } = this.state;
+
+        const loop = (children, prefix = '0') => {
+            return Children.map(children, (child, index) => {
+                if (!React.isValidElement(child)) {
+                    return;
+                }
+                const pos = `${prefix}-${index}`;
+                const key = child.key || pos;
+                const props = this.getNodeProps(`${key}`);
+                if (child.props.children) {
+                    props.children = loop(child.props.children, pos);
+                }
+
+                props._key = key;
+                props.rtl = rtl;
+                props.size = Children.count(children);
+
+                const node = cloneElement(child, props);
+                _k2n[key].node = node;
+                return node;
+            });
+        };
+
+        return loop(this.props.children);
+    }
     render() {
         const {
             prefix,
@@ -1272,6 +1338,8 @@ class Tree extends Component {
             ? virtualTreeRender(dataSource)
             : renderChildNodes
             ? treeRender(this.renderWithCustomChildNodes(dataSource))
+            : !this.props.dataSource
+            ? treeRender(this.renderByChildren())
             : treeRender(this.renderByDataSource(dataSource));
     }
 }
