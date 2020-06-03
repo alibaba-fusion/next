@@ -554,7 +554,7 @@ class Tree extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { dataSource, k2n, p2n } = getData(props);
+        const { dataSource = [], k2n, p2n } = getData(props);
         const st = {};
 
         if (!state.willReceiveProps) {

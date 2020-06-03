@@ -1041,6 +1041,27 @@ describe('Tree', () => {
         assert(myTree.querySelectorAll('.illegal-div').length === 1);
     });
 
+    it('fix error when dataSource is empty', done => {
+        function App() {
+            const [dataSource, setDataSource] = useState([]);
+
+            setTimeout(() => {
+                setDataSource([]);
+                setTimeout(() => {
+                    done();
+                });
+            });
+            return (
+                <Tree
+                    defaultExpandAll
+                    className="my-tree"
+                    dataSource={dataSource}
+                />
+            );
+        }
+        ReactDOM.render(<App />, mountNode);
+    });
+
     it('should support rtl', () => {
         ReactDOM.render(
             <Tree
