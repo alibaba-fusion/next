@@ -17,6 +17,8 @@ The Drawer is used to provide the user with an auxiliary window for quickly perf
 
 ### Drawer
 
+> Inherited Overlay.Popup's API unless otherwise specified
+
 | Param | Descripiton  | Type  | Default Value |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | --------------------------------------------------------------------------------- |
 | trigger               | trigger the overlay to show or hide elements                                                                                                                                                                                    | ReactElement | -               |
