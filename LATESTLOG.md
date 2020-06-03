@@ -1,10 +1,10 @@
 # Latest Log 
 
-## [1.20.9](https://github.com/alibaba-fusion/next/compare/1.20.8...1.20.9) (2020-06-03)
+## [1.20.10](https://github.com/alibaba-fusion/next/compare/1.20.9...1.20.10) (2020-06-03)
 
 
 ### Bug Fixes
 
-* **Tree:** support styled component ([be52446](https://github.com/alibaba-fusion/next/commit/be52446))
+* **Tree:** fix error when dataSource is empty ([a8fbffb](https://github.com/alibaba-fusion/next/commit/a8fbffb))
 
 
