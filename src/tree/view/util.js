@@ -229,7 +229,11 @@ export function convertChildren2Data(children) {
 
         return treeNodes
             .map(node => {
-                if (node.type !== TreeNode) {
+                if (
+                    node.type &&
+                    node.type !== TreeNode &&
+                    node.type.target !== TreeNode
+                ) {
                     // 为了兼容之前的实现 保留非法节点
                     return {
                         illegalFlag: true,

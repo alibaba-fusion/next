@@ -8,8 +8,6 @@ import Tree from '../../src/tree/index';
 import Button from '../../src/button/index';
 import '../../src/tree/style.js';
 
-
-
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
 /* global describe it beforeEach afterEach */
 
@@ -49,7 +47,7 @@ const dataSource = [
                         label: '裙子',
                         className: 'k-6',
                         key: '6',
-                    }
+                    },
                 ],
             },
         ],
@@ -133,18 +131,18 @@ class CheckDemo extends Component {
 
 class DragDemo extends React.Component {
     static propTypes = {
-        canDrop: propTypes.func
-    }
+        canDrop: propTypes.func,
+    };
 
     static defaultProps = {
-        canDrop: () => true
-    }
+        canDrop: () => true,
+    };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            gData: cloneData(dataSource)
+            gData: cloneData(dataSource),
         };
     }
 
@@ -261,7 +259,6 @@ describe('Tree', () => {
 
     it('should render by children', () => {
         const loop = data =>
-
             data.map(item => {
                 return (
                     <TreeNode
@@ -269,7 +266,6 @@ describe('Tree', () => {
                         {...item}
                         className={`k-${item.key}`}
                     >
-
                         {item.children ? loop(item.children) : null}
                     </TreeNode>
                 );
@@ -370,7 +366,6 @@ describe('Tree', () => {
             </Tree>,
             mountNode
         );
-
         assert(!!document.querySelector('.custom-child-tree'));
     });
 
@@ -649,12 +644,14 @@ describe('Tree', () => {
 
     it('should support setting indeterminate key when checkStrictly true', done => {
         class Demo extends Component {
-            constructor () {
+            constructor() {
                 super();
 
                 setTimeout(() => {
                     ['1', '2', '3'].forEach(key => assertChecked(key, true));
-                    ['4', '5', '6'].forEach(key => assertIndeterminate(key, true));
+                    ['4', '5', '6'].forEach(key =>
+                        assertIndeterminate(key, true)
+                    );
 
                     this.setState({ checkedKeys: [] });
                     ['4', '5', '6'].forEach(key => assertChecked(key, false));
@@ -662,22 +659,22 @@ describe('Tree', () => {
                     this.setState({
                         checkedKeys: {
                             checked: '1',
-                            indeterminate: '2'
-                        }
+                            indeterminate: '2',
+                        },
                     });
                     assertChecked('1', true);
                     assertIndeterminate('2', true);
 
                     done();
-                }, 100)
+                }, 100);
             }
 
             state = {
                 checkedKeys: {
                     checked: ['1', '2', '3'],
-                    indeterminate: ['4', '5', '6']
-                }
-            }
+                    indeterminate: ['4', '5', '6'],
+                },
+            };
 
             render() {
                 return (
@@ -687,7 +684,7 @@ describe('Tree', () => {
                         checkStrictly
                         checkedKeys={this.state.checkedKeys}
                         dataSource={cloneData(dataSource, {
-                            2: { disabled: false }
+                            2: { disabled: false },
                         })}
                     />
                 );
@@ -699,7 +696,7 @@ describe('Tree', () => {
 
     it('should support update indeterminate key when dataSource change', done => {
         class Demo extends Component {
-            constructor () {
+            constructor() {
                 super();
 
                 setTimeout(() => {
@@ -710,7 +707,7 @@ describe('Tree', () => {
 
                     this.state.data[0].children[0].children.length = 1;
                     this.setState({ data: this.state.data });
-                    assertIndeterminate('2', false)
+                    assertIndeterminate('2', false);
 
                     done();
                 }, 100);
@@ -718,9 +715,9 @@ describe('Tree', () => {
 
             state = {
                 data: cloneData(dataSource, {
-                    2: { disabled: false }
-                })
-            }
+                    2: { disabled: false },
+                }),
+            };
 
             render() {
                 return (
@@ -732,9 +729,8 @@ describe('Tree', () => {
                 );
             }
         }
-        ReactDOM.render(<Demo/>, mountNode);
+        ReactDOM.render(<Demo />, mountNode);
     });
-
 
     it('should support editing node', () => {
         let called = false;
@@ -838,18 +834,18 @@ describe('Tree', () => {
     });
 
     it('should stop dragover event propagation whatever could drop or not', () => {
-        let isCanDrop = false
+        let isCanDrop = false;
 
-        function canDrop({node}) {
-            assert(node.props.eventKey === '2')
-            return isCanDrop
+        function canDrop({ node }) {
+            assert(node.props.eventKey === '2');
+            return isCanDrop;
         }
         ReactDOM.render(<DragDemo canDrop={canDrop} />, mountNode);
 
         // 禁止拖拽
         dragTreeNode('6', '2', 1, isCanDrop);
         // 允许拖拽
-        isCanDrop = true
+        isCanDrop = true;
         dragTreeNode('6', '2', 1, isCanDrop);
     });
 
@@ -1029,18 +1025,18 @@ describe('Tree', () => {
                     <TreeNode label="Select" key="2">
                         <TreeNode label="TreeSelect" key="3" />
                     </TreeNode>
-                    <TreeNode label="Input" key="4" />
-                    dasdfa
-                    <div className="illegal-div" />
-                    <Button className="illegal-bt">dasd</Button>
+                    <TreeNode label="Input" key="4">
+                        dasdfa
+                        <div className="illegal-div" />
+                        <Button className="illegal-bt">dasd</Button>
+                    </TreeNode>
                 </TreeNode>
             </Tree>,
             mountNode
         );
-
         const myTree = document.querySelector('.my-tree');
 
-        assert(myTree.textContent.indexOf('dasdfa') !== -1);
+        assert(myTree.textContent.indexOf('dasdfa') === -1);
         assert(myTree.querySelectorAll('.illegal-bt').length === 1);
         assert(myTree.querySelectorAll('.illegal-div').length === 1);
     });
@@ -1204,7 +1200,7 @@ function rightClickTreeNode(key) {
     );
 }
 
-function dragTreeNode(dragKey, dropKey, dropPosition, isCanDrop=true) {
+function dragTreeNode(dragKey, dropKey, dropPosition, isCanDrop = true) {
     const dragNodeLabel = findTreeNodeByKey(dragKey).querySelector(
         '.next-tree-node-label'
     );
