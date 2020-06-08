@@ -1041,15 +1041,65 @@ describe('Tree', () => {
         assert(myTree.querySelectorAll('.illegal-div').length === 1);
     });
 
+    // fix: https://github.com/alibaba-fusion/next/issues/1914
+    it('fix bug on isLeaf', () => {
+        [
+            <Tree key={0} defaultExpandAll loadData={() => Promise.resolve([])}>
+                <TreeNode label="Form" key="1">
+                    <TreeNode
+                        label="Input"
+                        key="2"
+                        isLeaf
+                        className="leaf-node"
+                    />
+                    <TreeNode
+                        label="TreeSelect"
+                        key="3"
+                        className="leaf-node"
+                    />
+                </TreeNode>
+            </Tree>,
+            <Tree
+                key={1}
+                defaultExpandAll
+                loadData={() => Promise.resolve([])}
+                dataSource={[
+                    {
+                        label: 'Form',
+                        key: '1',
+                        children: [
+                            {
+                                label: 'Input',
+                                key: '2',
+                                className: 'leaf-node',
+                                isLeaf: true,
+                            },
+                            {
+                                label: 'TreeSelect',
+                                key: '3',
+                                className: 'leaf-node',
+                                isLeaf: true,
+                            },
+                        ],
+                    },
+                ]}
+            />,
+        ].forEach(instance => {
+            ReactDOM.render(instance, mountNode);
+            assert(
+                document.querySelectorAll('.leaf-node .tree-switcher-icon')
+                    .length === 0
+            );
+            ReactDOM.unmountComponentAtNode(mountNode);
+        });
+    });
+
     it('fix error when dataSource is empty', done => {
         function App() {
             const [dataSource, setDataSource] = useState([]);
 
             setTimeout(() => {
                 setDataSource([]);
-                setTimeout(() => {
-                    done();
-                });
             });
             return (
                 <Tree
@@ -1060,6 +1110,10 @@ describe('Tree', () => {
             );
         }
         ReactDOM.render(<App />, mountNode);
+
+        setTimeout(() => {
+            done();
+        }, 100);
     });
 
     it('should support rtl', () => {

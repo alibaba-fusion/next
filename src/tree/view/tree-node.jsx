@@ -85,7 +85,6 @@ class TreeNode extends Component {
         rtl: false,
         disabled: false,
         checkboxDisabled: false,
-        isLeaf: false,
         size: 1,
         posinset: 1,
     };
