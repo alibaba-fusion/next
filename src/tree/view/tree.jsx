@@ -174,13 +174,17 @@ const preHandleData = (dataSource, props) => {
 
             item.pos = pos;
             item.level = level;
+
             // 判断为叶子节点
+            // - 指定isLeaf属性
             // - loadData模式下 没有指定isLeaf为true
             // - 存在children元素
-            item.isLeaf = !(
-                (props.loadData && item.isLeaf !== true) ||
-                (children && children.length)
-            );
+            if (!('isLeaf' in item)) {
+                item.isLeaf = !(
+                    (children && children.length) ||
+                    props.loadData
+                );
+            }
             item.isLastChild = parent
                 ? [].concat(parent.isLastChild || [], index === data.length - 1)
                 : [];
@@ -208,23 +212,25 @@ const preHandleChildren = props => {
             if (!React.isValidElement(node)) {
                 return;
             }
-
             const pos = `${prefix}-${index}`;
             let { key } = node;
-            key = key || pos;
-            const newItem = { ...node.props, key, pos, level };
 
+            key = key || pos;
+
+            const item = { ...node.props, key, pos, level };
             const { children } = node.props;
-            if (children && Children.count(children)) {
-                newItem.children = loop(children, pos, ++level);
+            const hasChildren = children && Children.count(children);
+
+            if (!('isLeaf' in item)) {
+                item.isLeaf = !(hasChildren || props.loadData);
             }
 
-            newItem.isLeaf = !(
-                (props.loadData && props.isLeaf !== true) ||
-                Children.count(children)
-            );
-            k2n[key] = p2n[pos] = newItem;
-            return newItem;
+            if (hasChildren) {
+                item.children = loop(children, pos, level + 1);
+            }
+
+            k2n[key] = p2n[pos] = item;
+            return item;
         });
     loop(props.children);
 
