@@ -10,7 +10,7 @@ import { statics } from './util';
 
 const noop = () => {};
 
-export default function expanded(BaseComponent) {
+export default function expanded(BaseComponent, stickyLock) {
     /** Table */
     class ExpandedTable extends React.Component {
         static ExpandedRow = RowComponent;
@@ -57,7 +57,7 @@ export default function expanded(BaseComponent) {
             onRowOpen: noop,
             hasExpandedRowCtrl: true,
             components: {},
-            expandedRowIndent: [1, 0],
+            expandedRowIndent: stickyLock ? [0, 0] : [1, 0],
             prefix: 'next-',
         };
 
@@ -77,7 +77,9 @@ export default function expanded(BaseComponent) {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
                 expandedIndexSimulate: this.props.expandedIndexSimulate,
-                expandedRowIndent: this.props.expandedRowIndent,
+                expandedRowIndent: stickyLock
+                    ? [0, 0]
+                    : this.props.expandedRowIndent,
             };
         }
 

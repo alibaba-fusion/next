@@ -28,6 +28,7 @@ export default class ExpandedRow extends React.Component {
             lockType,
             expandedIndexSimulate,
         } = this.context;
+        const { tableOuterWidth } = this.props;
         const expandedIndex = expandedIndexSimulate
             ? (rowIndex - 1) / 2
             : rowIndex;
@@ -87,14 +88,25 @@ export default class ExpandedRow extends React.Component {
                     </tr>
                 ) : null;
             }
+
+            const expandedRowStyle = {
+                position: 'sticky',
+                width: tableOuterWidth,
+                left: 0,
+            };
             // 暴露给用户的index
             content = expandedRowRender(record, expandedIndex);
             if (!React.isValidElement(content)) {
                 content = (
-                    <div className={`${prefix}table-cell-wrapper`}>
+                    <div
+                        className={`${prefix}table-cell-wrapper`}
+                        style={expandedRowStyle}
+                    >
                         {content}
                     </div>
                 );
+            } else {
+                content = <div style={expandedRowStyle}>{content}</div>;
             }
 
             let rightStart = columns.length;
