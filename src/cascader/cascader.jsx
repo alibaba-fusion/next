@@ -250,7 +250,7 @@ class Cascader extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props) {
         const { v2n, p2n } = flatDataSource(props.dataSource);
         const states = {};
 
@@ -265,7 +265,7 @@ class Cascader extends Component {
                 states.value = getAllCheckedValues(states.value, v2n, p2n);
             }
 
-            if (!state.expandedValue.length && !('expandedValue' in props)) {
+            if (!('expandedValue' in props)) {
                 states.expandedValue = getExpandedValue(
                     states.value[0],
                     v2n,
@@ -284,6 +284,7 @@ class Cascader extends Component {
             _p2n: p2n,
         };
     }
+
     componentDidMount() {
         this.setCascaderInnerWidth();
     }
