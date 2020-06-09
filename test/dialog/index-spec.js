@@ -65,7 +65,7 @@ class Demo extends React.Component {
 
     onChangeContent = () => {
         this.setState({
-            content: new Array(30)
+            content: new Array(40)
                 .fill('')
                 .map((__, index) => (
                     <p key={index}>
@@ -81,6 +81,13 @@ class Demo extends React.Component {
                 <Button onClick={this.onOpen} type="primary">
                     打开对话框
                 </Button>
+                <style>
+                    {`
+                        .next-dialog-header {
+                            height: 48px;
+                        }
+                    `}
+                </style>
                 <Dialog
                     title="欢迎来到 Alibaba.com"
                     visible={this.state.visible}
@@ -266,32 +273,36 @@ describe('inner', () => {
         const viewportHeight =
             window.innerHeight || document.documentElement.clientHeight;
 
-        wrapper = render(<Demo />);
+        wrapper = render(<Demo visible />);
         wrapper.setProps({
             shouldUpdatePosition: true,
         });
 
-        const btn = document.querySelector('button');
-        ReactTestUtils.Simulate.click(btn);
-
         const contentChangeBt = document.querySelector('.contentChangeBt');
         ReactTestUtils.Simulate.click(contentChangeBt);
 
-        const inner = document.querySelector('.next-dialog');
-        const top = getStyle(inner, 'top');
-        const footerHeight = getStyle(
-            document.querySelector('.next-dialog-footer'),
-            'height'
-        );
-        const headerHeight = getStyle(
-            document.querySelector('.next-dialog-header'),
-            'height'
-        );
+        const top = getStyle(document.querySelector('.next-dialog'), 'top');
+        const dailogHeight = [
+            '.next-dialog-body',
+            '.next-dialog-footer',
+            '.next-dialog-header',
+        ]
+            .map(sltor => getStyle(document.querySelector(sltor), 'height'))
+            .reduce((sum, height) => sum + height, 0);
 
-        assert(
-            getStyle(document.querySelector('.next-dialog-body'), 'height') ===
-                viewportHeight - footerHeight - headerHeight - top * 2
-        );
+        assert(dailogHeight === viewportHeight - top * 2);
+    });
+
+    it('dialog body should has max-heigth when setting smaller value of heigth', () => {
+        wrapper = render(<Demo visible />);
+        wrapper.setProps({
+            height: '200px',
+            shouldUpdatePosition: true,
+        });
+
+        const bodyEl = document.querySelector('.next-dialog-body');
+
+        assert(bodyEl.style.maxHeight === '100px');
     });
 
     it('should hide close link if set closeable to false', () => {
@@ -403,7 +414,6 @@ describe('inner', () => {
             height: '500px',
         });
         assert(document.querySelector('.next-dialog').style.height === '500px');
-
         assert(
             hasClass(
                 document.querySelector('.next-dialog-footer'),
