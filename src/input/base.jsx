@@ -294,10 +294,10 @@ class Base extends React.Component {
 
     focus(start, end) {
         this.inputRef.focus();
-        if (typeof start !== 'undefined') {
+        if (typeof start === 'number') {
             this.inputRef.selectionStart = start;
         }
-        if (typeof end !== 'undefined') {
+        if (typeof end === 'number') {
             this.inputRef.selectionEnd = end;
         }
     }
