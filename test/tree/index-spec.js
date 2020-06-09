@@ -76,7 +76,6 @@ class ExpandDemo extends Component {
         );
     }
 }
-
 class SelectDemo extends Component {
     state = {
         selectedKeys: ['1'],
@@ -101,7 +100,6 @@ class SelectDemo extends Component {
         );
     }
 }
-
 class CheckDemo extends Component {
     state = {
         checkedKeys: ['4', '5', '6'],
@@ -128,7 +126,6 @@ class CheckDemo extends Component {
         );
     }
 }
-
 class DragDemo extends React.Component {
     static propTypes = {
         canDrop: propTypes.func,
@@ -202,7 +199,6 @@ class DragDemo extends React.Component {
         );
     }
 }
-
 class AsyncDemo extends Component {
     state = {
         data: [
@@ -1094,6 +1090,32 @@ describe('Tree', () => {
         });
     });
 
+    it('fix bug on level', () => {
+        [
+            <Tree
+                key="0"
+                dataSource={dataSource}
+                defaultExpandAll
+                isNodeBlock
+                useVirtual
+            />,
+            <Tree key="1" defaultExpandAll isNodeBlock useVirtual>
+                {renderTreeNodeWithData(dataSource)}
+            </Tree>,
+        ].forEach(instance => {
+            ReactDOM.render(instance, mountNode);
+
+            walk(dataSource, (item, level) => {
+                assert(
+                    document
+                        .querySelector(`.${item.className}`)
+                        .getAttribute('level') === String(level)
+                );
+            });
+            ReactDOM.unmountComponentAtNode(mountNode);
+        });
+    });
+
     it('fix error when dataSource is empty', done => {
         function App() {
             const [dataSource, setDataSource] = useState([]);
@@ -1136,7 +1158,7 @@ function createDataSource(level = 2, count = 3) {
     const dataSource = [];
 
     const drill = (children, _level, _count) => {
-        children.forEach((child, i) => {
+        children.forEach(child => {
             child.children = new Array(_count).fill(null).map((__, k) => {
                 const key = `${child.key}-${k}`;
                 return {
@@ -1360,4 +1382,27 @@ function assertActiveElement() {
 
 function findInnerNodeByKey(key) {
     return findTreeNodeByKey(key).querySelector('.next-tree-node-inner');
+}
+
+function walk(dataSource, enter, level = 1, parent) {
+    dataSource.forEach((item, index) => {
+        enter(item, level, index, parent);
+        const { children } = item;
+        if (children && children.length) {
+            walk(children, enter, level + 1, parent);
+        }
+    });
+}
+
+function renderTreeNodeWithData(dataSource) {
+    const drill = items => {
+        if (items && items.length) {
+            return items.map(({ key, children, ...others }) => (
+                <TreeNode {...others} key={key}>
+                    {children && drill(children)}
+                </TreeNode>
+            ));
+        }
+    };
+    return drill(dataSource);
 }
