@@ -201,13 +201,30 @@ class Tag extends Component {
         return PRESET_COLOR_REG.test(color);
     }
 
+    hex2rgb(color) {
+        let hex = color;
+        if (/(^#[a-f\d]{3}$)/i.test(hex)) {
+            hex = color.replace(/([a-f\d])/gi, s1 => s1 + s1);
+        }
+        if (/(^#[a-f\d]{6}$)/i.test(hex)) {
+            const rgb = hex
+                .match(/[a-f\d]{2}/gi)
+                .map(code => parseInt(code, 16));
+            return rgb.join(',');
+        }
+    }
+
     getTagStyle() {
-        const { color = '', style } = this.props;
+        const { color = '', style, type } = this.props;
         const isPresetColor = this.isPresetColor();
-        const customColorStyle = {
+        const customColorStyle = (type === 'primary' && {
             backgroundColor: color,
             borderColor: color,
             color: '#fff',
+        }) || {
+            backgroundColor: `rgba(${this.hex2rgb(color)}, .25)`,
+            borderColor: color,
+            color,
         };
 
         return {
