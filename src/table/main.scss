@@ -7,8 +7,11 @@
     @include box-sizing;
     position: relative;
 
-    &#{$table-prefix}-layout-fixed table {
-        table-layout: fixed;
+    &#{$table-prefix}-layout-fixed {
+        overflow: auto;
+        table {
+            table-layout: fixed;
+        }
     }
     &#{$table-prefix}-layout-auto table {
         table-layout: auto;

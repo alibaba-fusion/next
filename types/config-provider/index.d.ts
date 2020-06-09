@@ -47,7 +47,7 @@ export interface ConfigProviderProps {
     /**
      * 组件树
      */
-    children?: React.ReactElement<any>;
+    children?: React.ReactNode;
     /**
      * 弹层挂载的容器节点
      */
