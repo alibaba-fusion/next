@@ -362,7 +362,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 Select 展现内容的方法
      */
-    valueRender?: (item: {}) => React.ReactNode;
+    valueRender?: (item: any) => React.ReactNode;
 
     /**
      * 受控搜索值，一般不需要设置

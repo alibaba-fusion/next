@@ -65,6 +65,8 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      */
     value?: string | Array<string>;
 
+    valueRender?: (item: any) => React.ReactNode;
+
     /**
      * 选中值改变时触发的回调函数
      */
@@ -198,12 +200,12 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 下拉框挂载的容器节点
      */
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
-    
+
     /**
      * 是否跟随滚动
      */
     followTrigger?: boolean;
-    
+
     /**
      * 透传到 Popup 的属性对象
      */

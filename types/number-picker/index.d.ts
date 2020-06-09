@@ -36,6 +36,11 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     defaultValue?: number;
 
     /**
+     * 文字后附加内容
+     */
+    innerAfter?: React.ReactNode;
+
+    /**
      * 是否禁用
      */
     disabled?: boolean;
