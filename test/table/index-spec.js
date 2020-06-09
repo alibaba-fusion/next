@@ -16,7 +16,10 @@ describe('Table', () => {
     let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
         table,
         wrapper,
-        timeout;
+        timeout,
+        stickyLock,
+        stickyLockWrapper,
+        timeoutStickyLock;
 
     beforeEach(() => {
         table = (
@@ -26,10 +29,27 @@ describe('Table', () => {
             </Table>
         );
 
+        stickyLock = (
+            <Table.StickyLock dataSource={dataSource}>
+                <Table.Column dataIndex="id" />
+                <Table.Column dataIndex="name" />
+            </Table.StickyLock>
+        );
+
         wrapper = mount(table);
+        stickyLockWrapper = mount(stickyLock);
         timeout = (props, callback) => {
             return new Promise(resolve => {
                 wrapper.setProps(props);
+                setTimeout(function() {
+                    resolve();
+                }, 10);
+            }).then(callback);
+        };
+
+        timeoutStickyLock = (props, callback) => {
+            return new Promise(resolve => {
+                stickyLockWrapper.setProps(props);
                 setTimeout(function() {
                     resolve();
                 }, 10);
@@ -39,6 +59,7 @@ describe('Table', () => {
 
     afterEach(() => {
         table = null;
+        stickyLockWrapper = null;
     });
 
     it('should mount table', () => {
@@ -1107,6 +1128,44 @@ describe('Table', () => {
                     scrollTop: 20
                 }
             });
+    });
+
+    it('should support StickyLock', done => {
+        const ds = new Array(30).fill(1).map((val, i) => {
+           return { id: i, name: 'test' + i }
+        });
+        stickyLockWrapper.setProps({
+            children: [
+                <Table.Column dataIndex="id" lock width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
+            ],
+            dataSource: ds,
+        });
+
+        wrapper.setProps({
+            children: [
+                <Table.Column dataIndex="id" lock width={200} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="name" width={500} />,
+                <Table.Column dataIndex="id" lock="right" width={700} />,
+            ],
+            dataSource: ds,
+            tableWidth: 1000,
+        });
+
+        assert(stickyLockWrapper.find('div.next-table-lock-left').length === 0);
+        assert(stickyLockWrapper.find('div.next-table-lock-right').length === 0);
+        assert(stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').at(0).instance().style.position === 'sticky');
+        wrapper.update();
+        stickyLockWrapper.update();
+
+        setTimeout(() => {
+            // assert(wrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
+            // assert(stickyLockWrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
+            assert(stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').length === ds.length);
+            done();
+        }, 500);
     });
 
     it('should support align alignHeader', () => {

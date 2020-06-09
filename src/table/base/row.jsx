@@ -113,6 +113,7 @@ export default class Row extends React.Component {
                 width,
                 colSpan,
                 style,
+                cellStyle,
                 __colIndex,
                 ...others
             } = child;
@@ -156,11 +157,14 @@ export default class Row extends React.Component {
                 [cellClass]: cellClass,
             });
 
+            const newStyle = { ...attrs.style, ...cellStyle };
+
             return (
                 <Cell
                     key={`${__rowIndex}-${colIndex}`}
                     {...others}
                     {...attrs}
+                    style={newStyle}
                     data-next-table-col={colIndex}
                     data-next-table-row={rowIndex}
                     ref={cell => cellRef(__rowIndex, colIndex, cell)}
@@ -214,6 +218,7 @@ export default class Row extends React.Component {
             pure,
             locale,
             expandedIndexSimulate,
+            tableOuterWidth,
             rtl,
             wrapper,
             ...others

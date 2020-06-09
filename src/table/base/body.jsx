@@ -97,6 +97,7 @@ export default class Body extends React.Component {
             locale,
             pure,
             expandedIndexSimulate,
+            tableOuterWidth,
             rtl,
             crossline,
             tableWidth,
@@ -172,6 +173,7 @@ export default class Body extends React.Component {
                         Cell={Cell}
                         onClick={this.onRowClick}
                         locale={locale}
+                        tableOuterWidth={tableOuterWidth}
                         onMouseEnter={this.onRowMouseEnter}
                         onMouseLeave={this.onRowMouseLeave}
                     />

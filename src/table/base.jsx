@@ -317,13 +317,20 @@ class Table extends React.Component {
 
     static contextTypes = {
         getTableInstance: PropTypes.func,
+        getTableInstanceForFixed: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func,
     };
 
     constructor(props, context) {
         super(props, context);
-        const { getTableInstance, getTableInstanceForVirtual } = this.context;
+        const {
+            getTableInstance,
+            getTableInstanceForVirtual,
+            getTableInstanceForFixed,
+        } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
+        getTableInstanceForFixed &&
+            getTableInstanceForFixed(props.lockType, this);
         getTableInstanceForVirtual &&
             getTableInstanceForVirtual(props.lockType, this);
         this.notRenderCellIndex = [];
@@ -352,6 +359,7 @@ class Table extends React.Component {
 
     componentDidMount() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -368,6 +376,7 @@ class Table extends React.Component {
 
     componentDidUpdate() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     normalizeChildrenState(props) {
@@ -588,6 +597,7 @@ class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
+                        tableOuterWidth={this.tableOuterWidth}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
@@ -728,6 +738,10 @@ class Table extends React.Component {
         });
     };
 
+    getTableEl = ref => {
+        this.tableEl = ref;
+    };
+
     render() {
         const ret = this.normalizeChildrenState(this.props);
         this.groupChildren = ret.groupChildren;
@@ -769,6 +783,7 @@ class Table extends React.Component {
                 loadingComponent: LoadingComponent = Loading,
                 tableLayout,
                 tableWidth,
+                ref,
                 ...others
             } = this.props,
             cls = classnames({
@@ -789,6 +804,7 @@ class Table extends React.Component {
             <div
                 className={cls}
                 style={style}
+                ref={ref || this.getTableEl}
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}

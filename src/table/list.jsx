@@ -97,7 +97,7 @@ export default function list(BaseComponent) {
                 <BaseComponent
                     {...others}
                     components={components}
-                    children={ret}
+                    children={ret.length > 0 ? ret : undefined}
                     className={className}
                     prefix={prefix}
                 />

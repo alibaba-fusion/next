@@ -97,6 +97,7 @@ export default class Header extends React.Component {
                     className,
                     __normalized,
                     lock,
+                    cellStyle,
                     ...others
                 } = col;
 

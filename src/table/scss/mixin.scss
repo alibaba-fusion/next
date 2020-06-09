@@ -25,3 +25,16 @@
         }
     }
 }
+
+@mixin table-last-child-border($border-width) {
+    #{$table-prefix}-header {
+        tr th:last-child {
+            border-right-width: $border-width;
+        }
+    }
+    #{$table-prefix}-body {
+        tr td:last-child {
+            border-right-width: $border-width;
+        }
+    }
+}

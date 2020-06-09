@@ -6,6 +6,8 @@
 #{$table-prefix} {
     @include box-sizing;
     position: relative;
+    border-top: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    border-left: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
 
     &#{$table-prefix}-layout-fixed table {
         table-layout: fixed;
@@ -33,7 +35,7 @@
     }
 
     table {
-        border-collapse: collapse;
+        border-collapse: separate;
         border-spacing: 0;
         width: 100%;
         background: $table-row-bg;
@@ -47,7 +49,8 @@
         color: $table-th-color;
         text-align: left;
         font-weight: $table-th-font-weight;
-        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+        border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+        border-bottom: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
 
         #{$table-prefix}-cell-wrapper {
             padding: $table-header-padding-top $table-header-padding-left;
@@ -78,7 +81,8 @@
     }
     td {
         padding: 0;
-        border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+        border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+        border-bottom: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
 
         #{$table-prefix}-cell-wrapper {
             padding: $table-cell-padding-top $table-cell-padding-left;
@@ -141,6 +145,8 @@
         table tr th:first-child {
             border-left-width: 0;
         }
+
+        @include table-last-child-border(0);
     }
     &-loading {
         display: block;
@@ -172,7 +178,7 @@
     }
     &-expanded-row {
         td {
-            border-width: 0;
+            border-width: 0 0 $table-normal-border-width 0;
             &:first-child {
                 border-left-width: 1px;
             }
@@ -210,6 +216,7 @@
             color: $table-row-selected-color;
         }
     }
+
     &-cell {
         &.hovered {
             background: $table-row-hover-bg;
@@ -253,7 +260,8 @@
 }
 
 #{$table-prefix}-fixed {
-    border: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    // border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    border-bottom: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
     table {
         table-layout: fixed;
     }
@@ -261,6 +269,8 @@
         background: $table-th-bg;
     }
     @include table-border(0);
+    @include table-last-child-border($table-normal-border-width);
+
     &#{$table-prefix}-group {
         @include table-border($table-normal-border-width);
     }
@@ -278,10 +288,21 @@
     #{$table-prefix}-body {
         margin-top: $table-group-split;
         table {
+            border-top: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+            border-left: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
             margin-bottom: $table-group-split;
             tr:first-child td {
                 border-top-width: 1px;
             }
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+    }
+    #{$table-prefix}-header {
+        table {
+            border-top: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+            border-left: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
         }
     }
     #{$table-prefix}-group-header {
@@ -346,6 +367,15 @@
         overflow-x: hidden;
         margin-right: -20px;
         padding-right: 0;
+        // @include table-last-child-border($table-normal-border-width);
+    }
+
+    #{$table-prefix}-header {
+        // @include table-last-child-border($table-normal-border-width);
+    }
+
+    &.shadow {
+        @include table-last-child-border(0);
     }
 }
 
@@ -436,6 +466,58 @@
         &::before {
             content: $table-expand-fold-icon-content;
         }
+    }
+}
+
+#{$table-prefix} {
+    &-fix-left,
+    &-fix-right {
+        background: inherit;
+        position: sticky;
+    }
+    &-ping-left {
+        #{$table-prefix}-fix-left-last {
+            border-right-width: 0;
+            &::after {
+                box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, .15);
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: -1px;
+                width: 30px;
+                content: '';
+                pointer-events: none;
+                transition: box-shadow .3s, -webkit-box-shadow .3s;
+                transform: translateX(100%);
+            }
+        }
+    }
+
+    &-ping-right {
+        #{$table-prefix}-fix-right-first::after {
+            box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, .15);
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: -1px;
+            width: 30px;
+            content: '';
+            pointer-events: none;
+            transition: box-shadow .3s, -webkit-box-shadow .3s;
+            transform: translateX(-100%);
+        }
+    }
+
+    &-fixed#{$table-prefix}-scrolling-to-right,
+    &-lock#{$table-prefix}-scrolling-to-right {
+        border-right: $table-normal-border-width $table-normal-border-style $table-normal-border-color;
+    }
+
+    &-fixed#{$table-prefix}-ping-right,
+    &-fixed.only-bottom-border,
+    &-lock#{$table-prefix}-ping-right,
+    &-lock.only-bottom-border {
+        border-right: 0;
     }
 }
 
