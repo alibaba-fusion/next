@@ -321,7 +321,9 @@ class Transfer extends Component {
     handlePanelChange(position, value) {
         const valuePropName =
             position === 'left' ? 'leftCheckedValue' : 'rightCheckedValue';
+        // inner state changed
         this.setState({
+            innerUpdate: true,
             [valuePropName]: value,
         });
     }
