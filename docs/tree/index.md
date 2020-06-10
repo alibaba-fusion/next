@@ -69,7 +69,7 @@
 | draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable  | Boolean   | -     |
 | disabled         | 是否禁止节点响应                        | Boolean   | false |
 | checkboxDisabled | 是否禁止勾选节点复选框                     | Boolean   | false |
-| isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | false |
+| isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | -     |
 
 <!-- api-extra-start -->
 
