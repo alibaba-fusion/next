@@ -80,7 +80,7 @@ class Tab extends Component {
          */
         extra: PropTypes.node,
         /**
-         * 禁止键盘事件
+         * 禁止键盘事件，设置后无法通过键盘的上下左右按键，切换当前选中的tab
          */
         disableKeyboard: PropTypes.bool,
         /**
