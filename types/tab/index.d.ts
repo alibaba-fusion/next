@@ -107,6 +107,11 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     extra?: React.ReactNode;
 
     /**
+     * 禁用键盘事件
+     */
+    disableKeyboard?: boolean;
+
+    /**
      * 点击单个选项卡时触发的回调
      */
     onClick?: (key: string | number) => void;
@@ -138,7 +143,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
         dropdown?: string | React.ReactNode;
         prev?: string | React.ReactNode;
         next?: string | React.ReactNode;
-    }
+    };
 }
 
 export default class Tab extends React.Component<TabProps, any> {

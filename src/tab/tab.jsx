@@ -80,6 +80,10 @@ class Tab extends Component {
          */
         extra: PropTypes.node,
         /**
+         * 禁止键盘事件，设置后无法通过键盘的上下左右按键，切换当前选中的tab
+         */
+        disableKeyboard: PropTypes.bool,
+        /**
          * 点击单个选项卡时触发的回调
          */
         onClick: PropTypes.func,
@@ -127,6 +131,7 @@ class Tab extends Component {
         triggerType: 'click',
         lazyLoad: true,
         unmountInactiveTabs: false,
+        disableKeyboard: false,
         onClick: noop,
         onChange: noop,
         onClose: noop,
@@ -227,9 +232,16 @@ class Tab extends Component {
 
     onNavKeyDown = e => {
         const keyCode = e.keyCode;
+        const { disableKeyboard } = this.props;
+
+        if (disableKeyboard) {
+            return;
+        }
+
         if (keyCode >= KEYCODE.LEFT && keyCode <= KEYCODE.DOWN) {
             e.preventDefault();
         }
+
         let newKey;
         if (keyCode === KEYCODE.RIGHT || keyCode === KEYCODE.DOWN) {
             newKey = this.getNextActiveKey(true);
