@@ -52,6 +52,7 @@
 | progressProps   | 透传给Progress props                                                                                                                                                                                                                               | Object          | -         |
 | isPreview       | 是否为预览态                                                                                                                                                                                                                                          | Boolean         | -         |
 | renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                                               | Function        | -         |
+| fileKeyName     | 文件对象的 key name                                                                                                                                                                                                                                  | String          | -         |
 
 ### Upload.Card
 
