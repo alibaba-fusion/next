@@ -585,6 +585,7 @@ describe('Table', () => {
                 },
             },
         });
+        wrapper.find('.next-icon-filter').simulate('click');
         wrapper
             .find('.next-btn')
             .at(0)
