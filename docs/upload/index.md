@@ -16,7 +16,7 @@
 
 ### 注意事项
 
-- 有些服务不支持 `X-Requested-With: XMLHttpRequest` 这个请求头导致不能跨域，可以通过设置 `<Upload headers={{'X-Requested-With':null}}>` 来解决
+-   有些服务不支持 `X-Requested-With: XMLHttpRequest` 这个请求头导致不能跨域，可以通过设置 `<Upload headers={{'X-Requested-With':null}}>` 来解决
 
 ## API
 
@@ -57,6 +57,8 @@
 | isPreview       | 是否为预览态                                                                                                                                                                                                                                          | Boolean         | -         |
 | renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                                               | Function        | -         |
 | fileKeyName     | 文件对象的 key name                                                                                                                                                                                                                                  | String          | -         |
+| fileNameRender  | list 的自定义文件名渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                          | Function        | -         |
+| actionRender    | 操作区域额外渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                                | Function        | -         |
 
 ### Upload.Card
 
