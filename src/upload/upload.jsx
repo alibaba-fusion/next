@@ -167,6 +167,10 @@ class Upload extends Base {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
+        /**
+         * 文件对象的 key name
+         */
+        fileKeyName: PropTypes.string,
     };
 
     static defaultProps = {
@@ -472,6 +476,8 @@ class Upload extends Base {
             rtl,
             isPreview,
             renderPreview,
+            name,
+            fileKeyName = name,
             ...others
         } = this.props;
 
@@ -534,6 +540,7 @@ class Upload extends Base {
             <div className={cls} style={style} {...otherAttributes}>
                 <Uploader
                     {...others}
+                    name={fileKeyName}
                     beforeUpload={beforeUpload}
                     dragable={dragable}
                     disabled={disabled || isExceedLimit}
