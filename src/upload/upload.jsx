@@ -171,6 +171,18 @@ class Upload extends Base {
          * 文件对象的 key name
          */
         fileKeyName: PropTypes.string,
+        /**
+         * list 的自定义文件名渲染
+         * @param {Object} file 文件
+         * @return {Node} react node
+         */
+        fileNameRender: PropTypes.func,
+        /**
+         * 操作区域额外渲染
+         * @param {Object} file 文件
+         * @return {Node} react node
+         */
+        actionRender: PropTypes.func,
     };
 
     static defaultProps = {
@@ -478,6 +490,8 @@ class Upload extends Base {
             renderPreview,
             name,
             fileKeyName = name,
+            fileNameRender,
+            actionRender,
             ...others
         } = this.props;
 
@@ -557,6 +571,8 @@ class Upload extends Base {
                 {listType || list ? (
                     <List
                         useDataURL={useDataURL}
+                        fileNameRender={fileNameRender}
+                        actionRender={actionRender}
                         uploader={this}
                         listType={listType}
                         value={this.state.value}
