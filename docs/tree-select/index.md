@@ -54,6 +54,7 @@
 | followTrigger           | 是否跟随滚动                                                                                                                                                                                                                                                   | Boolean                 | -           |
 | isPreview               | 是否为预览态                                                                                                                                                                                                                                                   | Boolean                 | -           |
 | renderPreview           | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: Array) => void<br>**参数**:<br>_value_: {Array} 选择值 { label: , value:}                                                                                                                                       | Function                | -           |
+| useVirtual           | 是否开启虚拟滚动                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Boolean                 | false              |
 
 <!-- api-extra-start -->
 
