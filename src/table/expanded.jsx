@@ -65,6 +65,7 @@ export default function expanded(BaseComponent, stickyLock) {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
             expandedIndexSimulate: PropTypes.bool,
+            expandedRowWidthEquals2Table: PropTypes.bool,
             expandedRowIndent: PropTypes.array,
         };
 
@@ -77,6 +78,7 @@ export default function expanded(BaseComponent, stickyLock) {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
                 expandedIndexSimulate: this.props.expandedIndexSimulate,
+                expandedRowWidthEquals2Table: stickyLock,
                 expandedRowIndent: stickyLock
                     ? [0, 0]
                     : this.props.expandedRowIndent,
@@ -175,6 +177,21 @@ export default function expanded(BaseComponent, stickyLock) {
             e.stopPropagation();
         }
 
+        addExpandCtrl = columns => {
+            const { prefix, size } = this.props;
+
+            if (!columns.find(record => record.key === 'expanded')) {
+                columns.unshift({
+                    key: 'expanded',
+                    title: '',
+                    cell: this.renderExpandedCell.bind(this),
+                    width: size === 'small' ? 34 : 50,
+                    className: `${prefix}table-expanded ${prefix}table-prerow`,
+                    __normalized: true,
+                });
+            }
+        };
+
         normalizeChildren(children) {
             const { prefix, size } = this.props;
             const toArrayChildren = Children.map(children, (child, index) =>
@@ -213,6 +230,7 @@ export default function expanded(BaseComponent, stickyLock) {
                 expandedRowRender,
                 hasExpandedRowCtrl,
                 children,
+                columns,
                 dataSource,
                 entireDataSource,
                 getExpandedColProps,
@@ -221,6 +239,7 @@ export default function expanded(BaseComponent, stickyLock) {
                 onExpandedRowClick,
                 ...others
             } = this.props;
+
             if (expandedRowRender && !components.Row) {
                 components = { ...components };
                 components.Row = RowComponent;
@@ -228,12 +247,19 @@ export default function expanded(BaseComponent, stickyLock) {
                 entireDataSource = this.normalizeDataSource(entireDataSource);
             }
             if (expandedRowRender && hasExpandedRowCtrl) {
-                children = this.normalizeChildren(children);
+                let useColumns = columns && !children;
+
+                if (useColumns) {
+                    this.addExpandCtrl(columns);
+                } else {
+                    children = this.normalizeChildren(children);
+                }
             }
 
             return (
                 <BaseComponent
                     {...others}
+                    columns={columns}
                     dataSource={dataSource}
                     entireDataSource={entireDataSource}
                     components={components}

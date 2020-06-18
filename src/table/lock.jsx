@@ -84,9 +84,8 @@ export default function lock(BaseComponent) {
         }
 
         normalizeChildrenState(props) {
-            let { children } = props;
-            children = this.normalizeChildren(children);
-            const splitChildren = this.splitFromNormalizeChildren(children);
+            const columns = this.normalizeChildren(props);
+            const splitChildren = this.splitFromNormalizeChildren(columns);
             const { lockLeftChildren, lockRightChildren } = splitChildren;
             return {
                 lockLeftChildren,
@@ -96,8 +95,10 @@ export default function lock(BaseComponent) {
         }
 
         // 将React结构化数据提取props转换成数组
-        normalizeChildren(children) {
-            let isLock = false;
+        normalizeChildren(props) {
+            const { children, columns } = props;
+            let isLock = false,
+                ret;
             const getChildren = children => {
                 const ret = [];
                 Children.forEach(children, child => {
@@ -121,7 +122,16 @@ export default function lock(BaseComponent) {
                 });
                 return ret;
             };
-            const ret = getChildren(children);
+
+            if (columns && !children) {
+                ret = columns;
+                isLock = columns.find(
+                    record => [true, 'left', 'right'].indexOf(record.lock) > -1
+                );
+            } else {
+                ret = getChildren(children);
+            }
+
             ret.forEach(child => {
                 // 为自定义的列特殊处理
                 if (child.__normalized && isLock) {
@@ -666,7 +676,7 @@ export default function lock(BaseComponent) {
             const loop = arr => {
                 const newArray = [];
                 arr.forEach(child => {
-                    if (child.children) {
+                    if (child && child.children) {
                         newArray.push(...loop(child.children));
                     } else {
                         newArray.push(child);
@@ -690,6 +700,7 @@ export default function lock(BaseComponent) {
             /* eslint-disable no-unused-vars, prefer-const */
             let {
                 children,
+                columns,
                 prefix,
                 components,
                 className,

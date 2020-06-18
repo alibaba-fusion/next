@@ -138,7 +138,7 @@ class Filter extends React.Component {
         } = this.props;
 
         const { visible, selectedKeys } = this.state;
-        const { subMenuSelectable, ...others } = filterMenuProps;
+        const { subMenuSelectable, ...others } = filterMenuProps || {};
 
         function renderMenuItem(item) {
             return <Menu.Item key={item.value}>{item.label}</Menu.Item>;

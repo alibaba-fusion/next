@@ -17,6 +17,7 @@ export default class ExpandedRow extends React.Component {
         expandedRowRender: PropTypes.func,
         expandedRowIndent: PropTypes.array,
         expandedIndexSimulate: PropTypes.bool,
+        expandedRowWidthEquals2Table: PropTypes.bool,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
@@ -27,6 +28,7 @@ export default class ExpandedRow extends React.Component {
             openRowKeys,
             lockType,
             expandedIndexSimulate,
+            expandedRowWidthEquals2Table,
         } = this.context;
         const { tableOuterWidth } = this.props;
         const expandedIndex = expandedIndexSimulate
@@ -100,13 +102,17 @@ export default class ExpandedRow extends React.Component {
                 content = (
                     <div
                         className={`${prefix}table-cell-wrapper`}
-                        style={expandedRowStyle}
+                        style={expandedRowWidthEquals2Table && expandedRowStyle}
                     >
                         {content}
                     </div>
                 );
             } else {
-                content = <div style={expandedRowStyle}>{content}</div>;
+                content = expandedRowWidthEquals2Table ? (
+                    <div style={expandedRowStyle}>{content}</div>
+                ) : (
+                    content
+                );
             }
 
             let rightStart = columns.length;
