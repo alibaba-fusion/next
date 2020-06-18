@@ -420,6 +420,14 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      */
     extraRender?: (file: File) => any;
     /**
+     * 自定义文件名渲染
+     */
+    fileNameRender?: (file: File) => any;
+    /**
+     * 自定义操作区域渲染
+     */
+    actionRender?: (file: File) => any;
+    /**
      * 自定义class
      */
     className?: string;
