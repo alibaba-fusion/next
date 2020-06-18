@@ -6,7 +6,7 @@ import { findDOMNode } from 'react-dom';
 import { events } from '../util';
 
 const NOOP = () => {};
-const MAX_SYNC_UPDATES = 100;
+const MAX_SYNC_UPDATES = 40;
 
 const isEqualSubset = (a, b) => {
     for (const key in b) {

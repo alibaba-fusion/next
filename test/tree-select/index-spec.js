@@ -564,11 +564,51 @@ describe('TreeSelect', () => {
         ];
         assertDataAndNodes(expectTreeData);
 
-        const hideNode3 = findTreeNodeByValue('3');
-        assert(hideNode3.style.display === 'none');
+        ['3', '5'].forEach(v =>
+            assert(findTreeNodeByValue(v).style.display === 'none')
+        );
+    });
 
-        const hideNode5 = findTreeNodeByValue('5');
-        assert(hideNode5.style.display === 'none');
+    it('should support search well when use virtual', () => {
+        dataSource[0].children = dataSource[0].children.concat(
+            new Array(100).fill().map((__, index) => {
+                return {
+                    value: index,
+                    label: index,
+                };
+            })
+        );
+        wrapper = mount(
+            <TreeSelect
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={dataSource}
+                showSearch
+                style={{ width: 200 }}
+                useVirtual
+                treeProps={{
+                    style: { maxHeight: '100px', overflow: 'auto' },
+                }}
+            />
+        );
+        wrapper
+            .find('.next-select-trigger-search input')
+            .simulate('change', { target: { value: 77 } });
+        wrapper.update();
+
+        const expectTreeData = [
+            {
+                label: '服装',
+                value: '1',
+                children: [
+                    {
+                        label: '77',
+                        value: '77',
+                    },
+                ],
+            },
+        ];
+        assertDataAndNodes(expectTreeData);
     });
 
     it('should render not found if dataSource is empty or there is no search result', () => {
