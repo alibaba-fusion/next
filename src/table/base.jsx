@@ -426,7 +426,7 @@ class Table extends React.Component {
         let hasGroupHeader = false;
         const flatChildren = [],
             groupChildren = [],
-            getChildren = (propsChildren, level) => {
+            getChildren = (propsChildren = [], level) => {
                 groupChildren[level] = groupChildren[level] || [];
                 propsChildren.forEach(child => {
                     if (child.children) {

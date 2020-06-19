@@ -115,6 +115,19 @@ describe('Table', () => {
         );
     });
 
+    it('should render when dataSource is [] & children is null', done => {
+        timeout(
+            {
+                dataSource: [],
+                children: [],
+            },
+            () => {
+                assert(wrapper);
+                done();
+            }
+        );
+    });
+
     it('should render when dataSource is made of string', done => {
         timeout(
             {
