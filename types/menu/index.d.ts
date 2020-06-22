@@ -161,7 +161,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击菜单项触发的回调函数
      */
-    onItemClick?: (key: string, item: {}, event: {}) => void;
+    onItemClick?: (key: string, item: any, event: React.MouseEvent) => void;
 
     /**
      * 当前打开的子菜单的 key 值
@@ -181,7 +181,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 打开或关闭子菜单触发的回调函数
      */
-    onOpen?: (key: string[], extra: {}) => void;
+    onOpen?: (key: string[], extra: { key: string; open: boolean }) => void;
 
     /**
      * 子菜单打开的模式
@@ -216,7 +216,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义 props
      */
-    popupProps?: {} | (() => void);
+    popupProps?: any | (() => void);
 
     /**
      * 弹出子菜单自定义 className
@@ -226,7 +226,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹出子菜单自定义 style
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 当前选中菜单项的 key 值
@@ -241,7 +241,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中或取消选中菜单项触发的回调函数
      */
-    onSelect?: (selectedKeys: Array<any>, item: {}, extra: {}) => void;
+    onSelect?: (selectedKeys: Array<any>, item: any, extra: { select: boolean; lable: any; keyPath: any[]; key: string[] }) => void;
 
     /**
      * 选中模式，单选还是多选，默认无值，不可选
