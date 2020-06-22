@@ -140,6 +140,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 自定义内联样式
      */
     style?: React.CSSProperties;
+    columns?: Array<any>;
 
     /**
      * 表格展示的数据源

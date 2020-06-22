@@ -179,6 +179,9 @@ class Table extends React.Component {
          */
         locale: PropTypes.object,
         components: PropTypes.object,
+        /**
+         * 等同于写子组件 Table.Column ，子组件优先级更高
+         */
         columns: PropTypes.array,
         /**
          * 设置数据为空的时候的表格内容展现

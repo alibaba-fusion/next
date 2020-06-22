@@ -99,36 +99,50 @@ export default function lock(BaseComponent) {
             const { children, columns } = props;
             let isLock = false,
                 ret;
-            const getChildren = children => {
-                const ret = [];
-                Children.forEach(children, child => {
-                    if (child) {
-                        const props = { ...child.props };
-                        if ([true, 'left', 'right'].indexOf(props.lock) > -1) {
-                            isLock = true;
-                            if (!('width' in props)) {
-                                log.warning(
-                                    `Should config width for lock column named [ ${
-                                        props.dataIndex
-                                    } ].`
+            const checkLock = col => {
+                if ([true, 'left', 'right'].indexOf(col.lock) > -1) {
+                    if (!('width' in col)) {
+                        log.warning(
+                            `Should config width for lock column named [ ${
+                                col.dataIndex
+                            } ].`
+                        );
+                    }
+                    isLock = true;
+                }
+            };
+            if (columns && !children) {
+                ret = columns;
+
+                const getColumns = cols => {
+                    cols.forEach((col = {}) => {
+                        checkLock(col);
+
+                        if (col.children) {
+                            getColumns(col.children);
+                        }
+                    });
+                };
+
+                getColumns(columns);
+            } else {
+                const getChildren = children => {
+                    const ret = [];
+                    Children.forEach(children, child => {
+                        if (child) {
+                            const props = { ...child.props };
+                            checkLock(props);
+                            ret.push(props);
+                            if (child.props.children) {
+                                props.children = getChildren(
+                                    child.props.children
                                 );
                             }
                         }
-                        ret.push(props);
-                        if (child.props.children) {
-                            props.children = getChildren(child.props.children);
-                        }
-                    }
-                });
-                return ret;
-            };
+                    });
+                    return ret;
+                };
 
-            if (columns && !children) {
-                ret = columns;
-                isLock = columns.find(
-                    record => [true, 'left', 'right'].indexOf(record.lock) > -1
-                );
-            } else {
                 ret = getChildren(children);
             }
 
