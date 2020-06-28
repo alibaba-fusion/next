@@ -23,7 +23,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    // checkTags();
+    checkTags();
     checkFiles();
 
     const publish = yield inquirer.prompt([
@@ -135,7 +135,7 @@ function* pushMaster() {
 
 function* pushPlatformDocsBranch() {
     const docs = path.join(cwd, 'platform-docs');
-    // yield runCommond(`git tag ${masterTag}`);
+    yield runCommond(`git tag ${masterTag}`);
     yield runCommond(`git push origin ${masterTag}`);
 
     try {
@@ -163,7 +163,7 @@ function* pushPlatformDocsBranch() {
         cp.execSync(`cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`);
 
         yield runCommond('cd platform-docs;git push origin platform-docs -f');
-        // yield runCommond(`cd platform-docs;git tag ${buildTag}`);
+        yield runCommond(`cd platform-docs;git tag ${buildTag}`);
         yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
 
         logger.success('******** push to branch platform-docs success! ********\n');
