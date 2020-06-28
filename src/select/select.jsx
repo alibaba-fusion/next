@@ -171,6 +171,10 @@ class Select extends Base {
          * 展开下拉菜单时是否自动焦点到弹层
          */
         popupAutoFocus: PropTypes.bool,
+        /**
+         * 是否展示 dataSource 中 children
+         */
+        showDataSourceChildren: PropTypes.bool,
     };
 
     static defaultProps = {

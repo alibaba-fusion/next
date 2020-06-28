@@ -92,18 +92,10 @@ export function parseDataSourceFromChildren(children, deep = 0) {
         let isOption = false;
         let isOptionGroup = false;
 
-        if (
-            (typeof type === 'function' &&
-                type._typeMark === 'next_select_option') ||
-            type === 'option'
-        ) {
+        if ((typeof type === 'function' && type._typeMark === 'next_select_option') || type === 'option') {
             isOption = true;
         }
-        if (
-            (typeof type === 'function' &&
-                type._typeMark === 'next_select_option_group') ||
-            type === 'optgroup'
-        ) {
+        if ((typeof type === 'function' && type._typeMark === 'next_select_option_group') || type === 'optgroup') {
             isOptionGroup = true;
         }
 
@@ -125,8 +117,7 @@ export function parseDataSourceFromChildren(children, deep = 0) {
                     ? childProps.children
                     : `${index}`;
 
-            item2.label =
-                childProps.label || childProps.children || `${item2.value}`;
+            item2.label = childProps.label || childProps.children || `${item2.value}`;
             if ('title' in childProps) {
                 item2.title = childProps.title;
             }
@@ -137,10 +128,7 @@ export function parseDataSourceFromChildren(children, deep = 0) {
             // option group
             item2.label = childProps.label || 'Group';
             // parse children nodes
-            item2.children = parseDataSourceFromChildren(
-                childProps.children,
-                deep + 1
-            );
+            item2.children = parseDataSourceFromChildren(childProps.children, deep + 1);
         }
 
         source.push(item2);
@@ -159,7 +147,7 @@ export function parseDataSourceFromChildren(children, deep = 0) {
  * label priority: label > 'value' > 'index'
  * disabled: disabled === true
  */
-export function normalizeDataSource(dataSource, deep = 0) {
+export function normalizeDataSource(dataSource, deep = 0, showDataSourceChildren = true) {
     const source = [];
 
     dataSource.forEach((item, index) => {
@@ -175,7 +163,7 @@ export function normalizeDataSource(dataSource, deep = 0) {
 
         const item2 = { deep };
         // deep < 1: only 2 level allowed
-        if (Array.isArray(item.children) && deep < 1) {
+        if (Array.isArray(item.children) && deep < 1 && showDataSourceChildren) {
             // handle group
             item2.label = item.label || item.value || `Group ${index}`;
             // parse children

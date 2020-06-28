@@ -387,7 +387,10 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
      */
     hiddenSelected?: boolean;
-
+    /**
+     * 是否展示 dataSource 中 children
+     */
+    showDataSourceChildren?: boolean;
     /**
      * tag 删除回调
      */
