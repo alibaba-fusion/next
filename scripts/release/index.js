@@ -163,7 +163,7 @@ function* pushPlatformDocsBranch() {
         cp.execSync(`cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`);
 
         yield runCommond('cd platform-docs;git push origin platform-docs -f');
-        yield runCommond(`cd platform-docs;git tag ${buildTag}`);
+        // yield runCommond(`cd platform-docs;git tag ${buildTag}`);
         yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
 
         logger.success('******** push to branch platform-docs success! ********\n');
