@@ -135,7 +135,7 @@ function* pushMaster() {
 
 function* pushPlatformDocsBranch() {
     const docs = path.join(cwd, 'platform-docs');
-    yield runCommond(`git tag ${masterTag}`);
+    // yield runCommond(`git tag ${masterTag}`);
     yield runCommond(`git push origin ${masterTag}`);
 
     try {
