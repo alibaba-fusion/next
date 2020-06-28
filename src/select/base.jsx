@@ -140,6 +140,7 @@ export default class Base extends React.Component {
          * 自动高亮第一个元素
          */
         autoHighlightFirstItem: PropTypes.bool,
+        showDataSourceChildren: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -157,6 +158,7 @@ export default class Base extends React.Component {
         },
         locale: zhCN.Select,
         autoHighlightFirstItem: true,
+        showDataSourceChildren: true,
     };
 
     constructor(props) {
@@ -165,6 +167,7 @@ export default class Base extends React.Component {
         this.dataStore = new DataStore({
             filter: props.filter,
             filterLocal: props.filterLocal,
+            showDataSourceChildren: props.showDataSourceChildren,
         });
 
         this.state = {
@@ -506,7 +509,7 @@ export default class Base extends React.Component {
      * @param {Array} dataSource
      */
     renderMenuItem(dataSource) {
-        const { prefix, itemRender } = this.props;
+        const { prefix, itemRender, showDataSourceChildren } = this.props;
         // If it has.
         let searchKey;
         if (this.isAutoComplete) {
@@ -520,7 +523,7 @@ export default class Base extends React.Component {
             if (!item) {
                 return null;
             }
-            if (Array.isArray(item.children)) {
+            if (Array.isArray(item.children) && showDataSourceChildren) {
                 return (
                     <MenuGroup key={index} label={item.label}>
                         {this.renderMenuItem(item.children)}

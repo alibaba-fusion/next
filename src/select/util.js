@@ -159,7 +159,11 @@ export function parseDataSourceFromChildren(children, deep = 0) {
  * label priority: label > 'value' > 'index'
  * disabled: disabled === true
  */
-export function normalizeDataSource(dataSource, deep = 0) {
+export function normalizeDataSource(
+    dataSource,
+    deep = 0,
+    showDataSourceChildren = true
+) {
     const source = [];
 
     dataSource.forEach((item, index) => {
@@ -175,7 +179,11 @@ export function normalizeDataSource(dataSource, deep = 0) {
 
         const item2 = { deep };
         // deep < 1: only 2 level allowed
-        if (Array.isArray(item.children) && deep < 1) {
+        if (
+            Array.isArray(item.children) &&
+            deep < 1 &&
+            showDataSourceChildren
+        ) {
             // handle group
             item2.label = item.label || item.value || `Group ${index}`;
             // parse children

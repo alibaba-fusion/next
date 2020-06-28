@@ -16,6 +16,7 @@ class DataStore {
             key: undefined,
             addonKey: false,
             filterLocal: true,
+            showDataSourceChildren: true,
             ...options,
         };
 
@@ -37,7 +38,11 @@ class DataStore {
     updateByDS(dataSource, isChildren = false) {
         this.dataSource = isChildren
             ? parseDataSourceFromChildren(dataSource)
-            : normalizeDataSource(dataSource);
+            : normalizeDataSource(
+                  dataSource,
+                  0,
+                  this.options.showDataSourceChildren
+              );
         return this.updateAll();
     }
 
@@ -71,7 +76,12 @@ class DataStore {
     }
 
     updateAll() {
-        const { key, filter, filterLocal } = this.options;
+        const {
+            key,
+            filter,
+            filterLocal,
+            showDataSourceChildren,
+        } = this.options;
         this.menuDataSource = filterDataSource(
             this.dataSource,
             filterLocal ? key : '',
@@ -79,7 +89,9 @@ class DataStore {
             this.options.addonKey
         );
 
-        this.flattenDataSource = flattingDataSource(this.menuDataSource);
+        this.flattenDataSource = showDataSourceChildren
+            ? flattingDataSource(this.menuDataSource)
+            : this.menuDataSource;
 
         this.mapDataSource = {};
         this.flattenDataSource.forEach(item => {
