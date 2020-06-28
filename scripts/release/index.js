@@ -23,7 +23,7 @@ const runCommond = function(cmd) {
 };
 
 co(function*() {
-    checkTags();
+    // checkTags();
     checkFiles();
 
     const publish = yield inquirer.prompt([
@@ -69,10 +69,7 @@ function checkTags() {
         logger.error(`You have duplicate tags: ${repeatTag}`);
         process.exit(0);
     } else {
-        logger.success(
-            `There is no [${masterTag}] or [${buildTag}] exits`,
-            '\n'
-        );
+        logger.success(`There is no [${masterTag}] or [${buildTag}] exits`, '\n');
     }
 }
 
@@ -116,20 +113,12 @@ function checkFiles() {
     const esLen = fs.readdirSync(esPath).length;
     const typesLen = fs.readdirSync(typesPath).length;
 
-    if (
-        !(
-            typesLen === srcLen - 7 &&
-            typesLen === libLen - 5 &&
-            typesLen === esLen - 3
-        )
-    ) {
+    if (!(typesLen === srcLen - 7 && typesLen === libLen - 5 && typesLen === esLen - 3)) {
         // src : demo-helper / core / mixin-ui-state / validate / .editorconfig / .eslintrc / .stylelintrc
         // lib : core / mixin-ui-state / validate / _components / index.d.ts
         // es : core / mixin-ui-state / validate
         // types: util.d.ts
-        logger.error(
-            `srcLen, libLen, esLen, typesLen: ${srcLen} ${libLen} ${esLen} ${typesLen}`
-        );
+        logger.error(`srcLen, libLen, esLen, typesLen: ${srcLen} ${libLen} ${esLen} ${typesLen}`);
         process.exit(0);
     }
 }
@@ -170,20 +159,14 @@ function* pushPlatformDocsBranch() {
 
         yield runCommond('cd platform-docs;git add .');
 
-        logger.success(
-            `[command] cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
-        );
-        cp.execSync(
-            `cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`
-        );
+        logger.success(`[command] cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`);
+        cp.execSync(`cd platform-docs;git commit -m 'chore(*): Release-${buildTag}' || true`);
 
         yield runCommond('cd platform-docs;git push origin platform-docs -f');
         yield runCommond(`cd platform-docs;git tag ${buildTag}`);
         yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
 
-        logger.success(
-            '******** push to branch platform-docs success! ********\n'
-        );
+        logger.success('******** push to branch platform-docs success! ********\n');
     } finally {
         yield fs.remove(docs);
         yield runCommond('git worktree prune');
