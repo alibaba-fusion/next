@@ -58,11 +58,10 @@ export function loopMap(dataSource, callback) {
     dataSource.forEach(option => {
         if (option.children) {
             const children = loopMap(option.children, callback);
-            children.length &&
-                result.push({
-                    ...option,
-                    children,
-                });
+            result.push({
+                ...option,
+                children,
+            });
         } else {
             // eslint-disable-next-line callback-return
             const tmp = callback(option);
