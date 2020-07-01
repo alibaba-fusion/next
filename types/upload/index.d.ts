@@ -262,6 +262,11 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     data?: {} | (() => void);
 
     /**
+     * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
+     */
+    multiple?: boolean;
+
+    /**
      * 设置上传的请求头部
      */
     headers?: {};
