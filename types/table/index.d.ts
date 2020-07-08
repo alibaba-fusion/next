@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
-import LoadingProps from '../loading';
-import AffixProps from '../affix';
+import { LoadingProps } from '../loading';
+import { AffixProps } from '../affix';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
