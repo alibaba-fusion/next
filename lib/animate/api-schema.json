@@ -1,0 +1,276 @@
+{
+  "name": "Animate",
+  "props": {
+    "animation": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "object"
+          }
+        ]
+      },
+      "required": false,
+      "description": "动画 className",
+      "docblock": "动画 className"
+    },
+    "animationAppear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "子元素第一次挂载时是否执行动画",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "子元素第一次挂载时是否执行动画"
+    },
+    "component": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "包裹子元素的标签",
+      "defaultValue": {
+        "value": "'div'",
+        "computed": false
+      },
+      "docblock": "包裹子元素的标签"
+    },
+    "singleMode": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否只有单个子元素，如果有多个子元素，请设置为 false",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否只有单个子元素，如果有多个子元素，请设置为 false"
+    },
+    "children": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "element"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "element"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "子元素",
+      "docblock": "子元素"
+    },
+    "beforeAppear": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行第一次挂载动画前触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行第一次挂载动画前触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onAppear": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行第一次挂载动画，添加 xxx-appear-active 类名后触发的回调函数\n @param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "afterAppear": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行完第一次挂载动画后触发的函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行完第一次挂载动画后触发的函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "beforeEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行进场动画前触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行进场动画前触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行进场动画，添加 xxx-enter-active 类名后触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行进场动画，添加 xxx-enter-active 类名后触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "afterEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行完进场动画后触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行完进场动画后触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "beforeLeave": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行离场动画前触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行离场动画前触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onLeave": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行离场动画，添加 xxx-leave-active 类名后触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行离场动画，添加 xxx-leave-active 类名后触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "afterLeave": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "执行完离场动画后触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "执行完离场动画后触发的回调函数\n@param {HTMLElement} node \b执行动画的 dom 元素",
+      "params": [
+        {
+          "name": "node",
+          "description": "\b执行动画的 dom 元素",
+          "type": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}
