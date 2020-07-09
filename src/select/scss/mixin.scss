@@ -28,6 +28,6 @@
     height: $height;
 
     .#{$css-prefix}tag-body, .#{$css-prefix}tag-close-btn {
-        line-height: $height - $padding-tb * 2;
+        line-height: calc($height - $padding-tb * 2);
     }
 }

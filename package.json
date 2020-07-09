@@ -62,26 +62,8 @@
     "tslint": "tsc",
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
     "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
-    "commitmsg": "commitlint -E GIT_PARAMS",
-    "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
     "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
-  },
-  "lint-staged": {
-    "types/**/*.d.ts": [
-      "npm run tslint --"
-    ],
-    "@(src|scripts|docs/*/demo)/**/*.@(js|jsx)": [
-      "prettier --write"
-    ],
-    "@(src|scripts|docs/*/demo)/**/*.@(js|jsx|md)": [
-      "eslint",
-      "git add"
-    ],
-    "src/**/*.@(css|scss)": [
-      "stylelint",
-      "git add"
-    ]
   },
   "dependencies": {
     "@alifd/field": "~1.4.1",
