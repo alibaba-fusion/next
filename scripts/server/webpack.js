@@ -196,6 +196,11 @@ function getEntry(entryPaths) {
         const pathWithoutExt = path.join(path.dirname(entryPath), name);
         ret[pathWithoutExt] = [
             'react-dev-utils/webpackHotDevClient',
+            // css var should only be included once.
+            // import it from 'src/core/index-noreset.scss'
+            // will produce many duplicates,
+            // making dev app slow
+            path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
             entryPath,
         ];
         return ret;
