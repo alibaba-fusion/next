@@ -73,7 +73,7 @@ $cascader-menu-border: $cascader-menu-border-width $line-solid $cascader-menu-bo
     }
 
     &-filtered-list {
-        height: $s-8 * 6;
+        height: calc(#{$s-8} * 6);
         padding: 0;
         border: none;
         border-radius: 0;
