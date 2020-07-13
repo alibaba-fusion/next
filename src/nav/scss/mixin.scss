@@ -45,7 +45,7 @@
 }
 
 @mixin nav-border-fix($height, $border-width) {
-    $real-height: $height - $border-width * 2;
+    $real-height: calc($height - $border-width * 2);
 
     border-width: $border-width;
     &.#{$css-prefix}hoz {

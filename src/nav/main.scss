@@ -57,11 +57,11 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}hoz {
-        height: $nav-hoz-height + 2 * $nav-hoz-item-margin-tb;
+        height: calc($nav-hoz-height + 2 * $nav-hoz-item-margin-tb);
 
         @include nav-size(
             'hoz',
-            $nav-hoz-height - $popup-local-border-width * 2,
+            calc($nav-hoz-height - $popup-local-border-width * 2),
             $nav-hoz-font-size,
             $nav-hoz-item-padding-lr,
             $nav-hoz-item-margin-tb,
@@ -77,12 +77,12 @@ $nav-icononly-width: 58px;
 
         #{$menu-prefix}-header {
             float: left;
-            height: $nav-hoz-height - $popup-local-border-width * 2;
+            height: calc($nav-hoz-height - $popup-local-border-width * 2);
         }
 
         #{$menu-prefix}-footer {
             float: right;
-            height: $nav-hoz-height - $popup-local-border-width * 2;
+            height: calc($nav-hoz-height - $popup-local-border-width * 2);
         }
 
         #{$nav-prefix}-item {
