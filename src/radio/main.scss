@@ -51,9 +51,9 @@
             position: absolute;
             border-radius: $radio-radius-size;
             top: 50%;
-            margin-top: -($radio-circle-size / 2);
+            margin-top: calc(0px - (#{$radio-circle-size} / 2));
             left: 50%;
-            margin-left: -($radio-circle-size / 2);
+            margin-left: calc(0px - (#{$radio-circle-size} / 2));
             background: $color-white;
             content: '';
             transition: all $motion-duration-immediately $motion-linear;
