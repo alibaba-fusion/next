@@ -6,6 +6,7 @@ const transform = require('./transform');
 const generateScssEntry = require('./generate-scss-entry');
 const exportApiSchema = require('./export-api-schema');
 const generateApi = require('./generate-api');
+const cssVarTempFile = require('./css-var-temp-file');
 
 const { logger } = require('../utils');
 
@@ -17,6 +18,12 @@ function run() {
 
     logger.info('> generate scss entry...');
     generateScssEntry();
+
+    logger.info('> add scss-var-to-css-var.scss & css-var-def-default.scss...');
+    cssVarTempFile();
+
+    logger.info('> [TODO]generate css-var files (style2.js / varaible.css / index.css )...');
+    // todo...
 
     logger.info('> generate api...');
     generateApi();
