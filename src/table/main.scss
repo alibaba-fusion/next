@@ -174,7 +174,7 @@
         text-align: center;
     }
     &-expanded-row {
-        td {
+        > td {
             border-width: 0;
             &:first-child {
                 border-left-width: 1px;
