@@ -27,18 +27,19 @@ class Gateway extends Component {
         super(props);
 
         this.state = {
-            containerNode: null,
-        };
-    }
-
-    static getDerivedStateFromProps(nextProps) {
-        return {
-            containerNode: getContainerNode(nextProps),
+            containerNode: getContainerNode(props),
         };
     }
 
     componentDidMount() {
-        this.forceUpdate();
+        const node = getContainerNode(this.props);
+
+        if (this.state.containerNode !== node) {
+            /* eslint-disable react/no-did-mount-set-state */
+            this.setState({
+                containerNode: node,
+            });
+        }
     }
 
     getChildNode() {
@@ -55,7 +56,6 @@ class Gateway extends Component {
 
     render() {
         const { containerNode } = this.state;
-
         if (!containerNode) {
             return null;
         }
@@ -67,9 +67,7 @@ class Gateway extends Component {
         }
 
         if (typeof child.ref === 'string') {
-            throw new Error(
-                'Can not set ref by string in Gateway, use function instead.'
-            );
+            throw new Error('Can not set ref by string in Gateway, use function instead.');
         }
         child = React.cloneElement(child, {
             ref: makeChain(this.saveChildRef, child.ref),
