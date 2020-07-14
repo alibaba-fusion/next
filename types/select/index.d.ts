@@ -2,9 +2,14 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+import { InputProps } from '../input';
+
+interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
     defaultValue?: any;
     onChange?: any;
+    onBlur?: any,
+    onFocus?: any,
+    onKeyDown?: any,
 }
 
 export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
