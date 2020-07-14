@@ -185,6 +185,28 @@ describe('src/object.js', function() {
         });
     });
 
+    describe('#isClassComponent', function() {
+        it('is isClassComponent', function() {
+
+        });
+
+        it('not isClassComponent', function() {
+            const frag = React.Fragment;
+            assert(!object.isClassComponent(frag));
+
+            const frag2 = (<React.Fragment>
+                <div>abc</div>
+            </React.Fragment>);
+            assert(!object.isClassComponent(frag2));
+
+            const frag3 = () => {};
+            assert(!object.isClassComponent(frag3));
+
+            const frag4 = undefined;
+            assert(!object.isClassComponent(frag4));
+        });
+    });
+
     describe('#isNil', function () {
         it(
             'should returns `true` if passing `null` or `undefined`',
