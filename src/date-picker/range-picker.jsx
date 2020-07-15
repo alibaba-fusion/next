@@ -45,10 +45,7 @@ function getFormatValues(values, format) {
     if (!Array.isArray(values)) {
         return [null, null];
     }
-    return [
-        formatDateValue(values[0], format),
-        formatDateValue(values[1], format),
-    ];
+    return [formatDateValue(values[0], format), formatDateValue(values[1], format)];
 }
 
 /**
@@ -223,10 +220,7 @@ class RangePicker extends Component {
         name: PropTypes.string,
         popupComponent: PropTypes.elementType,
         popupContent: PropTypes.node,
-        placeholder: PropTypes.oneOfType([
-            PropTypes.arrayOf(PropTypes.string),
-            PropTypes.string,
-        ]),
+        placeholder: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
     };
 
     static defaultProps = {
@@ -251,11 +245,7 @@ class RangePicker extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(
-            props.format,
-            props.showTime,
-            props.type
-        );
+        const { format, timeFormat, dateTimeFormat } = getDateTimeFormat(props.format, props.showTime, props.type);
 
         const val = props.value || props.defaultValue;
         const values = getFormatValues(val, dateTimeFormat);
@@ -274,30 +264,19 @@ class RangePicker extends Component {
             format,
             timeFormat,
             dateTimeFormat,
-            inputAsString:
-                val &&
-                (typeof val[0] === 'string' || typeof val[1] === 'string'),
+            inputAsString: val && (typeof val[0] === 'string' || typeof val[1] === 'string'),
         };
     }
     static getDerivedStateFromProps(props) {
-        const formatStates = getDateTimeFormat(
-            props.format,
-            props.showTime,
-            props.type
-        );
+        const formatStates = getDateTimeFormat(props.format, props.showTime, props.type);
         const states = {};
 
         if ('value' in props) {
-            const values = getFormatValues(
-                props.value,
-                formatStates.dateTimeFormat
-            );
+            const values = getFormatValues(props.value, formatStates.dateTimeFormat);
             states.startValue = values[0];
             states.endValue = values[1];
             states.inputAsString =
-                props.value &&
-                (typeof props.value[0] === 'string' ||
-                    typeof props.value[1] === 'string');
+                props.value && (typeof props.value[0] === 'string' || typeof props.value[1] === 'string');
         }
 
         if ('visible' in props) {
@@ -340,10 +319,7 @@ class RangePicker extends Component {
         let newValue = value;
         switch (active || prevActiveDateInput) {
             case 'startValue': {
-                if (
-                    !prevEndValue ||
-                    value.valueOf() <= prevEndValue.valueOf()
-                ) {
+                if (!prevEndValue || value.valueOf() <= prevEndValue.valueOf()) {
                     newState.activeDateInput = 'endValue';
                 }
 
@@ -352,9 +328,7 @@ class RangePicker extends Component {
                         // 第一次选择，如果设置了时间默认值，则使用该默认时间
                         if (showTime.defaultValue) {
                             const defaultTimeValue = formatDateValue(
-                                Array.isArray(showTime.defaultValue)
-                                    ? showTime.defaultValue[0]
-                                    : showTime.defaultValue,
+                                Array.isArray(showTime.defaultValue) ? showTime.defaultValue[0] : showTime.defaultValue,
                                 timeFormat
                             );
                             newValue = resetValueTime(value, defaultTimeValue);
@@ -370,15 +344,10 @@ class RangePicker extends Component {
                 // 如果起始日期大于结束日期
                 if (prevEndValue && value.valueOf() > prevEndValue.valueOf()) {
                     // 将结束日期设置为起始日期 如果需要的话保留时间
-                    newState.endValue = resetTime
-                        ? newValue
-                        : resetValueTime(value, prevEndValue);
+                    newState.endValue = resetTime ? newValue : resetValueTime(value, prevEndValue);
 
                     // 如果起始日期还是大于结束日期则清空结束日期
-                    if (
-                        newState.startValue.valueOf() >
-                        newState.endValue.valueOf()
-                    ) {
+                    if (newState.startValue.valueOf() > newState.endValue.valueOf()) {
                         newState.endValue = null;
                     }
                     newState.activeDateInput = 'endValue';
@@ -397,8 +366,7 @@ class RangePicker extends Component {
                         if (showTime.defaultValue) {
                             const defaultTimeValue = formatDateValue(
                                 Array.isArray(showTime.defaultValue)
-                                    ? showTime.defaultValue[1] ||
-                                          showTime.defaultValue[0]
+                                    ? showTime.defaultValue[1] || showTime.defaultValue[0]
                                     : showTime.defaultValue,
                                 timeFormat
                             );
@@ -413,32 +381,20 @@ class RangePicker extends Component {
                 newState.endValue = newValue;
 
                 // 选择了一个比开始日期更小的结束日期，此时表示用户重新选择了
-                if (
-                    prevStartValue &&
-                    value.valueOf() <= prevStartValue.valueOf()
-                ) {
-                    newState.startValue = resetTime
-                        ? value
-                        : resetValueTime(value, prevStartValue);
-                    newState.endValue = resetTime
-                        ? value
-                        : resetValueTime(value, prevEndValue);
+                if (prevStartValue && value.valueOf() <= prevStartValue.valueOf()) {
+                    newState.startValue = resetTime ? value : resetValueTime(value, prevStartValue);
+                    newState.endValue = resetTime ? value : resetValueTime(value, prevEndValue);
 
                     // 如果结束日期不大于起始日期则清空结束日期
-                    if (
-                        newState.endValue.valueOf() <
-                        newState.startValue.valueOf()
-                    ) {
+                    if (newState.endValue.valueOf() < newState.startValue.valueOf()) {
                         newState.endValue = null;
                     }
                 }
                 break;
         }
 
-        const newStartValue =
-            'startValue' in newState ? newState.startValue : prevStartValue;
-        const newEndValue =
-            'endValue' in newState ? newState.endValue : prevEndValue;
+        const newStartValue = 'startValue' in newState ? newState.startValue : prevStartValue;
+        const newEndValue = 'endValue' in newState ? newState.endValue : prevEndValue;
 
         // 受控状态选择不更新值
         if ('value' in this.props) {
@@ -499,9 +455,7 @@ class RangePicker extends Component {
 
             if (parsed.isValid() && !disabledDate(parsed, 'date')) {
                 const valueName = activeDateInput;
-                const newValue = resetTime
-                    ? parsed
-                    : resetValueTime(parsed, this.state[activeDateInput]);
+                const newValue = resetTime ? parsed : resetValueTime(parsed, this.state[activeDateInput]);
 
                 this.handleChange(valueName, newValue);
             }
@@ -620,13 +574,8 @@ class RangePicker extends Component {
         const { activeDateInput, timeFormat } = this.state;
         const stateName = mapInputStateName(activeDateInput);
         const timeInputStr = this.state[stateName];
-        const {
-            disabledMinutes,
-            disabledSeconds,
-            hourStep = 1,
-            minuteStep = 1,
-            secondStep = 1,
-        } = typeof showTime === 'object' ? showTime : {};
+        const { disabledMinutes, disabledSeconds, hourStep = 1, minuteStep = 1, secondStep = 1 } =
+            typeof showTime === 'object' ? showTime : {};
         let unit = 'second';
 
         if (disabledSeconds) {
@@ -638,9 +587,7 @@ class RangePicker extends Component {
             {
                 format: timeFormat,
                 timeInputStr,
-                value: this.state[
-                    activeDateInput.indexOf('start') ? 'startValue' : 'endValue'
-                ],
+                value: this.state[activeDateInput.indexOf('start') ? 'startValue' : 'endValue'],
                 steps: {
                     hour: hourStep,
                     minute: minuteStep,
@@ -656,16 +603,10 @@ class RangePicker extends Component {
     };
 
     handleChange = (valueName, newValue) => {
-        const values = ['startValue', 'endValue'].map(name =>
-            valueName === name ? newValue : this.state[name]
-        );
+        const values = ['startValue', 'endValue'].map(name => (valueName === name ? newValue : this.state[name]));
 
         // 判断起始时间是否大于结束时间
-        if (
-            values[0] &&
-            values[1] &&
-            values[0].valueOf() > values[1].valueOf()
-        ) {
+        if (values[0] && values[1] && values[0].valueOf() > values[1].valueOf()) {
             return;
         }
 
@@ -692,26 +633,18 @@ class RangePicker extends Component {
         this.setState({
             panel,
             activeDateInput:
-                panel === PANEL.DATE
-                    ? !!startValue && !endValue
-                        ? 'endValue'
-                        : 'startValue'
-                    : 'startTime',
+                panel === PANEL.DATE ? (!!startValue && !endValue ? 'endValue' : 'startValue') : 'startTime',
         });
     };
 
     onOk = value => {
         this.onVisibleChange(false, 'okBtnClick');
-        this.onValueChange(
-            value || [this.state.startValue, this.state.endValue],
-            'onOk'
-        );
+        this.onValueChange(value || [this.state.startValue, this.state.endValue], 'onOk');
     };
 
     // 如果用户没有给定时间禁用逻辑，则给默认到禁用逻辑
     getDisabledTime = ({ startValue, endValue }) => {
-        const { disabledHours, disabledMinutes, disabledSeconds } =
-            this.props.showTime || {};
+        const { disabledHours, disabledMinutes, disabledSeconds } = this.props.showTime || {};
 
         let disabledTime = {};
 
@@ -728,11 +661,7 @@ class RangePicker extends Component {
             const newDisabledMinutes = isFunction(disabledMinutes)
                 ? disabledMinutes
                 : index => {
-                      if (
-                          isSameDay &&
-                          startValue.hour() === endValue.hour() &&
-                          index < startValue.minute()
-                      ) {
+                      if (isSameDay && startValue.hour() === endValue.hour() && index < startValue.minute()) {
                           return true;
                       }
                   };
@@ -869,8 +798,7 @@ class RangePicker extends Component {
         const startDateInputValue =
             state.inputing === 'startValue'
                 ? state.startDateInputStr
-                : (state.startValue && state.startValue.format(state.format)) ||
-                  '';
+                : (state.startValue && state.startValue.format(state.format)) || '';
         const endDateInputValue =
             state.inputing === 'endValue'
                 ? state.endDateInputStr
@@ -938,10 +866,10 @@ class RangePicker extends Component {
                         shape="panel"
                         modes={type === 'month' ? ['month', 'year'] : ['year']}
                         {...{ ...shareCalendarProps }}
-                        disabledDate={date => {
+                        disabledDate={(date, ...args) => {
                             return (
-                                state.endValue &&
-                                date.isAfter(state.endValue, type)
+                                (state.endValue && date.isAfter(state.endValue, type)) ||
+                                (disabledDate && disabledDate(date, ...args))
                             );
                         }}
                         onSelect={value => {
@@ -954,10 +882,7 @@ class RangePicker extends Component {
                             if (type === 'year') {
                                 selectedValue.month(0);
                             }
-                            this.onSelectCalendarPanel(
-                                selectedValue,
-                                'startValue'
-                            );
+                            this.onSelectCalendarPanel(selectedValue, 'startValue');
                         }}
                         value={state.startValue}
                     />
@@ -965,10 +890,10 @@ class RangePicker extends Component {
                         shape="panel"
                         modes={type === 'month' ? ['month', 'year'] : ['year']}
                         {...shareCalendarProps}
-                        disabledDate={date => {
+                        disabledDate={(date, ...args) => {
                             return (
-                                state.startValue &&
-                                date.isBefore(state.startValue, type)
+                                (state.startValue && date.isBefore(state.startValue, type)) ||
+                                (disabledDate && disabledDate(date, ...args))
                             );
                         }}
                         onSelect={value => {
@@ -982,10 +907,7 @@ class RangePicker extends Component {
                             } else {
                                 selectedValue.date(selectedValue.daysInMonth());
                             }
-                            this.onSelectCalendarPanel(
-                                selectedValue,
-                                'endValue'
-                            );
+                            this.onSelectCalendarPanel(selectedValue, 'endValue');
                         }}
                         value={state.endValue}
                     />
@@ -1001,24 +923,14 @@ class RangePicker extends Component {
             const startTimeInputValue =
                 state.inputing === 'startTime'
                     ? state.startTimeInputStr
-                    : (state.startValue &&
-                          state.startValue.format(state.timeFormat)) ||
-                      '';
+                    : (state.startValue && state.startValue.format(state.timeFormat)) || '';
             const endTimeInputValue =
                 state.inputing === 'endTime'
                     ? state.endTimeInputStr
-                    : (state.endValue &&
-                          state.endValue.format(state.timeFormat)) ||
-                      '';
+                    : (state.endValue && state.endValue.format(state.timeFormat)) || '';
 
-            startTriggerValue =
-                (state.startValue &&
-                    state.startValue.format(state.dateTimeFormat)) ||
-                '';
-            endTriggerValue =
-                (state.endValue &&
-                    state.endValue.format(state.dateTimeFormat)) ||
-                '';
+            startTriggerValue = (state.startValue && state.startValue.format(state.dateTimeFormat)) || '';
+            endTriggerValue = (state.endValue && state.endValue.format(state.dateTimeFormat)) || '';
 
             const sharedTimeInputProps = {
                 size,
@@ -1113,9 +1025,7 @@ class RangePicker extends Component {
                     },
                 }))}
                 disabledOk={
-                    !state.startValue ||
-                    !state.endValue ||
-                    state.startValue.valueOf() > state.endValue.valueOf()
+                    !state.startValue || !state.endValue || state.startValue.valueOf() > state.endValue.valueOf()
                 }
                 locale={locale}
                 panel={state.panel}
@@ -1151,9 +1061,7 @@ class RangePicker extends Component {
                     className={`${prefix}range-picker-trigger-input`}
                     onFocus={() => this.onFocusDateInput('startValue')}
                 />
-                <span className={`${prefix}range-picker-trigger-separator`}>
-                    -
-                </span>
+                <span className={`${prefix}range-picker-trigger-separator`}>-</span>
                 <Input
                     {...sharedInputProps}
                     readOnly
@@ -1165,12 +1073,7 @@ class RangePicker extends Component {
                     className={`${prefix}range-picker-trigger-input`}
                     onFocus={() => this.onFocusDateInput('endValue')}
                     hasClear={allowClear}
-                    hint={
-                        <Icon
-                            type="calendar"
-                            className={`${prefix}date-picker-symbol-calendar-icon`}
-                        />
-                    }
+                    hint={<Icon type="calendar" className={`${prefix}date-picker-symbol-calendar-icon`} />}
                 />
             </div>
         );
@@ -1178,10 +1081,7 @@ class RangePicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div
-                {...obj.pickOthers(RangePicker.propTypes, others)}
-                className={classNames}
-            >
+            <div {...obj.pickOthers(RangePicker.propTypes, others)} className={classNames}>
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
@@ -1200,19 +1100,11 @@ class RangePicker extends Component {
                         popupContent
                     ) : (
                         <div dir={others.dir} className={panelBodyClassName}>
-                            <div
-                                className={`${prefix}range-picker-panel-header`}
-                            >
-                                <div
-                                    className={`${prefix}range-picker-panel-input`}
-                                >
+                            <div className={`${prefix}range-picker-panel-header`}>
+                                <div className={`${prefix}range-picker-panel-input`}>
                                     {startDateInput}
                                     {startTimeInput}
-                                    <span
-                                        className={`${prefix}range-picker-panel-input-separator`}
-                                    >
-                                        -
-                                    </span>
+                                    <span className={`${prefix}range-picker-panel-input-separator`}>-</span>
                                     {endDateInput}
                                     {endTimeInput}
                                 </div>
