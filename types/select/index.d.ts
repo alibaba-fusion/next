@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { MenuProps } from '../menu'
+
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
@@ -268,6 +270,12 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      * 自定义弹层的内容
      */
     popupContent?: React.ReactNode;
+
+
+    /**
+     * 添加到菜单上的属性		
+     */
+    menuProps?: MenuProps;
 
     /**
      * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
