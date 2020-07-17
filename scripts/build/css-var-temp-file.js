@@ -1,9 +1,9 @@
 const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
-
 const cwd = process.cwd();
 const { logger } = require('../utils');
+const { scss2css, compileScss } = require('./scss2css');
 
 module.exports = function() {
     const variablesPaths = glob.sync(path.join(cwd, 'src', '*', 'scss/variable.scss'));
@@ -11,20 +11,24 @@ module.exports = function() {
         const varsContent = fs.readFileSync(varsPath, 'utf8');
         let scss2cssContent = '';
         let cssvarDefaultContent = '';
+        const componentName = path.basename(path.dirname(path.dirname(varsPath)));
 
         varsContent.replace(/\n(\$[\d\s\S-]*?): ([\s\S\d-]*?);/g, (all, s1, s2) => {
-            // all: $breadcrumb-text-ellipsis-color: $color-text1-3 !default;
-            // s1: $breadcrumb-text-ellipsis-color
-            // s2: $color-text1-3
-            s2 = s2.replace('!default', '').trim();
-            const cssvar = s2.match(/^\$/) ? `var(${s2.replace('$', '--')})` : s2.replace('#{$css-prefix}', 'next-');
+            if (componentName === 'grid' && s1 === '$breakpoints') {
+                return;
+            }
 
-            scss2cssContent += `${s1}: var(${s1.replace('$', '--')});\n`;
-            cssvarDefaultContent += `    ${s1.replace('$', '--')}: ${cssvar};\n`;
+            if (s2.match(/\$css-prefix/)) {
+                // 保留原状
+                const result = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
+                scss2cssContent += `${s1}: ${result};\n`
+            }
+
+            scss2cssContent += `${s1}: var(${s1.replace('$', '--')});\n`
+            cssvarDefaultContent += scss2css(all, s1, s2, path.resolve(varsPath, '../../'), 'main.scss');
         });
 
         cssvarDefaultContent = `:root {\n${cssvarDefaultContent}}`;
-        const componentName = path.basename(path.dirname(path.dirname(varsPath)));
 
         fs.writeFileSync(
             path.join(cwd, 'lib', componentName, 'scss/scss-var-to-css-var.scss'),
