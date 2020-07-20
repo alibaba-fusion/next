@@ -13,25 +13,30 @@ const path = require('path');
 const sass = require('node-sass');
 const { logger } = require('../utils');
 
+// basePath 例如 path.join(cwd, 'lib/core/')
+// entry 例如 index.scss
 const compileScss = function(all, s1, basePath, entry) {
     let cssval = '';
     try {
-        const content = fs.readFileSync(path.join(basePath, entry));
-        const result = sass.renderSync({
-            includePaths: [basePath],
-            outputStyle: "compressed",
-            data: `${content}\n${all} \n.theScssCompileResultIwant{color:${s1};}`
-        });
 
-        const output = result.css.toString()
+        const content = fs.readFileSync(path.join(basePath, entry), 'utf-8');
+
+        const data = `${content}\n${all}.theScssCompileResultIwant{color:${s1};}`;
+        const result = sass.renderSync({
+            file: path.join(basePath, entry),
+            includePaths: [path.join(basePath, entry)],
+            outputStyle: "compressed",
+            data,
+        });
+        const output = result.css.toString();
+
         output.replace(/.*theScssCompileResultIwant{color:(.*)}/ig, (_, compileValue) => {
             cssval = compileValue;
-
             const temp = `${s1.replace('$', '--')}: ${compileValue};\n`
             console.log(`${all}\n${temp}`);
         });
     } catch (error) {
-        logger.error('[!]Error in ', error);
+        logger.error('[!]Error in :', error);
     }
 
     return cssval;
@@ -53,7 +58,11 @@ const scss2css = function (all, s1, s2, basePath, entry) {
         const nvs = vs.map(v => {
             return v.match(/[$]/ig) ? `var(${v.replace('$', '--')})` : v;
         });
-        newcContent = `    ${s1.replace('$', '--')}: ${nvs.join(' ')};\n`;
+        if (s2.match(/\*/ig)) {
+            newcContent = `    ${s1.replace('$', '--')}: calc(${nvs.join(' ')});\n`;
+        } else {
+            newcContent = `    ${s1.replace('$', '--')}: ${nvs.join(' ')};\n`;
+        }
     } else if (s2.match(/[$]/ig)) {
         cssvar = `var(${s2.replace('$', '--')})`;
         newcContent = `    ${s1.replace('$', '--')}: ${cssvar};\n`;

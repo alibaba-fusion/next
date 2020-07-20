@@ -1,12 +1,16 @@
 const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
+const sass = require('node-sass');
+const postcss = require('postcss');
+const postcssCalc = require('postcss-calc');
+
 const cwd = process.cwd();
 const { logger } = require('../utils');
 const { scss2css, compileScss } = require('./scss2css');
 
 module.exports = function() {
-    debugger
+    // generate temp files for [other component]
     const variablesPaths = glob.sync(path.join(cwd, 'src', '*', 'scss/variable.scss'));
     variablesPaths.forEach(varsPath => {
         const varsContent = fs.readFileSync(varsPath, 'utf8');
@@ -20,7 +24,6 @@ module.exports = function() {
             }
 
             if (s2.match(/\$css-prefix/)) {
-                // 保留原状
                 const result = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
                 scss2cssContent += `${s1}: ${result};\n`
             } else {
@@ -30,7 +33,7 @@ module.exports = function() {
             cssvarDefaultContent += scss2css(all, s1, s2, path.resolve(varsPath, '../../'), 'main.scss');
         });
 
-        cssvarDefaultContent = `:root {\n${cssvarDefaultContent}}`;
+        cssvarDefaultContent = `:root {\n${cssvarDefaultContent}}\n`;
 
         fs.writeFileSync(
             path.join(cwd, 'lib', componentName, 'scss/scss-var-to-css-var.scss'),
@@ -51,6 +54,5 @@ module.exports = function() {
         );
     });
 
-
-    logger.success('Generate scss-var-to-css-var.scss & css-var-def-default.scss for lib/ es/ successfully!');
+    logger.success('[Component] Generate scss-var-to-css-var.scss & css-var-def-default.scss for lib/ es/ successfully!');
 };

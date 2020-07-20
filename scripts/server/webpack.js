@@ -200,7 +200,7 @@ function getEntry(entryPaths) {
             // import it from 'src/core/index-noreset.scss'
             // will produce many duplicates,
             // making dev app slow
-            path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
+            // path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
             entryPath,
         ];
         return ret;

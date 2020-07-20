@@ -86,49 +86,49 @@ h6 a {
 }
 
 h1 {
-    margin-bottom: calc($font-size-headline * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-headline} * #{$typo-margin-bottom});
     font-size: $font-size-headline;
     font-weight: $font-weight-medium;
     line-height: 36px;
 }
 
 h2 {
-    margin-bottom: calc($font-size-title * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-title} * #{$typo-margin-bottom});
     font-size: $font-size-title;
     font-weight: $font-weight-medium;
     line-height: 30px;
 }
 
 h3 {
-    margin-bottom: calc($font-size-subhead * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-subhead} * #{$typo-margin-bottom});
     font-size: $font-size-subhead;
     font-weight: $font-weight-2;
     line-height: 24px;
 }
 
 h4 {
-    margin-bottom: calc($font-size-subhead * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-subhead} * #{$typo-margin-bottom});
     font-size: $font-size-subhead;
     font-weight: $font-weight-2;
     line-height: 24px;
 }
 
 h5 {
-    margin-bottom: calc($font-size-body-1 * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-body-1} * #{$typo-margin-bottom});
     font-size: $font-size-body-2;
     font-weight: $font-weight-2;
     line-height: 24px;
 }
 
 h6 {
-    margin-bottom: calc($font-size-body-2 * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-body-2} * #{$typo-margin-bottom});
     font-size: $font-size-body-1;
     font-weight: $font-weight-medium;
     line-height: 20px;
 }
 
 p {
-    margin-bottom: calc($font-size-body-1 * $typo-margin-bottom);
+    margin-bottom: calc(#{$font-size-body-1} * #{$typo-margin-bottom});
     font-size: $font-size-body-1;
     font-weight: $font-weight-2;
     line-height: 20px;
