@@ -17,11 +17,11 @@ const { logger } = require('../utils');
 function run() {
     const options = initOptions();
 
-    logger.info('> transform es6 to es5...');
-    transform();
+    // logger.info('> transform es6 to es5...');
+    // transform();
 
-    logger.info('> generate scss entry...');
-    generateScssEntry();
+    // logger.info('> generate scss entry...');
+    // generateScssEntry();
 
     logger.info('> [Core] empty and generate src/core-temp...');
     fs.emptyDirSync(path.join(cwd, 'src/core-temp'));
