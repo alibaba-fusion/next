@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
@@ -84,7 +85,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 导航条的自定义样式
      */
-    navStyle?: {};
+    navStyle?: React.CSSProperties;
 
     /**
      * 导航条的自定义样式类
@@ -94,7 +95,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 内容区容器的自定义样式
      */
-    contentStyle?: {};
+    contentStyle?: React.CSSProperties;
 
     /**
      * 内容区容器的自定义样式类
@@ -134,7 +135,7 @@ export interface TabProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层属性透传, 只有当 excessMode 为 dropdown 时生效
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 自定义 icon

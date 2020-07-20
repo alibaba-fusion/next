@@ -2,10 +2,18 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
+import { ButtonProps } from '../button';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
+}
+
+type item = {
+    value?: string | number;
+    label?: React.ReactNode;
+    [propName: string]: any;
 }
 
 export interface SearchProps extends HTMLAttributesWeak, CommonProps {
@@ -82,17 +90,17 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层的 className
      */
-    popupClassName?: any;
+    popupClassName?: string;
 
     /**
      * 弹层的内联样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 添加到弹层上的属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 自定义渲染的的下拉框
@@ -127,12 +135,12 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: {}) => React.ReactNode;
+    itemRender?: (item: item) => React.ReactNode;
 
     /**
      * 输入关键字时的回掉
      */
-    onChange?: (value: {}) => void;
+    onChange?: (value: string) => void;
 
     /**
      * 填充到选择框里的值的 key，默认是 value
@@ -197,7 +205,7 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 按钮的额外属性
      */
-    buttonProps?: {};
+    buttonProps?: ButtonProps;
 
     /**
      * 是否显示搜索按钮

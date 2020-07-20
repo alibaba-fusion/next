@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -216,7 +217,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义 props
      */
-    popupProps?: any | (() => void);
+    popupProps?: PopupProps | (() => void);
 
     /**
      * 弹出子菜单自定义 className

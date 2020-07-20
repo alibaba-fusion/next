@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import locale from '../locale/default';
 
 export interface ConfigProviderProps {
     /**
@@ -11,7 +12,7 @@ export interface ConfigProviderProps {
     /**
      * 国际化文案对象，属性为组件的 displayName
      */
-    locale?: {};
+    locale?: locale;
 
     /**
      * 是否开启错误捕捉 errorBoundary
