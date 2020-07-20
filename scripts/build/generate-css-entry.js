@@ -10,7 +10,7 @@ const cwd = process.cwd();
 const { logger } = require('../utils');
 
 module.exports = function() {
-
+    debugger
     // generate core2
     const corePaths = glob.sync('lib/core/@(utility|style)/*.scss');
     corePaths.forEach(cPath => {

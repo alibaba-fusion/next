@@ -38,7 +38,7 @@ module.exports = function getWebpackConfig(options) {
         ...demoPaths,
         ...themePaths,
         ...adaptorPaths,
-    ]);
+    ], componentName);
     config.entry = entry;
 
     config.output = {
@@ -190,7 +190,7 @@ module.exports = function getWebpackConfig(options) {
     return config;
 };
 
-function getEntry(entryPaths) {
+function getEntry(entryPaths, componentName) {
     const entry = entryPaths.reduce((ret, entryPath) => {
         const name = path.basename(entryPath, path.extname(entryPath));
         const pathWithoutExt = path.join(path.dirname(entryPath), name);
@@ -200,7 +200,9 @@ function getEntry(entryPaths) {
             // import it from 'src/core/index-noreset.scss'
             // will produce many duplicates,
             // making dev app slow
-            path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
+            // path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
+            path.join(process.cwd(), 'lib', componentName, 'scss', 'css-var-def-default.scss'),
+            path.join(process.cwd(), 'lib', componentName, 'main.scss'),
             entryPath,
         ];
         return ret;
