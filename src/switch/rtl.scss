@@ -23,7 +23,7 @@
 
     &-on[dir="rtl"] {
         > .#{$css-prefix}switch-children {
-            right: $switch-text-on-left + $switch-border-width-container * 2;
+            right: calc(#{$switch-text-on-left} + #{$switch-border-width-container * 2});
             left: auto;
             color: $switch-normal-on-color-font;
         }
@@ -51,14 +51,14 @@
             box-shadow: $switch-rtl-on-shadow;
         }
         > .#{$css-prefix}switch-children {
-            left: $switch-text-off-right + $switch-border-width-container * 2;
+            left: calc(#{$switch-text-off-right} + #{$switch-border-width-container * 2});
             right: auto;
         }
     }
 
     &-off#{&}-small[dir="rtl"] {
         > .#{$css-prefix}switch-children {
-            left: $switch-size-s-text-off-right + $switch-border-width-container;
+            left: calc(#{$switch-size-s-text-off-right} + #{$switch-border-width-container});
             right: auto;
         }
     }

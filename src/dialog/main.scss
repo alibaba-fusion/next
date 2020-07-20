@@ -128,7 +128,7 @@
     }
 
     & &-message.#{$css-prefix}message {
-        min-width: $s-25 * 3;
+        min-width: calc(#{$s-25} * 3);
         padding: 0;
     }
 }
