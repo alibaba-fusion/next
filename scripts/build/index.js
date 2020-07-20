@@ -14,14 +14,14 @@ const { logger } = require('../utils');
 function run() {
     const options = initOptions();
 
-    // logger.info('> transform es6 to es5...');
-    // transform();
+    logger.info('> transform es6 to es5...');
+    transform();
 
-    // logger.info('> generate scss entry...');
-    // generateScssEntry();
+    logger.info('> generate scss entry...');
+    generateScssEntry();
 
-    // logger.info('> add scss-var-to-css-var.scss & css-var-def-default.scss...');
-    // cssVarTempFile();
+    logger.info('> add scss-var-to-css-var.scss & css-var-def-default.scss...');
+    cssVarTempFile();
 
     // something to check
     logger.info('> [Going on]generate css-var files (style2.js / varaible.css / index.css )...');

@@ -22,9 +22,10 @@ module.exports = function() {
                 // 保留原状
                 const result = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
                 scss2cssContent += `${s1}: ${result};\n`
+            } else {
+                scss2cssContent += `${s1}: var(${s1.replace('$', '--')});\n`;
             }
 
-            scss2cssContent += `${s1}: var(${s1.replace('$', '--')});\n`
             cssvarDefaultContent += scss2css(all, s1, s2, path.resolve(varsPath, '../../'), 'main.scss');
         });
 

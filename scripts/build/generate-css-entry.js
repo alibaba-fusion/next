@@ -1,6 +1,9 @@
 const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
+const sass = require('node-sass');
+const postcss = require('postcss');
+const postcssCalc = require('postcss-calc');
 
 const { scss2css } = require('./scss2css');
 const cwd = process.cwd();
@@ -29,6 +32,7 @@ module.exports = function() {
 
     // generate [other components] css variables
     // const styleJsPaths = glob.sync(path.join(cwd, 'lib', '*', 'style.js'));
+    // const styleJsPaths = glob.sync(path.join(cwd, 'lib', 'badge', 'style.js'));
     // styleJsPaths.forEach(styleJsPath => {
     //     const styleJSContent = fs.readFileSync(styleJsPath, 'utf8');
     //     const libJsContent = styleJSContent.replace('main.scss', 'index.css');
@@ -55,7 +59,7 @@ module.exports = function() {
 
     //     // compile index.css
     //     const mainScssContent = fs.readFileSync(path.join(basePath, 'main.scss'), 'utf8');
-    //     const mainScss2 = mainScssContent.replace(/\/core\/index-noreset(\.scss)?/, '/core2/index-noreset.css').replace(/scss\/variable(\.scss)?/, 'variable.css');
+    //     const mainScss2 = mainScssContent.replace(/\/core\/index-noreset(\.scss)?/, '/core2/index-noreset.css').replace(/scss\/variable(\.scss)?/, 'scss/scss-var-to-css-var.scss');
 
     //     console.log(mainScss2)
     //     const result = sass.renderSync({
