@@ -47,6 +47,7 @@
     "report-coverage": "codecov",
     "dev": "node ./scripts/server/index.js",
     "build": "node ./scripts/build/index.js",
+    "db-build": "node --inspect-brk=9229 ./scripts/build/index.js",
     "check": "node ./scripts/check/index.js",
     "create": "node ./scripts/create-new.js",
     "check-sass": "node ./scripts/check/sass.js",

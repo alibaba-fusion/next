@@ -6,6 +6,7 @@ const { logger } = require('../utils');
 const { scss2css, compileScss } = require('./scss2css');
 
 module.exports = function() {
+    debugger
     const variablesPaths = glob.sync(path.join(cwd, 'src', '*', 'scss/variable.scss'));
     variablesPaths.forEach(varsPath => {
         const varsContent = fs.readFileSync(varsPath, 'utf8');
