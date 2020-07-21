@@ -7,6 +7,7 @@ const postcssCalc = require('postcss-calc');
 
 const cwd = process.cwd();
 const { logger } = require('../utils');
+const lintCss = require('./lintcss');
 
 module.exports = function() {
     // generate [other components] css variables
@@ -48,8 +49,10 @@ module.exports = function() {
                 path.join(esBasePath, 'variable.css'),
                 esCssVarsContent
             );
+            lintCss(path.join(libBasePath, 'variable.css'), libCssVarsContent);
+
         } catch (error) {
-            logger.info(`It doesn't have variable.scss: ${componentName}`)
+            logger.info(`It doesn't have variable.scss: ${componentName}`);
         }
 
         // compile index.css
@@ -93,6 +96,8 @@ module.exports = function() {
                     path.join(esBasePath, 'index.css'),
                     indexContent
                 );
+            lintCss(path.join(esBasePath, 'index.css'), indexContent);
+
             } catch (error) {
                 logger.error(`[!!]Error in ${componentName}:`)
             }
