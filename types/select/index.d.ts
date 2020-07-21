@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
+import { MenuProps } from '../menu';
 import { InputProps } from '../input';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
@@ -10,6 +12,12 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputPro
     onBlur?: any,
     onFocus?: any,
     onKeyDown?: any,
+}
+
+type item = {
+    value?: string | number;
+    label?: React.ReactNode;
+    [propName: string]: any;
 }
 
 export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
@@ -86,17 +94,17 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层的 className
      */
-    popupClassName?: any;
+    popupClassName?: string;
 
     /**
      * 弹层的内联样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 添加到弹层上的属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 自定义弹层的内容
@@ -131,7 +139,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: {}) => React.ReactNode;
+    itemRender?: (item: item) => React.ReactNode;
 
     /**
      * Select发生改变时触发的回调
@@ -252,17 +260,17 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层的 className
      */
-    popupClassName?: any;
+    popupClassName?: string;
 
     /**
      * 弹层的内联样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 添加到弹层上的属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 是否跟随滚动
@@ -273,6 +281,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      * 自定义弹层的内容
      */
     popupContent?: React.ReactNode;
+    menuProps?: MenuProps;
 
     /**
      * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
@@ -302,7 +311,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: {}, searchValue: string) => React.ReactNode;
+    itemRender?: (item: item, searchValue: string) => React.ReactNode;
 
     /**
      * 选择器模式

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -152,7 +153,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 下拉框自定义样式对象
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 下拉框样式自定义类名
@@ -170,7 +171,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 透传到 Popup 的属性对象
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 }
 
 export default class TreeSelect extends React.Component<TreeSelectProps, any> {}

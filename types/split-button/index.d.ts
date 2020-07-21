@@ -3,6 +3,8 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { ButtonProps } from '../button';
+import { PopupProps } from '../overlay';
+import { MenuProps } from '../menu';
 
 interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
@@ -97,7 +99,7 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -107,17 +109,17 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 透传给弹层的属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 透传给 Menu 的属性
      */
-    menuProps?: {};
+    menuProps?: MenuProps;
 
     /**
      * 透传给 左侧按钮 的属性
      */
-    leftButtonProps?: {};
+    leftButtonProps?: ButtonProps;
 }
 
 export default class SplitButton extends React.Component<

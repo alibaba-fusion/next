@@ -2,6 +2,7 @@
 import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -108,7 +109,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -118,7 +119,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
@@ -262,7 +263,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -272,7 +273,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
@@ -407,7 +408,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -417,7 +418,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
@@ -551,7 +552,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -561,7 +562,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层其他属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 输入框其他属性
