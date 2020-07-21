@@ -9,22 +9,24 @@ function lintCss(filename, css) {
             config: {
                 extends: 'stylelint-config-recommended',
                 rules: {
-                    "no-descending-specificity": null,
-                    "no-duplicate-selectors": null,
-                    "font-family-no-missing-generic-family-keyword": null
+                    'no-descending-specificity': null,
+                    'no-duplicate-selectors': null,
+                    'font-family-no-missing-generic-family-keyword': null,
                 },
             },
         })
         .then(function(resultObject) {
-            const output = JSON.parse(resultObject.output);
+            let output = JSON.parse(resultObject.output);
             if (output.length !== 1) {
                 throw new Error('unexpected');
             }
-            for (const warning of output[0].warnings) {
-                logger.warn(`[${warning.severity}] ${warning.text}. file: ${output[0].source}:${warning.line}`);
+            output = output[0];
+            if (output.parseErrors.length > 0) {
+                logger.error(`[parseErrors] file: ${output.source} ${JSON.stringify(output.parseErrors)}`);
             }
-
-            /* .. */
+            for (const warning of output.warnings) {
+                logger.warn(`[${warning.severity}] ${warning.text}. file: ${output.source}:${warning.line}`);
+            }
         });
 }
 
