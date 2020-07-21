@@ -96,7 +96,7 @@ module.exports = function() {
                     path.join(esBasePath, 'index.css'),
                     indexContent
                 );
-            lintCss(path.join(esBasePath, 'index.css'), indexContent);
+            lintCss(path.join(libBasePath, 'index.css'), indexContent);
 
             } catch (error) {
                 logger.error(`[!!]Error in ${componentName}:`)
