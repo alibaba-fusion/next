@@ -4,10 +4,14 @@ import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
 import { MenuProps } from '../menu';
+import { InputProps } from '../input';
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
     defaultValue?: any;
     onChange?: any;
+    onBlur?: any,
+    onFocus?: any,
+    onKeyDown?: any,
 }
 
 type item = {
