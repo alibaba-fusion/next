@@ -27,7 +27,7 @@ module.exports = function() {
         let cssvarDefaultContent = '';
 
         cContent.replace(/\n(\$[\d\s\S-]*?): ([\s\S\d-]*?);/g, (all, s1, s2) => {
-            if (s1.match(/\$css-prefix/)) {
+            if (s1.match(/\$css-prefix/) || s1.match(/\$color-white/)) {
                 // 保留原状
                 const result = compileScss(all, s1, path.join(cwd, 'src/core/'), 'index.scss');
                 scss2cssContent += `${s1}: ${result};\n`
