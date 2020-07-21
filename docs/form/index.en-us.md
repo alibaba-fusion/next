@@ -129,4 +129,4 @@ Form layout, validation, data submission operations used.
 
 ## Complex Form
 
-If your form scene is very complex, such as dynamic rendering, a large number of fields, complex data structures, complex linkage verification, you can consider using uform, uform has encapsulated all the fusion components, to ensure that you use it out of the box
+If your form scene is very complex, such as dynamic rendering, a large number of fields, complex data structures, complex linkage verification, you can consider using formily, formily has encapsulated all the fusion components, to ensure that you use it out of the box
