@@ -4,6 +4,7 @@ const glob = require('glob');
 const sass = require('node-sass');
 const postcss = require('postcss');
 const postcssCalc = require('postcss-calc');
+const cssvarFallback = require('postcss-custom-properties');
 
 const cwd = process.cwd();
 const { logger } = require('../utils');
@@ -27,30 +28,20 @@ module.exports = function() {
         const esJsContent = esStyleJSContent.replace('main.scss', 'index.css').replace('style.js', 'style2.js');
 
         // write style2.js
-        fs.outputFileSync(
-            path.join(libBasePath, 'style2.js'),
-            libJsContent
-        );
-        fs.outputFileSync(
-            path.join(libBasePath, 'style2.js'),
-            esJsContent
-        );
+        fs.outputFileSync(path.join(libBasePath, 'style2.js'), libJsContent);
+        fs.outputFileSync(path.join(libBasePath, 'style2.js'), esJsContent);
 
         // write varaible.css
         try {
-            const libCssVarsContent = fs.readFileSync(path.resolve(libBasePath, 'scss/css-var-def-default.scss'), 'utf8');
+            const libCssVarsContent = fs.readFileSync(
+                path.resolve(libBasePath, 'scss/css-var-def-default.scss'),
+                'utf8'
+            );
             const esCssVarsContent = fs.readFileSync(path.resolve(esBasePath, 'scss/css-var-def-default.scss'), 'utf8');
 
-            fs.outputFileSync(
-                path.join(libBasePath, 'variable.css'),
-                libCssVarsContent
-            );
-            fs.outputFileSync(
-                path.join(esBasePath, 'variable.css'),
-                esCssVarsContent
-            );
+            fs.outputFileSync(path.join(libBasePath, 'variable.css'), libCssVarsContent);
+            fs.outputFileSync(path.join(esBasePath, 'variable.css'), esCssVarsContent);
             lintCss(path.join(libBasePath, 'variable.css'), libCssVarsContent);
-
         } catch (error) {
             logger.info(`It doesn't have variable.scss: ${componentName}`);
         }
@@ -59,47 +50,43 @@ module.exports = function() {
         const mainScssContent = fs.readFileSync(path.join(srcBasePath, 'main.scss'), 'utf8');
         // 这里要把 main.scss 中，对core的引用换成core-temp、把对variable.scss的引用换成scss-var-to-css-var.scss
         const mainScss2 = mainScssContent
-            .replace(/\@import "..\/core\/index-noreset(\.scss)?";/ig, '@import "src/core-temp/index-noreset.scss";')
-            .replace(/scss\/variable(\.scss)?"/ig, `scss/scss-var-to-css-var.scss"`);
+            .replace(/\@import "..\/core\/index-noreset(\.scss)?";/gi, '@import "src/core-temp/index-noreset.scss";')
+            .replace(/scss\/variable(\.scss)?"/gi, `scss/scss-var-to-css-var.scss"`);
 
         if (!mainScss2) {
-            fs.outputFileSync(
-                path.join(libBasePath, 'index.css'),
-                ''
-            );
-            fs.outputFileSync(
-                path.join(esBasePath, 'index.css'),
-                ''
-            );
+            fs.outputFileSync(path.join(libBasePath, 'index.css'), '');
+            fs.outputFileSync(path.join(esBasePath, 'index.css'), '');
         } else {
             try {
                 const result = sass.renderSync({
-                    includePaths: [
-                        path.join(libBasePath),
-                    ],
+                    includePaths: [path.join(libBasePath)],
                     data: mainScss2,
                 });
 
                 const css = result.css.toString();
+
                 const output = postcss()
                     .use(postcssCalc())
-                    .process(css)
-                    .css
+                    .process(css).css;
 
                 const indexContent = output;
 
-                fs.outputFileSync(
-                    path.join(libBasePath, 'index.css'),
-                    indexContent
-                );
-                fs.outputFileSync(
-                    path.join(esBasePath, 'index.css'),
-                    indexContent
-                );
-            lintCss(path.join(libBasePath, 'index.css'), indexContent);
+                fs.outputFileSync(path.join(libBasePath, 'index.css'), indexContent);
+                fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
+                lintCss(path.join(libBasePath, 'index.css'), indexContent);
 
+                postcss()
+                    .use(cssvarFallback())
+                    // .use(postcssCalc())
+                    .process(css)
+                    .then(result => {
+                        const indexContent = result.css;
+                        fs.outputFileSync(path.join(libBasePath, 'index-with-fallback.css'), indexContent);
+                        fs.outputFileSync(path.join(esBasePath, 'index-with-fallback.css'), indexContent);
+                        // lintCss(path.join(libBasePath, 'index-with-fallback.css'), indexContent);
+                    });
             } catch (error) {
-                logger.error(`[!!]Error in ${componentName}:`)
+                logger.error(`[!!]Error in ${componentName}:`);
             }
         }
     });

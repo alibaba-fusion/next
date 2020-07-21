@@ -23,11 +23,12 @@ module.exports = function() {
                 return;
             }
 
+            const buildtimeResolvedValue = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
             if (s2.match(/\$css-prefix/)) {
-                const result = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
+                const result = buildtimeResolvedValue;
                 scss2cssContent += `${s1}: ${result};\n`
             } else {
-                scss2cssContent += `${s1}: var(${s1.replace('$', '--')});\n`;
+                scss2cssContent += `${s1}: var(${s1.replace('$', '--')}, ${buildtimeResolvedValue});\n`;
             }
 
             cssvarDefaultContent += scss2css(all, s1, s2, path.resolve(varsPath, '../../'), 'main.scss');
