@@ -31,12 +31,14 @@ module.exports = function() {
         let cssvarDefaultContent = '';
 
         cContent.replace(/\n(\$[\d\s\S-]*?): ([\s\S\d-]*?);/g, (all, s1, s2) => {
+            // FIXME 对每一个变量都执行compileScss，严重拖慢脚本速度，需要优化
+            const buildtimeResolvedValue = compileScss(all, s1, path.join(cwd, 'src/core/'), 'index.scss');
             if (keepValueSass.some(reg => s1.match(reg))) {
                 // 保留原状
-                const result = compileScss(all, s1, path.join(cwd, 'src/core/'), 'index.scss');
+                const result = buildtimeResolvedValue;
                 scss2cssContent += `${s1}: ${result};\n`
             } else {
-                scss2cssContent += `${s1}: var(${s1.replace('$', '--')});\n`;
+                scss2cssContent += `${s1}: var(${s1.replace('$', '--')}, ${buildtimeResolvedValue});\n`;
             }
 
             const val = scss2css(all, s1, s2, path.join(cwd, 'src/core/'), 'index.scss');
