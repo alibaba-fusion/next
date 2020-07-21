@@ -84,7 +84,7 @@ export interface CheckboxItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中或取消选中触发的回调函数
      */
-    onChange?: (checked: boolean, event: {}) => void;
+    onChange?: (checked: boolean, event: React.MouseEvent<HTMLElement>) => void;
 
     /**
      * 帮助文本
@@ -294,6 +294,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
      * 当前获得焦点的子菜单或菜单项 key 值
      */
     focusedKey?: string;
+    renderMore?: (items?: Array<any>) => React.ReactElement;
 
     /**
      * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
@@ -312,5 +313,5 @@ export default class Menu extends React.Component<MenuProps, any> {
     static RadioItem: typeof RadioItem;
     static Group: typeof Group;
     static Divider: typeof Divider;
-    static create(props: {}): void;
+    static create(props: any): void;
 }
