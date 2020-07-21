@@ -23,6 +23,7 @@ module.exports = function() {
                 return;
             }
 
+            // FIXME 对每一个变量都执行compileScss，严重拖慢脚本速度，需要优化
             const buildtimeResolvedValue = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
             if (s2.match(/\$css-prefix/)) {
                 const result = buildtimeResolvedValue;
