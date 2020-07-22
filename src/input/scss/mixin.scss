@@ -22,8 +22,8 @@
         padding-right: $iconPadding;
     }
     input {
-        height: calc($height - $input-border-width*2);
-        line-height: calc(($height - $input-border-width*2)\0); // ie9 support
+        height: calc(#{$height} - #{$input-border-width} * 2);
+        line-height: calc((#{$height} - #{$input-border-width}*2)\0); // ie9 support
         padding: 0 $padding;
         font-size: $fontSize;
         &::placeholder {
@@ -35,8 +35,8 @@
     #{$input-prefix}-text-field {
         padding: 0 $padding;
         font-size: $fontSize;
-        height: calc($height - $input-border-width*2);
-        line-height: calc($height - $input-border-width*2); // ie9 support
+        height: calc(#{$height} - #{$input-border-width} * 2);
+        line-height: calc(#{$height} - #{$input-border-width} * 2); // ie9 support
     }
 }
 

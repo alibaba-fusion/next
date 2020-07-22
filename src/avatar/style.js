@@ -1,2 +1,2 @@
-// import '../icon/style.js';
-// import './main.scss';
+import '../icon/style.js';
+import './main.scss';

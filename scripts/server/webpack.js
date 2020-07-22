@@ -22,6 +22,7 @@ module.exports = function getWebpackConfig(options) {
         lang,
         dir,
         devA11y,
+        mode,
     } = options;
 
     const indexPath = path.join(
@@ -38,7 +39,7 @@ module.exports = function getWebpackConfig(options) {
         ...demoPaths,
         ...themePaths,
         ...adaptorPaths,
-    ], componentName);
+    ], componentName, mode);
     config.entry = entry;
 
     config.output = {
@@ -190,10 +191,19 @@ module.exports = function getWebpackConfig(options) {
     return config;
 };
 
-function getEntry(entryPaths, componentName) {
+function getEntry(entryPaths, componentName, mode) {
     const entry = entryPaths.reduce((ret, entryPath) => {
         const name = path.basename(entryPath, path.extname(entryPath));
         const pathWithoutExt = path.join(path.dirname(entryPath), name);
+        let cssArr = [];
+        // 通过 mode 判断引入的样式文件
+        if (mode === 'css') {
+            cssArr = [
+                path.join(process.cwd(), 'lib', componentName, 'variable.css'),
+                path.join(process.cwd(), 'lib', componentName, 'style2.js'),
+                path.join(process.cwd(), 'lib', 'core2', 'index.css'),
+            ];
+        } else cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
         ret[pathWithoutExt] = [
             'react-dev-utils/webpackHotDevClient',
             // css var should only be included once.
@@ -201,9 +211,7 @@ function getEntry(entryPaths, componentName) {
             // will produce many duplicates,
             // making dev app slow
             // path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
-            path.join(process.cwd(), 'lib', componentName, 'variable.css'),
-            path.join(process.cwd(), 'lib', componentName, 'style2.js'),
-            path.join(process.cwd(), 'lib', 'core2', 'index.css'),
+            ...cssArr,
             entryPath,
         ];
         return ret;

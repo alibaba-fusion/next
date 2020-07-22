@@ -160,63 +160,63 @@
 
 @include keyframes(nextVectorRoute) {
     0% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 0));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 0));
     }
     5% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 1));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 1));
     }
     25% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 1));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 1));
     }
     30% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 2));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 2));
     }
     50% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 2));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 2));
     }
     55% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 3));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 3));
     }
     75% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 3));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 3));
     }
     80% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 4));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 4));
     }
     100% {
-        @include transform(rotate($loading-fusion-vector-rotation-step * 4));
+        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 4));
     }
 }
 
 /* 20% 的时间在旋转 */
 @include keyframes(nextVectorDotsYR) {
-    @include loading-fusion(bottom, $loading-large-dot-size ,$loading-large-size / 2 - $loading-large-dot-size * 1.2 / 2, $loading-large-dot-size * 1.2);
+    @include loading-fusion(bottom, $loading-large-dot-size , calc(#{$loading-large-size} / 2 - #{$loading-large-dot-size} * 1.2 / 2), calc(#{$loading-large-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsY) {
-    @include loading-fusion(top, $loading-large-dot-size, $loading-large-size / 2 - $loading-large-dot-size * 1.2 / 2, $loading-large-dot-size * 1.2);
+    @include loading-fusion(top, $loading-large-dot-size, calc(#{$loading-large-size} / 2 - #{$loading-large-dot-size} * 1.2 / 2), calc(#{$loading-large-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsX) {
-    @include loading-fusion(left, $loading-large-dot-size, $loading-large-size / 2 - $loading-large-dot-size * 1.2 / 2, $loading-large-dot-size * 1.2);
+    @include loading-fusion(left, $loading-large-dot-size, calc(#{$loading-large-size} / 2 - #{$loading-large-dot-size} * 1.2 / 2), calc(#{$loading-large-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsXR) {
-    @include loading-fusion(right, $loading-large-dot-size, $loading-large-size / 2 - $loading-large-dot-size * 1.2 / 2, $loading-large-dot-size * 1.2);
+    @include loading-fusion(right, $loading-large-dot-size, calc(#{$loading-large-size} / 2 - #{$loading-large-dot-size} * 1.2 / 2), calc(#{$loading-large-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsYR-medium) {
-    @include loading-fusion(bottom, $loading-medium-dot-size ,$loading-medium-size / 2 - $loading-medium-dot-size * 1.2 / 2, $loading-medium-dot-size * 1.2);
+    @include loading-fusion(bottom, $loading-medium-dot-size, calc(#{$loading-medium-size} / 2 - #{$loading-medium-dot-size} * 1.2 / 2), calc(#{$loading-medium-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsY-medium) {
-    @include loading-fusion(top, $loading-medium-dot-size ,$loading-medium-size / 2 - $loading-medium-dot-size * 1.2 / 2, $loading-medium-dot-size * 1.2);
+    @include loading-fusion(top, $loading-medium-dot-size ,calc(#{$loading-medium-size} / 2 - #{$loading-medium-dot-size} * 1.2 / 2), calc(#{$loading-medium-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsX-medium) {
-    @include loading-fusion(left, $loading-medium-dot-size ,$loading-medium-size / 2 - $loading-medium-dot-size * 1.2 / 2, $loading-medium-dot-size * 1.2);
+    @include loading-fusion(left, $loading-medium-dot-size ,calc(#{$loading-medium-size} / 2 - #{$loading-medium-dot-size} * 1.2 / 2), calc(#{$loading-medium-dot-size} * 1.2));
 }
 
 @include keyframes(nextVectorDotsXR-medium) {
-    @include loading-fusion(right, $loading-medium-dot-size ,$loading-medium-size / 2 - $loading-medium-dot-size * 1.2 / 2, $loading-medium-dot-size * 1.2);
+    @include loading-fusion(right, $loading-medium-dot-size ,calc(#{$loading-medium-size} / 2 - #{$loading-medium-dot-size} * 1.2 / 2), calc(#{$loading-medium-dot-size} * 1.2));
 }

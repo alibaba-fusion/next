@@ -4,7 +4,7 @@
 #{$range-picker-prefix} {
 
     display: inline-block;
-    width: $s-28 * 3;
+    width: calc(#{$s-28} * 3);
 
     &-input {
         width: 100%;
@@ -56,7 +56,7 @@
     }
 
     &-body {
-        width: $s-30 * 5;
+        width: calc(#{$s-30} * 5);
     }
 
     &-panel {

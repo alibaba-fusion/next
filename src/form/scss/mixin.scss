@@ -20,9 +20,9 @@
         &.#{$css-prefix}input-textarea > p {
             font-size: $font-size;
             text-align: justify;
-            min-height: $font-size * 1.4;
+            min-height: calc(#{$font-size} * 1.4);
             line-height: 1.4;
-            margin-top: ($line-height - (1.4 * $font-size)) / 2;
+            margin-top: calc((#{$line-height} - (1.4 * #{$font-size})) / 2);
         }
     }
 }
@@ -34,7 +34,7 @@
 
     #{$form-prefix}-item.#{$css-prefix}left #{$form-prefix}-item-label {
         line-height: 1.4;
-        margin-top: ($element-height - $font-size) / 2;
-        margin-bottom: ($element-height - $font-size) / 2;
+        margin-top: calc((#{$element-height} - #{$font-size}) / 2);
+        margin-bottom: calc((#{$element-height} - #{$font-size}) / 2);
     }
 }

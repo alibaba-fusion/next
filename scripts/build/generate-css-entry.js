@@ -12,10 +12,11 @@ const lintCss = require('./lintcss');
 
 module.exports = function() {
     // generate [other components] css variables
-    const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
+    // const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
+    const componentPaths = glob.sync(path.join(cwd, 'src', 'nav'));
     componentPaths.forEach(comPath => {
         const componentName = path.basename(comPath);
-        if (!fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
+        if (['demo-helper'].indexOf(componentName) > -1 || !fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
             return;
         }
         const libBasePath = path.join(cwd, 'lib', componentName);
@@ -50,8 +51,8 @@ module.exports = function() {
         const mainScssContent = fs.readFileSync(path.join(srcBasePath, 'main.scss'), 'utf8');
         // 这里要把 main.scss 中，对core的引用换成core-temp、把对variable.scss的引用换成scss-var-to-css-var.scss
         const mainScss2 = mainScssContent
-            .replace(/\@import "..\/core\/index-noreset(\.scss)?";/gi, '@import "src/core-temp/index-noreset.scss";')
-            .replace(/scss\/variable(\.scss)?"/gi, `scss/scss-var-to-css-var.scss"`);
+            .replace(/\@import ["']..\/core\/index-noreset(\.scss)?["'];/gi, '@import "src/core-temp/index-noreset.scss";')
+            .replace(/scss\/variable(\.scss)?/gi, `scss/scss-var-to-css-var.scss`);
 
         if (!mainScss2) {
             fs.outputFileSync(path.join(libBasePath, 'index.css'), '');
@@ -62,10 +63,10 @@ module.exports = function() {
                     includePaths: [path.join(libBasePath)],
                     data: mainScss2,
                 });
-
+                
                 const css = result.css.toString();
-
                 const output = postcss()
+                    .use(cssvarFallback())
                     .use(postcssCalc())
                     .process(css).css;
 
@@ -75,18 +76,8 @@ module.exports = function() {
                 fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
                 lintCss(path.join(libBasePath, 'index.css'), indexContent);
 
-                postcss()
-                    .use(cssvarFallback())
-                    // .use(postcssCalc())
-                    .process(css)
-                    .then(result => {
-                        const indexContent = result.css;
-                        fs.outputFileSync(path.join(libBasePath, 'index-with-fallback.css'), indexContent);
-                        fs.outputFileSync(path.join(esBasePath, 'index-with-fallback.css'), indexContent);
-                        // lintCss(path.join(libBasePath, 'index-with-fallback.css'), indexContent);
-                    });
             } catch (error) {
-                logger.error(`[!!]Error in ${componentName}:`);
+                logger.error(`[!!]Error in ${componentName}:`, error);
             }
         }
     });
