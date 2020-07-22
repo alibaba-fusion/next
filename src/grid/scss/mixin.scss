@@ -92,7 +92,7 @@
 @mixin make-columns-fixed() {
     @for $i from 1 through $grid-columns-fixed {
         .#{$css-prefix}col-fixed-#{$i} {
-            $width: calc($i * $grid-col-fixed-width);
+            $width: calc(#{$i} * #{$grid-col-fixed-width});
             flex: 0 0 $width;
             width: $width;
             max-width: $width;

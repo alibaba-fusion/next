@@ -1,10 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
-const sass = require('node-sass');
-const postcss = require('postcss');
-const postcssCalc = require('postcss-calc');
-
+const keepValueSass = require('./white-list-key-reg');
 const cwd = process.cwd();
 const { logger } = require('../utils');
 const { scss2css, compileScss } = require('./scss2css');
@@ -20,12 +17,41 @@ module.exports = function() {
 
         varsContent.replace(/\n(\$[\d\s\S-]*?): ([\s\S\d-]*?);/g, (all, s1, s2) => {
             if (componentName === 'grid' && s1 === '$breakpoints') {
+                scss2cssContent += `$breakpoints: ((
+    "xxs",
+    "(min-width: " + $grid-xxs + ")",
+    "(max-width: " + ($grid-xs - 1) + ")"
+), (
+    "xs",
+    "(min-width: " + $grid-xs + ")",
+    "(max-width: " + ($grid-s - 1) + ")"
+), (
+    "s",
+    "(min-width: " + $grid-s + ")",
+    "(max-width: " + ($grid-m - 1) + ")"
+), (
+    "m",
+    "(min-width: " + $grid-m + ")",
+    "(max-width: " + ($grid-l - 1) + ")"
+), (
+    "l",
+    "(min-width: " + $grid-l + ")",
+    "(max-width: " + ($grid-xl - 1) + ")"
+), (
+    "xl",
+    "(min-width: " + $grid-xl + ")",
+    ""
+));
+`
                 return;
             }
 
             // FIXME 对每一个变量都执行compileScss，严重拖慢脚本速度，需要优化
             const buildtimeResolvedValue = compileScss(all, s1, path.resolve(varsPath, '../../'), 'main.scss');
-            if (s2.match(/\$css-prefix/)) {
+            // 对于value(s2)使用到$css-prefix的
+            // 例如 $month-picker-prefix: '.' + $css-prefix + 'month-picker';
+            // 或者某些白名单key(s1) 这些白名单key一般都是不作为css的value使用的
+            if (s2.match(/\$css-prefix/) || keepValueSass.some(reg => s1.match(reg))) {
                 const result = buildtimeResolvedValue;
                 scss2cssContent += `${s1}: ${result};\n`
             } else {
@@ -56,5 +82,5 @@ module.exports = function() {
         );
     });
 
-    logger.success('[Component] Generate scss-var-to-css-var.scss & css-var-def-default.scss for lib/ es/ successfully!');
+    logger.success('[Component] add scss-var-to-css-var.scss & css-var-def-default.scss successfully!');
 };

@@ -15,7 +15,7 @@ module.exports = function() {
     const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
     componentPaths.forEach(comPath => {
         const componentName = path.basename(comPath);
-        if (!fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
+        if (['demo-helper'].indexOf(componentName) > -1 || !fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
             return;
         }
         const libBasePath = path.join(cwd, 'lib', componentName);
@@ -76,7 +76,7 @@ module.exports = function() {
                 lintCss(path.join(libBasePath, 'index.css'), indexContent);
 
             } catch (error) {
-                logger.error(`[!!]Error in ${componentName}:`);
+                logger.error(`[!!]Error in ${componentName}:`, error);
             }
         }
     });

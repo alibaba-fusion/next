@@ -4,7 +4,8 @@ const glob = require('glob');
 const sass = require('node-sass');
 const postcss = require('postcss');
 const postcssCalc = require('postcss-calc');
-
+// 保留原状
+const keepValueSass = require('./white-list-key-reg');
 const cwd = process.cwd();
 const { logger } = require('../utils');
 const { scss2css, compileScss } = require('./scss2css');
@@ -18,9 +19,6 @@ const fontScssVar = {
     '$font-name-medium': 'roboto-medium',
     '$font-name-bold': 'roboto-bold'
 };
-
-// 保留原状
-const keepValueSass = [/\$color-white/, /\$css-prefix/, /\$color-black/, /\$color-transparent/, /\$icon-prefix/, /\$icon-font-path/, /\$icon-font-name/, /\$icon-font-family/, /\$class-prefix/];
 
 module.exports = function() {
     // generate temp files for [core/utility, core/style]
@@ -130,5 +128,5 @@ ${mainScssContent}`;
         );
     });
 
-    logger.success('[Core] Generate scss-var-to-css-var.scss & css-var-def-default.scss for lib/ es/ successfully!');
+    logger.success('> [Core] empty and generate src/core-temp successfully!');
 };
