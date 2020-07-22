@@ -18,30 +18,30 @@ const { logger } = require('../utils');
 function run() {
     const options = initOptions();
 
-    logger.info('> transform es6 to es5...');
-    transform();
+    // logger.info('> transform es6 to es5...');
+    // transform();
 
-    logger.info('> generate scss entry...');
-    generateScssEntry();
+    // logger.info('> generate scss entry...');
+    // generateScssEntry();
 
-    logger.info('> [Core] empty and generate src/core-temp...');
-    fs.removeSync(path.join(cwd, 'src/core-temp'));
-    cssVarTempFileCore();
+    // logger.info('> [Core] empty and generate src/core-temp...');
+    // fs.removeSync(path.join(cwd, 'src/core-temp'));
+    // cssVarTempFileCore();
 
-    logger.info('> [Component] add scss-var-to-css-var.scss & css-var-def-default.scss...');
-    cssVarTempFile();
+    // logger.info('> [Component] add scss-var-to-css-var.scss & css-var-def-default.scss...');
+    // cssVarTempFile();
 
-    logger.info('> [Core]generate core2 files...');
-    generateCssEntryCore();
+    // logger.info('> [Core]generate core2 files...');
+    // generateCssEntryCore();
 
-    logger.info('> [Component]generate css-var files (style2.js / varaible.css / index.css )...');
-    generateCssEntry();
+    // logger.info('> [Component]generate css-var files (style2.js / varaible.css / index.css )...');
+    // generateCssEntry();
 
-    logger.info('> generate api...');
-    generateApi();
+    // logger.info('> generate api...');
+    // generateApi();
 
-    logger.info('> export-api-schema...');
-    exportApiSchema(options);
+    // logger.info('> export-api-schema...');
+    // exportApiSchema(options);
 
     const libPath = path.join(cwd, 'lib');
     const esPath = path.join(cwd, 'es');
