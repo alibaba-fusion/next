@@ -29,7 +29,7 @@ function run() {
     // cssVarTempFileCore();
 
     // logger.info('> [Component] add scss-var-to-css-var.scss & css-var-def-default.scss...');
-    // cssVarTempFile();
+    cssVarTempFile();
 
     // logger.info('> [Core]generate core2 files...');
     // generateCssEntryCore();
