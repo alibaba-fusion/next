@@ -45,7 +45,7 @@
 }
 
 @mixin nav-border-fix($height, $border-width) {
-    $real-height: calc($height - $border-width * 2);
+    $real-height: calc(#{$height} - #{$border-width} * 2);
 
     border-width: $border-width;
     &.#{$css-prefix}hoz {
@@ -64,20 +64,20 @@
         }
 
         &.#{$css-prefix}top #{$nav-prefix}-item:before {
-            top: - $border-width;
+            top: calc(0px - #{$border-width});
         }
 
         &.#{$css-prefix}bottom #{$nav-prefix}-item:before {
-            bottom: - $border-width;
+            bottom: calc(0px - #{$border-width});
         }
     }
     &.#{$css-prefix}ver {
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
-            left: - $border-width;
+            left: calc(0px - #{$border-width});
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
-            right: - $border-width;
+            right: calc(0px - #{$border-width});
         }
     }
 }
@@ -186,8 +186,8 @@
     #{$nav-prefix}-icon.#{$css-prefix}icon {
         @include icon-size(
             $size: $nav-icon-only-font-size,
-            $marginLeft: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $border-width,
-            $marginRight: ($nav-icononly-width - $nav-icon-only-font-size) / 2 - $nav-ver-item-padding-lr - $border-width
+            $marginLeft: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr} - #{$border-width}),
+            $marginRight: calc((#{$nav-icononly-width} - #{$nav-icon-only-font-size}) / 2 - #{$nav-ver-item-padding-lr} - #{$border-width})
         );
     }
 }
