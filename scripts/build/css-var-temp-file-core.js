@@ -20,7 +20,7 @@ const fontScssVar = {
 };
 
 // 保留原状
-const keepValueSass = [/\$color-white/, /\$css-prefix/, /\$color-black/, /\$color-transparent/];
+const keepValueSass = [/\$color-white/, /\$css-prefix/, /\$color-black/, /\$color-transparent/, /\$icon-prefix/, /\$icon-font-path/, /\$icon-font-name/, /\$icon-font-family/, /\$class-prefix/];
 
 module.exports = function() {
     // generate temp files for [core/utility, core/style]
