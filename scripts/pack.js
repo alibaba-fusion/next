@@ -14,6 +14,8 @@ config.entry = {
     next: ['./index.scss', './index.js'],
     'next-with-locales': './index-with-locales.js',
     'next-noreset': './index-noreset.scss',
+    'next-noreset.var': './index-noreset.css',
+    'next.var': './index.css',
 };
 config.output = Object.assign({}, config.output, {
     path: distPath,

@@ -24,7 +24,7 @@ function run() {
     generateScssEntry();
 
     logger.info('> [Core] empty and generate src/core-temp...');
-    fs.emptyDirSync(path.join(cwd, 'src/core-temp'));
+    fs.removeSync(path.join(cwd, 'src/core-temp'));
     cssVarTempFileCore();
 
     logger.info('> [Component] add scss-var-to-css-var.scss & css-var-def-default.scss...');
@@ -36,21 +36,20 @@ function run() {
     logger.info('> [Component]generate css-var files (style2.js / varaible.css / index.css )...');
     generateCssEntry();
 
-    fs.emptyDirSync(path.join(cwd, 'src/core-temp'));
+    logger.info('> generate api...');
+    generateApi();
 
-    // logger.info('> generate api...');
-    // generateApi();
+    logger.info('> export-api-schema...');
+    exportApiSchema(options);
 
-    // logger.info('> export-api-schema...');
-    // exportApiSchema(options);
+    const libPath = path.join(cwd, 'lib');
+    const esPath = path.join(cwd, 'es');
 
-    // const cwd = process.cwd();
-    // const libPath = path.join(cwd, 'lib');
-    // const esPath = path.join(cwd, 'es');
-
-    // fs.removeSync(path.join(libPath, 'demo-helper'));
-    // fs.removeSync(path.join(esPath, 'demo-helper'));
-    // fs.emptyDirSync(path.join(cwd, 'src/core-temp'));
+    fs.removeSync(path.join(libPath, 'demo-helper'));
+    fs.removeSync(path.join(esPath, 'demo-helper'));
+    fs.removeSync(path.join(libPath, 'core-temp'));
+    fs.removeSync(path.join(esPath, 'core-temp'));
+    fs.removeSync(path.join(cwd, 'src/core-temp'));
 
     logger.success('Run build successfully!');
 }
