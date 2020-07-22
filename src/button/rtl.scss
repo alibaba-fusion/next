@@ -14,7 +14,7 @@
 
     &#{$btn-prefix}-loading {
         padding-left: $padding;
-        padding-right: $padding + $icon-size + $icon-margin;
+        padding-right: calc(#{$padding} + #{$icon-size} + #{$icon-margin});
 
         &:after {
             right: $padding;
