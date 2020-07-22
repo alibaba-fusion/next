@@ -201,8 +201,9 @@ function getEntry(entryPaths, componentName) {
             // will produce many duplicates,
             // making dev app slow
             // path.join(process.cwd(), 'src', 'core', 'css-var-def.scss'),
-            path.join(process.cwd(), 'lib', componentName, 'scss', 'css-var-def-default.scss'),
-            path.join(process.cwd(), 'lib', componentName, 'main.scss'),
+            path.join(process.cwd(), 'lib', componentName, 'variable.css'),
+            path.join(process.cwd(), 'lib', componentName, 'style2.js'),
+            path.join(process.cwd(), 'lib', 'core2', 'index.css'),
             entryPath,
         ];
         return ret;
