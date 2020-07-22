@@ -1,6 +1,7 @@
 const co = require('co');
 const fs = require('fs-extra');
 const path = require('path');
+const glob = require('glob');
 const initOptions = require('../init-options');
 const transform = require('./transform');
 const cssVarTempFile = require('./css-var-temp-file');
@@ -47,9 +48,12 @@ function run() {
 
     fs.removeSync(path.join(libPath, 'demo-helper'));
     fs.removeSync(path.join(esPath, 'demo-helper'));
-    fs.removeSync(path.join(libPath, 'core-temp'));
-    fs.removeSync(path.join(esPath, 'core-temp'));
-    fs.removeSync(path.join(cwd, 'src/core-temp'));
+    // fs.removeSync(path.join(libPath, 'core-temp'));
+    // fs.removeSync(path.join(esPath, 'core-temp'));
+    // fs.removeSync(path.join(cwd, 'src/core-temp'));
+
+    // const tempPaths = glob.sync(path.join(cwd, '@(lib|es)', '*', 'scss/@(scss-var-to-css-var|css-var-def-default).scss'));
+    // tempPaths.forEach(p => fs.removeSync(p));
 
     logger.success('Run build successfully!');
 }
