@@ -29,10 +29,13 @@ const argv = parseArgs(process.argv.slice(2), {
     },
 });
 
+
 const { host, silent, lang, dir } = argv;
 const port = parseInt(argv.port, 10);
+
 const componentName = argv._[0];
 const componentPath = path.join(process.cwd(), 'docs', componentName);
+const mode = argv._[1];
 const disableAnimation = argv['disable-animation'];
 const devA11y = argv.a11y;
 
@@ -56,6 +59,7 @@ function run(port) {
         lang,
         dir,
         devA11y,
+        mode,
     });
     const compiler = webpack(config);
 
