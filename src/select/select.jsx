@@ -108,7 +108,7 @@ class Select extends Base {
          * 渲染 Select 展现内容的方法
          * @param {Object} item 渲染节点的item
          * @return {ReactNode} 展现内容
-         * @default item => item.label \|\| item.value
+         * @default item => `item.label || item.value`
          */
         valueRender: PropTypes.func,
         /**
@@ -132,6 +132,10 @@ class Select extends Base {
          * 是否一行显示，仅在 mode 为 multiple 的时候生效
          */
         tagInline: PropTypes.bool,
+        /**
+         * tag 是否可关闭
+         */
+        tagClosable: PropTypes.bool,
         /**
          * 最多显示多少个 tag
          */
@@ -198,6 +202,7 @@ class Select extends Base {
         onMouseEnter: noop,
         onMouseLeave: noop,
         popupAutoFocus: false,
+        tagClosable: true,
     };
 
     static displayName = 'Select';
@@ -761,6 +766,7 @@ class Select extends Base {
             maxTagCount,
             maxTagPlaceholder,
             tagInline,
+            tagClosable,
         } = this.props;
         let value = this.state.value;
 
@@ -827,7 +833,7 @@ class Select extends Base {
                         size={size === 'large' ? 'medium' : 'small'}
                         animation={false}
                         onClose={this.handleTagClose.bind(this, v)}
-                        closable
+                        closable={tagClosable}
                     >
                         {labelNode}
                     </Tag>
