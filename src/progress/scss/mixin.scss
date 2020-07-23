@@ -12,7 +12,7 @@
         height: $overlay-size;
         border-radius: $corner;
         top: 50%;
-        margin-top: -$overlay-size/2;
+        margin-top: calc(0px - $overlay-size / 2);
     }
     #{$progress-prefix}-line-text {
         font-size: $font-size;
