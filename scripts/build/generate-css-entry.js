@@ -41,7 +41,7 @@ module.exports = function() {
 
             fs.outputFileSync(path.join(libBasePath, 'variable.css'), libCssVarsContent);
             fs.outputFileSync(path.join(esBasePath, 'variable.css'), esCssVarsContent);
-            lintCss(path.join(libBasePath, 'variable.css'), libCssVarsContent);
+            // lintCss(path.join(libBasePath, 'variable.css'), libCssVarsContent);
         } catch (error) {
             logger.info(`It doesn't have variable.scss: ${componentName}`);
         }
