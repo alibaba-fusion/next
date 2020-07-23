@@ -15,7 +15,7 @@ const generateApi = require('./generate-api');
 const cwd = process.cwd();
 const { logger } = require('../utils');
 
-function run() {
+async function run() {
     const options = initOptions();
 
     logger.info('> transform es6 to es5...');
@@ -26,10 +26,10 @@ function run() {
 
     logger.info('> [Core] empty and generate src/core-temp...');
     fs.removeSync(path.join(cwd, 'src/core-temp'));
-    cssVarTempFileCore();
+    await cssVarTempFileCore();
 
     logger.info('> [Component] add scss-var-to-css-var.scss & css-var-def-default.scss...');
-    cssVarTempFile();
+    await cssVarTempFile();
 
     logger.info('> [Core]generate core2 files...');
     generateCssEntryCore();
