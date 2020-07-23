@@ -50,7 +50,7 @@
             border: $range-size-m-scale-item-border-width solid;
             border-radius: $range-size-m-scale-radius;
             &:last-child {
-                margin-left: calc(-$range-size-m-scale-item-border-width * 2);
+                margin-left: calc(0 - #{$range-size-m-scale-item-border-width} * 2);
             }
         }
     }

@@ -50,8 +50,8 @@
             position: absolute;
             display: inline-block;
             border-left: $tree-line;
-            height: $tree-node-padding + $line-2 * 2 + $tree-node-title-height;
-            left: ($tree-switch-size - $tree-line-width) / 2;
+            height: calc(#{$tree-node-padding} + #{$line-2} * 2 + #{$tree-node-title-height});
+            left: calc((#{$tree-switch-size} - #{$tree-line-width}) / 2);
         }
     }
 
@@ -186,11 +186,11 @@
 
     &-right-angle {
         position: absolute;
-        bottom: ($tree-switch-size - $tree-switch-border-width * 2 - $tree-line-width) / 2;
-        left: - ($tree-child-indent-right + $tree-line-width + $tree-switch-border-width);
+        bottom: calc((#{$tree-switch-size} - #{$tree-switch-border-width} * 2 - #{$tree-line-width}) / 2);
+        left: calc(0 - (#{$tree-child-indent-right} + #{$tree-line-width} + #{$tree-switch-border-width}));
         display: block;
-        width: $tree-child-indent-right + $tree-line-width;
-        height: $tree-node-title-height + $tree-node-padding - $tree-line-width * 2;
+        width: calc(#{$tree-child-indent-right} + #{$tree-line-width});
+        height: calc(#{$tree-node-title-height} + #{$tree-node-padding} - #{$tree-line-width} * 2);
         border-left: $tree-line;
         border-bottom: $tree-line;
     }
@@ -213,8 +213,8 @@
         }
 
         #{$tree-prefix}-node-inner {
-            padding-top: $tree-node-padding / 2;
-            padding-bottom: $tree-node-padding / 2;
+            padding-top: calc(#{$tree-node-padding} / 2);
+            padding-bottom: calc(#{$tree-node-padding} / 2);
             &:focus {
                 #{$tree-prefix}-node-label {
                     @include tree-node-state($tree-node-hover-color, $tree-node-hover-bg-color);

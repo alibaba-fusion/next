@@ -19,7 +19,7 @@
 
 #{$timeline-prefix}-item {
     &-folder {
-        padding-left: $timeline-item-content-margin-left + $timeline-item-node-size;
+        padding-left: calc(#{$timeline-item-content-margin-left} + #{$timeline-item-node-size});
         padding-top: $timeline-item-folder-margin-top;
         padding-bottom: $timeline-item-folder-margin-bottom;
         font-size: $timeline-item-folder-font-size;
@@ -31,7 +31,7 @@
     &-dot-tail {
         position: absolute;
         top: 0;
-        left: $timeline-item-node-size / 2;
+        left: calc(#{$timeline-item-node-size} / 2);
         height: 100%;
         border-top: 0;
         border-bottom: 0;

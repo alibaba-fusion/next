@@ -8,7 +8,7 @@
     $height,
     $lineHeight
 ) {
-    $padding-tb: ($height - $lineHeight - 2px) / 2;
+    $padding-tb: calc((#{$height} - #{$lineHeight} - 2px) / 2);
 
     min-height: $height - 2;
     padding-top: $padding-tb;
@@ -21,13 +21,13 @@
     $height,
     $border: 1px
 ) {
-    $padding-tb: ($height - $s-4 - $border * 2) / 2;
+    $padding-tb: calc((#{$height} - #{$s-4} - #{$border} * 2) / 2);
 
     padding-top: $padding-tb;
     padding-bottom: $padding-tb;
     height: $height;
 
     .#{$css-prefix}tag-body, .#{$css-prefix}tag-close-btn {
-        line-height: calc($height - $padding-tb * 2);
+        line-height: calc(#{$height} - #{$padding-tb} * 2);
     }
 }
