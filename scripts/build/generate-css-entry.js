@@ -13,7 +13,7 @@ const lintCss = require('./lintcss');
 module.exports = function() {
     // generate [other components] css variables
     // const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
-    const componentPaths = glob.sync(path.join(cwd, 'src', 'progress'));
+    const componentPaths = glob.sync(path.join(cwd, 'src', 'animate'));
     componentPaths.forEach(comPath => {
         const componentName = path.basename(comPath);
         if (['demo-helper'].indexOf(componentName) > -1 || !fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
