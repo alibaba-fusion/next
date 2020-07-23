@@ -1,9 +1,9 @@
 const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
-const keepValueSass = require('./white-list-key-reg');
 const { logger } = require('../utils');
 const { collectVarsInfo } = require('./utils/collect-vars-info');
+const shouldBeCssVar = require('./utils/should-be-css-var');
 // const { scss2css, compileScss } = require('./scss2css');
 
 const cwd = process.cwd();
@@ -47,11 +47,4 @@ module.exports = async function() {
     logger.success('[Component] add scss-var-to-css-var.scss & css-var-def-default.scss successfully!');
 };
 
-function shouldBeCssVar(name, value) {
-    // "content" property of icon can't be css var
-    if (name.startsWith('icon-content')) return false;
-    // 例如 $month-picker-prefix: '.' + $css-prefix + 'month-picker'; 不应该转成css变量
-    if (/\$css-prefix/.test(value)) return false;
-    if (keepValueSass.some(reg => name.match(reg))) return false;
-    return true;
-}
+

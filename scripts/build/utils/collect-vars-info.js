@@ -8,7 +8,6 @@ const postcss = require('postcss');
 const fs = require('fs-extra');
 const scssSyntax = require('postcss-scss');
 const sass = require('node-sass');
-const keepValueSass = require('../white-list-key-reg');
 
 // async function parseScssWithImports(entryPath) {
 //     const content = await fs.readFile(entryPath, 'utf-8');
@@ -31,7 +30,6 @@ const keepValueSass = require('../white-list-key-reg');
 async function resolveSassValue(entryScss, varNames) {
     const content = await fs.readFile(entryScss, 'utf-8');
     const varCodeLines = varNames.map(varName => {
-        // only resolve unquoted value
         return `@include exportValue("${varName}", $${varName});`;
     });
     const data = `
