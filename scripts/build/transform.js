@@ -20,7 +20,10 @@ module.exports = function transform() {
 
     const relativePaths = glob.sync('**/*.*', { cwd: srcPath });
     relativePaths.forEach(relaticePath => {
-        const content = fs.readFileSync(path.join(srcPath, relaticePath), 'utf8');
+        const content = fs.readFileSync(
+            path.join(srcPath, relaticePath),
+            'utf8'
+        );
         let libContent, esContent;
         libContent = esContent = content;
         if (PATTERN_ES6.test(relaticePath)) {
@@ -30,19 +33,6 @@ module.exports = function transform() {
         }
         fs.outputFileSync(path.join(libPath, relaticePath), libContent);
         fs.outputFileSync(path.join(esPath, relaticePath), esContent);
-    });
-
-    const localePaths = glob.sync(path.join(srcPath, 'locale/**.*'));
-    localePaths.forEach(localePath => {
-        const fileName = path.basename(localePath).replace('.js', '');
-        const content = fs.readFileSync(localePath, 'utf8');
-        const newContent =
-            `import Locale from '../../types/locale/${fileName}';\n\n` +
-            content.replace('export default', 'const obj = ').replace('};', '} as Locale;') +
-            `\nexport default obj;`;
-
-        fs.outputFileSync(path.join(libPath, `locale/${fileName}.ts`), newContent);
-        fs.outputFileSync(path.join(esPath, `locale/${fileName}.ts`), newContent);
     });
 
     logger.success('Transform es6 code to es5 successfully!');
