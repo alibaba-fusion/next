@@ -30,10 +30,15 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
     }
 
     if (renderMore && typeof renderMore === 'function') {
-        return React.cloneElement(renderMore(items), {
-            style,
-            className: moreCls,
-        });
+        const moreNode = renderMore(items);
+        const renderMoreCls = cx(moreCls, moreNode.props && moreNode.props.className);
+
+        return React.isValidElement(moreNode)
+            ? React.cloneElement(moreNode, {
+                  style,
+                  className: renderMoreCls,
+              })
+            : moreNode;
     }
 
     return (
