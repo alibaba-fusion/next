@@ -12,8 +12,7 @@ const lintCss = require('./lintcss');
 
 module.exports = function() {
     // generate [other components] css variables
-    // const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
-    const componentPaths = glob.sync(path.join(cwd, 'src', 'nav'));
+    const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
     componentPaths.forEach(comPath => {
         const componentName = path.basename(comPath);
         if (['demo-helper'].indexOf(componentName) > -1 || !fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
@@ -63,7 +62,7 @@ module.exports = function() {
                     includePaths: [path.join(libBasePath)],
                     data: mainScss2,
                 });
-                
+
                 const css = result.css.toString();
                 const output = postcss()
                     .use(cssvarFallback())
