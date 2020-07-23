@@ -31,13 +31,13 @@
     @if ($type == 'hor') {
         @if ($shape == 'circle') {
             & > #{$step-prefix}-item-body {
-                right: - ($step-circle-item-body-width - $node-size - $step-circle-item-node-padding * 2) / 2;
+                right: calc(0px - (#{$step-dot-item-body-width} - #{$node-size} - #{$step-dot-item-dot-padding} * 2) / 2);
                 left: auto;
             }
         }
         @if ($shape == 'dot') {
             & > #{$step-prefix}-item-body {
-                right: - ($step-dot-item-body-width - $node-size - $step-dot-item-dot-padding * 2) / 2;
+                right: calc(0px - (#{$step-dot-item-body-width} - #{$node-size} - #{$step-dot-item-dot-padding} * 2) / 2);
                 left: auto;
             }
         }
@@ -122,7 +122,7 @@
         }
 
         &:after {
-            left: -$step-arrow-item-border-width * 2;
+            left: calc(0px - #{$step-arrow-item-border-width} * 2);
             right: auto;
             border-top: $step-arrow-item-border-width solid transparent;
             border-bottom: $step-arrow-item-border-width solid transparent;

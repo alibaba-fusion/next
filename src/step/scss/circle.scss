@@ -16,12 +16,12 @@
 
             #{$step-progress-prefix}-circle-underlay {
                 stroke: $step-circle-item-node-wait-border-color;
-                stroke-width: 3 * $step-circle-item-node-border-width;
+                stroke-width: calc(3 * #{$step-circle-item-node-border-width});
             }
 
             #{$step-progress-prefix}-circle-overlay-normal {
                 stroke: $step-circle-item-node-finish-border-color;
-                stroke-width: 3 * $step-circle-item-node-border-width;
+                stroke-width: calc(3 * #{$step-circle-item-node-border-width});
             }
         }
         #{$step-prefix}-item-node-placeholder {
