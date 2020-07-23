@@ -142,7 +142,7 @@
             #{$step-prefix}-item-tail {
                 display: inline-block;
                 clear: both;
-                width: calc(100% - #{$node-size} + 2 * #{$step-circle-item-node-padding});
+                width: calc(100% - (#{$node-size} + 2 * #{$step-circle-item-node-padding}));
                 vertical-align: middle;
                 #{$step-prefix}-item-tail-underlay {
                     display: block;
@@ -178,7 +178,7 @@
             #{$step-prefix}-item-tail {
                 display: inline-block;
                 clear: both;
-                width: calc(100% - #{$node-size} + 2 * #{$step-dot-item-dot-padding});
+                width: calc(100% - (#{$node-size} + 2 * #{$step-dot-item-dot-padding}));
                 vertical-align: middle;
                 #{$step-prefix}-item-tail-underlay {
                     display: block;

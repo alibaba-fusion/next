@@ -75,8 +75,8 @@
         #{$timeline-prefix}-item-tail {
             position: absolute;
             width: auto;
-            height: calc(100% - #{$timeline-item-node-size} + 2 * #{$timeline-item-node-padding});
-            top: calc(#{$timeline-item-node-size} + 2 * #{$timeline-item-node-padding});
+            height: calc(100% - (#{$timeline-item-node-size} + 2*#{$timeline-item-node-padding}));
+            top: calc(#{$timeline-item-node-size} + 2*#{$timeline-item-node-padding});
             @if $direction == 'rtl' {
                 left: auto;
                 right: calc(#{$timeline-item-node-size} / 2);

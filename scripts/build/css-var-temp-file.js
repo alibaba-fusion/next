@@ -25,6 +25,8 @@ module.exports = async function() {
                     scss2cssContent += `$${name}: ${value};`;
                 } else if (shouldBeCssVar(name, value)) {
                     scss2cssContent += `$${name}: var(--${name}, ${resolvedValue});\n`;
+                    if (componentName !== 'animate')
+                        scss2cssContent += `$varMap: map-merge($varMap, (var(--${name}, ${resolvedValue}): ${resolvedValue}));\n`;
                 } else {
                     scss2cssContent += `$${name}: ${resolvedValue};\n`;
                 }
