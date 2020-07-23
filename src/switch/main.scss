@@ -20,11 +20,11 @@
     }
 
     &-medium {
-        @include bounding($switch-size-m-width, $switch-size-m-trigger, $switch-border-width-container, $switch-border-width-trigger, $switch-size-m-radius-container, $switch-size-m-radius-trigger);
+        @include bounding($switch-size-m-width, $switch-size-m-trigger, #{$switch-border-width-container}, $switch-border-width-trigger, $switch-size-m-radius-container, $switch-size-m-radius-trigger);
     }
 
     &-small {
-        @include bounding($switch-size-s-width, $switch-size-s-trigger, $switch-border-width-container, $switch-border-width-trigger, $switch-size-s-radius-container, $switch-size-s-radius-trigger);
+        @include bounding($switch-size-s-width, $switch-size-s-trigger, #{$switch-border-width-container}, $switch-border-width-trigger, $switch-size-s-radius-container, $switch-size-s-radius-trigger);
     }
 
     &-on {
@@ -35,7 +35,7 @@
             border-color: $switch-handle-on-border-color;
         }
         > .#{$css-prefix}switch-children {
-            left: calc(#{$switch-text-on-left} + #{$switch-border-width-container * 2});
+            left: calc(#{$switch-text-on-left} + #{$switch-border-width-container} * 2);
             color: $switch-normal-on-color-font;
         }
 
@@ -50,7 +50,7 @@
 
     &-on#{&}-small {
         > .#{$css-prefix}switch-children {
-            left: calc(#{$switch-size-s-text-on-left} + #{$switch-border-width-container * 2});
+            left: calc(#{$switch-size-s-text-on-left} + #{$switch-border-width-container} * 2);
         }
     }
     &-on[disabled] {
@@ -90,7 +90,7 @@
             }
         }
         > .#{$css-prefix}switch-children {
-            right: calc(#{$switch-text-off-right} + #{$switch-border-width-container * 2});
+            right: calc(#{$switch-text-off-right} + #{$switch-border-width-container} * 2);
             color: $switch-normal-off-color-font;
         }
     }
