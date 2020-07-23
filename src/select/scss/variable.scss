@@ -50,7 +50,8 @@ $select-s-lineheight: 14px !default;
 
 $select-tag-spacing-lr: $s-1;
 $select-tag-spacing-tb: 3px;
-$select-tag-padding-lr: $s-1;
+// TODO: deprecated in 2.x
+$select-tag-padding-lr: $s-0;
 $select-menu-item-height: $s-5;
 $select-menu-icon-color: $color-brand1-6;
 
