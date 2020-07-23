@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs-extra');
-const glob = require('glob');
 const apiExtractor = require('@alifd/api-extractor');
 // const tsgen = require('@alifd/dts-generator');
 const { logger, getComponentName } = require('../utils');
@@ -43,7 +42,11 @@ module.exports = function(options) {
 
         const srcComponentPath = path.join(cwd, 'src', shortName);
         const libComponentPath = path.join(cwd, 'lib', shortName);
-        const apiInfo = apiExtractor.extract(srcComponentPath, {}, parentPathMap);
+        const apiInfo = apiExtractor.extract(
+            srcComponentPath,
+            {},
+            parentPathMap
+        );
 
         const apiPath = path.join(libComponentPath, 'api-schema.json');
         const exportDTSPath = path.join(libComponentPath, 'index.d.ts');
@@ -51,7 +54,9 @@ module.exports = function(options) {
         if (apiInfo) {
             const apiString = JSON.stringify(apiInfo, null, 2);
 
-            entries.push(`export { default as ${apiInfo.name} } from './${shortName}';\n`);
+            entries.push(
+                `export { default as ${apiInfo.name} } from './${shortName}';\n`
+            );
 
             fs.writeFileSync(apiPath, apiString);
             fs.writeFileSync(
@@ -79,18 +84,23 @@ export default ${exportName};
 `
             );
 
-            entries.push(`export { default as ${getComponentName(shortName)} } from './${shortName}';\n`);
+            entries.push(
+                `export { default as ${getComponentName(
+                    shortName
+                )} } from './${shortName}';\n`
+            );
         } else {
             logger.warn(`Can not generate ${apiPath}`);
         }
     });
 
     // generate d.ts for locale
-    const localePaths = glob.sync(path.join(cwd, 'src/locale/**.*'));
-    localePaths.forEach(localePath => {
-        const file = path.basename(localePath).replace('.js', '');
-        const tsPath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
-        fs.writeFileSync(tsPath, `export * from '../../types/locale/${file}';`);
+    ['zh-cn', 'en-us', 'ja-jp', 'zh-hk', 'zh-tw'].forEach(file => {
+        const localePath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
+        fs.writeFileSync(
+            localePath,
+            `export * from '../../types/locale/${file}';`
+        );
     });
 
     fs.writeFileSync(entriesPath, entries.join(''));
