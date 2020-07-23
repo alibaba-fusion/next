@@ -90,15 +90,15 @@
         }
 
         &.#{$css-prefix}small {
-            @include progress-bar-size($progress-line-height-size-s + 2 * $progress-line-underlay-border-width, $progress-line-height-size-s, $progress-line-font-s, $progress-line-radius-s);
+            @include progress-bar-size(calc(#{$progress-line-height-size-s} + 2 * #{$progress-line-underlay-border-width}), $progress-line-height-size-s, $progress-line-font-s, $progress-line-radius-s);
         }
 
         &.#{$css-prefix}medium {
-            @include progress-bar-size($progress-line-height-size-m + 2 * $progress-line-underlay-border-width, $progress-line-height-size-m, $progress-line-font-m, $progress-line-radius-m);
+            @include progress-bar-size(calc(#{$progress-line-height-size-m} + 2 * #{$progress-line-underlay-border-width}), $progress-line-height-size-m, $progress-line-font-m, $progress-line-radius-m);
         }
 
         &.#{$css-prefix}large {
-            @include progress-bar-size($progress-line-height-size-l + 2 * $progress-line-underlay-border-width, $progress-line-height-size-l, $progress-line-font-l, $progress-line-radius-l);
+            @include progress-bar-size(calc(#{$progress-line-height-size-l} + 2 * #{$progress-line-underlay-border-width}), $progress-line-height-size-l, $progress-line-font-l, $progress-line-radius-l);
         }
     }
 }
