@@ -12,7 +12,7 @@ const lintCss = require('./lintcss');
 
 module.exports = function() {
     // generate [other components] css variables
-    const componentPaths = glob.sync(path.join(cwd, 'src', 'switch'));
+    const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
     componentPaths.forEach(comPath => {
         const componentName = path.basename(comPath);
         if (['demo-helper'].indexOf(componentName) > -1 || !fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
@@ -41,7 +41,7 @@ module.exports = function() {
 
             fs.outputFileSync(path.join(libBasePath, 'variable.css'), libCssVarsContent);
             fs.outputFileSync(path.join(esBasePath, 'variable.css'), esCssVarsContent);
-            lintCss(path.join(libBasePath, 'variable.css'), libCssVarsContent);
+            // lintCss(path.join(libBasePath, 'variable.css'), libCssVarsContent);
         } catch (error) {
             logger.info(`It doesn't have variable.scss: ${componentName}`);
         }
@@ -73,7 +73,7 @@ module.exports = function() {
 
                 fs.outputFileSync(path.join(libBasePath, 'index.css'), indexContent);
                 fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
-                lintCss(path.join(libBasePath, 'index.css'), indexContent);
+                // lintCss(path.join(libBasePath, 'index.css'), indexContent);
 
             } catch (error) {
                 logger.error(`[!!]Error in ${componentName}:`, error);
