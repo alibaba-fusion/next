@@ -1,6 +1,6 @@
 #{$collapse-prefix}[dir=rtl] {
     #{$collapse-prefix}-panel-title {
-        padding: $collapse-title-padding-tb $collapse-icon-margin-r + $collapse-icon-margin-l + $collapse-icon-size $collapse-title-padding-tb 0;
+        padding: $collapse-title-padding-tb calc(#{$collapse-icon-margin-r} + #{$collapse-icon-margin-l} + #{$collapse-icon-size}) $collapse-title-padding-tb 0;
     }
 
     #{$collapse-prefix}-panel-icon {

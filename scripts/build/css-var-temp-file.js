@@ -38,7 +38,7 @@ module.exports = async function() {
                     cssvarDefaultContent += `--${name}: ${resolvedValue};\n`;
                 }
             });
-            cssvarDefaultContent = `:root {\n${cssvarDefaultContent}}\n`;
+            cssvarDefaultContent = cssvarDefaultContent ? `:root {\n${cssvarDefaultContent}}\n` : '';
 
             fs.writeFileSync(path.join(cwd, 'lib', componentName, 'scss/scss-var-to-css-var.scss'), scss2cssContent);
             fs.writeFileSync(path.join(cwd, 'es', componentName, 'scss/scss-var-to-css-var.scss'), scss2cssContent);

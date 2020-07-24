@@ -14,6 +14,12 @@ module.exports = [
     /class-prefix/,
     /grid-columns/,
     /grid-columns-5p/,
+    /grid-xxs/,
+    /grid-xs/,
+    /grid-s/,
+    /grid-m/,
+    /grid-l/,
+    /grid-xl/,
     /grid-col-fixed-width/,
     /font-family/,
 ];
