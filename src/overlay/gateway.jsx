@@ -27,19 +27,21 @@ class Gateway extends Component {
         super(props);
 
         this.state = {
-            containerNode: getContainerNode(props),
+            containerNode: null,
+        };
+    }
+
+    static getDerivedStateFromProps(nextProps) {
+        return {
+            containerNode: getContainerNode(nextProps),
         };
     }
 
     componentDidMount() {
-        const node = getContainerNode(this.props);
-
-        if (this.state.containerNode !== node) {
-            /* eslint-disable react/no-did-mount-set-state */
-            this.setState({
-                containerNode: node,
-            });
-        }
+        // eslint-disable-next-line
+        this.setState({
+            containerNode: getContainerNode(this.props),
+        });
     }
 
     getChildNode() {
@@ -56,6 +58,7 @@ class Gateway extends Component {
 
     render() {
         const { containerNode } = this.state;
+
         if (!containerNode) {
             return null;
         }
