@@ -32,10 +32,17 @@ class Gateway extends Component {
     }
 
     componentDidMount() {
-        const node = getContainerNode(this.props);
+        this.setContainerNodeIfNeeded();
+    }
 
+    componentDidUpdate() {
+        this.setContainerNodeIfNeeded();
+    }
+
+    setContainerNodeIfNeeded() {
+        const node = getContainerNode(this.props);
         if (this.state.containerNode !== node) {
-            /* eslint-disable react/no-did-mount-set-state */
+            /* eslint-disable-next-line */
             this.setState({
                 containerNode: node,
             });
