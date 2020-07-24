@@ -12,6 +12,7 @@ function lintCss(filename, css) {
                     'no-descending-specificity': null,
                     'no-duplicate-selectors': null,
                     'font-family-no-missing-generic-family-keyword': null,
+                    'function-calc-no-unspaced-operator': null,
                 },
             },
         })
