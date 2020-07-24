@@ -33,6 +33,7 @@ module.exports = async function() {
             Object.entries(varsInfo).forEach(([name, { value, resolvedValue }]) => {
                 if (shouldBeCssVar(name, value)) {
                     scss2cssContent += `$${name}: var(--${name}, ${resolvedValue});\n`;
+                    scss2cssContent += `$varMap: map-merge($varMap, (var(--${name}, ${resolvedValue}): ${resolvedValue}));\n`;
                 } else {
                     scss2cssContent += `$${name}: ${resolvedValue};\n`;
                 }
@@ -85,7 +86,9 @@ module.exports = async function() {
                 mainScssContent = mainScssContent.replace(reg, fontScssVar[key]);
             });
         }
-        const mainScss2 = `@import "src/core-temp/style/_global.scss";
+        const mainScss2 = `
+@import "src/core-temp/util/_varMap.scss";
+@import "src/core-temp/style/_global.scss";
 @import "src/core-temp/style/_size.scss";
 @import "src/core-temp/style/_color.scss";
 @import "src/core-temp/style/_corner.scss";

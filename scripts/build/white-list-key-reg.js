@@ -15,4 +15,5 @@ module.exports = [
     /grid-columns/,
     /grid-columns-5p/,
     /grid-col-fixed-width/,
+    /font-family/,
 ];
