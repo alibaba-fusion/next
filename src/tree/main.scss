@@ -118,14 +118,14 @@
     &-switcher.#{$css-prefix}line {
         width: $tree-switch-size;
         height: $tree-switch-size;
-        line-height: $tree-switch-size - $tree-switch-border-width * 2;
+        line-height: calc(#{$tree-switch-size} - #{$tree-switch-border-width} * 2);
         border: $tree-switch-border-width $line-solid $tree-switch-border-color;
         border-radius: $tree-switch-corner;
         background-color: $tree-switch-bg-color;
         cursor: pointer;
 
         #{$tree-prefix}-switcher-icon {
-            @include icon-size($tree-switch-icon-size, ($tree-switch-size - $tree-switch-icon-size - $tree-switch-border-width * 2) / 2);
+            @include icon-size($tree-switch-icon-size, calc((#{$tree-switch-size} - #{$tree-switch-icon-size} - #{$tree-switch-border-width} * 2) / 2));
             color: $tree-switch-icon-color;
         }
 
@@ -174,7 +174,7 @@
         &.#{$css-prefix}loading-line {
             width: $tree-switch-size;
             height: $tree-switch-size;
-            line-height: $tree-switch-size - $tree-switch-border-width * 2;
+            line-height: calc(#{$tree-switch-size} - #{$tree-switch-border-width} * 2);
             border: $tree-switch-border-width $line-solid $color-transparent;
         }
 
