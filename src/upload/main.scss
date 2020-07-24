@@ -207,7 +207,7 @@
         }
 
         $thumbnail-margin-right: $s-2 !default;
-        @if (getBuildTimeValue($upload-image-list-item-padding) > getBuildTimeValue($s-2)) {
+        @if (getCompilingValue($upload-image-list-item-padding) > getCompilingValue($s-2)) {
             $thumbnail-margin-right: $upload-image-list-item-padding;
         }
         &-thumbnail {

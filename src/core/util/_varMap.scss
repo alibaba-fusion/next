@@ -1,8 +1,8 @@
 $varMap: ();
-@function getBuildTimeValue($cssVarRepresentation) {
+@function getCompilingValue($cssVarRepresentation) {
     @if map-has-key($varMap, $cssVarRepresentation) {
         @return map-get($varMap, $cssVarRepresentation);
     }
-    // @warn "getBuildTimeValue miss: " $cssVarRepresentation;
+    // @warn "getCompilingValue miss: " $cssVarRepresentation;
     @return $cssVarRepresentation;
 }
