@@ -31,8 +31,8 @@
         }
 
         #{$upload-prefix}-list-item-progress {
-            margin-right: $upload-image-list-item-picture-size + $thumbnail-margin-right;
-            margin-left: $upload-image-list-close-icon-size + $upload-image-list-close-icon-right * 2;
+            margin-right: calc(#{$upload-image-list-item-picture-size} + #{$thumbnail-margin-right});
+            margin-left: calc(#{$upload-image-list-close-icon-size} + #{$upload-image-list-close-icon-right} * 2);
         }
     }
 }
