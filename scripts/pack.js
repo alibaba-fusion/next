@@ -67,8 +67,12 @@ webpack(config, (err, stats) => {
     try {
         if (minimize) {
             fs.unlinkSync(path.join(distPath, 'next-noreset.min.js'));
+            fs.unlinkSync(path.join(distPath, 'next-noreset.var.min.js'));
+            fs.unlinkSync(path.join(distPath, 'next.var.min.js'));
         } else {
             fs.unlinkSync(path.join(distPath, 'next-noreset.js'));
+            fs.unlinkSync(path.join(distPath, 'next-noreset.var.js'));
+            fs.unlinkSync(path.join(distPath, 'next.var.js'));
         }
     } catch (e) {
         logger.warn(

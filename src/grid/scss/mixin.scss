@@ -123,14 +123,14 @@
 @mixin make-offset-fixed() {
     @for $i from 1 through $grid-columns-fixed {
         .#{$css-prefix}col-offset-fixed-#{$i} {
-            margin-left: calc($i * $grid-col-fixed-width);
+            margin-left: calc(#{$i} * #{$grid-col-fixed-width});
         }
     }
     @each $breakpoint in $breakpoints {
         $name: #{nth($breakpoint, 1)};
         @for $j from 1 through $grid-columns-fixed {
             .#{$css-prefix}col-offset-fixed-#{$name}-#{$j} {
-                margin-left: calc($j * $grid-col-fixed-width);
+                margin-left: calc(#{$j} * #{$grid-col-fixed-width});
             }
         }
     }

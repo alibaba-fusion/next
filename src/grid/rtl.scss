@@ -24,7 +24,7 @@
 @mixin make-offset-fixed-rtl() {
     @for $i from 1 through $grid-columns-fixed {
         .#{$css-prefix}col-offset-fixed-#{$i}[dir="rtl"] {
-            margin-right: calc($i * $grid-col-fixed-width);
+            margin-right: calc(#{$i} * #{$grid-col-fixed-width});
             margin-left: auto;
         }
     }
@@ -32,7 +32,7 @@
         $name: #{nth($breakpoint, 1)};
         @for $j from 1 through $grid-columns-fixed {
             .#{$css-prefix}col-offset-fixed-#{$name}-#{$j}[dir="rtl"] {
-                margin-right: calc($j * $grid-col-fixed-width);
+                margin-right: calc(#{$j} * #{$grid-col-fixed-width});
                 margin-left: auto;
             }
         }

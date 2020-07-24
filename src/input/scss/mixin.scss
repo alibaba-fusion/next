@@ -23,7 +23,7 @@
     }
     input {
         height: calc(#{$height} - #{$input-border-width} * 2);
-        line-height: calc((#{$height} - #{$input-border-width}*2)\0); // ie9 support
+        line-height: calc((#{$height} - #{$input-border-width}*2))\0; // ie9 support
         padding: 0 $padding;
         font-size: $fontSize;
         &::placeholder {
@@ -129,7 +129,7 @@
 ) {
     height: $height;
     input {
-        height: $height - $borderWidth*2;
-        line-height: ($height - $borderWidth*2)\0; // ie9 support
+        height: calc(#{$height} - #{$borderWidth} * 2);
+        line-height: calc(#{$height} - #{$borderWidth} * 2)\0; // ie9 support
     }
 }
