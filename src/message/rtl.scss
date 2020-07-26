@@ -7,7 +7,7 @@
 
     &.#{$css-prefix}medium {
         .#{$css-prefix}message-title {
-            padding: 0 $message-size-m-title-content-padding-left + $message-size-m-icon 0 $message-size-m-title-content-padding-right;
+            padding: 0 calc(#{$message-size-m-title-content-padding-left} + #{$message-size-m-icon}) 0 $message-size-m-title-content-padding-right;
         }
         .#{$css-prefix}message-close {
             left: $message-size-m-close-right;
@@ -17,7 +17,7 @@
 
     &.#{$css-prefix}large {
         .#{$css-prefix}message-title {
-            padding: 0 $message-size-l-title-content-padding-left + $message-size-l-icon 0 $message-size-l-title-content-padding-right;
+            padding: 0 calc(#{$message-size-l-title-content-padding-left} + #{$message-size-l-icon}) 0 $message-size-l-title-content-padding-right;
         }
         .#{$css-prefix}message-close {
             left: $message-size-l-close-right;

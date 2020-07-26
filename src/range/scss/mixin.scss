@@ -248,32 +248,32 @@
 ) {
     .#{$css-prefix}range-track {
         height: $trackHeight;
-        margin-top: -$trackHeight/2;
+        margin-top: calc(0px - #{$trackHeight} / 2);
     }
 
     .#{$css-prefix}range-selected {
         height: $trackHeight;
-        margin-top: -$trackHeight/2;
+        margin-top: calc(0px - #{$trackHeight} / 2);
     }
 
     .#{$css-prefix}range-frag {
-        margin-top: -$trackHeight/2;
+        margin-top: calc(0px - #{$trackHeight} / 2);
         height: $sliderHW;
     }
 
     .#{$css-prefix}range-slider {
         height: $sliderHW;
         width: $sliderHW;
-        margin-top: -$sliderHW/2;
-        margin-left: -$sliderHW/2;
+        margin-top: calc(0px - #{$sliderHW} / 2);
+        margin-left: calc(0px - #{$sliderHW} / 2);
         box-shadow: $sliderShadow;
     }
 
     .#{$css-prefix}range-slider-inner {
         height: $sliderHW;
         width: $sliderHW;
-        margin-top: -$sliderHW/2;
-        margin-left: -$sliderHW/2;
+        margin-top: calc(0px - #{$sliderHW} / 2);
+        margin-left: calc(0px - #{$sliderHW} / 2);
     }
 
     .#{$css-prefix}range-mark {

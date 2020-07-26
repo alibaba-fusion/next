@@ -11,7 +11,7 @@
     }
 
     #{$search-prefix}-input {
-        @include input-height(calc(#{$height} - #{$border-width}*2), 0);
+        @include input-height(calc(#{$height} - #{$border-width}*2), 0px);
         overflow-y: hidden;
     }
 
