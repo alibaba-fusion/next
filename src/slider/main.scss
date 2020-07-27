@@ -121,30 +121,30 @@
             button {
                 cursor: pointer;
                 border-width: $slick-dots-border-width;
-                border-color: rgba($slick-dots-border-color-normal, $slick-dots-border-opacity-normal);
+                border-color: rgba(getCompilingValue($slick-dots-border-color-normal), getCompilingValue($slick-dots-border-opacity-normal));
                 border-style: solid;
                 outline: none;
                 padding: 0;
                 height: $slick-dots-height;
                 width: $slick-dots-width;
                 border-radius: $slick-dots-border-radius;
-                background: rgba($slick-dots-background-color-normal, $slick-dots-background-opacity-normal);
+                background: rgba(getCompilingValue($slick-dots-background-color-normal), getCompilingValue($slick-dots-background-opacity-normal));
 
                 &:hover {
-                    background-color: rgba($slick-dots-background-color-hover, $slick-dots-background-opacity-hover);
+                    background-color: rgba(getCompilingValue($slick-dots-background-color-hover), getCompilingValue($slick-dots-background-opacity-hover));
                     /* border-width: $slick-dots-border-width-hover; */
-                    border-color: rgba($slick-dots-border-color-hover, $slick-dots-border-opacity-hover);
+                    border-color: rgba(getCompilingValue($slick-dots-border-color-hover), getCompilingValue($slick-dots-border-opacity-hover));
                 }
             }
 
             & button:focus,
             & button:hover {
-                background: rgba($color-white, .5);
+                background: rgba(getCompilingValue($color-white), .5);
             }
             &.active button {
-                background: rgba($slick-dots-background-color-selected, $slick-dots-background-opacity-selected);
+                background: rgba(getCompilingValue($slick-dots-background-color-selected), getCompilingValue($slick-dots-background-opacity-selected));
                 /* border-width: $slick-dots-border-width-selected; */
-                border-color: rgba($slick-dots-border-color-selected, $slick-dots-border-opacity-selected);
+                border-color: rgba(getCompilingValue($slick-dots-border-color-selected), getCompilingValue($slick-dots-border-opacity-selected));
                 animation: zoom .3s cubic-bezier(.86, 0, .07, 1);
             }
         }
@@ -200,9 +200,9 @@
             &.medium.outer {
                 @include slick-arrow-position-hoz(
                     calc((100% - #{$slick-arrow-height-m}) / 2), // top
-                    -$slick-arrow-position-lr-m, // right
+                    calc(0px - #{$slick-arrow-position-lr-m}), // right
                     null, // bottom
-                    -$slick-arrow-position-lr-m // left
+                    calc(0px - #{$slick-arrow-position-lr-m}) // left
                 );
             }
 
@@ -217,9 +217,9 @@
             &.large.outer {
                 @include slick-arrow-position-hoz(
                     calc((100% - #{$slick-arrow-height-l}) / 2),
-                    -$slick-arrow-position-lr-l,
+                    calc(0px - #{$slick-arrow-position-lr-l}),
                     null,
-                    -$slick-arrow-position-lr-l
+                    calc(0px -#{$slick-arrow-position-lr-l})
                 );
             }
         }
@@ -252,7 +252,7 @@
 
                 /* size medium & position outer */
                 &.medium.outer {
-                    @include slick-arrow-position-ver(-$slick-ver-arrow-position-tb-m, null, -$slick-ver-arrow-position-tb-m, calc((100% - #{$slick-ver-arrow-width-m}) / 2));
+                    @include slick-arrow-position-ver(calc(0px - #{$slick-ver-arrow-position-tb-m}), null, calc(0px - #{$slick-ver-arrow-position-tb-m}), calc((100% - #{$slick-ver-arrow-width-m}) / 2));
                 }
 
                 /* size large */
@@ -267,7 +267,7 @@
 
                 /* size large & position outer */
                 &.large.outer {
-                    @include slick-arrow-position-ver(-$slick-ver-arrow-position-tb-l, null, -$slick-ver-arrow-position-tb-l, calc((100% - #{$slick-ver-arrow-width-l}) / 2));
+                    @include slick-arrow-position-ver(calc(0px - #{$slick-ver-arrow-position-tb-l}), null, calc(0px - #{$slick-ver-arrow-position-tb-l}), calc((100% - #{$slick-ver-arrow-width-l}) / 2));
                 }
             }
         }
