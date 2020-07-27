@@ -89,7 +89,7 @@
     $iconSize,
     $className
 ) {
-    @if getCompilingValue($fontSize) > getCompilingValue($iconSize) {
+    @if get-compiling-value($fontSize) > get-compiling-value($iconSize) {
         .#{$css-prefix}message-symbol {
             line-height: $fontSize;
         }

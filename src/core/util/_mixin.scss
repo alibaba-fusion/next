@@ -399,7 +399,7 @@
 }
 
 @mixin icon-size($size, $marginLeft: false, $marginRight: false, $transform: false) {
-    $size: getCompilingValue($size);
+    $size: get-compiling-value($size);
     @if ($transform) {
         transform: $transform;
     }
@@ -447,7 +447,7 @@
 }
 
 @mixin icon-square-size($size, $marginTop: false, $marginRight: false, $marginBottom: false, $marginLeft: false, $transform: false) {
-    $size: getCompilingValue($size);
+    $size: get-compiling-value($size);
     @if ($transform) {
         transform: $transform;
     }

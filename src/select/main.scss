@@ -289,7 +289,7 @@
     }
 
     &.#{$css-prefix}active {
-        @if getCompilingValue($select-unfold-icon-content) != getCompilingValue($icon-reset) {
+        @if get-compiling-value($select-unfold-icon-content) != get-compiling-value($icon-reset) {
             #{$select-prefix}-symbol-fold::before {
                 content: $select-unfold-icon-content;
             }

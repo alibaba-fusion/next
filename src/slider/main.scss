@@ -121,30 +121,30 @@
             button {
                 cursor: pointer;
                 border-width: $slick-dots-border-width;
-                border-color: rgba(getCompilingValue($slick-dots-border-color-normal), getCompilingValue($slick-dots-border-opacity-normal));
+                border-color: rgba(get-compiling-value($slick-dots-border-color-normal), get-compiling-value($slick-dots-border-opacity-normal));
                 border-style: solid;
                 outline: none;
                 padding: 0;
                 height: $slick-dots-height;
                 width: $slick-dots-width;
                 border-radius: $slick-dots-border-radius;
-                background: rgba(getCompilingValue($slick-dots-background-color-normal), getCompilingValue($slick-dots-background-opacity-normal));
+                background: rgba(get-compiling-value($slick-dots-background-color-normal), get-compiling-value($slick-dots-background-opacity-normal));
 
                 &:hover {
-                    background-color: rgba(getCompilingValue($slick-dots-background-color-hover), getCompilingValue($slick-dots-background-opacity-hover));
+                    background-color: rgba(get-compiling-value($slick-dots-background-color-hover), get-compiling-value($slick-dots-background-opacity-hover));
                     /* border-width: $slick-dots-border-width-hover; */
-                    border-color: rgba(getCompilingValue($slick-dots-border-color-hover), getCompilingValue($slick-dots-border-opacity-hover));
+                    border-color: rgba(get-compiling-value($slick-dots-border-color-hover), get-compiling-value($slick-dots-border-opacity-hover));
                 }
             }
 
             & button:focus,
             & button:hover {
-                background: rgba(getCompilingValue($color-white), .5);
+                background: rgba(get-compiling-value($color-white), .5);
             }
             &.active button {
-                background: rgba(getCompilingValue($slick-dots-background-color-selected), getCompilingValue($slick-dots-background-opacity-selected));
+                background: rgba(get-compiling-value($slick-dots-background-color-selected), get-compiling-value($slick-dots-background-opacity-selected));
                 /* border-width: $slick-dots-border-width-selected; */
-                border-color: rgba(getCompilingValue($slick-dots-border-color-selected), getCompilingValue($slick-dots-border-opacity-selected));
+                border-color: rgba(get-compiling-value($slick-dots-border-color-selected), get-compiling-value($slick-dots-border-opacity-selected));
                 animation: zoom .3s cubic-bezier(.86, 0, .07, 1);
             }
         }
