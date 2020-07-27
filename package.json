@@ -62,7 +62,7 @@
     "eslint": "eslint '@(src|scripts)/**/*.@(js|jsx)' && eslint --fix 'docs/**/@(demo|theme)/*.@(md)'",
     "tslint": "tsc",
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
-    "stylelint": "stylelint --fix 'src/**/*.@(css|scss)'",
+    "stylelint": "stylelint --fix 'src/!(core-temp)/*.@(css|scss)'",
     "changelog": "node ./scripts/changelog.js",
     "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
@@ -176,7 +176,7 @@
     "sinon": "^5.0.10",
     "solarlunar": "^2.0.7",
     "style-loader": "^0.18.2",
-    "stylelint": "^9.10.1",
+    "stylelint": "^13.0.0",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-scss": "^3.1.1",
     "tslint": "^5.18.0",
