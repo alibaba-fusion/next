@@ -33,7 +33,7 @@ const compileScss = function(all, s1, basePath, entry) {
         output.replace(/.*theScssCompileResultIwant{color:(.*)}/ig, (_, compileValue) => {
             cssval = compileValue;
             const temp = `${s1.replace('$', '--')}: ${compileValue};\n`
-            console.log(`${all}\n${temp}`);
+            logger.info(`${all}\n${temp}`);
         });
     } catch (error) {
         logger.error('[!]Error in :', error);

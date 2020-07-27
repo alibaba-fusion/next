@@ -29,7 +29,7 @@ module.exports = function() {
 
         // write style2.js
         fs.outputFileSync(path.join(libBasePath, 'style2.js'), libJsContent);
-        fs.outputFileSync(path.join(libBasePath, 'style2.js'), esJsContent);
+        fs.outputFileSync(path.join(esBasePath, 'style2.js'), esJsContent);
 
         // write varaible.css
         try {
@@ -50,7 +50,7 @@ module.exports = function() {
         const mainScssContent = fs.readFileSync(path.join(srcBasePath, 'main.scss'), 'utf8');
         // 这里要把 main.scss 中，对core的引用换成core-temp、把对variable.scss的引用换成scss-var-to-css-var.scss
         const mainScss2 = mainScssContent
-            .replace(/\@import ["']..\/core\/index-noreset(\.scss)?["'];/gi, '@import "src/core-temp/index-noreset.scss";')
+            .replace(/@import ["']..\/core\/index-noreset(\.scss)?["'];/gi, '@import "src/core-temp/index-noreset.scss";')
             .replace(/scss\/variable(\.scss)?/gi, `scss/scss-var-to-css-var.scss`);
 
         if (!mainScss2) {

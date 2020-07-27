@@ -13,7 +13,6 @@ module.exports = function() {
 
         const newPath = cPath.replace('src', 'lib').replace('core-temp', 'core2').replace('-def-default.css', '.css');
 
-        console.log(cPath, newPath)
         fs.outputFileSync(
             newPath,
             cContent
