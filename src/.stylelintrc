@@ -13,6 +13,6 @@
         "no-descending-specificity": null,
         "font-family-no-missing-generic-family-keyword": null,
         "no-empty-source": null,
-        "length-zero-no-unit": false,
+        "length-zero-no-unit": null,
     }
 }
