@@ -196,7 +196,7 @@
     &-multiple, &-tag {
         #{$select-prefix}-values {
             /* Tag 有 3px 的 margin-bottom，所以包裹 Tag 的容器要作一下处理 */
-            margin-bottom: -$select-tag-spacing-tb;
+            margin-bottom: calc(0px - #{$select-tag-spacing-tb});
             height: auto !important;
         }
 
@@ -223,14 +223,14 @@
             }
             #{$tag-prefix} {
                 border: 0;
-                @include select-tag-size($select-s-lineheight, -1);
+                @include select-tag-size($select-s-lineheight, calc(0px - 1px));
 
                 &-body {
                     line-height: $select-s-lineheight;
                 }
             }
             .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
-                line-height: $form-element-small-height - 2;
+                line-height: calc(#{$form-element-small-height} - 2px);
             }
         }
 
@@ -245,7 +245,7 @@
                 @include select-tag-size($select-m-lineheight);
             }
             .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
-                line-height: $form-element-medium-height - 2;
+                line-height: calc(#{$form-element-medium-height} - 2px);
             }
         }
 
@@ -260,7 +260,7 @@
                 @include select-tag-size($select-l-lineheight);
             }
             .#{$css-prefix}input-label, .#{$css-prefix}input-control, #{$select-prefix}-tag-compact {
-                line-height: $form-element-large-height - 2;
+                line-height: calc(#{$form-element-large-height} - 2px);
             }
         }
     }
@@ -289,7 +289,7 @@
     }
 
     &.#{$css-prefix}active {
-        @if $select-unfold-icon-content != $icon-reset {
+        @if getCompilingValue($select-unfold-icon-content) != getCompilingValue($icon-reset) {
             #{$select-prefix}-symbol-fold::before {
                 content: $select-unfold-icon-content;
             }
