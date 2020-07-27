@@ -10,7 +10,7 @@
 ) {
     $padding-tb: calc((#{$height} - #{$lineHeight} - 2px) / 2);
 
-    min-height: $height - 2;
+    min-height: calc(#{$height} - 2px);
     padding-top: $padding-tb;
     padding-bottom: $padding-tb;
     line-height: $lineHeight;
