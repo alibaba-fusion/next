@@ -37,23 +37,23 @@ async function run() {
     logger.info('> [Component]generate css-var files (style2.js / varaible.css / index.css )...');
     generateCssEntry();
 
-    // logger.info('> generate api...');
-    // generateApi();
+    logger.info('> generate api...');
+    generateApi();
 
-    // logger.info('> export-api-schema...');
-    // exportApiSchema(options);
+    logger.info('> export-api-schema...');
+    exportApiSchema(options);
 
     const libPath = path.join(cwd, 'lib');
     const esPath = path.join(cwd, 'es');
 
     fs.removeSync(path.join(libPath, 'demo-helper'));
     fs.removeSync(path.join(esPath, 'demo-helper'));
-    // fs.removeSync(path.join(libPath, 'core-temp'));
-    // fs.removeSync(path.join(esPath, 'core-temp'));
-    // fs.removeSync(path.join(cwd, 'src/core-temp'));
+    fs.removeSync(path.join(libPath, 'core-temp'));
+    fs.removeSync(path.join(esPath, 'core-temp'));
+    fs.removeSync(path.join(cwd, 'src/core-temp'));
 
-    // const tempPaths = glob.sync(path.join(cwd, '@(lib|es)', '*', 'scss/@(scss-var-to-css-var|css-var-def-default).scss'));
-    // tempPaths.forEach(p => fs.removeSync(p));
+    const tempPaths = glob.sync(path.join(cwd, '@(lib|es)', '*', 'scss/@(scss-var-to-css-var|css-var-def-default).scss'));
+    tempPaths.forEach(p => fs.removeSync(p));
 
     logger.success('Run build successfully!');
 }
