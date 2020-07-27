@@ -263,7 +263,7 @@
                 }
                 .#{$css-prefix}progress-line-overlay {
                     height: $upload-image-list-progressbar-height;
-                    margin-top: - ($upload-image-list-progressbar-height / 2);
+                    margin-top: calc(0px - (#{$upload-image-list-progressbar-height} / 2));
                 }
             }
         }
@@ -335,7 +335,7 @@
         }
 
         &-handler {
-            margin-top: ($upload-card-size - 74) / 2;
+            margin-top: calc((#{$upload-card-size} - 74px) / 2);
             .#{$css-prefix}icon-cry {
                 margin-top: 10px;
             }
@@ -366,7 +366,7 @@
             .#{$css-prefix}progress-line-overlay {
                 border-radius: 0;
                 height: $upload-card-list-progressbar-height;
-                margin-top: - ($upload-card-list-progressbar-height / 2);
+                margin-top: calc(0px - #{($upload-card-list-progressbar-height / 2)});
             }
         }
 

@@ -166,7 +166,7 @@
         /* dots 位于右侧垂直位置 */
         &.ver {
             @include slick-dots-position(
-                $slick-dots-width + 4 * 2,
+                calc(#{$slick-dots-width} + 4 * 2),
                 $slick-dots-position-right,
                 'ver'
             );
@@ -219,7 +219,7 @@
                     calc((100% - #{$slick-arrow-height-l}) / 2),
                     calc(0px - #{$slick-arrow-position-lr-l}),
                     null,
-                    calc(0px -#{$slick-arrow-position-lr-l})
+                    calc(0px - #{$slick-arrow-position-lr-l})
                 );
             }
         }

@@ -165,7 +165,7 @@
                 position: absolute;
                 & > #{$step-prefix}-item-title {
                     font-size: $step-circle-item-title-size;
-                    line-height: $step-circle-item-title-size + 4;
+                    line-height: calc(#{$step-circle-item-title-size} + 4px);
                     margin-top: $step-circle-item-title-margin-top;
                     font-weight: $step-circle-item-title-weight;
                 }
@@ -201,7 +201,7 @@
                 position: absolute;
                 & > #{$step-prefix}-item-title {
                     font-size: $step-dot-item-title-size;
-                    line-height: $step-dot-item-title-size + 4;
+                    line-height: calc(#{$step-dot-item-title-size} + 4px);
                     margin-top: $step-dot-item-title-margin-top;
                     font-weight: $step-dot-item-title-weight;
                 }
@@ -247,7 +247,7 @@
                     min-height: $s-2;
                     text-align: left;
                     font-size: $step-circle-item-content-font-size;
-                    line-height: $step-circle-item-content-font-size + 4;
+                    line-height: calc(#{$step-circle-item-content-font-size} + 4px);
                 }
             }
         }
@@ -286,7 +286,7 @@
                     min-height: $s-2;
                     text-align: left;
                     font-size: $step-dot-item-content-font-size;
-                    line-height: $step-dot-item-content-font-size + 4;
+                    line-height: calc(#{$step-dot-item-content-font-size} + 4px);
                 }
             }
         }

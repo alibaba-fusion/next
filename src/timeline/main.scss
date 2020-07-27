@@ -23,7 +23,7 @@
         padding-top: $timeline-item-folder-margin-top;
         padding-bottom: $timeline-item-folder-margin-bottom;
         font-size: $timeline-item-folder-font-size;
-        line-height: $timeline-item-folder-font-size + 4;
+        line-height: calc(#{$timeline-item-folder-font-size} + 4px);
         position: relative;
         /* min-height: auto !important; */
     }

@@ -35,10 +35,10 @@
             font-size: $timeline-item-custom-node-font-size;
             word-break: break-all;
             @if $direction == 'rtl' {
-                margin-right: calc(0 - #{($timeline-item-custom-node-size - $timeline-item-node-size) / 2});
+                margin-right: calc(0px - (#{$timeline-item-custom-node-size} - #{$timeline-item-node-size}) / 2);
                 margin-left: 0;
             } @else {
-                margin-left: calc(0 - #{($timeline-item-custom-node-size - $timeline-item-node-size) / 2});
+                margin-left: calc(0px - (#{$timeline-item-custom-node-size} - #{$timeline-item-node-size}) / 2);
             }
             line-height: 1;
         }
