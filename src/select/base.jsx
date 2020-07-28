@@ -113,9 +113,17 @@ export default class Base extends React.Component {
          */
         filter: PropTypes.func,
         /**
+         * 默认高亮的 key，不要和 autoHighlightFirstItem 同时使用
+         */
+        defaultHighlightKey: PropTypes.string,
+        /**
          * 键盘上下键切换菜单高亮选项的回调
          */
         onToggleHighlightItem: PropTypes.func,
+        /**
+         * 自动高亮第一个元素
+         */
+        autoHighlightFirstItem: PropTypes.bool,
         /**
          * 是否开启虚拟滚动模式
          */
@@ -139,10 +147,6 @@ export default class Base extends React.Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
-        /**
-         * 自动高亮第一个元素
-         */
-        autoHighlightFirstItem: PropTypes.bool,
         showDataSourceChildren: PropTypes.bool,
     };
 
@@ -162,6 +166,7 @@ export default class Base extends React.Component {
         locale: zhCN.Select,
         autoHighlightFirstItem: true,
         showDataSourceChildren: true,
+        defaultHighlightKey: null,
     };
 
     constructor(props) {
@@ -179,8 +184,7 @@ export default class Base extends React.Component {
             visible: 'visible' in props ? props.visible : props.defaultVisible,
             dataSource: this.setDataSource(this.props),
             width: 100,
-            // current highlight key
-            highlightKey: null,
+            highlightKey: props.defaultHighlightKey,
             srReader: '',
         };
 
