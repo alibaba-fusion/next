@@ -160,31 +160,31 @@
 
 @include keyframes(nextVectorRoute) {
     0% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 0));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 0));
     }
     5% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 1));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 1));
     }
     25% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 1));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 1));
     }
     30% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 2));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 2));
     }
     50% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 2));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 2));
     }
     55% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 3));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 3));
     }
     75% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 3));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 3));
     }
     80% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 4));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 4));
     }
     100% {
-        @include transform(rotate(#{$loading-fusion-vector-rotation-step} * 4));
+        @include transform(rotate(get-compiling-value($loading-fusion-vector-rotation-step) * 4));
     }
 }
 
