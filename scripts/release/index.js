@@ -83,6 +83,8 @@ function checkFiles() {
         'dist/next-noreset.min.css',
         'dist/next.min-1.css',
         'dist/next.min-2.css',
+        'dist/next.var.css',
+        'dist/next.var.min.css',
         'dist/next-with-locales.js',
         'dist/next-with-locales.min.js',
         'es/index.js',
