@@ -114,8 +114,8 @@
             }
 
             .#{$css-prefix}input {
-                border-top-left-radius: $search-normal-corner - $search-normal-primary-border-width;
-                border-bottom-left-radius: $search-normal-corner - $search-normal-primary-border-width;
+                border-top-left-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
+                border-bottom-left-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
             }
         }
 
@@ -151,8 +151,8 @@
             }
 
             .#{$css-prefix}input {
-                border-top-left-radius: $search-normal-corner - $search-normal-secondary-border-width;
-                border-bottom-left-radius: $search-normal-corner - $search-normal-secondary-border-width;
+                border-top-left-radius: calc(#{$search-normal-corner} - #{$search-normal-secondary-border-width});
+                border-bottom-left-radius: calc(#{$search-normal-corner} - #{$search-normal-secondary-border-width});
             }
         }
 
@@ -188,8 +188,8 @@
             }
 
             .#{$css-prefix}input {
-                border-top-left-radius: $search-normal-corner - $search-normal-normal-border-width;
-                border-bottom-left-radius: $search-normal-corner - $search-normal-normal-border-width;
+                border-top-left-radius: calc(#{$search-normal-corner} - #{$search-normal-normal-border-width});
+                border-bottom-left-radius: calc(#{$search-normal-corner} - #{$search-normal-normal-border-width});
             }
         }
 
