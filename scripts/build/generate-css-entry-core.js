@@ -49,8 +49,7 @@ module.exports = function() {
 `;
     fs.outputFileSync(path.join(cwd, 'lib/core2/index-noreset.css'), indexNoresetContent);
 
-    const resetContent = `/* Style */
-@import "./index-noreset.css";
+    const resetContent = `
 /* Base */
 @import "./base/_normalize.css";
 @import "./base/_reset.css";
