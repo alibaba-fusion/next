@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { ButtonProps } from '../button';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -118,12 +119,12 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 增加按钮的props
      */
-    upBtnProps?: {};
+    upBtnProps?: ButtonProps;
 
     /**
      * 减少按钮的props
      */
-    downBtnProps?: {};
+    downBtnProps?: ButtonProps;
 }
 
 export default class NumberPicker extends React.Component<

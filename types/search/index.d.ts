@@ -200,7 +200,7 @@ export interface SearchProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选择器的props
      */
-    filterProps?: {};
+    filterProps?: any;
 
     /**
      * 按钮的额外属性

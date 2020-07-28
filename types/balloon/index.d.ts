@@ -208,7 +208,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 配置动画的播放方式
      */
-    animation?: {} | boolean;
+    animation?: any | boolean;
 
     /**
      * 弹层的dom节点关闭时是否删除

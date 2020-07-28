@@ -3,6 +3,7 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
+import { TreeProps } from '../tree';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -78,7 +79,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时触发的回调函数
      */
-    onChange?: (value: string | Array<any>, data: {} | Array<any>) => void;
+    onChange?: (value: string | Array<any>, data: any | Array<any>) => void;
 
     /**
      * 是否显示搜索框
@@ -133,7 +134,7 @@ export interface TreeSelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 透传到 Tree 的属性对象
      */
-    treeProps?: {};
+    treeProps?: TreeProps;
 
     /**
      * 初始下拉框是否显示

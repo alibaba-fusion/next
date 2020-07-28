@@ -58,6 +58,6 @@ export default class ConfigProvider extends React.Component<
     ConfigProviderProps,
     any
 > {
-    static config(Component: any, options?: {}): any;
+    static config(Component: any, options?: any): any;
     static getContextProps(props: {}, displayName: string): {};
 }

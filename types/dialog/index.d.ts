@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { ButtonProps } from '../button';
+import { OverlayProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
@@ -45,22 +47,22 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 在点击确定按钮时触发的回调函数
      */
-    onOk?: (event: {}) => void;
+    onOk?: (event: React.MouseEvent) => void;
 
     /**
      * 在点击取消按钮时触发的回调函数
      */
-    onCancel?: (event: {}) => void;
+    onCancel?: (event: React.MouseEvent) => void;
 
     /**
      * 应用于确定按钮的属性对象
      */
-    okProps?: {};
+    okProps?: ButtonProps;
 
     /**
      * 应用于取消按钮的属性对象
      */
-    cancelProps?: {};
+    cancelProps?: ButtonProps;
 
     /**
      * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
@@ -77,7 +79,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 对话框关闭时触发的回调函数
      */
-    onClose?: (trigger: string, event: {}) => void;
+    onClose?: (trigger: string, event: React.MouseEvent) => void;
 
     /**
      * 对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发
@@ -92,7 +94,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 显示隐藏时动画的播放方式
      */
-    animation?: {} | boolean;
+    animation?: any | boolean;
 
     /**
      * 对话框弹出时是否自动获得焦点
@@ -122,7 +124,7 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 透传到弹层组件的属性对象
      */
-    overlayProps?: {};
+    overlayProps?: OverlayProps;
 
     /**
      * 自定义国际化文案对象
