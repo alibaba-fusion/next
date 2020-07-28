@@ -3,6 +3,7 @@ import { Moment } from 'moment';
 import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
+import { InputProps } from '../input';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -59,7 +60,7 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 日期值改变时的回调
      */
-    onChange?: (value: {} | string) => void;
+    onChange?: (value: any | string) => void;
 
     /**
      * 输入框尺寸
@@ -124,12 +125,12 @@ export interface MonthPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 自定义月份渲染函数
      */
-    monthCellRender?: (calendarDate: {}) => React.ReactNode;
+    monthCellRender?: (calendarDate: any) => React.ReactNode;
 
     /**
      * 日期输入框的 aria-label 属性
@@ -178,7 +179,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否使用时间控件，支持传入 TimePicker 的属性
      */
-    showTime?: {} | boolean;
+    showTime?: any | boolean;
 
     /**
      * 每次选择是否重置时间（仅在 showTime 开启时有效）
@@ -278,7 +279,7 @@ export interface RangePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 自定义日期单元格渲染
@@ -423,7 +424,7 @@ export interface YearPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 日期输入框的 aria-label 属性
@@ -477,7 +478,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
      */
-    showTime?: {} | boolean;
+    showTime?: any | boolean;
 
     /**
      * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
@@ -567,7 +568,7 @@ export interface DatePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框其他属性
      */
-    inputProps?: {};
+    inputProps?: InputProps;
 
     /**
      * 自定义日期渲染函数

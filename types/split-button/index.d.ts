@@ -1,10 +1,10 @@
 /// <reference types="react" />
 
 import * as React from 'react';
+import { Item, Group, Divider, MenuProps } from '../menu';
 import CommonProps from '../util';
 import { ButtonProps } from '../button';
 import { PopupProps } from '../overlay';
-import { MenuProps } from '../menu';
 
 interface HTMLAttributesWeak extends ButtonProps {
     onSelect?: any;
@@ -39,12 +39,12 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 默认激活的菜单项（用法同 Menu 非受控）
      */
-    defaultSelectedKeys?: Array<string>;
+    defaultSelectedKeys?: string[];
 
     /**
      * 激活的菜单项（用法同 Menu 受控）
      */
-    selectedKeys?: Array<string>;
+    selectedKeys?: string[];
 
     /**
      * 菜单的选择模式
@@ -52,19 +52,9 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     selectMode?: 'single' | 'multiple';
 
     /**
-     * 选择菜单项时的回调，参考 Menu
-     */
-    onSelect?: () => void;
-
-    /**
-     * 点击菜单项时的回调，参考 Menu
-     */
-    onItemClick?: () => void;
-
-    /**
      * 触发按钮的属性（支持 Button 的所有属性透传）
      */
-    triggerProps?: {};
+    triggerProps?: ButtonProps;
 
     /**
      * 弹层菜单的宽度是否与按钮组一致
@@ -112,6 +102,16 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     popupProps?: PopupProps;
 
     /**
+     * 点击菜单项后的回调，同 Menu
+     */
+    onItemClick?: (key: string, item: any, event: React.MouseEvent<HTMLElement>) => void;
+
+    /**
+     * 选择菜单后的回调，同 Menu
+     */
+    onSelect?: (selectedKeys: Array<any>, item: any, extra: any) => void;
+
+    /**
      * 透传给 Menu 的属性
      */
     menuProps?: MenuProps;
@@ -122,7 +122,8 @@ export interface SplitButtonProps extends HTMLAttributesWeak, CommonProps {
     leftButtonProps?: ButtonProps;
 }
 
-export default class SplitButton extends React.Component<
-    SplitButtonProps,
-    any
-> {}
+export default class SplitButton extends React.Component<SplitButtonProps, any> {
+    static Item: typeof Item;
+    static Group: typeof Group;
+    static Divider: typeof Divider;
+}

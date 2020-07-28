@@ -7,7 +7,7 @@ export interface AnimateProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 动画 className
      */
-    animation?: string | {};
+    animation?: string | any;
 
     /**
      * 子元素第一次挂载时是否执行动画
