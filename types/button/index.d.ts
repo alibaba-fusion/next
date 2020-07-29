@@ -53,7 +53,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 设置标签类型
      */
-    component?: 'button' | 'a';
+    component?: 'button' | 'a' | React.ReactNode;
 
     /**
      * 设置按钮的载入状态
@@ -83,7 +83,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击按钮的回调
      */
-    onClick?: (e: {}) => void;
+    onClick?: React.MouseEventHandler;
 
     /**
      * 在Button组件使用component属性值为a时有效，代表链接页面的URL

@@ -59,6 +59,7 @@ It will tell his children whether it's collapse or not by `isCollapse` via Conte
 | direction  | header or asider<br><br>**option**:<br>'hoz', 'ver'    | Enum         |  hoz    |
 | align      | Arrangement of Navigation when direction is hoz<br><br>**option**:<br>'left', 'right', 'center'   | Enum        |  right  |
 | onCollapseChange   | this will be triggered when collapse changed by inner icon   | Function        | () => {}   |
+| trigger   | trigger of Shell.Navigation, it placed on top and left of the page, you can set `null` to remove it    | ReactNode         |      |
 | fixed   | fixed or not, only worked when Shell fixedHeader is true   | Boolean         | false     |
 
 ### Shell.LocalNavigation

@@ -135,4 +135,4 @@
 
 ## 复杂表单场景
 
-如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [uform](https://github.com/alibaba/uform)，uform已经封装了所有fusion组件，保证您开箱即用
+如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [formily](https://github.com/alibaba/formily)，formily已经封装了所有fusion组件，保证您开箱即用

@@ -310,6 +310,19 @@ describe('Tab', () => {
             );
         });
 
+        it('should not change tabs with keyboard when keyboard event is disabled', () => {
+            wrapper = mount(<Tab disableKeyboard>{panes}</Tab>);
+            wrapper
+                .find('.next-tabs-tab.active')
+                .simulate('keyDown', { keyCode: KEYCODE.RIGHT });
+            assert(
+                wrapper
+                    .find('.next-tabs-tab')
+                    .at(0)
+                    .hasClass('active')
+            );
+        });
+
         it('should render with closeable tabs', () => {
             let tabKey;
             wrapper = mount(

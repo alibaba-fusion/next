@@ -56,6 +56,7 @@
 | animation           | 是否开启展开收起动画                                                                                                                                                                                                                                                                                                                                                                                                       | Boolean                 | true       |
 | focusedKey          | 当前获得焦点的子菜单或菜单项 key 值                                                                                                                                                                                                                                                                                                                                                                                             | String                  | -          |
 | renderChildNodes    | 渲染子节点<br><br>**签名**:<br>Function(nodes: Array) => ReactNode<br>**参数**:<br>_nodes_: {Array} 所有的子节点<br>**返回值**:<br>{ReactNode} 返回节点<br>                                                                                                                                                                                                                                                                            | Function                | -          |
+| useVirtual          | 是否开启虚拟滚动                                                                                                                                                                                                                                                                                                                                                                                                         | Boolean                 | false      |
 
 ### Tree.Node
 
@@ -69,7 +70,7 @@
 | draggable        | 单独设置是否支持拖拽，覆盖 Tree 的 draggable  | Boolean   | -     |
 | disabled         | 是否禁止节点响应                        | Boolean   | false |
 | checkboxDisabled | 是否禁止勾选节点复选框                     | Boolean   | false |
-| isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | false |
+| isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | -     |
 
 <!-- api-extra-start -->
 

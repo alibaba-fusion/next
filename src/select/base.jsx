@@ -107,12 +107,23 @@ export default class Base extends React.Component {
         filterLocal: PropTypes.bool,
         /**
          * 本地过滤方法，返回一个 Boolean 值确定是否保留
+         * @param {String} key 搜索关键字
+         * @param {Object} item 渲染节点的item
+         * @return {Boolean} 是否匹配
          */
         filter: PropTypes.func,
+        /**
+         * 默认高亮的 key，不要和 autoHighlightFirstItem 同时使用
+         */
+        defaultHighlightKey: PropTypes.string,
         /**
          * 键盘上下键切换菜单高亮选项的回调
          */
         onToggleHighlightItem: PropTypes.func,
+        /**
+         * 自动高亮第一个元素
+         */
+        autoHighlightFirstItem: PropTypes.bool,
         /**
          * 是否开启虚拟滚动模式
          */
@@ -136,10 +147,7 @@ export default class Base extends React.Component {
          * @param {number} value 评分值
          */
         renderPreview: PropTypes.func,
-        /**
-         * 自动高亮第一个元素
-         */
-        autoHighlightFirstItem: PropTypes.bool,
+        showDataSourceChildren: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -157,6 +165,8 @@ export default class Base extends React.Component {
         },
         locale: zhCN.Select,
         autoHighlightFirstItem: true,
+        showDataSourceChildren: true,
+        defaultHighlightKey: null,
     };
 
     constructor(props) {
@@ -165,6 +175,7 @@ export default class Base extends React.Component {
         this.dataStore = new DataStore({
             filter: props.filter,
             filterLocal: props.filterLocal,
+            showDataSourceChildren: props.showDataSourceChildren,
         });
 
         this.state = {
@@ -173,8 +184,7 @@ export default class Base extends React.Component {
             visible: 'visible' in props ? props.visible : props.defaultVisible,
             dataSource: this.setDataSource(this.props),
             width: 100,
-            // current highlight key
-            highlightKey: null,
+            highlightKey: props.defaultHighlightKey,
             srReader: '',
         };
 
@@ -197,10 +207,7 @@ export default class Base extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (
-            prevProps.label !== this.props.label ||
-            prevState.value !== this.state.value
-        ) {
+        if (prevProps.label !== this.props.label || prevState.value !== this.state.value) {
             this.syncWidth();
         }
     }
@@ -216,10 +223,7 @@ export default class Base extends React.Component {
      */
     syncWidth() {
         const { popupStyle, popupProps } = this.props;
-        if (
-            (popupStyle && 'width' in popupStyle) ||
-            (popupProps && popupProps.style && 'width' in popupProps.style)
-        ) {
+        if ((popupStyle && 'width' in popupStyle) || (popupProps && popupProps.style && 'width' in popupProps.style)) {
             return;
         }
 
@@ -298,10 +302,7 @@ export default class Base extends React.Component {
         }
 
         // 设置高亮 item key
-        if (
-            this.dataStore.getMenuDS().length &&
-            this.dataStore.getEnableDS().length
-        ) {
+        if (this.dataStore.getMenuDS().length && this.dataStore.getEnableDS().length) {
             const highlightKey = `${this.dataStore.getEnableDS()[0].value}`;
             this.setState({
                 highlightKey,
@@ -385,9 +386,7 @@ export default class Base extends React.Component {
         this.highlightTimer = setTimeout(() => {
             try {
                 const menuNode = findDOMNode(this.menuRef);
-                const itemNode = menuNode.querySelector(
-                    `.${prefix}select-menu-item.${prefix}focused`
-                );
+                const itemNode = menuNode.querySelector(`.${prefix}select-menu-item.${prefix}focused`);
                 itemNode && itemNode.scrollIntoViewIfNeeded();
             } catch (ex) {
                 // I don't care...
@@ -417,14 +416,7 @@ export default class Base extends React.Component {
      * @param {object} props
      */
     renderMenu() {
-        const {
-            prefix,
-            mode,
-            locale,
-            notFoundContent,
-            useVirtual,
-            menuProps,
-        } = this.props;
+        const { prefix, mode, locale, notFoundContent, useVirtual, menuProps } = this.props;
         const { dataSource, highlightKey } = this.state;
         const value = this.state.value;
         let selectedKeys;
@@ -467,15 +459,10 @@ export default class Base extends React.Component {
             onMouseDown: preventDefault,
             className: menuClassName,
         };
-        const menuStyle = this.shouldAutoWidth()
-            ? { width: this.width }
-            : { minWidth: this.width };
+        const menuStyle = this.shouldAutoWidth() ? { width: this.width } : { minWidth: this.width };
 
         return useVirtual && children.length ? (
-            <div
-                className={`${prefix}select-menu-wrapper`}
-                style={{ position: 'relative', ...menuStyle }}
-            >
+            <div className={`${prefix}select-menu-wrapper`} style={{ position: 'relative', ...menuStyle }}>
                 <VirtualList
                     itemsRenderer={(items, ref) => {
                         return (
@@ -506,7 +493,7 @@ export default class Base extends React.Component {
      * @param {Array} dataSource
      */
     renderMenuItem(dataSource) {
-        const { prefix, itemRender } = this.props;
+        const { prefix, itemRender, showDataSourceChildren } = this.props;
         // If it has.
         let searchKey;
         if (this.isAutoComplete) {
@@ -520,7 +507,7 @@ export default class Base extends React.Component {
             if (!item) {
                 return null;
             }
-            if (Array.isArray(item.children)) {
+            if (Array.isArray(item.children) && showDataSourceChildren) {
                 return (
                     <MenuGroup key={index} label={item.label}>
                         {this.renderMenuItem(item.children)}
@@ -538,11 +525,7 @@ export default class Base extends React.Component {
                     itemProps.title = item.title;
                 }
 
-                return (
-                    <MenuItem {...itemProps}>
-                        {itemRender(item, searchKey)}
-                    </MenuItem>
-                );
+                return <MenuItem {...itemProps}>{itemRender(item, searchKey)}</MenuItem>;
             }
         });
     }
@@ -561,12 +544,12 @@ export default class Base extends React.Component {
      * 点击 arrow 或 label 的时候焦点切到 input 中
      * @override
      */
-    focusInput(...args) {
-        this.inputRef.focus(...args);
+    focusInput() {
+        this.inputRef.focus();
     }
 
     focus(...args) {
-        this.focusInput(...args);
+        this.inputRef.focus(...args);
     }
 
     beforeOpen() {
@@ -583,10 +566,7 @@ export default class Base extends React.Component {
 
     savePopupRef = ref => {
         this.popupRef = ref;
-        if (
-            this.props.popupProps &&
-            typeof this.props.popupProps.ref === 'function'
-        ) {
+        if (this.props.popupProps && typeof this.props.popupProps.ref === 'function') {
             this.props.popupProps.ref(ref);
         }
     };
@@ -620,8 +600,7 @@ export default class Base extends React.Component {
 
         const cls = classNames(
             {
-                [`${prefix}select-auto-complete-menu`]:
-                    !popupContent && this.isAutoComplete,
+                [`${prefix}select-auto-complete-menu`]: !popupContent && this.isAutoComplete,
                 [`${prefix}select-${mode}-menu`]: !popupContent && !!mode,
             },
             popupClassName || popupProps.className
@@ -658,11 +637,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={
-                                    fillProps
-                                        ? valueDS[fillProps]
-                                        : valueDS.label
-                                }
+                                value={fillProps ? valueDS[fillProps] : valueDS.label}
                             />
                         );
                     } else {
@@ -703,17 +678,11 @@ export default class Base extends React.Component {
         const Tag = popupComponent ? popupComponent : Popup;
 
         return (
-            <Tag
-                {..._props}
-                trigger={this.renderSelect()}
-                ref={this.savePopupRef}
-            >
+            <Tag {..._props} trigger={this.renderSelect()} ref={this.savePopupRef}>
                 {popupContent ? (
                     <div
                         className={`${prefix}select-popup-wrap`}
-                        style={
-                            this.shouldAutoWidth() ? { width: this.width } : {}
-                        }
+                        style={this.shouldAutoWidth() ? { width: this.width } : {}}
                     >
                         {popupContent}
                     </div>

@@ -197,22 +197,15 @@ class Upload extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? [] : [].concat(value),
+            value: !Array.isArray(value) ? [] : value,
             uploading: false,
         };
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (
-            'value' in nextProps &&
-            nextProps.value !== prevState.value &&
-            !prevState.uploading
-        ) {
+        if ('value' in nextProps && nextProps.value !== prevState.value && !prevState.uploading) {
             return {
-                value:
-                    typeof nextProps.value === 'undefined'
-                        ? []
-                        : nextProps.value,
+                value: !Array.isArray(nextProps.value) ? [] : nextProps.value,
             };
         }
 
@@ -283,9 +276,7 @@ class Upload extends Base {
      * @param files
      */
     selectFiles(files) {
-        const filesArr = files.length
-            ? Array.prototype.slice.call(files)
-            : [files];
+        const filesArr = files.length ? Array.prototype.slice.call(files) : [files];
 
         this.onSelect(filesArr);
     }
@@ -506,16 +497,8 @@ class Upload extends Base {
             });
             children = (
                 <div className={cardCls}>
-                    <Icon
-                        size="large"
-                        type="add"
-                        className={`${prefix}upload-add-icon`}
-                    />
-                    <div
-                        tabIndex="0"
-                        role="button"
-                        className={`${prefix}upload-text`}
-                    >
+                    <Icon size="large" type="add" className={`${prefix}upload-add-icon`} />
+                    <div tabIndex="0" role="button" className={`${prefix}upload-text`}>
                         {children}
                     </div>
                 </div>
@@ -537,13 +520,7 @@ class Upload extends Base {
 
             if (listType) {
                 return (
-                    <List
-                        isPreview
-                        listType={listType}
-                        style={style}
-                        className={className}
-                        value={this.state.value}
-                    />
+                    <List isPreview listType={listType} style={style} className={className} value={this.state.value} />
                 );
             }
 

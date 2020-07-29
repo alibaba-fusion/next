@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -83,7 +84,7 @@ export interface CheckboxItemProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中或取消选中触发的回调函数
      */
-    onChange?: (checked: boolean, event: {}) => void;
+    onChange?: (checked: boolean, event: React.MouseEvent<HTMLElement>) => void;
 
     /**
      * 帮助文本
@@ -161,7 +162,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击菜单项触发的回调函数
      */
-    onItemClick?: (key: string, item: {}, event: {}) => void;
+    onItemClick?: (key: string, item: any, event: React.MouseEvent) => void;
 
     /**
      * 当前打开的子菜单的 key 值
@@ -181,7 +182,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 打开或关闭子菜单触发的回调函数
      */
-    onOpen?: (key: string[], extra: {}) => void;
+    onOpen?: (key: string[], extra: { key: string; open: boolean }) => void;
 
     /**
      * 子菜单打开的模式
@@ -216,7 +217,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义 props
      */
-    popupProps?: {} | (() => void);
+    popupProps?: PopupProps | (() => void);
 
     /**
      * 弹出子菜单自定义 className
@@ -226,7 +227,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹出子菜单自定义 style
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 当前选中菜单项的 key 值
@@ -241,7 +242,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中或取消选中菜单项触发的回调函数
      */
-    onSelect?: (selectedKeys: Array<any>, item: {}, extra: {}) => void;
+    onSelect?: (selectedKeys: Array<any>, item: any, extra: { select: boolean; lable: any; keyPath: any[]; key: string[] }) => void;
 
     /**
      * 选中模式，单选还是多选，默认无值，不可选
@@ -293,6 +294,7 @@ export interface MenuProps extends HTMLAttributesWeak, CommonProps {
      * 当前获得焦点的子菜单或菜单项 key 值
      */
     focusedKey?: string;
+    renderMore?: (items?: Array<any>) => React.ReactElement;
 
     /**
      * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
@@ -311,5 +313,5 @@ export default class Menu extends React.Component<MenuProps, any> {
     static RadioItem: typeof RadioItem;
     static Group: typeof Group;
     static Divider: typeof Divider;
-    static create(props: {}): void;
+    static create(props: any): void;
 }

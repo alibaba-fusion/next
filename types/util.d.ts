@@ -13,7 +13,7 @@ export default interface CommonProps {
     /**
      * 国际化文案对象，属性为组件的 displayName
      */
-    locale?: {};
+    locale?: any;
 
     /**
      * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用

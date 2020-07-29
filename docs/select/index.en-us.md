@@ -99,11 +99,11 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | searchValue | Controlled search value, generally not set | String | - |
 | tagInline               | show in one line or not                                                                                                                                                                                                                                                    | Boolean                                | false                                             |
 | maxTagCount           | max count of tag can be show                                                                                                                                                                                                                                               | Number                                 | -                                             |
-| maxTagPlaceholder     | if selected tags' length is over maxTagCount, what to show <br><br>**签名**:<br>Function() => void                                                                                                                                                                                 | Function                               | (selected, total) => `${selected} / ${total}` |
+| maxTagPlaceholder      | if selected tags' length is over maxTagCount, what to show<br><br>**Signature**:<br>Function(selectedValues: object, totalValues: object) => void<br>**参数**:<br>_selectedValues_: {object} selected values<br>_totalValues_: {object} all values                                                   | Function                               | (selected, total) => `${selected} / ${total}`                                  |
 | onRemove | tag Delete callback <br><br><br>**Signature**:<br>Function(item: object) => void<br>**Parameters**:<br>_item_: {object} Render node's Item | Function | func.noop |
-| onFocus         | focus event<br><br>**签名**:<br>Function() => void | Function | func.noop |
-| onBlur          | blur event<br><br>**签名**:<br>Function() => void | Function | func.noop |
-| onToggleHighlightItem | callback func while highlight item changed <br><br>**签名**:<br>Function() => void | Function| func.noop |
+| onFocus         | focus event<br><br>**Signature**:<br>Function() => void | Function | func.noop |
+| onBlur          | blur event<br><br>**Signature**:<br>Function() => void | Function | func.noop |
+| onToggleHighlightItem | callback func while highlight item changed <br><br>**Signature**:<br>Function() => void | Function| func.noop |
 | hiddenSelected | hide menu after selected (only mode="multiple" or "tag") | Boolean                                | -                                  |
 | popupAutoFocus        | whether autofocus to popup                                                                                                                        | Boolean                                | false                              |
 
@@ -134,7 +134,7 @@ This is because the layer's animation of the overlay is implemented by `classNam
 | dataSource | Incoming data source that can dynamically render children | Array&lt;Object/String> | - |
 |itemRender | How to render MenuItem content <br><br>**Signature**:<br>Function(item: Object) => ReactNode<br>**Parameters**:<br>_item_: {Object} Rendering The node's item<br>**return value**:<br>{ReactNode} item node<br> | Function | - |
 |fillProps | key?? of the value filled into the selection box, default value | String | 'value' |
-| onToggleHighlightItem | callback func while highlight item changed <br><br>**签名**:<br>Function() => void | Function| func.noop |
+| onToggleHighlightItem | callback func while highlight item changed <br><br>**Signature**:<br>Function() => void | Function| func.noop |
 
 ### Select.OptionGroup
 

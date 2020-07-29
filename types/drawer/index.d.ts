@@ -6,6 +6,7 @@ import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends PopupProps {
     title?: any;
+    onClose?: any;
 }
 
 export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
@@ -27,12 +28,14 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      * body上的样式
      */
     bodyStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
     /**
      * 显示隐藏时动画的播放方式
      * @property {String} in 进场动画
      * @property {String} out 出场动画
      */
-    animation?: {} | boolean;
+    animation?: { in: string; out: string; } | boolean;
+    visible?: boolean;
 
     /**
      * 宽度，仅在 placement是 left right 的时候生效
@@ -47,6 +50,7 @@ export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
      * 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
      */
     onVisibleChange?: (visible: boolean, reason: string) => void;
+    onClose?: (reason: string, e: React.MouseEvent) => void;
     /**
      * 位于页面的位置
      */

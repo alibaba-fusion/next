@@ -1,8 +1,5 @@
 export const getWidth = elem => {
-    let width =
-        elem &&
-        typeof elem.getBoundingClientRect === 'function' &&
-        elem.getBoundingClientRect().width;
+    let width = elem && typeof elem.getBoundingClientRect === 'function' && elem.getBoundingClientRect().width;
     if (width) {
         width = +width.toFixed(6);
     }
@@ -47,16 +44,11 @@ export const isAncestor = (currentPos, targetPos) => {
 export const isAvailablePos = (refPos, targetPos, _p2n) => {
     const { type, disabled } = _p2n[targetPos];
 
-    return (
-        isSibling(refPos, targetPos) &&
-        ((type === 'item' && !disabled) || type === 'submenu')
-    );
+    return isSibling(refPos, targetPos) && ((type === 'item' && !disabled) || type === 'submenu');
 };
 
 export const getFirstAvaliablelChildKey = (parentPos, _p2n) => {
-    const pos = Object.keys(_p2n).find(p =>
-        isAvailablePos(`${parentPos}-0`, p, _p2n)
-    );
+    const pos = Object.keys(_p2n).find(p => isAvailablePos(`${parentPos}-0`, p, _p2n));
     return pos ? _p2n[pos].key : null;
 };
 
@@ -75,12 +67,7 @@ export const getChildSelected = ({ selectMode, selectedKeys, _k2n, _key }) => {
         return false;
     }
 
-    const _keyPos = `${_k2n[_key].pos}-`;
+    const _keyPos = `${_k2n[_key] && _k2n[_key].pos}-`;
 
-    return (
-        !!selectMode &&
-        selectedKeys.some(
-            key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0
-        )
-    );
+    return !!selectMode && selectedKeys.some(key => _k2n[key] && _k2n[key].pos.indexOf(_keyPos) === 0);
 };
