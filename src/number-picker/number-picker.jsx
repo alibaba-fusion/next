@@ -221,7 +221,7 @@ class NumberPicker extends React.Component {
                 if (
                     value.indexOf('.') > -1 &&
                     value[value.length - 1] === '0' &&
-                    value.split('.')[1].length <= this.getPrecision()
+                    value.split('.')[1].length < this.getPrecision()
                 ) {
                     this.setState({
                         value,
