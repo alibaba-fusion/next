@@ -31,6 +31,7 @@ import { Upload, Button } from '@alifd/next';
 class App extends React.Component {
 
     saveUploaderRef = (ref) => {
+        if (!ref) return;
         this.uploaderRef = ref.getInstance();
     };
 
