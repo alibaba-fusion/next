@@ -73,7 +73,7 @@
     }
     &-main {
         display: flex;
-        flex: 1 1;
+        flex: 1 1 auto;
         flex-direction: row;
         position: relative;
         height: 100%;
@@ -82,7 +82,7 @@
         transition: all .2s $motion-ease;
 
         #{$shell-prefix}-content {
-            flex: 1 1;
+            flex: 1 1 auto;
         }
 
         #{$shell-prefix}-content-inner {
@@ -573,7 +573,9 @@
     }
 
     &#{$shell-prefix}-phone {
-
+        .#{$css-prefix}aside-navigation {
+            width: 100%;
+        }
         #{$shell-prefix}-header #{$shell-prefix}-navigation {
             display: none;
         }
