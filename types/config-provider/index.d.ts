@@ -11,7 +11,7 @@ export interface ConfigProviderProps {
     /**
      * 国际化文案对象，属性为组件的 displayName
      */
-    locale?: {};
+    locale?: any;
 
     /**
      * 是否开启错误捕捉 errorBoundary
@@ -58,6 +58,6 @@ export default class ConfigProvider extends React.Component<
     ConfigProviderProps,
     any
 > {
-    static config(Component: any, options?: {}): any;
+    static config(Component: any, options?: any): any;
     static getContextProps(props: {}, displayName: string): {};
 }

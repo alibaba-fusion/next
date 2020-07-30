@@ -961,6 +961,39 @@ describe('Menu', () => {
 
     });
 
+    it('should support hozInLine with renderMore', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu
+                direction="hoz"
+                style={{width: 300}}
+                mode="popup"
+                hozInLine
+                renderMore={() => {
+                    return (<div className="rendermore-class">test</div>);
+            }}>
+                <Item key="0" style={{width: 60}}>0</Item>
+                <Item key="1" style={{width: 60}}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                    <Item key="2">2</Item>
+                    <Item key="3">3</Item>
+                </SubMenu>
+                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="5">5</Item>
+                <Item key="6">6</Item>
+            </Menu>,
+            div
+        );
+
+        const menu = document.querySelector('.next-menu.next-hoz');
+        assert(menu.querySelectorAll('li.next-menu-more.rendermore-class'));
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+    });
+
     it('should support hozInLine with header&footer in hoz', () => {
 
         const div = document.createElement('div');

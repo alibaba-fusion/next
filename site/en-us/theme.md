@@ -56,7 +56,7 @@ module.exports = {
           plugins: [
             'add-module-exports',
             'transform-decorators-legacy',
-            ['babel-plugin-import', {
+            ['import', {
                 libraryName: '@alifd/next',
                 style: true
             }]

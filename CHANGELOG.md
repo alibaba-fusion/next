@@ -1,5 +1,77 @@
 # Change Log 
 
+## [1.20.23](https://github.com/alibaba-fusion/next/compare/1.20.22...1.20.23) (2020-07-28)
+
+
+### Bug Fixes
+
+* **Menu:** enhance robotness ([9098d95](https://github.com/alibaba-fusion/next/commit/9098d95))
+* **Tab:** offest exception when set translate scale, close [#1928](https://github.com/alibaba-fusion/next/issues/1928) ([c42e0f7](https://github.com/alibaba-fusion/next/commit/c42e0f7))
+* **Typescript:** replace {} with any ([d3bfd09](https://github.com/alibaba-fusion/next/commit/d3bfd09))
+
+
+### Features
+
+* **Select:** add defaultHighlightKey ([ad8c5cb](https://github.com/alibaba-fusion/next/commit/ad8c5cb))
+
+
+
+
+## [1.20.22](https://github.com/alibaba-fusion/next/compare/1.20.21...1.20.22) (2020-07-27)
+
+
+### Bug Fixes
+
+* **Overlay:** bug on Gateway when settting ContainerNode,close [#2033](https://github.com/alibaba-fusion/next/issues/2033) ([0cdac60](https://github.com/alibaba-fusion/next/commit/0cdac60))
+
+
+
+
+## [1.20.21](https://github.com/alibaba-fusion/next/compare/1.20.20...1.20.21) (2020-07-23)
+
+
+### Bug Fixes
+
+* **Menu:** renderMore with className ([51b412a](https://github.com/alibaba-fusion/next/commit/51b412a))
+* **Typescript:** correct d.ts ([0a6833a](https://github.com/alibaba-fusion/next/commit/0a6833a))
+
+
+### Features
+
+* **Select:** api tagClosable for disable Tag close fix [#2025](https://github.com/alibaba-fusion/next/issues/2025) ([c754ee9](https://github.com/alibaba-fusion/next/commit/c754ee9))
+
+
+
+
+## [1.20.20](https://github.com/alibaba-fusion/next/compare/1.20.19...1.20.20) (2020-07-22)
+
+
+### Bug Fixes
+
+* **Menu:** shake and endless loop, close [#2014](https://github.com/alibaba-fusion/next/issues/2014) ([4da815c](https://github.com/alibaba-fusion/next/commit/4da815c))
+* **Search:** sass syntax error ([13515b5](https://github.com/alibaba-fusion/next/commit/13515b5))
+* **Select:** linear-gradient in safari. fix [#1922](https://github.com/alibaba-fusion/next/issues/1922) ([5081e7a](https://github.com/alibaba-fusion/next/commit/5081e7a))
+* **Typescript:** fix {} ([#2011](https://github.com/alibaba-fusion/next/issues/2011)) ([e3b934b](https://github.com/alibaba-fusion/next/commit/e3b934b))
+* **Upload:** value must be Array close [#2019](https://github.com/alibaba-fusion/next/issues/2019) ([19c687f](https://github.com/alibaba-fusion/next/commit/19c687f))
+
+
+
+
+## [1.20.19](https://github.com/alibaba-fusion/next/compare/1.20.18...1.20.19) (2020-07-15)
+
+
+### Bug Fixes
+
+* **DatePicker:** disabledDate invalid when type year/month,close [#1565](https://github.com/alibaba-fusion/next/issues/1565) ([d88beac](https://github.com/alibaba-fusion/next/commit/d88beac))
+* **GateWay:** getDerivedStateFromProps don`t execute ([faf6a90](https://github.com/alibaba-fusion/next/commit/faf6a90))
+* **Search:** fix Incompatible units on sass compile ([ecfd10f](https://github.com/alibaba-fusion/next/commit/ecfd10f))
+* **Table:** fix expanded table border, close [#884](https://github.com/alibaba-fusion/next/issues/884) ([18d82e5](https://github.com/alibaba-fusion/next/commit/18d82e5))
+* **Tree:** should stop stopPropagation keyboard event when editing node ([70233fb](https://github.com/alibaba-fusion/next/commit/70233fb))
+* **Typescript:** close [#1789](https://github.com/alibaba-fusion/next/issues/1789) ([d1b296e](https://github.com/alibaba-fusion/next/commit/d1b296e))
+
+
+
+
 ## [1.20.18](https://github.com/alibaba-fusion/next/compare/1.20.17...1.20.18) (2020-07-08)
 
 

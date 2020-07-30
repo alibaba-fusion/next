@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -55,7 +56,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层组件style，透传给Popup
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层组件className，透传给Popup
@@ -65,7 +66,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层组件属性，透传给Popup
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 是否pure render
@@ -207,7 +208,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 配置动画的播放方式
      */
-    animation?: {} | boolean;
+    animation?: any | boolean;
 
     /**
      * 弹层的dom节点关闭时是否删除
@@ -222,7 +223,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层组件style，透传给Popup
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层组件className，透传给Popup
@@ -232,7 +233,7 @@ export interface BalloonProps extends React.HTMLAttributes<HTMLElement>, CommonP
     /**
      * 弹层组件属性，透传给Popup
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 弹层id, 传入值才会支持无障碍

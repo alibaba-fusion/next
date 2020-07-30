@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -114,7 +115,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 弹层自定义样式类
@@ -124,7 +125,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 是否禁用
@@ -134,7 +135,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 时间值改变时的回调
      */
-    onChange?: (value: {} | string) => void;
+    onChange?: (value: any | string) => void;
 }
 
 export default class TimePicker extends React.Component<TimePickerProps, any> {}

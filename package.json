@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.20.18",
+  "version": "1.20.23",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -155,6 +155,7 @@
     "postcss": "^7.0.32",
     "postcss-custom-properties": "^9.1.1",
     "postcss-import": "^12.0.1",
+    "postcss-calc": "^7.0.2",
     "postcss-loader": "^2.0.6",
     "power-assert": "^1.5.0",
     "prettier": "1.16.4",

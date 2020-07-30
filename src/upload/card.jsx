@@ -59,7 +59,7 @@ class Card extends Base {
         }
 
         this.state = {
-            value: typeof value === 'undefined' ? [] : value,
+            value: !Array.isArray(value) ? [] : value,
             uploaderRef: this.uploaderRef,
         };
     }
@@ -71,10 +71,7 @@ class Card extends Base {
     static getDerivedStateFromProps(nextProps, prevState) {
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             return {
-                value:
-                    typeof nextProps.value === 'undefined'
-                        ? []
-                        : [].concat(nextProps.value),
+                value: !Array.isArray(nextProps.value) ? [] : [].concat(nextProps.value),
             };
         }
 
