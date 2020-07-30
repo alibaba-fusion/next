@@ -2,9 +2,22 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+import { PopupProps } from '../overlay';
+import { MenuProps } from '../menu';
+import { InputProps } from '../input';
+
+interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
     defaultValue?: any;
     onChange?: any;
+    onBlur?: any,
+    onFocus?: any,
+    onKeyDown?: any,
+}
+
+type item = {
+    value?: string | number;
+    label?: React.ReactNode;
+    [propName: string]: any;
 }
 
 export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
@@ -81,17 +94,17 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层的 className
      */
-    popupClassName?: any;
+    popupClassName?: string;
 
     /**
      * 弹层的内联样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 添加到弹层上的属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 自定义弹层的内容
@@ -126,7 +139,7 @@ export interface AutoCompleteProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: {}) => React.ReactNode;
+    itemRender?: (item: item) => React.ReactNode;
 
     /**
      * Select发生改变时触发的回调
@@ -247,17 +260,17 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层的 className
      */
-    popupClassName?: any;
+    popupClassName?: string;
 
     /**
      * 弹层的内联样式
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 添加到弹层上的属性
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 
     /**
      * 是否跟随滚动
@@ -268,6 +281,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      * 自定义弹层的内容
      */
     popupContent?: React.ReactNode;
+    menuProps?: MenuProps;
 
     /**
      * 是否使用本地过滤，在数据源为远程的时候需要关闭此项
@@ -277,7 +291,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 本地过滤方法，返回一个 Boolean 值确定是否保留
      */
-    filter?: () => void;
+    filter?: (key:string, item: any) => boolean;
 
     /**
      * 键盘上下键切换菜单高亮选项的回调
@@ -297,7 +311,7 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 MenuItem 内容的方法
      */
-    itemRender?: (item: {}, searchValue: string) => React.ReactNode;
+    itemRender?: (item: item, searchValue: string) => React.ReactNode;
 
     /**
      * 选择器模式
@@ -362,18 +376,35 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 渲染 Select 展现内容的方法
      */
-    valueRender?: (item: {}) => React.ReactNode;
+    valueRender?: (item: any) => React.ReactNode;
 
     /**
      * 受控搜索值，一般不需要设置
      */
     searchValue?: string;
+    /**
+     * 是否一行显示，仅在 mode 为 multiple 的时候生效
+     */
+    tagInline?: boolean;
+    /**
+     * 最多显示多少个 tag
+     */
+    maxTagCount?: number;
+    /**
+     * 隐藏多余 tag 时显示的内容，在 maxTagCount 生效时起作用
+     * @param {object} selectedValues 当前已选中的元素
+     * @param {object} totalValues 总待选元素
+     */
+    maxTagPlaceholder?: (selectedValues?: any[], totalValues?: any[]) => React.ReactNode | HTMLElement;
 
     /**
      * 选择后是否立即隐藏菜单 (mode=multiple/tag 模式生效)
      */
     hiddenSelected?: boolean;
-
+    /**
+     * 是否展示 dataSource 中 children
+     */
+    showDataSourceChildren?: boolean;
     /**
      * tag 删除回调
      */

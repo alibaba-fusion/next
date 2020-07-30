@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 export interface GroupProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -166,7 +167,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹层自定义 props
      */
-    popupProps?: {} | (() => void);
+    popupProps?: PopupProps | (() => void);
 
     /**
      * 弹出子导航的自定义类名
@@ -176,7 +177,7 @@ export interface NavProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 弹出子菜单自定义 style
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 当前选中导航项的 key 值

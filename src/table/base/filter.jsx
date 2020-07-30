@@ -34,6 +34,7 @@ class Filter extends React.Component {
         this.state = {
             visible: filterConfig.visible || false,
             selectedKeys: filterConfig.selectedKeys || [],
+            selectedKeysChangedByInner: true,
         };
         this._selectedKeys = [...this.state.selectedKeys];
     }
@@ -47,7 +48,14 @@ class Filter extends React.Component {
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
-            const selectedKeys = filterConfig.selectedKeys || [];
+            let selectedKeys;
+            if (prevState.selectedKeysChangedByInner) {
+                selectedKeys = prevState.selectedKeys || [];
+                state.selectedKeysChangedByInner = false;
+            } else {
+                selectedKeys = filterConfig.selectedKeys || [];
+            }
+
             state.selectedKeys = selectedKeys;
         }
 
@@ -79,6 +87,7 @@ class Filter extends React.Component {
             const selectedKeys = [...this._selectedKeys];
 
             this.setState({
+                selectedKeysChangedByInner: true,
                 selectedKeys,
             });
         }
@@ -87,6 +96,7 @@ class Filter extends React.Component {
     onFilterSelect = selectedKeys => {
         this.setState({
             visible: true,
+            selectedKeysChangedByInner: true,
             selectedKeys,
         });
     };
@@ -103,6 +113,7 @@ class Filter extends React.Component {
         this._selectedKeys = [...selectedKeys];
         this.setState({
             visible: false,
+            selectedKeysChangedByInner: true,
         });
         // 兼容之前的格式
         this.props.onFilter(filterParams);
@@ -120,6 +131,7 @@ class Filter extends React.Component {
         this.setState({
             selectedKeys: [],
             visible: false,
+            selectedKeysChangedByInner: true,
         });
         // 兼容之前的格式
         this.props.onFilter(filterParams);

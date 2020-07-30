@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { CascaderProps, data, extra } from '../cascader';
 import CommonProps from '../util';
+import { PopupProps } from '../overlay';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
@@ -64,6 +65,8 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * （受控）当前值
      */
     value?: string | Array<string>;
+
+    valueRender?: (item: any) => React.ReactNode;
 
     /**
      * 选中值改变时触发的回调函数
@@ -187,7 +190,7 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
     /**
      * 下拉框自定义样式对象
      */
-    popupStyle?: {};
+    popupStyle?: React.CSSProperties;
 
     /**
      * 下拉框样式自定义类名
@@ -198,16 +201,16 @@ export interface CascaderSelectProps extends CascaderProps, HTMLAttributesWeak, 
      * 下拉框挂载的容器节点
      */
     popupContainer?: string | HTMLElement | ((target: HTMLElement) => HTMLElement);
-    
+
     /**
      * 是否跟随滚动
      */
     followTrigger?: boolean;
-    
+
     /**
      * 透传到 Popup 的属性对象
      */
-    popupProps?: {};
+    popupProps?: PopupProps;
 }
 
 export default class CascaderSelect extends React.Component<

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import CommonProps from '../util';
+import { ProgressProps } from '../progress';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onError?: any;
@@ -24,12 +25,12 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传额外传参
      */
-    data?: {} | (() => void);
+    data?: any | (() => void);
 
     /**
      * 设置上传的请求头部
      */
-    headers?: {};
+    headers?: any;
 
     /**
      * 是否允许请求携带 cookie
@@ -174,7 +175,7 @@ export interface CardProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 透传给Progress props
      */
-    progressProps?: {};
+    progressProps?: ProgressProps;
 
     /**
      * 点击图片回调
@@ -245,6 +246,30 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
+
+export class Uploader {
+    /**
+     * @param options 配置
+     */
+    constructor(options?: any);
+
+    /**
+     * 配置选项
+     * @param options 配置
+     */
+    setOptions(options: any);
+    /**
+     * 开始上传
+     * @param files 文件列表
+     */
+    startUpload(files: Array<any>);
+    /**
+     * 中断某个文件上传
+     * @param file 文件
+     */
+    abort(file: any);
+}
+
 export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传的地址
@@ -259,12 +284,17 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传额外传参
      */
-    data?: {} | (() => void);
+    data?: any | (() => void);
+
+    /**
+     * 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件
+     */
+    multiple?: boolean;
 
     /**
      * 设置上传的请求头部
      */
-    headers?: {};
+    headers?: any;
 
     /**
      * 是否允许请求携带 cookie
@@ -274,7 +304,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 可选参数, 详见 [beforeUpload](#beforeUpload)
      */
-    beforeUpload?: (file: {}, options: {}) => boolean | {} | any;
+    beforeUpload?: (file: any, options: any) => boolean | {} | any;
 
     /**
      * 上传中
@@ -284,12 +314,12 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 可选参数，上传成功回调函数，参数为请求下响应信息以及文件
      */
-    onSuccess?: (file: {}, value: Array<any>) => void;
+    onSuccess?: (file: any, value: Array<any>) => void;
 
     /**
      * 可选参数，上传失败回调函数，参数为上传失败的信息、响应信息以及文件
      */
-    onError?: (file: {}, value: Array<any>) => void;
+    onError?: (file: any, value: Array<any>) => void;
 
     /**
      * 子元素
@@ -309,7 +339,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义上传方法
      */
-    request?: (option: {}) => {};
+    request?: (option: any) => any;
 
     /**
      * 文件名字段
@@ -354,7 +384,7 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 数据格式化函数，配合自定义 action 使用，参数为服务器的响应数据，详见 [formatter](#formater)
      */
-    formatter?: (response: {}, file: any) => void;
+    formatter?: (response: any, file: any) => void;
 
     /**
      * 最大文件上传个数
@@ -384,17 +414,25 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 可选参数, 用于校验文件,afterSelect仅在 autoUpload=false 的时候生效,autoUpload=true时,可以使用beforeUpload完全可以替代该功能.
      */
-    afterSelect?: (file: {}) => boolean;
+    afterSelect?: (file: any) => boolean;
 
     /**
      * 移除文件回调函数
      */
-    onRemove?: (file: {}) => boolean | any;
+    onRemove?: (file: any) => boolean | any;
 
     /**
      * 自定义额外渲染
      */
     extraRender?: (file: File) => any;
+    /**
+     * 自定义文件名渲染
+     */
+    fileNameRender?: (file: File) => any;
+    /**
+     * 自定义操作区域渲染
+     */
+    actionRender?: (file: File) => any;
     /**
      * 自定义class
      */
@@ -413,11 +451,12 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 透传给Progress props
      */
-    progressProps?: {};
+    progressProps?: ProgressProps;
 }
 
 export default class Upload extends React.Component<UploadProps, any> {
     static Card: typeof Card;
     static Dragger: typeof Dragger;
     static Selecter: typeof Selecter;
+    static Uploader: typeof Uploader;
 }

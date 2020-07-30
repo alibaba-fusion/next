@@ -3,6 +3,13 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { data } from '../checkbox';
+import { ButtonProps } from '../button';
+
+type SpanOffset = {
+    span?: string | number;
+    offset?: string | number;
+    [propName: string]: any;
+}
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
     /**
@@ -18,12 +25,12 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     /**
      * label 标签布局，通 `<Col>` 组件，设置 span offset 值，如 {span: 8, offset: 16}，该项仅在垂直表单有效
      */
-    labelCol?: {};
+    labelCol?: SpanOffset;
 
     /**
      * 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol
      */
-    wrapperCol?: {};
+    wrapperCol?: SpanOffset;
 
     /**
      * 自定义提示信息，如不设置，则会根据校验规则自动生成.
@@ -201,7 +208,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
 
 export class Item extends React.Component<ItemProps, any> {}
 
-interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
+interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, ButtonProps {
     onClick?: any;
 }
 
@@ -267,7 +274,7 @@ export interface SubmitProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击提交后触发
      */
-    onClick?: (value: {}, errors: {}, field: any) => void;
+    onClick?: (value: any, errors: any, field: any) => void;
 
     /**
      * 是否校验/需要校验的 name 数组
@@ -277,7 +284,7 @@ export interface SubmitProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义 field (在 Form 内不需要设置)
      */
-    field?: {};
+    field?: any;
 }
 
 export class Submit extends React.Component<SubmitProps, any> {}
@@ -301,6 +308,7 @@ export interface ResetProps extends HTMLAttributesWeak, CommonProps {
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
     iconSize?:
+        | number
         | 'xxs'
         | 'xs'
         | 'small'
@@ -308,7 +316,8 @@ export interface ResetProps extends HTMLAttributesWeak, CommonProps {
         | 'large'
         | 'xl'
         | 'xxl'
-        | 'xxxl';
+        | 'xxxl'
+        | 'inherit';
 
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值
@@ -363,7 +372,7 @@ export interface ResetProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 自定义 field (在 Form 内不需要设置)
      */
-    field?: {};
+    field?: any;
 }
 
 export class Reset extends React.Component<ResetProps, any> {}
@@ -377,7 +386,7 @@ export interface ErrorProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 自定义 field (在 Form 内不需要设置)
      */
-    field?: {};
+    field?: any;
 
     /**
      * 自定义错误渲染, 可以是 node 或者 function(errors, state)
@@ -430,12 +439,12 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 控制第一级 Item 的 labelCol
      */
-    labelCol?: {};
+    labelCol?: SpanOffset;
 
     /**
      * 控制第一级 Item 的 wrapperCol
      */
-    wrapperCol?: {};
+    wrapperCol?: SpanOffset;
 
     /**
      * form内有 `htmlType="submit"` 的元素的时候会触发
@@ -460,12 +469,12 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 表单数值
      */
-    value?: {};
+    value?: any;
 
     /**
      * 表单变化回调
      */
-    onChange?: (values: {}, item: {}) => void;
+    onChange?: (values: any, item: any) => void;
 
     /**
      * 设置标签类型

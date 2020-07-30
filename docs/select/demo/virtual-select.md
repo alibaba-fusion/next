@@ -49,7 +49,7 @@ ReactDOM.render(
         </Select>
         <br />
         <br />
-        <Select style={{width: 300}} hasSelectAll tagInline mode="multiple" dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue="option0" />
+        <Select style={{width: 300}} hasSelectAll tagInline mode="multiple" dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue={["option0"]} />
     </div>
     , mountNode);
 ````

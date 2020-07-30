@@ -340,10 +340,13 @@ class Overlay extends Component {
         } else {
             const wrapperNode = this.getWrapperNode();
             if (open) {
-                this.props.onOpen();
-                this.props.afterOpen();
-                dom.addClass(wrapperNode, 'opened');
-                overlayManager.addOverlay(this);
+                // fix https://github.com/alibaba-fusion/next/issues/1901
+                setTimeout(() => {
+                    this.props.onOpen();
+                    this.props.afterOpen();
+                    dom.addClass(wrapperNode, 'opened');
+                    overlayManager.addOverlay(this);
+                });
             } else if (close) {
                 this.props.onClose();
                 this.props.afterClose();
@@ -633,6 +636,45 @@ class Overlay extends Component {
         }
     }
 
+    isInShadowDOM(node) {
+        return node.getRootNode ? node.getRootNode().nodeType === 11 : false;
+    }
+
+    getEventPath(event) {
+        // 参考 https://github.com/spring-media/react-shadow-dom-retarget-events/blob/master/index.js#L29
+        return (
+            event.path ||
+            (event.composedPath && event.composedPath()) ||
+            this.composedPath(event.target)
+        );
+    }
+
+    composedPath(el) {
+        const path = [];
+        while (el) {
+            path.push(el);
+            if (el.tagName === 'HTML') {
+                path.push(document);
+                path.push(window);
+                return path;
+            }
+            el = el.parentElement;
+        }
+    }
+
+    matchInShadowDOM(node, e) {
+        if (this.isInShadowDOM(node)) {
+            // Shadow DOM 环境中，触发点击事件，监听 document click 事件获得的事件源
+            // 并非实际触发的 dom 节点，而是 Shadow DOM 的 host 节点
+            // 进而会导致如 Select 组件的下拉弹层打开后立即关闭等问题
+            // 因此额外增加 node 和 eventPath 的判断
+            const eventPath = this.getEventPath(e);
+            return node === eventPath[0] || node.contains(eventPath[0]);
+        }
+
+        return false;
+    }
+
     handleDocumentClick(e) {
         if (this.state.visible) {
             const { safeNode } = this.props;
@@ -649,6 +691,7 @@ class Overlay extends Component {
                     node &&
                     (node === e.target ||
                         node.contains(e.target) ||
+                        this.matchInShadowDOM(node, e) ||
                         (e.target !== document &&
                             !document.documentElement.contains(e.target)))
                 ) {

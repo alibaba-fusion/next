@@ -51,6 +51,8 @@ Like Select, TreeSelect can be used when the selected data structure is a tree s
 | popupContainer          | container of dropdown                                                                                                                                                                                                                                              | String/Function         | -           |
 | popupProps              | properties of Popup                                                                                                                                                                                                                                          | Object                  | -           |
 | followTrigger           | follow Trigger or not                | Boolean         | -                                         |
+| useVirtual          | whether use virtual scroll                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Boolean         | false         |
+
 <!-- api-extra-start -->
 
 ### TreeSelect.Node

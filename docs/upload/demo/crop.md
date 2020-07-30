@@ -2,7 +2,7 @@
 
 - order: 10
 
-提供了两种方案，如果不需要支持 IE 推荐方案1
+通过转换 dataURL to Blob to File, 构造文件对象
 
 :::lang=en-us
 # Crop
@@ -19,7 +19,23 @@ import { Upload, Button, Dialog } from '@alifd/next';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
-function dataURL2File(dataURL, fileName){
+// plan 1: [not work in IE/Edge] IE don't support File Constructor
+// function dataURL2File(dataURL, filename) { 
+//     const arr = dataURL.split(','),
+//         mime = arr[0].match(/:(.*?);/)[1],
+//         bstr = atob(arr[1]),
+//         u8arr = new Uint8Array(bstr.length);
+//     let n = bstr.length;
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
+
+//     // base64 -> File (File Constructor not work in IE/Edge)
+//     return new File([u8arr], filename, { type: mime });
+// }
+
+// plan 2: base64 -> Blob -> File, IE9+
+function dataURL2Blob2File(dataURL, fileName) {
     const arr = dataURL.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
@@ -29,7 +45,8 @@ function dataURL2File(dataURL, fileName){
         u8arr[n] = bstr.charCodeAt(n);
     }
     const blob = new Blob([u8arr], { type: mime });
-    // to File
+    // Blob to File
+    // set lastModifiedDate and name
     blob.lastModifiedDate = new Date();
     blob.name = fileName;
     return blob;
@@ -78,7 +95,7 @@ class App extends React.Component {
     onOk = () => {
 
         const data = this.cropperRef.getCroppedCanvas().toDataURL();
-        const file = dataURL2File(data, 'test.png');
+        const file = dataURL2Blob2File(data, 'test.png');
 
         // start upload
         this.uploader.startUpload(file);

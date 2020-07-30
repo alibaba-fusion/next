@@ -11,7 +11,8 @@ const { pickOthers } = obj;
 
 /**
  * Drawer
- */
+ * @description 继承 Overlay.Popup 的 API，除非特别说明
+ * */
 export default class Drawer extends Component {
     static displayName = 'Drawer';
 

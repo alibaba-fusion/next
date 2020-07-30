@@ -136,3 +136,5 @@ export interface locale {
         closeAriaLabel: string;
     };
 }
+
+export default locale;

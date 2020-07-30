@@ -241,10 +241,15 @@ export default class Dialog extends Component {
                 const viewportHeight =
                     window.innerHeight || document.documentElement.clientHeight;
 
-                // 分辨率和精确度的原因 高度计算的时候 可能会有1px内的偏差
-                if (viewportHeight < height + top * 2 - 1) {
-                    const expectHeight = viewportHeight - top * 2;
-                    this.adjustSize(inner, node, expectHeight);
+                if (
+                    viewportHeight < height + top * 2 - 1 || // 分辨率和精确度的原因 高度计算的时候 可能会有1px内的偏差
+                    this.props.height
+                ) {
+                    this.adjustSize(
+                        inner,
+                        node,
+                        Math.min(height, viewportHeight - top * 2)
+                    );
                 } else {
                     this.revertSize(inner.bodyNode);
                 }
@@ -256,13 +261,17 @@ export default class Dialog extends Component {
 
     adjustSize(inner, node, expectHeight) {
         const { headerNode, bodyNode, footerNode } = inner;
+        const [headerHeight, footerHeight] = [headerNode, footerNode].map(
+            node => (node ? _getSize(node, 'height') : 0)
+        );
+        const padding = ['padding-top', 'padding-bottom'].reduce(
+            (sum, attr) => sum + getStyle(node, attr),
+            0
+        );
 
-        const headerHeight = headerNode ? _getSize(headerNode, 'height') : 0;
-        const footerHeight = footerNode ? _getSize(footerNode, 'height') : 0;
-        const padding =
-            getStyle(node, 'padding-top') + getStyle(node, 'padding-bottom');
         let maxBodyHeight =
             expectHeight - headerHeight - footerHeight - padding;
+
         if (maxBodyHeight < 0) {
             maxBodyHeight = 1;
         }

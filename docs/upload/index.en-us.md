@@ -47,10 +47,11 @@ When user want to upload some file to server side or cloud storage, upload compo
 | autoUpload      | auto upload after select file                                                                                                                                                                                                                                          | Boolean         | true      |
 | afterSelect      | callback after select file, afterSelect only works when autoUpload=false; when autoUpload=true, use beforeUpload to replace it<br><br>**signaure**:<br>Function(file: Object) => Boolean<br>**params**:<br>_file_: {Object} null<br>**return**:<br>{Boolean} return false will prevent upload file<br>   return false will prevent upload<br>        | Function        | func.noop |
 | request         | custom reuqest method <br><br>**signaure**:<br>Function(option: Object) => Object<br>**params**:<br>_option_: {Object} null<br>**returns**:<br>{Object} object with abort method<br>                                                                                       | Function        | -         |
-| progressProps   | Progress props                                                                                                                                                                                                                               | Object          | -         |
-|
-| useDataURL      | use dataurl for local preview                                                                                                                                                                                                                                   | Boolean         | -         |
-
+| progressProps   | Progress props | Object          | -         |
+| isPreview       | is preview state | Boolean         | -         |
+| fileKeyName     | file's key name | String          | -         |
+| fileNameRender  | custom list's fileName render<br><br>**signaure**:<br>Function(file: Object) => Node<br>**params**:<br>_file_: {Object} file<br>**return**:<br>{Node} react node<br> | Function        | -         |
+| actionRender    | custom action area render<br><br>**signaure**:<br>Function(file: Object) => Node<br>**params**:<br>_file_: {Object} 文件<br>**return**:<br>{Node} react node<br> | Function        | -         |
 
 ### Upload.Card
 
@@ -73,6 +74,7 @@ When user want to upload some file to server side or cloud storage, upload compo
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
 | disabled    | disable this upload component                                                                                                                                            | Boolean  | -         |
 | multiple    | select more than one file at once, only works on `ie10+`. Press `Ctrl` to Select files                                                                                                               | Boolean  | false     |
+| webkitdirectory | upload a folder or not, only works in chrome                                                                                                                               | Boolean  | -         |
 | dragable    |  support dragable or not, attention: this feature only works when `ie10+`。                                                                                                                                     | Boolean  | -         |
 | accept      | file type you want to accept (image/png, image/jpg, .doc, .ppt) See [input accept attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input#attr-accept) | String   | -         |
 | onSelect    | callback when files are selected<br><br>signature:<br>Function() => void                                                                                                           | Function | func.noop |

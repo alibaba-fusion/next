@@ -424,7 +424,25 @@ describe('Menu', () => {
         assert(subItems.length === 2);
     });
 
+    it('should render popup sub menu with no animation', () => {
+        if (env.ieVersion === 9) {
+            return;
+        }
 
+        wrapper = mount(
+            <Menu mode="popup" popupProps={{animation: false}} defaultOpenKeys={['sub-1']}>
+                <SubMenu key="sub-1" label="Popup menu 1">
+                    <Item key="popup-1-2">Popup option 2</Item>
+                </SubMenu>
+                <SubMenu key="sub-2" label="Popup menu 2">
+                    <Item key="popup-2-2">Popup option 2</Item>
+                </SubMenu>
+            </Menu>
+        );
+
+        const overlay = wrapper.find('.next-overlay-wrapper');
+        assert(overlay.length === 1);
+    });
 
     it('can not select item if not set selectMode', () => {
         wrapper = mount(
@@ -941,6 +959,39 @@ describe('Menu', () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
 
+    });
+
+    it('should support hozInLine with renderMore', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        ReactDOM.render(
+            <Menu
+                direction="hoz"
+                style={{width: 300}}
+                mode="popup"
+                hozInLine
+                renderMore={() => {
+                    return (<div className="rendermore-class">test</div>);
+            }}>
+                <Item key="0" style={{width: 60}}>0</Item>
+                <Item key="1" style={{width: 60}}>1</Item>
+                <SubMenu key="sub-menu" label="Sub menu" style={{width: 50}}>
+                    <Item key="2">2</Item>
+                    <Item key="3">3</Item>
+                </SubMenu>
+                <Item key="4" style={{width: 30}}>4</Item>
+                <Item key="5">5</Item>
+                <Item key="6">6</Item>
+            </Menu>,
+            div
+        );
+
+        const menu = document.querySelector('.next-menu.next-hoz');
+        assert(menu.querySelectorAll('li.next-menu-more.rendermore-class'));
+
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
     });
 
     it('should support hozInLine with header&footer in hoz', () => {

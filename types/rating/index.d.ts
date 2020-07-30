@@ -58,11 +58,6 @@ export interface RatingProps extends HTMLAttributesWeak, CommonProps {
      * 评分文案生成方法，传入id支持无障碍时，读屏软件可读
      */
     readAs?: () => void;
-
-    /**
-     * 自定义国际化文案对象
-     */
-    locale?: {};
 }
 
 export default class Rating extends React.Component<RatingProps, any> {}

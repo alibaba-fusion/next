@@ -92,11 +92,7 @@ class OverlayControlDemo extends React.Component {
                     onRequestClose={this.onClose}
                     {...others}
                 >
-                    {children || (
-                        <span className="overlay-demo">
-                            Hello World From Overlay!
-                        </span>
-                    )}
+                    {children || <span className="overlay-demo">Hello World From Overlay!</span>}
                 </Overlay>
             </div>
         );
@@ -132,13 +128,36 @@ class PopupControlDemo extends React.Component {
     }
 }
 
+class OverlayDemo extends React.Component {
+    state = {
+        container: () => document.getElementById('container0'),
+    };
+
+    changeContainer = () => {
+        this.setState({
+            container: () => document.getElementById('container1'),
+        });
+    };
+
+    render() {
+        return (
+            <div>
+                <Button id="btn" onClick={this.changeContainer} />
+                <Overlay container={this.state.container} visible>
+                    <div>Start your business here by searching a popular product</div>
+                </Overlay>
+                <div id="container0" />
+                <div id="container1" />
+            </div>
+        );
+    }
+}
+
 describe('Overlay', () => {
     let wrapper;
 
     beforeEach(() => {
-        const nodeListArr = [].slice.call(
-            document.querySelectorAll('.next-overlay-wrapper')
-        );
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
 
         nodeListArr.forEach(node => {
             node.parentNode.removeChild(node);
@@ -219,9 +238,7 @@ describe('Overlay', () => {
             visible: true,
         });
         assert(document.querySelector('.next-overlay-wrapper'));
-        assert(
-            hasClass(document.querySelector('.next-overlay-inner'), 'content')
-        );
+        assert(hasClass(document.querySelector('.next-overlay-inner'), 'content'));
         assert(!document.querySelector('.next-overlay-backdrop'));
 
         wrapper.setProps({
@@ -265,11 +282,7 @@ describe('Overlay', () => {
         };
 
         wrapper = render(
-            <Overlay
-                visible
-                canCloseByOutSideClick={false}
-                onRequestClose={handleClose}
-            >
+            <Overlay visible canCloseByOutSideClick={false} onRequestClose={handleClose}>
                 <div className="content" />
             </Overlay>
         );
@@ -294,31 +307,19 @@ describe('Overlay', () => {
         };
 
         wrapper = render(
-            <Overlay
-                visible
-                animation={false}
-                hasMask
-                canCloseByMask={false}
-                onRequestClose={handleClose}
-            >
+            <Overlay visible animation={false} hasMask canCloseByMask={false} onRequestClose={handleClose}>
                 <div className="content" />
             </Overlay>
         );
 
-        simulateEvent.simulate(
-            document.querySelector('.next-overlay-backdrop'),
-            'click'
-        );
+        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
         assert(!called);
 
         wrapper.setProps({
             canCloseByMask: true,
         });
 
-        simulateEvent.simulate(
-            document.querySelector('.next-overlay-backdrop'),
-            'click'
-        );
+        simulateEvent.simulate(document.querySelector('.next-overlay-backdrop'), 'click');
         assert(called);
     });
 
@@ -363,9 +364,7 @@ describe('Overlay', () => {
             simulateEvent.simulate(btn, 'click');
             assert(document.body.style.overflowY === 'hidden');
             if (hasScroll()) {
-                assert(
-                    document.body.style.paddingRight === `${scrollbarWidth}px`
-                );
+                assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
             }
 
             simulateEvent.simulate(btn, 'click');
@@ -398,9 +397,7 @@ describe('Overlay', () => {
             yield delay(500);
             // ie9/ie10 document.activeElement === document.body
             if (env.ieVersion > 10) {
-                assert(
-                    document.activeElement === document.querySelector('#outer')
-                );
+                assert(document.activeElement === document.querySelector('#outer'));
             }
 
             document.body.removeChild(outerInput);
@@ -409,12 +406,7 @@ describe('Overlay', () => {
 
     it('should not destory overlay node if set cache to true', () => {
         return co(function*() {
-            wrapper = render(
-                <OverlayControlDemo
-                    cache
-                    wrapperClassName="overlay-cache-test"
-                />
-            );
+            wrapper = render(<OverlayControlDemo cache wrapperClassName="overlay-cache-test" />);
             const btn = document.querySelector('button');
 
             simulateEvent.simulate(btn, 'click');
@@ -423,11 +415,7 @@ describe('Overlay', () => {
             simulateEvent.simulate(btn, 'click');
             yield delay(500);
 
-            assert(
-                document.querySelector(
-                    '.overlay-cache-test.next-overlay-wrapper'
-                ).style.display === 'none'
-            );
+            assert(document.querySelector('.overlay-cache-test.next-overlay-wrapper').style.display === 'none');
         });
     });
 
@@ -490,26 +478,17 @@ describe('Overlay', () => {
 
         wrapper.instance().scrollTop = 220;
         document.getElementById('overlay-autofit-btn').click();
-        assert(
-            document.getElementById('overlay-autofit-wrapper').style.top ===
-                '245px'
-        );
+        assert(document.getElementById('overlay-autofit-wrapper').style.top === '245px');
 
         document.body.click();
         wrapper.instance().scrollTop = 140;
         document.getElementById('overlay-autofit-btn').click();
-        assert(
-            document.getElementById('overlay-autofit-wrapper').style.top ===
-                '150px'
-        );
+        assert(document.getElementById('overlay-autofit-wrapper').style.top === '150px');
 
         document.body.click();
         wrapper.instance().scrollTop = 170;
         document.getElementById('overlay-autofit-btn').click();
-        assert(
-            document.getElementById('overlay-autofit-wrapper').style.top ===
-                '170px'
-        );
+        assert(document.getElementById('overlay-autofit-wrapper').style.top === '170px');
     });
 
     it('should support onClick', done => {
@@ -561,6 +540,24 @@ describe('Overlay', () => {
         const content = overlay.getContent();
         assert(content.textContent.trim() === 'content');
     });
+
+    // https://github.com/alibaba-fusion/next/issues/2033
+    it('fix bug on Gateway when settting ContainerNode', done => {
+        const container = document.createElement('div');
+        document.body.append(container);
+        ReactDOM.render(<OverlayDemo />, container);
+
+        assert(document.querySelector('#container0 .next-overlay-wrapper'));
+
+        const btn = document.querySelector('#btn');
+        simulateEvent.simulate(btn, 'click');
+
+        setTimeout(() => {
+            assert(document.querySelector('#container1 .next-overlay-wrapper'));
+            container.remove();
+            done();
+        });
+    });
 });
 
 describe('Popup', () => {
@@ -576,11 +573,7 @@ describe('Popup', () => {
     it('should support rendering trigger and overlay', () => {
         return co(function*() {
             wrapper = render(
-                <Popup
-                    defaultVisible
-                    trigger={<button>Open</button>}
-                    triggerType="click"
-                >
+                <Popup defaultVisible trigger={<button>Open</button>} triggerType="click">
                     <span>Hello World From Popup!</span>
                 </Popup>
             );
@@ -608,15 +601,11 @@ describe('Popup', () => {
             assert(document.querySelector('.next-overlay-wrapper'));
 
             ReactTestUtils.Simulate.mouseLeave(btn);
-            ReactTestUtils.Simulate.mouseEnter(
-                document.querySelector('.content')
-            );
+            ReactTestUtils.Simulate.mouseEnter(document.querySelector('.content'));
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.mouseLeave(
-                document.querySelector('.content')
-            );
+            ReactTestUtils.Simulate.mouseLeave(document.querySelector('.content'));
             yield delay(500);
             assert(!document.querySelector('.next-overlay-wrapper'));
         });
@@ -662,9 +651,7 @@ describe('Popup', () => {
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
 
-            ReactTestUtils.Simulate.mouseDown(
-                document.querySelector('.content')
-            );
+            ReactTestUtils.Simulate.mouseDown(document.querySelector('.content'));
             ReactTestUtils.Simulate.blur(btn);
             yield delay(300);
             assert(document.querySelector('.next-overlay-wrapper'));
@@ -678,11 +665,7 @@ describe('Popup', () => {
     it('should support setting triggerType to click with custom triggerClickKeycode', () => {
         return co(function*() {
             wrapper = render(
-                <Popup
-                    trigger={<button>Open</button>}
-                    triggerType="click"
-                    triggerClickKeycode={40}
-                >
+                <Popup trigger={<button>Open</button>} triggerType="click" triggerClickKeycode={40}>
                     <span className="content">Hello World From Popup!</span>
                 </Popup>
             );
@@ -721,11 +704,7 @@ describe('Popup', () => {
     it('should support setting canCloseByTrigger to false', () => {
         return co(function*() {
             wrapper = render(
-                <Popup
-                    trigger={<button>Open</button>}
-                    triggerType="click"
-                    canCloseByTrigger={false}
-                >
+                <Popup trigger={<button>Open</button>} triggerType="click" canCloseByTrigger={false}>
                     <span className="content">Hello World From Popup!</span>
                 </Popup>
             );
@@ -761,10 +740,7 @@ describe('Popup', () => {
             ReactTestUtils.Simulate.click(btn);
             yield delay(300);
 
-            assert(
-                document.querySelector('.next-overlay-wrapper').parentElement
-                    .id === 'myContainer'
-            );
+            assert(document.querySelector('.next-overlay-wrapper').parentElement.id === 'myContainer');
 
             ReactTestUtils.Simulate.click(btn);
             yield delay(300);
@@ -784,6 +760,36 @@ describe('Popup', () => {
             ReactTestUtils.Simulate.click(btn);
             yield delay(300);
             assert(!document.querySelector('.next-overlay-wrapper'));
+        });
+    });
+
+    it('should support render in shadow dom', () => {
+        return co(function*() {
+            const host = document.createElement('div');
+            const shadowRoot = host.attachShadow({ mode: 'open' });
+            document.body.appendChild(host);
+
+            ReactDOM.render(
+                <Popup trigger={<button>Open</button>} triggerType="click">
+                    <span className="content">Hello World From Popup!</span>
+                </Popup>,
+                shadowRoot
+            );
+
+            yield delay(300);
+            const btn = shadowRoot.querySelector('button');
+            // NOTE: 此处不能使用 ReactTestUtils.Simulate.click(btn);
+            btn.click();
+
+            yield delay(300);
+            assert(document.querySelector('.next-overlay-wrapper'));
+
+            btn.click();
+            yield delay(300);
+            assert(!document.querySelector('.next-overlay-wrapper'));
+
+            ReactDOM.unmountComponentAtNode(shadowRoot);
+            document.body.removeChild(host);
         });
     });
 
@@ -827,13 +833,8 @@ describe('Popup', () => {
     // https://riddle.alibaba-inc.com/riddles/10f7eac1
     it('should base on BaseElement`offset event when BaseElement is fixed', () => {
         wrapper = render(
-            <div
-                className="container"
-                style={{ height: '400px', overflow: 'auto' }}
-            >
-                <div
-                    style={{ height: 1200, width: '100%', background: 'red' }}
-                />
+            <div className="container" style={{ height: '400px', overflow: 'auto' }}>
+                <div style={{ height: 1200, width: '100%', background: 'red' }} />
                 <Balloon
                     align="l"
                     triggerType="click"

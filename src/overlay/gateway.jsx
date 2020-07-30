@@ -38,7 +38,10 @@ class Gateway extends Component {
     }
 
     componentDidMount() {
-        this.forceUpdate();
+        // eslint-disable-next-line
+        this.setState({
+            containerNode: getContainerNode(this.props),
+        });
     }
 
     getChildNode() {
@@ -67,9 +70,7 @@ class Gateway extends Component {
         }
 
         if (typeof child.ref === 'string') {
-            throw new Error(
-                'Can not set ref by string in Gateway, use function instead.'
-            );
+            throw new Error('Can not set ref by string in Gateway, use function instead.');
         }
         child = React.cloneElement(child, {
             ref: makeChain(this.saveChildRef, child.ref),

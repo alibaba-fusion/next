@@ -79,7 +79,7 @@ export interface MenuButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击菜单项后的回调，同 Menu
      */
-    onItemClick?: (key: string, item: {}, event: React.MouseEvent<HTMLElement>) => void;
+    onItemClick?: (key: string, item: any, event: React.MouseEvent<HTMLElement>) => void;
 
     /**
      * 选择菜单后的回调，同 Menu

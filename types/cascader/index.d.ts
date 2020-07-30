@@ -29,7 +29,7 @@ type extra = {
     /**
      * 多选时当前操作的数据
      */
-    currentData?: {};
+    currentData?: any;
     /**
      * 多选时所有被选中的数据
      */

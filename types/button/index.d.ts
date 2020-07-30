@@ -34,6 +34,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
      * 按钮中 Icon 的尺寸，用于替代 Icon 的默认大小
      */
     iconSize?:
+        | number
         | 'xxs'
         | 'xs'
         | 'small'
@@ -41,7 +42,8 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
         | 'large'
         | 'xl'
         | 'xxl'
-        | 'xxxl';
+        | 'xxxl'
+        | 'inherit';
 
     /**
      * 当 component = 'button' 时，设置 button 标签的 type 值
@@ -51,7 +53,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 设置标签类型
      */
-    component?: 'button' | 'a';
+    component?: 'button' | 'a' | React.ReactNode;
 
     /**
      * 设置按钮的载入状态
@@ -81,7 +83,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 点击按钮的回调
      */
-    onClick?: (e: {}) => void;
+    onClick?: React.MouseEventHandler;
 
     /**
      * 在Button组件使用component属性值为a时有效，代表链接页面的URL

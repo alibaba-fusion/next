@@ -19,6 +19,7 @@
 
         &-underlay {
             position: relative;
+            overflow: hidden;
             width: 100%;
             background-color: $progress-line-underlay-color;
         }

@@ -86,6 +86,7 @@
             line-height: 1;
             margin-right: $select-tag-spacing-lr;
             margin-bottom: $select-tag-spacing-tb;
+            // TODO: removed next 2 line in next version
             padding-left: $select-tag-padding-lr;
             padding-right: $select-tag-padding-lr;
         }
@@ -188,7 +189,7 @@
                 z-index: 1;
                 padding: 0 4px 0 16px;
                 color: $input-text-color;
-                background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-bg-color 10px);
+                background: linear-gradient(90deg, transparent, $input-bg-color 10px);
             }
         }
     }

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ConfigProvider from '../config-provider';
 import Input from './input';
 import Icon from '../icon/index';
 
@@ -13,6 +12,8 @@ export default class Password extends Input {
         hint: 'eye',
         htmlType: 'password',
     };
+
+    static getDerivedStateFromProps = Input.getDerivedStateFromProps;
 
     static propTypes = {
         ...Input.propTypes,
