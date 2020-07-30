@@ -208,21 +208,9 @@ class NumberPicker extends React.Component {
                     return;
                 }
                 // ignore when input 0./0.0/0.00 to 0.001
+                // and input *.*0
                 // but take care of Number('')=0;
-                if (value.match(/\.0*$/)) {
-                    this.setState({
-                        value,
-                        reRender: false,
-                    });
-                    return;
-                }
-                // ignore when input a decimal number whose
-                // last position is 0
-                if (
-                    value.indexOf('.') > -1 &&
-                    value[value.length - 1] === '0' &&
-                    value.split('.')[1].length < this.getPrecision()
-                ) {
+                if (value.match(/\.0*$/) || value.match(/\.[0-9]*0$/)) {
                     this.setState({
                         value,
                         reRender: false,
