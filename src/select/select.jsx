@@ -784,7 +784,7 @@ class Select extends Base {
         }
 
         if (mode === 'single') {
-            if (!value) {
+            if (!value || typeof value !== 'object') {
                 return null;
             }
 
