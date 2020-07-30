@@ -81,8 +81,8 @@
             left: 50%;
             @include icon-square-size(
                 $size: $drawer-close-size,
-                $marginTop: calc(0 - #{$drawer-close-size} / 2),
-                $marginLeft: calc(0 - #{$drawer-close-size} / 2)
+                $marginTop: calc(0px - #{$drawer-close-size} / 2),
+                $marginLeft: calc(0px - #{$drawer-close-size} / 2)
             );
         }
     }
