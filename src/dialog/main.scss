@@ -90,8 +90,8 @@
             left: 50%;
             @include icon-square-size(
                 $size: $dialog-close-size,
-                $marginTop: calc(0 - #{$dialog-close-size} / 2),
-                $marginLeft: calc(0 - #{$dialog-close-size} / 2)
+                $marginTop: calc(0px - #{$dialog-close-size} / 2),
+                $marginLeft: calc(0px - #{$dialog-close-size} / 2)
             );
         }
     }

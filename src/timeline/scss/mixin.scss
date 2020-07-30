@@ -64,8 +64,8 @@
             border-radius: 100%;
             top: 50%;
             left: 50%;
-            margin-top: calc(0 - #{$timeline-item-icon-size} / 2 - 2);
-            margin-left: calc(0 - #{$timeline-item-icon-size} / 2 - 2);
+            margin-top: calc(0px - #{$timeline-item-icon-size} / 2 - 2);
+            margin-left: calc(0px - #{$timeline-item-icon-size} / 2 - 2);
 
             #{$timeline-icon-prefix} {
                 @include icon-size($timeline-item-icon-size);

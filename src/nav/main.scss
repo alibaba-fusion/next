@@ -404,7 +404,7 @@ $nav-icononly-width: 58px;
             }
 
             &.#{$css-prefix}icon-only {
-                @include icon-only-size(0);
+                @include icon-only-size(0px);
             }
         }
 
