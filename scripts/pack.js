@@ -6,7 +6,7 @@ const { logger } = require('./utils');
 
 const distPath = path.join(process.cwd(), 'dist');
 
-fs.removeSync(distPath);
+// fs.removeSync(distPath);
 
 const args = process.argv.slice(2);
 const minimize = args.indexOf('minimize') > -1;
