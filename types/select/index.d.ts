@@ -5,6 +5,7 @@ import CommonProps from '../util';
 import { PopupProps } from '../overlay';
 import { MenuProps } from '../menu';
 import { InputProps } from '../input';
+import { data } from '../checkbox';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement>, InputProps {
     defaultValue?: any;
@@ -419,6 +420,8 @@ export interface SelectProps extends HTMLAttributesWeak, CommonProps {
      * 失去焦点事件
      */
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    isPreview?: boolean;
+    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any;
 }
 
 export default class Select extends React.Component<SelectProps, any> {

@@ -10,20 +10,7 @@ import { getDisabledCompatibleTrigger } from './util';
 const { noop } = func;
 const { Popup } = Overlay;
 
-const alignList = [
-    't',
-    'r',
-    'b',
-    'l',
-    'tl',
-    'tr',
-    'bl',
-    'br',
-    'lt',
-    'lb',
-    'rt',
-    'rb',
-];
+const alignList = ['t', 'r', 'b', 'l', 'tl', 'tr', 'bl', 'br', 'lt', 'lb', 'rt', 'rb'];
 
 let alignMap = normalMap;
 
@@ -130,7 +117,7 @@ class Balloon extends React.Component {
          */
         safeId: PropTypes.string,
         /**
-         * 配置动画的播放方式
+         * 配置动画的播放方式，格式是{in: '', out: ''}， 常用的动画class请查看Animate组件文档
          * @param {String} in 进场动画
          * @param {String} out 出场动画
          */
@@ -212,11 +199,7 @@ class Balloon extends React.Component {
             nextState.visible = nextProps.visible;
         }
 
-        if (
-            !prevState.innerAlign &&
-            'align' in nextProps &&
-            alignList.includes(nextProps.align)
-        ) {
+        if (!prevState.innerAlign && 'align' in nextProps && alignList.includes(nextProps.align)) {
             nextState.align = nextProps.align;
             nextState.innerAlign = false;
         }
@@ -321,10 +304,7 @@ class Balloon extends React.Component {
             trOrigin = 'rtlTrOrigin';
         }
 
-        const _offset = [
-            alignMap[align].offset[0] + offset[0],
-            alignMap[align].offset[1] + offset[1],
-        ];
+        const _offset = [alignMap[align].offset[0] + offset[0], alignMap[align].offset[1] + offset[1]];
         const transformOrigin = alignMap[align][trOrigin];
         const _style = { ...{ transformOrigin }, ...style };
 
@@ -350,16 +330,10 @@ class Balloon extends React.Component {
         triggerProps['aria-describedby'] = id;
         triggerProps.tabIndex = '0';
 
-        const ariaTrigger = id
-            ? React.cloneElement(trigger, triggerProps)
-            : trigger;
+        const ariaTrigger = id ? React.cloneElement(trigger, triggerProps) : trigger;
 
         const newTrigger = getDisabledCompatibleTrigger(
-            React.isValidElement(ariaTrigger) ? (
-                ariaTrigger
-            ) : (
-                <span>{ariaTrigger}</span>
-            )
+            React.isValidElement(ariaTrigger) ? ariaTrigger : <span>{ariaTrigger}</span>
         );
 
         return (
