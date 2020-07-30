@@ -91,6 +91,11 @@ export default ${exportName};
         const file = path.basename(localePath).replace('.js', '');
         const tsLibPath = path.join(cwd, 'lib', 'locale', `${file}.d.ts`);
         const tsEsPath = path.join(cwd, 'es', 'locale', `${file}.d.ts`);
+        const tsPath = path.join(cwd, 'types', 'locale', `${file}.d.ts`);
+
+        if (!fs.existsSync(tsPath)) {
+            fs.writeFileSync(tsPath, `export * from './default';`);
+        }
 
         fs.writeFileSync(tsLibPath, `export * from '../../types/locale/${file}';`);
         fs.writeFileSync(tsEsPath, `export * from '../../types/locale/${file}';`);
