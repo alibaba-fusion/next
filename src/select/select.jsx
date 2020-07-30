@@ -256,6 +256,12 @@ class Select extends Base {
             });
         }
 
+        if ('highlightKey' in nextProps && nextProps.highlightKey !== prevState.highlightKey) {
+            Object.assign(state, {
+                highlightKey: nextProps.highlightKey,
+            });
+        }
+
         if ('searchValue' in nextProps && nextProps.searchValue !== prevState.searchValue) {
             const searchValue = nextProps.searchValue;
             Object.assign(state, {
