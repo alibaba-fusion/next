@@ -169,7 +169,7 @@
         }
 
         .#{$css-prefix}tabs-tab-close {
-            padding-left: $close-icon-margin-left;
+            margin-left: $close-icon-margin-left;
             @include icon-size($close-icon-size);
         }
     }
