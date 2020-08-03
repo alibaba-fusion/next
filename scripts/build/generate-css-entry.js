@@ -5,15 +5,16 @@ const sass = require('node-sass');
 const postcss = require('postcss');
 const postcssCalc = require('postcss-calc');
 const cssvarFallback = require('postcss-custom-properties');
+const less = require('less')
 
 const cwd = process.cwd();
 const { logger } = require('../utils');
 const lintCss = require('./lintcss');
 
-module.exports = function() {
+module.exports = async function() {
     // generate [other components] css variables
     const componentPaths = glob.sync(path.join(cwd, 'src', '*'));
-    componentPaths.forEach(comPath => {
+    Promise.all(componentPaths.map(async comPath => {
         const componentName = path.basename(comPath);
         if (['demo-helper'].indexOf(componentName) > -1 || !fs.existsSync(path.join(cwd, 'src', componentName, 'style.js'))) {
             return;
@@ -74,12 +75,14 @@ module.exports = function() {
                 fs.outputFileSync(path.join(libBasePath, 'index.css'), indexContent);
                 fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
                 lintCss(path.join(libBasePath, 'index.css'), indexContent);
+                // 用less编译器来渲染css，验证css合法性
+                await less.render(indexContent, {filename: path.join(libBasePath, 'index.less')})
 
             } catch (error) {
                 logger.error(`[!!]Error in ${componentName}:`, error);
             }
         }
-    });
+    }));
 
     logger.success('Generate index.css / style2.js / variable.css successfully!');
 };

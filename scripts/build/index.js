@@ -35,7 +35,7 @@ async function run() {
     generateCssEntryCore();
 
     logger.info('> [Component]generate css-var files (style2.js / varaible.css / index.css )...');
-    generateCssEntry();
+    await generateCssEntry();
 
     logger.info('> generate api...');
     generateApi();
