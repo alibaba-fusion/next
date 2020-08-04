@@ -28,6 +28,10 @@
     "index.scss",
     "reset.scss",
     "variables.scss",
+    "index.css",
+    "index-noreset.css",
+    "reset.css",
+    "variables.css",
     ".fusion"
   ],
   "main": "index.js",

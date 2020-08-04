@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const webpack = require('webpack');
 const getWebpackConfig = require('./webpack/prod');
@@ -51,6 +51,7 @@ config.externals = [
 ];
 config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
+fs.emptyDirSync(distPath);
 // eslint-disable-next-line handle-callback-err
 webpack(config, (err, stats) => {
     logger.info(

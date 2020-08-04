@@ -96,7 +96,7 @@ $nav-icononly-width: 58px;
                 height: $nav-hoz-item-hover-active-line;
             }
 
-            @if ($nav-hoz-item-hover-active-line != 0) {
+            @if (get-compiling-value($nav-hoz-item-hover-active-line) != 0) {
                 &:hover:before {
                     width: 100%;
                     left: 0;
@@ -168,7 +168,7 @@ $nav-icononly-width: 58px;
                 width: $nav-ver-item-hover-active-line;
             }
 
-            @if ($nav-ver-item-hover-active-line != 0) {
+            @if (get-compiling-value($nav-ver-item-hover-active-line) != 0) {
                 &:hover:before {
                     height: 100%;
                     top: 0;
