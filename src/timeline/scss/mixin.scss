@@ -50,22 +50,22 @@
             height: $dot-size;
             border-radius: 100%;
             top: 50%;
-            margin-top: -$dot-size/2;
+            margin-top: calc(0px - #{$dot-size} / 2);
             left: 50%;
-            margin-left: -$dot-size/2;
+            margin-left: calc(0px - #{$dot-size} / 2);
         }
 
         #{$timeline-prefix}-item-icon {
             display: block;
             position: absolute;
-            width: calc(#{$timeline-item-icon-size} + 4);
-            height: calc(#{$timeline-item-icon-size} + 4);
-            line-height: calc(#{$timeline-item-icon-size} + 4);
+            width: calc(#{$timeline-item-icon-size} + 4px);
+            height: calc(#{$timeline-item-icon-size} + 4px);
+            line-height: calc(#{$timeline-item-icon-size} + 4px);
             border-radius: 100%;
             top: 50%;
             left: 50%;
-            margin-top: calc(0px - #{$timeline-item-icon-size} / 2 - 2);
-            margin-left: calc(0px - #{$timeline-item-icon-size} / 2 - 2);
+            margin-top: calc(0px - #{$timeline-item-icon-size} / 2 - 2px);
+            margin-left: calc(0px - #{$timeline-item-icon-size} / 2 - 2px);
 
             #{$timeline-icon-prefix} {
                 @include icon-size($timeline-item-icon-size);
@@ -109,7 +109,7 @@
             margin: 0;
             font-size: $timeline-item-title-font-size;
             font-weight: $timeline-item-title-font-weight;
-            line-height: calc(#{$timeline-item-title-font-size} + 4);
+            line-height: calc(#{$timeline-item-title-font-size} + 4px);
             margin-top: $timeline-item-title-margin-top;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -126,7 +126,7 @@
             margin: 0;
             margin-top: $timeline-item-body-margin-top;
             font-size: $timeline-item-body-font-size;
-            line-height: calc(#{$timeline-item-body-font-size} + 4);
+            line-height: calc(#{$timeline-item-body-font-size} + 4px);
             color: $timeline-item-body-color;
             @if $direction == 'rtl' {
                 text-align: right;
@@ -157,7 +157,7 @@
             display: inline-block;
             font-size: $timeline-item-left-body-font-size;
             color: $timeline-item-left-body-color;
-            line-height: calc(#{$timeline-item-left-body-font-size} + 4);
+            line-height: calc(#{$timeline-item-left-body-font-size} + 4px);
             margin-top: $timeline-item-title-margin-top;
             @if $direction == 'rtl' {
                 text-align: left;

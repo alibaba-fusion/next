@@ -116,7 +116,7 @@
                 }
                 .#{$css-prefix}progress-line-overlay {
                     height: $upload-text-list-progressbar-height;
-                    margin-top: - ($upload-text-list-progressbar-height / 2);
+                    margin-top: calc(0px - (#{$upload-text-list-progressbar-height} / 2));
                 }
             }
         }

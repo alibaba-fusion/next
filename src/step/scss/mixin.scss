@@ -234,7 +234,7 @@
             & > #{$step-prefix}-item-body {
                 position: absolute;
                 top: 0;
-                left: $node-size / 2;
+                left: calc(#{$node-size} / 2);
                 margin-left: $step-circle-item-node-padding;
                 & > #{$step-prefix}-item-title {
                     margin-top: $step-circle-vertical-item-title-margin-top;
@@ -273,7 +273,7 @@
             & > #{$step-prefix}-item-body {
                 position: absolute;
                 top: 0;
-                left: $node-size / 2;
+                left: calc(#{$node-size} / 2);
                 margin-left: $step-dot-item-dot-padding;
                 & > #{$step-prefix}-item-title {
                     margin-top: $step-dot-vertical-item-title-margin-top;

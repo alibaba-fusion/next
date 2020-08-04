@@ -47,7 +47,7 @@
         @if ($shape == 'circle') {
 
             & > #{$step-prefix}-item-body {
-                right: $node-size / 2;
+                right: calc(#{$node-size} / 2);
                 left: auto;
                 margin-right: $step-circle-item-node-padding;
                 margin-left: 0;
@@ -63,7 +63,7 @@
 
         @if ($shape == 'dot') {
             & > #{$step-prefix}-item-body {
-                right: $node-size / 2;
+                right: calc(#{$node-size} / 2);
                 left: auto;
                 margin-right: $step-dot-item-dot-padding;
                 margin-left: 0;

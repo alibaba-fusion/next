@@ -15,7 +15,7 @@
         &:before {
             content: '';
             position: absolute;
-            left: -$step-arrow-item-border-width;
+            left: calc(0px - #{$step-arrow-item-border-width});
             top: 0;
             z-index: 1;
             border: $step-arrow-item-border-width solid transparent;

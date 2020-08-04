@@ -125,8 +125,8 @@
 
 // for virtual btn
 @mixin tick-bg-size($size) {
-    right: -$size / 2;
-    bottom: -$size / 2;
+    right: calc(0px - #{$size} / 2);
+    bottom: calc(0px - #{$size} / 2);
     width: $size;
     height: $size;
 }
@@ -134,8 +134,8 @@
 // checkable tag tick
 @mixin checkable-tag-tick-size($tick-bg-size, $tick-size) {
     &:before {
-        right: -$tick-bg-size / 2;
-        bottom: -$tick-bg-size / 2;
+        right: calc(0px - #{$tick-bg-size} / 2);
+        bottom: calc(0px - #{$tick-bg-size} / 2);
         width: $tick-bg-size;
         height: $tick-bg-size;
     }
