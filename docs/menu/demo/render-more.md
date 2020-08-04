@@ -63,7 +63,7 @@ const ds = [{
 const Panel = props => {
     const { dataSource, ...others } = props;
 
-    return (<div className="my-custom-content" {...others}>
+    return (<div className="my-custom-content3" {...others}>
         <Box direction="row">
             {dataSource.map((item, i) => {
                 return (<Menu embeddable key={i}>
@@ -155,6 +155,14 @@ ReactDOM.render(
 }
 
 .my-custom-content2 {
+    background: #fff;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 20px;
+    text-align: left;
+}
+
+.my-custom-content3 {
     background: #fff;
     border: 1px solid #ccc;
     text-align: center;

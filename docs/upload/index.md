@@ -14,6 +14,10 @@
 
 用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。<br /> 参考文章: <br />1. <a href="https://zhuanlan.zhihu.com/p/56684600" target="_blank">Upload 组件的设计思想</a> <br /> 2. <a href="https://zhuanlan.zhihu.com/p/59483736" target="_blank">Fusion Upload组件对接阿里云OSS/七牛/又拍</a>
 
+### 注意事项
+
+-   有些服务不支持 `X-Requested-With: XMLHttpRequest` 这个请求头导致不能跨域，可以通过设置 `<Upload headers={{'X-Requested-With':null}}>` 来解决
+
 ## API
 
 ### Upload
@@ -52,6 +56,9 @@
 | progressProps   | 透传给Progress props                                                                                                                                                                                                                               | Object          | -         |
 | isPreview       | 是否为预览态                                                                                                                                                                                                                                          | Boolean         | -         |
 | renderPreview   | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                                                                                                               | Function        | -         |
+| fileKeyName     | 文件对象的 key name                                                                                                                                                                                                                                  | String          | -         |
+| fileNameRender  | list 的自定义文件名渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                          | Function        | -         |
+| actionRender    | 操作区域额外渲染<br><br>**签名**:<br>Function(file: Object) => Node<br>**参数**:<br>_file_: {Object} 文件<br>**返回值**:<br>{Node} react node<br>                                                                                                                | Function        | -         |
 
 ### Upload.Card
 

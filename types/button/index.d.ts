@@ -53,7 +53,7 @@ export interface ButtonProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 设置标签类型
      */
-    component?: 'button' | 'a';
+    component?: 'button' | 'a' | React.ReactNode;
 
     /**
      * 设置按钮的载入状态

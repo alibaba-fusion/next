@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.20.18",
+  "version": "1.20.23",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -145,6 +145,7 @@
     "karma-spec-reporter": "^0.0.26",
     "karma-webdriver-launcher": "^1.0.5",
     "karma-webpack": "^3.0.5",
+    "less": "^3.12.2",
     "lint-staged": "^7.2.2",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
@@ -157,6 +158,7 @@
     "node-sass-package-importer": "^5.2.0",
     "nunjucks": "^3.2.0",
     "postcss": "^7.0.32",
+    "postcss-calc": "^7.0.2",
     "postcss-custom-properties": "^9.1.1",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^2.0.6",
