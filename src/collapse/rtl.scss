@@ -7,6 +7,6 @@
         left: inherit;
         right: $collapse-icon-margin-l;
 
-        @include icon-size($collapse-icon-size, 0, 0, rotate(180deg));
+        @include icon-size($collapse-icon-size, 0px, 0px, rotate(180deg));
     }
 }

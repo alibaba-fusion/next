@@ -28,7 +28,7 @@
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0, 0);
+        @include icon-size($collapse-icon-size, 0px, 0px);
     }
 
     &-panel-title {
@@ -95,7 +95,7 @@
                     content: $collapse-unfold-icon-content;
                 }
             } @else {
-                @include icon-size($collapse-icon-size, 0, 0, rotate(90deg));
+                @include icon-size($collapse-icon-size, 0px, 0px, rotate(90deg));
             }
         }
     }

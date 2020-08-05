@@ -50,7 +50,7 @@
             @if ($checkbox-circle-size == 12) {
                 margin-top: 1px;
             }
-            @include icon-size($checkbox-circle-size, 0);
+            @include icon-size($checkbox-circle-size, 0px);
         }
         > .#{$css-prefix}icon::before {
             vertical-align: top;
@@ -78,7 +78,7 @@
                 > .#{$css-prefix}icon {
                     opacity: 1;
                     transform: scale(1);
-                    @include icon-size($checkbox-circle-size, 0); /* font-size < 12px的时候进行覆盖。 */
+                    @include icon-size($checkbox-circle-size, 0px); /* font-size < 12px的时候进行覆盖。 */
                 }
             }
         }
@@ -98,7 +98,7 @@
                 > .#{$css-prefix}icon {
                     opacity: 1;
                     transform: scale3d(1, 1, 1);
-                    @include icon-size($checkbox-circle-size, 0); /* font-size < 12px的时候进行覆盖。 */
+                    @include icon-size($checkbox-circle-size, 0px); /* font-size < 12px的时候进行覆盖。 */
                 }
             }
         }
