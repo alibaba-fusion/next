@@ -3,7 +3,7 @@ const path = require('path');
 const glob = require('glob');
 const sass = require('node-sass');
 const postcss = require('postcss');
-const postcssCalc = require('postcss-calc');
+// const postcssCalc = require('postcss-calc');
 const cssvarFallback = require('postcss-custom-properties');
 const less = require('less')
 
@@ -67,7 +67,7 @@ module.exports = async function() {
                 const css = result.css.toString();
                 const output = postcss()
                     .use(cssvarFallback())
-                    .use(postcssCalc())
+                    // .use(postcssCalc())
                     .process(css).css;
 
                 const indexContent = output;

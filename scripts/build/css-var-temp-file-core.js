@@ -2,8 +2,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
 const sass = require('node-sass');
-const postcss = require('postcss');
-const postcssCalc = require('postcss-calc');
+// const postcss = require('postcss');
+// const postcssCalc = require('postcss-calc');
 // 保留原状
 const cwd = process.cwd();
 const { logger } = require('../utils');
@@ -104,9 +104,10 @@ ${mainScssContent}`;
             data: mainScss2,
         });
         const css = result.css.toString();
-        const output = postcss()
-            .use(postcssCalc())
-            .process(css).css;
+        // const output = postcss()
+        //     .use(postcssCalc())
+        //     .process(css).css;
+        const output = css;
 
         fs.outputFileSync(cPath.replace('.scss', '-def-default.css').replace('core', 'core-temp'), output);
     });

@@ -28,7 +28,7 @@ const css = (options = {}) => [
                 require('autoprefixer')({
                     browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 9'],
                 }),
-                require('postcss-calc')(),
+                // require('postcss-calc')(),
             ],
         },
     },
