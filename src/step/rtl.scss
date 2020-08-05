@@ -110,8 +110,8 @@
         @include step-item-size(
             $step-arrow-item-height,
             auto,
-            $step-arrow-item-height/8,
-            $step-arrow-item-height/2
+            calc(#{$step-arrow-item-height} / 8),
+            calc(#{$step-arrow-item-height} / 2)
         );
 
         &:before {
