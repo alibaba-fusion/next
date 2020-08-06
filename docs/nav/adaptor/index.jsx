@@ -168,6 +168,9 @@ export default {
                 type={level}
                 direction={shape}
                 iconOnly={iconOnly}
+                mode={shape === 'hoz' ? 'popup' : 'inline'}
+                // 防止在横向模式下，弹层找不到
+                popupProps={{container: node => node.parentNode}}
                 openKeys={keys.expanded}
                 selectedKeys={keys.selected}
                 activeDirection={
