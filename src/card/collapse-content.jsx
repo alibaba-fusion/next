@@ -16,10 +16,7 @@ class CardCollapseContent extends Component {
         /**
          * 内容区域的固定高度
          */
-        contentHeight: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]),
+        contentHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         locale: PropTypes.object,
         children: PropTypes.node,
     };
@@ -62,13 +59,17 @@ class CardCollapseContent extends Component {
         const { contentHeight } = this.props;
         const childrenHeight = this._getNodeChildrenHeight(this.content);
         this.setState({
-            needMore:
-                contentHeight !== 'auto' && childrenHeight > contentHeight,
+            needMore: contentHeight !== 'auto' && childrenHeight > contentHeight,
         });
     }
 
     // 设置 Body 的高度
     _setContentHeight() {
+        if (this.props.contentHeight === 'auto') {
+            this.content.style.height = 'auto';
+            return;
+        }
+
         if (this.state.expand) {
             const childrenHeight = this._getNodeChildrenHeight(this.content);
             this.content.style.height = `${childrenHeight}px`; // get the real height
@@ -115,24 +116,14 @@ class CardCollapseContent extends Component {
 
         return (
             <div className={`${prefix}card-body`}>
-                <div
-                    className={`${prefix}card-content`}
-                    ref={this._contentRefHandler}
-                >
+                <div className={`${prefix}card-content`} ref={this._contentRefHandler}>
                     {children}
                 </div>
                 {needMore ? (
-                    <div
-                        className={`${prefix}card-footer`}
-                        ref={this.saveFooter}
-                        onClick={this.handleToggle}
-                    >
+                    <div className={`${prefix}card-footer`} ref={this.saveFooter} onClick={this.handleToggle}>
                         <Button text type="primary">
                             {expand ? locale.fold : locale.expand}
-                            <Icon
-                                type="arrow-down"
-                                className={expand ? 'expand' : ''}
-                            />
+                            <Icon type="arrow-down" className={expand ? 'expand' : ''} />
                         </Button>
                     </div>
                 ) : null}

@@ -81,7 +81,7 @@ describe('Card', () => {
             );
 
             assert(wrapper.find('.next-card-head').length > 0);
-            assert(wrapper.find('.next-card-content-container').length > 0);
+            assert(wrapper.find('.next-card-content').length > 0);
         });
 
         it('should render free', () => {
