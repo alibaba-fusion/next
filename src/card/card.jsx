@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
 import BulletHeader from './bullet-header';
+import CardContent from './content';
 import CollapseContent from './collapse-content';
 import CardMedia from './media';
 import CardActions from './actions';
@@ -115,6 +116,10 @@ export default class Card extends React.Component {
                 />
                 {free ? (
                     children
+                ) : contentHeight === 'auto' ? (
+                    <CardContent>
+                        {children}
+                    </CardContent>
                 ) : (
                     <CollapseContent contentHeight={contentHeight}>
                         {children}
