@@ -48,6 +48,25 @@ describe('Select', () => {
         assert(wrapper.find('.next-select em').text() === 'xxx');
     });
 
+    it('should support showDataSourceChildren to ignore dataSource children', () => {
+        const dataSource = [{ 
+            label: 'xxx', 
+            value: 'yyy', 
+            children: [{ label: 'xxx1', value: 'yyy1' },{ label: 'xxx2', value: 'yyy2' }]
+        },{
+            label: 'label1',
+            value: 'label1',
+            children: []
+        }];
+
+        wrapper.setProps({
+            dataSource,
+            visible: true,
+            showDataSourceChildren: false
+        });
+        assert(document.querySelectorAll('.next-menu-item').length === 2);
+    });
+
     it('should support empty value from dataSource', () => {
         const dataSource = [
             { label: 'xxx', value: 'yyy' },

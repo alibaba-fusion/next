@@ -48,8 +48,8 @@
             .#{$css-prefix}input {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-                border-top-right-radius: $search-normal-corner - $search-normal-primary-border-width;
-                border-bottom-right-radius: $search-normal-corner - $search-normal-primary-border-width;
+                border-top-right-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
+                border-bottom-right-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
             }
             @include search-type-color-rtl(
                 $search-normal-primary-color,
@@ -65,8 +65,8 @@
             .#{$css-prefix}input {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-                border-top-right-radius: $search-normal-corner - $search-normal-primary-border-width;
-                border-bottom-right-radius: $search-normal-corner - $search-normal-primary-border-width;
+                border-top-right-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
+                border-bottom-right-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
             }
             @include search-type-color-rtl(
                 $search-normal-secondary-color,
@@ -82,8 +82,8 @@
             .#{$css-prefix}input {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-                border-top-right-radius: $search-normal-corner - $search-normal-primary-border-width;
-                border-bottom-right-radius: $search-normal-corner - $search-normal-primary-border-width;
+                border-top-right-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
+                border-bottom-right-radius: calc(#{$search-normal-corner} - #{$search-normal-primary-border-width});
             }
             @include search-type-color-rtl(
                 $search-normal-normal-color,

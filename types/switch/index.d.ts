@@ -14,6 +14,7 @@ export interface SwitchProps extends HTMLAttributesWeak, CommonProps {
      * 自定义类名
      */
     className?: string;
+    name?: string;
 
     /**
      * 自定义内敛样式

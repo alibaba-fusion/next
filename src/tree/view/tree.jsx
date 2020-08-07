@@ -470,6 +470,9 @@ class Tree extends Component {
         onItemFocus: PropTypes.func,
         onBlur: PropTypes.func,
         onItemKeyDown: PropTypes.func,
+        /**
+         * 是否开启虚拟滚动
+         */
         useVirtual: PropTypes.bool,
     };
 

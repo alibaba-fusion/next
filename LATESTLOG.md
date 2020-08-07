@@ -1,15 +1,17 @@
 # Latest Log 
 
-## [1.20.12](https://github.com/alibaba-fusion/next/compare/1.20.11...1.20.12) (2020-06-11)
+## [1.20.23](https://github.com/alibaba-fusion/next/compare/1.20.22...1.20.23) (2020-07-28)
 
 
 ### Bug Fixes
 
-* **Transfer:** fix item of right panel can't be checked when ds changed ([8737a08](https://github.com/alibaba-fusion/next/commit/8737a08))
+* **Menu:** enhance robotness ([9098d95](https://github.com/alibaba-fusion/next/commit/9098d95))
+* **Tab:** offest exception when set translate scale, close [#1928](https://github.com/alibaba-fusion/next/issues/1928) ([c42e0f7](https://github.com/alibaba-fusion/next/commit/c42e0f7))
+* **Typescript:** replace {} with any ([d3bfd09](https://github.com/alibaba-fusion/next/commit/d3bfd09))
 
 
 ### Features
 
-* **Tab:** add disableKeyboard property ([#1929](https://github.com/alibaba-fusion/next/issues/1929)) ([494ee93](https://github.com/alibaba-fusion/next/commit/494ee93))
+* **Select:** add defaultHighlightKey ([ad8c5cb](https://github.com/alibaba-fusion/next/commit/ad8c5cb))
 
 

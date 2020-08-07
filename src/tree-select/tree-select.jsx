@@ -230,6 +230,10 @@ class TreeSelect extends Component {
          * @param {Array<data>} value 选择值 { label: , value:}
          */
         renderPreview: PropTypes.func,
+        /**
+         * 是否开启虚拟滚动
+         */
+        useVirtual: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -256,6 +260,7 @@ class TreeSelect extends Component {
         treeProps: {},
         defaultVisible: false,
         onVisibleChange: noop,
+        useVirtual: false,
     };
 
     constructor(props, context) {
@@ -288,7 +293,7 @@ class TreeSelect extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props) {
         const st = {};
 
         if ('value' in props) {
@@ -474,6 +479,7 @@ class TreeSelect extends Component {
         const retainedKeys = [];
         Object.keys(this.state._k2n).forEach(k => {
             const { label, pos } = this.state._k2n[k];
+
             if (this.isSearched(label, searchedValue)) {
                 searchedKeys.push(k);
                 const posArr = pos.split('-');
@@ -554,10 +560,13 @@ class TreeSelect extends Component {
 
     isSearched(label, searchedValue) {
         let labelString = '';
+
+        searchedValue = String(searchedValue);
+
         const loop = arg => {
             if (isValidElement(arg) && arg.props.children) {
                 Children.forEach(arg.props.children, loop);
-            } else if (typeof arg === 'string') {
+            } else {
                 labelString += arg;
             }
         };
@@ -598,6 +607,13 @@ class TreeSelect extends Component {
     }
 
     createNodesByData(data, searching) {
+        const { treeProps, useVirtual } = this.props;
+
+        const virtual =
+            'useVirtual' in this.props
+                ? useVirtual
+                : treeProps && treeProps.useVirtual;
+
         const loop = (data, isParentMatched, prefix = '0') => {
             const retainedNodes = [];
 
@@ -606,16 +622,19 @@ class TreeSelect extends Component {
                 const pos = `${prefix}-${index}`;
                 const key = this.state._p2n[pos].key;
                 const addNode = (isParentMatched, hide) => {
+                    // TODO:
+                    // 对没有开启虚拟滚动的 暂时保留TreeNode节点 1.21版本可以去掉
                     if (hide) {
                         others.style = { display: 'none' };
                     }
-                    retainedNodes.push(
-                        <TreeNode {...others} key={key}>
-                            {children && children.length
-                                ? loop(children, isParentMatched, pos)
-                                : null}
-                        </TreeNode>
-                    );
+                    (!hide || !virtual) &&
+                        retainedNodes.push(
+                            <TreeNode {...others} key={key}>
+                                {children && children.length
+                                    ? loop(children, isParentMatched, pos)
+                                    : null}
+                            </TreeNode>
+                        );
                 };
 
                 if (searching) {
@@ -656,12 +675,13 @@ class TreeSelect extends Component {
             treeDefaultExpandAll,
             treeDefaultExpandedKeys,
             treeLoadData,
-            treeProps: customTreeProps,
+            treeProps: customTreeProps = {},
             showSearch,
             dataSource,
             children,
             readOnly,
             notFoundContent,
+            useVirtual,
         } = this.props;
         const {
             value,
@@ -676,7 +696,17 @@ class TreeSelect extends Component {
             loadData: treeLoadData,
             defaultExpandAll: treeDefaultExpandAll,
             defaultExpandedKeys: treeDefaultExpandedKeys,
+            useVirtual,
         };
+
+        // 使用虚拟滚动 设置默认高度
+        if (useVirtual) {
+            customTreeProps.style = {
+                maxHeight: '260px',
+                overflow: 'auto',
+                ...customTreeProps.style,
+            };
+        }
 
         const keys = this.getKeysByValue(value);
         if (treeCheckable) {
@@ -731,14 +761,22 @@ class TreeSelect extends Component {
             }
         }
 
+        const contentClass = `${treeSelectPrefix}dropdown-content`;
+
         return (
             <div className={`${treeSelectPrefix}dropdown`}>
                 {notFound ? (
-                    <div className={`${treeSelectPrefix}not-found`}>
+                    <div
+                        className={`${treeSelectPrefix}not-found ${contentClass}`}
+                    >
                         {notFoundContent}
                     </div>
                 ) : (
-                    <Tree {...customTreeProps} {...treeProps}>
+                    <Tree
+                        {...treeProps}
+                        {...customTreeProps}
+                        className={contentClass}
+                    >
                         {newChildren}
                     </Tree>
                 )}

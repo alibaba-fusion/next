@@ -6,14 +6,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import SubMenu from './sub-menu';
 import ConfigProvider from '../../config-provider';
 import { func, obj, dom, events, KEYCODE } from '../../util';
-import {
-    getWidth,
-    normalizeToArray,
-    isSibling,
-    isAncestor,
-    isAvailablePos,
-    getFirstAvaliablelChildKey,
-} from './util';
+import { getWidth, normalizeToArray, isSibling, isAncestor, isAvailablePos, getFirstAvaliablelChildKey } from './util';
 
 const { bindCtx } = func;
 const { pickOthers, isNil } = obj;
@@ -37,9 +30,15 @@ const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
     }
 
     if (renderMore && typeof renderMore === 'function') {
-        return React.cloneElement(renderMore(items), {
-            style,
-        });
+        const moreNode = renderMore(items);
+        const renderMoreCls = cx(moreCls, moreNode.props && moreNode.props.className);
+
+        return React.isValidElement(moreNode)
+            ? React.cloneElement(moreNode, {
+                  style,
+                  className: renderMoreCls,
+              })
+            : moreNode;
     }
 
     return (
@@ -59,22 +58,17 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
             child = React.cloneElement(child, {
                 key: `more-${index}`,
                 style: { display: 'none' },
-                className: `${child.className ||
-                    ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
+                className: `${child.className || ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
             });
         }
 
         if (index === lastVisibleIndex + 1) {
-            overflowedItems = children
-                .slice(lastVisibleIndex + 1)
-                .map((c, i) => {
-                    return React.cloneElement(c, {
-                        key: `more-${index}-${i}`,
-                    });
+            overflowedItems = children.slice(lastVisibleIndex + 1).map((c, i) => {
+                return React.cloneElement(c, {
+                    key: `more-${index}-${i}`,
                 });
-            arr.push(
-                getIndicatorsItem(overflowedItems, false, prefix, renderMore)
-            );
+            });
+            arr.push(getIndicatorsItem(overflowedItems, false, prefix, renderMore));
         }
 
         arr.push(child);
@@ -85,14 +79,7 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
     return arr;
 };
 
-const getNewChildren = ({
-    children,
-    root,
-    lastVisibleIndex,
-    hozInLine,
-    prefix,
-    renderMore,
-}) => {
+const getNewChildren = ({ children, root, lastVisibleIndex, hozInLine, prefix, renderMore }) => {
     const k2n = {};
     const p2n = {};
 
@@ -105,12 +92,7 @@ const getNewChildren = ({
           })
         : children;
 
-    const loop = (
-        children,
-        posPrefix,
-        indexWrapper = { index: 0 },
-        inlineLevel = 1
-    ) => {
+    const loop = (children, posPrefix, indexWrapper = { index: 0 }, inlineLevel = 1) => {
         const keyArray = [];
         return Children.map(children, child => {
             if (
@@ -128,11 +110,7 @@ const getNewChildren = ({
                 let pos;
                 const props = { root };
 
-                if (
-                    ['item', 'submenu', 'group'].indexOf(
-                        child.type.menuChildType
-                    ) > -1
-                ) {
+                if (['item', 'submenu', 'group'].indexOf(child.type.menuChildType) > -1) {
                     pos = `${posPrefix}-${indexWrapper.index++}`;
                     const key = typeof child.key === 'string' ? child.key : pos;
 
@@ -156,42 +134,24 @@ const getNewChildren = ({
                     props.level = level;
                     props.inlineLevel = inlineLevel;
                     props._key = key;
-                    props.groupIndent =
-                        child.type.menuChildType === 'group' ? 1 : 0;
+                    props.groupIndent = child.type.menuChildType === 'group' ? 1 : 0;
                 }
 
                 // paddingLeft(or paddingRight in rtl) only make sense in inline mode
                 // parent know children's inlineLevel
                 // if parent's mode is popup, then children's inlineLevel must be 1;
                 // else inlineLevel should add 1
-                const childLevel =
-                    (child.props.mode || props.root.props.mode) === 'popup'
-                        ? 1
-                        : inlineLevel + 1;
+                const childLevel = (child.props.mode || props.root.props.mode) === 'popup' ? 1 : inlineLevel + 1;
 
                 switch (child.type.menuChildType) {
                     case 'submenu':
-                        newChild = cloneElement(
-                            child,
-                            props,
-                            loop(
-                                child.props.children,
-                                pos,
-                                undefined,
-                                childLevel
-                            )
-                        );
+                        newChild = cloneElement(child, props, loop(child.props.children, pos, undefined, childLevel));
                         break;
                     case 'group':
                         newChild = cloneElement(
                             child,
                             props,
-                            loop(
-                                child.props.children,
-                                posPrefix,
-                                indexWrapper,
-                                props.level
-                            )
+                            loop(child.props.children, posPrefix, indexWrapper, props.level)
                         );
                         break;
                     case 'item':
@@ -249,10 +209,7 @@ class Menu extends Component {
         /**
          * 初始打开的子菜单的 key 值
          */
-        defaultOpenKeys: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        defaultOpenKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * 初始展开所有的子菜单，只在 mode 设置为 'inline' 以及 openMode 设置为 'multiple' 下生效，优先级高于 defaultOpenKeys
          */
@@ -309,10 +266,7 @@ class Menu extends Component {
         /**
          * 初始选中菜单项的 key 值
          */
-        defaultSelectedKeys: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        defaultSelectedKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * 选中或取消选中菜单项触发的回调函数
          * @param {Array} selectedKeys 选中的所有菜单项的值
@@ -449,9 +403,7 @@ class Menu extends Component {
             renderMore,
         });
 
-        const tabbableKey = focusable
-            ? getFirstAvaliablelChildKey('0', _p2n)
-            : undefined;
+        const tabbableKey = focusable ? getFirstAvaliablelChildKey('0', _p2n) : undefined;
 
         this.state = {
             root: this,
@@ -462,11 +414,7 @@ class Menu extends Component {
             tabbableKey,
             openKeys: this.getInitOpenKeys(props, _k2n, _p2n),
             selectedKeys: normalizeToArray(selectedKeys || defaultSelectedKeys),
-            focusedKey: !isNil(this.props.focusedKey)
-                ? focusedKey
-                : focusable && autoFocus
-                ? tabbableKey
-                : null,
+            focusedKey: !isNil(this.props.focusedKey) ? focusedKey : focusable && autoFocus ? tabbableKey : null,
         };
 
         bindCtx(this, [
@@ -556,10 +504,7 @@ class Menu extends Component {
 
         if (header || footer) {
             children = this.menuContent.children;
-            spaceWidth =
-                getWidth(this.menuNode) -
-                getWidth(this.menuHeader) -
-                getWidth(this.menuFooter);
+            spaceWidth = getWidth(this.menuNode) - getWidth(this.menuHeader) - getWidth(this.menuFooter);
         } else {
             children = this.menuNode.children;
             spaceWidth = getWidth(this.menuNode);
@@ -572,40 +517,45 @@ class Menu extends Component {
         let currentSumWidth = 0,
             lastVisibleIndex = -1;
 
-        const menuItemNodes = [].slice
-            .call(children)
-            .filter(
-                node =>
-                    node.className.split(' ').indexOf(`${prefix}menu-more`) < 0
-            );
+        let moreNode = '';
+
+        const menuItemNodes = [].slice.call(children).filter(node => {
+            if (node.className.split(' ').indexOf(`${prefix}menu-more`) < 0) {
+                return true;
+            } else {
+                moreNode = node;
+            }
+            return false;
+        });
 
         const overflowedItems = menuItemNodes.filter(
-            c =>
-                c.className.split(' ').indexOf(MENUITEM_OVERFLOWED_CLASSNAME) >=
-                0
+            c => c.className.split(' ').indexOf(MENUITEM_OVERFLOWED_CLASSNAME) >= 0
         );
 
         overflowedItems.forEach(c => {
             dom.setStyle(c, 'display', 'inline-block');
         });
 
-        const lastIndicator = children[children.length - 1];
-        dom.setStyle(lastIndicator, 'display', 'inline-block');
-        const moreWidth = getWidth(lastIndicator);
-        dom.setStyle(lastIndicator, 'display', 'none');
+        dom.setStyle(moreNode, 'display', 'inline-block');
+        const moreWidth = getWidth(moreNode);
 
         this.menuItemSizes = menuItemNodes.map(c => getWidth(c));
+        const totalLen = this.menuItemSizes.length;
 
         overflowedItems.forEach(c => {
             dom.setStyle(c, 'display', 'none');
         });
 
-        this.menuItemSizes.forEach(liWidth => {
+        this.menuItemSizes.forEach((liWidth, i) => {
             currentSumWidth += liWidth;
-            if (currentSumWidth + moreWidth <= spaceWidth) {
+            if ((i >= totalLen - 1 && currentSumWidth <= spaceWidth) || currentSumWidth + moreWidth <= spaceWidth) {
                 lastVisibleIndex++;
             }
         });
+
+        if (lastVisibleIndex >= totalLen - 1) {
+            dom.setStyle(moreNode, 'display', 'none');
+        }
 
         this.setState({
             lastVisibleIndex,
@@ -623,20 +573,10 @@ class Menu extends Component {
     getInitOpenKeys(props, _k2n, _p2n) {
         let initOpenKeys;
 
-        const {
-            openKeys,
-            defaultOpenKeys,
-            defaultOpenAll,
-            mode,
-            openMode,
-        } = props;
+        const { openKeys, defaultOpenKeys, defaultOpenAll, mode, openMode } = props;
         if (openKeys) {
             initOpenKeys = openKeys;
-        } else if (
-            defaultOpenAll &&
-            mode === 'inline' &&
-            openMode === 'multiple'
-        ) {
+        } else if (defaultOpenAll && mode === 'inline' && openMode === 'multiple') {
             initOpenKeys = Object.keys(_k2n).filter(key => {
                 return _k2n[key].type === 'submenu';
             });
@@ -645,36 +585,6 @@ class Menu extends Component {
         }
 
         return normalizeToArray(initOpenKeys);
-    }
-
-    getIndicatorsItem(items, isPlaceholder) {
-        const { prefix, renderMore } = this.props;
-        const moreCls = cx({
-            [`${prefix}menu-more`]: true,
-        });
-
-        const style = {};
-        // keep placehold to get width
-        if (isPlaceholder) {
-            style.visibility = 'hidden';
-            style.display = 'inline-block';
-            // indicators which not in use, just display: none
-        } else if (items && items.length === 0) {
-            style.display = 'none';
-            style.visibility = 'unset';
-        }
-
-        if (renderMore && typeof renderMore === 'function') {
-            return React.cloneElement(renderMore(items), {
-                style,
-            });
-        }
-
-        return (
-            <SubMenu label="···" noIcon className={moreCls} style={style}>
-                {items}
-            </SubMenu>
-        );
     }
 
     getUpdateChildren = () => {
@@ -700,9 +610,7 @@ class Menu extends Component {
         if (open && index === -1) {
             if (mode === 'inline') {
                 if (openMode === 'single') {
-                    newOpenKeys = openKeys.filter(
-                        k => _k2n[k] && !isSibling(_k2n[key].pos, _k2n[k].pos)
-                    );
+                    newOpenKeys = openKeys.filter(k => _k2n[k] && !isSibling(_k2n[key].pos, _k2n[k].pos));
                     newOpenKeys.push(key);
                 } else {
                     newOpenKeys = openKeys.concat(key);
@@ -715,25 +623,14 @@ class Menu extends Component {
             }
         } else if (!open && index > -1) {
             if (mode === 'inline') {
-                newOpenKeys = [
-                    ...openKeys.slice(0, index),
-                    ...openKeys.slice(index + 1),
-                ];
+                newOpenKeys = [...openKeys.slice(0, index), ...openKeys.slice(index + 1)];
             } else if (triggerType === 'docClick') {
-                if (
-                    !this.popupNodes
-                        .concat(this.menuNode)
-                        .some(node => node.contains(e.target))
-                ) {
+                if (!this.popupNodes.concat(this.menuNode).some(node => node.contains(e.target))) {
                     newOpenKeys = [];
                 }
             } else {
                 newOpenKeys = openKeys.filter(k => {
-                    return (
-                        k !== key &&
-                        _k2n[k] &&
-                        !isAncestor(_k2n[k].pos, _k2n[key].pos)
-                    );
+                    return k !== key && _k2n[k] && !isAncestor(_k2n[k].pos, _k2n[key].pos);
                 });
             }
         }
@@ -793,10 +690,7 @@ class Menu extends Component {
                 newSelectedKeys = selectedKeys.concat(key);
             }
         } else if (!select && index > -1 && selectMode === 'multiple') {
-            newSelectedKeys = [
-                ...selectedKeys.slice(0, index),
-                ...selectedKeys.slice(index + 1),
-            ];
+            newSelectedKeys = [...selectedKeys.slice(0, index), ...selectedKeys.slice(index + 1)];
         }
 
         if (newSelectedKeys) {
@@ -828,10 +722,7 @@ class Menu extends Component {
         }
 
         if (item.props.type === 'item') {
-            if (
-                item.props.parentMode === 'popup' &&
-                this.state.openKeys.length
-            ) {
+            if (item.props.parentMode === 'popup' && this.state.openKeys.length) {
                 if (isNil(this.props.openKeys)) {
                     this.setState({
                         openKeys: [],
@@ -840,9 +731,7 @@ class Menu extends Component {
 
                 this.props.onOpen([], {
                     key: this.state.openKeys.sort(
-                        (prevKey, nextKey) =>
-                            _k2n[nextKey].pos.split('-').length -
-                            _k2n[prevKey].pos.split('-').length
+                        (prevKey, nextKey) => _k2n[nextKey].pos.split('-').length - _k2n[prevKey].pos.split('-').length
                     )[0],
                     open: false,
                 });
@@ -876,15 +765,9 @@ class Menu extends Component {
 
     handleItemKeyDown(key, type, item, e) {
         if (
-            [
-                KEYCODE.UP,
-                KEYCODE.DOWN,
-                KEYCODE.RIGHT,
-                KEYCODE.LEFT,
-                KEYCODE.ENTER,
-                KEYCODE.ESC,
-                KEYCODE.SPACE,
-            ].indexOf(e.keyCode) > -1
+            [KEYCODE.UP, KEYCODE.DOWN, KEYCODE.RIGHT, KEYCODE.LEFT, KEYCODE.ENTER, KEYCODE.ESC, KEYCODE.SPACE].indexOf(
+                e.keyCode
+            ) > -1
         ) {
             e.preventDefault();
             e.stopPropagation();
@@ -1032,10 +915,7 @@ class Menu extends Component {
         ) : null;
         const itemsElement =
             !flatenContent && (header || footer) ? (
-                <ul
-                    className={`${prefix}menu-content`}
-                    ref={this.menuContentRef}
-                >
+                <ul className={`${prefix}menu-content`} ref={this.menuContentRef}>
                     {newChildren}
                 </ul>
             ) : (
