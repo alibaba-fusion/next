@@ -113,8 +113,8 @@ const tableMixExpandedLock = (<div style={{width: '500px'}}>
     </Table>
 </div>);
 
-const tableMixTreeLock = (<div style={{width: '500px'}}>
-    <Table dataSource={data} primaryKey="key" isTree>
+const tableMixTreeLock = (<div style={{width: '800px'}}>
+    <Table dataSource={data} primaryKey="key" isTree showLine hasBorder={false}>
         <Table.Column title="Key" dataIndex="key" width={100}/>
         <Table.Column title="Name" dataIndex="name" lock width={100}/>
         <Table.Column title="Age" dataIndex="age" width={200} lock="right"/>
@@ -123,26 +123,6 @@ const tableMixTreeLock = (<div style={{width: '500px'}}>
 </div>);
 
 ReactDOM.render(<div className="mix-demo">
-    <div className="row">
-        <h4>tree & select</h4>
-        {tableMixTree}
-    </div>
-    <div className="row">
-        <h4>extra & select</h4>
-        {tableMixExpanded}
-    </div>
-    <div className="row">
-        <h4>tree & lock column & select</h4>
-        {tableMixSelectionTreeLock}
-    </div>
-    <div className="row">
-        <h4>extra & lock column & select</h4>
-        {tableMixExpandedLock}
-    </div>
-    <div className="row">
-        <h4>lock column & select</h4>
-        {tableMixLock}
-    </div>
     <div className="row">
         <h4>tree & lock column</h4>
         {tableMixTreeLock}

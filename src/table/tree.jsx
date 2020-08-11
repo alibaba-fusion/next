@@ -36,6 +36,10 @@ export default function tree(BaseComponent) {
              * 开启Table的tree模式, 接收的数据格式中包含children则渲染成tree table
              */
             isTree: PropTypes.bool,
+            /**
+             * 开启Table的tree模式时，是否开启线条模式
+             */
+            showLine: PropTypes.bool,
             locale: PropTypes.object,
             ...BaseComponent.propTypes,
         };
@@ -54,6 +58,7 @@ export default function tree(BaseComponent) {
             treeStatus: PropTypes.array,
             onTreeNodeClick: PropTypes.func,
             isTree: PropTypes.bool,
+            showLine: PropTypes.bool,
         };
 
         constructor(props, context) {
@@ -70,6 +75,7 @@ export default function tree(BaseComponent) {
                 treeStatus: this.getTreeNodeStatus(this.ds),
                 onTreeNodeClick: this.onTreeNodeClick,
                 isTree: this.props.isTree,
+                showLine: this.props.showLine,
             };
         }
 
@@ -85,12 +91,16 @@ export default function tree(BaseComponent) {
 
         normalizeDataSource(dataSource) {
             const ret = [],
-                loop = function(dataSource, level) {
-                    dataSource.forEach(item => {
+                loop = function(dataSource, level, parent) {
+                    dataSource.forEach((item, i, all) => {
                         item.__level = level;
+                        item.__isLastChild = parent ? [].concat(parent.__isLastChild || [], i === all.length - 1) : [];
                         ret.push(item);
-                        if (item.children) {
-                            loop(item.children, level + 1);
+                        if (item.children && Array.isArray(item.children) && item.children.length > 0) {
+                            item.__isLeaf = false;
+                            loop(item.children, level + 1, item);
+                        } else {
+                            item.__isLeaf = true;
                         }
                     });
                 };
@@ -167,13 +177,7 @@ export default function tree(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let {
-                components,
-                isTree,
-                dataSource,
-                indent,
-                ...others
-            } = this.props;
+            let { components, isTree, dataSource, indent, ...others } = this.props;
 
             if (isTree) {
                 components = { ...components };
@@ -186,13 +190,7 @@ export default function tree(BaseComponent) {
 
                 dataSource = this.normalizeDataSource(dataSource);
             }
-            return (
-                <BaseComponent
-                    {...others}
-                    dataSource={dataSource}
-                    components={components}
-                />
-            );
+            return <BaseComponent {...others} dataSource={dataSource} components={components} />;
         }
     }
     statics(TreeTable, BaseComponent);

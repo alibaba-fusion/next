@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import "../core/index-noreset.scss";
+@import "../tree/scss/variable";
 @import "scss/variable";
 @import "scss/mixin";
 /* put your code here */
@@ -471,6 +472,120 @@
         }
     }
 }
+
+
+
+#{$table-prefix} {
+    tr:not(:last-child) td#{$table-prefix}-tree-net {
+        border-bottom: 0;
+    }
+    #{$table-prefix}-tree-net {
+        div#{$table-prefix}-cell-wrapper {
+            overflow: initial;
+            position: relative;
+        }
+    }
+    &#{$table-prefix}small {
+        .#{$css-prefix}line::before {
+            height: $table-size-s-cell-padding-top + $line-2 * 2 + $tree-node-title-height;
+        }
+    }
+}
+
+#{$table-prefix}-tree {
+    &-node-indent-unit {
+        display: inline-block;
+        width: 24px;
+        vertical-align: middle;
+        position: relative;
+
+        &.#{$css-prefix}line {
+            position: absolute;
+            display: inline-block;
+            background: $color-line1-3;
+            width: $line-1;
+            height: 100%;
+        }
+    }
+    &-switcher {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: $s-2;
+        left: -8px; // switcher宽度的一半
+    }
+
+    &-switcher.#{$css-prefix}noop-noline {
+        width: $tree-switch-arrow-size;
+        height: $tree-switch-arrow-size;
+    }
+
+    &-switcher.#{$css-prefix}line {
+        width: $s-4;
+        height: $s-4;
+        line-height: $s-4 - $line-1 * 2;
+        border: $line-1 $line-solid $tree-switch-border-color;
+        border-radius: $tree-switch-corner;
+        background-color: $tree-switch-bg-color;
+        cursor: pointer;
+
+        #{$table-prefix}-tree-switcher-icon {
+            @include icon-size($tree-switch-icon-size, ($s-4 - $tree-switch-icon-size - $line-1 * 2) / 2);
+            color: $tree-switch-icon-color;
+        }
+
+        &:not(.#{$css-prefix}disabled):hover {
+            border-color: $tree-switch-hover-border-color;
+            background-color: $tree-switch-hover-bg-color;
+
+            #{$table-prefix}-tree-switcher-icon {
+                color: $tree-switch-hover-icon-color;
+            }
+        }
+
+        &.#{$css-prefix}disabled {
+            border-color: $color-line1-1;
+            background-color: $color-white;
+            cursor: not-allowed;
+
+            #{$table-prefix}-tree-switcher-icon {
+                color: $tree-node-disabled-color;
+            }
+        }
+    }
+
+    &-switcher.#{$css-prefix}noop-line {
+        width: $s-4;
+        height: $s-4;
+    }
+
+    &-switcher.#{$css-prefix}noop-line-noroot {
+        height: 0;
+        border-left: $line-1 $line-solid $color-line1-1;
+        border-bottom: $line-1 $line-solid $color-line1-3;
+
+        #{$table-prefix}-tree-right-angle {
+            bottom: -$line-1;
+        }
+    }
+
+    &-right-angle {
+        position: absolute;
+        bottom: 6.5px;
+        // 带子元素的 比不带自元素的差一个switcher的border 也就是1px
+        left: -13px;
+        display: block;
+        width: 12.5px;
+        height: 20px;
+        border-left: $line-1 $line-solid $color-line1-3;
+        border-bottom: $line-1 $line-solid $color-line1-3;
+    }
+}
+
+#{$table-prefix}-noop-line #{$table-prefix}-tree-right-angle {
+    left: -12px;
+}
+
 
 #{$table-prefix} {
     &-fix-left,
