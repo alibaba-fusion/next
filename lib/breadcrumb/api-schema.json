@@ -1,0 +1,105 @@
+{
+  "name": "Breadcrumb",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式类名的品牌前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式类名的品牌前缀"
+    },
+    "children": {
+      "type": {
+        "name": "custom",
+        "raw": "(props, propName) => {\n    Children.forEach(props[propName], child => {\n        if (\n            !(\n                child &&\n                typeof child.type === 'function' &&\n                child.type._typeMark === 'breadcrumb_item'\n            )\n        ) {\n            throw new Error(\n                \"Breadcrumb's children must be Breadcrumb.Item!\"\n            );\n        }\n    });\n}"
+      },
+      "required": false,
+      "description": "面包屑子节点，需传入 Breadcrumb.Item",
+      "docblock": "面包屑子节点，需传入 Breadcrumb.Item"
+    },
+    "maxNode": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'auto'",
+                "computed": false
+              }
+            ]
+          }
+        ]
+      },
+      "required": false,
+      "description": "面包屑最多显示个数，超出部分会被隐藏, 设置为 auto 会自动根据父元素的宽度适配。",
+      "defaultValue": {
+        "value": "100",
+        "computed": false
+      },
+      "docblock": "面包屑最多显示个数，超出部分会被隐藏, 设置为 auto 会自动根据父元素的宽度适配。"
+    },
+    "separator": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "node"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "分隔符，可以是文本或 Icon",
+      "docblock": "分隔符，可以是文本或 Icon"
+    },
+    "component": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "func"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置标签类型",
+      "defaultValue": {
+        "value": "'nav'",
+        "computed": false
+      },
+      "docblock": "设置标签类型"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "link": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`",
+          "docblock": "面包屑节点链接，如果设置这个属性，则该节点为`<a />` ，否则是`<span />`"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
