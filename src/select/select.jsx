@@ -97,7 +97,7 @@ class Select extends Base {
          */
         fillProps: PropTypes.string,
         /**
-         * onChange 返回的 value 使用 dataSource 的对象
+         * value 使用对象类型 `{value, label}`, 同时 onChange 第一个参数返回也修改为 dataSource 中的对象
          */
         useDetailValue: PropTypes.bool,
         /**
