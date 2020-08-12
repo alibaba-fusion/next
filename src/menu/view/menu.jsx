@@ -52,13 +52,16 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
     const arr = [];
 
     children.forEach((child, index) => {
+        if (!child) {
+            return;
+        }
         let overflowedItems = [];
 
         if (index > lastVisibleIndex) {
             child = React.cloneElement(child, {
                 key: `more-${index}`,
                 style: { display: 'none' },
-                className: `${child.className || ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
+                className: `${(child && child.className) || ''} ${MENUITEM_OVERFLOWED_CLASSNAME}`,
             });
         }
 
