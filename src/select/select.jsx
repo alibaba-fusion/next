@@ -790,11 +790,12 @@ class Select extends Base {
         }
 
         if (mode === 'single') {
-            if (!value || typeof value !== 'object') {
+            if (!value) {
                 return null;
             }
 
-            const retvalue = fillProps && fillProps in value ? value[fillProps] : valueRender(value);
+            const retvalue =
+                fillProps && typeof value === 'object' && fillProps in value ? value[fillProps] : valueRender(value);
             // 0 => '0'
             return typeof retvalue === 'number' ? retvalue.toString() : retvalue;
         } else if (value) {
