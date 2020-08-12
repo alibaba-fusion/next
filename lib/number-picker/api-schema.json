@@ -1,0 +1,437 @@
+{
+  "name": "NumberPicker",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式前缀"
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false,
+            "description": "普通"
+          },
+          {
+            "value": "'inline'",
+            "computed": false,
+            "description": "内联"
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "设置类型\n@enumdesc 普通, 内联",
+      "value": [
+        {
+          "value": "'normal'",
+          "computed": false,
+          "description": "普通"
+        },
+        {
+          "value": "'inline'",
+          "computed": false,
+          "description": "内联"
+        }
+      ]
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'large'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "大小"
+    },
+    "value": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "当前值",
+      "docblock": "当前值"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "默认值",
+      "docblock": "默认值"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "docblock": "是否禁用"
+    },
+    "step": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "步长",
+      "defaultValue": {
+        "value": "1",
+        "computed": false
+      },
+      "docblock": "步长"
+    },
+    "precision": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "保留小数点后位数",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "保留小数点后位数"
+    },
+    "editable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "用户是否可以输入",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "用户是否可以输入"
+    },
+    "autoFocus": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "自动焦点",
+      "docblock": "自动焦点"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "数值被改变的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "数值被改变的事件\n@param {Number} value 数据\n@param {Event} e DOM事件对象",
+      "params": [
+        {
+          "name": "value",
+          "description": "数据",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "e",
+          "description": "DOM事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onKeyDown": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "键盘按下",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "键盘按下",
+      "params": [],
+      "returns": null
+    },
+    "onFocus": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "焦点获得",
+      "docblock": "焦点获得",
+      "params": [],
+      "returns": null
+    },
+    "onBlur": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "焦点失去",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "焦点失去",
+      "params": [],
+      "returns": null
+    },
+    "onCorrect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "数值订正后的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "数值订正后的回调\n@param {Object} obj {currentValue,oldValue:String}",
+      "params": [
+        {
+          "name": "obj",
+          "description": "{currentValue,oldValue:String}",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "max": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最大值",
+      "defaultValue": {
+        "value": "Infinity",
+        "computed": true
+      },
+      "docblock": "最大值"
+    },
+    "min": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最小值",
+      "defaultValue": {
+        "value": "-Infinity",
+        "computed": false
+      },
+      "docblock": "最小值"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义class",
+      "docblock": "自定义class"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内联样式",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "自定义内联样式",
+      "properties": []
+    },
+    "format": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "格式化当前值",
+      "docblock": "格式化当前值\n@param {Number} value\n@return {String|Number}",
+      "params": [
+        {
+          "name": "value",
+          "description": null,
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": {
+        "description": null,
+        "type": {
+          "name": "union",
+          "value": [
+            "String",
+            "Number"
+          ]
+        }
+      }
+    },
+    "upBtnProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "增加按钮的props",
+      "docblock": "增加按钮的props",
+      "properties": []
+    },
+    "downBtnProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "减少按钮的props",
+      "docblock": "减少按钮的props",
+      "properties": []
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "内联 label",
+      "docblock": "内联 label"
+    },
+    "innerAfter": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "inner after",
+      "docblock": "inner after"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "device": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'phone'",
+            "computed": false
+          },
+          {
+            "value": "'tablet'",
+            "computed": false
+          },
+          {
+            "value": "'desktop'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "预设屏幕宽度",
+      "docblock": "预设屏幕宽度"
+    },
+    "hasTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否展示点击按钮",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否展示点击按钮"
+    },
+    "alwaysShowTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否一直显示点击按钮(无须hover)",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否一直显示点击按钮(无须hover)"
+    }
+  },
+  "methods": [
+    {
+      "name": "hackChrome",
+      "docblock": "fix bug in chrome browser\n0.28 + 0.01 = 0.29000000000000004\n0.29 - 0.01 = 0.27999999999999997\n@param {Number} value value",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "value",
+          "description": "value",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": null,
+      "description": "fix bug in chrome browser\n0.28 + 0.01 = 0.29000000000000004\n0.29 - 0.01 = 0.27999999999999997"
+    }
+  ],
+  "subComponents": []
+}
