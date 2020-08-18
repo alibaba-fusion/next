@@ -57,8 +57,8 @@ class App extends React.Component {
                 <Range tooltipVisible fixedWidth defaultValue={[70, 90]} style={styleX3} />
                 <Range disabled tooltipVisible fixedWidth defaultValue={[70, 90]} style={style} />
                 <h4>fixedWidth with marks</h4>
-                <Range fixedWidth step={10} defaultValue={[20, 40]} scales={10} marks={10} style={styleX3} />
-                <Range fixedWidth step={2} defaultValue={[60, 80]} scales={[0, 100]} marks={[0, 30, 100]} style={style} marksPosition="below" />
+                <Range fixedWidth step={10} defaultValue={[20, 40]} marks={10} style={styleX3} />
+                <Range fixedWidth step={2} defaultValue={[60, 80]} marks={[0, 30, 100]} style={style} marksPosition="below" />
                 <h4>fixedWidth with 0.01 step</h4>
                 <Range fixedWidth defaultValue={[0.6, 0.7]} min={0.5} max={1} step={0.01}/>
                 <div style={{width: '400px', marginTop: '50px'}}>
