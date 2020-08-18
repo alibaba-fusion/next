@@ -177,11 +177,7 @@ class NumberPicker extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (
-            'value' in nextProps &&
-            nextProps.value !== prevState.value &&
-            prevState.reRender
-        ) {
+        if ('value' in nextProps && nextProps.value !== prevState.value && prevState.reRender) {
             const value = nextProps.value;
             return {
                 value: value === undefined || value === null ? '' : value,
@@ -196,8 +192,13 @@ class NumberPicker extends React.Component {
             value = value.trim();
             // Compatible Chinese Input Method
             value = value.replace('。', '.');
-            // ignore space
-            if (this.state.value === value) {
+
+            // ignore space as well as inputting more than one '.' or '-'
+            if (
+                this.state.value === value ||
+                (value.match(/\./g) || []).length > 1 ||
+                (value.match(/-/g) || []).length > 1
+            ) {
                 return;
             }
 
@@ -206,20 +207,35 @@ class NumberPicker extends React.Component {
                 // ignore when input start form '-'
                 if (value === '-' || this.state.value === '-') {
                     this.setState({
-                        value,
+                        value: value !== '-' && isNaN(Number(value[value.length - 1])) ? this.state.value : value,
                         reRender: false,
                     });
                     return;
                 }
+
+                // cut if current length larger than precision required to ensure not rounding
+                const precisionSet = this.getPrecision();
+                const precisionCurrent = value.indexOf('.') === -1 ? 0 : value.length - value.indexOf('.') - 1;
+                if (precisionCurrent > precisionSet) {
+                    value = value.substr(0, value.indexOf('.') + 1 + this.getPrecision());
+                }
+
                 // ignore when input 0./0.0/0.00 to 0.001
                 // but take care of Number('')=0;
-                if (value.match(/\.0*$/)) {
+                // value.match(/\.0*$/) can not be conbined with value.match(/\.[0-9]*0$/) ，otherwise . will not be able to be input
+                if (value.match(/\.0*$/) || value.match(/\.[0-9]*0$/) || value.match(/-0$/)) {
                     this.setState({
-                        value,
+                        value: value,
                         reRender: false,
                     });
                     return;
                 }
+
+                // ignore input a-z after .
+                if (isNaN(Number(value[value.length - 1]))) {
+                    return;
+                }
+
                 // ignore when value < min (because number is inputted one by one)
                 if (!isNaN(value) && Number(value) < this.props.min) {
                     this.setState({
@@ -283,24 +299,13 @@ class NumberPicker extends React.Component {
             if (val > props.max) {
                 val = props.max;
             }
-
-            // precision=2  and input from 1.99 to 1.999, should stay with 1.99 not 2
-            const strValue = `${val}`;
-            const pointPos = strValue.indexOf('.');
-            const cutPos = pointPos + 1 + this.getPrecision();
-            if (pointPos !== -1 && strValue.length > cutPos) {
-                val = Number(strValue.substr(0, cutPos));
-            }
         } else {
             val = this.state.value;
         }
 
         if (`${val}` !== `${value}`) {
             // under controled, set back to props.value
-            if (
-                'value' in this.props &&
-                `${this.props.value}` !== `${this.state.value}`
-            ) {
+            if ('value' in this.props && `${this.props.value}` !== `${this.state.value}`) {
                 this.setState({
                     value: this.props.value,
                 });
@@ -369,9 +374,7 @@ class NumberPicker extends React.Component {
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
-            result =
-                (precisionFactor * val + precisionFactor * step) /
-                precisionFactor;
+            result = (precisionFactor * val + precisionFactor * step) / precisionFactor;
 
             result = this.hackChrome(result);
         } else {
@@ -385,9 +388,7 @@ class NumberPicker extends React.Component {
         const precisionFactor = this.getPrecisionFactor();
         let result;
         if (typeof val === 'number') {
-            result =
-                (precisionFactor * val - precisionFactor * step) /
-                precisionFactor;
+            result = (precisionFactor * val - precisionFactor * step) / precisionFactor;
 
             result = this.hackChrome(result);
         } else {
@@ -420,7 +421,7 @@ class NumberPicker extends React.Component {
             return onDisabled(e);
         }
 
-        const value = this.state.value;
+        const value = Number(this.state.value);
         if (isNaN(value)) {
             return;
         }
@@ -446,9 +447,7 @@ class NumberPicker extends React.Component {
     renderValue() {
         const { value, hasFocused } = this.state;
         const { format } = this.props;
-        return typeof format === 'function' && !hasFocused
-            ? format(value)
-            : value;
+        return typeof format === 'function' && !hasFocused ? format(value) : value;
     }
 
     focus() {
@@ -524,29 +523,19 @@ class NumberPicker extends React.Component {
                         {...upBtnProps}
                         onMouseDown={this.handleMouseDown}
                         disabled={disabled}
-                        className={`${upBtnProps.className || ''} ${
-                            upDisabled ? 'disabled' : ''
-                        }`}
+                        className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                         onClick={this.up.bind(this, upDisabled)}
                     >
-                        <Icon
-                            type="arrow-up"
-                            className={`${prefixCls}-up-icon`}
-                        />
+                        <Icon type="arrow-up" className={`${prefixCls}-up-icon`} />
                     </Button>
                     <Button
                         {...downBtnProps}
                         onMouseDown={this.handleMouseDown}
                         disabled={disabled}
-                        className={`${downBtnProps.className || ''} ${
-                            downDisabled ? 'disabled' : ''
-                        }`}
+                        className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                         onClick={this.down.bind(this, downDisabled)}
                     >
-                        <Icon
-                            type="arrow-down"
-                            className={`${prefixCls}-down-icon`}
-                        />
+                        <Icon type="arrow-down" className={`${prefixCls}-down-icon`} />
                     </Button>
                 </span>
             );
@@ -556,9 +545,7 @@ class NumberPicker extends React.Component {
                     {...downBtnProps}
                     size={size}
                     disabled={disabled}
-                    className={`${downBtnProps.className || ''} ${
-                        downDisabled ? 'disabled' : ''
-                    }`}
+                    className={`${downBtnProps.className || ''} ${downDisabled ? 'disabled' : ''}`}
                     onClick={this.down.bind(this, downDisabled)}
                 >
                     <Icon type="minus" className={`${prefixCls}-minus-icon`} />
@@ -569,9 +556,7 @@ class NumberPicker extends React.Component {
                     {...upBtnProps}
                     size={size}
                     disabled={disabled}
-                    className={`${upBtnProps.className || ''} ${
-                        upDisabled ? 'disabled' : ''
-                    }`}
+                    className={`${upBtnProps.className || ''} ${upDisabled ? 'disabled' : ''}`}
                     onClick={this.up.bind(this, upDisabled)}
                 >
                     <Icon type="add" className={`${prefixCls}-add-icon`} />
@@ -603,12 +588,7 @@ class NumberPicker extends React.Component {
         }
 
         return (
-            <span
-                className={cls}
-                style={style}
-                dir={rtl ? 'rtl' : undefined}
-                {...dataAttrs}
-            >
+            <span className={cls} style={style} dir={rtl ? 'rtl' : undefined} {...dataAttrs}>
                 <Input
                     {...others}
                     hasClear={false}

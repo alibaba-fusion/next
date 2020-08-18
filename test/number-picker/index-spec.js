@@ -424,6 +424,76 @@ describe('number-picker', () => {
             done();
         });
 
+        it('should not input infinite 0 like 0.00...00 ', done =>{
+            const wrapper = mount(
+                <NumberPicker defaultValue={0.0000} step={0.01} precision={4} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', {target: {value: '0.00000'}});
+            assert(wrapper.find('input').prop('value') === '0.0000');
+
+            done();
+        })
+
+        it('should enable input 0 under circumstance like 0.1', done => {
+            const wrapper = mount(
+                <NumberPicker defaultValue={0.01} step={0.01} precision={4} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', {target: {value: '0.010'}});
+            assert(wrapper.find('input').prop('value') === '0.010');
+
+            done();
+        })
+
+        it('should not delete - when input numbers more than precision allowed', done => {
+            const wrapper = mount(
+                <NumberPicker defaultValue={-0.0000} step={0.01} precision={4} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', {target: {value: '-0.00001'}});
+            assert(wrapper.find('input').prop('value') === '-0.0000');
+
+            done();
+        })
+
+        it('should keep - under circumstances like -0', done => {
+            const wrapper = mount(
+                <NumberPicker defaultValue={-0.31} step={0.01} precision={4} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', {target: {value: '-0'}});
+            assert(wrapper.find('input').prop('value') === '-0');
+
+            done();
+        })
+
+        it('should not input more than one . or -', done => {
+            const wrapper = mount(
+                <NumberPicker defaultValue={-0.31} step={0.01} precision={4} />
+            );
+
+            wrapper
+                .find('input')
+                .simulate('change', {target: {value: '-0.31-'}});
+            assert(wrapper.find('input').prop('value') === -0.31);
+
+            wrapper
+                .find('input')
+                .simulate('change', {target: {value: '-0.31.'}});
+            assert(wrapper.find('input').prop('value') === -0.31)
+
+            done();
+        })
+
         it('should consider [。] as [.]', done => {
             const wrapper = mount(
                 <NumberPicker defaultValue={1.2} step={0.01} precision={3} />
