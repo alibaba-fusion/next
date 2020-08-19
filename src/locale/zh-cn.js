@@ -71,6 +71,9 @@ export default {
     Input: {
         clear: '清除',
     },
+    List: {
+        empty: '没有数据',
+    },
     Select: {
         selectPlaceholder: '请选择',
         autoCompletePlaceholder: '请输入',
