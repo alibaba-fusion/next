@@ -6,6 +6,8 @@ const { logger } = require('./utils');
 
 const distPath = path.join(process.cwd(), 'dist');
 
+// fs.removeSync(distPath);
+
 const args = process.argv.slice(2);
 const minimize = args.indexOf('minimize') > -1;
 
@@ -76,9 +78,6 @@ webpack(config, (err, stats) => {
             fs.unlinkSync(path.join(distPath, 'next.var.js'));
         }
     } catch (e) {
-        logger.warn(
-            'remove next-noreset.js or next-noreset.min.js failed: ',
-            e
-        );
+        logger.warn('remove next-noreset.js or next-noreset.min.js failed: ', e);
     }
 });

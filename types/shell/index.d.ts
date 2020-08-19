@@ -19,6 +19,7 @@ export interface ShellNavigationProps extends ShellCommonProps {
     direction?: 'hoz' | 'ver';
     align?: 'left' | 'right' | 'center';
     fixed?: boolean;
+    trigger?: any;
     onCollapseChange?: (collapse?: boolean) => {};
 }
 

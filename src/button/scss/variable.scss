@@ -5,7 +5,7 @@
 /// @family general
 /// @varPrefix $btn-
 /// @classPrefix {prefix}-btn
-/// @order {"statement/normal":10,"statement/hover":11,"statement/disabled":12,"statement/loading":13,"size/bounding":10,"size/text":11,"size/icon":12,"size/normal":13}
+/// @order {"statement/normal":10,"statement/hover":11,"statement/disabled":12,"statement/active":13,"statement/loading":14,"size/bounding":10,"size/text":11,"size/icon":12,"size/normal":13}
 ////
 
 $btn-prefix: '.' + $css-prefix + 'btn';
@@ -142,23 +142,41 @@ $btn-pure-bg-disabled: $color-fill1-1 !default;
 $btn-pure-border-color-disabled: $color-line1-1 !default;
 
 /// text
+/// @namespace statement/disabled
+$btn-pure-normal-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-pure-normal-bg-disabled: $color-fill1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-pure-normal-border-color-disabled: $color-line1-1 !default;
+/// text
 /// @namespace statement/normal
 $btn-pure-normal-color: $color-text1-4 !default;
 /// text
 /// @namespace statement/hover
 $btn-pure-normal-color-hover: $color-text1-4 !default;
+/// text
+/// @namespace statement/active
+$btn-pure-normal-color-active: $color-text1-4 !default;
 /// background
 /// @namespace statement/normal
 $btn-pure-normal-bg: $color-white !default;
 /// background
 /// @namespace statement/hover
 $btn-pure-normal-bg-hover: $color-fill1-2 !default;
+/// background
+/// @namespace statement/active
+$btn-pure-normal-bg-active: $color-fill1-2 !default;
 /// border color
 /// @namespace statement/normal
 $btn-pure-normal-border-color: $color-line1-3 !default;
 /// border color
 /// @namespace statement/hover
 $btn-pure-normal-border-color-hover: $color-line1-4 !default;
+/// border color
+/// @namespace statement/active
+$btn-pure-normal-border-color-active: $color-line1-4 !default;
 /// border style
 /// @namespace statement/normal
 $btn-pure-normal-border-style: $line-solid !default;
@@ -166,23 +184,41 @@ $btn-pure-normal-border-style: $line-solid !default;
 // Secondary
 // ----------------------------------------
 /// text
+/// @namespace statement/disabled
+$btn-pure-secondary-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-pure-secondary-bg-disabled: $color-fill1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-pure-secondary-border-color-disabled: $color-line1-1 !default;
+/// text
 /// @namespace statement/normal
 $btn-pure-secondary-color: $color-brand1-6 !default;
 /// text
 /// @namespace statement/hover
 $btn-pure-secondary-color-hover: $color-white !default;
+/// text
+/// @namespace statement/active
+$btn-pure-secondary-color-active: $color-white !default;
 /// background
 /// @namespace statement/normal
 $btn-pure-secondary-bg: $color-white !default;
 /// background
 /// @namespace statement/hover
 $btn-pure-secondary-bg-hover: $color-brand1-9 !default;
+/// background
+/// @namespace statement/active
+$btn-pure-secondary-bg-active: $color-brand1-9 !default;
 /// border color
 /// @namespace statement/normal
 $btn-pure-secondary-border-color: $color-brand1-6 !default;
 /// border color
 /// @namespace statement/hover
 $btn-pure-secondary-border-color-hover: $color-brand1-9 !default;
+/// border color
+/// @namespace statement/active
+$btn-pure-secondary-border-color-active: $color-brand1-9 !default;
 /// border style
 /// @namespace statement/normal
 $btn-pure-secondary-border-style: $line-solid !default;
@@ -190,23 +226,41 @@ $btn-pure-secondary-border-style: $line-solid !default;
 // Primary
 // ----------------------------------------
 /// text
+/// @namespace statement/disabled
+$btn-pure-primary-color-disabled: $color-text1-1 !default;
+/// background
+/// @namespace statement/disabled
+$btn-pure-primary-bg-disabled: $color-fill1-1 !default;
+/// border color
+/// @namespace statement/disabled
+$btn-pure-primary-border-color-disabled: $color-line1-1 !default;
+/// text
 /// @namespace statement/normal
 $btn-pure-primary-color: $color-white !default;
 /// text
 /// @namespace statement/hover
 $btn-pure-primary-color-hover: $color-white !default;
+/// text
+/// @namespace statement/active
+$btn-pure-primary-color-active: $color-white !default;
 /// background
 /// @namespace statement/normal
 $btn-pure-primary-bg: $color-brand1-6 !default;
 /// background
 /// @namespace statement/hover
 $btn-pure-primary-bg-hover: $color-brand1-9 !default;
+/// background
+/// @namespace statement/active
+$btn-pure-primary-bg-active: $color-brand1-9 !default;
 /// border color
 /// @namespace statement/normal
 $btn-pure-primary-border-color: $color-transparent !default;
 /// border color
 /// @namespace statement/hover
 $btn-pure-primary-border-color-hover: $color-transparent !default;
+/// border color
+/// @namespace statement/active
+$btn-pure-primary-border-color-active: $color-transparent !default;
 /// border style
 /// @namespace statement/normal
 $btn-pure-primary-border-style: $line-solid !default;
@@ -355,6 +409,9 @@ $btn-warning-primary-color: $color-white !default;
 /// text
 /// @namespace statement/hover
 $btn-warning-primary-color-hover: $color-white !default;
+/// text
+/// @namespace statement/active
+$btn-warning-primary-color-active: $color-white !default;
 
 /// border color
 /// @namespace statement/normal
@@ -363,6 +420,9 @@ $btn-warning-primary-border-color: $color-error-3 !default;
 /// border color
 /// @namespace statement/hover
 $btn-warning-primary-border-color-hover: $color-error-4 !default;
+/// border color
+/// @namespace statement/active
+$btn-warning-primary-border-color-active: $color-error-4 !default;
 
 /// background
 /// @namespace statement/normal
@@ -371,6 +431,9 @@ $btn-warning-primary-bg: $color-error-3 !default;
 /// background
 /// @namespace statement/hover
 $btn-warning-primary-bg-hover: $color-error-4 !default;
+/// background
+/// @namespace statement/active
+$btn-warning-primary-bg-active: $color-error-4 !default;
 
 /// text
 /// @namespace statement/disabled
@@ -395,6 +458,10 @@ $btn-warning-normal-color: $color-error-3 !default;
 /// @namespace statement/hover
 $btn-warning-normal-color-hover: $color-white !default;
 
+/// text
+/// @namespace statement/active
+$btn-warning-normal-color-active: $color-white !default;
+
 /// border
 /// @namespace statement/normal
 $btn-warning-normal-border-color: $color-error-3 !default;
@@ -402,6 +469,9 @@ $btn-warning-normal-border-color: $color-error-3 !default;
 /// border
 /// @namespace statement/hover
 $btn-warning-normal-border-color-hover: $color-error-4 !default;
+/// border
+/// @namespace statement/active
+$btn-warning-normal-border-color-active: $color-error-4 !default;
 
 /// background
 /// @namespace statement/normal
@@ -410,6 +480,10 @@ $btn-warning-normal-bg: $color-white !default;
 /// background
 /// @namespace statement/hover
 $btn-warning-normal-bg-hover: $color-error-4 !default;
+
+/// background
+/// @namespace statement/active
+$btn-warning-normal-bg-active: $color-error-4 !default;
 
 /// text
 /// @namespace statement/disabled

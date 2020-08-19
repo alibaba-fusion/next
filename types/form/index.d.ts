@@ -204,6 +204,7 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
     labelWidth?: number | string;
     colSpan?: number;
     isPreview?: boolean;
+    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -482,7 +483,7 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
     component?: string | (() => void);
     responsive?: boolean;
     isPreview?: boolean;
-    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => void
+    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any
 }
 
 export default class Form extends React.Component<FormProps, any> {

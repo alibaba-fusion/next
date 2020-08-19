@@ -73,6 +73,25 @@ describe('Card', () => {
             assert(wrapper.find('.next-card-actions').length > 0);
         });
 
+        it('should render when contentHeight is auto', () => {
+            wrapper = mount(
+                <Card {...commonProps} title="Card Title" contentHeight="300">
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                    Card Content <br/>Card Content <br/>Card Content <br/>Card Content <br/>
+                </Card>
+            );
+
+            assert(wrapper.find('.next-card-content').instance().style.height === '300px');
+
+            wrapper.setProps({ contentHeight: 'auto' });
+            assert(wrapper.find('.next-card-content').instance().style.height === 'auto');
+        });
+
         it('should render free', () => {
             wrapper = mount(
                 <Card

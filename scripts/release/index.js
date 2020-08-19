@@ -75,6 +75,7 @@ function checkTags() {
 
 function checkFiles() {
     const paths = [
+        'dist/adaptor.min.js',
         'dist/next.min.js',
         'dist/next.min.css',
         'dist/next.js',

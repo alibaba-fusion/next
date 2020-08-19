@@ -49,10 +49,7 @@ export default class Card extends React.Component {
         /**
          * 内容区域的固定高度
          */
-        contentHeight: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]),
+        contentHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         /**
          * 标题区域的用户自定义内容
          */
@@ -107,19 +104,8 @@ export default class Card extends React.Component {
         return (
             <div {...others} className={cardCls}>
                 {media && <CardMedia>{media}</CardMedia>}
-                <BulletHeader
-                    title={title}
-                    subTitle={subTitle}
-                    extra={extra}
-                    showTitleBullet={showTitleBullet}
-                />
-                {free ? (
-                    children
-                ) : (
-                    <CollapseContent contentHeight={contentHeight}>
-                        {children}
-                    </CollapseContent>
-                )}
+                <BulletHeader title={title} subTitle={subTitle} extra={extra} showTitleBullet={showTitleBullet} />
+                {free ? children : <CollapseContent contentHeight={contentHeight}>{children}</CollapseContent>}
                 {actions && <CardActions>{actions}</CardActions>}
             </div>
         );
