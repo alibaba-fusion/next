@@ -42,12 +42,12 @@ export interface RatingProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 用户点击评分时触发的回调
      */
-    onChange?: (value: string) => void;
+    onChange?: (value: number) => void;
 
     /**
      * 用户hover评分时触发的回调
      */
-    onHoverChange?: (value: string) => void;
+    onHoverChange?: (value: number) => void;
 
     /**
      * 是否禁用
