@@ -116,10 +116,10 @@ function checkFiles() {
     const esLen = fs.readdirSync(esPath).length;
     const typesLen = fs.readdirSync(typesPath).length;
 
-    if (!(typesLen === srcLen - 7 && typesLen === libLen - 5 && typesLen === esLen - 3)) {
+    if (!(typesLen === srcLen - 7 && typesLen === libLen - 6 && typesLen === esLen - 4)) {
         // src : demo-helper / core / mixin-ui-state / validate / .editorconfig / .eslintrc / .stylelintrc
-        // lib : core / mixin-ui-state / validate / _components / index.d.ts
-        // es : core / mixin-ui-state / validate
+        // lib : core / core2/  mixin-ui-state / validate / _components / index.d.ts
+        // es : core / core2/ mixin-ui-state / validate
         // types: util.d.ts
         logger.error(`srcLen, libLen, esLen, typesLen: ${srcLen} ${libLen} ${esLen} ${typesLen}`);
         process.exit(0);
