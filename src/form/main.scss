@@ -7,6 +7,24 @@
 #{$form-prefix} {
     @include box-sizing;
 
+    &-preview {
+        #{$form-prefix}-item-label {
+            font-size: $form-element-medium-preview-font-size;
+            line-height: $form-element-medium-preview-height;
+        }
+        &.#{$css-prefix}small {
+            #{$form-prefix}-item-label {
+                font-size: $form-element-small-preview-font-size;
+                line-height: $form-element-small-preview-height;
+            }
+        }
+        &.#{$css-prefix}large {
+            #{$form-prefix}-item-label {
+                font-size: $form-element-large-preview-font-size;
+                line-height: $form-element-large-preview-height;
+            }
+        }
+    }
     &-responsive-grid {
         #{$form-prefix}-item-control {
             flex: 1;
