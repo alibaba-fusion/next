@@ -117,6 +117,10 @@ export default class Base extends React.Component {
          */
         defaultHighlightKey: PropTypes.string,
         /**
+         * 高亮 key，不要和 autoHighlightFirstItem 同时使用，用于受控模式
+         */
+        highlightKey: PropTypes.string,
+        /**
          * 键盘上下键切换菜单高亮选项的回调
          */
         onToggleHighlightItem: PropTypes.func,
@@ -184,7 +188,7 @@ export default class Base extends React.Component {
             visible: 'visible' in props ? props.visible : props.defaultVisible,
             dataSource: this.setDataSource(this.props),
             width: 100,
-            highlightKey: props.defaultHighlightKey,
+            highlightKey: 'highlightKey' in props ? props.highlightKey : props.defaultHighlightKey,
             srReader: '',
         };
 

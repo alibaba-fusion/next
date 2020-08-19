@@ -1,5 +1,50 @@
 # Change Log 
 
+## [1.20.28](https://github.com/alibaba-fusion/next/compare/1.20.26...1.20.28) (2020-08-12)
+
+
+### Bug Fixes
+
+* **Menu:** in caseof children null, close [#2088](https://github.com/alibaba-fusion/next/issues/2088) ([7f20168](https://github.com/alibaba-fusion/next/commit/7f20168))
+* **Select:** compact with string value while useDetailValue=true ([59bd67a](https://github.com/alibaba-fusion/next/commit/59bd67a))
+
+
+
+
+## [1.20.26](https://github.com/alibaba-fusion/next/compare/1.20.25...1.20.26) (2020-08-11)
+
+
+### Bug Fixes
+
+* **Tree:** bug when selectable is false ([8aeeae5](https://github.com/alibaba-fusion/next/commit/8aeeae5))
+
+
+
+
+## [1.20.25](https://github.com/alibaba-fusion/next/compare/1.20.24...1.20.25) (2020-08-07)
+
+
+### Bug Fixes
+
+* **Tab:** narrow close icon hot area, close [#2061](https://github.com/alibaba-fusion/next/issues/2061) ([44eaed6](https://github.com/alibaba-fusion/next/commit/44eaed6))
+* **Typescript:** for Shell.Navigation, close [#2049](https://github.com/alibaba-fusion/next/issues/2049) ([36ff9a8](https://github.com/alibaba-fusion/next/commit/36ff9a8))
+* **VirtualList:** prevent extra calculations, close [#2068](https://github.com/alibaba-fusion/next/issues/2068) ([e35dde7](https://github.com/alibaba-fusion/next/commit/e35dde7))
+
+
+
+
+## [1.20.24](https://github.com/alibaba-fusion/next/compare/1.20.23...1.20.24) (2020-07-30)
+
+
+### Bug Fixes
+
+* **Select:** enhance value type must be object ([45c6bd8](https://github.com/alibaba-fusion/next/commit/45c6bd8))
+* **Shell:** phone navigaiton should be fullscreen & fix ie 11 ([0b709ff](https://github.com/alibaba-fusion/next/commit/0b709ff))
+* **Typescript:** add preview ([cb8c854](https://github.com/alibaba-fusion/next/commit/cb8c854))
+
+
+
+
 ## [1.20.23](https://github.com/alibaba-fusion/next/compare/1.20.22...1.20.23) (2020-07-28)
 
 

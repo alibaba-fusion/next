@@ -89,6 +89,7 @@ class VirtualList extends Component {
         const { from, size } = constrain(jumpIndex, 0, props);
         this.state = { from, size };
         this.cache = {};
+        this.cacheAdd = {};
         this.scrollTo = this.scrollTo.bind(this);
         this.cachedScroll = null;
         this.unstable = false;
@@ -104,9 +105,7 @@ class VirtualList extends Component {
     componentDidMount() {
         const { jumpIndex } = this.props;
 
-        this.updateFrameAndClearCache = this.updateFrameAndClearCache.bind(
-            this
-        );
+        this.updateFrameAndClearCache = this.updateFrameAndClearCache.bind(this);
 
         events.on(window, 'resize', this.updateFrameAndClearCache);
 
@@ -186,8 +185,7 @@ class VirtualList extends Component {
                 ? // Firefox always returns document.body[scrollKey] as 0 and Chrome/Safari
                   // always return document.documentElement[scrollKey] as 0, so take
                   // whichever has a value.
-                  document.body[scrollKey] ||
-                  document.documentElement[scrollKey]
+                  document.body[scrollKey] || document.documentElement[scrollKey]
                 : scrollParent[scrollKey];
         const max = this.getScrollSize() - this.getViewportSize();
 
@@ -211,18 +209,14 @@ class VirtualList extends Component {
 
     getViewportSize() {
         const { scrollParent } = this;
-        return scrollParent === window
-            ? window.innerHeight
-            : scrollParent.clientHeight;
+        return scrollParent === window ? window.innerHeight : scrollParent.clientHeight;
     }
 
     getScrollSize() {
         const { scrollParent } = this;
         const { body, documentElement } = document;
         const key = 'scrollHeight';
-        return scrollParent === window
-            ? Math.max(body[key], documentElement[key])
-            : scrollParent[key];
+        return scrollParent === window ? Math.max(body[key], documentElement[key]) : scrollParent[key];
     }
 
     getStartAndEnd(threshold = this.props.threshold) {
@@ -285,11 +279,7 @@ class VirtualList extends Component {
 
         while (from < maxFrom) {
             const itemSize = this.getSizeOf(from);
-            if (
-                itemSize === null ||
-                itemSize === undefined ||
-                space + itemSize > start
-            ) {
+            if (itemSize === null || itemSize === undefined || space + itemSize > start) {
                 break;
             }
             space += itemSize;
@@ -321,10 +311,7 @@ class VirtualList extends Component {
 
         // Find the closest space to index there is a cached value for.
         let from = index;
-        while (
-            from > 0 &&
-            (cache[from] === null || cache[from] === undefined)
-        ) {
+        while (from > 0 && (cache[from] === null || cache[from] === undefined)) {
             from--;
         }
 
@@ -389,7 +376,7 @@ class VirtualList extends Component {
     }
 
     scrollTo(index) {
-        this.setScroll(this.getSpaceBefore(index));
+        this.setScroll(this.getSpaceBefore(index, this.cacheAdd));
     }
 
     renderMenuItems() {
@@ -414,14 +401,13 @@ class VirtualList extends Component {
         const items = this.renderMenuItems();
 
         const style = { position: 'relative' };
-        const cache = {};
 
-        const size = this.getSpaceBefore(length, cache);
+        const size = this.getSpaceBefore(length, this.cacheAdd);
 
         if (size) {
             style.height = size;
         }
-        const offset = this.getSpaceBefore(from, cache);
+        const offset = this.getSpaceBefore(from, this.cacheAdd);
         const transform = `translate(0px, ${offset}px)`;
         const listStyle = {
             msTransform: transform,
