@@ -56,6 +56,7 @@
     "create": "node ./scripts/create-new.js",
     "check-sass": "node ./scripts/check/sass.js",
     "docs": "node ./scripts/docs/index.js",
+    "clear-dist": "node ./scripts/clear-dist.js",
     "api": "node ./scripts/api.js",
     "pack": "node ./scripts/pack.js",
     "pack-adaptor": "node ./scripts/adaptor/build.js",
@@ -68,7 +69,7 @@
     "prettierjs": "prettier --write '@(src|test|scripts)/**/*.@(js|jsx)'",
     "stylelint": "stylelint --fix 'src/!(core-temp)/*.@(css|scss)'",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
+    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "dependencies": {
     "@alifd/field": "~1.4.1",
