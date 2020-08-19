@@ -48,12 +48,12 @@ class Rating extends Component {
         allowHalf: PropTypes.bool,
         /**
          * 用户点击评分时触发的回调
-         * @param {String} value 评分值
+         * @param {Number} value 评分值
          */
         onChange: PropTypes.func,
         /**
          * 用户hover评分时触发的回调
-         * @param {String} value 评分值
+         * @param {Number} value 评分值
          */
         onHoverChange: PropTypes.func,
         /**
@@ -127,12 +127,7 @@ class Rating extends Component {
         };
         this.timer = null;
 
-        bindCtx(this, [
-            'handleClick',
-            'handleHover',
-            'handleLeave',
-            'onKeyDown',
-        ]);
+        bindCtx(this, ['handleClick', 'handleHover', 'handleLeave', 'onKeyDown']);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -148,9 +143,7 @@ class Rating extends Component {
             'renderPreview' in nextProps
         ) {
             state.disabled =
-                nextProps.disabled ||
-                nextProps.readOnly ||
-                (nextProps.isPreview && !('renderPreview' in nextProps));
+                nextProps.disabled || nextProps.readOnly || (nextProps.isPreview && !('renderPreview' in nextProps));
         }
 
         return state;
@@ -179,9 +172,7 @@ class Rating extends Component {
 
         if (icon && this.underlayNode) {
             const newIconSize = icon.offsetWidth;
-            const newIconSpace =
-                (this.underlayNode.offsetWidth - count * newIconSize) /
-                (count + 1);
+            const newIconSpace = (this.underlayNode.offsetWidth - count * newIconSize) / (count + 1);
 
             if (newIconSize !== iconSize || newIconSpace !== iconSpace) {
                 this.setState({
@@ -201,23 +192,16 @@ class Rating extends Component {
 
         const pos = e.pageX - this.underlayNode.getBoundingClientRect().left;
         const fullNum = Math.floor(pos / (iconSpace + iconSize));
-        const surplusNum =
-            (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
+        const surplusNum = (pos - fullNum * (iconSpace + iconSize) - iconSpace) / iconSize;
         let value = Number(fullNum) + Number(surplusNum.toFixed(1));
         if (value >= count) {
             value = count;
         } else if (allowHalf) {
             const floorValue = Math.floor(value);
             if (rtl) {
-                value =
-                    value - 0.5 >= floorValue
-                        ? floorValue + 1.5
-                        : floorValue + 1;
+                value = value - 0.5 >= floorValue ? floorValue + 1.5 : floorValue + 1;
             } else {
-                value =
-                    value - 0.5 >= floorValue
-                        ? floorValue + 1
-                        : floorValue + 0.5;
+                value = value - 0.5 >= floorValue ? floorValue + 1 : floorValue + 0.5;
             }
         } else {
             value = Math.floor(value) + 1;
@@ -337,12 +321,7 @@ class Rating extends Component {
             return 'auto';
         }
 
-        const value = Rating.currentValue(
-            0,
-            this.props.count,
-            hoverValue,
-            this.state.value
-        );
+        const value = Rating.currentValue(0, this.props.count, hoverValue, this.state.value);
 
         const floorValue = Math.floor(value);
 
@@ -387,12 +366,7 @@ class Rating extends Component {
         const enableA11y = !!id;
 
         // 获得Value
-        const value = Rating.currentValue(
-            0,
-            count,
-            hoverValue,
-            this.state.value
-        );
+        const value = Rating.currentValue(0, count, hoverValue, this.state.value);
 
         // icon的sizeMap
         const sizeMap = ICON_SIZE_MAP[size];
@@ -407,11 +381,7 @@ class Rating extends Component {
             const iconNode = iconType ? (
                 <Icon type={iconType} size={sizeMap} className={iconCls} />
             ) : (
-                <Icon
-                    type="favorites-filling"
-                    size={sizeMap}
-                    className={iconCls}
-                />
+                <Icon type="favorites-filling" size={sizeMap} className={iconCls} />
             );
 
             const saveRefs = ref => {
@@ -419,11 +389,7 @@ class Rating extends Component {
             };
 
             underlay.push(
-                <span
-                    ref={saveRefs}
-                    key={`underlay-${i}`}
-                    className={`${prefix}rating-icon`}
-                >
+                <span ref={saveRefs} key={`underlay-${i}`} className={`${prefix}rating-icon`}>
                     {iconNode}
                 </span>
             );
@@ -449,11 +415,7 @@ class Rating extends Component {
                     className={`${prefix}rating-icon`}
                 >
                     {iconNode}
-                    {enableA11y ? (
-                        <span className={`${prefix}sr-only`}>
-                            {readAs(i + 1)}
-                        </span>
-                    ) : null}
+                    {enableA11y ? <span className={`${prefix}sr-only`}>{readAs(i + 1)}</span> : null}
                 </label>
             );
         }
@@ -518,17 +480,10 @@ class Rating extends Component {
                 aria-label={locale.description}
             >
                 <div className={baseCls} {...finalProps}>
-                    <div
-                        className={`${prefix}rating-underlay`}
-                        ref={n => (this.underlayNode = n)}
-                        aria-hidden
-                    >
+                    <div className={`${prefix}rating-underlay`} ref={n => (this.underlayNode = n)} aria-hidden>
                         {underlay}
                     </div>
-                    <div
-                        className={`${prefix}rating-overlay`}
-                        style={overlayStyle}
-                    >
+                    <div className={`${prefix}rating-overlay`} style={overlayStyle}>
                         {overlay}
                     </div>
                 </div>
