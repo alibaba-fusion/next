@@ -147,7 +147,7 @@ $tree-node-disabled-background: $color-white !default;
 
 $tree-child-indent: $s-6 !default;
 $tree-node-title-height: $s-5 !default;
-$tree-child-indent-left: #{$tree-switch-size} - #{$tree-line-width} / 2;
+$tree-child-indent-left: (#{$tree-switch-size} - #{$tree-line-width}) / 2;
 $tree-child-indent-right: #{$tree-child-indent} - #{$tree-line-width} - #{$tree-child-indent-left};
 $tree-line: $tree-line-width $tree-line-style $tree-line-color;
 
