@@ -11,7 +11,7 @@
 
 Button has a inner state `icons.loading` to custom loading icon. It could be changed by setting `icons.loading` attribute.
 
-::
+:::
 
 ---
 
