@@ -17,6 +17,7 @@ const TPL_PATH = path.join(__dirname, './tpls/index.ejs');
 const cwd = process.cwd();
 
 const renderContext = Object.assign({}, ctx);
+const enRenderContext = Object.assign({}, ctx, { locale: 'en-us' });
 
 module.exports = function*() {
     const srcDir = path.join(cwd, SRC_FOLDER);
@@ -147,7 +148,12 @@ function* buildCompiledDocs(cwd) {
 
         const enAPIFileExists = yield fs.exists(enAPIFrom);
         if (enAPIFileExists) {
-            const { apiMdRendered } = yield compileApiFrom(enAPIFrom, docParser);
+            const { apiMdParsed, apiMdRendered } = yield compileApiFrom(enAPIFrom, docParser);
+
+            enRenderContext.comp.name = apiMdParsed.meta.title;
+            enRenderContext.comp.cnName = apiMdParsed.meta.chinese;
+            enRenderContext.readmeDoc = JSON.parse(apiMdRendered);
+
             yield fs.writeFile(enAPITo, apiMdRendered, 'utf8');
         } else {
             logger.warn(`${folder} does not has index.en-us.md`);
@@ -210,11 +216,11 @@ function* buildCompiledDocs(cwd) {
 
             // write en demo here
             if (enDemosDoc.length) {
-                const enCtx = Object.assign({}, renderContext, { demosDoc: enDemosDoc, demo: enDemosDoc[0] });
+                const enCtx = Object.assign({}, enRenderContext, { demosDoc: enDemosDoc, demo: enDemosDoc[0] });
 
-                const cnHtmlContent = nunjucks.renderString(tplBuffer.toString(), enCtx);
+                const enHtmlContent = nunjucks.renderString(tplBuffer.toString(), enCtx);
 
-                yield fs.writeFile(path.join(cwd, COMPILED_FOLDER, folder, 'index.en-us.html'), cnHtmlContent);
+                yield fs.writeFile(path.join(cwd, COMPILED_FOLDER, folder, 'index.en-us.html'), enHtmlContent);
             }
         } else {
             logger.warn(`${folder} does not has demo folder`);

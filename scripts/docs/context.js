@@ -1,6 +1,21 @@
 const defaultConfig = require('./config');
 const pkgJson = require('../../package.json');
 
+const parsePkgName = () => {
+    let scope = '';
+    let name = '';
+    let version = '';
+    if (pkgJson.name[0] === '@') {
+        [scope, name] = pkgJson.name.split('/');
+    } else {
+        name = pkgJson.name;
+    }
+    if (/@/.test(name)) {
+        [name, version] = name.split('@');
+    }
+    return { scope, name, version, pkgname: scope ? `${scope}/${name}` : name };
+};
+
 /**
  *
  *
@@ -8,13 +23,10 @@ const pkgJson = require('../../package.json');
  *
  */
 module.exports = {
-    // locale: 'zh-cn',
+    locale: 'zh-cn',
     // iconname: 'fuckicon',
-    // bgColor: 'black',
-    // themepkg: {
-    //     npm: '111',
-    //     'icon_extra': '1222'
-    // },
+    bgColor: 'white',
+    themepkg: parsePkgName(),
     comp: {
         groupName: pkgJson.name,
         version: pkgJson.version,
