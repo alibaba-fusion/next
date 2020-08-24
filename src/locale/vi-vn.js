@@ -72,6 +72,9 @@ export default {
     Input: {
         clear: 'Xóa',
     },
+    List: {
+        empty: 'Không có dữ liệu',
+    },
     Select: {
         selectPlaceholder: 'Vui lòng chọn',
         autoCompletePlaceholder: 'Vui lòng nhập',
@@ -114,8 +117,7 @@ export default {
         },
         drag: {
             text: 'Nhấp chuột hoặc kéo tệp vào khu vực này để tải lên',
-            hint:
-                'Hỗ trợ docx, xls, PDF, rar, zip, PNG, JPG và tải lên các tệp khác',
+            hint: 'Hỗ trợ docx, xls, PDF, rar, zip, PNG, JPG và tải lên các tệp khác',
         },
         upload: {
             delete: 'Xóa',

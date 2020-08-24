@@ -66,12 +66,14 @@ export default {
         labelPrev: 'Pagina precedente, pagina corrente {current}',
         labelNext: 'Pagina successiva, pagina corrente {current}',
         inputAriaLabel: 'Inserisci a quale pagina saltare',
-        selectAriaLabel:
-            'Seleziona il numero di elementi visualizzati in ogni pagina',
+        selectAriaLabel: 'Seleziona il numero di elementi visualizzati in ogni pagina',
         pageSize: 'Articoli per pagina:',
     },
     Input: {
         clear: 'Cancella',
+    },
+    List: {
+        empty: 'Nessun dato',
     },
     Select: {
         selectPlaceholder: 'Seleziona',
@@ -115,8 +117,7 @@ export default {
         },
         drag: {
             text: "Seleziona o trascina il file in quest'area per caricarlo'",
-            hint:
-                'Supporta il caricamento di docx, xls, PDF, rar, zip, PNG, JPG e altri file',
+            hint: 'Supporta il caricamento di docx, xls, PDF, rar, zip, PNG, JPG e altri file',
         },
         upload: {
             delete: 'Elimina',
