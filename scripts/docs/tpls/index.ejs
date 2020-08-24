@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>demos</title>
+    <link rel="dns-prefetch" href="//unpkg.com"/>
+    <link rel="dns-prefetch" href="//g.alicdn.com"/>
+    <link href="https://g.alicdn.com/code/lib/prism/9000.0.1/themes/prism.min.css" rel="stylesheet">
+    {% if themepkg.npm %}
+        <link rel="stylesheet" href="https://alifd.alicdn.com/npm/{{themepkg.npm}}/{{themepkg.version}}/next.min.css">
+    {% else %}
+        {% if helper.isAliEnv() %}
+            <link rel="stylesheet" href="https://unpkg.alibaba-inc.com/{{comp.groupName}}@{{comp.version}}/dist/next.min.css">
+        {% else %}
+            <link rel="stylesheet" href="https://alifd.alicdn.com/npm/{{comp.groupName}}/{{comp.version}}/next.min.css">
+        {% endif %}
+    {% endif %}
+    <link rel="stylesheet" href="{{helper.getStaticPath('pages/comp-demo/index.bundle.css')}}">
+    <link href="https://g.alicdn.com/code/lib/cropperjs/1.0.0-rc.3/cropper.min.css" rel="stylesheet">
+  </head>
+  <body>
+    {{helper.getRetcode() | safe }}
+
+    <script src="https://g.alicdn.com/code/lib/react/16.8.4/umd/react.production.min.js"></script>
+    <script src="https://g.alicdn.com/code/lib/react-dom/16.8.4/umd/react-dom.production.min.js"></script>
+    <script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://g.alicdn.com/code/lib/babel-polyfill/6.26.0/polyfill.min.js"></script>
+    <script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
+    <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
+    <script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
+    <script src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
+    <script src="https://alifd.alicdn.com/npm/{{comp.groupName}}/{{comp.version}}/next-with-locales.min.js"></script>
+    <script src="https://g.alicdn.com/next/fusion-deps/0.3.4/??common.js,next.js"></script>
+    <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
+    <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script>
+    <script>
+        window.react = window.React;
+        window['react-dom'] = window.ReactDOM;
+        window['prop-types'] = window.PropTypes;
+        window['react-dnd'] = window.ReactDnD;
+        window['react-dnd-html5-backend'] = window.ReactDnDHTML5Backend;
+        window['@alife/next'] = window.Next;
+        window['@alifd/next'] = window.Next;
+        window.ConfigProvider = window.Next.ConfigProvider;
+        window.customIcons = [];
+        {% if themepkg.icon_extra %}
+            window.customIcons = "{% for iconname,val in themepkg.icon_extra %}{{iconname}},{% endfor %}".split(',').filter(key => !!key);
+        {% endif %}
+
+        (function(){
+            // 设置 ConfigProvider 国际化语言
+            ConfigProvider.initLocales(window.Next.locales);
+            ConfigProvider.setLanguage('{{locale}}' ? '{{locale}}': 'zh-cn');
+            // 加载 代码展开按钮事件
+            $(function() {
+                $('#demo-list').on('click', '.demo-list-item-control-img', function(event) {
+                    const $target = $(event.target);
+                    const controlId = $target.data('control-id');
+                    const $demoItemCode = $('#'+controlId);
+                    $demoItemCode.toggleClass('expand');
+                });
+
+                $('.demo-list-item-header a').on('click', function(event) {
+                    const $target = $(event.currentTarget);
+                    $('.demo-list-item').removeClass('active');
+                    $target.parents('.demo-list-item').addClass('active');
+                });
+
+                $('.demo-index-item').on('click', function(event) {
+                    const $target = $(event.currentTarget);
+                    const id = $target.find('a').attr('href');
+                    $('.demo-list-item').removeClass('active');
+                    $(`${id}`).addClass('active');
+                });
+            });
+
+            $(window).scroll(function(){
+                var $sections = $('.scroll-count-item'); // 获取所有的内容块
+                var currentScroll = $(this).scrollTop();  // winodw滚动的高度
+                var $currentSection;   //   当前内容块
+                $sections.each(function () {
+                    var divPosition = $(this).offset().top;  // 获取到当前内容块具体页面顶部的距离
+                    if( divPosition - 1 < currentScroll){  //  通过条件判断匹配到当前滚动内容块
+                        $currentSection = $(this);
+                    }
+                    // 如果楼层最上端有其它的内容快需要加一个判断
+                    if($currentSection){
+                        var id = $currentSection.attr('data-scroll-id');
+                        $('.demo-index-item').removeClass('active');
+                        $('.demo-index-item[data-id="'+ id +'"]').addClass('active');
+                    }
+                });
+            });
+        })();
+    </script>
+    <div class="demo-wrapper pc">
+        <div class="demo-index">
+            <ul class="demo-index-list">
+                <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide">Guide</a></li>
+                <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
+                {%for demo in demosDoc%}
+                <li class="demo-index-item demo-index-item-sub" data-id="{{demo.meta.title}}">
+                    <a href="#{{demo.meta.title}}">{{demo.meta.title}}</a>
+                </li>
+                {%endfor%}
+                <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
+            </ul>
+        </div>
+        <div class="demo-title">{{comp.name}}&nbsp;&nbsp;{{comp.cnName}}</div>
+        <div class="demo-head markdown scroll-count-item" data-scroll-id="demo-guide" id="demo-guide">
+            {{readmeDoc.meta | safe}}
+        </div>
+
+        <div class="demo-list" id="demo-list">
+            <div class="markdown scroll-count-item" data-scroll-id="demo-list">
+                <h2 id="demo-list">
+                    <a href="#demo-list" class="anchor"># <span>代码演示</span></a>
+                </h2>
+            </div>
+        {% for demo in demosDoc %}
+            <div class="demo-list-item scroll-count-item" data-scroll-id="{{demo.title}}" id="{{demo.title}}">
+                <div class="demo-list-item-header markdown">
+                    <h3>
+                        <a href="#{{demo.title}}" class="anchor"># <span>{{demo.meta.title}}</span></a>
+                    </h3>
+                </div>
+                <div class="demo-list-item-body" id="react-app-code-{{loop.index}}" {% if bgColor %} style="background-color: {{bgColor}}" {% endif %}>
+                    <div class="demo-list-item-viewbox">
+                        <div id="react-app-{{loop.index}}"></div>
+                        <script>var mountNode = document.getElementById('react-app-{{loop.index}}');</script>
+                        <div class="demo-list-item-code markdown" >
+                            <ul class="demo-code-previews">
+                                {% if helper.isAliEnv() %}
+                                <li class="demo-code-preview-item">
+                                    <form class="preview-form" action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
+                                        <input type="hidden" name="data" value="{{ctx.helper.demo.getNextCompRiddleFormValue(comp, demo, themepkg)}}">
+                                        <button type="submit" class="preview-btn">
+                                            <svg class="preview-paltform-icon" width="76px" height="78px" viewBox="0 0 76 78" version="1.1">
+                                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <g id="Group" fill="#FFF">
+                                                        <path d="M35.0196078,42.0857143 L46.6123615,42.0857143 C55.4390626,42.0857143 62.5882353,34.9350621 62.5882353,26.1142857 C62.5882353,17.2915698 55.4355929,10.1428571 46.6123615,10.1428571 L3.99843066,10.1428571 C1.78894984,10.1428571 0,11.932423 0,14.1399644 L0,34.0870052 C0,37.7978527 2.53072603,40.9248679 5.96078431,41.8250425 L5.96078431,32.9142857 L6,32.9142857 L6,16.2000008 L46.648359,16.2000008 C52.1444977,16.2000008 56.5999985,20.6535592 56.5999985,26.1500006 C56.5999985,31.6452337 52.1539336,36.1000004 46.648359,36.1000004 L35.0196078,36.1000004 L35.0196078,42.0857143 Z" id="Combined-Shape"/>
+                                                        <rect id="Rectangle-5" transform="translate(37.647059, 74.530075) rotate(90.000000) translate(-37.647059, -74.530075) " x="34.6470588" y="37.1428571" width="6" height="74.7744361" rx="3"/>
+                                                        <rect id="Rectangle-5" x="0" y="11.1428571" width="6" height="66.5492481" rx="3"/>
+                                                        <rect id="Rectangle-5" transform="translate(32.803922, 64.197274) rotate(90.000000) translate(-32.803922, -64.197274) " x="29.8039216" y="44.9428571" width="6" height="38.5088346" rx="3"/>
+                                                        <path d="M55.8823529,51.0283125 C66.8071299,47.949948 74.8110138,37.9101927 74.8110138,26 C74.8110138,11.6374393 63.1727798,0 48.8162906,0 L20.6637313,0 C16.2536885,0 12.6666667,3.58030617 12.6666667,7.99683765 L12.6666667,44.0031624 C12.6666667,47.5852562 15.0154228,50.6107344 18.254902,51.631385 L18.254902,44.5714286 L18.748254,44.5714286 C18.6951642,44.391285 18.6666667,44.2004209 18.6666667,44.0027084 L18.6666667,7.99729162 C18.6666667,6.89421792 19.5557309,6 20.6575807,6 L48.6718036,6 C59.7146616,6 68.6666667,14.9518764 68.6666667,26 C68.6666667,34.5025876 63.3614245,41.7659474 55.8823529,44.6598019 L55.8823529,51.0283125 Z" id="Combined-Shape"/>
+                                                        <rect id="Rectangle-5" transform="translate(64.070451, 60.540753) rotate(-30.000000) translate(-64.070451, -60.540753) " x="61.0705954" y="42.5957536" width="5.99971081" height="35.8899994" rx="2.9998554"/>
+                                                        <rect id="Rectangle-5" x="12.6666667" y="30.0857143" width="6" height="37.0133459" rx="3"/>
+                                                        <rect id="Rectangle-5" transform="translate(42.240636, 51.162340) rotate(-30.000000) translate(-42.240636, -51.162340) " x="39.2406356" y="34.3380917" width="6" height="33.6484962" rx="3"/>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            Riddle
+                                        </button>
+                                    </form>
+                                </li>
+                                {% endif %}
+                                <li class="demo-code-preview-item">
+                                    <form class="preview-form" action="https://codepen.io/pen/define" method="POST" target="_blank">
+                                        <input type="hidden" name="data" value="{{ctx.helper.demo.getNextCompCodepenFormValue(comp, demo, themepkg)}}">
+                                        <button class="preview-btn" type="submit">
+                                            <svg class="preview-paltform-icon" viewBox="0 0 100 100" width="100%" height="100%"><path d="M100 34.2c-.4-2.6-3.3-4-5.3-5.3-3.6-2.4-7.1-4.7-10.7-7.1-8.5-5.7-17.1-11.4-25.6-17.1-2-1.3-4-2.7-6-4-1.4-1-3.3-1-4.8 0-5.7 3.8-11.5 7.7-17.2 11.5L5.2 29C3 30.4.1 31.8 0 34.8c-.1 3.3 0 6.7 0 10v16c0 2.9-.6 6.3 2.1 8.1 6.4 4.4 12.9 8.6 19.4 12.9 8 5.3 16 10.7 24 16 2.2 1.5 4.4 3.1 7.1 1.3 2.3-1.5 4.5-3 6.8-4.5 8.9-5.9 17.8-11.9 26.7-17.8l9.9-6.6c.6-.4 1.3-.8 1.9-1.3 1.4-1 2-2.4 2-4.1V37.3c.1-1.1.2-2.1.1-3.1 0-.1 0 .2 0 0zM54.3 12.3L88 34.8 73 44.9 54.3 32.4V12.3zm-8.6 0v20L27.1 44.8 12 34.8l33.7-22.5zM8.6 42.8L19.3 50 8.6 57.2V42.8zm37.1 44.9L12 65.2l15-10.1 18.6 12.5v20.1zM50 60.2L34.8 50 50 39.8 65.2 50 50 60.2zm4.3 27.5v-20l18.6-12.5 15 10.1-33.6 22.4zm37.1-30.5L80.7 50l10.8-7.2-.1 14.4z"></path></svg>
+                                            CodePen
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                            {{ demo.html | safe }}
+                        </div>
+                    </div>
+                    <div class="demo-list-item-description">
+                        {{ demo.meta.description | safe }}
+                    </div>
+                    <div class="demo-list-item-control">
+                        <img class="demo-list-item-control-img" data-control-id="react-app-code-{{loop.index}}" src="https://img.alicdn.com/tfs/TB13J3EdzihSKJjy0FiXXcuiFXa-20-20.svg" alt="code collapse" class="collapse-btn">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="demo-api markdown scroll-count-item" data-scroll-id="demo-api">
+            <p></p>
+            <h2 id="demo-api">
+                <a href="#demo-api" class="anchor"># <span>API</span></a>
+            </h2>
+            <div class="demo-api-body markdown">
+                {{readmeDoc.api | safe}}
+            </div>
+        </div>
+    </div>
+    <script>
+        if (window.top !== window) {
+
+            window.addEventListener("hashchange", function() {
+                window.top.postMessage({
+                        type: 'hashChange',
+                        from: 'mc',
+                        body: document.location.hash
+                    },'*');
+            }, false);
+            window.addEventListener("message", function (event) {
+                var data = event.data;
+                if (data && data.from === 'app' && data.type === 'hashChange' && data.body) {
+                    changeHash(data.body);
+                }
+            }, false);
+        }
+
+        function changeHash(hash) {
+            window.location.hash = hash;
+        }
+
+    </script>
+  </body>
+</html>

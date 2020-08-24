@@ -1,18 +1,27 @@
 const path = require('path');
+
+const nunjucks = require('nunjucks');
 const fs = require('fs-extra');
 const cheerio = require('cheerio');
 const createDocParser = require('@alifd/doc-parser');
 const { logger, getComponentName } = require('../utils');
 
+const ctx = require('./context');
+
 const SRC_FOLDER = 'docs';
 const LANGDOC_FOLDER = 'docs-lang';
 const COMPILED_FOLDER = 'compiled_docs';
 
+const TPL_PATH = path.join(__dirname, './tpls/index.ejs');
+
 const cwd = process.cwd();
+
+const renderContext = Object.assign({}, ctx);
 
 module.exports = function*() {
     const srcDir = path.join(cwd, SRC_FOLDER);
     const targetDir = path.join(cwd, LANGDOC_FOLDER);
+
     fs.removeSync(targetDir);
     fs.copySync(srcDir, targetDir);
 
@@ -66,6 +75,7 @@ function* buildDemoMappingList(srcFolder, toFile) {
         }
     }
     content += '\n};\n';
+
     yield fs.writeFile(toFile, content);
 }
 
@@ -93,11 +103,17 @@ function* buildCompiledDocs(cwd) {
     const componentList = [];
     const folders = yield fs.readdir(from);
 
+    const demosDoc = [];
+    const enDemosDoc = [];
+
     for (const folder of folders) {
         const stats = fs.statSync(path.join(from, folder));
         if (!stats.isDirectory() || ignoreFolders.indexOf(folder) > -1) {
             continue;
         }
+
+        demosDoc.length = 0;
+        enDemosDoc.length = 0;
 
         const apiFrom = path.join(from, folder, 'index.md');
         const enAPIFrom = path.join(from, folder, 'index.en-us.md');
@@ -112,16 +128,18 @@ function* buildCompiledDocs(cwd) {
         // 2.1 compile apiFrom
         const apiFileExists = yield fs.exists(apiFrom);
         if (apiFileExists) {
-            const { apiMdParsed, apiMdRendered } = yield compileApiFrom(
-                apiFrom,
-                docParser
-            );
+            const { apiMdParsed, apiMdRendered } = yield compileApiFrom(apiFrom, docParser);
+
+            renderContext.comp.name = apiMdParsed.meta.title;
+            renderContext.comp.cnName = apiMdParsed.meta.chinese;
+            renderContext.readmeDoc = JSON.parse(apiMdRendered);
 
             componentList.push({
                 english: apiMdParsed.meta.title,
                 chinese: apiMdParsed.meta.chinese,
                 family: apiMdParsed.meta.family,
             });
+
             yield fs.writeFile(apiTo, apiMdRendered, 'utf8');
         } else {
             logger.warn(`${folder} does not has index.md`);
@@ -129,10 +147,7 @@ function* buildCompiledDocs(cwd) {
 
         const enAPIFileExists = yield fs.exists(enAPIFrom);
         if (enAPIFileExists) {
-            const { apiMdRendered } = yield compileApiFrom(
-                enAPIFrom,
-                docParser
-            );
+            const { apiMdRendered } = yield compileApiFrom(enAPIFrom, docParser);
             yield fs.writeFile(enAPITo, apiMdRendered, 'utf8');
         } else {
             logger.warn(`${folder} does not has index.en-us.md`);
@@ -151,9 +166,13 @@ function* buildCompiledDocs(cwd) {
 
                 const cnDoc = mutliLanguageDocs.cn;
                 const cnDemoContent = docParser.parse(cnDoc);
+
+                demosDoc.push(cnDemoContent);
+
                 cnDemoContent.html = docParser.render(cnDemoContent.body);
                 const cnDemoContentOutput = JSON.stringify(cnDemoContent);
                 const cnDemoFileTo = path.join(demoBaseTo, demoFile);
+
                 yield fs.writeFile(cnDemoFileTo, cnDemoContentOutput, 'utf8');
 
                 if (mutliLanguageDocs.en) {
@@ -163,24 +182,39 @@ function* buildCompiledDocs(cwd) {
 
                     // 增加一份英文文档
                     const enDoc = mutliLanguageDocs.en;
-                    const filename = `${path.basename(
-                        demoFile,
-                        '.md'
-                    )}.en-us.md`;
+                    const filename = `${path.basename(demoFile, '.md')}.en-us.md`;
                     const enDemoFilePath = path.join(demoBaseFrom, filename);
+
                     yield fs.writeFile(enDemoFilePath, enDoc, 'utf8');
 
                     // 另外再编译一份英文文档
                     const enDemoContent = docParser.parse(enDoc);
+
+                    enDemosDoc.push(enDemoContent);
+
                     enDemoContent.html = docParser.render(enDemoContent.body);
                     const enDemoContentOutput = JSON.stringify(enDemoContent);
                     const enDemoFileTo = path.join(demoBaseTo, filename);
-                    yield fs.writeFile(
-                        enDemoFileTo,
-                        enDemoContentOutput,
-                        'utf8'
-                    );
+                    yield fs.writeFile(enDemoFileTo, enDemoContentOutput, 'utf8');
                 }
+            }
+
+            // write cn demo here
+            const tplBuffer = yield fs.readFile(TPL_PATH);
+
+            const ctx = Object.assign({}, renderContext, { demosDoc, demo: demosDoc[0] });
+
+            const cnHtmlContent = nunjucks.renderString(tplBuffer.toString(), ctx);
+
+            yield fs.writeFile(path.join(cwd, COMPILED_FOLDER, folder, 'index.html'), cnHtmlContent);
+
+            // write en demo here
+            if (enDemosDoc.length) {
+                const enCtx = Object.assign({}, renderContext, { demosDoc: enDemosDoc, demo: enDemosDoc[0] });
+
+                const cnHtmlContent = nunjucks.renderString(tplBuffer.toString(), enCtx);
+
+                yield fs.writeFile(path.join(cwd, COMPILED_FOLDER, folder, 'index.en-us.html'), cnHtmlContent);
             }
         } else {
             logger.warn(`${folder} does not has demo folder`);
@@ -188,13 +222,9 @@ function* buildCompiledDocs(cwd) {
     }
 
     // 3. generate component list
-    yield fs.writeFile(
-        componentListPath,
-        JSON.stringify(componentList),
-        'utf8'
-    );
+    yield fs.writeFile(componentListPath, JSON.stringify(componentList), 'utf8');
 
-    // 4. generate demo mapping list
+    // 4. generate demo mapping lis
     yield buildDemoMappingList(to, demoMappingFilePath);
 }
 
@@ -230,6 +260,7 @@ function* compileApiFrom(apiFrom, docParser) {
     $('#api').after('<split></split>');
     const html = $('#cheerio-load').html();
     const [meta, api] = html.split('<split></split>');
+
     return {
         apiMdParsed,
         apiMdRendered: JSON.stringify({ meta, api }),
