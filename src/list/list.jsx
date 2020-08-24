@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { polyfill } from 'react-lifecycles-compat';
+import Loading from '../loading';
+import zhCN from '../locale/zh-cn';
 import ConfigProvider from '../config-provider';
 
 /**
@@ -27,8 +29,32 @@ class List extends Component {
          * 是否显示分割线
          */
         divider: PropTypes.bool,
+        /**
+         * 列表数据源
+         */
+        dataSource: PropTypes.array,
+        /**
+         * 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项
+         * @param {Any} current 当前遍历的项
+         * @param {Number} index 当前遍历的项的索引
+         */
+        renderItem: PropTypes.func,
+        /**
+         * 是否在加载中
+         */
+        loading: PropTypes.bool,
+        /**
+         * 自定义 Loading 组件
+         * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
+         */
+        loadingComponent: PropTypes.func,
+        /**
+         * 设置数据为空的时候的表格内容展现
+         */
+        emptyContent: PropTypes.node,
         className: PropTypes.string,
         children: PropTypes.any,
+        locale: PropTypes.object,
     };
 
     static defaultProps = {
@@ -36,6 +62,9 @@ class List extends Component {
         size: 'medium',
         divider: true,
         prefix: 'next-',
+        locale: zhCN.List,
+        renderItem: item => item,
+        loading: false,
     };
 
     render() {
@@ -48,12 +77,20 @@ class List extends Component {
             className,
             children,
             rtl,
+            dataSource,
+            renderItem,
+            locale,
+            loading,
+            loadingComponent: LoadingComponent = Loading,
+            emptyContent,
             ...others
         } = this.props;
 
         if (rtl) {
             others.dir = 'rtl';
         }
+
+        const dSValid = Array.isArray(dataSource);
 
         const classes = classNames(
             `${prefix}list`,
@@ -64,17 +101,35 @@ class List extends Component {
             className
         );
 
-        return (
+        const customContent =
+            dSValid &&
+            dataSource.map((one, index) => {
+                return renderItem(one, index);
+            });
+
+        const content = (
             <div {...others} className={classes}>
-                {header ? (
-                    <div className={`${prefix}list-header`}>{header}</div>
-                ) : null}
-                <ul className={`${prefix}list-items`}>{children}</ul>
-                {footer ? (
-                    <div className={`${prefix}list-footer`}>{footer}</div>
-                ) : null}
+                {header ? <div className={`${prefix}list-header`}>{header}</div> : null}
+
+                {!(dSValid && dataSource.length > 1) && !children ? (
+                    <div className={`${prefix}list-empty`}>{emptyContent || locale.empty}</div>
+                ) : (
+                    <ul key="list-body" className={`${prefix}list-items`}>
+                        {customContent}
+                        {children}
+                    </ul>
+                )}
+
+                {footer ? <div className={`${prefix}list-footer`}>{footer}</div> : null}
             </div>
         );
+
+        if (loading) {
+            const loadingClassName = `${prefix}list-loading`;
+            return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
+        }
+
+        return content;
     }
 }
 

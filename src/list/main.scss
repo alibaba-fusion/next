@@ -18,6 +18,16 @@
         color: $list-content-color;
     }
 
+    &-loading {
+        display: block;
+    }
+    &-empty {
+        font-size: $font-size-body-1;
+        color: $color-line1-4;
+        padding: $s-8 0;
+        text-align: center;
+    }
+
     &-items {
         margin: 0;
         padding: 0;
