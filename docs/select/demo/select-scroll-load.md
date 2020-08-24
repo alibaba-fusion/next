@@ -45,17 +45,17 @@ class App extends React.Component {
             console.log(dataSource, otherData);
             this.setState({
                 dataSource: dataSource.concat(otherData)
-            })
+            });
         }
     }
 
     render() {
-        return <Select 
+        return (<Select 
             style={{width: 200}}
             dataSource={this.state.dataSource} 
             menuProps={{onScroll: this.onScroll}} 
             autoHighlightFirstItem={false}
-        />
+        />);
     }
 }
 

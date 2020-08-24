@@ -29,19 +29,19 @@ const showImg = (url) => {
         title: 'img preview',
         content: <img src={url} style={{width: 400, height: 400}}/>,
         footer: false,
-    })
-}
+    });
+};
 
 const actionRender = (file) => {
     console.log(file);
-    return <span style={{position: 'absolute', right: 50}}>
-        <Button text onClick={e=> {e.preventDefault(); showImg(file.url)}} size="large">
+    return (<span style={{position: 'absolute', right: 50}}>
+        <Button text onClick={e=> {e.preventDefault(); showImg(file.url);}} size="large">
             <Icon type="eye" style={{marginRight: 12, cursor: 'pointer'}} />
         </Button>
         <Button text component="a" href={file.url} target="_blank">
             <Icon type="download" style={{cursor: 'pointer'}}/>
         </Button>
-    </span>
+    </span>);
 };
 
 const data = [{

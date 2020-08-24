@@ -1,0 +1,19 @@
+:root {
+--number-picker-normal-up-icon: "";
+--number-picker-normal-down-icon: "";
+--number-picker-normal-s-button-width: 20px;
+--number-picker-normal-m-button-width: 20px;
+--number-picker-normal-l-button-width: 20px;
+--number-picker-normal-m-input-width: 80px;
+--number-picker-normal-l-input-width: 80px;
+--number-picker-inline-add-icon: "";
+--number-picker-inline-minus-icon: "";
+--number-picker-inline-s-button-margin: 2px;
+--number-picker-inline-s-button-corner: 3px;
+--number-picker-inline-m-button-margin: 2px;
+--number-picker-inline-m-button-corner: 3px;
+--number-picker-inline-m-input-width: 100px;
+--number-picker-inline-l-button-margin: 2px;
+--number-picker-inline-l-button-corner: 3px;
+--number-picker-inline-l-input-width: 128px;
+}
