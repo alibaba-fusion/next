@@ -7,10 +7,12 @@
 #{$form-prefix} {
     @include box-sizing;
 
-    &-preview {
-        #{$form-prefix}-item-label {
-            font-size: $form-element-medium-preview-font-size;
-            line-height: $form-element-medium-preview-height;
+    &-preview .#{$css-prefix}form-item {
+        &.#{$css-prefix}medium {
+            #{$form-prefix}-item-label {
+                font-size: $form-element-medium-preview-font-size;
+                line-height: $form-element-medium-preview-height;
+            }
         }
         &.#{$css-prefix}small {
             #{$form-prefix}-item-label {
