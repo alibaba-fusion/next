@@ -25,11 +25,9 @@ argv._.forEach(item => {
 start(restoreArgs(argv));
 
 function start(args) {
-    const worker1 = cp.fork(scriptPath, [args[0], 'css', '--port=3010']);
-    const worker2 = cp.fork(scriptPath, [args[0], 'scss', '--port=3011']);
+    const worker = cp.fork(scriptPath, args);
 
-    hanleMsg(worker1);
-    hanleMsg(worker2);
+    hanleMsg(worker);
     function hanleMsg(worker) {
         worker.on('message', data => {
             if (data === 'RESTART') {
