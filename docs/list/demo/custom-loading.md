@@ -1,21 +1,22 @@
-# 基本
+# 自定义 loading 样式
 
-- order: 0
+- order: 3
 
-简单的列表展示。
+自定义 `loading` 样式。
 
 :::lang=en-us
 # Basic Usage
 
-- order: 0
+- order: 3
 
-Simple usage of List component.
+Custom Loading component.
 
 :::
 ---
 
 ````jsx
-import { List, Avatar } from '@alifd/next';
+import { List, Avatar, Button, Loading, Icon } from '@alifd/next';
+import { useState } from 'react';
 
 const data = [
     {
@@ -40,15 +41,36 @@ const data = [
     },
 ];
 
-ReactDOM.render(
-    <div style={{width: 288}}>
+const indicator = (
+    <div>
+        <Icon type="loading" />
+    </div>
+);
+
+const CustomLoading = (props) => (
+    <Loading
+        indicator={indicator}
+        {...props}
+    />
+);
+
+const App = () => {
+    const [loading, setLoading] = useState(false);
+
+    return <div style={{width: 288}}>
+        <Button onClick={() => setLoading(!loading)}>Toggle loading</Button>
         <List
             size="small"
+            loading={loading}
+            loadingComponent={CustomLoading}
             header={<div>Notifications</div>}
             dataSource={data}
             renderItem={(item, i) => <List.Item key={i} extra={item.money} title={item.title} media={<Avatar src={item.img}/>}>List Item {i}</List.Item>}
         />
     </div>
+}
+ReactDOM.render(
+    <App />
 , mountNode);
 ````
 

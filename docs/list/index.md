@@ -19,12 +19,17 @@
 
 ### List
 
-| 参数      | 说明                                        | 类型        | 默认值      |
-| ------- | ----------------------------------------- | --------- | -------- |
-| header  | 列表头部                                      | ReactNode | -        |
-| size    | 列表尺寸<br><br>**可选值**:<br>'medium', 'small' | Enum      | 'medium' |
-| footer  | 列表尾部                                      | ReactNode | -        |
-| divider | 是否显示分割线                                   | Boolean   | true     |
+| 参数               | 说明                                                                                                                                                                            | 类型        | 默认值          |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------ |
+| header           | 列表头部                                                                                                                                                                          | ReactNode | -            |
+| size             | 列表尺寸<br><br>**可选值**:<br>'medium', 'small'                                                                                                                                     | Enum      | 'medium'     |
+| footer           | 列表尾部                                                                                                                                                                          | ReactNode | -            |
+| divider          | 是否显示分割线                                                                                                                                                                       | Boolean   | true         |
+| dataSource       | 列表数据源                                                                                                                                                                         | Array     | -            |
+| renderItem       | 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项<br><br>**签名**:<br>Function(current: Any, index: Number) => void<br>**参数**:<br>_current_: {Any} 当前遍历的项<br>_index_: {Number} 当前遍历的项的索引 | Function  | item => item |
+| loading          | 是否在加载中                                                                                                                                                                        | Boolean   | false        |
+| loadingComponent | 自定义 Loading 组件<br>请务必传递 props, 使用方式： loadingComponent={props => &lt;Loading {...props}/>}<br><br>**签名**:<br>Function() => void                                                | Function  | -            |
+| emptyContent     | 设置数据为空的时候的表格内容展现                                                                                                                                                              | ReactNode | -            |
 
 ### List.Item
 

@@ -246,6 +246,30 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     onChange?: any;
 }
 
+
+export class Uploader {
+    /**
+     * @param options 配置
+     */
+    constructor(options?: any);
+
+    /**
+     * 配置选项
+     * @param options 配置
+     */
+    setOptions(options: any);
+    /**
+     * 开始上传
+     * @param files 文件列表
+     */
+    startUpload(files: Array<any>);
+    /**
+     * 中断某个文件上传
+     * @param file 文件
+     */
+    abort(file: any);
+}
+
 export interface UploadProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 上传的地址
@@ -402,6 +426,14 @@ export interface UploadProps extends HTMLAttributesWeak, CommonProps {
      */
     extraRender?: (file: File) => any;
     /**
+     * 自定义文件名渲染
+     */
+    fileNameRender?: (file: File) => any;
+    /**
+     * 自定义操作区域渲染
+     */
+    actionRender?: (file: File) => any;
+    /**
      * 自定义class
      */
     className?: string;
@@ -426,4 +458,5 @@ export default class Upload extends React.Component<UploadProps, any> {
     static Card: typeof Card;
     static Dragger: typeof Dragger;
     static Selecter: typeof Selecter;
+    static Uploader: typeof Uploader;
 }
