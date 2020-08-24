@@ -51,9 +51,9 @@
             position: absolute;
             border-radius: $radio-radius-size;
             top: 50%;
-            margin-top: -($radio-circle-size / 2);
+            margin-top: calc(0px - (#{$radio-circle-size} / 2));
             left: 50%;
-            margin-left: -($radio-circle-size / 2);
+            margin-left: calc(0px - (#{$radio-circle-size} / 2));
             background: $color-white;
             content: '';
             transition: all $motion-duration-immediately $motion-linear;
@@ -223,8 +223,8 @@
             }
 
             #{$radio-prefix}-label {
-                height: $radio-button-height-large - 2;
-                line-height: $radio-button-height-large - 2;
+                height: calc(#{$radio-button-height-large} - 2px);
+                line-height: calc(#{$radio-button-height-large} - 2px);
                 font-size: $radio-button-font-size-large;
             }
         }
@@ -246,8 +246,8 @@
             }
 
             #{$radio-prefix}-label {
-                height: $radio-button-height-medium - 2;
-                line-height: $radio-button-height-medium - 2;
+                height: calc(#{$radio-button-height-medium} - 2px);
+                line-height: calc(#{$radio-button-height-medium} - 2px);
                 font-size: $radio-button-font-size-medium;
             }
         }
@@ -269,8 +269,8 @@
             }
 
             #{$radio-prefix}-label {
-                height: $radio-button-height-small - 2;
-                line-height: $radio-button-height-small - 2;
+                height: calc(#{$radio-button-height-small} - 2px);
+                line-height: calc(#{$radio-button-height-small} - 2px);
                 font-size: $radio-button-font-size-small;
             }
         }

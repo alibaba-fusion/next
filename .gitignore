@@ -83,8 +83,7 @@ coverage/
 docs-lang/
 gemini-report/
 .idea/
-.vscode/
 *.iml
 *.log
 .DS_Store
-
+src/core-temp

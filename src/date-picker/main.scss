@@ -1,4 +1,4 @@
-@import "../core/index-noreset";
+@import "../core/index-noreset.scss";
 @import "../input/scss/variable.scss";
 @import "../input/scss/mixin.scss";
 @import "../time-picker/scss/variable.scss";
@@ -6,8 +6,8 @@
 @import "scss/variable";
 @import "scss/mixin";
 
-@import "scss/date-picker";
-@import "scss/range-picker";
+@import "scss/date-picker.scss";
+@import "scss/range-picker.scss";
 @import "./rtl.scss";
 
 #{$date-picker-prefix},

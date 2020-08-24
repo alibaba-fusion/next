@@ -18,7 +18,7 @@
 ) {
     height: $height;
     padding: 0;
-    line-height: $height - $borderWidth * 2;
+    line-height: calc(#{$height} - #{$borderWidth} * 2);
     font-size: 0;
 
     $_marginLeft: $iconSize;
@@ -31,7 +31,7 @@
 
     &.#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 0 0 $paddingLr;
-        max-width: calc(100% - #{$_marginLeft + $iconSize + $paddingLr});
+        max-width: calc(100% - (#{$_marginLeft} + #{$iconSize} + #{$paddingLr}));
     }
     &[dir=rtl].#{$css-prefix}tag-closable > .#{$css-prefix}tag-body {
         padding: 0 $paddingLr 0 0;
@@ -125,8 +125,8 @@
 
 // for virtual btn
 @mixin tick-bg-size($size) {
-    right: -$size / 2;
-    bottom: -$size / 2;
+    right: calc(0px - #{$size} / 2);
+    bottom: calc(0px - #{$size} / 2);
     width: $size;
     height: $size;
 }
@@ -134,8 +134,8 @@
 // checkable tag tick
 @mixin checkable-tag-tick-size($tick-bg-size, $tick-size) {
     &:before {
-        right: -$tick-bg-size / 2;
-        bottom: -$tick-bg-size / 2;
+        right: calc(0px - #{$tick-bg-size} / 2);
+        bottom: calc(0px - #{$tick-bg-size} / 2);
         width: $tick-bg-size;
         height: $tick-bg-size;
     }

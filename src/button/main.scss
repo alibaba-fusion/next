@@ -354,7 +354,7 @@
         }
         &.#{$css-prefix}large {
             @include next-button-size(
-                0,
+                0px,
                 $btn-text-size-l-height,
                 $btn-text-size-l-font,
                 0,
@@ -366,7 +366,7 @@
         }
         &.#{$css-prefix}medium {
             @include next-button-size(
-                0,
+                0px,
                 $btn-text-size-m-height,
                 $btn-text-size-m-font,
                 0,
@@ -378,7 +378,7 @@
         }
         &.#{$css-prefix}small {
             @include next-button-size(
-                0,
+                0px,
                 $btn-text-size-s-height,
                 $btn-text-size-s-font,
                 0,

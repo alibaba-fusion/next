@@ -14,7 +14,7 @@
 
     &#{$btn-prefix}-loading {
         padding-left: $padding;
-        padding-right: $padding + $icon-size + $icon-margin;
+        padding-right: calc(#{$padding} + #{$icon-size} + #{$icon-margin});
 
         &:after {
             right: $padding;
@@ -93,7 +93,7 @@
 #{$btn-prefix}-text[dir="rtl"] {
     &.#{$css-prefix}large {
         @include next-button-size-rtl(
-            0,
+            0px,
             $btn-text-icon-l-margin,
             $btn-size-l-icon-size,
             0
@@ -101,7 +101,7 @@
     }
     &.#{$css-prefix}medium {
         @include next-button-size-rtl(
-            0,
+            0px,
             $btn-text-icon-m-margin,
             $btn-size-m-icon-size,
             0
@@ -109,7 +109,7 @@
     }
     &.#{$css-prefix}small {
         @include next-button-size-rtl(
-            0,
+            0px,
             $btn-text-icon-s-margin,
             $btn-size-s-icon-size,
             0

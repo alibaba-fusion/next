@@ -28,7 +28,7 @@
         left: $collapse-icon-margin-l;
         margin-top: -2px;
 
-        @include icon-size($collapse-icon-size, 0, 0);
+        @include icon-size($collapse-icon-size, 0px, 0px);
     }
 
     &-panel-title {
@@ -39,7 +39,7 @@
         font-weight: $collapse-title-font-weight;
         color: $collapse-title-font-color;
         cursor: pointer;
-        padding: $collapse-title-padding-tb 0 $collapse-title-padding-tb $collapse-icon-margin-r + $collapse-icon-margin-l + $collapse-icon-size;
+        padding: $collapse-title-padding-tb 0 $collapse-title-padding-tb calc(#{$collapse-icon-margin-r} + #{$collapse-icon-margin-l} + #{$collapse-icon-size});
         transition: background $motion-duration-immediately $motion-linear;
 
         &:hover {
@@ -95,7 +95,7 @@
                     content: $collapse-unfold-icon-content;
                 }
             } @else {
-                @include icon-size($collapse-icon-size, 0, 0, rotate(90deg));
+                @include icon-size($collapse-icon-size, 0px, 0px, rotate(90deg));
             }
         }
     }
