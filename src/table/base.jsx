@@ -179,6 +179,9 @@ class Table extends React.Component {
          */
         locale: PropTypes.object,
         components: PropTypes.object,
+        /**
+         * 等同于写子组件 Table.Column ，子组件优先级更高
+         */
         columns: PropTypes.array,
         /**
          * 设置数据为空的时候的表格内容展现
@@ -314,13 +317,15 @@ class Table extends React.Component {
 
     static contextTypes = {
         getTableInstance: PropTypes.func,
+        getTableInstanceForFixed: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func,
     };
 
     constructor(props, context) {
         super(props, context);
-        const { getTableInstance, getTableInstanceForVirtual } = this.context;
+        const { getTableInstance, getTableInstanceForVirtual, getTableInstanceForFixed } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
+        getTableInstanceForFixed && getTableInstanceForFixed(props.lockType, this);
         getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
         this.notRenderCellIndex = [];
     }
@@ -348,6 +353,7 @@ class Table extends React.Component {
 
     componentDidMount() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -364,6 +370,7 @@ class Table extends React.Component {
 
     componentDidUpdate() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     normalizeChildrenState(props) {
@@ -410,7 +417,7 @@ class Table extends React.Component {
         let hasGroupHeader = false;
         const flatChildren = [],
             groupChildren = [],
-            getChildren = (propsChildren, level) => {
+            getChildren = (propsChildren = [], level) => {
                 groupChildren[level] = groupChildren[level] || [];
                 propsChildren.forEach(child => {
                     if (child.children) {
@@ -569,6 +576,7 @@ class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
+                        tableOuterWidth={this.tableOuterWidth}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
@@ -707,6 +715,10 @@ class Table extends React.Component {
         });
     };
 
+    getTableEl = ref => {
+        this.tableEl = ref;
+    };
+
     render() {
         const ret = this.normalizeChildrenState(this.props);
         this.groupChildren = ret.groupChildren;
@@ -748,6 +760,7 @@ class Table extends React.Component {
                 loadingComponent: LoadingComponent = Loading,
                 tableLayout,
                 tableWidth,
+                ref,
                 ...others
             } = this.props,
             cls = classnames({
@@ -765,7 +778,12 @@ class Table extends React.Component {
         }
 
         const content = (
-            <div className={cls} style={style} {...obj.pickOthers(Object.keys(Table.propTypes), others)}>
+            <div
+                className={cls}
+                style={style}
+                ref={ref || this.getTableEl}
+                {...obj.pickOthers(Object.keys(Table.propTypes), others)}
+            >
                 {table}
             </div>
         );

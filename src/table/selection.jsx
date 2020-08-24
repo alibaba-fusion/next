@@ -130,6 +130,24 @@ export default function selection(BaseComponent) {
             return children;
         }
 
+        addSelection = columns => {
+            const { prefix, rowSelection, size } = this.props;
+            const attrs =
+                (rowSelection.columnProps && rowSelection.columnProps()) || {};
+
+            if (!columns.find(record => record.key === 'selection')) {
+                columns.unshift({
+                    key: 'selection',
+                    title: this.renderSelectionHeader.bind(this),
+                    cell: this.renderSelectionBody.bind(this),
+                    width: size === 'small' ? 34 : 50,
+                    className: `${prefix}table-selection ${prefix}table-prerow`,
+                    __normalized: true,
+                    ...attrs,
+                });
+            }
+        };
+
         renderSelectionHeader = () => {
             const onChange = this.selectAllRow,
                 attrs = {},
@@ -325,17 +343,31 @@ export default function selection(BaseComponent) {
 
         render() {
             /* eslint-disable prefer-const */
-            let { rowSelection, components, children, ...others } = this.props;
+            let {
+                rowSelection,
+                components,
+                children,
+                columns,
+                ...others
+            } = this.props;
+            let useColumns = columns && !children;
 
             if (rowSelection) {
-                children = this.normalizeChildren(children);
+                if (useColumns) {
+                    this.addSelection(columns);
+                } else {
+                    children = this.normalizeChildren(children);
+                }
                 components = { ...components };
                 components.Row = components.Row || SelectionRow;
             }
             return (
-                <BaseComponent {...others} components={components}>
-                    {children}
-                </BaseComponent>
+                <BaseComponent
+                    {...others}
+                    columns={columns}
+                    components={components}
+                    children={children}
+                />
             );
         }
     }

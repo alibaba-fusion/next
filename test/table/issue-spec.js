@@ -294,6 +294,7 @@ describe('Issue', () => {
             div.querySelectorAll('.next-table-lock-right')[0].children
                 .length === 0
         );
+        assert(div.querySelectorAll('div.next-table-lock.next-table-scrolling-to-right').length === 1);
 
         setTimeout(() => {
             assert(
@@ -325,7 +326,7 @@ describe('Issue', () => {
         assert(
             parseInt(
                 window.getComputedStyle(
-                    div.querySelectorAll('.next-table tr:first-child td')[0]
+                    div.querySelectorAll('.next-table')[0]
                 ).borderTopWidth,
                 10
             ) === 1

@@ -78,7 +78,6 @@ export default class VirtualBody extends React.Component {
                 <div
                     style={{
                         height: bodyHeight,
-                        overflow: 'hidden',
                         position: 'relative',
                     }}
                     ref={this.virtualScrollRef}
