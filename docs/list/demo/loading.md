@@ -44,7 +44,7 @@ const data = [
 const App = () => {
     const [loading, setLoading] = useState(false);
 
-    return <div style={{width: 288}}>
+    return (<div style={{width: 288}}>
         <Button onClick={() => setLoading(!loading)}>Toggle loading</Button>
         <List
             size="small"
@@ -53,8 +53,8 @@ const App = () => {
             dataSource={data}
             renderItem={(item, i) => <List.Item key={i} extra={item.money} title={item.title} media={<Avatar src={item.img}/>}>List Item {i}</List.Item>}
         />
-    </div>
-}
+    </div>);
+};
 ReactDOM.render(
     <App />
 , mountNode);
