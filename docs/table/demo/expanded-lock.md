@@ -40,7 +40,7 @@ const dataSource = () => {
             <Table.Column title="Title" dataIndex="title" width={200}/>
             <Table.Column title="Title" dataIndex="title" width={200}/>
             <Table.Column title="Title" dataIndex="title" width={200}/>
-        </Table.StickyLock>)
+        </Table.StickyLock>);
     },
     render = (value, index, record) => {
         return <a>Remove({record.id})</a>;
