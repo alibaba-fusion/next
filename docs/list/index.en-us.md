@@ -26,12 +26,18 @@ The content can consist of multiple elements of varying type and size.
 | size    | List size <br><br>**Options**:<br>'medium', 'small' | Enum      | 'medium' |
 | footer  | List footer                                  | ReactNode | -        |
 | divider | Toggles rendering of the divider the list item  | Boolean   | true     |
+| dataSource       | datasource of List                                                                                                                                                                         | Array     | -            |
+| renderItem       | when dataSource is set, you can custmize every item by `renderItem` <br><br>**signature**:<br>Function(current: Any, index: Number) => void<br>**params**:<br>_current_: {Any} current item<br>_index_: {Number} index of item | Function  | item => item |
+| loading          | is loading                                                                                                                                                                        | Boolean   | false        |
+| loadingComponent | custmize Loading Component<br> loadingComponent={props => &lt;Loading {...props}/>}<br><br>**signature**:<br>Function() => void                                                | Function  | -            |
+| emptyContent     | content when list is empty                                                                                                                                                              | ReactNode | -            |
+
 
 ### List.Item
 
 | Param | Descripiton  | Type  | Default Value |
 | ----------- | ------------------- | --------- | --- |
-| title       | 列表元素的标题             | ReactNode | -   |
-| description | 列表元素的描述内容           | ReactNode | -   |
-| media       | 列表元素的头像 / 图标 / 图片内容 | ReactNode | -   |
-| extra       | 额外内容                | ReactNode | -   |
+| title       | title             | ReactNode | -   |
+| description | description           | ReactNode | -   |
+| media       | set avatar / image / icon | ReactNode | -   |
+| extra       | extra content                | ReactNode | -   |

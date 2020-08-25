@@ -71,6 +71,9 @@ export default {
     Input: {
         clear: '清除',
     },
+    List: {
+        empty: '沒有數據',
+    },
     Select: {
         selectPlaceholder: '請選擇',
         autoCompletePlaceholder: '請輸入',

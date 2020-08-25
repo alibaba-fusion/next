@@ -531,11 +531,14 @@
 ///
 /// @param {String} $color 字体色
 /// @param {String} $color-hover 鼠标悬浮时的字体色
+/// @param {String} $color-active 鼠标按下时的字体色
 /// @param {String} $bg-color 背景色
 /// @param {String} $bg-color-hover 鼠标悬浮时的背景色
+/// @param {String} $bg-color-active 鼠标按下时的背景色
 /// @param {String} $border-color 边框色
 /// @param {String} $border-color-hover 鼠标悬浮时的边框色
-@mixin button-color($color, $color-hover, $bg-color: transparent, $bg-color-hover: transparent, $border-color: transparent, $border-color-hover: transparent) {
+/// @param {String} $border-color-active 鼠标按下时的边框色
+@mixin button-color($color, $color-hover, $color-active, $bg-color: transparent, $bg-color-hover: transparent, $bg-color-active: transparent, $border-color: transparent, $border-color-hover: transparent, $border-color-active: transparent) {
     background-color: $bg-color;
     border-color: $border-color;
 
@@ -548,12 +551,18 @@
 
     &:focus,
     &:hover,
-    &.hover,
-    &:active,
-    &.active {
+    &.hover {
         color: $color-hover;
         background-color: $bg-color-hover;
         border-color: $border-color-hover;
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        color: $color-active;
+        background-color: $bg-color-active;
+        border-color: $border-color-active;
         text-decoration: none;
     }
 }
