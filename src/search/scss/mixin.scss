@@ -16,7 +16,7 @@
     }
 
     .#{$css-prefix}select {
-        height: calc(#{$height} - #{$border-width}*2);
+        height: calc(#{$height} - #{$border-width} * 2);
     }
 
     #{$search-prefix}-btn {
