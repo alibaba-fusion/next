@@ -47,6 +47,10 @@ class List extends Component {
          */
         extraRender: PropTypes.func,
         /**
+         * 自定义操作渲染
+         */
+        actionRender: PropTypes.func,
+        /**
          * 透传给Progress props
          */
         progressProps: PropTypes.object,
@@ -58,6 +62,7 @@ class List extends Component {
         useDataURL: PropTypes.bool,
         rtl: PropTypes.bool,
         isPreview: PropTypes.bool,
+        fileNameRender: PropTypes.func,
     };
 
     static defaultProps = {
@@ -69,9 +74,11 @@ class List extends Component {
         onRemove: func.noop,
         onCancel: func.noop,
         extraRender: func.noop,
+        actionRender: func.noop,
         onImageError: func.noop,
         onPreview: func.noop,
         progressProps: {},
+        fileNameRender: file => file.name,
     };
 
     componentDidUpdate() {
@@ -169,7 +176,14 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const { locale, extraRender, progressProps, rtl } = this.props;
+        const {
+            locale,
+            extraRender,
+            actionRender,
+            progressProps,
+            rtl,
+            fileNameRender,
+        } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
         const onClick = () =>
@@ -190,7 +204,7 @@ class List extends Component {
                         style={{ pointerEvents: downloadURL ? '' : 'none' }}
                         className={`${prefixCls}-list-item-name`}
                     >
-                        <span>{file.name}</span>
+                        <span>{fileNameRender(file)}</span>
                         {!!size && (
                             <span
                                 className={`${prefixCls}-list-item-size`}
@@ -220,23 +234,32 @@ class List extends Component {
                         {file.errorMsg}
                     </div>
                 ) : null}
-                {this.props.closable ? (
-                    <Icon
-                        type="close"
-                        size="large"
-                        role="button"
-                        aria-label={locale.upload.delete}
-                        tabIndex="0"
-                        onClick={onClick}
-                        onKeyDown={onKeyDown}
-                    />
-                ) : null}
+                <span className={`${prefixCls}-list-item-op`}>
+                    {actionRender(file)}
+                    {this.props.closable ? (
+                        <Icon
+                            type="close"
+                            size="large"
+                            role="button"
+                            aria-label={locale.upload.delete}
+                            tabIndex="0"
+                            onClick={onClick}
+                            onKeyDown={onKeyDown}
+                        />
+                    ) : null}
+                </span>
             </div>
         );
     }
 
     getImageList(file) {
-        const { extraRender, progressProps, rtl } = this.props;
+        const {
+            extraRender,
+            actionRender,
+            progressProps,
+            rtl,
+            fileNameRender,
+        } = this.props;
 
         const {
             prefixCls,
@@ -281,23 +304,26 @@ class List extends Component {
         return (
             <div className={itemCls} key={file.uid || file.name}>
                 <div className={`${prefixCls}-list-item-thumbnail`}>{img}</div>
-                {this.props.closable ? (
-                    <Icon
-                        type="close"
-                        size="large"
-                        tabIndex="0"
-                        role="button"
-                        onClick={onClick}
-                        onKeyDown={onKeyDown}
-                    />
-                ) : null}
+                <span className={`${prefixCls}-list-item-op`}>
+                    {actionRender(file)}
+                    {this.props.closable ? (
+                        <Icon
+                            type="close"
+                            size="large"
+                            tabIndex="0"
+                            role="button"
+                            onClick={onClick}
+                            onKeyDown={onKeyDown}
+                        />
+                    ) : null}
+                </span>
                 <a
                     href={downloadURL}
                     target="_blank"
                     style={{ pointerEvents: downloadURL ? '' : 'none' }}
                     className={`${prefixCls}-list-item-name`}
                 >
-                    <span>{file.name}</span>
+                    <span>{fileNameRender(file)}</span>
                     {!!size && (
                         <span
                             className={`${prefixCls}-list-item-size`}
@@ -330,7 +356,7 @@ class List extends Component {
     }
 
     getPictureCardList(file, isPreview) {
-        const { locale, progressProps } = this.props;
+        const { locale, progressProps, fileNameRender } = this.props;
 
         const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(
             file
@@ -431,7 +457,7 @@ class List extends Component {
                 </div>
 
                 <span className={`${prefixCls}-list-item-name`}>
-                    {file.name}
+                    {fileNameRender(file)}
                 </span>
             </div>
         );

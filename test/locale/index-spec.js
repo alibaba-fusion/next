@@ -5,6 +5,8 @@ import JP from '../../src/locale/ja-jp';
 import CN from '../../src/locale/zh-cn';
 import HK from '../../src/locale/zh-hk';
 import TW from '../../src/locale/zh-tw';
+import VI from '../../src/locale/vi-vn';
+import IT from '../../src/locale/it-it';
 
 describe('Locale', () => {
     it('should be the same keys', () => {
@@ -13,8 +15,10 @@ describe('Locale', () => {
         const cnKeys = getKeys(CN);
         const hkKeys = getKeys(HK);
         const twKeys = getKeys(TW);
+        const viKeys = getKeys(VI);
+        const itKeys = getKeys(IT);
 
-        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys);
+        assert(usKeys === jpKeys && jpKeys === cnKeys && cnKeys === hkKeys && hkKeys === twKeys && twKeys === viKeys && viKeys === itKeys);
     });
 });
 

@@ -8,14 +8,14 @@
         @include step-item-size(
             $step-arrow-item-height,
             auto,
-            $step-arrow-item-height/2,
-            $step-arrow-item-height/8
+            calc(#{$step-arrow-item-height} / 2),
+            calc(#{$step-arrow-item-height} / 8)
         );
 
         &:before {
             content: '';
             position: absolute;
-            left: -$step-arrow-item-border-width;
+            left: calc(0px - #{$step-arrow-item-border-width});
             top: 0;
             z-index: 1;
             border: $step-arrow-item-border-width solid transparent;

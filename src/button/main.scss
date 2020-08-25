@@ -249,7 +249,7 @@
         }
         &.#{$css-prefix}large {
             @include next-button-size(
-                0,
+                0px,
                 $btn-text-size-l-height,
                 $btn-text-size-l-font,
                 0,
@@ -261,7 +261,7 @@
         }
         &.#{$css-prefix}medium {
             @include next-button-size(
-                0,
+                0px,
                 $btn-text-size-m-height,
                 $btn-text-size-m-font,
                 0,
@@ -273,7 +273,7 @@
         }
         &.#{$css-prefix}small {
             @include next-button-size(
-                0,
+                0px,
                 $btn-text-size-s-height,
                 $btn-text-size-s-font,
                 0,
@@ -391,7 +391,7 @@
         }
 
         > #{$btn-prefix}-primary:not(:first-child) {
-            border-left-color: transparentize($color-white, .8);
+            border-left-color: rgba($color-white, .2);
 
             &:hover {
                 border-left-color: transparent;

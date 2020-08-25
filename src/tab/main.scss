@@ -317,7 +317,7 @@
         width: 100%;
         height: 0;
         border-bottom: $tab-wrapped-content-border;
-        transform: translateY(-$tab-wrapped-content-border-line-width);
+        transform: translateY(calc(0px - #{$tab-wrapped-content-border-line-width}));
         display: block;
     }
 

@@ -334,5 +334,5 @@ $search-simple-dark-m-icon-size: $icon-xs !default;
 /// @type icon
 $search-search-icon-content: $icon-content-search !default;
 
-$color-calculate-search-normal-dark-bg: transparentize($search-normal-dark-bg-color, 1 - $search-normal-dark-bg-opacity) !default;
-$color-calculate-search-simple-dark-bg: transparentize($search-simple-dark-bg-color, 1 - $search-simple-dark-bg-opacity) !default;
+$color-calculate-search-normal-dark-bg: rgba(get-compiling-value($search-normal-dark-bg-color), get-compiling-value($search-normal-dark-bg-opacity)) !default;
+$color-calculate-search-simple-dark-bg: rgba(get-compiling-value($search-simple-dark-bg-color), get-compiling-value($search-simple-dark-bg-opacity)) !default;

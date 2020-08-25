@@ -11,12 +11,12 @@
     }
 
     #{$search-prefix}-input {
-        @include input-height($height - $border-width*2, 0);
+        @include input-height(calc(#{$height} - #{$border-width}*2), 0px);
         overflow-y: hidden;
     }
 
     .#{$css-prefix}select {
-        height: $height - $border-width*2;
+        height: calc(#{$height} - #{$border-width}*2);
     }
 
     #{$search-prefix}-btn {

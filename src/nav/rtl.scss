@@ -1,15 +1,13 @@
-@import "../core/index-noreset.scss";
-
 
 @mixin nav-border-fix-rtl($border-width) {
     &.#{$css-prefix}ver {
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
-            right: - $border-width;
+            right: calc(0px - #{$border-width});
             left: auto;
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
-            left: - $border-width;
+            left: calc(0px - #{$border-width});
             right: auto;
         }
     }
@@ -83,7 +81,7 @@
             @include icon-size(
                 $size: $nav-icon-only-font-size,
                 $marginLeft: 0,
-                $marginRight: (18px - $nav-icon-only-font-size) / 2
+                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2)
             );
         }
     }
