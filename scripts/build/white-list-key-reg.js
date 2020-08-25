@@ -29,7 +29,7 @@ module.exports = [
     /grid-l/,
     /grid-xl/,
     /grid-col-fixed-width/,
-    /menu-.*-icon-content/,
+    // /menu-.*-icon-content/,
     /icon-reset/,
     /font-family/,
 ];
