@@ -90,8 +90,8 @@
             left: 50%;
             @include icon-square-size(
                 $size: $dialog-close-size,
-                $marginTop: -($dialog-close-size / 2),
-                $marginLeft: -($dialog-close-size / 2)
+                $marginTop: calc(0px - #{$dialog-close-size} / 2),
+                $marginLeft: calc(0px - #{$dialog-close-size} / 2)
             );
         }
     }
@@ -128,7 +128,7 @@
     }
 
     & &-message.#{$css-prefix}message {
-        min-width: $s-25 * 3;
+        min-width: calc(#{$s-25} * 3);
         padding: 0;
     }
 }

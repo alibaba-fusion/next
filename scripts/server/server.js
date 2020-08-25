@@ -26,13 +26,17 @@ const argv = parseArgs(process.argv.slice(2), {
         'disable-animation': false,
         lang: 'zh',
         dir: 'ltr',
+        mode: 'scss',
     },
 });
 
-const { host, silent, lang, dir } = argv;
+
+const { host, silent, lang, dir, mode } = argv;
 const port = parseInt(argv.port, 10);
+
 const componentName = argv._[0];
 const componentPath = path.join(process.cwd(), 'docs', componentName);
+
 const disableAnimation = argv['disable-animation'];
 const devA11y = argv.a11y;
 
@@ -49,6 +53,15 @@ function tryToRun(port) {
 }
 
 function run(port) {
+    logger.success('/******************************/');
+    logger.success('componentName:', componentName);
+    logger.success('disableAnimation:', disableAnimation);
+    logger.success('lang:', lang);
+    logger.success('dir:', dir);
+    logger.success('a11y:', devA11y);
+    logger.success('mode:', mode);
+    logger.success('/*****************************/');
+
     const config = getWebpackConfig({
         componentName,
         componentPath,
@@ -56,6 +69,7 @@ function run(port) {
         lang,
         dir,
         devA11y,
+        mode,
     });
     const compiler = webpack(config);
 

@@ -16,6 +16,8 @@ config.entry = {
     next: ['./index.scss', './index.js'],
     'next-with-locales': './index-with-locales.js',
     'next-noreset': './index-noreset.scss',
+    'next-noreset.var': './index-noreset.css',
+    'next.var': './index.css',
 };
 config.output = Object.assign({}, config.output, {
     path: distPath,
@@ -67,8 +69,12 @@ webpack(config, (err, stats) => {
     try {
         if (minimize) {
             fs.unlinkSync(path.join(distPath, 'next-noreset.min.js'));
+            fs.unlinkSync(path.join(distPath, 'next-noreset.var.min.js'));
+            fs.unlinkSync(path.join(distPath, 'next.var.min.js'));
         } else {
             fs.unlinkSync(path.join(distPath, 'next-noreset.js'));
+            fs.unlinkSync(path.join(distPath, 'next-noreset.var.js'));
+            fs.unlinkSync(path.join(distPath, 'next.var.js'));
         }
     } catch (e) {
         logger.warn('remove next-noreset.js or next-noreset.min.js failed: ', e);

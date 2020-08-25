@@ -5,7 +5,7 @@
             // top-bottom s-1  left $upload-text-list-padding-left-right
             padding: $s-1 $upload-text-list-padding-left-right;
             // righrt: icon size + icon paddinng left-right
-            padding-left: $upload-text-list-close-icon-right * 2 + $upload-text-list-close-icon-size;
+            padding-left: calc(#{$upload-text-list-close-icon-right} * 2 + #{$upload-text-list-close-icon-size});
         }
         .#{$css-prefix}icon {
             left: $upload-text-list-close-icon-right;
@@ -20,7 +20,7 @@
         }
 
         $thumbnail-margin-right: $s-2 !default;
-        @if ($upload-image-list-item-padding > $s-2) {
+        @if (get-compiling-value($upload-image-list-item-padding) > get-compiling-value($s-2)) {
             $thumbnail-margin-right: $upload-image-list-item-padding;
         }
 
@@ -31,8 +31,8 @@
         }
 
         #{$upload-prefix}-list-item-progress {
-            margin-right: $upload-image-list-item-picture-size + $thumbnail-margin-right;
-            margin-left: $upload-image-list-close-icon-size + $upload-image-list-close-icon-right * 2;
+            margin-right: calc(#{$upload-image-list-item-picture-size} + #{$thumbnail-margin-right});
+            margin-left: calc(#{$upload-image-list-close-icon-size} + #{$upload-image-list-close-icon-right} * 2);
         }
     }
 }

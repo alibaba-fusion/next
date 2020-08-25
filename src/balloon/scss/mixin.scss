@@ -47,7 +47,7 @@
     $shadow-bottom: $balloon-shadow-bottom;
     $shadow-left: $balloon-shadow-left;
 
-    @if $shadow == $shadow-zero {
+    @if (get-compiling-value($shadow) == get-compiling-value($shadow-zero)) {
         $shadow-top: null;
         $shadow-right: null;
         $shadow-bottom: null;

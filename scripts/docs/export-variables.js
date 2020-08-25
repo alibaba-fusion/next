@@ -7,6 +7,7 @@ module.exports = function*(options) {
     const exportNextCorVars = [
         'lib/core/util/_mixin.scss',
         'lib/core/util/_function.scss',
+        'lib/core/util/_varMap.scss',
         'lib/core/style/_global.scss',
         'lib/core/style/_size.scss',
         'lib/core/style/_color.scss',
