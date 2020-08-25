@@ -75,14 +75,14 @@
     &:not(.disabled):not([disabled]):focus {
         color: $textColorHover;
 
-        @if $borderColorHover != "" {
+        @if get-compiling-value($borderColorHover) != "" {
             border-color: $borderColorHover;
         }
-        @if $bgColorHover != "" {
+        @if get-compiling-value($bgColorHover) != "" {
             background-color: $bgColorHover;
         }
 
-        @if $tailColorHover != "" {
+        @if get-compiling-value($tailColorHover) != "" {
             > .#{$css-prefix}tag-close-btn {
                 color: $tailColorHover;
             }
@@ -91,27 +91,27 @@
 
     &[disabled],
     &.disabled {
-        @if $tailColorDisabled != "" {
+        @if get-compiling-value($tailColorDisabled) != "" {
             > .#{$css-prefix}tag-close-btn {
                 color: $tailColorDisabled;
             }
         }
 
-        @if $textColorDisabled != "" {
+        @if get-compiling-value($textColorDisabled) != "" {
             color: $textColorDisabled;
         }
 
-        @if $borderColorDisabled != "" {
+        @if get-compiling-value($borderColorDisabled) != "" {
             border-color: $borderColorDisabled;
         }
 
-        @if $bgColorDisabled != "" {
+        @if get-compiling-value($bgColorDisabled) != "" {
             background-color: $bgColorDisabled;
         }
     }
 
     > .#{$css-prefix}tag-close-btn {
-        @if $tailColor != "" {
+        @if get-compiling-value($tailColor) != "" {
             color: $tailColor;
         }
     }

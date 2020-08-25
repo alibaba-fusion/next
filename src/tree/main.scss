@@ -85,7 +85,7 @@
         }
 
         &.#{$css-prefix}close #{$tree-prefix}-switcher-icon {
-            @if $tree-unfold-icon-content != $icon-reset {
+            @if get-compiling-value($tree-unfold-icon-content) != get-compiling-value($icon-reset) {
                 &::before {
                     content: $tree-unfold-icon-content;
                 }

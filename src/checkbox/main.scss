@@ -47,7 +47,7 @@
             transition: all $motion-duration-immediately $motion-linear;
             color: $checkbox-checked-circle-color;
             left: calc((#{$checkbox-size} - #{$checkbox-circle-size}) / 2);
-            @if ($checkbox-circle-size == 12) {
+            @if (get-compiling-value($checkbox-circle-size) == 12) {
                 margin-top: 1px;
             }
             @include icon-size($checkbox-circle-size, 0px);

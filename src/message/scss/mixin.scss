@@ -70,7 +70,7 @@
     }
     .#{$css-prefix}message-symbol-icon::before {
         content: $icon;
-        @if ($icon == $message-loading-icon-content) {
+        @if (get-compiling-value($icon) == get-compiling-value($message-loading-icon-content)) {
             animation: loadingCircle 1s infinite linear;
         }
     }
