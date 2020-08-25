@@ -19,41 +19,19 @@ function preventDefault(e) {
     e.preventDefault();
 }
 const getNewChildren = (children, props) => {
-    const {
-        size,
-        device,
-        labelAlign,
-        labelTextAlign,
-        labelCol,
-        wrapperCol,
-        responsive,
-    } = props;
+    const { size, device, labelAlign, labelTextAlign, labelCol, wrapperCol, responsive } = props;
 
     return React.Children.map(children, child => {
         if (obj.isReactFragment(child)) {
             return getNewChildren(child.props.children, props);
         }
 
-        if (
-            child &&
-            typeof child.type === 'function' &&
-            child.type._typeMark === 'form_item'
-        ) {
+        if (child && typeof child.type === 'function' && child.type._typeMark === 'form_item') {
             const childrenProps = {
-                labelCol: child.props.labelCol
-                    ? child.props.labelCol
-                    : labelCol,
-                wrapperCol: child.props.wrapperCol
-                    ? child.props.wrapperCol
-                    : wrapperCol,
-                labelAlign: child.props.labelAlign
-                    ? child.props.labelAlign
-                    : device === 'phone'
-                    ? 'top'
-                    : labelAlign,
-                labelTextAlign: child.props.labelTextAlign
-                    ? child.props.labelTextAlign
-                    : labelTextAlign,
+                labelCol: child.props.labelCol ? child.props.labelCol : labelCol,
+                wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,
+                labelAlign: child.props.labelAlign ? child.props.labelAlign : device === 'phone' ? 'top' : labelAlign,
+                labelTextAlign: child.props.labelTextAlign ? child.props.labelTextAlign : labelTextAlign,
                 size: child.props.size ? child.props.size : size,
                 responsive: responsive,
             };
@@ -195,8 +173,7 @@ export default class Form extends React.Component {
                 this._formField = props.field;
                 const onChange = this._formField.options.onChange;
                 options.onChange = func.makeChain(onChange, this.onChange);
-                this._formField.setOptions &&
-                    this._formField.setOptions(options);
+                this._formField.setOptions && this._formField.setOptions(options);
             } else {
                 if ('value' in props) {
                     options.values = props.value;
@@ -254,6 +231,7 @@ export default class Form extends React.Component {
             style,
             prefix,
             rtl,
+            isPreview,
             component: Tag,
             responsive,
         } = this.props;
@@ -263,6 +241,7 @@ export default class Form extends React.Component {
             [`${prefix}inline`]: inline, // 内联
             [`${prefix}${size}`]: size,
             [`${prefix}form-responsive-grid`]: responsive,
+            [`${prefix}form-preview`]: isPreview,
             [className]: !!className,
         });
 
