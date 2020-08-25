@@ -1,5 +1,3 @@
-@import "../core/index-noreset.scss";
-
 @mixin tooltip-arrow-rtl() {
 
     &.#{$css-prefix}balloon-tooltip-right:after {

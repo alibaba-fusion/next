@@ -57,11 +57,11 @@ $nav-icononly-width: 58px;
     }
 
     &.#{$css-prefix}hoz {
-        height: $nav-hoz-height + 2 * $nav-hoz-item-margin-tb;
+        height: calc(#{$nav-hoz-height} + 2 * #{$nav-hoz-item-margin-tb});
 
         @include nav-size(
             'hoz',
-            $nav-hoz-height - $popup-local-border-width * 2,
+            calc(#{$nav-hoz-height} - #{$popup-local-border-width} * 2),
             $nav-hoz-font-size,
             $nav-hoz-item-padding-lr,
             $nav-hoz-item-margin-tb,
@@ -77,12 +77,12 @@ $nav-icononly-width: 58px;
 
         #{$menu-prefix}-header {
             float: left;
-            height: $nav-hoz-height - $popup-local-border-width * 2;
+            height: calc(#{$nav-hoz-height} - #{$popup-local-border-width} * 2);
         }
 
         #{$menu-prefix}-footer {
             float: right;
-            height: $nav-hoz-height - $popup-local-border-width * 2;
+            height: calc(#{$nav-hoz-height} - #{$popup-local-border-width} * 2);
         }
 
         #{$nav-prefix}-item {
@@ -96,7 +96,7 @@ $nav-icononly-width: 58px;
                 height: $nav-hoz-item-hover-active-line;
             }
 
-            @if ($nav-hoz-item-hover-active-line != 0) {
+            @if (get-compiling-value($nav-hoz-item-hover-active-line) != 0) {
                 &:hover:before {
                     width: 100%;
                     left: 0;
@@ -105,11 +105,11 @@ $nav-icononly-width: 58px;
         }
 
         &.#{$css-prefix}top #{$nav-prefix}-item:before {
-            top: - $popup-local-border-width;
+            top: calc(0px - #{$popup-local-border-width});
         }
 
         &.#{$css-prefix}bottom #{$nav-prefix}-item:before {
-            bottom: - $popup-local-border-width;
+            bottom: calc(0px - #{$popup-local-border-width});
         }
 
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
@@ -168,7 +168,7 @@ $nav-icononly-width: 58px;
                 width: $nav-ver-item-hover-active-line;
             }
 
-            @if ($nav-ver-item-hover-active-line != 0) {
+            @if (get-compiling-value($nav-ver-item-hover-active-line) != 0) {
                 &:hover:before {
                     height: 100%;
                     top: 0;
@@ -177,11 +177,11 @@ $nav-icononly-width: 58px;
         }
 
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
-            left: - $popup-local-border-width;
+            left: calc(0px - #{$popup-local-border-width});
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
-            right: - $popup-local-border-width;
+            right: calc(0px - #{$popup-local-border-width});
         }
 
         .#{$css-prefix}selected#{$nav-prefix}-item:before {
@@ -363,8 +363,8 @@ $nav-icononly-width: 58px;
         #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
-                $marginRight: (18px - $nav-icon-only-font-size) / 2
+                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
+                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2)
             );
             transition: all $motion-duration-immediately $motion-linear;
             transform-origin: center 50%;
@@ -373,8 +373,8 @@ $nav-icononly-width: 58px;
         #{$nav-prefix}-item.#{$css-prefix}opened #{$nav-prefix}-icon-only-arrow.#{$css-prefix}icon-arrow-down {
             @include icon-size(
                 $size: $nav-icon-only-font-size,
-                $marginLeft: (18px - $nav-icon-only-font-size) / 2,
-                $marginRight: (18px - $nav-icon-only-font-size) / 2,
+                $marginLeft: calc((18px - #{$nav-icon-only-font-size}) / 2),
+                $marginRight: calc((18px - #{$nav-icon-only-font-size}) / 2),
                 $transform: rotate(180deg)
             );
         }
@@ -404,7 +404,7 @@ $nav-icononly-width: 58px;
             }
 
             &.#{$css-prefix}icon-only {
-                @include icon-only-size(0);
+                @include icon-only-size(0px);
             }
         }
 

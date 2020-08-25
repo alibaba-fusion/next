@@ -112,7 +112,7 @@
             margin: 0;
         }
 
-        @include form-enhance($form-element-medium-height - 4);
+        @include form-enhance(calc(#{$form-element-medium-height} - 4px));
         @include form-preview($form-element-medium-preview-font-size, $form-element-medium-preview-height);
 
         #{$form-prefix}-item-label {
@@ -125,11 +125,11 @@
                 line-height: $form-element-large-height;
             }
 
-            @include form-enhance($form-element-large-height - 1);
+            @include form-enhance(calc(#{$form-element-large-height} - 1px));
             @include form-preview($form-element-large-preview-font-size, $form-element-large-preview-height);
 
             .#{$css-prefix}switch {
-                margin-top: ($form-element-large-height - 26)/2;
+                margin-top: calc((#{$form-element-large-height} - 26px) / 2);
             }
 
             #{$form-prefix}-item-label {

@@ -399,6 +399,7 @@
 }
 
 @mixin icon-size($size, $marginLeft: false, $marginRight: false, $transform: false) {
+    $size: get-compiling-value($size);
     @if ($transform) {
         transform: $transform;
     }
@@ -426,14 +427,14 @@
                     transform: scale($size / $icon-s);
                 }
                 @if ($marginLeft) {
-                    margin-left: $marginLeft - ($icon-s - $size) / 2;
+                    margin-left: calc(#{$marginLeft} - (#{$icon-s} - #{$size}) / 2);
                 } @else {
-                    margin-left: -($icon-s - $size) / 2;
+                    margin-left: calc(0px - (#{$icon-s} - #{$size}) / 2);
                 }
                 @if ($marginRight) {
-                    margin-right: $marginRight - ($icon-s - $size) / 2;
+                    margin-right: calc(#{$marginRight} - (#{$icon-s} - #{$size}) / 2);
                 } @else {
-                    margin-right: -($icon-s - $size) / 2;
+                    margin-right: calc(0px - (#{$icon-s} - #{$size}) / 2);
                 }
 
                 &:before {
@@ -446,6 +447,7 @@
 }
 
 @mixin icon-square-size($size, $marginTop: false, $marginRight: false, $marginBottom: false, $marginLeft: false, $transform: false) {
+    $size: get-compiling-value($size);
     @if ($transform) {
         transform: $transform;
     }

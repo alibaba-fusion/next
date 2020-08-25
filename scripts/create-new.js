@@ -83,6 +83,12 @@ co(function*() {
     noresetScssContent += `@import "lib/${dashName}/index.scss";\n`;
     fs.writeFileSync(noresetScssPath, noresetScssContent);
 
+    // index-noreset.css
+    const noresetCssPath = path.join(cwd, 'index-noreset.css');
+    let noresetCssContent = fs.readFileSync(noresetCssPath, 'utf8');
+    noresetCssContent += `@import "lib/${dashName}/index.css";\n`;
+    fs.writeFileSync(noresetCssPath, noresetCssContent);
+
     // types/index.d.ts
     const typesIndexJSPath = path.join(cwd, 'types', 'index.d.ts');
     let typesIndexJSContent = fs.readFileSync(typesIndexJSPath, 'utf8');
