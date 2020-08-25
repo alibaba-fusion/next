@@ -97,7 +97,7 @@ class Select extends Base {
          */
         fillProps: PropTypes.string,
         /**
-         * onChange 返回的 value 使用 dataSource 的对象
+         * value 使用对象类型 `{value, label}`, 同时 onChange 第一个参数返回也修改为 dataSource 中的对象
          */
         useDetailValue: PropTypes.bool,
         /**
@@ -253,6 +253,12 @@ class Select extends Base {
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             Object.assign(state, {
                 value: nextProps.value,
+            });
+        }
+
+        if ('highlightKey' in nextProps && nextProps.highlightKey !== prevState.highlightKey) {
+            Object.assign(state, {
+                highlightKey: nextProps.highlightKey,
             });
         }
 
@@ -788,7 +794,8 @@ class Select extends Base {
                 return null;
             }
 
-            const retvalue = fillProps && fillProps in value ? value[fillProps] : valueRender(value);
+            const retvalue =
+                fillProps && typeof value === 'object' && fillProps in value ? value[fillProps] : valueRender(value);
             // 0 => '0'
             return typeof retvalue === 'number' ? retvalue.toString() : retvalue;
         } else if (value) {

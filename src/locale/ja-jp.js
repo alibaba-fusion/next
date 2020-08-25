@@ -71,6 +71,9 @@ export default {
     Input: {
         clear: 'クリア',
     },
+    List: {
+        empty: 'データなし',
+    },
     Select: {
         selectPlaceholder: '選択',
         autoCompletePlaceholder: '入力',

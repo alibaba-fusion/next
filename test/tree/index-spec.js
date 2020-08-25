@@ -29,6 +29,7 @@ const dataSource = [
                     {
                         label: '外套',
                         className: 'k-4',
+                        selectable: false,
                         key: '4',
                     },
                     {
@@ -406,10 +407,18 @@ describe('Tree', () => {
 
         selectTreeNode('3');
         assertSelected('3', true);
-
         selectTreeNode('4');
         assertSelected('3', true);
-        assertSelected('4', true);
+
+        ReactTestUtils.Simulate.keyDown(findTreeNodeByKey(3).querySelector('.next-tree-node-label'), {
+            keyCode: KEYCODE.ENTER,
+        });
+        assertSelected('3', false);
+
+        ReactTestUtils.Simulate.keyDown(findTreeNodeByKey(4).querySelector('.next-tree-node-label'), {
+            keyCode: KEYCODE.ENTER,
+        });
+        assertSelected('4', false);
     });
 
     it('should support defaultCheckedKeys and onCheck', () => {

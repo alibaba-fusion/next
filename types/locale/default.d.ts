@@ -71,6 +71,9 @@ export interface locale {
     Input: {
         clear: string;
     };
+    List: {
+        empty: string;
+    };
     Select: {
         selectPlaceholder: string;
         autoCompletePlaceholder: string;

@@ -10,7 +10,7 @@ import { statics } from './util';
 
 const noop = () => {};
 
-export default function expanded(BaseComponent) {
+export default function expanded(BaseComponent, stickyLock) {
     /** Table */
     class ExpandedTable extends React.Component {
         static ExpandedRow = RowComponent;
@@ -57,7 +57,7 @@ export default function expanded(BaseComponent) {
             onRowOpen: noop,
             hasExpandedRowCtrl: true,
             components: {},
-            expandedRowIndent: [1, 0],
+            expandedRowIndent: stickyLock ? [0, 0] : [1, 0],
             prefix: 'next-',
         };
 
@@ -65,6 +65,7 @@ export default function expanded(BaseComponent) {
             openRowKeys: PropTypes.array,
             expandedRowRender: PropTypes.func,
             expandedIndexSimulate: PropTypes.bool,
+            expandedRowWidthEquals2Table: PropTypes.bool,
             expandedRowIndent: PropTypes.array,
         };
 
@@ -77,7 +78,10 @@ export default function expanded(BaseComponent) {
                 openRowKeys: this.state.openRowKeys,
                 expandedRowRender: this.props.expandedRowRender,
                 expandedIndexSimulate: this.props.expandedIndexSimulate,
-                expandedRowIndent: this.props.expandedRowIndent,
+                expandedRowWidthEquals2Table: stickyLock,
+                expandedRowIndent: stickyLock
+                    ? [0, 0]
+                    : this.props.expandedRowIndent,
             };
         }
 
@@ -173,6 +177,21 @@ export default function expanded(BaseComponent) {
             e.stopPropagation();
         }
 
+        addExpandCtrl = columns => {
+            const { prefix, size } = this.props;
+
+            if (!columns.find(record => record.key === 'expanded')) {
+                columns.unshift({
+                    key: 'expanded',
+                    title: '',
+                    cell: this.renderExpandedCell.bind(this),
+                    width: size === 'small' ? 34 : 50,
+                    className: `${prefix}table-expanded ${prefix}table-prerow`,
+                    __normalized: true,
+                });
+            }
+        };
+
         normalizeChildren(children) {
             const { prefix, size } = this.props;
             const toArrayChildren = Children.map(children, (child, index) =>
@@ -211,6 +230,7 @@ export default function expanded(BaseComponent) {
                 expandedRowRender,
                 hasExpandedRowCtrl,
                 children,
+                columns,
                 dataSource,
                 entireDataSource,
                 getExpandedColProps,
@@ -219,6 +239,7 @@ export default function expanded(BaseComponent) {
                 onExpandedRowClick,
                 ...others
             } = this.props;
+
             if (expandedRowRender && !components.Row) {
                 components = { ...components };
                 components.Row = RowComponent;
@@ -226,12 +247,19 @@ export default function expanded(BaseComponent) {
                 entireDataSource = this.normalizeDataSource(entireDataSource);
             }
             if (expandedRowRender && hasExpandedRowCtrl) {
-                children = this.normalizeChildren(children);
+                let useColumns = columns && !children;
+
+                if (useColumns) {
+                    this.addExpandCtrl(columns);
+                } else {
+                    children = this.normalizeChildren(children);
+                }
             }
 
             return (
                 <BaseComponent
                     {...others}
+                    columns={columns}
                     dataSource={dataSource}
                     entireDataSource={entireDataSource}
                     components={components}

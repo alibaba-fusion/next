@@ -179,6 +179,9 @@ class Table extends React.Component {
          */
         locale: PropTypes.object,
         components: PropTypes.object,
+        /**
+         * 等同于写子组件 Table.Column ，子组件优先级更高
+         */
         columns: PropTypes.array,
         /**
          * 设置数据为空的时候的表格内容展现
@@ -187,7 +190,7 @@ class Table extends React.Component {
         /**
          * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
          */
-        primaryKey: PropTypes.string,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         lockType: PropTypes.oneOf(['left', 'right']),
         wrapperContent: PropTypes.any,
         refs: PropTypes.object,
@@ -230,10 +233,7 @@ class Table extends React.Component {
         /**
          * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
          */
-        maxBodyHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 是否启用选择模式
          * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
@@ -317,15 +317,16 @@ class Table extends React.Component {
 
     static contextTypes = {
         getTableInstance: PropTypes.func,
+        getTableInstanceForFixed: PropTypes.func,
         getTableInstanceForVirtual: PropTypes.func,
     };
 
     constructor(props, context) {
         super(props, context);
-        const { getTableInstance, getTableInstanceForVirtual } = this.context;
+        const { getTableInstance, getTableInstanceForVirtual, getTableInstanceForFixed } = this.context;
         getTableInstance && getTableInstance(props.lockType, this);
-        getTableInstanceForVirtual &&
-            getTableInstanceForVirtual(props.lockType, this);
+        getTableInstanceForFixed && getTableInstanceForFixed(props.lockType, this);
+        getTableInstanceForVirtual && getTableInstanceForVirtual(props.lockType, this);
         this.notRenderCellIndex = [];
     }
 
@@ -352,6 +353,7 @@ class Table extends React.Component {
 
     componentDidMount() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -368,6 +370,7 @@ class Table extends React.Component {
 
     componentDidUpdate() {
         this.notRenderCellIndex = [];
+        this.tableOuterWidth = this.tableEl && this.tableEl.clientWidth;
     }
 
     normalizeChildrenState(props) {
@@ -391,13 +394,10 @@ class Table extends React.Component {
                         !(
                             child &&
                             typeof child.type === 'function' &&
-                            (child.type._typeMark === 'column' ||
-                                child.type._typeMark === 'columnGroup')
+                            (child.type._typeMark === 'column' || child.type._typeMark === 'columnGroup')
                         )
                     ) {
-                        log.warning(
-                            'Use <Table.Column/>, <Table.ColumnGroup/> as child.'
-                        );
+                        log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
                     }
                     ret.push(props);
                     if (child.props.children) {
@@ -417,7 +417,7 @@ class Table extends React.Component {
         let hasGroupHeader = false;
         const flatChildren = [],
             groupChildren = [],
-            getChildren = (propsChildren, level) => {
+            getChildren = (propsChildren = [], level) => {
                 groupChildren[level] = groupChildren[level] || [];
                 propsChildren.forEach(child => {
                     if (child.children) {
@@ -507,10 +507,7 @@ class Table extends React.Component {
 
     // 通过头部和扁平的结构渲染表格
     renderTable(groupChildren, flatChildren) {
-        if (
-            flatChildren.length ||
-            (!flatChildren.length && !this.props.lockType)
-        ) {
+        if (flatChildren.length || (!flatChildren.length && !this.props.lockType)) {
             const {
                 hasHeader,
                 components,
@@ -535,20 +532,11 @@ class Table extends React.Component {
                 tableWidth,
             } = this.props;
             const { sort } = this.state;
-            const {
-                Header = HeaderComponent,
-                Wrapper = WrapperComponent,
-                Body = BodyComponent,
-            } = components;
+            const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
             return (
-                <Wrapper
-                    colGroup={colGroup}
-                    ref={this.getWrapperRef}
-                    prefix={prefix}
-                    tableWidth={tableWidth}
-                >
+                <Wrapper colGroup={colGroup} ref={this.getWrapperRef} prefix={prefix} tableWidth={tableWidth}>
                     {hasHeader ? (
                         <Header
                             prefix={prefix}
@@ -588,6 +576,7 @@ class Table extends React.Component {
                         cellRef={this.getCellRef}
                         onRowClick={onRowClick}
                         expandedIndexSimulate={expandedIndexSimulate}
+                        tableOuterWidth={this.tableOuterWidth}
                         onRowMouseEnter={onRowMouseEnter}
                         onRowMouseLeave={onRowMouseLeave}
                         dataSource={dataSource}
@@ -651,9 +640,7 @@ class Table extends React.Component {
                     // in case of finding an unmounted component due to cached data
                     // need to clear refs of this.tableInc when dataSource Changed
                     // in virtual table
-                    const currentCol = findDOMNode(
-                        this.getCellRef(index, colIndex)
-                    );
+                    const currentCol = findDOMNode(this.getCellRef(index, colIndex));
                     currentCol && dom[funcName](currentCol, 'hovered');
                 } catch (error) {
                     return null;
@@ -728,6 +715,10 @@ class Table extends React.Component {
         });
     };
 
+    getTableEl = ref => {
+        this.tableEl = ref;
+    };
+
     render() {
         const ret = this.normalizeChildrenState(this.props);
         this.groupChildren = ret.groupChildren;
@@ -769,6 +760,7 @@ class Table extends React.Component {
                 loadingComponent: LoadingComponent = Loading,
                 tableLayout,
                 tableWidth,
+                ref,
                 ...others
             } = this.props,
             cls = classnames({
@@ -789,6 +781,7 @@ class Table extends React.Component {
             <div
                 className={cls}
                 style={style}
+                ref={ref || this.getTableEl}
                 {...obj.pickOthers(Object.keys(Table.propTypes), others)}
             >
                 {table}
@@ -796,11 +789,7 @@ class Table extends React.Component {
         );
         if (loading) {
             const loadingClassName = `${prefix}table-loading`;
-            return (
-                <LoadingComponent className={loadingClassName}>
-                    {content}
-                </LoadingComponent>
-            );
+            return <LoadingComponent className={loadingClassName}>{content}</LoadingComponent>;
         }
         return content;
     }

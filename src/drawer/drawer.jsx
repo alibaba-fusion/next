@@ -75,9 +75,8 @@ export default class Drawer extends Component {
         // 受控模式下(没有 trigger 的时候)，只会在关闭时触发，相当于onClose
         onVisibleChange: PropTypes.func,
         /**
-         * 显示隐藏时动画的播放方式
-         * @property {String} in 进场动画
-         * @property {String} out 出场动画
+         * 显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名
+         * @default { in: 'expandInDown', out: 'expandOutUp' }
          */
         animation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         locale: PropTypes.object,
@@ -161,10 +160,7 @@ export default class Drawer extends Component {
     mapcloseableToConfig = closeable => {
         return ['esc', 'close', 'mask'].reduce((ret, option) => {
             const key = option.charAt(0).toUpperCase() + option.substr(1);
-            const value =
-                typeof closeable === 'boolean'
-                    ? closeable
-                    : closeable.split(',').indexOf(option) > -1;
+            const value = typeof closeable === 'boolean' ? closeable : closeable.split(',').indexOf(option) > -1;
 
             if (option === 'esc' || option === 'mask') {
                 ret[`canCloseBy${key}`] = value;
@@ -247,10 +243,7 @@ export default class Drawer extends Component {
             ...style,
         };
 
-        const {
-            canCloseByCloseClick,
-            ...closeConfig
-        } = this.mapcloseableToConfig(closeable);
+        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(closeable);
 
         const newPopupProps = {
             prefix,

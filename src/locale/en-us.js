@@ -65,12 +65,14 @@ export default {
         labelPrev: 'Previous page, current page {current}',
         labelNext: 'Next page, current page {current}',
         inputAriaLabel: 'Please enter what page to skip to',
-        selectAriaLabel:
-            'Please select how many items are displayed on each page',
+        selectAriaLabel: 'Please select how many items are displayed on each page',
         pageSize: 'Items per page:',
     },
     Input: {
         clear: 'Clear',
+    },
+    List: {
+        empty: 'No Data',
     },
     Select: {
         selectPlaceholder: 'Please Select',
@@ -114,8 +116,7 @@ export default {
         },
         drag: {
             text: 'Click or Drag the file to this area to upload',
-            hint:
-                'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload',
+            hint: 'Support docx, xls, PDF, rar, zip, PNG, JPG and other files upload',
         },
         upload: {
             delete: 'Delete',
