@@ -129,7 +129,7 @@
         outline: none;
         height: 100%;
 
-        @include button-color($tab-nav-arrow-color-normal, $tab-nav-arrow-color-hover);
+        @include button-color($tab-nav-arrow-color-normal, $tab-nav-arrow-color-hover, $tab-nav-arrow-color-hover);
 
         &.disabled {
             cursor: not-allowed;
@@ -317,7 +317,7 @@
         width: 100%;
         height: 0;
         border-bottom: $tab-wrapped-content-border;
-        transform: translateY(-$tab-wrapped-content-border-line-width);
+        transform: translateY(calc(0px - #{$tab-wrapped-content-border-line-width}));
         display: block;
     }
 

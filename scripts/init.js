@@ -29,7 +29,7 @@ const indexNoResetScssContent = components
             return '';
         }
 
-        return `@import "lib/${component}/index.scss";\n`;
+        return `@import "lib/${component}/main.scss";\n`;
     })
     .join('');
 fs.writeFileSync(indexNoResetScssPath, indexNoResetScssContent);

@@ -7,6 +7,26 @@
 #{$form-prefix} {
     @include box-sizing;
 
+    &-preview.#{$css-prefix}form-item {
+        &.#{$css-prefix}medium {
+            #{$form-prefix}-item-label {
+                font-size: $form-element-medium-preview-font-size;
+                line-height: $form-element-medium-preview-height;
+            }
+        }
+        &.#{$css-prefix}small {
+            #{$form-prefix}-item-label {
+                font-size: $form-element-small-preview-font-size;
+                line-height: $form-element-small-preview-height;
+            }
+        }
+        &.#{$css-prefix}large {
+            #{$form-prefix}-item-label {
+                font-size: $form-element-large-preview-font-size;
+                line-height: $form-element-large-preview-height;
+            }
+        }
+    }
     &-responsive-grid {
         #{$form-prefix}-item-control {
             flex: 1;
@@ -92,7 +112,7 @@
             margin: 0;
         }
 
-        @include form-enhance($form-element-medium-height - 4);
+        @include form-enhance(calc(#{$form-element-medium-height} - 4px));
         @include form-preview($form-element-medium-preview-font-size, $form-element-medium-preview-height);
 
         #{$form-prefix}-item-label {
@@ -105,11 +125,11 @@
                 line-height: $form-element-large-height;
             }
 
-            @include form-enhance($form-element-large-height - 1);
+            @include form-enhance(calc(#{$form-element-large-height} - 1px));
             @include form-preview($form-element-large-preview-font-size, $form-element-large-preview-height);
 
             .#{$css-prefix}switch {
-                margin-top: ($form-element-large-height - 26)/2;
+                margin-top: calc((#{$form-element-large-height} - 26px) / 2);
             }
 
             #{$form-prefix}-item-label {

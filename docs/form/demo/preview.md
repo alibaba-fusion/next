@@ -54,7 +54,6 @@ const fileList = [{
 
 class Demo extends React.Component {
     state = {
-        size: 'medium',
         preview: false,
     };
     submitHandler = (e) => {
@@ -71,7 +70,7 @@ class Demo extends React.Component {
     render() {
         return (
             <div>
-                <Form {...formItemLayout} isPreview={this.state.preview} size={this.state.size} style={{maxWidth: '800px'}}>
+                <Form {...formItemLayout} isPreview={this.state.preview} style={{maxWidth: '800px'}}>
                     <FormItem label="preview: " isPreview={false} size="small" style={{marginBottom: 0}}>
                         <Switch size="large" onChange={this.onPreviewChange} />
                     </FormItem>

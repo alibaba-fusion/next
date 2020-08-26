@@ -53,7 +53,7 @@
                     vertical-align: top;
                     font-weight: $calendar-btn-date-font-weight;
                     margin: 0 $calendar-btn-date-margin-lr;
-                    @include button-color($calendar-btn-date-color, $calendar-btn-date-color-hover);
+                    @include button-color($calendar-btn-date-color, $calendar-btn-date-color-hover, $calendar-btn-date-color-hover);
                 }
             }
 
@@ -103,7 +103,7 @@
     &-btn-next-decade {
         position: absolute;
         top: 0;
-        @include button-color($calendar-btn-arrow-color, $calendar-btn-arrow-color-hover);
+        @include button-color($calendar-btn-arrow-color, $calendar-btn-arrow-color-hover, $calendar-btn-arrow-color-hover);
     }
 
     &-btn-prev-decade,

@@ -1,6 +1,7 @@
 /// <reference types="react" />
 
 import { ReactNode, Component, ComponentType } from 'react';
+import { LoadingProps } from '../loading';
 import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
@@ -28,6 +29,20 @@ export interface ListProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * children
      */
     children?: ReactNode;
+    dataSource?: any[];
+    /**
+     * 当使用 dataSource 时，可以用 renderItem 自定义渲染列表项
+     * @param {Any} current 当前遍历的项
+     * @param {Number} index 当前遍历的项的索引
+     */
+    renderItem?: (current: any, index: number) => any;
+    loading?: boolean;
+    /**
+     * 自定义 Loading 组件
+     * 请务必透传 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
+     */
+    loadingComponent?: (props: LoadingProps) => void;
+    emptyContent?: ReactNode;
 }
 
 export interface ListItemProps extends HTMLAttributesWeak, CommonProps {

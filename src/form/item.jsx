@@ -47,12 +47,7 @@ export default class Item extends React.Component {
          * 校验状态，如不设置，则会根据校验规则自动生成
          * @enumdesc 失败, 成功, 校验中, 警告
          */
-        validateState: PropTypes.oneOf([
-            'error',
-            'success',
-            'loading',
-            'warning',
-        ]),
+        validateState: PropTypes.oneOf(['error', 'success', 'loading', 'warning']),
         /**
          * 配合 validateState 属性使用，是否展示 success/loading 的校验状态图标, 目前只有Input支持
          */
@@ -103,10 +98,7 @@ export default class Item extends React.Component {
         /**
          * required 自定义触发方式
          */
-        requiredTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        requiredTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * [表单校验] 最小值
          */
@@ -138,10 +130,7 @@ export default class Item extends React.Component {
         /**
          * minLength/maxLength 自定义触发方式
          */
-        minmaxLengthTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        minmaxLengthTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * [表单校验] 字符串精确长度 / 数组精确个数
          */
@@ -165,10 +154,7 @@ export default class Item extends React.Component {
         /**
          * pattern 自定义触发方式
          */
-        patternTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        patternTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * [表单校验] 四种常用的 pattern
          */
@@ -188,10 +174,7 @@ export default class Item extends React.Component {
         /**
          * validator 自定义触发方式
          */
-        validatorTrigger: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        validatorTrigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * 是否修改数据时自动触发校验
          */
@@ -259,10 +242,7 @@ export default class Item extends React.Component {
         const _formField = this.context._formField;
 
         return (
-            <Error
-                name={help === undefined ? this.getNames() : undefined}
-                field={_formField}
-            >
+            <Error name={help === undefined ? this.getNames() : undefined} field={_formField}>
                 {help}
             </Error>
         );
@@ -293,15 +273,11 @@ export default class Item extends React.Component {
     }
 
     getIsPreview() {
-        return 'isPreview' in this.props
-            ? this.props.isPreview
-            : this.context._formPreview;
+        return 'isPreview' in this.props ? this.props.isPreview : this.context._formPreview;
     }
 
     getFullWidth() {
-        return isNil(this.props.fullWidth)
-            ? !!this.context._formFullWidth
-            : this.props.fullWidth;
+        return isNil(this.props.fullWidth) ? !!this.context._formFullWidth : this.props.fullWidth;
     }
 
     getLabelForErrorMessage() {
@@ -338,21 +314,14 @@ export default class Item extends React.Component {
             labelTextAlign,
         } = this.props;
 
-        const labelAlign = this.getLabelAlign(
-            this.props.labelAlign,
-            this.props.device
-        );
+        const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
         if (!label) {
             return null;
         }
 
         const ele = (
-            <label
-                htmlFor={id || this.getNames()[0]}
-                required={asterisk}
-                key="label"
-            >
+            <label htmlFor={id || this.getNames()[0]} required={asterisk} key="label">
                 {label}
             </label>
         );
@@ -382,20 +351,9 @@ export default class Item extends React.Component {
     }
 
     getItemWrapper() {
-        const {
-            hasFeedback,
-            labelCol,
-            wrapperCol,
-            children,
-            extra,
-            prefix,
-            renderPreview,
-        } = this.props;
+        const { hasFeedback, labelCol, wrapperCol, children, extra, prefix, renderPreview } = this.props;
 
-        const labelAlign = this.getLabelAlign(
-            this.props.labelAlign,
-            this.props.device
-        );
+        const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
         const state = this.getState();
 
@@ -408,10 +366,7 @@ export default class Item extends React.Component {
             childrenProps.isPreview = true;
         }
 
-        if (
-            'renderPreview' in this.props &&
-            typeof renderPreview === 'function'
-        ) {
+        if ('renderPreview' in this.props && typeof renderPreview === 'function') {
             childrenProps.renderPreview = renderPreview;
         }
 
@@ -438,19 +393,11 @@ export default class Item extends React.Component {
                 child.type._typeMark !== 'form_error'
             ) {
                 let extraProps = childrenProps;
-                if (
-                    this.context._formField &&
-                    'name' in child.props &&
-                    !('data-meta' in child.props)
-                ) {
+                if (this.context._formField && 'name' in child.props && !('data-meta' in child.props)) {
                     extraProps = this.context._formField.init(
                         child.props.name,
                         {
-                            ...getFieldInitCfg(
-                                this.props,
-                                child.type.displayName,
-                                labelForErrorMessage
-                            ),
+                            ...getFieldInitCfg(this.props, child.type.displayName, labelForErrorMessage),
                             props: { ...child.props, ref: child.ref },
                         },
                         childrenProps
@@ -469,11 +416,7 @@ export default class Item extends React.Component {
 
         if ((wrapperCol || labelCol) && labelAlign !== 'top') {
             return (
-                <Col
-                    {...wrapperCol}
-                    className={`${prefix}form-item-control`}
-                    key="item"
-                >
+                <Col {...wrapperCol} className={`${prefix}form-item-control`} key="item">
                     {ele} {help} {extra}
                 </Col>
             );
@@ -495,23 +438,14 @@ export default class Item extends React.Component {
     }
 
     render() {
-        const {
-            className,
-            style,
-            prefix,
-            wrapperCol,
-            labelCol,
-            responsive,
-        } = this.props;
+        const { className, style, prefix, wrapperCol, labelCol, responsive } = this.props;
 
-        const labelAlign = this.getLabelAlign(
-            this.props.labelAlign,
-            this.props.device
-        );
+        const labelAlign = this.getLabelAlign(this.props.labelAlign, this.props.device);
 
         const state = this.getState();
         const size = this.getSize();
         const fullWidth = this.getFullWidth();
+        const isPreview = this.getIsPreview();
 
         const itemClassName = classNames({
             [`${prefix}form-item`]: true,
@@ -520,22 +454,15 @@ export default class Item extends React.Component {
             [`${prefix}${size}`]: !!size,
             [`${prefix}form-item-fullwidth`]: fullWidth,
             [`${className}`]: !!className,
+            [`${prefix}form-preview`]: isPreview,
         });
 
         // 垂直模式并且左对齐才用到
-        const Tag = responsive
-            ? Cell
-            : (wrapperCol || labelCol) && labelAlign !== 'top'
-            ? Row
-            : 'div';
+        const Tag = responsive ? Cell : (wrapperCol || labelCol) && labelAlign !== 'top' ? Row : 'div';
         const label = labelAlign === 'inset' ? null : this.getItemLabel();
 
         return (
-            <Tag
-                {...obj.pickOthers(Item.propTypes, this.props)}
-                className={itemClassName}
-                style={style}
-            >
+            <Tag {...obj.pickOthers(Item.propTypes, this.props)} className={itemClassName} style={style}>
                 {label}
                 {this.getItemWrapper()}
             </Tag>

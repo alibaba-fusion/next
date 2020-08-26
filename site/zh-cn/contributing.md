@@ -53,11 +53,15 @@ git checkout -b fix-issue-100
 
 在完成上述操作并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
 
-* `npm run dev component` 启动指定组件的调试页面
+* `npm run dev date-picker` 启动指定组件的调试页面
 
-* `npm run test component` 启动指定组件的测试
+* `npm run dev date-picker mode=css` 启动指定组件 css-var 的调试页面（默认是scss）
 
-* `npm run api component` 根据代码和注释，自动更新指定组件的中文 API 文档
+* `npm run dev date-picker dir=rtl` 启动指定组件在rtl模式下的调试页面
+
+* `npm run test date-picker` 启动指定组件的测试
+
+* `npm run api date-picker` 根据代码和注释，自动更新指定组件的中文 API 文档
 
 * `npm run test` 启动所有组件的测试
 
@@ -82,6 +86,7 @@ git checkout -b fix-issue-100
     - 避免往window等全局对象挂载定时器 (可能内存泄漏)
     - 避免random()等不确定性输出(输出结果可预期，不依赖于环境等)
 2. sass 颜色变量计算的结果，需要以 `$color-calcualte-` 开头，写到组件的 variable.scss 中(不能写到main.scss中)，参考`Search`组件，[#1029](https://github.com/alibaba-fusion/next/issues/1029)
+3. 所有sass计算需要被calc包裹
 
 
 ## 发布周期

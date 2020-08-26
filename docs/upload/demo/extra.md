@@ -22,30 +22,56 @@ Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` A
 ---
 
 ````jsx
-import { Upload, Button } from '@alifd/next';
+import { Upload, Button, Icon, Dialog } from '@alifd/next';
 
-const extraRender = (file) => {
-    console.log(file);
-    return (<Button style={{marginLeft: 4}}>extra</Button>);
+const showImg = (url) => {
+    Dialog.show({
+        title: 'img preview',
+        content: <img src={url} style={{width: 400, height: 400}}/>,
+        footer: false,
+    });
 };
 
-ReactDOM.render((
+const actionRender = (file) => {
+    console.log(file);
+    return (<span style={{position: 'absolute', right: 50}}>
+        <Button text onClick={e=> {e.preventDefault(); showImg(file.url);}} size="large">
+            <Icon type="eye" style={{marginRight: 12, cursor: 'pointer'}} />
+        </Button>
+        <Button text component="a" href={file.url} target="_blank">
+            <Icon type="download" style={{cursor: 'pointer'}}/>
+        </Button>
+    </span>);
+};
+
+const data = [{
+    name: 'IMG.png',
+    state: 'done',
+    size: 100,
+    url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
+}];
+
+ReactDOM.render((<div>
+    <Upload
+        listType="text"
+        action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
+        accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+        beforeUpload={beforeUpload}
+        onChange={onChange}
+        fileNameRender={file => <span><Icon type="attachment" size="xs" style={{marginRight: 8}}/>{file.name}</span>}
+        defaultValue={data}
+    />
+    <br/>
     <Upload
         listType="image"
         action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
         accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
         beforeUpload={beforeUpload}
         onChange={onChange}
-        extraRender={extraRender}
-        defaultValue={[{
-            name: 'IMG.png',
-            state: 'done',
-            size: 100,
-            url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'
-        }]}
-    >
-        <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
-    </Upload>
+        actionRender={actionRender}
+        defaultValue={data}
+    />
+    </div>
 ), mountNode);
 
 function beforeUpload(info) {

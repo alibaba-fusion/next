@@ -5,7 +5,13 @@ const { checkComponentName } = require('../utils');
 
 const scriptPath = path.join(__dirname, 'server.js');
 
+
 const args = checkComponentName(false, true);
+
+// 获取输入的 mode，css / scss，默认scss
+// const mode = process.env.npm_config_mode || 'scss';
+// args.push(mode);
+
 const argv = parseArgs(args);
 
 argv._.forEach(item => {
@@ -20,26 +26,30 @@ start(restoreArgs(argv));
 
 function start(args) {
     const worker = cp.fork(scriptPath, args);
-    worker.on('message', data => {
-        if (data === 'RESTART') {
-            worker.kill('SIGINT');
-            start(args);
-        } else if (data.indexOf('CHANGE_LANG') === 0) {
-            worker.kill('SIGINT');
-            const lang = data.split('=')[1];
-            const argv = parseArgs(args);
-            argv.lang = lang;
-            const newArgs = restoreArgs(argv);
-            start(newArgs);
-        } else if (data.indexOf('CHANGE_DIR') === 0) {
-            worker.kill('SIGINT');
-            const dir = data.split('=')[1];
-            const argv = parseArgs(args);
-            argv.dir = dir;
-            const newArgs = restoreArgs(argv);
-            start(newArgs);
-        }
-    });
+
+    hanleMsg(worker);
+    function hanleMsg(worker) {
+        worker.on('message', data => {
+            if (data === 'RESTART') {
+                worker.kill('SIGINT');
+                start(args);
+            } else if (data.indexOf('CHANGE_LANG') === 0) {
+                worker.kill('SIGINT');
+                const lang = data.split('=')[1];
+                const argv = parseArgs(args);
+                argv.lang = lang;
+                const newArgs = restoreArgs(argv);
+                start(newArgs);
+            } else if (data.indexOf('CHANGE_DIR') === 0) {
+                worker.kill('SIGINT');
+                const dir = data.split('=')[1];
+                const argv = parseArgs(args);
+                argv.dir = dir;
+                const newArgs = restoreArgs(argv);
+                start(newArgs);
+            }
+        });
+    }
 }
 
 function restoreArgs(argv) {

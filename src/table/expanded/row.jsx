@@ -17,6 +17,7 @@ export default class ExpandedRow extends React.Component {
         expandedRowRender: PropTypes.func,
         expandedRowIndent: PropTypes.array,
         expandedIndexSimulate: PropTypes.bool,
+        expandedRowWidthEquals2Table: PropTypes.bool,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
@@ -27,7 +28,9 @@ export default class ExpandedRow extends React.Component {
             openRowKeys,
             lockType,
             expandedIndexSimulate,
+            expandedRowWidthEquals2Table,
         } = this.context;
+        const { tableOuterWidth } = this.props;
         const expandedIndex = expandedIndexSimulate
             ? (rowIndex - 1) / 2
             : rowIndex;
@@ -87,13 +90,28 @@ export default class ExpandedRow extends React.Component {
                     </tr>
                 ) : null;
             }
+
+            const expandedRowStyle = {
+                position: 'sticky',
+                width: tableOuterWidth,
+                left: 0,
+            };
             // 暴露给用户的index
             content = expandedRowRender(record, expandedIndex);
             if (!React.isValidElement(content)) {
                 content = (
-                    <div className={`${prefix}table-cell-wrapper`}>
+                    <div
+                        className={`${prefix}table-cell-wrapper`}
+                        style={expandedRowWidthEquals2Table && expandedRowStyle}
+                    >
                         {content}
                     </div>
+                );
+            } else {
+                content = expandedRowWidthEquals2Table ? (
+                    <div style={expandedRowStyle}>{content}</div>
+                ) : (
+                    content
                 );
             }
 

@@ -84,11 +84,15 @@ function checkFiles() {
         'dist/next-noreset.min.css',
         'dist/next.min-1.css',
         'dist/next.min-2.css',
+        'dist/next.var.css',
+        'dist/next.var.min.css',
         'dist/next-with-locales.js',
         'dist/next-with-locales.min.js',
         'es/index.js',
         'lib/index.d.ts',
         'lib/index.js',
+        'lib/core2/',
+        'es/core2/',
         'types/index.d.ts',
         'index-noreset.scss',
         'index-with-locales.js',
@@ -114,10 +118,10 @@ function checkFiles() {
     const esLen = fs.readdirSync(esPath).length;
     const typesLen = fs.readdirSync(typesPath).length;
 
-    if (!(typesLen === srcLen - 7 && typesLen === libLen - 5 && typesLen === esLen - 3)) {
+    if (!(typesLen === srcLen - 7 && typesLen === libLen - 6 && typesLen === esLen - 4)) {
         // src : demo-helper / core / mixin-ui-state / validate / .editorconfig / .eslintrc / .stylelintrc
-        // lib : core / mixin-ui-state / validate / _components / index.d.ts
-        // es : core / mixin-ui-state / validate
+        // lib : core / core2/  mixin-ui-state / validate / _components / index.d.ts
+        // es : core / core2/ mixin-ui-state / validate
         // types: util.d.ts
         logger.error(`srcLen, libLen, esLen, typesLen: ${srcLen} ${libLen} ${esLen} ${typesLen}`);
         process.exit(0);
@@ -125,13 +129,13 @@ function checkFiles() {
 }
 
 function* pushMaster() {
-    yield runCommond('git checkout master');
+    // yield runCommond('git checkout master');
     yield runCommond('git add .');
     yield runCommond(`git commit -m 'chore(*): Release-${masterTag}'`);
     yield runCommond('git pull');
-    yield runCommond('git push origin master');
+    yield runCommond('git push');
 
-    logger.success('******** push to branch master success! ********\n');
+    logger.success(`******** add commit message Release-${masterTag} success! ********\n`);
 }
 
 function* pushPlatformDocsBranch() {
@@ -167,7 +171,7 @@ function* pushPlatformDocsBranch() {
         yield runCommond(`cd platform-docs;git tag ${buildTag}`);
         yield runCommond(`cd platform-docs;git push origin ${buildTag}`);
 
-        logger.success('******** push to branch platform-docs success! ********\n');
+        logger.success(`******** add commit message Release-${buildTag} success! ********\n`);
     } finally {
         yield fs.remove(docs);
         yield runCommond('git worktree prune');
