@@ -160,7 +160,7 @@
         border-bottom: $tree-line;
 
         #{$tree-prefix}-right-angle {
-            bottom: -$tree-line-width;
+            bottom: calc(0px - #{$tree-line-width});
         }
     }
 
@@ -187,9 +187,9 @@
     &-right-angle {
         position: absolute;
         bottom: calc((#{$tree-switch-size} - #{$tree-switch-border-width} * 2 - #{$tree-line-width}) / 2);
-        left: calc(0px - (#{$tree-child-indent-right} + #{$tree-line-width} + #{$tree-switch-border-width}));
+        left: $tree-child-right-angle-left;
         display: block;
-        width: calc(#{$tree-child-indent-right} + #{$tree-line-width});
+        width: $tree-child-right-angle-width;
         height: calc(#{$tree-node-title-height} + #{$tree-node-padding} - #{$tree-line-width} * 2);
         border-left: $tree-line;
         border-bottom: $tree-line;
