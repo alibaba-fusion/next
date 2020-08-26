@@ -399,7 +399,8 @@
 }
 
 @mixin icon-size($size, $marginLeft: false, $marginRight: false, $transform: false) {
-    $size: get-compiling-value($size);
+    $size-static: get-compiling-value($size);
+    $icon-s-static: get-compiling-value($icon-s);
     @if ($transform) {
         transform: $transform;
     }
@@ -418,13 +419,13 @@
     }
 
     // Chrome不支持小于12px的字体，故采用缩放的方式缩小字体
-    @if (type-of($size) == 'number') {
-        @if ($size < 12) {
+    @if (type-of($size-static) == 'number') {
+        @if ($size-static < 12) {
             @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
                 @if ($transform) {
-                    transform: scale($size / $icon-s) $transform;
+                    transform: scale($size-static / $icon-s-static) $transform;
                 } @else {
-                    transform: scale($size / $icon-s);
+                    transform: scale($size-static / $icon-s-static);
                 }
                 @if ($marginLeft) {
                     margin-left: calc(#{$marginLeft} - (#{$icon-s} - #{$size}) / 2);
@@ -447,7 +448,8 @@
 }
 
 @mixin icon-square-size($size, $marginTop: false, $marginRight: false, $marginBottom: false, $marginLeft: false, $transform: false) {
-    $size: get-compiling-value($size);
+    $size-static: get-compiling-value($size);
+    $icon-s-static: get-compiling-value($icon-s);
     @if ($transform) {
         transform: $transform;
     }
@@ -476,32 +478,32 @@
     }
 
     // Chrome不支持小于12px的字体，故采用缩放的方式缩小字体
-    @if ($size < 12) {
+    @if ($size-static < 12) {
         @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
             @if ($transform) {
-                transform: scale($size / $icon-s) $transform;
+                transform: scale($size-static / $icon-s-static) $transform;
             } @else {
-                transform: scale($size / $icon-s);
+                transform: scale($size-static / $icon-s-static);
             }
             @if ($marginTop) {
-                margin-top: $marginTop - ($icon-s - $size) / 2;
+                margin-top: calc(#{$marginTop} - (#{$icon-s} - #{$size}) / 2);
             } @else {
-                margin-top: -($icon-s - $size) / 2;
+                margin-top: calc(0px - (#{$icon-s} - #{$size}) / 2);
             }
             @if ($marginRight) {
-                margin-right: $marginRight - ($icon-s - $size) / 2;
+                margin-right: calc(#{$marginRight} - (#{$icon-s} - #{$size}) / 2);
             } @else {
-                margin-right: -($icon-s - $size) / 2;
+                margin-right: calc(0px - (#{$icon-s} - #{$size}) / 2);
             }
             @if ($marginBottom) {
-                margin-bottom: $marginBottom - ($icon-s - $size) / 2;
+                margin-bottom: calc(#{$marginBottom} - (#{$icon-s} - #{$size}) / 2);
             } @else {
-                margin-bottom: -($icon-s - $size) / 2;
+                margin-bottom: calc(0px - (#{$icon-s} - #{$size}) / 2);
             }
             @if ($marginLeft) {
-                margin-left: $marginLeft - ($icon-s - $size) / 2;
+                margin-left: calc(#{$marginLeft} - (#{$icon-s} - #{$size}) / 2);
             } @else {
-                margin-left: -($icon-s - $size) / 2;
+                margin-left: calc(0px - (#{$icon-s} - #{$size}) / 2);
             }
 
             width: $icon-s;
