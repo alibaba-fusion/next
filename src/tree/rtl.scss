@@ -10,7 +10,7 @@
         }
         &-right-angle {
             left: auto;
-            right: calc(0px - (#{$tree-child-indent-right} + #{$tree-line-width} + #{$tree-switch-border-width}));
+            right: $tree-child-right-angle-left;
             border-left: none;
             border-right: $tree-line;
         }
