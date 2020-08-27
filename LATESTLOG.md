@@ -1,10 +1,21 @@
 # Latest Log 
 
-# [1.21.0](https://github.com/alibaba-fusion/next/compare/1.20.28...1.21.0) (2020-08-25)
+## [1.21.1-beta](https://github.com/alibaba-fusion/next/compare/1.20.28...1.21.1-beta) (2020-08-27)
+
+
+### Bug Fixes
+
+* bugfix for icon in css variable ([d46fb9c](https://github.com/alibaba-fusion/next/commit/d46fb9c))
+* ensure all [@import](https://github.com/import) 'scss/variable.scss' is replaced ([0086fab](https://github.com/alibaba-fusion/next/commit/0086fab))
+* **List:** make loading state display: block ([514b18e](https://github.com/alibaba-fusion/next/commit/514b18e))
+* **Tree:** add calc to tree variable ([3723eda](https://github.com/alibaba-fusion/next/commit/3723eda))
+* **Typescript:** correct type of rating onChange ([a99a047](https://github.com/alibaba-fusion/next/commit/a99a047))
 
 
 ### Features
 
+* Css variable into Next ([#2038](https://github.com/alibaba-fusion/next/issues/2038)) ([bed22a2](https://github.com/alibaba-fusion/next/commit/bed22a2))
+* update theme-template ([8a865b2](https://github.com/alibaba-fusion/next/commit/8a865b2))
 * **Button:** add active ([51107d1](https://github.com/alibaba-fusion/next/commit/51107d1))
 * **Button:** update disabled configuration ([18140ab](https://github.com/alibaba-fusion/next/commit/18140ab))
 * **List:** add loading/emptyContent/dataSource/renderItem, close [#2050](https://github.com/alibaba-fusion/next/issues/2050) ([#2105](https://github.com/alibaba-fusion/next/issues/2105)) ([1fb62bf](https://github.com/alibaba-fusion/next/commit/1fb62bf))
