@@ -236,8 +236,15 @@ export function filterDataSource(dataSource, key, filter, addonKey) {
 function getKeyItemByValue(value, valueMap) {
     let item;
 
-    if (typeof value === 'object' && value.hasOwnProperty('value')) {
-        item = value;
+    if (typeof value === 'object') {
+        if (value.hasOwnProperty('value')) {
+            item = value;
+        } else {
+            item = {
+                value: '',
+                ...value,
+            };
+        }
     } else {
         item = valueMap[`${value}`] || {
             value,
