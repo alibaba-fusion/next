@@ -182,9 +182,18 @@ export default class Base extends React.Component {
             showDataSourceChildren: props.showDataSourceChildren,
         });
 
+        const mode = props.mode;
+
+        let value = 'value' in props ? props.value : props.defaultValue;
+
+        // 多选情况下做 value 数组订正
+        if (props.mode !== 'single' && value && !Array.isArray(value)) {
+            value = [value];
+        }
+
         this.state = {
             dataStore: this.dataStore,
-            value: 'value' in props ? props.value : props.defaultValue,
+            value,
             visible: 'visible' in props ? props.visible : props.defaultVisible,
             dataSource: this.setDataSource(this.props),
             width: 100,
