@@ -287,7 +287,8 @@ export default class Base extends React.Component {
      * @param {string} type trigger type
      */
     setVisible(visible, type) {
-        if (this.props.disabled || this.state.visible === visible) {
+        // disabled 状态下只允许关闭不允许打开
+        if ((this.props.disabled && visible) || this.state.visible === visible) {
             return;
         }
 
