@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -62,9 +62,7 @@ describe('TreeSelect', () => {
     let wrapper;
 
     beforeEach(() => {
-        const nodeListArr = [].slice.call(
-            document.querySelectorAll('.next-overlay-wrapper')
-        );
+        const nodeListArr = [].slice.call(document.querySelectorAll('.next-overlay-wrapper'));
 
         nodeListArr.forEach(node => {
             node.parentNode.removeChild(node);
@@ -119,13 +117,7 @@ describe('TreeSelect', () => {
     });
 
     it('should render by dataSource', () => {
-        wrapper = mount(
-            <TreeSelect
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-            />
-        );
+        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
         assertDataAndNodes(dataSource);
 
         const newDataSource = [...dataSource];
@@ -140,14 +132,7 @@ describe('TreeSelect', () => {
     });
 
     it('should render by defaultValue', () => {
-        wrapper = mount(
-            <TreeSelect
-                defaultValue="4"
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-            />
-        );
+        wrapper = mount(<TreeSelect defaultValue="4" defaultVisible treeDefaultExpandAll dataSource={dataSource} />);
         assertSelected('4', true);
 
         wrapper.setProps({ defaultValue: '6' });
@@ -178,13 +163,7 @@ describe('TreeSelect', () => {
 
     it('should render by defaultValue when enable treeCheckable', () => {
         wrapper = mount(
-            <TreeSelect
-                defaultValue="4"
-                defaultVisible
-                treeCheckable
-                treeDefaultExpandAll
-                dataSource={dataSource}
-            />
+            <TreeSelect defaultValue="4" defaultVisible treeCheckable treeDefaultExpandAll dataSource={dataSource} />
         );
         assertChecked('4', true);
 
@@ -225,12 +204,7 @@ describe('TreeSelect', () => {
         };
 
         wrapper = mount(
-            <TreeSelect
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-                onChange={handleChange}
-            />
+            <TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} onChange={handleChange} />
         );
         selectTreeNode(expectValue);
         wrapper.update();
@@ -239,8 +213,7 @@ describe('TreeSelect', () => {
         setTimeout(() => {
             assert(
                 !document.querySelector('.next-overlay-wrapper') ||
-                    document.querySelector('.next-overlay-wrapper').style
-                        .display === 'none'
+                    document.querySelector('.next-overlay-wrapper').style.display === 'none'
             );
             done();
         }, 1000);
@@ -269,8 +242,7 @@ describe('TreeSelect', () => {
         setTimeout(() => {
             assert(
                 !document.querySelector('.next-overlay-wrapper') ||
-                    document.querySelector('.next-overlay-wrapper').style
-                        .display === 'none'
+                    document.querySelector('.next-overlay-wrapper').style.display === 'none'
             );
             done();
         }, 1000);
@@ -304,8 +276,7 @@ describe('TreeSelect', () => {
         setTimeout(() => {
             assert(
                 document.querySelector('.next-overlay-wrapper') &&
-                    document.querySelector('.next-overlay-wrapper').style
-                        .display !== 'none'
+                    document.querySelector('.next-overlay-wrapper').style.display !== 'none'
             );
             done();
         }, 1000);
@@ -379,12 +350,7 @@ describe('TreeSelect', () => {
 
     it('should render child tag when set treeCheckedStrategy to all', () => {
         wrapper = mount(
-            <TreeSelect
-                treeCheckable
-                dataSource={dataSource}
-                defaultValue={['6']}
-                treeCheckedStrategy="child"
-            />
+            <TreeSelect treeCheckable dataSource={dataSource} defaultValue={['6']} treeCheckedStrategy="child" />
         );
         assert.deepEqual(getLabels(wrapper), ['裙子']);
     });
@@ -441,13 +407,7 @@ describe('TreeSelect', () => {
             },
         ];
 
-        wrapper = mount(
-            <TreeSelect
-                dataSource={dataSource}
-                isPreview
-                defaultValue={'2975'}
-            />
-        );
+        wrapper = mount(<TreeSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
         assert(wrapper.find('.next-form-preview').length > 0);
         assert(wrapper.find('.next-form-preview').text() === '西安市');
         wrapper.setProps({
@@ -501,9 +461,7 @@ describe('TreeSelect', () => {
                 onSearch={handleSearch}
             />
         );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '外套' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
         wrapper.update();
         assert(triggered);
     });
@@ -522,26 +480,37 @@ describe('TreeSelect', () => {
             </TreeSelect>
         );
 
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: 'element' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 'element' } });
         wrapper.update();
         const node = document.querySelector('.react-element');
         assert(hasClass(node, 'next-filtered'));
     });
 
+    // https://github.com/alibaba-fusion/next/issues/2029
+    it('fix bug after setState onSearch', () => {
+        function Demo() {
+            const [data, setData] = useState([{ label: 'element', key: '0', className: 'react-element' }]);
+
+            function handleChange() {
+                setData([{ label: 'react-element-new', key: '1', className: 'react-element-new' }]);
+            }
+            return (
+                <TreeSelect defaultVisible treeDefaultExpandAll showSearch dataSource={data} onSearch={handleChange} />
+            );
+        }
+
+        wrapper = mount(<Demo />);
+
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 'element' } });
+        wrapper.update();
+
+        assert(!hasClass(document.querySelector('.react-element'), 'next-filtered'));
+        assert(hasClass(document.querySelector('.react-element-new'), 'next-filtered'));
+    });
+
     it('should only show matched node and its parent node when search some keyword', () => {
-        wrapper = mount(
-            <TreeSelect
-                defaultVisible
-                treeDefaultExpandAll
-                dataSource={dataSource}
-                showSearch
-            />
-        );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '外套' } });
+        wrapper = mount(<TreeSelect defaultVisible treeDefaultExpandAll dataSource={dataSource} showSearch />);
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '外套' } });
         wrapper.update();
 
         const expectTreeData = [
@@ -564,9 +533,7 @@ describe('TreeSelect', () => {
         ];
         assertDataAndNodes(expectTreeData);
 
-        ['3', '5'].forEach(v =>
-            assert(findTreeNodeByValue(v).style.display === 'none')
-        );
+        ['3', '5'].forEach(v => assert(findTreeNodeByValue(v).style.display === 'none'));
     });
 
     it('should support search well when use virtual', () => {
@@ -591,9 +558,7 @@ describe('TreeSelect', () => {
                 }}
             />
         );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: 77 } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
         wrapper.update();
 
         const expectTreeData = [
@@ -612,28 +577,16 @@ describe('TreeSelect', () => {
     });
 
     it('should render not found if dataSource is empty or there is no search result', () => {
-        wrapper = mount(
-            <TreeSelect showSearch defaultVisible dataSource={[]} />
-        );
-        assert(
-            document
-                .querySelector('.next-tree-select-not-found')
-                .textContent.trim() === 'Not Found'
-        );
+        wrapper = mount(<TreeSelect showSearch defaultVisible dataSource={[]} />);
+        assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
 
         wrapper.setProps({ dataSource });
         wrapper.update();
         assert(document.querySelector('.next-tree'));
 
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '哈哈' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
         wrapper.update();
-        assert(
-            document
-                .querySelector('.next-tree-select-not-found')
-                .textContent.trim() === 'Not Found'
-        );
+        assert(document.querySelector('.next-tree-select-not-found').textContent.trim() === 'Not Found');
     });
 
     it('should support keyboard', done => {
@@ -650,14 +603,10 @@ describe('TreeSelect', () => {
 
         setTimeout(() => {
             assert(document.querySelector('.next-tree'));
-            wrapper
-                .find('.next-select-trigger-search input')
-                .simulate('keydown', { keyCode: KEYCODE.DOWN });
+            wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(
                 document.activeElement ===
-                    document.querySelectorAll(
-                        '.next-tree  > .next-tree-node > .next-tree-node-inner'
-                    )[0]
+                    document.querySelectorAll('.next-tree  > .next-tree-node > .next-tree-node-inner')[0]
             );
             done();
         }, 2000);
@@ -705,11 +654,7 @@ function assertDataAndNodes(dataSource) {
         item => item.textContent
     );
 
-    assert(
-        flattenData(dataSource).every(
-            (item, index) => item.label === labels[index]
-        )
-    );
+    assert(flattenData(dataSource).every((item, index) => item.label === labels[index]));
 }
 
 function findTreeNodeByValue(value) {
@@ -734,36 +679,22 @@ function createMap(data) {
 }
 
 function selectTreeNode(value) {
-    ReactTestUtils.Simulate.click(
-        findTreeNodeByValue(value).querySelector('.next-tree-node-label')
-    );
+    ReactTestUtils.Simulate.click(findTreeNodeByValue(value).querySelector('.next-tree-node-label'));
 }
 
 function checkTreeNode(value) {
-    const input = findTreeNodeByValue(value).querySelector(
-        '.next-checkbox input'
-    );
+    const input = findTreeNodeByValue(value).querySelector('.next-checkbox input');
     ReactTestUtils.Simulate.change(input, {
         target: { checked: input.checked },
     });
 }
 
 function assertSelected(value, selected) {
-    assert(
-        hasClass(
-            findTreeNodeByValue(value).querySelector('.next-tree-node-inner'),
-            'next-selected'
-        ) === selected
-    );
+    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-tree-node-inner'), 'next-selected') === selected);
 }
 
 function assertChecked(value, checked) {
-    assert(
-        hasClass(
-            findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'),
-            'checked'
-        ) === checked
-    );
+    assert(hasClass(findTreeNodeByValue(value).querySelector('.next-checkbox-wrapper'), 'checked') === checked);
 }
 
 function getLabels(wrapper) {
