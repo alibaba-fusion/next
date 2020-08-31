@@ -38,6 +38,10 @@ class Card extends Base {
          * 取消上传的回调
          */
         onCancel: PropTypes.func,
+        /**
+         * 自定义成功和失败的列表渲染方式
+         */
+        itemRender: PropTypes.func,
     };
 
     static defaultProps = {
@@ -115,6 +119,7 @@ class Card extends Base {
             onCancel,
             timeout,
             isPreview,
+            itemRender,
         } = this.props;
 
         const isExceedLimit = this.state.value.length >= limit;
@@ -139,6 +144,7 @@ class Card extends Base {
                 onRemove={onRemoveFunc}
                 onCancel={onCancel}
                 onPreview={onPreview}
+                itemRender={itemRender}
                 uploader={this.state.uploaderRef}
                 {...othersForList}
             >
