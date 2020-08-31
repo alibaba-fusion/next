@@ -9,6 +9,7 @@ import { func, obj, KEYCODE } from '../util';
 import zhCN from '../locale/zh-cn.js';
 import { previewFile } from './util';
 import transform from './transform';
+import Item from '../menu/view/item';
 
 class List extends Component {
     static propTypes = {
@@ -50,6 +51,7 @@ class List extends Component {
          * 自定义操作渲染
          */
         actionRender: PropTypes.func,
+        itemRender: PropTypes.func,
         /**
          * 透传给Progress props
          */
@@ -143,8 +145,7 @@ class List extends Component {
         const itemCls = classNames({
             [`${prefixCls}-list-item`]: true,
             [`${prefixCls}-list-item-${file.state}`]: file.state,
-            [`${prefixCls}-list-item-error-with-msg`]:
-                file.state === 'error' && file.errorMsg,
+            [`${prefixCls}-list-item-error-with-msg`]: file.state === 'error' && file.errorMsg,
         });
         const alt = file.name || file.alt;
         return { prefixCls, downloadURL, imgURL, size, itemCls, alt };
@@ -162,10 +163,7 @@ class List extends Component {
         // 在Mac上实验发现 取1024造成显示的大小和实际大小不一致
         // 因为单位制不同 见 https://superuser.com/questions/938234/size-of-files-in-windows-os-its-kb-or-kb
         const BIT_NUMBER_SYSTEM = 1024;
-        while (
-            fileSize >= BIT_NUMBER_SYSTEM &&
-            suffixIndex < SIZE_SUFFIX.length
-        ) {
+        while (fileSize >= BIT_NUMBER_SYSTEM && suffixIndex < SIZE_SUFFIX.length) {
             suffixIndex++;
             fileSize /= BIT_NUMBER_SYSTEM;
         }
@@ -176,20 +174,10 @@ class List extends Component {
         return `${fileSize}${suffix}`;
     }
     getTextList(file) {
-        const {
-            locale,
-            extraRender,
-            actionRender,
-            progressProps,
-            rtl,
-            fileNameRender,
-        } = this.props;
+        const { locale, extraRender, actionRender, progressProps, rtl, fileNameRender } = this.props;
 
         const { prefixCls, downloadURL, size, itemCls } = this.getInfo(file);
-        const onClick = () =>
-            file.state === 'uploading'
-                ? this.handleCancel(file)
-                : this.handleClose(file);
+        const onClick = () => (file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file));
         const onKeyDown = e => {
             if (e.keyCode === KEYCODE.ENTER) {
                 onClick();
@@ -206,16 +194,11 @@ class List extends Component {
                     >
                         <span>{fileNameRender(file)}</span>
                         {!!size && (
-                            <span
-                                className={`${prefixCls}-list-item-size`}
-                                dir={rtl ? 'rtl' : undefined}
-                            >
+                            <span className={`${prefixCls}-list-item-size`} dir={rtl ? 'rtl' : undefined}>
                                 ({size})
                             </span>
                         )}
-                        <span className={`${prefixCls}-extra`}>
-                            {extraRender(file)}
-                        </span>
+                        <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
                     </a>
                 </div>
                 {file.state === 'uploading' ? (
@@ -230,9 +213,7 @@ class List extends Component {
                     </div>
                 ) : null}
                 {file.state === 'error' && file.errorMsg ? (
-                    <div className={`${prefixCls}-list-item-error-msg`}>
-                        {file.errorMsg}
-                    </div>
+                    <div className={`${prefixCls}-list-item-error-msg`}>{file.errorMsg}</div>
                 ) : null}
                 <span className={`${prefixCls}-list-item-op`}>
                     {actionRender(file)}
@@ -253,39 +234,20 @@ class List extends Component {
     }
 
     getImageList(file) {
-        const {
-            extraRender,
-            actionRender,
-            progressProps,
-            rtl,
-            fileNameRender,
-        } = this.props;
+        const { extraRender, actionRender, progressProps, rtl, fileNameRender } = this.props;
 
-        const {
-            prefixCls,
-            downloadURL,
-            imgURL,
-            size,
-            itemCls,
-            alt,
-        } = this.getInfo(file);
+        const { prefixCls, downloadURL, imgURL, size, itemCls, alt } = this.getInfo(file);
 
         let img = null;
 
-        const onClick = () =>
-            file.state === 'uploading'
-                ? this.handleCancel(file)
-                : this.handleClose(file);
+        const onClick = () => (file.state === 'uploading' ? this.handleCancel(file) : this.handleClose(file));
         const onKeyDown = e => {
             if (e.keyCode === KEYCODE.ENTER) {
                 onClick();
             }
         };
 
-        if (
-            file.state === 'uploading' ||
-            (file.state === 'selected' && !imgURL)
-        ) {
+        if (file.state === 'uploading' || (file.state === 'selected' && !imgURL)) {
             img = <Icon type="picture" />;
         } else if (file.state === 'error') {
             img = <Icon type="cry" />;
@@ -325,42 +287,28 @@ class List extends Component {
                 >
                     <span>{fileNameRender(file)}</span>
                     {!!size && (
-                        <span
-                            className={`${prefixCls}-list-item-size`}
-                            dir={rtl ? 'rtl' : undefined}
-                        >
+                        <span className={`${prefixCls}-list-item-size`} dir={rtl ? 'rtl' : undefined}>
                             ({size})
                         </span>
                     )}
-                    <span className={`${prefixCls}-extra`}>
-                        {extraRender(file)}
-                    </span>
+                    <span className={`${prefixCls}-extra`}>{extraRender(file)}</span>
                 </a>
                 {file.state === 'uploading' ? (
                     <div className={`${prefixCls}-list-item-progress`}>
-                        <Progress
-                            size="medium"
-                            percent={file.percent}
-                            textRender={func.noop}
-                            {...progressProps}
-                        />
+                        <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps} />
                     </div>
                 ) : null}
                 {file.state === 'error' && file.errorMsg ? (
-                    <div className={`${prefixCls}-list-item-error-msg`}>
-                        {file.errorMsg}
-                    </div>
+                    <div className={`${prefixCls}-list-item-error-msg`}>{file.errorMsg}</div>
                 ) : null}
             </div>
         );
     }
 
     getPictureCardList(file, isPreview) {
-        const { locale, progressProps, fileNameRender } = this.props;
+        const { locale, progressProps, fileNameRender, itemRender } = this.props;
 
-        const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(
-            file
-        );
+        const { prefixCls, downloadURL, imgURL, itemCls, alt } = this.getInfo(file);
         const state = isPreview ? '' : file.state;
 
         let img = null;
@@ -398,80 +346,74 @@ class List extends Component {
                 onClose();
             }
         };
+
+        let item = null;
+        if (state === 'uploading') {
+            item = [
+                <div className={`${prefixCls}-list-item-thumbnail`} key="img">
+                    {img}
+                </div>,
+                <div className={`${prefixCls}-list-item-progress`} key="progress">
+                    <Progress size="medium" percent={file.percent} textRender={func.noop} {...progressProps} />
+                </div>,
+            ];
+        } else {
+            /* eslint-disable no-lonely-if */
+            if (typeof itemRender === 'function') {
+                item = itemRender(file);
+            } else {
+                item = [
+                    <div className={`${prefixCls}-list-item-thumbnail`} key="img">
+                        {img}
+                    </div>,
+                    <span
+                        key="tool"
+                        className={`${prefixCls}-tool ${!this.props.closable ? `${prefixCls}-noclose` : ''}`}
+                    >
+                        <a
+                            href={downloadURL}
+                            target="_blank"
+                            tabIndex={downloadURL ? '0' : '-1'}
+                            className={`${prefixCls}-tool-download-link`}
+                            style={{
+                                pointerEvents: downloadURL ? '' : 'none',
+                            }}
+                        >
+                            <Icon
+                                type={downloadURL ? 'download' : ''}
+                                aria-label={locale.card.download}
+                                className={`${prefixCls}-tool-download-icon`}
+                            />
+                        </a>
+
+                        {this.props.closable && !isPreview ? (
+                            <span className={`${prefixCls}-tool-close`}>
+                                <Icon
+                                    type="ashbin"
+                                    aria-label={locale.card.delete}
+                                    tabIndex="0"
+                                    role="button"
+                                    onClick={onClose}
+                                    onKeyDown={onKeyDownClose}
+                                />
+                            </span>
+                        ) : null}
+                    </span>,
+                ];
+            }
+        }
+
         return (
             <div className={itemCls} key={file.uid || file.name}>
-                <div className={`${prefixCls}-list-item-wrapper`}>
-                    <div className={`${prefixCls}-list-item-thumbnail`}>
-                        {img}
-                    </div>
-                    {state === 'uploading' ? (
-                        <div className={`${prefixCls}-list-item-progress`}>
-                            <Progress
-                                size="medium"
-                                percent={file.percent}
-                                textRender={func.noop}
-                                {...progressProps}
-                            />
-                        </div>
-                    ) : null}
-                    {state !== 'uploading' ? (
-                        <span
-                            className={`${prefixCls}-tool ${
-                                !this.props.closable
-                                    ? `${prefixCls}-noclose`
-                                    : ''
-                            }`}
-                        >
-                            <a
-                                href={downloadURL}
-                                target="_blank"
-                                tabIndex={downloadURL ? '0' : '-1'}
-                                className={`${prefixCls}-tool-download-link`}
-                                style={{
-                                    pointerEvents: downloadURL ? '' : 'none',
-                                }}
-                            >
-                                <Icon
-                                    type={downloadURL ? 'download' : ''}
-                                    aria-label={locale.card.download}
-                                    className={`${prefixCls}-tool-download-icon`}
-                                />
-                            </a>
+                <div className={`${prefixCls}-list-item-wrapper`}>{item}</div>
 
-                            {this.props.closable && !isPreview ? (
-                                <span className={`${prefixCls}-tool-close`}>
-                                    <Icon
-                                        type="ashbin"
-                                        aria-label={locale.card.delete}
-                                        tabIndex="0"
-                                        role="button"
-                                        onClick={onClose}
-                                        onKeyDown={onKeyDownClose}
-                                    />
-                                </span>
-                            ) : null}
-                        </span>
-                    ) : (
-                        ''
-                    )}
-                </div>
-
-                <span className={`${prefixCls}-list-item-name`}>
-                    {fileNameRender(file)}
-                </span>
+                <span className={`${prefixCls}-list-item-name`}>{fileNameRender(file)}</span>
             </div>
         );
     }
 
     render() {
-        const {
-            listType,
-            children,
-            prefix,
-            rtl,
-            className,
-            isPreview,
-        } = this.props;
+        const { listType, children, prefix, rtl, className, isPreview } = this.props;
         const prefixCls = `${prefix}upload`;
 
         let list = [];
@@ -519,8 +461,7 @@ class List extends Component {
         if (rtl && listType === 'card' && Array.isArray(list)) {
             list = list.reverse();
         }
-        const _listType =
-            isPreview && listType === 'image' ? 'card' : this.props.listType;
+        const _listType = isPreview && listType === 'image' ? 'card' : this.props.listType;
         const listclassNames = classNames(
             {
                 [`${prefixCls}-list`]: true,
@@ -531,11 +472,7 @@ class List extends Component {
 
         const others = obj.pickAttrsWith(this.props, 'data-');
         return (
-            <div
-                {...others}
-                className={listclassNames}
-                dir={rtl ? 'rtl' : undefined}
-            >
+            <div {...others} className={listclassNames} dir={rtl ? 'rtl' : undefined}>
                 {rtl ? children : list}
                 {rtl ? list : children}
             </div>
