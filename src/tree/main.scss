@@ -33,6 +33,15 @@
         padding: 0 $tree-node-title-padding;
         border-radius: $tree-node-title-border-radius;
         font-size: $tree-node-title-font-size;
+
+        .#{$css-prefix}icon {
+            font-size: calc(#{$tree-node-title-font-size} + 2px);
+            &::before {
+                font-size: $tree-node-title-font-size;
+                width: $tree-node-title-font-size;
+                margin-right: .5em;
+            }
+        }
     }
 
     &-node-input.#{$css-prefix}input {

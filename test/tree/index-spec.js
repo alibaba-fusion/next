@@ -6,6 +6,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
 import Button from '../../src/button/index';
+import Icon from '../../src/icon/index';
 import '../../src/tree/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -792,6 +793,15 @@ describe('Tree', () => {
     it('should support showLine', () => {
         ReactDOM.render(<Tree showLine dataSource={dataSource} />, mountNode);
         assert(hasClass(document.querySelector('.next-tree'), 'next-show-line'));
+    });
+
+    it('should support icon', () => {
+        dataSource[0].icon = 'cry';
+        dataSource[0].children[0].icon = <Icon type="smile" />;
+
+        ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} />, mountNode);
+
+        assert(document.querySelectorAll('.next-tree-node-label .next-icon').length === 2);
     });
 
     it('should support isLabelBlock and isNodeBlock', () => {
