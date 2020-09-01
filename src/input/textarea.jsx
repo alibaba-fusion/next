@@ -100,9 +100,7 @@ export default class TextArea extends Base {
         if (autoHeight) {
             if (typeof autoHeight === 'object') {
                 /* eslint-disable react/no-did-mount-set-state */
-                this.setState(
-                    this._getMinMaxHeight(autoHeight, this.state.value)
-                );
+                this.setState(this._getMinMaxHeight(autoHeight, this.state.value));
             } else {
                 this.setState({
                     height: this._getHeight(this.state.value),
@@ -139,6 +137,9 @@ export default class TextArea extends Base {
 
     _getHeight(value) {
         const node = ReactDOM.findDOMNode(this.helpRef);
+        if (!node) {
+            return 0;
+        }
         node.value = value;
 
         return node.scrollHeight;
@@ -150,9 +151,7 @@ export default class TextArea extends Base {
         }
         this.nextFrameActionId = onNextFrame(() => {
             const height = this._getHeight(value);
-            const maxHeight = this.state.maxHeight
-                ? this.state.maxHeight
-                : Infinity;
+            const maxHeight = this.state.maxHeight ? this.state.maxHeight : Infinity;
 
             this.setState({
                 height: this._getHeight(value),
@@ -239,10 +238,7 @@ export default class TextArea extends Base {
         const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心node节点：input
-        const others = obj.pickOthers(
-            Object.assign({}, dataProps, TextArea.propTypes),
-            this.props
-        );
+        const others = obj.pickOthers(Object.assign({}, dataProps, TextArea.propTypes), this.props);
 
         const textareStyle = {
             ...props.style,
@@ -258,9 +254,7 @@ export default class TextArea extends Base {
             [className]: !!className,
         });
 
-        const wrapStyle = autoHeight
-            ? { ...style, position: 'relative' }
-            : style;
+        const wrapStyle = autoHeight ? { ...style, position: 'relative' } : style;
 
         if (isPreview) {
             const { value } = props;
@@ -281,12 +275,7 @@ export default class TextArea extends Base {
         }
 
         return (
-            <span
-                className={cls}
-                style={wrapStyle}
-                dir={rtl ? 'rtl' : undefined}
-                {...dataProps}
-            >
+            <span className={cls} style={wrapStyle} dir={rtl ? 'rtl' : undefined} {...dataProps}>
                 <textarea
                     {...others}
                     {...props}
