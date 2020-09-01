@@ -47,7 +47,7 @@ $message-size-l-close-right: $s-4 !default;
 /// @namespace size/content
 $message-size-l-icon: $icon-l !default;
 // unconfigurable
-$message-size-l-title-content-padding: 0 $message-size-l-title-content-padding-right 0 $message-size-l-title-content-padding-left + $message-size-l-icon !default;
+$message-size-l-title-content-padding: 0 $message-size-l-title-content-padding-right 0 calc(#{$message-size-l-title-content-padding-left} + #{$message-size-l-icon}) !default;
 
 // Size:Medium
 // ----------------------------------------
