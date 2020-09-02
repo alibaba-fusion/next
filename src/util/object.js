@@ -294,3 +294,7 @@ export function isReactFragment(component) {
     }
     return component === React.Fragment;
 }
+
+export function clone(target) {
+    return JSON.parse(JSON.stringify(target));
+}

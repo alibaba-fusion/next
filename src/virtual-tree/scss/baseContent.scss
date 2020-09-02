@@ -1,0 +1,59 @@
+.cabala-get-row-base-container {
+    width: max-content !important;
+    min-width: 100%;
+
+    &.cabala-get-row-selected {
+        background: rgba(0, 0, 0, .2);
+    }
+
+    &:hover:not(.cabala-get-row-selected) {
+        background: rgba(0, 0, 0, .1);
+    }
+}
+
+.cabala-tree-base-content {
+    font-size: 14px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &.cabala-tree-base-content-disabled {
+        user-select: none;
+        cursor: not-allowed;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    @for $i from 0 through 20 {
+        &.cabala-tree-base-content-level-#{$i} {
+            margin-left: (20px * $i);
+
+            @if ($i == 0) {
+                .cabala-tree-base-content-icon {
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+
+    .cabala-tree-base-content-icon {
+        margin: 0px 4px;
+        display: inline-flex;
+        vertical-align: middle;
+        align-items: center;
+    }
+
+    .cabala-tree-base-item-content {
+        display: inline-flex;
+        width: auto;
+    }
+}
+
+.cabala-tree-clone-content {
+    .cabala-tree-base-item {
+        display: flex;
+        width: max-content;
+    }
+}
