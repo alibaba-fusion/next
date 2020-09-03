@@ -309,6 +309,7 @@ class TreeSelect extends Component {
             searchedKeys: [],
             retainedKeys: [],
             autoExpandParent: false,
+            autoExpandBySearch: false, // 是否由于搜索展开全部。
             ...flatDataSource(props),
         };
 
@@ -343,6 +344,9 @@ class TreeSelect extends Component {
             const { searchedKeys, retainedKeys } = getSearchKeys(state.searchedValue, _k2n, _p2n);
             st.searchedKeys = searchedKeys;
             st.retainedKeys = retainedKeys;
+            if (state.autoExpandBySearch) {
+                st.expandedKeys = searchedKeys;
+            }
         }
 
         return {
@@ -514,6 +518,7 @@ class TreeSelect extends Component {
             searchedKeys,
             retainedKeys,
             autoExpandParent: true,
+            autoExpandBySearch: true,
         });
 
         this.props.onSearch(searchedValue);
@@ -531,6 +536,7 @@ class TreeSelect extends Component {
         this.setState({
             expandedKeys,
             autoExpandParent: false,
+            autoExpandBySearch: false,
         });
     }
 

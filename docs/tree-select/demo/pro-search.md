@@ -50,8 +50,18 @@ class Demo extends React.Component {
         this.setState({
           treeData: [
             {
-              label: searchVal,
-              value: searchVal,
+              label: '浙江',
+              value: '浙江',
+              children: [
+                {
+                  label: '绍兴',
+                  value: '绍兴',
+                },
+                {
+                  label: searchVal,
+                  value: searchVal,
+                },
+              ],
             },
           ],
         });
@@ -67,6 +77,7 @@ class Demo extends React.Component {
     return (
       <TreeSelect
         treeDefaultExpandAll
+        treeCheckable
         showSearch
         onSearch={this.handleSearch}
         dataSource={this.state.treeData}
