@@ -42,9 +42,26 @@ export async function setMenuList(props, model, contextMenuModel) {
     list = obj.isPromise(list) ? await list : list;
     contextMenuModel.list = list;
 }
-export function getOnClose(model) {
+export function getOnOpen(model, ref) {
     return () => {
-        model.visible = false;
+        if (ref.current) {
+            const content = ref.current.getInstance().getContent();
+            const contentInstance = content ? content.getInstance() : undefined;
+            if (contentInstance) {
+                model.popupNodes = contentInstance.popupNodes;
+            }
+        }
+    };
+}
+export function getOnClose(model) {
+    return (type, e) => {
+        const clickedPopupMenu =
+            type === 'docClick' &&
+            Array.isArray(model.popupNodes) &&
+            model.popupNodes.some(node => node.contains(e.target));
+        if (!clickedPopupMenu) {
+            model.visible = false;
+        }
     };
 }
 export function getOnContextMenuItemClick(props, model) {

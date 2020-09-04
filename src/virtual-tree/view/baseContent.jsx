@@ -4,16 +4,14 @@ import ItemRenderer from './itemRenderer';
 import * as baseContentController from '../controller/baseContent';
 import useModel from '../model/baseContent';
 import TreeModel from '../context/tree';
-import { ITEM_TYPE } from '../constant';
 
 const BaseContent = props => {
     const model = useModel();
     const treeModel = React.useContext(TreeModel);
-    const { index, item, provided, snapshot, renderIcon, renderContent, getContainerStyle, containerClassName } = props;
+    const { index, item, provided, snapshot, renderIcon, renderContent, containerClassName } = props;
     const { order, isParent, name, expanded } = model;
     const icon = renderIcon(index, item);
     const content = renderContent(index, item);
-    const containerStyle = getContainerStyle(index, item, snapshot, ITEM_TYPE.BASE);
     baseContentController.useEffects(props, model);
     return (
         // eslint-disable-next-line
@@ -36,12 +34,7 @@ const BaseContent = props => {
             onContextMenu={baseContentController.getOnContextMenu(props, model, treeModel)}
             {...provided && provided.draggableProps}
             {...provided && provided.dragHandleProps}
-            style={{
-                height: `${props.rowHeight}px`,
-                lineHeight: `${props.rowHeight}px`,
-                ...(provided && provided.draggableProps.style),
-                ...containerStyle,
-            }}
+            style={baseContentController.getStyle(props, snapshot, index, item, provided)}
             data-index={index}
             data-is-dragging={snapshot.isDragging}
         >

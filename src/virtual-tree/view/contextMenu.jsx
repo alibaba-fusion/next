@@ -23,6 +23,7 @@ const ContextMenu = props => {
             offset={treeModel.offset}
             visible={treeModel.visible}
             className={classnames('cabala-tree-item-context-menu')}
+            onOpen={contextMenuController.getOnOpen(treeModel, ref)}
             onRequestClose={contextMenuController.getOnClose(treeModel)}
             animation={false}
             needAdjust={false}

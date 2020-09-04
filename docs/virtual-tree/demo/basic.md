@@ -15,90 +15,34 @@ A simple case.
 
 ---
 
-````css
-.virtual-box {
-    height: 200px;
-    width: 200px;
-    border: 1px solid #ddd;
-    overflow: auto;
-}
-````
-
 ````jsx
-import React from 'react';
 import { VirtualTree } from '@alifd/next';
 
 const data = [];
 
 for (let i = 0; i < 50; i++) {
-  data.push({
-    id: `root-${i}`,
-    name: `root-${i}`,
-    expanded: false,
-  });
-  for (let j = 0; j < 3; j++) {
-    data.push({
-      id: `folder-${i}-${j}`,
-      pId: `root-${i}`,
-      name: `folder-${j}`,
-      expanded: false,
-    });
-    for (let k = 0; k < 30; k++) {
-      data.push({
-        id: `file-${i}-${j}-${k}`,
-        pId: `folder-${i}-${j}`,
-        name: `file-${k}`,
-      });
+    data.push({ id: `root-${i}`, name: `Node Id ${i}`, expanded: false });
+    for (let j = 0; j < 3; j++) {
+        data.push({ id: `file-${i}-${j}`, pId: `root-${i}`, name: `File Id ${j}` });
     }
-  }
 }
 
-export default data;
+ReactDOM.render(
+    <div className="demo-box">
+        <div className="tree-block"><VirtualTree nextList={data} /></div>
+    </div>, mountNode);
+````
 
-class Demo extends React.Component {
-  state = {
-    data: [],
-  }
-  componentDidMount() {
-    this.getData();
-  }
-  getData = () => {
-    this.setState({ data: data.splice(0, 10000) });
-    setTimeout(() => {
-      if (data.length > 0) {
-        this.getData();
-      }
-    }, 10);
-  }
-  getContextMenuList = (node) => {
-    const { expanded } = node;
-    const isParent = expanded !== undefined;
-    return ([
-      {
-        key: 'edit',
-        type: 'subMenu',
-        title: 'Edit',
-        content: [
-          { key: 'createDocument', type: 'item', title: 'Create Document', disabled: !isParent },
-          { key: 'createNode', type: 'item', title: 'Create Node', disabled: !isParent },
-          { key: 'updateNode', type: 'item', title: 'Rename' },
-          { key: 'delete', type: 'item', title: 'Delete' },
-        ],
-      },
-      { key: 'focus', type: 'item', title: 'Focus' },
-    ]);
-  }
-  render() {
-    return (
-      <div className={'virtual-box'}>
-        <VirtualTree
-          nextList={this.state.data}
-          getContextMenuList={this.getContextMenuList}
-        />
-      </div>
-    );
-  }
+````css
+.demo-box {
+    width: 100%;
+    height: 400px;
+    border: 1px solid #ddd;
+    overflow: auto;
 }
-
-ReactDOM.render(<Demo />, mountNode);
+.tree-block {
+    float: left;
+    width: 250px;
+    height: 100%;
+}
 ````

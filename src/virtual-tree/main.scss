@@ -1,10 +1,8 @@
 @charset "UTF-8";
+
 @import "../core/index-noreset.scss";
-@import "./scss/mixin.scss";
-@import "./scss/variable.scss";
-@import '../menu/main.scss';
-@import '../overlay/main.scss';
-@import '../icon/main.scss';
-@import './scss/tree.scss';
-@import './scss/baseContent.scss';
-@import './scss/contextMenu.scss';
+@import 'scss/mixin';
+@import 'scss/variable';
+@import 'scss/tree';
+@import 'scss/baseContent';
+@import 'scss/contextMenu';

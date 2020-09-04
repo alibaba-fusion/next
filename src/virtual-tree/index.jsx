@@ -1,8 +1,10 @@
-import ConfigProvider from '../config-provider';
+import { Droppable } from 'cabala-react-beautiful-dnd';
 import App from './view/app';
 import Context from './view/context';
 import VirtualTree from './view/tree';
 
-export default ConfigProvider.config(App);
+App.Droppable = Droppable;
+App.Context = Context;
+App.Tree = VirtualTree;
 
-export { Context, VirtualTree };
+export default App;

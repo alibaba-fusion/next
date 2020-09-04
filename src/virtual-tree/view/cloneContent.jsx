@@ -4,22 +4,11 @@ import PropTypes from 'prop-types';
 import ItemRenderer from './itemRenderer';
 import * as cloneContentController from '../controller/cloneContent';
 import useModel from '../model/cloneContent';
-import { ITEM_TYPE } from '../constant';
 
 const CloneContent = props => {
-    const {
-        index,
-        item,
-        snapshot,
-        containerClassName,
-        draggableProps,
-        dragHandleProps,
-        rowHeight,
-        getContainerStyle,
-    } = props;
+    const { index, item, snapshot, containerClassName, draggableProps, dragHandleProps } = props;
     const model = useModel();
     cloneContentController.useEffects(props, model);
-    const containerStyle = getContainerStyle(index, item, snapshot, ITEM_TYPE.CLONE);
     return (
         <div
             className={classnames(
@@ -30,12 +19,7 @@ const CloneContent = props => {
             )}
             {...draggableProps}
             {...dragHandleProps}
-            style={{
-                height: rowHeight,
-                lineHeight: `${rowHeight}px`,
-                ...draggableProps.style,
-                ...containerStyle,
-            }}
+            style={cloneContentController.getStyle(props, snapshot, index, item, draggableProps.style)}
         >
             <ItemRenderer
                 name={model.name}

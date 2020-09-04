@@ -13,7 +13,7 @@ function switcher(list, order = 0) {
             disabled = false,
             title = '',
             icon = null,
-            mode = 'popup',
+            mode,
             align = 'r',
             display = true,
         } = item;

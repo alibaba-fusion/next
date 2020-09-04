@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { obj } from '../../util';
-import { EXPANDFOLDER_TIME_DELAY } from '../constant';
+import { EXPANDFOLDER_TIME_DELAY, ITEM_TYPE } from '../constant';
 
 export function useEffects(props, model) {
     const { snapshot, treeRef, item } = props;
@@ -144,4 +144,14 @@ export async function onSwitchFolder(props, model) {
         model.expanded = nextExpanded;
         treeRef.current.expandFolder(item.id, nextExpanded);
     }
+}
+export function getStyle(props, snapshot, index, item, provided) {
+    const { getContainerStyle } = props;
+    const userStyle = getContainerStyle(index, item, snapshot, ITEM_TYPE.BASE);
+    return {
+        height: `${props.rowHeight}px`,
+        lineHeight: `${props.rowHeight}px`,
+        ...userStyle,
+        ...(provided && provided.draggableProps.style),
+    };
 }
