@@ -13,6 +13,11 @@ const { pickOthers, isNil } = obj;
 const noop = () => {};
 const MENUITEM_OVERFLOWED_CLASSNAME = 'menuitem-overflowed';
 
+const flat = arr => {
+    if (Array.isArray(arr)) return [].concat(...arr.map(x => (Array.isArray(x) ? flat(x) : x)));
+    return arr;
+};
+
 const getIndicatorsItem = (items, isPlaceholder, prefix = '', renderMore) => {
     const moreCls = cx({
         [`${prefix}menu-more`]: true,
@@ -451,7 +456,7 @@ class Menu extends Component {
             hozInLine,
             lastVisibleIndex: prevState.lastVisibleIndex,
             prefix,
-            children,
+            children: flat(children),
             renderMore,
         });
 
