@@ -103,9 +103,7 @@ class Sup extends Component {
         const supNode = this.supEl;
 
         if (supNode && dom.hasClass(supNode, `${prefix}badge-count`)) {
-            let scrollNums = supNode.querySelectorAll(
-                `.${prefix}badge-scroll-number-only`
-            );
+            let scrollNums = supNode.querySelectorAll(`.${prefix}badge-scroll-number-only`);
 
             if (scrollNums.length) {
                 const height = window.getComputedStyle(supNode).height;
@@ -114,7 +112,7 @@ class Sup extends Component {
 
                 getDigitArray(count).forEach((digit, i) => {
                     const position = this.getPositionByDigit(digit, i, revert);
-                    const transformTo = -position * parseInt(height, 10);
+                    const transformTo = -position * parseFloat(height);
 
                     removeTransition =
                         removeTransition ||
@@ -169,15 +167,7 @@ class Sup extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            count,
-            showZero,
-            overflowCount,
-            dot,
-            style,
-            content,
-        } = this.props;
+        const { prefix, count, showZero, overflowCount, dot, style, content } = this.props;
 
         const supClasses = classNames(`${prefix}badge-scroll-number`, {
             [`${prefix}badge-count`]: !!count || (count === 0 && showZero),
@@ -189,14 +179,9 @@ class Sup extends Component {
         const show = dot || count > 0 || (count === 0 && showZero) || content;
 
         if (count > 0 || (count === 0 && showZero)) {
-            const realCount =
-                overflowCount > 0 && count > overflowCount
-                    ? `${overflowCount}+`
-                    : count;
+            const realCount = overflowCount > 0 && count > overflowCount ? `${overflowCount}+` : count;
 
-            children = isNaN(realCount)
-                ? realCount
-                : Sup.renderNumber(prefix, count);
+            children = isNaN(realCount) ? realCount : Sup.renderNumber(prefix, count);
         } else if (content) {
             children = content;
         }
@@ -207,11 +192,7 @@ class Sup extends Component {
             leave: 'zoomOut',
         };
 
-        const wrapper = support.animation ? (
-            <Animate animation={animation} />
-        ) : (
-            <span />
-        );
+        const wrapper = support.animation ? <Animate animation={animation} /> : <span />;
         const element = show ? (
             <sup ref={this.saveRef} className={supClasses} style={style}>
                 {children}
