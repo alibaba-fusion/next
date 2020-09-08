@@ -1,6 +1,7 @@
 /* eslint-disable max-depth */
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import cloneDeep from 'lodash.clonedeep';
 import { polyfill } from 'react-lifecycles-compat';
 import cx from 'classnames';
 import { func, dom, obj, KEYCODE } from '../../util';
@@ -162,6 +163,7 @@ const preHandleData = (dataSource, props) => {
             if (!('isLeaf' in item)) {
                 item.isLeaf = !((children && children.length) || props.loadData);
             }
+
             item.isLastChild = parent ? [].concat(parent.isLastChild || [], index === data.length - 1) : [];
 
             if (key === undefined || key === null) {
@@ -216,10 +218,24 @@ const getData = props => {
     const { dataSource, renderChildNodes, children = [], useVirtual } = props;
     let data = dataSource;
 
-    if ((renderChildNodes || useVirtual) && !(data && data.length)) {
+    if ((renderChildNodes || useVirtual) && !('dataSource' in props)) {
         data = convertChildren2Data(children);
     }
-    return data && data.length ? preHandleData(data, props) : preHandleChildren(props);
+
+    if (data) {
+        try {
+            return preHandleData(data, props);
+        } catch (err) {
+            // 对immutable数据进行深拷贝处理
+            if ((err.message || '').match('object is not extensible')) {
+                return preHandleData(cloneDeep(data), props);
+            } else {
+                throw err;
+            }
+        }
+    } else {
+        return preHandleChildren(props);
+    }
 };
 
 /**

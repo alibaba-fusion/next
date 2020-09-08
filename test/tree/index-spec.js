@@ -14,7 +14,7 @@ import '../../src/tree/style.js';
 const TreeNode = Tree.Node;
 const { hasClass, getOffset } = dom;
 
-const dataSource = [
+const dataSource = freeze([
     {
         label: '服装',
         key: '1',
@@ -53,7 +53,7 @@ const dataSource = [
             },
         ],
     },
-];
+]);
 const _k2n = createMap(dataSource);
 
 class ExpandDemo extends Component {
@@ -1047,7 +1047,15 @@ function createDataSource(level = 2, count = 3) {
         key: '0-0',
     });
     drill(dataSource, level, count);
-    return dataSource;
+    return freeze(dataSource);
+}
+
+function freeze(dataSource) {
+    return dataSource.map(item => {
+        const { children } = item;
+        children && freeze(children);
+        return Object.freeze(item);
+    });
 }
 
 function getAllLabels() {
