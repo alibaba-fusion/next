@@ -45,11 +45,23 @@ chore|ci|docs|feat|fix|perf|refactor|revert|style|test|temp；`scope` 必填，�
 ```
 git clone git@github.com:[your account]/next.git
 ```
-3. 进入刚克隆的目录，创建分支进行开发
+3. 进入刚克隆的目录，为了后续开发、同步主仓库，先设置 upstream
 ```
 cd next
+git remote add upstream git@github.com:alibaba-fusion/next.git
+```
+4. 开发时不要直接在fork库的master上进行开发，fork库的master应当仅用来同步主库的master。将主库主干代码同步至fork库：
+```
+git pull upstream master
+git push
+```
+5. 基于更新后的fork库master，创建分支进行开发
+```
 git checkout -b fix-issue-100
 ```
+
+其中4、5是每提交一个pr就需要执行的操作。
+
 
 在完成上述操作并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
 
@@ -69,9 +81,9 @@ git checkout -b fix-issue-100
 
 * `npm run pack` 打包文件，生成 dist 目录
 
-4. 开发完成后按照要求补充单元测试、运行单元测试、编写语义化的commit信息后，进入 https://github.com/[your account]/next 找到 `New pull request` 按钮提交PR
+1. 开发完成后按照要求补充单元测试、运行单元测试、编写语义化的commit信息后，进入 https://github.com/[your account]/next 找到 `New pull request` 按钮提交PR
 
-5. 维护者可能会有一些修改建议，开发者可能需要根据修改建议反复修改代码。最终由组件库维护者合并PR，在下次发布时本次修改的功能生效。
+2. 维护者可能会有一些修改建议，开发者可能需要根据修改建议反复修改代码。最终由组件库维护者合并PR，在下次发布时本次修改的功能生效。
 
 ## 开发注意事项
 

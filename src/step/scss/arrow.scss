@@ -25,7 +25,7 @@
         &:after {
             content: '';
             position: absolute;
-            right: -$step-arrow-item-border-width;
+            right: calc(0px - #{$step-arrow-item-border-width});
             top: 0;
             z-index: 1;
             border-top: $step-arrow-item-border-width solid transparent;

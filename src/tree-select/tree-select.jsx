@@ -73,6 +73,51 @@ const flatDataSource = props => {
     return { _k2n, _p2n, _v2n };
 };
 
+const isSearched = (label, searchedValue) => {
+    let labelString = '';
+
+    searchedValue = String(searchedValue);
+
+    const loop = arg => {
+        if (isValidElement(arg) && arg.props.children) {
+            Children.forEach(arg.props.children, loop);
+        } else {
+            labelString += arg;
+        }
+    };
+    loop(label);
+
+    if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
+        return true;
+    }
+
+    return false;
+};
+
+const getSearchKeys = (searchedValue, _k2n, _p2n) => {
+    const searchedKeys = [];
+    const retainedKeys = [];
+    Object.keys(_k2n).forEach(k => {
+        const { label, pos } = _k2n[k];
+
+        if (isSearched(label, searchedValue)) {
+            searchedKeys.push(k);
+            const posArr = pos.split('-');
+            posArr.forEach((n, i) => {
+                if (i > 0) {
+                    const p = posArr.slice(0, i + 1).join('-');
+                    const kk = _p2n[p].key;
+                    if (retainedKeys.indexOf(kk) === -1) {
+                        retainedKeys.push(kk);
+                    }
+                }
+            });
+        }
+    });
+
+    return { searchedKeys, retainedKeys };
+};
+
 /**
  * TreeSelect
  */
@@ -272,6 +317,8 @@ class TreeSelect extends Component {
             value: normalizeToArray(typeof value === 'undefined' ? defaultValue : value),
             searchedValue: '',
             expandedKeys: [],
+            searchedKeys: [],
+            retainedKeys: [],
             autoExpandParent: false,
             ...flatDataSource(props),
         };
@@ -291,7 +338,7 @@ class TreeSelect extends Component {
         ]);
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, state) {
         const st = {};
 
         if ('value' in props) {
@@ -301,9 +348,19 @@ class TreeSelect extends Component {
             st.visible = props.visible;
         }
 
+        const { _k2n, _p2n, _v2n } = flatDataSource(props);
+
+        if (props.showSearch && state.searchedValue) {
+            const { searchedKeys, retainedKeys } = getSearchKeys(state.searchedValue, _k2n, _p2n);
+            st.searchedKeys = searchedKeys;
+            st.retainedKeys = retainedKeys;
+        }
+
         return {
             ...st,
-            ...flatDataSource(props),
+            _k2n,
+            _p2n,
+            _v2n,
         };
     }
 
@@ -459,33 +516,16 @@ class TreeSelect extends Component {
     }
 
     handleSearch(searchedValue) {
-        const searchedKeys = [];
-        const retainedKeys = [];
-        Object.keys(this.state._k2n).forEach(k => {
-            const { label, pos } = this.state._k2n[k];
-
-            if (this.isSearched(label, searchedValue)) {
-                searchedKeys.push(k);
-                const posArr = pos.split('-');
-                posArr.forEach((n, i) => {
-                    if (i > 0) {
-                        const p = posArr.slice(0, i + 1).join('-');
-                        const kk = this.state._p2n[p].key;
-                        if (retainedKeys.indexOf(kk) === -1) {
-                            retainedKeys.push(kk);
-                        }
-                    }
-                });
-            }
-        });
+        const { _k2n, _p2n } = this.state;
+        const { searchedKeys, retainedKeys } = getSearchKeys(searchedValue, _k2n, _p2n);
 
         this.setState({
             searchedValue,
             expandedKeys: searchedKeys,
+            searchedKeys,
+            retainedKeys,
             autoExpandParent: true,
         });
-        this.searchedKeys = searchedKeys;
-        this.retainedKeys = retainedKeys;
 
         this.props.onSearch(searchedValue);
     }
@@ -564,12 +604,14 @@ class TreeSelect extends Component {
     }
 
     searchNodes(children) {
+        const { searchedKeys, retainedKeys } = this.state;
+
         const loop = children => {
             const retainedNodes = [];
             Children.forEach(children, child => {
-                if (this.searchedKeys.indexOf(child.key) > -1) {
+                if (searchedKeys.indexOf(child.key) > -1) {
                     retainedNodes.push(child);
-                } else if (this.retainedKeys.indexOf(child.key) > -1) {
+                } else if (retainedKeys.indexOf(child.key) > -1) {
                     const retainedNode = child.props.children
                         ? cloneElement(child, {}, loop(child.props.children))
                         : child;
@@ -589,6 +631,7 @@ class TreeSelect extends Component {
 
     createNodesByData(data, searching) {
         const { treeProps, useVirtual } = this.props;
+        const { searchedKeys, retainedKeys } = this.state;
 
         const virtual = 'useVirtual' in this.props ? useVirtual : treeProps && treeProps.useVirtual;
 
@@ -614,9 +657,9 @@ class TreeSelect extends Component {
                 };
 
                 if (searching) {
-                    if (this.searchedKeys.indexOf(key) > -1 || isParentMatched) {
+                    if (searchedKeys.indexOf(key) > -1 || isParentMatched) {
                         addNode(true);
-                    } else if (this.retainedKeys.indexOf(key) > -1) {
+                    } else if (retainedKeys.indexOf(key) > -1) {
                         addNode(false);
                     } else {
                         addNode(false, true);
@@ -656,7 +699,8 @@ class TreeSelect extends Component {
             notFoundContent,
             useVirtual,
         } = this.props;
-        const { value, searchedValue, expandedKeys, autoExpandParent } = this.state;
+
+        const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
 
         const treeProps = {
             multiple,
@@ -699,10 +743,10 @@ class TreeSelect extends Component {
             treeProps.autoExpandParent = autoExpandParent;
             treeProps.onExpand = this.handleExpand;
             treeProps.filterTreeNode = node => {
-                return this.searchedKeys.indexOf(node.props.eventKey) > -1;
+                return searchedKeys.indexOf(node.props.eventKey) > -1;
             };
 
-            if (this.searchedKeys.length) {
+            if (searchedKeys.length) {
                 newChildren = dataSource ? this.createNodesByData(dataSource, true) : this.searchNodes(children);
             } else {
                 notFound = true;

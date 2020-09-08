@@ -115,7 +115,7 @@
         );
 
         &:before {
-            right: -$step-arrow-item-border-width;
+            right: calc(0px - #{$step-arrow-item-border-width});
             left: auto;
             border: $step-arrow-item-border-width solid transparent;
             border-right-color: transparent;
