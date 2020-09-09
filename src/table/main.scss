@@ -405,6 +405,7 @@
 }
 
 #{$table-prefix}-sort {
+    cursor: pointer;
     position: relative;
     width: 16px;
     display: inline-block;
