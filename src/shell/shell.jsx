@@ -353,7 +353,7 @@ export default function ShellBase(props) {
 
             const navigationCls = classnames({
                 [`${prefix}aside-navigation`]: true,
-                [`${prefix}shell-collapse`]: layout.Navigation.props.collapse,
+                [`${prefix}shell-collapse`]: layout.Navigation && layout.Navigation.props.collapse,
             });
 
             if (hasToolDock) {
