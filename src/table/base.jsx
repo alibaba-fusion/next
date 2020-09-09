@@ -202,6 +202,13 @@ class Table extends React.Component {
          */
         expandedRowRender: PropTypes.func,
         /**
+         * 设置行是否可展开，设置 false 为不可展开
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @returns {Boolean} 是否可展开
+         */
+        rowExpandable: PropTypes.func,
+        /**
          * 额外渲染行的缩进
          */
         expandedRowIndent: PropTypes.array,
