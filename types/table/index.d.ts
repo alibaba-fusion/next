@@ -281,6 +281,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 额外渲染行的渲染函数
      */
     expandedRowRender?: (record: any, index: number) => React.ReactElement<any>;
+    rowExpandable?: (record: any) => boolean;
 
     /**
      * 额外渲染行的缩进
