@@ -575,6 +575,10 @@
     &#{$shell-prefix}-phone {
         .#{$css-prefix}aside-navigation {
             width: 100%;
+
+            &#{$shell-prefix}-collapse {
+                width: auto;
+            }
         }
         #{$shell-prefix}-header #{$shell-prefix}-navigation {
             display: none;
