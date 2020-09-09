@@ -520,6 +520,29 @@ describe('Table', () => {
         );
     });
 
+    it('should support rowExpandable', done => {
+        timeout(
+            {
+                dataSource: [
+                    { id: '1', name: 'test', expandable: false },
+                    { id: '2', name: 'test2', expandable: true, },
+                    { id: '3', name: 'test3', expandable: true },
+                ],
+                expandedRowRender: record => record.name,
+                rowExpandable: record => record.expandable
+            },
+            () => {
+                let expandedTotal = wrapper
+                    .find('.next-table-row');
+                let expandedIcon = wrapper
+                    .find('.next-table-prerow .next-table-cell-wrapper .next-icon');
+
+                assert(expandedTotal.length - expandedIcon.length === 1);
+                done();
+            }
+        );
+    });
+
     it('should support multiple header', done => {
         timeout(
             {
@@ -594,6 +617,9 @@ describe('Table', () => {
             onFilter,
             children: [<Table.Column dataIndex="id" filters={filters} />],
         });
+
+        assert(wrapper.find('next-table-filter-active').length === 0);
+
         wrapper.find('.next-icon-filter').simulate('click');
         wrapper
             .find('.next-btn')
@@ -612,6 +638,7 @@ describe('Table', () => {
             .simulate('click');
         assert.deepEqual(id, '3');
 
+        assert(wrapper.find('next-table-filter-active'));
         wrapper.setProps({
             filterParams: {
                 id: {
