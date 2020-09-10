@@ -49,6 +49,7 @@ class DatePanelHeader extends React.PureComponent {
         let monthButton = (
             <button
                 role="button"
+                type="button"
                 className={btnCls}
                 title={monthLabel}
                 onClick={() => changeMode('month', 'start')}
@@ -60,6 +61,7 @@ class DatePanelHeader extends React.PureComponent {
         let yearButton = (
             <button
                 role="button"
+                type="button"
                 className={btnCls}
                 title={yearLabel}
                 onClick={() => changeMode('year', 'start')}
@@ -70,22 +72,14 @@ class DatePanelHeader extends React.PureComponent {
 
         if (disableChangeMode) {
             const months = getMonths(momentLocale);
-            const years = getYears(
-                yearRange,
-                yearRangeOffset,
-                visibleMonth.year()
-            );
+            const years = getYears(yearRange, yearRangeOffset, visibleMonth.year());
 
             monthButton = (
                 <Dropdown
                     align="tc bc"
                     container={this.selectContainerHandler}
                     trigger={
-                        <button
-                            role="button"
-                            className={btnCls}
-                            title={monthLabel}
-                        >
+                        <button role="button" type="button" className={btnCls} title={monthLabel}>
                             {monthLabel}
                             <Icon type="arrow-down" />
                         </button>
@@ -106,11 +100,7 @@ class DatePanelHeader extends React.PureComponent {
                     align="tc bc"
                     container={this.selectContainerHandler}
                     trigger={
-                        <button
-                            role="button"
-                            className={btnCls}
-                            title={yearLabel}
-                        >
+                        <button role="button" type="button" className={btnCls} title={yearLabel}>
                             {yearLabel}
                             <Icon type="arrow-down" />
                         </button>
@@ -131,25 +121,21 @@ class DatePanelHeader extends React.PureComponent {
             <div className={`${prefix}calendar-panel-header`}>
                 <button
                     role="button"
+                    type="button"
                     title={locale.prevYear}
                     className={`${btnCls} ${btnCls}-prev-year`}
                     onClick={goPrevYear}
                 >
-                    <Icon
-                        type="arrow-double-left"
-                        className={`${prefix}calendar-symbol-prev-super`}
-                    />
+                    <Icon type="arrow-double-left" className={`${prefix}calendar-symbol-prev-super`} />
                 </button>
                 <button
                     role="button"
+                    type="button"
                     title={locale.prevMonth}
                     className={`${btnCls} ${btnCls}-prev-month`}
                     onClick={goPrevMonth}
                 >
-                    <Icon
-                        type="arrow-left"
-                        className={`${prefix}calendar-symbol-prev`}
-                    />
+                    <Icon type="arrow-left" className={`${prefix}calendar-symbol-prev`} />
                 </button>
                 <div className={`${prefix}calendar-panel-header-full`}>
                     {monthButton}
@@ -157,25 +143,21 @@ class DatePanelHeader extends React.PureComponent {
                 </div>
                 <button
                     role="button"
+                    type="button"
                     title={locale.nextMonth}
                     className={`${btnCls} ${btnCls}-next-month`}
                     onClick={goNextMonth}
                 >
-                    <Icon
-                        type="arrow-right"
-                        className={`${prefix}calendar-symbol-next`}
-                    />
+                    <Icon type="arrow-right" className={`${prefix}calendar-symbol-next`} />
                 </button>
                 <button
                     role="button"
+                    type="button"
                     title={locale.nextYear}
                     className={`${btnCls} ${btnCls}-next-year`}
                     onClick={goNextYear}
                 >
-                    <Icon
-                        type="arrow-double-right"
-                        className={`${prefix}calendar-symbol-next-super`}
-                    />
+                    <Icon type="arrow-double-right" className={`${prefix}calendar-symbol-next-super`} />
                 </button>
             </div>
         );
