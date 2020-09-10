@@ -152,7 +152,6 @@ $tree-child-indent-right: calc(#{$tree-child-indent} - #{$tree-line-width} - (#{
 $tree-child-right-angle-left: calc(0px - (#{$tree-child-indent} - (#{$tree-switch-size} - #{$tree-line-width}) / 2 + #{$tree-switch-border-width}));
 $tree-child-right-angle-width: calc(#{$tree-child-indent} - (#{$tree-switch-size} - #{$tree-line-width}) / 2);
 
-
 $tree-line: $tree-line-width $tree-line-style $tree-line-color;
 
 

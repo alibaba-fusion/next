@@ -78,6 +78,10 @@ class TreeNode extends Component {
         posinset: PropTypes.number,
         // 是否是最后一个子节点，数组类型，包含对祖先节点的判断
         isLastChild: PropTypes.arrayOf(PropTypes.bool),
+        /**
+         * 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />`
+         */
+        icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     };
 
     static defaultProps = {
@@ -374,7 +378,7 @@ class TreeNode extends Component {
     }
 
     renderLabel() {
-        const { prefix, root, disabled } = this.props;
+        const { prefix, root, disabled, icon } = this.props;
         const { isNodeBlock } = root.props;
         const { label } = this.state;
         const selectable = typeof this.props.selectable !== 'undefined' ? this.props.selectable : root.props.selectable;
@@ -389,9 +393,14 @@ class TreeNode extends Component {
             this.addCallbacks(labelProps);
         }
 
+        const iconEl = typeof icon === 'string' ? <Icon type={icon} /> : icon;
+
         return (
             <div className={`${prefix}tree-node-label-wrapper`} ref={this.saveLabelWrapperRef}>
-                <div {...labelProps}>{label}</div>
+                <div {...labelProps}>
+                    {iconEl}
+                    {label}
+                </div>
             </div>
         );
     }

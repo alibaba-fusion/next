@@ -17,10 +17,10 @@ Using the dataSource generate tree structure, in addition to setting the key, la
 ````jsx
 import { Tree } from '@alifd/next';
 
-const data = [{
+const data = Object.freeze([{
     label: 'Component',
     key: '1',
-    children: [{
+    children: [Object.freeze({
         label: 'Form',
         key: '2',
         selectable: false,
@@ -32,7 +32,7 @@ const data = [{
             key: '5',
             disabled: true
         }]
-    }, {
+    }), {
         label: 'Display',
         key: '3',
         children: [{
@@ -40,7 +40,7 @@ const data = [{
             key: '6'
         }]
     }]
-}];
+}]);
 
 class Demo extends React.Component {
     onSelect(keys, info) {

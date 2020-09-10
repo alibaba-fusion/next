@@ -71,6 +71,7 @@
 | disabled         | 是否禁止节点响应                        | Boolean   | false |
 | checkboxDisabled | 是否禁止勾选节点复选框                     | Boolean   | false |
 | isLeaf           | 是否是叶子节点，设置loadData时生效           | Boolean   | -     |
+| icon     | 自定义图标，可以使用 Icon 的 type，也可以使用组件 `<Icon type="icon type" />` | String/ReactNode | -   |
 
 <!-- api-extra-start -->
 
