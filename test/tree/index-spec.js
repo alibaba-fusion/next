@@ -20,12 +20,14 @@ const dataSource = freeze([
         label: '服装',
         key: '1',
         className: 'k-1',
+        icon: 'cry',
         children: [
             {
                 label: '男装',
                 key: '2',
                 className: 'k-2',
                 disabled: true,
+                icon: <Icon type="smile" />,
                 children: [
                     {
                         label: '外套',
@@ -796,8 +798,6 @@ describe('Tree', () => {
     });
 
     it('should support icon', () => {
-        dataSource[0].icon = 'cry';
-        dataSource[0].children[0].icon = <Icon type="smile" />;
 
         ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} />, mountNode);
 
