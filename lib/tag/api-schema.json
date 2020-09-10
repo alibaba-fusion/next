@@ -1,0 +1,264 @@
+{
+  "name": "Tag",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "标签类名前缀,提供给二次开发者用",
+      "defaultValue": {
+        "value": "next-",
+        "computed": false
+      },
+      "docblock": "标签类名前缀,提供给二次开发者用\n@default next-"
+    },
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'primary'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "标签的类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "标签的类型"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "标签的尺寸（large 尺寸为兼容表单场景 large = medium）",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "标签的尺寸（large 尺寸为兼容表单场景 large = medium）"
+    },
+    "color": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效",
+      "docblock": "标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效"
+    },
+    "animation": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启动效",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否开启动效"
+    },
+    "afterAppear": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "标签出现动画结束后执行的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "标签出现动画结束后执行的回调",
+      "params": [],
+      "returns": null
+    },
+    "onClick": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "点击回调",
+      "params": [],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Closeable",
+      "props": {
+        "closeArea": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'tag'",
+                "computed": false
+              },
+              {
+                "value": "'tail'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮",
+          "docblock": "closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮"
+        },
+        "onClose": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "点击关闭按钮时的回调",
+          "docblock": "点击关闭按钮时的回调\n@param {String} from 事件来源, tag: 标签体点击, tail: 关闭按钮点击\n@returns {Boolean} true则关闭, false阻止关闭",
+          "params": [
+            {
+              "name": "from",
+              "description": "事件来源, tag: 标签体点击, tail: 关闭按钮点击",
+              "type": {
+                "name": "String"
+              }
+            }
+          ],
+          "returns": {
+            "description": "true则关闭, false阻止关闭",
+            "type": {
+              "name": "Boolean"
+            }
+          }
+        },
+        "afterClose": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "标签关闭后执行的回调",
+          "docblock": "标签关闭后执行的回调",
+          "params": [],
+          "returns": null
+        },
+        "onClick": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "点击回调",
+          "docblock": "点击回调",
+          "params": [],
+          "returns": null
+        },
+        "size": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'small'",
+                "computed": false
+              },
+              {
+                "value": "'medium'",
+                "computed": false
+              },
+              {
+                "value": "'large'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "标签的尺寸（large 尺寸为兼容表单场景 large = medium）",
+          "docblock": "标签的尺寸（large 尺寸为兼容表单场景 large = medium）"
+        }
+      },
+      "methods": []
+    },
+    {
+      "name": "Selectable",
+      "props": {
+        "checked": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "标签是否被选中，受控用法\ntag checked or not, a controlled way",
+          "docblock": "标签是否被选中，受控用法\ntag checked or not, a controlled way"
+        },
+        "defaultChecked": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "标签是否默认被选中，非受控用法\ntag checked or not by default, a uncontrolled way",
+          "docblock": "标签是否默认被选中，非受控用法\ntag checked or not by default, a uncontrolled way"
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "选中状态变化时触发的事件",
+          "defaultValue": {
+            "value": "func.noop",
+            "computed": true
+          },
+          "docblock": "选中状态变化时触发的事件\n@param {Boolean} checked 是否选中\n@param {Event} e Dom 事件对象",
+          "params": [
+            {
+              "name": "checked",
+              "description": "是否选中",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            {
+              "name": "e",
+              "description": "Dom 事件对象",
+              "type": {
+                "name": "Event"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "标签是否被禁用",
+          "docblock": "标签是否被禁用"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
