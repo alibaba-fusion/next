@@ -50,40 +50,28 @@ class RangePanelHeader extends React.PureComponent {
         const btnCls = `${prefix}calendar-btn`;
 
         const months = getMonths(momentLocale);
-        const startYears = getYears(
-            yearRange,
-            yearRangeOffset,
-            startVisibleMonth.year()
-        );
-        const endYears = getYears(
-            yearRange,
-            yearRangeOffset,
-            endVisibleMonth.year()
-        );
+        const startYears = getYears(yearRange, yearRangeOffset, startVisibleMonth.year());
+        const endYears = getYears(yearRange, yearRangeOffset, endVisibleMonth.year());
 
         return (
             <div className={`${prefix}calendar-panel-header`}>
                 <button
                     role="button"
+                    type="button"
                     title={locale.prevYear}
                     className={`${btnCls} ${btnCls}-prev-year`}
                     onClick={goPrevYear}
                 >
-                    <Icon
-                        type="arrow-double-left"
-                        className={`${prefix}calendar-symbol-prev-super`}
-                    />
+                    <Icon type="arrow-double-left" className={`${prefix}calendar-symbol-prev-super`} />
                 </button>
                 <button
                     role="button"
+                    type="button"
                     title={locale.prevMonth}
                     className={`${btnCls} ${btnCls}-prev-month`}
                     onClick={goPrevMonth}
                 >
-                    <Icon
-                        type="arrow-left"
-                        className={`${prefix}calendar-symbol-prev`}
-                    />
+                    <Icon type="arrow-left" className={`${prefix}calendar-symbol-prev`} />
                 </button>
                 <div className={`${prefix}calendar-panel-header-left`}>
                     {disableChangeMode ? (
@@ -91,11 +79,7 @@ class RangePanelHeader extends React.PureComponent {
                             align="tc bc"
                             container={this.selectContainerHandler}
                             trigger={
-                                <button
-                                    role="button"
-                                    className={btnCls}
-                                    title={startMonthLabel}
-                                >
+                                <button role="button" type="button" className={btnCls} title={startMonthLabel}>
                                     {startMonthLabel}
                                     <Icon type="arrow-down" />
                                 </button>
@@ -106,17 +90,13 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={startVisibleMonth.month()}
                                 dataSource={months}
-                                onChange={value =>
-                                    this.changeVisibleMonth(
-                                        startVisibleMonth,
-                                        value
-                                    )
-                                }
+                                onChange={value => this.changeVisibleMonth(startVisibleMonth, value)}
                             />
                         </Dropdown>
                     ) : (
                         <button
                             role="button"
+                            type="button"
                             title={startMonthLabel}
                             className={btnCls}
                             onClick={() => changeMode('month', 'start')}
@@ -129,11 +109,7 @@ class RangePanelHeader extends React.PureComponent {
                             align="tc bc"
                             container={this.selectContainerHandler}
                             trigger={
-                                <button
-                                    role="button"
-                                    className={btnCls}
-                                    title={startYearLabel}
-                                >
+                                <button role="button" type="button" className={btnCls} title={startYearLabel}>
                                     {startYearLabel}
                                     <Icon type="arrow-down" />
                                 </button>
@@ -144,14 +120,13 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={startVisibleMonth.year()}
                                 dataSource={startYears}
-                                onChange={v =>
-                                    this.onYearChange(startVisibleMonth, v)
-                                }
+                                onChange={v => this.onYearChange(startVisibleMonth, v)}
                             />
                         </Dropdown>
                     ) : (
                         <button
                             role="button"
+                            type="button"
                             title={startYearLabel}
                             className={btnCls}
                             onClick={() => changeMode('year', 'start')}
@@ -166,11 +141,7 @@ class RangePanelHeader extends React.PureComponent {
                             align="tc bc"
                             container={this.selectContainerHandler}
                             trigger={
-                                <button
-                                    role="button"
-                                    className={btnCls}
-                                    title={endMonthLabel}
-                                >
+                                <button role="button" type="button" className={btnCls} title={endMonthLabel}>
                                     {endMonthLabel}
                                     <Icon type="arrow-down" />
                                 </button>
@@ -181,17 +152,13 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={endVisibleMonth.month()}
                                 dataSource={months}
-                                onChange={value =>
-                                    this.changeVisibleMonth(
-                                        endVisibleMonth,
-                                        value
-                                    )
-                                }
+                                onChange={value => this.changeVisibleMonth(endVisibleMonth, value)}
                             />
                         </Dropdown>
                     ) : (
                         <button
                             role="button"
+                            type="button"
                             title={endMonthLabel}
                             className={btnCls}
                             onClick={() => changeMode('month', 'end')}
@@ -204,11 +171,7 @@ class RangePanelHeader extends React.PureComponent {
                             align="tc bc"
                             container={this.selectContainerHandler}
                             trigger={
-                                <button
-                                    role="button"
-                                    className={btnCls}
-                                    title={endYearLabel}
-                                >
+                                <button role="button" type="button" className={btnCls} title={endYearLabel}>
                                     {endYearLabel}
                                     <Icon type="arrow-down" />
                                 </button>
@@ -219,14 +182,13 @@ class RangePanelHeader extends React.PureComponent {
                                 prefix={prefix}
                                 value={endVisibleMonth.year()}
                                 dataSource={endYears}
-                                onChange={v =>
-                                    this.onYearChange(endVisibleMonth, v)
-                                }
+                                onChange={v => this.onYearChange(endVisibleMonth, v)}
                             />
                         </Dropdown>
                     ) : (
                         <button
                             role="button"
+                            type="button"
                             title={endYearLabel}
                             className={btnCls}
                             onClick={() => changeMode('year', 'end')}
@@ -237,25 +199,21 @@ class RangePanelHeader extends React.PureComponent {
                 </div>
                 <button
                     role="button"
+                    type="button"
                     title={locale.nextMonth}
                     className={`${btnCls} ${btnCls}-next-month`}
                     onClick={goNextMonth}
                 >
-                    <Icon
-                        type="arrow-right"
-                        className={`${prefix}calendar-symbol-next`}
-                    />
+                    <Icon type="arrow-right" className={`${prefix}calendar-symbol-next`} />
                 </button>
                 <button
                     role="button"
+                    type="button"
                     title={locale.nextYear}
                     className={`${btnCls} ${btnCls}-next-year`}
                     onClick={goNextYear}
                 >
-                    <Icon
-                        type="arrow-double-right"
-                        className={`${prefix}calendar-symbol-next-super`}
-                    />
+                    <Icon type="arrow-double-right" className={`${prefix}calendar-symbol-next-super`} />
                 </button>
             </div>
         );
