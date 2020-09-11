@@ -21,6 +21,7 @@
 - initValue 类似组件的 defaultValue 只有在组件第一次render的时候才生效(ajax 异步调用设置 initValue 可能已经错过了第一次render)
 - autoUnmount 默认打开的，如果需要保留会 `自动卸载的组件` 数据请关闭此项
 - `parseName=true` 可以通过 `getValues` 获取到结构化的数据, 但是 getValue 还是必须传完整 key 值
+- `PureComponent` 中无法使用，除非你开启 `forceUpdate` 功能，但是会带来性能问题
 
 ### 基本使用
 
