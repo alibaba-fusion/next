@@ -156,10 +156,6 @@
                 opacity: 0;
                 filter: alpha(opacity=0); /* for IE 9 */
             }
-
-            #{$select-prefix}-trigger-search input {
-                color: $color-transparent;
-            }
         }
 
         #{$select-prefix}-values {
@@ -266,13 +262,16 @@
         }
     }
 
+
+    /* 在搜索框未激活时，将 input 的 color 置为透明 */
+    /* ISSUE: 在 IE11 中，<input readonly/> 仍然会显示光标, 要隐藏掉 */
+    /*
     &.#{$css-prefix}no-search {
-        /* 在搜索框未激活时，将 input 的 color 置为透明 */
-        /* ISSUE: 在 firefox 中，readonly 的 input 仍然会显示光标 */
         #{$select-prefix}-trigger-search input {
             color: $color-transparent;
         }
     }
+    */
 
     &-auto-complete {
         width: 160px;
@@ -460,10 +459,6 @@
                 #{$select-prefix}-values > em + #{$select-prefix}-trigger-search {
                     filter: alpha(opacity=0); /* for IE 9 */
                     font-size: 0;
-                }
-
-                #{$select-prefix}-trigger-search input {
-                    color: inherit;
                 }
             }
         }
