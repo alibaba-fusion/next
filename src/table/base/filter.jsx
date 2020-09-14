@@ -41,10 +41,7 @@ class Filter extends React.Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         const state = {};
-        if (
-            nextProps.hasOwnProperty('filterParams') &&
-            typeof nextProps.filterParams !== 'undefined'
-        ) {
+        if (nextProps.hasOwnProperty('filterParams') && typeof nextProps.filterParams !== 'undefined') {
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
@@ -138,16 +135,7 @@ class Filter extends React.Component {
     };
 
     render() {
-        const {
-            filters,
-            prefix,
-            locale,
-            className,
-            filterMode,
-            filterMenuProps,
-            filterProps,
-            rtl,
-        } = this.props;
+        const { filters, prefix, locale, className, filterMode, filterMenuProps, filterProps, rtl } = this.props;
 
         const { visible, selectedKeys } = this.state;
         const { subMenuSelectable, ...others } = filterMenuProps || {};
@@ -158,11 +146,7 @@ class Filter extends React.Component {
 
         function renderSubMenu(parent, children) {
             return (
-                <Menu.SubMenu
-                    label={parent.label}
-                    key={parent.value}
-                    selectable={subMenuSelectable}
-                >
+                <Menu.SubMenu label={parent.label} key={parent.value} selectable={subMenuSelectable}>
                     {renderMenuContent(children)}
                 </Menu.SubMenu>
             );
@@ -193,6 +177,10 @@ class Filter extends React.Component {
             [className]: className,
         });
 
+        const filterIconCls = classnames({
+            [`${prefix}table-filter-active`]: selectedKeys && selectedKeys.length > 0,
+        });
+
         return (
             <Dropdown
                 trigger={
@@ -203,7 +191,7 @@ class Filter extends React.Component {
                         tabIndex="0"
                         className={cls}
                     >
-                        <Icon type="filter" size="small" />
+                        <Icon type="filter" size="small" className={filterIconCls} />
                     </span>
                 }
                 triggerType="click"

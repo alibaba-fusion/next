@@ -30,24 +30,19 @@ const createChildren = (children, { spacing, direction, wrap, device }) => {
         if (!wrap) {
             // 不折行
             const isNone = [index === 0, index === array.length - 1];
-            const props =
-                direction === 'row'
-                    ? ['marginLeft', 'marginRight']
-                    : ['marginTop', 'marginBottom'];
+            const props = direction === 'row' ? ['marginLeft', 'marginRight'] : ['marginTop', 'marginBottom'];
 
-            ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'].forEach(
-                prop => {
-                    if (prop in spacingMargin && props.indexOf(prop) === -1) {
-                        spacingMargin[prop] = 0;
-                    }
-
-                    props.forEach((key, i) => {
-                        if (key in spacingMargin && isNone[i]) {
-                            spacingMargin[key] = 0;
-                        }
-                    });
+            ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'].forEach(prop => {
+                if (prop in spacingMargin && props.indexOf(prop) === -1) {
+                    spacingMargin[prop] = 0;
                 }
-            );
+
+                props.forEach((key, i) => {
+                    if (key in spacingMargin && isNone[i]) {
+                        spacingMargin[key] = 0;
+                    }
+                });
+            });
         }
 
         if (React.isValidElement(child)) {
@@ -55,10 +50,7 @@ const createChildren = (children, { spacing, direction, wrap, device }) => {
             const childPropsMargin = getMargin(propsMargin);
             let gridProps = {};
 
-            if (
-                typeof child.type === 'function' &&
-                child.type._typeMark === 'responsive_grid'
-            ) {
+            if (typeof child.type === 'function' && child.type._typeMark === 'responsive_grid') {
                 gridProps = createStyle({ display: 'grid', ...child.props });
             }
 
@@ -117,16 +109,14 @@ class Box extends Component {
          * 布局属性
          */
         flex: PropTypes.oneOfType([
-            PropTypes.arrayOf(
-                PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-            ),
+            PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
             PropTypes.number,
         ]),
         /**
          * 布局方向，默认为 column ，一个元素占据一整行
          * @default column
          */
-        direction: PropTypes.oneOf(['row', 'column']),
+        direction: PropTypes.oneOf(['row', 'column', 'row-reverse']),
         /**
          * 是否折行 支持IE11+
          */
@@ -134,44 +124,23 @@ class Box extends Component {
         /**
          * 元素之间的间距 [bottom&top, right&left]
          */
-        spacing: PropTypes.oneOfType([
-            PropTypes.arrayOf(PropTypes.number),
-            PropTypes.number,
-        ]),
+        spacing: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
         /**
          * 设置 margin [bottom&top, right&left]
          */
-        margin: PropTypes.oneOfType([
-            PropTypes.arrayOf(PropTypes.number),
-            PropTypes.number,
-        ]),
+        margin: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
         /**
          * 设置 padding [bottom&top, right&left]
          */
-        padding: PropTypes.oneOfType([
-            PropTypes.arrayOf(PropTypes.number),
-            PropTypes.number,
-        ]),
+        padding: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
         /**
          * 沿着主轴方向，子元素们的排布关系 （兼容性同 justify-content ）
          */
-        justify: PropTypes.oneOf([
-            'flex-start',
-            'center',
-            'flex-end',
-            'space-between',
-            'space-around',
-        ]),
+        justify: PropTypes.oneOf(['flex-start', 'center', 'flex-end', 'space-between', 'space-around']),
         /**
          * 垂直主轴方向，子元素们的排布关系 （兼容性同 align-items ）
          */
-        align: PropTypes.oneOf([
-            'flex-start',
-            'center',
-            'flex-end',
-            'baseline',
-            'stretch',
-        ]),
+        align: PropTypes.oneOf(['flex-start', 'center', 'flex-end', 'baseline', 'stretch']),
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         /**
          * 定制标签名， 例如section等

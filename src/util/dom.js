@@ -5,10 +5,7 @@ import { each } from './object';
  * 是否能使用 DOM 方法
  * @type {Boolean}
  */
-export const hasDOM =
-    typeof window !== 'undefined' &&
-    !!window.document &&
-    !!document.createElement;
+export const hasDOM = typeof window !== 'undefined' && !!window.document && !!document.createElement;
 
 /**
  * 节点是否包含指定 className
@@ -96,9 +93,7 @@ export function toggleClass(node, className) {
         return node.classList.toggle(className);
     } else {
         const flag = hasClass(node, className);
-        flag
-            ? removeClass(node, className, true)
-            : addClass(node, className, true);
+        flag ? removeClass(node, className, true) : addClass(node, className, true);
 
         return !flag;
     }
@@ -145,9 +140,7 @@ export const matches = (function() {
  * @return {Object}
  */
 function _getComputedStyle(node) {
-    return node && node.nodeType === 1
-        ? window.getComputedStyle(node, null)
-        : {};
+    return node && node.nodeType === 1 ? window.getComputedStyle(node, null) : {};
 }
 
 const PIXEL_PATTERN = /margin|padding|width|height|max|min|offset|size|top/i;
@@ -201,17 +194,9 @@ export function getStyle(node, name) {
         return style;
     }
 
-    name = floatMap[name]
-        ? 'cssFloat' in node.style
-            ? 'cssFloat'
-            : 'styleFloat'
-        : name;
+    name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
 
-    return _getStyleValue(
-        node,
-        name,
-        style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]
-    );
+    return _getStyleValue(node, name, style.getPropertyValue(hyphenate(name)) || node.style[camelcase(name)]);
 }
 
 /**
@@ -239,11 +224,7 @@ export function setStyle(node, name, value) {
     if (typeof name === 'object' && arguments.length === 2) {
         each(name, (val, key) => setStyle(node, key, val));
     } else {
-        name = floatMap[name]
-            ? 'cssFloat' in node.style
-                ? 'cssFloat'
-                : 'styleFloat'
-            : name;
+        name = floatMap[name] ? ('cssFloat' in node.style ? 'cssFloat' : 'styleFloat') : name;
         if (typeof value === 'number' && PIXEL_PATTERN.test(name)) {
             value = `${value}px`;
         }
@@ -257,6 +238,7 @@ export function setStyle(node, name, value) {
  */
 export function scrollbar() {
     const scrollDiv = document.createElement('div');
+    scrollDiv.className += 'just-to-get-scrollbar-size';
 
     setStyle(scrollDiv, {
         position: 'absolute',

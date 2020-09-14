@@ -38,6 +38,7 @@ $badge-size-count-font: $font-size-caption !default;
 // unconfigurable
 $badge-size-count-width: auto !default;
 $badge-size-count-height: $badge-size-count-config-height !default;
+$badge-size-count-min-width: $badge-size-count-height !default;
 $badge-size-count-padding: 0 $badge-size-count-padding-lr 0 $badge-size-count-padding-lr !default;
 $badge-size-count-lineheight: $badge-size-count-config-height !default;
 $badge-size-dot-min-width: $badge-size-dot-width !default;

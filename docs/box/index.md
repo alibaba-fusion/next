@@ -20,7 +20,7 @@
 | 参数        | 说明                                                                                                                              | 类型                             | 默认值    |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------ |
 | flex      | 布局属性                                                                                                                            | Array&lt;Number/String>/Number | -      |
-| direction | 布局方向，默认为 column ，一个元素占据一整行<br><br>**可选值**:<br>'row', 'column'                                                                   | Enum                           | column |
+| direction | 布局方向，默认为 column ，一个元素占据一整行<br><br>**可选值**:<br>'row', 'column', 'row-reverse'                                                    | Enum                           | column |
 | wrap      | 是否折行 支持IE11+                                                                                                                    | Boolean                        | false  |
 | spacing   | 元素之间的间距 [bottom&top, right&left]                                                                                                | Array&lt;Number>/Number        | -      |
 | margin    | 设置 margin [bottom&top, right&left]                                                                                              | Array&lt;Number>/Number        | -      |

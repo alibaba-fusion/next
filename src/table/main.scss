@@ -405,6 +405,7 @@
 }
 
 #{$table-prefix}-sort {
+    cursor: pointer;
     position: relative;
     width: 16px;
     display: inline-block;
@@ -438,9 +439,14 @@
     &:focus {
         outline: 0;
     }
+
     .#{$css-prefix}icon {
         @include icon-size($table-filter-icon-size);
         color: $table-sort-color;
+    }
+
+    #{$table-prefix}-filter-active {
+        color: $color-brand1-6;
     }
 }
 

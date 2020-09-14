@@ -1,6 +1,7 @@
 import React, { Component, Children, isValidElement, cloneElement } from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
+import cloneDeep from 'lodash.clonedeep';
 import classNames from 'classnames';
 import Select from '../select';
 import Tree from '../tree';
@@ -37,7 +38,17 @@ const flatDataSource = props => {
                 _k2n[key] = _p2n[pos] = _v2n[value] = newItem;
                 return newItem;
             });
-        loop(props.dataSource);
+
+        try {
+            loop(props.dataSource);
+        } catch (err) {
+            // 对immutable数据进行深拷贝处理
+            if ((err.message || '').match('object is not extensible')) {
+                loop(cloneDeep(props.dataSource));
+            } else {
+                throw err;
+            }
+        }
     } else if ('children' in props) {
         const loop = (children, prefix = '0') =>
             Children.map(children, (node, index) => {
@@ -571,6 +582,27 @@ class TreeSelect extends Component {
         }
     }
 
+    isSearched(label, searchedValue) {
+        let labelString = '';
+
+        searchedValue = String(searchedValue);
+
+        const loop = arg => {
+            if (isValidElement(arg) && arg.props.children) {
+                Children.forEach(arg.props.children, loop);
+            } else {
+                labelString += arg;
+            }
+        };
+        loop(label);
+
+        if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
+            return true;
+        }
+
+        return false;
+    }
+
     searchNodes(children) {
         const { searchedKeys, retainedKeys } = this.state;
 
@@ -667,6 +699,7 @@ class TreeSelect extends Component {
             notFoundContent,
             useVirtual,
         } = this.props;
+
         const { value, searchedValue, expandedKeys, autoExpandParent, searchedKeys } = this.state;
 
         const treeProps = {
