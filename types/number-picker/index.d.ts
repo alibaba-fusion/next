@@ -125,9 +125,10 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
      * 减少按钮的props
      */
     downBtnProps?: ButtonProps;
+    /**
+     * 控制按钮一直显示、隐藏
+     */
+    alwaysShowTrigger?: boolean;
 }
 
-export default class NumberPicker extends React.Component<
-    NumberPickerProps,
-    any
-> {}
+export default class NumberPicker extends React.Component<NumberPickerProps, any> {}
