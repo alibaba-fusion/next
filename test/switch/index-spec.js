@@ -135,4 +135,26 @@ describe('Switch', () => {
 
         assert(wrapper.getDOMNode().innerText === 'preview switch');
     });
+    it('should use checkedChildren if exist when on & preview', () => {
+        const wrapper = mount(
+            <Switch
+                isPreview
+                checked
+                checkedChildren="✓"
+            />
+        );
+
+        assert(wrapper.getDOMNode().innerText === '✓');
+    });
+    it('should use unCheckedChildren if exist when off & preview', () => {
+        const wrapper = mount(
+            <Switch
+                isPreview
+                checked={false}
+                unCheckedChildren="✕"
+            />
+        );
+
+        assert(wrapper.getDOMNode().innerText === '✕');
+    });
 });
