@@ -49,9 +49,9 @@ describe('Select', () => {
     });
 
     it('should support showDataSourceChildren to ignore dataSource children', () => {
-        const dataSource = [{ 
-            label: 'xxx', 
-            value: 'yyy', 
+        const dataSource = [{
+            label: 'xxx',
+            value: 'yyy',
             children: [{ label: 'xxx1', value: 'yyy1' },{ label: 'xxx2', value: 'yyy2' }]
         },{
             label: 'label1',
@@ -324,6 +324,18 @@ describe('Select', () => {
         wrapper.update();
 
         assert(wrapper.find('span.next-select em').text() === '123label');
+    });
+
+    it('should renderPreview', () => {
+        const wrapper = mount(
+            <Select
+                isPreview
+                dataSource={[]}
+                value={null}
+            />
+        );
+
+        assert(wrapper.getDOMNode().innerText === '');
     });
 
     it('should support children null', () => {

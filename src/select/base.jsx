@@ -641,7 +641,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={fillProps ? valueDS[fillProps] : valueDS.label}
+                                value={fillProps ? valueDS[fillProps] : valueDS && valueDS.label}
                             />
                         );
                     } else {
