@@ -641,7 +641,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={fillProps ? valueDS[fillProps] : valueDS && valueDS.label}
+                                value={valueDS ? (fillProps ? valueDS[fillProps] : valueDS.label) : ''}
                             />
                         );
                     } else {
@@ -650,7 +650,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={valueDS.map(i => i.label).join(', ')}
+                                value={(valueDS || []).map(i => i.label).join(', ')}
                             />
                         );
                     }
