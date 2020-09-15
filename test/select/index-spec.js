@@ -338,6 +338,19 @@ describe('Select', () => {
         assert(wrapper.getDOMNode().innerText === '');
     });
 
+    it('should renderPreview mode="tag"', () => {
+        const wrapper = mount(
+            <Select
+                isPreview
+                mode="tag"
+                dataSource={[]}
+                value={null}
+            />
+        );
+
+        assert(wrapper.getDOMNode().innerText === '');
+    });
+
     it('should support children null', () => {
         wrapper.setProps({
             children: [
