@@ -577,7 +577,7 @@
             width: 100%;
 
             &#{$shell-prefix}-collapse {
-                width: auto;
+                width: 0;
             }
         }
         #{$shell-prefix}-header #{$shell-prefix}-navigation {

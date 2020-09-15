@@ -18,6 +18,11 @@ Shell 是整个应用的基础结构框架。它体现应用的结构形式和�
 - Shell 应该根据业务实际诉求的复杂度进行配置；
 - 同一个应用统一使用一套 Shell 框架，避免出现混乱问题；
 
+### 常见问题
+
+-   Q: 有侧边栏的情况下，如何去掉左上角的side bar 展开、收起触发器？<br/>
+      A: 设置 `<Shell.Navigation trigger={null}/>`
+
 ````jsx
 <Shell>
     <Shell.Branding />
