@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { PopupProps } from '../overlay';
+import { CloseMode } from '../dialog';
 import CommonProps from '../util';
 
 interface HTMLAttributesWeak extends PopupProps {
@@ -11,14 +12,22 @@ interface HTMLAttributesWeak extends PopupProps {
 
 export interface DrawerProps extends HTMLAttributesWeak, CommonProps {
     /**
-     * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+     * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
      * **mask** 表示点击遮罩区域可以关闭对话框
      * **esc** 表示按下 esc 键可以关闭对话框
      * 如 'mask' 或 'esc,mask'
      * 如果设置为 true，则以上关闭方式全部生效
      * 如果设置为 false，则以上关闭方式全部失效
      */
-    closeable?: string | boolean;
+    closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
+    /**
+     * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+     * **close** 表示点击关闭按钮可以关闭对话框
+     * **mask** 表示点击遮罩区域可以关闭对话框
+     * **esc** 表示按下 esc 键可以关闭对话框
+     * 如 'close' 或 ['close','esc','mask'], []
+     */
+    closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
 
     /**
      * 标题

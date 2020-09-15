@@ -33,7 +33,7 @@ export default class Drawer extends Component {
          */
         height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
-         * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+         * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
          * **close** 表示点击关闭按钮可以关闭对话框
          * **mask** 表示点击遮罩区域可以关闭对话框
          * **esc** 表示按下 esc 键可以关闭对话框
@@ -42,6 +42,17 @@ export default class Drawer extends Component {
          * 如果设置为 false，则以上关闭方式全部失效
          */
         closeable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        /**
+         * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+         * **close** 表示点击关闭按钮可以关闭对话框
+         * **mask** 表示点击遮罩区域可以关闭对话框
+         * **esc** 表示按下 esc 键可以关闭对话框
+         * 如 'close' 或 ['close','esc','mask'], []
+         */
+        closeMode: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.oneOf(['close', 'mask', 'esc'])),
+            PropTypes.oneOf(['close', 'mask', 'esc']),
+        ]),
         /**
          * 对话框关闭时触发的回调函数
          * @param {String} trigger 关闭触发行为的描述字符串
@@ -232,6 +243,7 @@ export default class Drawer extends Component {
             onClose,
             onVisibleChange,
             closeable,
+            closeMode,
             rtl,
             popupContainer,
             ...others
@@ -243,7 +255,10 @@ export default class Drawer extends Component {
             ...style,
         };
 
-        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(closeable);
+        const newCloseable =
+            'closeMode' in this.props ? (Array.isArray(closeMode) ? closeMode.join(',') : closeMode) : closeable;
+
+        const { canCloseByCloseClick, ...closeConfig } = this.mapcloseableToConfig(newCloseable);
 
         const newPopupProps = {
             prefix,
