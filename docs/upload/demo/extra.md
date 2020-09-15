@@ -44,6 +44,22 @@ const actionRender = (file) => {
     </span>);
 };
 
+const itemRender = (file) => {
+    console.log(file);
+    return (<div>
+        <img src={file.url} style={{maxWidth: '100%', maxHeight: '100%'}} />
+        <div style={{
+            position: 'absolute', top:0, right:0, bottom:0, left:0, background: 'rgba(0,0,0,.5)', color: '#ddd',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        }}>
+            <Icon type="eye" style={{marginTop: 40}}/>
+            <span style={{marginTop: 10}}>06:08</span>
+        </div>
+    </div>);
+}
+
 const data = [{
     name: 'IMG.png',
     state: 'done',
@@ -71,6 +87,13 @@ ReactDOM.render((<div>
         actionRender={actionRender}
         defaultValue={data}
     />
+    <br/>
+     <Upload.Card
+        listType="card"
+        accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+        defaultValue={data}
+        itemRender={itemRender}
+    />,
     </div>
 ), mountNode);
 
