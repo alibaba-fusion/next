@@ -72,7 +72,7 @@ class Demo extends React.Component {
                 <Dialog title="Welcome to Alibaba.com"
                     visible={visible}
                     isFullScreen={isFullScreen}
-                    closeable={closeOnMaskClick ? 'close,esc,mask' : 'close,esc'}
+                    closeable={closeOnMaskClick ? ['close', 'esc', 'mask'] : ['close', 'esc']}
                     onOk={this.onClose}
                     onCancel={this.onClose}
                     onClose={this.onClose}>
