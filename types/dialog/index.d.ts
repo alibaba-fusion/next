@@ -5,6 +5,11 @@ import CommonProps from '../util';
 import { ButtonProps } from '../button';
 import { OverlayProps } from '../overlay';
 
+export interface CloseMode {
+    'close': string,
+    'mask': string,
+    'esc': string
+}
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     title?: any;
 }
@@ -65,16 +70,23 @@ export interface DialogProps extends HTMLAttributesWeak, CommonProps {
     cancelProps?: ButtonProps;
 
     /**
-     * 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
+     * [废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：
      * **close** 表示点击关闭按钮可以关闭对话框
      * **mask** 表示点击遮罩区域可以关闭对话框
      * **esc** 表示按下 esc 键可以关闭对话框
      * 如 'close' 或 'close,esc,mask'
      * 如果设置为 true，则以上关闭方式全部生效
      * 如果设置为 false，则以上关闭方式全部失效
-     * 2.x 要改成支持string[]
      */
     closeable?: 'close' | 'mask' | 'esc' | boolean | 'close,mask' | 'close,esc' | 'mask,esc';
+    /**
+     * [推荐]控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：
+     * **close** 表示点击关闭按钮可以关闭对话框
+     * **mask** 表示点击遮罩区域可以关闭对话框
+     * **esc** 表示按下 esc 键可以关闭对话框
+     * 如 'close' 或 ['close','esc','mask'], []
+     */
+    closeMode?: CloseMode[] | 'close' | 'mask' | 'esc';
 
     /**
      * 对话框关闭时触发的回调函数
