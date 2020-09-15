@@ -150,7 +150,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 表格的总长度，可以这么用：设置表格总长度 、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
      */
-    tableWidth: number;
+    tableWidth?: number;
     /**
      * 表格展示的数据源
      */
