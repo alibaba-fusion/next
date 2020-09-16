@@ -82,7 +82,7 @@ const addIndicators = ({ children, lastVisibleIndex, prefix, renderMore }) => {
     return arr;
 };
 
-const getNewChildren = ({ children, root, lastVisibleIndex, hozInLine, prefix, renderMore }) => {
+const getNewChildren = ({ children, root, mode, lastVisibleIndex, hozInLine, prefix, renderMore }) => {
     const k2n = {};
     const p2n = {};
 
@@ -144,7 +144,7 @@ const getNewChildren = ({ children, root, lastVisibleIndex, hozInLine, prefix, r
                 // parent know children's inlineLevel
                 // if parent's mode is popup, then children's inlineLevel must be 1;
                 // else inlineLevel should add 1
-                const childLevel = (child.props.mode || props.root.props.mode) === 'popup' ? 1 : inlineLevel + 1;
+                const childLevel = (child.props.mode || mode) === 'popup' ? 1 : inlineLevel + 1;
 
                 switch (child.type.menuChildType) {
                     case 'submenu':
@@ -400,10 +400,7 @@ class Menu extends Component {
 
         const { newChildren, _k2n, _p2n } = getNewChildren({
             root: this,
-            hozInLine,
-            prefix,
-            children,
-            renderMore,
+            ...this.props,
         });
 
         const tabbableKey = focusable ? getFirstAvaliablelChildKey('0', _p2n) : undefined;
@@ -445,14 +442,10 @@ class Menu extends Component {
             state.focusedKey = nextProps.focusedKey;
         }
 
-        const { hozInLine, children, prefix, renderMore } = nextProps;
         const { newChildren, _k2n, _p2n } = getNewChildren({
             root: prevState.root,
-            hozInLine,
             lastVisibleIndex: prevState.lastVisibleIndex,
-            prefix,
-            children,
-            renderMore,
+            ...nextProps,
         });
 
         state.newChildren = newChildren;
@@ -592,15 +585,11 @@ class Menu extends Component {
 
     getUpdateChildren = () => {
         const { root, lastVisibleIndex } = this.state;
-        const { prefix, hozInLine, children, renderMore } = this.props;
 
         return getNewChildren({
             root,
-            hozInLine,
             lastVisibleIndex,
-            prefix,
-            children,
-            renderMore,
+            ...this.props,
         });
     };
 

@@ -411,6 +411,42 @@ describe('Nav', () => {
         }, 500);
     });
 
+    it('should support iconOnly switch state', (done) => {
+        wrapper = render(
+            <Nav iconOnly={false} mode={"inline"} style={{ width: '200px' }} openKeys="icononly-switch-subnav">
+                <SubNav icon="account" label="SubNav label" key="icononly-switch-subnav">
+                    <Item icon="account" key="1" id="icononly-switch-item-1">
+                        First
+                    </Item>
+                    <Item icon="account" key="2" id="icononly-switch-item-2">
+                        Second
+                    </Item>
+                </SubNav>
+            </Nav>
+        );
+
+        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '40px');
+        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '40px');
+
+        wrapper.setProps({
+            iconOnly: true,
+            mode: "popup"
+        });
+
+        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '');
+        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '');
+
+        wrapper.setProps({
+            iconOnly: false,
+            mode: "inline"
+        });
+
+        assert(document.getElementById("icononly-switch-item-1").style.paddingLeft === '40px');
+        assert(document.getElementById("icononly-switch-item-2").style.paddingLeft === '40px');
+
+        done();
+    });
+
     it('should support fixed', (done) => {
         wrapper = render(
             <Nav
@@ -439,13 +475,10 @@ describe('Nav', () => {
             </Nav>
         );
 
-        setTimeout(() => {
-            const popup = document.querySelectorAll('.fixed-popup-sub3');
-            assert(popup[0].style.top === '80px');
-            assert(popup[0].style.left === '68px');
+        const popup = document.querySelectorAll('.fixed-popup-sub3');
+        assert(popup[0].style.top === '80px');
+        assert(popup[0].style.left === '68px');
 
-            done();
-        }, 500);
-
+        done();
     });
 });
