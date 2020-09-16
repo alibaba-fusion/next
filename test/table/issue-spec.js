@@ -80,6 +80,32 @@ describe('Issue', () => {
         });
     });
 
+    it('should support rowSelection without children and columns', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        class App extends React.Component {
+
+            render() {
+                return (
+                    <Table
+                        dataSource={dataSource}
+                        rowSelection={{ onChange: console.log }}
+                        expandedRowRender={(record) => record.title}
+                    >
+                    </Table>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+            setTimeout(() => {
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
     it('should fix onChange reRender bug', done => {
         const container = document.createElement('div');
         document.body.appendChild(container);
