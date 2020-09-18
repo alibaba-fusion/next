@@ -3,4 +3,5 @@ import NextIcon from '../index';
 
 const Icon = MeetIcon ? MeetIcon : NextIcon;
 
+Icon.createFromIconfontCN = NextIcon.createFromIconfontCN;
 export default Icon;
