@@ -64,12 +64,13 @@
 
 > 继承 Upload 的 API，除非特别说明
 
-| 参数        | 说明                                           | 类型       | 默认值       |
-| --------- | -------------------------------------------- | -------- | --------- |
-| onPreview | 点击图片回调<br><br>**签名**:<br>Function() => void  | Function | func.noop |
-| onChange  | 改变时候的回调<br><br>**签名**:<br>Function() => void | Function | func.noop |
-| onRemove  | 点击移除的回调<br><br>**签名**:<br>Function() => void | Function | -         |
-| onCancel  | 取消上传的回调<br><br>**签名**:<br>Function() => void | Function | -         |
+| 参数         | 说明                                                   | 类型       | 默认值       |
+| ---------- | ---------------------------------------------------- | -------- | --------- |
+| onPreview  | 点击图片回调<br><br>**签名**:<br>Function() => void          | Function | func.noop |
+| onChange   | 改变时候的回调<br><br>**签名**:<br>Function() => void         | Function | func.noop |
+| onRemove   | 点击移除的回调<br><br>**签名**:<br>Function() => void         | Function | -         |
+| onCancel   | 取消上传的回调<br><br>**签名**:<br>Function() => void         | Function | -         |
+| itemRender | 自定义成功和失败的列表渲染方式<br><br>**签名**:<br>Function() => void | Function | -         |
 
 ### Upload.Dragger
 

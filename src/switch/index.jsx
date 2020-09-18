@@ -190,7 +190,7 @@ class Switch extends React.Component {
 
             return (
                 <p className={previewCls} {...others}>
-                    {locale[status]}
+                    {children || locale[status]}
                 </p>
             );
         }

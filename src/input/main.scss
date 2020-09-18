@@ -24,6 +24,7 @@
         /* remove autoFill yellow background */
         &:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 1000px $input-bg-color inset;
+            border-radius: $form-element-large-corner; // 一般大中小 radius 都相等，目前还没见过不一样的
         }
     }
 
