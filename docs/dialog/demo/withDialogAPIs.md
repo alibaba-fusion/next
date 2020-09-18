@@ -5,7 +5,7 @@
 使用 `Dialog.withDialogAPIs` 来命令式调起 Dialog。相比直接使用 `Dialog.alert/confirm/show`，它能避免Dialog应用的fusion config(比如prefix、文案)不符合预期的问题。
 
 :::lang=en-us
-# Basic
+# withDialogAPIs
 
 - order: 9
 
