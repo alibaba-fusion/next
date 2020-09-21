@@ -245,7 +245,7 @@ export default function expanded(BaseComponent, stickyLock) {
                 if (useColumns) {
                     this.addExpandCtrl(columns);
                 } else {
-                    children = this.normalizeChildren(children);
+                    children = this.normalizeChildren(children || []);
                 }
             }
 

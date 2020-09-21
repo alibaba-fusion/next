@@ -15,26 +15,20 @@ import { env } from '../util';
 
 const { ieVersion } = env;
 
-const ORDER_LIST = [
-    fixed,
-    lock,
-    selection,
-    expanded,
-    tree,
-    virtual,
-    list,
-    sticky,
-];
+const ORDER_LIST = [fixed, lock, selection, expanded, tree, virtual, list, sticky];
 const Table = ORDER_LIST.reduce((ret, current) => {
     ret = current(ret);
     return ret;
 }, Base);
 
+lock._typeMark = 'lock';
+expanded._typeMark = 'expanded';
+
 const StickyLockTable = ORDER_LIST.reduce((ret, current) => {
     const newLock = !ieVersion;
-    if (current.name === 'lock') {
+    if (current._typeMark === 'lock') {
         ret = newLock ? stickyLock(ret) : lock(ret);
-    } else if (current.name === 'expanded') {
+    } else if (current._typeMark === 'expanded') {
         ret = newLock ? expanded(ret, true) : expanded(ret);
     } else {
         ret = current(ret);

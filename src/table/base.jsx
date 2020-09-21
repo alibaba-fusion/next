@@ -420,7 +420,7 @@ class Table extends React.Component {
         return columns;
     }
 
-    fetchInfoFromBinaryChildren(children) {
+    fetchInfoFromBinaryChildren(children = []) {
         let hasGroupHeader = false;
         const flatChildren = [],
             groupChildren = [],

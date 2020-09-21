@@ -58,7 +58,7 @@ const itemRender = (file) => {
             <span style={{marginTop: 10}}>06:08</span>
         </div>
     </div>);
-}
+};
 
 const data = [{
     name: 'IMG.png',
