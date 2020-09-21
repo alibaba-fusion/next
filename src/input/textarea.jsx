@@ -118,6 +118,9 @@ export default class TextArea extends Base {
 
     _getMinMaxHeight({ minRows, maxRows }, value) {
         const node = ReactDOM.findDOMNode(this.helpRef);
+        if (!node) {
+            return {};
+        }
         node.setAttribute('rows', minRows);
         const minHeight = node.clientHeight;
 
