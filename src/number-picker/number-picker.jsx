@@ -9,6 +9,9 @@ import Input from '../input';
 import ConfigProvider from '../config-provider';
 import { func, obj } from '../util';
 
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
+const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -Math.pow(2, 53) + 1;
+
 /** NumberPicker */
 class NumberPicker extends React.Component {
     static propTypes = {
@@ -142,8 +145,8 @@ class NumberPicker extends React.Component {
 
     static defaultProps = {
         prefix: 'next-',
-        max: Number.MAX_SAFE_INTEGER,
-        min: Number.MIN_SAFE_INTEGER,
+        max: MAX_SAFE_INTEGER,
+        min: MIN_SAFE_INTEGER,
         type: 'normal',
         size: 'medium',
         step: 1,
@@ -587,8 +590,8 @@ class NumberPicker extends React.Component {
                 <Input
                     {...others}
                     hasClear={false}
-                    aria-valuemax={max !== Number.MAX_SAFE_INTEGER ? max : undefined}
-                    aria-valuemin={min !== Number.MIN_SAFE_INTEGER ? min : undefined}
+                    aria-valuemax={max !== MAX_SAFE_INTEGER ? max : MAX_SAFE_INTEGER}
+                    aria-valuemin={min !== MIN_SAFE_INTEGER ? min : MIN_SAFE_INTEGER}
                     state={state === 'error' ? 'error' : null}
                     onBlur={this.onBlur.bind(this)}
                     onFocus={this.onFocus.bind(this)}
