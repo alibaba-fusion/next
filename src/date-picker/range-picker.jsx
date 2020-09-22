@@ -509,12 +509,9 @@ class RangePicker extends Component {
     };
 
     onSelectStartTime = value => {
+        this.setState({ inputing: false, activeDateInput: 'startTime' });
         if (!('value' in this.props)) {
-            this.setState({
-                startValue: value,
-                inputing: false,
-                activeDateInput: 'startTime',
-            });
+            this.setState({ startValue: value });
         }
         if (value.valueOf() !== this.state.startValue.valueOf()) {
             this.onValueChange([value, this.state.endValue]);
@@ -522,12 +519,9 @@ class RangePicker extends Component {
     };
 
     onSelectEndTime = value => {
+        this.setState({ inputing: false, activeDateInput: 'endTime' });
         if (!('value' in this.props)) {
-            this.setState({
-                endValue: value,
-                inputing: false,
-                activeDateInput: 'endTime',
-            });
+            this.setState({ endValue: value });
         }
         if (value.valueOf() !== this.state.endValue.valueOf()) {
             this.onValueChange([this.state.startValue, value]);
