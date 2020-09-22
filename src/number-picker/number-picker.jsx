@@ -490,6 +490,7 @@ class NumberPicker extends React.Component {
             [`${prefix}${size}`]: true,
             [`${prefixCls}-show-trigger`]: alwaysShowTrigger,
             [`${prefixCls}-no-trigger`]: !hasTrigger,
+            [`${prefix}disabled`]: disabled,
             [className]: className,
         });
 

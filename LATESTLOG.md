@@ -1,20 +1,23 @@
 # Latest Log 
 
-# [1.21.0](https://github.com/alibaba-fusion/next/compare/1.20.28...1.21.0) (2020-08-25)
+## [1.21.5](https://github.com/alibaba-fusion/next/compare/1.21.4...1.21.5) (2020-09-17)
+
+
+### Bug Fixes
+
+* **Input:** ui of radius in password autofill. fix [#2017](https://github.com/alibaba-fusion/next/issues/2017) ([916f0f0](https://github.com/alibaba-fusion/next/commit/916f0f0))
+* **Menu:** avoid errors while dom removed and js executing ([4c4732a](https://github.com/alibaba-fusion/next/commit/4c4732a))
+* **Nav:** correct inline level when iconOnly switched, close [#1676](https://github.com/alibaba-fusion/next/issues/1676) ([b4a03d7](https://github.com/alibaba-fusion/next/commit/b4a03d7))
+* **Select:** crash when mode=tag&&value={null}&&isPreview, close [#2175](https://github.com/alibaba-fusion/next/issues/2175) ([bcc4ddc](https://github.com/alibaba-fusion/next/commit/bcc4ddc))
+* **Select:** enhance defaultValue type. fix [#2071](https://github.com/alibaba-fusion/next/issues/2071) ([d6a090d](https://github.com/alibaba-fusion/next/commit/d6a090d))
+* **Select:** only close popup in disabled state. fix [#2072](https://github.com/alibaba-fusion/next/issues/2072) ([f9f7456](https://github.com/alibaba-fusion/next/commit/f9f7456))
+* **Table:** add _typeMark to func, close [#2180](https://github.com/alibaba-fusion/next/issues/2180) ([0176594](https://github.com/alibaba-fusion/next/commit/0176594))
+* **Table:** rowselection bug when children is null, close [#2179](https://github.com/alibaba-fusion/next/issues/2179) ([b756075](https://github.com/alibaba-fusion/next/commit/b756075))
+* **Upload:** startUpload in card mode. fix [#2097](https://github.com/alibaba-fusion/next/issues/2097) ([6032d0d](https://github.com/alibaba-fusion/next/commit/6032d0d))
 
 
 ### Features
 
-* **Button:** add active ([51107d1](https://github.com/alibaba-fusion/next/commit/51107d1))
-* **Button:** update disabled configuration ([18140ab](https://github.com/alibaba-fusion/next/commit/18140ab))
-* **List:** add loading/emptyContent/dataSource/renderItem, close [#2050](https://github.com/alibaba-fusion/next/issues/2050) ([#2105](https://github.com/alibaba-fusion/next/issues/2105)) ([1fb62bf](https://github.com/alibaba-fusion/next/commit/1fb62bf))
-* **Locale:** add vi and it ([#2051](https://github.com/alibaba-fusion/next/issues/2051)) ([efd5da9](https://github.com/alibaba-fusion/next/commit/efd5da9))
-* **Table:** ExpandTable with StickyLock ([343a550](https://github.com/alibaba-fusion/next/commit/343a550))
-* **Table:** support columns ([83ef263](https://github.com/alibaba-fusion/next/commit/83ef263))
-* **Table:** update lock with position sticky, close [#1728](https://github.com/alibaba-fusion/next/issues/1728) ([8732416](https://github.com/alibaba-fusion/next/commit/8732416))
-* **Upload:** add fileKeyName to set form-data name for file. fix [#1940](https://github.com/alibaba-fusion/next/issues/1940) ([6f5d5f4](https://github.com/alibaba-fusion/next/commit/6f5d5f4))
-* **Upload:** add fileKeyName to set form-data name for file. fix [#1940](https://github.com/alibaba-fusion/next/issues/1940) ([df561e2](https://github.com/alibaba-fusion/next/commit/df561e2))
-* **Upload:** api fileNameRender/actionRender fix [#910](https://github.com/alibaba-fusion/next/issues/910),[#1934](https://github.com/alibaba-fusion/next/issues/1934),[#1778](https://github.com/alibaba-fusion/next/issues/1778) ([acd381d](https://github.com/alibaba-fusion/next/commit/acd381d))
-* **Upload:** api fileNameRender/actionRender fix [#910](https://github.com/alibaba-fusion/next/issues/910),[#1934](https://github.com/alibaba-fusion/next/issues/1934),[#1778](https://github.com/alibaba-fusion/next/issues/1778) ([d681304](https://github.com/alibaba-fusion/next/commit/d681304))
+* **Upload:** add api itemRender for Card. fix [#2100](https://github.com/alibaba-fusion/next/issues/2100) ([c982886](https://github.com/alibaba-fusion/next/commit/c982886))
 
 

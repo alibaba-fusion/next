@@ -3,14 +3,14 @@
 
 - order: 24
 
-可拖拽的表格。拖拽功能的实现依赖react-dnd@7.x 及react-dnd-html5-backend@7.x， 它要求react react-dom 版本高于16.3.x
+可拖拽的表格。拖拽功能的实现依赖react-dnd@7.x 及react-dnd-html5-backend@7.x， 它要求react react-dom 版本高于16.3.x。在线Demo可以参考 https://codesandbox.io/s/draggable-table-drt4m
 
 :::lang=en-us
 # Simple
 
 - order: 24
 
-Dragable table with sort. It requires react-dnd@7.x, react-dnd-html5-backend@7.x, react@16.3.x and react-dom@16.3.x
+Dragable table with sort. It requires react-dnd@7.x, react-dnd-html5-backend@7.x, react@16.3.x and react-dom@16.3.x. Online demo: https://codesandbox.io/s/draggable-table-drt4m
 :::
 
 ---
@@ -191,7 +191,7 @@ class Demo extends React.Component {
     };
     render() {
         return (<div>
-            <SortableTable dataSource={this.state.dataSource}>
+            <SortableTable dataSource={this.state.dataSource} onSort={console.log}>
                 <Table.Column title="Id" dataIndex="id" width={100} lock/>
                 <Table.Column title="Title" dataIndex="title.name" width={400} />
                 <Table.Column title="Time" dataIndex="time" width={300}/>

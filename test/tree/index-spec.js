@@ -6,6 +6,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import { dom, KEYCODE } from '../../src/util';
 import Tree from '../../src/tree/index';
 import Button from '../../src/button/index';
+import Icon from '../../src/icon/index';
 import '../../src/tree/style.js';
 
 /* eslint-disable react/jsx-filename-extension, react/no-multi-comp */
@@ -14,17 +15,19 @@ import '../../src/tree/style.js';
 const TreeNode = Tree.Node;
 const { hasClass, getOffset } = dom;
 
-const dataSource = [
+const dataSource = freeze([
     {
         label: '服装',
         key: '1',
         className: 'k-1',
+        icon: 'cry',
         children: [
             {
                 label: '男装',
                 key: '2',
                 className: 'k-2',
                 disabled: true,
+                icon: <Icon type="smile" />,
                 children: [
                     {
                         label: '外套',
@@ -53,7 +56,7 @@ const dataSource = [
             },
         ],
     },
-];
+]);
 const _k2n = createMap(dataSource);
 
 class ExpandDemo extends Component {
@@ -794,6 +797,13 @@ describe('Tree', () => {
         assert(hasClass(document.querySelector('.next-tree'), 'next-show-line'));
     });
 
+    it('should support icon', () => {
+
+        ReactDOM.render(<Tree defaultExpandAll dataSource={dataSource} />, mountNode);
+
+        assert(document.querySelectorAll('.next-tree-node-label .next-icon').length === 2);
+    });
+
     it('should support isLabelBlock and isNodeBlock', () => {
         ReactDOM.render(<Tree isLabelBlock isNodeBlock dataSource={dataSource} />, mountNode);
         assert(hasClass(document.querySelector('.next-tree'), 'next-node-block'));
@@ -1047,7 +1057,15 @@ function createDataSource(level = 2, count = 3) {
         key: '0-0',
     });
     drill(dataSource, level, count);
-    return dataSource;
+    return freeze(dataSource);
+}
+
+function freeze(dataSource) {
+    return dataSource.map(item => {
+        const { children } = item;
+        children && freeze(children);
+        return Object.freeze(item);
+    });
 }
 
 function getAllLabels() {

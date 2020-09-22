@@ -182,9 +182,18 @@ export default class Base extends React.Component {
             showDataSourceChildren: props.showDataSourceChildren,
         });
 
+        const mode = props.mode;
+
+        let value = 'value' in props ? props.value : props.defaultValue;
+
+        // 多选情况下做 value 数组订正
+        if (props.mode !== 'single' && value && !Array.isArray(value)) {
+            value = [value];
+        }
+
         this.state = {
             dataStore: this.dataStore,
-            value: 'value' in props ? props.value : props.defaultValue,
+            value,
             visible: 'visible' in props ? props.visible : props.defaultVisible,
             dataSource: this.setDataSource(this.props),
             width: 100,
@@ -287,7 +296,8 @@ export default class Base extends React.Component {
      * @param {string} type trigger type
      */
     setVisible(visible, type) {
-        if (this.props.disabled || this.state.visible === visible) {
+        // disabled 状态下只允许关闭不允许打开
+        if ((this.props.disabled && visible) || this.state.visible === visible) {
             return;
         }
 
@@ -641,7 +651,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={fillProps ? valueDS[fillProps] : valueDS.label}
+                                value={valueDS ? (fillProps ? valueDS[fillProps] : valueDS.label) : ''}
                             />
                         );
                     } else {
@@ -650,7 +660,7 @@ export default class Base extends React.Component {
                                 style={style}
                                 className={className}
                                 isPreview={isPreview}
-                                value={valueDS.map(i => i.label).join(', ')}
+                                value={(valueDS || []).map(i => i.label).join(', ')}
                             />
                         );
                     }

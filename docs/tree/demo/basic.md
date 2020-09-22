@@ -15,7 +15,7 @@ the simplest usage: can be expanded, selectable, checkable, editable, can be rig
 ---
 
 ````jsx
-import { Tree, Button } from '@alifd/next';
+import { Tree, Button, Icon } from '@alifd/next';
 
 const TreeNode = Tree.Node;
 
@@ -45,13 +45,13 @@ class Demo extends React.Component {
                 onCheck={this.onCheck}
                 onEditFinish={this.onEditFinish}
                 onRightClick={this.onRightClick}>
-                <TreeNode key="1" label="Component">
-                    <TreeNode key="2" label="Form" selectable={false}>
-                        <TreeNode key="4" label="Input" />
-                        <TreeNode key="5" label="Select" disabled />
+                <TreeNode key="1" label="Component" icon={<Icon type="smile"/>}>
+                    <TreeNode key="2" label="Form" selectable={false} icon="smile">
+                        <TreeNode key="4" label="Input" icon="smile"/>
+                        <TreeNode key="5" label="Select" disabled  icon="cry"/>
                     </TreeNode>
-                    <TreeNode key="3" label="Display">
-                        <TreeNode key="6" label="Table" />
+                    <TreeNode key="3" label="Display" icon="smile">
+                        <TreeNode key="6" label="Table" icon="smile"/>
                     </TreeNode>
                 </TreeNode>
             </Tree>

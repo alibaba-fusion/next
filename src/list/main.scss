@@ -18,7 +18,7 @@
         color: $list-content-color;
     }
 
-    &-loading {
+    &-loading.#{$css-prefix}loading {
         display: block;
     }
     &-empty {

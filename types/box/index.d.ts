@@ -6,7 +6,7 @@ import CommonProps from '../util';
 export interface BoxProps extends HTMLAttributes<HTMLElement>, CommonProps {
     device?: 'phone' | 'tablet' | 'desktop';
     flex?: number | Array<number | string> ;
-    direction?: 'row' | 'column';
+    direction?: 'row' | 'column' | 'row-reverse';
     wrap?: boolean;
     spacing?: number | Array<number>;
     margin?: number | Array<number>;

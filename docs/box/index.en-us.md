@@ -20,7 +20,7 @@ Flex box, added in 1.19.0+, support IE10+
 | Param     | Description                                                                         | Type       | Default Value      |
 | --------- | -------------------------------------------------------------------------------- | ------------------------------ | ------ |
 | flex      | flex                                                                             | Array<Number/String>/Number | -      |
-| direction | direction, column by default<br><br>**options**:<br>'row', 'column'                    | Enum                           | column |
+| direction | direction, column by default<br><br>**options**:<br>'row', 'column', 'row-reverse'                     | Enum                           | column |
 | wrap      | wrap or not, support IE11+                                                                             | Boolean                        | false  |
 | spacing   | spaceing of element [bottom&top, right&left]                                                 | Array<Number>/Number        | -      |
 | margin    | css margin [bottom&top, right&left]                                               | Array<Number>/Number        | -      |

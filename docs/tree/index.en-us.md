@@ -70,6 +70,7 @@ Folders, organizational structures, taxonomy, countries, regions, etc. Most of t
 | disabled         | whether node is disabled                        | Boolean   | false |
 | checkboxDisabled | whether checkbox of node is disabled                      | Boolean   | false |
 | isLeaf           | whether it is a leaf node and only works when loadData is set           | Boolean   | false |
+| icon     | custom icon, it can be type of Icon or such as `<Icon type="icon type" />` | String/ReactNode | -   |
 
 <!-- api-extra-start -->
 

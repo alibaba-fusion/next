@@ -84,10 +84,7 @@ export default function ShellBase(props) {
                 Object.keys(deviceMapAfter).forEach(block => {
                     const { props } = this.layout[block] || {};
                     if (deviceMapBefore[block] !== deviceMapAfter[block]) {
-                        if (
-                            props &&
-                            typeof props.onCollapseChange === 'function'
-                        ) {
+                        if (props && typeof props.onCollapseChange === 'function') {
                             props.onCollapseChange(deviceMapAfter[block]);
                         }
                     }
@@ -108,10 +105,7 @@ export default function ShellBase(props) {
             }
 
             let headerHeight;
-            if (
-                this.headerRef &&
-                (this.navigationFixed || this.toolDockFixed)
-            ) {
+            if (this.headerRef && (this.navigationFixed || this.toolDockFixed)) {
                 headerHeight = dom.getStyle(this.headerRef, 'height');
             }
 
@@ -119,8 +113,7 @@ export default function ShellBase(props) {
                 const style = {};
                 style.marginLeft = dom.getStyle(this.navRef, 'width');
                 dom.addClass(this.navRef, 'fixed');
-                headerHeight &&
-                    dom.setStyle(this.navRef, { top: headerHeight });
+                headerHeight && dom.setStyle(this.navRef, { top: headerHeight });
                 dom.setStyle(this.localNavRef || this.submainRef, style);
             }
 
@@ -128,8 +121,7 @@ export default function ShellBase(props) {
                 const style = {};
                 style.marginRight = dom.getStyle(this.toolDockRef, 'width');
                 dom.addClass(this.toolDockRef, 'fixed');
-                headerHeight &&
-                    dom.setStyle(this.toolDockRef, { top: headerHeight });
+                headerHeight && dom.setStyle(this.toolDockRef, { top: headerHeight });
                 dom.setStyle(this.localNavRef || this.submainRef, style);
             }
         };
@@ -179,19 +171,12 @@ export default function ShellBase(props) {
                     .filter(
                         child =>
                             child &&
-                            child.type._typeMark.replace('Shell_', '') ===
-                                mark &&
+                            child.type._typeMark.replace('Shell_', '') === mark &&
                             child.props.direction !== 'hoz'
                     )
                     .pop();
             } else {
-                com = children
-                    .filter(
-                        child =>
-                            child &&
-                            child.type._typeMark.replace('Shell_', '') === mark
-                    )
-                    .pop();
+                com = children.filter(child => child && child.type._typeMark.replace('Shell_', '') === mark).pop();
             }
 
             const { triggerProps = {} } = com.props;
@@ -265,14 +250,7 @@ export default function ShellBase(props) {
         };
 
         renderShell = props => {
-            const {
-                prefix,
-                children,
-                className,
-                type,
-                fixedHeader,
-                ...others
-            } = props;
+            const { prefix, children, className, type, fixedHeader, ...others } = props;
 
             const { device } = this.state;
 
@@ -338,10 +316,7 @@ export default function ShellBase(props) {
 
                                 needNavigationTrigger = true;
                                 this.navigationFixed = child.props.fixed;
-                                const childN = this.setChildCollapse(
-                                    child,
-                                    mark
-                                );
+                                const childN = this.setChildCollapse(child, mark);
                                 layout[mark] = childN;
                             }
                             break;
@@ -378,6 +353,7 @@ export default function ShellBase(props) {
 
             const navigationCls = classnames({
                 [`${prefix}aside-navigation`]: true,
+                [`${prefix}shell-collapse`]: layout.Navigation && layout.Navigation.props.collapse,
             });
 
             if (hasToolDock) {
@@ -423,10 +399,7 @@ export default function ShellBase(props) {
                 if (!branding) {
                     trigger && (layout.header.Branding = trigger);
                 } else {
-                    layout.header.Branding = React.cloneElement(branding, {}, [
-                        trigger,
-                        branding.props.children,
-                    ]);
+                    layout.header.Branding = React.cloneElement(branding, {}, [trigger, branding.props.children]);
                 }
             }
 
@@ -463,10 +436,7 @@ export default function ShellBase(props) {
                 if (!action) {
                     layout.header.Action = trigger;
                 } else {
-                    layout.header.Action = React.cloneElement(action, {}, [
-                        action.props.children,
-                        trigger,
-                    ]);
+                    layout.header.Action = React.cloneElement(action, {}, [action.props.children, trigger]);
                 }
             }
 
@@ -525,16 +495,9 @@ export default function ShellBase(props) {
                 });
 
                 innerArr.push(
-                    <aside
-                        key="localnavigation"
-                        className={localNavCls}
-                        ref={this.saveLocalNavRef}
-                    >
+                    <aside key="localnavigation" className={localNavCls} ref={this.saveLocalNavRef}>
                         {React.cloneElement(layout.LocalNavigation, {}, [
-                            <div
-                                key="wrapper"
-                                className={`${prefix}shell-content-wrapper`}
-                            >
+                            <div key="wrapper" className={`${prefix}shell-content-wrapper`}>
                                 {layout.LocalNavigation.props.children}
                             </div>,
                             trigger,
@@ -545,11 +508,7 @@ export default function ShellBase(props) {
 
             if (layout.content) {
                 innerArr.push(
-                    <section
-                        key="submain"
-                        className={submainCls}
-                        ref={this.saveSubmainRef}
-                    >
+                    <section key="submain" className={submainCls} ref={this.saveSubmainRef}>
                         {layout.content}
                     </section>
                 );
@@ -594,10 +553,7 @@ export default function ShellBase(props) {
                 innerArr.push(
                     <aside key="ancillary" className={ancillaryCls}>
                         {React.cloneElement(layout.Ancillary, {}, [
-                            <div
-                                key="wrapper"
-                                className={`${prefix}shell-content-wrapper`}
-                            >
+                            <div key="wrapper" className={`${prefix}shell-content-wrapper`}>
                                 {layout.Ancillary.props.children}
                             </div>,
                             trigger,
@@ -609,11 +565,7 @@ export default function ShellBase(props) {
             // 按照dom结构, arr 包括 header Navigation ToolDock 和 innerArr
             if (Object.keys(layout.header).length > 0) {
                 const dom = (
-                    <header
-                        key="header"
-                        className={headerCls}
-                        ref={this.saveHeaderRef}
-                    >
+                    <header key="header" className={headerCls} ref={this.saveHeaderRef}>
                         {layout.header.Branding}
                         {layout.header.Navigation}
                         {layout.header.Action}
@@ -628,16 +580,9 @@ export default function ShellBase(props) {
 
             layout.Navigation &&
                 contentArr.push(
-                    <aside
-                        key="navigation"
-                        className={navigationCls}
-                        ref={this.saveNavRef}
-                    >
+                    <aside key="navigation" className={navigationCls} ref={this.saveNavRef}>
                         {React.cloneElement(layout.Navigation, {
-                            className: classnames(
-                                asideCls,
-                                layout.Navigation.props.className
-                            ),
+                            className: classnames(asideCls, layout.Navigation.props.className),
                         })}
                     </aside>
                 );
@@ -651,11 +596,7 @@ export default function ShellBase(props) {
                 innerArr.length > 0
                     ? innerArr
                     : [
-                          <section
-                              key="page"
-                              ref={this.saveSubmainRef}
-                              className={submainCls}
-                          >
+                          <section key="page" ref={this.saveSubmainRef} className={submainCls}>
                               {layout.page}
                           </section>,
                       ]
@@ -663,16 +604,9 @@ export default function ShellBase(props) {
 
             layout.ToolDock &&
                 contentArr.push(
-                    <aside
-                        key="tooldock"
-                        className={toolDockCls}
-                        ref={this.saveToolDockRef}
-                    >
+                    <aside key="tooldock" className={toolDockCls} ref={this.saveToolDockRef}>
                         {React.cloneElement(layout.ToolDock, {
-                            className: classnames(
-                                asideCls,
-                                layout.ToolDock.props.className
-                            ),
+                            className: classnames(asideCls, layout.ToolDock.props.className),
                             key: 'tooldock',
                         })}
                     </aside>
