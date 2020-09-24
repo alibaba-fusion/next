@@ -158,10 +158,7 @@ class Search extends React.Component {
         super(props);
 
         const value = 'value' in props ? props.value : props.defaultValue;
-        const filterValue =
-            'filterValue' in props
-                ? props.filterValue
-                : props.defaultFilterValue;
+        const filterValue = 'filterValue' in props ? props.filterValue : props.defaultFilterValue;
 
         this.state = {
             value: typeof value === 'undefined' ? '' : value,
@@ -175,17 +172,12 @@ class Search extends React.Component {
         const nextState = {};
         if ('value' in nextProps && nextProps.value !== prevState.value) {
             const value = nextProps.value;
-            nextState.value =
-                value === undefined || value === null ? '' : nextProps.value;
+            nextState.value = value === undefined || value === null ? '' : nextProps.value;
         }
 
-        if (
-            'filterValue' in nextProps &&
-            nextProps.filterValue !== prevState.filterValue
-        ) {
+        if ('filterValue' in nextProps && nextProps.filterValue !== prevState.filterValue) {
             const filterValue = nextProps.filterValue;
-            nextState.filterValue =
-                filterValue === undefined ? '' : filterValue;
+            nextState.filterValue = filterValue === undefined ? '' : filterValue;
         }
 
         if (Object.keys(nextState).length > 0) {
@@ -289,6 +281,7 @@ class Search extends React.Component {
             [`${prefix}search-${shape}`]: true,
             [`${prefix}${type}`]: type,
             [`${prefix}${size}`]: size,
+            [`${prefix}disabled`]: !!disabled,
             [className]: !!className,
         });
 
@@ -308,18 +301,15 @@ class Search extends React.Component {
                 [`${prefix}search-symbol-icon`]: !iconsSearch,
             });
             hasIcon &&
-                (searchIcon = React.cloneElement(
-                    iconsSearch || <Icon type="search" />,
-                    {
-                        role: 'button',
-                        'aria-disabled': disabled,
-                        'aria-label': locale.buttonText,
-                        ...buttonProps,
-                        className: cls,
-                        onClick: this.onSearch,
-                        onKeyDown: this.onKeyDown,
-                    }
-                ));
+                (searchIcon = React.cloneElement(iconsSearch || <Icon type="search" />, {
+                    role: 'button',
+                    'aria-disabled': disabled,
+                    'aria-label': locale.buttonText,
+                    ...buttonProps,
+                    className: cls,
+                    onClick: this.onSearch,
+                    onKeyDown: this.onKeyDown,
+                }));
         } else {
             const cls = classNames({
                 [`${prefix}search-btn`]: true,
@@ -336,19 +326,8 @@ class Search extends React.Component {
                     onClick={this.onSearch}
                     onKeyDown={this.onKeyDown}
                 >
-                    {hasIcon
-                        ? iconsSearch || (
-                              <Icon
-                                  type="search"
-                                  className={`${prefix}search-symbol-icon`}
-                              />
-                          )
-                        : null}
-                    {searchText ? (
-                        <span className={`${prefix}search-btn-text`}>
-                            {searchText}
-                        </span>
-                    ) : null}
+                    {hasIcon ? iconsSearch || <Icon type="search" className={`${prefix}search-symbol-icon`} /> : null}
+                    {searchText ? <span className={`${prefix}search-btn-text`}>{searchText}</span> : null}
                 </Button>
             );
         }
@@ -405,17 +384,8 @@ class Search extends React.Component {
         );
 
         return (
-            <span
-                className={cls}
-                style={style}
-                {...dataAttr}
-                dir={rtl ? 'rtl' : undefined}
-            >
-                {searchBtn ? (
-                    <Group addonAfter={searchBtn}>{left}</Group>
-                ) : (
-                    left
-                )}
+            <span className={cls} style={style} {...dataAttr} dir={rtl ? 'rtl' : undefined}>
+                {searchBtn ? <Group addonAfter={searchBtn}>{left}</Group> : left}
             </span>
         );
     }

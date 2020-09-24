@@ -132,40 +132,17 @@ export default class Input extends Base {
     }
 
     renderControl() {
-        const {
-            hasClear,
-            readOnly,
-            state,
-            prefix,
-            hint,
-            extra,
-            locale,
-        } = this.props;
+        const { hasClear, readOnly, state, prefix, hint, extra, locale } = this.props;
 
         const lenWrap = this.renderLength();
 
         let stateWrap = null;
         if (state === 'success') {
-            stateWrap = (
-                <Icon
-                    type="success-filling"
-                    className={`${prefix}input-success-icon`}
-                />
-            );
+            stateWrap = <Icon type="success-filling" className={`${prefix}input-success-icon`} />;
         } else if (state === 'loading') {
-            stateWrap = (
-                <Icon
-                    type="loading"
-                    className={`${prefix}input-loading-icon`}
-                />
-            );
+            stateWrap = <Icon type="loading" className={`${prefix}input-loading-icon`} />;
         } else if (state === 'warning') {
-            stateWrap = (
-                <Icon
-                    type="warning"
-                    className={`${prefix}input-warning-icon`}
-                />
-            );
+            stateWrap = <Icon type="warning" className={`${prefix}input-warning-icon`} />;
         }
 
         let clearWrap = null;
@@ -175,15 +152,10 @@ export default class Input extends Base {
             let hintIcon = null;
             if (hint) {
                 if (typeof hint === 'string') {
-                    hintIcon = (
-                        <Icon type={hint} className={`${prefix}input-hint`} />
-                    );
+                    hintIcon = <Icon type={hint} className={`${prefix}input-hint`} />;
                 } else if (isValidElement(hint)) {
                     hintIcon = cloneElement(hint, {
-                        className: classNames(
-                            hint.props.className,
-                            `${prefix}input-hint`
-                        ),
+                        className: classNames(hint.props.className, `${prefix}input-hint`),
                     });
                 } else {
                     hintIcon = hint;
@@ -304,13 +276,13 @@ export default class Input extends Base {
             rtl,
         } = this.props;
 
-        const hasAddon =
-            addonBefore || addonAfter || addonTextBefore || addonTextAfter;
+        const hasAddon = addonBefore || addonAfter || addonTextBefore || addonTextAfter;
         const cls = classNames(this.getClass(), {
             [`${prefix}${size}`]: true,
             [`${prefix}hidden`]: this.props.htmlType === 'hidden',
             [`${prefix}noborder`]: !hasBorder || this.props.htmlType === 'file',
             [`${prefix}input-group-auto-width`]: hasAddon,
+            [`${prefix}disabled`]: disabled,
             [className]: !!className && !hasAddon,
         });
 
@@ -336,10 +308,7 @@ export default class Input extends Base {
         const dataProps = obj.pickAttrsWith(this.props, 'data-');
         // Custom props are transparently transmitted to the core input node by default
         // 自定义属性默认透传到核心node节点：input
-        const others = obj.pickOthers(
-            Object.assign({}, dataProps, Input.propTypes),
-            this.props
-        );
+        const others = obj.pickOthers(Object.assign({}, dataProps, Input.propTypes), this.props);
 
         if (isPreview) {
             const { value } = props;
@@ -378,12 +347,7 @@ export default class Input extends Base {
         );
 
         const inputWrap = (
-            <span
-                {...dataProps}
-                dir={rtl ? 'rtl' : undefined}
-                className={cls}
-                style={hasAddon ? undefined : style}
-            >
+            <span {...dataProps} dir={rtl ? 'rtl' : undefined} className={cls} style={hasAddon ? undefined : style}>
                 {this.renderLabel()}
                 {this.renderInner(innerBefore, innerBeforeCls)}
                 {inputRender(inputEl)}
@@ -411,6 +375,7 @@ export default class Input extends Base {
                     {...dataProps}
                     className={className}
                     style={style}
+                    disabled={disabled}
                     addonBefore={addonBefore || addonTextBefore}
                     addonBeforeClassName={addonBeforeCls}
                     addonAfter={addonAfter || addonTextAfter}
