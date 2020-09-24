@@ -890,6 +890,7 @@ class Menu extends Component {
             [`${prefix}hoz`]: direction === 'hoz',
             [`${prefix}menu-embeddable`]: embeddable,
             [`${prefix}menu-nowrap`]: hozInLine,
+            [`${prefix}menu-selectable-${selectMode}`]: selectMode,
             [className]: !!className,
         });
 
