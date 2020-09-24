@@ -257,8 +257,8 @@
     }
 
     .#{$css-prefix}range-frag {
-        margin-top: calc(0px - #{$trackHeight} / 2);
-        height: $sliderHW;
+        margin-top: calc((#{$scaleHeight} - #{$trackHeight}) / 2);
+        height: $trackHeight;
     }
 
     .#{$css-prefix}range-slider {

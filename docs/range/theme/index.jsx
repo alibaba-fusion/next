@@ -78,6 +78,7 @@ class OriginalDemo extends Component {
             <Demo title="With Scale" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <ItemDemo marksPosition={marksPosition} title="Single" defaultValue={3} max={10} scales={5} marks={5} />
                 <ItemDemo marksPosition={marksPosition} title="Double" defaultValue={[20, 40]} slider="double" scales={10} marks={10} />
+                <ItemDemo fixedWidth marksPosition={marksPosition} title="Double - fixedWidth" defaultValue={[20, 40]} slider="double" scales={10} marks={10} />
             </Demo>
         );
     }
@@ -87,6 +88,7 @@ function NormalRange() {
     return (<Demo title="Basic">
         <ItemDemo title="Single" defaultValue={3} max={10} />
         <ItemDemo title="Double" defaultValue={[20, 40]} slider="double" />
+        <ItemDemo fixedWidth title="Double - fixedWidth" defaultValue={[20, 40]} slider="double" />
     </Demo>);
 }
 
