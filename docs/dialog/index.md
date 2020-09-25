@@ -70,6 +70,13 @@
 | onOk     | 在点击确定按钮时触发的回调函数 | Function  | () => {} |
 | onCancel | 在点击取消按钮时触发的回调函数 | Function  | () => {} |
 
+### Dialog.withContext
+
+上面的`Dialog.alert/confirm/show`这种命令式API，虽然使用起来很方便，但是如果你的应用使用了多次`ConfigProvider`，当你通过命令式API调起的Dialog的时候，它到底会使用哪份fusion config（比如prefix、文案），是一件无法确定的事情（详见[#2005](https://github.com/alibaba-fusion/next/issues/2005)）。你可以从 withContext Example 看到这个问题。
+
+为了解决这个问题，我们提供了一个新的API：`Dialog.withContext`。
+对于要使用命令式API的组件，使用`Dialog.withContext`HOC来包裹一下。然后你就可以在你的组件props.contextDialog拿到 `alert, confirm, show` 这3个命令式方法。通过这3个方法来调起的Dialog，它使用的fusion config是符合预期的。请看 withContext Example 的使用示例。
+
 <!-- api-extra-end -->
 
 ## 常见问题
