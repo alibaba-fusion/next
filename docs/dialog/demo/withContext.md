@@ -2,7 +2,11 @@
 
 - order: 9
 
-使用 `Dialog.withContext` 来命令式调起 Dialog。相比直接使用 `Dialog.alert/confirm/show`，它能避免Dialog应用的fusion config(比如prefix、文案)不符合预期的问题。
+通过 `Dialog.withContext(({ contextDialog }) => {} )`方法，封装 使用到函数式调用弹窗 的组件（例如业务组件或者当前App等），可以将 被封装组件 代码所在上下文的context注入到contextDialog中。
+
+相比较`Dialog.alert()`获取到的是当前页面第一次被记录且未被卸载的context，contextDialog.alert()获取到的是 下例中`< AfterFix />` 所在代码环境的context。
+
+`contextDialog`上可被调用的方法有`alert` `confirm` `show`，注意`contextDialog`只有`Dialog`的函数式调用方法，它不能像 `<Dialog />` 一样被使用。
 
 :::lang=en-us
 # withContext
