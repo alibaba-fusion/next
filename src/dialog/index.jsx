@@ -2,7 +2,7 @@ import ConfigProvider from '../config-provider';
 import { log } from '../util';
 import Dialog from './dialog';
 import Inner from './inner';
-import { show, alert, confirm, withDialogAPIs } from './show';
+import { show, alert, confirm, withContext } from './show';
 
 Dialog.Inner = Inner;
 Dialog.show = config => {
@@ -26,7 +26,7 @@ Dialog.confirm = config => {
     }
     return confirm(config);
 };
-Dialog.withDialogAPIs = withDialogAPIs;
+Dialog.withContext = withContext;
 
 /* istanbul ignore next */
 function processProps(props, deprecated) {

@@ -294,14 +294,14 @@ export default {
     notice,
 };
 
-export const withMessageAPIs = WrappedComponent => {
+export const withContext = WrappedComponent => {
     const HOC = props => {
         return (
             <ConfigProvider.Consumer>
                 {contextConfig => (
                     <WrappedComponent
                         {...props}
-                        messageAPIs={{
+                        contextMessage={{
                             show: (config = {}) => show({ ...config, contextConfig }),
                             hide,
                             success: (config = {}) => success({ ...config, contextConfig }),

@@ -1,15 +1,15 @@
-# withDialogAPIs
+# withContext
 
 - order: 9
 
-使用 `Dialog.withDialogAPIs` 来命令式调起 Dialog。相比直接使用 `Dialog.alert/confirm/show`，它能避免Dialog应用的fusion config(比如prefix、文案)不符合预期的问题。
+使用 `Dialog.withContext` 来命令式调起 Dialog。相比直接使用 `Dialog.alert/confirm/show`，它能避免Dialog应用的fusion config(比如prefix、文案)不符合预期的问题。
 
 :::lang=en-us
-# withDialogAPIs
+# withContext
 
 - order: 9
 
-Use `Dialog.withDialogAPIs` to render Dialog imperatively. It is recommended over `Dialog.alert/confirm/show` because it get fusion config(.e.g prefix, locale) from context.
+Use `Dialog.withContext` to render Dialog imperatively. It is recommended over `Dialog.alert/confirm/show` because it get fusion config(.e.g prefix, locale) from context.
 
 :::
 ---
@@ -33,17 +33,17 @@ const BeforeFix = () => {
   );
 };
 
-const AfterFix = Dialog.withDialogAPIs(({ dialogAPIs }) => {
+const AfterFix = Dialog.withContext(({ contextDialog }) => {
   return (
     <div>
       <Button
         onClick={() => {
-          dialogAPIs.confirm({
-            title: "Dialog.withDialogAPIs 命令式弹窗",
+          contextDialog.confirm({
+            title: "Dialog.withContext 命令式弹窗",
           });
         }}
       >
-        使用 Dialog.withDialogAPIs
+        使用 Dialog.withContext
       </Button>
     </div>
   );

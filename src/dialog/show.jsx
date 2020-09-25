@@ -249,17 +249,17 @@ export const alert = methodFactory('alert');
  */
 export const confirm = methodFactory('confirm');
 
-export const withDialogAPIs = WrappedComponent => {
+export const withContext = WrappedComponent => {
     const HOC = props => {
         return (
             <ConfigProvider.Consumer>
                 {contextConfig => (
                     <WrappedComponent
                         {...props}
-                        dialogAPIs={{
+                        contextDialog={{
                             show: (config = {}) => show({ ...config, contextConfig }),
                             alert: (config = {}) => alert({ ...config, contextConfig }),
-                            confirm: (config = {}) => alert({ ...config, contextConfig }),
+                            confirm: (config = {}) => confirm({ ...config, contextConfig }),
                         }}
                     />
                 )}

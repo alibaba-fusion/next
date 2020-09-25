@@ -78,9 +78,9 @@ Message.success({
 });
 ```
 
-### Message.withMessageAPIs
+### Message.withContext
 
-建议通过这个HOC来获得命令式调起Message的API，而尽量不使用 `Message.[success|error|notice|help|loading|show|hide]`，能避免fusion config错误的bug，详细原因参考 `Dialog.withDialogAPIs` 的文档。
+建议通过这个HOC来获得命令式调起Message的API，而尽量不使用 `Message.[success|error|notice|help|loading|show|hide]`，能避免fusion config错误的bug，详细原因参考 `Dialog.withContext` 的文档。
 
 <!-- api-extra-end -->
 

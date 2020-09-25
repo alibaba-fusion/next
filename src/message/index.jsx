@@ -1,6 +1,6 @@
 import ConfigProvider from '../config-provider';
 import Message from './message';
-import toast, { withMessageAPIs } from './toast';
+import toast, { withContext } from './toast';
 
 Message.show = toast.show;
 Message.success = toast.success;
@@ -10,7 +10,7 @@ Message.notice = toast.notice;
 Message.help = toast.help;
 Message.loading = toast.loading;
 Message.hide = toast.hide;
-Message.withMessageAPIs = withMessageAPIs;
+Message.withContext = withContext;
 
 export default ConfigProvider.config(Message, {
     componentName: 'Message',
