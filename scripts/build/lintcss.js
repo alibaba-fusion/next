@@ -8,11 +8,14 @@ function lintCss(filename, css) {
             codeFilename: filename,
             config: {
                 extends: 'stylelint-config-recommended',
+                plugins: ['stylelint-csstree-validator'],
                 rules: {
+                    'csstree/validator': true,
                     'no-descending-specificity': null,
                     'no-duplicate-selectors': null,
                     'font-family-no-missing-generic-family-keyword': null,
                     'function-calc-no-unspaced-operator': null,
+                    'no-empty-source': null,
                 },
             },
         })
@@ -26,6 +29,8 @@ function lintCss(filename, css) {
                 logger.error(`[parseErrors] file: ${output.source} ${JSON.stringify(output.parseErrors)}`);
             }
             for (const warning of output.warnings) {
+                if (warning.text === `"declaration-no-important" has already been disabled (CssSyntaxError)`) continue;
+
                 logger.warn(`[${warning.severity}] ${warning.text}. file: ${output.source}:${warning.line}`);
             }
         });

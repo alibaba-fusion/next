@@ -5,7 +5,6 @@ const sass = require('node-sass');
 const postcss = require('postcss');
 const postcssCalc = require('postcss-calc');
 const cssvarFallback = require('postcss-custom-properties');
-const less = require('less');
 
 const cwd = process.cwd();
 const { logger } = require('../utils');
@@ -91,8 +90,6 @@ module.exports = async function() {
                     fs.outputFileSync(path.join(libBasePath, 'index.css'), indexContent);
                     fs.outputFileSync(path.join(esBasePath, 'index.css'), indexContent);
                     lintCss(path.join(libBasePath, 'index.css'), indexContent);
-                    // 用less编译器来渲染css，验证css合法性
-                    await less.render(indexContent, { filename: path.join(libBasePath, 'index.less') });
                 } catch (error) {
                     logger.error(`[!!]Error in ${componentName}:`, error);
                 }
