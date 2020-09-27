@@ -44,13 +44,16 @@ http.createServer(function(req, res) {
                     // res.writeHead(200, {'content-type': 'application/json'});
                     // res.write(`<script>document.domain='taobao.com'</script>`);
 
-                    res.end(
-                        JSON.stringify({
-                            success: true,
-                            message: 'success',
-                            url: `http://${req.headers.host}${files.file.path.replace(tmpdir, '')}`,
-                        })
-                    );
+                    // 模拟上传时间
+                    setTimeout(() => {
+                        res.end(
+                            JSON.stringify({
+                                success: true,
+                                message: 'success',
+                                url: `http://${req.headers.host}${files.file.path.replace(tmpdir, '')}`,
+                            })
+                        );
+                    }, Math.random() * 3000);
                 } else {
                     res.end(
                         JSON.stringify({
