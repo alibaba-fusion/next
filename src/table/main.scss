@@ -483,6 +483,7 @@
     &-fix-right {
         background: inherit;
         position: sticky;
+        z-index: 1;
     }
     &-ping-left {
         #{$table-prefix}-fix-left-last {
