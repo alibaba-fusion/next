@@ -219,6 +219,7 @@ class Upload extends Base {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
+        // 上传中不允许做受控修改
         if ('value' in nextProps && nextProps.value !== prevState.value && !prevState.uploading) {
             return {
                 value: !Array.isArray(nextProps.value) ? [] : nextProps.value,
@@ -359,8 +360,6 @@ class Upload extends Base {
     };
 
     onSuccess = (response, file) => {
-        this.state.uploading = false;
-
         const { formatter } = this.props;
 
         if (formatter) {
@@ -400,13 +399,13 @@ class Upload extends Base {
             targetItem.imgURL = response.imgURL || response.url; // 缩略图地址(可选)
         }
 
+        this.updateUploadingState();
+
         this.onChange(value, targetItem);
         this.props.onSuccess(targetItem, value);
     };
 
     onError = (err, response, file) => {
-        this.state.uploading = false;
-
         const value = this.state.value;
         const targetItem = getFileItem(file, value);
 
@@ -419,6 +418,8 @@ class Upload extends Base {
             error: err,
             response,
         });
+
+        this.updateUploadingState();
 
         this.onChange(value, targetItem);
         this.props.onError(targetItem, value);
@@ -439,6 +440,13 @@ class Upload extends Base {
         if (index !== -1) {
             fileList.splice(index, 1);
             this.onChange(fileList, targetItem);
+        }
+    };
+
+    updateUploadingState = () => {
+        const inProgress = this.state.value.some(i => i.state === 'uploading');
+        if (!inProgress) {
+            this.state.uploading = false;
         }
     };
 
