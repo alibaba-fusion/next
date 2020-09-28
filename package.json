@@ -99,8 +99,7 @@
     "prop-types": "^15.6.0",
     "react-lifecycles-compat": "^3.0.4",
     "react-transition-group": "^2.2.1",
-    "shallow-element-equals": "^1.0.1",
-    "stylelint-csstree-validator": "^1.8.0"
+    "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
     "@alifd/adaptor-generate": "^0.2.3",
@@ -205,6 +204,7 @@
     "style-loader": "^0.18.2",
     "stylelint": "^13.0.0",
     "stylelint-config-recommended": "^3.0.0",
+    "stylelint-csstree-validator": "^1.8.0",
     "stylelint-scss": "^3.1.1",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
