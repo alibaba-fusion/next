@@ -377,7 +377,7 @@
             border-top-right-radius: 0 !important;
             //TODO: removed in 2.x
             > * {
-                margin-right: -$input-border-width;
+                margin-right: calc(0px - #{$input-border-width});
                 border-bottom-right-radius: 0 !important;
                 border-top-right-radius: 0 !important;
                 &.#{$css-prefix}focus {
@@ -399,7 +399,7 @@
             border-top-left-radius: 0 !important;
             //TODO: removed in 2.x
             > * {
-                margin-left: -$input-border-width;
+                margin-left: calc(0px - #{$input-border-width});
                 border-bottom-left-radius: 0 !important;
                 border-top-left-radius: 0 !important;
                 > #{$input-prefix} {
