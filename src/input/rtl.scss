@@ -98,7 +98,7 @@
 
         //TODO: removed in 2.x
         &:first-child > * {
-            margin-left: -$input-border-width;
+            margin-left: calc(0px - #{$input-border-width});
             border-bottom-left-radius: 0 !important;
             border-top-left-radius: 0 !important;
         }
@@ -127,7 +127,7 @@
 
         &:last-child > * {
             //TODO: removed in 2.x
-            margin-right: -$input-border-width;
+            margin-right: calc(0px - #{$input-border-width});
             border-bottom-right-radius: 0 !important;
             border-top-right-radius: 0 !important;
         }

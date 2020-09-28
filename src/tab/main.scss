@@ -208,7 +208,7 @@
         background-color: $tab-pure-bg-color;
 
         #{$tab-prefix}-nav-container {
-            margin-bottom: -$tab-pure-divider-line-width;
+            margin-bottom: calc(0px - #{$tab-pure-divider-line-width});
             box-shadow: $tab-pure-divider-shadow;
 
             #{$tab-prefix}-tab {
@@ -299,7 +299,7 @@
             @include tabs-tab-inkbar(
                 $tab-wrapped-ink-bar-width,
                 $tab-wrapped-ink-bar-color,
-                -$tab-wrapped-border-line-width,
+                calc(0px - #{$tab-wrapped-border-line-width}),
                 $tab-wrapped-tab-corner-radius,
                 'top'
             );
@@ -334,7 +334,7 @@
         #{$tab-prefix}-tab {
             margin-right: $tab-wrapped-tab-margin-right;
             @include tabs-tab-border( $tab-wrapped-bar-border, null, $tab-wrapped-tab-bottom-border-radius, $tab-wrapped-border-line-color-hover, $tab-wrapped-bg-color-selected, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color);
-            @include tabs-tab-inkbar( $tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, -$tab-wrapped-border-line-width, $tab-wrapped-tab-corner-radius, 'bottom');
+            @include tabs-tab-inkbar( $tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, calc(0px - #{$tab-wrapped-border-line-width}), $tab-wrapped-tab-corner-radius, 'bottom');
         }
     }
 
@@ -350,7 +350,7 @@
             float: none;
             margin-bottom: $tab-wrapped-tab-margin-bottom;
             @include tabs-tab-border( $tab-wrapped-bar-border, null, $tab-wrapped-tab-left-border-radius, $tab-wrapped-border-line-color-hover, $tab-wrapped-border-line-color, $tab-wrapped-bg-color-selected, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color);
-            @include tabs-tab-inkbar($tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, -$tab-wrapped-border-line-width, $tab-wrapped-tab-corner-radius, 'left');
+            @include tabs-tab-inkbar($tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, calc(0px - #{$tab-wrapped-border-line-width}), $tab-wrapped-tab-corner-radius, 'left');
             border-width: $tab-wrapped-border-side-width $tab-wrapped-border-line-width $tab-wrapped-border-side-width $tab-wrapped-border-side-width;
             &.active {
                 border-width: $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width;
@@ -370,7 +370,7 @@
             float: none;
             margin-bottom: $tab-wrapped-tab-margin-bottom;
             @include tabs-tab-border( $tab-wrapped-bar-border, null, $tab-wrapped-tab-right-border-radius, $tab-wrapped-border-line-color-hover, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color, $tab-wrapped-border-line-color, $tab-wrapped-bg-color-selected);
-            @include tabs-tab-inkbar($tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, -$tab-wrapped-border-line-width, $tab-wrapped-tab-corner-radius, 'right');
+            @include tabs-tab-inkbar($tab-wrapped-ink-bar-width, $tab-wrapped-ink-bar-color, calc(0px - #{$tab-wrapped-border-line-width}), $tab-wrapped-tab-corner-radius, 'right');
             border-width: $tab-wrapped-border-side-width $tab-wrapped-border-side-width $tab-wrapped-border-side-width $tab-wrapped-border-line-width;
             &.active {
                 border-width: $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width $tab-wrapped-border-line-width;
@@ -379,7 +379,7 @@
     }
 
     &-wrapped#{$tab-prefix}-right > #{$tab-prefix}-content {
-        right: -$tab-wrapped-content-position-right;
+        right: calc(0px - #{$tab-wrapped-content-position-right});
         border-right: $tab-wrapped-content-border;
     }
 
@@ -388,7 +388,7 @@
             transition: background-color $motion-duration-immediately $motion-linear;
             border: $tab-capsule-tab-border;
             border-right-color: transparent;
-            margin-right: -$tab-capsule-tab-border-line-width;
+            margin-right: calc(0px - #{$tab-capsule-tab-border-line-width});
 
             &:first-child {
                 border-radius: $tab-capsule-corner-radius 0 0 $tab-capsule-corner-radius;
