@@ -214,7 +214,7 @@
         color: #FFF;
 
         &-inverse {
-            background-color: rgba($color, .25);
+            background-color: rgba(get-compiling-value($color), .25);
             border-color: $color;
             color: $color;
         }
