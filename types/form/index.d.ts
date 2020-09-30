@@ -482,6 +482,8 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      */
     component?: string | (() => void);
     responsive?: boolean;
+    // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
+    gap?: number | Array<number>;
     isPreview?: boolean;
     renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any
 }
