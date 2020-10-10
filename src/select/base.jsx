@@ -10,7 +10,7 @@ import Input from '../input';
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
 import VirtualList from '../virtual-list';
-import { isSingle, filter, isNull, valueToSelectKey } from './util';
+import { isSingle, filter, isNull, valueToSelectKey, getValueDataSource } from './util';
 
 const { Popup } = Overlay;
 const { Item: MenuItem, Group: MenuGroup } = Menu;
@@ -632,7 +632,18 @@ export default class Base extends React.Component {
                     />
                 );
             } else {
-                const valueDS = this.valueDataSource.valueDS;
+                const value = this.state.value;
+                let valueDS = this.state.value;
+
+                if (!this.useDetailValue()) {
+                    if (value === this.valueDataSource.value) {
+                        valueDS = this.valueDataSource.valueDS;
+                    } else {
+                        valueDS = getValueDataSource(value, this.valueDataSource.mapValueDS, this.dataStore.getMapDS())
+                            .valueDS;
+                    }
+                }
+
                 if (typeof renderPreview === 'function') {
                     const previewCls = classNames({
                         [`${prefix}form-preview`]: true,
