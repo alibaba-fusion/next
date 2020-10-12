@@ -68,6 +68,11 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLElement>, CommonP
      */
     popupProps?: PopupProps;
 
+     /**
+     * 弹层在触发以后的延时显示, 单位毫秒 ms
+     */
+    delay?: number;
+
     /**
      * 是否pure render
      */
