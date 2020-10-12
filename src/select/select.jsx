@@ -759,6 +759,8 @@ class Select extends Base {
 
     /**
      * 如果用户是自定义的弹层，则直接以 value 为准，不再校验 dataSource
+     * TODO: 2.0 中 value 接受 string/object{value,label} 两种类型的数据，自动做识别，可以避免用户去转换，也和 date-picker 对齐
+     * 此外 onChange 第一个参数根据 api 来控制类型是 [string] 还是 [object{value,label}]
      * @param {object} props
      */
     renderValues() {
