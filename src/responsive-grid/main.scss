@@ -10,4 +10,8 @@
 #{$responsive-grid-prefix} {
     @include box-sizing;
     display: grid;
+
+    &-ie {
+        display: block;
+    }
 }

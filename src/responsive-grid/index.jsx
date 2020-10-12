@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ConfigProvider from '../config-provider';
-import { obj } from '../util';
+import Box from '../box';
+import { obj, env } from '../util';
 import createStyle, { getGridChildProps } from './create-style';
 import Cell from './cell';
 
+const { ieVersion } = env;
 const { pickOthers, isReactFragment } = obj;
 
-const createChildren = (children, device) => {
+const createChildren = (children, device, gap) => {
     const array = React.Children.toArray(children);
     if (!children) {
         return null;
@@ -16,19 +18,17 @@ const createChildren = (children, device) => {
 
     return array.map(child => {
         if (isReactFragment(child)) {
-            return createChildren(child.props.children, device);
+            return createChildren(child.props.children, device, gap);
         }
 
         if (
             React.isValidElement(child) &&
             typeof child.type === 'function' &&
-            ['form_item', 'responsive_grid_cell'].indexOf(
-                child.type._typeMark
-            ) > -1
+            ['form_item', 'responsive_grid_cell'].indexOf(child.type._typeMark) > -1
         ) {
             return React.cloneElement(child, {
                 style: {
-                    ...getGridChildProps(child.props, device),
+                    ...getGridChildProps(child.props, device, gap),
                     ...(child.props.style || {}),
                 },
             });
@@ -66,10 +66,7 @@ class ResponsiveGrid extends Component {
         /**
          * 每个 cell 之间的间距， [bottom&top, right&left]
          */
-        gap: PropTypes.oneOfType([
-            PropTypes.arrayOf(PropTypes.number),
-            PropTypes.number,
-        ]),
+        gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
         /**
          * 设置标签类型
          */
@@ -115,23 +112,23 @@ class ResponsiveGrid extends Component {
             dense,
         };
 
-        const others = pickOthers(
-            Object.keys(ResponsiveGrid.propTypes),
-            this.props
-        );
+        const others = pickOthers(Object.keys(ResponsiveGrid.propTypes), this.props);
 
         const styleSheet = getStyle(style, styleProps);
 
         const cls = classNames(
             {
                 [`${prefix}responsive-grid`]: true,
+                [`${prefix}responsive-grid-ie`]: ieVersion,
             },
             className
         );
 
-        return (
+        return ieVersion ? (
+            <Box {...this.props} direction="row" wrap spacing={gap} children={createChildren(children, device, gap)} />
+        ) : (
             <View style={styleSheet} className={cls} {...others}>
-                {createChildren(children, device)}
+                {createChildren(children, device, gap)}
             </View>
         );
     }
