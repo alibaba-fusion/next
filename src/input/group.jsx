@@ -52,11 +52,13 @@ class Group extends React.Component {
             addonBeforeClassName,
             addonAfterClassName,
             rtl,
+            disabled,
             ...others
         } = this.props;
 
         const cls = classNames({
             [`${prefix}input-group`]: true,
+            [`${prefix}disabled`]: disabled,
             [className]: !!className,
         });
 
@@ -70,21 +72,12 @@ class Group extends React.Component {
             [addonAfterClassName]: addonAfterClassName,
         });
 
-        const before = addonBefore ? (
-            <span className={beforeCls}>{addonBefore}</span>
-        ) : null;
+        const before = addonBefore ? <span className={beforeCls}>{addonBefore}</span> : null;
 
-        const after = addonAfter ? (
-            <span className={afterCls}>{addonAfter}</span>
-        ) : null;
+        const after = addonAfter ? <span className={afterCls}>{addonAfter}</span> : null;
 
         return (
-            <span
-                {...others}
-                dir={rtl ? 'rtl' : undefined}
-                className={cls}
-                style={style}
-            >
+            <span {...others} disabled={disabled} dir={rtl ? 'rtl' : undefined} className={cls} style={style}>
                 {before}
                 {children}
                 {after}

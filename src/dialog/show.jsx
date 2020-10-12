@@ -15,14 +15,7 @@ const MESSAGE_TYPE = {
     confirm: 'help',
 };
 
-export const ModalInner = function({
-    type,
-    messageProps = {},
-    title,
-    rtl,
-    prefix = 'next-',
-    content,
-}) {
+export const ModalInner = function({ type, messageProps = {}, title, rtl, prefix = 'next-', content }) {
     return (
         <Message
             size="large"
@@ -157,12 +150,7 @@ class Modal extends Component {
             );
 
         const newFooterActions =
-            footerActions ||
-            (type === 'alert'
-                ? ['ok']
-                : type === 'confirm'
-                ? ['ok', 'cancel']
-                : undefined);
+            footerActions || (type === 'alert' ? ['ok'] : type === 'confirm' ? ['ok', 'cancel'] : undefined);
         const newOnOk = this.wrapper(onOk, this.close);
         const newOnCancel = this.wrapper(onCancel, this.close);
         const newOnClose = this.wrapper(onClose, this.close);
@@ -212,7 +200,8 @@ export const show = (config = {}) => {
     };
 
     document.body.appendChild(container);
-    const newContext = ConfigProvider.getContext();
+    let newContext = config.contextConfig;
+    if (!newContext) newContext = ConfigProvider.getContext();
 
     let instance, myRef;
 
@@ -259,3 +248,23 @@ export const alert = methodFactory('alert');
  * @returns {Object} 包含有 hide 方法，可用来关闭对话框
  */
 export const confirm = methodFactory('confirm');
+
+export const withContext = WrappedComponent => {
+    const HOC = props => {
+        return (
+            <ConfigProvider.Consumer>
+                {contextConfig => (
+                    <WrappedComponent
+                        {...props}
+                        contextDialog={{
+                            show: (config = {}) => show({ ...config, contextConfig }),
+                            alert: (config = {}) => alert({ ...config, contextConfig }),
+                            confirm: (config = {}) => confirm({ ...config, contextConfig }),
+                        }}
+                    />
+                )}
+            </ConfigProvider.Consumer>
+        );
+    };
+    return HOC;
+};

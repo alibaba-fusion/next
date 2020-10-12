@@ -51,8 +51,8 @@
     }
 
     .#{$css-prefix}calendar-panel-header {
-        margin-left: -$popup-local-border-width;
-        margin-right: -$popup-local-border-width;
+        margin-left: calc(0px - #{$popup-local-border-width});
+        margin-right: calc(0px - #{$popup-local-border-width});
     }
 
     #{$date-picker-input-prefix} input {

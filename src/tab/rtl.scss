@@ -58,7 +58,7 @@
             }
 
             &.active {
-                margin-left: -$tab-capsule-tab-border-line-width;
+                margin-left: calc(0px - #{$tab-capsule-tab-border-line-width});
                 margin-right: auto;
                 border-left: $tab-capsule-tab-border;
                 border-color: $tab-capsule-tab-border-line-color-active;

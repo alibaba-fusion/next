@@ -138,6 +138,8 @@ export default class Form extends React.Component {
          * 是否使用 label 替换校验信息的 name 字段
          */
         useLabelForErrorMessage: PropTypes.bool,
+        // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
+        gap: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.number]),
     };
 
     static defaultProps = {
@@ -234,6 +236,7 @@ export default class Form extends React.Component {
             isPreview,
             component: Tag,
             responsive,
+            gap,
         } = this.props;
 
         const formClassName = classNames({
@@ -256,7 +259,7 @@ export default class Form extends React.Component {
                 dir={rtl ? 'rtl' : undefined}
                 onSubmit={onSubmit}
             >
-                {responsive ? <RGrid>{newChildren}</RGrid> : newChildren}
+                {responsive ? <RGrid gap={gap}>{newChildren}</RGrid> : newChildren}
             </Tag>
         );
     }

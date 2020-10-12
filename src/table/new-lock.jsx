@@ -54,7 +54,9 @@ export default function stickyLock(BaseComponent) {
         shouldComponentUpdate(nextProps, nextState, nextContext) {
             if (nextProps.pure) {
                 const isEqual = shallowElementEquals(nextProps, this.props);
-                return !(isEqual && obj.shallowEqual(nextContext, this.context));
+                return !(
+                    isEqual && obj.shallowEqual(nextContext, this.context)
+                );
             }
 
             return true;
@@ -65,17 +67,29 @@ export default function stickyLock(BaseComponent) {
         }
 
         updateOffsetArr = () => {
-            const { lockLeftChildren, lockRightChildren, originChildren } = this.splitChildren || {};
+            const { lockLeftChildren, lockRightChildren, originChildren } =
+                this.splitChildren || {};
 
             const leftLen = this.getFlatenChildren(lockLeftChildren).length;
             const rightLen = this.getFlatenChildren(lockRightChildren).length;
-            const totalLen = leftLen + rightLen + this.getFlatenChildren(originChildren).length;
+            const totalLen =
+                leftLen +
+                rightLen +
+                this.getFlatenChildren(originChildren).length;
 
             const hasLockLeft = leftLen > 0;
             const hasLockRight = rightLen > 0;
 
-            const leftOffsetArr = this.getStickyWidth(lockLeftChildren, 'left', totalLen);
-            const rightOffsetArr = this.getStickyWidth(lockRightChildren, 'right', totalLen);
+            const leftOffsetArr = this.getStickyWidth(
+                lockLeftChildren,
+                'left',
+                totalLen
+            );
+            const rightOffsetArr = this.getStickyWidth(
+                lockRightChildren,
+                'right',
+                totalLen
+            );
 
             const state = {};
 
@@ -105,12 +119,15 @@ export default function stickyLock(BaseComponent) {
 
             this.splitChildren = this.splitFromNormalizeChildren(columns);
 
-            return this.mergeFromSplitLockChildren(this.splitChildren, props.prefix);
+            return this.mergeFromSplitLockChildren(
+                this.splitChildren,
+                props.prefix
+            );
         }
 
         // 将React结构化数据提取props转换成数组
         normalizeChildren(props) {
-            const { children = [], columns } = props;
+            const { children, columns } = props;
             let isLock = false,
                 ret;
             const getChildren = children => {
@@ -121,7 +138,11 @@ export default function stickyLock(BaseComponent) {
                         if ([true, 'left', 'right'].indexOf(props.lock) > -1) {
                             isLock = true;
                             if (!('width' in props)) {
-                                log.warning(`Should config width for lock column named [ ${props.dataIndex} ].`);
+                                log.warning(
+                                    `Should config width for lock column named [ ${
+                                        props.dataIndex
+                                    } ].`
+                                );
                             }
                         }
                         ret.push(props);
@@ -135,7 +156,9 @@ export default function stickyLock(BaseComponent) {
 
             if (columns && !children) {
                 ret = columns;
-                isLock = columns.find(record => [true, 'left', 'right'].indexOf(record.lock) > -1);
+                isLock = columns.find(
+                    record => [true, 'left', 'right'].indexOf(record.lock) > -1
+                );
             } else {
                 ret = getChildren(children);
             }
@@ -191,7 +214,11 @@ export default function stickyLock(BaseComponent) {
                 }
             });
             loop(originChildren, child => {
-                return child.lock !== true && child.lock !== 'left' && child.lock !== 'right';
+                return (
+                    child.lock !== true &&
+                    child.lock !== 'left' &&
+                    child.lock !== 'right'
+                );
             });
             return {
                 lockLeftChildren,
@@ -211,10 +238,24 @@ export default function stickyLock(BaseComponent) {
             let { originChildren } = splitChildren;
 
             const flatenLeftChildren = this.getFlatenChildren(lockLeftChildren);
-            const flatenRightChildren = this.getFlatenChildren(lockRightChildren);
+            const flatenRightChildren = this.getFlatenChildren(
+                lockRightChildren
+            );
 
-            setStickyStyle(lockLeftChildren, flatenLeftChildren, 'left', this.state.leftOffsetArr, prefix);
-            setStickyStyle(lockRightChildren, flatenRightChildren, 'right', this.state.rightOffsetArr, prefix);
+            setStickyStyle(
+                lockLeftChildren,
+                flatenLeftChildren,
+                'left',
+                this.state.leftOffsetArr,
+                prefix
+            );
+            setStickyStyle(
+                lockRightChildren,
+                flatenRightChildren,
+                'right',
+                this.state.rightOffsetArr,
+                prefix
+            );
 
             Array.prototype.unshift.apply(originChildren, lockLeftChildren);
             originChildren = originChildren.concat(lockRightChildren);
@@ -235,11 +276,14 @@ export default function stickyLock(BaseComponent) {
         }
 
         onLockBodyScroll = e => {
-            const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget || {};
+            const { scrollLeft, scrollWidth, clientWidth } =
+                e.currentTarget || {};
             const { pingRight, pingLeft } = this;
 
             const pingLeftNext = scrollLeft > 0 && this.state.hasLockLeft;
-            const pingRightNext = scrollLeft < scrollWidth - clientWidth && this.state.hasLockRight;
+            const pingRightNext =
+                scrollLeft < scrollWidth - clientWidth &&
+                this.state.hasLockRight;
 
             if (pingLeft !== pingLeftNext || pingRight !== pingRightNext) {
                 const { prefix } = this.props;
@@ -263,7 +307,8 @@ export default function stickyLock(BaseComponent) {
             flatenChildren.reduce((ret, col, index) => {
                 const tag = dir === 'left' ? index : len - 1 - index;
                 const tagNext = dir === 'left' ? tag - 1 : tag + 1;
-                const nodeToGetWidth = dir === 'left' ? tag - 1 : totalLen - index;
+                const nodeToGetWidth =
+                    dir === 'left' ? tag - 1 : totalLen - index;
 
                 if (dir === 'left' && tag === 0) {
                     ret[0] = 0;
@@ -275,7 +320,8 @@ export default function stickyLock(BaseComponent) {
 
                 // no header
                 const node = this.getCellNode(0, nodeToGetWidth);
-                const colWidth = (node && parseFloat(getComputedStyle(node).width)) || 0;
+                const colWidth =
+                    (node && parseFloat(getComputedStyle(node).width)) || 0;
 
                 ret[tag] = (ret[tagNext] || 0) + colWidth;
                 return ret;
@@ -336,7 +382,15 @@ export default function stickyLock(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { children, columns, prefix, components, className, dataSource, ...others } = this.props;
+            let {
+                children,
+                columns,
+                prefix,
+                components,
+                className,
+                dataSource,
+                ...others
+            } = this.props;
 
             const normalizedChildren = this.normalizeChildrenState(this.props);
 

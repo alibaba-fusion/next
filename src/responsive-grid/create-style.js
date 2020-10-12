@@ -1,6 +1,8 @@
 // import { prefix } from 'inline-style-prefixer';
 import { filterUndefinedValue, stripObject } from './util';
+import { env } from '../util';
 
+const { ieVersion } = env;
 const getPadding = padding => {
     if (!Array.isArray(padding)) {
         return {
@@ -8,12 +10,7 @@ const getPadding = padding => {
         };
     }
 
-    const attrs = [
-        'paddingTop',
-        'paddingRight',
-        'paddingBottom',
-        'paddingLeft',
-    ];
+    const attrs = ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'];
     const paddings = {};
     let value;
 
@@ -26,10 +23,7 @@ const getPadding = padding => {
                 value = padding[index] || padding[index - 2] || 0;
                 break;
             case 3:
-                value =
-                    index === 2
-                        ? padding[2]
-                        : padding[index] || padding[index - 2] || 0;
+                value = index === 2 ? padding[2] : padding[index] || padding[index - 2] || 0;
                 break;
             case 4:
             default:
@@ -42,10 +36,7 @@ const getPadding = padding => {
     return paddings;
 };
 
-const getMargin = (
-    size,
-    { isNegative, half } = { isNegative: false, half: false }
-) => {
+const getMargin = (size, { isNegative, half } = { isNegative: false, half: false }) => {
     if (!size) {
         return {};
     }
@@ -66,11 +57,7 @@ const getMargin = (
                     value = param * (size[index] || size[index - 2] || 0);
                     break;
                 case 3:
-                    value =
-                        param *
-                        (index === 2
-                            ? size[2]
-                            : size[index] || size[index - 2] || 0);
+                    value = param * (index === 2 ? size[2] : size[index] || size[index - 2] || 0);
                     break;
                 case 4:
                 default:
@@ -141,13 +128,7 @@ const getTemplateCount = counts => {
 
 // const outerProps = ['alignSelf', 'flexGrow', 'flexShrink', 'flexBasis', 'backgroundColor', 'boxShadow', 'borderRadius', 'borderWidth', 'borderStyle', 'borderColor', 'padding', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom'];
 
-const helperProps = [
-    'margin',
-    'marginTop',
-    'marginLeft',
-    'marginRight',
-    'marginBottom',
-];
+const helperProps = ['margin', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom'];
 
 const innerProps = [
     'flexDirection',
@@ -190,7 +171,7 @@ const filterInnerStyle = style => {
     return filterUndefinedValue(props);
 };
 
-const getGridChildProps = (props, device) => {
+const getGridChildProps = (props, device, gap) => {
     const {
         row = 'initial',
         col = 'initial',
@@ -200,10 +181,8 @@ const getGridChildProps = (props, device) => {
         // alignSelf,
     } = props;
 
-    let newColSpan =
-        typeof colSpan === 'object' && 'desktop' in colSpan
-            ? colSpan.desktop
-            : colSpan;
+    let totalSpan = 12;
+    let newColSpan = typeof colSpan === 'object' && 'desktop' in colSpan ? colSpan.desktop : colSpan;
 
     ['tablet', 'phone'].forEach(deviceKey => {
         if (deviceKey === device) {
@@ -212,15 +191,32 @@ const getGridChildProps = (props, device) => {
             } else {
                 switch (deviceKey) {
                     case 'tablet':
+                        totalSpan = 8;
                         newColSpan = colSpan > 5 ? 8 : colSpan > 2 ? 4 : 2;
                         break;
                     case 'phone':
+                        totalSpan = 4;
                         newColSpan = colSpan > 2 ? 4 : 2;
                         break;
                 }
             }
         }
     });
+
+    let gapLeft = gap;
+    if (Array.isArray(gap)) {
+        gapLeft = gap[1];
+    }
+
+    const ieChildFix =
+        ieVersion && !(rowSpan === 1 && colSpan === 1)
+            ? {
+                  display: 'inline-block',
+                  width: gapLeft
+                      ? `calc(${(newColSpan / totalSpan) * 100}% - ${gapLeft}px)`
+                      : `${(newColSpan / totalSpan) * 100}%`,
+              }
+            : {};
 
     return filterUndefinedValue({
         gridRowStart: row,
@@ -231,6 +227,7 @@ const getGridChildProps = (props, device) => {
         // gridColumn: `${col} / span ${colSpan}`,
         // justifySelf,
         // alignSelf,
+        ...ieChildFix,
     });
 };
 

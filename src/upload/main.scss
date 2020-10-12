@@ -389,7 +389,7 @@
         .#{$css-prefix}upload-tool {
             position: absolute;
             z-index: 1;
-            background-color: rgba($upload-select-card-tool-bg-color, $upload-select-card-tool-bg-opacity);
+            background-color: rgba(get-compiling-value($upload-select-card-tool-bg-color), $upload-select-card-tool-bg-opacity);
             transition: all $motion-duration-immediately $motion-linear;
             opacity: 0;
             width: 100%;

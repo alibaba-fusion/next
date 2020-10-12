@@ -123,7 +123,7 @@ const NewMask = config(Mask);
 
 const create = props => {
     /* eslint-disable no-unused-vars */
-    const { duration, afterClose, ...others } = props;
+    const { duration, afterClose, contextConfig, ...others } = props;
     /* eslint-enable no-unused-vars */
 
     const div = document.createElement('div');
@@ -134,7 +134,8 @@ const create = props => {
         afterClose && afterClose();
     };
 
-    const newContext = ConfigProvider.getContext();
+    let newContext = contextConfig;
+    if (!newContext) newContext = ConfigProvider.getContext();
 
     let mask,
         myRef,
@@ -291,4 +292,29 @@ export default {
     help,
     loading,
     notice,
+};
+
+export const withContext = WrappedComponent => {
+    const HOC = props => {
+        return (
+            <ConfigProvider.Consumer>
+                {contextConfig => (
+                    <WrappedComponent
+                        {...props}
+                        contextMessage={{
+                            show: (config = {}) => show({ ...config, contextConfig }),
+                            hide,
+                            success: (config = {}) => success({ ...config, contextConfig }),
+                            warning: (config = {}) => warning({ ...config, contextConfig }),
+                            error: (config = {}) => error({ ...config, contextConfig }),
+                            help: (config = {}) => help({ ...config, contextConfig }),
+                            loading: (config = {}) => loading({ ...config, contextConfig }),
+                            notice: (config = {}) => notice({ ...config, contextConfig }),
+                        }}
+                    />
+                )}
+            </ConfigProvider.Consumer>
+        );
+    };
+    return HOC;
 };

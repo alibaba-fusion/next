@@ -319,6 +319,6 @@
         width: calc(100% - (#{$node-size} + 2 * #{$step-circle-item-node-padding} + #{$step-circle-item-body-width}));
         position: absolute;
         right: 0;
-        margin-top: -$step-circle-vertical-item-tail-size;
+        margin-top: calc(0px - #{$step-circle-vertical-item-tail-size});
     }
 }
