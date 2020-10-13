@@ -106,6 +106,62 @@ describe('Issue', () => {
         });
     });
 
+    it('should support columns with lock', done => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const columns = [{
+            title: "Title6",
+            dataIndex: "id",
+            width: 400,
+        }, {
+            title: "Title7",
+            dataIndex: "id",
+            width: 200,
+            lock: true
+        }, {
+            title: "Title7",
+            dataIndex: "id",
+            width: 200
+        }, {
+            title: "Title7",
+            dataIndex: "id",
+            width: 200
+        }];
+
+        class App extends React.Component {
+
+            render() {
+                return (
+                    <div>
+                        <Table
+                            id="normal-table"
+                            dataSource={dataSource}
+                            columns={columns}
+                            tableWidth={600}
+                        />
+                        <Table.StickyLock
+                            id="sticky-table"
+                            dataSource={dataSource}
+                            columns={columns}
+                            tableWidth={600}
+                        />
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, container, function() {
+
+            assert(document.querySelectorAll('#normal-table .next-table-lock-left .next-table-body tbody tr').length === 2);
+            assert(document.querySelectorAll('#sticky-table .next-table-fix-left')[0].style.position === 'sticky');
+            setTimeout(() => {
+                ReactDOM.unmountComponentAtNode(container);
+                document.body.removeChild(container);
+                done();
+            }, 10);
+        });
+    });
+
     it('should fix onChange reRender bug', done => {
         const container = document.createElement('div');
         document.body.appendChild(container);
