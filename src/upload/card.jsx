@@ -42,6 +42,8 @@ class Card extends Base {
          * 自定义成功和失败的列表渲染方式
          */
         itemRender: PropTypes.func,
+        isPreview: PropTypes.bool,
+        renderPreview: PropTypes.func,
     };
 
     static defaultProps = {
@@ -119,6 +121,7 @@ class Card extends Base {
             onCancel,
             timeout,
             isPreview,
+            renderPreview,
             itemRender,
         } = this.props;
 
@@ -133,6 +136,21 @@ class Card extends Base {
         const onRemoveFunc = disabled ? func.prevent : onRemove;
         const othersForList = obj.pickOthers(Card.propTypes, this.props);
         const othersForUpload = obj.pickOthers(List.propTypes, othersForList);
+
+        if (isPreview) {
+            if (typeof renderPreview === 'function') {
+                const previewCls = classNames({
+                    [`${prefix}form-preview`]: true,
+                    [className]: !!className,
+                });
+                return (
+                    <div style={style} className={previewCls}>
+                        {renderPreview(this.state.value, this.props)}
+                    </div>
+                );
+            }
+        }
+
         return (
             <List
                 className={className}
@@ -145,6 +163,7 @@ class Card extends Base {
                 onCancel={onCancel}
                 onPreview={onPreview}
                 itemRender={itemRender}
+                isPreview={isPreview}
                 uploader={this.state.uploaderRef}
                 {...othersForList}
             >
