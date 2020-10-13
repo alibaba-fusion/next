@@ -962,7 +962,7 @@ export default class Tree extends Component {
     }
 
     getDropPosition(e, node) {
-        const labelWrapperNode = node.refs.labelWrapper;
+        const labelWrapperNode = node.labelWrapperEl;
         const offsetTop = getOffset(labelWrapperNode).top;
         const offsetHeight = labelWrapperNode.offsetHeight;
         const pageY = e.pageY;
