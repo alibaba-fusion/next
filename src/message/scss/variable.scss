@@ -87,7 +87,7 @@ $message-size-m-title-content-padding: 0 $message-size-m-title-content-padding-r
 
 /// icon
 /// @namespace size/close
-$message-close-icon-size: $icon-xs;
+$message-close-icon-size: $icon-xs !default;
 
 // Statement:Common
 // ----------------------------------------
