@@ -26,7 +26,7 @@ const getNewChildren = (children, props) => {
             return getNewChildren(child.props.children, props);
         }
 
-        if (child && typeof child.type === 'function' && child.type._typeMark === 'form_item') {
+        if (child && ['function', 'object'].indexOf(typeof child.type) > -1 && child.type._typeMark === 'form_item') {
             const childrenProps = {
                 labelCol: child.props.labelCol ? child.props.labelCol : labelCol,
                 wrapperCol: child.props.wrapperCol ? child.props.wrapperCol : wrapperCol,

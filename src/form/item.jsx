@@ -388,7 +388,7 @@ export default class Item extends React.Component {
         const ele = React.Children.map(childrenNode, child => {
             if (
                 child &&
-                typeof child.type === 'function' &&
+                ['function', 'object'].indexOf(typeof child.type) > -1 &&
                 child.type._typeMark !== 'form_item' &&
                 child.type._typeMark !== 'form_error'
             ) {

@@ -23,7 +23,7 @@ const createChildren = (children, device, gap) => {
 
         if (
             React.isValidElement(child) &&
-            typeof child.type === 'function' &&
+            ['function', 'object'].indexOf(typeof child.type) > -1 &&
             ['form_item', 'responsive_grid_cell'].indexOf(child.type._typeMark) > -1
         ) {
             return React.cloneElement(child, {

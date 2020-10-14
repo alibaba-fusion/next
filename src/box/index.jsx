@@ -50,7 +50,7 @@ const createChildren = (children, { spacing, direction, wrap, device }) => {
             const childPropsMargin = getMargin(propsMargin);
             let gridProps = {};
 
-            if (typeof child.type === 'function' && child.type._typeMark === 'responsive_grid') {
+            if (['function', 'object'].indexOf(typeof child.type) > -1 && child.type._typeMark === 'responsive_grid') {
                 gridProps = createStyle({ display: 'grid', ...child.props });
             }
 
