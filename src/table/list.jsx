@@ -56,18 +56,12 @@ export default function list(BaseComponent) {
 
         render() {
             /* eslint-disable prefer-const */
-            let {
-                components,
-                children,
-                className,
-                prefix,
-                ...others
-            } = this.props;
+            let { components, children, className, prefix, ...others } = this.props;
             let isList = false,
                 ret = [];
             Children.forEach(children, child => {
                 if (child) {
-                    if (typeof child.type === 'function') {
+                    if (['function', 'object'].indexOf(typeof child.type) > -1) {
                         if (child.type._typeMark === 'listHeader') {
                             this.listHeader = child.props;
                             isList = true;

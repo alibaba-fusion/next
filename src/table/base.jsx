@@ -400,7 +400,7 @@ class Table extends React.Component {
                     if (
                         !(
                             child &&
-                            typeof child.type === 'function' &&
+                            ['function', 'object'].indexOf(typeof child.type) > -1 &&
                             (child.type._typeMark === 'column' || child.type._typeMark === 'columnGroup')
                         )
                     ) {
