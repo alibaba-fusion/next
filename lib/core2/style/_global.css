@@ -1,0 +1,19 @@
+:root {
+--language: "zh-cn";
+--typo-margin-bottom: 0.5;
+--z-pane: 89;
+--z-menu: 99;
+--z-select: 109;
+--z-dialog: 199;
+--z-balloon: 299;
+--z-loading-panel: 399;
+--z-tour-user: 499;
+--z-tour-new: 599;
+--z-dialog-login: 699;
+--z-msg: 999;
+--prefix-for-webkit: undefined;
+--prefix-for-mozilla: undefined;
+--prefix-for-microsoft: undefined;
+--prefix-for-opera: undefined;
+--prefix-for-spec: undefined;
+}

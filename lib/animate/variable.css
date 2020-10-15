@@ -1,0 +1,13 @@
+:root {
+--countDefault: 1;
+--durationSmallDefault: 0.2s;
+--durationDefault: 0.3s;
+--durationBigDefault: 0.35s;
+--delayDefault: 0s;
+--functionDefault: cubic-bezier(0.23, 1, 0.32, 1);
+--fillDefault: both;
+--visibilityDefault: hidden;
+--ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+--ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+--ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+}
