@@ -265,6 +265,7 @@
     &-text {
         box-shadow: none;
         border-radius: 0;
+        user-select: text;
 
         &.hover,
         &:hover {
