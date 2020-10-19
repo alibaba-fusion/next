@@ -85,10 +85,11 @@
 @mixin balloon-arrow-rtl(
     $arrorExpose
 ) {
-    $shadow-top: $balloon-shadow-top;
-    $shadow-right: $balloon-shadow-right;
-    $shadow-bottom: $balloon-shadow-bottom;
-    $shadow-left: $balloon-shadow-left;
+    // 小三角不需要阴影
+    $shadow-top: null;
+    $shadow-right: null;
+    $shadow-bottom: null;
+    $shadow-left: null;
 
     &.#{$css-prefix}balloon-right:after {
         left: $arrorExpose;
