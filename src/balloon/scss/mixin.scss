@@ -42,17 +42,12 @@
     $widthBorder,
     $arrorExpose
 ) {
-    $shadow-top: $balloon-shadow-top;
-    $shadow-right: $balloon-shadow-right;
-    $shadow-bottom: $balloon-shadow-bottom;
-    $shadow-left: $balloon-shadow-left;
+    // 小三角不需要阴影
+    $shadow-top: null;
+    $shadow-right: null;
+    $shadow-bottom: null;
+    $shadow-left: null;
 
-    @if (get-compiling-value($shadow) == get-compiling-value($shadow-zero)) {
-        $shadow-top: null;
-        $shadow-right: null;
-        $shadow-bottom: null;
-        $shadow-left: null;
-    }
     &:after {
         position: absolute;
         width: $height;
@@ -209,7 +204,7 @@
     $colorBorder,
     $colorBg
 ) {
-
+    // 小三角不需要阴影
     $shadow-top: null;
     $shadow-right: null;
     $shadow-bottom: null;
