@@ -1,6 +1,6 @@
 @import "../core/index-noreset.scss";
 @import "scss/variable";
-@import "../tree/scss//variable.scss";
+@import "../tree/scss/variable.scss";
 
 #{$tree-select-prefix} {
     @include box-sizing;

@@ -630,10 +630,7 @@ class TreeSelect extends Component {
     }
 
     createNodesByData(data, searching) {
-        const { treeProps, useVirtual } = this.props;
         const { searchedKeys, retainedKeys } = this.state;
-
-        const virtual = 'useVirtual' in this.props ? useVirtual : treeProps && treeProps.useVirtual;
 
         const loop = (data, isParentMatched, prefix = '0') => {
             const retainedNodes = [];
@@ -643,17 +640,15 @@ class TreeSelect extends Component {
                 const pos = `${prefix}-${index}`;
                 const key = this.state._p2n[pos].key;
                 const addNode = (isParentMatched, hide) => {
-                    // TODO:
-                    // 对没有开启虚拟滚动的 暂时保留TreeNode节点 1.21版本可以去掉
                     if (hide) {
                         others.style = { display: 'none' };
                     }
-                    (!hide || !virtual) &&
-                        retainedNodes.push(
-                            <TreeNode {...others} key={key}>
-                                {children && children.length ? loop(children, isParentMatched, pos) : null}
-                            </TreeNode>
-                        );
+
+                    retainedNodes.push(
+                        <TreeNode {...others} key={key}>
+                            {children && children.length ? loop(children, isParentMatched, pos) : null}
+                        </TreeNode>
+                    );
                 };
 
                 if (searching) {
@@ -674,6 +669,7 @@ class TreeSelect extends Component {
 
         return loop(data, false);
     }
+
     /*eslint-disable max-statements*/
     renderPopupContent() {
         const prefix = this.props.prefix;
@@ -769,13 +765,14 @@ class TreeSelect extends Component {
                 }
             }
         }
+        const contentClass = `${treeSelectPrefix}dropdown-content`;
 
         return (
             <div className={`${treeSelectPrefix}dropdown`}>
                 {notFound ? (
-                    <div className={`${treeSelectPrefix}not-found`}>{notFoundContent}</div>
+                    <div className={`${treeSelectPrefix}not-found contentClass`}>{notFoundContent}</div>
                 ) : (
-                    <Tree {...treeProps} {...customTreeProps}>
+                    <Tree {...treeProps} {...customTreeProps} className={contentClass}>
                         {newChildren}
                     </Tree>
                 )}
@@ -807,6 +804,7 @@ class TreeSelect extends Component {
             </p>
         );
     }
+
     /*eslint-enable*/
     render() {
         const {
