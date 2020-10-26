@@ -716,6 +716,7 @@ class TreeSelect extends Component {
             customTreeProps.style = {
                 maxHeight: '260px',
                 overflow: 'auto',
+                boxSizing: 'border-box',
                 ...customTreeProps.style,
             };
         }
@@ -769,14 +770,12 @@ class TreeSelect extends Component {
             }
         }
 
-        const contentClass = `${treeSelectPrefix}dropdown-content`;
-
         return (
             <div className={`${treeSelectPrefix}dropdown`}>
                 {notFound ? (
-                    <div className={`${treeSelectPrefix}not-found ${contentClass}`}>{notFoundContent}</div>
+                    <div className={`${treeSelectPrefix}not-found`}>{notFoundContent}</div>
                 ) : (
-                    <Tree {...treeProps} {...customTreeProps} className={contentClass}>
+                    <Tree {...treeProps} {...customTreeProps}>
                         {newChildren}
                     </Tree>
                 )}
