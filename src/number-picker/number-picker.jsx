@@ -202,6 +202,23 @@ class NumberPicker extends React.Component {
 
             // in case of autoCorrect ('0.'=>0, '0.0'=>0) , we have these steps
             if (value) {
+                const precisionCurrent = value.length - value.indexOf('.') - 1;
+                const precisionSet = this.getPrecision();
+                const dotNum = value.match(/\./g);
+                const dotIndex = value.indexOf('.');
+
+                // ignore more than one . or -, cut at second . or -
+                if (dotNum && dotNum.length > 1) value = value.substr(0, value.split('.', 2).join('.').length);
+                const minusNum = value.match(/-/g);
+                if (minusNum && minusNum.length > 1) value = value.substr(0, value.split('-', 2).join('.').length);
+
+                // ignore . when precision set 0
+                // leave out digits larger than precision set
+                if (dotIndex > -1) {
+                    if (precisionSet === 0) value = value.substr(0, dotIndex);
+                    else if (precisionCurrent > precisionSet) value = value.substr(0, dotIndex + 1 + precisionSet);
+                }
+
                 // ignore when input start form '-'
                 if (value === '-' || this.state.value === '-') {
                     this.setState({
@@ -282,14 +299,6 @@ class NumberPicker extends React.Component {
             }
             if (val > props.max) {
                 val = props.max;
-            }
-
-            // precision=2  and input from 1.99 to 1.999, should stay with 1.99 not 2
-            const strValue = `${val}`;
-            const pointPos = strValue.indexOf('.');
-            const cutPos = pointPos + 1 + this.getPrecision();
-            if (pointPos !== -1 && strValue.length > cutPos) {
-                val = Number(strValue.substr(0, cutPos));
             }
         } else {
             val = this.state.value;
