@@ -41,7 +41,7 @@ export interface ListProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 自定义 Loading 组件
      * 请务必透传 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
      */
-    loadingComponent?: (props: LoadingProps) => void;
+    loadingComponent?: (props: LoadingProps) => ReactNode;
     emptyContent?: ReactNode;
 }
 
