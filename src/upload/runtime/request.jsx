@@ -56,8 +56,11 @@ export default function upload(option) {
             formData.append(key, option.data[key]);
         });
     }
-
-    formData.append(option.filename, option.file);
+    if (option.file instanceof Blob) {
+        formData.append(option.filename, option.file, option.file.name);
+    } else {
+        formData.append(option.filename, option.file);
+    }
 
     xhr.onerror = function error(e) {
         option.onError(e);
