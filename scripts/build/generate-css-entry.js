@@ -28,9 +28,11 @@ module.exports = async function() {
             const srcBasePath = path.join(cwd, 'src', componentName);
 
             const libStyleJSContent = fs.readFileSync(path.join(libBasePath, 'style.js'), 'utf8');
-            const libJsContent = libStyleJSContent.replace('main.scss', 'index.css').replace('style.js', 'style2.js');
+            const libJsContent = libStyleJSContent
+                .replace('main.scss', 'index.css')
+                .replace(/style\.js/gi, 'style2.js');
             const esStyleJSContent = fs.readFileSync(path.join(esBasePath, 'style.js'), 'utf8');
-            const esJsContent = esStyleJSContent.replace('main.scss', 'index.css').replace('style.js', 'style2.js');
+            const esJsContent = esStyleJSContent.replace('main.scss', 'index.css').replace(/style\.js/gi, 'style2.js');
 
             // write style2.js
             fs.outputFileSync(path.join(libBasePath, 'style2.js'), libJsContent);
