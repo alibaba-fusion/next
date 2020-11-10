@@ -1,0 +1,282 @@
+<% include partials/header %>
+
+<div class="demo-wrapper pc">
+    <div class="demo-title">
+        <%= comp.name %>
+    </div>
+    <div class="demo-index">
+        <ul class="demo-index-list">
+            <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide">Guide</a></li>
+            <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
+            <% for(let i = 0; i<demosDoc.length; ++i){%>
+            <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].title%>">
+                <a href="#<%=demosDoc[i].title%>"><%=demosDoc[i].title%></a>
+            </li>
+            <%}%>
+            <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
+        </ul>
+    </div>
+    <div id="demo-guide" class="demo-head markdown scroll-count-item active">
+            <div id="demo-area" class="next-demo-section">
+                <div id="md-area-former" class="markdown-body"><%-readmeFormer%>
+    </div>
+    <div id="md-area-latter" class="markdown-body"><%-readmeLatter%></div>
+</div>
+</div>
+</div>
+
+<script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+<script src="//shadow.elemecdn.com/npm/react@16.13.0/umd/react.development.js"></script>
+<script src="//shadow.elemecdn.com/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+<script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
+
+<script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
+<script
+    src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
+
+<script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
+<script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
+<!-- <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
+<script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script> -->
+
+<script>
+    window.react = window.React;
+    window['react-dom'] = window.ReactDOM;
+    window['prop-types'] = window.PropTypes;
+    window['react-dnd'] = window.ReactDnD;
+    window['react-dnd-html5-backend'] = window.ReactDnDHTML5Backend;
+    // window['@alife/next'] = window.Next;
+    // window['@alifd/next'] = window.Next;
+    // window.ConfigProvider = window.Next.ConfigProvider;
+    // window.customIcons = [];
+    // {% if themepkg.icon_extra %}
+    //     window.customIcons = "{% for iconname,val in themepkg.icon_extra %}{{iconname}},{% endfor %}".split(',').filter(key => !!key);
+    // {% endif %}
+
+    (function () {
+
+        // 交换两个元素
+        function swapElements(a, b) {
+            if (a == b) return
+            //记录父元素
+            var bp = b.parentNode,
+                ap = a.parentNode
+            //记录下一个同级元素
+            var an = a.nextElementSibling,
+                bn = b.nextElementSibling
+            //如果参照物是邻近元素则直接调整位置
+            if (an == b) return bp.insertBefore(b, a)
+            if (bn == a) return ap.insertBefore(a, b)
+            if (a.contains(b))
+                //如果a包含了b
+                return ap.insertBefore(b, a), bp.insertBefore(a, bn)
+            else return bp.insertBefore(a, b), ap.insertBefore(b, an)
+        }
+        // // 设置 ConfigProvider 国际化语言
+        // ConfigProvider.initLocales(window.Next.locales);
+        // ConfigProvider.setLanguage('{{locale}}' ? '{{locale}}': 'zh-cn');
+        // 加载 代码展开按钮事件
+        $(function () {
+            $('#demo-list').on('click', '.demo-list-item-control-img', function (event) {
+                const $target = $(event.target);
+                const controlId = $target.data('control-id');
+                const $demoItemCode = $('#' + controlId);
+                $demoItemCode.toggleClass('expand');
+            });
+
+            $('.demo-list-item-header a').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                $('.demo-list-item').removeClass('active');
+                $target.parents('.demo-list-item').addClass('active');
+            });
+
+            $('.demo-index-item').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                const id = $target.find('a').attr('href');
+                $('.demo-list-item').removeClass('active');
+                $(`${id}`).addClass('active');
+            });
+
+            $('.code-expand-icon-hide').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                const bodyC = $target[0].parentElement.parentElement.nextElementSibling;
+                var name;
+                if (bodyC.id.match('-live-body')) {
+                    name = bodyC.id.replace('-live-body', '');
+                    liveErr = $(`#${name}-live-error`)[0];
+                    if (liveErr) liveErr.style.display = "none";
+                } else {
+                    name = bodyC.id.replace('-body', '');
+                    liveErr = $(`#${name}-live-error`)[0];
+                    if (liveErr) liveErr.style.display = "none";
+                }
+                bodyC.style.display = 'none';
+                console.log(bodyC)
+                $(`#${name}-icon-hide`)[0].style.display = 'none';
+                $(`#${name}-icon-show`)[0].style.display = '';
+                $(`#${name}-operations`)[0].style.borderBottom = '';
+            });
+
+            $('.code-expand-icon-show').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                const bodyC = $target[0].parentElement.parentElement.nextElementSibling;
+                var name;
+                console.log(bodyC.id.match('-live-body'))
+                if (bodyC.id.match('-live-body')) {
+                    name = bodyC.id.replace('-live-body', '');
+                    liveErr = $(`#${name}-live-error`)[0];
+                    if (liveErr) liveErr.style.display = "";
+                } else {
+                    name = bodyC.id.replace('-body', '');
+                }
+                bodyC.style.display = '';
+                console.log(`#${name}-icon-show`, $(`#${name}-icon-show`), $(`#${name}-icon-hide`)[0], $(`#${name}-operations`)[0])
+                $(`#${name}-icon-show`)[0].style.display = 'none';
+                $(`#${name}-icon-hide`)[0].style.display = '';
+                $(`#${name}-operations`)[0].style.borderBottom = 'dashed #EEE 1px';
+            });
+
+            $('.react-live-switch').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                var bodyC = $target[0].parentElement.parentElement.nextElementSibling;
+                var bodyN;
+                var liveErr;
+                var name;
+                var mountC;
+                if (bodyC.id.match('-live-body')) {
+                    name = bodyC.id.replace('-live-body', '');
+                    $target[0].src = "https://user-images.githubusercontent.com/17658189/63178611-4e90d580-c042-11e9-875f-f2455148b9ae.png";
+                    bodyN = $(`#${name}-body`)[0];
+                    mountC = $(`#${name}-live-preview`)[0];
+                    mountN = $(`#${name}-mount`)[0];
+                    liveErr = $(`#${name}-live-error`)[0];
+                    if (liveErr) liveErr.style.display = "none";
+                } else {
+                    name = bodyC.id.replace('-body', '');
+                    $target[0].src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png";
+                    bodyN = $(`#${name}-live-body`)[0];
+                    mountC = $(`#${name}-mount`)[0];
+                    mountN = $(`#${name}-live-preview`)[0];
+                    liveErr = $(`#${name}-live-error`)[0];
+                    if ($(`#${name}-icon-show`)[0].style.display === 'none' && liveErr) liveErr.style.display = "";
+                }
+
+                bodyC.style.display = "none";
+                mountC.style.display = "none";
+
+                swapElements(bodyC, bodyN);
+                swapElements(mountC, mountN);
+                if ($(`#${name}-icon-show`)[0].style.display === 'none') bodyN.style.display = "";
+                mountN.style.display = "";
+            });
+
+            $('.all-code-box-controls').on('click', function (event) {
+                console.log('hhhhhh',window.localStorage.foldAll)
+                if (window.localStorage.foldAll) {
+                    window.localStorage.foldAll = false;
+                    document.querySelectorAll('.next-demo-body').forEach((el) => {
+                        el.style.display = "none";
+                    })
+                    return;
+                }
+                window.localStorage['foldAll'] = true;
+                document.querySelectorAll('.next-demo-body').forEach((el) => {
+                    console.log(el)
+                    el.style.display = "";
+                })
+            });
+        });
+
+        $(window).scroll(function () {
+            var $sections = $('.scroll-count-item'); // 获取所有的内容块
+            var currentScroll = $(this).scrollTop();  // winodw滚动的高度
+            var $currentSection;   //   当前内容块
+            $sections.each(function () {
+                var divPosition = $(this).offset().top;  // 获取到当前内容块具体页面顶部的距离
+                if (divPosition - 1 < currentScroll) {  //  通过条件判断匹配到当前滚动内容块
+                    $currentSection = $(this);
+                }
+                // 如果楼层最上端有其它的内容快需要加一个判断
+                if ($currentSection) {
+                    var id = $currentSection.attr('data-scroll-id');
+                    $('.demo-index-item').removeClass('active');
+                    console.log(id)
+                    $('.demo-index-item[data-id="' + id + '"]').addClass('active');
+                }
+            });
+        });
+
+    })();
+</script>
+
+
+<!--
+<% for(var i=0; i<demosDoc.length; i++){ %>
+            <div class="demo-list-item scroll-count-item" data-scroll-id="<%=demosDoc[i].title%>" id="<%=demosDoc[i].title%>">
+                <div class="demo-list-item-header markdown">
+                    <h3>
+                        <a href="#<%=demosDoc[i].title%>" class="anchor"># <span><%=demosDoc[i].title%></span></a>
+                    </h3>
+                </div>
+                <div class="demo-list-item-body" id="react-app-code-<%=i%>" >
+                    <div class="demo-list-item-viewbox">
+                        <div id="react-app-<%=i%>"></div>
+                        <script>var mountNode = document.getElementById('react-app-<%=i%>');</script>
+                        <div class="demo-list-item-code markdown" >
+                            <ul class="demo-code-previews">
+                                <li class="demo-code-preview-item">
+                                    <form class="preview-form" action="https://codepen.io/pen/define" method="POST" target="_blank">
+                                        
+                                        <button class="preview-btn" type="submit">
+                                            <svg class="preview-paltform-icon" viewBox="0 0 100 100" width="100%" height="100%"><path d="M100 34.2c-.4-2.6-3.3-4-5.3-5.3-3.6-2.4-7.1-4.7-10.7-7.1-8.5-5.7-17.1-11.4-25.6-17.1-2-1.3-4-2.7-6-4-1.4-1-3.3-1-4.8 0-5.7 3.8-11.5 7.7-17.2 11.5L5.2 29C3 30.4.1 31.8 0 34.8c-.1 3.3 0 6.7 0 10v16c0 2.9-.6 6.3 2.1 8.1 6.4 4.4 12.9 8.6 19.4 12.9 8 5.3 16 10.7 24 16 2.2 1.5 4.4 3.1 7.1 1.3 2.3-1.5 4.5-3 6.8-4.5 8.9-5.9 17.8-11.9 26.7-17.8l9.9-6.6c.6-.4 1.3-.8 1.9-1.3 1.4-1 2-2.4 2-4.1V37.3c.1-1.1.2-2.1.1-3.1 0-.1 0 .2 0 0zM54.3 12.3L88 34.8 73 44.9 54.3 32.4V12.3zm-8.6 0v20L27.1 44.8 12 34.8l33.7-22.5zM8.6 42.8L19.3 50 8.6 57.2V42.8zm37.1 44.9L12 65.2l15-10.1 18.6 12.5v20.1zM50 60.2L34.8 50 50 39.8 65.2 50 50 60.2zm4.3 27.5v-20l18.6-12.5 15 10.1-33.6 22.4zm37.1-30.5L80.7 50l10.8-7.2-.1 14.4z"></path></svg>
+                                            CodePen
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                            <%- demosDoc[i].html %>
+                        </div>
+                    </div>
+                    <div class="demo-list-item-description">
+                        <%- demosDoc[i].desc %>
+                    </div>
+                    <div class="demo-list-item-control">
+                        <img class="demo-list-item-control-img" data-control-id="react-app-code-<%=i%>" src="https://img.alicdn.com/tfs/TB13J3EdzihSKJjy0FiXXcuiFXa-20-20.svg" alt="code collapse" class="collapse-btn">
+                    </div>
+                </div>
+            </div>
+        <% } %> -->
+
+
+<script>
+    if (window.top !== window) {
+
+        window.addEventListener("hashchange", function () {
+            window.top.postMessage({
+                type: 'hashChange',
+                from: 'mc',
+                body: document.location.hash
+            }, '*');
+        }, false);
+        window.addEventListener("message", function (event) {
+            var data = event.data;
+            if (data && data.from === 'app' && data.type === 'hashChange' && data.body) {
+                changeHash(data.body);
+            }
+        }, false);
+    }
+
+    function changeHash(hash) {
+        window.location.hash = hash;
+    }
+
+</script>
+
+<% scripts.forEach(function(src) { %>
+<script src="<%= src %>"></script>
+<% })%>
+
+
+<% include partials/footer %>
