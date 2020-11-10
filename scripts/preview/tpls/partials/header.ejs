@@ -13,6 +13,8 @@
   <link rel="stylesheet"
     href="http://g.alicdn.com/fusion-platform/material-center-static/0.3.0/pages/comp-demo/index.bundle.css">
   <link href="https://g.alicdn.com/code/lib/cropperjs/1.0.0-rc.3/cropper.min.css" rel="stylesheet">
+
+  <!-- demo card -->
   <style>
     .next-demo-item {
       border: 1px solid #EEE;
@@ -91,8 +93,6 @@
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      width: 16px;
-      height: 16px;
       margin-left: 16px;
       color: rgba(0, 0, 0, .45);
       cursor: pointer;
@@ -120,15 +120,30 @@
       width: 16px;
     }
 
+    .all-demo-box-controls {
+      float: right;
+      display: flex;
+    }
 
+    .all-demo-box-controls svg {
+      height: 20px;
+      width: 20px;
+      position: relative;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      color: rgba(0, 0, 0, .45);
+      cursor: pointer;
+      -webkit-transition: all .24s;
+      transition: all .24s;
+      margin: 8px;
+    }
+  </style>
+
+  <style>
     .react-live-error {
       background-color: #0A0C18;
       color: #fff;
-    }
-
-    .all-code-box-controls {
-      float: right;
-      display: flex;
     }
 
     .next-demo-links {
@@ -301,7 +316,7 @@
     }
   </style>
 
-<!-- markdown table css -->
+  <!-- markdown table css -->
   <style>
     body>h2:first-child {
       margin-top: 0;

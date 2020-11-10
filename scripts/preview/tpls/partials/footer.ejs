@@ -1,2 +1,12 @@
 </body>
+<script>
+    if (window.localStorage.foldAll === 'true') {
+        $('#all-not-expand')[0].style.display = "none";
+        $('#all-expanded')[0].style.display = "";
+        document.querySelectorAll('.next-demo-body:not([id*="live-body"])').forEach((el) => {
+            el.style.display = "";
+        })
+    }
+</script>
+
 </html>

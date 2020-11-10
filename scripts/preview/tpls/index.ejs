@@ -1,30 +1,5 @@
 <% include partials/header %>
 
-<div class="demo-wrapper pc">
-    <div class="demo-title">
-        <%= comp.name %>
-    </div>
-    <div class="demo-index">
-        <ul class="demo-index-list">
-            <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide">Guide</a></li>
-            <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
-            <% for(let i = 0; i<demosDoc.length; ++i){%>
-            <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].title%>">
-                <a href="#<%=demosDoc[i].title%>"><%=demosDoc[i].title%></a>
-            </li>
-            <%}%>
-            <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
-        </ul>
-    </div>
-    <div id="demo-guide" class="demo-head markdown scroll-count-item active">
-            <div id="demo-area" class="next-demo-section">
-                <div id="md-area-former" class="markdown-body"><%-readmeFormer%>
-    </div>
-    <div id="md-area-latter" class="markdown-body"><%-readmeLatter%></div>
-</div>
-</div>
-</div>
-
 <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
 <script src="//shadow.elemecdn.com/npm/react@16.13.0/umd/react.development.js"></script>
 <script src="//shadow.elemecdn.com/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
@@ -56,7 +31,6 @@
     // {% endif %}
 
     (function () {
-
         // 交换两个元素
         function swapElements(a, b) {
             if (a == b) return
@@ -172,21 +146,29 @@
                 mountN.style.display = "";
             });
 
-            $('.all-code-box-controls').on('click', function (event) {
-                console.log('hhhhhh',window.localStorage.foldAll)
-                if (window.localStorage.foldAll) {
-                    window.localStorage.foldAll = false;
+            $('#expand-all').on('click', function (event) {
+                const a = $('#all-expanded')[0].style.display;
+                $('#all-expanded')[0].style.display = $('#all-not-expand')[0].style.display;
+                $('#all-not-expand')[0].style.display = a;
+                if (window.localStorage.foldAll === 'true') {
+                    window.localStorage.foldAll = 'false';
                     document.querySelectorAll('.next-demo-body').forEach((el) => {
                         el.style.display = "none";
                     })
                     return;
                 }
-                window.localStorage['foldAll'] = true;
-                document.querySelectorAll('.next-demo-body').forEach((el) => {
-                    console.log(el)
+                window.localStorage['foldAll'] = 'true';
+                document.querySelectorAll('.next-demo-body:not([id*="live-body"])').forEach((el) => {
                     el.style.display = "";
                 })
             });
+
+            $('#debug-demo').on('click', function (event) {
+                document.querySelectorAll('[debug=true]').forEach((el) => el.style.display = el.style.display ? "" : "none");
+                const a = $('#debug-hide')[0].style.display;
+                $('#debug-hide')[0].style.display = $('#debug-show')[0].style.display;
+                $('#debug-show')[0].style.display = a;
+            })
         });
 
         $(window).scroll(function () {
@@ -202,7 +184,6 @@
                 if ($currentSection) {
                     var id = $currentSection.attr('data-scroll-id');
                     $('.demo-index-item').removeClass('active');
-                    console.log(id)
                     $('.demo-index-item[data-id="' + id + '"]').addClass('active');
                 }
             });
@@ -210,45 +191,6 @@
 
     })();
 </script>
-
-
-<!--
-<% for(var i=0; i<demosDoc.length; i++){ %>
-            <div class="demo-list-item scroll-count-item" data-scroll-id="<%=demosDoc[i].title%>" id="<%=demosDoc[i].title%>">
-                <div class="demo-list-item-header markdown">
-                    <h3>
-                        <a href="#<%=demosDoc[i].title%>" class="anchor"># <span><%=demosDoc[i].title%></span></a>
-                    </h3>
-                </div>
-                <div class="demo-list-item-body" id="react-app-code-<%=i%>" >
-                    <div class="demo-list-item-viewbox">
-                        <div id="react-app-<%=i%>"></div>
-                        <script>var mountNode = document.getElementById('react-app-<%=i%>');</script>
-                        <div class="demo-list-item-code markdown" >
-                            <ul class="demo-code-previews">
-                                <li class="demo-code-preview-item">
-                                    <form class="preview-form" action="https://codepen.io/pen/define" method="POST" target="_blank">
-                                        
-                                        <button class="preview-btn" type="submit">
-                                            <svg class="preview-paltform-icon" viewBox="0 0 100 100" width="100%" height="100%"><path d="M100 34.2c-.4-2.6-3.3-4-5.3-5.3-3.6-2.4-7.1-4.7-10.7-7.1-8.5-5.7-17.1-11.4-25.6-17.1-2-1.3-4-2.7-6-4-1.4-1-3.3-1-4.8 0-5.7 3.8-11.5 7.7-17.2 11.5L5.2 29C3 30.4.1 31.8 0 34.8c-.1 3.3 0 6.7 0 10v16c0 2.9-.6 6.3 2.1 8.1 6.4 4.4 12.9 8.6 19.4 12.9 8 5.3 16 10.7 24 16 2.2 1.5 4.4 3.1 7.1 1.3 2.3-1.5 4.5-3 6.8-4.5 8.9-5.9 17.8-11.9 26.7-17.8l9.9-6.6c.6-.4 1.3-.8 1.9-1.3 1.4-1 2-2.4 2-4.1V37.3c.1-1.1.2-2.1.1-3.1 0-.1 0 .2 0 0zM54.3 12.3L88 34.8 73 44.9 54.3 32.4V12.3zm-8.6 0v20L27.1 44.8 12 34.8l33.7-22.5zM8.6 42.8L19.3 50 8.6 57.2V42.8zm37.1 44.9L12 65.2l15-10.1 18.6 12.5v20.1zM50 60.2L34.8 50 50 39.8 65.2 50 50 60.2zm4.3 27.5v-20l18.6-12.5 15 10.1-33.6 22.4zm37.1-30.5L80.7 50l10.8-7.2-.1 14.4z"></path></svg>
-                                            CodePen
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                            <%- demosDoc[i].html %>
-                        </div>
-                    </div>
-                    <div class="demo-list-item-description">
-                        <%- demosDoc[i].desc %>
-                    </div>
-                    <div class="demo-list-item-control">
-                        <img class="demo-list-item-control-img" data-control-id="react-app-code-<%=i%>" src="https://img.alicdn.com/tfs/TB13J3EdzihSKJjy0FiXXcuiFXa-20-20.svg" alt="code collapse" class="collapse-btn">
-                    </div>
-                </div>
-            </div>
-        <% } %> -->
-
 
 <script>
     if (window.top !== window) {
@@ -274,9 +216,83 @@
 
 </script>
 
+
+<div class="demo-wrapper pc">
+    <div class="demo-title">
+        <%= comp.name %>
+    </div>
+    <div class="demo-index">
+        <ul class="demo-index-list">
+            <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide">Guide</a></li>
+            <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
+            <% for(let i = 0; i<demosDoc.length; ++i){%>
+            <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].title%>"
+                debug="<%=demosDoc[i].debug==="true"%>" style="<%=demosDoc[i].debug==="true" ? 'display: none' : ''%>">
+                <a href="#<%=demosDoc[i].title%>"
+                    style="<%=demosDoc[i].debug==="true" ? 'color: #c41d7f' : ''%>"><%=demosDoc[i].title%></a>
+            </li>
+            <%}%>
+            <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
+        </ul>
+    </div>
+    <div id="demo-guide" class="demo-head markdown scroll-count-item active">
+        <div id="demo-area" class="next-demo-section">
+            <div id="md-area-former" class="markdown-body">
+                <%- readmeFormer %>
+
+            <h2 id="demo-list">
+                <a href='#demo-list'>
+                    <span>代码演示</span>
+                </a>
+                <span class="all-demo-box-controls">
+                    <span id="expand-all" role="img" aria-label="code" class="code-box-expand-trigger">
+                        <svg id="all-not-expand" viewBox="64 64 896 896" focusable="false" class="" data-icon="code" width="1em"
+                            height="1em" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M516 673c0 4.4 3.4 8 7.5 8h185c4.1 0 7.5-3.6 7.5-8v-48c0-4.4-3.4-8-7.5-8h-185c-4.1 0-7.5 3.6-7.5 8v48zm-194.9 6.1l192-161c3.8-3.2 3.8-9.1 0-12.3l-192-160.9A7.95 7.95 0 00308 351v62.7c0 2.4 1 4.6 2.9 6.1L420.7 512l-109.8 92.2a8.1 8.1 0 00-2.9 6.1V673c0 6.8 7.9 10.5 13.1 6.1zM880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656z">
+                            </path>
+                        </svg>
+                        <svg id="all-expanded" viewBox="64 64 896 896" focusable="false" class="" data-icon="code" width="1em"
+                            height="1em" fill="currentColor" aria-hidden="true" style="display: none;">
+                            <path
+                                d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM513.1 518.1l-192 161c-5.2 4.4-13.1.7-13.1-6.1v-62.7c0-2.3 1.1-4.6 2.9-6.1L420.7 512l-109.8-92.2a7.63 7.63 0 01-2.9-6.1V351c0-6.8 7.9-10.5 13.1-6.1l192 160.9c3.9 3.2 3.9 9.1 0 12.3zM716 673c0 4.4-3.4 8-7.5 8h-185c-4.1 0-7.5-3.6-7.5-8v-48c0-4.4 3.4-8 7.5-8h185c4.1 0 7.5 3.6 7.5 8v48z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span id="debug-demo" role="img" aria-label="debug" class="code-box-expand-trigger">
+                        <svg id="debug-hide" viewBox="64 64 896 896" focusable="false" class="" data-icon="bug"
+                            width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M304 280h56c4.4 0 8-3.6 8-8 0-28.3 5.9-53.2 17.1-73.5 10.6-19.4 26-34.8 45.4-45.4C450.9 142 475.7 136 504 136h16c28.3 0 53.2 5.9 73.5 17.1 19.4 10.6 34.8 26 45.4 45.4C650 218.9 656 243.7 656 272c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-40-8.8-76.7-25.9-108.1a184.31 184.31 0 00-74-74C596.7 72.8 560 64 520 64h-16c-40 0-76.7 8.8-108.1 25.9a184.31 184.31 0 00-74 74C304.8 195.3 296 232 296 272c0 4.4 3.6 8 8 8z">
+                            </path>
+                            <path
+                                d="M940 512H792V412c76.8 0 139-62.2 139-139 0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8a63 63 0 01-63 63H232a63 63 0 01-63-63c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8 0 76.8 62.2 139 139 139v100H84c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h148v96c0 6.5.2 13 .7 19.3C164.1 728.6 116 796.7 116 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-44.2 23.9-82.9 59.6-103.7a273 273 0 0022.7 49c24.3 41.5 59 76.2 100.5 100.5S460.5 960 512 960s99.8-13.9 141.3-38.2a281.38 281.38 0 00123.2-149.5A120 120 0 01836 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-79.3-48.1-147.4-116.7-176.7.4-6.4.7-12.8.7-19.3v-96h148c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM716 680c0 36.8-9.7 72-27.8 102.9-17.7 30.3-43 55.6-73.3 73.3C584 874.3 548.8 884 512 884s-72-9.7-102.9-27.8c-30.3-17.7-55.6-43-73.3-73.3A202.75 202.75 0 01308 680V412h408v268z">
+                            </path>
+                        </svg>
+                        <svg id="debug-show" viewBox="64 64 896 896" focusable="false" class="" data-icon="bug"
+                            width="1em" height="1em" fill="currentColor" aria-hidden="true" style="display: none;">
+                            <path
+                                d="M304 280h416c4.4 0 8-3.6 8-8 0-40-8.8-76.7-25.9-108.1a184.31 184.31 0 00-74-74C596.7 72.8 560 64 520 64h-16c-40 0-76.7 8.8-108.1 25.9a184.31 184.31 0 00-74 74C304.8 195.3 296 232 296 272c0 4.4 3.6 8 8 8z">
+                            </path>
+                            <path
+                                d="M940 512H792V412c76.8 0 139-62.2 139-139 0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8a63 63 0 01-63 63H232a63 63 0 01-63-63c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8 0 76.8 62.2 139 139 139v100H84c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h148v96c0 6.5.2 13 .7 19.3C164.1 728.6 116 796.7 116 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-44.2 23.9-82.9 59.6-103.7a273 273 0 0022.7 49c24.3 41.5 59 76.2 100.5 100.5 28.9 16.9 61 28.8 95.3 34.5 4.4 0 8-3.6 8-8V484c0-4.4 3.6-8 8-8h60c4.4 0 8 3.6 8 8v464.2c0 4.4 3.6 8 8 8 34.3-5.7 66.4-17.6 95.3-34.5a281.38 281.38 0 00123.2-149.5A120.4 120.4 0 01836 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-79.3-48.1-147.4-116.7-176.7.4-6.4.7-12.8.7-19.3v-96h148c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z">
+                            </path>
+                        </svg>
+                    </span>
+                </span>
+            </h2>
+
+    </div>
+
+    <div id="md-area-latter" class="markdown-body">
+        <%- readmeLatter %>
+    </div>
+</div>
+</div>
+</div>
+
 <% scripts.forEach(function(src) { %>
 <script src="<%= src %>"></script>
 <% })%>
-
 
 <% include partials/footer %>
