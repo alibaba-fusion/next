@@ -111,7 +111,7 @@ class List extends Component {
             <div {...others} className={classes}>
                 {header ? <div className={`${prefix}list-header`}>{header}</div> : null}
 
-                {!(dSValid && dataSource.length > 1) && !children ? (
+                {!(dSValid && dataSource.length > 0) && !children ? (
                     <div className={`${prefix}list-empty`}>{emptyContent || locale.empty}</div>
                 ) : (
                     <ul key="list-body" className={`${prefix}list-items`}>
