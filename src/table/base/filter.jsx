@@ -137,6 +137,9 @@ class Filter extends React.Component {
     render() {
         const { filters, prefix, locale, className, filterMode, filterMenuProps, filterProps, rtl } = this.props;
 
+        const dropdownClassname = classnames(filterProps && filterProps.className, {
+            [`${prefix}table-filter-menu`]: true,
+        });
         const { visible, selectedKeys } = this.state;
         const { subMenuSelectable, ...others } = filterMenuProps || {};
 
@@ -200,6 +203,7 @@ class Filter extends React.Component {
                 rtl={rtl}
                 needAdjust={false}
                 onVisibleChange={this.onFilterVisible}
+                className={dropdownClassname}
                 {...filterProps}
             >
                 <Menu
