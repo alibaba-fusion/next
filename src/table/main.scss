@@ -449,6 +449,12 @@
         color: $color-brand1-6;
     }
 }
+#{$table-prefix}-filter-menu {
+    .#{$css-prefix}menu-content {
+        max-height: 220px;
+        overflow: auto;
+    }
+}
 
 #{$table-prefix}-header-icon {
     margin-left: $table-header-icon-margin-left;
