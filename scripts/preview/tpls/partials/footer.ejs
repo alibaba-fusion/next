@@ -1,12 +1,15 @@
-</body>
+
 <script>
+    // 从localStorage读取是否使用react-live，若是，则同时切换所有代码
+    if (window.localStorage.liveDemo === 'true') {
+        liveDemo('LIVE');
+    }
+
+    // 从localStorage读取是否全部展开代码，若是，则同时切换所有展开按钮
     if (window.localStorage.foldAll === 'true') {
-        $('#all-not-expand')[0].style.display = "none";
-        $('#all-expanded')[0].style.display = "";
-        document.querySelectorAll('.next-demo-body:not([id*="live-body"])').forEach((el) => {
-            el.style.display = "";
-        })
+        expandAll('EXPAND');
     }
 </script>
+</body>
 
 </html>

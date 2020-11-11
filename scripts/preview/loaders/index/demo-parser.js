@@ -48,6 +48,7 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
             result.js,
             result.meta.debug === 'true',
             result.meta.desc,
+            result.css,
             result.meta.title,
             result.body,
             demoPath,
@@ -63,13 +64,28 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
 // TODO add react-axe
 // TODO scope 透出
 // eslint-disable-next-line max-params
-function processDemoJS(js, debug, desc, title, body, demoPath, dir, resourcePath) {
+function processDemoJS(js, debug, desc, css, title, body, demoPath, dir, resourcePath) {
     if (!js) {
         return '';
     }
 
     const ext = path.extname(demoPath);
     const name = _.camelCase(path.basename(demoPath, ext));
+
+    const rawImportJs = `\`\`\`jsx
+${js
+    .split('\n')
+    .filter(line => /import/.test(line))
+    .join('\n')
+    .replace(/`/g, '{backquote}')
+    .replace(/\$/g, '{dollar}')}
+\`\`\``;
+
+    const rawCss = css
+        ? `\`\`\`css
+${css.replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}')}
+\`\`\``
+        : '';
 
     js = fixImport(js, resourcePath, dir);
     const importJs = js
@@ -159,11 +175,6 @@ ${name}Op.innerHTML = \`
   <img id="${name}-icon-hide"  style="display:none" alt="expand code" src="https://gw.alipayobjects.com/zos/antfincdn/4zAaozCvUH/unexpand.svg"
   class="code-expand-icon-hide">
 </span>
-
-<span class="react-live-icon code-box-code-action">
-<img class="react-live-switch" alt="react-live" id="${name}-live-switch"
-  src="https://user-images.githubusercontent.com/17658189/63178611-4e90d580-c042-11e9-875f-f2455148b9ae.png"/>
-</span>
 \`;
 
 const ${name}Body = document.createElement('div');
@@ -193,13 +204,20 @@ ReactDOM.render(
     code={${name}LiveScript} 
     scope={{${liveVars}}} 
     noInline={true}>
-    <div id="live-editor">
-    <LiveEditor id="${name}-live-body" className='next-demo-body' style={{display:'none'}}/>
-    <LiveError id="${name}-live-error" className="react-live-error"/>
+    <div id="${name}-live-editor" className="next-demo-body" style={{display: 'none'}}>
+        <div id="${name}-live-import" ></div>
+        <LiveEditor id="${name}-live-body" className="react-live-body"/>
+        <div id="${name}-live-css"></div>
+        <LiveError id="${name}-live-error" className="react-live-error"/>
     </div>
-    <LivePreview id="${name}-live-preview" className='next-demo-mount' style={{display:'none'}}/>
+    <LivePreview />
 </LiveProvider>, document.getElementById('${name}-live-test'));
 })()
+
+document.getElementById('${name}-live-import').innerHTML = \`${marked(rawImportJs)
+        .replace(/{backquote}/g, '`')
+        .replace(/{dollar}/g, '$')}\`
+document.getElementById('${name}-live-css').innerHTML = \`${marked(rawCss)}\`;
 
 `;
 
