@@ -200,8 +200,6 @@
                 // 如果楼层最上端有其它的内容快需要加一个判断
                 if ($currentSection) {
                     var id = $currentSection.attr('data-scroll-id');
-                    console.log($currentSection, id)
-
                     $('.demo-index-item').removeClass('active');
                     $('.demo-index-item[data-id="' + id + '"]').addClass('active');
                 }

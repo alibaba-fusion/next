@@ -7,7 +7,7 @@ const loaders = require('../webpack/loaders');
 const { parseMD } = require('../utils');
 const _ = require('lodash');
 
-const babelConfig = require('@alifd/babel-preset-next')({ runtime: true });
+const babelConfig = getWebpackPreset({ runtime: true });
 
 babelConfig.babelrc = false;
 const babelLoader = loaders.js(babelConfig);
@@ -141,4 +141,34 @@ function getLinks(demoPaths) {
 
         return { href, title, filename: path.basename(demoPath, '.md') };
     });
+}
+
+function getWebpackPreset(context, options) {
+    options = options || {};
+
+    const preset = {
+        presets: [
+            require('babel-preset-react'),
+            [require('babel-preset-env'), { modules: options.modules, loose: true }],
+            require('babel-preset-stage-0'),
+        ],
+        plugins: [
+            require('babel-plugin-transform-react-es6-displayname'),
+            require('babel-plugin-transform-decorators-legacy').default,
+        ],
+    };
+    if (options.runtime) {
+        preset.plugins.unshift([
+            require('babel-plugin-transform-runtime'),
+            {
+                polyfill: false,
+                regenerator: false,
+            },
+        ]);
+    }
+    if (typeof options.modules === 'undefined' || options.modules) {
+        preset.plugins.push(require('babel-plugin-add-module-exports'));
+    }
+
+    return preset;
 }
