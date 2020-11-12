@@ -29,24 +29,24 @@
     // {% if themepkg.icon_extra %}
     //     window.customIcons = "{% for iconname,val in themepkg.icon_extra %}{{iconname}},{% endfor %}".split(',').filter(key => !!key);
     // {% endif %}
-    
+
     // 交换两个元素
-    function swapElements(a, b) {
-        if (a == b) return
-        //记录父元素
-        var bp = b.parentNode,
-            ap = a.parentNode
-        //记录下一个同级元素
-        var an = a.nextElementSibling,
-            bn = b.nextElementSibling
-        //如果参照物是邻近元素则直接调整位置
-        if (an == b) return bp.insertBefore(b, a)
-        if (bn == a) return ap.insertBefore(a, b)
-        if (a.contains(b))
-            //如果a包含了b
-            return ap.insertBefore(b, a), bp.insertBefore(a, bn)
-        else return bp.insertBefore(a, b), ap.insertBefore(b, an)
-    }
+    // function swapElements(a, b) {
+    //     if (a == b) return
+    //     //记录父元素
+    //     var bp = b.parentNode,
+    //         ap = a.parentNode
+    //     //记录下一个同级元素
+    //     var an = a.nextElementSibling,
+    //         bn = b.nextElementSibling
+    //     //如果参照物是邻近元素则直接调整位置
+    //     if (an == b) return bp.insertBefore(b, a)
+    //     if (bn == a) return ap.insertBefore(a, b)
+    //     if (a.contains(b))
+    //         //如果a包含了b
+    //         return ap.insertBefore(b, a), bp.insertBefore(a, bn)
+    //     else return bp.insertBefore(a, b), ap.insertBefore(b, an)
+    // }
 
     // 展开所有代码
     function expandAll(op) {
@@ -61,7 +61,7 @@
                 document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
                     el.style.display = "";
                 })
-                document.querySelectorAll('.next-demo-body').forEach((el) => {
+                document.querySelectorAll('[id*="-body"]').forEach((el) => {
                     el.style.display = "none";
                 })
                 return;
@@ -76,16 +76,9 @@
                 document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
                     el.style.display = "";
                 })
-                console.log(window.localStorage.liveDemo)
-                if (window.localStorage.liveDemo === "true") {
-                    document.querySelectorAll(`[id*="-live-editor"]`).forEach((el) => {
-                        el.style.display = "";
-                    })
-                } else {
-                    document.querySelectorAll(`.next-demo-body:not([id*="-live-editor"])`).forEach((el) => {
-                        el.style.display = "";
-                    })
-                }
+                document.querySelectorAll('[id*="-body"]').forEach((el) => {
+                    el.style.display = "";
+                })
                 return;
             }
             default:
@@ -94,49 +87,31 @@
     }
     // 切换react-live
     function liveDemo(op) {
+        function unmountAll() {
+            window.demoNames.forEach((demoName) => {
+                ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-mount`));
+                ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-body`));
+            })
+        }
         switch (op) {
             case "LIVE": {
                 window.localStorage.liveDemo = 'true';
+                unmountAll();
+                window.renderFuncs.forEach((demoRender) => {
+                    demoRender("true");
+                })
                 $('#live-on')[0].style.display = "none";
                 $('#live-off')[0].style.display = "";
-                document.querySelectorAll("[id*='-live-preview']").forEach((el) => {
-                    const name = el.id.replace('-live-preview', '');
-                    const mount = $(`#${name}-mount`)[0];
-                    mount.style.display = "none";
-                    swapElements(el, mount);
-                    el.style.display = "";
-                })
-                document.querySelectorAll("[id*='-live-editor']").forEach((el) => {
-                    const name = el.id.replace('-live-editor', '');
-                    const body = $(`#${name}-body`)[0];
-                    // 交互显示情况
-                    const bodyDis = body.style.display;
-                    body.style.display = "none";
-                    swapElements(el, body);
-                    el.style.display = bodyDis;
-                })
                 return;
             }
             case "READONLY": {
                 window.localStorage.liveDemo = 'false';
+                unmountAll();
+                window.renderFuncs.forEach((demoRender) => {
+                    demoRender("false");
+                })
                 $('#live-off')[0].style.display = "none";
                 $('#live-on')[0].style.display = "";
-                document.querySelectorAll("[id*='-live-preview']").forEach((el) => {
-                    const name = el.id.replace('-live-preview', '');
-                    const mount = $(`#${name}-mount`)[0];
-                    el.style.display = "none";
-                    swapElements(el, mount);
-                    mount.style.display = "";
-                })
-                document.querySelectorAll("[id*='-live-editor']").forEach((el) => {
-                    const name = el.id.replace('-live-editor', '');
-                    const body = $(`#${name}-body`)[0];
-                    // 交互显示情况
-                    const elDis = el.style.display;
-                    el.style.display = "none";
-                    swapElements(el, body);
-                    body.style.display = elDis;
-                })
                 return;
             }
             default:
@@ -174,12 +149,7 @@
             $('.code-expand-icon-hide').on('click', function (event) {
                 const $target = $(event.currentTarget)[0];
                 const name = $target.id.replace('-icon-hide', '');
-                console.log(name)
-                if (window.localStorage.liveDemo === "true") {
-                    $(`#${name}-live-editor`)[0].style.display = "none";
-                } else {
-                    $(`#${name}-body`)[0].style.display = "none";
-                }
+                $(`#${name}-body`)[0].style.display = "none";
                 $(`#${name}-icon-hide`)[0].style.display = 'none';
                 $(`#${name}-icon-show`)[0].style.display = '';
                 $(`#${name}-operations`)[0].style.borderBottom = '';
@@ -188,11 +158,7 @@
             $('.code-expand-icon-show').on('click', function (event) {
                 const $target = $(event.currentTarget)[0];
                 const name = $target.id.replace('-icon-show', '');
-                if (window.localStorage.liveDemo === "true") {
-                    $(`#${name}-live-editor`)[0].style.display = "";
-                } else {
-                    $(`#${name}-body`)[0].style.display = "";
-                }
+                $(`#${name}-body`)[0].style.display = "";
                 $(`#${name}-icon-show`)[0].style.display = 'none';
                 $(`#${name}-icon-hide`)[0].style.display = '';
                 $(`#${name}-operations`)[0].style.borderBottom = 'dashed #EEE 1px';

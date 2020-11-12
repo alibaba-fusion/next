@@ -73,6 +73,8 @@ module.exports = function(content) {
 
     const script = `
         import {LiveProvider, LiveEditor, LiveError, LivePreview} from '${liveRelativePath}';
+        window.demoNames = [];
+        window.renderFuncs = [];
         ${demoInsertScript}
     `;
 

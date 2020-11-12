@@ -3,6 +3,8 @@
     // 从localStorage读取是否使用react-live，若是，则同时切换所有代码
     if (window.localStorage.liveDemo === 'true') {
         liveDemo('LIVE');
+    }else{
+        liveDemo('READONLY');
     }
 
     // 从localStorage读取是否全部展开代码，若是，则同时切换所有展开按钮
