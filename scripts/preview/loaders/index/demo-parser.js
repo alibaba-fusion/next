@@ -132,9 +132,10 @@ document.getElementById('demo-area').insertBefore(${name}LiveTest, document.getE
 ${importJs}
 
 window.${name}RenderScript = function ${name}RenderScript(liveDemo){
+    var mountNode = document.getElementById('${name}-mount');
     if(liveDemo==="false"){
         ${name}Body.innerHTML = \`${body}\`.replace(/{backquote}/g, '\`').replace(/{dollar}/g, '$');
-        ${noImportJs.replace(/,\n*\s*mountNode\s*\n*\s*\)/g, `, document.getElementById('${name}-mount'))`)}
+        ${noImportJs}
         return;
     }
 
@@ -142,7 +143,7 @@ window.${name}RenderScript = function ${name}RenderScript(liveDemo){
     ReactDOM.render(
         <LiveProvider 
             code={${name}LiveScript} 
-            scope={{${liveVars}}} 
+            scope={{${liveVars}, mountNode}} 
             noInline={true}>
             <div id="${name}-live-editor" className="next-demo-body">
                 <div id="${name}-live-import" ></div>
@@ -311,8 +312,7 @@ function getLiveScript(code, name) {
     const func = code
         .split('\n')
         .filter(line => !/import/.test(line))
-        .join('\n')
-        .replace(/,\n*\s*mountNode\s*\n*\s*\)/g, `, document.getElementById('${name}-mount'))`);
+        .join('\n');
 
     return [func, vars];
 }
