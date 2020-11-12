@@ -264,6 +264,7 @@ const ${name}Container = document.createElement('div');
 ${name}Container.id = '${name}-container';
 ${name}Container.className = 'next-demo-item scroll-count-item';
 ${name}Container.setAttribute('debug','${debug}');
+${name}Container.setAttribute('data-scroll-id','${title}');
 ${name}Container.style.display = ${debug ? `'none'` : `''`};
 ${debug ? `${name}Container.style.border = '1px solid rgb(196, 29, 127, 0.45)'` : ''};
 
