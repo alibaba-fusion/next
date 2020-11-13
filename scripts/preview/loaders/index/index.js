@@ -21,19 +21,7 @@ module.exports = function(content) {
     this.addDependency(indexTplPath);
     this.addDependency(resourcePath);
 
-    const importSet = [];
     let [demoInsertScript, demoMetas] = getDemos(demoPaths, lang, dir, this.context, resourcePath);
-    demoInsertScript = demoInsertScript
-        .split('\n')
-        /* eslint-disable array-callback-return */
-        .filter(line => {
-            // TODO 引入/变量 去重
-            if (importSet.includes(line)) return;
-            if (line.startsWith('import')) importSet.push(line);
-            return line;
-        })
-        .join('\n');
-    /* eslint-enable */
 
     const lines = content.split(/\n/g);
     const endIndex = lines.findIndex(line => /^-{3,}/.test(line));
@@ -73,6 +61,23 @@ module.exports = function(content) {
 
     const script = `
         import {LiveProvider, LiveEditor, LiveError, LivePreview} from '${liveRelativePath}';
+        import Loading from '${path.relative(path.dirname(resourcePath), path.join(cwd, 'src', 'loading'))}';
+        import Message from '${path.relative(path.dirname(resourcePath), path.join(cwd, 'src', 'message'))}';
+        import Balloon from '${path.relative(path.dirname(resourcePath), path.join(cwd, 'src', 'balloon'))}';
+        const Tooltip = Balloon.Tooltip;
+        window.loadingRenderScript = function(loading, showMessage=true){
+            try{
+                if(loading){
+                    ReactDOM.render(<Loading visible={true} fullScreen/>, document.getElementById('demo-loading-state'));
+                    return;
+                }
+                ReactDOM.unmountComponentAtNode(document.getElementById('demo-loading-state'));
+                showMessage && Message.success(window.localStorage.liveDemo === "true" ? "切换到在线编辑模式成功，点击代码区域即可编辑预览。" : "切换到预览模式成功，代码展示为只读模式。");
+            }catch(e){
+                Message.error(window.localStorage.liveDemo === "true" ? "切换到在线编辑模式失败，请联系管理员。" : "切换到预览模式失败，请联系管理员。")
+            }
+        }
+
         window.demoNames = [];
         window.renderFuncs = [];
         ${demoInsertScript}

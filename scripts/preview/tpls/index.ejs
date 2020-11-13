@@ -86,11 +86,11 @@
         }
     }
     // 切换react-live
-    function liveDemo(op) {
+    function liveDemo(op, showMessage=true) {
         function unmountAll() {
             window.demoNames.forEach((demoName) => {
-                ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-mount`));
                 ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-body`));
+                ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-mount`));
             })
         }
         switch (op) {
@@ -99,9 +99,10 @@
                 unmountAll();
                 window.renderFuncs.forEach((demoRender) => {
                     demoRender("true");
-                })
+                });
                 $('#live-on')[0].style.display = "none";
                 $('#live-off')[0].style.display = "";
+                window.loadingRenderScript(false, showMessage);
                 return;
             }
             case "READONLY": {
@@ -109,9 +110,10 @@
                 unmountAll();
                 window.renderFuncs.forEach((demoRender) => {
                     demoRender("false");
-                })
+                });
                 $('#live-off')[0].style.display = "none";
                 $('#live-on')[0].style.display = "";
+                window.loadingRenderScript(false, showMessage);
                 return;
             }
             default:
@@ -180,11 +182,14 @@
             });
 
             $('#live-demo').on('click', function (event) {
-                if (window.localStorage.liveDemo === 'true') {
-                    liveDemo("READONLY");
-                    return;
-                }
-                liveDemo('LIVE');
+                window.loadingRenderScript(true);
+                setTimeout(() => {
+                    if (window.localStorage.liveDemo === 'true') {
+                        liveDemo("READONLY");
+                        return;
+                    }
+                    liveDemo('LIVE');
+                }, 500)
             });
         });
 
@@ -243,9 +248,9 @@
             <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide">Guide</a></li>
             <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
             <% for(let i = 0; i<demosDoc.length; ++i){%>
-            <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].title%>"
+            <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].name%>-container"
                 debug="<%=demosDoc[i].debug==="true"%>" style="<%=demosDoc[i].debug==="true" ? 'display: none' : ''%>">
-                <a href="#<%=demosDoc[i].title%>"
+                <a href="#<%=demosDoc[i].name%>-container"
                     style="<%=demosDoc[i].debug==="true" ? 'color: #c41d7f' : ''%>"><%=demosDoc[i].title%></a>
             </li>
             <%}%>
@@ -258,74 +263,47 @@
                 <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
                 <%- readmeFormer %>
 
-                <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item active">
-                    <a href='#demo-list'>
-                        <span>代码演示</span>
-                    </a>
-                    <span class="all-demo-box-controls">
-                        <span id="live-demo" role="img" aria-label="edit" class="code-box-expand-trigger"
-                            style="padding: 1px;">
-                            <svg id="live-on" viewBox="64 64 896 896" focusable="false" class="" data-icon="edit"
-                                width="1em" height="1em" fill="currentColor" aria-hidden="true"
-                                style="box-sizing:border-box;-moz-box-sizing:border-box;border: 1.8px solid rgba(0, 0, 0, .45); width: 18px;height: 18px;">
-                                <path
-                                    d="M880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32zm-622.3-84c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 000-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 009.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9z">
-                                </path>
-                            </svg>
-                            <svg id="live-off" viewBox="64 64 896 896" focusable="false" class="" data-icon="edit"
-                                width="1em" height="1em" fill="currentColor" aria-hidden="true"
-                                style="box-sizing:border-box;-moz-box-sizing:border-box;color: white;background-color: rgba(0, 0, 0, .45); display: none;width: 18px;height: 18px;">
-                                <path
-                                    d="M880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32zm-622.3-84c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 000-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 009.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9z">
-                                </path>
-                            </svg>
-                        </span>
-                        <span id="expand-all" role="img" aria-label="code" class="code-box-expand-trigger">
-                            <svg id="all-not-expand" viewBox="64 64 896 896" focusable="false" class="" data-icon="code"
-                                width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M516 673c0 4.4 3.4 8 7.5 8h185c4.1 0 7.5-3.6 7.5-8v-48c0-4.4-3.4-8-7.5-8h-185c-4.1 0-7.5 3.6-7.5 8v48zm-194.9 6.1l192-161c3.8-3.2 3.8-9.1 0-12.3l-192-160.9A7.95 7.95 0 00308 351v62.7c0 2.4 1 4.6 2.9 6.1L420.7 512l-109.8 92.2a8.1 8.1 0 00-2.9 6.1V673c0 6.8 7.9 10.5 13.1 6.1zM880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656z">
-                                </path>
-                            </svg>
-                            <svg id="all-expanded" viewBox="64 64 896 896" focusable="false" class="" data-icon="code"
-                                width="1em" height="1em" fill="currentColor" aria-hidden="true" style="display: none;">
-                                <path
-                                    d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM513.1 518.1l-192 161c-5.2 4.4-13.1.7-13.1-6.1v-62.7c0-2.3 1.1-4.6 2.9-6.1L420.7 512l-109.8-92.2a7.63 7.63 0 01-2.9-6.1V351c0-6.8 7.9-10.5 13.1-6.1l192 160.9c3.9 3.2 3.9 9.1 0 12.3zM716 673c0 4.4-3.4 8-7.5 8h-185c-4.1 0-7.5-3.6-7.5-8v-48c0-4.4 3.4-8 7.5-8h185c4.1 0 7.5 3.6 7.5 8v48z">
-                                </path>
-                            </svg>
-                        </span>
-                        <span id="debug-demo" role="img" aria-label="debug" class="code-box-expand-trigger">
-                            <svg id="debug-hide" viewBox="64 64 896 896" focusable="false" class="" data-icon="bug"
-                                width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M304 280h56c4.4 0 8-3.6 8-8 0-28.3 5.9-53.2 17.1-73.5 10.6-19.4 26-34.8 45.4-45.4C450.9 142 475.7 136 504 136h16c28.3 0 53.2 5.9 73.5 17.1 19.4 10.6 34.8 26 45.4 45.4C650 218.9 656 243.7 656 272c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-40-8.8-76.7-25.9-108.1a184.31 184.31 0 00-74-74C596.7 72.8 560 64 520 64h-16c-40 0-76.7 8.8-108.1 25.9a184.31 184.31 0 00-74 74C304.8 195.3 296 232 296 272c0 4.4 3.6 8 8 8z">
-                                </path>
-                                <path
-                                    d="M940 512H792V412c76.8 0 139-62.2 139-139 0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8a63 63 0 01-63 63H232a63 63 0 01-63-63c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8 0 76.8 62.2 139 139 139v100H84c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h148v96c0 6.5.2 13 .7 19.3C164.1 728.6 116 796.7 116 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-44.2 23.9-82.9 59.6-103.7a273 273 0 0022.7 49c24.3 41.5 59 76.2 100.5 100.5S460.5 960 512 960s99.8-13.9 141.3-38.2a281.38 281.38 0 00123.2-149.5A120 120 0 01836 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-79.3-48.1-147.4-116.7-176.7.4-6.4.7-12.8.7-19.3v-96h148c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM716 680c0 36.8-9.7 72-27.8 102.9-17.7 30.3-43 55.6-73.3 73.3C584 874.3 548.8 884 512 884s-72-9.7-102.9-27.8c-30.3-17.7-55.6-43-73.3-73.3A202.75 202.75 0 01308 680V412h408v268z">
-                                </path>
-                            </svg>
-                            <svg id="debug-show" viewBox="64 64 896 896" focusable="false" class="" data-icon="bug"
-                                width="1em" height="1em" fill="currentColor" aria-hidden="true" style="display: none;">
-                                <path
-                                    d="M304 280h416c4.4 0 8-3.6 8-8 0-40-8.8-76.7-25.9-108.1a184.31 184.31 0 00-74-74C596.7 72.8 560 64 520 64h-16c-40 0-76.7 8.8-108.1 25.9a184.31 184.31 0 00-74 74C304.8 195.3 296 232 296 272c0 4.4 3.6 8 8 8z">
-                                </path>
-                                <path
-                                    d="M940 512H792V412c76.8 0 139-62.2 139-139 0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8a63 63 0 01-63 63H232a63 63 0 01-63-63c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8 0 76.8 62.2 139 139 139v100H84c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h148v96c0 6.5.2 13 .7 19.3C164.1 728.6 116 796.7 116 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-44.2 23.9-82.9 59.6-103.7a273 273 0 0022.7 49c24.3 41.5 59 76.2 100.5 100.5 28.9 16.9 61 28.8 95.3 34.5 4.4 0 8-3.6 8-8V484c0-4.4 3.6-8 8-8h60c4.4 0 8 3.6 8 8v464.2c0 4.4 3.6 8 8 8 34.3-5.7 66.4-17.6 95.3-34.5a281.38 281.38 0 00123.2-149.5A120.4 120.4 0 01836 876c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8 0-79.3-48.1-147.4-116.7-176.7.4-6.4.7-12.8.7-19.3v-96h148c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z">
-                                </path>
-                            </svg>
-                        </span>
-                    </span>
-                </h2>
+            <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item active">
+                <a href='#demo-list'>
+                    <span>代码演示</span>
+                </a>
+                <span id="global-control" class="all-demo-box-controls">
+                </span>
+            </h2>
 
-            </div>
+    </div>
+
+    <div id="demo-loading-state"></div>
+
+    <% for(let i = 0; i<demosDoc.length; ++i){%>
+    <div id="<%=demosDoc[i].name%>-container" class='next-demo-item scroll-count-item'
+        debug="<%=demosDoc[i].debug==="true"%>" data-scroll-id="<%=demosDoc[i].name%>-container"
+        style="<%=demosDoc[i].debug==="true" ? 'display: none; border: "1px solid rgb(196, 29, 127, 0.45)"' : ''%>">
+        <div id="<%=demosDoc[i].name%>-mount" class="next-demo-mount"></div>
+        <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc">
+            <span class="demo-item-desc-title">
+                <a href='<%=demosDoc[i].name%>-container'
+                    style="<%=demosDoc[i].debug==="true" ? 'color: "#c41d7f"' : ''%>">
+                    <span><%=demosDoc[i].title%></span>
+                </a>
+            </span>
+            <div class="demo-item-desc-body"><%=demosDoc[i].desc%></div>
+        </div>
+        <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'
+            style='border-bottom: "dashed #EEE 1px";'>
+        </div>
+        <div id="<%=demosDoc[i].name%>-body" class='next-demo-body' style="display: none">
+        </div>
+    </div>
+    <%}%>
 
             <div id="md-area-latter" class="markdown-body">
                 <div id="demo-api" data-scroll-id="demo-api" class=" scroll-count-item active" >
                     <%- readmeLatter %>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <% scripts.forEach(function(src) { %>
