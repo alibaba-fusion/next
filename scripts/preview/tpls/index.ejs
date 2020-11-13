@@ -1,21 +1,5 @@
 <% include partials/header %>
 
-<script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
-<script src="//shadow.elemecdn.com/npm/react@16.13.0/umd/react.development.js"></script>
-<script src="//shadow.elemecdn.com/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
-<script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
-
-<script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
-<script
-    src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
-
-<script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
-<script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
-<script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
-<!-- <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
-<script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script> -->
-
 <script>
     window.react = window.React;
     window['react-dom'] = window.ReactDOM;
@@ -194,7 +178,7 @@
         });
 
         $(window).scroll(function () {
-            var $sections = $('.scroll-count-item'); // 获取所有的内容块
+            var $sections = $('.scroll-count-item:not([style*="display: none"])'); // 获取所有的内容块
             var currentScroll = $(this).scrollTop();  // winodw滚动的高度
             var $currentSection;   //   当前内容块
             $sections.each(function () {
@@ -206,7 +190,7 @@
                 if ($currentSection) {
                     var id = $currentSection.attr('data-scroll-id');
                     $('.demo-index-item').removeClass('active');
-                    $('.demo-index-item[data-id="' + id + '"]').addClass('active');
+                    $('.demo-index-item[data-id="' + id + '"]:not([style*="display: none"])').addClass('active');
                 }
             });
         });
@@ -240,8 +224,10 @@
 
 
 <div class="demo-wrapper pc">
-    <div class="demo-title">
-        <%= comp.name %>
+    <div class="demo-title markdown">
+        <h1>
+            <%= comp.name %>
+        </h1>
     </div>
     <div class="demo-index">
         <ul class="demo-index-list">
@@ -257,53 +243,53 @@
             <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
         </ul>
     </div>
-    <div class="demo-head markdown" >
+    <div class="demo-head" >
         <div id="demo-area" class="next-demo-section">
-            <div id="md-area-former" class="markdown-body">
+            <div id="md-area-former" class="markdown-body markdown">
                 <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
                 <%- readmeFormer %>
 
-            <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item active">
-                <a href='#demo-list'>
-                    <span>代码演示</span>
-                </a>
-                <span id="global-control" class="all-demo-box-controls">
-                </span>
-            </h2>
+                <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item active">
+                    <a href='#demo-list'>
+                        <span>代码演示</span>
+                    </a>
+                    <span id="global-control" class="all-demo-box-controls">
+                    </span>
+                </h2>
 
-    </div>
+            </div>
 
-    <div id="demo-loading-state"></div>
+            <div id="demo-loading-state"></div>
 
-    <% for(let i = 0; i<demosDoc.length; ++i){%>
-    <div id="<%=demosDoc[i].name%>-container" class='next-demo-item scroll-count-item'
-        debug="<%=demosDoc[i].debug==="true"%>" data-scroll-id="<%=demosDoc[i].name%>-container"
-        style="<%=demosDoc[i].debug==="true" ? 'display: none; border: "1px solid rgb(196, 29, 127, 0.45)"' : ''%>">
-        <div id="<%=demosDoc[i].name%>-mount" class="next-demo-mount"></div>
-        <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc">
-            <span class="demo-item-desc-title">
-                <a href='<%=demosDoc[i].name%>-container'
-                    style="<%=demosDoc[i].debug==="true" ? 'color: "#c41d7f"' : ''%>">
-                    <span><%=demosDoc[i].title%></span>
-                </a>
-            </span>
-            <div class="demo-item-desc-body"><%=demosDoc[i].desc%></div>
-        </div>
-        <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'
-            style='border-bottom: "dashed #EEE 1px";'>
-        </div>
-        <div id="<%=demosDoc[i].name%>-body" class='next-demo-body' style="display: none">
-        </div>
-    </div>
-    <%}%>
+            <% for(let i = 0; i<demosDoc.length; ++i){%>
+            <div id="<%=demosDoc[i].name%>-container" class='next-demo-item scroll-count-item'
+                debug="<%=demosDoc[i].debug==="true"%>" data-scroll-id="<%=demosDoc[i].name%>-container"
+                style="<%=demosDoc[i].debug==="true" ? 'display: none; border: "1px solid rgb(196, 29, 127, 0.45)"' : ''%>">
+                <div id="<%=demosDoc[i].name%>-mount" class="next-demo-mount"></div>
+                <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc">
+                    <span class="demo-item-desc-title">
+                        <a href='<%=demosDoc[i].name%>-container'
+                            style="<%=demosDoc[i].debug==="true" ? 'color: "#c41d7f"' : ''%>">
+                            <span><%=demosDoc[i].title%></span>
+                        </a>
+                    </span>
+                    <div class="demo-item-desc-body"><%=demosDoc[i].desc%></div>
+                </div>
+                <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'
+                    style='border-bottom: "dashed #EEE 1px";'>
+                </div>
+                <div id="<%=demosDoc[i].name%>-body" class='next-demo-body' style="display: none">
+                </div>
+            </div>
+            <%}%>
 
-            <div id="md-area-latter" class="markdown-body">
+            <div id="md-area-latter" class="markdown-body markdown">
                 <div id="demo-api" data-scroll-id="demo-api" class=" scroll-count-item active" >
                     <%- readmeLatter %>
-</div>
-</div>
-</div>
-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <% scripts.forEach(function(src) { %>

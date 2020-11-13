@@ -14,8 +14,28 @@
     href="http://g.alicdn.com/fusion-platform/material-center-static/0.3.0/pages/comp-demo/index.bundle.css">
   <link href="https://g.alicdn.com/code/lib/cropperjs/1.0.0-rc.3/cropper.min.css" rel="stylesheet">
 
+  <script src="//shadow.elemecdn.com/npm/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
+  <script src="//shadow.elemecdn.com/npm/react@16.13.0/umd/react.development.js"></script>
+  <script src="//shadow.elemecdn.com/npm/react-dom@16.13.0/umd/react-dom.development.js"></script>
+  <script src="//shadow.elemecdn.com/npm/moment@2.24.0/min/moment-with-locales.js"></script>
+
+  <script src="https://gw.alipayobjects.com/os/lib/react-dnd/7.7.0/dist/ReactDnD.min.js"></script>
+  <script
+    src="https://gw.alipayobjects.com/os/lib/react-dnd-html5-backend/7.7.0/dist/ReactDnDHTML5Backend.min.js"></script>
+
+  <script src="https://g.alicdn.com/code/lib/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/prop-types/15.7.2/prop-types.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://g.alicdn.com/code/lib/moment.js/2.24.0/locale/zh-cn.js"></script>
+  <!-- <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/common.js"></script>
+  <script src="https://g.alicdn.com/next/fusion-dev-static/3.5.7/demo-util.js"></script> -->
+
   <!-- demo card -->
   <style>
+    .demo-wrapper {
+      margin: 20px 215px 30px 60px;
+    }
+
     .next-demo-item {
       border: 1px solid #EEE;
       margin: 40px 0;
@@ -32,19 +52,11 @@
 
     .next-demo-body {
       background: #FAFAFA;
-      padding: 0px 24px 24px 24px!important
+      padding: 4px 20px !important;
     }
 
     .next-demo-body pre {
-      margin: 0;
-    }
-
-    .demo-title {
-      height: 46px;
-      font-family: Roboto-Bold;
-      font-size: 32px;
-      color: #222222;
-      line-height: 46px;
+      margin: 14px 0;
     }
 
     .demo-item-desc {
@@ -144,7 +156,7 @@
     .react-live-error {
       background-color: #0A0C18;
       color: #fff;
-      margin-top: 30px!important;
+      margin-top: 30px !important;
     }
 
 
@@ -192,13 +204,14 @@
 
     .markdown-body .highlight pre,
     .markdown-body pre {
-      background: #fff;
+      background: #FAFAFA;
     }
 
     .hljs {
       display: block;
       overflow-x: auto;
-      background: #fff;
+      background: #FAFAFA;
+      padding: 14px;
     }
 
     .hljs-comment,
@@ -220,6 +233,31 @@
     .hljs-template-variable,
     .hljs-tag .hljs-attr {
       color: #008080;
+    }
+
+    .react-live-body {
+      background-color: #333;
+      font-size: 14px;
+      line-height: 1.7;
+      padding: 20px;
+    }
+
+    .react-live-body textarea:focus {
+      outline: none;
+    }
+
+    [id*="-live-import"] pre .language-jsx .hljs {
+      background-color: #F5F5FB !important;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    [id*="-live-css"] pre .language-css .hljs {
+      background-color: #F5F5FB !important;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 14px;
     }
 
     .hljs-string,
@@ -318,50 +356,80 @@
     }
   </style>
 
+  <!-- markdown -->
+  <style>
+    .markdown {
+      color: rgba(0, 0, 0, .85);
+      font-size: 14px !important;
+      line-height: 2;
+    }
+
+    .markdown h1 {
+      margin-top: 8px;
+      margin-bottom: 20px;
+      color: rgba(0, 0, 0, .85);
+      font-weight: 500;
+      font-size: 30px;
+      font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+      line-height: 38px;
+    }
+
+    .markdown h2 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .markdown h2,
+    .markdown h3,
+    .markdown h4,
+    .markdown h5,
+    .markdown h6 {
+      clear: both;
+      margin: 1.6em 0 .6em;
+      color: rgba(0, 0, 0, .85);
+      font-weight: 500;
+      font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    }
+
+    .markdown p {
+      display: block;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      font-size: 14px !important;
+      line-height: 2;
+      margin: 1em 0;
+    }
+
+    .markdown code {
+      margin: 0 0 10px 0;
+    }
+
+    .markdown ul>li {
+      margin-left: 20px;
+      padding-left: 4px;
+      list-style-type: circle;
+    }
+
+    .react-live-body textarea {
+      color: #333;
+      caret-color: red;
+    }
+
+    @supports (-webkit-mask: none) and (not (caret-color: red)) {
+      textarea {
+        color: red;
+      }
+
+      intextareaput::first-line {
+        color: #333;
+      }
+    }
+  </style>
+
   <!-- markdown table css -->
   <style>
-    body>h2:first-child {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    body>h1:first-child {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    body>h1:first-child+h2 {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    body>h3:first-child,
-    body>h4:first-child,
-    body>h5:first-child,
-    body>h6:first-child {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    a:first-child h1,
-    a:first-child h2,
-    a:first-child h3,
-    a:first-child h4,
-    a:first-child h5,
-    a:first-child h6 {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    h1 p,
-    h2 p,
-    h3 p,
-    h4 p,
-    h5 p,
-    h6 p {
-      margin-top: 0;
-    }
-
     li p.first {
       display: inline-block;
     }
@@ -431,34 +499,69 @@
       margin-bottom: 0;
     }
 
-    table {
+    .markdown table {
       padding: 0;
+      border-spacing: 0;
+      width: 100%;
+      margin: 2em 0;
     }
 
-    table tr {
+    .markdown table em {
+      color: rgba(155, 4, 152, 0.8);
+      margin-right: 4px;
+    }
+
+    .markdown table tr {
       border-top: 1px solid #cccccc;
       background-color: white;
       margin: 0;
       padding: 0;
     }
 
-    table tr:nth-child(2n) {
+    .markdown table tr:hover {
       background-color: #f8f8f8;
     }
 
-    table tr th {
+    .markdown table tr th {
       font-weight: bold;
-      border: 1px solid #cccccc;
+      border-bottom: 2px solid #333;
       text-align: left;
       margin: 0;
       padding: 6px 13px;
     }
 
-    table tr td {
-      border: 1px solid #cccccc;
+    .markdown table tr td {
+      border-bottom: 1px solid #ccc;
       text-align: left;
       margin: 0;
       padding: 6px 13px;
+    }
+
+    .markdown table td:first-child {
+      width: 14%;
+      color: #595959;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .markdown table td:nth-child(2) {
+      width: 54%;
+    }
+
+    .markdown table td:nth-child(3) {
+      width: 19%;
+      color: #c41d7f;
+      font-size: 13px;
+    }
+
+    .markdown table td:nth-child(4) {
+      width: 19%;
+      font-size: 13px;
+    }
+
+    .markdown table td:nth-child(5) {
+      width: 8%;
+      font-size: 13px;
     }
   </style>
 </head>

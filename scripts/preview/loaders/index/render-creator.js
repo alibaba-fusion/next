@@ -212,11 +212,11 @@ window.${name}RenderScript = function ${name}RenderScript(liveDemo){
     ReactDOM.render(
         <LiveProvider 
             code={${name}LiveScript} 
-            scope={{${liveVars}, mountNode}} 
+            scope={{${liveVars ? `${liveVars},` : ''}mountNode}} 
             noInline={true}>
-            <div id="${name}-live-editor" className="next-demo-body">
+            <div id="${name}-live-editor">
                 <div id="${name}-live-import" ></div>
-                <LiveEditor id="${name}-live-body" className="react-live-body"/>
+                <div id="${name}-live-body" className="react-live-body"><LiveEditor style={{fontSize: 14,lineHeight: 1.7}}/></div>
                 <div id="${name}-live-css"></div>
                 <LiveError id="${name}-live-error" className="react-live-error"/>
             </div>
