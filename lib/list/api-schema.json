@@ -1,0 +1,176 @@
+{
+  "name": "List",
+  "props": {
+    "header": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "列表头部",
+      "docblock": "列表头部"
+    },
+    "footer": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "列表尾部",
+      "docblock": "列表尾部"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'small'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "列表尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "列表尺寸"
+    },
+    "divider": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示分割线",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示分割线"
+    },
+    "dataSource": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "列表数据源",
+      "docblock": "列表数据源"
+    },
+    "renderItem": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "当使用 dataSource 时，可以用 renderItem 自定义渲染列表项",
+      "defaultValue": {
+        "value": "item => item",
+        "computed": false
+      },
+      "docblock": "当使用 dataSource 时，可以用 renderItem 自定义渲染列表项\n@param {Any} current 当前遍历的项\n@param {Number} index 当前遍历的项的索引",
+      "params": [
+        {
+          "name": "current",
+          "description": "当前遍历的项",
+          "type": {
+            "name": "Any"
+          }
+        },
+        {
+          "name": "index",
+          "description": "当前遍历的项的索引",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "loading": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否在加载中",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否在加载中"
+    },
+    "loadingComponent": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义 Loading 组件\n请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}",
+      "docblock": "自定义 Loading 组件\n请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}\n@param {LoadingProps} props 需要透传给组件的参数\n@return {React.ReactNode} 展示的组件",
+      "params": [
+        {
+          "name": "props",
+          "description": "需要透传给组件的参数",
+          "type": {
+            "name": "LoadingProps"
+          }
+        }
+      ],
+      "returns": {
+        "description": "展示的组件",
+        "type": {
+          "name": "React.ReactNode"
+        }
+      }
+    },
+    "emptyContent": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "设置数据为空的时候的表格内容展现",
+      "docblock": "设置数据为空的时候的表格内容展现"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列表元素的标题",
+          "docblock": "列表元素的标题"
+        },
+        "description": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列表元素的描述内容",
+          "docblock": "列表元素的描述内容"
+        },
+        "media": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "列表元素的头像 / 图标 / 图片内容",
+          "docblock": "列表元素的头像 / 图标 / 图片内容"
+        },
+        "extra": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "额外内容",
+          "docblock": "额外内容"
+        }
+      },
+      "methods": []
+    }
+  ]
+}
