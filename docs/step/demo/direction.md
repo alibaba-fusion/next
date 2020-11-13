@@ -24,17 +24,17 @@ import React,{ useState, useEffect, useCallback } from 'react';
 import { Button, Step, Radio } from '@alifd/next';
 
 const Step1Content=(props)=>{
-    return <React.Fragment>
+    return (<React.Fragment>
         <Button onClick={props.addNewItem}>add new div</Button>
             <div>
                 {props.conditions&&props.conditions.length>0&&
                 props.conditions.map((item,index)=>
-                    <div key={'step-content-' + index} style={{width:'100%', maxWidth: 200, height:20, background:'#2196f3', margin:'10px 0'}}/>
+                    <div key={`step-content-${  index}`} style={{width:'100%', maxWidth: 200, height:20, background:'#2196f3', margin:'10px 0'}}/>
                 )}
                     
             </div>	
-    </React.Fragment>
-}
+    </React.Fragment>);
+};
 const CreateDemo=()=>{
     const [conditions, setconditions] = useState([]);
     const [direction, setDirection] = useState('ver');
@@ -43,9 +43,9 @@ const CreateDemo=()=>{
             type: 'null',
             fieldName: 'null',
         };
-        const newConditions = [...conditions,newType]
+        const newConditions = [...conditions,newType];
         setconditions(newConditions);
-    }
+    };
     console.log('direction: ', direction);
     return(
     <div>
@@ -64,7 +64,7 @@ const CreateDemo=()=>{
             <Step.Item title={"A bit more on the background"} content={'test'} />
         </Step>
     </div>
-  )
-}
+  );
+};
 ReactDOM.render(<CreateDemo/>, mountNode);
 ````

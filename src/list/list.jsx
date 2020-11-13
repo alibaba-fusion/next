@@ -46,6 +46,8 @@ class List extends Component {
         /**
          * 自定义 Loading 组件
          * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
+         * @param {LoadingProps} props 需要透传给组件的参数
+         * @return {React.ReactNode} 展示的组件
          */
         loadingComponent: PropTypes.func,
         /**
