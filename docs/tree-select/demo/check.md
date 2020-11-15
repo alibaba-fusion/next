@@ -1,13 +1,14 @@
-# 复选框多选
+# 勾选
 
-- order: 2
+-   order: 3
 
-展示复选框多选的功能。
+通过设置 `treeCheckable`，开启 `Tree` 组件的勾选功能，注意，此时组件处于可多选状态，`multiple` 属性无效。
 
 :::lang=en-us
+
 # Checkbox
 
-- order: 2
+-   order: 3
 
 Demo the multiple select usage.
 :::
@@ -17,28 +18,38 @@ Demo the multiple select usage.
 ````jsx
 import { TreeSelect } from '@alifd/next';
 
-const treeData = [{
-    label: 'Component',
-    value: '1',
-    children: [{
-        label: 'Form',
-        value: '2',
-        children: [{
-            label: 'Input',
-            value: '4'
-        }, {
-            label: 'Select',
-            value: '5'
-        }]
-    }, {
-        label: 'Display',
-        value: '3',
-        children: [{
-            label: 'Table',
-            value: '6'
-        }]
-    }]
-}];
+const treeData = [
+    {
+        label: 'Component',
+        value: '1',
+        children: [
+            {
+                label: 'Form',
+                value: '2',
+                children: [
+                    {
+                        label: 'Input',
+                        value: '4',
+                    },
+                    {
+                        label: 'Select',
+                        value: '5',
+                    },
+                ],
+            },
+            {
+                label: 'Display',
+                value: '3',
+                children: [
+                    {
+                        label: 'Table',
+                        value: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 class Demo extends React.Component {
     constructor(props) {
@@ -53,7 +64,13 @@ class Demo extends React.Component {
 
     render() {
         return (
-            <TreeSelect treeDefaultExpandAll treeCheckable dataSource={treeData} onChange={this.handleChange} style={{ width: 200 }} />
+            <TreeSelect
+                treeDefaultExpandAll
+                treeCheckable
+                dataSource={treeData}
+                onChange={this.handleChange}
+                style={{ width: 200 }}
+            />
         );
     }
 }

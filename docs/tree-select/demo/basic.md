@@ -1,13 +1,14 @@
 # 基本
 
-- order: 0
+-   order: 0
 
 最简单的单选用法。
 
 :::lang=en-us
+
 # Basic
 
-- order: 0
+-   order: 0
 
 The simplest single select usage.
 :::
