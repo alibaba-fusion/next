@@ -1,17 +1,17 @@
 # Tree
 
--   category: Components
--   family: DataDisplay
--   chinese: 树形控件
--   type: 基本
+- category: Components
+- family: DataDisplay
+- chinese: 树形控件
+- type: 基本
 
 ---
 
-## 开发指南
+用于展示具有层级结构的数据。
 
-### 何时使用
+## 何时使用
 
-文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用`树控件`可以完整展现其中的层级关系，并具有展开收起选择等交互功能。
+`Tree`组件适用于大量、具有层级关系的数据展示场景中，并且利用组件的展开收起和关联选中等交互可以方便地对数据进行操作处理。
 
 ## API
 
