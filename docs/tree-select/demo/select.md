@@ -1,25 +1,25 @@
-# 无障碍
+# 单选与多选
 
--   order: 7
+-   order: 2
 
-通过`aria-labelledby`对组件进行描述。关于键盘操作请参考`ARIA and KeyBoard`。
+展示单选与多选的用法。
 
 :::lang=en-us
 
-# Accessibility
+# Single and multiple selection
 
--   order: 7
+-   order: 2
 
-Description of components is through `aria-labelledby`. Please refer to `ARIA and KeyBoard` for keyboard operation.
+Demo single and multiple selection.
 
 :::
 
 ---
 
 ````jsx
-import { TreeSelect } from '@alifd/next';
+import { TreeSelect, Checkbox } from '@alifd/next';
 
-const data = [
+const dataSource = [
     {
         label: 'Component',
         value: '1',
@@ -52,11 +52,15 @@ const data = [
         ],
     },
 ];
-
 class Demo extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            multiple: false,
+        };
+
+        this.handleCheck = this.handleCheck.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -64,15 +68,27 @@ class Demo extends React.Component {
         console.log(value, data);
     }
 
+    handleCheck(v) {
+        this.setState({
+            multiple: v,
+        });
+    }
+
     render() {
+        const { multiple } = this.state;
+
         return (
-            <div>
+            <div className="control-select-demo" key={`control-select-demo-${multiple}`}>
+                <label className="multiple-check">
+                    <Checkbox checked={multiple} onChange={this.handleCheck} />
+                    <span className="multiple-text">允许多选</span>
+                </label>
                 <TreeSelect
                     treeDefaultExpandAll
-                    aria-labelledby="a11y-tree-select"
-                    onChange={this.handleChange}
+                    multiple={multiple}
+                    onSelect={this.handleSelect}
+                    dataSource={dataSource}
                     style={{ width: 200 }}
-                    dataSource={data}
                 />
             </div>
         );
@@ -80,4 +96,19 @@ class Demo extends React.Component {
 }
 
 ReactDOM.render(<Demo />, mountNode);
+````
+
+````css
+.control-select-demo .multiple-check {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.control-select-demo .multiple-text {
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: #666;
+    font-size: 14px;
+}
 ````
