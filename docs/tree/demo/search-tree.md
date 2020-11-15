@@ -1,13 +1,14 @@
-# 可搜索的树
+# 实现搜索
 
-- order: 6
+-   order: 8
 
-展示可搜索的树。
+组合 `Search` 组件，实现 `Tree` 组件的搜索。
 
 :::lang=en-us
+
 # Searchable
 
-- order: 6
+-   order: 8
 
 Demos the searchable tree.
 :::
@@ -17,28 +18,38 @@ Demos the searchable tree.
 ````jsx
 import { Search, Tree } from '@alifd/next';
 
-const data = [{
-    label: 'Component',
-    key: '1',
-    children: [{
-        label: 'Form',
-        key: '2',
-        children: [{
-            label: 'Input',
-            key: '4'
-        }, {
-            label: 'Select',
-            key: '5'
-        }]
-    }, {
-        label: 'Display',
-        key: '3',
-        children: [{
-            label: 'Table',
-            key: '6'
-        }]
-    }]
-}];
+const data = [
+    {
+        label: 'Component',
+        key: '1',
+        children: [
+            {
+                label: 'Form',
+                key: '2',
+                children: [
+                    {
+                        label: 'Input',
+                        key: '4',
+                    },
+                    {
+                        label: 'Select',
+                        key: '5',
+                    },
+                ],
+            },
+            {
+                label: 'Display',
+                key: '3',
+                children: [
+                    {
+                        label: 'Table',
+                        key: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 class Demo extends React.Component {
     constructor(props) {
@@ -46,9 +57,11 @@ class Demo extends React.Component {
 
         this.state = {
             expandedKeys: ['2'],
-            autoExpandParent: true
+            autoExpandParent: true,
         };
+
         this.matchedKeys = [];
+
         this.handleSearch = this.handleSearch.bind(this);
         this.handleExpand = this.handleExpand.bind(this);
     }
@@ -61,19 +74,20 @@ class Demo extends React.Component {
         }
 
         const matchedKeys = [];
-        const loop = data => data.forEach(item => {
-            if (item.label.indexOf(value) > -1) {
-                matchedKeys.push(item.key);
-            }
-            if (item.children && item.children.length) {
-                loop(item.children);
-            }
-        });
+        const loop = data =>
+            data.forEach(item => {
+                if (item.label.indexOf(value) > -1) {
+                    matchedKeys.push(item.key);
+                }
+                if (item.children && item.children.length) {
+                    loop(item.children);
+                }
+            });
         loop(data);
 
         this.setState({
             expandedKeys: [...matchedKeys],
-            autoExpandParent: true
+            autoExpandParent: true,
         });
         this.matchedKeys = matchedKeys;
     }
@@ -81,7 +95,7 @@ class Demo extends React.Component {
     handleExpand(keys) {
         this.setState({
             expandedKeys: keys,
-            autoExpandParent: false
+            autoExpandParent: false,
         });
     }
 
@@ -93,8 +107,19 @@ class Demo extends React.Component {
 
         return (
             <div>
-                <Search shape="simple" size="medium" style={{ width: '200px', marginBottom: '10px' }} onChange={this.handleSearch} />
-                <Tree expandedKeys={expandedKeys} autoExpandParent={autoExpandParent} filterTreeNode={filterTreeNode} onExpand={this.handleExpand} dataSource={data} />
+                <Search
+                    shape="simple"
+                    size="medium"
+                    style={{ width: '200px', marginBottom: '10px' }}
+                    onChange={this.handleSearch}
+                />
+                <Tree
+                    expandedKeys={expandedKeys}
+                    autoExpandParent={autoExpandParent}
+                    filterTreeNode={filterTreeNode}
+                    onExpand={this.handleExpand}
+                    dataSource={data}
+                />
             </div>
         );
     }

@@ -1,13 +1,16 @@
 # 平铺叶子节点
 
-- order: 9
+-   order: 9
+-   debug: true
 
 当最后一级都是叶子节点时，平铺展示
 
 :::lang=en-us
+
 # Tile leaf nodes
 
-- order: 9
+-   order: 9
+-   debug: true
 
 When the last level is all leaf nodes, the tiling display.
 :::
@@ -19,13 +22,12 @@ import { Tree } from '@alifd/next';
 
 const TreeNode = Tree.Node;
 
-
-const formatDataSource = (data) => {
-    return data.map((it) => {
+const formatDataSource = data => {
+    return data.map(it => {
         return {
             ...it,
             key: it.value,
-            children: formatDataSource(it.children || [])
+            children: formatDataSource(it.children || []),
         };
     });
 };
@@ -35,7 +37,7 @@ class Demo extends React.Component {
         super(props);
 
         this.state = {
-            data: []
+            data: [],
         };
     }
 
@@ -47,28 +49,39 @@ class Demo extends React.Component {
     }
 
     render() {
-        return (<Tree checkable renderChildNodes={(nodes) => {
-            if (nodes.find(node => node.props.children && node.props.children.length)) {
-                <ul role="group" className={`next-tree-child-tree`}>
-                    {nodes}
-                </ul>;
-            }
-            return <ul role="group" className="next-tree-child-tree custom-leaf-tree">{nodes}</ul>;
-        }} defaultExpandAll dataSource={this.state.data}/>);
+        return (
+            <Tree
+                checkable
+                renderChildNodes={nodes => {
+                    if (nodes.find(node => node.props.children && node.props.children.length)) {
+                        <ul role="group" className={`next-tree-child-tree`}>
+                            {nodes}
+                        </ul>;
+                    }
+                    return (
+                        <ul role="group" className="next-tree-child-tree custom-leaf-tree">
+                            {nodes}
+                        </ul>
+                    );
+                }}
+                defaultExpandAll
+                dataSource={this.state.data}
+            />
+        );
     }
 }
 
 ReactDOM.render(<Demo />, mountNode);
 ````
 
-```css
+````css
 .custom-leaf-tree {
     padding-left: 20px;
     display: block;
     font-size: 0;
     white-space: normal;
 }
-.custom-leaf-tree .next-tree-switcher{
+.custom-leaf-tree .next-tree-switcher {
     display: none;
 }
 
@@ -78,4 +91,4 @@ ReactDOM.render(<Demo />, mountNode);
     width: 68px;
     display: inline-block;
 }
-```
+````

@@ -1,32 +1,33 @@
-# 带线样式
+# 图标
 
--   order: 4
+-   order: 5
 
-使用`showLine`开启节点之间的连接线，用于更清晰地展示节点的层级结构。
+可以设置节点文本前的`icon`图标。
 
 :::lang=en-us
 
-# Show line
+# Show Icon
 
--   order: 4
+-   order: 5
 
-Demo the tree with line.
+Demo the tree node with icon.
 :::
 
 ---
 
 ````jsx
-import { Tree, Checkbox } from '@alifd/next';
+import { Tree, Checkbox, Icon } from '@alifd/next';
 
 const data = [
     {
         label: 'Component',
         key: '1',
+        icon: <Icon type="favorites-filling" />,
         children: [
             {
                 label: 'Form',
                 key: '2',
-                selectable: false,
+                icon: 'form',
                 children: [
                     {
                         label: 'Input',
@@ -41,6 +42,7 @@ const data = [
             {
                 label: 'Display',
                 key: '3',
+                icon: 'form',
                 children: [
                     {
                         label: 'Table',
@@ -52,5 +54,5 @@ const data = [
     },
 ];
 
-ReactDOM.render(<Tree defaultExpandAll showLine dataSource={data} />, mountNode);
+ReactDOM.render(<Tree defaultExpandAll dataSource={data} />, mountNode);
 ````
