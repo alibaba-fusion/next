@@ -21,7 +21,7 @@ import { Affix, Button } from '@alifd/next';
 
 ReactDOM.render(<div className="custom-affix-wrapper">
     <Affix>
-        <Button type="secondary">Affixed Button</Button>
+        <Button type="secondary">Basic Affixed Button</Button>
     </Affix>
 </div>, mountNode);
 ````
