@@ -1053,7 +1053,7 @@ class Select extends Base {
             [`${prefix}select-compact`]: !isSingle && tagInline,
         });
 
-        const searchInput = [isSingle && valueNodes ? <em key="select-value">{valueNodes}</em> : valueNodes];
+        const searchInput = [isSingle && valueNodes ? <em title={valueNodes} key="select-value">{valueNodes}</em> : valueNodes];
         const triggerSearch = (
             <span key="trigger-search" className={`${prefix}select-trigger-search`}>
                 {inputEl}
