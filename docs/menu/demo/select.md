@@ -1,13 +1,15 @@
-# 菜单项选择
+# 选择与选中
 
-- order: 6
+- order: 5
+- debug: true
 
 展示菜单项选择用法。
 
 :::lang=en-us
 # Menu item selection
 
-- order: 6
+- order: 5
+- debug: true
 
 Demo the usage of menu item selection.
 :::

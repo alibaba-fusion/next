@@ -1,13 +1,13 @@
-# 横向菜单条
+# 超长折叠
 
-- order: 8
+- order: 1
 
-展示横向导航菜单条的用法。
+在横向导航模式下，可通过设置 `hozInLine` 折叠超长内容。
 
 :::lang=en-us
 # Horizontal menu bar
 
-- order: 8
+- order: 1
 
 Demo the usage of the horizontal navigation menu bar.
 :::
