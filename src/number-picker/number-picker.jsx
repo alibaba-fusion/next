@@ -27,7 +27,7 @@ class NumberPicker extends React.Component {
         /**
          * 大小
          */
-        size: PropTypes.oneOf(['large', 'medium']),
+        size: PropTypes.oneOf(['large', 'medium', 'small']),
         /**
          * 当前值
          */

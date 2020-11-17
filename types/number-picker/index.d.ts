@@ -24,7 +24,7 @@ export interface NumberPickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 大小
      */
-    size?: 'large' | 'medium';
+    size?: 'large' | 'medium' | 'small';
 
     /**
      * 当前值
