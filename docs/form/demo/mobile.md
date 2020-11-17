@@ -1,6 +1,7 @@
 # 移动端
 
 - order: 17
+- debug: true
 
 device=phone 下会强制设置 labelAlign=top
 
