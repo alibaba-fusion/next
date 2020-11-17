@@ -1,6 +1,7 @@
 # 自定义菜单项选择
 
 - order: 7
+- debug: true
 
 展示自定义组合菜单项可选的用法。
 
@@ -8,6 +9,7 @@
 # Customize menu item selection
 
 - order: 7
+- debug: true
 
 Demo how to customize menu item selection.
 :::
