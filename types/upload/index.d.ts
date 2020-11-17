@@ -257,17 +257,17 @@ export class Uploader {
      * 配置选项
      * @param options 配置
      */
-    setOptions(options: any);
+    setOptions(options: any): void;
     /**
      * 开始上传
      * @param files 文件列表
      */
-    startUpload(files: Array<any>);
+    startUpload(files: Array<any>): void;
     /**
      * 中断某个文件上传
      * @param file 文件
      */
-    abort(file: any);
+    abort(file: any): void;
 }
 
 export interface UploadProps extends HTMLAttributesWeak, CommonProps {
