@@ -32,6 +32,10 @@ class SubNav extends Component {
          * 导航项和子导航
          */
         children: PropTypes.node,
+        /**
+         * 是否需要提示当前项可展开的 icon，默认是有的
+         */
+        noIcon: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -46,32 +50,16 @@ class SubNav extends Component {
     };
 
     render() {
-        const { prefix, iconOnly, hasArrow, mode } = this.context;
-        const {
-            className,
-            icon,
-            label,
-            children,
-            level,
-            ...others
-        } = this.props;
+        const { prefix, iconOnly, hasArrow, noIcon, mode } = this.context;
+        const { className, icon, label, children, level, ...others } = this.props;
         const cls = classNames({
             [`${prefix}nav-sub-nav-item`]: true,
             [className]: !!className,
         });
-        let iconEl =
-            typeof icon === 'string' ? (
-                <Icon className={`${prefix}nav-icon`} type={icon} />
-            ) : (
-                icon
-            );
+        let iconEl = typeof icon === 'string' ? <Icon className={`${prefix}nav-icon`} type={icon} /> : icon;
         // 这里是为 iconOnly 模式下，添加默认的展开按钮
         // 只有在 inline 模式下 或 popup模式的第一层级，才需要添加默认的按钮
-        if (
-            iconOnly &&
-            hasArrow &&
-            (mode === 'inline' || (level === 1 && mode === 'popup'))
-        ) {
+        if (iconOnly && hasArrow && (mode === 'inline' || (level === 1 && mode === 'popup'))) {
             iconEl = (
                 <Icon
                     className={`${prefix}nav-icon-only-arrow`}
@@ -79,10 +67,7 @@ class SubNav extends Component {
                 />
             );
         }
-        const newLabel = [
-            iconEl ? cloneElement(iconEl, { key: 'icon' }) : null,
-            <span key="label">{label}</span>,
-        ];
+        const newLabel = [iconEl ? cloneElement(iconEl, { key: 'icon' }) : null, <span key="label">{label}</span>];
 
         let title;
 
@@ -91,13 +76,7 @@ class SubNav extends Component {
         }
 
         return (
-            <Menu.SubMenu
-                className={cls}
-                label={newLabel}
-                level={level}
-                title={title}
-                {...others}
-            >
+            <Menu.SubMenu className={cls} label={newLabel} level={level} title={title} noIcon={noIcon} {...others}>
                 {children}
             </Menu.SubMenu>
         );
