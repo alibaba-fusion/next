@@ -2,13 +2,14 @@ const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
 const loaderUtils = require('loader-utils');
-const { parseMD } = require('../../../utils');
+const createDocParser = require('@alifd/doc-parser');
 const { marked, logger } = require('../../../utils');
 const { getGlobalControl, getDemoOp, getDemoRenderScript } = require('./render-creator');
 
 const selectorPath = require.resolve('./selector');
 const cwd = process.cwd();
-
+const docParser = createDocParser({});
+const EN_DOC_REG = /:{3}lang=en-us((.|\r|\n)*):{3}/;
 const IMPORT_REG = /import {(.+)} from ['"]@alifd\/next['"];?/;
 const IMPORT_LIB_REG = /import (.+) from ['"]@alifd\/next\/lib\/(.+)['"];?/;
 const IMPORT_LIB_REG_G = /^import .+ from ['"]@alifd\/next\/lib\/(.+)['"];?/gm;
@@ -21,7 +22,12 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
         const ext = path.extname(demoPath);
         const name = _.camelCase(path.basename(demoPath, ext));
         const content = fs.readFileSync(demoPath, 'utf8');
-        const result = parseMD(content, demoPath, lang, dir);
+        const result = docParser.parse(filterByLang(content));
+        result.meta.desc = result.meta.description;
+        delete result.meta.description;
+        result.js = result.codes.jsx;
+        result.css = result.codes.css;
+        delete result.codes;
         result.meta.name = name;
         demoResults[demoPath] = result;
         ret[demoPath] = result.meta;
@@ -172,6 +178,21 @@ import ${component} from'${newLibPath}'`;
     }
 
     return code;
+}
+
+function filterByLang(content, lang) {
+    if (lang === 'en') {
+        const matched = content.match(EN_DOC_REG);
+        if (matched) {
+            const enDoc = matched[1];
+            const parts = content.split(matched[0]);
+            return enDoc + parts[1];
+        }
+
+        return content;
+    }
+
+    return content.replace(EN_DOC_REG, '');
 }
 
 module.exports.getDemos = getDemos;

@@ -28,7 +28,7 @@ module.exports = function(content) {
     const newContent = lines.slice(endIndex + 1).join('\n');
     let [readmeFormer, readmeLatter] = newContent.split('## API');
     readmeFormer = marked(readmeFormer);
-    readmeLatter = marked(`## API${readmeLatter}`);
+    readmeLatter = marked(`## API\n${readmeLatter}`);
 
     const scripts = ['/common.js', `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`];
 

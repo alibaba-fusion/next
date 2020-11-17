@@ -110,17 +110,23 @@ function run(port) {
     if (!silent) {
         setTimeout(() => {
             openBrowser(url);
-
-            const watcher = chokidar.watch(path.join(cwd, 'docs', componentName, 'demo', '*.md'), {
-                ignoreInitial: true,
-            });
+            const watcher = chokidar.watch(
+                [
+                    path.join(cwd, 'docs', componentName, 'demo', '*.md'),
+                    path.join(cwd, 'docs', componentName, 'index.md'),
+                ],
+                {
+                    ignoreInitial: true,
+                }
+            );
             const handler = () => {
                 logger.warn('Demo md added or removed, try to restart server');
                 server.close();
                 watcher.close();
                 process.send('RESTART');
             };
-            watcher.on('add', handler).on('unlink', handler);
+
+            watcher.on('all', handler);
 
             event.on('CHANGE_LANG', lang => {
                 logger.warn('Change language, try to restart server');

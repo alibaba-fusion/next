@@ -248,15 +248,12 @@
             <div id="md-area-former" class="markdown-body markdown">
                 <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
                 <%- readmeFormer %>
-
                 <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item active">
-                    <a href='#demo-list'>
-                        <span>代码演示</span>
-                    </a>
+                    <a href='#demo-list'># </a>
+                        代码演示
                     <span id="global-control" class="all-demo-box-controls">
                     </span>
                 </h2>
-
             </div>
 
             <div id="demo-loading-state"></div>
@@ -268,12 +265,13 @@
                 <div id="<%=demosDoc[i].name%>-mount" class="next-demo-mount"></div>
                 <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc">
                     <span class="demo-item-desc-title">
-                        <a href='<%=demosDoc[i].name%>-container'
+                        <a href='#<%=demosDoc[i].name%>-container'
                             style="<%=demosDoc[i].debug==="true" ? 'color: "#c41d7f"' : ''%>">
-                            <span><%=demosDoc[i].title%></span>
+                            # 
                         </a>
+                        <%=demosDoc[i].title%>
                     </span>
-                    <div class="demo-item-desc-body"><%=demosDoc[i].desc%></div>
+                    <div class="demo-item-desc-body markdown"><%-demosDoc[i].desc%></div>
                 </div>
                 <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'
                     style='border-bottom: "dashed #EEE 1px";'>
