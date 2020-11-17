@@ -1,6 +1,7 @@
 # 移动端
 
 - order: 9
+- debug: true
 
 device=phone 下会强制设置 type=normal
 
