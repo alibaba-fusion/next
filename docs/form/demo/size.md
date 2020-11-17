@@ -22,14 +22,14 @@
 ---
 
 ````jsx
-import { Form, Input, Select } from '@alifd/next';
+import { Form, Input, Select, Radio, NumberPicker, DatePicker, Switch, Button } from '@alifd/next';
 
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const formItemLayout = {
-    labelCol: {span: 4},
-    wrapperCol: {span: 20}
+    labelCol: {span: 8},
+    wrapperCol: {span: 16}
 };
 
 class Demo extends React.Component {
@@ -48,41 +48,26 @@ class Demo extends React.Component {
             <div>
                 <Form {...formItemLayout} size={this.state.size} style={{maxWidth: '500px'}}>
                     <FormItem label="Size:">
-                        <Select value={this.state.size} onChange={this.handleChange} style={{width: '100%'}}>
-                            <Option value="small">small</Option>
-                            <Option value="medium">medium</Option>
-                            <Option value="large">large</Option>
-                        </Select>
+                        <Radio.Group shape="button" value={this.state.size} onChange={this.handleChange}>
+                            <Radio value="small">small</Radio>
+                            <Radio value="medium">medium</Radio>
+                            <Radio value="large">large</Radio>
+                        </Radio.Group>
                     </FormItem>
-                    <FormItem label="Account:">
-                        <Input placeholder="Please enter your user name" id="userName" name="userName"/>
+                    <FormItem label="Input:">
+                        <Input placeholder="Please enter your user name" id="userName" />
                     </FormItem>
-                    <FormItem required label="Password:">
-                        <Input htmlType="password" placeholder="Please enter your password" id="password" name="password"/>
+                    <FormItem label="Select:">
+                        <Select><Select.Option value="test">test</Select.Option></Select>
                     </FormItem>
-                    <FormItem label="Password:" validateState="error">
-                        <Input htmlType="password" placeholder="Check your password" id="rePass" name="rePass"/>
+                    <FormItem label="NumberPicker:">
+                        <NumberPicker />
                     </FormItem>
-                </Form>
-
-                <br/><br/>
-
-                <Form size={this.state.size} inline>
-                    <FormItem label="Size:">
-                        <Select style={{width: '100%'}} value={this.state.size} onChange={this.handleChange}>
-                            <Option value="small">small</Option>
-                            <Option value="medium">medium</Option>
-                            <Option value="large">large</Option>
-                        </Select>
+                    <FormItem label="DatePicker:">
+                        <DatePicker />
                     </FormItem>
-                    <FormItem label="Account:">
-                        <Input placeholder="Please enter your user name" id="userName2" name="userName2"/>
-                    </FormItem>
-                    <FormItem label="Password:">
-                        <Input htmlType="password" placeholder="Please enter your password" id="password2" name="password2"/>
-                    </FormItem>
-                    <FormItem label="Password:" validateState="error">
-                        <Input htmlType="password" placeholder="Check your password" id="rePass2" name="rePass2"/>
+                    <FormItem label="Switch:">
+                        <Switch />
                     </FormItem>
                 </Form>
             </div>
