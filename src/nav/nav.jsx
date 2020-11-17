@@ -38,13 +38,7 @@ class Nav extends Component {
          * @enumdesc 无, 上, 下, 左, 右
          * @default 当 direction 为 'hoz' 时，默认值为 'bottom'，当 direction 为 'ver' 时，默认值为 'left'
          */
-        activeDirection: PropTypes.oneOf([
-            null,
-            'top',
-            'bottom',
-            'left',
-            'right',
-        ]),
+        activeDirection: PropTypes.oneOf([null, 'top', 'bottom', 'left', 'right']),
         /**
          * 子导航打开的模式（水平导航只支持弹出）
          * @eumdesc 行内, 弹出
@@ -74,10 +68,7 @@ class Nav extends Component {
         /**
          * 初始选中导航项的 key 值
          */
-        defaultSelectedKeys: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.array,
-        ]),
+        defaultSelectedKeys: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         /**
          * 选中或取消选中导航项触发的回调函数
          * @param {Array} selectedKeys 选中的所有导航项的 key
@@ -120,6 +111,7 @@ class Nav extends Component {
         footer: PropTypes.node,
         /**
          * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Nav style={{lineHeight: '100px'}}>` 自定义高度
+         * @version 1.18
          */
         embeddable: PropTypes.bool,
         popupProps: PropTypes.object,
@@ -163,14 +155,7 @@ class Nav extends Component {
     }
 
     getChildContext() {
-        const {
-            prefix,
-            direction,
-            mode,
-            iconOnly,
-            hasTooltip,
-            hasArrow,
-        } = this.props;
+        const { prefix, direction, mode, iconOnly, hasTooltip, hasArrow } = this.props;
 
         const { isCollapse } = this.context;
 
@@ -219,23 +204,14 @@ class Nav extends Component {
         let realActiveDirection = activeDirection;
         if (
             realActiveDirection &&
-            ((direction === 'hoz' &&
-                (realActiveDirection === 'left' ||
-                    realActiveDirection === 'right')) ||
-                (direction === 'ver' &&
-                    (realActiveDirection === 'top' ||
-                        realActiveDirection === 'bottom')))
+            ((direction === 'hoz' && (realActiveDirection === 'left' || realActiveDirection === 'right')) ||
+                (direction === 'ver' && (realActiveDirection === 'top' || realActiveDirection === 'bottom')))
         ) {
             realActiveDirection = null;
         }
 
         if (!newIconOnly && realActiveDirection === undefined) {
-            realActiveDirection =
-                direction === 'hoz'
-                    ? 'bottom'
-                    : type === 'line'
-                    ? 'right'
-                    : 'left';
+            realActiveDirection = direction === 'hoz' ? 'bottom' : type === 'line' ? 'right' : 'left';
         }
 
         const cls = classNames({
@@ -263,31 +239,20 @@ class Nav extends Component {
             selectMode: 'single',
             itemClassName: `${prefix}nav-item`,
             popupClassName: classNames({
-                [cls
-                    .replace(`${prefix}icon-only`, '')
-                    .replace(`${prefix}nav-embeddable`, '')]: mode === 'popup',
+                [cls.replace(`${prefix}icon-only`, '').replace(`${prefix}nav-embeddable`, '')]: mode === 'popup',
                 [`${prefix}icon-only`]: newIconOnly && mode === 'inline',
                 [popupClassName]: !!popupClassName,
             }),
             popupProps: popupItemProps => {
                 return {
-                    offset:
-                        direction === 'hoz' && popupItemProps.level === 1
-                            ? [0, 2]
-                            : [-2, 0],
+                    offset: direction === 'hoz' && popupItemProps.level === 1 ? [0, 2] : [-2, 0],
                     ...popupProps,
                 };
             },
         };
 
         return (
-            <Menu
-                className={cls}
-                style={newStyle}
-                {...props}
-                {...others}
-                ref={this.getMenuRef}
-            >
+            <Menu className={cls} style={newStyle} {...props} {...others} ref={this.getMenuRef}>
                 {children}
             </Menu>
         );

@@ -333,6 +333,7 @@ class Menu extends Component {
         onBlur: PropTypes.func,
         /**
          * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
+         * @version 1.18
          */
         embeddable: PropTypes.bool,
         onItemKeyDown: PropTypes.func,
