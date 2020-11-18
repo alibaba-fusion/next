@@ -2,7 +2,12 @@ const fs = require('fs-extra');
 const path = require('path');
 const cp = require('child_process');
 const co = require('co');
-const Github = require('@octokit/rest')();
+const { Octokit } = require('@octokit/rest');
+
+const octokit = new Octokit({
+    auth: process.env.GITHUB_RELEASE_TOKEN,
+});
+
 const inquirer = require('inquirer');
 const { logger, runCmd } = require('../utils');
 const { execSync } = require('child_process');
@@ -268,15 +273,7 @@ function* triggerRelease() {
         .join('\n');
 
     return new Promise(function(resolve, reject) {
-        Github.hook.before('request', () => {
-            Github.authenticate({
-                type: 'basic',
-                username: hubInfo.uname,
-                password: hubInfo.pwd,
-            });
-        });
-
-        Github.repos
+        octokit.repos
             .createRelease({
                 owner: 'alibaba-fusion',
                 repo: 'next',
