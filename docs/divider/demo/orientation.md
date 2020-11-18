@@ -2,7 +2,7 @@
 
 - order: 2
 
-通过 `orientation` 来设置分割线上文案的位置
+通过 `orientation` 来设置分割线上文案的位置。
 
 :::lang=en-us
 # Basic Usage
