@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const cp = require('child_process');
+const urllib = require('urllib');
 const co = require('co');
 const { Octokit } = require('@octokit/rest');
 
@@ -55,6 +56,7 @@ co(function*() {
     }
     yield pushPlatformDocsBranch();
     yield publishToNpm();
+    yield sendToDingTalk();
 }).catch(err => {
     logger.error('Release failed', err.stack);
 });
@@ -213,7 +215,7 @@ function* publishToNpm() {
         yield runCommond(`npm publish --tag ${distTags.tag}`);
         yield runCommond(`tnpm sync @alifd/next`);
         yield publishToNextDocs();
-        yield triggerRelease();
+        triggerRelease();
     } else {
         logger.success('publish abort.');
     }
@@ -246,24 +248,8 @@ function* publishToNextDocs() {
     }
 }
 
-function* getGithubInfo() {
-    return yield inquirer.prompt([
-        {
-            name: 'uname',
-            type: 'input',
-            message: '请输入github用户名:',
-        },
-        {
-            name: 'pwd',
-            type: 'password',
-            message: '请输入github密码:',
-        },
-    ]);
-}
-
-function* triggerRelease() {
+function triggerRelease() {
     logger.success(`正在准备发布Github release: ${buildTag}`);
-    const hubInfo = yield getGithubInfo();
 
     const latestLog = fs
         .readFileSync(path.join(cwd, 'LATESTLOG.md'), 'utf8')
@@ -295,4 +281,52 @@ function* triggerRelease() {
                 reject();
             });
     });
+}
+
+function* sendToDingTalk() {
+    const group = process.env.FUSION_SERVICE_DINGTALK_GROUPS;
+    const dingtalks = (group && group.split(', ')) || [];
+
+    const result = yield inquirer.prompt([
+        {
+            name: 'sync',
+            type: 'confirm',
+            default: true,
+            message: '是否同步发布信息到钉钉群',
+        },
+    ]);
+    if (!result.sync) {
+        logger.success('不发就不发吧~');
+        return;
+    }
+
+    const username = cp.execSync('git config --get user.name');
+    const latestLog = fs
+        .readFileSync(path.join(cwd, 'LATESTLOG.md'), 'utf8')
+        .replace(/# Latest Log/g, '')
+        .replace(/\n+/g, '\n')
+        .replace(/\(\[[\d\w]+\]\(https:\/\/[^)]+\)\)/g, '');
+    const dingContent = `> [公告] @alifd/next@${masterTag} 版本发布! by: ${username}
+${latestLog}
+> 历史发布记录请查看[CHANGELOG](https://github.com/alibaba-fusion/next/blob/master/CHANGELOG.md);`;
+
+    // console.log(dingContent)
+    for (let i = 0; i < dingtalks.length; i++) {
+        const url = dingtalks[i];
+        yield urllib.request(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            content: JSON.stringify({
+                msgtype: 'markdown',
+                markdown: {
+                    title: 'Fusion Next 组件发布',
+                    text: dingContent,
+                },
+            }),
+        });
+    }
+
+    logger.success('Push to ding talk successfully!');
 }
