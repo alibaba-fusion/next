@@ -35,19 +35,55 @@ const onBlur = () => {
 };
 
 ReactDOM.render(
-  <Select
-    id="basic-demo"
-    onChange={onChange}
-    onToggleHighlightItem={onToggleHighlightItem}
-    defaultValue="jack"
-    onFocus={onFocus}
-    onBlur={onBlur}
-    aria-label="name is"
-  >
-    <Option value="jack">Jack</Option>
-    <Option value="frank">Frank</Option>
-    <Option value="hugo">Hugo</Option>
-  </Select>,
+  <div>
+    <Select
+      id="basic-demo"
+      onChange={onChange}
+      onToggleHighlightItem={onToggleHighlightItem}
+      defaultValue="jack"
+      onFocus={onFocus}
+      onBlur={onBlur}
+      aria-label="name is"
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="hugo">Hugo</Option>
+    </Select>
+
+
+    <Select
+      defaultValue="hugo"
+      hasClear
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="hugo">Hugo</Option>
+    </Select>
+
+    <Select
+      placeholder="show search"
+      showSearch
+      hasClear
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="hugo">Hugo</Option>
+    </Select>
+    
+    <Select
+      disabled
+      defaultValue="frank"
+      style={{marginRight: 8}}
+    >
+      <Option value="jack">Jack</Option>
+      <Option value="frank">Frank</Option>
+      <Option value="hugo">Hugo</Option>
+    </Select>
+
+  </div>,
   mountNode
 );
 ````

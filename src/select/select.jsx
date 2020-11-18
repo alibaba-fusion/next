@@ -32,7 +32,7 @@ class Select extends Base {
     static propTypes = {
         ...Base.propTypes,
         /**
-         * 选择器模式
+         * 选择器模式, 单选、多选、tag, tag 模式支持输入内容变成选项
          */
         mode: PropTypes.oneOf(['single', 'multiple', 'tag']),
         /**

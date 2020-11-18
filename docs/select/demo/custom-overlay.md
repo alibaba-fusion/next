@@ -1,6 +1,6 @@
 # 弹层定制
 
-- order: 14
+- order: 9
 
 通过 popupContent 定制 Select 弹层， Select 使用 popupContent 中渲染出的 item 的 value 作为菜单项的key，如果没有提供或者自定义渲染 key 请使用 valueRender
 
@@ -8,7 +8,7 @@
 
 # custom popup
 
-- order: 14
+- order: 9
 
 custom Popup by `popupContent`
 :::
@@ -24,7 +24,7 @@ function preventDefault(e) {
     e.preventDefault();
 }
 
-class Menu extends React.Component {
+class CustomMenu extends React.Component {
     data = [{
         label: 'value1',
         value: 1
@@ -77,7 +77,11 @@ class Demo extends React.Component {
     }
 
     render() {
-        const popupContent = <Menu onChange={this.handleSelect} onMouseDown={preventDefault}/>;
+        const popupContent = <div style={{border: '1px solid', background: 'white'}}>
+            <div style={{borderBottom: '1px solid', background: 'white', padding: 10, fontSize: '12px'}}>custom header</div>
+            <CustomMenu onChange={this.handleSelect} onMouseDown={preventDefault}/>
+            <div style={{borderTop: '1px solid', background: 'white', padding: 10, fontSize: '12px'}}>custom footer</div>
+        </div>;
         const popupProps = {
             triggerClickKeycode: [13, 32, 40] // space, enter, down-arrow
         };
@@ -90,7 +94,9 @@ class Demo extends React.Component {
                     onVisibleChange={this.onVisibleChange}
                     value={this.state.value}
                     popupProps={popupProps}
-                    popupContent={popupContent} />
+                    popupContent={popupContent} 
+                    style={{width: 200}}
+                    />
             </div>
         );
     }

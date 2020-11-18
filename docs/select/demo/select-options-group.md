@@ -2,7 +2,7 @@
 
 - order: 5
 
-使用 OptionGroup 针对选项进行分组，也可以使用原生的 html 标签 optgroup
+使用 OptionGroup 针对选项进行分组
 
 :::lang=en-us
 # Group
@@ -33,8 +33,8 @@ const dataSource = [{
 }];
 
 ReactDOM.render(
-    <div className="demo-container">
-        <Select placeholder="OptionGroup">
+    <div >
+        <Select placeholder="OptionGroup" style={{marginRight: 8}}>
             <OptionGroup label="group1">
                 <Option value="small">Small</Option>
                 <Option value="medium">Medium</Option>
@@ -46,29 +46,8 @@ ReactDOM.render(
                 <Option value="large2">Large2</Option>
             </OptionGroup>
         </Select>
-        <Select placeholder="optgroup">
-            <option value="apple">Apple</option>
-            <option value="orange">Orange</option>
-            <option value="banana">Banana</option>
-            <optgroup label="Pets Group">
-                <option value="cat">Cat</option>
-                <option value="rabbit">Rabbit</option>
-                <option value="dog" disabled>Dog</option>
-            </optgroup>
-        </Select>
-        <Select placeholder="item.children" dataSource={dataSource}/>
+        <Select placeholder="use dataSource" dataSource={dataSource}/>
     </div>,
     mountNode
 );
-````
-
-````css
-.next-select {
-    margin-right:10px;
-}
-
-.demo-container {
-    background-color: #F8F8F8;
-    padding: 16px;
-}
 ````
