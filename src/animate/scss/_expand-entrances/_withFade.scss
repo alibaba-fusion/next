@@ -13,7 +13,7 @@
     }
 }
 
-@mixin expandInWithFade($count: $countDefault, $duration: .2s, $delay: $delayDefault, $function: $functionDefault, $fill: 'forwards', $visibility: $visibilityDefault) {
+@mixin expandInWithFade($count: $countDefault, $duration: .2s, $delay: $delayDefault, $function: $functionDefault, $fill: forwards, $visibility: $visibilityDefault) {
     @include animation-name(expandInWithFade);
     @include count($count);
     @include duration($duration);
