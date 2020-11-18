@@ -1,6 +1,6 @@
-# 无障碍
+# 无障碍支持
 
-- order: 7
+- order: 8
 
 请参考`ARIA and KeyBoard`。
 
@@ -8,7 +8,7 @@
 :::lang=en-us
 # Accessibility
 
-- order: 7
+- order: 8
 
 Please refer to `ARIA and KeyBoard`.
 
