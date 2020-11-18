@@ -13,7 +13,6 @@ const getVariables = require('./middlewares/get-variables');
 const rebuildScss = require('./middlewares/rebuild-scss');
 const event = require('./event');
 const { logger } = require('../utils');
-const { watch } = require('less');
 
 const cwd = process.cwd();
 

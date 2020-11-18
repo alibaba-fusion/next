@@ -146,19 +146,19 @@ function getDemoOp(name) {
             <span className="code-expand-icon code-box-code-action">
                 <Tooltip
                     align="b"
-                    style={{ maxWidth: 320 }}
+                    style={{ maxWidth: 400 }}
                     trigger={
                         <img alt="expand code" id="${name}-icon-show" src="https://gw.alipayobjects.com/zos/antfincdn/Z5c7kzvi30/expand.svg" className="code-expand-icon-show" />
                     }>
-                    <span>展开代码</span>
+                    <span>展开代码<br/><br/><span style={{color:'red'}}>小提示:&emsp;</span> <a href="#demo-list">#代码演示</a> 右侧提供 <span style={{color:'red'}}>全局代码展开</span> 及 <span style={{color:'red'}}>开启在线编辑</span> 模式哟～</span>
                 </Tooltip>
                 <Tooltip
                     align="b"
-                    style={{ maxWidth: 320 }}
+                    style={{ maxWidth: 400 }}
                     trigger={
                         <img id="${name}-icon-hide"  style={{display:'none'}} alt="expand code" src="https://gw.alipayobjects.com/zos/antfincdn/4zAaozCvUH/unexpand.svg" className="code-expand-icon-hide"/>
                     }>
-                    <span>收起代码</span>
+                    <span>收起代码<br/><br/><span style={{color:'red'}}>小提示:&emsp;</span> <a href="#demo-list">#代码演示</a> 右侧提供 <span style={{color:'red'}}>全局代码展开</span> 及 <span style={{color:'red'}}>开启在线编辑</span> 模式哟～</span>
                 </Tooltip>
             </span>`;
 
@@ -198,7 +198,6 @@ function getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs) {
     })
         .code.replace(/`/g, '\\`')
         .replace(/\$/g, '\\$');
-
     return `
 window.${name}RenderScript = function ${name}RenderScript(liveDemo){
     var mountNode = document.getElementById('${name}-mount');
@@ -224,10 +223,38 @@ window.${name}RenderScript = function ${name}RenderScript(liveDemo){
         </LiveProvider>, 
         document.getElementById('${name}-body'), 
         ()=>{
-            document.getElementById('${name}-live-import').innerHTML = \`${marked(rawImportJs)
-        .replace(/{backquote}/g, '`')
-        .replace(/{dollar}/g, '$')}\`
-            document.getElementById('${name}-live-css').innerHTML = \`${marked(rawCss)}\`;
+            ${
+                rawImportJs
+                    ? `ReactDOM.render(
+                <Tooltip
+                    align="t"
+                    style={{ maxWidth: 320}}
+                    trigger={
+                        <div 
+                            dangerouslySetInnerHTML = {{ 
+                                __html: \`${marked(rawImportJs)
+                                    .replace(/{backquote}/g, '`')
+                                    .replace(/{dollar}/g, '$')}\`
+                                }}
+                            >
+                        </div>}
+                >
+                    编辑模式暂不支持修改依赖引入
+                </Tooltip>, document.getElementById('${name}-live-import'));`
+                    : ''
+            }
+            ${
+                rawCss
+                    ? `ReactDOM.render(
+                <Tooltip
+                    align="b"
+                    style={{ maxWidth: 320}}
+                    trigger={<div dangerouslySetInnerHTML = {{  __html: \`${marked(rawCss)}\`}}></div>}
+                >
+                    编辑模式暂不支持修改css
+                </Tooltip>, document.getElementById('${name}-live-css'));`
+                    : ''
+            }
         });
 }
 
