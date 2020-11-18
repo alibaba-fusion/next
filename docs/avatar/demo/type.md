@@ -1,8 +1,8 @@
-# 多种类型
+# 类型
 
 - order: 1
 
-支持三种类型：图片、Icon 以及字符，其中 Icon 和字符型可以自定义图标颜色及背景色。
+支持多种展示类型：内置图标、Icon、字符、图片，并可自定义样式
 
 :::lang=en-us
 # Types
@@ -20,7 +20,7 @@ import { Avatar, Icon } from '@alifd/next';
 ReactDOM.render(
     <div>
         <Avatar icon="account" />
-        <Avatar icon={<Icon type="account" />} />
+        <Avatar icon={<Icon type="smile" />} />
         <Avatar>U</Avatar>
         <Avatar src="https://img.alicdn.com/tfs/TB1QS.4l4z1gK0jSZSgXXavwpXa-1024-1024.png" />
         <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>U</Avatar>
