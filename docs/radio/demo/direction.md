@@ -4,10 +4,6 @@
 
 垂直展示`<Radio.Group>`，配合更多输入框。仅适用于非Button样式的`<Radio.Group>`。
 
-- 测试电话i说的话i
-
-- 大幅加快速度发货
-
 :::lang=en-us
 # Direction
 

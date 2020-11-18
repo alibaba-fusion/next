@@ -5,7 +5,7 @@
 使用 `RadioGroup` 渲染的组，通过设置 `shape="button"` 可以让组件以按钮形式展示，同时可以通过 `size` 来控制组件大小。
 
 :::lang=en-us
-# The components display as a button shape;
+# The components display as a button shape
 - order: 6
 Groups that are rendered using `RadioGroup` can set the component to be displayed as a button by setting `shape="button"`, and the size of the component can be controlled via `size`.
 :::

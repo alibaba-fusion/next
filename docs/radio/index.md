@@ -7,11 +7,9 @@
 
 ---
 
-## 开发指南
-
 单选框。
 
-### 何时使用
+## 何时使用
 
 -   单选框允许用户从一个数据集中选择单个选项。面向用户需要并排看到所有的可选项，并使用单选框进行排他操作的场景。
 
@@ -54,7 +52,7 @@
 | isPreview     | 是否为预览态                                                                                                                                                                                                                        | Boolean                             | false    |
 | renderPreview | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(previewed: Object, props: Object) => reactNode<br>**参数**:<br>_previewed_: {Object} 预览值：{label: "", value: ""}<br>_props_: {Object} 所有传入的参数<br>**返回值**:<br>{reactNode} Element 渲染内容<br> | Function                            | -        |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键  | 说明                                                     |
 | :-- | :----------------------------------------------------- |
