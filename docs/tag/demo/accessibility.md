@@ -1,14 +1,14 @@
-# 无障碍
+# 无障碍支持
 
-- order: 3
+- order: 6
 
-组件已支持无障碍。关于键盘操作请参考`ARIA and KeyBoard`。
+组件已支持无障碍。关于键盘操作请参考 `ARIA and KeyBoard`
 
 
 :::lang=en-us
 # Accessibility
 
-- order: 3
+- order: 6
 
 Components already support accessibility.Please refer to `ARIA and KeyBoard` for keyboard operation.
 
@@ -20,9 +20,7 @@ import { Tag, Icon } from '@alifd/next';
 
 const {Group: TagGroup} = Tag;
 
-
 const dataType = ['全部', '衣服', '手机', '化妆品'];
-
 
 class Demo extends React.Component {
 
