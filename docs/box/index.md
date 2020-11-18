@@ -11,7 +11,8 @@
 
 ## 何时使用
 
-用于弹性布局, 通过`display: flex`实现，受浏览器限制，本功能支持到IE10+，IE下参考文档 <https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85>)
+- 用于弹性布局, 通过`display: flex`实现。
+- 受浏览器限制，本功能支持到IE10+，IE下[#参考文档](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85>))。
 
 ## API
 
