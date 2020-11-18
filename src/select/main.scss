@@ -154,7 +154,9 @@
             #{$select-prefix}-values > em + #{$select-prefix}-trigger-search {
                 width: 1px;
                 opacity: 0;
+                /* stylelint-disable */
                 filter: alpha(opacity=0); /* for IE 9 */
+                /* stylelint-enable */
             }
         }
 
@@ -457,7 +459,9 @@
             &.#{$css-prefix}no-search,
             &.#{$css-prefix}inactive {
                 #{$select-prefix}-values > em + #{$select-prefix}-trigger-search {
+                    /* stylelint-disable */
                     filter: alpha(opacity=0); /* for IE 9 */
+                    /* stylelint-enable */
                     font-size: 0;
                 }
             }
