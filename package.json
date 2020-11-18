@@ -208,6 +208,7 @@
     "stylelint-scss": "^3.1.1",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
+    "urllib": "^2.36.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.x",
     "whatwg-fetch": "^2.0.3"
