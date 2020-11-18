@@ -1,15 +1,16 @@
-# 基本
+# 尺寸
 
-- order: 0
+- order: 1
 
-基本的标签
+三种尺寸的 `Tag`
+
 
 :::lang=en-us
-# Basic Usage
+# Size
 
-- order: 0
+- order: 1
 
-basic tag
+three sizes of `Tag`
 
 :::
 
@@ -21,8 +22,9 @@ import { Tag, Icon } from '@alifd/next';
 const {Group: TagGroup} = Tag;
 
 ReactDOM.render(<div className="tag-list">
-    <Tag type="normal">Normal Tag</Tag>
-    <Tag type="primary">Primary Tag</Tag>
+    <Tag size="small">小</Tag>
+    <Tag size="medium">中</Tag>
+    <Tag size="large">大</Tag>
 </div>,
 mountNode);
 ````

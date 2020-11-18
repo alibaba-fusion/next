@@ -11,6 +11,7 @@ class Closeable extends Component {
         className: PropTypes.any,
         /**
          * closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮
+         * @enumdesc 标签, 尾部icon
          */
         closeArea: PropTypes.oneOf(['tag', 'tail']),
         /**
