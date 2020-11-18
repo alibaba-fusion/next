@@ -7,11 +7,11 @@
 
 ---
 
-## 开发指南
+弹性布局组件，支持版本1.19.0+。
 
-### 何时使用
+## 何时使用
 
-用于弹性布局, 1.19.0+ 添加，通过`display: flex`实现，受浏览器限制，本功能支持到IE10+, IE下参考文档 <https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85>)
+用于弹性布局, 通过`display: flex`实现，受浏览器限制，本功能支持到IE10+，IE下参考文档 <https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/dev-guides/hh673531(v=vs.85>)
 
 ## API
 
