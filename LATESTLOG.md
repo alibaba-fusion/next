@@ -1,15 +1,13 @@
-# Latest Log 
+# Latest Log
 
-## [1.21.8](https://github.com/alibaba-fusion/next/compare/1.21.7...1.21.8) (2020-10-15)
+## [1.21.10](https://github.com/alibaba-fusion/next/compare/1.21.9...1.21.10) (2020-11-18)
 
 
 ### Bug Fixes
 
-* correct typemark to fit forwardref ([2cb0fd7](https://github.com/alibaba-fusion/next/commit/2cb0fd7))
-* fix style ([0d8fc47](https://github.com/alibaba-fusion/next/commit/0d8fc47))
-* **Button:** make text button selectable, close [#2248](https://github.com/alibaba-fusion/next/issues/2248) ([467acf9](https://github.com/alibaba-fusion/next/commit/467acf9))
-* **Message:** $message-close-icon-size lose default statement ([fb65a17](https://github.com/alibaba-fusion/next/commit/fb65a17))
-* **Search:** correct use of this and avoid warning for esm bundle ([1a25a1a](https://github.com/alibaba-fusion/next/commit/1a25a1a))
-* **Upload:** Card renderPreview fix [#2239](https://github.com/alibaba-fusion/next/issues/2239) ([e698721](https://github.com/alibaba-fusion/next/commit/e698721))
-
+* **Nav:** color of a link, close [#2388](https://github.com/alibaba-fusion/next/issues/2388) ([8c93ae7](https://github.com/alibaba-fusion/next/commit/8c93ae7))
+* **NumberPicker:** dts for size=small ([7e1d2a0](https://github.com/alibaba-fusion/next/commit/7e1d2a0))
+* **NumberPicker:** fix trigger style in firefox fix [#2281](https://github.com/alibaba-fusion/next/issues/2281) ([a88d81e](https://github.com/alibaba-fusion/next/commit/a88d81e))
+* **Table** size of sort icon should be xs ([40c6686](https://github.com/alibaba-fusion/next/commit/40c6686))
+* **Upload:** correct typo for old ts version ([#2368](https://github.com/alibaba-fusion/next/issues/2368)) ([1345652](https://github.com/alibaba-fusion/next/commit/1345652))
 

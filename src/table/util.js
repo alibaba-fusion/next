@@ -29,7 +29,7 @@ export const fetchDataByPath = (object, path) => {
         // lists[1].name
         if (key.indexOf('[') >= 0) {
             key = key.match(/(.*)\[(.*)\]/);
-            if (key) {
+            if (key && typeof key[1] === 'object' && typeof object[key[1]] === 'object') {
                 val = object[key[1]][key[2]];
             }
         } else {
@@ -51,13 +51,7 @@ export const fetchDataByPath = (object, path) => {
  * @param {Array} lockChildren
  * @param {String} dir 'left', 'right'
  */
-export const setStickyStyle = (
-    lockChildren,
-    flatenChildren,
-    dir,
-    offsetArr = [],
-    prefix
-) => {
+export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = [], prefix) => {
     const len = flatenChildren.length;
 
     flatenChildren.forEach((col, index) => {

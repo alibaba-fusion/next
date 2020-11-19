@@ -407,4 +407,5 @@ export default class Table extends React.Component<TableProps, any> {
     static ColumnGroup: typeof ColumnGroup;
     static GroupHeader: typeof GroupHeader;
     static GroupFooter: typeof GroupFooter;
+    static StickyLock: typeof Table;
 }

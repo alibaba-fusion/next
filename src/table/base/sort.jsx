@@ -45,7 +45,7 @@ export default class Sort extends React.Component {
                     {sortIcons ? (
                         sortIcons[sortOrder]
                     ) : (
-                        <Icon rtl={rtl} type={map[sortOrder]} size="small" />
+                        <Icon rtl={rtl} type={map[sortOrder]} size="xs" />
                     )}
                 </a>
             );

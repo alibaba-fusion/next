@@ -119,7 +119,7 @@ const getGridGap = gap => {
 };
 
 const getTemplateCount = counts => {
-    if (!isNaN(counts)) {
+    if (!isNaN(counts) || typeof counts === 'string') {
         return `repeat(${counts}, minmax(0,1fr))`;
     }
 
@@ -280,7 +280,7 @@ export default ({
         default:
             break;
     }
-    const newColumns = !isNaN(columns) ? columns : deviceColumns;
+    const newColumns = !isNaN(columns) || typeof columns === 'string' ? columns : deviceColumns;
 
     switch (display) {
         case 'grid':

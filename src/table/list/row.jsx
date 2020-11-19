@@ -64,17 +64,11 @@ export default class GroupListRow extends Row {
     }
 
     isChildrenSelection() {
-        return (
-            this.context.listHeader &&
-            this.context.listHeader.hasChildrenSelection
-        );
+        return this.context.listHeader && this.context.listHeader.hasChildrenSelection;
     }
 
     isFirstLevelDataWhenNoChildren() {
-        return (
-            this.context.listHeader &&
-            this.context.listHeader.useFirstLevelDataWhenNoChildren
-        );
+        return this.context.listHeader && this.context.listHeader.useFirstLevelDataWhenNoChildren;
     }
 
     isSelection() {
@@ -107,10 +101,12 @@ export default class GroupListRow extends Row {
                 }
                 if (this.context.rowSelection) {
                     cells.shift();
-                    cells[0] = React.cloneElement(cells[0], {
-                        colSpan: 2,
-                        ...cells[0].props,
-                    });
+                    cells[0] =
+                        cells[0] &&
+                        React.cloneElement(cells[0], {
+                            colSpan: 2,
+                            ...cells[0].props,
+                        });
                 }
                 return <tr key={index}>{cells}</tr>;
             });
@@ -133,31 +129,19 @@ export default class GroupListRow extends Row {
             }
             if (listNode) {
                 let cells = this.renderCells(record);
-                if (
-                    type === 'header' &&
-                    this.context.rowSelection &&
-                    this.isSelection()
-                ) {
+                if (type === 'header' && this.context.rowSelection && this.isSelection()) {
                     cells = cells.slice(0, 1);
                     cells.push(
                         <td colSpan={columns.length - 1} key="listNode">
-                            <div className={`${prefix}table-cell-wrapper`}>
-                                {listNode}
-                            </div>
+                            <div className={`${prefix}table-cell-wrapper`}>{listNode}</div>
                         </td>
                     );
-                    listNode = (
-                        <tr className={`${prefix}table-group-${type}`}>
-                            {cells}
-                        </tr>
-                    );
+                    listNode = <tr className={`${prefix}table-group-${type}`}>{cells}</tr>;
                 } else {
                     listNode = (
                         <tr className={`${prefix}table-group-${type}`}>
                             <td colSpan={columns.length}>
-                                <div className={`${prefix}table-cell-wrapper`}>
-                                    {listNode}
-                                </div>
+                                <div className={`${prefix}table-cell-wrapper`}>{listNode}</div>
                             </td>
                         </tr>
                     );
