@@ -1,28 +1,17 @@
-# 自定义上传参数
+# 添加上传参数
 
 - order: 4
 
-通过 data 控制自定义参数
+通过 data 控制自定义参数, 可以是一个 对象 或者 函数
 
 
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
 :::lang=en-us
 # Custom Upload Params
 
 - order: 4
 
-using  `data` param to put custom params in.
+using  `data` param to put custom params in. can be a object or function
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
-
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
