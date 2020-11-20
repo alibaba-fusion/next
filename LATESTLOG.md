@@ -1,13 +1,13 @@
-# Latest Log
+# Latest Log 
 
-## [1.21.10](https://github.com/alibaba-fusion/next/compare/1.21.9...1.21.10) (2020-11-18)
+## [1.21.11](https://github.com/alibaba-fusion/next/compare/1.21.10...1.21.11) (2020-11-20)
 
 
 ### Bug Fixes
 
-* **Nav:** color of a link, close [#2388](https://github.com/alibaba-fusion/next/issues/2388) ([8c93ae7](https://github.com/alibaba-fusion/next/commit/8c93ae7))
-* **NumberPicker:** dts for size=small ([7e1d2a0](https://github.com/alibaba-fusion/next/commit/7e1d2a0))
-* **NumberPicker:** fix trigger style in firefox fix [#2281](https://github.com/alibaba-fusion/next/issues/2281) ([a88d81e](https://github.com/alibaba-fusion/next/commit/a88d81e))
-* **Table** size of sort icon should be xs ([40c6686](https://github.com/alibaba-fusion/next/commit/40c6686))
-* **Upload:** correct typo for old ts version ([#2368](https://github.com/alibaba-fusion/next/issues/2368)) ([1345652](https://github.com/alibaba-fusion/next/commit/1345652))
+* fix warning of style ([b865019](https://github.com/alibaba-fusion/next/commit/b865019))
+* **Checkbox:** wrong style in .disabled.focus, close [#2280](https://github.com/alibaba-fusion/next/issues/2280) ([4e474cc](https://github.com/alibaba-fusion/next/commit/4e474cc))
+* **Typescript:** add StickyLock ([79fd9db](https://github.com/alibaba-fusion/next/commit/79fd9db))
+* **Upload:** Card progress under controled value. fix [#2411](https://github.com/alibaba-fusion/next/issues/2411) ([edcea69](https://github.com/alibaba-fusion/next/commit/edcea69))
+
 
