@@ -75,7 +75,8 @@ class Card extends Base {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if ('value' in nextProps && nextProps.value !== prevState.value) {
+        const isUploading = prevState.uploaderRef && prevState.uploaderRef.isUploading();
+        if ('value' in nextProps && nextProps.value !== prevState.value && !isUploading) {
             return {
                 value: !Array.isArray(nextProps.value) ? [] : [].concat(nextProps.value),
             };
@@ -84,10 +85,12 @@ class Card extends Base {
         return null;
     }
 
-    onProgress = value => {
+    onProgress = (value, targetItem) => {
         this.setState({
             value,
         });
+
+        this.props.onProgress(value, targetItem);
     };
 
     onChange = (value, file) => {
