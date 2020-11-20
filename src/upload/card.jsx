@@ -42,6 +42,10 @@ class Card extends Base {
          * 自定义成功和失败的列表渲染方式
          */
         itemRender: PropTypes.func,
+        /**
+         * 上传中
+         */
+        onProgress: PropTypes.func,
         isPreview: PropTypes.bool,
         renderPreview: PropTypes.func,
     };
@@ -51,6 +55,7 @@ class Card extends Base {
         locale: zhCN.Upload,
         onChange: func.noop,
         onPreview: func.noop,
+        onProgress: func.noop,
     };
 
     constructor(props) {
