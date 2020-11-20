@@ -71,6 +71,7 @@
 | onRemove   | 点击移除的回调<br><br>**签名**:<br>Function() => void         | Function | -         |
 | onCancel   | 取消上传的回调<br><br>**签名**:<br>Function() => void         | Function | -         |
 | itemRender | 自定义成功和失败的列表渲染方式<br><br>**签名**:<br>Function() => void | Function | -         |
+| onProgress | 上传中<br><br>**签名**:<br>Function() => void             | Function | func.noop |
 
 ### Upload.Dragger
 
