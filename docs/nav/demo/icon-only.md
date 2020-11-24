@@ -1,6 +1,7 @@
 # 只显示图标
 
 - order: 2
+- debug: true
 
 Nav 可设置 iconOnly 属性，只显示图标，以减少占用空间。
 

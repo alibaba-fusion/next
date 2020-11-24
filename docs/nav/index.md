@@ -16,9 +16,12 @@
 
 ### 注意事项
 
--   iconOnly 只适用垂直方向。
-
 -   Nav 继承自 Menu，除特殊说明外，可使用 Menu 的 API。
+
+### 常见问题
+-   Q: 菜单的数据是移步获取的，当我拿到数据之后，发现设置的 `defaultOpenKeys` 不生效，有什么解决办法？这个问题的成因是什么？<br/>
+      A: 假设菜单信息是异步获取后塞到 menuData 变量中的，可以设置 `{menuData && <Menu />}`
+    原因：defaultXXX系列API遵循React的设计规范，仅在组件第一次渲染的时候生效，所以`defaultOpenKeys`仅仅对Menu在didMount阶段拿到的Children生效，异步获取的信息不在这个阶段内，所以不生效
 
 ## API
 
