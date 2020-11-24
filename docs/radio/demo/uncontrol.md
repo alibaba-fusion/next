@@ -1,13 +1,15 @@
-# 非受限组件
+# 非受控组件
 
-- order: 2
+- order: 10
+- debug: true
 
-使用 `RadioGroup` 渲染的组，通过设置 `defaultValue` 属性可以让组件变成[非受限组件](https://facebook.github.io/react/docs/forms.html#uncontrolled-components)。
+使用 `RadioGroup` 渲染的组，通过设置 `defaultValue` 属性可以让组件变成[非受控组件](https://facebook.github.io/react/docs/forms.html#uncontrolled-components)。
 
 
 :::lang=en-us
 # Uncontrolled Component
-- order: 2
+- order: 10
+- debug: true
 Groups rendered using `RadioGroup` can be made to become [uncontrolled component] by setting the `defaultValue` property (https://facebook.github.io/react/docs/forms.html#uncontrolled-components).
 
 :::
