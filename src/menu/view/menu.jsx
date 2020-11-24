@@ -435,13 +435,19 @@ class Menu extends Component {
 
         if ('openKeys' in nextProps) {
             state.openKeys = normalizeToArray(nextProps.openKeys);
+            // 从展开状态变为收起状态，才需要清空openKeys
+        } else if ('mode' in nextProps && nextProps.mode === 'popup' && prevState.lastMode === 'inline') {
+            state.openKeys = [];
         }
+
         if ('selectedKeys' in nextProps) {
             state.selectedKeys = normalizeToArray(nextProps.selectedKeys);
         }
         if ('focusedKey' in nextProps) {
             state.focusedKey = nextProps.focusedKey;
         }
+
+        state.lastMode = nextProps.mode;
 
         const { newChildren, _k2n, _p2n } = getNewChildren({
             root: prevState.root,
