@@ -17,7 +17,7 @@ const event = require('./event');
 const { logger } = require('../utils');
 
 const cwd = process.cwd();
-
+console.log(process.argv);
 const argv = parseArgs(process.argv.slice(2), {
     default: {
         host: '127.0.0.1',
@@ -30,11 +30,11 @@ const argv = parseArgs(process.argv.slice(2), {
     },
 });
 
-
 const { host, silent, lang, dir, mode } = argv;
 const port = parseInt(argv.port, 10);
 
 const componentName = argv._[0];
+
 const componentPath = path.join(process.cwd(), 'docs', componentName);
 
 const disableAnimation = argv['disable-animation'];
@@ -116,12 +116,9 @@ function run(port) {
         setTimeout(() => {
             openBrowser(url);
 
-            const watcher = chokidar.watch(
-                path.join(cwd, 'docs', componentName, 'demo', '*.md'),
-                {
-                    ignoreInitial: true,
-                }
-            );
+            const watcher = chokidar.watch(path.join(cwd, 'docs', componentName, 'demo', '*.md'), {
+                ignoreInitial: true,
+            });
             const handler = () => {
                 logger.warn('Demo md added or removed, try to restart server');
                 server.close();

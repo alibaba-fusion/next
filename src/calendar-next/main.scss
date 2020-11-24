@@ -1,0 +1,100 @@
+// @import '../core/index-noreset';
+
+// @import "scss/variable";
+// @import "scss/normalize";
+// @import "scss/mixin";
+// @import "scss/animation";
+
+// @import "scss/header";
+// @import "scss/table";
+// @import "./rtl.scss";
+
+// #{$calendar-prefix} {
+//     &-table {
+//         width: 100%;
+//         table-layout: fixed;
+//     }
+
+//     /* range calendar */
+//     /* --------------- */
+//     &-range {
+//         #{$calendar-prefix}-body {
+//             &-left, &-right {
+//                 float: left;
+//                 width: 50%;
+//             }
+
+//             &-left {
+//                 padding-right: $s-2;
+//             }
+
+//             &-right {
+//                 padding-left: $s-2;
+//             }
+
+//             @include clearfix;
+//         }
+//     }
+
+//     &-symbol-prev::before {
+//         content: $calendar-btn-arrow-content-prev;
+//     }
+//     &-symbol-next::before {
+//         content: $calendar-btn-arrow-content-next;
+//     }
+//     &-symbol-prev-super::before {
+//         content: $calendar-btn-arrow-content-prev-super;
+//     }
+//     &-symbol-next-super::before {
+//         content: $calendar-btn-arrow-content-next-super;
+//     }
+// }
+
+.calendar-cell {
+    padding: 4px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.25);
+}
+.calendar-cell-inner:focus {
+    outline: none;
+}
+.calendar-cell-current {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.calendar-cell-inner {
+    min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    cursor: pointer;
+}
+
+.calendar-cell-selected.calendar-cell-current {
+    background: #e6f7ff;
+}
+.calendar-cell-range-begin.calendar-cell-current,
+.calendar-cell-range-end.calendar-cell-current {
+    background: #1890ff;
+    color: #fff;
+}
+
+.calendar-cell-disabled {
+    background: red !important;
+}
+
+.calendar-header {
+    display: flex;
+}
+
+.calendar-date {
+    width: 100%;
+}
+
+.calendar-header-actions {
+    margin-left: auto;
+}
+
+.calendar-header-text-field {
+    flex: 1;
+    text-align: center;
+}

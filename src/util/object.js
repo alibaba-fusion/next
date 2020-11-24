@@ -28,7 +28,11 @@ export function isArrayLike(obj) {
     const length = !!obj && 'length' in obj && obj.length;
     const type = typeOf(obj);
 
-    return type === 'Array' || length === 0 || (typeof length === 'number' && length > 0 && length - 1 in obj);
+    return (
+        type === 'Array' ||
+        length === 0 ||
+        (typeof length === 'number' && length > 0 && length - 1 in obj)
+    );
 }
 
 /**
@@ -37,7 +41,11 @@ export function isArrayLike(obj) {
  * @return {Boolean}
  */
 export function isPromise(obj) {
-    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+    return (
+        !!obj &&
+        (typeof obj === 'object' || typeof obj === 'function') &&
+        typeof obj.then === 'function'
+    );
 }
 
 /**
@@ -266,7 +274,9 @@ export function deepMerge(target, ...sources) {
  */
 export function isFunctionComponent(component) {
     return (
-        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent === undefined
+        typeOf(component) === 'Function' &&
+        component.prototype &&
+        component.prototype.isReactComponent === undefined
     );
 }
 
@@ -276,7 +286,9 @@ export function isFunctionComponent(component) {
  */
 export function isClassComponent(component) {
     return (
-        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent !== undefined
+        typeOf(component) === 'Function' &&
+        component.prototype &&
+        component.prototype.isReactComponent !== undefined
     );
 }
 
@@ -293,4 +305,20 @@ export function isReactFragment(component) {
         return component.type === React.Fragment;
     }
     return component === React.Fragment;
+}
+
+export function get(key, targetObj, defaultValue) {
+    return key in targetObj ? targetObj[key] : defaultValue;
+}
+
+export function getFromPropOrState(key) {
+    const _get = k => get(k, this.props, this.state && this.state[k]);
+
+    if (Array.isArray(key)) {
+        const o = Object.create(null);
+        key.forEach(k => (o[k] = _get(k)));
+        return o;
+    } else {
+        return _get(key);
+    }
 }

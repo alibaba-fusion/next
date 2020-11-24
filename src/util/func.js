@@ -77,3 +77,33 @@ export function promiseCall(ret, success, failure = noop) {
 
     return ret !== false ? success(ret) : failure(ret);
 }
+
+/**
+ * 判断是否是函数类型
+ * @param {*} func
+ * @return {Boolean}
+ */
+export function isFunction(func) {
+    return typeof func === 'function';
+}
+
+/**
+ * 函数调用，如果obj对象中存在名为methodName的方法则调用该方法，
+ * 如果不存在，则从可选的defaultObj中找
+ * 如果没有找到返回undefined
+ * @param {Object} obj 目标对象
+ * @param {string} methodName 方法
+ * @param {Array} args 函数参数
+ * @param {Object} defaultObj 默认对象
+ */
+export function call(obj, methodName, args, defaultObj) {
+    const method = methodName in obj ? obj[methodName] : defaultObj && defaultObj[methodName];
+
+    return method && method(...args);
+}
+
+export function witchCustomRender(renderName, props, renderProps, defaultRender) {
+    const r = renderName in props ? props[renderName] : defaultRender;
+
+    return isFunction(r) ? r(renderProps) : r;
+}
