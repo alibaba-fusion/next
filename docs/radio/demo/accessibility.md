@@ -1,14 +1,14 @@
-# 无障碍
+# 无障碍支持
 
-- order: 7
+- order: 8
 
-请参考`ARIA and KeyBoard`。
+请参考后文[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 
 :::lang=en-us
 # Accessibility
 
-- order: 7
+- order: 8
 
 Please refer to `ARIA and KeyBoard`.
 

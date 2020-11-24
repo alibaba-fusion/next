@@ -1,13 +1,15 @@
-# 受限组件
+# 受控组件
 
-- order: 1
+- order: 9
+- debug: true
 
-使用 `RadioGroup` 渲染的组，通过设置 `value` 属性可以让组件变成[受限组件](https://facebook.github.io/react/docs/forms.html#controlled-components)。
+使用 `RadioGroup` 渲染的组，通过设置 `value` 属性可以让组件变成[受控组件](https://facebook.github.io/react/docs/forms.html#controlled-components)。
 
 
 :::lang=en-us
 # Controlled Component
-- order: 1
+- order: 9
+- debug: true
 Groups rendered using `RadioGroup` can make the component a [controlled component] by setting the `value` property (https://facebook.github.io/react/docs/forms.html#controlled-components).
 
 :::
