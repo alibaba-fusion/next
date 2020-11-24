@@ -1,9 +1,8 @@
-
 <script>
     // 从localStorage读取是否使用react-live，若是，则同时切换所有代码
     if (window.localStorage.liveDemo === 'true') {
         liveDemo('LIVE', false);
-    }else{
+    } else {
         liveDemo('READONLY', false);
     }
 
@@ -11,6 +10,38 @@
     if (window.localStorage.foldAll === 'true') {
         expandAll('EXPAND');
     }
+
+    function newLi({anchor, level='H2'}) {
+        const li = document.createElement('li');
+        li.className = level==='H2' ? 'demo-index-item' : 'demo-index-item demo-index-item-sub';
+        li.setAttribute('data-id', anchor);
+        li.innerHTML = `<a href="#${anchor}">${anchor}</a>`;
+        return li
+    }
+
+    function appendIndex(selector, parent, latter = null) {
+        const headers = Array.from(document.querySelectorAll(selector))
+            .map(el => ({anchor: decodeURI(el.hash.replace('#', '')), level: el.parentElement.tagName}))
+            .filter(el => el.anchor !== 'demo-list' && el.anchor !== 'API');
+        if (latter) {
+            for (let i = 0; i < headers.length; ++i) {
+                parent.insertBefore(newLi(headers[i]), latter);
+            }
+        } else {
+            for (let i = 0; i < headers.length; ++i) {
+                parent.appendChild(newLi(headers[i]));
+            }
+        }
+    }
+
+    appendIndex(
+        '#md-area-former h2 .header-anchor, #md-area-former h3 .header-anchor',
+        document.getElementsByClassName('demo-index-list')[0],
+        document.querySelector('[data-id="demo-list"]'));
+    appendIndex(
+        '#md-area-latter h2 .header-anchor,#md-area-latter h3 .header-anchor',
+        document.getElementsByClassName('demo-index-list')[0],
+        null);
 </script>
 </body>
 

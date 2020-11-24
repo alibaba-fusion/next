@@ -87,14 +87,15 @@ function getEntry(entryPaths, componentName, mode) {
         const name = path.basename(entryPath, path.extname(entryPath));
         const pathWithoutExt = path.join(path.dirname(entryPath), name);
         let cssArr = [];
+        // preview 不需要next样式默认值
         // 通过 mode 判断引入的样式文件
-        if (mode === 'css') {
-            cssArr = [
-                path.join(process.cwd(), 'lib', componentName, 'variable.css'),
-                path.join(process.cwd(), 'lib', componentName, 'style2.js'),
-                path.join(process.cwd(), 'lib', 'core2', 'index.css'),
-            ];
-        } else cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
+        // if (mode === 'css') {
+        //     cssArr = [
+        //         path.join(process.cwd(), 'lib', componentName, 'variable.css'),
+        //         path.join(process.cwd(), 'lib', componentName, 'style2.js'),
+        //         path.join(process.cwd(), 'lib', 'core2', 'index.css'),
+        //     ];
+        // } else cssArr = [path.join(process.cwd(), 'src', componentName, 'style.js')];
         ret[pathWithoutExt] = [
             'react-dev-utils/webpackHotDevClient',
             // css var should only be included once.

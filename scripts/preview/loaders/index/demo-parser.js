@@ -156,7 +156,6 @@ function fixImport(code, resourcePath) {
 
                 return `
 import ${component} from '${relativePath}';
-import '${path.join(relativePath, 'style.js')}';
 `;
             })
             .join('\n');
