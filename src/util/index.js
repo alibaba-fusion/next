@@ -10,6 +10,7 @@ import * as _focus from './focus';
 import _guid from './guid';
 import _KEYCODE from './keycode';
 import * as _htmlId from './htmlId';
+import _date from './date';
 
 export const dom = _dom;
 export const env = _env;
@@ -23,3 +24,4 @@ export const focus = _focus;
 export const guid = _guid;
 export const KEYCODE = _KEYCODE;
 export const htmlId = _htmlId;
+export const datejs = _date;
