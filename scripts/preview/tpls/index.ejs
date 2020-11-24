@@ -14,24 +14,6 @@
     //     window.customIcons = "{% for iconname,val in themepkg.icon_extra %}{{iconname}},{% endfor %}".split(',').filter(key => !!key);
     // {% endif %}
 
-    // 交换两个元素
-    // function swapElements(a, b) {
-    //     if (a == b) return
-    //     //记录父元素
-    //     var bp = b.parentNode,
-    //         ap = a.parentNode
-    //     //记录下一个同级元素
-    //     var an = a.nextElementSibling,
-    //         bn = b.nextElementSibling
-    //     //如果参照物是邻近元素则直接调整位置
-    //     if (an == b) return bp.insertBefore(b, a)
-    //     if (bn == a) return ap.insertBefore(a, b)
-    //     if (a.contains(b))
-    //         //如果a包含了b
-    //         return ap.insertBefore(b, a), bp.insertBefore(a, bn)
-    //     else return bp.insertBefore(a, b), ap.insertBefore(b, an)
-    // }
-
     // 展开所有代码
     function expandAll(op) {
         switch (op) {
@@ -45,7 +27,7 @@
                 document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
                     el.style.display = "";
                 })
-                document.querySelectorAll('[id*="-body"]').forEach((el) => {
+                document.querySelectorAll('[id*="-body"]:not([id*="-live-body"])').forEach((el) => {
                     el.style.display = "none";
                 })
                 return;
@@ -230,8 +212,10 @@
         </h1>
     </div>
     <div class="demo-index">
+        <span id="global-control" class="all-demo-box-controls">
+        </span>
         <ul class="demo-index-list">
-            <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide">Guide</a></li>
+            <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide"><%= comp.name %></a></li>
             <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
             <% for(let i = 0; i<demosDoc.length; ++i){%>
             <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].name%>-container"
@@ -239,7 +223,7 @@
                 <a href="#<%=demosDoc[i].name%>-container"
                     style="<%=demosDoc[i].debug==="true" ? 'color: #c41d7f' : ''%>"><%=demosDoc[i].title%></a>
             </li>
-            <%}%>
+            <% } %>
             <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
         </ul>
     </div>
@@ -248,11 +232,9 @@
             <div id="md-area-former" class="markdown-body markdown">
                 <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
                 <%- readmeFormer %>
-                <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item active">
-                    <a href='#demo-list'># </a>
+                <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item with-global-control-right">
                         代码演示
-                    <span id="global-control" class="all-demo-box-controls">
-                    </span>
+                        <a href='#demo-list' class="header-anchor"># </a>
                 </h2>
             </div>
 
@@ -261,20 +243,20 @@
             <% for(let i = 0; i<demosDoc.length; ++i){%>
             <div id="<%=demosDoc[i].name%>-container" class='next-demo-item scroll-count-item'
                 debug="<%=demosDoc[i].debug==="true"%>" data-scroll-id="<%=demosDoc[i].name%>-container"
-                style="<%=demosDoc[i].debug==="true" ? 'display: none; border: "1px solid rgb(196, 29, 127, 0.45)"' : ''%>">
+                style="<%=demosDoc[i].debug==='true' ? 'display: none; border: 1px solid rgb(196, 29, 127, 0.45)' : ''%>">
                 <div id="<%=demosDoc[i].name%>-mount" class="next-demo-mount"></div>
-                <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc">
-                    <span class="demo-item-desc-title">
-                        <a href='#<%=demosDoc[i].name%>-container'
+                <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc markdown">
+                    <h3 class="demo-item-desc-title">
+                        <%=demosDoc[i].title%>
+                        <a  class="header-anchor"
+                            href='#<%=demosDoc[i].name%>-container'
                             style="<%=demosDoc[i].debug==="true" ? 'color: "#c41d7f"' : ''%>">
                             # 
                         </a>
-                        <%=demosDoc[i].title%>
-                    </span>
+                    </h3>
                     <div class="demo-item-desc-body markdown"><%-demosDoc[i].desc%></div>
                 </div>
-                <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'
-                    style='border-bottom: "dashed #EEE 1px";'>
+                <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'>
                 </div>
                 <div id="<%=demosDoc[i].name%>-body" class='next-demo-body' style="display: none">
                 </div>
