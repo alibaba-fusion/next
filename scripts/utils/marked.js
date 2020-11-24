@@ -1,21 +1,22 @@
 const highlight = require('highlight.js');
+const prism = require('markdown-it-prism');
 const _ = require('lodash');
 const mdIt = require('markdown-it')({
     html: true,
     xhtmlOut: true,
-    highlight: function(code, lang) {
-        const result =
-            lang && highlight.getLanguage(lang) ? highlight.highlight(lang, code) : highlight.highlightAuto(code);
-        return `<div class="hljs">${result.value}</div>`;
-    },
-}).use(require('markdown-it-anchor'), {
-    level: 1,
-    slugify: id => _.startCase(id),
-    permalink: true,
-    permalinkClass: 'header-anchor',
-    permalinkSymbol: '#',
-    permalinkBefore: true,
-});
+})
+    .use(require('markdown-it-anchor'), {
+        level: [1, 2, 3],
+        slugify: id => _.startCase(id),
+        permalink: true,
+        permalinkClass: 'header-anchor scroll-count-item',
+        permalinkAttrs: id => {
+            return { 'data-scroll-id': _.startCase(id) };
+        },
+        permalinkSymbol: '#',
+        permalinkBefore: false,
+    })
+    .use(prism, {});
 
 module.exports = function(md) {
     return mdIt.render(md);
