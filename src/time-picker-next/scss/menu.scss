@@ -30,14 +30,14 @@
         }
         &:after {
             display: block;
-            height: calc(#{$time-picker-menu-item-height} * 3);
+            height: calc(#{$time-picker-menu-item-height} * 6);
             content: "";
         }
-        &:before {
-            display: block;
-            height: calc(#{$time-picker-menu-item-height} * 3);
-            content: "";
-        }
+        // &:before {
+        //     display: block;
+        //     height: calc(#{$time-picker-menu-item-height} * 3);
+        //     content: "";
+        // }
     }
 
     &-item {

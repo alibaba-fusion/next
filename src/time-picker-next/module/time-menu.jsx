@@ -68,7 +68,7 @@ class TimeMenu extends React.Component {
         const targetIndex = Math.floor((activeIndex || 0) / step);
         const firstItem = this.menu.children[targetIndex];
         const offsetTo = firstItem.offsetTop;
-        scrollTo(this.menu, offsetTo - (this.menuWrapper.offsetHeight / 7) * 3, duration);
+        scrollTo(this.menu, offsetTo, duration);
     }
 
     _menuRefHandler = ref => {
