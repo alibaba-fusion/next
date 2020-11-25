@@ -208,8 +208,13 @@ class TimePicker extends Component {
         return state;
     }
 
-    onValueChange(newValue) {
-        const ret = this.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
+    onValueChange(values) {
+        let ret;
+        if (!values.length || !this.state.inputAsString) {
+            ret = values;
+        } else {
+            ret = [values[0] ? values[0].toDate() : null, values[1] ? values[1].toDate() : null];
+        }
         this.props.onChange(ret);
     }
 
@@ -218,7 +223,7 @@ class TimePicker extends Component {
             value: null,
         });
         if (this.state.value) {
-            this.onValueChange(null);
+            this.onValueChange([]);
         }
     };
 
@@ -236,7 +241,7 @@ class TimePicker extends Component {
         } else if (eventType === 'clear') {
             // 受控状态下用户点击 clear
             e.stopPropagation();
-            this.onValueChange(null);
+            this.onValueChange([]);
         }
     };
 

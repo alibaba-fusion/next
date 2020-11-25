@@ -214,7 +214,8 @@ class TimePicker extends Component {
     }
 
     onValueChange(newValue) {
-        const ret = this.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
+        // const ret = this.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
+        const ret = newValue.toDate();
         this.props.onChange(ret);
     }
 
