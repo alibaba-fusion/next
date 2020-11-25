@@ -7,6 +7,9 @@
 
 ---
 
+## 何时使用
+当任务复杂或者存在先后关系时，将其分解成一系列步骤，从而简化任务。
+
 ## API
 
 ### Step
@@ -33,3 +36,10 @@
 | percent    | 百分比                                                                                                                                                                                                      | Number    | -        |
 | disabled   | 是否禁用                                                                                                                                                                                                     | Boolean   | -        |
 | onClick    | 点击步骤时的回调<br><br>**签名**:<br>Function(index: Number) => void<br>**参数**:<br>_index_: {Number} 节点索引                                                                                                          | Function  | () => {} |
+
+## FAQ
+
+### 为什么设置 step 的展示方向不生效？
+Step 的 `direction` 和 `labelPlacement` 的可选值都是: 'hoz' 和 'ver'，但这两个 API 的含义是不一样的，前者可设置 step 的展示方向，而后者是控制 step 横向展示时 step 项的内容展示方向；
+
+如果发现 step 展示方向设置不生效，可先检查是否使用了正确的 API: direction，如果使用的是正确的 API 则还需要检查下 `shape` 是否为 `arrow`，`arrow` 模式下是无法修改展示方向的。
