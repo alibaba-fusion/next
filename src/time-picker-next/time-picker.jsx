@@ -148,9 +148,9 @@ class TimePicker extends Component {
          */
         disabled: PropTypes.bool,
         /**
-         * 是否显示边框
+         * 输入框是否有边框
          */
-        bordered: PropTypes.bool,
+        hasBorder: PropTypes.bool,
         /**
          * 是否为预览态
          */
@@ -180,7 +180,7 @@ class TimePicker extends Component {
         format: 'HH:mm:ss',
         hasClear: true,
         disabled: false,
-        bordered: true,
+        hasBorder: true,
         popupAlign: 'tl bl',
         popupTriggerType: 'click',
         onChange: noop,
@@ -362,6 +362,7 @@ class TimePicker extends Component {
             popupContent,
             followTrigger,
             disabled,
+            hasBorder,
             className,
             locale,
             rtl,
@@ -403,8 +404,9 @@ class TimePicker extends Component {
                     {...sharedInputProps}
                     label={label}
                     state={state}
+                    hasBorder={hasBorder}
                     placeholder={placeholder || locale.placeholder}
-                    className={`${prefix}time-picker-input`}
+                    className={classnames(`${prefix}time-picker-input`)}
                 />
             </div>
         );
