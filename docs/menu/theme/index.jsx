@@ -221,7 +221,7 @@ class FunctionDemoNest extends FunctionDemo {
             <Demo title="Nest" demoFunction={demoFunction} onFunctionChange={this.onFunctionChange}>
                 <Demo title="Normal">
                     <DemoGroup label="Inline">
-                        <Menu selectMode="single" autoFocus={false} openKeys={['2']} focusedKey="2" selectedKeys={['2-1']} style={{ width: '150px' }}>
+                        <Menu selectMode="single" openKeys={['2']} selectedKeys={['2-1']} style={{ width: '150px' }}>
                             <Menu.SubMenu key="1" label="Sub 1">
                                 <Menu.Item key="1-1">{`${i18n.option}1`}</Menu.Item>
                                 <Menu.Item key="1-2">{`${i18n.option}2`}</Menu.Item>
@@ -254,7 +254,7 @@ class FunctionDemoNest extends FunctionDemo {
                         </Menu>
                     </DemoGroup>
                     <DemoGroup label="Popup">
-                        <Menu style={{ marginBottom: '50px' }} popupProps={{ needAdjust: false }} selectMode="single" autoFocus={false} mode="popup" openKeys={['2']} focusedKey="2" selectedKeys={['2-1']}>
+                        <Menu style={{ marginBottom: '50px' }} popupProps={{ needAdjust: false }} selectMode="single" mode="popup" openKeys={['2']} selectedKeys={['2-1']}>
                             <Menu.SubMenu key="1" label="Sub 1">
                                 <Menu.Item key="1-1">{`${i18n.option}1`}</Menu.Item>
                                 <Menu.Item key="1-2">{`${i18n.option}2`}</Menu.Item>
