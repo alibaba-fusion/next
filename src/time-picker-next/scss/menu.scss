@@ -2,9 +2,9 @@
     float: left;
     text-align: center;
 
-    &:not(:last-child) {
-        border-right: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
-    }
+    // &:not(:last-child) {
+    //     border-right: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
+    // }
 
     &-title {
         cursor: default;
@@ -19,6 +19,7 @@
     ul {
         position: relative;
         overflow-y: hidden;
+        overflow-x: hidden;
         list-style: none;
         margin: 0;
         padding: 0;
@@ -29,7 +30,12 @@
         }
         &:after {
             display: block;
-            height: calc(#{$time-picker-menu-item-height} * 6);
+            height: calc(#{$time-picker-menu-item-height} * 3);
+            content: "";
+        }
+        &:before {
+            display: block;
+            height: calc(#{$time-picker-menu-item-height} * 3);
             content: "";
         }
     }
@@ -37,8 +43,7 @@
     &-item {
         cursor: pointer;
         height: $time-picker-menu-item-height;
-        // TODO: use variable here
-        min-width: 66px;
+        min-width: $time-picker-menu-item-width;
         line-height: $time-picker-menu-item-height;
         transition: background $motion-duration-immediately $motion-linear;
         color: $time-picker-menu-item-color;
@@ -53,7 +58,7 @@
         &.#{$css-prefix}selected {
             font-weight: $time-picker-menu-item-font-weight-selected;
             color: $time-picker-menu-item-color-selected;
-            background: $time-picker-menu-item-background-selected;
+            // background: $time-picker-menu-item-background-selected;
         }
 
         &.#{$css-prefix}disabled {

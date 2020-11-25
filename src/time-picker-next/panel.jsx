@@ -156,6 +156,7 @@ class TimePickerPanel extends Component {
 
         return (
             <div {...others} className={classNames}>
+                <div className={`${prefix}time-picker-panel-selected-box`} />
                 {showHour ? (
                     <TimeMenu
                         {...commonProps}

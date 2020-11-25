@@ -148,6 +148,10 @@ class TimePicker extends Component {
          */
         disabled: PropTypes.bool,
         /**
+         * 是否显示边框
+         */
+        bordered: PropTypes.bool,
+        /**
          * 是否为预览态
          */
         isPreview: PropTypes.bool,
@@ -176,6 +180,7 @@ class TimePicker extends Component {
         format: 'HH:mm:ss',
         hasClear: true,
         disabled: false,
+        bordered: true,
         popupAlign: 'tl bl',
         popupTriggerType: 'click',
         onChange: noop,

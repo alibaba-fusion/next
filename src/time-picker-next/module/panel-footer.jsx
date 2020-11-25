@@ -22,7 +22,7 @@ class PanelFooter extends React.PureComponent {
         const { onOk, prefix } = this.props;
 
         return (
-            <div className={`${prefix}date-picker-panel-tools`}>
+            <div className={`${prefix}time-picker-panel-tools`}>
                 {ranges.map(({ label, value = [], onChange }) => {
                     const handleClick = () => {
                         const momentValue = value.map(v => datejs(v));
