@@ -1,4 +1,4 @@
-# 带 loading 列表
+# 带 loading 的列表
 
 - order: 2
 
