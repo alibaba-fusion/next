@@ -29,7 +29,7 @@ class DatePanel extends React.Component {
         inputType: SharedPT.inputType,
         showTime: PT.bool,
         mode: PT.any,
-        selectedState: PT.func,
+        handleCellState: PT.func,
         disabledDate: PT.func,
     };
     static defaultProps = {
@@ -44,21 +44,26 @@ class DatePanel extends React.Component {
 
         this.state = {
             mode,
-            visibleValue: getVisibleValue(value, mode),
+            panelDate: getVisibleValue(value, mode),
+            curHoverValue: null,
         };
 
         bindCtx(this, [
-            'selectedState',
+            'handleCellState',
             'handleVisibleValueChange',
             'handleModeChange',
             'onChange',
+            'disabledDate',
+            'handleCellClassName',
+            'handleMouseEnter',
+            'handleMouseLeave',
         ]);
     }
 
     // 日期面板显示的日期区间
     getRanges() {
         const { mode } = this.props;
-        const { visibleValue: value } = this.state;
+        const { panelDate: value } = this.state;
 
         const begin = value.clone();
         let end;
@@ -75,33 +80,19 @@ class DatePanel extends React.Component {
         return [begin, end];
     }
 
-    selectedState(v) {
-        const { UN_SELECTED, SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
-        const {
-            value: [begin, end],
-            mode,
-        } = this.props;
-
-        // 相同日期对应的单位是day 其余单位同mode一致
-        const unit = mode === 'date' ? 'day' : mode;
-
-        return begin && begin.isSame(v, unit)
-            ? SELECTED_BEGIN
-            : end && end.isSame(v, unit)
-            ? SELECTED_END
-            : begin && end && v.isAfter(begin, unit) && v.isBefore(end, unit)
-            ? SELECTED
-            : UN_SELECTED;
-    }
-
     disabledDate(v) {
         const {
             value: [begin, end],
         } = this.props;
 
-        const { disabledDate } = this.props;
+        const { disabledDate, inputType } = this.props;
+        const { BEGIN, END } = DATE_INPUT_TYPE;
 
-        return disabledDate(v) || (begin && begin.isAfter(v)) || (end && end.isBefore(v));
+        return (
+            disabledDate(v) ||
+            (inputType === END && begin && begin.isAfter(v)) ||
+            (inputType === BEGIN && end && end.isBefore(v))
+        );
     }
 
     onChange(v) {
@@ -121,58 +112,126 @@ class DatePanel extends React.Component {
     handleVisibleValueChange(v, calendarIdx) {
         const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
 
+        v = v.clone();
         // 需要处理第二Calendar组件顶部的选择逻辑
         if (calendarIdx === 1) {
             switch (this.state.mode) {
                 case DATE:
                 case WEEK: {
-                    v = v.clone().subtract(1, 'month');
+                    v = v.subtract(1, 'month');
                     break;
                 }
                 case MONTH:
                 case QUARTER: {
-                    v = v.clone().subtract(1, 'year');
+                    v = v.subtract(1, 'year');
                     break;
                 }
                 case YEAR: {
-                    v = v.clone().subtract(10, 'year');
+                    v = v.subtract(10, 'year');
                     break;
                 }
                 case YEAR_RANGE: {
-                    v = v.clone().subtract(100, 'year');
+                    v = v.subtract(100, 'year');
                     break;
                 }
             }
         }
-
         this.setState({
-            visibleValue: v,
+            panelDate: v,
         });
+    }
+
+    handleMouseEnter(value) {
+        this.currentRaf && window.cancelAnimationFrame(this.currentRaf);
+        this.currentRaf = window.requestAnimationFrame(() => {
+            this.setState({
+                curHoverValue: value,
+            });
+        });
+    }
+
+    handleMouseLeave() {
+        this.setState({
+            curHoverValue: null,
+        });
+    }
+
+    // 日期cell状态
+    handleCellState(v, hoverValue) {
+        const { UN_SELECTED, SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
+        const { mode } = this.props;
+        const [begin, end] = hoverValue || this.props.value;
+
+        // 相同日期对应的单位是day 其余单位同mode一致
+        const unit = mode === 'date' ? 'day' : mode;
+
+        return begin && begin.isSame(v, unit)
+            ? SELECTED_BEGIN
+            : end && end.isSame(v, unit)
+            ? SELECTED_END
+            : begin && end && v.isAfter(begin, unit) && v.isBefore(end, unit)
+            ? SELECTED
+            : UN_SELECTED;
+    }
+
+    handleCellClassName(value) {
+        const { SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
+        const state = this.handleCellState(value);
+
+        const hoverValue = [...this.props.value];
+        hoverValue[this.props.inputType] = this.state.curHoverValue;
+
+        const hoverState = this.handleCellState(value, hoverValue);
+
+        return {
+            'calendar-cell-selected': state >= SELECTED,
+            'calendar-cell-range-begin': state === SELECTED_BEGIN,
+            'calendar-cell-range-end': state === SELECTED_END,
+            'calendar-cell-hover': hoverState >= SELECTED,
+            'calendar-cell-hover-begin': hoverState === SELECTED_BEGIN,
+            'calendar-cell-hover-end': hoverState === SELECTED_END,
+        };
     }
 
     render() {
         const {
             onChange,
             handleModeChange,
-            selectedState,
+            handleCellClassName,
             disabledDate,
+            handleMouseEnter,
+            handleMouseLeave,
             handleVisibleValueChange,
         } = this;
         const { value, mode } = this.props;
-
         const ranges = this.getRanges();
 
+        const hasModeChanged = this.state.mode === this.props.mode;
+
+        const cellProps = {
+            onMouseEnter: handleMouseEnter,
+            onMouseLeave: handleMouseLeave,
+        };
         const calendarProps = idx => {
+            let xxx;
+
+            if (hasModeChanged) {
+                xxx = {
+                    cellProps,
+                    onChange,
+                    cellClassName: handleCellClassName,
+                };
+            }
+
             return {
                 mode,
                 shape: 'panel',
                 value: value[idx],
-                visibleValue: ranges[idx],
-                selectedState,
+                panelDate: ranges[idx],
                 disabledDate,
-                onChange,
                 onModeChange: v => handleModeChange(v, idx),
                 onVisibleValueChange: v => handleVisibleValueChange(v, idx),
+                ...xxx,
             };
         };
 

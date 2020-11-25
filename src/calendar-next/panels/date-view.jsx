@@ -2,8 +2,8 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import classnames from 'classnames';
-import { CALENDAR_MODE, CALENDAR_CELL_STATE } from '../constant';
-import { func, datejs, KEYCODE, obj } from '../../util';
+import { CALENDAR_MODE } from '../constant';
+import { func, datejs, KEYCODE } from '../../util';
 
 const { bindCtx, witchCustomRender } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
@@ -16,13 +16,11 @@ function getCellKey(v, mode) {
     };
 
     //  周&季度不直接支持格式化
-    if (mode === WEEK) {
-        return `${v.year()}-Q${v.week()}w`;
-    } else if (mode === QUARTER) {
-        return `${v.year()}-Q${v.quarter()}`;
-    } else {
-        return v.format(mode2fmt[mode]);
-    }
+    return mode === WEEK
+        ? `${v.year()}-Q${v.week()}w`
+        : mode === QUARTER
+        ? `${v.year()}-Q${v.quarter()}`
+        : v.format(mode2fmt[mode]);
 }
 
 class DateView extends React.Component {
@@ -32,12 +30,14 @@ class DateView extends React.Component {
         defaultValue: PT.any,
         cellRender: PT.any,
         startOnSunday: PT.bool,
-        visibleValue: PT.any,
+        panelDate: PT.any,
         disabledDate: PT.func,
         selectedState: PT.func,
+        hoveredState: PT.func,
         onSelect: PT.func,
         onModeChange: PT.func,
         onDateSelect: PT.func,
+        cellClassName: PT.func,
     };
 
     static defaultProps = {
@@ -55,12 +55,10 @@ class DateView extends React.Component {
             'getYearRangeData',
             'handleKeyDown',
             'handleSelect',
-            'handleMouseEnter',
-            'handleMouseLeave',
         ]);
 
         this.state = {
-            hoverKey: null,
+            hoverValue: null,
         };
     }
 
@@ -68,9 +66,9 @@ class DateView extends React.Component {
 
     // ------> eventHandler
 
-    handleSelect(v) {
+    handleSelect(v, e) {
         console.log('[DateView]');
-        func.call(this.props, 'onSelect', [v]);
+        func.call(this.props, 'onSelect', [v, e]);
     }
 
     handleKeyDown(e, v) {
@@ -86,18 +84,6 @@ class DateView extends React.Component {
         // e.preventDefault();
     }
 
-    handleMouseEnter(v) {
-        this.setState({
-            hoverKey: v,
-        });
-    }
-
-    handleMouseLeave() {
-        this.setState({
-            hoverKey: null,
-        });
-    }
-
     // ------> render
 
     /**
@@ -109,7 +95,9 @@ class DateView extends React.Component {
      */
     renderCellContent(cellData) {
         const { props } = this;
-        const { mode } = props;
+        const { mode, hoveredState, cellClassName } = props;
+        const { hoverValue } = this.state;
+
         const cellContent = [];
 
         // 面板行数
@@ -121,9 +109,7 @@ class DateView extends React.Component {
             [YEAR]: 3,
             [YEAR_RANGE]: 3,
         };
-
         const unit = mode === 'date' ? 'day' : mode;
-        const selectedState = obj.get('selectedState', props, v => v.isSame(props.value, unit));
         const now = datejs();
 
         for (let i = 0; i < cellData.length; ) {
@@ -132,26 +118,37 @@ class DateView extends React.Component {
             for (let j = 0; j < mode2Rows[mode]; j++) {
                 const { label, value, key, isCurrent } = cellData[i++];
 
-                const state = selectedState(value);
-                const className = classnames({
-                    'calendar-cell-inner': true,
-                    'calendar-cell-current': isCurrent,
+                const isDisabled = props.disabledDate && props.disabledDate(value);
+                const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
+
+                const className = classnames('calendar-cell-inner', {
+                    'calendar-cell-current': isCurrent, // 是否属于当前面板值
                     'calendar-cell-today': value.isSame(now, mode),
-                    'calendar-cell-selected': state >= CALENDAR_CELL_STATE.SELECTED,
-                    'calendar-cell-range-begin': state === CALENDAR_CELL_STATE.SELECTED_BEGIN,
-                    'calendar-cell-range-end': state === CALENDAR_CELL_STATE.SELECTED_END,
-                    'calendar-cell-disabled': props.disabledDate && props.disabledDate(value),
+                    'calendar-cell-selected': value.isSame(props.value, unit),
+                    'calendar-cell-disabled': isDisabled,
+                    'calendar-cell-range-hover': hoverState,
+                    ...(cellClassName && cellClassName(value)),
                 });
+
+                let onEvents = null;
+
+                if (!isDisabled) {
+                    onEvents = {
+                        onClick: e => this.handleSelect(value, e),
+                        onKeyDown: e => this.handleKeyDown(value, e),
+                    };
+
+                    // 为了处理hover逻辑
+                    ['onMouseEnter', 'onMouseLeave'].forEach(eventName => {
+                        if (eventName in props) {
+                            onEvents[eventName] = e => props[eventName](value, e);
+                        }
+                    });
+                }
 
                 children.push(
                     <td className="calendar-cell" key={key} title={key}>
-                        <div
-                            role="button"
-                            tabIndex="0"
-                            className={className}
-                            onClick={() => this.handleSelect(value)}
-                            onKeyDown={e => this.handleKeyDown(e, value)}
-                        >
+                        <div role="button" tabIndex="0" className={className} {...onEvents}>
                             {witchCustomRender('cellRender', props, [value, mode], label)}
                         </div>
                     </td>
@@ -187,7 +184,7 @@ class DateView extends React.Component {
     }
 
     getDateData() {
-        const { visibleValue: value, startOnSunday, mode } = this.props;
+        const { panelDate: value, startOnSunday, mode } = this.props;
 
         const firstDayOfMonth = value.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
@@ -223,10 +220,10 @@ class DateView extends React.Component {
     }
 
     getMonthData() {
-        const { visibleValue, mode } = this.props;
+        const { panelDate, mode } = this.props;
 
         return datejs.monthsShort().map((label, index) => {
-            const value = visibleValue.clone().month(index);
+            const value = panelDate.clone().month(index);
 
             return {
                 label,
@@ -238,14 +235,14 @@ class DateView extends React.Component {
     }
 
     getYearData() {
-        const { visibleValue, mode } = this.props;
-        const curYear = visibleValue.year();
+        const { panelDate, mode } = this.props;
+        const curYear = panelDate.year();
         const startYear = curYear - (curYear % 10) - 1;
         const cellData = [];
 
         for (let i = 0; i < 12; i++) {
             const y = startYear + i;
-            const value = visibleValue.clone().year(y);
+            const value = panelDate.clone().year(y);
 
             cellData.push({
                 value,
@@ -259,14 +256,14 @@ class DateView extends React.Component {
     }
 
     getYearRangeData() {
-        const { visibleValue, mode } = this.props;
-        const curYear = visibleValue.year();
+        const { panelDate, mode } = this.props;
+        const curYear = panelDate.year();
         const startYear = curYear - (curYear % 100) - 10;
         const cellData = [];
 
         for (let i = 0; i < 12; i++) {
             const y = startYear + i * 10;
-            const value = visibleValue.clone().year(y);
+            const value = panelDate.clone().year(y);
 
             cellData.push({
                 value,

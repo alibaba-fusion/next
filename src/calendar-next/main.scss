@@ -66,6 +66,7 @@
     min-width: 28px;
     height: 28px;
     line-height: 28px;
+    border: 1px dashed transparent;
     cursor: pointer;
 }
 
@@ -79,7 +80,8 @@
 }
 
 .calendar-cell-disabled {
-    background: red !important;
+    background: #f5f7fa !important;
+    color: #c4c7cc;
 }
 
 .calendar-header {
@@ -97,4 +99,13 @@
 .calendar-header-text-field {
     flex: 1;
     text-align: center;
+}
+
+.calendar-cell-inner:hover {
+    background: #f4f6f9;
+    color: #585d66;
+}
+
+.calendar-cell-hover.calendar-cell-current:not(.calendar-cell-disabled) {
+    border: 1px dashed #1890ff;
 }

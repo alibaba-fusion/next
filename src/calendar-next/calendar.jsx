@@ -19,7 +19,7 @@ class Calendar extends React.Component {
         shape: PT.any,
         value: PT.any,
         defaultValue: PT.any,
-        visibleValue: PT.any,
+        panelDate: PT.any,
         defaultVisibleValue: PT.any,
         showHeader: PT.bool,
         disabledDate: PT.func,
@@ -28,13 +28,15 @@ class Calendar extends React.Component {
         validRange: PT.any,
         onPanelChange: PT.func,
         mode: PT.any,
+        cellProps: PT.object,
+        cellClassName: PT.func,
     };
 
     static defaultProps = {
         shape: CALENDAR_SHAPE.FULLSCREEN,
         locale: defaultLocale,
         showHeader: true,
-        mode: CALENDAR_MODE.DATE,
+        mode: CALENDAR_MODE.MONTH,
     };
 
     constructor(props) {
@@ -44,22 +46,21 @@ class Calendar extends React.Component {
 
         const value = obj.get('value', props, defaultValue);
         const defaultVisibleValue = obj.get('defaultVisibleValue', props, value || datejs());
-        const visibleValue = obj.get('visibleValue', props, defaultVisibleValue);
+        const panelDate = obj.get('panelDate', props, defaultVisibleValue);
 
         this.state = {
             value,
-            visibleValue,
+            panelDate,
             mode,
         };
 
-        bindCtx(this, ['onModeChange', 'onSelect', 'onChange', 'onDateSelect']);
+        bindCtx(this, ['onPanelChange', 'onChange', 'onDateSelect']);
 
         this.getFromPropOrState = obj.getFromPropOrState.bind(this);
     }
 
     switchMode(mode) {
         const { DATE, MONTH, YEAR, YEAR_RANGE } = CALENDAR_MODE;
-
         switch (mode) {
             case MONTH:
                 return DATE;
@@ -74,37 +75,28 @@ class Calendar extends React.Component {
 
     // -------> event handles
 
-    onModeChange(mode) {
-        console.log('onModeChange', mode, arguments);
-        this.setState({
-            mode: mode,
-        });
-
-        func.call(this.props, 'onModeChange', [mode]);
-    }
-
     onDateSelect(value) {
-        console.log('[Calendar]: onDateSelect');
-        if (this.props.mode === this.state.mode) {
-            this.onChange(value);
-        } else {
-            this.onSelect(value);
-            this.onModeChange(this.switchMode(this.state.mode));
-        }
+        // if (this.props.mode === this.state.mode && this.props.panel !== CALENDAR_SHAPE.PANEL) {
+        this.onChange(value);
+        // } else {
+        //     this.onPanelChange(value, this.switchMode(this.state.mode));
+        // }
     }
 
-    onSelect(value) {
+    onPanelChange(value, mode) {
         this.setState({
-            visibleValue: value,
+            mode,
+            panelDate: value,
         });
-        console.log('onVisibleValueChange', value);
-        func.call(this.props, 'onVisibleValueChange', [value]);
+        console.log('onPanelChange', value);
+
+        func.call(this.props, 'onPanelChange', [value]);
     }
 
     onChange(value) {
         this.setState({
             value,
-            visibleValue: value,
+            panelDate: value,
         });
 
         func.call(this.props, 'onChange', [value]);
@@ -113,11 +105,11 @@ class Calendar extends React.Component {
     // -------> render
 
     render() {
-        let { value, visibleValue } = this.getFromPropOrState(['value', 'visibleValue']);
-        const { shape, showHeader, type, selectedState } = this.props;
+        let { value, panelDate } = this.getFromPropOrState(['value', 'panelDate']);
+        const { shape, showHeader, type } = this.props;
         const { mode } = this.state;
 
-        visibleValue = datejs(visibleValue);
+        panelDate = datejs(panelDate);
 
         if (value) {
             value = datejs(value);
@@ -127,14 +119,16 @@ class Calendar extends React.Component {
             mode,
             type,
             value,
-            visibleValue,
+            panelDate,
             onSelect: this.onDateSelect,
-            onModeChange: this.onModeChange,
+            onPanelChange: this.onPanelChange,
+            ...this.props.cellProps,
         };
 
         // TODO: 属性透传
-        if ('selectedState' in this.props) {
-            dateViewProps.selectedState = this.props.selectedState;
+        if ('cellClassName' in this.props) {
+            dateViewProps.disabledDate = this.props.disabledDate;
+            dateViewProps.cellClassName = this.props.cellClassName;
         }
 
         return (
@@ -144,9 +138,8 @@ class Calendar extends React.Component {
                         mode={mode}
                         shape={shape}
                         value={value}
-                        visibleValue={visibleValue}
-                        onModeChange={this.onModeChange}
-                        onSelect={this.onSelect}
+                        panelDate={panelDate}
+                        onPanelChange={this.onPanelChange}
                     />
                 ) : null}
                 <DateView startOnSunday {...dateViewProps} />

@@ -15,7 +15,7 @@ class RangeView extends React.Component {
         defaultValue: PT.any,
         cellRender: PT.any,
         startOnSunday: PT.bool,
-        visibleValue: PT.any,
+        panelDate: PT.any,
         onDateSelect: PT.func,
         disabledDate: PT.func,
     };
@@ -30,25 +30,25 @@ class RangeView extends React.Component {
 
     // 日期面板显示的日期区间
     getRanges() {
-        const { visibleValue, mode } = this.props;
-        const begin = visibleValue.clone();
+        const { panelDate, mode } = this.props;
+        const begin = panelDate.clone();
         let end;
 
         switch (mode) {
             case CALENDAR_MODE.DATE:
-                end = visibleValue.clone().add(1, 'month');
+                end = panelDate.clone().add(1, 'month');
                 break;
             case CALENDAR_MODE.MONTH:
-                end = visibleValue.clone().add(1, 'year');
+                end = panelDate.clone().add(1, 'year');
                 break;
         }
 
         return [begin, end];
 
-        // const begin = visibleValue.clone();
-        // const end = visibleValue.clone().subtract(1, mode);
+        // const begin = panelDate.clone();
+        // const end = panelDate.clone().subtract(1, mode);
 
-        // console.log(visibleValue.format('l'), end.format('l'), mode);
+        // console.log(panelDate.format('l'), end.format('l'), mode);
     }
 
     selectedState(v) {
@@ -89,7 +89,7 @@ class RangeView extends React.Component {
         const sharedProps = idx => {
             return {
                 value: this.props.value[idx],
-                visibleValue: ranges[idx],
+                panelDate: ranges[idx],
                 onSelect: v => this.handleDateSelect(v, idx),
                 // onChange: v => this.handleChange(v, idx),
                 selectedState: this.selectedState,

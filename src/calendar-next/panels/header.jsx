@@ -17,7 +17,7 @@ class HeaderPanel extends React.Component {
         ...ConfigProvider.propTypes,
         shape: PT.any,
         value: PT.any,
-        visibleValue: PT.any,
+        panelDate: PT.any,
         headerRender: PT.func,
         mode: PT.any,
         validValue: PT.any,
@@ -37,34 +37,18 @@ class HeaderPanel extends React.Component {
         this.prefixCls = `calendar-header`;
 
         bindCtx(this, [
-            'onModeChange',
             'renderModeSwitch',
             'handleSelect',
-            'onSelect',
+            'onPanelChange',
             'generatePanelBtns',
+            'renderMonthSelect',
+            'onModeChange',
         ]);
     }
 
-    // ----->  event
-
-    onModeChange(v) {
-        func.call(this.props, 'onModeChange', [v]);
-    }
-
-    onSelect(v) {
-        func.call(this.props, 'onSelect', [v]);
-    }
-
-    handleSelect(v, unit) {
-        const value = this.props.visibleValue.clone();
-
-        value[unit](v);
-
-        this.onSelect(value);
-    }
     // 生成panel面板的button
     generatePanelBtns({ unit, num = 1, isDoubleIcon = true }) {
-        const value = this.props.visibleValue.clone();
+        const value = this.props.panelDate.clone();
         const size = 'small';
         const iconTypes = isDoubleIcon
             ? ['arrow-double-left', 'arrow-double-right']
@@ -88,17 +72,31 @@ class HeaderPanel extends React.Component {
         ];
     }
 
+    // ----->  event
+
+    onModeChange(mode) {
+        this.onPanelChange(this.props.panelDate, mode);
+    }
+
+    onPanelChange(...args) {
+        func.call(this.props, 'onPanelChange', args);
+    }
+
+    handleSelect(v, unit) {
+        const value = this.props.panelDate.clone();
+        value[unit](v);
+        this.onPanelChange(value, this.props.mode);
+    }
+
     // ----->  render
 
     renderModeSwitch() {
-        const { onModeChange } = this;
-
         return (
             <Radio.Group
                 key="mode-switch"
                 shape="button"
                 value={this.props.mode}
-                onChange={onModeChange}
+                onChange={this.onModeChange}
             >
                 <Radio value={CALENDAR_MODE.DATE}>月</Radio>
                 <Radio value={CALENDAR_MODE.MONTH}>年</Radio>
@@ -107,7 +105,7 @@ class HeaderPanel extends React.Component {
     }
 
     renderMonthSelect() {
-        const curMonth = datejs(this.props.visibleValue).month();
+        const curMonth = this.props.panelDate.month();
 
         const dataSource = datejs.monthsShort().map((label, value) => {
             return {
@@ -127,13 +125,14 @@ class HeaderPanel extends React.Component {
     }
 
     renderYearSelect() {
-        const { validValue, visibleValue } = this.props;
+        const { validValue, panelDate } = this.props;
 
-        const curYear = datejs(visibleValue).year();
+        const curYear = panelDate.year();
 
         let beginYear;
         let endYear;
 
+        // TODO 有效区间
         if (validValue) {
             const [begin, end] = validValue;
             beginYear = begin.year();
@@ -161,11 +160,11 @@ class HeaderPanel extends React.Component {
 
     renderTextField() {
         const { prefixCls } = this;
-        const { visibleValue, monthBeforeYear, mode } = this.props;
+        const { panelDate, monthBeforeYear, mode } = this.props;
 
         let nodes;
-        const year = visibleValue.format('YYYY'); // TODO 切换到国际化
-        const month = datejs.monthsShort(visibleValue.month()); // TODO 切换到国际化
+        const year = panelDate.format('YYYY'); // TODO 切换到国际化
+        const month = datejs.monthsShort(panelDate.month()); // TODO 切换到国际化
 
         const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
 
@@ -206,7 +205,7 @@ class HeaderPanel extends React.Component {
             }
 
             case YEAR: {
-                const curYear = visibleValue.year();
+                const curYear = panelDate.year();
                 const start = curYear - (curYear % 10);
                 const end = start + 9;
                 nodes = (
@@ -223,7 +222,7 @@ class HeaderPanel extends React.Component {
                 break;
             }
             case YEAR_RANGE: {
-                const curYear = visibleValue.year();
+                const curYear = panelDate.year();
                 const start = curYear - (curYear % 100);
                 const end = start + 99;
 
