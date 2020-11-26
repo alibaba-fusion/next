@@ -39,7 +39,16 @@
 
 ## FAQ
 
-### 为什么设置 step 的展示方向不生效？
-Step 的 `direction` 和 `labelPlacement` 的可选值都是: 'hoz' 和 'ver'，但这两个 API 的含义是不一样的，前者可设置 step 的展示方向，而后者是控制 step 横向展示时 step 项的内容展示方向；
-
-如果发现 step 展示方向设置不生效，可先检查是否使用了正确的 API: direction，如果使用的是正确的 API 则还需要检查下 `shape` 是否为 `arrow`，`arrow` 模式下是无法修改展示方向的。
+### 为什么设置 Step 的展示方向不生效？
+`Step`组件有三种类型（shape） `shape?: 'arrow' | 'circle' | 'dot';`, 其中:
+- `shape='arrow'` 只有一种模式；
+- `shape='circle'` 有两种方向；
+    - `direction='ver'` 垂直方向
+    - `direction='hoz'` 水平方向，根据文案与图标位置的不同分为两种模式
+        - `labelPlacement='hoz'` 文案与图标 左右布局
+        - `labelPlacement='ver'` 文案与图标 上下布局
+- `shape='dot'` 有两种方向；
+    - `direction='ver'` 垂直方向
+    - `direction='hoz'` 水平方向
+    
+如果发现 step 展示方向设置不生效，可先检查是否使用了正确的 API（比如`labelPlacement`就仅在`shape='circle'` `direction='hoz'`时才生效。
