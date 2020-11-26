@@ -169,9 +169,9 @@ request需要返回一个包含abort方法的对象,用于中断上传
         {
           "success": true,
           "message": "上传成功",                                  // success=false 时候可以展示错误
-          "url": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"             // 返回结果
-          "imgURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",         // 图片预览地址 (非必须)
-          "downloadURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",    // 文件下载地址 (非必须)
+          "url": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",           // 返回结果
+          "imgURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",        // 图片预览地址 (非必须)
+          "downloadURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"    // 文件下载地址 (非必须)
         }
 
 ### 后端数据格式化
