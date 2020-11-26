@@ -1,13 +1,13 @@
-# 定制弹窗布局
+# 定制菜单布局
 
-- order: 7
+- order: 8
 
 通过 `MenuProps` 自定义 `Select` 弹窗的头部和底部（注意 `MenuProps.header` 不能与 `hasSelectAll` 同时出现, `MenuProps.header` 优先级更高）
 
 :::lang=en-us
 # custom popup render
 
-- order: 0
+- order: 8
 
 simple usage
 :::
