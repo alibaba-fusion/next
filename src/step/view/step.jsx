@@ -225,6 +225,9 @@ class Step extends Component {
                 // tabIndex: this.state.currentfocus === index ? '0' : '-1',
                 'aria-current': status === 'process' ? 'step' : null,
                 itemRender: child.props.itemRender ? child.props.itemRender : itemRender, // 优先使用Item的itemRender
+                onResize: () => {
+                    this.step && this.adjustHeight();
+                },
             });
         });
 
