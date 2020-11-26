@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.21.10",
+  "version": "1.21.11",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -114,7 +114,7 @@
     "@alifd/stylelint-config-next": "^1.0.0",
     "@commitlint/cli": "^7.0.0",
     "@no-repeat/sassdoc-parser": "^0.0.11",
-    "@octokit/rest": "^15.15.1",
+    "@octokit/rest": "^18.0.9",
     "@types/react": "^16.8.13",
     "autoprefixer": "^7.1.4",
     "axe-core": "~3.2.0",
@@ -208,6 +208,7 @@
     "stylelint-scss": "^3.1.1",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
+    "urllib": "^2.36.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.x",
     "whatwg-fetch": "^2.0.3"
