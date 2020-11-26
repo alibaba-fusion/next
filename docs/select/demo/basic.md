@@ -2,14 +2,14 @@
 
 - order: 0
 
-简单
+最基本的使用、带清除、搜索功能的展示
 
 :::lang=en-us
 # Basic
 
 - order: 0
 
-simple usage
+simple usage, has clear, show search
 :::
 ---
 
@@ -53,13 +53,13 @@ ReactDOM.render(
 
 
     <Select
-      defaultValue="hugo"
+      defaultValue="clear"
       hasClear
       style={{marginRight: 8}}
     >
       <Option value="jack">Jack</Option>
       <Option value="frank">Frank</Option>
-      <Option value="hugo">Hugo</Option>
+      <Option value="clear">clear</Option>
     </Select>
 
     <Select

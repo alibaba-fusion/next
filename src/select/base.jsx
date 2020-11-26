@@ -99,6 +99,7 @@ export default class Base extends React.Component {
         popupContent: PropTypes.node,
         /**
          * 添加到菜单上的属性
+         * @version 1.18
          */
         menuProps: PropTypes.object,
         /**
