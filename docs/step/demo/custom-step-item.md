@@ -1,6 +1,6 @@
-# Step.Item 自定义渲染
+# 步骤项自定义渲染
 
-- order: 4
+- order: 5
 
 `Step.Item` 默认有三种状态，分别是 `wait`, `process`, `finish`。
 用户可以通过传递 `itemRender` 属性进行自定义的渲染。
