@@ -212,6 +212,7 @@
     "react-live": "^2.2.3",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
+    "react-router-dom": "^5.2.0",
     "redux": "^4.0.0",
     "remark": "^9.0.0",
     "sassaby-next": "^3.0.0",
