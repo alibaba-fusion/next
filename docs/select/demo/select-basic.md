@@ -1,6 +1,7 @@
 # 选择器
 
 - order: 4
+- debug: true
 
 演示了 Select 的多种形态.
 

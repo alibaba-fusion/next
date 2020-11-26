@@ -1,14 +1,14 @@
-# 自定义渲染
+# 自定义菜单
 
-- order: 13
+- order: 7
 
 通过 `itemRender` 和 `valueRender` (仅 Select) 自定义渲染的节点内容。
 
 :::lang=en-us
 
-# custom render
+# custom menu
 
-- order: 13
+- order: 7
 
 custom render Item by api of `itemRender` and `valueRender` (only support by Select)
 
@@ -79,15 +79,4 @@ ReactDOM.render(
     </div>,
     mountNode
 );
-````
-
-````css
-.demo-container {
-    padding: 16px;
-    background-color: #F8F8F8;
-}
-
-.demo-container .next-select {
-    margin-right: 10px;
-}
 ````
