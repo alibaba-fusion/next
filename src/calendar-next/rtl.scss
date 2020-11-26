@@ -1,4 +1,4 @@
-#{$calendar-prefix}[dir='rtl'] {
+#{$calendar-prefix}[dir="rtl"] {
     #{$calendar-prefix} {
         &-header {
             text-align: left;
@@ -36,7 +36,7 @@
     }
 }
 
-#{$calendar-prefix}-fullscreen[dir='rtl'] {
+#{$calendar-prefix}-fullscreen[dir="rtl"] {
     #{$calendar-prefix} {
         &-th {
             text-align: left;
@@ -50,9 +50,10 @@
     }
 }
 
-#{$calendar-prefix}-range[dir='rtl'] {
+#{$calendar-prefix}-range[dir="rtl"] {
     #{$calendar-prefix} {
-        &-body-left, &-body-right {
+        &-body-left,
+        &-body-right {
             float: right;
         }
 

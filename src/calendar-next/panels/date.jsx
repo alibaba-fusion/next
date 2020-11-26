@@ -1,58 +1,39 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import * as PT from 'prop-types';
 import classnames from 'classnames';
-import { CALENDAR_MODE } from '../constant';
-import { func, datejs, KEYCODE } from '../../util';
+import * as PT from 'prop-types';
+import SharedPT from '../prop-types';
+import { DATE_PANEL_MODE } from '../constant';
+import { func, obj, datejs, KEYCODE } from '../../util';
 
 const { bindCtx, witchCustomRender } = func;
-const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
+const { MONTH, WEEK, QUARTER, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
 
-function getCellKey(v, mode) {
-    const mode2fmt = {
-        [DATE]: 'YYYY-MM-DD',
-        [MONTH]: 'YYYY-MM',
-        [YEAR]: 'YYYY',
-    };
-
-    //  周&季度不直接支持格式化
-    return mode === WEEK
-        ? `${v.year()}-Q${v.week()}w`
-        : mode === QUARTER
-        ? `${v.year()}-Q${v.quarter()}`
-        : v.format(mode2fmt[mode]);
-}
-
-class DateView extends React.Component {
+class DatePanel extends React.Component {
     static propTypes = {
-        mode: PT.any,
-        value: PT.any,
-        defaultValue: PT.any,
-        cellRender: PT.any,
-        startOnSunday: PT.bool,
-        panelDate: PT.any,
+        mode: SharedPT.mode,
+        value: SharedPT.date,
+        panelDate: SharedPT.date,
+        dateCellRender: PT.func,
         disabledDate: PT.func,
         selectedState: PT.func,
         hoveredState: PT.func,
         onSelect: PT.func,
-        onModeChange: PT.func,
         onDateSelect: PT.func,
-        cellClassName: PT.func,
-    };
-
-    static defaultProps = {
-        mode: DATE,
-        startOnSunday: false,
+        startOnSunday: PT.bool,
+        cellClassName: PT.oneOfType([PT.func, PT.string]),
     };
 
     constructor(props) {
         super(props);
 
+        this.prefixCls = `${props.prefix}calendar`;
+
         bindCtx(this, [
-            'getDateData',
             'getMonthData',
             'getYearData',
-            'getYearRangeData',
+            'getDecadeData',
+            'getCenturyData',
             'handleKeyDown',
             'handleSelect',
         ]);
@@ -62,12 +43,8 @@ class DateView extends React.Component {
         };
     }
 
-    // ------> utils
-
-    // ------> eventHandler
-
     handleSelect(v, e) {
-        console.log('[DateView]');
+        console.log('[DatePanel]');
         func.call(this.props, 'onSelect', [v, e]);
     }
 
@@ -84,7 +61,22 @@ class DateView extends React.Component {
         // e.preventDefault();
     }
 
-    // ------> render
+    isSame(curDate, date, mode) {
+        switch (mode) {
+            case MONTH:
+                return curDate.isSame(date, 'day');
+            case WEEK:
+                return curDate.isSame(date, 'week');
+            case QUARTER:
+                return curDate.isSame(date, 'quarter');
+            case YEAR:
+                return curDate.isSame(date, 'month');
+            case DECADE:
+                return curDate.isBefore(date) && curDate.isAfter(date.clone(1, 'year'));
+            case CENTURY:
+                return curDate.isBefore(date) && curDate.isAfter(date.clone(10, 'year'));
+        }
+    }
 
     /**
      * 渲染日期面板
@@ -99,17 +91,17 @@ class DateView extends React.Component {
         const { hoverValue } = this.state;
 
         const cellContent = [];
+        const prefixCls = `${this.prefixCls}-cell`;
 
         // 面板行数
         const mode2Rows = {
-            [DATE]: 7,
+            [MONTH]: 7,
             [WEEK]: 7,
-            [MONTH]: 4,
-            [QUARTER]: 1,
             [YEAR]: 3,
-            [YEAR_RANGE]: 3,
+            [QUARTER]: 1,
+            [DECADE]: 3,
+            [CENTURY]: 3,
         };
-        const unit = mode === 'date' ? 'day' : mode;
         const now = datejs();
 
         for (let i = 0; i < cellData.length; ) {
@@ -121,12 +113,12 @@ class DateView extends React.Component {
                 const isDisabled = props.disabledDate && props.disabledDate(value);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
 
-                const className = classnames('calendar-cell-inner', {
-                    'calendar-cell-current': isCurrent, // 是否属于当前面板值
-                    'calendar-cell-today': value.isSame(now, mode),
-                    'calendar-cell-selected': value.isSame(props.value, unit),
-                    'calendar-cell-disabled': isDisabled,
-                    'calendar-cell-range-hover': hoverState,
+                const className = classnames(`${prefixCls}-inner`, {
+                    [`${prefixCls}-current`]: isCurrent, // 是否属于当前面板值
+                    [`${prefixCls}-today`]: this.isSame(value, now, mode),
+                    [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
+                    [`${prefixCls}-disabled`]: isDisabled,
+                    [`${prefixCls}-range-hover`]: hoverState,
                     ...(cellClassName && cellClassName(value)),
                 });
 
@@ -147,9 +139,14 @@ class DateView extends React.Component {
                 }
 
                 children.push(
-                    <td className="calendar-cell" key={key} title={key}>
-                        <div role="button" tabIndex="0" className={className} {...onEvents}>
-                            {witchCustomRender('cellRender', props, [value, mode], label)}
+                    <td className={prefixCls} key={key} title={key}>
+                        <div role="cell" tabIndex="-1" className={className} {...onEvents}>
+                            {witchCustomRender(
+                                'dateCellRender',
+                                props,
+                                value,
+                                <div className={`${prefixCls}-value`}>{label}</div>
+                            )}
                         </div>
                     </td>
                 );
@@ -165,11 +162,12 @@ class DateView extends React.Component {
         return cellContent;
     }
 
-    // label：星期几
+    // 星期几
     renderWeekdaysHead() {
         const weekdaysShort = datejs.weekdaysShort();
+        const startOnSunday = obj.get('startOnSunday', this.props, this.props.locale.startOnSunday);
 
-        if (!this.props.startOnSunday) {
+        if (!startOnSunday) {
             weekdaysShort.push(weekdaysShort.shift());
         }
         return (
@@ -183,8 +181,8 @@ class DateView extends React.Component {
         );
     }
 
-    getDateData() {
-        const { panelDate: value, startOnSunday, mode } = this.props;
+    getMonthData() {
+        const { panelDate: value, startOnSunday } = this.props;
 
         const firstDayOfMonth = value.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
@@ -214,13 +212,13 @@ class DateView extends React.Component {
                 value,
                 label: value.date(),
                 isCurrent: value.isSame(firstDayOfMonth, 'month'),
-                key: getCellKey(value, mode),
+                key: value.format('YYYY-MM-DD'),
             };
         });
     }
 
-    getMonthData() {
-        const { panelDate, mode } = this.props;
+    getYearData() {
+        const { panelDate } = this.props;
 
         return datejs.monthsShort().map((label, index) => {
             const value = panelDate.clone().month(index);
@@ -229,47 +227,45 @@ class DateView extends React.Component {
                 label,
                 value,
                 isCurrent: true,
-                key: getCellKey(value, mode),
+                key: value.format('YYYY-MM'),
             };
         });
     }
 
-    getYearData() {
-        const { panelDate, mode } = this.props;
+    getDecadeData() {
+        const { panelDate } = this.props;
         const curYear = panelDate.year();
         const startYear = curYear - (curYear % 10) - 1;
         const cellData = [];
 
         for (let i = 0; i < 12; i++) {
             const y = startYear + i;
-            const value = panelDate.clone().year(y);
 
             cellData.push({
-                value,
+                value: panelDate.clone().year(y),
                 label: y,
-                isCurrent: i !== 0 && i !== 11,
-                key: getCellKey(value, mode),
+                isCurrent: i > 0 && i < 11,
+                key: y,
             });
         }
 
         return cellData;
     }
 
-    getYearRangeData() {
-        const { panelDate, mode } = this.props;
+    getCenturyData() {
+        const { panelDate } = this.props;
         const curYear = panelDate.year();
         const startYear = curYear - (curYear % 100) - 10;
         const cellData = [];
 
         for (let i = 0; i < 12; i++) {
             const y = startYear + i * 10;
-            const value = panelDate.clone().year(y);
 
             cellData.push({
-                value,
+                value: panelDate.clone().year(y),
                 label: `${y}-${y + 9}`,
-                isCurrent: i !== 0 && i !== 11,
-                key: getCellKey(value, mode),
+                isCurrent: i > 0 && i < 11,
+                key: `${y}-${y + 9}`,
             });
         }
 
@@ -279,21 +275,21 @@ class DateView extends React.Component {
     render() {
         const { mode } = this.props;
         const mode2Data = {
-            [DATE]: this.getDateData,
-            // [WEEK]: this.renderDate,
             [MONTH]: this.getMonthData,
-            // [QUARTER]: this.renderQuarter,
+            // [WEEK]: this.renderDate,
             [YEAR]: this.getYearData,
-            [YEAR_RANGE]: this.getYearRangeData,
+            // [QUARTER]: this.renderQuarter,
+            [DECADE]: this.getDecadeData,
+            [CENTURY]: this.getCenturyData,
         };
 
         return (
-            <table className="calendar-date">
-                {mode === DATE ? this.renderWeekdaysHead() : null}
+            <table className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
+                {mode === MONTH ? this.renderWeekdaysHead() : null}
                 <tbody>{this.renderCellContent(mode2Data[mode]())}</tbody>
             </table>
         );
     }
 }
 
-export default polyfill(DateView);
+export default polyfill(DatePanel);

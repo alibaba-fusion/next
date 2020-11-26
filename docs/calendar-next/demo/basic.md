@@ -17,29 +17,17 @@ A basic fullscreen calendar.
 ---
 
 ```jsx
-import React, { useState } from 'react';
 import { CalendarNext } from '@alifd/next';
 import moment from 'moment';
 
-function App() {
-    const [value, setValue] = useState(new Date());
-
-    function onDateChange(v) {
-        console.log('onDateChange', v);
-        setValue(v);
-    }
-
-    return (
-        <div>
-            {[value].map((v, index) => (
-                <p key={index}>{(v || '').toString()}</p>
-            ))}
-            <CalendarNext onChange={onDateChange} defaultValue={value} />
-            <CalendarNext onChange={onDateChange} defaultValue={value} />
-            <CalendarNext onChange={onDateChange} defaultValue={value} />
-        </div>
-    );
+function onDateChange(value) {
+    console.log(value.format('L'));
 }
 
-ReactDOM.render(<App />, mountNode);
+ReactDOM.render(
+    <div>
+        <CalendarNext onSelect={onDateChange} defaultValue={moment().add(1, 'days')} />
+    </div>,
+    mountNode
+);
 ```

@@ -1,111 +1,176 @@
-// @import '../core/index-noreset';
+@import "../core/index-noreset";
 
-// @import "scss/variable";
-// @import "scss/normalize";
-// @import "scss/mixin";
-// @import "scss/animation";
+@import "scss/variable";
+@import "scss/normalize";
 
-// @import "scss/header";
-// @import "scss/table";
-// @import "./rtl.scss";
+@import "./rtl.scss";
 
-// #{$calendar-prefix} {
-//     &-table {
-//         width: 100%;
-//         table-layout: fixed;
-//     }
+#{$calendar-prefix} {
+    font-size: 14px;
+    user-select: none;
 
-//     /* range calendar */
-//     /* --------------- */
-//     &-range {
-//         #{$calendar-prefix}-body {
-//             &-left, &-right {
-//                 float: left;
-//                 width: 50%;
-//             }
+    &-header {
+        display: flex;
+    }
 
-//             &-left {
-//                 padding-right: $s-2;
-//             }
+    &-table {
+        width: 100%;
+        table-layout: fixed;
+    }
 
-//             &-right {
-//                 padding-left: $s-2;
-//             }
+    &-cell-inner {
+        color: rgba(0, 0, 0, 0.25);
+        outline: none;
+        cursor: pointer;
+    }
 
-//             @include clearfix;
-//         }
-//     }
+    &-cell-current {
+        color: rgba(0, 0, 0, 0.85);
 
-//     &-symbol-prev::before {
-//         content: $calendar-btn-arrow-content-prev;
-//     }
-//     &-symbol-next::before {
-//         content: $calendar-btn-arrow-content-next;
-//     }
-//     &-symbol-prev-super::before {
-//         content: $calendar-btn-arrow-content-prev-super;
-//     }
-//     &-symbol-next-super::before {
-//         content: $calendar-btn-arrow-content-next-super;
-//     }
-// }
+        &:hover {
+            background: #edeff2;
+        }
+    }
 
-.calendar-cell {
-    padding: 4px;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.25);
-}
-.calendar-cell-inner:focus {
-    outline: none;
-}
-.calendar-cell-current {
-    color: rgba(0, 0, 0, 0.85);
-}
+    &-cell-today {
+        color: rgb(3, 193, 253);
+    }
 
-.calendar-cell-inner {
-    min-width: 28px;
-    height: 28px;
-    line-height: 28px;
-    border: 1px dashed transparent;
-    cursor: pointer;
-}
+    &-fullscreen,
+    &-card {
+        #{$calendar-prefix}-header {
+            padding-top: 12px;
+            padding-bottom: 12px;
 
-.calendar-cell-selected.calendar-cell-current {
-    background: #e6f7ff;
-}
-.calendar-cell-range-begin.calendar-cell-current,
-.calendar-cell-range-end.calendar-cell-current {
-    background: #1890ff;
-    color: #fff;
-}
+            &-actions {
+                margin-left: auto;
 
-.calendar-cell-disabled {
-    background: #f5f7fa !important;
-    color: #c4c7cc;
-}
+                & > * {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
 
-.calendar-header {
-    display: flex;
-}
+    &-card,
+    &-panel {
+        #{$calendar-prefix} {
+            min-height: 150px;
 
-.calendar-date {
-    width: 100%;
-}
+            &-table {
+                th,
+                td {
+                    font-weight: 400;
+                    text-align: center;
+                    padding: 3px 0;
+                }
+            }
 
-.calendar-header-actions {
-    margin-left: auto;
-}
+            &-cell-inner {
+                cursor: pointer;
+                position: relative;
+                z-index: 2;
+                display: inline-block;
+                min-width: 24px;
+                height: 24px;
+                line-height: 24px;
+                border-radius: 2px;
+                transition: background-color 0.2s, border 0.2s;
 
-.calendar-header-text-field {
-    flex: 1;
-    text-align: center;
-}
+                &#{$calendar-prefix}-cell-selected {
+                    color: #fff;
+                    background: rgb(3, 193, 253);
+                }
 
-.calendar-cell-inner:hover {
-    background: #f4f6f9;
-    color: #585d66;
-}
+                &#{$calendar-prefix}-cell-disabled {
+                    color: #c4c7cc;
+                    background: #dcdfe6;
+                }
+            }
 
-.calendar-cell-hover.calendar-cell-current:not(.calendar-cell-disabled) {
-    border: 1px dashed #1890ff;
+            &-table-year,
+            &-table-quarter,
+            &-table-decade,
+            &-table-century {
+                #{$calendar-prefix}-cell-inner {
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+
+    &-fullscreen {
+        #{$calendar-prefix} {
+            &-cell-value,
+            &-table th {
+                text-align: right;
+            }
+
+            &-table th {
+                padding: 0 8px 4px;
+            }
+
+            &-cell-inner {
+                height: 80px;
+                border-top: 2px solid #dcdfe6;
+                margin: 0 4px;
+                padding: 4px 8px 0;
+
+                &#{$calendar-prefix}-cell {
+                    &-selected {
+                        border-top-color: rgb(3, 193, 253);
+                        background: #e6fdff;
+                    }
+                }
+            }
+        }
+    }
+
+    &-card {
+        #{$calendar-prefix} {
+            &-header {
+                padding-right: 8px;
+                padding-left: 8px;
+            }
+        }
+    }
+
+    &-panel {
+        #{$calendar-prefix} {
+            &-header {
+                padding: 0 8px;
+                border-bottom: 1px solid #f0f0f0;
+
+                &-btn,
+                &-text-field {
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 14px;
+                    vertical-align: inherit;
+                    font-family: inherit;
+                }
+
+                &-btn {
+                    min-width: 1.6em;
+                }
+
+                &-btn > span {
+                    vertical-align: inherit;
+                }
+
+                &-text-field {
+                    flex: 1;
+                    text-align: center;
+
+                    #{$calendar-prefix}-header-btn:not(:first-child) {
+                        margin-left: 8px;
+                    }
+                }
+            }
+
+            &-body {
+                padding: 8px 12px;
+            }
+        }
+    }
 }

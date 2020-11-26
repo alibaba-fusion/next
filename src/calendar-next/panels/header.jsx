@@ -2,9 +2,8 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import { func, datejs } from '../../util';
-import { CALENDAR_MODE } from '../constant';
 
-import ConfigProvider from '../../config-provider';
+import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE } from '../constant';
 import Radio from '../../radio';
 import Select from '../../select';
 import Button from '../../button';
@@ -12,42 +11,54 @@ import Icon from '../../icon';
 
 const { bindCtx, witchCustomRender } = func;
 
-class HeaderPanel extends React.Component {
+class HeaderPanel extends React.PureComponent {
     static propTypes = {
-        ...ConfigProvider.propTypes,
-        shape: PT.any,
+        rtl: PT.bool,
+        prefix: PT.string,
+        locale: PT.object,
+        mode: PT.any,
+        shape: PT.string,
         value: PT.any,
         panelDate: PT.any,
-        headerRender: PT.func,
-        mode: PT.any,
         validValue: PT.any,
-        monthBeforeYear: PT.any, // 加到local配置中
         showTitle: PT.bool,
+        /**
+         * 是否需要渲染模式切换
+         */
+        showModeSwitch: PT.bool,
+        /**
+         * 扩展操作区域渲染
+         */
+        renderHeaderExtra: PT.func,
+        /**
+         * 自定义头部渲染
+         */
+        headerRender: PT.func,
     };
 
     static defaultProps = {
-        shape: 'fullscreen',
-        showTitle: true,
-        // validValue: [datejs('2020', 'YYYY'), datejs('2030', 'YYYY')],
+        showTitle: false,
+        showModeSwitch: true,
     };
 
     constructor(props) {
         super(props);
 
-        this.prefixCls = `calendar-header`;
+        this.prefixCls = `${props.prefix}calendar-header`;
 
         bindCtx(this, [
+            'generatePanelBtns',
+            'renderMonthSelect',
             'renderModeSwitch',
             'handleSelect',
             'onPanelChange',
-            'generatePanelBtns',
-            'renderMonthSelect',
             'onModeChange',
         ]);
     }
 
     // 生成panel面板的button
     generatePanelBtns({ unit, num = 1, isDoubleIcon = true }) {
+        const { prefixCls } = this;
         const value = this.props.panelDate.clone();
         const size = 'small';
         const iconTypes = isDoubleIcon
@@ -56,14 +67,18 @@ class HeaderPanel extends React.Component {
 
         return [
             <Button
-                onClick={() => this.onSelect(value.subtract(num, unit))}
+                text
+                className={`${prefixCls}-btn`}
+                onClick={() => this.onPanelChange(value.subtract(num, unit))}
                 size={size}
                 key={`prev-btn-${unit}`}
             >
                 <Icon type={iconTypes[0]} />
             </Button>,
             <Button
-                onClick={() => this.onSelect(value.add(num, unit))}
+                text
+                className={`${prefixCls}-btn`}
+                onClick={() => this.onPanelChange(value.add(num, unit))}
                 size={size}
                 key={`next-btn-${unit}`}
             >
@@ -72,14 +87,12 @@ class HeaderPanel extends React.Component {
         ];
     }
 
-    // ----->  event
-
     onModeChange(mode) {
         this.onPanelChange(this.props.panelDate, mode);
     }
 
-    onPanelChange(...args) {
-        func.call(this.props, 'onPanelChange', args);
+    onPanelChange(value, mode) {
+        func.call(this.props, 'onPanelChange', [value, mode || this.props.mode]);
     }
 
     handleSelect(v, unit) {
@@ -88,25 +101,19 @@ class HeaderPanel extends React.Component {
         this.onPanelChange(value, this.props.mode);
     }
 
-    // ----->  render
-
     renderModeSwitch() {
+        const { mode, locale } = this.props;
+
         return (
-            <Radio.Group
-                key="mode-switch"
-                shape="button"
-                value={this.props.mode}
-                onChange={this.onModeChange}
-            >
-                <Radio value={CALENDAR_MODE.DATE}>月</Radio>
-                <Radio value={CALENDAR_MODE.MONTH}>年</Radio>
+            <Radio.Group key="mode-switch" shape="button" value={mode} onChange={this.onModeChange}>
+                <Radio value={CALENDAR_MODE.MONTH}>{locale.month}</Radio>
+                <Radio value={CALENDAR_MODE.YEAR}>{locale.year}</Radio>
             </Radio.Group>
         );
     }
 
     renderMonthSelect() {
         const curMonth = this.props.panelDate.month();
-
         const dataSource = datejs.monthsShort().map((label, value) => {
             return {
                 label,
@@ -126,7 +133,6 @@ class HeaderPanel extends React.Component {
 
     renderYearSelect() {
         const { validValue, panelDate } = this.props;
-
         const curYear = panelDate.year();
 
         let beginYear;
@@ -160,36 +166,38 @@ class HeaderPanel extends React.Component {
 
     renderTextField() {
         const { prefixCls } = this;
-        const { panelDate, monthBeforeYear, mode } = this.props;
+        const { panelDate, locale, mode } = this.props;
+
+        const monthBeforeYear = locale.monthBeforeYear || false;
 
         let nodes;
-        const year = panelDate.format('YYYY'); // TODO 切换到国际化
-        const month = datejs.monthsShort(panelDate.month()); // TODO 切换到国际化
+        const year = panelDate.year();
+        const month = datejs.monthsShort(panelDate.month());
 
-        const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
+        const { WEEK, MONTH, QUARTER, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
 
         const yearNode = (
             <Button
                 text
-                key="year"
+                key="year-btn"
                 tabIndex={-1}
-                className="year-btn"
-                onClick={() => this.onModeChange(YEAR)}
+                className={`${prefixCls}-btn`}
+                onClick={() => this.onModeChange(DECADE)}
             >
                 {year}
             </Button>
         );
 
         switch (mode) {
-            case DATE:
+            case MONTH:
             case WEEK: {
                 const monthNode = (
                     <Button
                         text
-                        key="month"
+                        key="month-btn"
                         tabIndex={-1}
-                        className="month-btn"
-                        onClick={() => this.onModeChange(MONTH)}
+                        className={`${prefixCls}-btn`}
+                        onClick={() => this.onModeChange(YEAR)}
                     >
                         {month}
                     </Button>
@@ -199,29 +207,29 @@ class HeaderPanel extends React.Component {
             }
 
             case QUARTER:
-            case MONTH: {
+            case YEAR: {
                 nodes = yearNode;
                 break;
             }
 
-            case YEAR: {
+            case DECADE: {
                 const curYear = panelDate.year();
                 const start = curYear - (curYear % 10);
                 const end = start + 9;
                 nodes = (
                     <Button
                         text
-                        key="year-range"
+                        key="decade-btn"
                         tabIndex={-1}
-                        className="year-range-btn"
-                        onClick={() => this.onModeChange(YEAR_RANGE)}
+                        className={`${prefixCls}-btn`}
+                        onClick={() => this.onModeChange(CENTURY)}
                     >
                         {`${start}-${end}`}
                     </Button>
                 );
                 break;
             }
-            case YEAR_RANGE: {
+            case CENTURY: {
                 const curYear = panelDate.year();
                 const start = curYear - (curYear % 100);
                 const end = start + 99;
@@ -232,23 +240,23 @@ class HeaderPanel extends React.Component {
         }
 
         return (
-            <div key="text-field" className={`${prefixCls}-text-field`}>
+            <span key="header-text-field" className={`${prefixCls}-text-field`}>
                 {nodes}
-            </div>
+            </span>
         );
     }
 
     renderPanelHeader() {
         const { generatePanelBtns } = this;
         const { mode } = this.props;
-        const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
+        const { MONTH, WEEK, QUARTER, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
 
         let nodes = [];
 
         const textFieldNode = this.renderTextField();
 
         switch (mode) {
-            case DATE:
+            case MONTH:
             case WEEK: {
                 const [preMonthBtn, nextMonthBtn] = generatePanelBtns({
                     unit: 'month',
@@ -261,8 +269,8 @@ class HeaderPanel extends React.Component {
                 nodes = [preYearBtn, preMonthBtn, textFieldNode, nextMonthBtn, nextYearBtn];
                 break;
             }
-            case MONTH:
-            case QUARTER: {
+            case QUARTER:
+            case YEAR: {
                 const [preYearBtn, nextYearBtn] = generatePanelBtns({
                     unit: 'year',
                 });
@@ -270,7 +278,7 @@ class HeaderPanel extends React.Component {
                 nodes = [preYearBtn, textFieldNode, nextYearBtn];
                 break;
             }
-            case YEAR: {
+            case DECADE: {
                 const [preDecadeBtn, nextDecadeBtn] = generatePanelBtns({
                     unit: 'year',
                     num: 10,
@@ -279,7 +287,7 @@ class HeaderPanel extends React.Component {
                 nodes = [preDecadeBtn, textFieldNode, nextDecadeBtn];
                 break;
             }
-            case YEAR_RANGE: {
+            case CENTURY: {
                 const [preCenturyBtn, nextCenturyBtn] = generatePanelBtns({
                     unit: 'year',
                     num: 100,
@@ -294,12 +302,12 @@ class HeaderPanel extends React.Component {
     }
 
     renderInner() {
-        const { prefixCls } = this;
-        const { shape, showTitle, value, mode } = this.props;
+        const { prefixCls, onPanelChange } = this;
+        const { shape, showTitle, value, mode, showModeSwitch } = this.props;
 
         const nodes = [];
 
-        if (shape === 'panel') {
+        if (shape === CALENDAR_SHAPE.PANEL) {
             return this.renderPanelHeader();
         } else {
             if (showTitle) {
@@ -308,19 +316,19 @@ class HeaderPanel extends React.Component {
                         {witchCustomRender(
                             'headerTitleRender',
                             this.props,
-                            null,
-                            value.format('l') // TODO: 需要传入格式
+                            { value },
+                            value.format()
                         )}
                     </div>
                 );
             }
             nodes.push(
-                <div key="actions" className="calendar-header-actions">
+                <div key="actions" className={`${prefixCls}-actions`}>
                     {this.renderYearSelect()}
-                    {mode === CALENDAR_MODE.DATE ? this.renderMonthSelect() : null}
-                    {this.renderModeSwitch()}
-                    {/* // 扩展操作区域 */}
-                    {this.props.renderHeaderExtra && this.props.renderHeaderExtra()}
+                    {mode === CALENDAR_MODE.MONTH ? this.renderMonthSelect() : null}
+                    {showModeSwitch ? this.renderModeSwitch() : null}
+                    {this.props.renderHeaderExtra &&
+                        this.props.renderHeaderExtra({ onPanelChange, ...this.props })}
                 </div>
             );
         }
@@ -329,14 +337,14 @@ class HeaderPanel extends React.Component {
     }
 
     render() {
-        const { onModeChange, handleSelect, prefixCls } = this;
+        const { onPanelChange, prefixCls } = this;
 
         return (
             <div className={prefixCls}>
                 {witchCustomRender(
                     'headerRender',
                     this.props,
-                    { onModeChange, handleSelect },
+                    { onPanelChange, ...this.props },
                     this.renderInner()
                 )}
             </div>

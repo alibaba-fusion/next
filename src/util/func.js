@@ -87,6 +87,10 @@ export function isFunction(func) {
     return typeof func === 'function';
 }
 
+export function isNone(v) {
+    return v === null || v === undefined;
+}
+
 /**
  * 函数调用，如果obj对象中存在名为methodName的方法则调用该方法，
  * 如果不存在，则从可选的defaultObj中找
@@ -103,7 +107,7 @@ export function call(obj, methodName, args, defaultObj) {
 }
 
 export function witchCustomRender(renderName, props, renderProps, defaultRender) {
-    const r = renderName in props ? props[renderName] : defaultRender;
+    const r = renderName in props && !isNone(props[renderName]) ? props[renderName] : defaultRender;
 
     return isFunction(r) ? r(renderProps) : r;
 }
