@@ -16,35 +16,26 @@ Disabled switch.
 ---
 
 ````jsx
-import { Button, Icon, Switch } from '@alifd/next';
+import { Button, Switch } from '@alifd/next';
+
+const Demo = () => {
+  const [disabled, setDisabled] = React.useState(true);
+
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
+
+  return (
+    <div>
+      <Switch disabled={disabled} defaultChecked />
+      <br />
+      <Button type="primary" onClick={toggle}>
+        Toggle disabled
+      </Button>
+    </div>
+  );
+};
 
 
-
-class Test extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            disabled: true
-        };
-    }
-
-    toggle() {
-        this.setState(Object.assign({}, this.state, {
-            disabled: !this.state.disabled
-        }));
-    }
-
-    render() {
-        return (<div>
-            <Switch checkedChildren={<Icon type="select" size="small" />}
-                unCheckedChildren={<Icon type="close" size="small" />} disabled={this.state.disabled} />
-            <Switch checkedChildren="on" unCheckedChildren="off" disabled={this.state.disabled} />
-            <br />
-            <br />
-            <Button type="primary" onClick={this.toggle.bind(this)}>Toggle disabled</Button>
-        </div>);
-    }
-}
-
-ReactDOM.render(<Test />, mountNode);
+ReactDOM.render(<Demo />, mountNode);
 ````
