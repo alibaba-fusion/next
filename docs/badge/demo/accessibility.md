@@ -1,15 +1,15 @@
-# 基本
+# 无障碍支持
 
-- order: 0
+- order: 7
 
-简单的徽章展示，当 `count` 为 `0` 时，默认不显示，但是可以使用 `showZero` 修改为显示。
+可通过给内容添加`className="next-sr-only"`，使内容仅能被读屏软件读取，但不会展示到页面上。
 
 :::lang=en-us
-# Basic Usage
+# Accessibility
 
 - order: 0
 
-Simple usage of badge component.
+Accessibility of Badge.
 
 :::
 ---
@@ -20,10 +20,7 @@ import { Badge } from '@alifd/next';
 ReactDOM.render(
     <div>
         <Badge count={5}>
-            <a href="#" className="basic-example"></a>
-        </Badge>
-        <Badge count={0} showZero>
-            <a href="#" className="basic-example"></a>
+            <a href="#" className="basic-example"><span className="next-sr-only">unread messages</span></a>
         </Badge>
     </div>
     , mountNode);

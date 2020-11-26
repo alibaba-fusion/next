@@ -1,13 +1,13 @@
-# 动态
+# 内容动态变化
 
-- order: 3
+- order: 6
 
-展示动态变化的效果。
+展示徽标内容动态变化的效果。
 
 :::lang=en-us
 # Dynamic
 
-- order: 3
+- order: 6
 
 Display the effect of dynamic changes.
 
@@ -17,8 +17,6 @@ Display the effect of dynamic changes.
 ````jsx
 import { Badge, Button, Icon } from '@alifd/next';
 
-
-
 const ButtonGroup = Button.Group;
 
 class Demo extends React.Component {
@@ -26,7 +24,7 @@ class Demo extends React.Component {
         super(props);
 
         this.state = {
-            count: 5,
+            count: 0,
             show: true
         };
 
