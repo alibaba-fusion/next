@@ -1,74 +1,68 @@
-@mixin tooltip-arrow-rtl() {
+@mixin tooltip-arrow-rtl($width) {
 
-    &.#{$css-prefix}balloon-tooltip-right:after {
-        left: $balloon-size-arrow-expose;
+    &.#{$css-prefix}balloon-tooltip-right .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
         right: auto;
-        border-top: none;
-        border-right: none;
-        border-left: inherit;
-        border-bottom: inherit;
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
     }
 
-    &.#{$css-prefix}balloon-tooltip-left:after {
-        right: $balloon-size-arrow-expose;
+    &.#{$css-prefix}balloon-tooltip-left .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
         left: auto;
-        border-top: inherit;
-        border-right: inherit;
-        border-left: none;
-        border-bottom: none;
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
     }
-    &.#{$css-prefix}balloon-tooltip-left-top:after {
-        right: $balloon-size-arrow-expose;
+    &.#{$css-prefix}balloon-tooltip-left-top .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
         left: auto;
-        border-top: inherit;
-        border-right: inherit;
-        border-left: none;
-        border-bottom: none;
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
     }
-    &.#{$css-prefix}balloon-tooltip-left-bottom:after {
-        right: $balloon-size-arrow-expose;
+    &.#{$css-prefix}balloon-tooltip-left-bottom .#{$css-prefix}balloon-arrow {
+        right: calc(0px - (#{$width} * 2));
         left: auto;
-        border-top: inherit;
-        border-right: inherit;
-        border-left: none;
-        border-bottom: none;
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(get-compiling-value($width) * -1) rotate(45deg);
+        }
     }
 
-    &.#{$css-prefix}balloon-tooltip-right-top:after {
-        left: $balloon-size-arrow-expose;
+    &.#{$css-prefix}balloon-tooltip-right-top .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
         right: auto;
-        border-top: none;
-        border-right: none;
-        border-left: inherit;
-        border-bottom: inherit;
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
     }
 
-    &.#{$css-prefix}balloon-tooltip-right-bottom:after {
-        left: $balloon-size-arrow-expose;
+    &.#{$css-prefix}balloon-tooltip-right-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(0px - (#{$width} * 2));
         right: auto;
-        border-top: none;
-        border-right: none;
-        border-left: inherit;
-        border-bottom: inherit;
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
     }
 
-    &.#{$css-prefix}balloon-tooltip-top-left:after {
-        right: $balloon-size-arrow-margin;
+    &.#{$css-prefix}balloon-tooltip-top-left .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
         left: auto;
     }
 
-    &.#{$css-prefix}balloon-tooltip-top-right:after {
-        left: $balloon-size-arrow-margin;
+    &.#{$css-prefix}balloon-tooltip-top-right .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
         right: auto;
     }
 
-    &.#{$css-prefix}balloon-tooltip-bottom-left:after {
-        right: $balloon-size-arrow-margin;
+    &.#{$css-prefix}balloon-tooltip-bottom-left .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - 2px);
         left: auto;
     }
 
-    &.#{$css-prefix}balloon-tooltip-bottom-right:after {
-        left: $balloon-size-arrow-margin;
+    &.#{$css-prefix}balloon-tooltip-bottom-right .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - 2px);
         right: auto;
     }
 }
@@ -196,7 +190,7 @@
 
 .#{$css-prefix}balloon-tooltip[dir="rtl"] {
 
-    @include tooltip-arrow-rtl();
+    @include tooltip-arrow-rtl($balloon-size-arrow-size);
 
     /* size */
     &.#{$css-prefix}balloon-tooltip-medium {
