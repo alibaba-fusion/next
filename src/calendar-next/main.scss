@@ -1,0 +1,177 @@
+@import "../core/index-noreset";
+
+@import "scss/variable";
+@import "scss/normalize";
+
+@import "./rtl.scss";
+
+#{$calendar-prefix} {
+    font-size: 14px;
+    user-select: none;
+    background: #fff;
+
+    &-header {
+        display: flex;
+    }
+
+    &-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    &-cell-inner {
+        color: rgba(0, 0, 0, 0.25);
+        outline: none;
+        cursor: pointer;
+    }
+
+    &-cell-current {
+        color: rgba(0, 0, 0, 0.85);
+
+        &:hover {
+            background: #edeff2;
+        }
+    }
+
+    &-cell-today {
+        color: rgb(3, 193, 253);
+    }
+
+    &-fullscreen,
+    &-card {
+        #{$calendar-prefix}-header {
+            padding-top: 12px;
+            padding-bottom: 12px;
+
+            &-actions {
+                margin-left: auto;
+
+                & > * {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
+
+    &-card,
+    &-panel {
+        #{$calendar-prefix} {
+            min-height: 150px;
+
+            &-table {
+                th,
+                td {
+                    font-weight: 400;
+                    text-align: center;
+                    padding: 3px 0;
+                }
+            }
+
+            &-cell-inner {
+                cursor: pointer;
+                position: relative;
+                z-index: 2;
+                display: inline-block;
+                min-width: 24px;
+                height: 24px;
+                line-height: 24px;
+                border-radius: 2px;
+                transition: background-color 0.2s, border 0.2s;
+
+                &#{$calendar-prefix}-cell-selected {
+                    color: #fff;
+                    background: rgb(3, 193, 253);
+                }
+
+                &#{$calendar-prefix}-cell-disabled {
+                    color: #c4c7cc;
+                    background: #f5f7fa;
+                }
+            }
+
+            &-table-month,
+            &-table-year,
+            &-table-quarter,
+            &-table-decade {
+                #{$calendar-prefix}-cell-inner {
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+
+    &-fullscreen {
+        #{$calendar-prefix} {
+            &-cell-value,
+            &-table th {
+                text-align: right;
+            }
+
+            &-table th {
+                padding: 0 8px 4px;
+            }
+
+            &-cell-inner {
+                height: 80px;
+                border-top: 2px solid #dcdfe6;
+                margin: 0 4px;
+                padding: 4px 8px 0;
+
+                &#{$calendar-prefix}-cell {
+                    &-selected {
+                        border-top-color: rgb(3, 193, 253);
+                        background: #e6fdff;
+                    }
+                }
+            }
+        }
+    }
+
+    &-card {
+        #{$calendar-prefix} {
+            &-header {
+                padding-right: 8px;
+                padding-left: 8px;
+            }
+        }
+    }
+
+    &-panel {
+        #{$calendar-prefix} {
+            &-header {
+                padding: 0 8px;
+                border-bottom: 1px solid #f0f0f0;
+
+                &-btn,
+                &-text-field {
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 14px;
+                    vertical-align: inherit;
+                    font-family: inherit;
+                }
+
+                &-btn {
+                    min-width: 1.6em;
+                }
+
+                &-btn > span {
+                    vertical-align: inherit;
+                }
+
+                &-text-field {
+                    flex: 1;
+                    text-align: center;
+
+                    #{$calendar-prefix}-header-btn:not(:first-child) {
+                        margin-left: 8px;
+                    }
+                }
+            }
+
+            &-body {
+                padding: 8px 12px;
+            }
+        }
+    }
+}
