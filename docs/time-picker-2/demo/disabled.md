@@ -16,7 +16,7 @@ Disable some time celles.
 ---
 
 ````jsx
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 
 const disabledHours = [1, 2, 3, 4, 5];
 const disabledMinutes = [10, 20, 30, 40, 50];
@@ -27,9 +27,9 @@ const disabledItems = (list) => (index) => {
 };
 
 ReactDOM.render(<div>
-    <p>Disable TimePickerNext</p>
-    <TimePickerNext disabled />
+    <p>Disable TimePicker2</p>
+    <TimePicker2 disabled />
     <p>Disable Hours/Minutes/Seconds</p>
-    <TimePickerNext disabledHours={disabledItems(disabledHours)} disabledMinutes={disabledItems(disabledMinutes)} disabledSeconds={disabledItems(disabledSeconds)} />
+    <TimePicker2 disabledHours={disabledItems(disabledHours)} disabledMinutes={disabledItems(disabledMinutes)} disabledSeconds={disabledItems(disabledSeconds)} />
 </div>, mountNode);
 ````

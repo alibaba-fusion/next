@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Demo, DemoHead, DemoGroup, initDemo } from '../../../src/demo-helper';
-import TimePickerNext from '../../../src/time-picker';
+import TimePicker2 from '../../../src/time-picker';
 import ConfigProvider from '../../../src/config-provider';
 import zhCN from '../../../src/locale/zh-cn';
 import enUS from '../../../src/locale/en-us';
@@ -22,7 +22,7 @@ const i18nMap = {
         panel: '面板',
     },
     'en-us': {
-        title: 'TimePickerNext',
+        title: 'TimePicker2',
         label: 'Label',
         normal: 'Normal',
         expand: 'Expanded',
@@ -82,15 +82,15 @@ class FunctionDemo extends React.Component {
         return (<Demo title={title} demoFunction={demoFunction} onFunctionChange={this.onFunctionChange} block>
             <DemoHead cols={['L', 'M', 'S']} />
             <DemoGroup label={locale.normal}>
-                <TimePickerNext visible={false} size="large" {...otherProps} />
-                <TimePickerNext visible={false} {...otherProps} />
-                <TimePickerNext visible={false} size="small" {...otherProps} />
+                <TimePicker2 visible={false} size="large" {...otherProps} />
+                <TimePicker2 visible={false} {...otherProps} />
+                <TimePicker2 visible={false} size="small" {...otherProps} />
             </DemoGroup>
 
             <DemoGroup label={locale.expand} height="300px">
-                <TimePickerNext value={timeValue} visible {...disabledProps} size="large" {...otherProps} />
-                <TimePickerNext value={timeValue} visible {...disabledProps} {...otherProps} />
-                <TimePickerNext value={timeValue} visible {...disabledProps} size="small" {...otherProps} />
+                <TimePicker2 value={timeValue} visible {...disabledProps} size="large" {...otherProps} />
+                <TimePicker2 value={timeValue} visible {...disabledProps} {...otherProps} />
+                <TimePicker2 value={timeValue} visible {...disabledProps} size="small" {...otherProps} />
             </DemoGroup>
 
             <DemoGroup label={locale.label}>
@@ -100,15 +100,15 @@ class FunctionDemo extends React.Component {
             </DemoGroup>
 
             <DemoGroup label={locale.selected}>
-                <TimePickerNext visible={false} value={timeValue} size="large" {...otherProps} />
-                <TimePickerNext visible={false} value={timeValue} {...otherProps} />
-                <TimePickerNext visible={false} value={timeValue} size="small" {...otherProps} />
+                <TimePicker2 visible={false} value={timeValue} size="large" {...otherProps} />
+                <TimePicker2 visible={false} value={timeValue} {...otherProps} />
+                <TimePicker2 visible={false} value={timeValue} size="small" {...otherProps} />
             </DemoGroup>
 
             <DemoGroup label={locale.disabled}>
-                <TimePickerNext value={timeValue} disabled size="large" {...otherProps} />
-                <TimePickerNext value={timeValue} disabled {...otherProps} />
-                <TimePickerNext value={timeValue} disabled size="small" {...otherProps} />
+                <TimePicker2 value={timeValue} disabled size="large" {...otherProps} />
+                <TimePicker2 value={timeValue} disabled {...otherProps} />
+                <TimePicker2 value={timeValue} disabled size="small" {...otherProps} />
             </DemoGroup>
         </Demo>);
     }

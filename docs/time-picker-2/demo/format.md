@@ -16,13 +16,13 @@ You can control the time format by `format`, it will also effect the display of 
 ---
 
 ````jsx
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <TimePickerNext format="HH" />
+    <TimePicker2 format="HH" />
     <p>Hide seconds</p>
-    <TimePickerNext format="HH:mm" />
+    <TimePicker2 format="HH:mm" />
     <p>Hide hours</p>
-    <TimePickerNext format="mm:ss" />
+    <TimePicker2 format="mm:ss" />
 </div>, mountNode);
 ````

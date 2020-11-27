@@ -16,7 +16,7 @@ Render time menu by `renderTimeMenuItems`.
 ---
 
 ````jsx
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 
 const renderTimeMenuItems = (list) => {
     return list.map(({ label, value }) => {
@@ -27,5 +27,5 @@ const renderTimeMenuItems = (list) => {
     });
 };
 
-ReactDOM.render(<TimePickerNext renderTimeMenuItems={renderTimeMenuItems} />, mountNode);
+ReactDOM.render(<TimePicker2 renderTimeMenuItems={renderTimeMenuItems} />, mountNode);
 ````

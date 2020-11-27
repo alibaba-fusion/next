@@ -16,7 +16,7 @@ Setting time interval by `hourStep`, `minuteStep`, `secondStep`.
 ---
 
 ````jsx
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 
-ReactDOM.render(<TimePickerNext onChange={(val) => console.log(val.format('HH:mm:ss'))} hourStep={2} minuteStep={5} secondStep={5} />, mountNode);
+ReactDOM.render(<TimePicker2 onChange={(val) => console.log(val.format('HH:mm:ss'))} hourStep={2} minuteStep={5} secondStep={5} />, mountNode);
 ````

@@ -16,10 +16,10 @@ Creating controlled TimePikcer by `value` and `onChange`.
 ---
 
 ````jsx
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 import moment from 'moment';
 
-class ControlledTimePickerNext extends React.Component {
+class ControlledTimePicker2 extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -33,9 +33,9 @@ class ControlledTimePickerNext extends React.Component {
     }
 
     render() {
-        return <TimePickerNext value={this.state.value} onChange={this.onSelect} />;
+        return <TimePicker2 value={this.state.value} onChange={this.onSelect} />;
     }
 }
 
-ReactDOM.render(<ControlledTimePickerNext onChange={(val) => console.log(val.format('HH:mm:ss'))} />, mountNode);
+ReactDOM.render(<ControlledTimePicker2 onChange={(val) => console.log(val.format('HH:mm:ss'))} />, mountNode);
 ````

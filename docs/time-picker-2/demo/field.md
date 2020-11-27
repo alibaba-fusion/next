@@ -9,14 +9,14 @@
 
 - order: 6
 
-Use TimePickerNext with Field.
+Use TimePicker2 with Field.
 
 :::
 
 ---
 
 ````jsx
-import { TimePickerNext, Field, Button } from '@alifd/next';
+import { TimePicker2, Field, Button } from '@alifd/next';
 import moment from 'moment';
 
 class Demo extends React.Component {
@@ -38,7 +38,7 @@ class Demo extends React.Component {
         });
 
         return (<div>
-            <TimePickerNext {...props} /> <br /><br />
+            <TimePicker2 {...props} /> <br /><br />
             <Button onClick={this.onClick}>Print Value in Console</Button>
         </div>);
     }

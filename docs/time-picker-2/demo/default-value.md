@@ -16,13 +16,13 @@ Setting default value by passing `defaultValue`.
 ---
 
 ````jsx
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 import moment from 'moment';
 
 const defaultVal = moment('12:00:00', 'HH:mm:ss', true);
 
 ReactDOM.render(<div>
-    <TimePickerNext defaultValue={defaultVal} onChange={(val) => console.log(val)} /><br /><br />
-    <TimePickerNext defaultValue="12:00:00" onChange={(val) => console.log(val)} />
+    <TimePicker2 defaultValue={defaultVal} onChange={(val) => console.log(val)} /><br /><br />
+    <TimePicker2 defaultValue="12:00:00" onChange={(val) => console.log(val)} />
 </div>, mountNode);
 ````

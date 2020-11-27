@@ -1,10 +1,10 @@
 import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
-import { TimePickerNext } from '@alifd/next';
+import { TimePicker2 } from '@alifd/next';
 import moment from 'moment';
 
 export default {
-    name: 'TimePickerNext',
+    name: 'TimePicker2',
     editor: () => ({
         props: [{
             name: 'size',
@@ -64,7 +64,7 @@ export default {
         }
 
         return (
-            <TimePickerNext
+            <TimePicker2
                 {...others}
                 size={size}
                 style={{ width, ...style }}
