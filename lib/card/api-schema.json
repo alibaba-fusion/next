@@ -1,0 +1,253 @@
+{
+  "name": "Card",
+  "props": {
+    "media": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "卡片的上的图片 / 视频",
+      "docblock": "卡片的上的图片 / 视频"
+    },
+    "title": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "卡片的标题",
+      "docblock": "卡片的标题"
+    },
+    "subTitle": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "卡片的副标题",
+      "docblock": "卡片的副标题"
+    },
+    "actions": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "卡片操作组，位置在卡片底部",
+      "docblock": "卡片操作组，位置在卡片底部"
+    },
+    "showTitleBullet": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示标题的项目符号",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示标题的项目符号"
+    },
+    "showHeadDivider": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否展示头部的分隔线",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否展示头部的分隔线"
+    },
+    "contentHeight": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "内容区域的固定高度",
+      "defaultValue": {
+        "value": "120",
+        "computed": false
+      },
+      "docblock": "内容区域的固定高度"
+    },
+    "extra": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "标题区域的用户自定义内容",
+      "docblock": "标题区域的用户自定义内容"
+    },
+    "free": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启自由模式，开启后card 将使用子组件配合使用, 设置此项后 title, subtitle, 等等属性都将失效",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否开启自由模式，开启后card 将使用子组件配合使用, 设置此项后 title, subtitle, 等等属性都将失效"
+    }
+  },
+  "methods": [],
+  "order": 0,
+  "subComponents": [
+    {
+      "name": "Media",
+      "props": {
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        },
+        "image": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "背景图片地址",
+          "docblock": "背景图片地址"
+        },
+        "src": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "媒体源文件地址",
+          "docblock": "媒体源文件地址"
+        }
+      },
+      "methods": [],
+      "order": 1
+    },
+    {
+      "name": "Header",
+      "props": {
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "卡片的标题",
+          "docblock": "卡片的标题"
+        },
+        "subTitle": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "卡片的副标题",
+          "docblock": "卡片的副标题"
+        },
+        "extra": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标题区域的用户自定义内容",
+          "docblock": "标题区域的用户自定义内容"
+        },
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        }
+      },
+      "methods": [],
+      "order": 2
+    },
+    {
+      "name": "Content",
+      "props": {
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        }
+      },
+      "methods": [],
+      "order": 3
+    },
+    {
+      "name": "Divider",
+      "props": {
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'hr'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        },
+        "inset": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "分割线是否向内缩进",
+          "docblock": "分割线是否向内缩进"
+        }
+      },
+      "methods": [],
+      "order": 4
+    },
+    {
+      "name": "Actions",
+      "props": {
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'div'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        }
+      },
+      "methods": [],
+      "order": 5
+    }
+  ]
+}
