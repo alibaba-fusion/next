@@ -6,17 +6,6 @@
         border-bottom: $line-1 $line-solid $time-picker-panel-border-color;
     }
 
-    &-selected-box {
-        position: absolute;
-        top: 0;//$time-picker-menu-item-height * 3;
-        left: 1.5 * $s-1;
-        z-index: 1;
-        width: $time-picker-panel-width - $s-3;
-        height: $time-picker-menu-item-height;
-        // border-top: $line-1 $line-solid $time-picker-menu-selected-box-color;
-        border-bottom: $line-1 $line-solid $time-picker-menu-selected-box-color;
-    }
-
     &-input.#{$css-prefix}input {
         width: 100%;
         padding: 6px;
