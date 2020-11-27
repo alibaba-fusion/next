@@ -4,7 +4,7 @@ const _ = require('lodash');
 const loaderUtils = require('loader-utils');
 const createDocParser = require('@alifd/doc-parser');
 const { marked, logger } = require('../../../utils');
-const { getGlobalControl, getDemoOp, getDemoRenderScript } = require('./render-creator');
+const { getDemoOp, getDemoRenderScript } = require('./render-creator');
 
 const selectorPath = require.resolve('./selector');
 const cwd = process.cwd();
@@ -58,7 +58,7 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
             ret = `
                 ${ret}
                 ${result.css ? getCSSRequireString(path.resolve(demoPath), context) : ''}
-                ${processDemoJS(result.js, result.css, result.body, demoPath, dir, resourcePath)}`;
+                ${processDemoJS(result.js, result.css, result.body, demoPath, resourcePath)}`;
             return ret;
         }, '')
         .split('\n')
@@ -75,7 +75,7 @@ function getDemos(demoPaths, lang, dir, context, resourcePath) {
 
 // TODO add react-axe
 // eslint-disable-next-line max-params
-function processDemoJS(js, css, body, demoPath, dir, resourcePath) {
+function processDemoJS(js, css, body, demoPath, resourcePath) {
     if (!js) {
         return '';
     }
@@ -104,7 +104,7 @@ ${css.replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}')}
 \`\`\``
         : '';
 
-    js = fixImport(js, resourcePath, dir);
+    js = fixImport(js, resourcePath);
     const importJs = js
         .split('\n')
         .filter(line => /import/.test(line))
@@ -123,7 +123,6 @@ ${css.replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}')}
 
 // HOT RELOAD CODE
 window.demoNames.push('${name}');
-${getGlobalControl()}
 ${getDemoOp(name)}
 ${importJs}
 ${getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs)}

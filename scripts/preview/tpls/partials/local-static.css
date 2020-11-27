@@ -1,14 +1,13 @@
 /* TODO 删除 */
 
 html {
-    margin-left: max(calc((100% - 1200px)/2), 0px);
 }
 
 body {
     max-width: 1200px;
     min-width: 784px;
-    /* TODO 删除 */
-    margin-left: 40px;
+    width: max(calc(100% - 112px), 784px);
+    margin: 56px auto;
     font-size: 14px!important;
 }
 
@@ -43,23 +42,24 @@ body {
 }
 
 .markdown h2 {
-    margin: 57px 0 16px 0;
+    margin: 56px 0 16px 0;
     font-size: 24px;
     min-height: 28px;
+    line-height: 28px;
 }
 
 .markdown h3 {
-    margin: 24px 0 8px 0;
+    margin: 24px 0 12px 0;
     font-size: 16px;
-    min-height: 19px;
-    line-height: 19px;
+    min-height: 22px;
+    line-height: 22px;
 }
 
 .markdown h4 {
-    margin: 12px 0 4px 0;
+    margin: 12px 0 8px 0;
     font-size: 14px;
-    min-height: 16px;
-    line-height: 16px;
+    min-height: 20px;
+    line-height: 20px;
 }
 
 .markdown .header-anchor {
@@ -241,14 +241,22 @@ code {
 
 .demo-index {
     position: fixed;
-    top: 96px;
-    /* TODO 恢复 */
-    /* right: 0; */
+    top: 56px;
     right: max(calc((100% - 1200px)/2), 0px);
     width: 168px;
     max-height: calc(100vh - 200px);
     min-height: 150px;
     overflow: auto;
+}
+
+@media screen and (max-width:1064px){
+    .demo-index {
+        display: none;
+    }
+}
+
+.demo-item-desc-body:empty {
+    display: none;
 }
 
 .demo-index-list {
@@ -264,6 +272,7 @@ code {
     font-family: Roboto-Regular;
     color: #666666;
     letter-spacing: 0;
+    min-height: 28px;
 }
 
 .demo-index-list .demo-index-item a {
@@ -275,6 +284,7 @@ code {
     text-decoration: none;
     font-family: Roboto-Regular;
     font-size: 12px;
+    min-height: 28px;
 }
 
 .demo-index-list .demo-index-item.demo-index-item-sub {
@@ -306,6 +316,7 @@ code {
     letter-spacing: 0;
     line-height: 1.5;
     font-weight: 900;
+    min-height: 28px;
 }
 
 .demo-index-list .demo-index-item.active a {
@@ -314,7 +325,8 @@ code {
     color: #222222;
     letter-spacing: 0;
     line-height: 1.5;
-    text-decoration: none
+    text-decoration: none;
+    min-height: 28px;
 }
 
 .demo-title {
@@ -343,23 +355,6 @@ code {
 .demo-list-item-code .demo-code-previews .demo-code-preview-item {
     display: inline-block;
     margin-left: 5px
-}
-
-.demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-btn {
-    border: 0;
-    cursor: pointer;
-    border-radius: 20px;
-    padding: 0 8px;
-    height: 20px;
-    font-size: 12px;
-    color: #fff;
-    background-color: rgba(16, 142, 233, .7);
-    transition: background-color .5s
-}
-
-.demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-btn:focus, .demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-btn:hover {
-    background-color: #108ee9;
-    outline: 0
 }
 
 .demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-paltform-icon {
@@ -440,27 +435,27 @@ html::-webkit-scrollbar {
 
 /* markdown table */
 
-li p.first {
+.markdown table li p.first {
     display: inline-block;
 }
 
-ul, ol {
+.markdown table ul, ol {
     padding-left: 30px;
 }
 
-ul :first-child, ol :first-child {
+.markdown table ul :first-child, ol :first-child {
     margin-top: 0;
 }
 
-ul :last-child, ol :last-child {
+.markdown table ul :last-child, ol :last-child {
     margin-bottom: 0;
 }
 
-dl {
+.markdown table dl {
     padding: 0;
 }
 
-dl dt {
+.markdown table dl dt {
     font-size: 14px;
     font-weight: bold;
     font-style: italic;
@@ -468,41 +463,41 @@ dl dt {
     margin: 15px 0 5px;
 }
 
-dl dt:first-child {
+.markdown table dl dt:first-child {
     padding: 0;
 }
 
-dl dt> :first-child {
+.markdown table dl dt> :first-child {
     margin-top: 0;
 }
 
-dl dt> :last-child {
+.markdown table dl dt> :last-child {
     margin-bottom: 0;
 }
 
-dl dd {
+.markdown table dl dd {
     margin: 0 0 15px;
     padding: 0 15px;
 }
 
-dl dd> :first-child {
+.markdown table dl dd> :first-child {
     margin-top: 0;
 }
 
-dl dd> :last-child {
+.markdown table dl dd> :last-child {
     margin-bottom: 0;
 }
 
-blockquote {
+.markdown table blockquote {
     padding: 0 15px;
     color: #777777;
 }
 
-blockquote> :first-child {
+.markdown table blockquote> :first-child {
     margin-top: 0;
 }
 
-blockquote> :last-child {
+.markdown table blockquote> :last-child {
     margin-bottom: 0;
 }
 
@@ -525,7 +520,7 @@ blockquote> :last-child {
 }
 
 .markdown table tbody tr:hover {
-    background-color: #f8f8f8;
+    background-color: #f9f9f9;
 }
 
 .markdown table tr th {
@@ -755,7 +750,7 @@ blockquote> :last-child {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: flex-end;
-    padding: 12px;
+    padding: 11px 12px 12px 12px;
     opacity: .7;
     -webkit-transition: opacity .3s;
     transition: opacity .3s;
@@ -806,4 +801,31 @@ blockquote> :last-child {
     -webkit-transition: all .24s;
     transition: all .24s;
     margin: 8px;
+    left: -3px;
+    top: -4px;
+}
+
+.preview-btn {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+#demo-guide + h2 {
+    margin-top: 0;
+}
+
+.markdown h2+h3 {
+    margin-top: 0;
+}
+.markdown h3+table tr th {
+    padding: 4px 0 10px 0;
+}
+
+.markdown table+h3 {
+    margin: 41px 0 8px 0;
 }

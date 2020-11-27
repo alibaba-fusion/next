@@ -2,6 +2,7 @@
 
 <script>
     window.react = window.React;
+    window['react-live'] = window.ReactLive;
     window['react-dom'] = window.ReactDOM;
     window['prop-types'] = window.PropTypes;
     window['react-dnd'] = window.ReactDnD;
@@ -215,7 +216,6 @@
         <span id="global-control" class="all-demo-box-controls">
         </span>
         <ul class="demo-index-list">
-            <li class="demo-index-item active" data-id="demo-guide"><a href="#demo-guide"><%= comp.name %></a></li>
             <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
             <% for(let i = 0; i<demosDoc.length; ++i){%>
             <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].name%>-container"
@@ -227,6 +227,7 @@
             <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
         </ul>
     </div>
+
     <div class="demo-head" >
         <div id="demo-area" class="next-demo-section">
             <div id="md-area-former" class="markdown-body markdown">
@@ -254,12 +255,15 @@
                             # 
                         </a>
                     </h3>
-                    <div class="demo-item-desc-body markdown"><%-demosDoc[i].desc%></div>
+                    <%if(demosDoc[i].desc.replace(/[\r\n\s]/g,"")){%>
+                        <div class="demo-item-desc-body markdown"><%-demosDoc[i].desc%></div>
+                    <% } %>
                 </div>
                 <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'>
                 </div>
                 <div id="<%=demosDoc[i].name%>-body" class='next-demo-body' style="display: none">
                 </div>
+                <!-- 线上增加 style标签放个组件style -->
             </div>
             <%}%>
 
