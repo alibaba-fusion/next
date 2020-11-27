@@ -6,7 +6,7 @@
 
 
 :::lang=en-us
-# Read-only Mode
+# Preview Mode
 
 - order: 5
 
