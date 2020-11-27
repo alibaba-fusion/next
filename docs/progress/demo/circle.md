@@ -20,7 +20,6 @@ import { Progress, Icon } from '@alifd/next';
 
 ReactDOM.render(<div>
     <Progress percent={30} shape="circle" /> &nbsp;&nbsp;
-    <Progress percent={50} shape="circle" /> &nbsp;&nbsp;
     <Progress percent={80} shape="circle" textRender={() => ''}/>&nbsp;&nbsp;
     <Progress percent={100} shape="circle" textRender={() => <Icon type="select" size="xl" />} />
 </div>, mountNode);

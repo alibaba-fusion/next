@@ -19,12 +19,13 @@ Change the size of progress.
 import { Progress } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Progress percent={30} size="small" />
-    <Progress percent={50} size="medium" />
-    <Progress percent={90} size="large" />
-    <br />
     <Progress percent={30} size="small" shape="circle" /> &nbsp;&nbsp;
     <Progress percent={50} size="medium" shape="circle" /> &nbsp;&nbsp;
     <Progress percent={90} size="large" shape="circle" />
+    <br />
+    <Progress percent={30} size="small" />
+    <Progress percent={50} size="medium" />
+    <Progress percent={90} size="large" />
+
 </div>, mountNode);
 ````
