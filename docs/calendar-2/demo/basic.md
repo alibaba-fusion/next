@@ -17,7 +17,7 @@ A basic fullscreen calendar.
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 
 function onDateChange(value) {
@@ -26,7 +26,7 @@ function onDateChange(value) {
 
 ReactDOM.render(
     <div>
-        <CalendarNext onSelect={onDateChange} defaultValue={moment().add(1, 'days')} />
+        <Calendar2 onSelect={onDateChange} defaultValue={moment().add(1, 'days')} />
     </div>,
     mountNode
 );

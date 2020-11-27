@@ -172,7 +172,7 @@ class Picker extends React.Component {
             visible: false,
             inputValue: this.getInputValue(value),
             inputType: null,
-            hasFinished: false,
+            justBeginInput: true,
         };
 
         bindCtx(this, [
@@ -277,7 +277,7 @@ class Picker extends React.Component {
         if (visible !== this.state.visible) {
             this.setState({
                 visible,
-                hasFinished: false,
+                justBeginInput: true,
             });
             func.call(this.props, 'onVisibleChange', [visible]);
         }
@@ -295,7 +295,7 @@ class Picker extends React.Component {
      * - 判断触发onChange事件
      */
     handleChange(v) {
-        const { value, showOk, isRange, hasFinished, inputType } = this.state;
+        const { value, showOk, isRange, justBeginInput, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
 
         v = this.checkAndRectify(v, value);
@@ -305,7 +305,7 @@ class Picker extends React.Component {
             inputValue: this.getInputValue(v),
         });
 
-        if (isRange && !hasFinished) {
+        if (isRange && justBeginInput) {
             this.handleInputFocus(inputType === BEGIN ? END : BEGIN);
         } else if (!showOk) {
             this.onChange(v);
@@ -330,11 +330,9 @@ class Picker extends React.Component {
         const { inputType, visible } = this.state;
 
         if (v !== inputType) {
-            const hasFinished = inputType !== null && visible;
-
             this.setState({
                 inputType: v,
-                hasFinished,
+                justBeginInput: !(inputType !== null && visible),
             });
         }
     }
@@ -386,7 +384,7 @@ class Picker extends React.Component {
             type,
             format,
         } = this.props;
-        const { isRange, inputType } = this.state;
+        const { isRange, inputType, justBeginInput } = this.state;
 
         const visible = this.getFromPropOrState('visible');
 
@@ -402,6 +400,7 @@ class Picker extends React.Component {
             rtl,
             prefix,
             locale,
+            onChange: handleChange,
         };
 
         // 渲染触发层
@@ -413,7 +412,6 @@ class Picker extends React.Component {
                 value={inputValue}
                 inputType={inputType}
                 readOnly={inputReadOnly}
-                onChange={handleChange}
                 onInput={onDateInput}
                 onClick={onClick}
                 ref={el => (this.dateInput = el)}
@@ -427,12 +425,18 @@ class Picker extends React.Component {
             mode,
             value,
             showTime,
-            onChange: handleChange,
             ...sharedProps,
         };
 
         const DateNode = this.state.isRange
-            ? renderNode('dateNode', <RangePanel inputType={inputType} {...sharedDateProps} />)
+            ? renderNode(
+                  'dateNode',
+                  <RangePanel
+                      justBeginInput={justBeginInput}
+                      inputType={inputType}
+                      {...sharedDateProps}
+                  />
+              )
             : renderNode('rangeNode', <DatePanel {...sharedDateProps} />);
 
         // 底部

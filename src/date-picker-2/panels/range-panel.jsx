@@ -6,8 +6,8 @@ import SharedPT from '../prop-types';
 import { func, datejs } from '../../util';
 
 import { DATE_INPUT_TYPE } from '../constant';
-import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-next/constant';
-import Calendar from '../../calendar-next';
+import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-2/constant';
+import Calendar from '../../calendar-2';
 
 const { bindCtx } = func;
 
@@ -31,10 +31,12 @@ class DatePanel extends React.Component {
         showTime: PT.bool,
         handleCellState: PT.func,
         disabledDate: PT.func,
+        justBeginInput: PT.bool,
     };
     static defaultProps = {
         showTime: false,
         disabledDate: () => false,
+        justBeginInput: true,
     };
 
     constructor(props) {
@@ -142,7 +144,6 @@ class DatePanel extends React.Component {
     }
 
     handleMouseEnter(value) {
-        console.log(value);
         this.currentRaf && window.cancelAnimationFrame(this.currentRaf);
         this.currentRaf = window.requestAnimationFrame(() => {
             this.setState({
@@ -183,14 +184,15 @@ class DatePanel extends React.Component {
         hoverValue[this.props.inputType] = this.state.curHoverValue;
 
         const hoverState = this.handleCellState(value, hoverValue);
+        const prefixCls = `${this.props.prefix}calendar-cell`;
 
         return {
-            'calendar-cell-selected': state >= SELECTED,
-            'calendar-cell-range-begin': state === SELECTED_BEGIN,
-            'calendar-cell-range-end': state === SELECTED_END,
-            'calendar-cell-hover': hoverState >= SELECTED,
-            'calendar-cell-hover-begin': hoverState === SELECTED_BEGIN,
-            'calendar-cell-hover-end': hoverState === SELECTED_END,
+            [`${prefixCls}-selected`]: state >= SELECTED,
+            [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
+            [`${prefixCls}-range-end`]: state === SELECTED_END,
+            [`${prefixCls}-hover`]: hoverState >= SELECTED,
+            [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
+            [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
         };
     }
 
@@ -203,15 +205,27 @@ class DatePanel extends React.Component {
             handleMouseEnter,
             handleMouseLeave,
         } = this;
-        const { value, mode } = this.props;
+        const { value, mode, justBeginInput, prefix } = this.props;
         const ranges = this.getRanges();
 
         // 切换面板mode
         const hasModeChanged = this.state.mode !== this.props.mode;
 
         const calendarProps = idx => {
-            let rangeProps;
+            const sharedProps = {
+                panelMode: mode,
+                shape: 'panel',
+                value: value[idx],
+                panelValue: ranges[idx],
+                onPanelChange: (v, m) => handlePanelChange(v, m, idx),
+            };
 
+            if (!justBeginInput) {
+                sharedProps.disabledDate = disabledDate;
+            }
+
+            let rangeProps;
+            console.log('hasModeChanged', hasModeChanged);
             if (!hasModeChanged) {
                 rangeProps = {
                     onChange,
@@ -224,12 +238,7 @@ class DatePanel extends React.Component {
             }
 
             return {
-                panelMode: mode,
-                shape: 'panel',
-                value: value[idx],
-                panelValue: ranges[idx],
-                disabledDate,
-                onPanelChange: (v, m) => handlePanelChange(v, m, idx),
+                ...sharedProps,
                 ...rangeProps,
             };
         };
@@ -240,7 +249,7 @@ class DatePanel extends React.Component {
         ].map((key, idx) => <Calendar key={key} {...calendarProps(idx)} />);
 
         return (
-            <div style={{ display: 'flex' }}>
+            <div className={`${prefix}range-picker-panel`}>
                 {this.state.mode === this.props.mode
                     ? calendarNodes
                     : calendarNodes[this.state.calendarIdx]}

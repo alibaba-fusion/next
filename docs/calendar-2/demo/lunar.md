@@ -17,7 +17,7 @@ A Lunar calendar.
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 import solarLunar from 'solarlunar';
 
@@ -39,7 +39,7 @@ function dateCellRender(value) {
 
 ReactDOM.render(
     <div>
-        <CalendarNext
+        <Calendar2
             onSelect={onDateChange}
             dateCellRender={dateCellRender}
             defaultValue={moment().add(1, 'days')}

@@ -17,7 +17,7 @@ Render custom contents in `dateCellRender` and `monthCellRender`.
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 
 const currentDate = moment();
@@ -83,7 +83,7 @@ function monthCellRender(date) {
 }
 
 ReactDOM.render(
-    <CalendarNext dateCellRender={dateCellRender} monthCellRender={monthCellRender} />,
+    <Calendar2 dateCellRender={dateCellRender} monthCellRender={monthCellRender} />,
     mountNode
 );
 ```

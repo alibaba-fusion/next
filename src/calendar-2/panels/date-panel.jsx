@@ -97,7 +97,7 @@ class DatePanel extends React.Component {
      */
     renderCellContent(cellData) {
         const { props } = this;
-        const { mode, hoveredState, dateCellClassName, dateCellProps } = props;
+        const { mode, hoveredState, dateCellClassName } = props;
         const { hoverValue } = this.state;
 
         const cellContent = [];
@@ -138,8 +138,8 @@ class DatePanel extends React.Component {
                     onEvents = {
                         onClick: e => this.handleSelect(value, e),
                         onKeyDown: e => this.handleKeyDown(value, e),
-                        // onMouseEnter: e => this.handleMouseEnter(value, e),
-                        // onMouseLeave: e => this.handleMouseLeave(value, e),
+                        onMouseEnter: e => this.handleMouseEnter(value, e),
+                        onMouseLeave: e => this.handleMouseLeave(value, e),
                     };
                 }
 

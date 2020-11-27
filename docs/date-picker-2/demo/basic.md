@@ -18,7 +18,7 @@ A basic usage case.
 
 ```jsx
 import { useState } from 'react';
-import { DatePickerNext, Switch } from '@alifd/next';
+import { DatePicker2, Switch } from '@alifd/next';
 
 function App() {
     const [mode, setMode] = useState('date');
@@ -32,7 +32,7 @@ function App() {
             mode：
             <Switch size="small" onChange={onChange} />
             <div>
-                <DatePickerNext
+                <DatePicker2
                     // showTime
                     // visible
                     // preset={[{ name: 'now', label: '此刻', value: Date.now(), type: 'secondary' }]}
@@ -41,7 +41,7 @@ function App() {
                 />
             </div>
             <div>
-                <DatePickerNext
+                <DatePicker2
                     // showTime
                     // visible
                     // preset={[{ name: 'now', label: '此刻', value: Date.now(), type: 'secondary' }]}

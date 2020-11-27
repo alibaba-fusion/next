@@ -17,7 +17,7 @@ Change default visible month by `defaultPanelValue`.
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 
 function onSelect(value) {
@@ -29,7 +29,7 @@ function onPanelChange(value, reason) {
 }
 
 ReactDOM.render(
-    <CalendarNext
+    <Calendar2
         onSelect={onSelect}
         defaultPanelValue={moment('2018-01', 'YYYY-MM', true)}
         onPanelChange={onPanelChange}

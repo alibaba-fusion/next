@@ -17,12 +17,12 @@ A calendar panel is usually used for embedding in a popup container.
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 
 ReactDOM.render(
     <div className="wrapped-calendar ">
-        <CalendarNext shape="panel" value={moment().add(1, 'days')} />
+        <Calendar2 shape="panel" value={moment().add(1, 'days')} />
     </div>,
     mountNode
 );

@@ -3,7 +3,7 @@
 // @import "../input/scss/mixin.scss";
 @import "../time-picker/scss/variable.scss";
 
-@import "../calendar-next/scss/variable.scss";
+@import "../calendar-2/scss/variable.scss";
 @import "../input/scss/variable.scss";
 @import "../input/scss/mixin.scss";
 
@@ -32,6 +32,7 @@
         }
 
         &-input {
+            outline: none;
             height: 28px;
             box-sizing: border-box;
             #{$input-prefix} {
@@ -51,10 +52,39 @@
             @include input-border-radius($form-element-small-corner);
         }
     }
+
     &range-picker {
         &-input-separator {
             color: #c4c7cc;
             font-size: 12px;
+        }
+    }
+
+    &range-picker-panel {
+        display: inline-flex;
+
+        #{$calendar-prefix} {
+            &-panel {
+                #{$calendar-prefix} {
+                    &-cell-inner {
+                        &#{$calendar-prefix}-cell-selected {
+                            color: inherit;
+                            background: #e6fdff;
+
+                            &.next-calendar-cell-range-begin,
+                            &#{$calendar-prefix}-cell-range-begin,
+                            &#{$calendar-prefix}-cell-range-end {
+                                color: #fff;
+                                background: #03c1fd;
+                            }
+                        }
+
+                        &#{$calendar-prefix}-cell-hover {
+                            border: 1px dashed #03c1fd;
+                        }
+                    }
+                }
+            }
         }
     }
 }

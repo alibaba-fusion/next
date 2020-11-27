@@ -17,7 +17,7 @@ A card calendar is usually used for embedding in a container with limiting width
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 
 function onDateChange(value) {
     console.log(value);
@@ -25,7 +25,7 @@ function onDateChange(value) {
 
 ReactDOM.render(
     <div className="wrapped-calendar">
-        <CalendarNext onSelect={onDateChange} shape="card" />
+        <Calendar2 onSelect={onDateChange} shape="card" />
     </div>,
     mountNode
 );

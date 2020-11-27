@@ -5,7 +5,7 @@ import SharedPT from '../prop-types';
 
 import { func } from '../../util';
 import { call } from '../util';
-import Calendar from '../../calendar-next';
+import Calendar from '../../calendar-2';
 
 const { bindCtx } = func;
 
@@ -22,7 +22,6 @@ class DatePanel extends React.Component {
     }
 
     onChange(v) {
-        console.log('DatePanel', v);
         call(this.props, 'onChange', v);
     }
 

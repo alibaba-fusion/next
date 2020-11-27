@@ -17,7 +17,7 @@ Disable specific dates by `disabledDate`.
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 
 const currentDate = moment();
@@ -27,7 +27,7 @@ const disabledDate = function(date) {
 
 ReactDOM.render(
     <div className="wrapped-calendar">
-        <CalendarNext disabledDate={disabledDate} shape="card" />
+        <Calendar2 disabledDate={disabledDate} shape="card" />
     </div>,
     mountNode
 );

@@ -17,11 +17,11 @@ Locale of date values come from `moment`, setting to dispaly Chinese with `momen
 ---
 
 ```jsx
-import { CalendarNext } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import moment from 'moment';
 
 // Setting moment locale to Chinese
 moment.locale('zh-cn');
 
-ReactDOM.render(<CalendarNext />, mountNode);
+ReactDOM.render(<Calendar2 />, mountNode);
 ```

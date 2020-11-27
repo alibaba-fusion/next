@@ -19,14 +19,31 @@
         table-layout: fixed;
     }
 
+    &-cell {
+        position: relative;
+    }
+    &-cell::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        height: 24px;
+        transform: translateY(-50%);
+    }
+
     &-cell-inner {
+        position: relative;
+        z-index: 2;
         color: rgba(0, 0, 0, 0.25);
         outline: none;
         cursor: pointer;
+        border: 1px solid transparent;
     }
 
     &-cell-current {
-        color: rgba(0, 0, 0, 0.85);
+        color: #585d66;
 
         &:hover {
             background: #edeff2;

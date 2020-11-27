@@ -196,6 +196,7 @@ class DateInput extends React.Component {
                         ref={setInputRef}
                         value={value}
                         hint="calendar"
+                        onFocus={onFocus}
                     />
                 )}
             </div>
