@@ -2,11 +2,13 @@
 @mixin nav-border-fix-rtl($border-width) {
     &.#{$css-prefix}ver {
         &.#{$css-prefix}left #{$nav-prefix}-item:before {
+            right: 0;
             right: calc(0px - #{$border-width});
             left: auto;
         }
 
         &.#{$css-prefix}right #{$nav-prefix}-item:before {
+            left: 0;
             left: calc(0px - #{$border-width});
             right: auto;
         }
