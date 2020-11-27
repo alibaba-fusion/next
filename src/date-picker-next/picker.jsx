@@ -1,56 +1,160 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
+import classnames from 'classnames';
 import * as PT from 'prop-types';
-import SharedPT from './shared-prop-types';
 
+import SharedPT from './prop-types';
+import defaultLocale from '../locale/zh-cn';
 import { func, datejs } from '../util';
-import { getFromPropOrState, isFunction } from './util';
+import { getFromPropOrState } from './util';
+import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
-import { DATE_PICKER_TYPE, DATE_INPUT_TYPE } from './constant';
-import { CALENDAR_MODE } from '../calendar-next/constant';
 import { Popup } from '../overlay';
 import DateInput from './panels/date-input';
 import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
-const { bindCtx } = func;
-
-function isEqual(v1, v2) {
-    const _equal = (a, b) => a === b || datejs(a).valueOf() === datejs(b).valueOf();
-
-    if (Array.isArray(v1)) {
-        return Array.isArray(v2) && v1.every((v, index) => _equal(v, v2[index]));
-    } else {
-        return _equal(v1, v2);
-    }
-}
+const { bindCtx, isFunction } = func;
 
 class Picker extends React.Component {
     static propTypes = {
-        value: SharedPT.value,
-        mode: PT.any,
-        defaultValue: SharedPT.value,
+        prefix: PT.string,
+        rtl: PT.bool,
+        locale: PT.object,
+        mode: SharedPT.mode,
         type: SharedPT.type,
-        isRange: PT.bool,
-        format: PT.oneOfType([PT.string, PT.func]),
         inputReadOnly: PT.bool,
-        visible: PT.bool,
         trigger: PT.oneOfType([PT.func, PT.object]),
-        showTime: PT.bool,
-        showOk: PT.bool,
+        /**
+         * 输入框内置标签
+         */
+        label: PT.node,
+        /**
+         * 输入框状态
+         */
+        state: PT.oneOf(['success', 'loading', 'error']),
+        /**
+         * 输入提示
+         */
+        placeholder: PT.string,
+        /**
+         * 默认展现的月
+         * @return {MomentObject} 返回包含指定月份的 moment 对象实例
+         */
+        defaultVisibleMonth: PT.func,
+        onVisibleMonthChange: PT.func,
+        /**
+         * 日期值（受控）moment 对象
+         */
+        value: SharedPT.value,
+        /**
+         * 初始日期值，moment 对象
+         */
+        defaultValue: SharedPT.value,
+        /**
+         * 日期值的格式（用于限定用户输入和展示）
+         */
+        format: PT.oneOfType([PT.string, PT.func]),
+        /**
+         * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
+         */
+        showTime: PT.oneOfType([PT.object, PT.bool]),
+        /**
+         * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
+         */
+        resetTime: PT.bool,
+        /**
+         * 禁用日期函数
+         * @param {MomentObject} 日期值
+         * @param {String} view 当前视图类型，year: 年， month: 月, date: 日
+         * @return {Boolean} 是否禁用
+         */
+        disabledDate: PT.func,
+        /**
+         * 自定义面板页脚
+         * @return {Node} 自定义的面板页脚组件
+         */
+        footerRender: PT.func,
+        /**
+         * 日期值改变时的回调
+         * @param {MomentObject|String} value 日期值
+         */
+        onChange: PT.func,
+        /**
+         * 点击确认按钮时的回调
+         * @return {MomentObject|String} 日期值
+         */
+        onOk: PT.func,
+        /**
+         * 输入框尺寸
+         */
+        size: PT.oneOf(['small', 'medium', 'large']),
+        /**
+         * 是否禁用
+         */
+        disabled: PT.bool,
+        /**
+         * 是否显示清空按钮
+         */
+        hasClear: PT.bool,
+        /**
+         * 弹层显示状态
+         */
+        visible: PT.bool,
+        /**
+         * 弹层默认是否显示
+         */
+        defaultVisible: PT.bool,
+        /**
+         * 弹层展示状态变化时的回调
+         * @param {Boolean} visible 弹层是否显示
+         */
+        onVisibleChange: PT.func,
+        /**
+         * 弹层其他属性
+         */
+        popupProps: PT.object,
+        /**
+         * 输入框其他属性
+         */
+        inputProps: PT.object,
+        /**
+         * 自定义日期渲染函数
+         * @param {Object} value 日期值（moment对象）
+         * @returns {ReactNode}
+         */
+        dateCellRender: PT.func,
+        /**
+         * 是否为预览态
+         */
+        isPreview: PT.bool,
+        /**
+         * 预览态模式下渲染的内容
+         * @param {MomentObject} value 日期
+         */
+        renderPreview: PT.func,
+        className: PT.string,
+        name: PT.string,
+        popupComponent: PT.elementType,
+        popupContent: PT.node,
+        disableChangeMode: PT.bool,
+        yearRange: PT.arrayOf(PT.number),
     };
 
     static defaultProps = {
-        inputReadOnly: false,
+        prefix: 'next-',
+        rtl: false,
+        locale: defaultLocale.DatePicker,
         type: DATE_PICKER_TYPE.DATE,
+        mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
-        showTime: false,
-        mode: CALENDAR_MODE.DATE,
     };
 
     constructor(props) {
         super(props);
+
+        this.prefixCls = `${props.prefix}picker`;
 
         const value = this.checkAndRectify(
             'value' in props
@@ -68,7 +172,7 @@ class Picker extends React.Component {
             visible: false,
             inputValue: this.getInputValue(value),
             inputType: null,
-            hasChangedInputType: false,
+            hasFinished: false,
         };
 
         bindCtx(this, [
@@ -140,8 +244,6 @@ class Picker extends React.Component {
         return v ? (isFunction(format) ? format(v) : v.format(format)) : '';
     }
 
-    // ---------------> event handle
-
     // 判断弹层是否显示
     handleVisibleChange(visible, type) {
         // 点击非组件内
@@ -175,9 +277,9 @@ class Picker extends React.Component {
         if (visible !== this.state.visible) {
             this.setState({
                 visible,
-                hasChangedInputType: false,
+                hasFinished: false,
             });
-            func.call(this.props, 'onVisibleChange', visible);
+            func.call(this.props, 'onVisibleChange', [visible]);
         }
     }
 
@@ -193,7 +295,7 @@ class Picker extends React.Component {
      * - 判断触发onChange事件
      */
     handleChange(v) {
-        const { value, showOk, isRange, hasChangedInputType, inputType } = this.state;
+        const { value, showOk, isRange, hasFinished, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
 
         v = this.checkAndRectify(v, value);
@@ -203,7 +305,7 @@ class Picker extends React.Component {
             inputValue: this.getInputValue(v),
         });
 
-        if (isRange && !hasChangedInputType) {
+        if (isRange && !hasFinished) {
             this.handleInputFocus(inputType === BEGIN ? END : BEGIN);
         } else if (!showOk) {
             this.onChange(v);
@@ -225,12 +327,14 @@ class Picker extends React.Component {
     }
 
     onInputTypeChange(v) {
-        if (v !== this.state.inputType) {
-            const hasChangedInputType = this.state.inputType !== null && true;
+        const { inputType, visible } = this.state;
+
+        if (v !== inputType) {
+            const hasFinished = inputType !== null && visible;
 
             this.setState({
                 inputType: v,
-                hasChangedInputType,
+                hasFinished,
             });
         }
     }
@@ -259,33 +363,52 @@ class Picker extends React.Component {
 
     render() {
         const {
+            prefixCls,
             checkAndRectify,
             getInputValue,
             handleChange,
-            handleVisibleChange,
             handleMouseDown,
+            handleVisibleChange,
+            onOk,
+            onClick,
             onDateInput,
             onInputTypeChange,
             renderNode,
         } = this;
-        const { props, state, onClick, onOk } = this;
-        const { inputReadOnly, showTime, preset, mode } = props;
-        const { isRange, inputType } = state;
+        const {
+            rtl,
+            prefix,
+            locale,
+            inputReadOnly,
+            showTime,
+            preset,
+            mode,
+            type,
+            format,
+        } = this.props;
+        const { isRange, inputType } = this.state;
 
         const visible = this.getFromPropOrState('visible');
 
-        let { inputValue, value } = state;
+        let { inputValue, value } = this.state;
 
         // value受控模式
-        if ('value' in props) {
-            value = checkAndRectify(props.value);
+        if ('value' in this.props) {
+            value = checkAndRectify(this.props.value);
             inputValue = getInputValue(value);
         }
+
+        const sharedProps = {
+            rtl,
+            prefix,
+            locale,
+        };
 
         // 渲染触发层
         const triggerNode = renderNode(
             'trigger',
             <DateInput
+                format={format}
                 isRange={isRange}
                 value={inputValue}
                 inputType={inputType}
@@ -295,16 +418,19 @@ class Picker extends React.Component {
                 onClick={onClick}
                 ref={el => (this.dateInput = el)}
                 onInputTypeChange={onInputTypeChange}
+                {...sharedProps}
             />
         );
 
         // 渲染弹出层
         const sharedDateProps = {
+            mode,
             value,
             showTime,
-            mode,
             onChange: handleChange,
+            ...sharedProps,
         };
+
         const DateNode = this.state.isRange
             ? renderNode('dateNode', <RangePanel inputType={inputType} {...sharedDateProps} />)
             : renderNode('rangeNode', <DatePanel {...sharedDateProps} />);
@@ -315,6 +441,8 @@ class Picker extends React.Component {
             <FooterPanel onOk={onOk} onChange={handleChange} preset={preset} />
         );
 
+        const className = classnames([`${prefixCls}`, `${prefix}${type}-picker-overlay`]);
+
         return (
             <Popup
                 key="date-picker-popup"
@@ -322,13 +450,10 @@ class Picker extends React.Component {
                 triggerType="click"
                 onVisibleChange={handleVisibleChange}
                 trigger={triggerNode}
-                shouldVisable
+                className={`${prefixCls}-overlay`}
             >
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div
-                    onMouseDown={handleMouseDown}
-                    style={{ resize: 'both', overflow: 'auto', width: '600px' }}
-                >
+                <div className={className} onMouseDown={handleMouseDown}>
                     {DateNode}
                     {footerNode}
                 </div>

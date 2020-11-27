@@ -1,5 +1,5 @@
 import * as PT from 'prop-types';
-import { DATE_PICKER_TYPE, DATE_INPUT_TYPE } from './constant';
+import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 import { datejs } from '../util';
 
 export const error = (propName, ComponentName) =>
@@ -31,6 +31,7 @@ const SharedPT = {
             }
         }
     },
+    mode: PT.oneOf(Object.values(DATE_PICKER_MODE)),
     type: PT.oneOf(Object.values(DATE_PICKER_TYPE)),
     inputType: PT.oneOf(Object.values(DATE_INPUT_TYPE)),
 };

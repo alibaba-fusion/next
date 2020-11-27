@@ -2,7 +2,7 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import { func } from '../../util';
-import { call } from '../util';
+import defaultLocale from '../../locale/zh-cn';
 
 import Button from '../../button';
 
@@ -34,12 +34,11 @@ function normalizePreset(preset) {
     return preset;
 }
 
-function getValue(value) {
-    return isFunction(value) ? value() : value;
-}
-
 class FooterPanel extends React.PureComponent {
     static propTypes = {
+        prefix: PT.string,
+        rtl: PT.bool,
+        locale: PT.object,
         showOk: PT.bool,
         preset: PT.any,
         onOk: PT.func,
@@ -48,10 +47,15 @@ class FooterPanel extends React.PureComponent {
     static defaultProps = {
         showOk: true,
         onOk: noop,
+        prefix: 'next-',
+        rtl: false,
+        locale: defaultLocale.DatePicker,
     };
 
     constructor(props) {
         super(props);
+
+        this.prefixCls = `${props.prefix}date-picker-footer`;
 
         bindCtx(this, ['renderPreset']);
     }
@@ -69,7 +73,9 @@ class FooterPanel extends React.PureComponent {
             return (
                 <Button
                     key={name || index}
-                    onClick={() => call(this.props, 'onChange', getValue(value))}
+                    onClick={() =>
+                        func.call(this.props, 'onChange', [isFunction(value) ? value() : value])
+                    }
                     {...buttonProps}
                 >
                     {label || name}
@@ -79,12 +85,16 @@ class FooterPanel extends React.PureComponent {
     }
 
     render() {
+        const { prefixCls } = this;
+
         return (
-            <div>
+            <div className={prefixCls}>
                 {this.renderPreset()}
-                <Button onClick={this.props.onOk} style={{ float: 'right' }} type="primary">
-                    确认
-                </Button>
+                {/* <div className={`${prefixCls}-actions`}>
+                    <Button onClick={this.props.onOk} type="primary">
+                        {this.props.locale.ok}
+                    </Button>
+                </div> */}
             </div>
         );
     }

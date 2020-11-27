@@ -8,6 +8,7 @@
 #{$calendar-prefix} {
     font-size: 14px;
     user-select: none;
+    background: #fff;
 
     &-header {
         display: flex;
@@ -84,14 +85,14 @@
 
                 &#{$calendar-prefix}-cell-disabled {
                     color: #c4c7cc;
-                    background: #dcdfe6;
+                    background: #f5f7fa;
                 }
             }
 
+            &-table-month,
             &-table-year,
             &-table-quarter,
-            &-table-decade,
-            &-table-century {
+            &-table-decade {
                 #{$calendar-prefix}-cell-inner {
                     min-width: 80px;
                 }

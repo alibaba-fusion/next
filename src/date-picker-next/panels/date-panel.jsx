@@ -1,7 +1,7 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
-import SharedPT from '../shared-prop-types';
+import SharedPT from '../prop-types';
 
 import { func } from '../../util';
 import { call } from '../util';
@@ -11,8 +11,9 @@ const { bindCtx } = func;
 
 class DatePanel extends React.Component {
     static propTypes = {
+        mode: SharedPT.mode,
         value: SharedPT.date,
-        disabled: PT.bool,
+        showTime: PT.bool,
     };
 
     constructor(props) {
@@ -21,14 +22,14 @@ class DatePanel extends React.Component {
     }
 
     onChange(v) {
-        console.log('[DatePanel]');
+        console.log('DatePanel', v);
         call(this.props, 'onChange', v);
     }
 
     render() {
         const { onChange } = this;
-        const { value } = this.props;
-        return <Calendar value={value} shape="panel" onChange={onChange} />;
+        const { value, mode } = this.props;
+        return <Calendar panelMode={mode} value={value} shape="panel" onChange={onChange} />;
     }
 }
 

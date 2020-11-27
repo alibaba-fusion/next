@@ -1,15 +1,16 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
-import { func, datejs } from '../../util';
+import { func, datejs, obj } from '../../util';
 
-import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE } from '../constant';
+import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE, PANEL_CHANGE_REASON } from '../constant';
 import Radio from '../../radio';
 import Select from '../../select';
 import Button from '../../button';
 import Icon from '../../icon';
 
 const { bindCtx, witchCustomRender } = func;
+const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
 class HeaderPanel extends React.PureComponent {
     static propTypes = {
@@ -19,13 +20,18 @@ class HeaderPanel extends React.PureComponent {
         mode: PT.any,
         shape: PT.string,
         value: PT.any,
-        panelDate: PT.any,
+        panelMode: PT.any,
+        panelValue: PT.any,
         validValue: PT.any,
         showTitle: PT.bool,
-        /**
-         * 是否需要渲染模式切换
-         */
         showModeSwitch: PT.bool,
+        onModeChange: PT.func,
+        onPanelValueChange: PT.func,
+        onPanelModeChange: PT.func,
+        onPrev: PT.func,
+        onNext: PT.func,
+        onSuperPrev: PT.func,
+        onSuperNext: PT.func,
         /**
          * 扩展操作区域渲染
          */
@@ -38,7 +44,6 @@ class HeaderPanel extends React.PureComponent {
 
     static defaultProps = {
         showTitle: false,
-        showModeSwitch: true,
     };
 
     constructor(props) {
@@ -51,25 +56,33 @@ class HeaderPanel extends React.PureComponent {
             'renderMonthSelect',
             'renderModeSwitch',
             'handleSelect',
-            'onPanelChange',
-            'onModeChange',
         ]);
     }
 
     // 生成panel面板的button
-    generatePanelBtns({ unit, num = 1, isDoubleIcon = true }) {
+    generatePanelBtns({ unit, num = 1, isSuper = true }) {
         const { prefixCls } = this;
-        const value = this.props.panelDate.clone();
+        const { onPanelValueChange } = this.props;
+        const value = this.props.panelValue.clone();
         const size = 'small';
-        const iconTypes = isDoubleIcon
-            ? ['arrow-double-left', 'arrow-double-right']
-            : ['arrow-left', 'arrow-right'];
+
+        let iconTypes = ['arrow-left', 'arrow-right'];
+        let clickHandlers = ['onPrev', 'onNext'];
+
+        if (isSuper) {
+            iconTypes = ['arrow-double-left', 'arrow-double-right'];
+            clickHandlers = ['onSuperPrev', 'onSuperNext'];
+        }
+
+        clickHandlers = clickHandlers.map(name =>
+            obj.get(name, this.props, () => onPanelValueChange(value.subtract(num, unit)))
+        );
 
         return [
             <Button
                 text
                 className={`${prefixCls}-btn`}
-                onClick={() => this.onPanelChange(value.subtract(num, unit))}
+                onClick={clickHandlers[0]}
                 size={size}
                 key={`prev-btn-${unit}`}
             >
@@ -78,7 +91,7 @@ class HeaderPanel extends React.PureComponent {
             <Button
                 text
                 className={`${prefixCls}-btn`}
-                onClick={() => this.onPanelChange(value.add(num, unit))}
+                onClick={clickHandlers[1]}
                 size={size}
                 key={`next-btn-${unit}`}
             >
@@ -87,25 +100,18 @@ class HeaderPanel extends React.PureComponent {
         ];
     }
 
-    onModeChange(mode) {
-        this.onPanelChange(this.props.panelDate, mode);
-    }
-
-    onPanelChange(value, mode) {
-        func.call(this.props, 'onPanelChange', [value, mode || this.props.mode]);
-    }
-
     handleSelect(v, unit) {
-        const value = this.props.panelDate.clone();
+        const value = this.props.panelValue.clone();
         value[unit](v);
-        this.onPanelChange(value, this.props.mode);
+
+        this.props.onPanelValueChange(value);
     }
 
     renderModeSwitch() {
-        const { mode, locale } = this.props;
+        const { mode, locale, onModeChange } = this.props;
 
         return (
-            <Radio.Group key="mode-switch" shape="button" value={mode} onChange={this.onModeChange}>
+            <Radio.Group key="mode-switch" shape="button" value={mode} onChange={onModeChange}>
                 <Radio value={CALENDAR_MODE.MONTH}>{locale.month}</Radio>
                 <Radio value={CALENDAR_MODE.YEAR}>{locale.year}</Radio>
             </Radio.Group>
@@ -113,7 +119,7 @@ class HeaderPanel extends React.PureComponent {
     }
 
     renderMonthSelect() {
-        const curMonth = this.props.panelDate.month();
+        const curMonth = this.props.panelValue.month();
         const dataSource = datejs.monthsShort().map((label, value) => {
             return {
                 label,
@@ -132,8 +138,8 @@ class HeaderPanel extends React.PureComponent {
     }
 
     renderYearSelect() {
-        const { validValue, panelDate } = this.props;
-        const curYear = panelDate.year();
+        const { validValue, panelValue } = this.props;
+        const curYear = panelValue.year();
 
         let beginYear;
         let endYear;
@@ -166,15 +172,15 @@ class HeaderPanel extends React.PureComponent {
 
     renderTextField() {
         const { prefixCls } = this;
-        const { panelDate, locale, mode } = this.props;
+        const { panelValue, locale, panelMode, onPanelModeChange } = this.props;
 
         const monthBeforeYear = locale.monthBeforeYear || false;
 
         let nodes;
-        const year = panelDate.year();
-        const month = datejs.monthsShort(panelDate.month());
+        const year = panelValue.year();
+        const month = datejs.monthsShort(panelValue.month());
 
-        const { WEEK, MONTH, QUARTER, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
+        const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
         const yearNode = (
             <Button
@@ -182,14 +188,14 @@ class HeaderPanel extends React.PureComponent {
                 key="year-btn"
                 tabIndex={-1}
                 className={`${prefixCls}-btn`}
-                onClick={() => this.onModeChange(DECADE)}
+                onClick={() => onPanelModeChange(YEAR)}
             >
                 {year}
             </Button>
         );
 
-        switch (mode) {
-            case MONTH:
+        switch (panelMode) {
+            case DATE:
             case WEEK: {
                 const monthNode = (
                     <Button
@@ -197,7 +203,7 @@ class HeaderPanel extends React.PureComponent {
                         key="month-btn"
                         tabIndex={-1}
                         className={`${prefixCls}-btn`}
-                        onClick={() => this.onModeChange(YEAR)}
+                        onClick={() => onPanelModeChange(MONTH)}
                     >
                         {month}
                     </Button>
@@ -206,14 +212,14 @@ class HeaderPanel extends React.PureComponent {
                 break;
             }
 
-            case QUARTER:
-            case YEAR: {
+            case MONTH:
+            case QUARTER: {
                 nodes = yearNode;
                 break;
             }
 
-            case DECADE: {
-                const curYear = panelDate.year();
+            case YEAR: {
+                const curYear = panelValue.year();
                 const start = curYear - (curYear % 10);
                 const end = start + 9;
                 nodes = (
@@ -222,15 +228,15 @@ class HeaderPanel extends React.PureComponent {
                         key="decade-btn"
                         tabIndex={-1}
                         className={`${prefixCls}-btn`}
-                        onClick={() => this.onModeChange(CENTURY)}
+                        onClick={() => onPanelModeChange(DECADE)}
                     >
                         {`${start}-${end}`}
                     </Button>
                 );
                 break;
             }
-            case CENTURY: {
-                const curYear = panelDate.year();
+            case DECADE: {
+                const curYear = panelValue.year();
                 const start = curYear - (curYear % 100);
                 const end = start + 99;
 
@@ -248,19 +254,18 @@ class HeaderPanel extends React.PureComponent {
 
     renderPanelHeader() {
         const { generatePanelBtns } = this;
-        const { mode } = this.props;
-        const { MONTH, WEEK, QUARTER, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
+        const { panelMode } = this.props;
 
         let nodes = [];
 
         const textFieldNode = this.renderTextField();
 
-        switch (mode) {
-            case MONTH:
+        switch (panelMode) {
+            case DATE:
             case WEEK: {
                 const [preMonthBtn, nextMonthBtn] = generatePanelBtns({
                     unit: 'month',
-                    isDoubleIcon: false,
+                    isSuper: false,
                 });
                 const [preYearBtn, nextYearBtn] = generatePanelBtns({
                     unit: 'year',
@@ -270,7 +275,7 @@ class HeaderPanel extends React.PureComponent {
                 break;
             }
             case QUARTER:
-            case YEAR: {
+            case MONTH: {
                 const [preYearBtn, nextYearBtn] = generatePanelBtns({
                     unit: 'year',
                 });
@@ -278,7 +283,7 @@ class HeaderPanel extends React.PureComponent {
                 nodes = [preYearBtn, textFieldNode, nextYearBtn];
                 break;
             }
-            case DECADE: {
+            case YEAR: {
                 const [preDecadeBtn, nextDecadeBtn] = generatePanelBtns({
                     unit: 'year',
                     num: 10,
@@ -287,7 +292,7 @@ class HeaderPanel extends React.PureComponent {
                 nodes = [preDecadeBtn, textFieldNode, nextDecadeBtn];
                 break;
             }
-            case CENTURY: {
+            case DECADE: {
                 const [preCenturyBtn, nextCenturyBtn] = generatePanelBtns({
                     unit: 'year',
                     num: 100,
@@ -302,7 +307,7 @@ class HeaderPanel extends React.PureComponent {
     }
 
     renderInner() {
-        const { prefixCls, onPanelChange } = this;
+        const { prefixCls } = this;
         const { shape, showTitle, value, mode, showModeSwitch } = this.props;
 
         const nodes = [];
@@ -325,10 +330,10 @@ class HeaderPanel extends React.PureComponent {
             nodes.push(
                 <div key="actions" className={`${prefixCls}-actions`}>
                     {this.renderYearSelect()}
-                    {mode === CALENDAR_MODE.MONTH ? this.renderMonthSelect() : null}
+                    {mode !== CALENDAR_MODE.YEAR ? this.renderMonthSelect() : null}
                     {showModeSwitch ? this.renderModeSwitch() : null}
                     {this.props.renderHeaderExtra &&
-                        this.props.renderHeaderExtra({ onPanelChange, ...this.props })}
+                        this.props.renderHeaderExtra({ ...this.props })}
                 </div>
             );
         }
@@ -337,14 +342,14 @@ class HeaderPanel extends React.PureComponent {
     }
 
     render() {
-        const { onPanelChange, prefixCls } = this;
+        const { prefixCls } = this;
 
         return (
             <div className={prefixCls}>
                 {witchCustomRender(
                     'headerRender',
                     this.props,
-                    { onPanelChange, ...this.props },
+                    { ...this.props },
                     this.renderInner()
                 )}
             </div>

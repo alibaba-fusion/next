@@ -13,18 +13,18 @@ export const CALENDAR_MODE = {
 
 // 日期面板的模式
 export const DATE_PANEL_MODE = {
-    MONTH: 'month',
+    DATE: 'date',
     WEEK: 'week',
+    MONTH: 'month',
     QUARTER: 'quarter',
     YEAR: 'year',
     DECADE: 'decade',
-    CENTURY: 'century',
 };
 
 // 单元格选中状态
-// export const CALENDAR_CELL_STATE = {
-//     UN_SELECTED: 0,
-//     SELECTED: 1,
-//     SELECTED_BEGIN: 2,
-//     SELECTED_END: 3,
-// };
+export const CALENDAR_CELL_STATE = {
+    UN_SELECTED: 0,
+    SELECTED: 1,
+    SELECTED_BEGIN: 2,
+    SELECTED_END: 3,
+};

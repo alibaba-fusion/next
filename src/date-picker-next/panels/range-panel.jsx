@@ -1,12 +1,12 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
-import SharedPT from '../shared-prop-types';
+import SharedPT from '../prop-types';
 
 import { func, datejs } from '../../util';
 
 import { DATE_INPUT_TYPE } from '../constant';
-import { CALENDAR_MODE, CALENDAR_CELL_STATE } from '../../calendar-next/constant';
+import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-next/constant';
 import Calendar from '../../calendar-next';
 
 const { bindCtx } = func;
@@ -25,10 +25,10 @@ function getVisibleValue(value, mode) {
 
 class DatePanel extends React.Component {
     static propTypes = {
+        mode: SharedPT.mode,
         value: PT.arrayOf(SharedPT.date),
         inputType: SharedPT.inputType,
         showTime: PT.bool,
-        mode: PT.any,
         handleCellState: PT.func,
         disabledDate: PT.func,
     };
@@ -44,17 +44,17 @@ class DatePanel extends React.Component {
 
         this.state = {
             mode,
-            panelDate: getVisibleValue(value, mode),
+            panelValue: getVisibleValue(value, mode),
             curHoverValue: null,
         };
 
         bindCtx(this, [
             'handleCellState',
-            'handleVisibleValueChange',
-            'handleModeChange',
+            'handlePanelValueChange',
+            'handlePanelChange',
             'onChange',
             'disabledDate',
-            'handleCellClassName',
+            'getCellClassName',
             'handleMouseEnter',
             'handleMouseLeave',
         ]);
@@ -63,17 +63,17 @@ class DatePanel extends React.Component {
     // 日期面板显示的日期区间
     getRanges() {
         const { mode } = this.props;
-        const { panelDate: value } = this.state;
+        const { panelValue: v } = this.state;
 
-        const begin = value.clone();
+        const begin = v.clone();
         let end;
 
         switch (mode) {
-            case CALENDAR_MODE.DATE:
-                end = value.clone().add(1, 'month');
+            case DATE_PANEL_MODE.DATE:
+                end = v.clone().add(1, 'month');
                 break;
-            case CALENDAR_MODE.MONTH:
-                end = value.clone().add(1, 'year');
+            case DATE_PANEL_MODE.MONTH:
+                end = v.clone().add(1, 'year');
                 break;
         }
 
@@ -98,19 +98,19 @@ class DatePanel extends React.Component {
     onChange(v) {
         const value = [...this.props.value];
         value[this.props.inputType] = v;
-
         func.call(this.props, 'onChange', [value]);
     }
 
-    handleModeChange(mode, idx) {
+    handlePanelChange(value, mode, idx) {
         this.setState({
-            mode: mode,
+            panelValue: value,
+            mode,
             calendarIdx: idx,
         });
     }
 
-    handleVisibleValueChange(v, calendarIdx) {
-        const { DATE, WEEK, MONTH, QUARTER, YEAR, YEAR_RANGE } = CALENDAR_MODE;
+    handlePanelValueChange(v, calendarIdx) {
+        const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
 
         v = v.clone();
         // 需要处理第二Calendar组件顶部的选择逻辑
@@ -130,18 +130,19 @@ class DatePanel extends React.Component {
                     v = v.subtract(10, 'year');
                     break;
                 }
-                case YEAR_RANGE: {
+                case DECADE: {
                     v = v.subtract(100, 'year');
                     break;
                 }
             }
         }
         this.setState({
-            panelDate: v,
+            panelValue: v,
         });
     }
 
     handleMouseEnter(value) {
+        console.log(value);
         this.currentRaf && window.cancelAnimationFrame(this.currentRaf);
         this.currentRaf = window.requestAnimationFrame(() => {
             this.setState({
@@ -174,7 +175,7 @@ class DatePanel extends React.Component {
             : UN_SELECTED;
     }
 
-    handleCellClassName(value) {
+    getCellClassName(value) {
         const { SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
         const state = this.handleCellState(value);
 
@@ -196,49 +197,47 @@ class DatePanel extends React.Component {
     render() {
         const {
             onChange,
-            handleModeChange,
-            handleCellClassName,
+            handlePanelChange,
+            getCellClassName,
             disabledDate,
             handleMouseEnter,
             handleMouseLeave,
-            handleVisibleValueChange,
         } = this;
         const { value, mode } = this.props;
         const ranges = this.getRanges();
 
-        const hasModeChanged = this.state.mode === this.props.mode;
+        // 切换面板mode
+        const hasModeChanged = this.state.mode !== this.props.mode;
 
-        const cellProps = {
-            onMouseEnter: handleMouseEnter,
-            onMouseLeave: handleMouseLeave,
-        };
         const calendarProps = idx => {
-            let xxx;
+            let rangeProps;
 
-            if (hasModeChanged) {
-                xxx = {
-                    cellProps,
+            if (!hasModeChanged) {
+                rangeProps = {
                     onChange,
-                    cellClassName: handleCellClassName,
+                    dateCellClassName: getCellClassName,
+                    dateCellProps: {
+                        onMouseEnter: handleMouseEnter,
+                        onMouseLeave: handleMouseLeave,
+                    },
                 };
             }
 
             return {
-                mode,
+                panelMode: mode,
                 shape: 'panel',
                 value: value[idx],
-                panelDate: ranges[idx],
+                panelValue: ranges[idx],
                 disabledDate,
-                onModeChange: v => handleModeChange(v, idx),
-                onVisibleValueChange: v => handleVisibleValueChange(v, idx),
-                ...xxx,
+                onPanelChange: (v, m) => handlePanelChange(v, m, idx),
+                ...rangeProps,
             };
         };
 
         const calendarNodes = [
-            <Calendar key="range-panel-calendar-left" {...calendarProps(0)} />,
-            <Calendar key="range-panel-calendar-right" {...calendarProps(1)} />,
-        ];
+            'range-panel-calendar-left',
+            'range-panel-calendar-right',
+        ].map((key, idx) => <Calendar key={key} {...calendarProps(idx)} />);
 
         return (
             <div style={{ display: 'flex' }}>

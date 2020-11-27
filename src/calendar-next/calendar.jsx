@@ -7,15 +7,21 @@ import { func, datejs, obj } from '../util';
 import SharedPT from './prop-types';
 
 import { CALENDAR_MODE, CALENDAR_SHAPE, DATE_PANEL_MODE } from './constant';
-import HeaderPanel from './panels/header';
-import DatePanel from './panels/date';
+import HeaderPanel from './panels/header-panel';
+import DatePanel from './panels/date-panel';
 
 const { bindCtx } = func;
 
+// CALENDAR_MODE => DATE_PANEL_MODE
+function getPanelMode(mode) {
+    return mode === CALENDAR_MODE.YEAR ? DATE_PANEL_MODE.MONTH : DATE_PANEL_MODE.DATE;
+}
+
 class Calendar extends React.Component {
     static propTypes = {
-        prefix: PT.string,
         rtl: PT.bool,
+        prefix: PT.string,
+        locale: PT.object,
         /**
          * 展现形态
          */
@@ -35,7 +41,7 @@ class Calendar extends React.Component {
         /**
          * 面板显示的日期（受控）
          */
-        panelDate: SharedPT.date,
+        panelValue: SharedPT.date,
         /**
          * 面板默认显示的日期
          */
@@ -57,10 +63,6 @@ class Calendar extends React.Component {
          */
         headerRender: PT.func,
         /**
-         * 国际化配置
-         */
-        locale: PT.object,
-        /**
          * 日期变化回调
          */
         onChange: PT.func,
@@ -72,15 +74,17 @@ class Calendar extends React.Component {
          * 日期面板变化回调
          */
         onPanelChange: PT.func,
+        dateCellProps: PT.object,
         dateCellClassName: PT.oneOfType([PT.func, PT.string]),
+        panelMode: PT.any,
     };
 
     static defaultProps = {
-        prefix: 'next-',
         rtl: false,
-        shape: CALENDAR_SHAPE.FULLSCREEN,
-        mode: CALENDAR_MODE.MONTH,
+        prefix: 'next-',
         locale: defaultLocale.Calendar,
+        mode: CALENDAR_MODE.MONTH,
+        shape: CALENDAR_SHAPE.FULLSCREEN,
     };
 
     constructor(props) {
@@ -90,64 +94,105 @@ class Calendar extends React.Component {
 
         const value = obj.get('value', props, defaultValue);
         const defaultPanelValue = obj.get('defaultPanelValue', props, value || datejs());
-        const panelDate = obj.get('panelDate', props, defaultPanelValue);
+        const panelValue = obj.get('panelValue', props, defaultPanelValue);
+        const panelMode = getPanelMode(mode);
 
         this.state = {
             mode,
             value,
-            panelDate,
+            panelMode,
+            panelValue,
         };
 
-        bindCtx(this, ['onPanelChange', 'onChange', 'onDateSelect']);
+        bindCtx(this, [
+            'shouldSwitchPanelMode',
+            'onPanelChange',
+            'onChange',
+            'onDateSelect',
+            'onModeChange',
+            'onPanelValueChange',
+            'onPanelModeChange',
+        ]);
 
         this.getFromPropOrState = obj.getFromPropOrState.bind(this);
     }
 
     switchPanelMode(mode) {
-        const { MONTH, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
+        const { DATE, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
         switch (mode) {
+            case MONTH:
+                return DATE;
             case YEAR:
                 return MONTH;
             case DECADE:
                 return YEAR;
-            case CENTURY:
-                return DECADE;
             default:
-                return this.props.mode;
+                return this.state.panelMode;
         }
+    }
+
+    shouldSwitchPanelMode() {
+        const { mode, shape } = this.props;
+        const { panelMode } = this.state;
+
+        return (
+            shape !== CALENDAR_SHAPE.PANEL ||
+            (mode === CALENDAR_MODE.MONTH && panelMode === DATE_PANEL_MODE.DATE) ||
+            (mode === CALENDAR_MODE.YEAR && panelMode === DATE_PANEL_MODE.MONTH)
+        );
     }
 
     onDateSelect(value) {
-        const { state, props } = this;
+        const { state } = this;
 
-        if (props.mode === state.mode || props.shape !== CALENDAR_SHAPE.PANEL) {
+        if (this.shouldSwitchPanelMode()) {
             this.onChange(value);
         } else {
-            this.onPanelChange(value, this.switchPanelMode(state.mode));
+            this.onPanelChange(value, this.switchPanelMode(state.panelMode));
         }
     }
 
-    onPanelChange(value, mode) {
+    onModeChange(mode, reason) {
         this.setState({
             mode,
-            panelDate: value,
         });
 
-        func.call(this.props, 'onPanelChange', [value, mode]);
+        const panelMode = getPanelMode(mode);
+
+        if (this.state.panelMode !== panelMode) {
+            this.onPanelModeChange(panelMode, reason);
+        }
+    }
+
+    onPanelValueChange(panelValue, reason) {
+        this.onPanelChange(panelValue, this.state.panelMode, reason);
+    }
+
+    onPanelModeChange(panelMode, reason) {
+        this.onPanelChange(this.state.panelValue, panelMode, reason);
+    }
+
+    onPanelChange(value, mode, reason) {
+        this.setState({
+            panelMode: mode,
+            panelValue: value,
+        });
+
+        func.call(this.props, 'onPanelChange', [value, mode, reason]);
     }
 
     onChange(value) {
         this.setState({
             value,
-            panelDate: value,
+            panelValue: value,
         });
 
         func.call(this.props, 'onChange', [value]);
     }
 
     render() {
-        let { value, panelDate } = this.getFromPropOrState(['value', 'panelDate']);
-        const { mode } = this.state;
+        let { value, panelValue } = this.getFromPropOrState(['value', 'panelValue']);
+        const { panelMode, mode } = this.state;
         const {
             rtl,
             prefix,
@@ -156,30 +201,37 @@ class Calendar extends React.Component {
             className,
             disabledDate,
             dateCellRender,
+            dateCellProps,
             dateCellClassName,
         } = this.props;
 
-        panelDate = datejs(panelDate);
+        panelValue = datejs(panelValue);
         value = datejs(value);
 
         const sharedProps = {
             rtl,
             prefix,
             locale,
-            mode,
             shape,
             value,
-            panelDate,
-            onPanelChange: this.onPanelChange,
+            panelValue,
         };
+
         const headerPanelProps = {
-            showModeSwitch: this.props.mode !== CALENDAR_MODE.YEAR, // mode为year时 不需要显示模式切换
+            mode,
+            panelMode,
+            onPanelValueChange: this.onPanelValueChange,
+            onModeChange: this.onModeChange,
+            onPanelModeChange: this.onPanelModeChange,
+            showModeSwitch: this.props.mode !== CALENDAR_MODE.YEAR,
             ...sharedProps,
         };
         const datePanelProps = {
+            mode: panelMode,
             disabledDate,
             dateCellRender,
             dateCellClassName,
+            dateCellProps,
             onSelect: this.onDateSelect,
             ...sharedProps,
         };

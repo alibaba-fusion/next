@@ -1,43 +1,48 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
-import SharedPT from '../shared-prop-types';
-import { DATE_PICKER_TYPE, DATE_INPUT_TYPE } from '../constant';
-import { func, KEYCODE, datejs } from '../../util';
+import classnames from 'classnames';
+import SharedPT from '../prop-types';
+import { DATE_INPUT_TYPE } from '../constant';
+import { func, KEYCODE } from '../../util';
 
-const { bindCtx } = func;
+import Input from '../../input';
+import Icon from '../../icon';
+
+const { bindCtx, isFunction } = func;
 
 class DateInput extends React.Component {
     static propTypes = {
-        value(props, propName, componentName) {
-            if (propName in props) {
-                const value = props[propName];
-                const isValid = v => !v || (typeof v === 'string' && datejs(v).isValid());
-
-                if (
-                    (props.isRange && (!Array.isArray(value) || !value.every(v => isValid(v)))) ||
-                    !isValid()
-                ) {
-                    throw new Error(
-                        `Invalid prop ${propName} supplied to ${componentName}. Validation failed.`
-                    );
-                }
-            }
-        },
+        prefix: PT.string,
+        rtl: PT.bool,
+        locale: PT.object,
+        value: PT.oneOfType([PT.arrayOf(SharedPT.date), SharedPT.date]),
         isRange: PT.bool,
         inputType: SharedPT.inputType,
         onInputTypeChange: PT.func,
         autoFocus: PT.bool,
+        format: PT.oneOfType([PT.string, PT.func]),
     };
 
     static defaultProps = {
-        type: DATE_PICKER_TYPE.DATE,
         autoFocus: false,
     };
 
     constructor(props) {
         super(props);
-        bindCtx(this, ['onInput', 'onFocus', 'onChange', 'onKeyDown', 'setValue', 'setInputRef']);
+
+        this.prefixCls = `${props.prefix}picker-input`;
+
+        bindCtx(this, [
+            'onInput',
+            'onFocus',
+            'onChange',
+            'onKeyDown',
+            'format',
+            'setValue',
+            'setInputRef',
+            'renderRangeInput',
+        ]);
     }
 
     setInputRef(el, index) {
@@ -52,10 +57,10 @@ class DateInput extends React.Component {
     }
 
     setValue(v) {
-        const { type, inputType, value } = this.props;
+        const { isRange, inputType, value } = this.props;
         let newVal;
 
-        if (type === DATE_PICKER_TYPE.RANGE) {
+        if (isRange) {
             const index = inputType === DATE_INPUT_TYPE.BEGIN ? 0 : 1;
 
             newVal = [...value];
@@ -66,8 +71,18 @@ class DateInput extends React.Component {
         return newVal;
     }
 
-    onInput(e) {
-        func.call(this.props, 'onInput', [this.setValue(e.target.value)]);
+    format(v) {
+        const { format } = this;
+
+        if (isFunction(format)) {
+            return format(v);
+        } else {
+            return v.format(format);
+        }
+    }
+
+    onInput(v) {
+        func.call(this.props, 'onInput', [this.setValue(v)]);
     }
 
     onChange() {
@@ -91,49 +106,96 @@ class DateInput extends React.Component {
         }
     }
 
-    render() {
-        const { onKeyDown, onFocus, onInput, setInputRef } = this;
-        const { autoFocus, isRange, value, onClick } = this.props;
+    renderRangeInput() {
+        const { onKeyDown, onInput, onFocus, setInputRef } = this;
+        const { format } = this.props;
 
         const sharedInputProps = {
             onChange: onInput,
             onKeyDown,
+            hasBorder: false,
+            placeholder: format,
         };
+        const { prefix, value } = this.props;
+
+        return (
+            <React.Fragment>
+                <Input
+                    {...sharedInputProps}
+                    value={value[0] || ''}
+                    ref={el => setInputRef(el, 0)}
+                    onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
+                />
+                <span className={`${prefix}range-picker-input-separator`}>-</span>
+                <Input
+                    {...sharedInputProps}
+                    value={value[1] || ''}
+                    ref={el => setInputRef(el, 1)}
+                    onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
+                    hint={
+                        <Icon
+                            type="calendar"
+                            className={`${prefix}date-picker-symbol-calendar-icon`}
+                        />
+                    }
+                />
+            </React.Fragment>
+        );
+    }
+
+    render() {
+        const { onKeyDown, onInput, setInputRef, onFocus, prefixCls } = this;
+        const { autoFocus, isRange, value, onClick, format, prefix } = this.props;
+
+        const htmlSize = String(format.length + 2);
+
+        const sharedInputProps = {
+            onChange: onInput,
+            onKeyDown,
+            hasBorder: false,
+            placeholder: format,
+            htmlSize,
+        };
+
+        const className = classnames([prefixCls, `${prefixCls}-${isRange ? 'range' : 'date'}`]);
 
         return (
             <div
-                style={{ display: 'inline-block' }}
+                className={className}
                 role="button"
                 tabIndex="0"
                 onKeyDown={onKeyDown}
                 onClick={onClick}
             >
                 {isRange ? (
-                    <div>
-                        <input
+                    <React.Fragment>
+                        <Input
                             {...sharedInputProps}
-                            autoFocus={autoFocus} // eslint-disable-line
                             value={value[0] || ''}
                             ref={el => setInputRef(el, 0)}
-                            onFocus={() => {
-                                onFocus(DATE_INPUT_TYPE.BEGIN);
-                            }}
+                            onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
                         />
-                        <input
+                        <span className={`${prefix}range-picker-input-separator`}>-</span>
+                        <Input
                             {...sharedInputProps}
                             value={value[1] || ''}
                             ref={el => setInputRef(el, 1)}
-                            onFocus={() => {
-                                onFocus(DATE_INPUT_TYPE.END);
-                            }}
+                            onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
+                            hint={
+                                <Icon
+                                    type="calendar"
+                                    className={`${prefix}date-picker-symbol-calendar-icon`}
+                                />
+                            }
                         />
-                    </div>
+                    </React.Fragment>
                 ) : (
-                    <input
+                    <Input
                         {...sharedInputProps}
                         autoFocus={autoFocus} // eslint-disable-line
                         ref={setInputRef}
                         value={value}
+                        hint="calendar"
                     />
                 )}
             </div>

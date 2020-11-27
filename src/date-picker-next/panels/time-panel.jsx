@@ -1,7 +1,7 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
-import SharedPT from '../shared-prop-types';
+import SharedPT from '../prop-types';
 
 import { func } from '../../util';
 import { call } from '../util';

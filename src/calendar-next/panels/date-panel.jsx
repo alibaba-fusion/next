@@ -7,13 +7,13 @@ import { DATE_PANEL_MODE } from '../constant';
 import { func, obj, datejs, KEYCODE } from '../../util';
 
 const { bindCtx, witchCustomRender } = func;
-const { MONTH, WEEK, QUARTER, YEAR, DECADE, CENTURY } = DATE_PANEL_MODE;
+const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
 
 class DatePanel extends React.Component {
     static propTypes = {
-        mode: SharedPT.mode,
+        mode: SharedPT.panelMode,
         value: SharedPT.date,
-        panelDate: SharedPT.date,
+        panelValue: SharedPT.date,
         dateCellRender: PT.func,
         disabledDate: PT.func,
         selectedState: PT.func,
@@ -21,7 +21,7 @@ class DatePanel extends React.Component {
         onSelect: PT.func,
         onDateSelect: PT.func,
         startOnSunday: PT.bool,
-        cellClassName: PT.oneOfType([PT.func, PT.string]),
+        dateCellClassName: PT.oneOfType([PT.func, PT.string]),
     };
 
     constructor(props) {
@@ -30,12 +30,14 @@ class DatePanel extends React.Component {
         this.prefixCls = `${props.prefix}calendar`;
 
         bindCtx(this, [
-            'getMonthData',
-            'getYearData',
+            'getDateCellData',
+            'getMonthCellData',
+            'getYearCellData',
             'getDecadeData',
-            'getCenturyData',
             'handleKeyDown',
             'handleSelect',
+            'handleMouseEnter',
+            'handleMouseLeave',
         ]);
 
         this.state = {
@@ -48,7 +50,7 @@ class DatePanel extends React.Component {
         func.call(this.props, 'onSelect', [v, e]);
     }
 
-    handleKeyDown(e, v) {
+    handleKeyDown(v, e) {
         console.log(e, v);
         switch (e.keyCode) {
             case KEYCODE.ENTER:
@@ -61,19 +63,27 @@ class DatePanel extends React.Component {
         // e.preventDefault();
     }
 
+    handleMouseEnter(v, e) {
+        func.call(this.props.dateCellProps, 'onMouseEnter', [v, e]);
+    }
+
+    handleMouseLeave(v, e) {
+        func.call(this.props.dateCellProps, 'onMouseLeave', [v, e]);
+    }
+
     isSame(curDate, date, mode) {
         switch (mode) {
-            case MONTH:
+            case DATE:
                 return curDate.isSame(date, 'day');
             case WEEK:
                 return curDate.isSame(date, 'week');
             case QUARTER:
                 return curDate.isSame(date, 'quarter');
-            case YEAR:
+            case MONTH:
                 return curDate.isSame(date, 'month');
-            case DECADE:
+            case YEAR:
                 return curDate.isBefore(date) && curDate.isAfter(date.clone(1, 'year'));
-            case CENTURY:
+            case DECADE:
                 return curDate.isBefore(date) && curDate.isAfter(date.clone(10, 'year'));
         }
     }
@@ -87,7 +97,7 @@ class DatePanel extends React.Component {
      */
     renderCellContent(cellData) {
         const { props } = this;
-        const { mode, hoveredState, cellClassName } = props;
+        const { mode, hoveredState, dateCellClassName, dateCellProps } = props;
         const { hoverValue } = this.state;
 
         const cellContent = [];
@@ -95,12 +105,12 @@ class DatePanel extends React.Component {
 
         // 面板行数
         const mode2Rows = {
-            [MONTH]: 7,
+            [DATE]: 7,
             [WEEK]: 7,
-            [YEAR]: 3,
+            [MONTH]: 3,
             [QUARTER]: 1,
+            [YEAR]: 3,
             [DECADE]: 3,
-            [CENTURY]: 3,
         };
         const now = datejs();
 
@@ -119,7 +129,7 @@ class DatePanel extends React.Component {
                     [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
                     [`${prefixCls}-disabled`]: isDisabled,
                     [`${prefixCls}-range-hover`]: hoverState,
-                    ...(cellClassName && cellClassName(value)),
+                    ...(dateCellClassName && dateCellClassName(value)),
                 });
 
                 let onEvents = null;
@@ -128,19 +138,20 @@ class DatePanel extends React.Component {
                     onEvents = {
                         onClick: e => this.handleSelect(value, e),
                         onKeyDown: e => this.handleKeyDown(value, e),
+                        // onMouseEnter: e => this.handleMouseEnter(value, e),
+                        // onMouseLeave: e => this.handleMouseLeave(value, e),
                     };
-
-                    // 为了处理hover逻辑
-                    ['onMouseEnter', 'onMouseLeave'].forEach(eventName => {
-                        if (eventName in props) {
-                            onEvents[eventName] = e => props[eventName](value, e);
-                        }
-                    });
                 }
 
                 children.push(
                     <td className={prefixCls} key={key} title={key}>
-                        <div role="cell" tabIndex="-1" className={className} {...onEvents}>
+                        <div
+                            role="cell"
+                            tabIndex="-1"
+                            className={className}
+                            // {...dateCellProps}
+                            {...onEvents}
+                        >
                             {witchCustomRender(
                                 'dateCellRender',
                                 props,
@@ -181,8 +192,8 @@ class DatePanel extends React.Component {
         );
     }
 
-    getMonthData() {
-        const { panelDate: value, startOnSunday } = this.props;
+    getDateCellData() {
+        const { panelValue: value, startOnSunday } = this.props;
 
         const firstDayOfMonth = value.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
@@ -217,11 +228,11 @@ class DatePanel extends React.Component {
         });
     }
 
-    getYearData() {
-        const { panelDate } = this.props;
+    getMonthCellData() {
+        const { panelValue } = this.props;
 
         return datejs.monthsShort().map((label, index) => {
-            const value = panelDate.clone().month(index);
+            const value = panelValue.clone().month(index);
 
             return {
                 label,
@@ -232,9 +243,9 @@ class DatePanel extends React.Component {
         });
     }
 
-    getDecadeData() {
-        const { panelDate } = this.props;
-        const curYear = panelDate.year();
+    getYearCellData() {
+        const { panelValue } = this.props;
+        const curYear = panelValue.year();
         const startYear = curYear - (curYear % 10) - 1;
         const cellData = [];
 
@@ -242,7 +253,7 @@ class DatePanel extends React.Component {
             const y = startYear + i;
 
             cellData.push({
-                value: panelDate.clone().year(y),
+                value: panelValue.clone().year(y),
                 label: y,
                 isCurrent: i > 0 && i < 11,
                 key: y,
@@ -252,9 +263,9 @@ class DatePanel extends React.Component {
         return cellData;
     }
 
-    getCenturyData() {
-        const { panelDate } = this.props;
-        const curYear = panelDate.year();
+    getDecadeData() {
+        const { panelValue } = this.props;
+        const curYear = panelValue.year();
         const startYear = curYear - (curYear % 100) - 10;
         const cellData = [];
 
@@ -262,7 +273,7 @@ class DatePanel extends React.Component {
             const y = startYear + i * 10;
 
             cellData.push({
-                value: panelDate.clone().year(y),
+                value: panelValue.clone().year(y),
                 label: `${y}-${y + 9}`,
                 isCurrent: i > 0 && i < 11,
                 key: `${y}-${y + 9}`,
@@ -275,17 +286,17 @@ class DatePanel extends React.Component {
     render() {
         const { mode } = this.props;
         const mode2Data = {
-            [MONTH]: this.getMonthData,
+            [DATE]: this.getDateCellData,
             // [WEEK]: this.renderDate,
-            [YEAR]: this.getYearData,
+            [MONTH]: this.getMonthCellData,
             // [QUARTER]: this.renderQuarter,
+            [YEAR]: this.getYearCellData,
             [DECADE]: this.getDecadeData,
-            [CENTURY]: this.getCenturyData,
         };
 
         return (
             <table className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
-                {mode === MONTH ? this.renderWeekdaysHead() : null}
+                {mode === DATE ? this.renderWeekdaysHead() : null}
                 <tbody>{this.renderCellContent(mode2Data[mode]())}</tbody>
             </table>
         );
