@@ -18,5 +18,5 @@ Rating component can only display score when you set `disabled` attribute.
 ````jsx
 import { Rating } from '@alifd/next';
 
-ReactDOM.render(<Rating defaultValue={3.2} disabled />, mountNode);
+ReactDOM.render(<Rating defaultValue={3.5} disabled />, mountNode);
 ````
