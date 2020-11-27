@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const { marked, logger } = require('../../../utils');
 const { replaceExt } = require('../../../utils');
 const { getDemos } = require('./demo-parser');
+const { getGlobalControl } = require('./render-creator');
 
 const cwd = process.cwd();
 
@@ -80,6 +81,7 @@ module.exports = function(content) {
 
         window.demoNames = [];
         window.renderFuncs = [];
+        ${getGlobalControl()}
         ${demoInsertScript}
     `;
 
