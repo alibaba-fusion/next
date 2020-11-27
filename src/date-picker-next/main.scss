@@ -1,0 +1,60 @@
+@import "../core/index-noreset.scss";
+// @import "../input/scss/variable.scss";
+// @import "../input/scss/mixin.scss";
+@import "../time-picker/scss/variable.scss";
+
+@import "../calendar-next/scss/variable.scss";
+@import "../input/scss/variable.scss";
+@import "../input/scss/mixin.scss";
+
+@import "scss/variable";
+
+// @import "scss/mixin";
+
+// @import "scss/date-picker.scss";
+// @import "scss/range-picker.scss";
+// @import "./rtl.scss";
+
+.#{$css-prefix} {
+    &picker-overlay {
+        overflow: hidden;
+        vertical-align: top;
+        background: #fff;
+        border-radius: 2px;
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+        transition: margin 0.3s;
+    }
+
+    &picker {
+        #{$calendar-prefix}-table {
+            width: 252px;
+            content: #{$input-prefix};
+        }
+
+        &-input {
+            height: 28px;
+            box-sizing: border-box;
+            #{$input-prefix} {
+                border: none;
+                width: auto;
+                height: 100%;
+                input {
+                    height: 100%;
+                }
+            }
+        }
+
+        &-input {
+            display: inline-flex;
+            align-items: center;
+            border: $input-border-width solid $input-border-color;
+            @include input-border-radius($form-element-small-corner);
+        }
+    }
+    &range-picker {
+        &-input-separator {
+            color: #c4c7cc;
+            font-size: 12px;
+        }
+    }
+}

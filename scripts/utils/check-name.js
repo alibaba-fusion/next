@@ -19,6 +19,7 @@ module.exports = function(runtest = false, withOtherArgs = false) {
         const file = runtest ? 'test' : 'docs';
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;
+        console.log(path.join(cwd, file));
         const valid = components.some(com => {
             if (componentName.replace('-', '') === com.replace('-', '')) {
                 name = com;
@@ -46,9 +47,7 @@ module.exports = function(runtest = false, withOtherArgs = false) {
     } else if (runtest) {
         return 'all';
     } else {
-        logger.error(
-            'Please input the component name, like: npm run [command] number-picker'
-        );
+        logger.error('Please input the component name, like: npm run [command] number-picker');
         process.exit(0);
         return false;
     }

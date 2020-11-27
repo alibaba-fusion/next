@@ -7,9 +7,9 @@ import * as _object from './object';
 import * as _string from './string';
 import * as _support from './support';
 import * as _focus from './focus';
+import * as _htmlId from './htmlId';
 import _guid from './guid';
 import _KEYCODE from './keycode';
-import * as _htmlId from './htmlId';
 import _date from './date';
 
 export const dom = _dom;
