@@ -144,14 +144,8 @@ class DatePanel extends React.Component {
                 }
 
                 children.push(
-                    <td className={prefixCls} key={key} title={key}>
-                        <div
-                            role="cell"
-                            tabIndex="-1"
-                            className={className}
-                            // {...dateCellProps}
-                            {...onEvents}
-                        >
+                    <td className={prefixCls} key={key} title={key} {...onEvents}>
+                        <div role="cell" tabIndex="-1" className={className}>
                             {witchCustomRender(
                                 'dateCellRender',
                                 props,

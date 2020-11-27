@@ -171,7 +171,7 @@ class Picker extends React.Component {
             value,
             visible: false,
             inputValue: this.getInputValue(value),
-            inputType: null,
+            inputType: undefined,
             justBeginInput: true,
         };
 
@@ -200,8 +200,6 @@ class Picker extends React.Component {
         };
     }
 
-    // ---------------> utils
-
     /**
      * 校验日期数据，范围选择模式下为数组，校验通过的时候返回备选值，注意，备选值也需要进行校验，如果还校验失败则返回null值
      * 日期值可以是：
@@ -213,8 +211,8 @@ class Picker extends React.Component {
      */
     checkAndRectify(value) {
         const check = value => {
-            // moment(undefined) === moment()
-            // 这里期望的是一个空值
+            // 因为moment(undefined) === moment()
+            // 但是这里期望的是一个空值
             if (value === undefined) {
                 value = null;
             }
@@ -225,7 +223,6 @@ class Picker extends React.Component {
 
         if (this.props.type === DATE_PICKER_TYPE.RANGE) {
             if (!Array.isArray(value)) {
-                console.warn('无效数据格式，range模式下必须是数组: ', value);
                 return [null, null];
             }
             return [0, 1].map(i => check(value[i]));
@@ -275,11 +272,21 @@ class Picker extends React.Component {
 
     onVisibleChange(visible) {
         if (visible !== this.state.visible) {
-            this.setState({
-                visible,
-                justBeginInput: true,
-            });
-            func.call(this.props, 'onVisibleChange', [visible]);
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId);
+                this.timeoutId = null;
+            }
+
+            this.timeoutId = setTimeout(
+                () => {
+                    this.setState({
+                        visible,
+                        justBeginInput: true,
+                    });
+                    func.call(this.props, 'onVisibleChange', [visible]);
+                },
+                visible ? 0 : 100
+            );
         }
     }
 

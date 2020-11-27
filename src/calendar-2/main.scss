@@ -20,8 +20,10 @@
     }
 
     &-cell {
+        cursor: pointer;
         position: relative;
     }
+
     &-cell::before {
         content: "";
         position: absolute;
@@ -38,14 +40,15 @@
         z-index: 2;
         color: rgba(0, 0, 0, 0.25);
         outline: none;
-        cursor: pointer;
         border: 1px solid transparent;
     }
 
     &-cell-current {
         color: #585d66;
+    }
 
-        &:hover {
+    &-cell:hover {
+        #{$calendar-prefix}-cell-current {
             background: #edeff2;
         }
     }
@@ -95,12 +98,13 @@
                 border-radius: 2px;
                 transition: background-color 0.2s, border 0.2s;
 
-                &#{$calendar-prefix}-cell-selected {
+                &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
                     color: #fff;
                     background: rgb(3, 193, 253);
                 }
 
-                &#{$calendar-prefix}-cell-disabled {
+                &#{$calendar-prefix}-cell-disabled,
+                &#{$calendar-prefix}-cell-disabled#{$calendar-prefix}-cell-current {
                     color: #c4c7cc;
                     background: #f5f7fa;
                 }
@@ -170,6 +174,7 @@
 
                 &-btn {
                     min-width: 1.6em;
+                    color: #585d66;
                 }
 
                 &-btn > span {

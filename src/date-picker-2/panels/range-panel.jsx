@@ -8,11 +8,12 @@ import { func, datejs } from '../../util';
 import { DATE_INPUT_TYPE } from '../constant';
 import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-2/constant';
 import Calendar from '../../calendar-2';
+import { add } from 'lodash';
 
 const { bindCtx } = func;
 
 // 获取面板显示值
-function getVisibleValue(value, mode) {
+function getPanelValue(value, mode) {
     if (value) {
         if (value[0]) {
             return datejs(value[0]);
@@ -46,7 +47,7 @@ class DatePanel extends React.Component {
 
         this.state = {
             mode,
-            panelValue: getVisibleValue(value, mode),
+            panelValue: getPanelValue(value, mode),
             curHoverValue: null,
         };
 
@@ -59,6 +60,7 @@ class DatePanel extends React.Component {
             'getCellClassName',
             'handleMouseEnter',
             'handleMouseLeave',
+            'handleCanlendarClick',
         ]);
     }
 
@@ -98,15 +100,29 @@ class DatePanel extends React.Component {
     }
 
     onChange(v) {
-        const value = [...this.props.value];
-        value[this.props.inputType] = v;
-        func.call(this.props, 'onChange', [value]);
+        const { value, inputType } = this.props;
+        const { BEGIN, END } = DATE_INPUT_TYPE;
+        let [begin, end] = value;
+
+        if (inputType === BEGIN) {
+            begin = v;
+            if (end && end.isBefore(v)) {
+                end = null;
+            }
+        } else if (inputType === END) {
+            end = v;
+            if (begin && begin.isAfter(v)) {
+                end = null;
+            }
+        }
+
+        func.call(this.props, 'onChange', [[begin, end]]);
     }
 
     handlePanelChange(value, mode, idx) {
         this.setState({
-            panelValue: value,
             mode,
+            panelValue: value,
             calendarIdx: idx,
         });
     }
@@ -177,14 +193,15 @@ class DatePanel extends React.Component {
     }
 
     getCellClassName(value) {
+        const { prefix, inputType } = this.props;
         const { SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
         const state = this.handleCellState(value);
 
         const hoverValue = [...this.props.value];
-        hoverValue[this.props.inputType] = this.state.curHoverValue;
+        hoverValue[inputType] = this.state.curHoverValue;
 
         const hoverState = this.handleCellState(value, hoverValue);
-        const prefixCls = `${this.props.prefix}calendar-cell`;
+        const prefixCls = `${prefix}calendar-cell`;
 
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
@@ -196,6 +213,12 @@ class DatePanel extends React.Component {
         };
     }
 
+    handleCanlendarClick(_, { unit, num }) {
+        this.setState({
+            panelValue: this.state.panelValue.clone().add(num, unit),
+        });
+    }
+
     render() {
         const {
             onChange,
@@ -204,6 +227,7 @@ class DatePanel extends React.Component {
             disabledDate,
             handleMouseEnter,
             handleMouseLeave,
+            handleCanlendarClick,
         } = this;
         const { value, mode, justBeginInput, prefix } = this.props;
         const ranges = this.getRanges();
@@ -225,7 +249,6 @@ class DatePanel extends React.Component {
             }
 
             let rangeProps;
-            console.log('hasModeChanged', hasModeChanged);
             if (!hasModeChanged) {
                 rangeProps = {
                     onChange,
@@ -244,9 +267,19 @@ class DatePanel extends React.Component {
         };
 
         const calendarNodes = [
-            'range-panel-calendar-left',
-            'range-panel-calendar-right',
-        ].map((key, idx) => <Calendar key={key} {...calendarProps(idx)} />);
+            <Calendar
+                className={`${prefix}range-picker-left`}
+                key="range-panel-calendar-left"
+                {...calendarProps(0)}
+            />,
+            <Calendar
+                className={`${prefix}range-picker-right`}
+                key="range-panel-calendar-right"
+                onNext={handleCanlendarClick}
+                onSuperNext={handleCanlendarClick}
+                {...calendarProps(1)}
+            />,
+        ];
 
         return (
             <div className={`${prefix}range-picker-panel`}>

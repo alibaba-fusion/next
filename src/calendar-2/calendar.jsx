@@ -77,6 +77,10 @@ class Calendar extends React.Component {
         dateCellProps: PT.object,
         dateCellClassName: PT.oneOfType([PT.func, PT.string]),
         panelMode: PT.any,
+        onPrev: PT.func,
+        onNext: PT.func,
+        onSuperPrev: PT.func,
+        onSuperNext: PT.func,
     };
 
     static defaultProps = {
@@ -203,6 +207,10 @@ class Calendar extends React.Component {
             dateCellRender,
             dateCellProps,
             dateCellClassName,
+            onPrev,
+            onNext,
+            onSuperPrev,
+            onSuperNext,
         } = this.props;
 
         panelValue = datejs(panelValue);
@@ -224,6 +232,10 @@ class Calendar extends React.Component {
             onModeChange: this.onModeChange,
             onPanelModeChange: this.onPanelModeChange,
             showModeSwitch: this.props.mode !== CALENDAR_MODE.YEAR,
+            onPrev,
+            onNext,
+            onSuperPrev,
+            onSuperNext,
             ...sharedProps,
         };
         const datePanelProps = {

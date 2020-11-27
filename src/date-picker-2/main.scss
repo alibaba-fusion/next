@@ -58,6 +58,18 @@
             color: #c4c7cc;
             font-size: 12px;
         }
+
+        &-right {
+            #{$calendar-prefix}-header-left-btn {
+                visibility: hidden;
+            }
+        }
+
+        &-left {
+            #{$calendar-prefix}-header-right-btn {
+                visibility: hidden;
+            }
+        }
     }
 
     &range-picker-panel {
@@ -67,7 +79,7 @@
             &-panel {
                 #{$calendar-prefix} {
                     &-cell-inner {
-                        &#{$calendar-prefix}-cell-selected {
+                        &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
                             color: inherit;
                             background: #e6fdff;
 
