@@ -1029,7 +1029,10 @@ class Tree extends Component {
     shouldNodeShow(nodeData) {
         const { expandedKeys, _p2n } = this.state;
 
-        return getAllDescendantKeys(nodeData, _p2n).every(k => expandedKeys.includes(k));
+        return (
+            !(nodeData.style && nodeData.style.display === 'none') &&
+            getAllDescendantKeys(nodeData, _p2n).every(k => expandedKeys.includes(k))
+        );
     }
 
     renderTreeNode(props, childNodes) {
@@ -1114,7 +1117,6 @@ class Tree extends Component {
                 if (item.illegalFlag) {
                     return item.node;
                 }
-
                 const pos = `${prefix}-${index}`;
                 const { key = pos, children, ...others } = item;
                 const props = {
@@ -1163,6 +1165,7 @@ class Tree extends Component {
 
         return loop(this.props.children);
     }
+
     render() {
         const {
             prefix,

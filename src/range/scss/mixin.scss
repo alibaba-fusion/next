@@ -309,7 +309,7 @@
 ) {
     &.simulation-hover > .#{$css-prefix}range-slider-inner {
         background-color: $sliderBgColorHover;
-        box-shadow: $range-size-m-slider-shadow-hover;
+        // box-shadow: $range-size-m-slider-shadow-hover;
         transform: scale(1.2);
     }
 }

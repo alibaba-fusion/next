@@ -30,7 +30,7 @@ http.createServer(function(req, res) {
 
             form.parse(req, function(err, fields, files) {
                 if (err) {
-                    res.send({ success: false, message: err });
+                    res.end({ success: false, message: err });
                     return;
                 }
 

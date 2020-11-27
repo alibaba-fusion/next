@@ -99,7 +99,7 @@
             transition: background-color $motion-duration-immediately $motion-linear;
             #{$step-icon-prefix} {
                 @include icon-size($step-circle-item-node-icon-size);
-                animation: zoomIn $motion-duration-immediately $motion-linear;
+                animation: zoomIn $motion-duration-standard $motion-linear;
             }
         }
     }

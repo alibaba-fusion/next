@@ -11,6 +11,17 @@ const StepItem = Step.Item;
 /* eslint-disable */
 describe('Step', () => {
     describe('render', () => {
+        it('should support rtl', () => {
+            const wrapper = mount(
+                <Step current={1} rtl>
+                    <StepItem title="步骤1" />
+                    <StepItem title="步骤2" />
+                    <StepItem title="步骤3" />
+                </Step>
+            );
+
+            assert(wrapper.find('.next-step-circle').at(0).instance().getAttribute('dir') === 'rtl');
+        });
         it('should render with default props', () => {
             const wrapper = mount(
                 <Step current={1}>

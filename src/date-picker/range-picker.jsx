@@ -317,6 +317,7 @@ class RangePicker extends Component {
         };
 
         let newValue = value;
+
         switch (active || prevActiveDateInput) {
             case 'startValue': {
                 if (!prevEndValue || value.valueOf() <= prevEndValue.valueOf()) {
@@ -342,13 +343,13 @@ class RangePicker extends Component {
                 newState.startValue = newValue;
 
                 // 如果起始日期大于结束日期
-                if (prevEndValue && value.valueOf() > prevEndValue.valueOf()) {
+                if (prevEndValue && newValue.valueOf() > prevEndValue.valueOf()) {
                     // 将结束日期设置为起始日期 如果需要的话保留时间
                     newState.endValue = resetTime ? newValue : resetValueTime(value, prevEndValue);
 
-                    // 如果起始日期还是大于结束日期则清空结束日期
-                    if (newState.startValue.valueOf() > newState.endValue.valueOf()) {
-                        newState.endValue = null;
+                    // 如果结束日期不大于起始日期则将结束日期设置为等于开始日期
+                    if (newState.endValue.valueOf() < newState.startValue.valueOf()) {
+                        newState.endValue = moment(newState.startValue);
                     }
                     newState.activeDateInput = 'endValue';
                 }
@@ -381,13 +382,13 @@ class RangePicker extends Component {
                 newState.endValue = newValue;
 
                 // 选择了一个比开始日期更小的结束日期，此时表示用户重新选择了
-                if (prevStartValue && value.valueOf() <= prevStartValue.valueOf()) {
+                if (prevStartValue && newValue.valueOf() <= prevStartValue.valueOf()) {
                     newState.startValue = resetTime ? value : resetValueTime(value, prevStartValue);
                     newState.endValue = resetTime ? value : resetValueTime(value, prevEndValue);
 
-                    // 如果结束日期不大于起始日期则清空结束日期
+                    // 如果结束日期不大于起始日期则将结束日期设置为等于开始日期
                     if (newState.endValue.valueOf() < newState.startValue.valueOf()) {
-                        newState.endValue = null;
+                        newState.endValue = moment(newState.startValue);
                     }
                 }
                 break;
@@ -516,6 +517,7 @@ class RangePicker extends Component {
                 activeDateInput: 'startTime',
             });
         }
+
         if (value.valueOf() !== this.state.startValue.valueOf()) {
             this.onValueChange([value, this.state.endValue]);
         }
@@ -545,27 +547,26 @@ class RangePicker extends Component {
     onTimeInputBlur = () => {
         const stateName = mapInputStateName(this.state.activeDateInput);
         const timeInputStr = this.state[stateName];
-        if (timeInputStr) {
-            const parsed = moment(timeInputStr, this.state.timeFormat, true);
 
-            this.setState({
-                [stateName]: '',
-                inputing: false,
-            });
+        const parsed = moment(timeInputStr, this.state.timeFormat, true);
 
-            if (parsed.isValid()) {
-                const hour = parsed.hour();
-                const minute = parsed.minute();
-                const second = parsed.second();
-                const valueName = mapTimeToValue(this.state.activeDateInput);
-                const newValue = this.state[valueName]
-                    .clone()
-                    .hour(hour)
-                    .minute(minute)
-                    .second(second);
+        this.setState({
+            [stateName]: '',
+            inputing: false,
+        });
 
-                this.handleChange(valueName, newValue);
-            }
+        if (parsed.isValid()) {
+            const hour = parsed.hour();
+            const minute = parsed.minute();
+            const second = parsed.second();
+            const valueName = mapTimeToValue(this.state.activeDateInput);
+            const newValue = this.state[valueName]
+                .clone()
+                .hour(hour)
+                .minute(minute)
+                .second(second);
+
+            this.handleChange(valueName, newValue);
         }
     };
 

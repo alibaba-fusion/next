@@ -1518,6 +1518,42 @@ describe('RangePicker', () => {
             });
             assert(instance.state.startTimeInputStr === '00:00:00');
         });
+
+        // fix issue: https://github.com/alibaba-fusion/next/issues/2198
+        it('should reset time when time is empty', done => {
+            wrapper = mount(<RangePicker showTime value={[moment(), moment()]} />);
+            openPanel();
+
+            const sltor = '.next-range-picker-panel-input-start-time input';
+            const timeInput = wrapper.find(sltor);
+
+            document.querySelector(sltor).value = '';
+            timeInput.simulate('blur');
+
+            setTimeout(() => {
+                document.querySelector(sltor).value !== '';
+                done();
+            });
+        });
+
+        // fix issue: https://github.com/alibaba-fusion/next/issues/2183
+        it('should be able to select same day', done => {
+            let value;
+
+            wrapper = mount(<RangePicker showTime onChange={val => (value = val)} />);
+            openPanel();
+
+            const cell = wrapper.find('.next-calendar-cell').at(10);
+
+            cell.simulate('click');
+            cell.simulate('click');
+
+            setTimeout(() => {
+                assert(value.every(v => moment.isMoment(v) && v.isValid()));
+                assert(value[0].valueOf() === value[1].valueOf());
+                done();
+            });
+        });
     });
 
     describe('with date string', () => {
