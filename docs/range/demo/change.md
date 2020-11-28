@@ -18,6 +18,7 @@ onChange,onProcess callbacks
 import { Range } from '@alifd/next';
 
 const onProcess = (value) => {
+    // This callback will be triggered when startValue and endValue aren't equal after mousedown/mousemove. You shouldn't call setState here.
     console.log('onProcess: ', value);
 }
 
