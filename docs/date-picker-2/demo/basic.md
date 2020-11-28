@@ -33,10 +33,11 @@ function App() {
             <Switch size="small" onChange={onChange} />
             <div>
                 <DatePicker2
-                    // showTime
+                    showTime
                     // visible
                     // preset={[{ name: 'now', label: '此刻', value: Date.now(), type: 'secondary' }]}
                     key={mode}
+                    format="YYYY-MM-DD HH:mm:ss"
                     type="date"
                 />
             </div>

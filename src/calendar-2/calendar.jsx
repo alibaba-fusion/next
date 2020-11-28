@@ -257,7 +257,7 @@ class Calendar extends React.Component {
         return (
             <div className={classNames}>
                 <HeaderPanel {...headerPanelProps} />
-                <div className={`${prefix}calendar-body`}>
+                <div className={`${prefix}calendar-body ${prefix}picker-body`}>
                     <DatePanel {...datePanelProps} />
                 </div>
             </div>

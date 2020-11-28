@@ -2,6 +2,8 @@
     @include box-sizing;
     @include clearfix;
 
+    display: flex;
+
     &-header {
         border-bottom: $line-1 $line-solid $time-picker-panel-border-color;
     }
@@ -13,21 +15,7 @@
         vertical-align: middle;
     }
 
-    &-col-3 {
-        #{$time-picker-prefix}-menu {
-            width: calc(100% / 3);
-        }
-    }
-
-    &-col-2 {
-        #{$time-picker-prefix}-menu {
-            width: 50%;
-        }
-    }
-
-    &-col-1 {
-        #{$time-picker-prefix}-menu {
-            width: 100%;
-        }
+    #{$time-picker-prefix}-menu {
+        flex: 1;
     }
 }

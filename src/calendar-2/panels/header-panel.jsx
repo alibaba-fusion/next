@@ -49,14 +49,15 @@ class HeaderPanel extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}calendar-header`;
+        this.prefixCls = `${props.prefix}picker-header`;
 
         bindCtx(this, ['createPanelBtns', 'renderMonthSelect', 'renderModeSwitch', 'handleSelect']);
     }
 
     createPanelBtns({ unit, num = 1, isSuper = true }) {
-        const { prefixCls } = this;
         const value = this.props.panelValue.clone();
+
+        const prefixCls = `${this.props.prefix}picker-header`;
 
         const iconTypes = isSuper
             ? ['arrow-double-left', 'arrow-double-right']
@@ -249,9 +250,9 @@ class HeaderPanel extends React.PureComponent {
         }
 
         return (
-            <span key="header-text-field" className={`${prefixCls}-text-field`}>
+            <div key="header-text-field" className={`${prefixCls}-text-field`}>
                 {nodes}
-            </span>
+            </div>
         );
     }
 
@@ -345,10 +346,8 @@ class HeaderPanel extends React.PureComponent {
     }
 
     render() {
-        const { prefixCls } = this;
-
         return (
-            <div className={prefixCls}>
+            <div className={`${this.prefixCls} ${this.props.prefix}picker-header`}>
                 {witchCustomRender(
                     'headerRender',
                     this.props,

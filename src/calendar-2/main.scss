@@ -3,10 +3,11 @@
 @import "scss/variable";
 @import "scss/normalize";
 
+@import "../date-picker-2/scss/picker.scss";
 @import "./rtl.scss";
 
 #{$calendar-prefix} {
-    font-size: 14px;
+    font-size: 12px;
     user-select: none;
     background: #fff;
 
@@ -54,7 +55,7 @@
     }
 
     &-cell-today {
-        color: rgb(3, 193, 253);
+        color: $color-brand1-9;
     }
 
     &-fullscreen,
@@ -100,7 +101,7 @@
 
                 &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
                     color: #fff;
-                    background: rgb(3, 193, 253);
+                    background: $color-brand1-9;
                 }
 
                 &#{$calendar-prefix}-cell-disabled,
@@ -140,8 +141,8 @@
 
                 &#{$calendar-prefix}-cell {
                     &-selected {
-                        border-top-color: rgb(3, 193, 253);
-                        background: #e6fdff;
+                        border-top-color: $color-brand1-9;
+                        background: $color-brand1-9;
                     }
                 }
             }
@@ -153,46 +154,6 @@
             &-header {
                 padding-right: 8px;
                 padding-left: 8px;
-            }
-        }
-    }
-
-    &-panel {
-        #{$calendar-prefix} {
-            &-header {
-                padding: 0 8px;
-                border-bottom: 1px solid #f0f0f0;
-
-                &-btn,
-                &-text-field {
-                    height: 40px;
-                    line-height: 40px;
-                    font-size: 14px;
-                    vertical-align: inherit;
-                    font-family: inherit;
-                }
-
-                &-btn {
-                    min-width: 1.6em;
-                    color: #585d66;
-                }
-
-                &-btn > span {
-                    vertical-align: inherit;
-                }
-
-                &-text-field {
-                    flex: 1;
-                    text-align: center;
-
-                    #{$calendar-prefix}-header-btn:not(:first-child) {
-                        margin-left: 8px;
-                    }
-                }
-            }
-
-            &-body {
-                padding: 8px 12px;
             }
         }
     }

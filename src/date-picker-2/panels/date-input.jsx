@@ -19,13 +19,15 @@ class DateInput extends React.Component {
         value: PT.oneOfType([PT.arrayOf(SharedPT.date), SharedPT.date]),
         isRange: PT.bool,
         inputType: SharedPT.inputType,
+        format: PT.oneOfType([PT.string, PT.func]),
         onInputTypeChange: PT.func,
         autoFocus: PT.bool,
-        format: PT.oneOfType([PT.string, PT.func]),
+        readOnly: PT.bool,
     };
 
     static defaultProps = {
         autoFocus: false,
+        readOnly: false,
     };
 
     constructor(props) {
@@ -41,7 +43,6 @@ class DateInput extends React.Component {
             'format',
             'setValue',
             'setInputRef',
-            'renderRangeInput',
         ]);
     }
 
@@ -106,53 +107,19 @@ class DateInput extends React.Component {
         }
     }
 
-    renderRangeInput() {
-        // const { onKeyDown, onInput, onFocus, setInputRef } = this;
-        // const { format } = this.props;
-        // const sharedInputProps = {
-        //     onChange: onInput,
-        //     onKeyDown,
-        //     hasBorder: false,
-        //     placeholder: format,
-        // };
-        // const { prefix, value } = this.props;
-        // return (
-        //     <React.Fragment>
-        //         <Input
-        //             {...sharedInputProps}
-        //             value={value[0] || ''}
-        //             ref={el => setInputRef(el, 0)}
-        //             onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
-        //         />
-        //         <span className={`${prefix}range-picker-input-separator`}>-</span>
-        //         <Input
-        //             {...sharedInputProps}
-        //             value={value[1] || ''}
-        //             ref={el => setInputRef(el, 1)}
-        //             onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
-        //             hint={
-        //                 <Icon
-        //                     type="calendar"
-        //                     className={`${prefix}date-picker-symbol-calendar-icon`}
-        //                 />
-        //             }
-        //         />
-        //     </React.Fragment>
-        // );
-    }
-
     render() {
         const { onKeyDown, onInput, setInputRef, onFocus, prefixCls } = this;
-        const { autoFocus, isRange, value, onClick, format, prefix } = this.props;
+        const { autoFocus, readOnly, isRange, value, onClick, format, prefix } = this.props;
 
-        const htmlSize = String(format.length + 2);
+        const htmlSize = format.length ? String(format.length + 2) : undefined;
 
         const sharedInputProps = {
             onChange: onInput,
             onKeyDown,
-            hasBorder: false,
-            placeholder: format,
             htmlSize,
+            readOnly,
+            placeholder: format,
+            hasBorder: false,
         };
 
         const className = classnames([prefixCls, `${prefixCls}-${isRange ? 'range' : 'date'}`]);

@@ -200,6 +200,13 @@ class Picker extends React.Component {
         };
     }
 
+    componentWillUnmount() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = null;
+        }
+    }
+
     /**
      * 校验日期数据，范围选择模式下为数组，校验通过的时候返回备选值，注意，备选值也需要进行校验，如果还校验失败则返回null值
      * 日期值可以是：
@@ -243,13 +250,11 @@ class Picker extends React.Component {
 
     // 判断弹层是否显示
     handleVisibleChange(visible, type) {
+        const showOk = this.props.showOk !== false && this.props.showTime;
+
         // 点击非组件内
-        if (type === 'docClick') {
+        if (type === 'docClick' && !showOk) {
             this.onVisibleChange(visible);
-            // if (visible === false) {
-            //     const input = this.dateInput && this.dateInput.input;
-            //     input.blur();
-            // }
         }
     }
 
@@ -302,8 +307,9 @@ class Picker extends React.Component {
      * - 判断触发onChange事件
      */
     handleChange(v) {
-        const { value, showOk, isRange, justBeginInput, inputType } = this.state;
+        const { value, isRange, justBeginInput, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
+        const showOk = this.props.showOk !== false && this.props.showTime;
 
         v = this.checkAndRectify(v, value);
 
@@ -391,7 +397,7 @@ class Picker extends React.Component {
             type,
             format,
         } = this.props;
-        const { isRange, inputType, justBeginInput } = this.state;
+        const { isRange, inputType, justBeginInput, panelValue } = this.state;
 
         const visible = this.getFromPropOrState('visible');
 
@@ -407,6 +413,7 @@ class Picker extends React.Component {
             rtl,
             prefix,
             locale,
+            showTime,
             onChange: handleChange,
         };
 
@@ -431,7 +438,7 @@ class Picker extends React.Component {
         const sharedDateProps = {
             mode,
             value,
-            showTime,
+            panelValue,
             ...sharedProps,
         };
 
@@ -446,10 +453,10 @@ class Picker extends React.Component {
               )
             : renderNode('rangeNode', <DatePanel {...sharedDateProps} />);
 
-        // 底部
+        // 底部节点
         const footerNode = renderNode(
             'footer',
-            <FooterPanel onOk={onOk} onChange={handleChange} preset={preset} />
+            <FooterPanel showTime={showTime} onOk={onOk} onChange={handleChange} preset={preset} />
         );
 
         const className = classnames([`${prefixCls}`, `${prefix}${type}-picker-overlay`]);

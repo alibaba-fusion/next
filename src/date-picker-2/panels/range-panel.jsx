@@ -8,7 +8,6 @@ import { func, datejs } from '../../util';
 import { DATE_INPUT_TYPE } from '../constant';
 import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-2/constant';
 import Calendar from '../../calendar-2';
-import { add } from 'lodash';
 
 const { bindCtx } = func;
 
@@ -24,18 +23,18 @@ function getPanelValue(value, mode) {
     return datejs();
 }
 
-class DatePanel extends React.Component {
+class RangePanel extends React.Component {
     static propTypes = {
         mode: SharedPT.mode,
         value: PT.arrayOf(SharedPT.date),
         inputType: SharedPT.inputType,
-        showTime: PT.bool,
         handleCellState: PT.func,
         disabledDate: PT.func,
         justBeginInput: PT.bool,
+        showTime: PT.bool,
     };
+
     static defaultProps = {
-        showTime: false,
         disabledDate: () => false,
         justBeginInput: true,
     };
@@ -62,6 +61,12 @@ class DatePanel extends React.Component {
             'handleMouseLeave',
             'handleCanlendarClick',
         ]);
+    }
+
+    componentDidMount() {
+        if (this.currentRaf) {
+            window.cancelAnimationFrame(this.currentRaf);
+        }
     }
 
     // 日期面板显示的日期区间
@@ -291,4 +296,4 @@ class DatePanel extends React.Component {
     }
 }
 
-export default polyfill(DatePanel);
+export default polyfill(RangePanel);

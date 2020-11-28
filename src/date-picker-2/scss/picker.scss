@@ -1,0 +1,64 @@
+.#{$css-prefix}picker {
+    .#{$css-prefix}picker {
+        &-header {
+            padding: 0 8px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+
+            &-btn,
+            &-text-field {
+                height: 40px;
+                line-height: 40px;
+            }
+
+            &-btn {
+                min-width: 1.6em;
+                color: #585d66;
+                font-family: inherit;
+                vertical-align: initial;
+            }
+
+            &-btn > span,
+            &-text-field {
+                text-align: center;
+                font-size: 14px;
+                color: #1f2633;
+                font-weight: bolder;
+                vertical-align: initial;
+            }
+
+            &-text-field {
+                flex: 1;
+
+                .#{$css-prefix}picker-header-btn:not(:first-child) {
+                    margin-left: 8px;
+                }
+            }
+        }
+
+        &-body {
+            padding: 8px 0;
+            display: inline-flex;
+            flex-direction: column;
+            text-align: center;
+            background: #fff;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        &-footer {
+            min-width: 100%;
+            box-sizing: border-box;
+            line-height: 38px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+            padding: 4px 12px;
+            display: flex;
+
+            &-actions {
+                margin-left: auto;
+            }
+        }
+    }
+}

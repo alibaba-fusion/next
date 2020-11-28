@@ -6,7 +6,7 @@ import defaultLocale from '../../locale/zh-cn';
 
 import Button from '../../button';
 
-const { noop, bindCtx, isFunction } = func;
+const { bindCtx, isFunction } = func;
 
 function pickProps(obj, fields) {
     const newObj = {};
@@ -40,13 +40,12 @@ class FooterPanel extends React.PureComponent {
         rtl: PT.bool,
         locale: PT.object,
         showOk: PT.bool,
+        showTime: PT.bool,
         preset: PT.any,
         onOk: PT.func,
     };
 
     static defaultProps = {
-        showOk: true,
-        onOk: noop,
         prefix: 'next-',
         rtl: false,
         locale: defaultLocale.DatePicker,
@@ -55,7 +54,7 @@ class FooterPanel extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}date-picker-footer`;
+        this.prefixCls = `${props.prefix}picker-footer`;
 
         bindCtx(this, ['renderPreset']);
     }
@@ -86,15 +85,20 @@ class FooterPanel extends React.PureComponent {
 
     render() {
         const { prefixCls } = this;
+        const { showTime, showOk } = this.props;
+
+        const shouldShowOk = showTime && showOk !== false;
 
         return (
             <div className={prefixCls}>
                 {this.renderPreset()}
-                {/* <div className={`${prefixCls}-actions`}>
-                    <Button onClick={this.props.onOk} type="primary">
-                        {this.props.locale.ok}
-                    </Button>
-                </div> */}
+                <div className={`${prefixCls}-actions`}>
+                    {shouldShowOk ? (
+                        <Button onClick={this.props.onOk} type="primary">
+                            {this.props.locale.ok}
+                        </Button>
+                    ) : null}
+                </div>
             </div>
         );
     }

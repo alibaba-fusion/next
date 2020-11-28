@@ -1,7 +1,7 @@
 @import "../core/index-noreset.scss";
 // @import "../input/scss/variable.scss";
 // @import "../input/scss/mixin.scss";
-@import "../time-picker/scss/variable.scss";
+// @import "../time-picker-2/scss/variable.scss";
 
 @import "../calendar-2/scss/variable.scss";
 @import "../input/scss/variable.scss";
@@ -11,7 +11,7 @@
 
 // @import "scss/mixin";
 
-// @import "scss/date-picker.scss";
+@import "scss/picker.scss";
 // @import "scss/range-picker.scss";
 // @import "./rtl.scss";
 
@@ -72,6 +72,10 @@
         }
     }
 
+    &date-picker-panel {
+        display: inline-flex;
+    }
+
     &range-picker-panel {
         display: inline-flex;
 
@@ -87,16 +91,22 @@
                             &#{$calendar-prefix}-cell-range-begin,
                             &#{$calendar-prefix}-cell-range-end {
                                 color: #fff;
-                                background: #03c1fd;
+                                background: $color-brand1-9;
                             }
                         }
 
                         &#{$calendar-prefix}-cell-hover {
-                            border: 1px dashed #03c1fd;
+                            border: 1px dashed $color-brand1-9;
                         }
                     }
                 }
             }
+        }
+    }
+
+    &date-time-picker-panel {
+        #{$calendar-prefix} {
+            border-right: 1px solid #f0f0f0;
         }
     }
 }
