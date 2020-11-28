@@ -25,11 +25,10 @@ const { RangePicker } = DatePicker;
 const onChange = val => console.log(val);
 
 const App = () => <div>
-    <RangePicker type="date" onChange={onChange} />
-    <RangePicker type="month" onChange={onChange} />
-    <RangePicker type="year" onChange={onChange} />
-    // week range picker ?
-    <RangePicker type="week" onChange={onChange} />
+    <RangePicker mode="date" onChange={onChange} /> <br />
+    <RangePicker mode="month" onChange={onChange} /> <br />
+    <RangePicker mode="year" onChange={onChange} /> <br />
+    <RangePicker mode="week" onChange={onChange} /> <br />
 </div>
 
 ReactDOM.render(<App />, mountNode);
