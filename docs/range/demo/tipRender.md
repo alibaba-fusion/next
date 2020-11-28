@@ -1,8 +1,8 @@
-# tipRender
+# 自定义滑块标签
 
 - order: 5
 
-tipRender 示例
+通过 tipRender 自定义滑块标签提示
 
 :::lang=en-us
 # tipRender
@@ -39,18 +39,12 @@ class App extends React.Component {
     }
 
     formatter(value) {
-        return `$${value}`;
+        return `0 ~ ${value}`;
     }
     render() {
         return (
-            <div style={{width: '400px', margin: '50px'}}>
-                <p>Range 0 ~ 1024</p>
-                <div style={{width: '400px', marginTop: '50px'}}>
-
-                    <Range defaultValue={256} tipRender={this.formatter.bind(this)} value={this.state.value} onChange={this.onChange.bind(this)}
-                        onProcess={this.onProcess.bind(this)}
-                        min={0} max={1024} marks={[0, 1024]} />
-                </div>
+            <div style={{margin: '50px'}}>
+                <Range defaultValue={256} tipRender={this.formatter.bind(this)} value={this.state.value} onChange={this.onChange.bind(this)} onProcess={this.onProcess.bind(this)} min={0} max={1024} marks={[0, 1024]} />
             </div>
         );
     }
