@@ -11,10 +11,6 @@ class TimePanel extends React.PureComponent {
         onSelect: PT.func,
     };
 
-    static defaultProps = {
-        prefix: 'next-',
-    };
-
     render() {
         const { prefix, value, onSelect } = this.props;
 

@@ -32,6 +32,7 @@ class DatePanel extends React.Component {
         bindCtx(this, [
             'getDateCellData',
             'getMonthCellData',
+            'getQuarterCellData',
             'getYearCellData',
             'getDecadeData',
             'handleKeyDown',
@@ -46,18 +47,15 @@ class DatePanel extends React.Component {
     }
 
     handleSelect(v, e) {
-        console.log('[DatePanel]');
         func.call(this.props, 'onSelect', [v, e]);
     }
 
     handleKeyDown(v, e) {
-        console.log(e, v);
         switch (e.keyCode) {
             case KEYCODE.ENTER:
                 this.handleSelect(v);
                 break;
             case KEYCODE.RIGHT:
-                console.log(v);
                 break;
         }
         // e.preventDefault();
@@ -108,7 +106,7 @@ class DatePanel extends React.Component {
             [DATE]: 7,
             [WEEK]: 7,
             [MONTH]: 3,
-            [QUARTER]: 1,
+            [QUARTER]: 4,
             [YEAR]: 3,
             [DECADE]: 3,
         };
@@ -237,6 +235,19 @@ class DatePanel extends React.Component {
         });
     }
 
+    getQuarterCellData() {
+        const { panelValue } = this.props;
+
+        return [1, 2, 3, 4].map(i => {
+            return {
+                label: `Q${i}`,
+                value: panelValue.clone().quarter(i),
+                isCurrent: true,
+                key: `Q${i}`,
+            };
+        });
+    }
+
     getYearCellData() {
         const { panelValue } = this.props;
         const curYear = panelValue.year();
@@ -281,9 +292,9 @@ class DatePanel extends React.Component {
         const { mode } = this.props;
         const mode2Data = {
             [DATE]: this.getDateCellData,
-            // [WEEK]: this.renderDate,
+            [WEEK]: this.getDateCellData,
             [MONTH]: this.getMonthCellData,
-            // [QUARTER]: this.renderQuarter,
+            [QUARTER]: this.getQuarterCellData,
             [YEAR]: this.getYearCellData,
             [DECADE]: this.getDecadeData,
         };

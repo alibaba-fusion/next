@@ -19,10 +19,10 @@
     &picker-overlay {
         overflow: hidden;
         vertical-align: top;
-        background: #fff;
+        background: #FFF;
         border-radius: 2px;
-        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
-        transition: margin 0.3s;
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
+        transition: margin .3s;
     }
 
     &picker {
@@ -54,8 +54,9 @@
     }
 
     &range-picker {
+        display: inline-flex;
         &-input-separator {
-            color: #c4c7cc;
+            color: #C4C7CC;
             font-size: 12px;
         }
 
@@ -79,34 +80,27 @@
     &range-picker-panel {
         display: inline-flex;
 
-        #{$calendar-prefix} {
-            &-panel {
-                #{$calendar-prefix} {
-                    &-cell-inner {
-                        &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
-                            color: inherit;
-                            background: #e6fdff;
+        #{$calendar-prefix}-cell-inner {
+            &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
+                color: inherit;
+                background: #E6FDFF;
 
-                            &.next-calendar-cell-range-begin,
-                            &#{$calendar-prefix}-cell-range-begin,
-                            &#{$calendar-prefix}-cell-range-end {
-                                color: #fff;
-                                background: $color-brand1-9;
-                            }
-                        }
-
-                        &#{$calendar-prefix}-cell-hover {
-                            border: 1px dashed $color-brand1-9;
-                        }
-                    }
+                &#{$calendar-prefix}-cell-range-begin,
+                &#{$calendar-prefix}-cell-range-end {
+                    color: #FFF;
+                    background: $color-brand1-9;
                 }
+            }
+
+            &#{$calendar-prefix}-cell-hover {
+                border: 1px dashed $color-brand1-9;
             }
         }
     }
 
     &date-time-picker-panel {
         #{$calendar-prefix} {
-            border-right: 1px solid #f0f0f0;
+            border-right: 1px solid #F0F0F0;
         }
     }
 }

@@ -8,8 +8,10 @@ import { func, datejs } from '../../util';
 import { DATE_INPUT_TYPE } from '../constant';
 import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-2/constant';
 import Calendar from '../../calendar-2';
+import TimePanel from './time-panel';
 
 const { bindCtx } = func;
+const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
 
 // 获取面板显示值
 function getPanelValue(value, mode) {
@@ -60,6 +62,8 @@ class RangePanel extends React.Component {
             'handleMouseEnter',
             'handleMouseLeave',
             'handleCanlendarClick',
+            'renderRangeTime',
+            'renderRange',
         ]);
     }
 
@@ -78,11 +82,16 @@ class RangePanel extends React.Component {
         let end;
 
         switch (mode) {
-            case DATE_PANEL_MODE.DATE:
+            case DATE:
+            case WEEK:
                 end = v.clone().add(1, 'month');
                 break;
-            case DATE_PANEL_MODE.MONTH:
+            case QUARTER:
+            case MONTH:
                 end = v.clone().add(1, 'year');
+                break;
+            case YEAR:
+                end = v.clone().add(20, 'year');
                 break;
         }
 
@@ -104,23 +113,35 @@ class RangePanel extends React.Component {
         );
     }
 
-    onChange(v) {
+    setTime(newVal, oldVal) {
+        if (oldVal) {
+            return newVal
+                .hour(oldVal.hour())
+                .minute(oldVal.minute())
+                .second(oldVal.second())
+                .millisecond(oldVal.millisecond());
+        }
+        return newVal;
+    }
+
+    onChange(v, resetTime = true) {
         const { value, inputType } = this.props;
         const { BEGIN, END } = DATE_INPUT_TYPE;
         let [begin, end] = value;
 
         if (inputType === BEGIN) {
-            begin = v;
+            begin = resetTime ? this.setTime(v, begin) : v;
+
             if (end && end.isBefore(v)) {
                 end = null;
             }
         } else if (inputType === END) {
-            end = v;
+            end = resetTime ? this.setTime(v, end) : v;
+
             if (begin && begin.isAfter(v)) {
-                end = null;
+                begin = null;
             }
         }
-
         func.call(this.props, 'onChange', [[begin, end]]);
     }
 
@@ -133,8 +154,6 @@ class RangePanel extends React.Component {
     }
 
     handlePanelValueChange(v, calendarIdx) {
-        const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
-
         v = v.clone();
         // 需要处理第二Calendar组件顶部的选择逻辑
         if (calendarIdx === 1) {
@@ -224,7 +243,46 @@ class RangePanel extends React.Component {
         });
     }
 
-    render() {
+    renderRangeTime() {
+        const { value, mode, justBeginInput, prefix, showTime, inputType } = this.props;
+        const hasModeChanged = this.state.mode !== this.props.mode;
+
+        const calendarProps = {
+            value: value[inputType],
+            shape: 'panel',
+            panelMode: mode,
+            onChange: this.onChange,
+            onPanelChange: this.handlePanelChange,
+        };
+        if (!justBeginInput) {
+            calendarProps.disabledDate = this.disabledDate;
+        }
+        let rangeProps;
+        if (!hasModeChanged) {
+            rangeProps = {
+                dateCellClassName: this.getCellClassName,
+                dateCellProps: {
+                    onMouseEnter: this.handleMouseEnter,
+                    onMouseLeave: this.handleMouseLeave,
+                },
+            };
+        }
+
+        return (
+            <div className={`${prefix}range-picker-panel`}>
+                <Calendar {...calendarProps} {...rangeProps} />
+                {showTime && !hasModeChanged ? (
+                    <TimePanel
+                        prefix={prefix}
+                        value={value[inputType]}
+                        onSelect={v => this.onChange(v, false)}
+                    />
+                ) : null}
+            </div>
+        );
+    }
+
+    renderRange() {
         const {
             onChange,
             handlePanelChange,
@@ -242,8 +300,8 @@ class RangePanel extends React.Component {
 
         const calendarProps = idx => {
             const sharedProps = {
-                panelMode: mode,
                 shape: 'panel',
+                panelMode: mode,
                 value: value[idx],
                 panelValue: ranges[idx],
                 onPanelChange: (v, m) => handlePanelChange(v, m, idx),
@@ -288,11 +346,13 @@ class RangePanel extends React.Component {
 
         return (
             <div className={`${prefix}range-picker-panel`}>
-                {this.state.mode === this.props.mode
-                    ? calendarNodes
-                    : calendarNodes[this.state.calendarIdx]}
+                {!hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
             </div>
         );
+    }
+
+    render() {
+        return this.props.showTime ? this.renderRangeTime() : this.renderRange();
     }
 }
 

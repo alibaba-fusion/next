@@ -182,8 +182,7 @@ class HeaderPanel extends React.PureComponent {
 
         let nodes;
         const year = panelValue.year();
-        const month = datejs.monthsShort(panelValue.month());
-
+        const month = panelValue.month();
         const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
         const yearNode = (
