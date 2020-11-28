@@ -240,15 +240,15 @@ class Calendar extends React.Component {
         };
 
         const classNames = classnames([
-            `${prefix}calendar`,
-            `${prefix}calendar-${shape}`,
+            `${prefix}calendar2`,
+            `${prefix}calendar2-${shape}`,
             className,
         ]);
 
         return (
             <div className={classNames}>
                 <HeaderPanel {...headerPanelProps} />
-                <div className={`${prefix}calendar-body ${prefix}picker-body`}>
+                <div className={`${prefix}calendar2-body ${prefix}picker-body`}>
                     <DatePanel {...datePanelProps} />
                 </div>
             </div>

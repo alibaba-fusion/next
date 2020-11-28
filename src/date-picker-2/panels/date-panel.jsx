@@ -73,8 +73,8 @@ class DatePanel extends React.Component {
         // 切换面板mode
         const hasModeChanged = this.state.mode !== this.props.mode;
 
-        const className = classnames(`${prefix}date-picker-panel`, {
-            [`${prefix}date-time-picker-panel`]: showTime,
+        const className = classnames(`${prefix}date-picker2-panel`, {
+            [`${prefix}date-time-picker2-panel`]: showTime,
         });
 
         return (

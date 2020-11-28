@@ -6,7 +6,7 @@
 @import "../date-picker-2/scss/picker.scss";
 @import "./rtl.scss";
 
-#{$calendar-prefix} {
+#{$calendar2-prefix} {
     font-size: 12px;
     user-select: none;
     background: #fff;
@@ -49,7 +49,7 @@
     }
 
     &-cell:hover {
-        #{$calendar-prefix}-cell-current {
+        #{$calendar2-prefix}-cell-current {
             background: #edeff2;
         }
     }
@@ -60,7 +60,7 @@
 
     &-fullscreen,
     &-card {
-        #{$calendar-prefix}-header {
+        #{$calendar2-prefix}-header {
             padding-top: 12px;
             padding-bottom: 12px;
 
@@ -76,7 +76,7 @@
 
     &-card,
     &-panel {
-        #{$calendar-prefix} {
+        #{$calendar2-prefix} {
             min-height: 150px;
 
             &-table {
@@ -99,13 +99,13 @@
                 border-radius: 2px;
                 transition: background-color 0.2s, border 0.2s;
 
-                &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
+                &#{$calendar2-prefix}-cell-selected#{$calendar2-prefix}-cell-current {
                     color: #fff;
                     background: $color-brand1-9;
                 }
 
-                &#{$calendar-prefix}-cell-disabled,
-                &#{$calendar-prefix}-cell-disabled#{$calendar-prefix}-cell-current {
+                &#{$calendar2-prefix}-cell-disabled,
+                &#{$calendar2-prefix}-cell-disabled#{$calendar2-prefix}-cell-current {
                     color: #c4c7cc;
                     background: #f5f7fa;
                 }
@@ -115,7 +115,7 @@
             &-table-year,
             &-table-quarter,
             &-table-decade {
-                #{$calendar-prefix}-cell-inner {
+                #{$calendar2-prefix}-cell-inner {
                     min-width: 80px;
                 }
             }
@@ -123,7 +123,7 @@
     }
 
     &-fullscreen {
-        #{$calendar-prefix} {
+        #{$calendar2-prefix} {
             &-cell-value,
             &-table th {
                 text-align: right;
@@ -139,7 +139,7 @@
                 margin: 0 4px;
                 padding: 4px 8px 0;
 
-                &#{$calendar-prefix}-cell {
+                &#{$calendar2-prefix}-cell {
                     &-selected {
                         border-top-color: $color-brand1-9;
                         background: $color-brand1-9;
@@ -150,7 +150,7 @@
     }
 
     &-card {
-        #{$calendar-prefix} {
+        #{$calendar2-prefix} {
             &-header {
                 padding-right: 8px;
                 padding-left: 8px;

@@ -27,7 +27,7 @@ class DatePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}calendar`;
+        this.prefixCls = `${props.prefix}calendar2`;
 
         bindCtx(this, [
             'getDateCellData',

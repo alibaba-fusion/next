@@ -10,7 +10,7 @@
 }
 
 @mixin range-picker-input-corner($corner) {
-    #{$range-picker-prefix} {
+    #{$range-picker2-prefix} {
         &-trigger, &-panel-input {
             border-radius: $corner;
         }

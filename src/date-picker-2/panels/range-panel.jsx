@@ -225,7 +225,7 @@ class RangePanel extends React.Component {
         hoverValue[inputType] = this.state.curHoverValue;
 
         const hoverState = this.handleCellState(value, hoverValue);
-        const prefixCls = `${prefix}calendar-cell`;
+        const prefixCls = `${prefix}calendar2-cell`;
 
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
@@ -269,7 +269,7 @@ class RangePanel extends React.Component {
         }
 
         return (
-            <div className={`${prefix}range-picker-panel`}>
+            <div className={`${prefix}range-picker2-panel`}>
                 <Calendar {...calendarProps} {...rangeProps} />
                 {showTime && !hasModeChanged ? (
                     <TimePanel
@@ -331,12 +331,12 @@ class RangePanel extends React.Component {
 
         const calendarNodes = [
             <Calendar
-                className={`${prefix}range-picker-left`}
+                className={`${prefix}range-picker2-left`}
                 key="range-panel-calendar-left"
                 {...calendarProps(0)}
             />,
             <Calendar
-                className={`${prefix}range-picker-right`}
+                className={`${prefix}range-picker2-right`}
                 key="range-panel-calendar-right"
                 onNext={handleCanlendarClick}
                 onSuperNext={handleCanlendarClick}
@@ -345,7 +345,7 @@ class RangePanel extends React.Component {
         ];
 
         return (
-            <div className={`${prefix}range-picker-panel`}>
+            <div className={`${prefix}range-picker2-panel`}>
                 {!hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
             </div>
         );

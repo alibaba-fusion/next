@@ -1,4 +1,4 @@
-#{$time-picker-prefix}-panel {
+#{$time-picker2-prefix}-panel {
     @include box-sizing;
     @include clearfix;
 
@@ -15,7 +15,7 @@
         vertical-align: middle;
     }
 
-    #{$time-picker-prefix}-menu {
+    #{$time-picker2-prefix}-menu {
         flex: 1;
     }
 }

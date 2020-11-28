@@ -286,7 +286,7 @@ class RangeCalendar extends React.Component {
         switch (mode) {
             case CALENDAR_MODE_DATE: {
                 table = [
-                    <div className={`${prefix}calendar-body-left`} key="left-panel">
+                    <div className={`${prefix}calendar2-body-left`} key="left-panel">
                         <DateTable
                             format={format}
                             {...tableProps}
@@ -294,7 +294,7 @@ class RangeCalendar extends React.Component {
                             onSelectDate={this.onSelectCell}
                         />
                     </div>,
-                    <div className={`${prefix}calendar-body-right`} key="right-panel">
+                    <div className={`${prefix}calendar2-body-right`} key="right-panel">
                         <DateTable
                             format={format}
                             {...tableProps}
@@ -357,8 +357,8 @@ class RangeCalendar extends React.Component {
 
         const classNames = classnames(
             {
-                [`${prefix}calendar`]: true,
-                [`${prefix}calendar-range`]: true,
+                [`${prefix}calendar2`]: true,
+                [`${prefix}calendar2-range`]: true,
             },
             className
         );
@@ -366,7 +366,7 @@ class RangeCalendar extends React.Component {
         return (
             <div {...obj.pickOthers(RangeCalendar.propTypes, others)} className={classNames}>
                 {header}
-                <div className={`${prefix}calendar-body`}>{table}</div>
+                <div className={`${prefix}calendar2-body`}>{table}</div>
             </div>
         );
     }

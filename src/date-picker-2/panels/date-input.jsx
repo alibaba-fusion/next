@@ -140,7 +140,7 @@ class DateInput extends React.Component {
                             ref={el => setInputRef(el, 0)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
                         />
-                        <span className={`${prefix}range-picker-input-separator`}>-</span>
+                        <span className={`${prefix}range-picker2-input-separator`}>-</span>
                         <Input
                             {...sharedInputProps}
                             value={value[1] || ''}
@@ -149,7 +149,7 @@ class DateInput extends React.Component {
                             hint={
                                 <Icon
                                     type="calendar"
-                                    className={`${prefix}date-picker-symbol-calendar-icon`}
+                                    className={`${prefix}date-picker2-symbol-calendar-icon`}
                                 />
                             }
                         />

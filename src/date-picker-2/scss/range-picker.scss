@@ -1,7 +1,7 @@
 //
 // date-picker 样式
 //
-#{$range-picker-prefix} {
+#{$range-picker2-prefix} {
 
     display: inline-block;
     width: calc(#{$s-28} * 3);
@@ -30,14 +30,14 @@
             @extend %input-separator;
         }
 
-        &-input#{$date-picker-input-prefix} {
+        &-input#{$date-picker2-input-prefix} {
             height: auto;
             width: calc((100% - #{$date-picker-input-separator-width}) / 2);
         }
     }
 
     &.#{$css-prefix}disabled {
-        #{$range-picker-prefix}-trigger {
+        #{$range-picker2-prefix}-trigger {
             @include input-disabled();
         }
     }
@@ -63,15 +63,15 @@
             @extend %input-separator;
         }
 
-        &-input-start-date#{$date-picker-input-prefix},
-        &-input-end-date#{$date-picker-input-prefix} {
+        &-input-start-date#{$date-picker2-input-prefix},
+        &-input-end-date#{$date-picker2-input-prefix} {
             width: calc((100% - #{$date-picker-input-separator-width}) / 2);
         }
     }
 }
 
-#{$range-picker-prefix}-body#{$range-picker-prefix}-body-show-time {
-    #{$range-picker-prefix}-panel {
+#{$range-picker2-prefix}-body#{$range-picker2-prefix}-body-show-time {
+    #{$range-picker2-prefix}-panel {
         &-input-start-date,
         &-input-end-date,
         &-input-start-time,
