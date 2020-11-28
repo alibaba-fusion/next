@@ -29,30 +29,39 @@ function App() {
 
     return (
         <div>
-            mode：
-            <Switch size="small" onChange={onChange} />
-            <div>
-                <DatePicker2
-                    showTime
-                    // visible
-                    // preset={[{ name: 'now', label: '此刻', value: Date.now(), type: 'secondary' }]}
-                    key={mode}
-                    format="YYYY-MM-DD HH:mm:ss"
-                    type="date"
-                />
+            <div className="main">
+                <DatePicker2 showTime format="YYYY-MM-DD HH:mm:ss" type="range" />
             </div>
-            <div>
-                <DatePicker2
-                    // showTime
-                    // visible
-                    // preset={[{ name: 'now', label: '此刻', value: Date.now(), type: 'secondary' }]}
-                    key={mode}
-                    type="range"
-                />
+            <div className="main">
+                <DatePicker2 format="YYYY-MM-DD HH:mm:ss" type="range" />
+            </div>
+            <div className="main">
+                <DatePicker2 showTime format="YYYY-MM-DD HH:mm:ss" />
+            </div>
+            <div className="main">
+                <DatePicker2 format="YYYY-MM-DD HH:mm:ss" />
+            </div>
+            <div className="main">
+                <DatePicker2 mode="year" format="YYYY-MM-DD HH:mm:ss" />
+            </div>
+            <div className="main">
+                <DatePicker2 mode="month" format="YYYY-MM-DD HH:mm:ss" />
+            </div>
+            <div className="main">
+                <DatePicker2 mode="week" format="YYYY-MM-DD HH:mm:ss" type="range" />
+            </div>
+            <div className="main">
+                <DatePicker2 mode="year" format="YYYY-MM-DD HH:mm:ss" type="range" />
             </div>
         </div>
     );
 }
 
 ReactDOM.render(<App />, mountNode);
+```
+
+```css
+.main {
+    margin-bottom: 20px;
+}
 ```

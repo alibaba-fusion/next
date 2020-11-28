@@ -54,6 +54,7 @@
     }
 
     &range-picker {
+        display: inline-flex;
         &-input-separator {
             color: #c4c7cc;
             font-size: 12px;

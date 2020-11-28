@@ -99,7 +99,7 @@ class Calendar extends React.Component {
         const value = obj.get('value', props, defaultValue);
         const defaultPanelValue = obj.get('defaultPanelValue', props, value || datejs());
         const panelValue = obj.get('panelValue', props, defaultPanelValue);
-        const panelMode = getPanelMode(mode);
+        const panelMode = props.panelMode || getPanelMode(mode);
 
         this.state = {
             mode,
@@ -136,24 +136,15 @@ class Calendar extends React.Component {
     }
 
     shouldSwitchPanelMode() {
-        const { mode, shape } = this.props;
-        const { panelMode } = this.state;
+        const { panelMode, shape } = this.props;
 
-        return (
-            shape !== CALENDAR_SHAPE.PANEL ||
-            (mode === CALENDAR_MODE.MONTH && panelMode === DATE_PANEL_MODE.DATE) ||
-            (mode === CALENDAR_MODE.YEAR && panelMode === DATE_PANEL_MODE.MONTH)
-        );
+        return shape === CALENDAR_SHAPE.PANEL && this.state.panelMode !== panelMode;
     }
 
     onDateSelect(value) {
-        const { state } = this;
-
-        if (this.shouldSwitchPanelMode()) {
-            this.onChange(value);
-        } else {
-            this.onPanelChange(value, this.switchPanelMode(state.panelMode));
-        }
+        this.shouldSwitchPanelMode()
+            ? this.onPanelChange(value, this.switchPanelMode(this.state.panelMode))
+            : this.onChange(value);
     }
 
     onModeChange(mode, reason) {

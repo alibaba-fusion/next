@@ -2,9 +2,10 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import * as PT from 'prop-types';
-import SharedPT from '../prop-types';
 
+import SharedPT from '../prop-types';
 import { func } from '../../util';
+
 import Calendar from '../../calendar-2';
 import TimePanel from './time-panel';
 
@@ -15,10 +16,9 @@ class DatePanel extends React.Component {
         rtl: PT.bool,
         prefix: PT.string,
         locale: PT.object,
+        showTime: PT.bool,
         mode: SharedPT.mode,
         value: SharedPT.date,
-        panelValue: SharedPT.date,
-        showTime: PT.bool,
     };
     static defaultProps = {
         showTime: false,
@@ -29,59 +29,46 @@ class DatePanel extends React.Component {
 
         this.state = {
             mode: props.mode,
-            panelValue: props.value,
+            value: props.value,
         };
 
-        bindCtx(this, [
-            'handleChange',
-            'onChange',
-            'renderTimePanel',
-            'handlePanelChange',
-            'handleTimeChange',
-        ]);
+        bindCtx(this, ['handleChange', 'onChange', 'handlePanelChange']);
     }
 
-    onChange(v) {
-        func.call(this.props, 'onChange', [v]);
+    onChange(value) {
+        this.setState({
+            value,
+        });
+        func.call(this.props, 'onChange', [value]);
     }
 
     setTime(newVal, oldVal) {
         if (oldVal) {
-            newVal.hours(oldVal.hours());
-            newVal.minutes(oldVal.minutes());
-            newVal.seconds(oldVal.seconds());
-            newVal.milliseconds(oldVal.milliseconds());
+            return newVal
+                .hour(oldVal.hour())
+                .minute(oldVal.minute())
+                .second(oldVal.second())
+                .millisecond(oldVal.millisecond());
         }
         return newVal;
     }
 
     handleChange(v) {
-        this.setTime(v, this.state.panelValue);
+        v = this.setTime(v, this.state.value);
 
-        this.setState({
-            panelValue: v,
-        });
-        this.onChange(v);
-    }
-
-    handleTimeChange(v) {
-        this.setState({
-            panelValue: v,
-        });
         this.onChange(v);
     }
 
     handlePanelChange(v, mode) {
-        this.setTime(v, this.state.panelValue);
-
         this.setState({
             mode,
-            panelValue: v,
+            value: this.setTime(v, this.state.value),
         });
     }
 
     render() {
-        const { value, mode, prefix, showTime } = this.props;
+        const { mode, prefix, showTime } = this.props;
+        const { value } = this.state;
 
         // 切换面板mode
         const hasModeChanged = this.state.mode !== this.props.mode;
@@ -100,7 +87,7 @@ class DatePanel extends React.Component {
                     onPanelChange={this.handlePanelChange}
                 />
                 {showTime && !hasModeChanged ? (
-                    <TimePanel prefix={prefix} value={value} onSelect={this.handleTimeChange} />
+                    <TimePanel prefix={prefix} value={value} onSelect={this.onChange} />
                 ) : null}
             </div>
         );
