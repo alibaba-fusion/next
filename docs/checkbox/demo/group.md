@@ -21,7 +21,7 @@ const CheckboxGroup = () => (
     <div>
         <h4>Horizonal direction</h4>
         <p>
-            <Checkbox.Group itemDirection="hoz">
+            <Checkbox.Group direction="hoz">
                 <Checkbox value="react">React</Checkbox>
                 <Checkbox value="vue">Vue</Checkbox>
                 <Checkbox value="angular">Angular</Checkbox>
@@ -29,7 +29,7 @@ const CheckboxGroup = () => (
         </p>
         <h4>Vertical direction</h4>
         <p>
-            <Checkbox.Group itemDirection="ver">
+            <Checkbox.Group direction="ver">
                 <Checkbox value="react">React</Checkbox>
                 <Checkbox value="vue">Vue</Checkbox>
                 <Checkbox value="angular">Angular</Checkbox>
