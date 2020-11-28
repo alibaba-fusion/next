@@ -18,22 +18,6 @@
     @return ($value / ($value * 0 + 1));
 }
 
-// 添加单位的方法
-//
-// @param {String} $value
-//   不带单位的数值
-//
-// @example scss - SCSS 用法
-//   $dimension: strip-units(10);
-//
-// @example css - CSS 输出
-//   $dimension: 10px;
-//
-// @return {String}
-@function add-units-px($value) {
-    @return ($value / ($value * 0 + 1)) + px;
-}
-
 // 检查一个值是否为合法的CSS长度
 //
 // @param {String} $value
