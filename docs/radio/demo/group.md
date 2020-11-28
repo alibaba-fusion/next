@@ -22,7 +22,7 @@ const Shape = {
     BUTTON: 'button'
 };
 
-const ItemDirection = {
+const direction = {
     HORIZON: 'hoz',
     VERTICAL: 'ver'
 };
@@ -30,15 +30,15 @@ const ItemDirection = {
 class RadioGroup extends React.Component {
     state = {
         shape: Shape.NORMAL,
-        itemDirection: ItemDirection.HORIZON
+        direction: direction.HORIZON
     }
 
     onShapeChange = (shape) => {
         this.setState({ shape });
     }
 
-    onItemDirectionChange = (itemDirection) => {
-        this.setState({ itemDirection });
+    ondirectionChange = (direction) => {
+        this.setState({ direction });
     }
 
     render() {
@@ -59,12 +59,12 @@ class RadioGroup extends React.Component {
                 <div>
                     <Radio.Group
                         shape="button"
-                        value={this.state.itemDirection}
-                        onChange={this.onItemDirectionChange}
+                        value={this.state.direction}
+                        onChange={this.ondirectionChange}
                     >
-                        <Radio value={ItemDirection.HORIZON}>Horizon</Radio>
+                        <Radio value={direction.HORIZON}>Horizon</Radio>
                         <Radio
-                            value={ItemDirection.VERTICAL}
+                            value={direction.VERTICAL}
                             disabled={this.state.shape === Shape.BUTTON}
                         >Vertical</Radio>
                     </Radio.Group>
@@ -73,7 +73,7 @@ class RadioGroup extends React.Component {
                     <h3>Rendered Result</h3>
                     <Radio.Group
                         shape={this.state.shape}
-                        itemDirection={this.state.itemDirection}
+                        direction={this.state.direction}
                     >
                         <Radio value="react">React</Radio>
                         <Radio value="vue">Vue</Radio>
