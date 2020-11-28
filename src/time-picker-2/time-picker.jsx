@@ -37,11 +37,11 @@ class TimePicker2 extends Component {
          */
         placeholder: PropTypes.string,
         /**
-         * 时间值，dayjs格式，受控状态使用
+         * 时间值，dayjs格式或者2020-01-01字符串格式，受控状态使用
          */
         value: checkDateValue,
         /**
-         * 时间初值，dayjs格式，非受控状态使用）
+         * 时间初值，dayjs格式或者2020-01-01字符串格式，非受控状态使用
          */
         defaultValue: checkDateValue,
         /**
@@ -162,7 +162,8 @@ class TimePicker2 extends Component {
         renderPreview: PropTypes.func,
         /**
          * 时间值改变时的回调
-         * @param {Object|String} value 时间对象或时间字符串
+         * @param {Object|String} dateString 时间对象或时间字符串
+         * @param {DayjsObject} date dayjs时间对象
          */
         onChange: PropTypes.func,
         className: PropTypes.string,
@@ -213,8 +214,8 @@ class TimePicker2 extends Component {
     }
 
     onValueChange(newValue) {
-        const ret = newValue ? newValue.format(this.props.format) : newValue;
-        this.props.onChange(ret);
+        const ret = newValue ? newValue.format(this.props.format) : '';
+        this.props.onChange(newValue, ret);
     }
 
     onClearValue = () => {
@@ -451,7 +452,7 @@ class TimePicker2 extends Component {
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
-                    offset={[0, 5]}
+                    offset={[0, 4]}
                     {...popupProps}
                     followTrigger={followTrigger}
                     visible={visible}

@@ -18,5 +18,5 @@ without border
 ````jsx
 import { TimePicker2 } from '@alifd/next';
 
-ReactDOM.render(<TimePicker2 hasBorder={false} onChange={(val) => console.log(val)} />, mountNode);
+ReactDOM.render(<TimePicker2 hasBorder={false} onChange={console.log} />, mountNode);
 ````

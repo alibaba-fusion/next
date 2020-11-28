@@ -18,5 +18,5 @@ Basic usage.
 ````jsx
 import { TimePicker2 } from '@alifd/next';
 
-ReactDOM.render(<TimePicker2 onChange={(val) => console.log(val)} />, mountNode);
+ReactDOM.render(<TimePicker2 onChange={console.log} />, mountNode);
 ````
