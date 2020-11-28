@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
 
+// 应该只会用一次，批量生成 mobile 目录及其引用
 const cwd = process.cwd();
 const { getComponentName } = require('./utils');
 

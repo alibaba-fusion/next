@@ -1,6 +1,5 @@
-import { Upload as MeetUpload } from '@alifd/meet-react';
 import NextUpload from '../index';
 
-const Upload = MeetUpload ? MeetUpload : NextUpload;
+const Upload = NextUpload;
 
 export default Upload;
