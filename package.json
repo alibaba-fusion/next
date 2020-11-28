@@ -71,7 +71,8 @@
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
+    "mix": "node ./scripts/mix.js",
+    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "lint-staged": {
     "types/**/*.d.ts": [
@@ -215,6 +216,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
+    "@alifd/meet-react": "^1.0.0",
     "moment": "^2.22.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
