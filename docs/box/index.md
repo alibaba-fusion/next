@@ -4,6 +4,7 @@
 -   family: General
 -   chinese: 弹性布局
 -   type: 展示
+-   version: 1.19
 
 ---
 
