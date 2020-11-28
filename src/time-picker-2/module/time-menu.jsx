@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { checkMomentObj } from '../utils';
+import { checkDayjsObj } from '../utils';
 
 function scrollTo(element, to, duration) {
     const requestAnimationFrame =
@@ -38,7 +38,7 @@ class TimeMenu extends React.Component {
         mode: PropTypes.oneOf(['hour', 'minute', 'second']),
         step: PropTypes.number,
         activeIndex: PropTypes.number,
-        value: checkMomentObj,
+        value: checkDayjsObj,
         disabledItems: PropTypes.func,
         renderTimeMenuItems: PropTypes.func,
         onSelect: PropTypes.func,
@@ -95,7 +95,7 @@ class TimeMenu extends React.Component {
         return list.map(({ label, value }) => {
             const isDisabled = disabled || disabledItems(value);
             const itemCls = classnames({
-                [`${prefix}time-picker-menu-item`]: true,
+                [`${prefix}time-picker2-menu-item`]: true,
                 [`${prefix}disabled`]: isDisabled,
                 [`${prefix}selected`]: value === activeIndex,
             });
@@ -133,11 +133,11 @@ class TimeMenu extends React.Component {
         // ) : null;
 
         return (
-            <div className={`${prefix}time-picker-menu`} ref={this._menuWrapperRefHandler}>
+            <div className={`${prefix}time-picker2-menu`} ref={this._menuWrapperRefHandler}>
                 {/* {menuTitle} */}
                 <ul
                     role="listbox"
-                    className={`${prefix}time-picker-menu-${mode}`}
+                    className={`${prefix}time-picker2-menu-${mode}`}
                     ref={this._menuRefHandler}
                 >
                     {this.createMenuItems(list)}

@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import nextLocale from '../locale/zh-cn';
 import { func, datejs } from '../util';
 import TimeMenu from './module/time-menu';
-import { checkMomentObj } from './utils';
+import { checkDayjsObj } from './utils';
 
 const { noop } = func;
 
@@ -12,9 +12,9 @@ class TimePickerPanel extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         /**
-         * 时间值（moment/dayjs 对象）
+         * 时间值（dayjs 对象）
          */
-        value: checkMomentObj,
+        value: checkDayjsObj,
         /**
          * 是否显示小时
          */
@@ -65,7 +65,7 @@ class TimePickerPanel extends Component {
          * }]
          * @param {Array} list 默认渲染的列表
          * @param {String} mode 渲染的菜单 hour, minute, second
-         * @param {moment} value 当前时间，可能为 null
+         * @param {dayjs} value 当前时间，可能为 null
          * @return {Array} 返回需要渲染的数据
          */
         renderTimeMenuItems: PropTypes.func,
@@ -95,18 +95,19 @@ class TimePickerPanel extends Component {
     onSelectMenuItem = (index, type) => {
         const { value } = this.props;
         const clonedValue = value ? value.clone() : datejs('00:00:00', 'HH:mm:ss', true);
+        let newValue;
         switch (type) {
             case 'hour':
-                clonedValue.hour(index);
+                newValue = clonedValue.hour(index);
                 break;
             case 'minute':
-                clonedValue.minute(index);
+                newValue = clonedValue.minute(index);
                 break;
             case 'second':
-                clonedValue.second(index);
+                newValue = clonedValue.second(index);
                 break;
         }
-        this.props.onSelect(clonedValue);
+        this.props.onSelect(newValue);
     };
 
     render() {
@@ -131,8 +132,8 @@ class TimePickerPanel extends Component {
 
         const colLen = [showHour, showMinute, showSecond].filter(v => v).length;
         const classNames = classnames(
-            `${prefix}time-picker-panel`,
-            `${prefix}time-picker-panel-col-${colLen}`,
+            `${prefix}time-picker2-panel`,
+            `${prefix}time-picker2-panel-col-${colLen}`,
             className
         );
 
@@ -148,7 +149,7 @@ class TimePickerPanel extends Component {
         let activeMinute;
         let activeSecond;
 
-        if (value && datejs.isMoment(value)) {
+        if (value && datejs.isSelf(value)) {
             activeHour = value.hour();
             activeMinute = value.minute();
             activeSecond = value.second();

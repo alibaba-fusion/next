@@ -17,9 +17,9 @@ Setting default value by passing `defaultValue`.
 
 ````jsx
 import { TimePicker2 } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-const defaultVal = moment('12:00:00', 'HH:mm:ss', true);
+const defaultVal = dayjs('12:00:00', 'HH:mm:ss', true);
 
 ReactDOM.render(<div>
     <TimePicker2 defaultValue={defaultVal} onChange={(val) => console.log(val)} /><br /><br />

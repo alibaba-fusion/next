@@ -22,7 +22,7 @@ class PanelFooter extends React.PureComponent {
         const { onOk, prefix } = this.props;
 
         return (
-            <div className={`${prefix}time-picker-panel-tools`}>
+            <div className={`${prefix}time-picker2-panel-tools`}>
                 {ranges.map(({ label, value = [], onChange }) => {
                     const handleClick = () => {
                         const momentValue = value.map(v => datejs(v));
@@ -64,7 +64,7 @@ class PanelFooter extends React.PureComponent {
         const onClick = () => onOk();
 
         return (
-            <div className={`${prefix}date-picker-panel-footer`}>
+            <div className={`${prefix}date-picker2-panel-footer`}>
                 {this.createRanges(ranges)}
                 {onPanelChange ? (
                     <Button {...sharedBtnProps} text onClick={this.changePanel}>

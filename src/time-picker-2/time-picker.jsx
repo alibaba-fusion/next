@@ -17,9 +17,9 @@ const { noop } = func;
 const timePickerLocale = nextLocale.TimePicker;
 
 /**
- * TimePicker
+ * TimePicker2
  */
-class TimePicker extends Component {
+class TimePicker2 extends Component {
     static propTypes = {
         ...ConfigProvider.propTypes,
         prefix: PropTypes.string,
@@ -37,11 +37,11 @@ class TimePicker extends Component {
          */
         placeholder: PropTypes.string,
         /**
-         * 时间值（moment/datejs 对象或时间字符串，受控状态使用）
+         * 时间值，dayjs格式，受控状态使用
          */
         value: checkDateValue,
         /**
-         * 时间初值（moment/datejs 对象或时间字符串，非受控状态使用）
+         * 时间初值，dayjs格式，非受控状态使用）
          */
         defaultValue: checkDateValue,
         /**
@@ -54,7 +54,7 @@ class TimePicker extends Component {
         hasClear: PropTypes.bool,
         /**
          * 时间的格式
-         * https://momentjs.com/docs/#/parsing/string-format/
+         * https://day.js.org/docs/zh-CN/display/format#docsNav
          */
         format: PropTypes.string,
         /**
@@ -95,7 +95,7 @@ class TimePicker extends Component {
          * }]
          * @param {Array} list 默认渲染的列表
          * @param {String} mode 渲染的菜单 hour, minute, second
-         * @param {moment} value 当前时间，可能为 null
+         * @param {dayjs} value 当前时间，可能为 null
          * @return {Array} 返回需要渲染的数据
          */
         renderTimeMenuItems: PropTypes.func,
@@ -157,7 +157,7 @@ class TimePicker extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {MomentObject} value 时间
+         * @param {DayjsObject} value 时间
          */
         renderPreview: PropTypes.func,
         /**
@@ -190,7 +190,6 @@ class TimePicker extends Component {
     constructor(props, context) {
         super(props, context);
         const value = formatDateValue(props.value || props.defaultValue, props.format);
-        this.inputAsString = typeof (props.value || props.defaultValue) === 'string';
         this.state = {
             value,
             inputStr: '',
@@ -214,8 +213,7 @@ class TimePicker extends Component {
     }
 
     onValueChange(newValue) {
-        // const ret = this.inputAsString && newValue ? newValue.format(this.props.format) : newValue;
-        const ret = newValue.toDate();
+        const ret = newValue ? newValue.format(this.props.format) : newValue;
         this.props.onChange(ret);
     }
 
@@ -381,7 +379,7 @@ class TimePicker extends Component {
         const { value, inputStr, inputing, visible } = this.state;
 
         const triggerCls = classnames({
-            [`${prefix}time-picker-trigger`]: true,
+            [`${prefix}time-picker2-trigger`]: true,
         });
 
         if (rtl) {
@@ -389,7 +387,7 @@ class TimePicker extends Component {
         }
 
         if (isPreview) {
-            return this.renderPreview(obj.pickOthers(others, TimePicker.PropTypes));
+            return this.renderPreview(obj.pickOthers(others, TimePicker2.PropTypes));
         }
 
         const inputValue = inputing ? inputStr : (value && value.format(format)) || '';
@@ -403,7 +401,7 @@ class TimePicker extends Component {
             onBlur: this.onInputBlur,
             onPressEnter: this.onInputBlur,
             onKeyDown: this.onKeyown,
-            hint: <Icon type="clock" className={`${prefix}time-picker-symbol-clock-icon`} />,
+            hint: <Icon type="clock" className={`${prefix}time-picker2-symbol-clock-icon`} />,
         };
 
         const triggerInput = (
@@ -414,7 +412,7 @@ class TimePicker extends Component {
                     state={state}
                     hasBorder={hasBorder}
                     placeholder={placeholder || locale.placeholder}
-                    className={classnames(`${prefix}time-picker-input`)}
+                    className={classnames(`${prefix}time-picker2-input`)}
                 />
             </div>
         );
@@ -439,8 +437,8 @@ class TimePicker extends Component {
 
         const classNames = classnames(
             {
-                [`${prefix}time-picker`]: true,
-                [`${prefix}time-picker-${size}`]: size,
+                [`${prefix}time-picker2`]: true,
+                [`${prefix}time-picker2-${size}`]: size,
                 [`${prefix}disabled`]: disabled,
             },
             className
@@ -449,7 +447,7 @@ class TimePicker extends Component {
         const PopupComponent = popupComponent ? popupComponent : Popup;
 
         return (
-            <div {...obj.pickOthers(TimePicker.propTypes, others)} className={classNames}>
+            <div {...obj.pickOthers(TimePicker2.propTypes, others)} className={classNames}>
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
@@ -468,7 +466,7 @@ class TimePicker extends Component {
                     {popupContent ? (
                         popupContent
                     ) : (
-                        <div dir={others.dir} className={`${prefix}time-picker-body`}>
+                        <div dir={others.dir} className={`${prefix}time-picker2-body`}>
                             <TimePickerPanel {...panelProps} />
                         </div>
                     )}
@@ -478,4 +476,4 @@ class TimePicker extends Component {
     }
 }
 
-export default polyfill(TimePicker);
+export default polyfill(TimePicker2);

@@ -58,3 +58,5 @@ export { default as ResponsiveGrid } from './responsive-grid';
 export { default as Box } from './box';
 export { default as List } from './list';
 export { default as TimePicker2 } from './time-picker-2';
+export { default as DatePicker2 } from './date-picker-2';
+export { default as Calendar2 } from './calendar-2';

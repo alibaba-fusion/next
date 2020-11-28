@@ -1,12 +1,9 @@
-const datejs =
-    window.moment === undefined
-        ? window.dayjs === undefined
-            ? null
-            : window.dayjs
-        : window.moment;
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-if (!datejs) {
-    throw new Error(`需要全局引入moment或dayjs日期库`);
-}
+dayjs.extend(customParseFormat);
+
+const datejs = dayjs;
+datejs.isSelf = dayjs.isDayjs;
 
 export default datejs;

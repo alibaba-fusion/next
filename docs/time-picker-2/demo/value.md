@@ -17,13 +17,13 @@ Creating controlled TimePikcer by `value` and `onChange`.
 
 ````jsx
 import { TimePicker2 } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 class ControlledTimePicker2 extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            value: moment('12:00:00', 'HH:mm:ss', true)
+            value: dayjs('12:00:00', 'HH:mm:ss', true)
         };
     }
 

@@ -17,7 +17,7 @@ Use TimePicker2 with Field.
 
 ````jsx
 import { TimePicker2, Field, Button } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 class Demo extends React.Component {
     field = new Field(this);
@@ -34,7 +34,7 @@ class Demo extends React.Component {
             rules: [
                 { required: true, message: 'Time Required' }
             ],
-            initValue: moment('00:00:00', 'HH:mm:ss', true)
+            initValue: dayjs('00:00:00', 'HH:mm:ss', true)
         });
 
         return (<div>
