@@ -6,10 +6,30 @@ import Group from './group';
 
 Input.Password = ConfigProvider.config(Password, {
     exportNames: ['getInputNode', 'focus'],
+    transform: /* istanbul ignore next */ (props, deprecated) => {
+        if ('hasLimitHint' in props) {
+            deprecated('hasLimitHint', 'showLimitHint', 'Input');
+            const { hasLimitHint, ...others } = props;
+
+            props = { showLimitHint: hasLimitHint, ...others };
+        }
+
+        return props;
+    },
 });
 
 Input.TextArea = ConfigProvider.config(TextArea, {
     exportNames: ['getInputNode', 'focus'],
+    transform: /* istanbul ignore next */ (props, deprecated) => {
+        if ('hasLimitHint' in props) {
+            deprecated('hasLimitHint', 'showLimitHint', 'Input');
+            const { hasLimitHint, ...others } = props;
+
+            props = { showLimitHint: hasLimitHint, ...others };
+        }
+
+        return props;
+    },
 });
 Input.Group = Group;
 
@@ -17,4 +37,14 @@ Input.Group = Group;
 // 所以不能在 input.jsx／textarea.jsx 中生成 HOC
 export default ConfigProvider.config(Input, {
     exportNames: ['getInputNode', 'focus'],
+    transform: /* istanbul ignore next */ (props, deprecated) => {
+        if ('hasLimitHint' in props) {
+            deprecated('hasLimitHint', 'showLimitHint', 'Input');
+            const { hasLimitHint, ...others } = props;
+
+            props = { showLimitHint: hasLimitHint, ...others };
+        }
+
+        return props;
+    },
 });

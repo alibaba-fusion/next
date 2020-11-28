@@ -25,7 +25,7 @@ Form Input, use it with Form components usually.
 | onKeyDown       | callback when on key down<br><br>**signature**:<br>Function(e: Event, opts: Object) => void <br>**params**:<br>_e_: {Event} DOM Event Object<br>_opts_: {Object} extended information：<br> - opts.overMaxLength: {Boolean} input has reached max length<br> - opts.beTrimed: {Boolean} input whitespace has been trimed  | Function       | func.noop           |
 | disabled        | disabled state  | Boolean       | false     |
 | maxLength       | max length  | Number        | null      |
-| hasLimitHint    | limit max num of characters  | Boolean       | false     |
+| showLimitHint    | limit max num of characters  | Boolean       | false     |
 | cutString       | when maxLength is set, auto cut string  | Boolean       | true      |
 | readOnly        | read only, forbid editing    | Boolean       | false     |
 | trim            | onChange will  auto trim text                                                                                      | Boolean       | false     |
@@ -60,7 +60,7 @@ Form Input, use it with Form components usually.
 | onKeyDown       | callback when on key down<br><br>**signature**:<br>Function(e: Event, opts: Object) => void <br>**params**:<br>_e_: {Event} DOM Event Object<br>_opts_: {Object} extended information：<br> - opts.overMaxLength: {Boolean} input has reached max length<br> - opts.beTrimed: {Boolean} input whitespace has been trimed  | Function       | func.noop           |
 | disabled       | disabled state                                                                                    | Boolean        | false     |
 | maxLength      | max length                                                                                                         | Number         | null      |
-| hasLimitHint   | limit max num of characters                                                                                         | Boolean        | false     |
+| showLimitHint   | limit max num of characters                                                                                         | Boolean        | false     |
 | cutString      | when maxLength is set, auto cut string                                                                           | Boolean        | true      |
 | readOnly       | read only, forbid editing                                                                                       | Boolean        | false     |
 | trim           | onChange will  auto trim text                                                                                    | Boolean        | false     |
