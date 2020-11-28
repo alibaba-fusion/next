@@ -48,7 +48,7 @@
 | disabled      | 表示radio被禁用                                                                                                                                         | Boolean                             | -        |
 | dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` `[{label: 'apply', value: 'apple'}]`                                                | Array&lt;String>/Array&lt;Object>   | \[]      |
 | children      | 通过子元素方式设置内部radio                                                                                                                                   | Array&lt;ReactElement>/ReactElement | -        |
-| itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                   | Enum                                | 'hoz'    |
+| direction     | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                   | Enum                                | 'hoz'    |
 | isPreview     | 是否为预览态                                                                                                                                             | Boolean                             | false    |
 | renderPreview | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: number) => void<br>**参数**:<br>_value_: {number} 评分值                                                  | Function                            | -        |
 
