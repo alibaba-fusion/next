@@ -2,7 +2,7 @@
     .#{$css-prefix}picker {
         &-header {
             padding: 0 8px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #F0F0F0;
             display: flex;
             align-items: center;
 
@@ -14,7 +14,7 @@
 
             &-btn {
                 min-width: 1.6em;
-                color: #585d66;
+                color: #585D66;
                 font-family: inherit;
                 vertical-align: initial;
             }
@@ -23,7 +23,7 @@
             &-text-field {
                 text-align: center;
                 font-size: 14px;
-                color: #1f2633;
+                color: #1F2633;
                 font-weight: bolder;
                 vertical-align: initial;
             }
@@ -42,7 +42,7 @@
             display: inline-flex;
             flex-direction: column;
             text-align: center;
-            background: #fff;
+            background: #FFF;
             border-radius: 2px;
             outline: none;
         }
@@ -52,7 +52,7 @@
             box-sizing: border-box;
             line-height: 38px;
             text-align: center;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid #F0F0F0;
             padding: 4px 12px;
             display: flex;
 

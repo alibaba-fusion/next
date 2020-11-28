@@ -9,7 +9,7 @@
 #{$calendar2-prefix} {
     font-size: 12px;
     user-select: none;
-    background: #fff;
+    background: #FFF;
 
     &-header {
         display: flex;
@@ -39,18 +39,18 @@
     &-cell-inner {
         position: relative;
         z-index: 2;
-        color: rgba(0, 0, 0, 0.25);
+        color: rgba(0, 0, 0, .25);
         outline: none;
         border: 1px solid transparent;
     }
 
     &-cell-current {
-        color: #585d66;
+        color: #585D66;
     }
 
     &-cell:hover {
         #{$calendar2-prefix}-cell-current {
-            background: #edeff2;
+            background: #EDEFF2;
         }
     }
 
@@ -97,17 +97,17 @@
                 height: 24px;
                 line-height: 24px;
                 border-radius: 2px;
-                transition: background-color 0.2s, border 0.2s;
+                transition: background-color .2s, border .2s;
 
                 &#{$calendar2-prefix}-cell-selected#{$calendar2-prefix}-cell-current {
-                    color: #fff;
+                    color: #FFF;
                     background: $color-brand1-9;
                 }
 
                 &#{$calendar2-prefix}-cell-disabled,
                 &#{$calendar2-prefix}-cell-disabled#{$calendar2-prefix}-cell-current {
-                    color: #c4c7cc;
-                    background: #f5f7fa;
+                    color: #C4C7CC;
+                    background: #F5F7FA;
                 }
             }
 
@@ -135,15 +135,13 @@
 
             &-cell-inner {
                 height: 80px;
-                border-top: 2px solid #dcdfe6;
+                border-top: 2px solid #DCDFE6;
                 margin: 0 4px;
                 padding: 4px 8px 0;
 
-                &#{$calendar2-prefix}-cell {
-                    &-selected {
-                        border-top-color: $color-brand1-9;
-                        background: $color-brand1-9;
-                    }
+                &#{$calendar2-prefix}-cell-selected {
+                    border-top-color: $color-brand1-9;
+                    background: $color-brand1-9;
                 }
             }
         }
