@@ -4,17 +4,17 @@ html {
 }
 
 body {
-    max-width: 1200px;
+    max-width: 1600px;
     min-width: 896px;
     width: max(calc(100% - 112px), 896px);
-    margin: 56px auto;
+    margin: 20px auto auto 40px;
     font-size: 14px!important;
 }
 
 .markdown {
     color: #666;
     word-wrap: break-word;
-    line-height: 2;
+    line-height: 20px;
     letter-spacing: .2px
 }
 
@@ -26,26 +26,25 @@ body {
 .markdown h1 {
     color: #222;
     margin-top: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     font-size: 32px;
     font-family: Roboto-Bold;
-    line-height: 38px;
+    line-height: 32px;
     font-weight: 500;
 }
 
 .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
     position: relative;
     color: #222;
-    margin: 1.6em 0 .6em;
     font-weight: 500;
     clear: both;
 }
 
 .markdown h2 {
-    margin: 56px 0 16px 0;
+    margin: 48px 0 12px 0;
     font-size: 24px;
-    min-height: 28px;
-    line-height: 28px;
+    min-height: 20px;
+    line-height: 20px;
 }
 
 .markdown h3 {
@@ -84,6 +83,7 @@ body {
 }
 
 .markdown p {
+    margin-bottom: 12px;
     font-family: Roboto-Regular;
     font-size: 14px;
     color: #666666;
@@ -105,9 +105,6 @@ body {
     padding-left: 4px
 }
 
-.markdown>ol li p, .markdown>ul li p {
-    margin: .6em 0
-}
 
 .markdown ol>li {
     list-style: decimal
@@ -235,7 +232,7 @@ code {
 }
 
 .demo-wrapper {
-    max-width: 992px;
+    max-width: 1600px;
     min-width: 784px;
     width: calc(100% - 168px);
     position: relative;
@@ -244,16 +241,21 @@ code {
 .demo-index {
     position: fixed;
     top: 56px;
-    right: max(calc((100% - 1200px)/2), 0px);
+    right: max(calc((100% - 1600px)/2), 0px);
     width: 168px;
     max-height: calc(100vh - 200px);
     min-height: 150px;
     overflow: auto;
 }
-
 @media screen and (max-width:1064px){
     .demo-index {
         display: none;
+    }
+}
+@media screen and (min-width:1600px){
+    .demo-index {
+        right: auto;
+        left: 1520px;
     }
 }
 
@@ -263,7 +265,6 @@ code {
 
 .demo-index-list {
     box-sizing: content-box;
-    border-left: 1px solid #dcdee3;
     top: 92px;
     position: fixed;
     overflow: auto;
@@ -272,6 +273,7 @@ code {
 }
 
 .demo-index-list .demo-index-item {
+    border-left: 1px solid #dcdee3;
     max-width: 168px;
     font-size: 12px;
     line-height: 1.5;
@@ -279,24 +281,24 @@ code {
     font-family: Roboto-Regular;
     color: #666666;
     letter-spacing: 0;
-    min-height: 28px;
+    min-height: 20px;
 }
 
 .demo-index-list .demo-index-item a {
     display: block;
-    padding: 4px 0;
+    padding: 0;
     color: #666;
     letter-spacing: 0;
     line-height: 1.5;
+    min-height: 20px;
     text-decoration: none;
     font-family: Roboto-Regular;
     font-size: 12px;
-    min-height: 28px;
 }
 
 .demo-index-list .demo-index-item.demo-index-item-sub {
-    padding-left: 36px;
-    line-height: 1.5;
+    padding-left: 20px;
+    line-height: 1.2;
     font-family: Roboto-Regular;
     font-size: 12px;
     color: #666666;
@@ -305,7 +307,6 @@ code {
 
 .demo-index-list .demo-index-item.demo-index-item-sub a {
     display: block;
-    padding: 4px 0;
     font-family: Roboto-Regular;
     font-size: 12px;
     color: #666666;
@@ -315,15 +316,14 @@ code {
 }
 
 .demo-index-list .demo-index-item.active {
-    border-left: 3px solid #222;
-    margin-left: -2px;
+    border-left: 1px solid #222;
     font-family: Roboto-Bold;
     font-size: 12px;
     color: #222222;
     letter-spacing: 0;
     line-height: 1.5;
     font-weight: 900;
-    min-height: 28px;
+    min-height: 20px;
 }
 
 .next-demo-item.scroll-count-item.active{
@@ -336,15 +336,15 @@ code {
     color: #222222;
     letter-spacing: 0;
     line-height: 1.5;
-    text-decoration: none;
-    min-height: 28px;
+    min-height: 20px;
+    text-decoration: none
 }
 
 .demo-title {
     font-size: 32px;
     font-weight: 400;
-    line-height: 46px;
-    height: 46px;
+    line-height: 32px;
+    height: 32px;
     margin: 26px 0 16px 0;
 }
 
@@ -377,10 +377,6 @@ code {
 
 .demo-list-item-code .demo-code-previews .demo-code-preview-item .preview-paltform-icon path {
     fill: #fff
-}
-
-.demo-list-item.active .demo-list-item-body {
-    border: 1px dashed rgba(59, 154, 255, .5);
 }
 
 .demo-list-item-header {
@@ -570,7 +566,7 @@ html::-webkit-scrollbar {
 
 .markdown table td:nth-child(3) {
     width: 16%;
-    color: #c41d7f;
+    /* color: #c41d7f; */
     font-size: 13px;
 }
 
@@ -653,9 +649,17 @@ html::-webkit-scrollbar {
 }
 
 .react-live-body {
-    font-size: 14px;
-    line-height: 1.5;
-    padding: 5px;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 5px 0 5px;
+}
+
+.react-live-body pre {
+    font-family: Monaco, 'Andale Mono', 'Ubuntu Mono', monospace!important;
+}
+
+.react-live-body .token.plain {
+    color: #585d66;
 }
 
 .react-live-body textarea {
@@ -678,17 +682,19 @@ html::-webkit-scrollbar {
 }
 
 [id*="-live-import"] pre .language-jsx .hljs {
+    font-family: Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,PingFang SC,Microsoft YaHei;
     background-color: #F5F5FB !important;
     border-radius: 10px;
     padding: 20px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 [id*="-live-css"] pre .language-css .hljs {
+    font-family: Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,PingFang SC,Microsoft YaHei;
     background-color: #F5F5FB !important;
     border-radius: 10px;
     padding: 20px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 #toggle-rtl {
@@ -701,7 +707,7 @@ html::-webkit-scrollbar {
 
 .next-demo-item {
     border: 1px solid #EEE;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
 .next-demo-playground {
@@ -709,13 +715,25 @@ html::-webkit-scrollbar {
 }
 
 .next-demo-mount {
-    padding: 40px 24px;
+    padding: 24px 24px;
     border-bottom: 1px solid #EEE;
 }
 
 .next-demo-body {
     background: #f5f7fa;
     padding: 4px 20px !important;
+    max-height: 400px;
+    overflow: scroll;
+}
+
+[id*='-live-import'] pre.language-jsx {
+    margin: 0 0;
+    padding-bottom: 0;
+}
+
+[id*='-live-css'] pre.language-css {
+    margin: 0 0;
+    padding-top: 0;
 }
 
 .next-demo-body pre {
@@ -734,8 +752,16 @@ html::-webkit-scrollbar {
 }
 
 .demo-item-desc p {
-    margin: 0 0 12px 0;
+    margin: 0 0 0 0;
     line-height: 20px;
+}
+
+.markdown h4+p {
+    margin-top: 0;
+}
+
+.next-demo-mount p {
+    margin: 0 0 12px 0;
 }
 
 .demo-item-desc .demo-item-desc-title {
@@ -832,8 +858,12 @@ html::-webkit-scrollbar {
     cursor: pointer;
 }
 
-#demo-guide + h2 {
+/* #demo-guide + h2 {
     margin-top: 0;
+} */
+
+h2#demo-list {
+    margin-bottom: 20px;
 }
 
 .markdown h2+h3 {
@@ -845,4 +875,8 @@ html::-webkit-scrollbar {
 
 .markdown table+h3 {
     margin: 41px 0 8px 0;
+}
+
+.markdown p+p {
+    margin-top: 12px;
 }
