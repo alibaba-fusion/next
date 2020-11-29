@@ -349,10 +349,10 @@ window.${name}RenderScript = function ${name}RenderScript(liveDemo){
                     scope={{${liveVars ? `${liveVars},` : ''}mountNode}} 
                     noInline={true}>
                     <div id="${name}-live-editor">
+                        <LiveError id="${name}-live-error" className="react-live-error"/>
                         <div id="${name}-live-import" ></div>
                         <div id="${name}-live-body" className="react-live-body"><LiveEditor theme={emptyTheme} /></div>
                         <div id="${name}-live-css"></div>
-                        <LiveError id="${name}-live-error" className="react-live-error"/>
                     </div>
                     <LivePreview />
                 </LiveProvider>
