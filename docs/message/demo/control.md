@@ -1,11 +1,15 @@
-# 受控显示隐藏
+# 受控显示
 
 - order: 4
+
+通过`visible`设置受控显示或隐藏。
 
 :::lang=en-us
 # Show and hide under controll
 
 - order: 4
+
+Control visibility of Message by `visibile`.
 :::
 
 ---
@@ -35,7 +39,7 @@ class App extends React.Component {
 
         return (
             <div className="control-demo">
-                <Button onClick={this.handleChange}>Toggle Visible</Button>
+                <Button type="primary" onClick={this.handleChange}>Toggle Visible</Button>
                 <Message type="warning" visible={visible} title="Warning" closeable onClose={this.handleClose}>
                     This item already has the label "travel". You can add a new label.
                 </Message>
