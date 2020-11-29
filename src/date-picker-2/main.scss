@@ -97,8 +97,19 @@
         // }
     }
 
-    &date-time-picker-panel {
-        #{$calendar-prefix} {
+    &time-picker-panel {
+        border-left: 1px solid #f0f0f0;
+
+        .#{$css-prefix}picker-body {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .#{$css-prefix}time-picker2-menu ul {
+            height: 206px;
+        }
+
+        .#{$css-prefix}time-picker2-menu:not(:last-child) {
             border-right: 1px solid #f0f0f0;
         }
     }

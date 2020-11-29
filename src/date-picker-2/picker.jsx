@@ -1,6 +1,5 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
-import classnames from 'classnames';
 import * as PT from 'prop-types';
 
 import SharedPT from './prop-types';
@@ -15,7 +14,7 @@ import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
-const { bindCtx, isFunction } = func;
+const { bindCtx, isFunction, getRender } = func;
 
 class Picker extends React.Component {
     static propTypes = {
@@ -24,26 +23,12 @@ class Picker extends React.Component {
         locale: PT.object,
         mode: SharedPT.mode,
         type: SharedPT.type,
-        inputReadOnly: PT.bool,
+        inputReadOnly: SharedPT.inputReadOnly,
         trigger: PT.oneOfType([PT.func, PT.object]),
-        /**
-         * 输入框内置标签
-         */
-        label: PT.node,
         /**
          * 输入框状态
          */
         state: PT.oneOf(['success', 'loading', 'error']),
-        /**
-         * 输入提示
-         */
-        placeholder: PT.string,
-        /**
-         * 默认展现的月
-         * @return {MomentObject} 返回包含指定月份的 moment 对象实例
-         */
-        defaultVisibleMonth: PT.func,
-        onVisibleMonthChange: PT.func,
         /**
          * 日期值（受控）moment 对象
          */
@@ -52,6 +37,10 @@ class Picker extends React.Component {
          * 初始日期值，moment 对象
          */
         defaultValue: SharedPT.value,
+        /**
+         * 输入提示
+         */
+        placeholder: PT.oneOfType([PT.string, PT.arrayOf(PT.string)]),
         /**
          * 日期值的格式（用于限定用户输入和展示）
          */
@@ -140,6 +129,8 @@ class Picker extends React.Component {
         popupContent: PT.node,
         disableChangeMode: PT.bool,
         yearRange: PT.arrayOf(PT.number),
+        titleRender: PT.func,
+        showOk: PT.bool,
     };
 
     static defaultProps = {
@@ -174,6 +165,7 @@ class Picker extends React.Component {
             inputValue: this.getInputValue(value),
             inputType: undefined,
             justBeginInput: true,
+            panelMode: props.mode,
         };
 
         bindCtx(this, [
@@ -184,11 +176,11 @@ class Picker extends React.Component {
             'onOk',
             'onChange',
             'onClick',
-            'onDateInput',
+            'handleInput',
             'onInputTypeChange',
             'handleChange',
             'onVisibleChange',
-            'renderNode',
+            'onPanelChange',
         ]);
 
         this.getFromPropOrState = getFromPropOrState.bind(this);
@@ -202,10 +194,7 @@ class Picker extends React.Component {
     }
 
     componentWillUnmount() {
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-            this.timeoutId = null;
-        }
+        this.timeoutId && clearTimeout(this.timeoutId);
     }
 
     /**
@@ -245,14 +234,18 @@ class Picker extends React.Component {
     }
 
     formater(v) {
-        const { format } = this.props;
-        return v ? (isFunction(format) ? format(v) : v.format(format)) : '';
+        const { format, isRange, inputType } = this.props;
+        let fmt = format;
+
+        if (isRange && Array.isArray(format)) {
+            fmt = format[inputType];
+        }
+
+        return v ? (isFunction(format) ? fmt(v) : v.format(fmt)) : '';
     }
 
     // 判断弹层是否显示
     handleVisibleChange(visible, type) {
-        // const showOk = this.props.showOk !== false && this.props.showTime;
-
         // 点击非组件内
         if (type === 'docClick') {
             this.onVisibleChange(visible);
@@ -306,9 +299,27 @@ class Picker extends React.Component {
         }
     }
 
-    onDateInput(v) {
+    handleInput(v, eventType) {
         this.setState({
             inputValue: v,
+        });
+
+        if (eventType === 'clear') {
+            this.handleChange(v);
+
+            if (this.state.isRange) {
+                // 因为input组件内部会让第二个输入框获得焦点
+                // 所以这里需要设置setTimeout才能让第一个input获得焦点
+                this.timeoutId = setTimeout(() => {
+                    this.handleInputFocus(0);
+                });
+            }
+        }
+    }
+
+    onPanelChange(v, mode) {
+        this.setState({
+            panelMode: mode,
         });
     }
 
@@ -329,11 +340,9 @@ class Picker extends React.Component {
         });
 
         if (!this.props.showTime || isOK) {
-            if (isRange && justBeginInput) {
-                this.handleInputFocus(inputType === BEGIN ? END : BEGIN);
-            } else {
-                this.onChange(v);
-            }
+            isRange && justBeginInput
+                ? this.handleInputFocus(inputType === BEGIN ? END : BEGIN)
+                : this.onChange(v);
         }
     }
 
@@ -341,7 +350,6 @@ class Picker extends React.Component {
         this.setState({
             value: v,
         });
-
         func.call(this.props, 'onChagne', [v]);
         this.onVisibleChange(false);
     }
@@ -373,19 +381,6 @@ class Picker extends React.Component {
             });
     }
 
-    renderNode(name, defaultRender) {
-        let node = defaultRender;
-
-        if (name in this.props) {
-            node = this.props[name];
-        }
-
-        if (isFunction(node)) {
-            node = node.call(this, this.state);
-        }
-        return node;
-    }
-
     render() {
         const {
             prefixCls,
@@ -396,9 +391,9 @@ class Picker extends React.Component {
             handleVisibleChange,
             onOk,
             onClick,
-            onDateInput,
+            handleInput,
             onInputTypeChange,
-            renderNode,
+            onPanelChange,
         } = this;
         const {
             rtl,
@@ -408,8 +403,9 @@ class Picker extends React.Component {
             showTime,
             preset,
             mode,
-            type,
             format,
+            trigger,
+            footer,
         } = this.props;
         const { isRange, inputType, justBeginInput, curValue } = this.state;
 
@@ -428,21 +424,21 @@ class Picker extends React.Component {
             prefix,
             locale,
             mode,
+            format,
             showTime,
             inputType,
             onChange: handleChange,
         };
 
         // 渲染触发层
-        const triggerNode = renderNode(
-            'trigger',
+        const triggerNode = getRender(
+            trigger,
             <DateInput
                 format={format}
                 isRange={isRange}
                 value={inputValue}
-                inputType={inputType}
                 readOnly={inputReadOnly}
-                onInput={onDateInput}
+                onInput={handleInput}
                 onClick={onClick}
                 ref={el => (this.dateInput = el)}
                 onInputTypeChange={onInputTypeChange}
@@ -451,26 +447,30 @@ class Picker extends React.Component {
         );
 
         // 渲染弹出层
-        const sharedDateProps = {
-            mode,
-            value: curValue,
-            ...sharedProps,
-        };
-
-        const DateNode = this.state.isRange
-            ? renderNode(
-                  'dateNode',
-                  <RangePanel justBeginInput={justBeginInput} {...sharedDateProps} />
-              )
-            : renderNode('rangeNode', <DatePanel {...sharedDateProps} />);
-
-        // 底部节点
-        const footerNode = renderNode(
-            'footer',
-            <FooterPanel showTime={showTime} onOk={onOk} onChange={handleChange} preset={preset} />
+        const DateNode = isRange ? (
+            <RangePanel
+                value={curValue}
+                onPanelChange={onPanelChange}
+                justBeginInput={justBeginInput}
+                {...sharedProps}
+            />
+        ) : (
+            <DatePanel value={curValue} onPanelChange={onPanelChange} {...sharedProps} />
         );
 
-        const className = classnames([`${prefixCls}`, `${prefix}${type}-picker-overlay`]);
+        // 底部节点
+        const footerNode = getRender(
+            footer,
+            this.state.showOk || preset ? (
+                <FooterPanel
+                    showTime={showTime}
+                    onOk={onOk}
+                    onChange={handleChange}
+                    preset={preset}
+                />
+            ) : null,
+            { onOk, showTime, onChange: handleChange, preset }
+        );
 
         return (
             <Popup
@@ -482,9 +482,9 @@ class Picker extends React.Component {
                 className={`${prefixCls}-overlay`}
             >
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div className={className} onMouseDown={handleMouseDown}>
+                <div className={prefixCls} onMouseDown={handleMouseDown}>
                     {DateNode}
-                    {footerNode}
+                    {this.state.panelMode !== this.props.mode ? null : footerNode}
                 </div>
             </Popup>
         );

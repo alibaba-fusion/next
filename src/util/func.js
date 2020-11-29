@@ -107,8 +107,7 @@ export function call(obj, methodName, args, defaultObj) {
     return method && method(...args);
 }
 
-export function witchCustomRender(renderName, props, renderProps, defaultRender) {
-    const r = renderName in props && !isNone(props[renderName]) ? props[renderName] : defaultRender;
-
-    return isFunction(r) ? r(renderProps) : r;
+export function getRender(render, defaultRender, ...renderProps) {
+    const r = render !== undefined ? render : defaultRender;
+    return isFunction(r) ? r(...renderProps) : r;
 }

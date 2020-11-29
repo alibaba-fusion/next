@@ -6,8 +6,18 @@ import SharedPT from '../prop-types';
 import { DATE_PANEL_MODE } from '../constant';
 import { func, obj, datejs, KEYCODE } from '../../util';
 
-const { bindCtx, witchCustomRender } = func;
+const { bindCtx, getRender } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
+
+// 面板行数
+const mode2Rows = {
+    [DATE]: 7,
+    [WEEK]: 7,
+    [MONTH]: 3,
+    [QUARTER]: 4,
+    [YEAR]: 3,
+    [DECADE]: 3,
+};
 
 class DatePanel extends React.Component {
     static propTypes = {
@@ -22,6 +32,7 @@ class DatePanel extends React.Component {
         onDateSelect: PT.func,
         startOnSunday: PT.bool,
         dateCellClassName: PT.oneOfType([PT.func, PT.string]),
+        colNum: PT.number,
     };
 
     constructor(props) {
@@ -144,11 +155,10 @@ class DatePanel extends React.Component {
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
                         <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
-                            {witchCustomRender(
-                                'dateCellRender',
-                                props,
-                                value,
-                                <div className={`${prefixCls}-value`}>{label}</div>
+                            {getRender(
+                                props.dateCellRender,
+                                <div className={`${prefixCls}-value`}>{label}</div>,
+                                value
                             )}
                         </div>
                     </td>
@@ -188,8 +198,8 @@ class DatePanel extends React.Component {
         );
     }
 
-    getDateCellData(minDays) {
-        const { panelValue: value } = this.props;
+    getDateCellData() {
+        const { panelValue: value, colNum } = this.props;
 
         const firstDayOfMonth = value.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
@@ -198,10 +208,10 @@ class DatePanel extends React.Component {
 
         const cellData = [];
         const preDays = (weekOfFirstDay - firstDayOfWeek + 7) % 7;
-        const nextDays = minDays
-            ? minDays - preDays - daysOfCurMonth
+        const nextDays = colNum
+            ? colNum * mode2Rows[DATE] - preDays - daysOfCurMonth
             : (7 - ((preDays + daysOfCurMonth) % 7)) % 7;
-
+        console.log(colNum);
         // 上个月日期
         for (let i = preDays; i > 0; i--) {
             cellData.push(firstDayOfMonth.clone().subtract(i, 'day'));

@@ -9,7 +9,7 @@ import Select from '../../select';
 import Button from '../../button';
 import Icon from '../../icon';
 
-const { bindCtx, witchCustomRender } = func;
+const { bindCtx, getRender } = func;
 const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
 class HeaderPanel extends React.PureComponent {
@@ -32,6 +32,7 @@ class HeaderPanel extends React.PureComponent {
         onNext: PT.func,
         onSuperPrev: PT.func,
         onSuperNext: PT.func,
+        titleRender: PT.func,
         /**
          * 扩展操作区域渲染
          */
@@ -322,12 +323,7 @@ class HeaderPanel extends React.PureComponent {
             if (showTitle) {
                 nodes.push(
                     <div key="title" className={`${prefixCls}-title`}>
-                        {witchCustomRender(
-                            'headerTitleRender',
-                            this.props,
-                            { value },
-                            value.format()
-                        )}
+                        {getRender(this.props.titleRender, value.format(), { value })}
                     </div>
                 );
             }
@@ -348,12 +344,7 @@ class HeaderPanel extends React.PureComponent {
     render() {
         return (
             <div className={`${this.prefixCls} ${this.props.prefix}picker-header`}>
-                {witchCustomRender(
-                    'headerRender',
-                    this.props,
-                    { ...this.props },
-                    this.renderInner()
-                )}
+                {getRender(this.props.headerRender, this.renderInner(), { ...this.props })}
             </div>
         );
     }

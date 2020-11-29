@@ -81,6 +81,7 @@ class Calendar extends React.Component {
         onNext: PT.func,
         onSuperPrev: PT.func,
         onSuperNext: PT.func,
+        colNum: PT.number,
     };
 
     static defaultProps = {
@@ -202,6 +203,7 @@ class Calendar extends React.Component {
             onNext,
             onSuperPrev,
             onSuperNext,
+            colNum,
         } = this.props;
 
         panelValue = datejs(panelValue);
@@ -235,6 +237,7 @@ class Calendar extends React.Component {
             dateCellRender,
             dateCellClassName,
             dateCellProps,
+            colNum,
             onSelect: this.onDateSelect,
             ...sharedProps,
         };

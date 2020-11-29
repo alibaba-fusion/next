@@ -64,6 +64,8 @@ class DatePanel extends React.Component {
             mode,
             value: this.setTime(v, this.state.value),
         });
+        console.log('[date-panel]:handlePanelChange');
+        func.call(this.props, 'onPanelChange', [v, mode]);
     }
 
     render() {

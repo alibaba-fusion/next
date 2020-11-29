@@ -15,7 +15,7 @@ class TimePanel extends React.PureComponent {
         const { prefix, value, onSelect } = this.props;
 
         return (
-            <div className={`${prefix}date-time-panel`}>
+            <div className={`${prefix}time-picker-panel`}>
                 <div className={`${prefix}picker-header`}>
                     <div className={`${prefix}picker-header-text-field`}>
                         {value ? value.format('HH:mm:ss') : null}
