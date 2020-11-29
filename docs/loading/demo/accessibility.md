@@ -1,15 +1,15 @@
-# 全屏
+# 无障碍支持
 
-- order: 5
+- order: 6
 
-通过`fullScreen`强制全屏显示加载态，通过`safeNode`指定安全节点。
+默认支持通过按下`Esc`键退出全屏显示加载态。
 
 :::lang=en-us
-# Fullscreen
+# Accessibility
 
-- order: 5
+- order: 6
 
-display a fullscreen loading
+Press `Esc` to exit fullScreen loading.
 
 :::
 
