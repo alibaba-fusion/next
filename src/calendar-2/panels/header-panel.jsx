@@ -179,12 +179,13 @@ class HeaderPanel extends React.PureComponent {
         const { panelValue, locale, panelMode, onPanelModeChange } = this.props;
 
         const monthBeforeYear = locale.monthBeforeYear || false;
+        const localeData = datejs.localeData();
 
-        let nodes;
-        const year = panelValue.year();
-        const month = panelValue.month();
+        const year = panelValue.year() + (locale && locale.year === '年' ? '年' : '');
+        const month = localeData.monthsShort()[panelValue.month()];
         const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
+        let nodes;
         const yearNode = (
             <Button
                 text

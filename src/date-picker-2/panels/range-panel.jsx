@@ -102,14 +102,18 @@ class RangePanel extends React.Component {
         const {
             value: [begin, end],
         } = this.props;
+        const { mode } = this.props;
+
+        // 相同日期对应的单位是day 其余单位同mode一致
+        const unit = mode === 'date' ? 'day' : mode;
 
         const { disabledDate, inputType } = this.props;
         const { BEGIN, END } = DATE_INPUT_TYPE;
 
         return (
             disabledDate(v) ||
-            (inputType === END && begin && begin.isAfter(v)) ||
-            (inputType === BEGIN && end && end.isBefore(v))
+            (inputType === END && begin && begin.isAfter(v, unit)) ||
+            (inputType === BEGIN && end && end.isBefore(v, unit))
         );
     }
 

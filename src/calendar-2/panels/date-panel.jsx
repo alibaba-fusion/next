@@ -121,7 +121,7 @@ class DatePanel extends React.Component {
                 const isDisabled = props.disabledDate && props.disabledDate(value);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
 
-                const className = classnames(`${prefixCls}-inner`, {
+                const className = classnames(prefixCls, {
                     [`${prefixCls}-current`]: isCurrent, // 是否属于当前面板值
                     [`${prefixCls}-today`]: this.isSame(value, now, mode),
                     [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
@@ -142,8 +142,8 @@ class DatePanel extends React.Component {
                 }
 
                 children.push(
-                    <td className={prefixCls} key={key} title={key} {...onEvents}>
-                        <div role="cell" tabIndex="-1" className={className}>
+                    <td key={key} title={key} {...onEvents} className={className}>
+                        <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
                             {witchCustomRender(
                                 'dateCellRender',
                                 props,
@@ -167,12 +167,16 @@ class DatePanel extends React.Component {
 
     // 星期几
     renderWeekdaysHead() {
-        const weekdaysShort = datejs.weekdaysShort();
-        const startOnSunday = obj.get('startOnSunday', this.props, this.props.locale.startOnSunday);
+        let weekdaysShort = datejs.weekdaysShort();
+        const firstDayOfWeek = datejs.localeData().firstDayOfWeek();
 
-        if (!startOnSunday) {
-            weekdaysShort.push(weekdaysShort.shift());
+        // 默认一周的第一天是周日，否则需要调整
+        if (firstDayOfWeek !== 0) {
+            weekdaysShort = weekdaysShort
+                .slice(firstDayOfWeek)
+                .concat(weekdaysShort.slice(0, firstDayOfWeek));
         }
+
         return (
             <thead>
                 <tr>
@@ -184,16 +188,19 @@ class DatePanel extends React.Component {
         );
     }
 
-    getDateCellData() {
-        const { panelValue: value, startOnSunday } = this.props;
+    getDateCellData(minDays) {
+        const { panelValue: value } = this.props;
 
         const firstDayOfMonth = value.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
-        const daysOfTheMonth = value.endOf('month').date(); // 当月天数
+        const daysOfCurMonth = value.endOf('month').date(); // 当月天数
+        const firstDayOfWeek = datejs.localeData().firstDayOfWeek(); // 一周的第一天是星期几
 
         const cellData = [];
-        const preDays = (weekOfFirstDay + (startOnSunday ? 0 : 6)) % 7;
-        const nextDays = (7 - ((preDays + daysOfTheMonth) % 7)) % 7;
+        const preDays = (weekOfFirstDay - firstDayOfWeek + 7) % 7;
+        const nextDays = minDays
+            ? minDays - preDays - daysOfCurMonth
+            : (7 - ((preDays + daysOfCurMonth) % 7)) % 7;
 
         // 上个月日期
         for (let i = preDays; i > 0; i--) {
@@ -201,13 +208,13 @@ class DatePanel extends React.Component {
         }
 
         // 本月日期
-        for (let i = 0; i < daysOfTheMonth; i++) {
+        for (let i = 0; i < daysOfCurMonth; i++) {
             cellData.push(firstDayOfMonth.clone().add(i, 'day'));
         }
 
         // 下个月日期
         for (let i = 0; i < nextDays; i++) {
-            cellData.push(firstDayOfMonth.clone().add(daysOfTheMonth + i, 'day'));
+            cellData.push(firstDayOfMonth.clone().add(daysOfCurMonth + i, 'day'));
         }
 
         return cellData.map(value => {
@@ -301,7 +308,7 @@ class DatePanel extends React.Component {
 
         return (
             <table className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
-                {mode === DATE ? this.renderWeekdaysHead() : null}
+                {[DATE, WEEK].includes(mode) ? this.renderWeekdaysHead() : null}
                 <tbody>{this.renderCellContent(mode2Data[mode]())}</tbody>
             </table>
         );
