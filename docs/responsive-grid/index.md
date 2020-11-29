@@ -4,18 +4,19 @@
 -   family: General
 -   chinese: 栅格布局
 -   type: 展示
+-   version: 1.19
 
 ---
 
-## 开发指南
+## 何时使用
 
-### 何时使用
+栅格布局，使用`display: grid`，1.19.0+ 添加本组件，目前不支持IE。
 
-栅格布局，使用`display: grid`，1.19.0+ 添加本组件，目前不支持IE
+## 如何使用
 
-PC first，其他屏幕支持自适应，因此默认情况下 `device` 处于 `desktop` 模式，此时 `columns` 为12列，
-更改 `device` 参数为 `tablet` 后 `columns` 为8列, 更改 `device` 参数为 `phone` 后 `columns` 为4列，
-同时 Cell会根据内置规则进行自适应调配。
+- PC first，其他屏幕支持自适应，因此默认情况下 `device` 处于 `desktop` 模式，此时 `columns` 为12列；
+- 更改 `device` 参数为 `tablet` 后 `columns` 为8列；
+- 更改 `device` 参数为 `phone` 后 `columns` 为4列，同时 Cell会根据内置规则进行自适应调配。
 
 ## API
 
