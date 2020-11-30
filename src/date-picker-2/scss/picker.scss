@@ -48,13 +48,16 @@
         }
 
         &-footer {
+            width: min-content;
             min-width: 100%;
             box-sizing: border-box;
-            line-height: 38px;
             text-align: center;
             border-top: 1px solid #f0f0f0;
             padding: 4px 12px;
             display: flex;
+            min-height: 40px;
+            align-items: center;
+            flex-wrap: wrap;
 
             &-actions {
                 margin-left: auto;

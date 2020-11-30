@@ -92,7 +92,6 @@ class RangePanel extends React.Component {
                 end = v.clone().add(20, 'year');
                 break;
         }
-
         return [begin, end];
     }
 
@@ -148,6 +147,8 @@ class RangePanel extends React.Component {
     }
 
     handlePanelChange(v, mode, idx) {
+        console.log('handlePanelChange', v, mode, idx);
+
         this.setState({
             mode,
             panelValue: v,
@@ -270,32 +271,30 @@ class RangePanel extends React.Component {
 
     renderRange(sharedProps) {
         const { handlePanelChange, handleCanlendarClick } = this;
-        const { value, prefix, mode } = this.props;
+        const { value, prefix } = this.props;
         const ranges = this.getRanges();
 
         const calendarProps = idx => {
-            sharedProps = {
+            return {
+                ...sharedProps,
                 value: value[idx],
                 panelValue: ranges[idx],
                 onPanelChange: (v, m) => handlePanelChange(v, m, idx),
-                ...sharedProps,
             };
-
-            return sharedProps;
         };
 
         const calendarNodes = [
             <Calendar
+                {...calendarProps(0)}
                 className={`${prefix}range-picker-left`}
                 key="range-panel-calendar-left"
-                {...calendarProps(0)}
             />,
             <Calendar
+                {...calendarProps(1)}
                 className={`${prefix}range-picker-right`}
                 key="range-panel-calendar-right"
                 onNext={handleCanlendarClick}
                 onSuperNext={handleCanlendarClick}
-                {...calendarProps(1)}
             />,
         ];
 

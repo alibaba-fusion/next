@@ -57,14 +57,14 @@ class DatePanel extends React.Component {
         };
     }
 
-    handleSelect(v, e) {
-        func.call(this.props, 'onSelect', [v, e]);
+    handleSelect(v, e, args) {
+        func.call(this.props, 'onSelect', [v, e, args]);
     }
 
-    handleKeyDown(v, e) {
+    handleKeyDown(v, e, args) {
         switch (e.keyCode) {
             case KEYCODE.ENTER:
-                this.handleSelect(v);
+                this.handleSelect(v, e, args);
                 break;
             case KEYCODE.RIGHT:
                 break;
@@ -72,12 +72,12 @@ class DatePanel extends React.Component {
         // e.preventDefault();
     }
 
-    handleMouseEnter(v, e) {
-        func.call(this.props.dateCellProps, 'onMouseEnter', [v, e]);
+    handleMouseEnter(v, e, args) {
+        func.call(this.props.dateCellProps, 'onMouseEnter', [v, e, args]);
     }
 
-    handleMouseLeave(v, e) {
-        func.call(this.props.dateCellProps, 'onMouseLeave', [v, e]);
+    handleMouseLeave(v, e, args) {
+        func.call(this.props.dateCellProps, 'onMouseLeave', [v, e, args]);
     }
 
     isSame(curDate, date, mode) {
@@ -145,10 +145,10 @@ class DatePanel extends React.Component {
 
                 if (!isDisabled) {
                     onEvents = {
-                        onClick: e => this.handleSelect(value, e),
-                        onKeyDown: e => this.handleKeyDown(value, e),
-                        onMouseEnter: e => this.handleMouseEnter(value, e),
-                        onMouseLeave: e => this.handleMouseLeave(value, e),
+                        onClick: e => this.handleSelect(value, e, { isCurrent, label }),
+                        onKeyDown: e => this.handleKeyDown(value, e, { isCurrent, label }),
+                        onMouseEnter: e => this.handleMouseEnter(value, e, { isCurrent, label }),
+                        onMouseLeave: e => this.handleMouseLeave(value, e, { isCurrent, label }),
                     };
                 }
 
@@ -211,7 +211,7 @@ class DatePanel extends React.Component {
         const nextDays = colNum
             ? colNum * mode2Rows[DATE] - preDays - daysOfCurMonth
             : (7 - ((preDays + daysOfCurMonth) % 7)) % 7;
-        console.log(colNum);
+
         // 上个月日期
         for (let i = preDays; i > 0; i--) {
             cellData.push(firstDayOfMonth.clone().subtract(i, 'day'));

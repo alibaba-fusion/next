@@ -142,10 +142,15 @@ class Calendar extends React.Component {
         return shape === CALENDAR_SHAPE.PANEL && this.state.panelMode !== panelMode;
     }
 
-    onDateSelect(value) {
-        this.shouldSwitchPanelMode()
-            ? this.onPanelChange(value, this.switchPanelMode(this.state.panelMode))
-            : this.onChange(value);
+    onDateSelect(value, e, { isCurrent }) {
+        if (this.shouldSwitchPanelMode()) {
+            this.onPanelChange(value, this.switchPanelMode(this.state.panelMode));
+        } else {
+            if (!isCurrent) {
+                this.onPanelValueChange(value);
+            }
+            this.onChange(value);
+        }
     }
 
     onModeChange(mode, reason) {

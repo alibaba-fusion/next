@@ -68,13 +68,19 @@ $cell-inner: #{$calendar-prefix}-cell-inner;
     }
 
     &-cell-current {
-        &:not(#{$calendar-prefix}-cell-disabled):not(#{$calendar-prefix}-cell-selected) {
+        &:not(#{$calendar-prefix}-cell-disabled):not(#{$calendar-prefix}-cell-selected):not(#{$calendar-prefix}-cell-today) {
             #{$cell-inner} {
                 @include calendar-current;
             }
 
             &:hover #{$cell-inner} {
                 @include calendar-hover;
+            }
+        }
+
+        &#{$calendar-prefix}-cell-today {
+            #{$cell-inner} {
+                color: $color-brand1-9;
             }
         }
 
@@ -88,12 +94,6 @@ $cell-inner: #{$calendar-prefix}-cell-inner;
     &-cell-disabled {
         #{$cell-inner} {
             @include calendar-disabled;
-        }
-    }
-
-    &-cell-today {
-        #{$cell-inner} {
-            color: $color-brand1-9;
         }
     }
 
@@ -192,24 +192,25 @@ $cell-inner: #{$calendar-prefix}-cell-inner;
             @include calendar-disabled;
         }
     }
-
-    #{$calendar-prefix}-cell-selected {
-        #{$cell-inner} {
-            color: $color-brand1-6;
-            background: $color-brand1-1;
-        }
-
-        &#{$calendar-prefix}-cell-range-begin,
-        &#{$calendar-prefix}-cell-range-end {
+    #{$calendar-prefix}-cell-current:not(#{$calendar-prefix}-cell-disabled) {
+        &#{$calendar-prefix}-cell-selected {
             #{$cell-inner} {
-                @include calendar-selected;
+                color: $color-brand1-6;
+                background: $color-brand1-1;
+            }
+
+            &#{$calendar-prefix}-cell-range-begin,
+            &#{$calendar-prefix}-cell-range-end {
+                #{$cell-inner} {
+                    @include calendar-selected;
+                }
             }
         }
-    }
 
-    #{$calendar-prefix}-cell-hover {
-        #{$cell-inner} {
-            border: 1px dashed $color-brand1-9;
+        &#{$calendar-prefix}-cell-hover {
+            #{$cell-inner} {
+                border: 1px dashed $color-brand1-9;
+            }
         }
     }
 
