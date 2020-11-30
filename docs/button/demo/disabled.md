@@ -1,13 +1,13 @@
-# 不可用状态
+# 禁用状态
 
-- order: 6
+- order: 2
 
 添加 `disabled` 属性即可让按钮处于不可用状态，同时按钮样式也会改变。
 
 :::lang=en-us
 # Disabled
 
-- order: 6
+- order: 2
 
 Disable a Button by adding `disabled` attribute.
 
@@ -16,21 +16,24 @@ Disable a Button by adding `disabled` attribute.
 ---
 
 ````jsx
-import { Button } from '@alifd/next';
+import { Button, Box } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Button type="primary">Primary</Button>&nbsp;&nbsp;
-    <Button component="a" type="primary" disabled>Primary</Button>
-    <br />
-    <br />
-    <Button type="secondary">Secondary</Button>&nbsp;&nbsp;
-    <Button type="secondary" disabled>Secondary</Button>
-    <br />
-    <br />
-    <Button type="normal">Normal</Button>&nbsp;&nbsp;
-    <Button type="normal" disabled>Normal</Button>
-    <br />
-    <br />
+    <Box wrap direction="column" spacing={20}>
+        <Box direction="row" spacing={20}>
+            <Button type="primary">Primary</Button>
+            <Button component="a" type="primary" disabled>Primary</Button>
+        </Box>
+        <Box direction="row" spacing={20}>
+            <Button type="secondary">Secondary</Button>
+            <Button type="secondary" disabled>Secondary</Button>
+        </Box>
+        <Box direction="row" spacing={20}>
+            <Button type="normal">Normal</Button>
+            <Button type="normal" disabled>Normal</Button>
+        </Box>
+    </Box>
+    <br/>
     <div>
         <div className="ghost-light-background">
             <Button ghost="light" disabled>Ghost Light</Button>
@@ -39,7 +42,7 @@ ReactDOM.render(<div>
             <Button ghost="dark" disabled>Ghost Dark</Button>
         </div>
     </div>
-</div>, mountNode);
+    </div>, mountNode);
 ````
 
 ````css

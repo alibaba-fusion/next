@@ -1,4 +1,4 @@
-# 加载中
+# 加载状态
 
 - order: 3
 
@@ -16,7 +16,7 @@ Button has a inner state `loading` to control if a Button is in loading. It coul
 ---
 
 ````jsx
-import { Button, Icon } from '@alifd/next';
+import { Button, Icon, Box } from '@alifd/next';
 
 class Demo extends React.Component {
     constructor(props, context) {
@@ -32,10 +32,10 @@ class Demo extends React.Component {
     }
 
     render() {
-        return (<div>
-            <Button type="secondary" loading>Loading</Button>&nbsp;&nbsp;
+        return (<Box direction="row" spacing={20}>
+            <Button type="secondary" loading>Loading</Button>
             <Button type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
-        </div>);
+        </Box>);
     }
 }
 
