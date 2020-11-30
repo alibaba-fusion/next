@@ -1,15 +1,15 @@
-# 不同类型的通知框
+# 常用类型的通知框
 
-- order: 3
+- order: 2
 
-`success`, `warning`, `error`, `notice`, `help` 类型的通知框
+`success`, `warning`, `error`, `notice`, `help` 类型的通知框。
 
 :::lang=en-us
 # Level Notification
 
-- order: 3
+- order: 2
 
-More level Noticfiction
+More Noticfiction types.
 
 :::
 
@@ -28,19 +28,19 @@ const openNotification = (type) => {
 
 ReactDOM.render(
     <div className="button-row">
-        <Button onClick={() => openNotification('success')}>
+        <Button type="primary" onClick={() => openNotification('success')}>
             success
         </Button>
-        <Button onClick={() => openNotification('warning')}>
+        <Button type="primary" onClick={() => openNotification('warning')}>
             warning
         </Button>
-        <Button onClick={() => openNotification('error')}>
+        <Button type="primary" onClick={() => openNotification('error')}>
             error
         </Button>
-        <Button onClick={() => openNotification('notice')}>
+        <Button type="primary" onClick={() => openNotification('notice')}>
             notice
         </Button>
-        <Button onClick={() => openNotification('help')}>
+        <Button type="primary" onClick={() => openNotification('help')}>
             help
         </Button>
     </div>,
