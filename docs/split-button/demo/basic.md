@@ -16,20 +16,14 @@ Use SplitButton as Button.
 ---
 
 ````jsx
-import { SplitButton } from '@alifd/next';
+import { SplitButton, Box } from '@alifd/next';
 
 const { Item } = SplitButton;
 const menu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => <Item key={item}>{item}</Item>);
 
-ReactDOM.render(<div>
-    <SplitButton className="basic-button" label="Edit Document">{menu}</SplitButton>
-    <SplitButton className="basic-button" label="Edit Document" type="secondary">{menu}</SplitButton>
-    <SplitButton className="basic-button" label="Edit Document" type="primary">{menu}</SplitButton>
-</div>, mountNode);
-````
-
-````css
-.basic-button{
-    margin-right: 20px;
-}
+ReactDOM.render(<Box direction="row" spacing={20}>
+    <SplitButton label="Edit Document">{menu}</SplitButton>
+    <SplitButton label="Edit Document" type="secondary">{menu}</SplitButton>
+    <SplitButton label="Edit Document" type="primary">{menu}</SplitButton>
+</Box>, mountNode);
 ````
