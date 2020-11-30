@@ -16,21 +16,24 @@ Disable a Button by adding `disabled` attribute.
 ---
 
 ````jsx
-import { Button } from '@alifd/next';
+import { Button, Box } from '@alifd/next';
 
-ReactDOM.render(<div style={{display: 'grid', gridRowGap: 10}}>
-    <div  style={{display: 'inline-flex', gridColumnGap: 10}}>
-        <Button type="primary">Primary</Button>
-        <Button component="a" type="primary" disabled>Primary</Button>
-    </div>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
-        <Button type="secondary">Secondary</Button>
-        <Button type="secondary" disabled>Secondary</Button>
-    </div>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
-        <Button type="normal">Normal</Button>
-        <Button type="normal" disabled>Normal</Button>
-    </div>
+ReactDOM.render(<div>
+    <Box wrap direction="column" spacing={20}>
+        <Box direction="row" spacing={20}>
+            <Button type="primary">Primary</Button>
+            <Button component="a" type="primary" disabled>Primary</Button>
+        </Box>
+        <Box direction="row" spacing={20}>
+            <Button type="secondary">Secondary</Button>
+            <Button type="secondary" disabled>Secondary</Button>
+        </Box>
+        <Box direction="row" spacing={20}>
+            <Button type="normal">Normal</Button>
+            <Button type="normal" disabled>Normal</Button>
+        </Box>
+    </Box>
+    <br/>
     <div>
         <div className="ghost-light-background">
             <Button ghost="light" disabled>Ghost Light</Button>
@@ -39,7 +42,7 @@ ReactDOM.render(<div style={{display: 'grid', gridRowGap: 10}}>
             <Button ghost="dark" disabled>Ghost Dark</Button>
         </div>
     </div>
-</div>, mountNode);
+    </div>, mountNode);
 ````
 
 ````css

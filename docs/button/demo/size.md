@@ -16,15 +16,14 @@ The size of a Button is controlled by a `size` attribute, supporting `large`, `m
 ---
 
 ````jsx
-import { Button, Icon } from '@alifd/next';
+import { Button, Icon, Box } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+    <Box direction="row" spacing={20}>
         <Button type="primary" size="large"><Icon type="atm" />Large</Button>
         <Button type="primary"><Icon type="atm" />Medium</Button>
         <Button type="primary" size="small"><Icon type="atm" />Small</Button>
-    </div>
-    <br />
+    </Box>
     <br />
     <Button.Group size="large">
         <Button className="basic-button">Button</Button>

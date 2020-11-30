@@ -16,7 +16,7 @@ By default, a Button component is rendered by a html `<button>` tag, its render 
 ---
 
 ````jsx
-import { Button } from '@alifd/next';
+import { Button, Box } from '@alifd/next';
 
 const props = {
     component: 'a',
@@ -24,9 +24,9 @@ const props = {
     target: '_blank'
 };
 
-ReactDOM.render(<div  style={{display: 'inline-flex', gridColumnGap: 10}}>
+ReactDOM.render(<Box direction="row" spacing={20} >
     <Button {...props} type="primary">alibaba.com</Button>
     <Button {...props} type="secondary">alibaba.com</Button>
     <Button {...props} type="normal">alibaba.com</Button>
-</div>, mountNode);
+</Box>, mountNode);
 ````

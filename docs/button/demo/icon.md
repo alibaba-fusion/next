@@ -18,7 +18,7 @@ Button could contain Icon as its children, the default size of Icon is controlle
 ---
 
 ````jsx
-import { Button, Icon } from '@alifd/next';
+import { Button, Icon, Box } from '@alifd/next';
 
 class LoadingIcon extends React.Component {
     constructor(props, context) {
@@ -34,20 +34,21 @@ class LoadingIcon extends React.Component {
     }
 
     render() {
-        return (<div style={{display: 'inline-flex', gridColumnGap: 10}}>
+        return (<Box direction="row" spacing={20}>
             <Button type="secondary" iconSize="xs" loading icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Custom loading icon</Button>
             <Button type="primary" loading={this.state.loading} onClick={this.setLoading} icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Click to loading and show loading icon</Button>
-        </div>);
+        </Box>);
     }
 }
 
-ReactDOM.render(<div style={{display: 'grid', gridRowGap: 10}}>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
-    <Button ><Icon type="atm" /> ATM</Button>
-    <Button text><Icon type="atm" /> ATM</Button>
-    <Button warning><Icon type="atm" /> ATM</Button>
-    <Button iconSize="xxs"><Icon type="arrow-left" /> ARROW</Button>
-    </div>
+ReactDOM.render(<div >
+    <Box direction="row" spacing={20}>
+        <Button ><Icon type="atm" /> ATM</Button>
+        <Button text><Icon type="atm" /> ATM</Button>
+        <Button warning><Icon type="atm" /> ATM</Button>
+        <Button iconSize="xxs"><Icon type="arrow-left" /> ARROW</Button>
+    </Box>
+    <br/>
     <LoadingIcon />
 </div>, mountNode);
 ````

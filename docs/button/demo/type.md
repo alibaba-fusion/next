@@ -19,22 +19,24 @@ The types of button includes: primary, secondary, normal. Each one used to descr
 ---
 
 ````jsx
-import { Button } from '@alifd/next';
+import { Button, Box } from '@alifd/next';
 
-ReactDOM.render(<div style={{display: 'grid', gridRowGap: 10}}>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+ReactDOM.render(<div >
+    <Box direction="row" spacing={20}>
         <Button type="normal">Normal</Button> 
         <Button type="primary">Prirmary</Button> 
         <Button type="secondary">Secondary</Button>
-    </div>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+    </Box>
+    <br/>
+    <Box direction="row" spacing={20}>
         <Button type="normal" text>Normal</Button>
         <Button type="primary" text>Primary</Button> 
         <Button type="secondary" text>Secondary</Button>
-    </div>
-    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+    </Box>
+    <br/>
+    <Box direction="row" spacing={20}>
         <Button type="normal" warning>Normal</Button>
         <Button type="primary" warning>Primary</Button>
-    </div>
+    </Box>
 </div>, mountNode);
 ````
