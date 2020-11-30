@@ -32,18 +32,12 @@ class Demo extends React.Component {
     }
 
     render() {
-        return (<div>
-            <Button className="basic-button" type="secondary" loading>Loading</Button>
-            <Button className="basic-button" type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
+        return (<div style={{display: 'inline-flex', gridColumnGap: 10}}>
+            <Button type="secondary" loading>Loading</Button>
+            <Button type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
         </div>);
     }
 }
 
 ReactDOM.render(<Demo/>, mountNode);
-````
-
-````css
-.basic-button{
-    margin-right: 10px;
-}
 ````

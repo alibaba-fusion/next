@@ -19,9 +19,11 @@ The size of a Button is controlled by a `size` attribute, supporting `large`, `m
 import { Button, Icon } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Button className="basic-button" type="primary" size="large"><Icon type="atm" />Large</Button>
-    <Button className="basic-button" type="primary"><Icon type="atm" />Medium</Button>
-    <Button className="basic-button" type="primary" size="small"><Icon type="atm" />Small</Button>
+    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+        <Button type="primary" size="large"><Icon type="atm" />Large</Button>
+        <Button type="primary"><Icon type="atm" />Medium</Button>
+        <Button type="primary" size="small"><Icon type="atm" />Small</Button>
+    </div>
     <br />
     <br />
     <Button.Group size="large">
@@ -30,10 +32,4 @@ ReactDOM.render(<div>
         <Button className="basic-button">Button</Button>
     </Button.Group>
 </div>, mountNode);
-````
-
-````css
-.basic-button{
-    margin-right: 10px;
-}
 ````

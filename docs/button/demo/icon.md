@@ -34,26 +34,20 @@ class LoadingIcon extends React.Component {
     }
 
     render() {
-        return (<div>
-            <Button className="basic-button" type="secondary" iconSize="xs" loading icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Custom loading icon</Button>
-            <Button className="basic-button" type="primary" loading={this.state.loading} onClick={this.setLoading} icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Click to loading and show loading icon</Button>
+        return (<div style={{display: 'inline-flex', gridColumnGap: 10}}>
+            <Button type="secondary" iconSize="xs" loading icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Custom loading icon</Button>
+            <Button type="primary" loading={this.state.loading} onClick={this.setLoading} icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Click to loading and show loading icon</Button>
         </div>);
     }
 }
 
-ReactDOM.render(<div>
-    <Button className="basic-button"><Icon type="atm" /> ATM</Button>
-    <Button className="basic-button" text><Icon type="atm" /> ATM</Button>
-    <Button className="basic-button" warning><Icon type="atm" /> ATM</Button>
-    <Button className="basic-button" iconSize="xxs"><Icon type="arrow-left" /> ARROW</Button>
-    <br/>
-    <br/>
+ReactDOM.render(<div style={{display: 'grid', gridRowGap: 10}}>
+    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+    <Button ><Icon type="atm" /> ATM</Button>
+    <Button text><Icon type="atm" /> ATM</Button>
+    <Button warning><Icon type="atm" /> ATM</Button>
+    <Button iconSize="xxs"><Icon type="arrow-left" /> ARROW</Button>
+    </div>
     <LoadingIcon />
 </div>, mountNode);
-````
-
-````css
-.basic-button{
-    margin-right: 10px;
-}
 ````

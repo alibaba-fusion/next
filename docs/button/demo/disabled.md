@@ -18,19 +18,19 @@ Disable a Button by adding `disabled` attribute.
 ````jsx
 import { Button } from '@alifd/next';
 
-ReactDOM.render(<div>
-    <Button className="basic-button" type="primary">Primary</Button>
-    <Button className="basic-button" component="a" type="primary" disabled>Primary</Button>
-    <br />
-    <br />
-    <Button className="basic-button" type="secondary">Secondary</Button>
-    <Button className="basic-button" type="secondary" disabled>Secondary</Button>
-    <br />
-    <br />
-    <Button className="basic-button" type="normal">Normal</Button>
-    <Button className="basic-button" type="normal" disabled>Normal</Button>
-    <br />
-    <br />
+ReactDOM.render(<div style={{display: 'grid', gridRowGap: 10}}>
+    <div  style={{display: 'inline-flex', gridColumnGap: 10}}>
+        <Button type="primary">Primary</Button>
+        <Button component="a" type="primary" disabled>Primary</Button>
+    </div>
+    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+        <Button type="secondary">Secondary</Button>
+        <Button type="secondary" disabled>Secondary</Button>
+    </div>
+    <div style={{display: 'inline-flex', gridColumnGap: 10}}>
+        <Button type="normal">Normal</Button>
+        <Button type="normal" disabled>Normal</Button>
+    </div>
     <div>
         <div className="ghost-light-background">
             <Button ghost="light" disabled>Ghost Light</Button>
@@ -43,9 +43,6 @@ ReactDOM.render(<div>
 ````
 
 ````css
-.basic-button{
-    margin-right: 10px;
-}
 .ghost-light-background {
     display: inline-block;
     height: 100px;

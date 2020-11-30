@@ -24,15 +24,9 @@ const props = {
     target: '_blank'
 };
 
-ReactDOM.render(<div>
-    <Button {...props} className="basic-button" type="primary">alibaba.com</Button>
-    <Button {...props} className="basic-button" type="secondary">alibaba.com</Button>
-    <Button {...props} className="basic-button" type="normal">alibaba.com</Button>
+ReactDOM.render(<div  style={{display: 'inline-flex', gridColumnGap: 10}}>
+    <Button {...props} type="primary">alibaba.com</Button>
+    <Button {...props} type="secondary">alibaba.com</Button>
+    <Button {...props} type="normal">alibaba.com</Button>
 </div>, mountNode);
-````
-
-````css
-.basic-button{
-    margin-right: 10px;
-}
 ````

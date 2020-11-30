@@ -19,16 +19,10 @@ When using icon Button component , we should add `aria-label` to describe it. Pl
 import { Button, Icon } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Button.Group>
-        <Button className="basic-button" type="primary" aria-label="prompt button"><Icon type="prompt" /></Button>
-        <Button className="basic-button" type="primary" aria-label="clock button"><Icon type="clock" /></Button>
-        <Button className="basic-button" type="primary" aria-label="set button"><Icon type="set" /></Button>
+    <Button.Group >
+        <Button type="primary" aria-label="prompt button"><Icon type="prompt" /></Button>
+        <Button type="primary" aria-label="clock button"><Icon type="clock" /></Button>
+        <Button type="primary" aria-label="set button"><Icon type="set" /></Button>
     </Button.Group>
 </div>, mountNode);
-````
-
-````css
-.basic-button{
-    margin-right: 10px;
-}
 ````
