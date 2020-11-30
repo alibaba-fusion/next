@@ -172,6 +172,7 @@
         }
         #{$checkbox-prefix}-label {
             color: $checkbox-disabled-label-color;
+            cursor: not-allowed;
         }
     }
 }
