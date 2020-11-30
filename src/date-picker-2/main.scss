@@ -15,6 +15,8 @@
 // @import "scss/range-picker.scss";
 // @import "./rtl.scss";
 
+$picker: "." + $css-prefix + "picker";
+
 .#{$css-prefix} {
     &picker-overlay {
         overflow: hidden;
@@ -31,9 +33,12 @@
         }
 
         &-input {
+            display: inline-flex;
+            align-items: center;
             outline: none;
-            height: 28px;
             box-sizing: border-box;
+            border: $input-border-width solid $input-border-color;
+
             #{$input-prefix} {
                 border: none;
                 width: auto;
@@ -42,34 +47,70 @@
                     height: 100%;
                 }
             }
+            &#{$picker}-input-small {
+                @include input-size(
+                    $form-element-small-height,
+                    $input-s-padding,
+                    $form-element-small-font-size,
+                    $input-s-label-padding-left,
+                    $input-s-icon-padding-right
+                );
+                @include input-icon-size($form-element-small-icon-size);
+                @include input-border-radius($form-element-small-corner);
+            }
+
+            &#{$picker}-input-medium {
+                @include input-size(
+                    $form-element-medium-height,
+                    $input-m-padding,
+                    $form-element-medium-font-size,
+                    $input-m-label-padding-left,
+                    $input-m-icon-padding-right
+                );
+                @include input-icon-size($form-element-medium-icon-size);
+                @include input-border-radius($form-element-medium-corner);
+            }
+
+            &#{$picker}large {
+                @include input-size(
+                    $form-element-large-height,
+                    $input-l-padding,
+                    $form-element-large-font-size,
+                    $input-l-label-padding-left,
+                    $input-l-icon-padding-right
+                );
+                @include input-icon-size($form-element-large-icon-size);
+                @include input-border-radius($form-element-large-corner);
+            }
+
+            &:hover {
+                border-color: $input-hover-border-color;
+                background-color: $input-hover-bg-color;
+            }
+
+            &.#{$css-prefix}focus {
+                border-color: $input-focus-border-color;
+                background-color: $input-focus-bg-color;
+                box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
+            }
         }
 
-        &-input {
-            display: inline-flex;
-            align-items: center;
-            border: $input-border-width solid $input-border-color;
-            @include input-border-radius($form-element-small-corner);
+        .#{$css-prefix}range-picker-right {
+            #{$picker}-header-left-btn {
+                visibility: hidden;
+            }
+        }
+
+        .#{$css-prefix}range-picker-left {
+            #{$picker}-header-right-btn {
+                visibility: hidden;
+            }
         }
     }
 
-    &range-picker {
-        display: inline-flex;
-        &-input-separator {
-            color: #c4c7cc;
-            font-size: 12px;
-        }
-
-        &-right {
-            #{$calendar-prefix}-header-left-btn {
-                visibility: hidden;
-            }
-        }
-
-        &-left {
-            #{$calendar-prefix}-header-right-btn {
-                visibility: hidden;
-            }
-        }
+    &range-picker-input-separator {
+        color: #c4c7cc;
+        font-size: 12px;
     }
 
     &date-picker-panel {
@@ -78,23 +119,6 @@
 
     &range-picker-panel {
         display: inline-flex;
-
-        // #{$calendar-prefix}-cell-inner {
-        //     &#{$calendar-prefix}-cell-selected#{$calendar-prefix}-cell-current {
-        //         color: $color-brand1-6;
-        //         background: $color-brand1-1;
-
-        //         &#{$calendar-prefix}-cell-range-begin,
-        //         &#{$calendar-prefix}-cell-range-end {
-        //             color: #fff;
-        //             background: $color-brand1-6;
-        //         }
-        //     }
-
-        //     &#{$calendar-prefix}-cell-hover {
-        //         border: 1px dashed $color-brand1-9;
-        //     }
-        // }
     }
 
     &time-picker-panel {
@@ -106,7 +130,7 @@
         }
 
         .#{$css-prefix}time-picker2-menu ul {
-            height: 206px;
+            height: 204px;
         }
 
         .#{$css-prefix}time-picker2-menu:not(:last-child) {

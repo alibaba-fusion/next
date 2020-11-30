@@ -16,9 +16,9 @@ class DatePanel extends React.Component {
         rtl: PT.bool,
         prefix: PT.string,
         locale: PT.object,
-        showTime: PT.bool,
         mode: SharedPT.mode,
         value: SharedPT.date,
+        showTime: PT.bool,
     };
     static defaultProps = {
         showTime: false,
@@ -32,14 +32,7 @@ class DatePanel extends React.Component {
             value: props.value,
         };
 
-        bindCtx(this, ['handleChange', 'onChange', 'handlePanelChange']);
-    }
-
-    onChange(value) {
-        this.setState({
-            value,
-        });
-        func.call(this.props, 'onChange', [value]);
+        bindCtx(this, ['handleChange', 'handlePanelChange']);
     }
 
     setTime(newVal, oldVal) {
@@ -54,26 +47,18 @@ class DatePanel extends React.Component {
     }
 
     handleChange(v) {
-        v = this.setTime(v, this.state.value);
-
-        this.onChange(v);
+        func.call(this.props, 'onChange', [this.setTime(v, this.state.value)]);
     }
 
     handlePanelChange(v, mode) {
         this.setState({
             mode,
-            value: this.setTime(v, this.state.value),
         });
-        console.log('[date-panel]:handlePanelChange');
-        func.call(this.props, 'onPanelChange', [v, mode]);
+        func.call(this.props, 'onPanelChange', [this.setTime(v, this.state.value), mode]);
     }
 
     render() {
-        const { mode, prefix, showTime } = this.props;
-        const { value } = this.state;
-
-        // 切换面板mode
-        const hasModeChanged = this.state.mode !== this.props.mode;
+        const { mode, prefix, showTime, value } = this.props;
 
         const className = classnames(`${prefix}date-picker-panel`, {
             [`${prefix}date-time-picker-panel`]: showTime,
@@ -88,8 +73,8 @@ class DatePanel extends React.Component {
                     onChange={this.handleChange}
                     onPanelChange={this.handlePanelChange}
                 />
-                {showTime && !hasModeChanged ? (
-                    <TimePanel prefix={prefix} value={value} onSelect={this.onChange} />
+                {showTime && this.state.mode === mode ? (
+                    <TimePanel prefix={prefix} value={value} onSelect={this.handleChange} />
                 ) : null}
             </div>
         );

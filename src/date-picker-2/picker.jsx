@@ -21,6 +21,7 @@ class Picker extends React.Component {
         prefix: PT.string,
         rtl: PT.bool,
         locale: PT.object,
+        className: PT.string,
         mode: SharedPT.mode,
         type: SharedPT.type,
         inputReadOnly: SharedPT.inputReadOnly,
@@ -78,7 +79,7 @@ class Picker extends React.Component {
         /**
          * 输入框尺寸
          */
-        size: PT.oneOf(['small', 'medium', 'large']),
+        size: SharedPT.size,
         /**
          * 是否禁用
          */
@@ -123,7 +124,7 @@ class Picker extends React.Component {
          * @param {MomentObject} value 日期
          */
         renderPreview: PT.func,
-        className: PT.string,
+        ranges: PT.oneOfType([PT.array, PT.object]),
         name: PT.string,
         popupComponent: PT.elementType,
         popupContent: PT.node,
@@ -140,6 +141,7 @@ class Picker extends React.Component {
         type: DATE_PICKER_TYPE.DATE,
         mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
+        size: 'medium',
     };
 
     constructor(props) {
@@ -331,8 +333,8 @@ class Picker extends React.Component {
     handleChange(v, isOK) {
         const { value, isRange, justBeginInput, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
-
         v = this.checkAndRectify(v, value);
+        console.log('handleChangehandleChange', v);
 
         this.setState({
             curValue: v,
@@ -395,17 +397,19 @@ class Picker extends React.Component {
             onInputTypeChange,
             onPanelChange,
         } = this;
+
         const {
             rtl,
             prefix,
             locale,
             inputReadOnly,
             showTime,
-            preset,
+            ranges,
             mode,
             format,
             trigger,
             footer,
+            size,
         } = this.props;
         const { isRange, inputType, justBeginInput, curValue } = this.state;
 
@@ -440,12 +444,13 @@ class Picker extends React.Component {
                 readOnly={inputReadOnly}
                 onInput={handleInput}
                 onClick={onClick}
+                size={size}
                 ref={el => (this.dateInput = el)}
                 onInputTypeChange={onInputTypeChange}
                 {...sharedProps}
             />
         );
-
+        console.log(909090, curValue);
         // 渲染弹出层
         const DateNode = isRange ? (
             <RangePanel
@@ -461,15 +466,15 @@ class Picker extends React.Component {
         // 底部节点
         const footerNode = getRender(
             footer,
-            this.state.showOk || preset ? (
+            this.state.showOk || ranges ? (
                 <FooterPanel
                     showTime={showTime}
                     onOk={onOk}
                     onChange={handleChange}
-                    preset={preset}
+                    ranges={ranges}
                 />
             ) : null,
-            { onOk, showTime, onChange: handleChange, preset }
+            { onOk, showTime, onChange: handleChange, ranges }
         );
 
         return (

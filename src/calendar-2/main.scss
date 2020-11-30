@@ -127,6 +127,10 @@ $cell-inner: #{$calendar-prefix}-cell-inner;
             min-height: 150px;
 
             &-table {
+                thead > tr {
+                    height: 24px;
+                }
+
                 th,
                 td {
                     font-weight: 400;

@@ -12,13 +12,6 @@ import Icon from '../../icon';
 const { bindCtx, isFunction } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 
-function normalizeToArray(v) {
-    if (!Array.isArray(v)) {
-        v = [v];
-    }
-    return v;
-}
-
 class DateInput extends React.Component {
     static propTypes = {
         prefix: PT.string,
@@ -33,6 +26,7 @@ class DateInput extends React.Component {
         autoFocus: PT.bool,
         readOnly: SharedPT.inputReadOnly,
         placeholder: SharedPT.placeholder,
+        size: SharedPT.size,
     };
 
     static defaultProps = {
@@ -175,6 +169,7 @@ class DateInput extends React.Component {
             format,
             prefix,
             hasClear,
+            size,
         } = this.props;
 
         const placeholder = this.getPlaceholder();
@@ -188,7 +183,11 @@ class DateInput extends React.Component {
             hasBorder: false,
         };
 
-        const className = classnames([prefixCls, `${prefixCls}-${isRange ? 'range' : 'date'}`]);
+        const className = classnames([
+            prefixCls,
+            `${prefixCls}-${size}`,
+            `${prefixCls}-${isRange ? 'range' : 'date'}`,
+        ]);
 
         return (
             <div
