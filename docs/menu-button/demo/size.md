@@ -16,20 +16,14 @@ Change component size by `size` attribute.
 ---
 
 ````jsx
-import { MenuButton } from '@alifd/next';
+import { MenuButton, Box } from '@alifd/next';
 
 const { Item } = MenuButton;
 const menu = ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'].map(item => <Item key={item}>{item}</Item>);
 
-ReactDOM.render(<div>
-    <MenuButton className="basic-button" label="Edit Document" size="small" type="secondary">{menu}</MenuButton>
-    <MenuButton className="basic-button" label="Edit Document" size="medium" type="secondary">{menu}</MenuButton>
-    <MenuButton className="basic-button" label="Edit Document" size="large" type="secondary">{menu}</MenuButton>
-</div>, mountNode);
-````
-
-````css
-.basic-button {
-    margin-right: 20px;
-}
+ReactDOM.render(<Box direction="row" spacing={20}>
+    <MenuButton label="Edit Document" size="small" type="secondary">{menu}</MenuButton>
+    <MenuButton label="Edit Document" size="medium" type="secondary">{menu}</MenuButton>
+    <MenuButton label="Edit Document" size="large" type="secondary">{menu}</MenuButton>
+</Box>, mountNode);
 ````
