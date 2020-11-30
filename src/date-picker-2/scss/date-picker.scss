@@ -1,33 +1,33 @@
-//
-// date-picker 样式
-//
-#{$date-picker2-prefix},
-#{$month-picker2-prefix},
-#{$year-picker2-prefix},
-#{$week-picker2-prefix} {
-    display: inline-block;
-    width: $s-50;
+// //
+// // date-picker 样式
+// //
+// #{$date-picker2-prefix},
+// #{$month-picker2-prefix},
+// #{$year-picker2-prefix},
+// #{$week-picker2-prefix} {
+//     display: inline-block;
+//     width: $s-50;
 
-    &-input {
-        width: 100%;
-    }
+//     &-input {
+//         width: 100%;
+//     }
 
-    &-body {
-        width: calc(#{$s-18} * 4);
-    }
+//     &-body {
+//         width: calc(#{$s-18} * 4);
+//     }
 
-    &-panel-input#{$date-picker2-input-prefix} {
-        width: 100%;
-        background: $color-transparent;
-    }
-}
+//     &-panel-input#{$date-picker2-input-prefix} {
+//         width: 100%;
+//         background: $color-transparent;
+//     }
+// }
 
-#{$date-picker2-prefix}-body#{$date-picker2-prefix}-body-show-time {
-    #{$date-picker2-prefix}-panel-input#{$date-picker2-input-prefix} {
-        width: 49%;
+// #{$date-picker2-prefix}-body#{$date-picker2-prefix}-body-show-time {
+//     #{$date-picker2-prefix}-panel-input#{$date-picker2-input-prefix} {
+//         width: 49%;
 
-        &:first-child {
-            margin-right: 2%;
-        }
-    }
-}
+//         &:first-child {
+//             margin-right: 2%;
+//         }
+//     }
+// }

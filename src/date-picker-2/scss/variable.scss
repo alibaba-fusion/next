@@ -1,21 +1,5 @@
 //
-$date-picker2-prefix: '.' + $css-prefix + 'date-picker2';
-$range-picker2-prefix: '.' + $css-prefix + 'range-picker2';
-$month-picker2-prefix: '.' + $css-prefix + 'month-picker2';
-$year-picker2-prefix: '.' + $css-prefix + 'year-picker2';
-$week-picker2-prefix: '.' + $css-prefix + 'week-picker2';
-
-$date-picker2-btn-prefix: '.' + $css-prefix + 'btn';
-$date-picker2-input-prefix: '.' + $css-prefix  + 'input';
-
+// $date-picker2-prefix: '.' + $css-prefix + 'picker';
 // --------------------------------------------------
 
-$date-picker-input-separator-width: $s-4 !default;
-
-// 日期选择面板
-// --------------------------------------------------
-$date-picker-panel-footer-padding-lr: $s-5 !default;
-$date-picker-panel-footer-padding-tb: $s-2 !default;
-$date-picker-panel-background: $color-white !default;
-$date-picker-panel-time-panel-separator-color: $color-line1-2 !default;
-$date-picker-calendar-icon: $icon-content-calendar !default;
+$picker: "." + $css-prefix + "picker";

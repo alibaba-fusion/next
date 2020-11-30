@@ -15,13 +15,13 @@ class TimePanel extends React.PureComponent {
         const { prefix, value, onSelect } = this.props;
 
         return (
-            <div className={`${prefix}date-time-panel`}>
-                <div className={`${prefix}picker-header`}>
-                    <div className={`${prefix}picker-header-text-field`}>
+            <div className={`${prefix}calendar2-right ${prefix}calendar2-panel`}>
+                <div className={`${prefix}calendar2-header`}>
+                    <div className={`${prefix}calendar2-header-text-field`}>
                         {value ? value.format('HH:mm:ss') : null}
                     </div>
                 </div>
-                <div className={`${prefix}picker-body`}>
+                <div className={`${prefix}calendar2-body`}>
                     <TimePickerPanel value={value} onSelect={onSelect} />
                 </div>
             </div>

@@ -1,0 +1,39 @@
+// mixin
+@mixin calendar-hover {
+    background: $color-brand1-1;
+}
+
+@mixin calendar-current {
+    color: #333;
+}
+
+@mixin calendar-disabled {
+    color: #C4C7CC;
+    background: #F5F7FA;
+}
+
+@mixin calendar-selected {
+    color: $color-white;
+    background: $color-brand1-9;
+}
+
+@mixin calendar-hover-fullscreen {
+    background-color: #F4F6F9;
+    color: #414752;
+}
+
+@mixin calendar-current-fullscreen {
+    color: #333;
+}
+
+@mixin calendar-selected-fullscreen {
+    border-top-color: $color-brand1-6;
+    font-weight: bold;
+    color: $color-brand1-6;
+    background: $color-brand1-1;
+}
+
+@mixin calendar-disabled-fullscreen {
+    color: #D2D4D9;
+    background-color: #F5F7FA;
+}

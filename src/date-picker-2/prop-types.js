@@ -5,6 +5,25 @@ import { datejs } from '../util';
 export const error = (propName, ComponentName) =>
     new Error(`Invalid prop ${propName} supplied to ${ComponentName}. Validation failed.`);
 
+function checkType(type) {
+    return (props, propName, componentName) => {
+        let value = props[propName];
+        if (value) {
+            if (!Array.isArray(value)) {
+                value = [value];
+            }
+
+            if (!Array.isArray(type)) {
+                type = [type];
+            }
+
+            if (!value.every(v => type.includes(typeof v))) {
+                throw error(propName, componentName);
+            }
+        }
+    };
+}
+
 const SharedPT = {
     // 日期类型：
     //  @string: 2020-11-11
@@ -16,10 +35,9 @@ const SharedPT = {
             throw error(propName, componentName);
         }
     },
-
     value(props, propName, componentName) {
-        let value = props[propName];
         if (propName in props) {
+            let value = props[propName];
             if (props.type === DATE_PICKER_TYPE.RANGE && !Array.isArray(value)) {
                 throw error(propName, componentName);
             } else {
@@ -31,9 +49,14 @@ const SharedPT = {
             }
         }
     },
+    format: checkType('string'),
+    inputValue: checkType('string'),
+    placeholder: checkType('string'),
+    inputReadOnly: checkType('boolean'),
     mode: PT.oneOf(Object.values(DATE_PICKER_MODE)),
     type: PT.oneOf(Object.values(DATE_PICKER_TYPE)),
     inputType: PT.oneOf(Object.values(DATE_INPUT_TYPE)),
+    size: PT.oneOf(['small', 'medium', 'large']),
 };
 
 export default SharedPT;

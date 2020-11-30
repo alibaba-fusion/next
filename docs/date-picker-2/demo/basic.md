@@ -36,7 +36,11 @@ function App() {
                 <DatePicker2 format="YYYY-MM-DD HH:mm:ss" type="range" />
             </div>
             <div className="main">
-                <DatePicker2 showTime format="YYYY-MM-DD HH:mm:ss" />
+                <DatePicker2
+                    showTime
+                    format="YYYY-MM-DD HH:mm:ss"
+                    ranges={{ Now: '2010-11', Next: Date.now() }}
+                />
             </div>
             <div className="main">
                 <DatePicker2 format="YYYY-MM-DD HH:mm:ss" />

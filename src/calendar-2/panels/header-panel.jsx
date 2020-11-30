@@ -9,7 +9,7 @@ import Select from '../../select';
 import Button from '../../button';
 import Icon from '../../icon';
 
-const { bindCtx, witchCustomRender } = func;
+const { bindCtx, getRender } = func;
 const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
 class HeaderPanel extends React.PureComponent {
@@ -32,6 +32,7 @@ class HeaderPanel extends React.PureComponent {
         onNext: PT.func,
         onSuperPrev: PT.func,
         onSuperNext: PT.func,
+        titleRender: PT.func,
         /**
          * 扩展操作区域渲染
          */
@@ -49,7 +50,7 @@ class HeaderPanel extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}picker-header`;
+        this.prefixCls = `${props.prefix}calendar2-header`;
 
         bindCtx(this, ['createPanelBtns', 'renderMonthSelect', 'renderModeSwitch', 'handleSelect']);
     }
@@ -57,11 +58,9 @@ class HeaderPanel extends React.PureComponent {
     createPanelBtns({ unit, num = 1, isSuper = true }) {
         const value = this.props.panelValue.clone();
 
-        const prefixCls = `${this.props.prefix}picker-header`;
+        const prefixCls = this.prefixCls;
 
-        const iconTypes = isSuper
-            ? ['arrow-double-left', 'arrow-double-right']
-            : ['arrow-left', 'arrow-right'];
+        const iconTypes = isSuper ? ['arrow-double-left', 'arrow-double-right'] : ['arrow-left', 'arrow-right'];
 
         return [
             <Button
@@ -123,6 +122,7 @@ class HeaderPanel extends React.PureComponent {
     }
 
     renderMonthSelect() {
+        const { prefixCls } = this;
         const curMonth = this.props.panelValue.month();
         const dataSource = datejs.monthsShort().map((label, value) => {
             return {
@@ -134,15 +134,19 @@ class HeaderPanel extends React.PureComponent {
         return (
             <Select
                 key="month-select"
+                className={`${prefixCls}-select-month`}
+                popupClassName={`${prefixCls}-select-month-popup`}
                 defaultValue={curMonth}
                 dataSource={dataSource}
+                menuProps={{ hasSelectedIcon: false }}
                 onChange={v => this.handleSelect(v, 'month')}
             />
         );
     }
 
     renderYearSelect() {
-        const { validValue, panelValue } = this.props;
+        const { prefixCls } = this;
+        const { validValue, panelValue, locale } = this.props;
         const curYear = panelValue.year();
 
         let beginYear;
@@ -161,14 +165,17 @@ class HeaderPanel extends React.PureComponent {
         }
         const dataSource = [];
         for (let i = beginYear; i < endYear; i++) {
-            dataSource.push({ label: i, value: i });
+            dataSource.push({ label: `${i}${locale && locale.year === '年' ? '年' : ''}`, value: i });
         }
 
         return (
             <Select
                 key="year-select"
+                className={`${prefixCls}-select-year`}
+                popupClassName={`${prefixCls}-select-year-popup`}
                 defaultValue={curYear}
                 dataSource={dataSource}
+                menuProps={{ hasSelectedIcon: false }}
                 onChange={v => this.handleSelect(v, 'year')}
             />
         );
@@ -179,12 +186,13 @@ class HeaderPanel extends React.PureComponent {
         const { panelValue, locale, panelMode, onPanelModeChange } = this.props;
 
         const monthBeforeYear = locale.monthBeforeYear || false;
+        const localeData = datejs.localeData();
 
-        let nodes;
-        const year = panelValue.year();
-        const month = panelValue.month();
+        const year = panelValue.year() + (locale && locale.year === '年' ? '年' : '');
+        const month = localeData.monthsShort()[panelValue.month()];
         const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
+        let nodes;
         const yearNode = (
             <Button
                 text
@@ -321,12 +329,7 @@ class HeaderPanel extends React.PureComponent {
             if (showTitle) {
                 nodes.push(
                     <div key="title" className={`${prefixCls}-title`}>
-                        {witchCustomRender(
-                            'headerTitleRender',
-                            this.props,
-                            { value },
-                            value.format()
-                        )}
+                        {getRender(this.props.titleRender, value.format(), { value })}
                     </div>
                 );
             }
@@ -335,8 +338,7 @@ class HeaderPanel extends React.PureComponent {
                     {this.renderYearSelect()}
                     {mode !== CALENDAR_MODE.YEAR ? this.renderMonthSelect() : null}
                     {showModeSwitch ? this.renderModeSwitch() : null}
-                    {this.props.renderHeaderExtra &&
-                        this.props.renderHeaderExtra({ ...this.props })}
+                    {this.props.renderHeaderExtra && this.props.renderHeaderExtra({ ...this.props })}
                 </div>
             );
         }
@@ -346,13 +348,8 @@ class HeaderPanel extends React.PureComponent {
 
     render() {
         return (
-            <div className={`${this.prefixCls} ${this.props.prefix}picker-header`}>
-                {witchCustomRender(
-                    'headerRender',
-                    this.props,
-                    { ...this.props },
-                    this.renderInner()
-                )}
+            <div className={`${this.prefixCls}`}>
+                {getRender(this.props.headerRender, this.renderInner(), { ...this.props })}
             </div>
         );
     }

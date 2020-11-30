@@ -67,10 +67,8 @@ class RangePanel extends React.Component {
         ]);
     }
 
-    componentDidMount() {
-        if (this.currentRaf) {
-            window.cancelAnimationFrame(this.currentRaf);
-        }
+    componentWillUnmount() {
+        this.currentRaf && window.cancelAnimationFrame(this.currentRaf);
     }
 
     // 日期面板显示的日期区间
@@ -94,7 +92,6 @@ class RangePanel extends React.Component {
                 end = v.clone().add(20, 'year');
                 break;
         }
-
         return [begin, end];
     }
 
@@ -102,14 +99,18 @@ class RangePanel extends React.Component {
         const {
             value: [begin, end],
         } = this.props;
+        const { mode } = this.props;
+
+        // 相同日期对应的单位是day 其余单位同mode一致
+        const unit = mode === 'date' ? 'day' : mode;
 
         const { disabledDate, inputType } = this.props;
         const { BEGIN, END } = DATE_INPUT_TYPE;
 
         return (
             disabledDate(v) ||
-            (inputType === END && begin && begin.isAfter(v)) ||
-            (inputType === BEGIN && end && end.isBefore(v))
+            (inputType === END && begin && begin.isAfter(v, unit)) ||
+            (inputType === BEGIN && end && end.isBefore(v, unit))
         );
     }
 
@@ -145,12 +146,16 @@ class RangePanel extends React.Component {
         func.call(this.props, 'onChange', [[begin, end]]);
     }
 
-    handlePanelChange(value, mode, idx) {
+    handlePanelChange(v, mode, idx) {
+        // console.log('handlePanelChange', v, mode, idx);
+
         this.setState({
             mode,
-            panelValue: value,
+            panelValue: v,
             calendarIdx: idx,
         });
+
+        func.call(this.props, 'onPanelChange', [v, mode]);
     }
 
     handlePanelValueChange(v, calendarIdx) {
@@ -243,116 +248,85 @@ class RangePanel extends React.Component {
         });
     }
 
-    renderRangeTime() {
-        const { value, mode, justBeginInput, prefix, showTime, inputType } = this.props;
-        const hasModeChanged = this.state.mode !== this.props.mode;
-
-        const calendarProps = {
-            value: value[inputType],
-            shape: 'panel',
-            panelMode: mode,
-            onChange: this.onChange,
-            onPanelChange: this.handlePanelChange,
-        };
-        if (!justBeginInput) {
-            calendarProps.disabledDate = this.disabledDate;
-        }
-        let rangeProps;
-        if (!hasModeChanged) {
-            rangeProps = {
-                dateCellClassName: this.getCellClassName,
-                dateCellProps: {
-                    onMouseEnter: this.handleMouseEnter,
-                    onMouseLeave: this.handleMouseLeave,
-                },
-            };
-        }
+    renderRangeTime(sharedProps) {
+        const { value, prefix, showTime, inputType } = this.props;
 
         return (
             <div className={`${prefix}range-picker2-panel`}>
-                <Calendar {...calendarProps} {...rangeProps} />
-                {showTime && !hasModeChanged ? (
-                    <TimePanel
-                        prefix={prefix}
-                        value={value[inputType]}
-                        onSelect={v => this.onChange(v, false)}
-                    />
+                <Calendar {...sharedProps} value={value[inputType]} onPanelChange={this.handlePanelChange} />
+                {showTime && !this.hasModeChanged ? (
+                    <TimePanel prefix={prefix} value={value[inputType]} onSelect={v => this.onChange(v, false)} />
                 ) : null}
             </div>
         );
     }
 
-    renderRange() {
-        const {
-            onChange,
-            handlePanelChange,
-            getCellClassName,
-            disabledDate,
-            handleMouseEnter,
-            handleMouseLeave,
-            handleCanlendarClick,
-        } = this;
-        const { value, mode, justBeginInput, prefix } = this.props;
+    renderRange(sharedProps) {
+        const { handlePanelChange, handleCanlendarClick } = this;
+        const { value, prefix } = this.props;
         const ranges = this.getRanges();
 
-        // 切换面板mode
-        const hasModeChanged = this.state.mode !== this.props.mode;
-
         const calendarProps = idx => {
-            const sharedProps = {
-                shape: 'panel',
-                panelMode: mode,
+            return {
+                ...sharedProps,
                 value: value[idx],
                 panelValue: ranges[idx],
                 onPanelChange: (v, m) => handlePanelChange(v, m, idx),
             };
-
-            if (!justBeginInput) {
-                sharedProps.disabledDate = disabledDate;
-            }
-
-            let rangeProps;
-            if (!hasModeChanged) {
-                rangeProps = {
-                    onChange,
-                    dateCellClassName: getCellClassName,
-                    dateCellProps: {
-                        onMouseEnter: handleMouseEnter,
-                        onMouseLeave: handleMouseLeave,
-                    },
-                };
-            }
-
-            return {
-                ...sharedProps,
-                ...rangeProps,
-            };
         };
 
         const calendarNodes = [
+            <Calendar {...calendarProps(0)} className={`${prefix}range-picker-left`} key="range-panel-calendar-left" />,
             <Calendar
-                className={`${prefix}range-picker2-left`}
-                key="range-panel-calendar-left"
-                {...calendarProps(0)}
-            />,
-            <Calendar
-                className={`${prefix}range-picker2-right`}
+                {...calendarProps(1)}
+                className={`${prefix}range-picker-right`}
                 key="range-panel-calendar-right"
                 onNext={handleCanlendarClick}
                 onSuperNext={handleCanlendarClick}
-                {...calendarProps(1)}
             />,
         ];
 
         return (
             <div className={`${prefix}range-picker2-panel`}>
-                {!hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
+                {!this.hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
             </div>
         );
     }
 
     render() {
-        return this.props.showTime ? this.renderRangeTime() : this.renderRange();
+        const { onChange, getCellClassName, disabledDate, handleMouseEnter, handleMouseLeave } = this;
+        const { mode, justBeginInput, prefix } = this.props;
+
+        // 切换面板mode
+        this.hasModeChanged = this.state.mode !== this.props.mode;
+
+        let sharedProps = {
+            prefix,
+            shape: 'panel',
+            panelMode: mode,
+        };
+
+        if (!justBeginInput) {
+            sharedProps.disabledDate = disabledDate;
+        }
+
+        if (mode === DATE) {
+            sharedProps.colNum = 6;
+        }
+
+        if (!this.hasModeChanged) {
+            sharedProps = {
+                ...sharedProps,
+                onChange,
+                dateCellClassName: getCellClassName,
+                dateCellProps: {
+                    onMouseEnter: handleMouseEnter,
+                    onMouseLeave: handleMouseLeave,
+                },
+            };
+        }
+
+        return this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps);
     }
 }
 

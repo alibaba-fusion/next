@@ -81,6 +81,7 @@ class Calendar extends React.Component {
         onNext: PT.func,
         onSuperPrev: PT.func,
         onSuperNext: PT.func,
+        colNum: PT.number,
     };
 
     static defaultProps = {
@@ -141,10 +142,15 @@ class Calendar extends React.Component {
         return shape === CALENDAR_SHAPE.PANEL && this.state.panelMode !== panelMode;
     }
 
-    onDateSelect(value) {
-        this.shouldSwitchPanelMode()
-            ? this.onPanelChange(value, this.switchPanelMode(this.state.panelMode))
-            : this.onChange(value);
+    onDateSelect(value, e, { isCurrent }) {
+        if (this.shouldSwitchPanelMode()) {
+            this.onPanelChange(value, this.switchPanelMode(this.state.panelMode));
+        } else {
+            if (!isCurrent) {
+                this.onPanelValueChange(value);
+            }
+            this.onChange(value);
+        }
     }
 
     onModeChange(mode, reason) {
@@ -202,6 +208,7 @@ class Calendar extends React.Component {
             onNext,
             onSuperPrev,
             onSuperNext,
+            colNum,
         } = this.props;
 
         panelValue = datejs(panelValue);
@@ -235,20 +242,17 @@ class Calendar extends React.Component {
             dateCellRender,
             dateCellClassName,
             dateCellProps,
+            colNum,
             onSelect: this.onDateSelect,
             ...sharedProps,
         };
 
-        const classNames = classnames([
-            `${prefix}calendar2`,
-            `${prefix}calendar2-${shape}`,
-            className,
-        ]);
+        const classNames = classnames([`${prefix}calendar2`, `${prefix}calendar2-${shape}`, className]);
 
         return (
             <div className={classNames}>
                 <HeaderPanel {...headerPanelProps} />
-                <div className={`${prefix}calendar2-body ${prefix}picker-body`}>
+                <div className={`${prefix}calendar2-body`}>
                     <DatePanel {...datePanelProps} />
                 </div>
             </div>

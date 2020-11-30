@@ -2,9 +2,11 @@
 
 @import "scss/variable";
 @import "scss/normalize";
+@import "scss/mixin";
 
-@import "../date-picker-2/scss/picker.scss";
 @import "./rtl.scss";
+
+// $calendar-cell-bg-hover: $color-brand1-1;
 
 #{$calendar2-prefix} {
     font-size: 12px;
@@ -23,47 +25,31 @@
     &-cell {
         cursor: pointer;
         position: relative;
+        transition: background-color .2s, border .2s;
     }
 
-    &-cell::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        right: 0;
-        left: 0;
-        z-index: 1;
-        height: 24px;
-        transform: translateY(-50%);
-    }
-
-    &-cell-inner {
-        position: relative;
-        z-index: 2;
-        color: rgba(0, 0, 0, .25);
+    #{$cell-inner} {
+        color: #C4C7CC;
         outline: none;
         border: 1px solid transparent;
+        min-width: 24px;
+        position: relative;
     }
 
-    &-cell-current {
-        color: #585D66;
-    }
-
-    &-cell:hover {
-        #{$calendar2-prefix}-cell-current {
-            background: #EDEFF2;
+    &-cell-disabled {
+        &::before,
+        #{$cell-inner} {
+            @include calendar-disabled;
         }
     }
 
-    &-cell-today {
-        color: $color-brand1-9;
-    }
-
     &-fullscreen,
+    &-panel,
     &-card {
         #{$calendar2-prefix}-header {
             padding-top: 12px;
             padding-bottom: 12px;
-
+            border-bottom: 1px solid #F0F0F0;
             &-actions {
                 margin-left: auto;
 
@@ -71,43 +57,59 @@
                     margin-left: 8px;
                 }
             }
+            &-select-month {
+                min-width: 70px;
+                .#{$css-prefix}input {
+                    min-width: 70px;
+                }
+            }
+            &-select-year {
+                min-width: 88px;
+                .#{$css-prefix}input {
+                    min-width: 88px;
+                }
+            }
+        }
+
+        #{$calendar2-prefix}-body {
+            padding: 8px 12px;
         }
     }
 
     &-card,
     &-panel {
+        #{$cell-inner} {
+            z-index: 2;
+            min-width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
         #{$calendar2-prefix} {
             min-height: 150px;
 
+            &-cell::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 0;
+                left: 0;
+                z-index: 1;
+                height: 24px;
+                transform: translateY(-50%);
+            }
             &-table {
+                thead > tr {
+                    height: 24px;
+                }
+
                 th,
                 td {
                     font-weight: 400;
                     text-align: center;
-                    padding: 3px 0;
-                }
-            }
-
-            &-cell-inner {
-                cursor: pointer;
-                position: relative;
-                z-index: 2;
-                display: inline-block;
-                min-width: 24px;
-                height: 24px;
-                line-height: 24px;
-                border-radius: 2px;
-                transition: background-color .2s, border .2s;
-
-                &#{$calendar2-prefix}-cell-selected#{$calendar2-prefix}-cell-current {
-                    color: #FFF;
-                    background: $color-brand1-9;
-                }
-
-                &#{$calendar2-prefix}-cell-disabled,
-                &#{$calendar2-prefix}-cell-disabled#{$calendar2-prefix}-cell-current {
-                    color: #C4C7CC;
-                    background: #F5F7FA;
+                    padding: 4px 0;
                 }
             }
 
@@ -115,8 +117,33 @@
             &-table-year,
             &-table-quarter,
             &-table-decade {
+                height: 160px;
                 #{$calendar2-prefix}-cell-inner {
                     min-width: 80px;
+                }
+            }
+        }
+
+        #{$calendar2-prefix}-cell-current {
+            &:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):not(#{$calendar2-prefix}-cell-today) {
+                #{$cell-inner} {
+                    @include calendar-current;
+                }
+
+                &:hover #{$cell-inner} {
+                    @include calendar-hover;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-today {
+                #{$cell-inner} {
+                    color: $color-brand1-9;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                #{$cell-inner} {
+                    @include calendar-selected;
                 }
             }
         }
@@ -138,10 +165,40 @@
                 border-top: 2px solid #DCDFE6;
                 margin: 0 4px;
                 padding: 4px 8px 0;
+            }
+        }
 
-                &#{$calendar2-prefix}-cell-selected {
-                    border-top-color: $color-brand1-9;
-                    background: $color-brand1-9;
+        #{$calendar2-prefix}-cell-disabled #{$cell-inner} {
+            @include calendar-disabled-fullscreen;
+        }
+
+        #{$calendar2-prefix}-cell-current {
+            &:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):not(#{$calendar2-prefix}-cell-today) {
+                #{$cell-inner} {
+                    @include calendar-current-fullscreen;
+                }
+
+                &:hover #{$cell-inner} {
+                    @include calendar-hover-fullscreen;
+                }
+                &:active #{$cell-inner} {
+                    background-color: #EDEFF2;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-today {
+                #{$cell-inner} {
+                    color: $color-brand1-9;
+                }
+            }
+
+            #{$cell-inner} {
+                background-color: $color-white;
+            }
+
+            &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                #{$cell-inner} {
+                    @include calendar-selected-fullscreen;
                 }
             }
         }
@@ -154,5 +211,70 @@
                 padding-left: 8px;
             }
         }
+    }
+    &-panel {
+        #{$calendar2-prefix}-header {
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+
+            &-btn,
+            &-text-field {
+                height: 40px;
+                line-height: 40px;
+            }
+
+            &-btn {
+                min-width: 1.6em;
+                color: #585D66;
+                font-family: inherit;
+                vertical-align: initial;
+            }
+
+            &-btn > span,
+            &-text-field {
+                text-align: center;
+                font-size: 14px;
+                color: #1F2633;
+                font-weight: bolder;
+                vertical-align: initial;
+            }
+
+            &-text-field {
+                flex: 1;
+
+                .#{$css-prefix}picker-header-btn:not(:first-child) {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
+}
+
+
+#{$calendar2-prefix}-header-select-month-popup,
+#{$calendar2-prefix}-header-select-year-popup {
+    min-width: auto;
+}
+
+
+#{$calendar2-prefix}-table-week {
+    tr {
+        td:first-of-type:before {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        td:last-of-type:before {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        &:hover td:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):before {
+            @include calendar-hover;
+        }
+    }
+
+    #{$calendar2-prefix}-cell-current#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled)::before {
+        @include calendar-selected;
     }
 }

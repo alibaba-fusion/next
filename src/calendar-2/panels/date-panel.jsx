@@ -6,8 +6,18 @@ import SharedPT from '../prop-types';
 import { DATE_PANEL_MODE } from '../constant';
 import { func, obj, datejs, KEYCODE } from '../../util';
 
-const { bindCtx, witchCustomRender } = func;
+const { bindCtx, getRender } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
+
+// 面板行数
+const mode2Rows = {
+    [DATE]: 7,
+    [WEEK]: 7,
+    [MONTH]: 3,
+    [QUARTER]: 4,
+    [YEAR]: 3,
+    [DECADE]: 3,
+};
 
 class DatePanel extends React.Component {
     static propTypes = {
@@ -22,6 +32,7 @@ class DatePanel extends React.Component {
         onDateSelect: PT.func,
         startOnSunday: PT.bool,
         dateCellClassName: PT.oneOfType([PT.func, PT.string]),
+        colNum: PT.number,
     };
 
     constructor(props) {
@@ -46,14 +57,14 @@ class DatePanel extends React.Component {
         };
     }
 
-    handleSelect(v, e) {
-        func.call(this.props, 'onSelect', [v, e]);
+    handleSelect(v, e, args) {
+        func.call(this.props, 'onSelect', [v, e, args]);
     }
 
-    handleKeyDown(v, e) {
+    handleKeyDown(v, e, args) {
         switch (e.keyCode) {
             case KEYCODE.ENTER:
-                this.handleSelect(v);
+                this.handleSelect(v, e, args);
                 break;
             case KEYCODE.RIGHT:
                 break;
@@ -61,12 +72,12 @@ class DatePanel extends React.Component {
         // e.preventDefault();
     }
 
-    handleMouseEnter(v, e) {
-        func.call(this.props.dateCellProps, 'onMouseEnter', [v, e]);
+    handleMouseEnter(v, e, args) {
+        func.call(this.props.dateCellProps, 'onMouseEnter', [v, e, args]);
     }
 
-    handleMouseLeave(v, e) {
-        func.call(this.props.dateCellProps, 'onMouseLeave', [v, e]);
+    handleMouseLeave(v, e, args) {
+        func.call(this.props.dateCellProps, 'onMouseLeave', [v, e, args]);
     }
 
     isSame(curDate, date, mode) {
@@ -121,7 +132,7 @@ class DatePanel extends React.Component {
                 const isDisabled = props.disabledDate && props.disabledDate(value);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
 
-                const className = classnames(`${prefixCls}-inner`, {
+                const className = classnames(prefixCls, {
                     [`${prefixCls}-current`]: isCurrent, // 是否属于当前面板值
                     [`${prefixCls}-today`]: this.isSame(value, now, mode),
                     [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
@@ -134,21 +145,20 @@ class DatePanel extends React.Component {
 
                 if (!isDisabled) {
                     onEvents = {
-                        onClick: e => this.handleSelect(value, e),
-                        onKeyDown: e => this.handleKeyDown(value, e),
-                        onMouseEnter: e => this.handleMouseEnter(value, e),
-                        onMouseLeave: e => this.handleMouseLeave(value, e),
+                        onClick: e => this.handleSelect(value, e, { isCurrent, label }),
+                        onKeyDown: e => this.handleKeyDown(value, e, { isCurrent, label }),
+                        onMouseEnter: e => this.handleMouseEnter(value, e, { isCurrent, label }),
+                        onMouseLeave: e => this.handleMouseLeave(value, e, { isCurrent, label }),
                     };
                 }
 
                 children.push(
-                    <td className={prefixCls} key={key} title={key} {...onEvents}>
-                        <div role="cell" tabIndex="-1" className={className}>
-                            {witchCustomRender(
-                                'dateCellRender',
-                                props,
-                                value,
-                                <div className={`${prefixCls}-value`}>{label}</div>
+                    <td key={key} title={key} {...onEvents} className={className}>
+                        <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
+                            {getRender(
+                                props.dateCellRender,
+                                <div className={`${prefixCls}-value`}>{label}</div>,
+                                value
                             )}
                         </div>
                     </td>
@@ -167,33 +177,39 @@ class DatePanel extends React.Component {
 
     // 星期几
     renderWeekdaysHead() {
-        const weekdaysShort = datejs.weekdaysShort();
-        const startOnSunday = obj.get('startOnSunday', this.props, this.props.locale.startOnSunday);
+        let weekdaysShort = datejs.weekdaysShort();
+        const firstDayOfWeek = datejs.localeData().firstDayOfWeek();
 
-        if (!startOnSunday) {
-            weekdaysShort.push(weekdaysShort.shift());
+        // 默认一周的第一天是周日，否则需要调整
+        if (firstDayOfWeek !== 0) {
+            weekdaysShort = weekdaysShort.slice(firstDayOfWeek).concat(weekdaysShort.slice(0, firstDayOfWeek));
         }
+
         return (
             <thead>
                 <tr>
-                    {weekdaysShort.map(d => (
-                        <th key={d}>{d}</th>
-                    ))}
+                    {weekdaysShort.map(d => {
+                        const day = d.replace('周', '');
+                        return <th key={day}>{day}</th>;
+                    })}
                 </tr>
             </thead>
         );
     }
 
     getDateCellData() {
-        const { panelValue: value, startOnSunday } = this.props;
+        const { panelValue: value, colNum } = this.props;
 
         const firstDayOfMonth = value.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
-        const daysOfTheMonth = value.endOf('month').date(); // 当月天数
+        const daysOfCurMonth = value.endOf('month').date(); // 当月天数
+        const firstDayOfWeek = datejs.localeData().firstDayOfWeek(); // 一周的第一天是星期几
 
         const cellData = [];
-        const preDays = (weekOfFirstDay + (startOnSunday ? 0 : 6)) % 7;
-        const nextDays = (7 - ((preDays + daysOfTheMonth) % 7)) % 7;
+        const preDays = (weekOfFirstDay - firstDayOfWeek + 7) % 7;
+        const nextDays = colNum
+            ? colNum * mode2Rows[DATE] - preDays - daysOfCurMonth
+            : (7 - ((preDays + daysOfCurMonth) % 7)) % 7;
 
         // 上个月日期
         for (let i = preDays; i > 0; i--) {
@@ -201,13 +217,13 @@ class DatePanel extends React.Component {
         }
 
         // 本月日期
-        for (let i = 0; i < daysOfTheMonth; i++) {
+        for (let i = 0; i < daysOfCurMonth; i++) {
             cellData.push(firstDayOfMonth.clone().add(i, 'day'));
         }
 
         // 下个月日期
         for (let i = 0; i < nextDays; i++) {
-            cellData.push(firstDayOfMonth.clone().add(daysOfTheMonth + i, 'day'));
+            cellData.push(firstDayOfMonth.clone().add(daysOfCurMonth + i, 'day'));
         }
 
         return cellData.map(value => {
@@ -301,7 +317,7 @@ class DatePanel extends React.Component {
 
         return (
             <table className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
-                {mode === DATE ? this.renderWeekdaysHead() : null}
+                {[DATE, WEEK].includes(mode) ? this.renderWeekdaysHead() : null}
                 <tbody>{this.renderCellContent(mode2Data[mode]())}</tbody>
             </table>
         );

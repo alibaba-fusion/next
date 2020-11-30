@@ -27,11 +27,17 @@ function pickProps(obj, fields) {
     return newObj;
 }
 
-function normalizePreset(preset) {
-    if (!Array.isArray(preset)) {
-        preset = [preset];
+function normalizeRanges(ranges) {
+    if (Array.isArray(ranges)) {
+        return ranges;
+    } else {
+        return Object.keys(ranges).map(key => {
+            return {
+                name: key,
+                value: ranges[key],
+            };
+        });
     }
-    return preset;
 }
 
 class FooterPanel extends React.PureComponent {
@@ -41,7 +47,7 @@ class FooterPanel extends React.PureComponent {
         locale: PT.object,
         showOk: PT.bool,
         showTime: PT.bool,
-        preset: PT.any,
+        ranges: PT.oneOfType([PT.array, PT.object]),
         onOk: PT.func,
     };
 
@@ -56,25 +62,25 @@ class FooterPanel extends React.PureComponent {
 
         this.prefixCls = `${props.prefix}picker-footer`;
 
-        bindCtx(this, ['renderPreset']);
+        bindCtx(this, ['renderRanges']);
     }
 
-    renderPreset() {
-        if (!('preset' in this.props) || !this.props.preset) {
+    renderRanges() {
+        if (!('ranges' in this.props) || !this.props.ranges) {
             return null;
         }
 
-        const preset = normalizePreset(this.props.preset);
+        const ranges = normalizeRanges(this.props.ranges);
 
-        return preset.map(({ name, label, value, ...rest }, index) => {
+        return ranges.map(({ name, label, value, ...rest }, index) => {
             const buttonProps = pickProps(rest, Button.propTypes);
 
             return (
                 <Button
+                    text
+                    type="primary"
                     key={name || index}
-                    onClick={() =>
-                        func.call(this.props, 'onChange', [isFunction(value) ? value() : value])
-                    }
+                    onClick={() => func.call(this.props, 'onChange', [isFunction(value) ? value() : value])}
                     {...buttonProps}
                 >
                     {label || name}
@@ -91,7 +97,7 @@ class FooterPanel extends React.PureComponent {
 
         return (
             <div className={prefixCls}>
-                {this.renderPreset()}
+                {this.renderRanges()}
                 <div className={`${prefixCls}-actions`}>
                     {shouldShowOk ? (
                         <Button onClick={this.props.onOk} type="primary">

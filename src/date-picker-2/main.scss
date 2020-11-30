@@ -4,6 +4,7 @@
 // @import "../time-picker-2/scss/variable.scss";
 
 @import "../calendar-2/scss/variable.scss";
+@import "../calendar-2/scss/mixin.scss";
 @import "../input/scss/variable.scss";
 @import "../input/scss/mixin.scss";
 
@@ -28,13 +29,15 @@
     &picker {
         #{$calendar2-prefix}-table {
             width: 252px;
-            content: #{$input-prefix};
         }
 
         &-input {
+            display: inline-flex;
+            align-items: center;
             outline: none;
-            height: 28px;
             box-sizing: border-box;
+            border: $input-border-width solid $input-border-color;
+
             #{$input-prefix} {
                 border: none;
                 width: auto;
@@ -43,34 +46,70 @@
                     height: 100%;
                 }
             }
+            &#{$picker}-input-small {
+                @include input-size(
+                    $form-element-small-height,
+                    $input-s-padding,
+                    $form-element-small-font-size,
+                    $input-s-label-padding-left,
+                    $input-s-icon-padding-right
+                );
+                @include input-icon-size($form-element-small-icon-size);
+                @include input-border-radius($form-element-small-corner);
+            }
+
+            &#{$picker}-input-medium {
+                @include input-size(
+                    $form-element-medium-height,
+                    $input-m-padding,
+                    $form-element-medium-font-size,
+                    $input-m-label-padding-left,
+                    $input-m-icon-padding-right
+                );
+                @include input-icon-size($form-element-medium-icon-size);
+                @include input-border-radius($form-element-medium-corner);
+            }
+
+            &#{$picker}large {
+                @include input-size(
+                    $form-element-large-height,
+                    $input-l-padding,
+                    $form-element-large-font-size,
+                    $input-l-label-padding-left,
+                    $input-l-icon-padding-right
+                );
+                @include input-icon-size($form-element-large-icon-size);
+                @include input-border-radius($form-element-large-corner);
+            }
+
+            &:hover {
+                border-color: $input-hover-border-color;
+                background-color: $input-hover-bg-color;
+            }
+
+            &.#{$css-prefix}focus {
+                border-color: $input-focus-border-color;
+                background-color: $input-focus-bg-color;
+                box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
+            }
         }
 
-        &-input {
-            display: inline-flex;
-            align-items: center;
-            border: $input-border-width solid $input-border-color;
-            @include input-border-radius($form-element-small-corner);
+        .#{$css-prefix}range-picker-right {
+            #{$picker}-header-left-btn {
+                visibility: hidden;
+            }
+        }
+
+        .#{$css-prefix}range-picker-left {
+            #{$picker}-header-right-btn {
+                visibility: hidden;
+            }
         }
     }
 
-    &range-picker2 {
-        display: inline-flex;
-        &-input-separator {
-            color: #C4C7CC;
-            font-size: 12px;
-        }
-
-        &-right {
-            #{$calendar2-prefix}-header-left-btn {
-                visibility: hidden;
-            }
-        }
-
-        &-left {
-            #{$calendar2-prefix}-header-right-btn {
-                visibility: hidden;
-            }
-        }
+    &range-picker2-input-separator {
+        color: #C4C7CC;
+        font-size: 12px;
     }
 
     &date-picker2-panel {
@@ -79,28 +118,82 @@
 
     &range-picker2-panel {
         display: inline-flex;
+    }
+}
 
-        #{$calendar2-prefix}-cell-inner {
-            &#{$calendar2-prefix}-cell-selected#{$calendar2-prefix}-cell-current {
-                color: inherit;
-                background: #E6FDFF;
+#{$calendar2-prefix}-right {
+    border-left: 1px solid #F2F3F7;
+    #{$calendar2-prefix}-body {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
 
-                &#{$calendar2-prefix}-cell-range-begin,
-                &#{$calendar2-prefix}-cell-range-end {
-                    color: #FFF;
-                    background: $color-brand1-9;
+.#{$css-prefix}range-picker2-panel {
+    #{$calendar2-prefix}-cell-disabled {
+        #{$cell-inner} {
+            @include calendar-disabled;
+        }
+    }
+    #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
+        &#{$calendar2-prefix}-cell-selected {
+            &:before,
+            #{$cell-inner} {
+                color: #333;
+                background: $color-brand1-1;
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin:before {
+                left: 50%;
+            }
+            &#{$calendar2-prefix}-cell-range-end:before {
+                right: 50%;
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin,
+            &#{$calendar2-prefix}-cell-range-end {
+                #{$cell-inner} {
+                    @include calendar-selected;
                 }
             }
+        }
 
-            &#{$calendar2-prefix}-cell-hover {
-                border: 1px dashed $color-brand1-9;
-            }
+        &#{$calendar2-prefix}-cell-hover:after {
+            content: ' ';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            left: 1px;
+            z-index: 0;
+            height: 24px;
+            transform: translateY(-50%);
+            border-top: 1px dashed $color-brand1-9;
+            border-bottom: 1px dashed $color-brand1-9;
+        }
+        &#{$calendar2-prefix}-cell-hover-begin:after {
+            left: 6px;
+            border-top: 1px dashed $color-brand1-9;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+        &#{$calendar2-prefix}-cell-hover-end:after {
+            right: 6px;
+            border-top: 1px dashed $color-brand1-9;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
         }
     }
 
-    &date-time-picker2-panel {
-        #{$calendar2-prefix} {
-            border-right: 1px solid #F0F0F0;
+    tr {
+        td:first-of-type#{$calendar2-prefix}-cell-hover:after {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-left: 1px dashed $color-brand1-9;
+        }
+        td:last-of-type#{$calendar2-prefix}-cell-hover:after {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-right: 1px dashed $color-brand1-9;
         }
     }
 }
