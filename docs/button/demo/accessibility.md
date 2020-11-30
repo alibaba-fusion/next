@@ -19,7 +19,7 @@ When using icon Button component , we should add `aria-label` to describe it. Pl
 import { Button, Icon } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Button.Group >
+    <Button.Group>
         <Button type="primary" aria-label="prompt button"><Icon type="prompt" /></Button>
         <Button type="primary" aria-label="clock button"><Icon type="clock" /></Button>
         <Button type="primary" aria-label="set button"><Icon type="set" /></Button>
