@@ -87,6 +87,7 @@ ${css.replace(/`/g, '{backquote}').replace(/\$/g, '{dollar}')}
         .filter(line => /import/.test(line))
         /* eslint-disable array-callback-return */
         .map(line => {
+            if (/import '.*';$/g.test(line)) return;
             if (/(\{\s*Ballon\s*\}|\{\s*Message\s*\})/g.test(line)) return;
             return line.replace(/(\s*Balloon\s*,*\s*|\s*Message\s*,*\s*)/g, '');
         })

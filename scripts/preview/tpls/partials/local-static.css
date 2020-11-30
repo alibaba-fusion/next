@@ -5,8 +5,8 @@ html {
 
 body {
     max-width: 1200px;
-    min-width: 784px;
-    width: max(calc(100% - 112px), 784px);
+    min-width: 896px;
+    width: max(calc(100% - 112px), 896px);
     margin: 56px auto;
     font-size: 14px!important;
 }
@@ -236,6 +236,8 @@ code {
 
 .demo-wrapper {
     max-width: 992px;
+    min-width: 784px;
+    width: calc(100% - 168px);
     position: relative;
 }
 
@@ -261,7 +263,12 @@ code {
 
 .demo-index-list {
     box-sizing: content-box;
-    border-left: 1px solid #dcdee3
+    border-left: 1px solid #dcdee3;
+    top: 92px;
+    position: fixed;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+    min-height: 150px;
 }
 
 .demo-index-list .demo-index-item {
@@ -308,7 +315,7 @@ code {
 }
 
 .demo-index-list .demo-index-item.active {
-    border-left: 2px solid #222;
+    border-left: 3px solid #222;
     margin-left: -2px;
     font-family: Roboto-Bold;
     font-size: 12px;
@@ -317,6 +324,10 @@ code {
     line-height: 1.5;
     font-weight: 900;
     min-height: 28px;
+}
+
+.next-demo-item.scroll-count-item.active{
+    border: 1px solid #3B9AFF!important;
 }
 
 .demo-index-list .demo-index-item.active a {
@@ -369,7 +380,7 @@ code {
 }
 
 .demo-list-item.active .demo-list-item-body {
-    border: 1px solid rgba(16, 142, 233, .7)
+    border: 1px dashed rgba(59, 154, 255, .5);
 }
 
 .demo-list-item-header {
@@ -661,6 +672,11 @@ html::-webkit-scrollbar {
     }
 }
 
+.react-live-body textarea:focus {
+    outline: none;
+    border: 1px dashed rgba(59, 154, 255, .5)!important;
+}
+
 [id*="-live-import"] pre .language-jsx .hljs {
     background-color: #F5F5FB !important;
     border-radius: 10px;
@@ -718,7 +734,7 @@ html::-webkit-scrollbar {
 }
 
 .demo-item-desc p {
-    margin: 0 0;
+    margin: 0 0 12px 0;
     line-height: 20px;
 }
 
@@ -784,6 +800,7 @@ html::-webkit-scrollbar {
 }
 
 .all-demo-box-controls {
+    position: fixed;
     display: flex;
     align-items: center;
 }
