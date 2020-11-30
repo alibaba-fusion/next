@@ -84,6 +84,7 @@ class Checkbox extends UIState {
         name: PropTypes.string,
         /**
          * 是否为预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
@@ -91,6 +92,7 @@ class Checkbox extends UIState {
          * @param {Boolean} checked 是否选中
          * @param {Object} props 所有传入的参数
          * @returns {reactNode} Element 渲染内容
+         * @version 1.19
          */
         renderPreview: PropTypes.func,
     };
