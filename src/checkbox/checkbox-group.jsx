@@ -56,6 +56,7 @@ class CheckboxGroup extends Component {
         itemDirection: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 是否为预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
@@ -63,6 +64,7 @@ class CheckboxGroup extends Component {
          * @param {Array} previewed 预览值 [{label: '', value:''},...]
          * @param {Object} props 所有传入的参数
          * @returns {reactNode} Element 渲染内容
+         * @version 1.19
          */
         renderPreview: PropTypes.func,
     };
