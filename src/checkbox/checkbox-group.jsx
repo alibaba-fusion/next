@@ -28,26 +28,15 @@ class CheckboxGroup extends Component {
         /**
          * 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`
          */
-        dataSource: PropTypes.oneOfType([
-            PropTypes.arrayOf(PropTypes.string),
-            PropTypes.arrayOf(PropTypes.object),
-        ]),
+        dataSource: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
         /**
          * 被选中的值列表
          */
-        value: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string,
-            PropTypes.number,
-        ]),
+        value: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
         /**
          * 默认被选中的值列表
          */
-        defaultValue: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.string,
-            PropTypes.number,
-        ]),
+        defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
         /**
          * 通过子元素方式设置内部 checkbox
          */
@@ -67,11 +56,15 @@ class CheckboxGroup extends Component {
         itemDirection: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 是否为预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {Array} previewed 预览值 [{label: '', value:''},...]
+         * @param {Object} props 所有传入的参数
+         * @returns {reactNode} Element 渲染内容
+         * @version 1.19
          */
         renderPreview: PropTypes.func,
     };
@@ -158,16 +151,7 @@ class CheckboxGroup extends Component {
     }
 
     render() {
-        const {
-            className,
-            style,
-            prefix,
-            disabled,
-            itemDirection,
-            rtl,
-            isPreview,
-            renderPreview,
-        } = this.props;
+        const { className, style, prefix, disabled, itemDirection, rtl, isPreview, renderPreview } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
@@ -178,9 +162,7 @@ class CheckboxGroup extends Component {
                 if (!React.isValidElement(child)) {
                     return child;
                 }
-                const checked =
-                    this.state.value &&
-                    this.state.value.indexOf(child.props.value) > -1;
+                const checked = this.state.value && this.state.value.indexOf(child.props.value) > -1;
 
                 if (checked) {
                     previewed.push({
@@ -189,10 +171,7 @@ class CheckboxGroup extends Component {
                     });
                 }
 
-                return React.cloneElement(
-                    child,
-                    child.props.rtl === undefined ? { rtl } : null
-                );
+                return React.cloneElement(child, child.props.rtl === undefined ? { rtl } : null);
             });
         } else {
             children = this.props.dataSource.map((item, index) => {
@@ -204,9 +183,7 @@ class CheckboxGroup extends Component {
                         disabled,
                     };
                 }
-                const checked =
-                    this.state.value &&
-                    this.state.value.indexOf(option.value) > -1;
+                const checked = this.state.value && this.state.value.indexOf(option.value) > -1;
 
                 if (checked) {
                     previewed.push({
@@ -233,22 +210,14 @@ class CheckboxGroup extends Component {
 
             if ('renderPreview' in this.props) {
                 return (
-                    <div
-                        {...others}
-                        dir={rtl ? 'rtl' : undefined}
-                        className={previewCls}
-                    >
+                    <div {...others} dir={rtl ? 'rtl' : undefined} className={previewCls}>
                         {renderPreview(previewed, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p
-                    {...others}
-                    dir={rtl ? 'rtl' : undefined}
-                    className={previewCls}
-                >
+                <p {...others} dir={rtl ? 'rtl' : undefined} className={previewCls}>
                     {previewed.map(item => item.label).join(', ')}
                 </p>
             );
@@ -262,12 +231,7 @@ class CheckboxGroup extends Component {
         });
 
         return (
-            <span
-                dir={rtl ? 'rtl' : undefined}
-                {...others}
-                className={cls}
-                style={style}
-            >
+            <span dir={rtl ? 'rtl' : undefined} {...others} className={cls} style={style}>
                 {children}
             </span>
         );
