@@ -1,4 +1,4 @@
-# 加载中
+# 加载状态
 
 - order: 3
 
@@ -33,11 +33,17 @@ class Demo extends React.Component {
 
     render() {
         return (<div>
-            <Button type="secondary" loading>Loading</Button>&nbsp;&nbsp;
-            <Button type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
+            <Button className="basic-button" type="secondary" loading>Loading</Button>
+            <Button className="basic-button" type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
         </div>);
     }
 }
 
 ReactDOM.render(<Demo/>, mountNode);
+````
+
+````css
+.basic-button{
+    margin-right: 10px;
+}
 ````

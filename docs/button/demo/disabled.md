@@ -1,13 +1,13 @@
-# 不可用状态
+# 禁用状态
 
-- order: 6
+- order: 2
 
 添加 `disabled` 属性即可让按钮处于不可用状态，同时按钮样式也会改变。
 
 :::lang=en-us
 # Disabled
 
-- order: 6
+- order: 2
 
 Disable a Button by adding `disabled` attribute.
 
@@ -19,16 +19,16 @@ Disable a Button by adding `disabled` attribute.
 import { Button } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Button type="primary">Primary</Button>&nbsp;&nbsp;
-    <Button component="a" type="primary" disabled>Primary</Button>
+    <Button className="basic-button" type="primary">Primary</Button>
+    <Button className="basic-button" component="a" type="primary" disabled>Primary</Button>
     <br />
     <br />
-    <Button type="secondary">Secondary</Button>&nbsp;&nbsp;
-    <Button type="secondary" disabled>Secondary</Button>
+    <Button className="basic-button" type="secondary">Secondary</Button>
+    <Button className="basic-button" type="secondary" disabled>Secondary</Button>
     <br />
     <br />
-    <Button type="normal">Normal</Button>&nbsp;&nbsp;
-    <Button type="normal" disabled>Normal</Button>
+    <Button className="basic-button" type="normal">Normal</Button>
+    <Button className="basic-button" type="normal" disabled>Normal</Button>
     <br />
     <br />
     <div>
@@ -43,6 +43,9 @@ ReactDOM.render(<div>
 ````
 
 ````css
+.basic-button{
+    margin-right: 10px;
+}
 .ghost-light-background {
     display: inline-block;
     height: 100px;
