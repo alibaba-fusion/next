@@ -155,6 +155,15 @@ class DateTable extends React.Component {
                     };
                 }
 
+                if (mode === WEEK && j === 0) {
+                    const week = value.week();
+                    children.push(
+                        <td key={`w-${week}`} className="row">
+                            {week}
+                        </td>
+                    );
+                }
+
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
                         <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
@@ -167,7 +176,6 @@ class DateTable extends React.Component {
                     </td>
                 );
             }
-
             cellContent.push(
                 <tr key={i} className="row">
                     {children}
@@ -191,6 +199,7 @@ class DateTable extends React.Component {
         return (
             <thead>
                 <tr>
+                    {this.props.mode === WEEK ? <td /> : null}
                     {weekdaysShort.map(d => {
                         const day = d.replace('周', '');
                         return <th key={day}>{day}</th>;
