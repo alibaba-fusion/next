@@ -57,10 +57,7 @@ class RangePanel extends React.Component {
             'handlePanelValueChange',
             'handlePanelChange',
             'onChange',
-            'disabledDate',
             'getCellClassName',
-            'handleMouseEnter',
-            'handleMouseLeave',
             'handleCanlendarClick',
             'renderRangeTime',
             'renderRange',
@@ -95,7 +92,7 @@ class RangePanel extends React.Component {
         return [begin, end];
     }
 
-    disabledDate(v) {
+    disabledDate = v => {
         const {
             value: [begin, end],
         } = this.props;
@@ -112,7 +109,7 @@ class RangePanel extends React.Component {
             (inputType === END && begin && begin.isAfter(v, unit)) ||
             (inputType === BEGIN && end && end.isBefore(v, unit))
         );
-    }
+    };
 
     setTime(newVal, oldVal) {
         if (oldVal) {
@@ -147,8 +144,6 @@ class RangePanel extends React.Component {
     }
 
     handlePanelChange(v, mode, idx) {
-        console.log('handlePanelChange', v, mode, idx);
-
         this.setState({
             mode,
             panelValue: v,
@@ -188,20 +183,20 @@ class RangePanel extends React.Component {
         });
     }
 
-    handleMouseEnter(value) {
+    handleMouseEnter = value => {
         this.currentRaf && window.cancelAnimationFrame(this.currentRaf);
         this.currentRaf = window.requestAnimationFrame(() => {
             this.setState({
                 curHoverValue: value,
             });
         });
-    }
+    };
 
-    handleMouseLeave() {
+    handleMouseLeave = () => {
         this.setState({
             curHoverValue: null,
         });
-    }
+    };
 
     // 日期cell状态
     handleCellState(v, hoverValue) {
@@ -225,6 +220,7 @@ class RangePanel extends React.Component {
         const { prefix, inputType } = this.props;
         const { SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
         const state = this.handleCellState(value);
+        const [end, begin] = value;
 
         const hoverValue = [...this.props.value];
         hoverValue[inputType] = this.state.curHoverValue;
@@ -238,7 +234,9 @@ class RangePanel extends React.Component {
             [`${prefixCls}-range-end`]: state === SELECTED_END,
             [`${prefixCls}-hover`]: hoverState >= SELECTED,
             [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
+            [`${prefixCls}-hover-begin-single`]: !!end,
             [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
+            [`${prefixCls}-hover-end-single`]: !!begin,
         };
     }
 
@@ -328,7 +326,7 @@ class RangePanel extends React.Component {
             sharedProps.disabledDate = disabledDate;
         }
 
-        if (mode === DATE) {
+        if ([DATE, WEEK].includes(mode)) {
             sharedProps.colNum = 6;
         }
 

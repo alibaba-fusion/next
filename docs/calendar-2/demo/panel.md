@@ -22,7 +22,7 @@ import moment from 'moment';
 
 ReactDOM.render(
     <div className="wrapped-calendar ">
-        <Calendar2 shape="panel" value={moment().add(1, 'days')} />
+        <Calendar2 shape="panel" defaultValue={moment().add(1, 'days')} />
     </div>,
     mountNode
 );

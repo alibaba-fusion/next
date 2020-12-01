@@ -9,14 +9,13 @@ import { func } from '../../util';
 import Calendar from '../../calendar-2';
 import TimePanel from './time-panel';
 
-const { bindCtx } = func;
-
 class DatePanel extends React.Component {
     static propTypes = {
         rtl: PT.bool,
         prefix: PT.string,
         locale: PT.object,
         mode: SharedPT.mode,
+        panelMode: PT.any,
         value: SharedPT.date,
         showTime: PT.bool,
     };
@@ -24,19 +23,8 @@ class DatePanel extends React.Component {
         showTime: false,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            mode: props.mode,
-            value: props.value,
-        };
-
-        bindCtx(this, ['handleChange', 'handlePanelChange']);
-    }
-
     setTime(newVal, oldVal) {
-        if (oldVal) {
+        if (oldVal && this.props.showTime) {
             return newVal
                 .hour(oldVal.hour())
                 .minute(oldVal.minute())
@@ -46,34 +34,33 @@ class DatePanel extends React.Component {
         return newVal;
     }
 
-    handleChange(v) {
-        func.call(this.props, 'onChange', [this.setTime(v, this.state.value)]);
-    }
+    handleChange = v => {
+        func.call(this.props, 'onChange', [this.setTime(v, this.props.value)]);
+    };
 
-    handlePanelChange(v, mode) {
-        this.setState({
-            mode,
-        });
-        func.call(this.props, 'onPanelChange', [this.setTime(v, this.state.value), mode]);
-    }
+    handlePanelChange = (v, mode) => {
+        func.call(this.props, 'onPanelChange', [this.setTime(v, this.props.value), mode]);
+    };
 
     render() {
-        const { mode, prefix, showTime, value } = this.props;
+        const { mode, panelMode, prefix, showTime, value } = this.props;
 
         const className = classnames(`${prefix}date-picker-panel`, {
             [`${prefix}date-time-picker-panel`]: showTime,
         });
-
+        console.log(this.calendarRef);
         return (
             <div className={className}>
                 <Calendar
                     shape="panel"
                     value={value}
                     panelMode={mode}
+                    colNum={showTime ? 6 : undefined}
                     onChange={this.handleChange}
                     onPanelChange={this.handlePanelChange}
+                    ref={ref => (this.calendarRef = ref)}
                 />
-                {showTime && this.state.mode === mode ? (
+                {showTime && mode === panelMode ? (
                     <TimePanel prefix={prefix} value={value} onSelect={this.handleChange} />
                 ) : null}
             </div>

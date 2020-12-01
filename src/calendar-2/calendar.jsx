@@ -90,6 +90,7 @@ class Calendar extends React.Component {
         locale: defaultLocale.Calendar,
         mode: CALENDAR_MODE.MONTH,
         shape: CALENDAR_SHAPE.FULLSCREEN,
+        panelValue: datejs(),
     };
 
     constructor(props) {
@@ -110,7 +111,6 @@ class Calendar extends React.Component {
         };
 
         bindCtx(this, [
-            'shouldSwitchPanelMode',
             'onPanelChange',
             'onChange',
             'onDateSelect',
@@ -136,18 +136,24 @@ class Calendar extends React.Component {
         }
     }
 
-    shouldSwitchPanelMode() {
-        const { panelMode, shape } = this.props;
+    shouldSwitchPanelMode = () => {
+        const { mode, shape } = this.props;
+        const { panelMode } = this.state;
+        const originalPanelMode = getPanelMode(mode);
 
-        return shape === CALENDAR_SHAPE.PANEL && this.state.panelMode !== panelMode;
-    }
+        return shape === CALENDAR_SHAPE.PANEL && panelMode !== originalPanelMode;
+    };
 
     onDateSelect(value, e, { isCurrent }) {
         if (this.shouldSwitchPanelMode()) {
-            this.onPanelChange(value, this.switchPanelMode(this.state.panelMode));
+            this.onPanelChange(
+                value,
+                this.switchPanelMode(this.state.panelMode),
+                'DATESELECT_SWITCH_MODE'
+            );
         } else {
             if (!isCurrent) {
-                this.onPanelValueChange(value);
+                this.onPanelValueChange(value, 'DATESELECT');
             }
             this.onChange(value);
         }
@@ -157,7 +163,6 @@ class Calendar extends React.Component {
         this.setState({
             mode,
         });
-
         const panelMode = getPanelMode(mode);
 
         if (this.state.panelMode !== panelMode) {
@@ -166,6 +171,7 @@ class Calendar extends React.Component {
     }
 
     onPanelValueChange(panelValue, reason) {
+        console.log('onPanelValueChange', panelValue, reason);
         this.onPanelChange(panelValue, this.state.panelMode, reason);
     }
 
@@ -194,6 +200,7 @@ class Calendar extends React.Component {
     render() {
         let { value, panelValue } = this.getFromPropOrState(['value', 'panelValue']);
         const { panelMode, mode } = this.state;
+
         const {
             rtl,
             prefix,
@@ -252,6 +259,8 @@ class Calendar extends React.Component {
             `${prefix}calendar-${shape}`,
             className,
         ]);
+
+        console.log('[calendar]', this.state.value, value);
 
         return (
             <div className={classNames}>

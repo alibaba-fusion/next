@@ -3,13 +3,13 @@ import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import { func, datejs } from '../../util';
 
-import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE, PANEL_CHANGE_REASON } from '../constant';
+import { CALENDAR_MODE, DATE_PANEL_MODE, CALENDAR_SHAPE } from '../constant';
 import Radio from '../../radio';
 import Select from '../../select';
 import Button from '../../button';
 import Icon from '../../icon';
 
-const { bindCtx, getRender } = func;
+const { getRender } = func;
 const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
 class HeaderPanel extends React.PureComponent {
@@ -51,11 +51,9 @@ class HeaderPanel extends React.PureComponent {
         super(props);
 
         this.prefixCls = `${props.prefix}picker-header`;
-
-        bindCtx(this, ['createPanelBtns', 'renderMonthSelect', 'renderModeSwitch', 'handleSelect']);
     }
 
-    createPanelBtns({ unit, num = 1, isSuper = true }) {
+    createPanelBtns = ({ unit, num = 1, isSuper = true }) => {
         const value = this.props.panelValue.clone();
 
         const prefixCls = `${this.props.prefix}picker-header`;
@@ -84,7 +82,7 @@ class HeaderPanel extends React.PureComponent {
                 <Icon type={iconTypes[1]} />
             </Button>,
         ];
-    }
+    };
 
     handleClick(value, { unit, num, isSuper, isNext }) {
         const { onPanelValueChange, onPrev, onSuperPrev, onNext, onSuperNext } = this.props;
@@ -105,14 +103,7 @@ class HeaderPanel extends React.PureComponent {
         }
     }
 
-    handleSelect(v, unit) {
-        const value = this.props.panelValue.clone();
-        value[unit](v);
-
-        this.props.onPanelValueChange(value);
-    }
-
-    renderModeSwitch() {
+    renderModeSwitch = () => {
         const { mode, locale, onModeChange } = this.props;
 
         return (
@@ -121,10 +112,12 @@ class HeaderPanel extends React.PureComponent {
                 <Radio value={CALENDAR_MODE.YEAR}>{locale.year}</Radio>
             </Radio.Group>
         );
-    }
+    };
 
-    renderMonthSelect() {
-        const curMonth = this.props.panelValue.month();
+    renderMonthSelect = () => {
+        const { panelValue, value } = this.props;
+
+        const curMonth = panelValue.month();
         const dataSource = datejs.monthsShort().map((label, value) => {
             return {
                 label,
@@ -137,13 +130,13 @@ class HeaderPanel extends React.PureComponent {
                 key="month-select"
                 defaultValue={curMonth}
                 dataSource={dataSource}
-                onChange={v => this.handleSelect(v, 'month')}
+                onChange={v => this.onPanelValueChange(value.month(v))}
             />
         );
-    }
+    };
 
     renderYearSelect() {
-        const { validValue, panelValue } = this.props;
+        const { validValue, panelValue, value } = this.props;
         const curYear = panelValue.year();
 
         let beginYear;
@@ -170,7 +163,7 @@ class HeaderPanel extends React.PureComponent {
                 key="year-select"
                 defaultValue={curYear}
                 dataSource={dataSource}
-                onChange={v => this.handleSelect(v, 'year')}
+                onChange={v => this.onPanelValueChange(value.year(v))}
             />
         );
     }

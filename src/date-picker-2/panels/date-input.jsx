@@ -27,6 +27,7 @@ class DateInput extends React.Component {
         readOnly: SharedPT.inputReadOnly,
         placeholder: SharedPT.placeholder,
         size: SharedPT.size,
+        focused: PT.bool,
     };
 
     static defaultProps = {
@@ -48,7 +49,6 @@ class DateInput extends React.Component {
             'format',
             'setValue',
             'setInputRef',
-            'getPlaceholder',
         ]);
     }
 
@@ -120,7 +120,7 @@ class DateInput extends React.Component {
         }
     }
 
-    getPlaceholder() {
+    getPlaceholder = () => {
         const {
             locale: {
                 placeholder,
@@ -135,9 +135,9 @@ class DateInput extends React.Component {
             isRange,
             mode,
         } = this.props;
-        let _placeholder = this.props.placeholder;
+        let holder = this.props.placeholder;
 
-        if (!_placeholder) {
+        if (!holder) {
             if (isRange) {
                 return [startPlaceholder, endPlaceholder];
             } else {
@@ -148,15 +148,14 @@ class DateInput extends React.Component {
                     [QUARTER]: quarterPlaceholder,
                     [YEAR]: yearPlaceholder,
                 };
-                _placeholder = mode2placeholder[mode];
+                holder = mode2placeholder[mode];
             }
         }
-        if (!_placeholder) {
-            _placeholder = placeholder;
-        }
 
-        return _placeholder;
-    }
+        holder = holder || placeholder;
+
+        return holder;
+    };
 
     render() {
         const { onKeyDown, onInput, setInputRef, onFocus, prefixCls } = this;
@@ -170,6 +169,7 @@ class DateInput extends React.Component {
             prefix,
             hasClear,
             size,
+            focused,
         } = this.props;
 
         const placeholder = this.getPlaceholder();
@@ -183,11 +183,12 @@ class DateInput extends React.Component {
             hasBorder: false,
         };
 
-        const className = classnames([
-            prefixCls,
-            `${prefixCls}-${size}`,
-            `${prefixCls}-${isRange ? 'range' : 'date'}`,
-        ]);
+        const className = classnames(
+            [prefixCls, `${prefixCls}-${size}`, `${prefixCls}-${isRange ? 'range' : 'date'}`],
+            {
+                [`${prefixCls}-focused`]: focused,
+            }
+        );
 
         return (
             <div
@@ -204,7 +205,7 @@ class DateInput extends React.Component {
                             autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                             placeholder={placeholder[0]}
                             value={value[0] || ''}
-                            ref={el => setInputRef(el, 0)}
+                            ref={ref => setInputRef(ref, 0)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
                         />
                         <Icon
@@ -217,7 +218,7 @@ class DateInput extends React.Component {
                             hasClear={hasClear}
                             placeholder={placeholder[1]}
                             value={value[1] || ''}
-                            ref={el => setInputRef(el, 1)}
+                            ref={ref => setInputRef(ref, 1)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
                             hint={
                                 <Icon

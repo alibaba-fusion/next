@@ -162,9 +162,10 @@ class Picker extends React.Component {
         this.state = {
             type: props.type,
             value,
-            visible: false,
             curValue: value, // 当前输入中的值
+            panelValue: value,
             inputValue: this.getInputValue(value),
+            visible: false,
             inputType: undefined,
             justBeginInput: true,
             panelMode: props.mode,
@@ -321,6 +322,7 @@ class Picker extends React.Component {
 
     onPanelChange(v, mode) {
         this.setState({
+            panelValue: v,
             panelMode: mode,
         });
     }
@@ -334,7 +336,6 @@ class Picker extends React.Component {
         const { value, isRange, justBeginInput, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
         v = this.checkAndRectify(v, value);
-        console.log('handleChangehandleChange', v);
 
         this.setState({
             curValue: v,
@@ -411,7 +412,7 @@ class Picker extends React.Component {
             footer,
             size,
         } = this.props;
-        const { isRange, inputType, justBeginInput, curValue } = this.state;
+        const { isRange, inputType, justBeginInput, curValue, panelMode } = this.state;
 
         const visible = this.getFromPropOrState('visible');
 
@@ -431,6 +432,7 @@ class Picker extends React.Component {
             format,
             showTime,
             inputType,
+            panelMode,
             onChange: handleChange,
         };
 
@@ -445,12 +447,13 @@ class Picker extends React.Component {
                 onInput={handleInput}
                 onClick={onClick}
                 size={size}
+                focused={visible}
                 ref={el => (this.dateInput = el)}
                 onInputTypeChange={onInputTypeChange}
                 {...sharedProps}
             />
         );
-        console.log(909090, curValue);
+
         // 渲染弹出层
         const DateNode = isRange ? (
             <RangePanel
