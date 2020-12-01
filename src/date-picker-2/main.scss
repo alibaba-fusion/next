@@ -4,6 +4,7 @@
 // @import "../time-picker-2/scss/variable.scss";
 
 @import "../calendar-2/scss/variable.scss";
+@import "../calendar-2/scss/mixin.scss";
 @import "../input/scss/variable.scss";
 @import "../input/scss/mixin.scss";
 
@@ -15,20 +16,18 @@
 // @import "scss/range-picker.scss";
 // @import "./rtl.scss";
 
-$picker: "." + $css-prefix + "picker";
-
 .#{$css-prefix} {
     &picker-overlay {
         overflow: hidden;
         vertical-align: top;
-        background: #fff;
+        background: #FFF;
         border-radius: 2px;
-        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
-        transition: margin 0.3s;
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
+        transition: margin .3s;
     }
 
     &picker {
-        #{$calendar-prefix}-table {
+        #{$calendar2-prefix}-table {
             width: 252px;
         }
 
@@ -108,33 +107,93 @@ $picker: "." + $css-prefix + "picker";
         }
     }
 
-    &range-picker-input-separator {
-        color: #c4c7cc;
+    &range-picker2-input-separator {
+        color: #C4C7CC;
         font-size: 12px;
     }
 
-    &date-picker-panel {
+    &date-picker2-panel {
         display: inline-flex;
     }
 
-    &range-picker-panel {
+    &range-picker2-panel {
         display: inline-flex;
     }
+}
 
-    &time-picker-panel {
-        border-left: 1px solid #f0f0f0;
+#{$calendar2-prefix}-right {
+    border-left: 1px solid #F2F3F7;
+    #{$calendar2-prefix}-body {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
 
-        .#{$css-prefix}picker-body {
-            padding-right: 0;
-            padding-left: 0;
+.#{$css-prefix}range-picker2-panel {
+    #{$calendar2-prefix}-cell-disabled {
+        #{$cell-inner} {
+            @include calendar-disabled;
+        }
+    }
+    #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
+        &#{$calendar2-prefix}-cell-selected {
+            &:before,
+            #{$cell-inner} {
+                color: #333;
+                background: $color-brand1-1;
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin:before {
+                left: 50%;
+            }
+            &#{$calendar2-prefix}-cell-range-end:before {
+                right: 50%;
+            }
+
+            &#{$calendar2-prefix}-cell-range-begin,
+            &#{$calendar2-prefix}-cell-range-end {
+                #{$cell-inner} {
+                    @include calendar-selected;
+                }
+            }
         }
 
-        .#{$css-prefix}time-picker2-menu ul {
-            height: 204px;
+        &#{$calendar2-prefix}-cell-hover:after {
+            content: ' ';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            left: 1px;
+            z-index: 0;
+            height: 24px;
+            transform: translateY(-50%);
+            border-top: 1px dashed $color-brand1-9;
+            border-bottom: 1px dashed $color-brand1-9;
         }
+        &#{$calendar2-prefix}-cell-hover-begin:after {
+            left: 6px;
+            border-top: 1px dashed $color-brand1-9;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+        &#{$calendar2-prefix}-cell-hover-end:after {
+            right: 6px;
+            border-top: 1px dashed $color-brand1-9;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+    }
 
-        .#{$css-prefix}time-picker2-menu:not(:last-child) {
-            border-right: 1px solid #f0f0f0;
+    tr {
+        td:first-of-type#{$calendar2-prefix}-cell-hover:after {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-left: 1px dashed $color-brand1-9;
+        }
+        td:last-of-type#{$calendar2-prefix}-cell-hover:after {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-right: 1px dashed $color-brand1-9;
         }
     }
 }

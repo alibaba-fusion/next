@@ -1,11 +1,5 @@
 ////
-/// @module calendar: 日历
-/// @tag Calendar
-/// @category component
-/// @family data-display
-/// @varPrefix $calendar-
-/// @classPrefix {prefix}-calendar
-/// @order {"size/header":10,"size/table head":11,"size/table cell":12,"statement/normal":10,"statement/normal/table head":100,"statement/normal/table cell":101,"statement/normal/header":102,"statement/hover":11,"statement/hover/table cell":110,"statement/hover/header":111,"statement/selected":12,"statement/selected/table cell":120,"statement/current":13,"statement/current/table cell":130,"statement/other month":14,"statement/other month/table cell":140,"statement/disabled":15,"statement/disabled/table cell":150,"statement/last month":16,"statement/last month/table cell":160,"statement/in range":17,"statement/in range/table cell":170}
 ////
 
-$calendar-prefix: "." + $css-prefix + "calendar";
+$calendar2-prefix: "." + $css-prefix + "calendar2";
+$cell-inner: "." + $css-prefix + "calendar2" + '-cell-inner';

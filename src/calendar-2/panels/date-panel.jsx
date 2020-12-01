@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import * as PT from 'prop-types';
 import SharedPT from '../prop-types';
 import { DATE_PANEL_MODE } from '../constant';
-import { func, obj, datejs, KEYCODE } from '../../util';
+import { func, datejs, KEYCODE } from '../../util';
 
 const { bindCtx, getRender } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
@@ -38,7 +38,7 @@ class DatePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}calendar`;
+        this.prefixCls = `${props.prefix}calendar2`;
 
         bindCtx(this, [
             'getDateCellData',
@@ -91,9 +91,12 @@ class DatePanel extends React.Component {
             case MONTH:
                 return curDate.isSame(date, 'month');
             case YEAR:
-                return curDate.isBefore(date) && curDate.isAfter(date.clone(1, 'year'));
-            case DECADE:
-                return curDate.isBefore(date) && curDate.isAfter(date.clone(10, 'year'));
+                return curDate.isSame(date, 'year');
+            case DECADE: {
+                const curYear = curDate.year();
+                const targetYear = date.year();
+                return curYear <= targetYear && targetYear < curYear + 10;
+            }
         }
     }
 
@@ -131,10 +134,10 @@ class DatePanel extends React.Component {
 
                 const isDisabled = props.disabledDate && props.disabledDate(value);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
-
                 const className = classnames(prefixCls, {
                     [`${prefixCls}-current`]: isCurrent, // 是否属于当前面板值
-                    [`${prefixCls}-today`]: this.isSame(value, now, mode),
+                    [`${prefixCls}-today`]:
+                        mode === WEEK ? this.isSame(value, now, DATE) : this.isSame(value, now, mode),
                     [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
                     [`${prefixCls}-disabled`]: isDisabled,
                     [`${prefixCls}-range-hover`]: hoverState,
@@ -182,28 +185,27 @@ class DatePanel extends React.Component {
 
         // 默认一周的第一天是周日，否则需要调整
         if (firstDayOfWeek !== 0) {
-            weekdaysShort = weekdaysShort
-                .slice(firstDayOfWeek)
-                .concat(weekdaysShort.slice(0, firstDayOfWeek));
+            weekdaysShort = weekdaysShort.slice(firstDayOfWeek).concat(weekdaysShort.slice(0, firstDayOfWeek));
         }
 
         return (
             <thead>
                 <tr>
-                    {weekdaysShort.map(d => (
-                        <th key={d}>{d}</th>
-                    ))}
+                    {weekdaysShort.map(d => {
+                        const day = d.replace('周', '');
+                        return <th key={day}>{day}</th>;
+                    })}
                 </tr>
             </thead>
         );
     }
 
     getDateCellData() {
-        const { panelValue: value, colNum } = this.props;
+        const { panelValue, colNum } = this.props;
 
-        const firstDayOfMonth = value.clone().startOf('month');
+        const firstDayOfMonth = panelValue.clone().startOf('month');
         const weekOfFirstDay = firstDayOfMonth.day(); // 当月第一天星期几
-        const daysOfCurMonth = value.endOf('month').date(); // 当月天数
+        const daysOfCurMonth = panelValue.endOf('month').date(); // 当月天数
         const firstDayOfWeek = datejs.localeData().firstDayOfWeek(); // 一周的第一天是星期几
 
         const cellData = [];
@@ -232,7 +234,7 @@ class DatePanel extends React.Component {
                 value,
                 label: value.date(),
                 isCurrent: value.isSame(firstDayOfMonth, 'month'),
-                key: value.format('YYYY-MM-DD'),
+                key: value.format('YYYYMMDD'),
             };
         });
     }
@@ -247,7 +249,7 @@ class DatePanel extends React.Component {
                 label,
                 value,
                 isCurrent: true,
-                key: value.format('YYYY-MM'),
+                key: value.format('YYYYMM'),
             };
         });
     }

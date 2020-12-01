@@ -41,15 +41,7 @@ class DateInput extends React.Component {
 
         this.prefixCls = `${props.prefix}picker-input`;
 
-        bindCtx(this, [
-            'onInput',
-            'onFocus',
-            'onChange',
-            'onKeyDown',
-            'format',
-            'setValue',
-            'setInputRef',
-        ]);
+        bindCtx(this, ['onInput', 'onFocus', 'onChange', 'onKeyDown', 'format', 'setValue', 'setInputRef']);
     }
 
     setInputRef(el, index) {
@@ -159,18 +151,7 @@ class DateInput extends React.Component {
 
     render() {
         const { onKeyDown, onInput, setInputRef, onFocus, prefixCls } = this;
-        const {
-            autoFocus,
-            readOnly,
-            isRange,
-            value,
-            onClick,
-            format,
-            prefix,
-            hasClear,
-            size,
-            focused,
-        } = this.props;
+        const { autoFocus, readOnly, isRange, value, onClick, format, prefix, hasClear, size, focused } = this.props;
 
         const placeholder = this.getPlaceholder();
         const htmlSize = String(Math.max(format.length ? format.length : 0, 12));
@@ -191,13 +172,7 @@ class DateInput extends React.Component {
         );
 
         return (
-            <div
-                className={className}
-                role="button"
-                tabIndex="0"
-                onKeyDown={onKeyDown}
-                onClick={onClick}
-            >
+            <div className={className} role="button" tabIndex="0" onKeyDown={onKeyDown} onClick={onClick}>
                 {isRange ? (
                     <React.Fragment>
                         <Input
@@ -208,11 +183,7 @@ class DateInput extends React.Component {
                             ref={ref => setInputRef(ref, 0)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
                         />
-                        <Icon
-                            className={`${prefix}range-picker-input-separator`}
-                            size="xxs"
-                            type="minus"
-                        />
+                        <Icon className={`${prefix}range-picker-input-separator`} size="xxs" type="minus" />
                         <Input
                             {...sharedInputProps}
                             hasClear={hasClear}
@@ -220,12 +191,7 @@ class DateInput extends React.Component {
                             value={value[1] || ''}
                             ref={ref => setInputRef(ref, 1)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
-                            hint={
-                                <Icon
-                                    type="calendar"
-                                    className={`${prefix}date-picker-symbol-calendar-icon`}
-                                />
-                            }
+                            hint={<Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />}
                         />
                     </React.Fragment>
                 ) : (

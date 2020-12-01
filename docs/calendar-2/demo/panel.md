@@ -33,6 +33,5 @@ ReactDOM.render(
     width: 300px;
     border: 1px solid #c4c6cf;
     border-radius: 3px;
-    padding: 8px;
 }
 ```

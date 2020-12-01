@@ -17,7 +17,6 @@ const event = require('./event');
 const { logger } = require('../utils');
 
 const cwd = process.cwd();
-console.log(process.argv);
 const argv = parseArgs(process.argv.slice(2), {
     default: {
         host: '127.0.0.1',

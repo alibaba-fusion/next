@@ -101,8 +101,7 @@ export function isNone(v) {
  * @param {Object} defaultObj 默认对象
  */
 export function call(obj, methodName, args, defaultObj) {
-    const method =
-        obj && methodName in obj ? obj[methodName] : defaultObj && defaultObj[methodName];
+    const method = obj && methodName in obj ? obj[methodName] : defaultObj && defaultObj[methodName];
 
     return method && method(...args);
 }

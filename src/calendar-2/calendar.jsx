@@ -14,7 +14,7 @@ const { bindCtx } = func;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
 function getPanelMode(mode) {
-    return mode === CALENDAR_MODE.YEAR ? DATE_PANEL_MODE.MONTH : DATE_PANEL_MODE.DATE;
+    return mode && (mode === CALENDAR_MODE.YEAR ? DATE_PANEL_MODE.MONTH : DATE_PANEL_MODE.DATE);
 }
 
 class Calendar extends React.Component {
@@ -88,9 +88,7 @@ class Calendar extends React.Component {
         rtl: false,
         prefix: 'next-',
         locale: defaultLocale.Calendar,
-        mode: CALENDAR_MODE.MONTH,
         shape: CALENDAR_SHAPE.FULLSCREEN,
-        panelValue: datejs(),
     };
 
     constructor(props) {
@@ -101,7 +99,7 @@ class Calendar extends React.Component {
         const value = obj.get('value', props, defaultValue);
         const defaultPanelValue = obj.get('defaultPanelValue', props, value || datejs());
         const panelValue = obj.get('panelValue', props, defaultPanelValue);
-        const panelMode = props.panelMode || getPanelMode(mode);
+        const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
 
         this.state = {
             mode,
@@ -123,34 +121,29 @@ class Calendar extends React.Component {
     }
 
     switchPanelMode(mode) {
-        const { DATE, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
+        const { MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
+
         switch (mode) {
-            case MONTH:
-                return DATE;
             case YEAR:
                 return MONTH;
             case DECADE:
                 return YEAR;
             default:
-                return this.state.panelMode;
+                return this.props.panelMode;
         }
     }
 
     shouldSwitchPanelMode = () => {
         const { mode, shape } = this.props;
         const { panelMode } = this.state;
-        const originalPanelMode = getPanelMode(mode);
+        const originalPanelMode = this.props.panelMode || getPanelMode(mode);
 
         return shape === CALENDAR_SHAPE.PANEL && panelMode !== originalPanelMode;
     };
 
     onDateSelect(value, e, { isCurrent }) {
         if (this.shouldSwitchPanelMode()) {
-            this.onPanelChange(
-                value,
-                this.switchPanelMode(this.state.panelMode),
-                'DATESELECT_SWITCH_MODE'
-            );
+            this.onPanelChange(value, this.switchPanelMode(this.state.panelMode), 'DATESELECT_VALUE_SWITCH_MODE');
         } else {
             if (!isCurrent) {
                 this.onPanelValueChange(value, 'DATESELECT');
@@ -171,7 +164,6 @@ class Calendar extends React.Component {
     }
 
     onPanelValueChange(panelValue, reason) {
-        console.log('onPanelValueChange', panelValue, reason);
         this.onPanelChange(panelValue, this.state.panelMode, reason);
     }
 
@@ -193,7 +185,6 @@ class Calendar extends React.Component {
             value,
             panelValue: value,
         });
-
         func.call(this.props, 'onChange', [value]);
     }
 
@@ -253,19 +244,12 @@ class Calendar extends React.Component {
             onSelect: this.onDateSelect,
             ...sharedProps,
         };
-
-        const classNames = classnames([
-            `${prefix}calendar`,
-            `${prefix}calendar-${shape}`,
-            className,
-        ]);
-
-        console.log('[calendar]', this.state.value, value);
+        const classNames = classnames([`${prefix}calendar2`, `${prefix}calendar2-${shape}`, className]);
 
         return (
             <div className={classNames}>
                 <HeaderPanel {...headerPanelProps} />
-                <div className={`${prefix}calendar-body ${prefix}picker-body`}>
+                <div className={`${prefix}calendar2-body`}>
                     <DatePanel {...datePanelProps} />
                 </div>
             </div>

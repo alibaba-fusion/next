@@ -343,9 +343,7 @@ class Picker extends React.Component {
         });
 
         if (!this.props.showTime || isOK) {
-            isRange && justBeginInput
-                ? this.handleInputFocus(inputType === BEGIN ? END : BEGIN)
-                : this.onChange(v);
+            isRange && justBeginInput ? this.handleInputFocus(inputType === BEGIN ? END : BEGIN) : this.onChange(v);
         }
     }
 
@@ -453,7 +451,6 @@ class Picker extends React.Component {
                 {...sharedProps}
             />
         );
-
         // 渲染弹出层
         const DateNode = isRange ? (
             <RangePanel
@@ -470,12 +467,7 @@ class Picker extends React.Component {
         const footerNode = getRender(
             footer,
             this.state.showOk || ranges ? (
-                <FooterPanel
-                    showTime={showTime}
-                    onOk={onOk}
-                    onChange={handleChange}
-                    ranges={ranges}
-                />
+                <FooterPanel showTime={showTime} onOk={onOk} onChange={handleChange} ranges={ranges} />
             ) : null,
             { onOk, showTime, onChange: handleChange, ranges }
         );

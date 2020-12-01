@@ -45,10 +45,10 @@ class DatePanel extends React.Component {
     render() {
         const { mode, panelMode, prefix, showTime, value } = this.props;
 
-        const className = classnames(`${prefix}date-picker-panel`, {
-            [`${prefix}date-time-picker-panel`]: showTime,
+        const className = classnames(`${prefix}date-picker2-panel`, {
+            [`${prefix}date-time-picker2-panel`]: showTime,
         });
-        console.log(this.calendarRef);
+
         return (
             <div className={className}>
                 <Calendar
@@ -58,7 +58,6 @@ class DatePanel extends React.Component {
                     colNum={showTime ? 6 : undefined}
                     onChange={this.handleChange}
                     onPanelChange={this.handlePanelChange}
-                    ref={ref => (this.calendarRef = ref)}
                 />
                 {showTime && mode === panelMode ? (
                     <TimePanel prefix={prefix} value={value} onSelect={this.handleChange} />
