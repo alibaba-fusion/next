@@ -80,7 +80,7 @@ switch (componentName) {
         break;
     case 'all':
         co(function*() {
-            if (process.env.TRAVIS) {
+            if (process.env.CI) {
                 runAllTest();
             } else {
                 const allTest = yield inquirer.prompt([
@@ -89,9 +89,7 @@ switch (componentName) {
                         type: 'list',
                         choices: ['yes', 'no'],
                         default: 1,
-                        message: logger.success(
-                            'This will run ALL components test cases, are you sure to run all?'
-                        ),
+                        message: logger.success('This will run ALL components test cases, are you sure to run all?'),
                     },
                 ]);
 
