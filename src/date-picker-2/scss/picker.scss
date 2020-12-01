@@ -1,67 +1,29 @@
-.#{$css-prefix}picker {
-    .#{$css-prefix}picker {
-        &-header {
-            padding: 0 8px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
 
-            &-btn,
-            &-text-field {
-                height: 40px;
-                line-height: 40px;
-            }
+#{$picker} {
+    & &-body {
+        padding: 8px 12px;
+        display: inline-flex;
+        flex-direction: column;
+        text-align: center;
+        background: #FFF;
+        border-radius: 2px;
+        outline: none;
+    }
 
-            &-btn {
-                min-width: 1.6em;
-                color: #585d66;
-                font-family: inherit;
-                vertical-align: initial;
-            }
+    & &-footer {
+        width: min-content;
+        min-width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        border-top: 1px solid #F0F0F0;
+        padding: 4px 12px;
+        display: flex;
+        min-height: 40px;
+        align-items: center;
+        flex-wrap: wrap;
 
-            &-btn > span,
-            &-text-field {
-                text-align: center;
-                font-size: 14px;
-                color: #1f2633;
-                font-weight: bolder;
-                vertical-align: initial;
-            }
-
-            &-text-field {
-                flex: 1;
-
-                .#{$css-prefix}picker-header-btn:not(:first-child) {
-                    margin-left: 8px;
-                }
-            }
-        }
-
-        &-body {
-            padding: 8px 12px;
-            display: inline-flex;
-            flex-direction: column;
-            text-align: center;
-            background: #fff;
-            border-radius: 2px;
-            outline: none;
-        }
-
-        &-footer {
-            width: min-content;
-            min-width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-            border-top: 1px solid #f0f0f0;
-            padding: 4px 12px;
-            display: flex;
-            min-height: 40px;
-            align-items: center;
-            flex-wrap: wrap;
-
-            &-actions {
-                margin-left: auto;
-            }
+        &-actions {
+            margin-left: auto;
         }
     }
 }

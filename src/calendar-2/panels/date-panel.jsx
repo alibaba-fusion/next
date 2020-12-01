@@ -38,7 +38,7 @@ class DatePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}calendar`;
+        this.prefixCls = `${props.prefix}calendar2`;
 
         bindCtx(this, [
             'getDateCellData',
@@ -182,17 +182,16 @@ class DatePanel extends React.Component {
 
         // 默认一周的第一天是周日，否则需要调整
         if (firstDayOfWeek !== 0) {
-            weekdaysShort = weekdaysShort
-                .slice(firstDayOfWeek)
-                .concat(weekdaysShort.slice(0, firstDayOfWeek));
+            weekdaysShort = weekdaysShort.slice(firstDayOfWeek).concat(weekdaysShort.slice(0, firstDayOfWeek));
         }
 
         return (
             <thead>
                 <tr>
-                    {weekdaysShort.map(d => (
-                        <th key={d}>{d}</th>
-                    ))}
+                    {weekdaysShort.map(d => {
+                        const day = d.replace('周', '');
+                        return <th key={day}>{day}</th>;
+                    })}
                 </tr>
             </thead>
         );

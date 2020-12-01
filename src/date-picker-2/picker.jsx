@@ -334,7 +334,7 @@ class Picker extends React.Component {
         const { value, isRange, justBeginInput, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
         v = this.checkAndRectify(v, value);
-        console.log('handleChangehandleChange', v);
+        // console.log('handleChangehandleChange', v);
 
         this.setState({
             curValue: v,
@@ -342,9 +342,7 @@ class Picker extends React.Component {
         });
 
         if (!this.props.showTime || isOK) {
-            isRange && justBeginInput
-                ? this.handleInputFocus(inputType === BEGIN ? END : BEGIN)
-                : this.onChange(v);
+            isRange && justBeginInput ? this.handleInputFocus(inputType === BEGIN ? END : BEGIN) : this.onChange(v);
         }
     }
 
@@ -450,7 +448,7 @@ class Picker extends React.Component {
                 {...sharedProps}
             />
         );
-        console.log(909090, curValue);
+        // console.log(909090, curValue);
         // 渲染弹出层
         const DateNode = isRange ? (
             <RangePanel
@@ -467,12 +465,7 @@ class Picker extends React.Component {
         const footerNode = getRender(
             footer,
             this.state.showOk || ranges ? (
-                <FooterPanel
-                    showTime={showTime}
-                    onOk={onOk}
-                    onChange={handleChange}
-                    ranges={ranges}
-                />
+                <FooterPanel showTime={showTime} onOk={onOk} onChange={handleChange} ranges={ranges} />
             ) : null,
             { onOk, showTime, onChange: handleChange, ranges }
         );

@@ -1,9 +1,5 @@
-////
-/// @module date-picker: 日期选择
-/// @tag DatePicker
-/// @category component
-/// @family data-entry
-/// @varPrefix $date-picker
-/// @classPrefix {prefix}-date-picker
-/// @order {"size/panel footer":10,"statement/normal":10,"statement/normal/panel":100}
-////
+//
+// $date-picker2-prefix: '.' + $css-prefix + 'picker';
+// --------------------------------------------------
+
+$picker: "." + $css-prefix + "picker";

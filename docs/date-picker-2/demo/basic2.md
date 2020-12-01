@@ -24,12 +24,12 @@ const { MonthPicker, YearPicker, WeekPicker } = DatePicker;
 
 const onChange = val => console.log(val);
 
-const App = () => <div>
+const App = () => (<div>
     <DatePicker onChange={onChange} /> <br />
     <WeekPicker onChange={onChange} /> <br />
     <MonthPicker onChange={onChange} /> <br />
     <YearPicker onChange={onChange} /> <br />
-</div>
+</div>);
 
 ReactDOM.render(<App />, mountNode);
 ```

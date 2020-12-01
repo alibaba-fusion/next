@@ -1,6 +1,6 @@
 ////
 
-$time-picker-prefix: "." + $css-prefix + "time-picker2";
+$time-picker2-prefix: "." + $css-prefix + "time-picker2";
 
 // global
 $time-picker-panel-border-color: $popup-local-border-color;
@@ -24,7 +24,7 @@ $time-picker-menu-title-height: $s-7 !default;
 $time-picker-menu-item-height: $s-7 !default;
 $time-picker-menu-item-width: $s-14 !default;
 
-$time-picker-menu-border-color: $color-line1-3 !default;
+$time-picker-menu-border-color: $color-fill1-2 !default;
 $time-picker-menu-title-color: $color-text1-2 !default;
 $time-picker-menu-title-background: $color-white !default;
 $time-pikcer-menu-title-font-weight: $font-weight-2 !default;

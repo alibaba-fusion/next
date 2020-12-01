@@ -60,8 +60,8 @@ class DatePanel extends React.Component {
     render() {
         const { mode, prefix, showTime, value } = this.props;
 
-        const className = classnames(`${prefix}date-picker-panel`, {
-            [`${prefix}date-time-picker-panel`]: showTime,
+        const className = classnames(`${prefix}date-picker2-panel`, {
+            [`${prefix}date-time-picker2-panel`]: showTime,
         });
 
         return (

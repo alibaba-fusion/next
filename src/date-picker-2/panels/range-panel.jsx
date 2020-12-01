@@ -147,7 +147,7 @@ class RangePanel extends React.Component {
     }
 
     handlePanelChange(v, mode, idx) {
-        console.log('handlePanelChange', v, mode, idx);
+        // console.log('handlePanelChange', v, mode, idx);
 
         this.setState({
             mode,
@@ -230,7 +230,7 @@ class RangePanel extends React.Component {
         hoverValue[inputType] = this.state.curHoverValue;
 
         const hoverState = this.handleCellState(value, hoverValue);
-        const prefixCls = `${prefix}calendar-cell`;
+        const prefixCls = `${prefix}calendar2-cell`;
 
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
@@ -252,18 +252,10 @@ class RangePanel extends React.Component {
         const { value, prefix, showTime, inputType } = this.props;
 
         return (
-            <div className={`${prefix}range-picker-panel`}>
-                <Calendar
-                    {...sharedProps}
-                    value={value[inputType]}
-                    onPanelChange={this.handlePanelChange}
-                />
+            <div className={`${prefix}range-picker2-panel`}>
+                <Calendar {...sharedProps} value={value[inputType]} onPanelChange={this.handlePanelChange} />
                 {showTime && !this.hasModeChanged ? (
-                    <TimePanel
-                        prefix={prefix}
-                        value={value[inputType]}
-                        onSelect={v => this.onChange(v, false)}
-                    />
+                    <TimePanel prefix={prefix} value={value[inputType]} onSelect={v => this.onChange(v, false)} />
                 ) : null}
             </div>
         );
@@ -284,11 +276,7 @@ class RangePanel extends React.Component {
         };
 
         const calendarNodes = [
-            <Calendar
-                {...calendarProps(0)}
-                className={`${prefix}range-picker-left`}
-                key="range-panel-calendar-left"
-            />,
+            <Calendar {...calendarProps(0)} className={`${prefix}range-picker-left`} key="range-panel-calendar-left" />,
             <Calendar
                 {...calendarProps(1)}
                 className={`${prefix}range-picker-right`}
@@ -299,20 +287,14 @@ class RangePanel extends React.Component {
         ];
 
         return (
-            <div className={`${prefix}range-picker-panel`}>
+            <div className={`${prefix}range-picker2-panel`}>
                 {!this.hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
             </div>
         );
     }
 
     render() {
-        const {
-            onChange,
-            getCellClassName,
-            disabledDate,
-            handleMouseEnter,
-            handleMouseLeave,
-        } = this;
+        const { onChange, getCellClassName, disabledDate, handleMouseEnter, handleMouseLeave } = this;
         const { mode, justBeginInput, prefix } = this.props;
 
         // 切换面板mode
@@ -344,9 +326,7 @@ class RangePanel extends React.Component {
             };
         }
 
-        return this.props.showTime
-            ? this.renderRangeTime(sharedProps)
-            : this.renderRange(sharedProps);
+        return this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps);
     }
 }
 
