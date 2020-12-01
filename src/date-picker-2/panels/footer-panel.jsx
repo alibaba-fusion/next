@@ -42,18 +42,16 @@ function normalizeRanges(ranges) {
 
 class FooterPanel extends React.PureComponent {
     static propTypes = {
-        prefix: PT.string,
         rtl: PT.bool,
+        prefix: PT.string,
         locale: PT.object,
         showOk: PT.bool,
-        showTime: PT.bool,
         ranges: PT.oneOfType([PT.array, PT.object]),
         onOk: PT.func,
+        oKable: PT.bool,
     };
 
     static defaultProps = {
-        prefix: 'next-',
-        rtl: false,
         locale: defaultLocale.DatePicker,
     };
 
@@ -91,17 +89,15 @@ class FooterPanel extends React.PureComponent {
 
     render() {
         const { prefixCls } = this;
-        const { showTime, showOk } = this.props;
-
-        const shouldShowOk = showTime && showOk !== false;
+        const { showOk, locale, onOk, oKable } = this.props;
 
         return (
             <div className={prefixCls}>
                 {this.renderRanges()}
                 <div className={`${prefixCls}-actions`}>
-                    {shouldShowOk ? (
-                        <Button onClick={this.props.onOk} type="primary">
-                            {this.props.locale.ok}
+                    {showOk ? (
+                        <Button disabled={!oKable} onClick={onOk} type="primary">
+                            {locale.ok}
                         </Button>
                     ) : null}
                 </div>

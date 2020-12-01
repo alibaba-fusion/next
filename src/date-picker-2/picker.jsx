@@ -18,14 +18,14 @@ const { bindCtx, isFunction, getRender } = func;
 
 class Picker extends React.Component {
     static propTypes = {
-        prefix: PT.string,
         rtl: PT.bool,
+        prefix: PT.string,
         locale: PT.object,
-        className: PT.string,
         mode: SharedPT.mode,
         type: SharedPT.type,
-        inputReadOnly: SharedPT.inputReadOnly,
-        trigger: PT.oneOfType([PT.func, PT.object]),
+        readOnly: SharedPT.readOnly,
+        className: PT.string,
+        trigger: PT.oneOfType([PT.func, PT.node]),
         /**
          * 输入框状态
          */
@@ -132,6 +132,7 @@ class Picker extends React.Component {
         yearRange: PT.arrayOf(PT.number),
         titleRender: PT.func,
         showOk: PT.bool,
+        hasBorder: PT.bool,
     };
 
     static defaultProps = {
@@ -142,6 +143,7 @@ class Picker extends React.Component {
         mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
         size: 'medium',
+        hasBorder: true,
     };
 
     constructor(props) {
@@ -163,7 +165,6 @@ class Picker extends React.Component {
             type: props.type,
             value,
             curValue: value, // 当前输入中的值
-            panelValue: value,
             inputValue: this.getInputValue(value),
             visible: false,
             inputType: undefined,
@@ -192,7 +193,7 @@ class Picker extends React.Component {
     static getDerivedStateFromProps(props) {
         return {
             isRange: props.type === DATE_PICKER_TYPE.RANGE,
-            showOk: props.showOk || props.showTime,
+            showOk: !!(props.showOk || props.showTime),
         };
     }
 
@@ -283,18 +284,14 @@ class Picker extends React.Component {
                 () => {
                     // 面板收起之后
                     if (!visible) {
-                        const { value } = this.state;
-
-                        this.setState({
-                            curValue: value,
-                            inputValue: this.getInputValue(value),
-                        });
+                        this.handleChange(this.state.curValue, true, false);
                     }
 
                     this.setState({
                         visible,
                         justBeginInput: true,
                     });
+
                     func.call(this.props, 'onVisibleChange', [visible]);
                 },
                 visible ? 0 : 100
@@ -320,9 +317,8 @@ class Picker extends React.Component {
         }
     }
 
-    onPanelChange(v, mode) {
+    onPanelChange(_, mode) {
         this.setState({
-            panelValue: v,
             panelMode: mode,
         });
     }
@@ -332,26 +328,40 @@ class Picker extends React.Component {
      * - 数据检验纠正
      * - 判断触发onChange事件
      */
-    handleChange(v, isOK) {
-        const { value, isRange, justBeginInput, inputType } = this.state;
+    handleChange(v, isOK, justBeginInput) {
+        const { value, isRange, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
+
         v = this.checkAndRectify(v, value);
+
+        if (justBeginInput === undefined) {
+            justBeginInput = this.state.justBeginInput;
+        }
+
+        if (!this.props.showTime || isOK) {
+            if (isRange && justBeginInput) {
+                this.handleInputFocus(inputType === BEGIN ? END : BEGIN);
+            } else {
+                if (isRange && v.some(o => !o)) {
+                    v = [null, null];
+                }
+                this.onChange(v);
+            }
+        }
 
         this.setState({
             curValue: v,
             inputValue: this.getInputValue(v),
         });
-
-        if (!this.props.showTime || isOK) {
-            isRange && justBeginInput ? this.handleInputFocus(inputType === BEGIN ? END : BEGIN) : this.onChange(v);
-        }
     }
 
     onChange(v) {
         this.setState({
             value: v,
         });
+
         func.call(this.props, 'onChagne', [v]);
+
         this.onVisibleChange(false);
     }
 
@@ -401,7 +411,7 @@ class Picker extends React.Component {
             rtl,
             prefix,
             locale,
-            inputReadOnly,
+            readOnly,
             showTime,
             ranges,
             mode,
@@ -409,8 +419,9 @@ class Picker extends React.Component {
             trigger,
             footer,
             size,
+            hasBorder,
         } = this.props;
-        const { isRange, inputType, justBeginInput, curValue, panelMode } = this.state;
+        const { isRange, inputType, justBeginInput, curValue, panelMode, showOk } = this.state;
 
         const visible = this.getFromPropOrState('visible');
 
@@ -441,10 +452,11 @@ class Picker extends React.Component {
                 format={format}
                 isRange={isRange}
                 value={inputValue}
-                readOnly={inputReadOnly}
+                readOnly={readOnly}
                 onInput={handleInput}
                 onClick={onClick}
                 size={size}
+                hasBorder={hasBorder}
                 focused={visible}
                 ref={el => (this.dateInput = el)}
                 onInputTypeChange={onInputTypeChange}
@@ -464,12 +476,20 @@ class Picker extends React.Component {
         );
 
         // 底部节点
+        const oKable = !!(isRange ? curValue && curValue[inputType] : curValue);
         const footerNode = getRender(
             footer,
-            this.state.showOk || ranges ? (
-                <FooterPanel showTime={showTime} onOk={onOk} onChange={handleChange} ranges={ranges} />
+            showOk || ranges ? (
+                <FooterPanel
+                    oKable={oKable}
+                    onOk={onOk}
+                    showOk={showOk}
+                    onChange={handleChange}
+                    ranges={ranges}
+                    prefix={prefix}
+                />
             ) : null,
-            { onOk, showTime, onChange: handleChange, ranges }
+            { onOk, onChange: handleChange }
         );
 
         return (
@@ -477,6 +497,7 @@ class Picker extends React.Component {
                 key="date-picker-popup"
                 visible={visible}
                 triggerType="click"
+                offset={[0, 10]}
                 onVisibleChange={handleVisibleChange}
                 trigger={triggerNode}
                 className={`${prefixCls}-overlay`}

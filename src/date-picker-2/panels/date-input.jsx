@@ -9,7 +9,7 @@ import { func, KEYCODE } from '../../util';
 import Input from '../../input';
 import Icon from '../../icon';
 
-const { bindCtx, isFunction } = func;
+const { isFunction } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 
 class DateInput extends React.Component {
@@ -24,10 +24,11 @@ class DateInput extends React.Component {
         hasClear: PT.bool,
         onInputTypeChange: PT.func,
         autoFocus: PT.bool,
-        readOnly: SharedPT.inputReadOnly,
+        readOnly: SharedPT.readOnly,
         placeholder: SharedPT.placeholder,
         size: SharedPT.size,
         focused: PT.bool,
+        hasBorder: PT.bool,
     };
 
     static defaultProps = {
@@ -38,13 +39,10 @@ class DateInput extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.prefixCls = `${props.prefix}picker-input`;
-
-        bindCtx(this, ['onInput', 'onFocus', 'onChange', 'onKeyDown', 'format', 'setValue', 'setInputRef']);
     }
 
-    setInputRef(el, index) {
+    setInputRef = (el, index) => {
         if (this.props.isRange) {
             if (!this.input) {
                 this.input = [];
@@ -53,34 +51,26 @@ class DateInput extends React.Component {
         } else {
             this.input = el;
         }
-    }
+    };
 
-    setValue(v) {
+    setValue = v => {
         const { isRange, inputType, value } = this.props;
-        let newVal;
+        let newVal = v;
 
         if (isRange) {
-            const index = inputType === DATE_INPUT_TYPE.BEGIN ? 0 : 1;
-
             newVal = [...value];
-            newVal[index] = v;
-        } else {
-            newVal = v;
+            newVal[inputType] = v;
         }
+
         return newVal;
-    }
+    };
 
-    format(v) {
+    format = v => {
         const { format } = this;
+        return isFunction(format) ? format(v) : v.format(format);
+    };
 
-        if (isFunction(format)) {
-            return format(v);
-        } else {
-            return v.format(format);
-        }
-    }
-
-    onInput(v, e, eventType) {
+    onInput = (v, e, eventType) => {
         v = this.setValue(v);
 
         if (eventType === 'clear') {
@@ -89,19 +79,19 @@ class DateInput extends React.Component {
         }
 
         func.call(this.props, 'onInput', [v, eventType]);
-    }
+    };
 
-    onChange() {
+    onChange = () => {
         func.call(this.props, 'onChange', [this.props.value]);
-    }
+    };
 
-    onFocus(inputType) {
+    onFocus = inputType => {
         if (inputType !== this.props.inputType) {
             func.call(this.props, 'onInputTypeChange', [inputType]);
         }
-    }
+    };
 
-    onKeyDown(e) {
+    onKeyDown = e => {
         switch (e.keyCode) {
             case KEYCODE.ENTER:
                 func.call(this.props, 'onClick');
@@ -110,7 +100,7 @@ class DateInput extends React.Component {
             default:
                 return;
         }
-    }
+    };
 
     getPlaceholder = () => {
         const {
@@ -151,7 +141,20 @@ class DateInput extends React.Component {
 
     render() {
         const { onKeyDown, onInput, setInputRef, onFocus, prefixCls } = this;
-        const { autoFocus, readOnly, isRange, value, onClick, format, prefix, hasClear, size, focused } = this.props;
+        const {
+            autoFocus,
+            readOnly,
+            isRange,
+            value,
+            onClick,
+            format,
+            prefix,
+            hasClear,
+            inputType,
+            size,
+            focused,
+            hasBorder,
+        } = this.props;
 
         const placeholder = this.getPlaceholder();
         const htmlSize = String(Math.max(format.length ? format.length : 0, 12));
@@ -168,6 +171,7 @@ class DateInput extends React.Component {
             [prefixCls, `${prefixCls}-${size}`, `${prefixCls}-${isRange ? 'range' : 'date'}`],
             {
                 [`${prefixCls}-focused`]: focused,
+                [`${prefixCls}-noborder`]: !hasBorder,
             }
         );
 
@@ -182,6 +186,9 @@ class DateInput extends React.Component {
                             value={value[0] || ''}
                             ref={ref => setInputRef(ref, 0)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
+                            className={classnames({
+                                [`${prefixCls}-input-active`]: inputType === DATE_INPUT_TYPE.BEGIN,
+                            })}
                         />
                         <Icon className={`${prefix}range-picker-input-separator`} size="xxs" type="minus" />
                         <Input
@@ -191,6 +198,9 @@ class DateInput extends React.Component {
                             value={value[1] || ''}
                             ref={ref => setInputRef(ref, 1)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
+                            className={classnames({
+                                [`${prefixCls}-input-active`]: inputType === DATE_INPUT_TYPE.END,
+                            })}
                             hint={<Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />}
                         />
                     </React.Fragment>

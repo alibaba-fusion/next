@@ -52,7 +52,7 @@ const SharedPT = {
     format: checkType('string'),
     inputValue: checkType('string'),
     placeholder: checkType('string'),
-    inputReadOnly: checkType('boolean'),
+    readOnly: checkType('boolean'),
     mode: PT.oneOf(Object.values(DATE_PICKER_MODE)),
     type: PT.oneOf(Object.values(DATE_PICKER_TYPE)),
     inputType: PT.oneOf(Object.values(DATE_INPUT_TYPE)),

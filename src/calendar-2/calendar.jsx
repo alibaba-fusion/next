@@ -8,13 +8,17 @@ import SharedPT from './prop-types';
 
 import { CALENDAR_MODE, CALENDAR_SHAPE, DATE_PANEL_MODE } from './constant';
 import HeaderPanel from './panels/header-panel';
-import DatePanel from './panels/date-panel';
+import DateTable from './panels/date-table';
 
 const { bindCtx } = func;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
 function getPanelMode(mode) {
     return mode && (mode === CALENDAR_MODE.YEAR ? DATE_PANEL_MODE.MONTH : DATE_PANEL_MODE.DATE);
+}
+
+function isValueChanged(newVal, oldVal) {
+    return newVal !== oldVal && !datejs(newVal).isSame(datejs(oldVal));
 }
 
 class Calendar extends React.Component {
@@ -89,6 +93,7 @@ class Calendar extends React.Component {
         prefix: 'next-',
         locale: defaultLocale.Calendar,
         shape: CALENDAR_SHAPE.FULLSCREEN,
+        mode: CALENDAR_MODE.MONTH,
     };
 
     constructor(props) {
@@ -98,14 +103,14 @@ class Calendar extends React.Component {
 
         const value = obj.get('value', props, defaultValue);
         const defaultPanelValue = obj.get('defaultPanelValue', props, value || datejs());
-        const panelValue = obj.get('panelValue', props, defaultPanelValue);
+        const panelValue = datejs(obj.get('panelValue', props, defaultPanelValue));
         const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
 
         this.state = {
             mode,
             value,
             panelMode,
-            panelValue,
+            panelValue: panelValue.isValid() ? panelValue : datejs(),
         };
 
         bindCtx(this, [
@@ -120,16 +125,49 @@ class Calendar extends React.Component {
         this.getFromPropOrState = obj.getFromPropOrState.bind(this);
     }
 
+    static getDerivedStateFromProps(props, state) {
+        let newState = null;
+        let value;
+        let panelValue;
+
+        if ('value' in props && isValueChanged(props.value, state.value)) {
+            value = props.value;
+
+            if (!('panelValue' in props)) {
+                panelValue = datejs(value);
+            }
+        }
+
+        if ('panelValue' in props) {
+            panelValue = datejs(props.panelValue);
+        }
+
+        // panelValue不能是无效值
+        if (panelValue) {
+            panelValue = panelValue.isValid() ? panelValue : datejs();
+            newState = {
+                panelValue,
+            };
+        }
+        if (value) {
+            newState.value = value;
+        }
+
+        return newState;
+    }
+
     switchPanelMode(mode) {
-        const { MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
+        const { DATE, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
         switch (mode) {
+            case MONTH:
+                return DATE;
             case YEAR:
                 return MONTH;
             case DECADE:
                 return YEAR;
             default:
-                return this.props.panelMode;
+                return mode;
         }
     }
 
@@ -137,7 +175,6 @@ class Calendar extends React.Component {
         const { mode, shape } = this.props;
         const { panelMode } = this.state;
         const originalPanelMode = this.props.panelMode || getPanelMode(mode);
-
         return shape === CALENDAR_SHAPE.PANEL && panelMode !== originalPanelMode;
     };
 
@@ -189,8 +226,8 @@ class Calendar extends React.Component {
     }
 
     render() {
-        let { value, panelValue } = this.getFromPropOrState(['value', 'panelValue']);
-        const { panelMode, mode } = this.state;
+        let { value } = this.getFromPropOrState(['value']);
+        const { panelMode, mode, panelValue } = this.state;
 
         const {
             rtl,
@@ -209,7 +246,6 @@ class Calendar extends React.Component {
             colNum,
         } = this.props;
 
-        panelValue = datejs(panelValue);
         value = datejs(value);
 
         const sharedProps = {
@@ -234,7 +270,7 @@ class Calendar extends React.Component {
             onSuperNext,
             ...sharedProps,
         };
-        const datePanelProps = {
+        const dateTableProps = {
             mode: panelMode,
             disabledDate,
             dateCellRender,
@@ -244,13 +280,14 @@ class Calendar extends React.Component {
             onSelect: this.onDateSelect,
             ...sharedProps,
         };
+
         const classNames = classnames([`${prefix}calendar2`, `${prefix}calendar2-${shape}`, className]);
 
         return (
             <div className={classNames}>
                 <HeaderPanel {...headerPanelProps} />
                 <div className={`${prefix}calendar2-body`}>
-                    <DatePanel {...datePanelProps} />
+                    <DateTable {...dateTableProps} />
                 </div>
             </div>
         );

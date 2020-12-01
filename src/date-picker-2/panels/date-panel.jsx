@@ -34,6 +34,10 @@ class DatePanel extends React.Component {
         return newVal;
     }
 
+    handleTimeChange = v => {
+        func.call(this.props, 'onChange', [v]);
+    };
+
     handleChange = v => {
         func.call(this.props, 'onChange', [this.setTime(v, this.props.value)]);
     };
@@ -60,7 +64,7 @@ class DatePanel extends React.Component {
                     onPanelChange={this.handlePanelChange}
                 />
                 {showTime && mode === panelMode ? (
-                    <TimePanel prefix={prefix} value={value} onSelect={this.handleChange} />
+                    <TimePanel prefix={prefix} value={value} onSelect={this.handleTimeChange} />
                 ) : null}
             </div>
         );

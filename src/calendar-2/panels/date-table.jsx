@@ -19,7 +19,7 @@ const mode2Rows = {
     [DECADE]: 3,
 };
 
-class DatePanel extends React.Component {
+class DateTable extends React.Component {
     static propTypes = {
         mode: SharedPT.panelMode,
         value: SharedPT.date,
@@ -234,7 +234,7 @@ class DatePanel extends React.Component {
                 value,
                 label: value.date(),
                 isCurrent: value.isSame(firstDayOfMonth, 'month'),
-                key: value.format('YYYYMMDD'),
+                key: value.format('YYYY-MM-DD'),
             };
         });
     }
@@ -249,7 +249,7 @@ class DatePanel extends React.Component {
                 label,
                 value,
                 isCurrent: true,
-                key: value.format('YYYYMM'),
+                key: value.format('YYYY-MM'),
             };
         });
     }
@@ -327,4 +327,4 @@ class DatePanel extends React.Component {
     }
 }
 
-export default polyfill(DatePanel);
+export default polyfill(DateTable);
