@@ -1,5 +1,6 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
+import classnames from 'classnames';
 import * as PT from 'prop-types';
 
 import SharedPT from './prop-types';
@@ -392,6 +393,12 @@ class Picker extends React.Component {
             });
     }
 
+    getCurrentAlign = ({ align }) => {
+        this.setState({
+            align,
+        });
+    };
+
     render() {
         const {
             prefixCls,
@@ -425,7 +432,7 @@ class Picker extends React.Component {
 
         const visible = this.getFromPropOrState('visible');
 
-        let { inputValue, value } = this.state;
+        let { inputValue, value, align } = this.state;
 
         // value受控模式
         if ('value' in this.props) {
@@ -492,20 +499,28 @@ class Picker extends React.Component {
             { onOk, onChange: handleChange }
         );
 
+        const popupCls = classnames(prefixCls, {
+            [`${prefixCls}-overlay`]: true,
+            [`${prefixCls}-${(align || []).join('-')}`]: align,
+            [`${prefixCls}-overlay-angle`]: isRange && showTime,
+        });
+
         return (
             <Popup
                 key="date-picker-popup"
                 visible={visible}
                 triggerType="click"
-                offset={[0, 10]}
                 onVisibleChange={handleVisibleChange}
                 trigger={triggerNode}
-                className={`${prefixCls}-overlay`}
+                className={popupCls}
+                onPosition={this.getCurrentAlign}
             >
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div className={prefixCls} onMouseDown={handleMouseDown}>
-                    {DateNode}
-                    {this.state.panelMode !== this.props.mode ? null : footerNode}
+                <div onMouseDown={handleMouseDown}>
+                    <div className={`${prefixCls}-wrapper`}>
+                        {DateNode}
+                        {this.state.panelMode !== this.props.mode ? null : footerNode}
+                    </div>
                 </div>
             </Popup>
         );

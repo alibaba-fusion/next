@@ -213,7 +213,7 @@ class RangePanel extends React.Component {
         const { value, prefix, showTime, inputType } = this.props;
 
         return (
-            <div className={`${prefix}range-picker2-panel`}>
+            <div key="time-panel" className={`${prefix}range-picker2-panel`}>
                 <Calendar
                     panelValue={this.state.panelValue}
                     {...sharedProps}
@@ -227,7 +227,7 @@ class RangePanel extends React.Component {
         );
     };
 
-    renderRange = sharedProps => {
+    renderRange(sharedProps) {
         const { handlePanelChange, handleCanlendarClick, hasModeChanged } = this;
         const { value, prefix } = this.props;
         const ranges = this.getRanges();
@@ -252,7 +252,7 @@ class RangePanel extends React.Component {
             />,
         ];
 
-        const classNames = classnames(`${prefix}range-picker2-panel`, {
+        const classNames = classnames({
             [`${prefix}range-picker2-panel-double`]: !hasModeChanged,
         });
 
@@ -261,11 +261,11 @@ class RangePanel extends React.Component {
                 {!this.hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
             </div>
         );
-    };
+    }
 
     render() {
         const { onChange, getCellClassName, disabledDate, handleMouseEnter, handleMouseLeave } = this;
-        const { mode, justBeginInput, prefix } = this.props;
+        const { mode, justBeginInput, prefix, inputType } = this.props;
 
         // 切换面板mode
         this.hasModeChanged = this.state.mode !== this.props.mode;
@@ -296,7 +296,19 @@ class RangePanel extends React.Component {
             };
         }
 
-        return this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps);
+        const { END } = DATE_INPUT_TYPE;
+        const left = inputType === END ? 140 : 0;
+
+        return (
+            <div className={`${prefix}range-picker2-panel`}>
+                {this.props.showTime
+                    ? [
+                          <div key="arrow" className={`${prefix}range-picker2-arrow`} style={{ left }} />,
+                          this.renderRangeTime(sharedProps),
+                      ]
+                    : this.renderRange(sharedProps)}
+            </div>
+        );
     }
 }
 

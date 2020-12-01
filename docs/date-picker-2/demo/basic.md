@@ -57,6 +57,9 @@ function App() {
             <div className="main">
                 <DatePicker2 mode="year" format="YYYY-MM-DD HH:mm:ss" type="range" />
             </div>
+            <div className="main">
+                <DatePicker2 showTime format="YYYY-MM-DD HH:mm:ss" type="range" />
+            </div>
         </div>
     );
 }
