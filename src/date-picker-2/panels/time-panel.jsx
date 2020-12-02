@@ -14,7 +14,9 @@ class TimePanel extends React.PureComponent {
     };
 
     static defaultProps = {
-        timePickerProps: {},
+        timePickerProps: {
+            format: 'HH:mm:ss',
+        },
     };
 
     formater = v => {
@@ -35,16 +37,14 @@ class TimePanel extends React.PureComponent {
                 <div className={`${prefix}calendar2-header`}>
                     <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
                 </div>
-                <div className={`${prefix}calendar2-body`}>
-                    <TimePickerPanel
-                        value={value}
-                        onSelect={onSelect}
-                        showHour={showHour}
-                        showSecond={showSecond}
-                        showMinute={showMinute}
-                        {...timePickerProps}
-                    />
-                </div>
+                <TimePickerPanel
+                    value={value}
+                    onSelect={onSelect}
+                    showHour={showHour}
+                    showSecond={showSecond}
+                    showMinute={showMinute}
+                    {...timePickerProps}
+                />
             </div>
         );
     }

@@ -14,6 +14,10 @@
         width: 100%;
     }
 
+    &-wrapper {
+        padding: $s-1 0;
+    }
+
     &-body {
         overflow: hidden;
         border: $popup-local-border-width $popup-local-border-style $time-picker-panel-border-color;

@@ -170,7 +170,6 @@ class TimePicker2 extends Component {
         name: PropTypes.string,
         inputProps: PropTypes.object,
         popupComponent: PropTypes.elementType,
-        popupContent: PropTypes.node,
     };
 
     static defaultProps = {
@@ -265,14 +264,7 @@ class TimePicker2 extends Component {
 
     onKeyown = e => {
         const { value, inputStr } = this.state;
-        const {
-            format,
-            hourStep = 1,
-            minuteStep = 1,
-            secondStep = 1,
-            disabledMinutes,
-            disabledSeconds,
-        } = this.props;
+        const { format, hourStep = 1, minuteStep = 1, secondStep = 1, disabledMinutes, disabledSeconds } = this.props;
 
         let unit = 'second';
 
@@ -366,7 +358,6 @@ class TimePicker2 extends Component {
             popupClassName,
             popupProps,
             popupComponent,
-            popupContent,
             followTrigger,
             disabled,
             hasBorder,
@@ -452,7 +443,6 @@ class TimePicker2 extends Component {
                 <PopupComponent
                     autoFocus
                     align={popupAlign}
-                    offset={[0, 4]}
                     {...popupProps}
                     followTrigger={followTrigger}
                     visible={visible}
@@ -464,13 +454,11 @@ class TimePicker2 extends Component {
                     style={popupStyle}
                     className={popupClassName}
                 >
-                    {popupContent ? (
-                        popupContent
-                    ) : (
-                        <div dir={others.dir} className={`${prefix}time-picker2-body`}>
+                    <div dir={others.dir} className={`${prefix}time-picker2-wrapper`}>
+                        <div className={`${prefix}time-picker2-body`}>
                             <TimePickerPanel {...panelProps} />
                         </div>
-                    )}
+                    </div>
                 </PopupComponent>
             </div>
         );

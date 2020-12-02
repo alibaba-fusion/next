@@ -68,7 +68,7 @@ class DatePanel extends React.Component {
                         prefix={prefix}
                         value={value}
                         onSelect={this.handleTimeChange}
-                        timePickerProps={typeof showTime === 'object' ? showTime : null}
+                        timePickerProps={typeof showTime === 'object' ? showTime : undefined}
                     />
                 ) : null}
             </div>

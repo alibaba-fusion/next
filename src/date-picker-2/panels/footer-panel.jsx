@@ -76,8 +76,8 @@ class FooterPanel extends React.PureComponent {
 
             return (
                 <Button
-                    text
-                    type="primary"
+                    size="small"
+                    type="secondary"
                     key={name || index}
                     onClick={() => func.call(this.props, 'onChange', [isFunction(value) ? value() : value])}
                     {...buttonProps}

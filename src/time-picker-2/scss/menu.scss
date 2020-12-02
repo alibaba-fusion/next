@@ -1,6 +1,7 @@
 #{$time-picker2-prefix}-menu {
     float: left;
     text-align: center;
+    padding: $s-2 0;
 
     &:not(:last-child) {
         border-right: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
@@ -22,7 +23,7 @@
         overflow-x: auto;
         list-style: none;
         margin: 0;
-        width: 48px;
+        width: 54px;
         padding: 0;
         font-size: $time-picker-menu-item-font-size;
         height: calc(#{$time-picker-menu-item-height} * 7);
