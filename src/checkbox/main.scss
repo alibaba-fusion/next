@@ -8,6 +8,7 @@
 
 #{$checkbox-prefix}-wrapper {
     @include box-sizing;
+    display: inline-block;
 
     #{$checkbox-prefix} {
         display: inline-block;
@@ -180,9 +181,9 @@
 #{$checkbox-prefix}-group {
     #{$checkbox-prefix}-wrapper {
         display: inline-block;
-        margin-left: 8px;
-        &:first-child {
-            margin-left: 0;
+        margin-right: 12px;
+        &:last-child {
+            margin-right: 0;
         }
     }
 
@@ -202,5 +203,7 @@
     vertical-align: middle;
     margin: 0;
     margin-left: $checkbox-margin-left;
+    /* 使用已存margin-left变量 */
+    margin-right: $checkbox-margin-left;
     line-height: 1;
 }
