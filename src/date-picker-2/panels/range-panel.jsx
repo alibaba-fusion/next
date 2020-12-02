@@ -34,7 +34,7 @@ class RangePanel extends React.Component {
         handleCellState: PT.func,
         disabledDate: PT.func,
         justBeginInput: PT.bool,
-        showTime: PT.bool,
+        showTime: SharedPT.showTime,
     };
 
     static defaultProps = {
@@ -181,7 +181,7 @@ class RangePanel extends React.Component {
     getCellClassName = value => {
         const { prefix, inputType } = this.props;
         const state = this.handleCellState(value);
-        const [end, begin] = value;
+        const [begin, end] = this.props.value;
 
         const hoverValue = [...this.props.value];
         hoverValue[inputType] = this.state.curHoverValue;
@@ -193,8 +193,8 @@ class RangePanel extends React.Component {
             [`${prefixCls}-selected`]: state >= SELECTED,
             [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
             [`${prefixCls}-range-end`]: state === SELECTED_END,
-            [`${prefixCls}-range-begin-single`]: state >= SELECTED && !!end,
-            [`${prefixCls}-range-end-single`]: state >= SELECTED && !!begin,
+            [`${prefixCls}-range-begin-single`]: state >= SELECTED && !end,
+            [`${prefixCls}-range-end-single`]: state >= SELECTED && !begin,
 
             [`${prefixCls}-hover`]: hoverState >= SELECTED,
             [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
@@ -221,7 +221,12 @@ class RangePanel extends React.Component {
                     onPanelChange={this.handlePanelChange}
                 />
                 {showTime && !this.hasModeChanged ? (
-                    <TimePanel prefix={prefix} value={value[inputType]} onSelect={v => this.onChange(v, false)} />
+                    <TimePanel
+                        prefix={prefix}
+                        value={value[inputType]}
+                        onSelect={v => this.onChange(v, false)}
+                        timePickerProps={typeof showTime === 'object' ? showTime : null}
+                    />
                 ) : null}
             </div>
         );

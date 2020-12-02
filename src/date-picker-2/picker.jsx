@@ -50,7 +50,7 @@ class Picker extends React.Component {
         /**
          * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
          */
-        showTime: PT.oneOfType([PT.object, PT.bool]),
+        showTime: SharedPT.showTime,
         /**
          * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
          */
@@ -428,11 +428,10 @@ class Picker extends React.Component {
             size,
             hasBorder,
         } = this.props;
-        const { isRange, inputType, justBeginInput, curValue, panelMode, showOk } = this.state;
+        const { isRange, inputType, justBeginInput, curValue, panelMode, showOk, align } = this.state;
+        let { inputValue, value } = this.state;
 
         const visible = this.getFromPropOrState('visible');
-
-        let { inputValue, value, align } = this.state;
 
         // value受控模式
         if ('value' in this.props) {

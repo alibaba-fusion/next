@@ -17,7 +17,7 @@ class DatePanel extends React.Component {
         mode: SharedPT.mode,
         panelMode: PT.any,
         value: SharedPT.date,
-        showTime: PT.bool,
+        showTime: SharedPT.showTime,
     };
     static defaultProps = {
         showTime: false,
@@ -64,7 +64,12 @@ class DatePanel extends React.Component {
                     onPanelChange={this.handlePanelChange}
                 />
                 {showTime && mode === panelMode ? (
-                    <TimePanel prefix={prefix} value={value} onSelect={this.handleTimeChange} />
+                    <TimePanel
+                        prefix={prefix}
+                        value={value}
+                        onSelect={this.handleTimeChange}
+                        timePickerProps={typeof showTime === 'object' ? showTime : null}
+                    />
                 ) : null}
             </div>
         );

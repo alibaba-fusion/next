@@ -1,6 +1,7 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
+import classnames from 'classnames';
 import { func } from '../../util';
 import defaultLocale from '../../locale/zh-cn';
 
@@ -91,9 +92,13 @@ class FooterPanel extends React.PureComponent {
         const { prefixCls } = this;
         const { showOk, locale, onOk, oKable } = this.props;
 
+        const classNames = classnames(prefixCls, {
+            [`${prefixCls}-with-actions`]: showOk,
+        });
+
         return (
-            <div className={prefixCls}>
-                {this.renderRanges()}
+            <div className={classNames}>
+                <div className={`${prefixCls}-ranges`}>{this.renderRanges()}</div>
                 <div className={`${prefixCls}-actions`}>
                     {showOk ? (
                         <Button disabled={!oKable} onClick={onOk} type="primary">

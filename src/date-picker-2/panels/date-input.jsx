@@ -4,7 +4,7 @@ import * as PT from 'prop-types';
 import classnames from 'classnames';
 import SharedPT from '../prop-types';
 import { DATE_INPUT_TYPE, DATE_PICKER_MODE } from '../constant';
-import { func, KEYCODE } from '../../util';
+import { func, KEYCODE, datejs } from '../../util';
 
 import Input from '../../input';
 import Icon from '../../icon';
@@ -65,8 +65,8 @@ class DateInput extends React.Component {
         return newVal;
     };
 
-    format = v => {
-        const { format } = this;
+    formatter = v => {
+        const { format } = this.props;
         return isFunction(format) ? format(v) : v.format(format);
     };
 
@@ -89,6 +89,10 @@ class DateInput extends React.Component {
         if (inputType !== this.props.inputType) {
             func.call(this.props, 'onInputTypeChange', [inputType]);
         }
+    };
+
+    onBlur = () => {
+        func.call(this.props, 'onInputTypeChange', [null]);
     };
 
     onKeyDown = e => {
@@ -140,14 +144,13 @@ class DateInput extends React.Component {
     };
 
     render() {
-        const { onKeyDown, onInput, setInputRef, onFocus, prefixCls } = this;
+        const { onKeyDown, onInput, setInputRef, onFocus, onBlur, prefixCls } = this;
         const {
             autoFocus,
             readOnly,
             isRange,
             value,
             onClick,
-            format,
             prefix,
             hasClear,
             inputType,
@@ -157,7 +160,7 @@ class DateInput extends React.Component {
         } = this.props;
 
         const placeholder = this.getPlaceholder();
-        const htmlSize = String(Math.max(format.length ? format.length : 0, 12));
+        const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, 12));
 
         const sharedInputProps = {
             onChange: onInput,
@@ -165,6 +168,7 @@ class DateInput extends React.Component {
             htmlSize,
             readOnly,
             hasBorder: false,
+            onBlur: onBlur,
         };
 
         const className = classnames(

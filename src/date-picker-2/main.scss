@@ -27,7 +27,7 @@
     }
 
     &picker-wrapper {
-        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
         background-color: $color-white;
     }
 
@@ -92,10 +92,10 @@
                 background-color: $input-hover-bg-color;
             }
 
-            &.#{$css-prefix}focus {
+            &.next-picker-input-focused {
                 border-color: $input-focus-border-color;
                 background-color: $input-focus-bg-color;
-                box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
+                box-shadow: 0 0 0 2px $color-calculate-input-focus-shadow;
             }
         }
 
@@ -113,7 +113,7 @@
     }
 
     &range-picker2-input-separator {
-        color: #C4C7CC;
+        color: #c4c7cc;
         font-size: 12px;
     }
 
@@ -138,15 +138,15 @@
     width: 10px;
     height: 10px;
     margin-left: 16.5px;
-    box-shadow: 2px -2px 6px rgba(0, 0, 0, .06);
-    transition: left .3s ease-out;
+    box-shadow: 2px -2px 6px rgba(0, 0, 0, 0.06);
+    transition: left 0.3s ease-out;
     &:after {
         position: absolute;
         top: 1px;
         right: 1px;
         width: 10px;
         height: 10px;
-        border-color: #FFF #FFF transparent transparent;
+        border-color: #fff #fff transparent transparent;
         border-style: solid;
         border-width: 5px;
         content: "";
@@ -165,9 +165,8 @@
     }
 }
 
-
 #{$calendar2-prefix}-right {
-    border-left: 1px solid #F2F3F7;
+    border-left: 1px solid #f2f3f7;
     #{$calendar2-prefix}-body {
         padding-right: 0;
         padding-left: 0;
@@ -204,7 +203,7 @@
         }
 
         &#{$calendar2-prefix}-cell-hover:after {
-            content: ' ';
+            content: " ";
             position: absolute;
             top: 50%;
             right: 0;
