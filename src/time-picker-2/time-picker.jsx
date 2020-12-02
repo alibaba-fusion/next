@@ -5,16 +5,25 @@ import classnames from 'classnames';
 import ConfigProvider from '../config-provider';
 import Input from '../input';
 import Icon from '../icon';
+import Button from '../button';
 import Overlay from '../overlay';
 import nextLocale from '../locale/zh-cn';
 import { func, obj, datejs } from '../util';
 import TimePickerPanel from './panel';
 import { checkDateValue, formatDateValue } from './utils';
 import { onTimeKeydown } from '../date-picker/util';
+import FooterPanel from '../date-picker-2/panels/footer-panel';
 
 const { Popup } = Overlay;
 const { noop } = func;
 const timePickerLocale = nextLocale.TimePicker;
+
+const rangePropType = PropTypes.shape({
+    name: PropTypes.string,
+    label: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.func, checkDateValue]),
+    ...Button.propTypes,
+});
 
 /**
  * TimePicker2
@@ -54,7 +63,7 @@ class TimePicker2 extends Component {
         hasClear: PropTypes.bool,
         /**
          * 时间的格式
-         * https://day.js.org/docs/zh-CN/display/format#docsNav
+         * https://dayjs.gitee.io/docs/zh-CN/display/format
          */
         format: PropTypes.string,
         /**
@@ -168,7 +177,11 @@ class TimePicker2 extends Component {
         onChange: PropTypes.func,
         className: PropTypes.string,
         name: PropTypes.string,
-        inputProps: PropTypes.object,
+        /**
+         * 预设值，会显示在时间面板下面
+         */
+        ranges: PropTypes.oneOfType([PropTypes.arrayOf(rangePropType), rangePropType]),
+        inputProps: PropTypes.shape(Input.propTypes),
         popupComponent: PropTypes.elementType,
     };
 
@@ -365,6 +378,7 @@ class TimePicker2 extends Component {
             locale,
             rtl,
             isPreview,
+            ranges,
             ...others
         } = this.props;
 
@@ -457,6 +471,9 @@ class TimePicker2 extends Component {
                     <div dir={others.dir} className={`${prefix}time-picker2-wrapper`}>
                         <div className={`${prefix}time-picker2-body`}>
                             <TimePickerPanel {...panelProps} />
+                            {ranges ? (
+                                <FooterPanel showTime showOk={false} onChange={this.handleChange} ranges={ranges} />
+                            ) : null}
                         </div>
                     </div>
                 </PopupComponent>
