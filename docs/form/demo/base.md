@@ -41,21 +41,21 @@ class Demo extends React.Component {
 
     render() {
         return (
-            <Form style={{width: '60%'}} {...formItemLayout} >
-                <FormItem label="baseUsername:">
+            <Form style={{width: '60%'}} {...formItemLayout} colon>
+                <FormItem label="baseUsername">
                     <p>Fixed Name</p>
                 </FormItem>
-                <FormItem label="password:">
+                <FormItem label="password">
                     <Input htmlType="password" name="basePass" placeholder="Please Enter Password"/>
                 </FormItem>
-                <FormItem label="Note:" help="something">
+                <FormItem label="Note" help="something">
                     <Input.TextArea placeholder="something" name="baseRemark" />
                 </FormItem>
-                <FormItem label="Agreement:">
+                <FormItem label="Agreement">
                     <Checkbox name="baseAgreement" defaultChecked>Agree</Checkbox>
                 </FormItem>
-                <FormItem label=" ">
-                    <Form.Submit onClick={this.handleSubmit}>Confirm</Form.Submit>
+                <FormItem label=" " colon={false}>
+                    <Form.Submit type="primary" onClick={this.handleSubmit}>Confirm</Form.Submit>
                 </FormItem>
             </Form>
         );
