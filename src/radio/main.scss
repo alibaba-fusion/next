@@ -6,6 +6,7 @@
 
 #{$radio-prefix}-wrapper {
     outline: 0;
+    display: inline-block;
     #{$radio-prefix} {
         @include box-sizing;
         display: inline-block;
@@ -286,10 +287,15 @@
     }
     &-group {
         display: inline-block;
-
+        & #{$radio-prefix}-wrapper {
+            /* 表现为radio整体之间多一份间隔，checkbox表现一致 */
+            margin-right: 12px;
+        }
+        & #{$radio-prefix}-wrapper:last-child {
+            margin-right: 0;
+        }
         #{$radio-prefix}-label {
             color: $radio-normal-font-color;
-            margin-right: 16px;
         }
         &.disabled #{$radio-prefix}-label {
             color: $radio-normal-font-color-disabled;
@@ -306,6 +312,8 @@
 #{$radio-prefix}-label {
     margin: 0;
     margin-left: $radio-font-margin-left;
+    /* 使用已有变量$radio-font-margin-left，配左即两边都有间隔 */
+    margin-right: $radio-font-margin-left;
     font-size: $radio-font-size;
     vertical-align: middle;
     line-height: 1;
