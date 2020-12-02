@@ -63,6 +63,8 @@ class TimeMenu extends React.Component {
         }
     }
 
+    prefixCls = `${this.props.prefix}time-picker2`;
+
     scrollToSelected(duration = 0) {
         const { activeIndex, step } = this.props;
         const targetIndex = Math.floor((activeIndex || 0) / step);
@@ -95,7 +97,7 @@ class TimeMenu extends React.Component {
         return list.map(({ label, value }) => {
             const isDisabled = disabled || disabledItems(value);
             const itemCls = classnames({
-                [`${prefix}time-picker2-menu-item`]: true,
+                [`${this.prefixCls}-menu-item`]: true,
                 [`${prefix}disabled`]: isDisabled,
                 [`${prefix}selected`]: value === activeIndex,
             });
@@ -116,7 +118,7 @@ class TimeMenu extends React.Component {
     };
 
     render() {
-        const { prefix, title, mode, step } = this.props;
+        const { mode, step } = this.props;
         const total = mode === 'hour' ? 24 : 60;
         const list = [];
         for (let i = 0; i < total; i++) {
@@ -128,18 +130,10 @@ class TimeMenu extends React.Component {
             }
         }
 
-        // const menuTitle = title ? (
-        //     <div className={`${prefix}time-picker-menu-title`}>{title}</div>
-        // ) : null;
-
         return (
-            <div className={`${prefix}time-picker2-menu`} ref={this._menuWrapperRefHandler}>
+            <div className={`${this.prefixCls}-menu`} ref={this._menuWrapperRefHandler}>
                 {/* {menuTitle} */}
-                <ul
-                    role="listbox"
-                    className={`${prefix}time-picker2-menu-${mode}`}
-                    ref={this._menuRefHandler}
-                >
+                <ul role="listbox" className={`${this.prefixCls}-menu-${mode}`} ref={this._menuRefHandler}>
                     {this.createMenuItems(list)}
                 </ul>
             </div>
