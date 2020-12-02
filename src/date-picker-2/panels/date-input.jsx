@@ -107,38 +107,32 @@ class DateInput extends React.Component {
     };
 
     getPlaceholder = () => {
+        const { locale, isRange, mode } = this.props;
         const {
-            locale: {
-                placeholder,
-                selectDate,
-                monthPlaceholder,
-                weekPlaceholder,
-                yearPlaceholder,
-                startPlaceholder,
-                quarterPlaceholder,
-                endPlaceholder,
-            },
-            isRange,
-            mode,
-        } = this.props;
+            placeholder,
+            selectDate,
+            monthPlaceholder,
+            weekPlaceholder,
+            yearPlaceholder,
+            startPlaceholder,
+            quarterPlaceholder,
+            endPlaceholder,
+        } = locale;
+        const mode2placeholder = {
+            [DATE]: selectDate,
+            [WEEK]: weekPlaceholder,
+            [MONTH]: monthPlaceholder,
+            [QUARTER]: quarterPlaceholder,
+            [YEAR]: yearPlaceholder,
+        };
+
         let holder = this.props.placeholder;
 
-        if (!holder) {
-            if (isRange) {
-                return [startPlaceholder, endPlaceholder];
-            } else {
-                const mode2placeholder = {
-                    [DATE]: selectDate,
-                    [WEEK]: weekPlaceholder,
-                    [MONTH]: monthPlaceholder,
-                    [QUARTER]: quarterPlaceholder,
-                    [YEAR]: yearPlaceholder,
-                };
-                holder = mode2placeholder[mode];
-            }
-        }
+        holder = holder || (isRange ? [startPlaceholder, endPlaceholder] : mode2placeholder[mode] || placeholder);
 
-        holder = holder || placeholder;
+        if (isRange && !Array.isArray(holder)) {
+            holder = Array(2).fill(holder);
+        }
 
         return holder;
     };
@@ -158,7 +152,6 @@ class DateInput extends React.Component {
             focused,
             hasBorder,
         } = this.props;
-
         const placeholder = this.getPlaceholder();
         const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, 12));
 

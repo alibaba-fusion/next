@@ -257,18 +257,17 @@ class Picker extends React.Component {
         }
     }
 
-    handleInputFocus(inputType) {
-        let input;
-        inputType = inputType !== undefined ? inputType : this.state.inputType;
+    handleInputFocus = (inputType = this.state.inputType) => {
+        let input = this.dateInput && this.dateInput.input;
 
-        if (this.dateInput && (input = this.dateInput.input)) {
+        if (input) {
             if (this.state.isRange) {
                 input = input[inputType];
             }
 
             input && input.focus();
         }
-    }
+    };
 
     handleMouseDown(e) {
         e.preventDefault();
@@ -329,15 +328,11 @@ class Picker extends React.Component {
      * - 数据检验纠正
      * - 判断触发onChange事件
      */
-    handleChange(v, isOK, justBeginInput) {
+    handleChange = (v, isOK, justBeginInput = this.state.justBeginInput) => {
         const { value, isRange, inputType } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
 
         v = this.checkAndRectify(v, value);
-
-        if (justBeginInput === undefined) {
-            justBeginInput = this.state.justBeginInput;
-        }
 
         if (!this.props.showTime || isOK) {
             if (isRange && justBeginInput) {
@@ -354,11 +349,12 @@ class Picker extends React.Component {
             curValue: v,
             inputValue: this.getInputValue(v),
         });
-    }
+    };
 
     onChange(v) {
         this.setState({
             value: v,
+            curValue: v,
         });
 
         func.call(this.props, 'onChagne', [v]);
@@ -428,8 +424,8 @@ class Picker extends React.Component {
             size,
             hasBorder,
         } = this.props;
-        const { isRange, inputType, justBeginInput, curValue, panelMode, showOk, align } = this.state;
-        let { inputValue, value } = this.state;
+        const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
+        let { inputValue, value, curValue } = this.state;
 
         const visible = this.getFromPropOrState('visible');
 
@@ -437,6 +433,7 @@ class Picker extends React.Component {
         if ('value' in this.props) {
             value = checkAndRectify(this.props.value);
             inputValue = getInputValue(value);
+            curValue = value;
         }
 
         const sharedProps = {
@@ -469,6 +466,7 @@ class Picker extends React.Component {
                 {...sharedProps}
             />
         );
+
         // 渲染弹出层
         const DateNode = isRange ? (
             <RangePanel

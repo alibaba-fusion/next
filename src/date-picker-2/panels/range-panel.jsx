@@ -179,15 +179,33 @@ class RangePanel extends React.Component {
     }
 
     getCellClassName = value => {
-        const { prefix, inputType } = this.props;
+        const { prefix, inputType, mode } = this.props;
+        const { curHoverValue } = this.state;
         const state = this.handleCellState(value);
         const [begin, end] = this.props.value;
+        const prefixCls = `${prefix}calendar2-cell`;
 
+        let hoverClassName;
         const hoverValue = [...this.props.value];
+        const unit = this.getUnitByMode(mode);
+
         hoverValue[inputType] = this.state.curHoverValue;
 
-        const hoverState = this.handleCellState(value, hoverValue);
-        const prefixCls = `${prefix}calendar2-cell`;
+        if (
+            curHoverValue &&
+            !(
+                (inputType === DATE_INPUT_TYPE.BEGIN && curHoverValue.isSame(end, unit)) ||
+                (inputType === DATE_INPUT_TYPE.END && curHoverValue.isSame(begin, unit))
+            )
+        ) {
+            const hoverState = this.handleCellState(value, hoverValue);
+
+            hoverClassName = {
+                [`${prefixCls}-hover`]: hoverState >= SELECTED,
+                [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
+                [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
+            };
+        }
 
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
@@ -195,10 +213,7 @@ class RangePanel extends React.Component {
             [`${prefixCls}-range-end`]: state === SELECTED_END,
             [`${prefixCls}-range-begin-single`]: state >= SELECTED && !end,
             [`${prefixCls}-range-end-single`]: state >= SELECTED && !begin,
-
-            [`${prefixCls}-hover`]: hoverState >= SELECTED,
-            [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
-            [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
+            ...hoverClassName,
         };
     };
 
@@ -281,9 +296,9 @@ class RangePanel extends React.Component {
             panelMode: mode,
         };
 
-        if (!justBeginInput) {
-            sharedProps.disabledDate = disabledDate;
-        }
+        // if (!justBeginInput) {
+        sharedProps.disabledDate = disabledDate;
+        // }
 
         if ([DATE, WEEK].includes(mode)) {
             sharedProps.colNum = 6;
