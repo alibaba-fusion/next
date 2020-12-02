@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Demo, DemoHead, DemoGroup, initDemo } from '../../../src/demo-helper';
 import TimePicker2 from '../../../src/time-picker';
 import ConfigProvider from '../../../src/config-provider';
@@ -9,7 +9,7 @@ import '../../../src/time-picker/style.js';
 import '../../../src/demo-helper/style.js';
 import TimePanel from '../../../src/time-picker/panel';
 
-const timeValue = moment().hour(6).minute(6).second(6);
+const timeValue = dayjs().hour(6).minute(6).second(6);
 
 const i18nMap = {
     'zh-cn': {
@@ -124,7 +124,7 @@ function render(i18n, lang) {
 }
 
 window.renderDemo = function(lang = 'en-us') {
-    moment.locale(lang);
+    dayjs.locale(lang);
     render(i18nMap[lang], lang);
 };
 

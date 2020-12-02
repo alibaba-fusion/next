@@ -1,7 +1,7 @@
 import React from 'react';
 import { Types } from '@alifd/adaptor-helper';
 import { TimePicker2 } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default {
     name: 'TimePicker2',
@@ -41,7 +41,7 @@ export default {
         }],
     }),
     adaptor: ({ size, state, type, width, label, placeholder, value = '', style, ...others }) => {
-        const time = moment();
+        const time = dayjs();
         const arr = value.split(':');
 
         for(let i = 0; i < type.length; i++) {
