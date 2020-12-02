@@ -128,7 +128,6 @@ class Picker extends React.Component {
         ranges: PT.oneOfType([PT.array, PT.object]),
         name: PT.string,
         popupComponent: PT.elementType,
-        popupContent: PT.node,
         disableChangeMode: PT.bool,
         yearRange: PT.arrayOf(PT.number),
         titleRender: PT.func,
@@ -501,7 +500,7 @@ class Picker extends React.Component {
         const popupCls = classnames(prefixCls, {
             [`${prefixCls}-overlay`]: true,
             [`${prefixCls}-${(align || []).join('-')}`]: align,
-            [`${prefixCls}-overlay-angle`]: isRange && showTime,
+            [`${prefixCls}-overlay-showtime`]: isRange && showTime,
         });
 
         return (

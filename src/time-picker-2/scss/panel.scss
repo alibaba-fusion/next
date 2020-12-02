@@ -3,7 +3,6 @@
     @include clearfix;
 
     display: flex;
-
     &-header {
         border-bottom: $line-1 $line-solid $time-picker-panel-border-color;
     }

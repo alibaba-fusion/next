@@ -225,7 +225,7 @@ class RangePanel extends React.Component {
                         prefix={prefix}
                         value={value[inputType]}
                         onSelect={v => this.onChange(v, false)}
-                        timePickerProps={typeof showTime === 'object' ? showTime : null}
+                        timePickerProps={typeof showTime === 'object' ? showTime : undefined}
                     />
                 ) : null}
             </div>
