@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.21.11",
+  "version": "1.21.13",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -187,6 +187,7 @@
     "power-assert": "^1.5.0",
     "prettier": "1.16.4",
     "promise-polyfill": "^8.1.0",
+    "puppeteer": "^5.5.0",
     "react": "^16.0.0",
     "react-axe": "^3.0.2",
     "react-copy-to-clipboard": "^5.0.1",
