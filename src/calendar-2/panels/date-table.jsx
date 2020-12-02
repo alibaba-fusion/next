@@ -158,7 +158,7 @@ class DateTable extends React.Component {
                 if (mode === WEEK && j === 0) {
                     const week = value.week();
                     children.push(
-                        <td key={`w-${week}`} className="row">
+                        <td key={`w-${week}`} className={`${prefixCls}-week`}>
                             {week}
                         </td>
                     );
@@ -199,7 +199,7 @@ class DateTable extends React.Component {
         return (
             <thead>
                 <tr>
-                    {this.props.mode === WEEK ? <td /> : null}
+                    {this.props.mode === WEEK ? <td className={`${this.prefixCls}-cell-week`} /> : null}
                     {weekdaysShort.map(d => {
                         const day = d.replace('周', '');
                         return <th key={day}>{day}</th>;

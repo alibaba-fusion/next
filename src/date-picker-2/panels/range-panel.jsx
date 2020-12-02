@@ -285,7 +285,7 @@ class RangePanel extends React.Component {
 
     render() {
         const { onChange, getCellClassName, disabledDate, handleMouseEnter, handleMouseLeave } = this;
-        const { mode, justBeginInput, prefix, inputType } = this.props;
+        const { mode, prefix, inputType, justBeginInput } = this.props;
 
         // 切换面板mode
         this.hasModeChanged = this.state.mode !== this.props.mode;
@@ -296,9 +296,9 @@ class RangePanel extends React.Component {
             panelMode: mode,
         };
 
-        // if (!justBeginInput) {
-        sharedProps.disabledDate = disabledDate;
-        // }
+        if (!justBeginInput) {
+            sharedProps.disabledDate = disabledDate;
+        }
 
         if ([DATE, WEEK].includes(mode)) {
             sharedProps.colNum = 6;

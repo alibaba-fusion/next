@@ -92,7 +92,9 @@ class DateInput extends React.Component {
     };
 
     onBlur = () => {
-        func.call(this.props, 'onInputTypeChange', [null]);
+        if (null !== this.props.inputType) {
+            func.call(this.props, 'onInputTypeChange', [null]);
+        }
     };
 
     onKeyDown = e => {
@@ -153,15 +155,16 @@ class DateInput extends React.Component {
             hasBorder,
         } = this.props;
         const placeholder = this.getPlaceholder();
-        const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, 12));
+        const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, hasBorder ? 12 : 8));
 
         const sharedInputProps = {
-            onChange: onInput,
-            onKeyDown,
+            size,
             htmlSize,
             readOnly,
             hasBorder: false,
             onBlur: onBlur,
+            onChange: onInput,
+            onKeyDown,
         };
 
         const className = classnames(

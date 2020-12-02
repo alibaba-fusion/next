@@ -18,48 +18,21 @@ A basic usage case.
 
 ```jsx
 import { useState } from 'react';
-import { DatePicker2, Switch } from '@alifd/next';
+import { DatePicker2 } from '@alifd/next';
+
+const { RangePicker} = DatePicker2;
 
 function App() {
-    const [mode, setMode] = useState('date');
-
-    const onChange = v => {
-        setMode(v ? 'date' : 'range');
-    };
-
     return (
-        <div>
-            <div className="main">
-                <DatePicker2 showTime format="YYYY-MM-DD HH:mm:ss" type="range" />
-            </div>
-            <div className="main">
-                <DatePicker2 format="YYYY-MM-DD HH:mm:ss" type="range" />
-            </div>
-            <div className="main">
-                <DatePicker2
-                    showTime
-                    format="YYYY-MM-DD HH:mm:ss"
-                    ranges={{ Now: '2010-11', Next: Date.now() }}
-                />
-            </div>
-            <div className="main">
-                <DatePicker2 format="YYYY-MM-DD HH:mm:ss" />
-            </div>
-            <div className="main">
-                <DatePicker2 mode="year" format="YYYY-MM-DD HH:mm:ss" />
-            </div>
-            <div className="main">
-                <DatePicker2 mode="month" format="YYYY-MM-DD HH:mm:ss" />
-            </div>
-            <div className="main">
-                <DatePicker2 mode="week" format="YYYY-MM-DD HH:mm:ss" type="range" />
-            </div>
-            <div className="main">
-                <DatePicker2 mode="year" format="YYYY-MM-DD HH:mm:ss" type="range" />
-            </div>
-            <div className="main">
-                <DatePicker2 showTime format="YYYY-MM-DD HH:mm:ss" type="range" />
-            </div>
+        <div className="app">
+            <div><DatePicker2/></div>
+            <div><DatePicker2 mode="month" /></div>
+            <div><DatePicker2 mode="week" /></div>
+            <div><DatePicker2 mode="year" /></div>
+            <div><RangePicker /></div>
+            <div><RangePicker mode="week" /></div>
+            <div><RangePicker mode="month" /></div>
+            <div><RangePicker mode="year" /></div>
         </div>
     );
 }
@@ -68,7 +41,7 @@ ReactDOM.render(<App />, mountNode);
 ```
 
 ```css
-.main {
+.app > div {
     margin-bottom: 20px;
 }
 ```

@@ -46,7 +46,7 @@ class Picker extends React.Component {
         /**
          * 日期值的格式（用于限定用户输入和展示）
          */
-        format: PT.oneOfType([PT.string, PT.func]),
+        format: SharedPT.format,
         /**
          * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
          */
@@ -212,8 +212,7 @@ class Picker extends React.Component {
      */
     checkAndRectify(value) {
         const check = value => {
-            // 因为moment(undefined) === moment()
-            // 但是这里期望的是一个空值
+            // 因为datejs(undefined) === datejs() 但是这里期望的是一个空值
             if (value === undefined) {
                 value = null;
             }
@@ -263,7 +262,7 @@ class Picker extends React.Component {
             if (this.state.isRange) {
                 input = input[inputType];
             }
-
+            console.log('handleInputFocus', inputType);
             input && input.focus();
         }
     };
@@ -283,7 +282,7 @@ class Picker extends React.Component {
                 () => {
                     // 面板收起之后
                     if (!visible) {
-                        this.handleChange(this.state.curValue, true, false);
+                        this.handleChange(this.state.value, true, true);
                     }
 
                     this.setState({
@@ -304,7 +303,7 @@ class Picker extends React.Component {
         });
 
         if (eventType === 'clear') {
-            this.handleChange(v);
+            this.handleChange(v, true, true);
 
             if (this.state.isRange) {
                 // 因为input组件内部会让第二个输入框获得焦点
@@ -322,20 +321,24 @@ class Picker extends React.Component {
         });
     }
 
-    /*
-     * 处理日期Change
-     * - 数据检验纠正
-     * - 判断触发onChange事件
-     */
-    handleChange = (v, isOK, justBeginInput = this.state.justBeginInput) => {
-        const { value, isRange, inputType } = this.state;
+    handleChange = (v, isOk, forced = false) => {
+        const { value, isRange, inputType, justBeginInput, showOk } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
-
         v = this.checkAndRectify(v, value);
 
-        if (!this.props.showTime || isOK) {
-            if (isRange && justBeginInput) {
-                this.handleInputFocus(inputType === BEGIN ? END : BEGIN);
+        if (!showOk || isOk) {
+            let idx = -1;
+
+            if (!forced && isRange) {
+                idx = v.indexOf(null);
+
+                if (idx === -1 && justBeginInput) {
+                    idx = inputType === BEGIN ? END : BEGIN;
+                }
+            }
+
+            if (idx !== -1) {
+                this.handleInputFocus(idx);
             } else {
                 if (isRange && v.some(o => !o)) {
                     v = [null, null];
@@ -353,7 +356,6 @@ class Picker extends React.Component {
     onChange(v) {
         this.setState({
             value: v,
-            curValue: v,
         });
 
         func.call(this.props, 'onChagne', [v]);
@@ -422,6 +424,7 @@ class Picker extends React.Component {
             footer,
             size,
             hasBorder,
+            disabledDate,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
@@ -443,7 +446,6 @@ class Picker extends React.Component {
             format,
             showTime,
             inputType,
-            panelMode,
             onChange: handleChange,
         };
 
@@ -451,7 +453,6 @@ class Picker extends React.Component {
         const triggerNode = getRender(
             trigger,
             <DateInput
-                format={format}
                 isRange={isRange}
                 value={inputValue}
                 readOnly={readOnly}
@@ -466,20 +467,24 @@ class Picker extends React.Component {
             />
         );
 
+        const sharedDateProps = {
+            ...sharedProps,
+            panelMode,
+            value: curValue,
+            disabledDate,
+            onPanelChange,
+        };
+
         // 渲染弹出层
         const DateNode = isRange ? (
-            <RangePanel
-                value={curValue}
-                onPanelChange={onPanelChange}
-                justBeginInput={justBeginInput}
-                {...sharedProps}
-            />
+            <RangePanel justBeginInput={justBeginInput} {...sharedDateProps} />
         ) : (
-            <DatePanel value={curValue} onPanelChange={onPanelChange} {...sharedProps} />
+            <DatePanel {...sharedDateProps} />
         );
 
         // 底部节点
         const oKable = !!(isRange ? curValue && curValue[inputType] : curValue);
+
         const footerNode = getRender(
             footer,
             showOk || ranges ? (

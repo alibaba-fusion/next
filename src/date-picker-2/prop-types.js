@@ -49,7 +49,7 @@ const SharedPT = {
             }
         }
     },
-    format: checkType('string'),
+    format: checkType(['string', 'function']),
     inputValue: checkType('string'),
     placeholder: checkType('string'),
     readOnly: checkType('boolean'),
