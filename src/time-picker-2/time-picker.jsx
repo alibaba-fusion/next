@@ -209,6 +209,7 @@ class TimePicker2 extends Component {
             inputing: false,
             visible: props.visible || props.defaultVisible,
         };
+        this.prefixCls = `${this.props.prefix}time-picker2`;
     }
 
     static getDerivedStateFromProps(props) {
@@ -225,10 +226,14 @@ class TimePicker2 extends Component {
         return state;
     }
 
-    onValueChange(newValue) {
-        const ret = newValue ? newValue.format(this.props.format) : '';
-        this.props.onChange(newValue, ret);
-    }
+    onValueChange = newValue => {
+        let nextValue = newValue;
+        if (nextValue !== null && !datejs.isSelf(nextValue)) {
+            nextValue = datejs(nextValue);
+        }
+        const ret = nextValue ? nextValue.format(this.props.format) : '';
+        this.props.onChange(nextValue, ret);
+    };
 
     onClearValue = () => {
         this.setState({
@@ -385,7 +390,7 @@ class TimePicker2 extends Component {
         const { value, inputStr, inputing, visible } = this.state;
 
         const triggerCls = classnames({
-            [`${prefix}time-picker2-trigger`]: true,
+            [`${this.prefixCls}-trigger`]: true,
         });
 
         if (rtl) {
@@ -407,7 +412,7 @@ class TimePicker2 extends Component {
             onBlur: this.onInputBlur,
             onPressEnter: this.onInputBlur,
             onKeyDown: this.onKeyown,
-            hint: <Icon type="clock" className={`${prefix}time-picker2-symbol-clock-icon`} />,
+            hint: <Icon type="clock" className={`${this.prefixCls}-symbol-clock-icon`} />,
         };
 
         const triggerInput = (
@@ -418,7 +423,7 @@ class TimePicker2 extends Component {
                     state={state}
                     hasBorder={hasBorder}
                     placeholder={placeholder || locale.placeholder}
-                    className={classnames(`${prefix}time-picker2-input`)}
+                    className={classnames(`${this.prefixCls}-input`)}
                 />
             </div>
         );
@@ -443,8 +448,8 @@ class TimePicker2 extends Component {
 
         const classNames = classnames(
             {
-                [`${prefix}time-picker2`]: true,
-                [`${prefix}time-picker2-${size}`]: size,
+                [`${this.prefixCls}`]: true,
+                [`${this.prefixCls}-${size}`]: size,
                 [`${prefix}disabled`]: disabled,
             },
             className
@@ -468,11 +473,17 @@ class TimePicker2 extends Component {
                     style={popupStyle}
                     className={popupClassName}
                 >
-                    <div dir={others.dir} className={`${prefix}time-picker2-wrapper`}>
-                        <div className={`${prefix}time-picker2-body`}>
+                    <div dir={others.dir} className={`${this.prefixCls}-wrapper`}>
+                        <div className={`${this.prefixCls}-body`}>
                             <TimePickerPanel {...panelProps} />
                             {ranges ? (
-                                <FooterPanel showTime showOk={false} onChange={this.handleChange} ranges={ranges} />
+                                <FooterPanel
+                                    prefix={prefix}
+                                    showTime
+                                    showOk={false}
+                                    onChange={this.onValueChange}
+                                    ranges={ranges}
+                                />
                             ) : null}
                         </div>
                     </div>

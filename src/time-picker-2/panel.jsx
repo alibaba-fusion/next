@@ -92,6 +92,8 @@ class TimePickerPanel extends Component {
         locale: nextLocale.TimePicker,
     };
 
+    prefixCls = `${this.props.prefix}time-picker2`;
+
     onSelectMenuItem = (index, type) => {
         const { value } = this.props;
         const clonedValue = value ? value.clone() : datejs('00:00:00', 'HH:mm:ss', true);
@@ -131,11 +133,7 @@ class TimePickerPanel extends Component {
         } = this.props;
 
         const colLen = [showHour, showMinute, showSecond].filter(v => v).length;
-        const classNames = classnames(
-            `${prefix}time-picker2-panel`,
-            `${prefix}time-picker2-panel-col-${colLen}`,
-            className
-        );
+        const classNames = classnames(`${this.prefixCls}-panel`, `${this.prefixCls}-panel-col-${colLen}`, className);
 
         const commonProps = {
             prefix,

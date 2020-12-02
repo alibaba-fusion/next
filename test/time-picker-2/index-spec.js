@@ -9,13 +9,6 @@ import { KEYCODE } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 const defaultValue = dayjs('11:12:13', 'HH:mm:ss', true);
-const presets = [{
-    label: 'now',
-    name: 'preset-key',
-    value: () => {
-        return new Date();
-    }
-}];
 
 /* eslint-disable */
 describe('TimePicker2', () => {
@@ -210,28 +203,31 @@ describe('TimePicker2', () => {
         });
 
         it('should render presets & change value on clicking presets', () => {
+            ret = null;
             wrapper = mount(
                 <TimePicker2
                     onChange={val => {
                         ret = val.format('HH:mm:ss');
                     }}
-                    ranges={presets}
+                    ranges={[{
+                        label: 'now',
+                        name: 'preset-key',
+                        value: () => {
+                            return dayjs('13:12:11', 'HH:mm:ss', true);
+                        }
+                    }]}
                 />
             );
 
             wrapper.find('.next-time-picker2-input input').simulate('click');
 
-            // TODO: click preset & change value
+            wrapper
+                .find('.next-picker-footer-ranges button')
+                .simulate('click');
 
-            // wrapper
-            //     .find('.next-time-picker2-input input')
-            //     .simulate('change', { target: { value: '20:00:00' } });
-            // wrapper.find('.next-time-picker2-input input').simulate('blur');
-            // assert(
-            //     wrapper.find('.next-time-picker2-input input').instance()
-            //         .value === '20:00:00'
-            // );
-            // assert(ret === '20:00:00');
+            assert(
+                ret === '13:12:11'
+            );
         });
 
         it('should select time-picker-2 panel', () => {

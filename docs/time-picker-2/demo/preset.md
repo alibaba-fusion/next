@@ -17,15 +17,22 @@ preset
 ---
 
 ```jsx
+import { useState } from 'react';
+import dayjs from 'dayjs';
 import { TimePicker2 } from '@alifd/next';
 
 const preset = [
     {
         label: '此刻',
         value: () => new Date(),
-        type: 'secondary',
     },
 ];
 
-ReactDOM.render(<TimePicker2 onChange={console.log} ranges={preset} />, mountNode);
+function Picker() {
+    const [value, onChange] = useState(dayjs('12:00:00', 'HH:mm:ss', true));
+
+    return <TimePicker2 value={value} onChange={onChange} ranges={preset} />;
+}
+
+ReactDOM.render(<Picker />, mountNode);
 ```
