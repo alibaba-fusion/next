@@ -259,7 +259,6 @@ code {
 
 .demo-index-list {
     box-sizing: content-box;
-    border-left: 1px solid #dcdee3;
     top: 92px;
     position: fixed;
     overflow: auto;
