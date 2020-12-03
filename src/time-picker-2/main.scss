@@ -1,8 +1,9 @@
 @import "../core/index-noreset.scss";
 
-@import "scss/variable";
+@import "./scss/variable";
 @import "./scss/menu.scss";
 @import "./scss/panel.scss";
+@import "./scss/footer.scss";
 @import "./rtl.scss";
 
 #{$time-picker2-prefix} {
