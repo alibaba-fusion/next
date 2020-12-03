@@ -12,7 +12,7 @@ interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
 }
 
 interface DatePreset extends ButtonProps {
-    name: string;
+    name?: string;
     label: string;
     // 时间值（dayjs 对象或时间字符串）或者返回时间值的函数
     value: any;
@@ -144,22 +144,22 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 输入框是否有边框
      */
-    hasBorder: boolean,
+    hasBorder?: boolean,
 
     /**
      * 透传给 Input 的属性
      */
-    inputProps: InputProps,
+    inputProps?: InputProps,
 
     /**
      * 预设值，会显示在时间面板下面
      */
-    ranges: DatePreset | DatePreset[];
+    ranges?: DatePreset | DatePreset[];
 
     /**
      * 时间值改变时的回调
      */
-    onChange?: (value: any | string) => void;
+    onChange?: (date: any, dateString: string) => void;
 }
 
 export default class TimePicker extends React.Component<TimePickerProps, any> {}
