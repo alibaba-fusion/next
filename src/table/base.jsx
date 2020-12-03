@@ -219,6 +219,9 @@ class Table extends React.Component {
         hasExpandedRowCtrl: PropTypes.bool,
         /**
          * 设置额外渲染行的属性
+         * @param {Object} record 该行所对应的数据
+         * @param {Number} index 该行所对应的序列
+         * @returns {Object} 额外渲染行的属性
          */
         getExpandedColProps: PropTypes.func,
         /**
