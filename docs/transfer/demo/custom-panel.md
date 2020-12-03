@@ -1,8 +1,8 @@
-# 自定义面板
+# 树穿梭框
 
 - order: 7
 
-展示自定义面板的用法。
+自定义树形 transfer 面板。
 
 :::lang=en-us
 # Customize panel

@@ -2,32 +2,45 @@
 
 - order: 8
 
-使用beforeUpload去控制上传行为
+使用 `beforeUpload` 在上传前确认有计划确实是否需要上传或者拦截, 返回 false 或者 Promise.reject 都会中断上传。
 
-
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
 
 :::lang=en-us
 # BeforeUpload
 
 - order: 8
 
-use beforeUpload to control upload
+use `beforeUpload` to control upload
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
-
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
 ````jsx
 import { Upload, Button } from '@alifd/next';
+
+const requestOpts = {
+    action: 'https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload',
+    data: {osstoken: 1234},
+    headers: {'X-Requested-With': 12345}
+};
+
+function beforeUpload(file, options) {
+    console.log('beforeUpload callback : ', file, options);
+    return requestOpts;
+}
+
+async function asyncBeforeUpload(file, options) {
+    console.log('beforeUpload callback : ', file, options);
+    return await new Promise(resolve => {
+        setTimeout(() => {
+            resolve(requestOpts);
+        }, 1e3);
+    });
+}
+
+function onChange(file) {
+    console.log('onChange callback : ', file);
+}
 
 ReactDOM.render([
     <Upload
@@ -64,51 +77,12 @@ ReactDOM.render([
         listType="text"
         action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
         accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-        beforeUpload={() => new Promise(resl => setTimeout(() => resl(false)))}
+        beforeUpload={() => new Promise((resovle, reject) => setTimeout(() => reject(false)))}
         onChange={onChange}
         key="4"
     >
         <Button type="primary" style={{margin: '0 0 10px'}}>Async Prevent Upload</Button>
-    </Upload>,
-    <Upload
-        listType="text"
-        action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
-        accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-        beforeUpload={() => {}}
-        onChange={onChange}
-        key="5"
-    >
-        <Button type="secondary" style={{margin: '0 0 10px'}}>Do nothing</Button>
     </Upload>
 ], mountNode);
-
-const requestOpts = {
-    action: 'https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload',
-    data: {osstoken: 1234},
-    headers: {'X-Requested-With': 12345}
-};
-
-async function ajax() {
-    return await new Promise(resolve => {
-        setTimeout(() => {
-            resolve(requestOpts);
-        }, 1e3);
-    });
-}
-
-function beforeUpload(file, options) {
-    console.log('beforeUpload callback : ', file, options);
-    return requestOpts;
-}
-
-async function asyncBeforeUpload(file, options) {
-    console.log('beforeUpload callback : ', file, options);
-    return await ajax();
-}
-
-function onChange(file) {
-    console.log('onChange callback : ', file);
-}
-
 
 ````

@@ -1,15 +1,15 @@
-# 自定义提示语位置
+# 自定义提示语及其位置
 
-- order: 5
+- order: 2
 
-你可以选择提示语的位置,目前支持两个值 right/bottom(默认值)
+通过`tip`自定义加载提示语，通过`tipAlign`设置提示语的位置，目前支持 `right` / `bottom (default)`。
 
 :::lang=en-us
 # Custom Tip Position
 
-- order: 5
+- order: 2
 
-Loading state can be toggle。
+Use custom loading tip with its location. 
 
 :::
 
@@ -19,22 +19,21 @@ Loading state can be toggle。
 import { Loading } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Loading tip="default">
-        <div className="demo">test</div>
+    <Loading tip={<span>default=bottom</span>}>
+        <div className="demo-tip">default</div>
     </Loading>
     <Loading tip="right" tipAlign="right">
-        <div className="demo">test</div>
+        <div className="demo-tip">right</div>
     </Loading>
     <Loading tip="bottom" tipAlign="bottom">
-        <div className="demo">test</div>
+        <div className="demo-tip">bottom</div>
     </Loading>
 </div>, mountNode);
 ````
 
 ````css
-.demo {
-    width: 500px;
-    background-color: #F2F3F7;
+.demo-tip {
+    width: 200px;
     text-align: center;
     padding:50px;
 }

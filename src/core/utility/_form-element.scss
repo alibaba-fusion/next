@@ -45,13 +45,25 @@ $form-element-medium-preview-height: $s-7 !default;
 /// @semantic 大号组件预览态高度
 $form-element-large-preview-height: $s-10 !default;
 
+/// preview label
+/// @semantic 小号label预览态字体
+$form-element-small-preview-label-font-size: $font-size-caption !default;
+
 /// preview text
 /// @semantic 小号组件预览态字体
 $form-element-small-preview-font-size: $font-size-caption !default;
 
+/// preview label
+/// @semantic 中号label预览态字体
+$form-element-medium-preview-label-font-size: $font-size-body-1 !default;
+
 /// preview text
 /// @semantic 中号组件预览态字体
 $form-element-medium-preview-font-size: $font-size-body-1 !default;
+
+/// preview label
+/// @semantic 大号label预览态字体
+$form-element-large-preview-label-font-size: $font-size-subhead !default;
 
 /// preview text
 /// @semantic 大号组件预览态字体

@@ -1,13 +1,13 @@
-# 创建上下文菜单
+# 右键菜单
 
-- order: 9
+- order: 6
 
 展示如何创建自定义的上下文菜单。
 
 :::lang=en-us
 # Create context menu
 
-- order: 9
+- order: 6
 
 Demo how to create the custom context menu.
 :::

@@ -1,12 +1,11 @@
-# 尺寸
+# 小号尺寸
 
 - order: 2
 
-组件尺寸，可以通过`size`属性设置，提供`medium`(默认)和`small`两种尺寸，
-`small`尺寸的选项卡组件可以用在弹出框等较狭窄的容器内。
+可以通过 `size=small` 设置小号尺寸，一般用于弹出框等较狭窄的容器内。
 
 :::lang=en-us
-# Size
+# small Size
 
 - order: 2
 

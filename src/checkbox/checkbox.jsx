@@ -84,11 +84,15 @@ class Checkbox extends UIState {
         name: PropTypes.string,
         /**
          * 是否为预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {Boolean} checked 是否选中
+         * @param {Object} props 所有传入的参数
+         * @returns {reactNode} Element 渲染内容
+         * @version 1.19
          */
         renderPreview: PropTypes.func,
     };
@@ -135,10 +139,7 @@ class Checkbox extends UIState {
         const state = {};
         if (nextContext.__group__) {
             if ('selectedValue' in nextContext) {
-                state.checked = isChecked(
-                    nextContext.selectedValue,
-                    nextProps.value
-                );
+                state.checked = isChecked(nextContext.selectedValue, nextProps.value);
             }
         } else if ('checked' in nextProps) {
             state.checked = nextProps.checked;
@@ -255,24 +256,14 @@ class Checkbox extends UIState {
             const previewCls = classnames(className, `${prefix}form-preview`);
             if ('renderPreview' in this.props) {
                 return (
-                    <div
-                        id={id}
-                        dir={rtl ? 'rtl' : undefined}
-                        {...othersData}
-                        className={previewCls}
-                    >
+                    <div id={id} dir={rtl ? 'rtl' : undefined} {...othersData} className={previewCls}>
                         {renderPreview(checked, this.props)}
                     </div>
                 );
             }
 
             return (
-                <p
-                    id={id}
-                    dir={rtl ? 'rtl' : undefined}
-                    {...othersData}
-                    className={previewCls}
-                >
+                <p id={id} dir={rtl ? 'rtl' : undefined} {...othersData} className={previewCls}>
                     {checked && (children || label || this.state.value)}
                 </p>
             );

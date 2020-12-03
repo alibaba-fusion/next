@@ -128,14 +128,17 @@ export default class Form extends React.Component {
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         /**
          * 是否开启内置的响应式布局 （使用ResponsiveGrid）
+         * @version 1.19
          */
         responsive: PropTypes.bool,
         /**
          * 是否开启预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
          * 是否使用 label 替换校验信息的 name 字段
+         * @version 1.20
          */
         useLabelForErrorMessage: PropTypes.bool,
         // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]

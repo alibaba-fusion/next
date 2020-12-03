@@ -1,14 +1,15 @@
-# 受限组件
+# 受控组件
 
-- order: 2
+- order: 6
 
-使用 `CheckboxGroup` 渲染的组，通过设置 `value` 属性可以让组件变成[受限组件](https://facebook.github.io/react/docs/forms.html#controlled-components)。
+使用 `Checkbox.Group` 渲染的组，通过设置 `value` 属性可以让组件变成[受控组件](https://facebook.github.io/react/docs/forms.html#controlled-components)。
 
 
 :::lang=en-us
 # Controlled Component
-- order: 2
-Groups rendered using `CheckboxGroup` can be made to become [controlled components] by setting the `value` properity (https://facebook.github.io/react/docs/forms.html#controlled-components).
+- order: 6
+
+Groups rendered using `Checkbox.Group` can make the component a [controlled component] by setting the `value` property (https://facebook.github.io/react/docs/forms.html#controlled-components).
 
 :::
 ---
@@ -16,11 +17,10 @@ Groups rendered using `CheckboxGroup` can be made to become [controlled componen
 ````jsx
 import { Checkbox } from '@alifd/next';
 
-const { Group: CheckboxGroup } = Checkbox;
 const list = [
     {
-        value: 'apple',
-        label: 'Apple'
+        value: 'appale',
+        label: 'Appale'
     }, {
         value: 'pear',
         label: 'Pear'
@@ -31,32 +31,38 @@ const list = [
 ];
 
 class ControlApp extends React.Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
-            value: ['orange']
+            value: 'orange'
         };
 
         this.onChange = this.onChange.bind(this);
     }
 
-    onChange(selectedItems) {
-        console.log('onChange callback', selectedItems);
+    onChange(value) {
         this.setState({
-            value: selectedItems
+            value: value
         });
+        console.log('onChange', value);
+    }
+
+    onClick(e) {
+        console.log('onClick', e);
     }
 
     render() {
         return (
-            <div style={{padding: '20px'}}>
-                <CheckboxGroup value={this.state.value} dataSource={list} onChange={this.onChange} />
+            <div>
+                normal:   <Checkbox.Group dataSource={list} value={this.state.value} onChange={this.onChange} />
+                <br />
+                <br />
+                <br />
+                disabled:  <Checkbox.Group disabled dataSource={list} value={this.state.value} onChange={this.onChange} />
             </div>
         );
     }
-
 }
 
 ReactDOM.render(<ControlApp />, mountNode);

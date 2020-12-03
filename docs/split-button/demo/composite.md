@@ -2,7 +2,7 @@
 
 - order: 3
 
-复合使用菜单，监听菜单行为。
+复合使用菜单，监听菜单行为展示左侧操作。
 
 :::lang=en-us
 # Composite
@@ -42,7 +42,7 @@ class CompositeSplitButton extends React.Component {
 
     render() {
         const { visible, label } = this.state;
-        return (<SplitButton label={label} visible={visible} onVisibleChange={this.changeVisible} onItemClick={this.onSelect}>{menu}</SplitButton>);
+        return (<SplitButton label={label} visible={visible} onVisibleChange={this.changeVisible} onItemClick={this.onSelect} type="secondary">{menu}</SplitButton>);
     }
 }
 

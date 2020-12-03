@@ -1,4 +1,4 @@
-# 自定义 loading 样式
+# 自定义 loading
 
 - order: 3
 

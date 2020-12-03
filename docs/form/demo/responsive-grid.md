@@ -1,7 +1,8 @@
 # 自适应布局
 
 - order: 6
-
+- debug: true
+  
 可通过设置 `device` `responsive` 实现响应式, 1.19.0+ 添加，仅支持ie10+
 
 :::lang=en-us

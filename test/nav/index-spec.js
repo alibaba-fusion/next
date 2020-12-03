@@ -280,6 +280,24 @@ describe('Nav', () => {
         assert(wrapper);
     });
 
+    it('should support iconOnly and mode="popup" switched and openKeys reset', () => {
+        wrapper = render(
+            <Nav defaultOpenAll>
+                <SubNav label="Group label">
+                    <Item key="1">First</Item>
+                    <Item key="2">Second</Item>
+                </SubNav>
+            </Nav>
+        );
+        assert(wrapper);
+        assert(wrapper.find('li.next-nav-sub-nav-item')[0].querySelector('.next-nav-item.next-opened'));
+        wrapper.setProps({
+            iconOnly: true,
+            mode: 'popup'
+        });
+        assert(!wrapper.find('li.next-nav-sub-nav-item')[0].querySelector('.next-nav-item.next-opened'));
+    });
+
     it('should support iconOnly', done => {
         wrapper = mount(
             <Nav iconOnly style={{ width: '200px' }}>

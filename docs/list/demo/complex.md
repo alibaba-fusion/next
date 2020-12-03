@@ -1,15 +1,15 @@
-# 大列表
+# 图文列表
 
 - order: 1
 
-页面级列表展示
+图文列表展示。
 
 :::lang=en-us
 # Basic Usage
 
 - order: 1
 
-Simple usage of List component.
+Complex usage of List component.
 
 :::
 ---

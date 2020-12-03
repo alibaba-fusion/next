@@ -1,6 +1,6 @@
-# 基本
+# 基本用法
 
-- order: 0
+- order: 1
 
 展示图标基本使用方法。
 
@@ -14,7 +14,12 @@ Basic usage of Icon。
 ---
 
 ````jsx
-import { Icon } from '@alifd/next';
+import { Box, Icon } from '@alifd/next';
 
-ReactDOM.render(<Icon type="atm" />, mountNode);
+ReactDOM.render(<Box spacing={20} direction="row">
+    <Icon type="atm" />
+    <Icon type="smile" />
+    <Icon type="success" />
+    <Icon type="loading" />
+</Box>, mountNode);
 ````
