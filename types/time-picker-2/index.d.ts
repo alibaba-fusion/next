@@ -154,7 +154,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 预设值，会显示在时间面板下面
      */
-    ranges?: DatePreset | DatePreset[];
+    ranges?: any;
 
     /**
      * 时间值改变时的回调
