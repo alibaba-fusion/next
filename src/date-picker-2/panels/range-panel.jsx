@@ -29,26 +29,12 @@ const operate = (mode, value, operator) => {
     }
 };
 
-const getPanelValue = ({ mode, inputType, value }, oldPanelValue) => {
+const getPanelValue = ({ mode, inputType, value, showTime }, oldPanelValue) => {
     let panelValue = oldPanelValue;
     const unit = mode;
 
     if (value && inputType !== null) {
         const v = value[inputType];
-
-        console.log(v, oldPanelValue);
-        if (v && oldPanelValue) {
-            console.log(
-                mode,
-                inputType,
-                v,
-                oldPanelValue.isAfter(v, unit),
-                oldPanelValue
-                    .clone()
-                    .add(2, unit)
-                    .isBefore(v, unit)
-            );
-        }
 
         if (
             v &&
@@ -61,7 +47,7 @@ const getPanelValue = ({ mode, inputType, value }, oldPanelValue) => {
         ) {
             panelValue = datejs(v);
 
-            if (inputType === END) {
+            if (inputType === END && !showTime) {
                 panelValue = operate(mode, panelValue, 'subtract');
             }
         }

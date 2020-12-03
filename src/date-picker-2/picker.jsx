@@ -288,6 +288,7 @@ class Picker extends React.Component {
 
             func.call(this.props, 'onVisibleChange', [visible]);
         };
+
         if (visible !== this.state.visible) {
             if (this.timeoutId) {
                 clearTimeout(this.timeoutId);
@@ -342,6 +343,12 @@ class Picker extends React.Component {
                 }
             }
 
+            if (!showOk) {
+                this.setState({
+                    value: v,
+                });
+            }
+
             if (idx !== -1) {
                 this.handleInputFocus(idx);
             } else {
@@ -383,7 +390,7 @@ class Picker extends React.Component {
         if (v !== inputType) {
             this.setState({
                 inputType: v,
-                justBeginInput: !(inputType !== null && visible),
+                justBeginInput: !(v !== null && visible),
             });
         }
     }
