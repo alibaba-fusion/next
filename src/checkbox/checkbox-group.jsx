@@ -234,4 +234,15 @@ class CheckboxGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(polyfill(CheckboxGroup));
+export default ConfigProvider.config(polyfill(CheckboxGroup), {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
+        if ('itemDirection' in props) {
+            deprecated('itemDirection', 'direction', 'Checkbox');
+            const { itemDirection, ...others } = props;
+
+            props = { direction: itemDirection, ...others };
+        }
+
+        return props;
+    },
+});
