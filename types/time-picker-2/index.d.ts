@@ -3,10 +3,19 @@
 import * as React from 'react';
 import CommonProps from '../util';
 import { PopupProps } from '../overlay';
+import { InputProps } from '../input';
+import { ButtonProps } from '../button';
 
 interface HTMLAttributesWeak extends React.HTMLAttributes<HTMLElement> {
     defaultValue?: any;
     onChange?: any;
+}
+
+interface DatePreset extends ButtonProps {
+    name: string;
+    label: string;
+    // 时间值（dayjs 对象或时间字符串）或者返回时间值的函数
+    value: any;
 }
 
 export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
@@ -27,12 +36,12 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
     placeholder?: string;
 
     /**
-     * 时间值（moment 对象或时间字符串，受控状态使用）
+     * 时间值（dayjs 对象或时间字符串，受控状态使用）
      */
     value?: any;
 
     /**
-     * 时间初值（moment 对象或时间字符串，非受控状态使用）
+     * 时间初值（dayjs 对象或时间字符串，非受控状态使用）
      */
     defaultValue?: any;
 
@@ -48,7 +57,7 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
 
     /**
      * 时间的格式
-     * https://momentjs.com/docs/#/parsing/string-format/
+     * https://dayjs.gitee.io/docs/zh-CN/display/format
      */
     format?: string;
 
@@ -131,6 +140,21 @@ export interface TimePickerProps extends HTMLAttributesWeak, CommonProps {
      * 是否禁用
      */
     disabled?: boolean;
+
+    /**
+     * 输入框是否有边框
+     */
+    hasBorder: boolean,
+
+    /**
+     * 透传给 Input 的属性
+     */
+    inputProps: InputProps,
+
+    /**
+     * 预设值，会显示在时间面板下面
+     */
+    ranges: DatePreset | DatePreset[];
 
     /**
      * 时间值改变时的回调
