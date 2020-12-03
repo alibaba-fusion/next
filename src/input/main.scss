@@ -195,6 +195,7 @@
 
     &.#{$css-prefix}noborder {
         border: none;
+        box-shadow: none;
     }
 
     &-control {
