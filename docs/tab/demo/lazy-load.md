@@ -2,7 +2,10 @@
 
 - order: 3
 
-默认情况 Tab 不会提前渲染好所有的内容，而是根据 Tab 的激活情况依次进行渲染。某些时候，如果你想一次渲染好所有内容，可以设置 `lazyLoad={false}` 进行关闭。此外，某些时候，如果你想每次切换选项卡时自动卸载未激活的 Tab，可以设置 `unmountInactiveTabs` 开启。
+默认情况 Tab 不会提前渲染好所有的内容，而是根据 Tab 的激活情况依次进行渲染。
+
+- 可以设置 `lazyLoad={false}` 一次渲染所有 TabItem 内容。
+- 可以设置 `unmountInactiveTabs` 在切换选项卡时自动卸载其他 TabItem。
 
 :::lang=en-us
 # LazyLoad and AutoUnmount
@@ -26,14 +29,14 @@ const tabs = [
 
 ReactDOM.render(
     <div>
-        <div>Render all tab contents</div>
+        <div>use lazyLoad=false to render all tab items</div>
         <Tab lazyLoad={false}>
             {
                 tabs.map(item => <Tab.Item key={item.key} title={item.tab}>{item.content}</Tab.Item>)
             }
         </Tab>
-
-        <div>Unmount inactive tabs</div>
+        <br/>
+        <div>Unmount other items while switch tab</div>
         <Tab unmountInactiveTabs>
             {
                 tabs.map(item => <Tab.Item key={item.key} title={item.tab}>{item.content}</Tab.Item>)

@@ -19,6 +19,6 @@ Basic usage.
 import { Rating } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Rating defaultValue={3.2} onChange={val => console.log('change:', val)} onHoverChange={val => console.log('hover:', val)} />
+    <Rating defaultValue={3.5} onChange={val => console.log('change:', val)} onHoverChange={val => console.log('hover:', val)} />
 </div>, mountNode);
 ````

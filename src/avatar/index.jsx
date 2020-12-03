@@ -15,13 +15,12 @@ class Avatar extends Component {
         className: PropTypes.string,
         /**
          * 头像的大小
+         * @enumdesc 小,中,大
          */
-        size: PropTypes.oneOfType([
-            PropTypes.oneOf(['small', 'medium', 'large']),
-            PropTypes.number,
-        ]),
+        size: PropTypes.oneOfType([PropTypes.oneOf(['small', 'medium', 'large']), PropTypes.number]),
         /**
          * 头像的形状
+         * @enumdesc 圆形,方形
          */
         shape: PropTypes.oneOf(['circle', 'square']),
         /**
@@ -76,17 +75,7 @@ class Avatar extends Component {
     };
 
     render() {
-        const {
-            prefix,
-            className,
-            style,
-            size,
-            icon,
-            alt,
-            srcSet,
-            shape,
-            src,
-        } = this.props;
+        const { prefix, className, style, size, icon, alt, srcSet, shape, src } = this.props;
         const { isImgExist } = this.state;
         let { children } = this.props;
 
@@ -115,31 +104,19 @@ class Avatar extends Component {
         const iconSize = this.getIconSize(size);
         if (src) {
             if (isImgExist) {
-                children = (
-                    <img
-                        src={src}
-                        srcSet={srcSet}
-                        onError={this.handleImgLoadError}
-                        alt={alt}
-                    />
-                );
+                children = <img src={src} srcSet={srcSet} onError={this.handleImgLoadError} alt={alt} />;
             } else {
                 children = <Icon type={'picture'} size={iconSize} />;
             }
         } else if (typeof icon === 'string') {
             children = <Icon type={icon} size={iconSize} />;
         } else if (icon) {
-            const newIconSize =
-                'size' in icon.props ? icon.props.size : iconSize;
+            const newIconSize = 'size' in icon.props ? icon.props.size : iconSize;
             children = React.cloneElement(icon, { size: newIconSize });
         }
 
         return (
-            <span
-                className={cls}
-                style={{ ...sizeStyle, ...style }}
-                {...others}
-            >
+            <span className={cls} style={{ ...sizeStyle, ...style }} {...others}>
                 {children}
             </span>
         );

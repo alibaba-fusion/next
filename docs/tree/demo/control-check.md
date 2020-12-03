@@ -1,13 +1,14 @@
-# 父子节点选中是否关联
+# 勾选
 
-- order: 5
+-   order: 3
 
-展示父子节点选中是否关联的用法。
+通过设置`checkable`为`true`，开启节点勾选，默认情况下，节点的勾选状态受上下级节点的关联，可以通过`checkStrictly`为`false`关闭该关联逻辑。
 
 :::lang=en-us
+
 # Parent and child node checked is related
 
-- order: 5
+-   order: 3
 
 Demo whether parent and child node checked is related.
 :::
@@ -17,43 +18,47 @@ Demo whether parent and child node checked is related.
 ````jsx
 import { Checkbox, Tree } from '@alifd/next';
 
-const data = [{
-    key: '0-0',
-    label: '0-0',
-    children: [{
-        key: '0-0-0',
-        label: '0-0-0',
-        children: [{
-            key: '0-0-0-0',
-            label: '0-0-0-0',
-            children: [{
-                key: '0-0-0-0-0',
-                label: '0-0-0-0-0'
-            }]
-        }, {
-            key: '0-0-0-1',
-            label: '0-0-0-1'
-        }]
-    }, {
-        key: '0-0-1',
-        label: '0-0-1',
-        children: [{
-            key: '0-0-1-0',
-            label: '0-0-1-0'
-        }, {
-            key: '0-0-1-1',
-            label: '0-0-1-1'
-        }]
-    }]
-}];
-
+const data = [
+    {
+        label: 'Component',
+        key: '1',
+        children: [
+            {
+                label: 'Form',
+                key: '2',
+                selectable: false,
+                children: [
+                    {
+                        label: 'Input',
+                        key: '4',
+                    },
+                    {
+                        label: 'Select',
+                        key: '5',
+                        disabled: true,
+                    },
+                ],
+            },
+            {
+                label: 'Display',
+                key: '3',
+                children: [
+                    {
+                        label: 'Table',
+                        key: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 class Demo extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             checkedKeys: [],
-            checkStrictly: false
+            checkStrictly: false,
         };
         this.handleCheck = this.handleCheck.bind(this);
         this.handleCheckStrictly = this.handleCheckStrictly.bind(this);
@@ -63,14 +68,14 @@ class Demo extends React.Component {
         console.log(keys, info);
 
         this.setState({
-            checkedKeys: keys
+            checkedKeys: keys,
         });
     }
 
     handleCheckStrictly() {
         this.setState({
             checkStrictly: !this.state.checkStrictly,
-            checkedKeys: []
+            checkedKeys: [],
         });
     }
 
@@ -81,7 +86,7 @@ class Demo extends React.Component {
             <div className="control-check-demo">
                 <label className="strictly-check">
                     <Checkbox checked={checkStrictly} onChange={this.handleCheckStrictly} />
-                    <span className="strictly-text">Enable checkStrictly</span>
+                    <span className="strictly-text">取消选中关联</span>
                 </label>
                 <Tree
                     defaultExpandAll

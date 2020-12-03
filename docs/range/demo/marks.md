@@ -28,7 +28,7 @@ ReactDOM.render(<div style={{width: '400px', margin: '50px'}}>
         <Range defaultValue={0} marks={[0, 100]} style={style} />
         <Range slider={'double'} defaultValue={[20, 40]} marks={[0, 100]} style={style} />
         <Range defaultValue={30} style={style} />
-        <p>Below</p>
+        <p>Marks below</p>
         <Range defaultValue={0} marks={[0, 100]} style={style} marksPosition="below" />
         <Range slider={'double'} defaultValue={[20, 40]} marks={[0, 100]} style={style} marksPosition="below" />
         <Range defaultValue={30} marks={[0, 100]} style={style} marksPosition="below" />

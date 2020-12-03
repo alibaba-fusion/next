@@ -84,7 +84,9 @@ class RadioGroup extends Component {
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {Object} previewed 预览值：{label: "", value: ""}
+         * @param {Object} props 所有传入的参数
+         * @returns {reactNode} Element 渲染内容
          */
         renderPreview: PropTypes.func,
     };
@@ -224,7 +226,6 @@ class RadioGroup extends Component {
                 );
             });
         }
-
         if (isPreview) {
             const previewCls = classnames(className, `${prefix}form-preview`);
 
@@ -263,4 +264,15 @@ class RadioGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(polyfill(RadioGroup));
+export default ConfigProvider.config(polyfill(RadioGroup), {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
+        if ('itemDirection' in props) {
+            deprecated('itemDirection', 'direction', 'Radio');
+            const { itemDirection, ...others } = props;
+
+            props = { direction: itemDirection, ...others };
+        }
+
+        return props;
+    },
+});

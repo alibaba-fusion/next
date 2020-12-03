@@ -17,5 +17,5 @@ Rating component only support integer score in default situation, bu you can set
 ````jsx
 import { Rating } from '@alifd/next';
 
-ReactDOM.render(<Rating defaultValue={3.2} allowHalf />, mountNode);
+ReactDOM.render(<Rating defaultValue={3.5} allowHalf />, mountNode);
 ````

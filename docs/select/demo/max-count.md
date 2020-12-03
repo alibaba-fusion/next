@@ -2,7 +2,7 @@
 
 - order: 3
 
-多选模式
+多选模式下通过 `maxTagCount` 控制选择的个数，通过 `maxTagPlaceholder` 控制选择的 hover 样式
 
 :::lang=en-us
 # max count
@@ -40,19 +40,17 @@ const maxTagPlaceholder = (selectedValues, totalValues) => {
     return <Tooltip trigger={trigger}>{ labels.join(', ') }</Tooltip>;
 };
 
+const style= { width: 200, marginRight: 8 };
+
 ReactDOM.render(
-    <div>
-        hasSelectAll:<br/>
-        <Select hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} />
-        <br /><br />
-        maxTagCount=2<br />
-        <Select maxTagCount={2} defaultValue={['10001', '10002', '-1']} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /> <br /><br />
-        maxTagPlaceholder<br />
-        <Select maxTagCount={2} maxTagPlaceholder={maxTagPlaceholder} defaultValue={['10001', '10002', '-1']} mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /><br /><br />
-        tagInline <br />
-        <Select maxTagCount={2} tagInline mode="multiple" defaultValue={['10001', '10002', '-1']}  onChange={handleChange} dataSource={dataSource} style={{width: 200}} /><br /><br />
-        maxTagPlaceholder<br />
-        <Select maxTagCount={2} tagInline maxTagPlaceholder={maxTagPlaceholder} defaultValue={['10001', '10002', '-1']}  mode="multiple" onChange={handleChange} dataSource={dataSource} style={{width: 200}} /><br /><br />
+    <div style={{display: 'flex'}}>
+        <Select placeholder="select all" hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={style} />
+
+        <Select maxTagCount={2} defaultValue={['10001', '10002', '-1']} mode="multiple" onChange={handleChange} dataSource={dataSource} style={style}  /> 
+        
+        <Select maxTagCount={2} maxTagPlaceholder={maxTagPlaceholder} defaultValue={['10001', '10002', '-1']} mode="multiple" onChange={handleChange} dataSource={dataSource} style={style}  /> 
+        
+        <Select maxTagCount={2} tagInline mode="multiple" defaultValue={['10001', '10002', '-1']}  onChange={handleChange} dataSource={dataSource} style={style}  /><br /><br />
     </div>
 , mountNode);
 ````

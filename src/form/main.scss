@@ -10,19 +10,19 @@
     &-preview.#{$css-prefix}form-item {
         &.#{$css-prefix}medium {
             #{$form-prefix}-item-label {
-                font-size: $form-element-medium-preview-font-size;
+                font-size: $form-element-medium-preview-label-font-size;
                 line-height: $form-element-medium-preview-height;
             }
         }
         &.#{$css-prefix}small {
             #{$form-prefix}-item-label {
-                font-size: $form-element-small-preview-font-size;
+                font-size: $form-element-small-preview-label-font-size;
                 line-height: $form-element-small-preview-height;
             }
         }
         &.#{$css-prefix}large {
             #{$form-prefix}-item-label {
-                font-size: $form-element-large-preview-font-size;
+                font-size: $form-element-large-preview-label-font-size;
                 line-height: $form-element-large-preview-height;
             }
         }

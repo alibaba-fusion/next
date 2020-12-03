@@ -1,13 +1,13 @@
 # 带文案的分割线
 
-- order: 1
+- order: 2
 
-通过 `orientation` 来设置分割线上文案的位置
+通过 `orientation` 来设置分割线上文案的位置。
 
 :::lang=en-us
 # Basic Usage
 
-- order: 1
+- order: 2
 
 Divider with different orientation of text.
 
@@ -33,8 +33,4 @@ ReactDOM.render(
         </p>
     </div>
     , mountNode);
-````
-
-````css
-
 ````

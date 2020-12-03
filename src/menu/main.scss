@@ -13,7 +13,6 @@
 
     position: relative;
     min-width: $s-25;
-    padding: $menu-padding-vertical 0;
     margin: 0;
     list-style: none;
     border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
@@ -25,6 +24,18 @@
     animation-duration: $motion-duration-standard;
     animation-timing-function: $motion-ease;
 
+    &.#{$css-prefix}ver {
+        padding: $menu-padding-ver-padding-tb $menu-padding-ver-padding-lr;
+        #{$menu-prefix}-item {
+            padding: 0 $menu-item-padding-ver-padding-r 0 $menu-item-padding-ver-padding-l;
+        }
+    }
+    &.#{$css-prefix}hoz {
+        padding: $menu-padding-hoz-padding-tb $menu-padding-hoz-padding-lr;
+        #{$menu-prefix}-item {
+            padding: 0 $menu-item-padding-hoz-padding-lr;
+        }
+    }
     &-embeddable,
     &-embeddable &-item.#{$css-prefix}disabled,
     &-embeddable &-item.#{$css-prefix}disabled #{$menu-prefix}-item-text > a {
@@ -69,7 +80,6 @@
 
     &-item {
         position: relative;
-        padding: 0 $menu-padding-horizontal;
         transition: background $motion-duration-immediately $motion-linear;
         color: $menu-color;
         cursor: pointer;
@@ -193,7 +203,8 @@
     & &-icon-selected {
         position: absolute;
         top: 0;
-        @include icon-size($menu-icon-selected-size, calc(0px - (#{$menu-padding-horizontal} + #{$menu-icon-selected-size}) / 2));
+
+        @include icon-size($menu-icon-selected-size, calc(0px - (#{$menu-item-padding-ver-padding-l} - #{$menu-icon-selected-right})));
 
         &#{$menu-prefix}-icon-right {
             right: $menu-icon-selected-right;

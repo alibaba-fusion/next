@@ -56,11 +56,15 @@ class CheckboxGroup extends Component {
         direction: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 是否为预览态
+         * @version 1.19
          */
         isPreview: PropTypes.bool,
         /**
          * 预览态模式下渲染的内容
-         * @param {number} value 评分值
+         * @param {Array} previewed 预览值 [{label: '', value:''},...]
+         * @param {Object} props 所有传入的参数
+         * @returns {reactNode} Element 渲染内容
+         * @version 1.19
          */
         renderPreview: PropTypes.func,
     };
@@ -234,4 +238,15 @@ class CheckboxGroup extends Component {
     }
 }
 
-export default ConfigProvider.config(polyfill(CheckboxGroup));
+export default ConfigProvider.config(polyfill(CheckboxGroup), {
+    transform: /* istanbul ignore next */ (props, deprecated) => {
+        if ('itemDirection' in props) {
+            deprecated('itemDirection', 'direction', 'Checkbox');
+            const { itemDirection, ...others } = props;
+
+            props = { direction: itemDirection, ...others };
+        }
+
+        return props;
+    },
+});

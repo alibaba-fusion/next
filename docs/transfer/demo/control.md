@@ -1,6 +1,7 @@
 # 受控
 
 - order: 1
+— debug: true
 
 展示受控的用法。
 
