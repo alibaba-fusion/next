@@ -60,6 +60,7 @@ export default class ConfigProvider extends React.Component<
 > {
     static config(Component: any, options?: any): any;
     static getContextProps(props: {}, displayName: string): {};
+    static initLocales(locales: any): any;
     static setLanguage(language: string): any;
     static setLocale(locale: any): any;
     static setDirection(dir: string): any;
