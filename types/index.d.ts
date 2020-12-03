@@ -44,6 +44,7 @@ export { default as Tab } from './tab';
 export { default as Table } from './table';
 export { default as Tag } from './tag';
 export { default as TimePicker } from './time-picker';
+export { default as TimePicker2 } from './time-picker-2';
 export { default as Timeline } from './timeline';
 export { default as Transfer } from './transfer';
 export { default as Tree } from './tree';
