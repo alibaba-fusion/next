@@ -193,6 +193,13 @@
             content: "*";
             color: $form-error-color;
         }
+        &.has-colon label::after {
+            content: ":";
+            position: relative;
+            top: -.5px;
+            margin: 0 0 0 2px;
+        }
+
 
         &.#{$css-prefix}left {
             text-align: left;
