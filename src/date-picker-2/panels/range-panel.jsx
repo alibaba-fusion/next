@@ -13,18 +13,66 @@ import TimePanel from './time-panel';
 
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PANEL_MODE;
 const { UN_SELECTED, SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
+const { BEGIN, END } = DATE_INPUT_TYPE;
 
-// 获取面板显示值
-function getPanelValue(value, mode) {
-    if (value) {
-        if (value[0]) {
-            return datejs(value[0]);
-        } else if (value[1]) {
-            return datejs(value[1]).subtract(1, mode);
+const operate = (mode, value, operator) => {
+    switch (mode) {
+        case DATE:
+        case WEEK:
+            return value.clone()[operator](1, 'month');
+
+        case QUARTER:
+        case MONTH:
+            return value.clone()[operator](1, 'year');
+        case YEAR:
+            return value.clone()[operator](20, 'year');
+    }
+};
+
+const getPanelValue = ({ mode, inputType, value }, oldPanelValue) => {
+    let panelValue = oldPanelValue;
+    const unit = mode;
+
+    if (value && inputType !== null) {
+        const v = value[inputType];
+
+        console.log(v, oldPanelValue);
+        if (v && oldPanelValue) {
+            console.log(
+                mode,
+                inputType,
+                v,
+                oldPanelValue.isAfter(v, unit),
+                oldPanelValue
+                    .clone()
+                    .add(2, unit)
+                    .isBefore(v, unit)
+            );
+        }
+
+        if (
+            v &&
+            oldPanelValue &&
+            (oldPanelValue.isAfter(v, unit) ||
+                oldPanelValue
+                    .clone()
+                    .add(2, unit)
+                    .isBefore(v, unit))
+        ) {
+            panelValue = datejs(v);
+
+            if (inputType === END) {
+                panelValue = operate(mode, panelValue, 'subtract');
+            }
         }
     }
-    return datejs();
-}
+
+    if (!(panelValue && panelValue.isValid())) {
+        panelValue = datejs();
+    }
+
+    return panelValue;
+};
 
 class RangePanel extends React.Component {
     static propTypes = {
@@ -34,7 +82,8 @@ class RangePanel extends React.Component {
         handleCellState: PT.func,
         disabledDate: PT.func,
         justBeginInput: PT.bool,
-        showTime: SharedPT.showTime,
+        showTime: PT.bool,
+        timePanelProps: PT.object,
     };
 
     static defaultProps = {
@@ -45,13 +94,25 @@ class RangePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        const { mode, value } = props;
+        const { mode } = props;
 
         this.state = {
             mode,
-            panelValue: getPanelValue(value, mode),
+            panelValue: getPanelValue(props, null),
+            inputType: props.inputType,
             curHoverValue: null,
         };
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.inputType !== state.inputType) {
+            console.log('state.panelValue', state.panelValue);
+            return {
+                inputType: props.inputType,
+                panelValue: getPanelValue(props, state.panelValue),
+            };
+        }
+        return null;
     }
 
     componentWillUnmount() {
@@ -92,7 +153,6 @@ class RangePanel extends React.Component {
         const unit = mode === 'date' ? 'day' : mode;
 
         const { disabledDate, inputType } = this.props;
-        const { BEGIN, END } = DATE_INPUT_TYPE;
 
         return (
             disabledDate(v) ||
@@ -114,7 +174,6 @@ class RangePanel extends React.Component {
 
     onChange = (v, resetTime = true) => {
         const { value, inputType } = this.props;
-        const { BEGIN, END } = DATE_INPUT_TYPE;
         let [begin, end] = value;
 
         if (inputType === BEGIN) {
@@ -194,8 +253,8 @@ class RangePanel extends React.Component {
         if (
             curHoverValue &&
             !(
-                (inputType === DATE_INPUT_TYPE.BEGIN && curHoverValue.isSame(end, unit)) ||
-                (inputType === DATE_INPUT_TYPE.END && curHoverValue.isSame(begin, unit))
+                (inputType === BEGIN && curHoverValue.isSame(end, unit)) ||
+                (inputType === END && curHoverValue.isSame(begin, unit))
             )
         ) {
             const hoverState = this.handleCellState(value, hoverValue);
@@ -225,7 +284,7 @@ class RangePanel extends React.Component {
     };
 
     renderRangeTime = sharedProps => {
-        const { value, prefix, showTime, inputType } = this.props;
+        const { value, prefix, showTime, inputType, timePanelProps } = this.props;
 
         return (
             <div key="time-panel" className={`${prefix}range-picker2-panel`}>
@@ -240,7 +299,7 @@ class RangePanel extends React.Component {
                         prefix={prefix}
                         value={value[inputType]}
                         onSelect={v => this.onChange(v, false)}
-                        timePickerProps={typeof showTime === 'object' ? showTime : undefined}
+                        timePickerProps={timePanelProps}
                     />
                 ) : null}
             </div>
@@ -316,7 +375,6 @@ class RangePanel extends React.Component {
             };
         }
 
-        const { END } = DATE_INPUT_TYPE;
         const left = inputType === END ? 140 : 0;
 
         return (

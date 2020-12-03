@@ -101,6 +101,7 @@
                 transform: translateY(-50%);
             }
             &-table {
+                width: 252px;
                 thead > tr {
                     height: 24px;
                 }
@@ -121,7 +122,8 @@
             &-table-year,
             &-table-quarter,
             &-table-decade {
-                height: 160px;
+                height: 144px;
+                width: 272px;
                 #{$calendar2-prefix}-cell-inner {
                     min-width: 80px;
                 }
@@ -140,7 +142,7 @@
                 }
             }
 
-            &#{$calendar2-prefix}-cell-today {
+            &#{$calendar2-prefix}-cell-today:not(#{$calendar2-prefix}-cell-disabled) {
                 #{$cell-inner} {
                     color: $color-brand1-9;
                 }
@@ -260,6 +262,15 @@
                     margin-left: 8px;
                 }
             }
+
+            // .#{$css-prefix} {
+            //     &icon-arrow-right,
+            //     &icon-arrow-left,
+            //     &icon-arrow-double-right,
+            //     &icon-arrow-double-left {
+            //         transform: scale(.9);
+            //     }
+            // }
         }
     }
 }

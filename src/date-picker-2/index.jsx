@@ -3,49 +3,39 @@ import ConfigProvider from '../config-provider';
 import Picker from './picker';
 
 const DatePicker2 = props => {
-    const { showTime, ...others } = props;
-    const _props = {
-        format: '',
-    };
-
-    _props.format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
-    _props.showTime = showTime;
-
-    return <Picker {..._props} {...others} />;
+    const format = props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+    return <Picker format={format} {...props} />;
 };
 
-DatePicker2.MonthPicker = props => <DatePicker2 format="YYYY-MM" mode="month" {...props} />;
+DatePicker2.MonthPicker = props => <Picker format="YYYY-MM" mode="month" {...props} />;
 
-DatePicker2.YearPicker = props => <DatePicker2 format="YYYY" mode="year" {...props} />;
+DatePicker2.YearPicker = props => <Picker format="YYYY" mode="year" {...props} />;
 
-DatePicker2.WeekPicker = props => <DatePicker2 format="YYYY-wo" mode="week" {...props} />;
+DatePicker2.WeekPicker = props => <Picker format="YYYY-wo" mode="week" {...props} />;
 
-DatePicker2.QuarterPicker = props => <DatePicker2 format="YYYY-Q" mode="quarter" {...props} />;
+DatePicker2.QuarterPicker = props => <Picker format="YYYY-Q" mode="quarter" {...props} />;
 
 DatePicker2.RangePicker = props => {
-    const { mode, showTime, ...others } = props;
-    const _props = {
-        format: '',
-    };
-    switch (mode) {
+    let format;
+
+    switch (props.mode) {
         case 'year':
-            _props.format = 'YYYY';
+            format = 'YYYY';
             break;
         case 'month':
-            _props.format = 'YYYY-MM';
+            format = 'YYYY-MM';
             break;
         case 'week':
-            _props.format = 'YYYY-wo';
+            format = 'YYYY-wo';
             break;
         case 'quarter':
-            _props.format = 'YYYY-Q';
+            format = 'YYYY-Q';
             break;
         default:
-            _props.format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
-            _props.showTime = showTime;
+            format = props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
             break;
     }
-    return <DatePicker2 type="range" mode={mode} {..._props} {...others} />;
+    return <Picker type="range" format={format} {...props} />;
 };
 
 export default ConfigProvider.config(DatePicker2);

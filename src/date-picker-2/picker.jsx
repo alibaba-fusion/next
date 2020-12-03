@@ -15,7 +15,7 @@ import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
-const { bindCtx, isFunction, getRender } = func;
+const { bindCtx, isFunction, renderNode } = func;
 
 class Picker extends React.Component {
     static propTypes = {
@@ -50,7 +50,8 @@ class Picker extends React.Component {
         /**
          * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
          */
-        showTime: SharedPT.showTime,
+        showTime: PT.bool,
+        timePanelProps: PT.object,
         /**
          * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
          */
@@ -63,10 +64,15 @@ class Picker extends React.Component {
          */
         disabledDate: PT.func,
         /**
+         * 自定义页脚面板
+         * @return {Node} 自定义的面板页脚组件
+         */
+        footerRender: SharedPT.render,
+        /**
          * 自定义面板页脚
          * @return {Node} 自定义的面板页脚组件
          */
-        footerRender: PT.func,
+        extraFooterRender: SharedPT.render,
         /**
          * 日期值改变时的回调
          * @param {MomentObject|String} value 日期值
@@ -133,6 +139,7 @@ class Picker extends React.Component {
         titleRender: PT.func,
         showOk: PT.bool,
         hasBorder: PT.bool,
+        separator: PT.node,
     };
 
     static defaultProps = {
@@ -249,8 +256,10 @@ class Picker extends React.Component {
 
     // 判断弹层是否显示
     handleVisibleChange(visible, type) {
-        // 点击非组件内
         if (type === 'docClick') {
+            if (!visible) {
+                this.handleChange(this.state.value, true, true);
+            }
             this.onVisibleChange(visible);
         }
     }
@@ -262,7 +271,6 @@ class Picker extends React.Component {
             if (this.state.isRange) {
                 input = input[inputType];
             }
-            console.log('handleInputFocus', inputType);
             input && input.focus();
         }
     };
@@ -272,28 +280,25 @@ class Picker extends React.Component {
     }
 
     onVisibleChange(visible) {
+        const callback = () => {
+            this.setState({
+                visible,
+                justBeginInput: true,
+            });
+
+            func.call(this.props, 'onVisibleChange', [visible]);
+        };
         if (visible !== this.state.visible) {
             if (this.timeoutId) {
                 clearTimeout(this.timeoutId);
                 this.timeoutId = null;
             }
 
-            this.timeoutId = setTimeout(
-                () => {
-                    // 面板收起之后
-                    if (!visible) {
-                        this.handleChange(this.state.value, true, true);
-                    }
-
-                    this.setState({
-                        visible,
-                        justBeginInput: true,
-                    });
-
-                    func.call(this.props, 'onVisibleChange', [visible]);
-                },
-                visible ? 0 : 100
-            );
+            if (visible) {
+                callback();
+            } else {
+                this.timeoutId = setTimeout(callback, 100);
+            }
         }
     }
 
@@ -358,7 +363,7 @@ class Picker extends React.Component {
             value: v,
         });
 
-        func.call(this.props, 'onChagne', [v]);
+        func.call(this.props, 'onChange', [v]);
 
         this.onVisibleChange(false);
     }
@@ -421,10 +426,14 @@ class Picker extends React.Component {
             mode,
             format,
             trigger,
-            footer,
+            footerRender,
             size,
             hasBorder,
             disabledDate,
+            separator,
+            extraFooterRender,
+            timePanelProps,
+            resetTime,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
@@ -450,7 +459,7 @@ class Picker extends React.Component {
         };
 
         // 渲染触发层
-        const triggerNode = getRender(
+        const triggerNode = renderNode(
             trigger,
             <DateInput
                 isRange={isRange}
@@ -461,6 +470,7 @@ class Picker extends React.Component {
                 size={size}
                 hasBorder={hasBorder}
                 focused={visible}
+                separator={separator}
                 ref={el => (this.dateInput = el)}
                 onInputTypeChange={onInputTypeChange}
                 {...sharedProps}
@@ -473,6 +483,8 @@ class Picker extends React.Component {
             value: curValue,
             disabledDate,
             onPanelChange,
+            timePanelProps,
+            resetTime,
         };
 
         // 渲染弹出层
@@ -485,9 +497,9 @@ class Picker extends React.Component {
         // 底部节点
         const oKable = !!(isRange ? curValue && curValue[inputType] : curValue);
 
-        const footerNode = getRender(
-            footer,
-            showOk || ranges ? (
+        const footerNode = renderNode(
+            footerRender,
+            showOk || ranges || extraFooterRender ? (
                 <FooterPanel
                     oKable={oKable}
                     onOk={onOk}
@@ -495,6 +507,7 @@ class Picker extends React.Component {
                     onChange={handleChange}
                     ranges={ranges}
                     prefix={prefix}
+                    extraRender={extraFooterRender}
                 />
             ) : null,
             { onOk, onChange: handleChange }

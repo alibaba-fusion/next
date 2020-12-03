@@ -10,23 +10,19 @@ class TimePanel extends React.PureComponent {
         prefix: PT.string,
         value: SharedPT.date,
         onSelect: PT.func,
-        timePickerProps: PT.object,
-    };
-
-    static defaultProps = {
-        timePickerProps: {
-            format: 'HH:mm:ss',
-        },
+        timePanelProps: PT.object,
     };
 
     formater = v => {
-        const fmt = this.props.timePickerProps.format;
+        const { timePanelProps } = this.props;
+        const fmt = (timePanelProps && timePanelProps.format) || 'HH:mm:ss';
         return func.isFunction(fmt) ? fmt(v) : v.format(fmt);
     };
 
     render() {
-        const { prefix, value, onSelect, timePickerProps } = this.props;
-        const fmt = timePickerProps.format;
+        const { prefix, value, onSelect } = this.props;
+        const timePanelProps = this.props.timePanelProps || {};
+        const fmt = timePanelProps.format || 'HH:mm:ss';
 
         const showHour = fmt.indexOf('H') > -1;
         const showSecond = fmt.indexOf('s') > -1;
@@ -43,7 +39,7 @@ class TimePanel extends React.PureComponent {
                     showHour={showHour}
                     showSecond={showSecond}
                     showMinute={showMinute}
-                    {...timePickerProps}
+                    {...timePanelProps}
                 />
             </div>
         );

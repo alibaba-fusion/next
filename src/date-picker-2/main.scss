@@ -32,10 +32,6 @@
     }
 
     &picker {
-        #{$calendar2-prefix}-table {
-            width: 252px;
-        }
-
         &-input {
             display: inline-flex;
             align-items: center;

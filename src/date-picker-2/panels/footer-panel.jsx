@@ -2,12 +2,14 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import classnames from 'classnames';
+
+import SharedPT from '../prop-types';
 import { func } from '../../util';
 import defaultLocale from '../../locale/zh-cn';
 
 import Button from '../../button';
 
-const { bindCtx, isFunction } = func;
+const { isFunction, renderNode } = func;
 
 function pickProps(obj, fields) {
     const newObj = {};
@@ -50,6 +52,7 @@ class FooterPanel extends React.PureComponent {
         ranges: PT.oneOfType([PT.array, PT.object]),
         onOk: PT.func,
         oKable: PT.bool,
+        extraRender: SharedPT.render,
     };
 
     static defaultProps = {
@@ -60,11 +63,9 @@ class FooterPanel extends React.PureComponent {
         super(props);
 
         this.prefixCls = `${props.prefix}picker-footer`;
-
-        bindCtx(this, ['renderRanges']);
     }
 
-    renderRanges() {
+    renderRanges = () => {
         if (!('ranges' in this.props) || !this.props.ranges) {
             return null;
         }
@@ -86,22 +87,25 @@ class FooterPanel extends React.PureComponent {
                 </Button>
             );
         });
-    }
+    };
 
     render() {
         const { prefixCls } = this;
-        const { showOk, locale, onOk, oKable } = this.props;
+        const { showOk, locale, onOk, oKable, extraRender } = this.props;
 
         const classNames = classnames(prefixCls, {
             [`${prefixCls}-with-actions`]: showOk,
         });
 
+        const extraNode = renderNode(extraRender, null);
+
         return (
             <div className={classNames}>
+                {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
                 <div className={`${prefixCls}-ranges`}>{this.renderRanges()}</div>
                 <div className={`${prefixCls}-actions`}>
                     {showOk ? (
-                        <Button disabled={!oKable} onClick={onOk} type="primary">
+                        <Button size="small" disabled={!oKable} onClick={onOk} type="primary">
                             {locale.ok}
                         </Button>
                     ) : null}

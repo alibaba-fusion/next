@@ -57,7 +57,7 @@ const SharedPT = {
     type: PT.oneOf(Object.values(DATE_PICKER_TYPE)),
     inputType: PT.oneOf(Object.values(DATE_INPUT_TYPE)),
     size: PT.oneOf(['small', 'medium', 'large']),
-    showTime: PT.oneOfType([PT.bool, PT.object]),
+    render: PT.oneOfType([PT.node, PT.func]),
 };
 
 export default SharedPT;

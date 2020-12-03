@@ -9,7 +9,7 @@ import Select from '../../select';
 import Button from '../../button';
 import Icon from '../../icon';
 
-const { getRender } = func;
+const { renderNode } = func;
 const { DATE, WEEK, QUARTER, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
 
 class HeaderPanel extends React.PureComponent {
@@ -63,7 +63,7 @@ class HeaderPanel extends React.PureComponent {
         return [
             <Button
                 text
-                size="small"
+                iconSize="xxs"
                 className={`${prefixCls}-btn  ${prefixCls}-left-btn`}
                 onClick={() => this.handleClick(value, { num, unit, isSuper, isNext: false })}
                 key={`prev-btn-${unit}`}
@@ -72,7 +72,7 @@ class HeaderPanel extends React.PureComponent {
             </Button>,
             <Button
                 text
-                size="small"
+                iconSize="xxs"
                 className={`${prefixCls}-btn ${prefixCls}-right-btn`}
                 onClick={() => this.handleClick(value, { num, unit, isSuper, isNext: true })}
                 key={`next-btn-${unit}`}
@@ -318,7 +318,7 @@ class HeaderPanel extends React.PureComponent {
             if (showTitle) {
                 nodes.push(
                     <div key="title" className={`${prefixCls}-title`}>
-                        {getRender(this.props.titleRender, value.format(), { value })}
+                        {renderNode(this.props.titleRender, value.format(), { value })}
                     </div>
                 );
             }
@@ -338,7 +338,7 @@ class HeaderPanel extends React.PureComponent {
     render() {
         return (
             <div className={`${this.prefixCls}`}>
-                {getRender(this.props.headerRender, this.renderInner(), { ...this.props })}
+                {renderNode(this.props.headerRender, this.renderInner(), { ...this.props })}
             </div>
         );
     }

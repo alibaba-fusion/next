@@ -106,7 +106,7 @@ export function call(obj, methodName, args, defaultObj) {
     return method && method(...args);
 }
 
-export function getRender(render, defaultRender, ...renderProps) {
+export function renderNode(render, defaultRender, ...renderProps) {
     const r = render !== undefined ? render : defaultRender;
     return isFunction(r) ? r(...renderProps) : r;
 }

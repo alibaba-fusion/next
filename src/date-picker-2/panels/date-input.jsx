@@ -29,12 +29,14 @@ class DateInput extends React.Component {
         size: SharedPT.size,
         focused: PT.bool,
         hasBorder: PT.bool,
+        separator: PT.node,
     };
 
     static defaultProps = {
         autoFocus: false,
         readOnly: false,
         hasClear: true,
+        separator: <Icon size="xxs" type="minus" />,
     };
 
     constructor(props) {
@@ -153,6 +155,7 @@ class DateInput extends React.Component {
             size,
             focused,
             hasBorder,
+            separator,
         } = this.props;
         const placeholder = this.getPlaceholder();
         const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, hasBorder ? 12 : 8));
@@ -190,7 +193,7 @@ class DateInput extends React.Component {
                                 [`${prefixCls}-input-active`]: inputType === DATE_INPUT_TYPE.BEGIN,
                             })}
                         />
-                        <Icon className={`${prefix}range-picker-input-separator`} size="xxs" type="minus" />
+                        <div className={`${prefix}range-picker-input-separator`}>{separator}</div>
                         <Input
                             {...sharedInputProps}
                             hasClear={hasClear}

@@ -6,7 +6,7 @@ import SharedPT from '../prop-types';
 import { DATE_PANEL_MODE } from '../constant';
 import { func, datejs, KEYCODE } from '../../util';
 
-const { bindCtx, getRender } = func;
+const { bindCtx, renderNode } = func;
 const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
 
 // 面板行数
@@ -132,7 +132,7 @@ class DateTable extends React.Component {
             for (let j = 0; j < mode2Rows[mode]; j++) {
                 const { label, value, key, isCurrent } = cellData[i++];
 
-                const isDisabled = props.disabledDate && props.disabledDate(value);
+                const isDisabled = props.disabledDate && props.disabledDate(value, mode);
                 const hoverState = hoverValue && hoveredState && hoveredState(hoverValue);
                 const className = classnames(prefixCls, {
                     [`${prefixCls}-current`]: isCurrent, // 是否属于当前面板值
@@ -167,7 +167,7 @@ class DateTable extends React.Component {
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
                         <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
-                            {getRender(
+                            {renderNode(
                                 props.dateCellRender,
                                 <div className={`${prefixCls}-value`}>{label}</div>,
                                 value
