@@ -19,7 +19,6 @@ const { noop } = func;
 const timePickerLocale = nextLocale.TimePicker;
 
 const rangePropType = PropTypes.shape({
-    name: PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.func, checkDateValue]),
     ...Button.propTypes,
