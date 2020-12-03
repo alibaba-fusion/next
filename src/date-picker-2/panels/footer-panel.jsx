@@ -34,7 +34,7 @@ function normalizeRanges(ranges) {
     } else {
         return Object.keys(ranges).map(key => {
             return {
-                name: key,
+                label: key,
                 value: ranges[key],
             };
         });
@@ -71,18 +71,18 @@ class FooterPanel extends React.PureComponent {
 
         const ranges = normalizeRanges(this.props.ranges);
 
-        return ranges.map(({ name, label, value, ...rest }, index) => {
+        return ranges.map(({ label, value, ...rest }, index) => {
             const buttonProps = pickProps(rest, Button.propTypes);
 
             return (
                 <Button
                     size="small"
                     type="secondary"
-                    key={name || index}
+                    key={`${label}-${index}`}
                     onClick={() => func.call(this.props, 'onChange', [isFunction(value) ? value() : value, true])}
                     {...buttonProps}
                 >
-                    {label || name}
+                    {label}
                 </Button>
             );
         });
