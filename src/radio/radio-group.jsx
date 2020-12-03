@@ -77,7 +77,7 @@ class RadioGroup extends Component {
          * - hoz: 水平排列 (default)
          * - ver: 垂直排列
          */
-        itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+        direction: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 是否为预览态
          */
@@ -97,7 +97,7 @@ class RadioGroup extends Component {
         onChange: () => {},
         prefix: 'next-',
         component: 'div',
-        itemDirection: 'hoz',
+        direction: 'hoz',
         isPreview: false,
     };
 
@@ -162,7 +162,7 @@ class RadioGroup extends Component {
             size,
             style,
             prefix,
-            itemDirection,
+            direction,
             component,
             isPreview,
             renderPreview,
@@ -248,7 +248,7 @@ class RadioGroup extends Component {
 
         const cls = classnames({
             [`${prefix}radio-group`]: true,
-            [`${prefix}radio-group-${itemDirection}`]: !isButtonShape,
+            [`${prefix}radio-group-${direction}`]: !isButtonShape,
             [`${prefix}radio-button`]: isButtonShape,
             [`${prefix}radio-button-${size}`]: isButtonShape,
             [className]: !!className,

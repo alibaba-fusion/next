@@ -29,7 +29,7 @@ The content can consist of multiple elements of varying type and size.
 | dataSource       | datasource of List                                                                                                                                                                         | Array     | -            |
 | renderItem       | when dataSource is set, you can custmize every item by `renderItem` <br><br>**signature**:<br>Function(current: Any, index: Number) => void<br>**params**:<br>_current_: {Any} current item<br>_index_: {Number} index of item | Function  | item => item |
 | loading          | is loading                                                                                                                                                                        | Boolean   | false        |
-| loadingComponent | custmize Loading Component<br> loadingComponent={props => &lt;Loading {...props}/>}<br><br>**signature**:<br>Function() => void                                                | Function  | -            |
+| loadingComponent | custmize Loading Component<br> loadingComponent={props => &lt;Loading {...props}/>}<br><br>**signature**:<br>Function(props: LoadingProps) => React.ReactNode                                                | Function  | -            |
 | emptyContent     | content when list is empty                                                                                                                                                              | ReactNode | -            |
 
 

@@ -46,6 +46,8 @@ class List extends Component {
         /**
          * 自定义 Loading 组件
          * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
+         * @param {LoadingProps} props 需要透传给组件的参数
+         * @return {React.ReactNode} 展示的组件
          */
         loadingComponent: PropTypes.func,
         /**
@@ -111,7 +113,7 @@ class List extends Component {
             <div {...others} className={classes}>
                 {header ? <div className={`${prefix}list-header`}>{header}</div> : null}
 
-                {!(dSValid && dataSource.length > 1) && !children ? (
+                {!(dSValid && dataSource.length > 0) && !children ? (
                     <div className={`${prefix}list-empty`}>{emptyContent || locale.empty}</div>
                 ) : (
                     <ul key="list-body" className={`${prefix}list-items`}>

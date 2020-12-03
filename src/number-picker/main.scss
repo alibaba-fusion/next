@@ -21,6 +21,7 @@
 
             .#{$css-prefix}input-control {
                 padding-right: 0;
+                height: 100%;
             }
         }
 
@@ -60,6 +61,7 @@
             height: 100%;
             display: block;
         }
+
         &:not(#{$number-picker-prefix}-show-trigger) #{$number-picker-prefix}-handler {
             opacity: 0;
         }
@@ -76,12 +78,14 @@
         #{$number-picker-prefix}-up-icon::before {
             content: $number-picker-normal-up-icon;
         }
+
         #{$number-picker-prefix}-down-icon::before {
             content: $number-picker-normal-down-icon;
         }
 
         &.#{$css-prefix}small {
             width: 68px;
+
             .#{$css-prefix}btn {
                 width: $number-picker-normal-s-button-width;
 
@@ -101,6 +105,7 @@
 
         &.#{$css-prefix}medium {
             width: $number-picker-normal-m-input-width;
+
             .#{$css-prefix}btn {
                 width: $number-picker-normal-m-button-width;
 
@@ -120,6 +125,7 @@
 
         &.#{$css-prefix}large {
             width: $number-picker-normal-l-input-width;
+
             .#{$css-prefix}btn {
                 width: $number-picker-normal-l-button-width;
 
@@ -150,6 +156,7 @@
         #{$number-picker-prefix}-add-icon::before {
             content: $number-picker-inline-add-icon;
         }
+
         #{$number-picker-prefix}-minus-icon::before {
             content: $number-picker-inline-minus-icon;
         }
@@ -241,6 +248,22 @@
             &.#{$css-prefix}large {
                 width: $form-element-large-height;
             }
+        }
+    }
+}
+
+@-moz-document url-prefix() {
+    #{$number-picker-prefix}-normal {
+        &.#{$css-prefix}small #{$number-picker-prefix}-handler {
+            height: calc(#{$form-element-small-height} - 2px);
+        }
+
+        &.#{$css-prefix}medium #{$number-picker-prefix}-handler {
+            height: calc(#{$form-element-medium-height} - 2px);
+        }
+
+        &.#{$css-prefix}large #{$number-picker-prefix}-handler {
+            height: calc(#{$form-element-large-height} - 2px);
         }
     }
 }

@@ -48,11 +48,11 @@
 | disabled      | 表示radio被禁用                                                                                                                                                                                                                    | Boolean                             | -        |
 | dataSource    | 可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` `[{label: 'apply', value: 'apple'}]`                                                                                                                           | Array&lt;String>/Array&lt;Object>   | \[]      |
 | children      | 通过子元素方式设置内部radio                                                                                                                                                                                                              | Array&lt;ReactElement>/ReactElement | -        |
-| itemDirection | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                                                                                              | Enum                                | 'hoz'    |
+| direction     | 子项目的排列方式<br>- hoz: 水平排列 (default)<br>- ver: 垂直排列<br><br>**可选值**:<br>'hoz', 'ver'                                                                                                                                              | Enum                                | 'hoz'    |
 | isPreview     | 是否为预览态                                                                                                                                                                                                                        | Boolean                             | false    |
 | renderPreview | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(previewed: Object, props: Object) => reactNode<br>**参数**:<br>_previewed_: {Object} 预览值：{label: "", value: ""}<br>_props_: {Object} 所有传入的参数<br>**返回值**:<br>{reactNode} Element 渲染内容<br> | Function                            | -        |
 
-## 无障碍键盘操作指南
+## ARIA and KeyBoard
 
 | 按键  | 说明                                                     |
 | :-- | :----------------------------------------------------- |

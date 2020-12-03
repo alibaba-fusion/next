@@ -2,7 +2,7 @@
 
 - order: 5
 
-最大长度 hasLimitHint 会展现限制数字; cutString 可控制是否要切割字符串, 用于只展示最大长度
+最大长度 showLimitHint 会展现限制数字; cutString 可控制是否要切割字符串, 用于只展示最大长度
 
 
 :::lang=en-us
@@ -12,7 +12,7 @@
 - order: 5
 
 
-the prop `hasLimitHint` will limit the number of characters
+the prop `showLimitHint` will limit the number of characters
 :::
 ---
 
@@ -47,7 +47,7 @@ class App extends React.Component {
                 size="large"
                 placeholder="Large"
                 value={this.state.control}
-                hasLimitHint
+                showLimitHint
                 aria-label="input max length 10"
                 onChange={this.onChange.bind(this)}
                 onKeyDown={this.onKeyDown.bind(this)} /><br /><br />
@@ -55,7 +55,7 @@ class App extends React.Component {
             <Input
                 maxLength={20}
                 placeholder="medium"
-                hasLimitHint
+                showLimitHint
                 cutString={false}
                 aria-label="input max length 20"
                 onChange={(v) => {
@@ -67,7 +67,7 @@ class App extends React.Component {
                 }} /><br /><br />
 
             <Input
-                hasLimitHint
+                showLimitHint
                 size="small"
                 placeholder="small"
                 maxLength={100}
@@ -77,7 +77,7 @@ class App extends React.Component {
                 placeholder="TextArea"
                 maxLength={100}
                 rows={4}
-                hasLimitHint
+                showLimitHint
                 aria-label="input max length 100" /><br /><br />
 
             <Input maxLength={5} placeholder="Original maxLength" aria-label="input max length 5" />

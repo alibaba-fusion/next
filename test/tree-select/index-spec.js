@@ -537,8 +537,11 @@ describe('TreeSelect', () => {
     });
 
     it('should support search well when use virtual', () => {
-        dataSource[0].children = dataSource[0].children.concat(
+        const data = cloneData(dataSource);
+
+        data[0].children = data[0].children.concat(
             new Array(100).fill().map((__, index) => {
+                index = String(index);
                 return {
                     value: index,
                     label: index,
@@ -549,7 +552,7 @@ describe('TreeSelect', () => {
             <TreeSelect
                 defaultVisible
                 treeDefaultExpandAll
-                dataSource={dataSource}
+                dataSource={data}
                 showSearch
                 style={{ width: 200 }}
                 useVirtual
@@ -574,6 +577,41 @@ describe('TreeSelect', () => {
             },
         ];
         assertDataAndNodes(expectTreeData);
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/2271
+    it('fix search bug when useVirtual', () => {
+        const data = cloneData(dataSource);
+
+        data[0].children = data[0].children.concat(
+            new Array(100).fill().map((__, index) => {
+                index = String(index);
+                return {
+                    value: index,
+                    label: index,
+                };
+            })
+        );
+        wrapper = mount(
+            <TreeSelect
+                defaultVisible
+                useVirtual
+                treeCheckable
+                treeDefaultExpandAll
+                dataSource={data}
+                showSearch
+                style={{ width: 200 }}
+                treeProps={{
+                    style: { maxHeight: '100px', overflow: 'auto' },
+                }}
+            />
+        );
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: 77 } });
+
+        wrapper.find('.next-tree-node[value="77"] input').simulate('change');
+        wrapper.update();
+
+        assert(wrapper.find('.next-tree-node[value="1"] .indeterminate').length);
     });
 
     it('should render not found if dataSource is empty or there is no search result', () => {

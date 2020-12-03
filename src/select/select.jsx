@@ -1056,12 +1056,23 @@ class Select extends Base {
             [`${prefix}input-text-field`]: true,
             [`${prefix}select-compact`]: !isSingle && tagInline,
         });
-
-        const searchInput = [isSingle && valueNodes ? <em key="select-value">{valueNodes}</em> : valueNodes];
+        const title = typeof valueNodes === 'string' ? valueNodes : '';
+        const searchInput = [
+            isSingle && valueNodes ? (
+                <em title={title} key="select-value">
+                    {valueNodes}
+                </em>
+            ) : (
+                valueNodes
+            ),
+        ];
         const triggerSearch = (
             <span key="trigger-search" className={`${prefix}select-trigger-search`}>
                 {inputEl}
-                <span aria-hidden>{mirrorText || placeholder}&nbsp;</span>
+                <span aria-hidden>
+                    <span>{mirrorText || placeholder}</span>
+                    <span>&nbsp;</span>
+                </span>
             </span>
         );
 

@@ -53,7 +53,7 @@ class CheckboxGroup extends Component {
          * - hoz: 水平排列 (default)
          * - ver: 垂直排列
          */
-        itemDirection: PropTypes.oneOf(['hoz', 'ver']),
+        direction: PropTypes.oneOf(['hoz', 'ver']),
         /**
          * 是否为预览态
          * @version 1.19
@@ -73,7 +73,7 @@ class CheckboxGroup extends Component {
         dataSource: [],
         onChange: () => {},
         prefix: 'next-',
-        itemDirection: 'hoz',
+        direction: 'hoz',
         isPreview: false,
     };
 
@@ -151,7 +151,7 @@ class CheckboxGroup extends Component {
     }
 
     render() {
-        const { className, style, prefix, disabled, itemDirection, rtl, isPreview, renderPreview } = this.props;
+        const { className, style, prefix, disabled, direction, rtl, isPreview, renderPreview } = this.props;
         const others = pickOthers(CheckboxGroup.propTypes, this.props);
 
         // 如果内嵌标签跟dataSource同时存在，以内嵌标签为主
@@ -225,7 +225,7 @@ class CheckboxGroup extends Component {
 
         const cls = classnames({
             [`${prefix}checkbox-group`]: true,
-            [`${prefix}checkbox-group-${itemDirection}`]: true,
+            [`${prefix}checkbox-group-${direction}`]: true,
             [className]: !!className,
             disabled,
         });

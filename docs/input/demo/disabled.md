@@ -32,9 +32,9 @@ ReactDOM.render(
             size="medium"
             value="alibaba"/><br /><br />
 
-        <Input disabled aria-label="disabled" placeholder="medium" maxLength={10} hasLimitHint/><br /><br />
+        <Input disabled aria-label="disabled" placeholder="medium" maxLength={10} showLimitHint/><br /><br />
 
-        <Input.TextArea disabled aria-label="disabled" placeholder="medium" maxLength={10} hasLimitHint/>
+        <Input.TextArea disabled aria-label="disabled" placeholder="medium" maxLength={10} showLimitHint/>
     </div>
     , mountNode);
 ````

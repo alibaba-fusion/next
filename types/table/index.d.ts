@@ -232,7 +232,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
      * 自定义 Loading 组件
      * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
      */
-    loadingComponent?: (props: LoadingProps) => void;
+    loadingComponent?: (props: LoadingProps) => React.ReactNode;
 
     /**
      * 当前过滤的的keys,使用此属性可以控制表格的头部的过滤选项中哪个菜单被选中,格式为 {dataIndex: {selectedKeys:[]}}
@@ -407,4 +407,5 @@ export default class Table extends React.Component<TableProps, any> {
     static ColumnGroup: typeof ColumnGroup;
     static GroupHeader: typeof GroupHeader;
     static GroupFooter: typeof GroupFooter;
+    static StickyLock: typeof Table;
 }

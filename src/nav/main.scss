@@ -30,7 +30,7 @@ $nav-icononly-width: 58px;
             transition: opacity $motion-duration-immediately $motion-linear;
         }
 
-        a {
+        & .#{$css-prefix}menu-item-text > a {
             text-decoration: none;
             color: inherit;
         }

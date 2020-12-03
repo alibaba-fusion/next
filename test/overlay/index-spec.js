@@ -6,6 +6,7 @@ import co from 'co';
 import assert from 'power-assert';
 import { dom, KEYCODE, env } from '../../src/util';
 import Overlay from '../../src/overlay/index';
+import Dialog from '../../src/dialog/index';
 import Balloon from '../../src/balloon/index';
 import Button from '../../src/button/index';
 import '../../src/overlay/style.js';
@@ -557,6 +558,37 @@ describe('Overlay', () => {
             container.remove();
             done();
         });
+    });
+
+    // https://github.com/alibaba-fusion/next/issues/2277
+    it('dom should ready when call onOpen & afterOpen evnet', done => {
+        const container = document.createElement('div');
+
+        function Demo() {
+            return (
+                <Dialog
+                    overlayProps={{
+                        wrapperClassName: 'myWrapper',
+                        afterOpen() {
+                            const myWrapper = document.querySelector('.myWrapper');
+                            assert(myWrapper.classList.contains('opened'));
+                            container.remove();
+                            myWrapper.remove();
+                            done();
+                        },
+                    }}
+                    animation={false}
+                    visible
+                    isFullScreen
+                    title="Welcome to Alibaba.com"
+                    footer={false}
+                >
+                    Start your business here by searching a popular product
+                </Dialog>
+            );
+        }
+        document.body.append(container);
+        ReactDOM.render(<Demo />, container);
     });
 });
 

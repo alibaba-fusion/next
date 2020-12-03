@@ -159,8 +159,20 @@
                 }
             }
         }
+        &.checked.focused {
+            #{$checkbox-prefix}-inner {
+                border-color: $checkbox-disabled-border-color;
+                background: $checkbox-disabled-bg-color;
+
+                > .#{$css-prefix}icon {
+                    color: $checkbox-disabled-circle-color;
+                    opacity: 1;
+                }
+            }
+        }
         #{$checkbox-prefix}-label {
             color: $checkbox-disabled-label-color;
+            cursor: not-allowed;
         }
     }
 }
