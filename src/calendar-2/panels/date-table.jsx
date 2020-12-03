@@ -13,9 +13,9 @@ const { DATE, WEEK, MONTH, QUARTER, YEAR, DECADE } = DATE_PANEL_MODE;
 const mode2Rows = {
     [DATE]: 7,
     [WEEK]: 7,
-    [MONTH]: 3,
+    [MONTH]: 4,
     [QUARTER]: 4,
-    [YEAR]: 3,
+    [YEAR]: 4,
     [DECADE]: 3,
 };
 
@@ -115,15 +115,6 @@ class DateTable extends React.Component {
         const cellContent = [];
         const prefixCls = `${this.prefixCls}-cell`;
 
-        // 面板行数
-        const mode2Rows = {
-            [DATE]: 7,
-            [WEEK]: 7,
-            [MONTH]: 3,
-            [QUARTER]: 4,
-            [YEAR]: 3,
-            [DECADE]: 3,
-        };
         const now = datejs();
 
         for (let i = 0; i < cellData.length; ) {
@@ -158,8 +149,8 @@ class DateTable extends React.Component {
                 if (mode === WEEK && j === 0) {
                     const week = value.week();
                     children.push(
-                        <td key={`w-${week}`} className={`${prefixCls}-week`}>
-                            {week}
+                        <td key={`w-${week}`} className={`${prefixCls}-week ${prefixCls}-cell`}>
+                            <div className={`${prefixCls}-inner`}>{week}</div>
                         </td>
                     );
                 }

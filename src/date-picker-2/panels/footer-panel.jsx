@@ -62,7 +62,7 @@ class FooterPanel extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}picker-footer`;
+        this.prefixCls = `${props.prefix}picker2-footer`;
     }
 
     renderRanges = () => {
@@ -77,10 +77,11 @@ class FooterPanel extends React.PureComponent {
 
             return (
                 <Button
+                    text={ranges.length === 1}
                     size="small"
-                    type="secondary"
+                    type={ranges.length === 1 ? 'primary' : 'secondary'}
                     key={`${label}-${index}`}
-                    onClick={() => func.call(this.props, 'onChange', [isFunction(value) ? value() : value, true])}
+                    onClick={() => func.call(this.props, 'onChange', [isFunction(value) ? value() : value, true, true])}
                     {...buttonProps}
                 >
                     {label}
@@ -99,17 +100,21 @@ class FooterPanel extends React.PureComponent {
 
         const extraNode = renderNode(extraRender, null);
 
+        const rangesCls = classnames(`${prefixCls}-ranges`, {
+            [`${prefixCls}-ranges-only`]: !showOk && !extraNode,
+        });
+
         return (
             <div className={classNames}>
                 {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
-                <div className={`${prefixCls}-ranges`}>{this.renderRanges()}</div>
-                <div className={`${prefixCls}-actions`}>
-                    {showOk ? (
+                <div className={rangesCls}>{this.renderRanges()}</div>
+                {showOk ? (
+                    <div className={`${prefixCls}-actions`}>
                         <Button size="small" disabled={!oKable} onClick={onOk} type="primary">
                             {locale.ok}
                         </Button>
-                    ) : null}
-                </div>
+                    </div>
+                ) : null}
             </div>
         );
     }

@@ -41,7 +41,7 @@ class DateInput extends React.Component {
 
     constructor(props) {
         super(props);
-        this.prefixCls = `${props.prefix}picker-input`;
+        this.prefixCls = `${props.prefix}picker2-input`;
     }
 
     setInputRef = (el, index) => {
@@ -193,7 +193,7 @@ class DateInput extends React.Component {
                                 [`${prefixCls}-input-active`]: inputType === DATE_INPUT_TYPE.BEGIN,
                             })}
                         />
-                        <div className={`${prefix}range-picker-input-separator`}>{separator}</div>
+                        <div className={`${prefixCls}-separator`}>{separator}</div>
                         <Input
                             {...sharedInputProps}
                             hasClear={hasClear}
@@ -202,7 +202,7 @@ class DateInput extends React.Component {
                             ref={ref => setInputRef(ref, 1)}
                             onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
                             className={classnames({
-                                [`${prefixCls}-input-active`]: inputType === DATE_INPUT_TYPE.END,
+                                [`${prefixCls}-active`]: inputType === DATE_INPUT_TYPE.END,
                             })}
                             hint={<Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />}
                         />

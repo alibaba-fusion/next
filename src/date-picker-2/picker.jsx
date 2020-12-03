@@ -156,7 +156,7 @@ class Picker extends React.Component {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}picker`;
+        this.prefixCls = `${props.prefix}picker2`;
 
         const value = this.checkAndRectify(
             'value' in props
@@ -298,7 +298,7 @@ class Picker extends React.Component {
             if (visible) {
                 callback();
             } else {
-                this.timeoutId = setTimeout(callback, 100);
+                this.timeoutId = setTimeout(callback, 20);
             }
         }
     }
@@ -370,18 +370,17 @@ class Picker extends React.Component {
             value: v,
         });
 
-        func.call(this.props, 'onChange', [v]);
+        func.call(this.props, 'onChange', [v, this.state.inputValue]);
 
         this.onVisibleChange(false);
     }
 
     onOk() {
-        const { curValue } = this.state;
-        const result = func.call(this.props, 'onOk', [curValue]);
+        const { curValue, inputValue } = this.state;
 
-        if (result !== false) {
-            this.handleChange(curValue, true);
-        }
+        const result = func.call(this.props, 'onOk', [curValue, inputValue]);
+
+        result !== false && this.handleChange(curValue, true);
     }
 
     onInputTypeChange(v) {

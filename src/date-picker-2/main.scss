@@ -10,115 +10,155 @@
 
 @import "scss/variable";
 
-// @import "scss/mixin";
 
-@import "scss/picker.scss";
-// @import "scss/range-picker.scss";
-// @import "./rtl.scss";
+#{$date-picker2-prefix} {
+    & &-body {
+        padding: 8px 12px;
+        display: inline-flex;
+        flex-direction: column;
+        text-align: center;
+        background: #FFF;
+        border-radius: 2px;
+        outline: none;
+    }
 
-.#{$css-prefix} {
-    &picker-overlay {
+    & &-footer {
+        width: min-content;
+        min-width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        border-top: 1px solid #F0F0F0;
+        padding: 4px 12px;
+        display: flex;
+        min-height: 40px;
+        align-items: center;
+        flex-wrap: wrap;
+
+        &-ranges > .#{$css-prefix}btn {
+            margin-right: $s-2;
+        }
+
+        &-actions {
+            margin-left: auto;
+        }
+
+        &-ranges-only {
+            width: 100%;
+        }
+    }
+
+    &-overlay {
         vertical-align: top;
         border-radius: 2px;
         padding: 4px 0;
     }
-    &picker-overlay-showtime {
+
+    &-overlay-showtime {
         padding: 12px 0;
     }
 
-    &picker-wrapper {
-        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+    &-wrapper {
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
         background-color: $color-white;
     }
 
-    &picker {
-        &-input {
-            display: inline-flex;
-            align-items: center;
-            outline: none;
-            box-sizing: border-box;
-            border: $input-border-width solid $input-border-color;
-            vertical-align: middle;
+    &-input {
+        display: inline-flex;
+        align-items: center;
+        outline: none;
+        box-sizing: border-box;
+        border: $input-border-width solid $input-border-color;
+        vertical-align: middle;
 
-            #{$input-prefix} {
-                border: none;
-                width: auto;
+        #{$input-prefix} {
+            border: none;
+            width: auto;
+            height: 100%;
+            input {
                 height: 100%;
-                input {
-                    height: 100%;
-                }
-            }
-            &#{$picker}-input-small {
-                @include input-size(
-                    $form-element-small-height,
-                    $input-s-padding,
-                    $form-element-small-font-size,
-                    $input-s-label-padding-left,
-                    $input-s-icon-padding-right
-                );
-                @include input-icon-size($form-element-small-icon-size);
-                @include input-border-radius($form-element-small-corner);
-            }
-
-            &#{$picker}-input-medium {
-                @include input-size(
-                    $form-element-medium-height,
-                    $input-m-padding,
-                    $form-element-medium-font-size,
-                    $input-m-label-padding-left,
-                    $input-m-icon-padding-right
-                );
-                @include input-icon-size($form-element-medium-icon-size);
-                @include input-border-radius($form-element-medium-corner);
-            }
-
-            &#{$picker}-input-large {
-                @include input-size(
-                    $form-element-large-height,
-                    $input-l-padding,
-                    $form-element-large-font-size,
-                    $input-l-label-padding-left,
-                    $input-l-icon-padding-right
-                );
-                @include input-icon-size($form-element-large-icon-size);
-                @include input-border-radius($form-element-large-corner);
-            }
-
-            &:hover {
-                border-color: $input-hover-border-color;
-                background-color: $input-hover-bg-color;
-            }
-
-            &#{$picker}-input-focused {
-                border-color: $input-focus-border-color;
-                background-color: $input-focus-bg-color;
-                box-shadow: 0 0 0 2px $color-calculate-input-focus-shadow;
-            }
-
-            &#{$picker}-input-noborder {
-                border-color: transparent !important;
-                box-shadow: none !important;
             }
         }
 
-        .#{$css-prefix}range-picker-right {
-            #{$picker}-header-left-btn {
-                visibility: hidden;
-            }
+        &#{$date-picker2-prefix}-input-small {
+            @include input-size(
+                $form-element-small-height,
+                $input-s-padding,
+                $form-element-small-font-size,
+                $input-s-label-padding-left,
+                $input-s-icon-padding-right
+            );
+            @include input-icon-size($form-element-small-icon-size);
+            @include input-border-radius($form-element-small-corner);
         }
 
-        .#{$css-prefix}range-picker-left {
-            #{$picker}-header-right-btn {
-                visibility: hidden;
-            }
+        &#{$date-picker2-prefix}-input-medium {
+            @include input-size(
+                $form-element-medium-height,
+                $input-m-padding,
+                $form-element-medium-font-size,
+                $input-m-label-padding-left,
+                $input-m-icon-padding-right
+            );
+            @include input-icon-size($form-element-medium-icon-size);
+            @include input-border-radius($form-element-medium-corner);
+        }
+
+        &#{$date-picker2-prefix}-input-large {
+            @include input-size(
+                $form-element-large-height,
+                $input-l-padding,
+                $form-element-large-font-size,
+                $input-l-label-padding-left,
+                $input-l-icon-padding-right
+            );
+            @include input-icon-size($form-element-large-icon-size);
+            @include input-border-radius($form-element-large-corner);
+        }
+
+        &:hover {
+            border-color: $input-hover-border-color;
+            background-color: $input-hover-bg-color;
+        }
+
+        &#{$date-picker2-prefix}-input-focused {
+            border-color: $input-focus-border-color;
+            background-color: $input-focus-bg-color;
+            box-shadow: 0 0 0 2px $color-calculate-input-focus-shadow;
+        }
+
+        &#{$date-picker2-prefix}-input-noborder {
+            border-color: transparent !important;
+            box-shadow: none !important;
         }
     }
 
-    &range-picker2-input-separator {
-        color: #c4c7cc;
-        font-size: 12px;
+    &-input-separator {
+        color: $color-line1-2;
     }
 
+    .#{$css-prefix}range-picker-right {
+        #{$date-picker2-prefix}-header-left-btn {
+            visibility: hidden;
+        }
+    }
+
+    .#{$css-prefix}range-picker-left {
+        #{$date-picker2-prefix}-header-right-btn {
+            visibility: hidden;
+        }
+    }
+}
+
+#{$calendar2-prefix}-cell {
+    &#{$calendar2-prefix}-cell-range-begin-single::before {
+        transform: translate(-50%, -50%);
+    }
+    &#{$calendar2-prefix}-cell-range-end-single::before {
+        transform: translate(50%, -50%);
+    }
+}
+
+.#{$css-prefix} {
     &range-picker2-panel-double,
     &range-picker2-panel,
     &date-picker2-panel {
@@ -141,15 +181,15 @@
     width: 10px;
     height: 10px;
     margin-left: 16.5px;
-    box-shadow: 2px -2px 6px rgba(0, 0, 0, 0.06);
-    transition: left 0.3s ease-out;
+    box-shadow: 2px -2px 6px rgba(0, 0, 0, .06);
+    transition: left .3s ease-out;
     &:after {
         position: absolute;
         top: 1px;
         right: 1px;
         width: 10px;
         height: 10px;
-        border-color: #fff #fff transparent transparent;
+        border-color: #FFF #FFF transparent transparent;
         border-style: solid;
         border-width: 5px;
         content: "";
@@ -169,31 +209,31 @@
 }
 
 #{$calendar2-prefix}-right {
-    border-left: 1px solid #f2f3f7;
+    border-left: 1px solid #F2F3F7;
     #{$calendar2-prefix}-body {
         padding-right: 0;
         padding-left: 0;
     }
 }
 
-.#{$css-prefix}range-picker2-panel {
+#{$range-picker2-prefix}-panel {
     #{$calendar2-prefix}-cell-disabled {
         #{$cell-inner} {
             @include calendar-disabled;
         }
     }
     #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
-        &#{$calendar2-prefix}-cell-selected {
-            &:before,
+        &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-range-begin-single):not(#{$calendar2-prefix}-cell-range-end-single) {
+            &::before,
             #{$cell-inner} {
                 color: #333;
                 background: $color-brand1-1;
             }
 
-            &#{$calendar2-prefix}-cell-range-begin:before {
+            &#{$calendar2-prefix}-cell-range-begin::before {
                 left: 50%;
             }
-            &#{$calendar2-prefix}-cell-range-end:before {
+            &#{$calendar2-prefix}-cell-range-end::before {
                 right: 50%;
             }
 
@@ -205,39 +245,41 @@
             }
         }
 
-        &#{$calendar2-prefix}-cell-hover:after {
+        &#{$calendar2-prefix}-cell-hover::after {
             content: " ";
             position: absolute;
             top: 50%;
             right: 0;
             left: 1px;
-            z-index: 0;
+            z-index: 2;
             height: 24px;
             transform: translateY(-50%);
             border-top: 1px dashed $color-brand1-9;
             border-bottom: 1px dashed $color-brand1-9;
         }
-        &#{$calendar2-prefix}-cell-hover-begin:after {
+        &#{$calendar2-prefix}-cell-hover-begin::after {
             left: 6px;
             border-top: 1px dashed $color-brand1-9;
+            border-left: 1px dashed $color-brand1-9;
             border-top-left-radius: 2px;
             border-bottom-left-radius: 2px;
         }
-        &#{$calendar2-prefix}-cell-hover-end:after {
+        &#{$calendar2-prefix}-cell-hover-end::after {
             right: 6px;
             border-top: 1px dashed $color-brand1-9;
-            border-top-left-radius: 2px;
-            border-bottom-left-radius: 2px;
+            border-right: 1px dashed $color-brand1-9;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
         }
     }
 
     tr {
-        td:first-of-type#{$calendar2-prefix}-cell-hover:after {
+        td:first-of-type#{$calendar2-prefix}-cell-hover::after {
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
             border-left: 1px dashed $color-brand1-9;
         }
-        td:last-of-type#{$calendar2-prefix}-cell-hover:after {
+        td:last-of-type#{$calendar2-prefix}-cell-hover::after {
             border-top-right-radius: 4px;
             border-bottom-right-radius: 4px;
             border-right: 1px dashed $color-brand1-9;

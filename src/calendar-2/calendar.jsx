@@ -157,17 +157,16 @@ class Calendar extends React.Component {
     }
 
     switchPanelMode(mode) {
-        const { DATE, MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
+        const { MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
+        const originalPanelMode = this.props.panelMode || getPanelMode(mode);
 
         switch (mode) {
-            case MONTH:
-                return DATE;
             case YEAR:
                 return MONTH;
             case DECADE:
                 return YEAR;
             default:
-                return mode;
+                return originalPanelMode;
         }
     }
 

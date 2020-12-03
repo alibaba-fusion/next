@@ -50,13 +50,22 @@
             padding-top: 12px;
             padding-bottom: 12px;
             border-bottom: 1px solid #F0F0F0;
-            &-actions {
-                margin-left: auto;
+            // &-actions {
+            //     margin-left: auto;
+            // }
 
-                & > * {
-                    margin-left: 8px;
-                }
-            }
+            // &-ranges,
+            // &-actions {
+            //     & > *:not(:first-child) {
+            //         margin-left: 8px;
+            //     }
+            // }
+
+            // &-ranges-only {
+            //     text-align: center;
+            //     width: 100%;
+            // }
+
             &-select-month {
                 min-width: 70px;
                 .#{$css-prefix}input {
@@ -101,9 +110,10 @@
                 transform: translateY(-50%);
             }
             &-table {
-                width: 252px;
+                width: 272px;
                 thead > tr {
                     height: 24px;
+                    color: $color-text1-2;
                 }
 
                 th,
@@ -123,7 +133,12 @@
             &-table-quarter,
             &-table-decade {
                 height: 144px;
-                width: 272px;
+                #{$calendar2-prefix}-cell-inner {
+                    min-width: 56px;
+                }
+            }
+
+            &-table-decade {
                 #{$calendar2-prefix}-cell-inner {
                     min-width: 80px;
                 }
@@ -137,7 +152,7 @@
                     @include calendar-current;
                 }
 
-                &:hover #{$cell-inner} {
+                &:hover:not(#{$calendar2-prefix}-cell-hover) #{$cell-inner} {
                     @include calendar-hover;
                 }
             }
@@ -235,8 +250,8 @@
 
             &-btn,
             &-text-field {
-                height: 40px;
-                line-height: 40px;
+                height: 38px;
+                line-height: 38px;
             }
 
             &-btn {
@@ -255,22 +270,18 @@
                 vertical-align: initial;
             }
 
+            &-btn:hover,
+            &-btn:hover > span {
+                color: $color-brand1-9;
+            }
+
             &-text-field {
                 flex: 1;
 
-                .#{$css-prefix}picker-header-btn:not(:first-child) {
-                    margin-left: 8px;
+                #{$calendar2-prefix}-header-btn:not(:first-child) {
+                    margin-left: 6px;
                 }
             }
-
-            // .#{$css-prefix} {
-            //     &icon-arrow-right,
-            //     &icon-arrow-left,
-            //     &icon-arrow-double-right,
-            //     &icon-arrow-double-left {
-            //         transform: scale(.9);
-            //     }
-            // }
         }
     }
 }
@@ -285,7 +296,7 @@
 #{$calendar2-prefix}-table-week {
     tr {
         td:first-child {
-            color: #8D9299;
+            color: $color-text1-2;
         }
 
         td:nth-child(2):before {

@@ -92,7 +92,6 @@ class RangePanel extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         if (props.inputType !== state.inputType) {
-            console.log('state.panelValue', state.panelValue);
             return {
                 inputType: props.inputType,
                 panelValue: getPanelValue(props, state.panelValue),
@@ -229,35 +228,33 @@ class RangePanel extends React.Component {
         const state = this.handleCellState(value);
         const [begin, end] = this.props.value;
         const prefixCls = `${prefix}calendar2-cell`;
-
-        let hoverClassName;
-        const hoverValue = [...this.props.value];
         const unit = this.getUnitByMode(mode);
 
-        hoverValue[inputType] = this.state.curHoverValue;
+        let hoverClassName;
 
-        if (
-            curHoverValue &&
-            !(
-                (inputType === BEGIN && curHoverValue.isSame(end, unit)) ||
-                (inputType === END && curHoverValue.isSame(begin, unit))
-            )
-        ) {
-            const hoverState = this.handleCellState(value, hoverValue);
+        if (curHoverValue) {
+            const hoverValue = [...this.props.value];
 
-            hoverClassName = {
-                [`${prefixCls}-hover`]: hoverState >= SELECTED,
-                [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
-                [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
-            };
+            hoverValue[inputType] = curHoverValue;
+            const [hoverBegin, hoverEnd] = hoverValue;
+
+            if (hoverBegin && hoverEnd && hoverBegin.isBefore(hoverEnd, unit)) {
+                const hoverState = this.handleCellState(value, hoverValue);
+
+                hoverClassName = {
+                    [`${prefixCls}-hover`]: hoverState >= SELECTED,
+                    [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
+                    [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
+                };
+            }
         }
 
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
             [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
             [`${prefixCls}-range-end`]: state === SELECTED_END,
-            [`${prefixCls}-range-begin-single`]: state >= SELECTED && !end,
-            [`${prefixCls}-range-end-single`]: state >= SELECTED && !begin,
+            [`${prefixCls}-range-begin-single`]: state >= SELECTED && (!end || end.isSame(begin, unit)),
+            [`${prefixCls}-range-end-single`]: state >= SELECTED && (!begin || begin.isSame(end, unit)),
             ...hoverClassName,
         };
     };
