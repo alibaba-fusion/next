@@ -259,6 +259,7 @@ code {
 
 .demo-index-list {
     box-sizing: content-box;
+    border-left: 1px solid #dcdee3;
     top: 92px;
     position: fixed;
     overflow: auto;
@@ -319,6 +320,10 @@ code {
     line-height: 1.5;
     font-weight: 900;
     min-height: 20px;
+}
+
+.next-demo-item.scroll-count-item.active{
+    border: 1px solid #3B9AFF!important;
 }
 
 .next-demo-item.scroll-count-item.active{

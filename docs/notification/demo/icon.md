@@ -1,13 +1,13 @@
 # 自定义图标
 
-- order: 2
+- order: 3
 
 可以设置使用的图标
 
 :::lang=en-us
 # Custom Icon
 
-- order: 1
+- order: 3
 
 Change Icon
 

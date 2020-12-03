@@ -29,16 +29,16 @@ const openNotification = (placement) => {
 
 ReactDOM.render(
     <div className="button-row">
-        <Button onClick={() => openNotification('tl')}>
+        <Button type="primary" onClick={() => openNotification('tl')}>
             Top Left
         </Button>
-        <Button onClick={() => openNotification('tr')}>
+        <Button type="primary" onClick={() => openNotification('tr')}>
             Top Right
         </Button>
-        <Button onClick={() => openNotification('bl')}>
+        <Button type="primary" onClick={() => openNotification('bl')}>
             Bottom Left
         </Button>
-        <Button onClick={() => openNotification('br')}>
+        <Button type="primary" onClick={() => openNotification('br')}>
             Bottom Right
         </Button>
     </div>,

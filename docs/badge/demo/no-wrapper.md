@@ -1,13 +1,13 @@
 # 独立使用
 
-- order: 5
+- order: 4
 
 不包裹任何元素即独立使用，可自定样式展示。
 
 :::lang=en-us
 # Alone Usage
 
-- order: 5
+- order: 4
 
 Alone usage mean that badge component wrap nothing, and you can custom style of badge component.
 

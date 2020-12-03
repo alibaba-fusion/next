@@ -141,7 +141,7 @@
         word-wrap: normal;
     }
 
-    &-item-text {
+    &-item &-item-text {
         vertical-align: middle;
 
         & > a {

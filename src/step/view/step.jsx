@@ -104,29 +104,23 @@ class Step extends Component {
 
     adjustHeight() {
         const { shape, direction, prefix, labelPlacement } = this.props;
+        const step = ReactDOM.findDOMNode(this.step);
         if (
             shape !== 'arrow' &&
             (direction === 'horizontal' || direction === 'hoz') &&
             (labelPlacement === 'vertical' || labelPlacement === 'ver')
         ) {
-            const step = ReactDOM.findDOMNode(this.step);
             const height = Array.prototype.slice
                 .call(step.getElementsByClassName(`${prefix}step-item`))
                 .reduce((ret, re) => {
                     const itemHeight =
-                        getHeight(
-                            re.getElementsByClassName(
-                                `${prefix}step-item-container`
-                            )[0]
-                        ) +
-                        getHeight(
-                            re.getElementsByClassName(
-                                `${prefix}step-item-body`
-                            )[0]
-                        );
+                        getHeight(re.getElementsByClassName(`${prefix}step-item-container`)[0]) +
+                        getHeight(re.getElementsByClassName(`${prefix}step-item-body`)[0]);
                     return Math.max(itemHeight, ret);
                 }, 0);
             setHeight(step, height);
+        } else {
+            setHeight(step, '');
         }
     }
 
@@ -212,12 +206,7 @@ class Step extends Component {
 
         // 修改子节点属性
         const cloneChildren = Children.map(children, (child, index) => {
-            const status =
-                index < current
-                    ? 'finish'
-                    : index === current
-                    ? 'process'
-                    : 'wait';
+            const status = index < current ? 'finish' : index === current ? 'process' : 'wait';
 
             return React.cloneElement(child, {
                 prefix,
@@ -235,20 +224,15 @@ class Step extends Component {
                 tabIndex: 0,
                 // tabIndex: this.state.currentfocus === index ? '0' : '-1',
                 'aria-current': status === 'process' ? 'step' : null,
-                itemRender: child.props.itemRender
-                    ? child.props.itemRender
-                    : itemRender, // 优先使用Item的itemRender
+                itemRender: child.props.itemRender ? child.props.itemRender : itemRender, // 优先使用Item的itemRender
+                onResize: () => {
+                    this.step && this.adjustHeight();
+                },
             });
         });
 
-        const _direction =
-            direction === 'ver' || direction === 'vertical'
-                ? 'vertical'
-                : 'horizontal';
-        const _labelPlacement =
-            labelPlacement === 'ver' || labelPlacement === 'vertical'
-                ? 'vertical'
-                : 'horizontal';
+        const _direction = direction === 'ver' || direction === 'vertical' ? 'vertical' : 'horizontal';
+        const _labelPlacement = labelPlacement === 'ver' || labelPlacement === 'vertical' ? 'vertical' : 'horizontal';
         const stepCls = classNames({
             [`${prefix}step`]: true,
             [`${prefix}step-${shape}`]: shape,

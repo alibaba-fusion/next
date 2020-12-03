@@ -46,6 +46,7 @@
 | responsive              | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                         | Boolean         | -                                                      |
 | isPreview               | 是否开启预览态                                                                                                                                                                                                                                 | Boolean         | -                                                      |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                                                                                                                              | Boolean         | -                                                      |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                                                                                                                                      | Boolean         | false                                                  |
 
 ### Form.Item
 
@@ -95,6 +96,7 @@
 | isPreview               | 是否开启预览态                                                                                                                 | Boolean            | -     |
 | renderPreview           | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: any) => void<br>**参数**:<br>_value_: {any} 根据包裹的组件的 value 类型而决定            | Function           | -     |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                              | Boolean            | -     |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                      | Boolean            | -     |
 
 ### Form.Submit
 

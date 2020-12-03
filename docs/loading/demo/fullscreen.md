@@ -1,13 +1,13 @@
 # 全屏
 
-- order: 3
+- order: 5
 
-全屏展示
+通过`fullScreen`强制全屏显示加载态，通过`safeNode`指定安全节点。
 
 :::lang=en-us
 # Fullscreen
 
-- order: 3
+- order: 5
 
 display a fullscreen loading
 
@@ -44,7 +44,6 @@ class App extends React.Component {
             <span>
                 <Loading visible={this.state.visible}
                     fullScreen
-                    shape="fusion-reactor"
                     safeNode={this.btn}
                     onVisibleChange={this.onClose.bind(this)}>
                     <Button onClick={this.onClick.bind(this)} ref={ref => (this.btn = ref)}>Full Screen</Button>

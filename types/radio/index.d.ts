@@ -47,7 +47,7 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
     /**
      * 选中值改变时的事件
      */
-    onChange?: (value: string, e: any) => void;
+    onChange?: (value: string | number | boolean, e: any) => void;
 
     /**
      * 表示radio被禁用
@@ -79,6 +79,7 @@ export interface GroupProps extends HTMLAttributesWeak, CommonProps {
      * - hoz: 水平排列 (default)
      * - ver: 垂直排列
      */
+    direction?: 'hoz' | 'ver';
     itemDirection?: 'hoz' | 'ver';
 }
 

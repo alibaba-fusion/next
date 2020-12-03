@@ -40,7 +40,7 @@ Checkbox is used to verify which options you want selected from a group. If you 
 | defaultValue | The values of default selected optional list                                         | Array/String/Number    | -         |
 | children     | To set nested checkbox  by children components             | Array&lt;ReactElement> | -         |
 | onChange     | Callback function triggered when the selected value changes<br><br>**signatures**:<br>Function(value: Array, e: Event) => void<br>**params**:<br>_value_: {Array} values of selected optional list <br>_e_: {Event} Dom event object                                | Function               | () => { } |
-| itemDirection    | The direction of item's aligning<br>- hoz: horizontal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |
+| direction    | The direction of item's aligning<br>- hoz: horizontal (default)<br>- ver: vertical<br><br>**Allowed values**:<br>'hoz', 'ver'                                                 | Enum                                | 'hoz' |
 
 
 

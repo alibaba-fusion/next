@@ -20,7 +20,9 @@
         opacity: .7;
         -webkit-filter: blur(1px);
         filter: blur(1px);
+        /* stylelint-disable */
         filter: "progid\:DXImageTransform\.Microsoft\.Blur(PixelRadius\=1, MakeShadow\=false)"; /* IE6~IE9 */
+        /* stylelint-enable */
         position: relative;
         pointer-events: none;
     }

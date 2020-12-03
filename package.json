@@ -1,6 +1,6 @@
 {
   "name": "@alifd/next",
-  "version": "1.21.8",
+  "version": "1.21.13",
   "description": "A configurable component library for web built on React.",
   "keywords": [
     "fusion",
@@ -72,7 +72,8 @@
     "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
     "changelog": "node ./scripts/changelog.js",
-    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check &&  npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
+    "mix": "node ./scripts/mix.js",
+    "prepub": "npm run tslint && npm run eslint && npm run stylelint && npm run changelog && npm run build && npm run tslint && npm run check && npm run docs && npm run clear-dist && npm run pack && npm run pack -- minimize && npm run pack-adaptor"
   },
   "lint-staged": {
     "types/**/*.d.ts": [
@@ -100,6 +101,7 @@
     "prop-types": "^15.6.0",
     "react-lifecycles-compat": "^3.0.4",
     "react-transition-group": "^2.2.1",
+    "resize-observer-polyfill": "^1.5.1",
     "shallow-element-equals": "^1.0.1"
   },
   "devDependencies": {
@@ -118,7 +120,7 @@
     "@babel/plugin-syntax-jsx": "^7.12.1",
     "@commitlint/cli": "^7.0.0",
     "@no-repeat/sassdoc-parser": "^0.0.11",
-    "@octokit/rest": "^15.15.1",
+    "@octokit/rest": "^18.0.9",
     "@types/react": "^16.8.13",
     "autoprefixer": "^7.1.4",
     "axe-core": "~3.2.0",
@@ -201,6 +203,7 @@
     "power-assert": "^1.5.0",
     "prettier": "1.16.4",
     "promise-polyfill": "^8.1.0",
+    "puppeteer": "^5.5.0",
     "react": "^16.0.0",
     "react-axe": "^3.0.2",
     "react-copy-to-clipboard": "^5.0.1",
@@ -226,11 +229,13 @@
     "stylelint-scss": "^3.1.1",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
+    "urllib": "^2.36.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.x",
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
+    "@alifd/meet-react": "^1.0.0",
     "moment": "^2.22.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"

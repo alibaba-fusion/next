@@ -4,6 +4,7 @@
 -   family: Feedback
 -   chinese: 通知
 -   type: 展示
+-   version: 1.18
 
 ---
 
@@ -17,8 +18,6 @@
 * 较为复杂的通知内容。
 * 带有交互的通知，给出用户下一步的行动点。
 * 系统主动推送。
-
-## 开发指南
 
 ## API
 
@@ -38,6 +37,7 @@ config 参数如下：
 | --- | --- | --- | --- | --- |
 | key | 当前通知唯一标志, 默认会自动生成 | String | - |  |
 | title | 通知提醒标题，必选 | String\|ReactNode | - |  |
+| type | 通知类型，`Notification.open`可选参数，可选值：`success`\|`error`\|`warning`\|`notice`\|`help` | String | `success` |  |
 | content | 通知提醒内容，必选 | String\|ReactNode | - |  |
 | duration | 默认 4.5 秒后自动关闭，配置为 0 则不自动关闭 | Number | 4.5 |  |
 | icon | 自定义图标 | ReactNode | - |  |
@@ -46,7 +46,8 @@ config 参数如下：
 | onClose | 点击默认关闭按钮时触发的回调函数 | Function | - |  |
 | onClick | 点击通知时触发的回调函数 | Function | - |  |
 
-还提供了一个全局配置方法，在调用前提前配置，全局一次生效。
+### 全局配置方法
+提供全局配置方法，在调用前配置，全局一次生效。
 
 - `Notification.config(options)`
 
