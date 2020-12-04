@@ -7,8 +7,8 @@ import SharedPT from '../prop-types';
 import { func, datejs } from '../../util';
 
 import { DATE_INPUT_TYPE } from '../constant';
-import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar-2/constant';
-import Calendar from '../../calendar-2';
+import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar2/constant';
+import Calendar from '../../calendar2';
 import TimePanel from './time-panel';
 
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PANEL_MODE;
@@ -203,9 +203,9 @@ class RangePanel extends React.Component {
     };
 
     // 日期cell状态
-    handleCellState(v, hoverValue) {
+    handleCellState(v, value) {
         const { mode } = this.props;
-        const [begin, end] = hoverValue || this.props.value;
+        const [begin, end] = value;
 
         const unit = this.getUnitByMode(mode);
 
@@ -222,18 +222,46 @@ class RangePanel extends React.Component {
         return mode === DATE ? 'day' : mode;
     }
 
+    isEdge = (value, mode) => {
+        const unit = this.getUnitByMode(mode);
+        let endOfDate;
+        let beginOfDate;
+
+        switch (mode) {
+            case DATE:
+                endOfDate = value.endOf('month');
+                beginOfDate = value.startOf('month');
+                break;
+            case YEAR:
+                endOfDate = value.add(10, 'year');
+                beginOfDate = value.subtract(10, 'year');
+                break;
+            default:
+                return UN_SELECTED;
+        }
+
+        return endOfDate.isSame(value, unit)
+            ? SELECTED_END
+            : beginOfDate.isSame(value, unit)
+            ? SELECTED_BEGIN
+            : UN_SELECTED;
+    };
+
     getCellClassName = value => {
         const { prefix, inputType, mode } = this.props;
         const { curHoverValue } = this.state;
-        const state = this.handleCellState(value);
         const [begin, end] = this.props.value;
-        const prefixCls = `${prefix}calendar2-cell`;
         const unit = this.getUnitByMode(mode);
+
+        const state = this.handleCellState(value, this.props.value);
+        const prefixCls = `${prefix}calendar2-cell`;
 
         let hoverClassName;
 
         if (curHoverValue) {
             const hoverValue = [...this.props.value];
+            const endOfDate = value.endOf('month');
+            const startOfDate = value.startOf('month');
 
             hoverValue[inputType] = curHoverValue;
             const [hoverBegin, hoverEnd] = hoverValue;
@@ -245,6 +273,9 @@ class RangePanel extends React.Component {
                     [`${prefixCls}-hover`]: hoverState >= SELECTED,
                     [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
                     [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
+                    [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
+                    [`${prefixCls}-hover-edge-begin`]: startOfDate.isSame(value, unit),
+                    [`${prefixCls}-hover-edge-end`]: endOfDate.isSame(value, unit),
                 };
             }
         }

@@ -31,6 +31,7 @@ class DateInput extends React.Component {
         hasBorder: PT.bool,
         separator: PT.node,
         disabled: SharedPT.disabled,
+        allDisabled: PT.bool,
     };
 
     static defaultProps = {
@@ -198,6 +199,7 @@ class DateInput extends React.Component {
             {
                 [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
+                [`${prefixCls}-disabled`]: this.props.allDisabled,
             }
         );
 

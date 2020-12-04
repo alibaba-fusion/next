@@ -152,6 +152,7 @@ class Picker extends React.Component {
         format: 'YYYY-MM-DD',
         size: 'medium',
         hasBorder: true,
+        disabled: false,
     };
 
     constructor(props) {
@@ -466,26 +467,30 @@ class Picker extends React.Component {
         };
 
         // 渲染触发层
-        const triggerNode = renderNode(
-            trigger,
-            <DateInput
-                isRange={isRange}
-                value={inputValue}
-                readOnly={inputReadOnly}
-                onInput={handleInput}
-                onClick={onClick}
-                size={size}
-                hasBorder={hasBorder}
-                focus={visible}
-                separator={separator}
-                ref={el => (this.dateInput = el)}
-                disabled={disabled}
-                onInputTypeChange={onInputTypeChange}
-                {...sharedProps}
-            />
-        );
 
-        const sharedDateProps = {
+        const allDisabled = !(!disabled || (isRange && Array.isArray(disabled) && disabled.some(v => !v)));
+
+        let inputProps = {
+            ...sharedProps,
+            value: inputValue,
+            isRange,
+            readOnly: inputReadOnly,
+            size,
+            hasBorder,
+            separator,
+            disabled,
+            allDisabled,
+            ref: el => (this.dateInput = el),
+        };
+
+        if (!allDisabled) {
+            inputProps = { ...inputProps, onInput: handleInput, onClick, focus: visible, onInputTypeChange };
+        }
+
+        const triggerNode = renderNode(trigger, <DateInput {...inputProps} />);
+
+        // 渲染弹出层
+        const panelProps = {
             ...sharedProps,
             panelMode,
             value: curValue,
@@ -495,11 +500,10 @@ class Picker extends React.Component {
             resetTime,
         };
 
-        // 渲染弹出层
         const DateNode = isRange ? (
-            <RangePanel justBeginInput={justBeginInput} {...sharedDateProps} />
+            <RangePanel justBeginInput={justBeginInput} {...panelProps} />
         ) : (
-            <DatePanel {...sharedDateProps} />
+            <DatePanel {...panelProps} />
         );
 
         // 底部节点

@@ -1,10 +1,7 @@
 @import "../core/index-noreset.scss";
-// @import "../input/scss/variable.scss";
-// @import "../input/scss/mixin.scss";
-// @import "../time-picker-2/scss/variable.scss";
 
-@import "../calendar-2/scss/variable.scss";
-@import "../calendar-2/scss/mixin.scss";
+@import "../calendar2/scss/variable.scss";
+@import "../calendar2/scss/mixin.scss";
 @import "../input/scss/variable.scss";
 @import "../input/scss/mixin.scss";
 
@@ -130,6 +127,10 @@
             border-color: transparent !important;
             box-shadow: none !important;
         }
+
+        &#{$date-picker2-prefix}-input-disabled {
+            @include input-disabled();
+        }
     }
 
     &-input-separator {
@@ -153,9 +154,13 @@
     &#{$calendar2-prefix}-cell-range-begin-single::before {
         transform: translate(-50%, -50%);
     }
+
+    &:first-child::before,
     &#{$calendar2-prefix}-cell-range-end-single::before {
         transform: translate(50%, -50%);
     }
+
+
 }
 
 .#{$css-prefix} {
@@ -245,18 +250,26 @@
             }
         }
 
-        &#{$calendar2-prefix}-cell-hover::after {
-            content: " ";
-            position: absolute;
-            top: 50%;
-            right: 0;
-            left: 1px;
-            z-index: 2;
-            height: 24px;
-            transform: translateY(-50%);
-            border-top: 1px dashed $color-brand1-9;
-            border-bottom: 1px dashed $color-brand1-9;
+        &#{$calendar2-prefix}-cell-hover {
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 0;
+                left: 1px;
+                z-index: 2;
+                height: 24px;
+                transform: translateY(-50%);
+                border-top: 1px dashed $color-brand1-9;
+                border-bottom: 1px dashed $color-brand1-9;
+            }
+
+            &:first-child::after {
+                left: 6px;
+            }
         }
+
         &#{$calendar2-prefix}-cell-hover-begin::after {
             left: 7px;
             border-top: 1px dashed $color-brand1-9;

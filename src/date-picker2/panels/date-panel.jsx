@@ -6,7 +6,7 @@ import * as PT from 'prop-types';
 import SharedPT from '../prop-types';
 import { func } from '../../util';
 
-import Calendar from '../../calendar-2';
+import Calendar from '../../calendar2';
 import TimePanel from './time-panel';
 
 class DatePanel extends React.Component {

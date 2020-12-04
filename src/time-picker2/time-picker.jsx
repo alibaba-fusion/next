@@ -12,7 +12,7 @@ import { func, obj, datejs } from '../util';
 import TimePickerPanel from './panel';
 import { checkDateValue, formatDateValue } from './utils';
 import { onTimeKeydown } from '../date-picker/util';
-import FooterPanel from '../date-picker-2/panels/footer-panel';
+import FooterPanel from '../date-picker2/panels/footer-panel';
 
 const { Popup } = Overlay;
 const { noop } = func;

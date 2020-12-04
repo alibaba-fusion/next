@@ -18,7 +18,7 @@ A basic usage case.
 
 ```jsx
 import { useState } from 'react';
-import { DatePicker2 } from '@alifd/next';
+import { DatePicker2, Input } from '@alifd/next';
 
 const { RangePicker} = DatePicker2;
 
@@ -27,9 +27,15 @@ function App() {
         <div className="app">
             inputReadOnly:
             <div> <DatePicker2 inputReadOnly/></div>
+            <div> <RangePicker inputReadOnly/></div>
 
-            disabled
-            <div><DatePicker2 disabled mode="month" /></div>
+            disabled:
+            <div> <DatePicker2 disabled/><Input disabled/></div>
+            <div> <RangePicker disabled/></div>
+            <div> <RangePicker disabled={[true, false]} defaultValue={[Date(), null]}/></div>
+
+
+            <div><DatePicker2  mode="month" /></div>
             <div><DatePicker2 mode="week" /></div>
             <div><DatePicker2 mode="year" /></div>
             <div><RangePicker /></div>
@@ -44,6 +50,9 @@ ReactDOM.render(<App />, mountNode);
 ```
 
 ```css
+.app {
+    line-height: 1.8;
+}
 .app > div {
     margin-bottom: 20px;
 }
