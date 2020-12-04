@@ -134,7 +134,7 @@ function getDemoOp(name) {
                             </svg>
                         </span>
                     }>
-                    <span>展开代码<br/><br/><span style={{color:'#ed4c62'}}>小提示:&emsp;</span> <a href="#global-control">#页面右上方</a> 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
+                    <span>展开代码<br/><br/>小提示: <br/><br/> 1. 点击一下代码，试一试在线编辑预览吧！ <br/><br/>2. 页面右上方 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
                 </Balloon.Tooltip>
                 <Balloon.Tooltip
                     align="b"
@@ -146,7 +146,7 @@ function getDemoOp(name) {
                             </svg>
                         </span>
                     }>
-                    <span>收起代码<br/><br/><span style={{color:'#ed4c62'}}>小提示:&emsp;</span> <a href="#global-control">#页面右上方</a> 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
+                    <span>收起代码<br/><br/>小提示: <br/><br/> 1. 点击一下代码，试一试在线编辑预览吧！ <br/><br/>2. 页面右上方 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
                 </Balloon.Tooltip>
             </span>`;
 
@@ -203,7 +203,7 @@ function getLiveDemoOp(name) {
                 </svg>
             </span>
         }>
-        <span>展开代码<br/><br/><span style={{color:'#ed4c62'}}>小提示:&emsp;</span> <a href="#global-control">#页面右上方</a> 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
+        <span>展开代码<br/><br/>小提示: <br/><br/> 1. 点击一下代码，试一试在线编辑预览吧！ <br/><br/>2. 页面右上方 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
     </Balloon.Tooltip> 
 
     <Balloon.Tooltip
@@ -219,7 +219,7 @@ function getLiveDemoOp(name) {
                 </svg>
             </span>
         }>
-        <span>收起代码<br/><br/><span style={{color:'#ed4c62'}}>小提示:&emsp;</span> <a href="#global-control">#页面右上方</a> 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
+        <span>收起代码<br/><br/>小提示: <br/><br/> 1. 点击一下代码，试一试在线编辑预览吧！ <br/><br/>2. 页面右上方 有 <strong>全局代码展开</strong> 及 <strong>开启在线编辑</strong> 模式哟～</span>
     </Balloon.Tooltip> 
     `;
 
@@ -278,7 +278,8 @@ function getDemoRenderScript(js, name, body, noImportJs, rawCss, rawImportJs) {
         ],
     })
         .code.replace(/`/g, '\\`')
-        .replace(/\$/g, '\\$');
+        .replace(/\$/g, '\\$')
+        .replace(/\n$/, '');
     return `
 window.${name}RenderScript = function ${name}RenderScript(liveDemo){
     var mountNode = document.getElementById('${name}-mount');
