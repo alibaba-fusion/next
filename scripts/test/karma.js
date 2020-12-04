@@ -1,12 +1,11 @@
 const path = require('path');
 const _ = require('lodash');
 const getWebpackConfig = require('./webpack');
+const { getComPathName } = require('../utils');
 
 module.exports = function(config) {
     const { runAll, a11y } = config;
-    const componentName = config.component
-        ? _.kebabCase(config.component)
-        : config.component;
+    const componentName = config.component ? getComPathName(config.component) : config.component;
     const singleRun = runAll;
     const coveragePath = resolveCwd('coverage');
     // const componentArray = config.componentArray;

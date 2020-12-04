@@ -2,7 +2,7 @@ const path = require('path');
 const loaderUtils = require('loader-utils');
 const ejs = require('ejs');
 const _ = require('lodash');
-const { logger, parseMD, marked, replaceExt } = require('../../../utils');
+const { logger, parseMD, marked, replaceExt, getComPathName } = require('../../../utils');
 
 const selectorPath = require.resolve('./selector');
 
@@ -119,9 +119,8 @@ function fixImport(code, resourcePath) {
 
         const importStrings = components
             .map(component => {
-                const componentPath = path.join(cwd, 'src', _.kebabCase(component));
+                const componentPath = path.join(cwd, 'src', getComPathName(component));
                 const relativePath = path.relative(path.dirname(resourcePath), componentPath);
-
                 return `
 import ${component} from '${relativePath}';
 import '${path.join(relativePath, 'style.js')}';

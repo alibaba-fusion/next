@@ -1,7 +1,7 @@
 const path = require('path');
 const _ = require('lodash');
 const ejs = require('ejs');
-const { logger, replaceExt } = require('../../../utils');
+const { logger, replaceExt, getComPathName } = require('../../../utils');
 
 const cwd = process.cwd();
 const IMPORT_REG = /import {(.+)} from ['"]@alifd\/next['"];?/;
@@ -18,18 +18,10 @@ function fixImport(code, resourcePath) {
 
     if (matched) {
         const components = matched[1].replace(/\s/g, '').split(',');
-
         const importStrings = components
             .map(component => {
-                const componentPath = path.join(
-                    cwd,
-                    'src',
-                    _.kebabCase(component)
-                );
-                const relativePath = path.relative(
-                    path.dirname(resourcePath),
-                    componentPath
-                );
+                const componentPath = path.join(cwd, 'src', getComPathName(component));
+                const relativePath = path.relative(path.dirname(resourcePath), componentPath);
 
                 return `
 import ${component} from '${relativePath}';
@@ -43,17 +35,10 @@ import '${path.join(relativePath, 'style.js')}';
 
     if (matchedLib) {
         matchedLib.forEach(element => {
-            const component = element
-                .match(IMPORT_LIB_REG)[1]
-                .replace(/\s/g, '');
-            const afterLib = element
-                .match(IMPORT_LIB_REG)[2]
-                .replace(/\s/g, '');
+            const component = element.match(IMPORT_LIB_REG)[1].replace(/\s/g, '');
+            const afterLib = element.match(IMPORT_LIB_REG)[2].replace(/\s/g, '');
             const libPath = path.join(cwd, 'src', afterLib);
-            const newLibPath = path.relative(
-                path.dirname(resourcePath),
-                libPath
-            );
+            const newLibPath = path.relative(path.dirname(resourcePath), libPath);
             const newLibStr = `
 import ${component} from'${newLibPath}'`;
 
@@ -62,16 +47,10 @@ import ${component} from'${newLibPath}'`;
     }
 
     if (process.env.NODE_ENV === 'development') {
-        const adaptorTplPath = path.resolve(
-            __dirname,
-            '../../tpls/adaptor.ejs'
-        );
+        const adaptorTplPath = path.resolve(__dirname, '../../tpls/adaptor.ejs');
         this.addDependency(adaptorTplPath);
 
-        const scripts = [
-            '/common.js',
-            `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
-        ];
+        const scripts = ['/common.js', `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`];
 
         ejs.renderFile(
             adaptorTplPath,
@@ -82,13 +61,7 @@ import ${component} from'${newLibPath}'`;
                 if (err) {
                     logger.error(`Render theme demo failed: ${err}`);
                 } else {
-                    const htmlPath = replaceExt(
-                        path.relative(
-                            path.join(cwd, 'docs'),
-                            this.resourcePath
-                        ),
-                        '.html'
-                    );
+                    const htmlPath = replaceExt(path.relative(path.join(cwd, 'docs'), this.resourcePath), '.html');
                     this.emitFile(htmlPath, html);
                 }
             }
