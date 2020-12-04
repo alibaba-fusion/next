@@ -49,10 +49,13 @@ const SharedPT = {
             }
         }
     },
+
     format: checkType(['string', 'function']),
     inputValue: checkType('string'),
     placeholder: checkType('string'),
     readOnly: checkType('boolean'),
+    disabled: checkType('boolean'),
+
     mode: PT.oneOf(Object.values(DATE_PICKER_MODE)),
     type: PT.oneOf(Object.values(DATE_PICKER_TYPE)),
     inputType: PT.oneOf(Object.values(DATE_INPUT_TYPE)),

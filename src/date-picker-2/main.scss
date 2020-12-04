@@ -120,10 +120,10 @@
             background-color: $input-hover-bg-color;
         }
 
-        &#{$date-picker2-prefix}-input-focused {
+        &#{$date-picker2-prefix}-input-focus {
             border-color: $input-focus-border-color;
             background-color: $input-focus-bg-color;
-            box-shadow: 0 0 0 2px $color-calculate-input-focus-shadow;
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
         }
 
         &#{$date-picker2-prefix}-input-noborder {
@@ -258,14 +258,14 @@
             border-bottom: 1px dashed $color-brand1-9;
         }
         &#{$calendar2-prefix}-cell-hover-begin::after {
-            left: 6px;
+            left: 7px;
             border-top: 1px dashed $color-brand1-9;
             border-left: 1px dashed $color-brand1-9;
             border-top-left-radius: 2px;
             border-bottom-left-radius: 2px;
         }
         &#{$calendar2-prefix}-cell-hover-end::after {
-            right: 6px;
+            right: 7px;
             border-top: 1px dashed $color-brand1-9;
             border-right: 1px dashed $color-brand1-9;
             border-top-right-radius: 2px;

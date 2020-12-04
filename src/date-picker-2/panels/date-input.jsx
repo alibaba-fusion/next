@@ -27,9 +27,10 @@ class DateInput extends React.Component {
         readOnly: SharedPT.readOnly,
         placeholder: SharedPT.placeholder,
         size: SharedPT.size,
-        focused: PT.bool,
+        focus: PT.bool,
         hasBorder: PT.bool,
         separator: PT.node,
+        disabled: SharedPT.disabled,
     };
 
     static defaultProps = {
@@ -41,8 +42,16 @@ class DateInput extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.prefixCls = `${props.prefix}picker2-input`;
     }
+
+    toArrayIfNeeded = v => {
+        if (this.props.isRange && !Array.isArray(v)) {
+            v = Array(2).fill(v);
+        }
+        return v;
+    };
 
     setInputRef = (el, index) => {
         if (this.props.isRange) {
@@ -87,15 +96,9 @@ class DateInput extends React.Component {
         func.call(this.props, 'onChange', [this.props.value]);
     };
 
-    onFocus = inputType => {
+    handleTypeChange = inputType => {
         if (inputType !== this.props.inputType) {
             func.call(this.props, 'onInputTypeChange', [inputType]);
-        }
-    };
-
-    onBlur = () => {
-        if (null !== this.props.inputType) {
-            func.call(this.props, 'onInputTypeChange', [null]);
         }
     };
 
@@ -142,7 +145,7 @@ class DateInput extends React.Component {
     };
 
     render() {
-        const { onKeyDown, onInput, setInputRef, onFocus, onBlur, prefixCls } = this;
+        const { onKeyDown, onInput, setInputRef, handleTypeChange, prefixCls } = this;
         const {
             autoFocus,
             readOnly,
@@ -153,27 +156,47 @@ class DateInput extends React.Component {
             hasClear,
             inputType,
             size,
-            focused,
+            focus,
             hasBorder,
             separator,
         } = this.props;
+
         const placeholder = this.getPlaceholder();
         const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, hasBorder ? 12 : 8));
+        const disabled = this.toArrayIfNeeded(this.props.disabled);
 
         const sharedInputProps = {
             size,
             htmlSize,
             readOnly,
             hasBorder: false,
-            onBlur: onBlur,
+            onBlur: () => handleTypeChange(null),
             onChange: onInput,
             onKeyDown,
         };
 
+        let rangeInputProps;
+        if (isRange) {
+            rangeInputProps = [DATE_INPUT_TYPE.BEGIN, DATE_INPUT_TYPE.END].map(idx => {
+                return {
+                    ...sharedInputProps,
+                    autoFocus,
+                    placeholder: placeholder[idx],
+                    value: value[idx] || '',
+                    disabled: disabled && disabled[idx],
+                    ref: ref => setInputRef(ref, idx),
+                    onFocus: () => handleTypeChange(idx),
+                    className: classnames({
+                        [`${prefixCls}-active`]: inputType === idx,
+                    }),
+                };
+            });
+        }
+
         const className = classnames(
             [prefixCls, `${prefixCls}-${size}`, `${prefixCls}-${isRange ? 'range' : 'date'}`],
             {
-                [`${prefixCls}-focused`]: focused,
+                [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
             }
         );
@@ -183,33 +206,20 @@ class DateInput extends React.Component {
                 {isRange ? (
                     <React.Fragment>
                         <Input
-                            {...sharedInputProps}
+                            {...rangeInputProps[0]}
                             autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
-                            placeholder={placeholder[0]}
-                            value={value[0] || ''}
-                            ref={ref => setInputRef(ref, 0)}
-                            onFocus={() => onFocus(DATE_INPUT_TYPE.BEGIN)}
-                            className={classnames({
-                                [`${prefixCls}-input-active`]: inputType === DATE_INPUT_TYPE.BEGIN,
-                            })}
                         />
                         <div className={`${prefixCls}-separator`}>{separator}</div>
                         <Input
-                            {...sharedInputProps}
+                            {...rangeInputProps[1]}
                             hasClear={hasClear}
-                            placeholder={placeholder[1]}
-                            value={value[1] || ''}
-                            ref={ref => setInputRef(ref, 1)}
-                            onFocus={() => onFocus(DATE_INPUT_TYPE.END)}
-                            className={classnames({
-                                [`${prefixCls}-active`]: inputType === DATE_INPUT_TYPE.END,
-                            })}
                             hint={<Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />}
                         />
                     </React.Fragment>
                 ) : (
                     <Input
                         {...sharedInputProps}
+                        disabled={disabled}
                         hasClear={hasClear}
                         placeholder={placeholder}
                         autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus

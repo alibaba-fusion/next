@@ -24,21 +24,16 @@ import dayjs from 'dayjs';
 const { RangePicker} = DatePicker2;
 
 
-const ranges0 = {
-    '此刻': () => dayjs(),
-}
-
 
 function App() {
     return (
         <div className="app">
-            <div><DatePicker2 ranges={ranges0}/></div>
+            <div><DatePicker2 ranges={{ '此刻': () => dayjs() }}/></div>
             <div>
                 <RangePicker ranges={{
                     '今天': [dayjs(), dayjs()],
                     '本月': [dayjs().startOf('month'), dayjs().endOf('month')],
-                }}
-                />
+                }}/>
             </div>
         </div>
     );

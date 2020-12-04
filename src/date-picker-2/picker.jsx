@@ -24,9 +24,13 @@ class Picker extends React.Component {
         locale: PT.object,
         mode: SharedPT.mode,
         type: SharedPT.type,
-        readOnly: SharedPT.readOnly,
-        className: PT.string,
-        trigger: PT.oneOfType([PT.func, PT.node]),
+        inputReadOnly: SharedPT.readOnly,
+        /**
+         * 是否禁用
+         */
+        disabled: SharedPT.disabled,
+
+        trigger: SharedPT.render,
         /**
          * 输入框状态
          */
@@ -87,10 +91,7 @@ class Picker extends React.Component {
          * 输入框尺寸
          */
         size: SharedPT.size,
-        /**
-         * 是否禁用
-         */
-        disabled: PT.bool,
+
         /**
          * 是否显示清空按钮
          */
@@ -285,7 +286,6 @@ class Picker extends React.Component {
                 visible,
                 justBeginInput: true,
             });
-
             func.call(this.props, 'onVisibleChange', [visible]);
         };
 
@@ -298,7 +298,7 @@ class Picker extends React.Component {
             if (visible) {
                 callback();
             } else {
-                this.timeoutId = setTimeout(callback, 20);
+                this.timeoutId = setTimeout(callback, 50);
             }
         }
     }
@@ -426,7 +426,7 @@ class Picker extends React.Component {
             rtl,
             prefix,
             locale,
-            readOnly,
+            inputReadOnly,
             showTime,
             ranges,
             mode,
@@ -437,6 +437,7 @@ class Picker extends React.Component {
             hasBorder,
             disabledDate,
             separator,
+            disabled,
             extraFooterRender,
             timePanelProps,
             resetTime,
@@ -470,14 +471,15 @@ class Picker extends React.Component {
             <DateInput
                 isRange={isRange}
                 value={inputValue}
-                readOnly={readOnly}
+                readOnly={inputReadOnly}
                 onInput={handleInput}
                 onClick={onClick}
                 size={size}
                 hasBorder={hasBorder}
-                focused={visible}
+                focus={visible}
                 separator={separator}
                 ref={el => (this.dateInput = el)}
+                disabled={disabled}
                 onInputTypeChange={onInputTypeChange}
                 {...sharedProps}
             />
@@ -528,6 +530,7 @@ class Picker extends React.Component {
         return (
             <Popup
                 key="date-picker-popup"
+                disabled
                 visible={visible}
                 triggerType="click"
                 onVisibleChange={handleVisibleChange}
