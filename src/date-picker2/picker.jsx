@@ -5,7 +5,7 @@ import * as PT from 'prop-types';
 
 import SharedPT from './prop-types';
 import defaultLocale from '../locale/zh-cn';
-import { func, datejs } from '../util';
+import { func, datejs, KEYCODE } from '../util';
 import { getFromPropOrState } from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
@@ -15,7 +15,7 @@ import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
-const { bindCtx, isFunction, renderNode } = func;
+const { bindCtx, renderNode } = func;
 
 class Picker extends React.Component {
     static propTypes = {
@@ -29,12 +29,8 @@ class Picker extends React.Component {
          * 是否禁用
          */
         disabled: SharedPT.disabled,
-
         trigger: SharedPT.render,
-        /**
-         * 输入框状态
-         */
-        state: PT.oneOf(['success', 'loading', 'error']),
+
         /**
          * 日期值（受控）moment 对象
          */
@@ -46,7 +42,8 @@ class Picker extends React.Component {
         /**
          * 输入提示
          */
-        placeholder: PT.oneOfType([PT.string, PT.arrayOf(PT.string)]),
+        placeholder: SharedPT.placeholder,
+
         /**
          * 日期值的格式（用于限定用户输入和展示）
          */
@@ -211,7 +208,7 @@ class Picker extends React.Component {
     }
 
     /**
-     * 校验日期数据，范围选择模式下为数组，校验通过的时候返回备选值，注意，备选值也需要进行校验，如果还校验失败则返回null值
+     * 校验日期数据，范围选择模式下为数组 不合法的日期重置null值
      * 日期值可以是：
      *  时间戳：1605263461196
      *  日期字符串：2020-11-11
@@ -219,42 +216,51 @@ class Picker extends React.Component {
      * @param {*} value
      * @return 返回moment或dayjs对象，范围选择模式下，返回moment或dayjs对象的长度为2的数组
      */
-    checkAndRectify(value) {
-        const check = value => {
+    checkAndRectify = value => {
+        const check = v => {
             // 因为datejs(undefined) === datejs() 但是这里期望的是一个空值
-            if (value === undefined) {
-                value = null;
+            if (v === undefined) {
+                v = null;
             }
-            value = datejs(value);
-
-            return value.isValid() ? value : null;
+            v = datejs(v);
+            return v.isValid() ? v : null;
         };
 
         if (this.props.type === DATE_PICKER_TYPE.RANGE) {
-            if (!Array.isArray(value)) {
+            const [begin, end] = Array.isArray(value) ? [0, 1].map(i => check(value[i])) : [null, null];
+
+            if (begin && end && begin.isAfter(end)) {
                 return [null, null];
             }
-            return [0, 1].map(i => check(value[i]));
+
+            return [begin, end];
         } else {
             return check(value);
         }
-    }
+    };
 
     // 返回日期字符串
     getInputValue(value) {
         return Array.isArray(value) ? value.map(v => this.formater(v)) : this.formater(value);
     }
 
-    formater(v) {
+    formater = v => {
         const { format, isRange, inputType } = this.props;
         let fmt = format;
 
-        if (isRange && Array.isArray(format)) {
-            fmt = format[inputType];
+        if (isRange && Array.isArray(fmt)) {
+            fmt = fmt[inputType];
         }
 
-        return v ? (isFunction(format) ? fmt(v) : v.format(fmt)) : '';
-    }
+        return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
+    };
+
+    toArrayIfNeeded = v => {
+        if (this.state.isRange && !Array.isArray(v)) {
+            v = Array(2).fill(v);
+        }
+        return v;
+    };
 
     // 判断弹层是否显示
     handleVisibleChange(visible, type) {
@@ -366,6 +372,17 @@ class Picker extends React.Component {
         });
     };
 
+    onKeyDown = e => {
+        switch (e.keyCode) {
+            case KEYCODE.ENTER:
+                this.onClick(); // TODO
+                this.onChange();
+                break;
+            default:
+                return;
+        }
+    };
+
     onChange(v) {
         this.setState({
             value: v,
@@ -421,6 +438,7 @@ class Picker extends React.Component {
             handleInput,
             onInputTypeChange,
             onPanelChange,
+            onKeyDown,
         } = this;
 
         const {
@@ -438,15 +456,17 @@ class Picker extends React.Component {
             hasBorder,
             disabledDate,
             separator,
-            disabled,
             extraFooterRender,
             timePanelProps,
             resetTime,
+            placeholder,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
 
         const visible = this.getFromPropOrState('visible');
+        const disabled = this.toArrayIfNeeded(this.props.disabled);
+        const allDisabled = isRange ? disabled.every(v => v) : disabled;
 
         // value受控模式
         if ('value' in this.props) {
@@ -467,10 +487,7 @@ class Picker extends React.Component {
         };
 
         // 渲染触发层
-
-        const allDisabled = !(!disabled || (isRange && Array.isArray(disabled) && disabled.some(v => !v)));
-
-        let inputProps = {
+        const inputProps = {
             ...sharedProps,
             value: inputValue,
             isRange,
@@ -479,13 +496,12 @@ class Picker extends React.Component {
             hasBorder,
             separator,
             disabled,
-            allDisabled,
             ref: el => (this.dateInput = el),
+            onInput: handleInput,
+            placeholder,
+            focus: visible,
+            onInputTypeChange,
         };
-
-        if (!allDisabled) {
-            inputProps = { ...inputProps, onInput: handleInput, onClick, focus: visible, onInputTypeChange };
-        }
 
         const triggerNode = renderNode(trigger, <DateInput {...inputProps} />);
 
@@ -531,6 +547,11 @@ class Picker extends React.Component {
             [`${prefixCls}-overlay-showtime`]: isRange && showTime,
         });
 
+        let triggerProps;
+        if (!allDisabled) {
+            triggerProps = { onKeyDown, onClick };
+        }
+
         return (
             <Popup
                 key="date-picker-popup"
@@ -538,7 +559,11 @@ class Picker extends React.Component {
                 visible={visible}
                 triggerType="click"
                 onVisibleChange={handleVisibleChange}
-                trigger={triggerNode}
+                trigger={
+                    <div {...triggerProps} role="button" tabIndex="0" className={`${prefixCls}-trigger`}>
+                        {triggerNode}
+                    </div>
+                }
                 className={popupCls}
                 onPosition={this.getCurrentAlign}
             >

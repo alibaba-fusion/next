@@ -222,7 +222,7 @@ class RangePanel extends React.Component {
         return mode === DATE ? 'day' : mode;
     }
 
-    isEdge = (value, mode) => {
+    handleEdgeState = (value, mode) => {
         const unit = this.getUnitByMode(mode);
         let endOfDate;
         let beginOfDate;
@@ -237,14 +237,10 @@ class RangePanel extends React.Component {
                 beginOfDate = value.subtract(10, 'year');
                 break;
             default:
-                return UN_SELECTED;
+                return 0;
         }
 
-        return endOfDate.isSame(value, unit)
-            ? SELECTED_END
-            : beginOfDate.isSame(value, unit)
-            ? SELECTED_BEGIN
-            : UN_SELECTED;
+        return beginOfDate.isSame(value, unit) ? 1 : endOfDate.isSame(value, unit) ? 2 : 0;
     };
 
     getCellClassName = value => {
@@ -260,8 +256,7 @@ class RangePanel extends React.Component {
 
         if (curHoverValue) {
             const hoverValue = [...this.props.value];
-            const endOfDate = value.endOf('month');
-            const startOfDate = value.startOf('month');
+            const edgeState = this.handleEdgeState(mode);
 
             hoverValue[inputType] = curHoverValue;
             const [hoverBegin, hoverEnd] = hoverValue;
@@ -274,8 +269,8 @@ class RangePanel extends React.Component {
                     [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
                     [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
                     [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
-                    [`${prefixCls}-hover-edge-begin`]: startOfDate.isSame(value, unit),
-                    [`${prefixCls}-hover-edge-end`]: endOfDate.isSame(value, unit),
+                    [`${prefixCls}-hover-edge-begin`]: edgeState === 0,
+                    [`${prefixCls}-hover-edge-end`]: edgeState === 1,
                 };
             }
         }

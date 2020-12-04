@@ -9,7 +9,7 @@ import defaultLocale from '../../locale/zh-cn';
 
 import Button from '../../button';
 
-const { isFunction, renderNode } = func;
+const { renderNode } = func;
 
 function pickProps(obj, fields) {
     const newObj = {};
@@ -81,7 +81,9 @@ class FooterPanel extends React.PureComponent {
                     size="small"
                     type={ranges.length === 1 ? 'primary' : 'secondary'}
                     key={`${label}-${index}`}
-                    onClick={() => func.call(this.props, 'onChange', [isFunction(value) ? value() : value, true, true])}
+                    onClick={() =>
+                        func.call(this.props, 'onChange', [typeof value === 'function' ? value() : value, true, true])
+                    }
                     {...buttonProps}
                 >
                     {label}

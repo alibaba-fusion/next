@@ -315,13 +315,7 @@ class RangeCalendar extends React.Component {
                 break;
             }
             case CALENDAR_MODE_MONTH: {
-                table = (
-                    <MonthTable
-                        {...tableProps}
-                        visibleMonth={visibleMonth}
-                        onSelectMonth={this.onSelectCell}
-                    />
-                );
+                table = <MonthTable {...tableProps} visibleMonth={visibleMonth} onSelectMonth={this.onSelectCell} />;
                 header = (
                     <MonthPanelHeader
                         {...headerProps}

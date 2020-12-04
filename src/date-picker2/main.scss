@@ -59,6 +59,11 @@
         background-color: $color-white;
     }
 
+    &-trigger {
+        outline: none;
+        display: inline-table;
+    }
+
     &-input {
         display: inline-flex;
         align-items: center;
@@ -160,6 +165,13 @@
         transform: translate(50%, -50%);
     }
 
+    &:last-child::before {
+        transform: translate(-50%, -50%);
+    }
+
+    &:last-child::after {
+        transform: translate(-50%, -50%);
+    }
 
 }
 
@@ -267,6 +279,9 @@
 
             &:first-child::after {
                 left: 6px;
+            }
+            &:last-child::after {
+                right: 6px;
             }
         }
 

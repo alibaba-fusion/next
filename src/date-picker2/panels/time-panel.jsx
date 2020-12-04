@@ -3,7 +3,9 @@ import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import TimePickerPanel from '../../time-picker2/panel';
 import SharedPT from '../prop-types';
-import { func } from '../../util';
+import { obj } from '../../util';
+
+const DECADE_TIME_FORMAT = 'HH:mm:ss';
 
 class TimePanel extends React.PureComponent {
     static propTypes = {
@@ -14,19 +16,50 @@ class TimePanel extends React.PureComponent {
     };
 
     formater = v => {
-        const { timePanelProps } = this.props;
-        const fmt = (timePanelProps && timePanelProps.format) || 'HH:mm:ss';
-        return func.isFunction(fmt) ? fmt(v) : v.format(fmt);
+        const { timePanelProps = {} } = this.props;
+        const { showHour, showMinute, showSecond } = this.judgeIsShow();
+
+        let fmt;
+        if ('format' in timePanelProps) {
+            fmt = timePanelProps.format;
+        } else {
+            const fmtArr = [];
+
+            showHour && fmtArr.push('HH');
+            showMinute && fmtArr.push('mm');
+            showSecond && fmtArr.push('ss');
+
+            fmt = fmtArr.join(':');
+        }
+
+        return typeof fmt === 'function' ? fmt(v) : v.format(fmt);
+    };
+
+    judgeIsShow = () => {
+        const { timePanelProps: p = {} } = this.props;
+
+        const fmt = p.format || DECADE_TIME_FORMAT;
+
+        let showHour;
+        let showMinute;
+        let showSecond;
+
+        if (typeof fmt === 'string') {
+            showHour = fmt.indexOf('H') > -1;
+            showSecond = fmt.indexOf('s') > -1;
+            showMinute = fmt.indexOf('m') > -1;
+        }
+
+        return {
+            showHour: obj.get('showHour', p, showHour),
+            showMinute: obj.get('showMinute', p, showMinute),
+            showSecond: obj.get('showSecond', p, showSecond),
+        };
     };
 
     render() {
-        const { prefix, value, onSelect } = this.props;
-        const timePanelProps = this.props.timePanelProps || {};
-        const fmt = timePanelProps.format || 'HH:mm:ss';
-
-        const showHour = fmt.indexOf('H') > -1;
-        const showSecond = fmt.indexOf('s') > -1;
-        const showMinute = fmt.indexOf('m') > -1;
+        const { prefix, value, onSelect, timePanelProps = {} } = this.props;
+        const { showHour, showMinute, showSecond } = this.judgeIsShow();
 
         return (
             <div className={`${prefix}calendar2-right ${prefix}calendar2-panel`}>
