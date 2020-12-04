@@ -253,7 +253,6 @@ class RangePanel extends React.Component {
         const prefixCls = `${prefix}calendar2-cell`;
 
         let hoverClassName;
-
         if (curHoverValue) {
             const hoverValue = [...this.props.value];
             const edgeState = this.handleEdgeState(mode);
