@@ -43,7 +43,7 @@ const Content = () => (
 );
 
 const App = () => (
-    <div style={{paddingLeft: 320, paddingTop: 100}}>
+    <div style={{paddingLeft: 320 }}>
         <div style={{marginLeft: 75}}>
             <Balloon trigger={topLeft} align="tl" alignEdge triggerType="click" style={{width: 300}}>
                 <Content/>

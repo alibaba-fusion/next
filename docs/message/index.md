@@ -91,4 +91,4 @@ Message.success({
 
 ## 无障碍键盘操作指南
 
-- 弹窗`Message`没有键盘操作，需要结合其他组件使用来聚焦提示，参考上文[#无障碍支持](#accessibility-container)。
+弹窗`Message`没有键盘操作，需要结合其他组件使用来聚焦提示，参考上文[#无障碍支持](#accessibility-container)。

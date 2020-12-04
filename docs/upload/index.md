@@ -7,16 +7,36 @@
 -   type: 表单
 
 ---
+文件选择上传和拖拽上传控件。
 
-## 开发指南
+## 何时使用
 
-### 何时使用
+用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。
 
-用户根据提示将自己本地的相应信息(包含本地和云储存)上传到网站，上传组件可以帮助用户对上传过程和上传结果有预期，并可以更改或撤销上传行为。<br /> 参考文章: <br />1. <a href="https://zhuanlan.zhihu.com/p/56684600" target="_blank">Upload 组件的设计思想</a> <br /> 2. <a href="https://zhuanlan.zhihu.com/p/59483736" target="_blank">Fusion Upload组件对接阿里云OSS/七牛/又拍</a>
+参考文章: <a href="https://zhuanlan.zhihu.com/p/56684600" target="_blank">Upload 组件的设计思想</a>  & <a href="https://zhuanlan.zhihu.com/p/59483736" target="_blank">Fusion Upload组件对接阿里云OSS/七牛/又拍</a>。
 
-### 注意事项
+## 如何使用
 
--   有些服务不支持 `X-Requested-With: XMLHttpRequest` 这个请求头导致不能跨域，可以通过设置 `<Upload headers={{'X-Requested-With':null}}>` 来解决
+### 跨域问题
+有些服务不支持 `X-Requested-With: XMLHttpRequest` 这个请求头导致不能跨域，可以通过设置 `<Upload headers={{'X-Requested-With':null}}>` 来解决。
+
+### IE9兼容性
+
+-   ie9 下用因为使用 iframe 作为无刷新上传方案，必须保证表单页面的域名和上传的服务器端的域名相同。
+-   ie9 下服务器端返回数据需要设置头部 `context-type` 为 `text/html`，不要设置为 `application/json`
+-   如果只是一级域名相同（`taobao.com` 为一级域名  `shop.taobao.com` 为二级域名），可以通过降域的方式实现跨域上传。
+
+假设你表单页面的域是：shop.taobao.com，而上传的服务器端路径却是 upload.taobao.com。服务端返回必须带额外script标签。
+iframe上传会额外传递参数 `_documentDomain` 方便你设置域名。
+```jsx
+  <script>document.domain="taobao.com";</script>
+  {
+    "status":1,
+    "type":"ajax",
+    "name":"54.png",
+    "url":".\/files\/54.png"
+    }
+```
 
 ## API
 
@@ -115,16 +135,15 @@
 ### 自定义Request
 
 某些场景下需要自定义Request,例如对接AWS S3 jd-sdk or aliyun oss sdk,. Upload 支持 传入自定义的 request方法.
+```jsx
+function customRequest(option) {
+    /* coding here */
+    return {abort() {/* coding here */}};
+}
 
-            function customRequest(option) {
-                /* coding here */
-                return {abort() {/* coding here */}};
-            }
-
-            <Upload request={customRequest}/>
-
+<Upload request={customRequest}/>
+```
 customRequest被传入一个 object,包含以下属性:
-
 -   onProgress: (event: { percent: number }): void
 -   onError: (event: Error, body?: Object): void
 -   onSuccess: (body: Object): void
@@ -139,7 +158,7 @@ customRequest被传入一个 object,包含以下属性:
 
 request需要返回一个包含abort方法的对象,用于中断上传
 
--   abort(file?: File) => void: abort the uploading file
+`abort(file?: File) => void`: abort the uploading file.
 
 具体实现参照 Upload 默认request方法: <https://github.com/alibaba-fusion/next/blob/master/src/upload/runtime/request.jsx>
 
@@ -154,55 +173,55 @@ request需要返回一个包含abort方法的对象,用于中断上传
 所有的值在`Upload.ErrorCode`.
 
 ### onChange 返回结构
-
-        {
-          uid: 'uid',       // 文件唯一标识
-          name: 'xx.png'    // 文件名
-          state: 'done',    // 状态有：selected uploading done error
-          response: {"success":true}  // 服务端响应内容
-          url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg', // 头像(可选)
-          downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'   // 下载(可选)
-        }
-
+```jsx
+{
+  uid: 'uid',       // 文件唯一标识
+  name: 'xx.png'    // 文件名
+  state: 'done',    // 状态有：selected uploading done error
+  response: {"success":true}  // 服务端响应内容
+  url: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
+  imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg', // 头像(可选)
+  downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg'   // 下载(可选)
+}
+```
 ### 接口 response 返回数据格式要求
-
-        {
-          "success": true,
-          "message": "上传成功",                                  // success=false 时候可以展示错误
-          "url": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",           // 返回结果
-          "imgURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",        // 图片预览地址 (非必须)
-          "downloadURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"    // 文件下载地址 (非必须)
-        }
-
+```jsx
+{
+  "success": true,
+  "message": "上传成功",                                  // success=false 时候可以展示错误
+  "url": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",           // 返回结果
+  "imgURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",        // 图片预览地址 (非必须)
+  "downloadURL": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"    // 文件下载地址 (非必须)
+}
+```
 ### 后端数据格式化
 
 通过 `formatter` 将来自后端的不规则数据转换为符合组件要求的数据格式
 
 -   `假设` 服务器的响应数据如下
 
-
-        {
-          "status": "success",                              // 上传成功返回码
-          "img_src": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",   // 图片链接
-        }
-
+```jsx
+{
+  "status": "success",                              // 上传成功返回码
+  "img_src": "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",   // 图片链接
+}
+```
 -   转换方法
 
-
-        <Upload
-          action="http://127.0.0.1:3001/upload"
-          formatter={(res, file) => {
-            // 函数里面根据当前服务器返回的响应数据
-            // 重新拼装符合组件要求的数据格式
-            return {
-              success: res.status === 'success',
-              url: res.img_src,
-            }
-          }}
-        />
-
-## Upload 服务端代码样例
+```jsx
+<Upload
+  action="http://127.0.0.1:3001/upload"
+  formatter={(res, file) => {
+    // 函数里面根据当前服务器返回的响应数据
+    // 重新拼装符合组件要求的数据格式
+    return {
+      success: res.status === 'success',
+      url: res.img_src,
+    }
+  }}
+/>
+```
+### Upload 服务端代码样例
 
 Next Upload组件上传文件使用的`multipart/form-data`方式上传文件,具体实现是在支持`FormData`对象的浏览器中使用xhr对象发送formdata。在不支持`FormData`对象的浏览器如IE9, 使用iframe原生表单实现。
 
@@ -211,20 +230,7 @@ Next Upload组件上传文件使用的`multipart/form-data`方式上传文件,�
 -   [Java Springboot 样例](https://github.com/alibaba-fusion/next-upload-java-server)
 -   [Node Eggjs 样例](https://github.com/alibaba-fusion/next-upload-node-server)
 
-## IE9兼容性
-
--   ie9 下用因为使用 iframe 作为无刷新上传方案，必须保证表单页面的域名和上传的服务器端的域名相同。
--   ie9 下服务器端返回数据需要设置头部 `context-type` 为 `text/html`，不要设置为 `application/json`
--   如果只是一级域名相同（`taobao.com` 为一级域名  `shop.taobao.com` 为二级域名），可以通过降域的方式实现跨域上传。
-
-假设你表单页面的域是：shop.taobao.com，而上传的服务器端路径却是 upload.taobao.com。服务端返回必须带额外script标签
-
-        <script>document.domain="taobao.com";</script>
-        {"status":1,"type":"ajax","name":"54.png","url":".\/files\/54.png"}
-
-iframe上传会额外传递参数 `_documentDomain` 方便你设置域名
-
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明                                     |
 | :---- | :------------------------------------- |

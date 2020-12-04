@@ -57,7 +57,7 @@ ReactDOM.render(<Demo />, mountNode);
 ````
 
 ````css
-.gutter-demo .demo-title {
+.gutter-demo .grid-fixed-demo-title {
     margin-left: 20px;
 }
 

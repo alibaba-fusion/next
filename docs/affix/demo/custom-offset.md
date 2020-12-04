@@ -18,15 +18,8 @@ Setting the offset by `offsetTop` or `offsetBottom`.
 ````jsx
 import { Affix, Button } from '@alifd/next';
 
-ReactDOM.render(<div className="custom-affix-wrapper">
+ReactDOM.render(
     <Affix offsetBottom={0}>
         <Button type="secondary">Custom Offset Affixed</Button>
-    </Affix>
-</div>, mountNode);
-````
-
-````css
-.custom-affix-wrapper {
-    padding: 40px 0;
-}
+    </Affix>, mountNode);
 ````

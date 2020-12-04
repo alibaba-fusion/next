@@ -21,7 +21,7 @@ const { Row, Col } = Grid;
 
 ReactDOM.render(
     <div className="basic-demo">
-        <div className="demo-title">Rendered as `ul` and `li`</div>
+        <div className="grid-fixed-demo-title">Rendered as `ul` and `li`</div>
         <Row component="ul">
             <Col span="12" component="li">col-12</Col>
             <Col span="12" component="li">col-12</Col>
@@ -35,7 +35,7 @@ ReactDOM.render(
     padding: 0;
 }
 
-.basic-demo .demo-title {
+.basic-demo .grid-fixed-demo-title {
     margin-left: 20px;
 }
 
