@@ -76,9 +76,3 @@
 | :---- | :------------------------------ |
 | SPACE | 当`triggerType=‘click’`时，点击会弹出提示 |
 | Enter | 当`triggerType=‘click’`时，点击会弹出提示 |
-
-## FAQ
-
-### disabled 的元素，onMouseLeave 事件在chrome下无法触发?
-
-此为chrome的bug，暂时无法绕过。
