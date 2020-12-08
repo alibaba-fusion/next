@@ -57,6 +57,7 @@ class Picker extends React.Component {
          * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
          */
         resetTime: PT.bool,
+
         /**
          * 禁用日期函数
          * @param {MomentObject} 日期值
@@ -64,6 +65,7 @@ class Picker extends React.Component {
          * @return {Boolean} 是否禁用
          */
         disabledDate: PT.func,
+        disabledTime: PT.func,
         /**
          * 自定义页脚面板
          * @return {Node} 自定义的面板页脚组件
@@ -173,7 +175,7 @@ class Picker extends React.Component {
             curValue: value, // 当前输入中的值
             inputValue: this.getInputValue(value),
             visible: false,
-            inputType: undefined,
+            inputType: DATE_PICKER_TYPE.BEGIN,
             justBeginInput: true,
             panelMode: props.mode,
         };
@@ -412,12 +414,24 @@ class Picker extends React.Component {
         }
     }
 
-    onClick() {
-        this.state.visible ||
+    onClick = () => {
+        const { visible, inputType } = this.state;
+        const { BEGIN, END } = DATE_INPUT_TYPE;
+
+        if (!visible) {
             this.setState({
                 visible: true,
             });
-    }
+
+            if (![BEGIN, END].includes(inputType)) {
+                this.setState({
+                    inputType: BEGIN,
+                });
+
+                this.handleInputFocus(BEGIN);
+            }
+        }
+    };
 
     getCurrentAlign = ({ align }) => {
         this.setState({
@@ -460,6 +474,7 @@ class Picker extends React.Component {
             timePanelProps,
             resetTime,
             placeholder,
+            disabledTime,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
@@ -513,6 +528,7 @@ class Picker extends React.Component {
             disabledDate,
             onPanelChange,
             timePanelProps,
+            disabledTime,
             resetTime,
         };
 
@@ -544,7 +560,7 @@ class Picker extends React.Component {
         const popupCls = classnames(prefixCls, {
             [`${prefixCls}-overlay`]: true,
             [`${prefixCls}-${(align || []).join('-')}`]: align,
-            [`${prefixCls}-overlay-showtime`]: isRange && showTime,
+            [`${prefixCls}-overlay-range`]: isRange,
         });
 
         let triggerProps;

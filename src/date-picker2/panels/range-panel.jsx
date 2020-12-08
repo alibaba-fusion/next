@@ -16,38 +16,49 @@ const { UN_SELECTED, SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_ST
 const { BEGIN, END } = DATE_INPUT_TYPE;
 
 const operate = (mode, value, operator) => {
+    const newVal = value.clone();
+
     switch (mode) {
         case DATE:
         case WEEK:
-            return value.clone()[operator](1, 'month');
-
+            return newVal[operator](1, 'month');
         case QUARTER:
         case MONTH:
-            return value.clone()[operator](1, 'year');
+            return newVal[operator](1, 'year');
         case YEAR:
-            return value.clone()[operator](20, 'year');
+            return newVal[operator](10, 'year');
+    }
+};
+
+const isSamePanel = (a, b, mode) => {
+    switch (mode) {
+        case DATE:
+        case WEEK:
+            return a.isSame(b, 'month');
+        case QUARTER:
+        case MONTH:
+            return a.isSame(b, 'year');
+        case YEAR: {
+            const begin = a.year() - (a.year() % 20);
+            const byear = b.year();
+
+            return byear >= begin && byear < begin + 20;
+        }
     }
 };
 
 const getPanelValue = ({ mode, inputType, value, showTime }, oldPanelValue) => {
     let panelValue = oldPanelValue;
-    const unit = mode;
 
-    if (value && inputType !== null) {
-        const v = value[inputType];
+    if (value && inputType !== null && value[inputType]) {
+        const [begin, end] = value;
 
-        if (
-            v &&
-            oldPanelValue &&
-            (oldPanelValue.isAfter(v, unit) ||
-                oldPanelValue
-                    .clone()
-                    .add(2, unit)
-                    .isBefore(v, unit))
-        ) {
-            panelValue = datejs(v);
+        panelValue = value[inputType];
 
-            if (inputType === END && !showTime) {
+        if (!showTime) {
+            if (begin && end && isSamePanel(begin, end, mode)) {
+                panelValue = begin;
+            } else if (inputType === END) {
                 panelValue = operate(mode, panelValue, 'subtract');
             }
         }
@@ -70,6 +81,7 @@ class RangePanel extends React.Component {
         justBeginInput: PT.bool,
         showTime: PT.bool,
         timePanelProps: PT.object,
+        disabledTime: PT.object,
     };
 
     static defaultProps = {
@@ -110,21 +122,8 @@ class RangePanel extends React.Component {
         const { panelValue: v } = this.state;
 
         const begin = v.clone();
-        let end;
+        const end = operate(mode, v, 'add');
 
-        switch (mode) {
-            case DATE:
-            case WEEK:
-                end = v.clone().add(1, 'month');
-                break;
-            case QUARTER:
-            case MONTH:
-                end = v.clone().add(1, 'year');
-                break;
-            case YEAR:
-                end = v.clone().add(20, 'year');
-                break;
-        }
         return [begin, end];
     }
 
@@ -183,6 +182,7 @@ class RangePanel extends React.Component {
             panelValue: v,
             calendarIdx: idx,
         });
+
         func.call(this.props, 'onPanelChange', [v, mode]);
     };
 
@@ -224,23 +224,23 @@ class RangePanel extends React.Component {
 
     handleEdgeState = (value, mode) => {
         const unit = this.getUnitByMode(mode);
-        let endOfDate;
-        let beginOfDate;
 
         switch (mode) {
-            case DATE:
-                endOfDate = value.endOf('month');
-                beginOfDate = value.startOf('month');
-                break;
-            case YEAR:
-                endOfDate = value.add(10, 'year');
-                beginOfDate = value.subtract(10, 'year');
-                break;
+            case DATE: {
+                const endDate = value.endOf('month');
+                const beginDate = value.startOf('month');
+                return beginDate.isSame(value, unit) ? 1 : endDate.isSame(value, unit) ? 2 : 0;
+            }
+            case YEAR: {
+                const year = value.year();
+
+                const beginYear = value.year() - (value.year() % 10);
+                const endYear = beginYear + 9;
+                return year === beginYear ? 1 : year === endYear ? 2 : 0;
+            }
             default:
                 return 0;
         }
-
-        return beginOfDate.isSame(value, unit) ? 1 : endOfDate.isSame(value, unit) ? 2 : 0;
     };
 
     getCellClassName = value => {
@@ -255,7 +255,6 @@ class RangePanel extends React.Component {
         let hoverClassName;
         if (curHoverValue) {
             const hoverValue = [...this.props.value];
-            const edgeState = this.handleEdgeState(mode);
 
             hoverValue[inputType] = curHoverValue;
             const [hoverBegin, hoverEnd] = hoverValue;
@@ -268,18 +267,28 @@ class RangePanel extends React.Component {
                     [`${prefixCls}-hover-begin`]: hoverState === SELECTED_BEGIN,
                     [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
                     [`${prefixCls}-hover-end`]: hoverState === SELECTED_END,
-                    [`${prefixCls}-hover-edge-begin`]: edgeState === 0,
-                    [`${prefixCls}-hover-edge-end`]: edgeState === 1,
                 };
             }
         }
 
+        let rangeClassName;
+        if (!this.hasModeChanged) {
+            const edgeState = this.handleEdgeState(value, mode);
+
+            rangeClassName = {
+                [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
+                [`${prefixCls}-range-end`]: state === SELECTED_END,
+                [`${prefixCls}-range-begin-single`]: state >= SELECTED && (!end || end.isSame(begin, unit)),
+                [`${prefixCls}-range-end-single`]: state >= SELECTED && (!begin || begin.isSame(end, unit)),
+                [`${prefixCls}-edge-begin`]: edgeState === 1,
+                [`${prefixCls}-edge-end`]: edgeState === 2,
+            };
+        }
+
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
-            [`${prefixCls}-range-begin`]: state === SELECTED_BEGIN,
-            [`${prefixCls}-range-end`]: state === SELECTED_END,
-            [`${prefixCls}-range-begin-single`]: state >= SELECTED && (!end || end.isSame(begin, unit)),
-            [`${prefixCls}-range-end-single`]: state >= SELECTED && (!begin || begin.isSame(end, unit)),
+
+            ...rangeClassName,
             ...hoverClassName,
         };
     };
@@ -292,10 +301,14 @@ class RangePanel extends React.Component {
     };
 
     renderRangeTime = sharedProps => {
-        const { value, prefix, showTime, inputType, timePanelProps } = this.props;
+        const { value, prefix, showTime, inputType, timePanelProps, disabledTime } = this.props;
+
+        const className = classnames(`${prefix}range-picker2-panel`, {
+            [`${prefix}range-picker2-panel-single`]: this.hasModeChanged,
+        });
 
         return (
-            <div key="time-panel" className={`${prefix}range-picker2-panel`}>
+            <div key="range-time-panel" className={className}>
                 <Calendar
                     panelValue={this.state.panelValue}
                     {...sharedProps}
@@ -307,7 +320,7 @@ class RangePanel extends React.Component {
                         prefix={prefix}
                         value={value[inputType]}
                         onSelect={v => this.onChange(v, false)}
-                        timePickerProps={timePanelProps}
+                        timePickerProps={{ ...disabledTime, ...timePanelProps }}
                     />
                 ) : null}
             </div>
@@ -339,12 +352,12 @@ class RangePanel extends React.Component {
             />,
         ];
 
-        const classNames = classnames({
-            [`${prefix}range-picker2-panel-double`]: !hasModeChanged,
+        const className = classnames(`${prefix}range-picker2-panel`, {
+            [`${prefix}range-picker2-panel-single`]: hasModeChanged,
         });
 
         return (
-            <div className={classNames}>
+            <div key="range-panel" className={className}>
                 {!this.hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
             </div>
         );
@@ -367,6 +380,7 @@ class RangePanel extends React.Component {
             sharedProps.disabledDate = disabledDate;
         }
 
+        // 日期面板固定列数 保证对齐
         if ([DATE, WEEK].includes(mode)) {
             sharedProps.colNum = 6;
         }
@@ -386,14 +400,10 @@ class RangePanel extends React.Component {
         const left = inputType === END ? 140 : 0;
 
         return (
-            <div className={`${prefix}range-picker2-panel`}>
-                {this.props.showTime
-                    ? [
-                          <div key="arrow" className={`${prefix}range-picker2-arrow`} style={{ left }} />,
-                          this.renderRangeTime(sharedProps),
-                      ]
-                    : this.renderRange(sharedProps)}
-            </div>
+            <React.Fragment>
+                <div key="arrow" className={`${prefix}range-picker2-arrow`} style={{ left }} />
+                {this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps)}
+            </React.Fragment>
         );
     }
 }

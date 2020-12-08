@@ -25,15 +25,15 @@
     &-cell {
         cursor: pointer;
         position: relative;
-        transition: background-color .2s, border .2s;
     }
 
     #{$cell-inner} {
-        color: #C4C7CC;
+        color: $color-text1-1;
         outline: none;
         border: 1px solid transparent;
         min-width: 24px;
         position: relative;
+        transition: background-color .2s, border .2s;
     }
 
     &-cell-disabled {
@@ -49,7 +49,7 @@
         #{$calendar2-prefix}-header {
             padding-top: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #F0F0F0;
+            border-bottom: 1px solid $color-line1-1;
             // &-actions {
             //     margin-left: auto;
             // }
@@ -81,7 +81,7 @@
         }
 
         #{$calendar2-prefix}-body {
-            padding: 8px 12px;
+            padding: 8px;
         }
     }
 
@@ -109,6 +109,13 @@
                 height: 24px;
                 transform: translateY(-50%);
             }
+            &-cell:last-child::before {
+                right: 8px;
+            }
+            &-cell:first-child::before {
+                left: 8px;
+            }
+
             &-table {
                 width: 272px;
                 thead > tr {
@@ -248,15 +255,12 @@
             display: flex;
             align-items: center;
 
-            &-btn,
-            &-text-field {
-                height: 38px;
-                line-height: 38px;
-            }
 
             &-btn {
-                min-width: 1.6em;
-                color: #585D66;
+                min-width: 20px;
+                min-height: 20px;
+                line-height: 20px;
+                color: $color-text1-3;
                 font-family: inherit;
                 vertical-align: initial;
             }
@@ -265,7 +269,7 @@
             &-text-field {
                 text-align: center;
                 font-size: 14px;
-                color: #1F2633;
+                color: $color-text1-4;
                 font-weight: bolder;
                 vertical-align: initial;
             }
@@ -275,9 +279,16 @@
                 color: $color-brand1-9;
             }
 
+            &-right-btn:hover,
+            &-left-btn:hover {
+                @include calendar-hover;
+            }
+
+
             &-text-field {
                 flex: 1;
-
+                height: 38px;
+                line-height: 38px;
                 #{$calendar2-prefix}-header-btn:not(:first-child) {
                     margin-left: 6px;
                 }

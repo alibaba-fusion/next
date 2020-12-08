@@ -17,7 +17,7 @@ class TimePanel extends React.PureComponent {
 
     formater = v => {
         const { timePanelProps = {} } = this.props;
-        const { showHour, showMinute, showSecond } = this.judgeIsShow();
+        const { showHour, showMinute, showSecond } = this.getShow();
 
         let fmt;
         if ('format' in timePanelProps) {
@@ -35,7 +35,7 @@ class TimePanel extends React.PureComponent {
         return typeof fmt === 'function' ? fmt(v) : v.format(fmt);
     };
 
-    judgeIsShow = () => {
+    getShow = () => {
         const { timePanelProps: p = {} } = this.props;
 
         const fmt = p.format || DECADE_TIME_FORMAT;
@@ -59,7 +59,7 @@ class TimePanel extends React.PureComponent {
 
     render() {
         const { prefix, value, onSelect, timePanelProps = {} } = this.props;
-        const { showHour, showMinute, showSecond } = this.judgeIsShow();
+        const { showHour, showMinute, showSecond } = this.getShow();
 
         return (
             <div className={`${prefix}calendar2-right ${prefix}calendar2-panel`}>

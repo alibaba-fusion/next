@@ -30,7 +30,6 @@ class DateInput extends React.Component {
         hasBorder: PT.bool,
         separator: PT.node,
         disabled: SharedPT.disabled,
-        allDisabled: PT.bool,
     };
 
     static defaultProps = {
@@ -95,17 +94,6 @@ class DateInput extends React.Component {
         }
     };
 
-    // onKeyDown = e => {
-    //     switch (e.keyCode) {
-    //         case KEYCODE.ENTER:
-    //             func.call(this.props, 'onClick');
-    //             this.onChange();
-    //             break;
-    //         default:
-    //             return;
-    //     }
-    // };
-
     getPlaceholder = () => {
         const { locale, isRange, mode } = this.props;
         const {
@@ -162,9 +150,8 @@ class DateInput extends React.Component {
             htmlSize,
             readOnly,
             hasBorder: false,
-            onBlur: () => handleTypeChange(null),
+            // onBlur: () => handleTypeChange(null),
             onChange: onInput,
-            // onKeyDown,
         };
 
         let rangeProps;
