@@ -349,7 +349,7 @@
         }
     }
     > #{$table-prefix}-inner > #{$table-prefix}-body > table {
-        table-layout: auto;
+        table-layout: fixed;
     }
 }
 
