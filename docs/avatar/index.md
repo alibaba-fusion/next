@@ -4,6 +4,7 @@
 -   family: DataDisplay
 -   chinese: 头像
 -   type: 展示
+-   version: 1.19
 
 ---
 
