@@ -1,8 +1,8 @@
-# 无障碍
+# 无障碍支持
 
 - order: 13
 
-支持手动输入或键盘操作，请参考`ARIA and KeyBoard`。
+支持手动输入或键盘操作，请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 :::lang=en-us
 # Accessibility

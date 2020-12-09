@@ -1,8 +1,8 @@
-# 无障碍
+# 无障碍支持
 
 - order: 7
 
-通过`okProps`与`cancelProps`设置`aria-label`属性，屏幕阅读器读取确定和取消按钮。关于键盘操作请参考`ARIA and KeyBoard`。
+通过`okProps`与`cancelProps`设置`aria-label`属性，屏幕阅读器读取确定和取消按钮。关于键盘操作请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 :::lang=en-us
 # Accessibility

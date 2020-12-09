@@ -49,7 +49,7 @@
 | isPreview     | 是否为预览态                                                                                                                                                                                                                           | Boolean                           | false    |
 | renderPreview | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(previewed: Array, props: Object) => reactNode<br>**参数**:<br>_previewed_: {Array} 预览值 [{label: '', value:''},...]<br>_props_: {Object} 所有传入的参数<br>**返回值**:<br>{reactNode} Element 渲染内容<br> | Function                          | -        |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明       |
 | :---- | :------- |

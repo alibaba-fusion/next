@@ -48,7 +48,9 @@ class Demo extends React.Component {
                     dataSource={['right', 'bottom', 'left', 'top']}
                     defaultValue={'right'}
                     onChange={this.onPlacementChange}
-                /> &nbsp;&nbsp;&nbsp;&nbsp;
+                /> 
+                <br/>
+                <br/>
                 <Button type="primary" onClick={this.onOpen}> open </Button>
                 <Drawer
                     title="标题"

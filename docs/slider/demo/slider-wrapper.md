@@ -42,7 +42,8 @@ class SliderWrapper extends React.Component {
                 <Option value>True</Option>
                 <Option value={false}>False</Option>
             </Select>
-            &nbsp;&nbsp;
+            <br/>
+            <br/>
             <Select placeholder="Autoplay Speed" onChange={this.onSelectAutoplaySpeed.bind(this)}>
                 <Option value={1000}>1 second</Option>
                 <Option value={2000}>2 seconds</Option>

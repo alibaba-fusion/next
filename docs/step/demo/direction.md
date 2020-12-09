@@ -19,8 +19,7 @@ While, type `arrows` do not support vertical mode.
 ---
 
 ````jsx
-import ReactDOM from 'react-dom';
-import React,{ useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button, Step, Radio } from '@alifd/next';
 
 const Step1Content=()=>{

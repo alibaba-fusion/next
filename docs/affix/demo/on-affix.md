@@ -36,8 +36,9 @@ class Demo extends React.Component {
     render() {
         const state = this.state;
 
-        return (<div className="affix-demo-wrapper">
-            <Affix onAffix={this.onAffix}>
+        return (<div>
+            <span>Scroll window to see button text change:  </span>
+            <Affix onAffix={this.onAffix} style={{display: 'inline-flex'}}>
                 <Button type="secondary">{state.affixed ? 'Affixed Button' : 'Unaffixed Button'}</Button>
             </Affix>
         </div>);
@@ -46,10 +47,4 @@ class Demo extends React.Component {
 
 
 ReactDOM.render(<Demo />, mountNode);
-````
-
-````css
-.affix-demo-wrapper {
-    padding: 40px 0;
-}
 ````

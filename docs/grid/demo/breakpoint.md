@@ -21,7 +21,7 @@ const { Row, Col } = Grid;
 
 ReactDOM.render(
     <div className="breakpoint-demo">
-        <div className="demo-title">Resize browser to see how each column changes</div>
+        <div className="grid-fixed-demo-title">Resize browser to see how each column changes</div>
         <Row >
             <Col xs={12} s={8} m={6}>Col</Col>
             <Col xs={6} s={8} m={6}>Col</Col>
@@ -31,7 +31,7 @@ ReactDOM.render(
 ````
 
 ````css
-.breakpoint-demo .demo-title {
+.breakpoint-demo .grid-fixed-demo-title {
     margin-left: 20px;
 }
 

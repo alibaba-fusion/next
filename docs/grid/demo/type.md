@@ -61,15 +61,15 @@ class Demo extends React.Component {
     render() {
         return (
             <div className="type-demo">
-                <div className="demo-title">Default</div>
+                <div className="grid-fixed-demo-title">Default</div>
                 <Row>
                     <Col>100%</Col>
                 </Row>
-                <div className="demo-title">Set fixed to true</div>
+                <div className="grid-fixed-demo-title">Set fixed to true</div>
                 <Row ref="fixedRow" fixed>
                     <Col ref="fixCol" />
                 </Row>
-                <div className="demo-title">Set fixedWidth to 's'</div>
+                <div className="grid-fixed-demo-title">Set fixedWidth to 's'</div>
                 <Row fixedWidth="s">
                     <Col>720px</Col>
                 </Row>
@@ -82,7 +82,7 @@ ReactDOM.render(<Demo />, mountNode);
 ````
 
 ````css
-.type-demo .demo-title {
+.type-demo .grid-fixed-demo-title {
     margin-left: 20px;
 }
 

@@ -15,7 +15,7 @@ Customize table borders
 ---
 
 ````jsx
-import { Table, Button } from '@alifd/next';
+import { Table, Button, Box } from '@alifd/next';
 
 const dataSource = () => {
         const result = [];
@@ -63,12 +63,12 @@ class App extends React.Component {
     }
     render() {
         return (<span>
-            <p>
-                <Button onClick={this.toggleZebra.bind(this)}> Toggle zebra </Button> &nbsp;
-                <Button onClick={this.toggleBorder.bind(this)}> Toggle border</Button> &nbsp;
-                <Button onClick={this.makeBeauty.bind(this)}> Make second column beauty </Button> &nbsp;
-                <Button onClick={this.makeAlign.bind(this)}> Make first column align right </Button> &nbsp;
-            </p>
+            <Box direction="row" spacing={20}>
+                <Button onClick={this.toggleZebra.bind(this)}> Toggle zebra </Button> 
+                <Button onClick={this.toggleBorder.bind(this)}> Toggle border</Button> 
+                <Button onClick={this.makeBeauty.bind(this)}> Make second column beauty </Button> 
+                <Button onClick={this.makeAlign.bind(this)}> Make first column align right </Button> 
+            </Box>
             <Table dataSource={this.state.dataSource}
                 isZebra={this.state.isZebra}
                 hasBorder={this.state.hasBorder}>
