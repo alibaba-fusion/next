@@ -465,6 +465,10 @@ class NumberPicker extends React.Component {
         this.inputRef = ref;
     }
 
+    getInputNode() {
+        return this.inputRef;
+    }
+
     handleMouseDown(e) {
         e.preventDefault();
     }
