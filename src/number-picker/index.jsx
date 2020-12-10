@@ -10,4 +10,5 @@ export default ConfigProvider.config(NumberPicker, {
 
         return props;
     },
+    exportNames: ['getInputNode'],
 });
