@@ -201,10 +201,27 @@ export interface ItemProps extends React.HTMLAttributes<HTMLElement>, CommonProp
      * 是否修改数据时自动触发校验
      */
     autoValidate?: boolean;
+    /**
+     * 在响应式布局下，且label在左边时，label的宽度是多少
+     */
     labelWidth?: number | string;
+    /**
+     * 在响应式布局模式下，表单项占多少列
+     */
     colSpan?: number;
+    /**
+     * 是否开启预览态
+     */
     isPreview?: boolean;
+    /**
+     * 预览态模式下渲染的内容
+     * @param {any} value 根据包裹的组件的 value 类型而决定
+     */
     renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any
+    /**
+     * 是否使用 label 替换校验信息的 name 字段
+     */
+    useLabelForErrorMessage?: boolean
 }
 
 export class Item extends React.Component<ItemProps, any> {}
@@ -481,11 +498,20 @@ export interface FormProps extends HTMLAttributesWeak, CommonProps {
      * 设置标签类型
      */
     component?: string | (() => void);
+    /**
+     * 是否开启内置的响应式布局 （使用ResponsiveGrid）
+     */
     responsive?: boolean;
     // 在 responsive模式下，透传给 ResponsiveGrid的， 表示 每个 cell 之间的间距， [bottom&top, right&left]
     gap?: number | Array<number>;
+    /**
+     * 是否开启预览态
+     */
     isPreview?: boolean;
-    renderPreview?: (values: number | string | data | Array<number | string | data>, props: any) => any
+    /**
+     * 是否使用 label 替换校验信息的 name 字段
+     */
+    useLabelForErrorMessage?: boolean
 }
 
 export default class Form extends React.Component<FormProps, any> {
