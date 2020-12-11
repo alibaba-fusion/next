@@ -486,6 +486,37 @@ describe('TreeSelect', () => {
         assert(hasClass(node, 'next-filtered'));
     });
 
+    it('should ignore case when search', () => {
+        const treeData = [
+            {
+                label: 'Component',
+                value: '1',
+                selectable: false,
+                children: [
+                    {
+                        label: 'Form',
+                        value: '2',
+                        children: [
+                            {
+                                label: 'Input',
+                                value: '4',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ];
+        wrapper = mount(<TreeSelect defaultVisible dataSource={treeData} treeDefaultExpandAll showSearch />);
+
+        ['INPUT', 'input'].forEach(kw => {
+            wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: kw } });
+            wrapper.update();
+
+            const node = document.querySelector('.next-filtered');
+            assert(node && node.querySelector('.next-tree-node-label') !== 'Input');
+        });
+    });
+
     // https://github.com/alibaba-fusion/next/issues/2029
     it('fix bug after setState onSearch', () => {
         function Demo() {
