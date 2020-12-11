@@ -190,6 +190,9 @@
                 background: linear-gradient(90deg, transparent, $input-bg-color 10px);
             }
         }
+        .#{$css-prefix}disabled #{$select-prefix}-tag-compact {
+            background: linear-gradient(90deg, transparent, $input-disabled-bg-color 10px);
+        }
     }
 
     &-multiple, &-tag {
