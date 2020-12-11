@@ -11,7 +11,9 @@
 
 ## 何时使用
 
-表单输入，一般配合Form使用。
+表单输入，一般配合 Form 使用。 
+
+- Input 不支持 Number 类型数字，如有需要使用 NumberPicker 支持数字选择
 
 ## API
 

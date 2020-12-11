@@ -169,6 +169,7 @@ class Upload extends Base {
         renderPreview: PropTypes.func,
         /**
          * 文件对象的 key name
+         * @version 1.21
          */
         fileKeyName: PropTypes.string,
         /**
