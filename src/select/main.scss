@@ -478,4 +478,18 @@
     }
 }
 
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    #{$select-prefix}-multiple {
+        #{$select-prefix}-compact {
+            #{$select-prefix}-tag-compact {
+                background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-bg-color 10px);
+            }
+        }
+
+        .#{$css-prefix}disabled #{$select-prefix}-tag-compact {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), $input-disabled-bg-color 10px);
+        }
+    }
+}
+
 @import "./rtl.scss";
