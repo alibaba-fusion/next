@@ -30,6 +30,7 @@ class DateInput extends React.Component {
         hasBorder: PT.bool,
         separator: PT.node,
         disabled: SharedPT.disabled,
+        inputProps: PT.object,
     };
 
     static defaultProps = {
@@ -37,12 +38,14 @@ class DateInput extends React.Component {
         readOnly: false,
         hasClear: true,
         separator: <Icon size="xxs" type="minus" />,
+        hasBorder: true,
+        size: 'medium',
     };
 
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}picker2-input`;
+        this.prefixCls = `${props.prefix}date-picker2-input`;
     }
 
     setInputRef = (el, index) => {
@@ -140,6 +143,7 @@ class DateInput extends React.Component {
             hasBorder,
             separator,
             disabled,
+            inputProps,
         } = this.props;
 
         const placeholder = this.getPlaceholder();
@@ -150,8 +154,8 @@ class DateInput extends React.Component {
             htmlSize,
             readOnly,
             hasBorder: false,
-            // onBlur: () => handleTypeChange(null),
             onChange: onInput,
+            ...inputProps,
         };
 
         let rangeProps;
@@ -162,7 +166,7 @@ class DateInput extends React.Component {
                     autoFocus,
                     placeholder: placeholder[idx],
                     value: value[idx] || '',
-                    disabled: disabled[idx],
+                    disabled: Array.isArray(disabled) ? disabled[idx] : disabled,
                     ref: ref => setInputRef(ref, idx),
                     onFocus: () => handleTypeChange(idx),
                     className: classnames({
@@ -177,7 +181,7 @@ class DateInput extends React.Component {
             {
                 [`${prefixCls}-focus`]: focus,
                 [`${prefixCls}-noborder`]: !hasBorder,
-                [`${prefixCls}-disabled`]: isRange ? disabled.every(v => v) : disabled,
+                [`${prefixCls}-disabled`]: isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled,
             }
         );
 

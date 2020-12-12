@@ -4,7 +4,6 @@ import Picker from './picker';
 import { DATE_PICKER_MODE } from './constant';
 
 const { WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
-
 const MODE2FORMAT = {
     [WEEK]: 'YYYY-wo',
     [MONTH]: 'YYYY-MM',
@@ -12,21 +11,30 @@ const MODE2FORMAT = {
     [YEAR]: 'YYYY',
 };
 
-const DatePicker2 = props => <Picker format={props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'} {...props} />;
+const ConfigPicker = ConfigProvider.config(Picker);
 
-DatePicker2.MonthPicker = props => <Picker format={MODE2FORMAT[MONTH]} mode={MONTH} {...props} />;
-DatePicker2.YearPicker = props => <Picker format={MODE2FORMAT[YEAR]} mode={YEAR} {...props} />;
-DatePicker2.WeekPicker = props => <Picker format={MODE2FORMAT[WEEK]} mode={WEEK} {...props} />;
-DatePicker2.QuarterPicker = props => <Picker format={MODE2FORMAT[QUARTER]} mode={QUARTER} {...props} />;
+const DatePicker2 = props => <ConfigPicker format={props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'} {...props} />;
+DatePicker2.displayName = 'DatePicker2';
+
+DatePicker2.MonthPicker = props => <ConfigPicker format={MODE2FORMAT[MONTH]} mode={MONTH} {...props} />;
+DatePicker2.MonthPicker.displayName = 'MonthPicker2';
+
+DatePicker2.YearPicker = props => <ConfigPicker format={MODE2FORMAT[YEAR]} mode={YEAR} {...props} />;
+DatePicker2.YearPicker.displayName = 'YearPicker2';
+
+DatePicker2.WeekPicker = props => <ConfigPicker format={MODE2FORMAT[WEEK]} mode={WEEK} {...props} />;
+DatePicker2.WeekPicker.displayName = 'WeekPicker2';
+
+DatePicker2.QuarterPicker = props => <ConfigPicker format={MODE2FORMAT[QUARTER]} mode={QUARTER} {...props} />;
+DatePicker2.QuarterPicker.displayName = 'QuarterPicker2';
 
 DatePicker2.RangePicker = props => {
     let format = MODE2FORMAT[props.mode];
-
     if (!format) {
         format = props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
     }
-
-    return <Picker type="range" format={format} {...props} />;
+    return <ConfigPicker type="range" format={format} {...props} />;
 };
+DatePicker2.RangePicker.displayName = 'RangePicker2';
 
-export default ConfigProvider.config(DatePicker2);
+export default DatePicker2;

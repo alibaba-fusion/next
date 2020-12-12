@@ -82,6 +82,7 @@ class RangePanel extends React.Component {
         showTime: PT.bool,
         timePanelProps: PT.object,
         disabledTime: PT.object,
+        dateCellRender: PT.func,
     };
 
     static defaultProps = {
@@ -255,7 +256,6 @@ class RangePanel extends React.Component {
         let hoverClassName;
         if (curHoverValue) {
             const hoverValue = [...this.props.value];
-
             hoverValue[inputType] = curHoverValue;
             const [hoverBegin, hoverEnd] = hoverValue;
 
@@ -287,7 +287,6 @@ class RangePanel extends React.Component {
 
         return {
             [`${prefixCls}-selected`]: state >= SELECTED,
-
             ...rangeClassName,
             ...hoverClassName,
         };
@@ -307,6 +306,11 @@ class RangePanel extends React.Component {
             [`${prefix}range-picker2-panel-single`]: this.hasModeChanged,
         });
 
+        let _disabledTime;
+        if (disabledTime) {
+            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+        }
+
         return (
             <div key="range-time-panel" className={className}>
                 <Calendar
@@ -319,8 +323,10 @@ class RangePanel extends React.Component {
                     <TimePanel
                         prefix={prefix}
                         value={value[inputType]}
+                        inputType={inputType}
                         onSelect={v => this.onChange(v, false)}
-                        timePickerProps={{ ...disabledTime, ...timePanelProps }}
+                        disabledTime={disabledTime}
+                        timePickerProps={{ ..._disabledTime, ...timePanelProps }}
                     />
                 ) : null}
             </div>
@@ -365,7 +371,7 @@ class RangePanel extends React.Component {
 
     render() {
         const { onChange, getCellClassName, disabledDate, handleMouseEnter, handleMouseLeave } = this;
-        const { mode, prefix, inputType, justBeginInput } = this.props;
+        const { mode, prefix, justBeginInput, dateCellRender } = this.props;
 
         // 切换面板mode
         this.hasModeChanged = this.state.mode !== this.props.mode;
@@ -374,6 +380,7 @@ class RangePanel extends React.Component {
             prefix,
             shape: 'panel',
             panelMode: mode,
+            dateCellRender,
         };
 
         if (!justBeginInput) {
@@ -389,22 +396,15 @@ class RangePanel extends React.Component {
             sharedProps = {
                 ...sharedProps,
                 onChange,
-                dateCellClassName: getCellClassName,
-                dateCellProps: {
+                cellClassName: getCellClassName,
+                cellProps: {
                     onMouseEnter: handleMouseEnter,
                     onMouseLeave: handleMouseLeave,
                 },
             };
         }
 
-        const left = inputType === END ? 140 : 0;
-
-        return (
-            <React.Fragment>
-                <div key="arrow" className={`${prefix}range-picker2-arrow`} style={{ left }} />
-                {this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps)}
-            </React.Fragment>
-        );
+        return this.props.showTime ? this.renderRangeTime(sharedProps) : this.renderRange(sharedProps);
     }
 }
 

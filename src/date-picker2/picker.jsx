@@ -29,8 +29,6 @@ class Picker extends React.Component {
          * 是否禁用
          */
         disabled: SharedPT.disabled,
-        trigger: SharedPT.render,
-
         /**
          * 日期值（受控）moment 对象
          */
@@ -57,7 +55,6 @@ class Picker extends React.Component {
          * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
          */
         resetTime: PT.bool,
-
         /**
          * 禁用日期函数
          * @param {MomentObject} 日期值
@@ -65,7 +62,7 @@ class Picker extends React.Component {
          * @return {Boolean} 是否禁用
          */
         disabledDate: PT.func,
-        disabledTime: PT.func,
+        disabledTime: PT.object,
         /**
          * 自定义页脚面板
          * @return {Node} 自定义的面板页脚组件
@@ -86,10 +83,6 @@ class Picker extends React.Component {
          * @return {MomentObject|String} 日期值
          */
         onOk: PT.func,
-        /**
-         * 输入框尺寸
-         */
-        size: SharedPT.size,
 
         /**
          * 是否显示清空按钮
@@ -122,6 +115,7 @@ class Picker extends React.Component {
          * @returns {ReactNode}
          */
         dateCellRender: PT.func,
+
         /**
          * 是否为预览态
          */
@@ -131,6 +125,7 @@ class Picker extends React.Component {
          * @param {MomentObject} value 日期
          */
         renderPreview: PT.func,
+
         ranges: PT.oneOfType([PT.array, PT.object]),
         name: PT.string,
         popupComponent: PT.elementType,
@@ -140,24 +135,23 @@ class Picker extends React.Component {
         showOk: PT.bool,
         hasBorder: PT.bool,
         separator: PT.node,
+        trigger: SharedPT.render,
+        size: SharedPT.size,
     };
 
     static defaultProps = {
-        prefix: 'next-',
         rtl: false,
+        prefix: 'next-',
         locale: defaultLocale.DatePicker,
         type: DATE_PICKER_TYPE.DATE,
         mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
-        size: 'medium',
-        hasBorder: true,
-        disabled: false,
     };
 
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}picker2`;
+        this.prefixCls = `${props.prefix}date-picker2`;
 
         const value = this.checkAndRectify(
             'value' in props
@@ -174,7 +168,7 @@ class Picker extends React.Component {
             value,
             curValue: value, // 当前输入中的值
             inputValue: this.getInputValue(value),
-            visible: false,
+            visible: 'defaultVisible' in props ? props.defaultVisible : false,
             inputType: DATE_PICKER_TYPE.BEGIN,
             justBeginInput: true,
             panelMode: props.mode,
@@ -257,12 +251,12 @@ class Picker extends React.Component {
         return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
     };
 
-    toArrayIfNeeded = v => {
-        if (this.state.isRange && !Array.isArray(v)) {
-            v = Array(2).fill(v);
-        }
-        return v;
-    };
+    // toArrayIfNeeded = v => {
+    //     if (v !== undefined && this.state.isRange && !Array.isArray(v)) {
+    //         v = Array(2).fill(v);
+    //     }
+    //     return v;
+    // };
 
     // 判断弹层是否显示
     handleVisibleChange(visible, type) {
@@ -307,7 +301,7 @@ class Picker extends React.Component {
             if (visible) {
                 callback();
             } else {
-                this.timeoutId = setTimeout(callback, 50);
+                this.timeoutId = setTimeout(callback, 100);
             }
         }
     }
@@ -390,7 +384,7 @@ class Picker extends React.Component {
             value: v,
         });
 
-        func.call(this.props, 'onChange', [v, this.state.inputValue]);
+        func.call(this.props, 'onChange', [v, this.getInputValue(v)]);
 
         this.onVisibleChange(false);
     }
@@ -419,9 +413,7 @@ class Picker extends React.Component {
         const { BEGIN, END } = DATE_INPUT_TYPE;
 
         if (!visible) {
-            this.setState({
-                visible: true,
-            });
+            this.onVisibleChange(true);
 
             if (![BEGIN, END].includes(inputType)) {
                 this.setState({
@@ -437,6 +429,16 @@ class Picker extends React.Component {
         this.setState({
             align,
         });
+    };
+
+    renderArrow = () => {
+        const left =
+            this.dateInput &&
+            this.dateInput.input &&
+            this.dateInput.input[this.state.inputType] &&
+            this.dateInput.input[this.state.inputType].getInputNode().offsetLeft;
+
+        return <div key="arrow" className={`${this.props.prefix}range-picker2-arrow`} style={{ left }} />;
     };
 
     render() {
@@ -475,13 +477,16 @@ class Picker extends React.Component {
             resetTime,
             placeholder,
             disabledTime,
+            hasClear,
+            popupProps,
+            dateCellRender,
+            disabled,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
 
         const visible = this.getFromPropOrState('visible');
-        const disabled = this.toArrayIfNeeded(this.props.disabled);
-        const allDisabled = isRange ? disabled.every(v => v) : disabled;
+        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
 
         // value受控模式
         if ('value' in this.props) {
@@ -508,6 +513,7 @@ class Picker extends React.Component {
             isRange,
             readOnly: inputReadOnly,
             size,
+            hasClear,
             hasBorder,
             separator,
             disabled,
@@ -516,6 +522,7 @@ class Picker extends React.Component {
             placeholder,
             focus: visible,
             onInputTypeChange,
+            inputProps: this.props.inputProps,
         };
 
         const triggerNode = renderNode(trigger, <DateInput {...inputProps} />);
@@ -530,6 +537,7 @@ class Picker extends React.Component {
             timePanelProps,
             disabledTime,
             resetTime,
+            dateCellRender,
         };
 
         const DateNode = isRange ? (
@@ -540,24 +548,22 @@ class Picker extends React.Component {
 
         // 底部节点
         const oKable = !!(isRange ? curValue && curValue[inputType] : curValue);
+        const shouldShowFooter = showOk || ranges || extraFooterRender || footerRender;
 
-        const footerNode = renderNode(
-            footerRender,
-            showOk || ranges || extraFooterRender ? (
-                <FooterPanel
-                    oKable={oKable}
-                    onOk={onOk}
-                    showOk={showOk}
-                    onChange={handleChange}
-                    ranges={ranges}
-                    prefix={prefix}
-                    extraRender={extraFooterRender}
-                />
-            ) : null,
-            { onOk, onChange: handleChange }
-        );
+        const footerNode = shouldShowFooter ? (
+            <FooterPanel
+                footerRender={footerRender}
+                oKable={oKable}
+                onOk={onOk}
+                showOk={showOk}
+                onChange={handleChange}
+                ranges={ranges}
+                prefix={prefix}
+                extraRender={extraFooterRender}
+            />
+        ) : null;
 
-        const popupCls = classnames(prefixCls, {
+        const popupCls = classnames(popupProps && popupProps.className, {
             [`${prefixCls}-overlay`]: true,
             [`${prefixCls}-${(align || []).join('-')}`]: align,
             [`${prefixCls}-overlay-range`]: isRange,
@@ -571,21 +577,22 @@ class Picker extends React.Component {
         return (
             <Popup
                 key="date-picker-popup"
-                disabled
                 visible={visible}
                 triggerType="click"
                 onVisibleChange={handleVisibleChange}
                 trigger={
-                    <div {...triggerProps} role="button" tabIndex="0" className={`${prefixCls}-trigger`}>
+                    <div {...triggerProps} role="button" tabIndex="0" className={`${prefixCls}`}>
                         {triggerNode}
                     </div>
                 }
-                className={popupCls}
                 onPosition={this.getCurrentAlign}
+                {...popupProps}
+                className={popupCls}
             >
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div onMouseDown={handleMouseDown}>
                     <div className={`${prefixCls}-wrapper`}>
+                        {isRange ? this.renderArrow() : null}
                         {DateNode}
                         {this.state.panelMode !== this.props.mode ? null : footerNode}
                     </div>

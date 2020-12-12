@@ -11,6 +11,7 @@ import HeaderPanel from './panels/header-panel';
 import DateTable from './panels/date-table';
 
 const { bindCtx } = func;
+const { pick } = obj;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
 function getPanelMode(mode) {
@@ -62,6 +63,9 @@ class Calendar extends React.Component {
          * 自定义日期渲染
          */
         dateCellRender: PT.func,
+        quarterCellRender: PT.func,
+        monthCellRender: PT.func,
+        yearCellRender: PT.func,
         /**
          * 自定义头部渲染
          */
@@ -78,8 +82,8 @@ class Calendar extends React.Component {
          * 日期面板变化回调
          */
         onPanelChange: PT.func,
-        dateCellProps: PT.object,
-        dateCellClassName: PT.oneOfType([PT.func, PT.string]),
+        cellProps: PT.object,
+        cellClassName: PT.oneOfType([PT.func, PT.string]),
         panelMode: PT.any,
         onPrev: PT.func,
         onNext: PT.func,
@@ -228,56 +232,33 @@ class Calendar extends React.Component {
         let { value } = this.getFromPropOrState(['value']);
         const { panelMode, mode, panelValue } = this.state;
 
-        const {
-            rtl,
-            prefix,
-            locale,
-            shape,
-            className,
-            disabledDate,
-            dateCellRender,
-            dateCellProps,
-            dateCellClassName,
-            onPrev,
-            onNext,
-            onSuperPrev,
-            onSuperNext,
-            colNum,
-        } = this.props;
+        const { prefix, shape, className, ...restProps } = this.props;
 
         value = datejs(value);
 
         const sharedProps = {
-            rtl,
             prefix,
-            locale,
             shape,
             value,
             panelValue,
         };
 
         const headerPanelProps = {
+            ...pick(restProps, Object.keys(HeaderPanel.propTypes)),
+            ...sharedProps,
             mode,
             panelMode,
             onPanelValueChange: this.onPanelValueChange,
             onModeChange: this.onModeChange,
             onPanelModeChange: this.onPanelModeChange,
             showModeSwitch: this.props.mode !== CALENDAR_MODE.YEAR,
-            onPrev,
-            onNext,
-            onSuperPrev,
-            onSuperNext,
-            ...sharedProps,
         };
+
         const dateTableProps = {
-            mode: panelMode,
-            disabledDate,
-            dateCellRender,
-            dateCellClassName,
-            dateCellProps,
-            colNum,
-            onSelect: this.onDateSelect,
+            ...pick(restProps, Object.keys(DateTable.propTypes)),
             ...sharedProps,
+            mode: panelMode,
+            onSelect: this.onDateSelect,
         };
 
         const classNames = classnames([`${prefix}calendar2`, `${prefix}calendar2-${shape}`, className]);

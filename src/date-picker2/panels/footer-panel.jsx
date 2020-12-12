@@ -53,6 +53,7 @@ class FooterPanel extends React.PureComponent {
         onOk: PT.func,
         oKable: PT.bool,
         extraRender: SharedPT.render,
+        footerRender: SharedPT.render,
     };
 
     static defaultProps = {
@@ -62,7 +63,7 @@ class FooterPanel extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.prefixCls = `${props.prefix}picker2-footer`;
+        this.prefixCls = `${props.prefix}date-picker2-footer`;
     }
 
     renderRanges = () => {
@@ -94,12 +95,13 @@ class FooterPanel extends React.PureComponent {
 
     render() {
         const { prefixCls } = this;
-        const { showOk, locale, onOk, oKable, extraRender } = this.props;
+        const { showOk, locale, onOk, oKable, extraRender, footerRender } = this.props;
 
         const classNames = classnames(prefixCls, {
             [`${prefixCls}-with-actions`]: showOk,
         });
 
+        const footerNode = renderNode(footerRender);
         const extraNode = renderNode(extraRender, null);
 
         const rangesCls = classnames(`${prefixCls}-ranges`, {
@@ -108,15 +110,21 @@ class FooterPanel extends React.PureComponent {
 
         return (
             <div className={classNames}>
-                {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
-                <div className={rangesCls}>{this.renderRanges()}</div>
-                {showOk ? (
-                    <div className={`${prefixCls}-actions`}>
-                        <Button size="small" disabled={!oKable} onClick={onOk} type="primary">
-                            {locale.ok}
-                        </Button>
-                    </div>
-                ) : null}
+                {footerNode ? (
+                    footerNode
+                ) : (
+                    <React.Fragment>
+                        {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
+                        <div className={rangesCls}>{this.renderRanges()}</div>
+                        {showOk ? (
+                            <div className={`${prefixCls}-actions`}>
+                                <Button size="small" disabled={!oKable} onClick={onOk} type="primary">
+                                    {locale.ok}
+                                </Button>
+                            </div>
+                        ) : null}
+                    </React.Fragment>
+                )}
             </div>
         );
     }

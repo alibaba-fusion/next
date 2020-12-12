@@ -49,7 +49,6 @@ class HeaderPanel extends React.PureComponent {
 
     constructor(props) {
         super(props);
-
         this.prefixCls = `${props.prefix}calendar2-header`;
     }
 
@@ -344,4 +343,4 @@ class HeaderPanel extends React.PureComponent {
     }
 }
 
-export default React.memo(polyfill(HeaderPanel));
+export default polyfill(HeaderPanel);

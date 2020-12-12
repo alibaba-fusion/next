@@ -28,11 +28,7 @@ export function isArrayLike(obj) {
     const length = !!obj && 'length' in obj && obj.length;
     const type = typeOf(obj);
 
-    return (
-        type === 'Array' ||
-        length === 0 ||
-        (typeof length === 'number' && length > 0 && length - 1 in obj)
-    );
+    return type === 'Array' || length === 0 || (typeof length === 'number' && length > 0 && length - 1 in obj);
 }
 
 /**
@@ -41,11 +37,7 @@ export function isArrayLike(obj) {
  * @return {Boolean}
  */
 export function isPromise(obj) {
-    return (
-        !!obj &&
-        (typeof obj === 'object' || typeof obj === 'function') &&
-        typeof obj.then === 'function'
-    );
+    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
 }
 
 /**
@@ -202,6 +194,23 @@ export function pickOthers(holdProps, props) {
     return others;
 }
 
+export function pick(object, props) {
+    const newObj = Object.create(null);
+
+    if (props) {
+        if (!Array.isArray(props)) {
+            props = [props];
+        }
+        props.forEach(key => {
+            if (key in object) {
+                newObj[key] = object[key];
+            }
+        });
+    }
+
+    return newObj;
+}
+
 /**
  * 过滤出带prefix的属性
  * @param  {Object} holdProps 过滤的参照对象，最终的结果只保留不在参照对象中的key
@@ -274,9 +283,7 @@ export function deepMerge(target, ...sources) {
  */
 export function isFunctionComponent(component) {
     return (
-        typeOf(component) === 'Function' &&
-        component.prototype &&
-        component.prototype.isReactComponent === undefined
+        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent === undefined
     );
 }
 
@@ -286,9 +293,7 @@ export function isFunctionComponent(component) {
  */
 export function isClassComponent(component) {
     return (
-        typeOf(component) === 'Function' &&
-        component.prototype &&
-        component.prototype.isReactComponent !== undefined
+        typeOf(component) === 'Function' && component.prototype && component.prototype.isReactComponent !== undefined
     );
 }
 

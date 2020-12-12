@@ -25,14 +25,18 @@ class DateTable extends React.Component {
         value: SharedPT.date,
         panelValue: SharedPT.date,
         dateCellRender: PT.func,
+        quarterCellRender: PT.func,
+        monthCellRender: PT.func,
+        yearCellRender: PT.func,
         disabledDate: PT.func,
         selectedState: PT.func,
         hoveredState: PT.func,
         onSelect: PT.func,
         onDateSelect: PT.func,
         startOnSunday: PT.bool,
-        dateCellClassName: PT.oneOfType([PT.func, PT.string]),
+        cellClassName: PT.oneOfType([PT.func, PT.string]),
         colNum: PT.number,
+        cellProps: PT.object,
     };
 
     constructor(props) {
@@ -73,11 +77,11 @@ class DateTable extends React.Component {
     }
 
     handleMouseEnter(v, e, args) {
-        func.call(this.props.dateCellProps, 'onMouseEnter', [v, e, args]);
+        func.call(this.props.cellProps, 'onMouseEnter', [v, e, args]);
     }
 
     handleMouseLeave(v, e, args) {
-        func.call(this.props.dateCellProps, 'onMouseLeave', [v, e, args]);
+        func.call(this.props.cellProps, 'onMouseLeave', [v, e, args]);
     }
 
     isSame(curDate, date, mode) {
@@ -100,6 +104,17 @@ class DateTable extends React.Component {
         }
     }
 
+    getCustomRender = mode => {
+        const mode2RenderName = {
+            [DATE]: 'dateCellRender',
+            [QUARTER]: 'quarterCellRender',
+            [MONTH]: 'monthCellRender',
+            [YEAR]: 'yearCellRender',
+        };
+
+        return this.props[mode2RenderName[mode]];
+    };
+
     /**
      * 渲染日期面板
      * @param {Object[]} cellData - 单元格数据
@@ -109,7 +124,7 @@ class DateTable extends React.Component {
      */
     renderCellContent(cellData) {
         const { props } = this;
-        const { mode, hoveredState, dateCellClassName } = props;
+        const { mode, hoveredState, cellClassName } = props;
         const { hoverValue } = this.state;
 
         const cellContent = [];
@@ -132,7 +147,7 @@ class DateTable extends React.Component {
                     [`${prefixCls}-selected`]: this.isSame(value, props.value, mode),
                     [`${prefixCls}-disabled`]: isDisabled,
                     [`${prefixCls}-range-hover`]: hoverState,
-                    ...(dateCellClassName && dateCellClassName(value)),
+                    ...(cellClassName && cellClassName(value)),
                 });
 
                 let onEvents = null;
@@ -155,14 +170,15 @@ class DateTable extends React.Component {
                     );
                 }
 
+                const customRender = this.getCustomRender(mode);
+
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
                         <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
-                            {renderNode(
-                                props.dateCellRender,
-                                <div className={`${prefixCls}-value`}>{label}</div>,
-                                value
-                            )}
+                            {renderNode(customRender, <div className={`${prefixCls}-value`}>{label}</div>, [
+                                value,
+                                mode,
+                            ])}
                         </div>
                     </td>
                 );

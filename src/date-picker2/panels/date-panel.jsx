@@ -21,6 +21,8 @@ class DatePanel extends React.Component {
         disabledDate: PT.func,
         resetTime: PT.bool,
         timePanelProps: PT.object,
+        disabledTime: SharedPT.disabledTime,
+        dateCellRender: PT.func,
     };
     static defaultProps = {
         showTime: false,
@@ -51,11 +53,26 @@ class DatePanel extends React.Component {
     };
 
     render() {
-        const { mode, panelMode, prefix, showTime, value, disabledDate, timePanelProps } = this.props;
+        const {
+            mode,
+            panelMode,
+            prefix,
+            showTime,
+            value,
+            disabledDate,
+            disabledTime,
+            timePanelProps,
+            dateCellRender,
+        } = this.props;
 
         const className = classnames(`${prefix}date-picker2-panel`, {
             [`${prefix}date-time-picker2-panel`]: showTime,
         });
+
+        let _disabledTime;
+        if (disabledTime) {
+            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
+        }
 
         return (
             <div className={className}>
@@ -67,13 +84,15 @@ class DatePanel extends React.Component {
                     onChange={this.handleChange}
                     onPanelChange={this.handlePanelChange}
                     disabledDate={disabledDate}
+                    dateCellRender={dateCellRender}
                 />
                 {showTime && mode === panelMode ? (
                     <TimePanel
                         prefix={prefix}
                         value={value}
                         onSelect={this.handleTimeChange}
-                        timePanelProps={timePanelProps}
+                        disabledTime={disabledTime}
+                        timePickerProps={{ ..._disabledTime, ...timePanelProps }}
                     />
                 ) : null}
             </div>

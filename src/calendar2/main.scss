@@ -37,8 +37,11 @@
     }
 
     &-cell-disabled {
-        &::before,
-        #{$cell-inner} {
+        // &::before,
+        // #{$cell-inner} {
+        //     @include calendar-disabled;
+        // }
+        &::before {
             @include calendar-disabled;
         }
     }
@@ -89,9 +92,8 @@
     &-panel {
         #{$cell-inner} {
             z-index: 2;
-            min-width: 24px;
             height: 24px;
-            line-height: 24px;
+            line-height: 22px;
             border-radius: 2px;
             display: inline-block;
         }
@@ -104,15 +106,19 @@
                 position: absolute;
                 top: 50%;
                 right: 0;
-                left: 0;
+                left: -1px;
                 z-index: 1;
                 height: 24px;
                 transform: translateY(-50%);
             }
             &-cell:last-child::before {
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
                 right: 8px;
             }
             &-cell:first-child::before {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
                 left: 8px;
             }
 
@@ -258,11 +264,11 @@
 
             &-btn {
                 min-width: 20px;
-                min-height: 20px;
                 line-height: 20px;
                 color: $color-text1-3;
                 font-family: inherit;
                 vertical-align: initial;
+                border-radius: 2px;
             }
 
             &-btn > span,
@@ -301,30 +307,4 @@
 #{$calendar2-prefix}-header-select-month-popup,
 #{$calendar2-prefix}-header-select-year-popup {
     min-width: auto;
-}
-
-
-#{$calendar2-prefix}-table-week {
-    tr {
-        td:first-child {
-            color: $color-text1-2;
-        }
-
-        td:nth-child(2):before {
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-        }
-        td:last-of-type:before {
-            border-top-right-radius: 4px;
-            border-bottom-right-radius: 4px;
-        }
-
-        &:hover td:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):before {
-            @include calendar-hover;
-        }
-    }
-
-    #{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled)::before {
-        @include calendar-selected;
-    }
 }

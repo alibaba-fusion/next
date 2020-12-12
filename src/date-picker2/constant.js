@@ -1,6 +1,6 @@
 export const DATE_PICKER_TYPE = {
-    RANGE: 'range',
     DATE: 'date',
+    RANGE: 'range',
 };
 
 export const DATE_INPUT_TYPE = {
