@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import * as PT from 'prop-types';
 
 import SharedPT from '../prop-types';
-import { func, datejs } from '../../util';
+import { func, datejs, obj } from '../../util';
 
 import { DATE_INPUT_TYPE } from '../constant';
 import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar2/constant';
@@ -73,6 +73,9 @@ const getPanelValue = ({ mode, inputType, value, showTime }, oldPanelValue) => {
 
 class RangePanel extends React.Component {
     static propTypes = {
+        rtl: PT.bool,
+        prefix: PT.string,
+        locale: PT.object,
         mode: SharedPT.mode,
         value: PT.arrayOf(SharedPT.date),
         inputType: SharedPT.inputType,
@@ -326,7 +329,7 @@ class RangePanel extends React.Component {
                         inputType={inputType}
                         onSelect={v => this.onChange(v, false)}
                         disabledTime={disabledTime}
-                        timePickerProps={{ ..._disabledTime, ...timePanelProps }}
+                        timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />
                 ) : null}
             </div>
@@ -370,22 +373,20 @@ class RangePanel extends React.Component {
     }
 
     render() {
-        const { onChange, getCellClassName, disabledDate, handleMouseEnter, handleMouseLeave } = this;
-        const { mode, prefix, justBeginInput, dateCellRender } = this.props;
+        const { onChange, getCellClassName, handleMouseEnter, handleMouseLeave } = this;
+        const { mode, justBeginInput, dateCellRender, ...restProps } = this.props;
 
         // 切换面板mode
         this.hasModeChanged = this.state.mode !== this.props.mode;
 
         let sharedProps = {
-            prefix,
+            ...obj.pickProps(restProps, Calendar),
             shape: 'panel',
             panelMode: mode,
             dateCellRender,
         };
 
-        if (!justBeginInput) {
-            sharedProps.disabledDate = disabledDate;
-        }
+        sharedProps.disabledDate = justBeginInput ? this.props.disabledDate : this.disabledDate;
 
         // 日期面板固定列数 保证对齐
         if ([DATE, WEEK].includes(mode)) {

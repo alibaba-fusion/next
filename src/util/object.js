@@ -194,14 +194,11 @@ export function pickOthers(holdProps, props) {
     return others;
 }
 
-export function pick(object, props) {
+export function pickProps(object, Component) {
     const newObj = Object.create(null);
 
-    if (props) {
-        if (!Array.isArray(props)) {
-            props = [props];
-        }
-        props.forEach(key => {
+    if (Component && Component.propTypes) {
+        Object.keys(Component.propTypes).forEach(key => {
             if (key in object) {
                 newObj[key] = object[key];
             }

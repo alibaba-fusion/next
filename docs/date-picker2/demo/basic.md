@@ -29,7 +29,7 @@ function App() {
             <div><DatePicker2 mode="month" /></div>
             <div><DatePicker2 mode="week" /></div>
             <div><DatePicker2 mode="year" /></div>
-            <div><RangePicker /></div>
+            <div><RangePicker defaultValue={['2020-12-12', '2021-11-13']} /></div>
             <div><RangePicker mode="week" /></div>
             <div><RangePicker mode="month" /></div>
             <div><RangePicker mode="year" /></div>

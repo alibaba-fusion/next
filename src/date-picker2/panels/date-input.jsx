@@ -4,7 +4,7 @@ import * as PT from 'prop-types';
 import classnames from 'classnames';
 import SharedPT from '../prop-types';
 import { DATE_INPUT_TYPE, DATE_PICKER_MODE } from '../constant';
-import { func, datejs } from '../../util';
+import { func, datejs, obj } from '../../util';
 
 import Input from '../../input';
 import Icon from '../../icon';
@@ -144,12 +144,14 @@ class DateInput extends React.Component {
             separator,
             disabled,
             inputProps,
+            ...restProps
         } = this.props;
 
         const placeholder = this.getPlaceholder();
         const htmlSize = String(Math.max(this.formatter(datejs('2020-12-12 24:00:00')).length, hasBorder ? 12 : 8));
 
         const sharedProps = {
+            ...obj.pickProps(restProps, Input),
             size,
             htmlSize,
             readOnly,

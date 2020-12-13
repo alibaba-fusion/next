@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import * as PT from 'prop-types';
 
 import SharedPT from '../prop-types';
-import { func } from '../../util';
+import { func, obj } from '../../util';
 
 import Calendar from '../../calendar2';
 import TimePanel from './time-panel';
@@ -63,6 +63,7 @@ class DatePanel extends React.Component {
             disabledTime,
             timePanelProps,
             dateCellRender,
+            ...restProps
         } = this.props;
 
         const className = classnames(`${prefix}date-picker2-panel`, {
@@ -77,6 +78,7 @@ class DatePanel extends React.Component {
         return (
             <div className={className}>
                 <Calendar
+                    {...obj.pickProps(restProps, Calendar)}
                     shape="panel"
                     value={value}
                     panelMode={mode}
@@ -92,7 +94,7 @@ class DatePanel extends React.Component {
                         value={value}
                         onSelect={this.handleTimeChange}
                         disabledTime={disabledTime}
-                        timePickerProps={{ ..._disabledTime, ...timePanelProps }}
+                        timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />
                 ) : null}
             </div>

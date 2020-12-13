@@ -211,7 +211,7 @@
     }
 }
 
-#{$calendar2-prefix}-right {
+.#{$css-prefix}date-time-picker-wrapper {
     border-left: 1px solid $color-line1-1;
     #{$calendar2-prefix}-body {
         padding-right: 0;

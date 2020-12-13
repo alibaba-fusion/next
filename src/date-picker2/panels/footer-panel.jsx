@@ -102,7 +102,7 @@ class FooterPanel extends React.PureComponent {
         });
 
         const footerNode = renderNode(footerRender);
-        const extraNode = renderNode(extraRender, null);
+        const extraNode = renderNode(extraRender);
 
         const rangesCls = classnames(`${prefixCls}-ranges`, {
             [`${prefixCls}-ranges-only`]: !showOk && !extraNode,

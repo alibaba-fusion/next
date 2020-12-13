@@ -57,7 +57,11 @@ class HeaderPanel extends React.PureComponent {
 
         const { prefixCls } = this;
 
-        const iconTypes = isSuper ? ['arrow-double-left', 'arrow-double-right'] : ['arrow-left', 'arrow-right'];
+        let iconTypes = isSuper ? ['arrow-double-left', 'arrow-double-right'] : ['arrow-left', 'arrow-right'];
+
+        if (this.props.rtl) {
+            iconTypes = iconTypes.reverse();
+        }
 
         return [
             <Button
@@ -229,7 +233,7 @@ class HeaderPanel extends React.PureComponent {
                         className={`${prefixCls}-btn`}
                         onClick={() => onPanelModeChange(DECADE)}
                     >
-                        {`${start}-${end}`}
+                        {this.props.rtl ? `${end}-${start}` : `${start}-${end}`}
                     </Button>
                 );
                 break;
@@ -239,7 +243,7 @@ class HeaderPanel extends React.PureComponent {
                 const start = curYear - (curYear % 100);
                 const end = start + 99;
 
-                nodes = `${start}-${end}`;
+                nodes = this.props.rtl ? `${end}-${start}` : `${start}-${end}`;
                 break;
             }
         }
@@ -317,7 +321,7 @@ class HeaderPanel extends React.PureComponent {
             if (showTitle) {
                 nodes.push(
                     <div key="title" className={`${prefixCls}-title`}>
-                        {renderNode(this.props.titleRender, value.format(), { value })}
+                        {renderNode(this.props.titleRender, value.format(), [value])}
                     </div>
                 );
             }
@@ -337,7 +341,7 @@ class HeaderPanel extends React.PureComponent {
     render() {
         return (
             <div className={`${this.prefixCls}`}>
-                {renderNode(this.props.headerRender, this.renderInner(), { ...this.props })}
+                {renderNode(this.props.headerRender, this.renderInner(), [...this.props])}
             </div>
         );
     }

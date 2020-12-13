@@ -36,9 +36,9 @@ class TimePanel extends React.PureComponent {
     };
 
     getShow = () => {
-        const { timePanelProps: p = {} } = this.props;
+        const { timePanelProps: props = {} } = this.props;
 
-        const fmt = p.format || DECADE_TIME_FORMAT;
+        const fmt = props.format || DECADE_TIME_FORMAT;
 
         let showHour;
         let showMinute;
@@ -51,9 +51,9 @@ class TimePanel extends React.PureComponent {
         }
 
         return {
-            showHour: obj.get('showHour', p, showHour),
-            showMinute: obj.get('showMinute', p, showMinute),
-            showSecond: obj.get('showSecond', p, showSecond),
+            showHour: obj.get('showHour', props, showHour),
+            showMinute: obj.get('showMinute', props, showMinute),
+            showSecond: obj.get('showSecond', props, showSecond),
         };
     };
 
@@ -62,7 +62,7 @@ class TimePanel extends React.PureComponent {
         const { showHour, showMinute, showSecond } = this.getShow();
 
         return (
-            <div className={`${prefix}calendar2-right ${prefix}calendar2-panel`}>
+            <div className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
                 <div className={`${prefix}calendar2-header`}>
                     <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
                 </div>

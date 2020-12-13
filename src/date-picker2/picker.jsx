@@ -24,11 +24,7 @@ class Picker extends React.Component {
         locale: PT.object,
         mode: SharedPT.mode,
         type: SharedPT.type,
-        inputReadOnly: SharedPT.readOnly,
-        /**
-         * 是否禁用
-         */
-        disabled: SharedPT.disabled,
+
         /**
          * 日期值（受控）moment 对象
          */
@@ -46,6 +42,11 @@ class Picker extends React.Component {
          * 日期值的格式（用于限定用户输入和展示）
          */
         format: SharedPT.format,
+        /**
+         * 是否禁用
+         */
+        disabled: SharedPT.disabled,
+        inputReadOnly: SharedPT.readOnly,
         /**
          * 是否使用时间控件，传入 TimePicker 的属性 { defaultValue, format, ... }
          */
@@ -125,7 +126,6 @@ class Picker extends React.Component {
          * @param {MomentObject} value 日期
          */
         renderPreview: PT.func,
-
         ranges: PT.oneOfType([PT.array, PT.object]),
         name: PT.string,
         popupComponent: PT.elementType,
@@ -175,15 +175,10 @@ class Picker extends React.Component {
         };
 
         bindCtx(this, [
-            'getInputValue',
-            'handleMouseDown',
-            'handleVisibleChange',
-            'handleInputFocus',
             'onOk',
             'onChange',
             'onClick',
             'handleInput',
-            'onInputTypeChange',
             'handleChange',
             'onVisibleChange',
             'onPanelChange',
@@ -236,9 +231,9 @@ class Picker extends React.Component {
     };
 
     // 返回日期字符串
-    getInputValue(value) {
+    getInputValue = value => {
         return Array.isArray(value) ? value.map(v => this.formater(v)) : this.formater(value);
-    }
+    };
 
     formater = v => {
         const { format, isRange, inputType } = this.props;
@@ -251,22 +246,15 @@ class Picker extends React.Component {
         return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
     };
 
-    // toArrayIfNeeded = v => {
-    //     if (v !== undefined && this.state.isRange && !Array.isArray(v)) {
-    //         v = Array(2).fill(v);
-    //     }
-    //     return v;
-    // };
-
     // 判断弹层是否显示
-    handleVisibleChange(visible, type) {
+    handleVisibleChange = (visible, type) => {
         if (type === 'docClick') {
             if (!visible) {
                 this.handleChange(this.state.value, true, true);
             }
             this.onVisibleChange(visible);
         }
-    }
+    };
 
     handleInputFocus = (inputType = this.state.inputType) => {
         let input = this.dateInput && this.dateInput.input;
@@ -279,9 +267,9 @@ class Picker extends React.Component {
         }
     };
 
-    handleMouseDown(e) {
+    handleMouseDown = e => {
         e.preventDefault();
-    }
+    };
 
     onVisibleChange(visible) {
         const callback = () => {
@@ -397,7 +385,7 @@ class Picker extends React.Component {
         result !== false && this.handleChange(curValue, true);
     }
 
-    onInputTypeChange(v) {
+    onInputTypeChange = v => {
         const { inputType, visible } = this.state;
 
         if (v !== inputType) {
@@ -406,7 +394,7 @@ class Picker extends React.Component {
                 justBeginInput: !(v !== null && visible),
             });
         }
-    }
+    };
 
     onClick = () => {
         const { visible, inputType } = this.state;
@@ -481,12 +469,11 @@ class Picker extends React.Component {
             popupProps,
             dateCellRender,
             disabled,
+            isPreview,
+            className,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
-
-        const visible = this.getFromPropOrState('visible');
-        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
 
         // value受控模式
         if ('value' in this.props) {
@@ -494,6 +481,23 @@ class Picker extends React.Component {
             inputValue = getInputValue(value);
             curValue = value;
         }
+
+        // 预览态
+        if (isPreview) {
+            const previewCls = classnames(className, `${prefix}form-preview`);
+
+            return (
+                <div className={previewCls}>
+                    {renderNode(this.props.renderPreview, isRange ? inputValue.join('-') : inputValue, [
+                        value,
+                        this.props,
+                    ])}
+                </div>
+            );
+        }
+
+        const visible = this.getFromPropOrState('visible');
+        const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
 
         const sharedProps = {
             rtl,
@@ -563,16 +567,17 @@ class Picker extends React.Component {
             />
         ) : null;
 
+        let triggerProps;
+        if (!allDisabled) {
+            triggerProps = { onKeyDown, onClick };
+        }
+
+        const triggerCls = classnames(className, prefixCls);
         const popupCls = classnames(popupProps && popupProps.className, {
             [`${prefixCls}-overlay`]: true,
             [`${prefixCls}-${(align || []).join('-')}`]: align,
             [`${prefixCls}-overlay-range`]: isRange,
         });
-
-        let triggerProps;
-        if (!allDisabled) {
-            triggerProps = { onKeyDown, onClick };
-        }
 
         return (
             <Popup
@@ -581,7 +586,13 @@ class Picker extends React.Component {
                 triggerType="click"
                 onVisibleChange={handleVisibleChange}
                 trigger={
-                    <div {...triggerProps} role="button" tabIndex="0" className={`${prefixCls}`}>
+                    <div
+                        dir={rtl ? 'rtl' : undefined}
+                        {...triggerProps}
+                        role="button"
+                        tabIndex="0"
+                        className={triggerCls}
+                    >
                         {triggerNode}
                     </div>
                 }
@@ -591,7 +602,7 @@ class Picker extends React.Component {
             >
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                 <div onMouseDown={handleMouseDown}>
-                    <div className={`${prefixCls}-wrapper`}>
+                    <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`}>
                         {isRange ? this.renderArrow() : null}
                         {DateNode}
                         {this.state.panelMode !== this.props.mode ? null : footerNode}

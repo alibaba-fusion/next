@@ -11,7 +11,7 @@ import HeaderPanel from './panels/header-panel';
 import DateTable from './panels/date-table';
 
 const { bindCtx } = func;
-const { pick } = obj;
+const { pickProps } = obj;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
 function getPanelMode(mode) {
@@ -244,7 +244,7 @@ class Calendar extends React.Component {
         };
 
         const headerPanelProps = {
-            ...pick(restProps, Object.keys(HeaderPanel.propTypes)),
+            ...pickProps(restProps, HeaderPanel),
             ...sharedProps,
             mode,
             panelMode,
@@ -255,7 +255,7 @@ class Calendar extends React.Component {
         };
 
         const dateTableProps = {
-            ...pick(restProps, Object.keys(DateTable.propTypes)),
+            ...pickProps(restProps, DateTable),
             ...sharedProps,
             mode: panelMode,
             onSelect: this.onDateSelect,
