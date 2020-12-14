@@ -230,7 +230,7 @@ function getLiveDemoOp(name) {
                     trigger={
                         <span className="code-box-code-action" onClick={()=>{Message.success('复制成功')}}>
                             <svg viewBox="0 0 20 20" focusable="false" data-icon="snippets" width="20px" height="20px" fill="currentColor" aria-hidden="true">
-                            <path d="M14,6 L14,18 L2,18 L2,6 L14,6 Z M13,7 L3,7 L3,17 L13,17 L13,7 Z M18,2 L18,10 L15,10 L15,9 L17,9 L17,3 L11,3 L11,5 L10,5 L10,2 L18,2 Z" ></path>
+                            <path d="M15,5 L15,18 L2,18 L2,5 L15,5 Z M14,6 L3,6 L3,17 L14,17 L14,6 Z M18,2 L18,15 L16,15 L16,13.999 L17,14 L17,3 L6,3 L6,4 L5,4 L5,2 L18,2 Z M9,8 L9,11 L12,11 L12,12 L9,12 L9,15 L8,15 L8,12 L5,12 L5,11 L8,11 L8,8 L9,8 Z"></path>
                             </svg>
                         </span>}
                 >
