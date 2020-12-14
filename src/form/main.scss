@@ -92,13 +92,17 @@
 
     &-item {
         &.has-error {
-            #{$form-prefix}-item-help {
-                color: $form-error-color;
+            > #{$form-prefix}-item-control {
+                > #{$form-prefix}-item-help {
+                    color: $form-error-color;
+                }
             }
         }
         &.has-warning {
-            #{$form-prefix}-item-help {
-                color: $form-warning-color;
+            > #{$form-prefix}-item-control {
+                > #{$form-prefix}-item-help {
+                    color: $form-warning-color;
+                }
             }
         }
 
