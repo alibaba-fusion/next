@@ -150,7 +150,7 @@ function fixImport(code, resourcePath) {
 
         const importStrings = components
             .map(component => {
-                const componentPath = path.join(cwd, 'src', _.kebabCase(component));
+                const componentPath = path.join(cwd, 'src', _.getComponentName(component));
                 const relativePath = path.relative(path.dirname(resourcePath), componentPath);
 
                 return `
