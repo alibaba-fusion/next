@@ -1,8 +1,8 @@
-# 预设日期
+# 预设时间范围快捷选择
 
 -   order: 0
 
-最基本的用法。可以通过 `onChange` 监听选中值的变化。
+预设时间范围快捷选择。
 
 :::lang=en-us
 
@@ -23,12 +23,9 @@ import dayjs from 'dayjs';
 
 const { RangePicker} = DatePicker2;
 
-
-
 function App() {
     return (
         <div className="app">
-            <div><DatePicker2 ranges={{ '此刻': () => dayjs() }}/></div>
             <div>
                 <RangePicker ranges={{
                     '今天': [dayjs(), dayjs()],

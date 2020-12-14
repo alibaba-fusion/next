@@ -44,11 +44,9 @@ ReactDOM.render(<div>
 .custom-footer {
     padding: 12px;
     font-size: 12px;
-    border-top: 1px solid #DCDEE3;
 }
 
 .extra-footer {
     font-size: 12px;
-
 }
 ````

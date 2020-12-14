@@ -24,7 +24,6 @@ class Picker extends React.Component {
         locale: PT.object,
         mode: SharedPT.mode,
         type: SharedPT.type,
-
         /**
          * 日期值（受控）moment 对象
          */
@@ -37,7 +36,6 @@ class Picker extends React.Component {
          * 输入提示
          */
         placeholder: SharedPT.placeholder,
-
         /**
          * 日期值的格式（用于限定用户输入和展示）
          */
@@ -84,7 +82,6 @@ class Picker extends React.Component {
          * @return {MomentObject|String} 日期值
          */
         onOk: PT.func,
-
         /**
          * 是否显示清空按钮
          */
@@ -127,7 +124,6 @@ class Picker extends React.Component {
          */
         renderPreview: PT.func,
         ranges: PT.oneOfType([PT.array, PT.object]),
-        name: PT.string,
         popupComponent: PT.elementType,
         disableChangeMode: PT.bool,
         yearRange: PT.arrayOf(PT.number),
@@ -198,15 +194,7 @@ class Picker extends React.Component {
         this.timeoutId && clearTimeout(this.timeoutId);
     }
 
-    /**
-     * 校验日期数据，范围选择模式下为数组 不合法的日期重置null值
-     * 日期值可以是：
-     *  时间戳：1605263461196
-     *  日期字符串：2020-11-11
-     *  日期对象：moment、dayjs或Date对象
-     * @param {*} value
-     * @return 返回moment或dayjs对象，范围选择模式下，返回moment或dayjs对象的长度为2的数组
-     */
+    // 校验日期数据，范围选择模式下为数组 不合法的日期重置null值
     checkAndRectify = value => {
         const check = v => {
             // 因为datejs(undefined) === datejs() 但是这里期望的是一个空值

@@ -37,10 +37,6 @@
     }
 
     &-cell-disabled {
-        // &::before,
-        // #{$cell-inner} {
-        //     @include calendar-disabled;
-        // }
         &::before {
             @include calendar-disabled;
         }
@@ -52,22 +48,16 @@
         #{$calendar2-prefix}-header {
             padding-top: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid $color-line1-1;
-            // &-actions {
-            //     margin-left: auto;
-            // }
+            &-actions {
+                margin-left: auto;
+            }
 
-            // &-ranges,
-            // &-actions {
-            //     & > *:not(:first-child) {
-            //         margin-left: 8px;
-            //     }
-            // }
-
-            // &-ranges-only {
-            //     text-align: center;
-            //     width: 100%;
-            // }
+            &-ranges,
+            &-actions {
+                & > *:not(:first-child) {
+                    margin-left: 8px;
+                }
+            }
 
             &-select-month {
                 min-width: 70px;
@@ -90,6 +80,7 @@
 
     &-card,
     &-panel {
+
         #{$cell-inner} {
             z-index: 2;
             height: 24px;
@@ -123,7 +114,6 @@
             }
 
             &-table {
-                width: 272px;
                 thead > tr {
                     height: 24px;
                     color: $color-text1-2;
@@ -255,11 +245,16 @@
             }
         }
     }
+
     &-panel {
+        #{$calendar2-prefix}-body {
+            width: 272px;
+        }
         #{$calendar2-prefix}-header {
             padding: 0 8px;
             display: flex;
             align-items: center;
+            border-bottom: 1px solid $color-line1-1;
 
 
             &-btn {

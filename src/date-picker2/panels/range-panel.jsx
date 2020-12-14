@@ -165,15 +165,15 @@ class RangePanel extends React.Component {
         let [begin, end] = value;
 
         if (inputType === BEGIN) {
-            begin = resetTime ? this.setTime(v, begin) : v;
+            begin = resetTime ? this.setTime(v, begin || end) : v;
 
-            if (end && end.isBefore(v)) {
+            if (end && end.isBefore(begin)) {
                 end = null;
             }
         } else if (inputType === END) {
-            end = resetTime ? this.setTime(v, end) : v;
+            end = resetTime ? this.setTime(v, end || begin) : v;
 
-            if (begin && begin.isAfter(v)) {
+            if (begin && begin.isAfter(end)) {
                 begin = null;
             }
         }

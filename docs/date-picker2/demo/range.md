@@ -24,11 +24,10 @@ const { RangePicker } = DatePicker;
 
 const onChange = val => console.log(val);
 
-const App = () => (<div>
+const App = () => (<div className="app">
     <RangePicker mode="date" onChange={onChange} /> <br />
     <RangePicker mode="month" onChange={onChange} /> <br />
     <RangePicker mode="year" onChange={onChange} /> <br />
-    <RangePicker mode="week" onChange={onChange} /> <br />
 </div>);
 
 ReactDOM.render(<App />, mountNode);
