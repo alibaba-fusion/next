@@ -11,7 +11,7 @@ const MODE2FORMAT = {
     [YEAR]: 'YYYY',
 };
 
-const ConfigPicker = ConfigProvider.config(Picker);
+const ConfigPicker = ConfigProvider.config(Picker, { componentName: 'DatePicker' });
 
 const DatePicker2 = props => <ConfigPicker format={props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'} {...props} />;
 DatePicker2.displayName = 'DatePicker2';

@@ -51,6 +51,7 @@ const SharedPT = {
     readOnly: checkType('boolean'),
     disabled: checkType('boolean'),
     disabledTime: checkType(['object', 'function']),
+    ariaLabel: checkType('string'),
 
     render: PT.oneOfType([PT.node, PT.func]),
     mode: PT.oneOf(Object.values(DATE_PICKER_MODE)),

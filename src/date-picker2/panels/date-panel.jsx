@@ -21,6 +21,8 @@ class DatePanel extends React.Component {
         disabledDate: PT.func,
         resetTime: PT.bool,
         timePanelProps: PT.object,
+        defaultTimeValue: SharedPT.date,
+        timeValue: SharedPT.date,
         disabledTime: SharedPT.disabledTime,
         dateCellRender: PT.func,
     };

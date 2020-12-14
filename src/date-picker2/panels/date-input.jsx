@@ -31,6 +31,7 @@ class DateInput extends React.Component {
         separator: PT.node,
         disabled: SharedPT.disabled,
         inputProps: PT.object,
+        dateInputAriaLabel: SharedPT.ariaLabel,
     };
 
     static defaultProps = {
@@ -144,6 +145,7 @@ class DateInput extends React.Component {
             separator,
             disabled,
             inputProps,
+            dateInputAriaLabel,
             ...restProps
         } = this.props;
 
@@ -168,6 +170,7 @@ class DateInput extends React.Component {
                     autoFocus,
                     placeholder: placeholder[idx],
                     value: value[idx] || '',
+                    'aria-label': Array.isArray(dateInputAriaLabel) ? dateInputAriaLabel[idx] : dateInputAriaLabel,
                     disabled: Array.isArray(disabled) ? disabled[idx] : disabled,
                     ref: ref => setInputRef(ref, idx),
                     onFocus: () => handleTypeChange(idx),
@@ -210,6 +213,7 @@ class DateInput extends React.Component {
                         placeholder={placeholder}
                         autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         ref={setInputRef}
+                        aria-label={dateInputAriaLabel}
                         value={value || ''}
                         hint="calendar"
                     />

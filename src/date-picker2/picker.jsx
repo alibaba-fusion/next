@@ -50,6 +50,8 @@ class Picker extends React.Component {
          */
         showTime: PT.bool,
         timePanelProps: PT.object,
+        defaultTimeValue: SharedPT.value,
+        timeValue: SharedPT.value,
         /**
          * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
          */
@@ -63,13 +65,13 @@ class Picker extends React.Component {
         disabledDate: PT.func,
         disabledTime: PT.object,
         /**
-         * 自定义页脚面板
-         * @return {Node} 自定义的面板页脚组件
+         * 自定义面板页脚
+         * @return {Node} 自定义的面板页脚节点
          */
         footerRender: SharedPT.render,
         /**
-         * 自定义面板页脚
-         * @return {Node} 自定义的面板页脚组件
+         * 自定义额外的页脚
+         * @return {Node} 自定义的额外的页脚节点
          */
         extraFooterRender: SharedPT.render,
         /**
@@ -99,10 +101,16 @@ class Picker extends React.Component {
          * @param {Boolean} visible 弹层是否显示
          */
         onVisibleChange: PT.func,
+
+        /**
+         * 弹层触发方式
+         */
+        triggerType: PT.oneOf(['click', 'hover']),
         /**
          * 弹层其他属性
          */
         popupProps: PT.object,
+
         /**
          * 输入框其他属性
          */
@@ -113,7 +121,6 @@ class Picker extends React.Component {
          * @returns {ReactNode}
          */
         dateCellRender: PT.func,
-
         /**
          * 是否为预览态
          */
@@ -123,8 +130,8 @@ class Picker extends React.Component {
          * @param {MomentObject} value 日期
          */
         renderPreview: PT.func,
+        dateInputAriaLabel: SharedPT.ariaLabel,
         ranges: PT.oneOfType([PT.array, PT.object]),
-        popupComponent: PT.elementType,
         disableChangeMode: PT.bool,
         yearRange: PT.arrayOf(PT.number),
         titleRender: PT.func,
@@ -142,6 +149,7 @@ class Picker extends React.Component {
         type: DATE_PICKER_TYPE.DATE,
         mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
+        triggerType: 'click',
     };
 
     constructor(props) {
@@ -309,6 +317,7 @@ class Picker extends React.Component {
     handleChange = (v, isOk, forced = false) => {
         const { value, isRange, inputType, justBeginInput, showOk } = this.state;
         const { BEGIN, END } = DATE_INPUT_TYPE;
+
         v = this.checkAndRectify(v, value);
 
         if (!showOk || isOk) {
@@ -347,8 +356,8 @@ class Picker extends React.Component {
     onKeyDown = e => {
         switch (e.keyCode) {
             case KEYCODE.ENTER:
-                this.onClick(); // TODO
-                this.onChange();
+                this.onClick();
+                this.handleChange(this.state.inputValue);
                 break;
             default:
                 return;
@@ -459,6 +468,7 @@ class Picker extends React.Component {
             disabled,
             isPreview,
             className,
+            triggerType,
         } = this.props;
         const { isRange, inputType, justBeginInput, panelMode, showOk, align } = this.state;
         let { inputValue, value, curValue } = this.state;
@@ -571,7 +581,7 @@ class Picker extends React.Component {
             <Popup
                 key="date-picker-popup"
                 visible={visible}
-                triggerType="click"
+                triggerType={triggerType}
                 onVisibleChange={handleVisibleChange}
                 trigger={
                     <div
