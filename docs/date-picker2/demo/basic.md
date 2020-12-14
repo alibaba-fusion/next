@@ -20,23 +20,19 @@ A basic usage case.
 import { useState } from 'react';
 import { DatePicker2 } from '@alifd/next';
 
-const { RangePicker} = DatePicker2;
+const { MonthPicker, YearPicker } = DatePicker2;
+
+const onChange = (date, dateStr) => console.log(date, dateStr)
 
 function App() {
     return (
         <div className="app">
-            <div><DatePicker2/></div>
-            <div><DatePicker2 mode="month" /></div>
-            <div><DatePicker2 mode="week" /></div>
-            <div><DatePicker2 mode="year" /></div>
-            <div><RangePicker defaultValue={['2020-12-12', '2021-11-13']} /></div>
-            <div><RangePicker mode="week" /></div>
-            <div><RangePicker mode="month" /></div>
-            <div><RangePicker mode="year" /></div>
+            <div><DatePicker2 onChange={onChange}/></div>
+            <div><MonthPicker onChange={onChange} /></div>
+            <div><YearPicker onChange={onChange} /></div>
         </div>
     );
 }
-
 ReactDOM.render(<App />, mountNode);
 ```
 

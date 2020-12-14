@@ -1,6 +1,6 @@
 # 格式化
 
--   order: 0
+-   order: 3
 
 使用`format`属性，可以自定义日期显示格式。
 
@@ -8,9 +8,10 @@
 
 # Basic
 
--   order: 0
+-   order: 3
 
-A basic usage case.
+Using attribute `format` to change the displayed dates, it will be also used to check user inputs.
+
 
 :::
 

@@ -1,6 +1,6 @@
 # 预设时间范围快捷选择
 
--   order: 0
+-   order: 5
 
 预设时间范围快捷选择。
 
@@ -8,9 +8,9 @@
 
 # Basic
 
--   order: 0
+-   order: 5
 
-A basic usage case.
+A ranges usage case.
 
 :::
 

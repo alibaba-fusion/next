@@ -1,13 +1,13 @@
 # 禁止选择某些日期
 
-- order: 4
+- order: 3
 
 可以通过 `disabledDate` 属性来禁止用户选择或输入某些特定日期。
 
 :::lang=en-us
 # Disable dates
 
-- order: 4
+- order: 3
 
 Disable date cells by `disabledDate`.
 
@@ -23,8 +23,8 @@ const { RangePicker, MonthPicker, YearPicker } = DatePicker2;
 const currentDate = moment();
 
 // Disable all dates before today
-const disabledDate = function (date, view) {
-    switch (view) {
+const disabledDate = function (date, mode) {
+    switch (mode) {
         case 'date':
             return date.valueOf() <= currentDate.valueOf();
         case 'year':

@@ -1,6 +1,6 @@
 # 无边框
 
--   order: 0
+-   order: 7
 
 无边框样式。
 
@@ -8,9 +8,9 @@
 
 # Basic
 
--   order: 0
+-   order: 7
 
-A basic usage case.
+A no border case.
 
 :::
 
