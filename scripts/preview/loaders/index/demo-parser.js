@@ -3,7 +3,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const loaderUtils = require('loader-utils');
 const createDocParser = require('@alifd/doc-parser');
-const { marked, logger } = require('../../../utils');
+const { marked, logger, getComPathName } = require('../../../utils');
 const { getDemoOp, getDemoRenderScript } = require('./render-creator');
 
 const selectorPath = require.resolve('./selector');
@@ -150,7 +150,7 @@ function fixImport(code, resourcePath) {
 
         const importStrings = components
             .map(component => {
-                const componentPath = path.join(cwd, 'src', _.getComponentName(component));
+                const componentPath = path.join(cwd, 'src', getComPathName(component));
                 const relativePath = path.relative(path.dirname(resourcePath), componentPath);
 
                 return `
