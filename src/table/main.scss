@@ -65,6 +65,11 @@
         &#{$table-prefix}-prerow #{$table-prefix}-cell-wrapper {
             padding: $s-3 $s-4;
         }
+
+        &#{$table-prefix}-fix-left,
+        &#{$table-prefix}-fix-right {
+            z-index: 1;
+        }
     }
     &-affix {
         z-index: 1;
@@ -374,7 +379,7 @@
         }
     }
     > #{$table-prefix}-inner > #{$table-prefix}-body > table {
-        table-layout: auto;
+        table-layout: fixed;
     }
 }
 
@@ -514,7 +519,6 @@
     &-fix-right {
         background: inherit;
         position: sticky;
-        z-index: 1;
     }
     &-ping-left {
         #{$table-prefix}-fix-left-last {
@@ -524,7 +528,7 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                bottom: -1px;
+                bottom: 0;
                 width: 30px;
                 content: '';
                 pointer-events: none;
@@ -540,7 +544,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            bottom: -1px;
+            bottom: 0;
             width: 30px;
             content: '';
             pointer-events: none;
@@ -556,7 +560,7 @@
             position: absolute;
             top: 0;
             right: -30px;
-            bottom: -1px;
+            bottom: 0;
             width: 30px;
             content: '';
             pointer-events: none;
