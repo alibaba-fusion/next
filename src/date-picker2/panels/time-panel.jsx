@@ -3,7 +3,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import * as PT from 'prop-types';
 import TimePickerPanel from '../../time-picker2/panel';
 import SharedPT from '../prop-types';
-import { obj } from '../../util';
+import { obj, func } from '../../util';
 
 const DECADE_TIME_FORMAT = 'HH:mm:ss';
 
@@ -11,8 +11,9 @@ class TimePanel extends React.PureComponent {
     static propTypes = {
         prefix: PT.string,
         value: SharedPT.date,
-        onSelect: PT.func,
         timePanelProps: PT.object,
+        defaultValue: SharedPT.value,
+        onSelect: PT.func,
     };
 
     formater = v => {
@@ -57,9 +58,16 @@ class TimePanel extends React.PureComponent {
         };
     };
 
+    onSelect = v => {
+        func.call(this.props, 'onSelect', [v]);
+    };
+
     render() {
-        const { prefix, value, onSelect, timePanelProps = {} } = this.props;
+        const { prefix, timePanelProps = {}, value } = this.props;
         const { showHour, showMinute, showSecond } = this.getShow();
+
+        delete timePanelProps.value;
+        delete timePanelProps.defaultValue;
 
         return (
             <div className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
@@ -68,7 +76,7 @@ class TimePanel extends React.PureComponent {
                 </div>
                 <TimePickerPanel
                     value={value}
-                    onSelect={onSelect}
+                    onSelect={this.onSelect}
                     showHour={showHour}
                     showSecond={showSecond}
                     showMinute={showMinute}

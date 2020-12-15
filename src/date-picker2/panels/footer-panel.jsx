@@ -4,40 +4,21 @@ import * as PT from 'prop-types';
 import classnames from 'classnames';
 
 import SharedPT from '../prop-types';
-import { func } from '../../util';
+import { func, obj } from '../../util';
 import defaultLocale from '../../locale/zh-cn';
 
 import Button from '../../button';
 
 const { renderNode } = func;
 
-function pickProps(obj, fields) {
-    const newObj = {};
-
-    if (!Array.isArray(fields)) {
-        if (typeof fields === 'object') {
-            fields = Object.keys(fields);
-        } else {
-            fields = [fields];
-        }
-    }
-
-    for (const k in obj) {
-        if (fields.includes(k)) {
-            newObj[k] = obj[k];
-        }
-    }
-    return newObj;
-}
-
-function normalizeRanges(ranges) {
-    if (Array.isArray(ranges)) {
-        return ranges;
+function normalizePreset(preset) {
+    if (Array.isArray(preset)) {
+        return preset;
     } else {
-        return Object.keys(ranges).map(key => {
+        return Object.keys(preset).map(key => {
             return {
                 label: key,
-                value: ranges[key],
+                value: preset[key],
             };
         });
     }
@@ -49,7 +30,7 @@ class FooterPanel extends React.PureComponent {
         prefix: PT.string,
         locale: PT.object,
         showOk: PT.bool,
-        ranges: PT.oneOfType([PT.array, PT.object]),
+        preset: PT.oneOfType([PT.array, PT.object]),
         onOk: PT.func,
         oKable: PT.bool,
         extraRender: SharedPT.render,
@@ -67,20 +48,20 @@ class FooterPanel extends React.PureComponent {
     }
 
     renderRanges = () => {
-        if (!('ranges' in this.props) || !this.props.ranges) {
+        if (!this.props.preset) {
             return null;
         }
 
-        const ranges = normalizeRanges(this.props.ranges);
+        const preset = normalizePreset(this.props.preset);
 
-        return ranges.map(({ label, value, ...rest }, index) => {
-            const buttonProps = pickProps(rest, Button.propTypes);
+        return preset.map(({ label, value, ...rest }, index) => {
+            const buttonProps = obj.pickProps(rest, Button);
 
             return (
                 <Button
-                    text={ranges.length === 1}
+                    text={preset.length === 1}
                     size="small"
-                    type={ranges.length === 1 ? 'primary' : 'secondary'}
+                    type={preset.length === 1 ? 'primary' : 'secondary'}
                     key={`${label}-${index}`}
                     onClick={() =>
                         func.call(this.props, 'onChange', [typeof value === 'function' ? value() : value, true, true])

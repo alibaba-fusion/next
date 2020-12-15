@@ -27,20 +27,15 @@ const onRangeOk = (value) => console.log('onOk: [%s, %s]', value[0].format('YYYY
 const defaultTimeValue = moment('09:00:00', 'HH:mm:ss', true);
 const defaultTimeValues = [moment('09:00:00', 'HH:mm:ss', true), moment('23:59:59', 'HH:mm:ss', true)];
 
-ReactDOM.render(<div>
-    <p>DatePicker With Time</p>
-    <DatePicker showTime onChange={onChange} onOk={onOk} />
-    <p>DatePicker with Time, reset 00:00:00 for every select</p>
-    <DatePicker showTime onChange={onChange} onOk={onOk} resetTime />
-    <p>DatePicker with Time, with default time value</p>
-    <DatePicker showTime={{ defaultValue: defaultTimeValue, secondStep: 10 }} onChange={onChange} onOk={onOk} />
-    <p>RangePicker with Time</p>
-    <RangePicker showTime onChange={onChange} onOk={onRangeOk} />
-    <p>RangePicker with Time, reset 00:00:00 for every select</p>
-    <RangePicker showTime resetTime onChange={onChange} onOk={onRangeOk} />
-    <p>RangePicker with Time, with default time value, hide seconds</p>
-    <RangePicker showTime={{ defaultValue: defaultTimeValue, format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} />
-    <p>RangePicker with Time, with default start & end time value, hide seconds</p>
-    <RangePicker showTime={{ defaultValue: defaultTimeValues, format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} />
+ReactDOM.render(<div className="app">
+  <div><DatePicker showTime onChange={onChange} onOk={onOk} /></div>
+  <div><DatePicker showTime timePanelProps={{ defaultValue: defaultTimeValue, secondStep: 10 }} onChange={onChange} onOk={onOk} /></div>
+  <div><RangePicker showTime onChange={onChange} onOk={onRangeOk} /></div>
+  <div><RangePicker showTime timePanelProps={{ defaultValue: defaultTimeValues, format: 'HH:mm', minuteStep: 15 }} onChange={onChange} onOk={onRangeOk} /></div>
 </div>, mountNode);
 ````
+```css
+.app > div {
+    margin-bottom: 20px;
+}
+```

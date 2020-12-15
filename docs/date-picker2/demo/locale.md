@@ -19,9 +19,9 @@ A locale usage case.
 ```jsx
 import { useState } from 'react';
 import { DatePicker2, ConfigProvider } from '@alifd/next';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 import 'dayjs/locale/en';
-import en from '../../../src/locale/en-us'
+import en from '@alifd/next/lib/locale/en-us';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker2;
 

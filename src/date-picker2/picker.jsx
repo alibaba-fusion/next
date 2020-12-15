@@ -15,7 +15,7 @@ import DatePanel from './panels/date-panel';
 import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
-const { bindCtx, renderNode } = func;
+const { renderNode } = func;
 
 class Picker extends React.Component {
     static propTypes = {
@@ -50,8 +50,6 @@ class Picker extends React.Component {
          */
         showTime: PT.bool,
         timePanelProps: PT.object,
-        defaultTimeValue: SharedPT.value,
-        timeValue: SharedPT.value,
         /**
          * 每次选择日期时是否重置时间（仅在 showTime 开启时有效）
          */
@@ -131,8 +129,7 @@ class Picker extends React.Component {
          */
         renderPreview: PT.func,
         dateInputAriaLabel: SharedPT.ariaLabel,
-        ranges: PT.oneOfType([PT.array, PT.object]),
-        disableChangeMode: PT.bool,
+        preset: PT.oneOfType([PT.array, PT.object]),
         yearRange: PT.arrayOf(PT.number),
         titleRender: PT.func,
         showOk: PT.bool,
@@ -177,16 +174,6 @@ class Picker extends React.Component {
             justBeginInput: true,
             panelMode: props.mode,
         };
-
-        bindCtx(this, [
-            'onOk',
-            'onChange',
-            'onClick',
-            'handleInput',
-            'handleChange',
-            'onVisibleChange',
-            'onPanelChange',
-        ]);
 
         this.getFromPropOrState = getFromPropOrState.bind(this);
     }
@@ -268,15 +255,15 @@ class Picker extends React.Component {
     };
 
     onVisibleChange(visible) {
-        const callback = () => {
-            this.setState({
-                visible,
-                justBeginInput: true,
-            });
-            func.call(this.props, 'onVisibleChange', [visible]);
-        };
-
         if (visible !== this.state.visible) {
+            const callback = () => {
+                this.setState({
+                    visible,
+                    justBeginInput: true,
+                });
+                func.call(this.props, 'onVisibleChange', [visible]);
+            };
+
             if (this.timeoutId) {
                 clearTimeout(this.timeoutId);
                 this.timeoutId = null;
@@ -285,12 +272,12 @@ class Picker extends React.Component {
             if (visible) {
                 callback();
             } else {
-                this.timeoutId = setTimeout(callback, 100);
+                this.timeoutId = setTimeout(callback, 150);
             }
         }
     }
 
-    handleInput(v, eventType) {
+    handleInput = (v, eventType) => {
         this.setState({
             inputValue: v,
         });
@@ -306,13 +293,13 @@ class Picker extends React.Component {
                 });
             }
         }
-    }
+    };
 
-    onPanelChange(_, mode) {
+    onPanelChange = (_, mode) => {
         this.setState({
             panelMode: mode,
         });
-    }
+    };
 
     handleChange = (v, isOk, forced = false) => {
         const { value, isRange, inputType, justBeginInput, showOk } = this.state;
@@ -357,30 +344,38 @@ class Picker extends React.Component {
         switch (e.keyCode) {
             case KEYCODE.ENTER:
                 this.onClick();
-                this.handleChange(this.state.inputValue);
+                this.handleChange(this.state.inputValue, true);
                 break;
             default:
                 return;
         }
     };
 
-    onChange(v) {
-        this.setState({
-            value: v,
-        });
+    isValueChanged = (newValue, oldValue) => {
+        if (this.state.isRange) {
+            return newValue.some((val, idx) => !(val === oldValue[idx] || (val && val.isSame(oldValue[idx]))));
+        } else {
+            return newValue !== oldValue || (newValue && newValue.isSame(oldValue));
+        }
+    };
+    onChange = v => {
+        if (this.isValueChanged(v, this.state.value)) {
+            this.setState({
+                value: v,
+            });
 
-        func.call(this.props, 'onChange', [v, this.getInputValue(v)]);
+            func.call(this.props, 'onChange', [v, this.getInputValue(v)]);
+            this.onVisibleChange(false);
+        }
+    };
 
-        this.onVisibleChange(false);
-    }
-
-    onOk() {
+    onOk = () => {
         const { curValue, inputValue } = this.state;
 
         const result = func.call(this.props, 'onOk', [curValue, inputValue]);
 
         result !== false && this.handleChange(curValue, true);
-    }
+    };
 
     onInputTypeChange = v => {
         const { inputType, visible } = this.state;
@@ -448,7 +443,7 @@ class Picker extends React.Component {
             locale,
             inputReadOnly,
             showTime,
-            ranges,
+            preset,
             mode,
             format,
             trigger,
@@ -550,7 +545,7 @@ class Picker extends React.Component {
 
         // 底部节点
         const oKable = !!(isRange ? curValue && curValue[inputType] : curValue);
-        const shouldShowFooter = showOk || ranges || extraFooterRender || footerRender;
+        const shouldShowFooter = showOk || preset || extraFooterRender || footerRender;
 
         const footerNode = shouldShowFooter ? (
             <FooterPanel
@@ -559,7 +554,7 @@ class Picker extends React.Component {
                 onOk={onOk}
                 showOk={showOk}
                 onChange={handleChange}
-                ranges={ranges}
+                preset={preset}
                 prefix={prefix}
                 extraRender={extraFooterRender}
             />

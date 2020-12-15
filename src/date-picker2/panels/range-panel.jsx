@@ -5,6 +5,7 @@ import * as PT from 'prop-types';
 
 import SharedPT from '../prop-types';
 import { func, datejs, obj } from '../../util';
+import { setTime } from '../util';
 
 import { DATE_INPUT_TYPE } from '../constant';
 import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar2/constant';
@@ -82,6 +83,7 @@ class RangePanel extends React.Component {
         handleCellState: PT.func,
         disabledDate: PT.func,
         justBeginInput: PT.bool,
+        resetTime: PT.bool,
         showTime: PT.bool,
         timePanelProps: PT.object,
         disabledTime: PT.object,
@@ -96,13 +98,20 @@ class RangePanel extends React.Component {
     constructor(props) {
         super(props);
 
-        const { mode } = props;
+        const { mode, value, timePanelProps } = props;
+
+        let timeValue = (value && [...value]) || (timePanelProps && timePanelProps.defaultValue) || [];
+
+        if (!Array.isArray(timeValue)) {
+            timeValue = Array(2).fill(timeValue);
+        }
 
         this.state = {
             mode,
             panelValue: getPanelValue(props, null),
             inputType: props.inputType,
             curHoverValue: null,
+            timeValue,
         };
     }
 
@@ -143,40 +152,57 @@ class RangePanel extends React.Component {
         const { disabledDate, inputType } = this.props;
 
         return (
-            disabledDate(v) ||
+            disabledDate(v, mode) ||
             (inputType === END && begin && begin.isAfter(v, unit)) ||
             (inputType === BEGIN && end && end.isBefore(v, unit))
         );
     };
 
-    setTime(newVal, oldVal) {
-        if (oldVal) {
-            return newVal
-                .hour(oldVal.hour())
-                .minute(oldVal.minute())
-                .second(oldVal.second())
-                .millisecond(oldVal.millisecond());
+    onTimeChange(v) {
+        const { value, inputType, timePanelProps } = this.props;
+
+        if (timePanelProps && 'value' in timePanelProps) {
+            return;
         }
-        return newVal;
+        const timeValue = this.getTimeValue();
+
+        timeValue[inputType] = v;
+
+        const otherIdx = (inputType + 1) % 2;
+        if (!value[otherIdx] && !timeValue[otherIdx]) {
+            timeValue[otherIdx] = v;
+        }
+
+        this.setState({ timeValue });
+        if (value && value[inputType]) {
+            this.handleChange(setTime(value[inputType], v), true);
+        }
     }
 
-    onChange = (v, resetTime = true) => {
-        const { value, inputType } = this.props;
+    handleChange = (v, fromTimeChange) => {
+        const { value, inputType, resetTime } = this.props;
         let [begin, end] = value;
+        const timeValue = this.getTimeValue();
+
+        if (!fromTimeChange && resetTime) {
+            timeValue[inputType] = datejs('00:00:00', 'HH:mm:ss');
+        }
+        const [beginTime, endTime] = timeValue;
 
         if (inputType === BEGIN) {
-            begin = resetTime ? this.setTime(v, begin || end) : v;
+            begin = setTime(v, beginTime);
 
             if (end && end.isBefore(begin)) {
                 end = null;
             }
-        } else if (inputType === END) {
-            end = resetTime ? this.setTime(v, end || begin) : v;
+        } else {
+            end = setTime(v, endTime);
 
             if (begin && begin.isAfter(end)) {
                 begin = null;
             }
         }
+
         func.call(this.props, 'onChange', [[begin, end]]);
     };
 
@@ -302,16 +328,36 @@ class RangePanel extends React.Component {
         });
     };
 
+    getTimeValue = () => {
+        const { timePanelProps } = this.props;
+        let { timeValue } = this.state;
+
+        if (timePanelProps && 'value' in timePanelProps) {
+            timeValue = timePanelProps.value;
+
+            if (!Array.isArray(timeValue) && timeValue) {
+                timeValue = [timeValue.clone(), timeValue.clone()];
+            }
+        }
+
+        return timeValue;
+    };
+
     renderRangeTime = sharedProps => {
-        const { value, prefix, showTime, inputType, timePanelProps, disabledTime } = this.props;
+        const { value, prefix, showTime, inputType, timePanelProps = {}, disabledTime } = this.props;
 
         const className = classnames(`${prefix}range-picker2-panel`, {
             [`${prefix}range-picker2-panel-single`]: this.hasModeChanged,
         });
 
+        let timeValue;
         let _disabledTime;
-        if (disabledTime) {
-            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+        if (showTime && !this.hasModeChanged) {
+            timeValue = value.every(v => v) ? value : this.getTimeValue();
+
+            if (disabledTime) {
+                _disabledTime = typeof disabledTime === 'function' ? disabledTime(value, inputType) : disabledTime;
+            }
         }
 
         return (
@@ -325,9 +371,9 @@ class RangePanel extends React.Component {
                 {showTime && !this.hasModeChanged ? (
                     <TimePanel
                         prefix={prefix}
-                        value={value[inputType]}
                         inputType={inputType}
-                        onSelect={v => this.onChange(v, false)}
+                        value={timeValue[inputType]}
+                        onSelect={v => this.onTimeChange(v)}
                         disabledTime={disabledTime}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />
@@ -373,7 +419,7 @@ class RangePanel extends React.Component {
     }
 
     render() {
-        const { onChange, getCellClassName, handleMouseEnter, handleMouseLeave } = this;
+        const { handleChange, getCellClassName, handleMouseEnter, handleMouseLeave } = this;
         const { mode, justBeginInput, dateCellRender, ...restProps } = this.props;
 
         // 切换面板mode
@@ -396,7 +442,7 @@ class RangePanel extends React.Component {
         if (!this.hasModeChanged) {
             sharedProps = {
                 ...sharedProps,
-                onChange,
+                onChange: handleChange,
                 cellClassName: getCellClassName,
                 cellProps: {
                     onMouseEnter: handleMouseEnter,

@@ -4,7 +4,8 @@ import classnames from 'classnames';
 import * as PT from 'prop-types';
 
 import SharedPT from '../prop-types';
-import { func, obj } from '../../util';
+import { func, obj, datejs } from '../../util';
+import { setTime } from '../util';
 
 import Calendar from '../../calendar2';
 import TimePanel from './time-panel';
@@ -17,12 +18,10 @@ class DatePanel extends React.Component {
         mode: SharedPT.mode,
         panelMode: PT.any,
         value: SharedPT.date,
-        showTime: PT.bool,
         disabledDate: PT.func,
+        showTime: PT.bool,
         resetTime: PT.bool,
         timePanelProps: PT.object,
-        defaultTimeValue: SharedPT.date,
-        timeValue: SharedPT.date,
         disabledTime: SharedPT.disabledTime,
         dateCellRender: PT.func,
     };
@@ -31,27 +30,53 @@ class DatePanel extends React.Component {
         resetTime: false,
     };
 
-    setTime(newVal, oldVal) {
-        if (oldVal && this.props.showTime && !this.props.resetTime) {
-            return newVal
-                .hour(oldVal.hour())
-                .minute(oldVal.minute())
-                .second(oldVal.second())
-                .millisecond(oldVal.millisecond());
-        }
-        return newVal;
+    constructor(props) {
+        super(props);
+
+        const { value, timePanelProps } = props;
+
+        this.state = {
+            timeValue: value || (timePanelProps && timePanelProps.defaultValue),
+        };
     }
 
-    handleTimeChange = v => {
-        func.call(this.props, 'onChange', [v]);
+    onTimeChange = v => {
+        const { value, timePanelProps } = this.props;
+
+        if (timePanelProps && 'value' in timePanelProps) {
+            return;
+        }
+
+        this.setState({ timeValue: v });
+
+        value && func.call(this.props, 'onChange', [setTime(this.props.value, v)]);
+    };
+
+    getTimeValue = () => {
+        const { timePanelProps } = this.props;
+        let { timeValue } = this.state;
+
+        if (timePanelProps && 'value' in timePanelProps) {
+            timeValue = timePanelProps.value;
+        }
+
+        return timeValue;
     };
 
     handleChange = v => {
-        func.call(this.props, 'onChange', [this.setTime(v, this.props.value)]);
+        if (this.props.resetTime) {
+            this.setState({
+                timeValue: datejs('00:00:00', 'HH:mm:ss'),
+            });
+        } else {
+            v = setTime(v, this.getTimeValue());
+        }
+
+        func.call(this.props, 'onChange', [v]);
     };
 
     handlePanelChange = (v, mode) => {
-        func.call(this.props, 'onPanelChange', [this.setTime(v, this.props.value), mode]);
+        func.call(this.props, 'onPanelChange', [v, mode]);
     };
 
     render() {
@@ -72,9 +97,19 @@ class DatePanel extends React.Component {
             [`${prefix}date-time-picker2-panel`]: showTime,
         });
 
+        let { timeValue } = this.state;
         let _disabledTime;
-        if (disabledTime) {
-            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
+
+        if (showTime && mode === panelMode) {
+            if (value) {
+                timeValue = value;
+            } else if (timePanelProps && 'value' in timePanelProps) {
+                timeValue = timePanelProps.value;
+            }
+
+            if (disabledTime) {
+                _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
+            }
         }
 
         return (
@@ -93,8 +128,8 @@ class DatePanel extends React.Component {
                 {showTime && mode === panelMode ? (
                     <TimePanel
                         prefix={prefix}
-                        value={value}
-                        onSelect={this.handleTimeChange}
+                        value={timeValue}
+                        onSelect={this.onTimeChange}
                         disabledTime={disabledTime}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />

@@ -12,3 +12,14 @@ export function getValue(key, obj, defaultObj) {
 export function getFromPropOrState(key) {
     return getValue(key, this.props, this.state);
 }
+
+export function setTime(targetVal, sourceVal) {
+    if (sourceVal && targetVal) {
+        return targetVal
+            .hour(sourceVal.hour())
+            .minute(sourceVal.minute())
+            .second(sourceVal.second())
+            .millisecond(sourceVal.millisecond());
+    }
+    return targetVal;
+}
