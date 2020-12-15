@@ -219,7 +219,7 @@
 
 #{$range-picker2-prefix}-panel:not(#{$range-picker2-prefix}-panel-single) {
     #{$calendar2-prefix}-cell-disabled {
-        #{$cell-inner} {
+        #{$calendar2-cell-inner} {
             @include calendar-disabled;
         }
     }
@@ -229,7 +229,7 @@
                 color: $color-text1-3;
                 background: $color-brand1-1;
             }
-            #{$cell-inner} {
+            #{$calendar2-cell-inner} {
                 color: $color-text1-3;
                 background: transparent;
             }
@@ -243,7 +243,7 @@
 
             &#{$calendar2-prefix}-cell-range-begin,
             &#{$calendar2-prefix}-cell-range-end {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     @include calendar-selected;
                 }
             }

@@ -21,13 +21,13 @@
 
     &-body {
         overflow: hidden;
-        border: $popup-local-border-width $popup-local-border-style $time-picker-panel-border-color;
-        border-radius: $time-picker-panel-corner;
-        background: $time-picker-panel-background;
-        box-shadow: $time-picker-panel-shadow;
+        border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
+        border-radius: $popup-local-corner;
+        background: $color-white;
+        box-shadow: $popup-local-shadow;
     }
 
     &-symbol-clock-icon::before {
-        content: $time-picker-clock-icon;
+        content: $icon-content-clock;
     }
 }

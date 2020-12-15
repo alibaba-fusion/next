@@ -4,7 +4,7 @@
 
     display: flex;
     &-header {
-        border-bottom: $line-1 $line-solid $time-picker-panel-border-color;
+        border-bottom: $line-1 $line-solid $popup-local-border-color;
     }
 
     &-input.#{$css-prefix}input {

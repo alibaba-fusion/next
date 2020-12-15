@@ -27,7 +27,7 @@
         position: relative;
     }
 
-    #{$cell-inner} {
+    #{$calendar2-cell-inner} {
         color: $color-text1-1;
         outline: none;
         border: 1px solid transparent;
@@ -81,7 +81,7 @@
     &-card,
     &-panel {
 
-        #{$cell-inner} {
+        #{$calendar2-cell-inner} {
             z-index: 2;
             height: 24px;
             line-height: 22px;
@@ -151,23 +151,23 @@
 
         #{$calendar2-prefix}-cell-current {
             &:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):not(#{$calendar2-prefix}-cell-today) {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     @include calendar-current;
                 }
 
-                &:hover:not(#{$calendar2-prefix}-cell-hover) #{$cell-inner} {
+                &:hover:not(#{$calendar2-prefix}-cell-hover) #{$calendar2-cell-inner} {
                     @include calendar-hover;
                 }
             }
 
             &#{$calendar2-prefix}-cell-today:not(#{$calendar2-prefix}-cell-disabled) {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     color: $color-brand1-9;
                 }
             }
 
             &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     @include calendar-selected;
                 }
             }
@@ -175,7 +175,7 @@
 
         #{$calendar2-prefix}-table-week {
             #{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     @include calendar-selected;
                 }
             }
@@ -201,36 +201,36 @@
             }
         }
 
-        #{$calendar2-prefix}-cell-disabled #{$cell-inner} {
+        #{$calendar2-prefix}-cell-disabled #{$calendar2-cell-inner} {
             @include calendar-disabled-fullscreen;
         }
 
         #{$calendar2-prefix}-cell-current {
             &:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):not(#{$calendar2-prefix}-cell-today) {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     @include calendar-current-fullscreen;
                 }
 
-                &:hover #{$cell-inner} {
+                &:hover #{$calendar2-cell-inner} {
                     @include calendar-hover-fullscreen;
                 }
-                &:active #{$cell-inner} {
+                &:active #{$calendar2-cell-inner} {
                     background-color: #EDEFF2;
                 }
             }
 
             &#{$calendar2-prefix}-cell-today {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     color: $color-brand1-9;
                 }
             }
 
-            #{$cell-inner} {
+            #{$calendar2-cell-inner} {
                 background-color: $color-white;
             }
 
             &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                #{$cell-inner} {
+                #{$calendar2-cell-inner} {
                     @include calendar-selected-fullscreen;
                 }
             }
