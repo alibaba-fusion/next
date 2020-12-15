@@ -301,6 +301,13 @@
             color: $radio-normal-font-color-disabled;
         }
     }
+
+    &-group#{$radio-prefix}-button {
+        & #{$radio-prefix}-wrapper {
+            margin-right: 0;
+        }
+    }
+
     &-group-ver {
         #{$radio-prefix}-wrapper {
             display: block;
