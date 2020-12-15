@@ -56,6 +56,56 @@
 
     &-overlay-range {
         padding: 12px 0;
+        #{$range-picker2-prefix}-panel:not(#{$range-picker2-prefix}-panel-single) #{$calendar2-prefix}-table-week {
+            tr td#{$calendar2-prefix}-cell-hover::after {
+                display: none;
+            }
+
+            tr td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                &::before,
+                & #{$calendar2-cell-inner} {
+                    @include calendar-initial;
+                }
+
+                &#{$calendar2-prefix}-cell-range-begin::before {
+                    left: -2px;
+                }
+                &#{$calendar2-prefix}-cell-range-begin:last-child::before {
+                    left: 2px;
+                }
+                &#{$calendar2-prefix}-cell-range-end:last-child::before {
+                    right: 2px;
+                }
+
+                &#{$calendar2-prefix}-cell-range-end::before {
+                    right: -2px;
+                }
+
+                &#{$calendar2-prefix}-cell-range-begin::before,
+                &#{$calendar2-prefix}-cell-range-end::before,
+                &#{$calendar2-prefix}-cell-range-begin #{$calendar2-cell-inner},
+                &#{$calendar2-prefix}-cell-range-end #{$calendar2-cell-inner} {
+                    color: $color-text1-3;
+                    background: $color-brand1-1;
+                }
+            }
+
+            tr #{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled)#{$calendar2-prefix}-cell-range-begin::before {
+                left: 2px;
+            }
+
+            tr td#{$calendar2-prefix}-cell-range-begin:last-child,
+            tr td#{$calendar2-prefix}-cell-range-end:last-child,
+            tr td#{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell-range-begin,
+            tr td#{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell-range-end {
+                &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                    &::before,
+                    & #{$calendar2-cell-inner} {
+                        @include calendar-selected;
+                    }
+                }
+            }
+        }
     }
 
     &-wrapper {
@@ -288,7 +338,7 @@
         & + #{$calendar2-prefix}-cell-edge-end {
             &::before,
             &::after {
-                right: 8px;
+                right: 4px;
             }
 
             &#{$calendar2-prefix}-cell-hover {
@@ -317,7 +367,7 @@
     #{$calendar2-prefix}-cell-edge-end + #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
         &::before,
         &::after {
-            left: 8px;
+            left: 4px;
         }
 
         &#{$calendar2-prefix}-cell-hover {

@@ -25,6 +25,9 @@
     &-cell {
         cursor: pointer;
         position: relative;
+        &::before {
+            transition: background-color .2s, border .2s;
+        }
     }
 
     #{$calendar2-cell-inner} {
@@ -96,8 +99,8 @@
                 content: "";
                 position: absolute;
                 top: 50%;
-                right: 0;
-                left: -1px;
+                right: -2px;
+                left: -2px;
                 z-index: 1;
                 height: 24px;
                 transform: translateY(-50%);
@@ -106,11 +109,18 @@
                 border-top-right-radius: 2px;
                 border-bottom-right-radius: 2px;
                 right: 8px;
+                left: 2px;
             }
             &-cell:first-child::before {
                 border-top-left-radius: 2px;
                 border-bottom-left-radius: 2px;
                 left: 8px;
+            }
+            &-cell-week + #{$calendar2-prefix}-cell::before {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                left: 8px;
+                right: 2px;
             }
 
             &-table {
@@ -174,9 +184,30 @@
         }
 
         #{$calendar2-prefix}-table-week {
-            #{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
-                #{$calendar2-cell-inner} {
-                    @include calendar-selected;
+            #{$calendar2-cell-inner},
+            #{$calendar2-prefix}-cell:before {
+                transition: none;
+            }
+            tr:hover #{$calendar2-prefix}-cell:not(#{$calendar2-prefix}-cell-disabled) {
+                &::before,
+                & #{$calendar2-cell-inner} {
+                    @include calendar-hover;
+                }
+            }
+            tr td#{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                &::before,
+                & #{$calendar2-cell-inner} {
+                    color: $color-text1-3;
+                    background: $color-brand1-1;
+                }
+            }
+            tr td#{$calendar2-prefix}-cell:last-child,
+            tr td#{$calendar2-prefix}-cell-week + #{$calendar2-prefix}-cell {
+                &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                    &::before,
+                    & #{$calendar2-cell-inner} {
+                        @include calendar-selected;
+                    }
                 }
             }
         }

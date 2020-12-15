@@ -7,6 +7,11 @@
     color: $color-text1-3;
 }
 
+@mixin calendar-initial {
+    background-color: $color-white;
+    color: $color-text1-3;
+}
+
 @mixin calendar-disabled {
     // color: #C4C7CC;
     color: $color-text1-1;
