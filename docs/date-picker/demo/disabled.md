@@ -22,6 +22,9 @@ import { DatePicker } from '@alifd/next';
 const { RangePicker } = DatePicker;
 
 ReactDOM.render(<div>
-    <DatePicker disabled />&nbsp;&nbsp;<RangePicker disabled />
+    <DatePicker disabled />
+    <br/>
+    <br/>
+    <RangePicker disabled />
 </div>, mountNode);
 ````

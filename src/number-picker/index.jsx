@@ -8,6 +8,10 @@ export default ConfigProvider.config(NumberPicker, {
             log.warning('[NumberPicker]: onDisabled is deleted!');
         }
 
+        if ('state' in props && props.state === 'success') {
+            delete props.state;
+        }
+
         return props;
     },
     exportNames: ['getInputNode'],

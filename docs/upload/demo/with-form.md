@@ -12,7 +12,7 @@
 ---
 
 ````jsx
-import { Upload, Button, Field, Form } from '@alifd/next';
+import { Upload, Button, Field, Form, Box } from '@alifd/next';
 
 const FormItem = Form.Item;
 
@@ -55,12 +55,12 @@ class App extends React.Component {
                         <Button>Upload</Button>
                     </Upload>
                 </FormItem>
-                <div>
-                    <Button onClick={this.setValues} type="primary" style={{margin: '0 0 10px'}}>Set Data</Button>&nbsp;&nbsp;
-                    <Button onClick={this.getValues} type="primary" style={{margin: '0 0 10px'}}>Get Data</Button>&nbsp;&nbsp;
-                    <Button onClick={() => this.field.reset()} type="primary" style={{margin: '0 0 10px'}}>Reset</Button>&nbsp;&nbsp;
+                <Box direction="row" spacing={20}>
+                    <Button onClick={this.setValues} type="primary" style={{margin: '0 0 10px'}}>Set Data</Button>
+                    <Button onClick={this.getValues} type="primary" style={{margin: '0 0 10px'}}>Get Data</Button>
+                    <Button onClick={() => this.field.reset()} type="primary" style={{margin: '0 0 10px'}}>Reset</Button>
                     <Button onClick={() => this.field.validate()} type="primary" style={{margin: '0 0 10px'}}>Validate</Button>
-                </div>
+                </Box>
             </Form>
         );
     }

@@ -23,7 +23,7 @@ ReactDOM.render(
         <Breadcrumb.Item link="javascript:void(0);">Women’s Clothing</Breadcrumb.Item>
         <Breadcrumb.Item link="javascript:void(0);">Blouses & Shirts</Breadcrumb.Item>
         <Breadcrumb.Item>
-            T-shirts&nbsp; <b>78,999</b> Results
+            T-shirts <b>78,999</b> Results
         </Breadcrumb.Item>
     </Breadcrumb>,
     mountNode);

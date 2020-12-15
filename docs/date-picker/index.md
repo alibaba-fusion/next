@@ -7,9 +7,13 @@
 
 ---
 
-## Guide
+日期组件。
+
+## 何时使用
 
 输入或选择日期的控件。当用户需要输入一个日期，可以点击标准输入框，弹出日期面板进行选择。
+
+## 如何使用
 
 ### 日期选择模式
 
@@ -24,11 +28,11 @@ DatePicker/RangePicker 在交互上增加了**操作焦点**的设置，意味�
 
 由于 Calendar 组件内部使用 moment 对象来设置日期（请使用最新版 moment），部分 Locale 读取自 moment，因此用户需要在外部使用时[正确的设置 moment 的 locale](http://momentjs.cn/docs/#/i18n/changing-locale/) 。
 
--   Q: 文档站点上看是中式日历，为什么我本地却是美式日历呢？如何进行多语言适配？<br/>
-    A: 日期的多语言情况比较复杂，涉及到年、月、日、星期、阅读习惯等多方面(美式从周日到周六，中式从周一到周日)，因此我们借助了成熟的时间库 moment.js 来进行日期的多语言处理。
+Q: 文档站点上看是中式日历，为什么我本地却是美式日历呢？如何进行多语言适配？<br/>
+A: 日期的多语言情况比较复杂，涉及到年、月、日、星期、阅读习惯等多方面(美式从周日到周六，中式从周一到周日)，因此我们借助了成熟的时间库 moment.js 来进行日期的多语言处理。
      moment.js 默认支持美式表达，如需中文等其他语言，请引入moment-with-locales.js语言包。
 
-```js
+```jsx
 import moment from 'moment';
 
 moment.locale('zh-cn');
@@ -36,7 +40,7 @@ moment.locale('zh-cn');
 
 此外，当改变 moment 的全局 locale 时并不会修改之前的已有实例，例如：
 
-```js
+```jsx
 moment.locale('fr');
 const m = moment(1316116057189);
 m.fromNow(); // il y a une heure
@@ -48,7 +52,7 @@ moment(1316116057189).fromNow(); // an hour ago
 
 除了全局设置 moment 的多语言，还可以只对某个 moment 实例设置多语言。比如：
 
-```js
+```jsx
 const value = moment();
 value.locale('fr'); // set this instance to use French
 ```
@@ -270,7 +274,7 @@ DatePicker 默认情况下接收和返回的数据类型都是 Moment 对象。�
 | isPreview          | 是否为预览态                                                                                                                                                                                                                                             | Boolean   | -           |
 | renderPreview      | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: MomentObject) => void<br>**参数**:<br>_value_: {MomentObject} 年份                                                                                                                                       | Function  | -           |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 同选择框一样聚焦到 DatePiker 后，需要按下 `ENTER` 键打开弹出框，选择/输入日期， 通过 `TAB` 切换日期和时间输入框。
 

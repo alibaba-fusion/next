@@ -7,11 +7,13 @@
 
 ---
 
-## 开发指南
+表单输入组件。
 
-### 何时使用
+## 何时使用
 
-表单输入，一般配合Form使用
+表单输入，一般配合 Form 使用。 
+
+- Input 不支持 Number 类型数字，如有需要使用 NumberPicker 支持数字选择
 
 ## API
 
@@ -98,7 +100,7 @@
 | getInputNode | 获取真正input节点                                                                                                                  | Function |     |
 | focus        | 获取焦点<br><br>**签名**:<br> Function(start:Number, end: Number)<br>**参数**:<br>_start_: {Number} 光标起始位置<br>_end_: {Number} 选择结束位置 | Function |     |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明            |
 | :---- | :------------ |

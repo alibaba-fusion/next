@@ -7,11 +7,9 @@
 
 ---
 
-## 使用指南
+抽屉组件。
 
-抽屉
-
-### 何时使用
+## 何时使用
 
 抽屉是用于在不离开主路径的情况下，提供用户快速执行简单的操作、确认用户信息或反馈提示的辅助窗口。
 
@@ -36,7 +34,7 @@
 | hasMask     | 是否显示遮罩                                                                                                                                                                                                                           | Boolean             | true                                       |
 | animation   | 显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名                                                                                                                    | Object/Boolean      | { in: 'expandInDown', out: 'expandOutUp' } |
 
-## ARIA and Keyboard
+## 无障碍键盘操作指南
 
 | 键盘        | 说明                                       |
 | :-------- | :--------------------------------------- |

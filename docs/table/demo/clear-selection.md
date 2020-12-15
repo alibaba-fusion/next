@@ -15,7 +15,7 @@ Demo all selection and single selection under control.
 ---
 
 ````jsx
-import { Table, Button } from '@alifd/next';
+import { Table, Button, Box } from '@alifd/next';
 
 const dataSource = (i, j) => {
         const result = [];
@@ -84,12 +84,12 @@ class App extends React.Component {
     render () {
         return (
             <div>
-                <p>
-                    <Button onClick={this.clear.bind(this)}>Clear Selection</Button>&nbsp;
-                    <Button onClick={this.changeMode.bind(this)}>Change mode</Button>&nbsp;
-                    <Button onClick={this.toggleLoading.bind(this)}>Toggle loading</Button>&nbsp;
+                <Box direction="row" spacing={20}>
+                    <Button onClick={this.clear.bind(this)}>Clear Selection</Button>
+                    <Button onClick={this.changeMode.bind(this)}>Change mode</Button>
+                    <Button onClick={this.toggleLoading.bind(this)}>Toggle loading</Button>
                     <Button onClick={this.modifyDataSource.bind(this)}>Modify dataSource</Button>
-                </p>
+                </Box>
                 <Table dataSource={this.state.dataSource}
                     loading={this.state.loading}
                     rowSelection={this.state.rowSelection}>

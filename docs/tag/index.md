@@ -6,17 +6,14 @@
 -   type: 展示
 
 ---
-
-## Guide
-
 标签用于标记事物的属性和维度，或者可以使用标签来对一组事物分类。
 
-### 何时使用
+## 何时使用
 
 -   用于标记事物的属性和维度。
 -   进行分类。
 
-### 使用注意点
+## 如何使用
 
 1.  虽然可以设置 `size` 属性取值 `large`，但该值只是为了兼容表单场景，实际取值时 `large` 等同于 `medium`。
 2.  不建议在 Tag 中使用大段文本。
@@ -53,7 +50,7 @@
 | onChange       | 选中状态变化时触发的事件<br><br>**签名**:<br>Function(checked: Boolean, e: Event) => void<br>**参数**:<br>_checked_: {Boolean} 是否选中<br>_e_: {Event} Dom 事件对象 | Function | func.noop |
 | disabled       | 标签是否被禁用                                                                                                                                      | Boolean  | -         |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明           |
 | :---- | :----------- |

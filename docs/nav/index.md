@@ -8,20 +8,13 @@
 
 ---
 
-## 开发指南
-
-### 何时使用
+## 何时使用
 
 分为顶部导航和侧边导航，顶部导航提供全局性的类目和功能，侧边导航提供多级结构来收纳和排列网站架构。
 
-### 注意事项
+## 如何使用
 
--   Nav 继承自 Menu，除特殊说明外，可使用 Menu 的 API。
-
-### 常见问题
--   Q: 菜单的数据是移步获取的，当我拿到数据之后，发现设置的 `defaultOpenKeys` 不生效，有什么解决办法？这个问题的成因是什么？<br/>
-      A: 假设菜单信息是异步获取后塞到 menuData 变量中的，可以设置 `{menuData && <Menu />}`
-    原因：defaultXXX系列API遵循React的设计规范，仅在组件第一次渲染的时候生效，所以`defaultOpenKeys`仅仅对Menu在didMount阶段拿到的Children生效，异步获取的信息不在这个阶段内，所以不生效
+Nav 继承自 Menu，除特殊说明外，可使用 Menu 的 API。
 
 ## API
 
@@ -92,7 +85,7 @@
 | selectable | 是否可选                                                       | Boolean          | false |
 | children   | 导航项和子导航                                                    | ReactNode        | -     |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键          | 说明                              |
 | :---------- | :------------------------------ |
@@ -102,3 +95,11 @@
 | Left Arrow  | 关闭子菜单，导航到父级菜单；横向菜单条第一层，导航到左一项   |
 | Enter       | 打开子菜单，导航到子菜单第一项                 |
 | Esc         | 关闭子菜单，导航到父级菜单                   |
+
+## FAQ
+
+### 菜单的数据是移步获取的，当我拿到数据之后，发现设置的 `defaultOpenKeys` 不生效，有什么解决办法？
+
+原因：defaultXXX系列API遵循React的设计规范，仅在组件第一次渲染的时候生效，所以`defaultOpenKeys`仅仅对Menu在didMount阶段拿到的Children生效，异步获取的信息不在这个阶段内，所以不生效。
+
+解决方法：假设菜单信息是异步获取后塞到 menuData 变量中的，可以设置 `{menuData && <Menu />}`。

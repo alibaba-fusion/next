@@ -4,17 +4,17 @@ html {
 }
 
 body {
-    max-width: 1200px;
+    max-width: 1600px;
     min-width: 896px;
     width: max(calc(100% - 112px), 896px);
-    margin: 56px auto;
+    margin: 56px 56px auto 56px;
     font-size: 14px!important;
 }
 
 .markdown {
     color: #666;
     word-wrap: break-word;
-    line-height: 20px;
+    line-height: 24px;
     letter-spacing: .2px
 }
 
@@ -41,7 +41,7 @@ body {
 }
 
 .markdown h2 {
-    margin: 48px 0 12px 0;
+    margin: 56px 0 20px 0;
     font-size: 24px;
     min-height: 20px;
     line-height: 20px;
@@ -88,8 +88,8 @@ body {
     font-size: 14px;
     color: #666666;
     letter-spacing: 0;
-    min-height: 20px;
-    line-height: 20px;
+    min-height: 24px;
+    line-height: 24px;
 }
 
 .markdown ol, .markdown ul {
@@ -232,7 +232,7 @@ code {
 }
 
 .demo-wrapper {
-    max-width: 992px;
+    max-width: 1600px;
     min-width: 784px;
     width: calc(100% - 168px);
     position: relative;
@@ -241,7 +241,7 @@ code {
 .demo-index {
     position: fixed;
     top: 56px;
-    right: max(calc((100% - 1200px)/2), 0px);
+    right: max(calc((100% - 1600px)/2), 0px);
     width: 168px;
     max-height: calc(100vh - 200px);
     min-height: 150px;
@@ -250,6 +250,12 @@ code {
 @media screen and (max-width:1064px){
     .demo-index {
         display: none;
+    }
+}
+@media screen and (min-width:1600px){
+    .demo-index {
+        right: auto;
+        left: 1520px;
     }
 }
 
@@ -301,7 +307,6 @@ code {
 
 .demo-index-list .demo-index-item.demo-index-item-sub a {
     display: block;
-    padding: 4px 0;
     font-family: Roboto-Regular;
     font-size: 12px;
     color: #666666;
@@ -319,10 +324,6 @@ code {
     line-height: 1.5;
     font-weight: 900;
     min-height: 20px;
-}
-
-.next-demo-item.scroll-count-item.active{
-    border: 1px solid #3B9AFF!important;
 }
 
 .next-demo-item.scroll-count-item.active{
@@ -648,9 +649,17 @@ html::-webkit-scrollbar {
 }
 
 .react-live-body {
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 12px;
+    line-height: 14px;
     padding: 0 5px 0 5px;
+}
+
+.react-live-body pre {
+    font-family: Monaco, 'Andale Mono', 'Ubuntu Mono', monospace!important;
+}
+
+.react-live-body .token.plain {
+    color: #585d66;
 }
 
 .react-live-body textarea {
@@ -673,17 +682,19 @@ html::-webkit-scrollbar {
 }
 
 [id*="-live-import"] pre .language-jsx .hljs {
+    font-family: Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,PingFang SC,Microsoft YaHei;
     background-color: #F5F5FB !important;
     border-radius: 10px;
     padding: 20px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 [id*="-live-css"] pre .language-css .hljs {
+    font-family: Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,PingFang SC,Microsoft YaHei;
     background-color: #F5F5FB !important;
     border-radius: 10px;
     padding: 20px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 #toggle-rtl {
@@ -743,6 +754,7 @@ html::-webkit-scrollbar {
 .demo-item-desc p {
     margin: 0 0 0 0;
     line-height: 20px;
+    min-height: 20px;
 }
 
 .markdown h4+p {
@@ -868,4 +880,12 @@ h2#demo-list {
 
 .markdown p+p {
     margin-top: 12px;
+}
+
+pre[class*="language-"]+h2 {
+    margin-top: 36px;
+}
+
+p {
+    margin: 12px 0 12px 0;
 }

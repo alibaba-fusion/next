@@ -13,7 +13,7 @@
 pre[class*="language-"],
 code[class*="language-"] {
   color: #585d66;
-  font-size: 13px;
+  font-size: 12px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
@@ -45,7 +45,7 @@ code[class*="language-"]::mozselection {
 }
 pre[class*="language-"] {
   padding: 1em;
-  margin: .5em 0;
+  margin: 1em 0 3em 0;
   overflow: auto;
   background: #f5f7fa;
 }

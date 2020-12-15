@@ -43,14 +43,14 @@ const maxTagPlaceholder = (selectedValues, totalValues) => {
 const style= { width: 200, marginRight: 8 };
 
 ReactDOM.render(
-    <div style={{display: 'flex'}}>
+    <div style={{display: 'flex', alignItems: 'flex-start'}}>
         <Select placeholder="select all" hasSelectAll mode="multiple" onChange={handleChange} dataSource={dataSource} style={style} />
 
         <Select maxTagCount={2} defaultValue={['10001', '10002', '-1']} mode="multiple" onChange={handleChange} dataSource={dataSource} style={style}  /> 
         
         <Select maxTagCount={2} maxTagPlaceholder={maxTagPlaceholder} defaultValue={['10001', '10002', '-1']} mode="multiple" onChange={handleChange} dataSource={dataSource} style={style}  /> 
         
-        <Select maxTagCount={2} tagInline mode="multiple" defaultValue={['10001', '10002', '-1']}  onChange={handleChange} dataSource={dataSource} style={style}  /><br /><br />
+        <Select maxTagCount={2} tagInline mode="multiple" defaultValue={['10001', '10002', '-1']}  onChange={handleChange} dataSource={dataSource} style={style} /><br /><br />
     </div>
 , mountNode);
 ````

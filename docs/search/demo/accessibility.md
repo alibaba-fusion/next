@@ -1,8 +1,8 @@
-# 无障碍
+# 无障碍支持
 
 - order: 6
 
-按下Enter键调用`onSearch`事件去处理,请参考`ARIA and KeyBoard`。
+按下Enter键调用`onSearch`事件去处理,请参考[无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 :::lang=en-us
 # Accessibility

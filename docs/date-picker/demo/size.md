@@ -16,11 +16,11 @@ Change size by attribute `size`.
 ---
 
 ````jsx
-import { DatePicker } from '@alifd/next';
+import { DatePicker, Box } from '@alifd/next';
 
-ReactDOM.render(<div>
-    <DatePicker size="large" /> &nbsp;&nbsp;
-    <DatePicker /> &nbsp;&nbsp;
+ReactDOM.render(<Box direction="row" spacing={20}>
+    <DatePicker size="large" /> 
+    <DatePicker /> 
     <DatePicker size="small" />
-</div>, mountNode);
+</Box>, mountNode);
 ````

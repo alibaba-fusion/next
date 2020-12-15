@@ -7,17 +7,15 @@
 
 ---
 
-## Guide
-
 按照日历形式展示数据的容器。
 
-### 何时使用
+## 何时使用
 
 日历组件是一个偏向于展示与受控的基础组件，可用于日程、课表、价格日历、农历展示等。
 
-### 日期值的多语言
+## 如何使用
 
-由于 Calendar 组件内部使用 moment 对象来设置日期（请使用最新版 moment），部分 Locale 读取自 moment，因此用户需要在外部使用时[正确的设置 moment 的 locale](http://momentjs.cn/docs/#/i18n/changing-locale/) 。
+日期值的多语言设置：由于 Calendar 组件内部使用 moment 对象来设置日期（请使用最新版 moment），部分 Locale 读取自 moment，因此用户需要在外部使用时[正确的设置 moment 的 locale](http://momentjs.cn/docs/#/i18n/changing-locale/) 。
 
 ```js
 import moment from 'moment';

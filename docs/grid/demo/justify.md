@@ -21,35 +21,35 @@ const { Row, Col } = Grid;
 
 ReactDOM.render(
     <div className="justify-demo">
-        <div className="demo-title">start</div>
+        <div className="grid-fixed-demo-title">start</div>
         <Row justify="start">
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
         </Row>
 
-        <div className="demo-title">center</div>
+        <div className="grid-fixed-demo-title">center</div>
         <Row justify="center">
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
         </Row>
 
-        <div className="demo-title">end</div>
+        <div className="grid-fixed-demo-title">end</div>
         <Row justify="end">
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
         </Row>
 
-        <div className="demo-title">space-between</div>
+        <div className="grid-fixed-demo-title">space-between</div>
         <Row justify="space-between">
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
         </Row>
 
-        <div className="demo-title">space-around</div>
+        <div className="grid-fixed-demo-title">space-around</div>
         <Row justify="space-around">
             <Col span="4">col-4</Col>
             <Col span="4">col-4</Col>
@@ -59,7 +59,7 @@ ReactDOM.render(
 ````
 
 ````css
-.justify-demo  .demo-title {
+.justify-demo  .grid-fixed-demo-title {
     margin-left: 20px;
 }
 

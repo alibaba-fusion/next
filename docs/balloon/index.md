@@ -7,16 +7,14 @@
 
 ---
 
-## 开发指南
+气泡组件。
 
-气泡组件
-
-### 何时使用
+## 何时使用
 
 -   当用户与被说明对象（文字，图片，输入框等）发生交互行为的action开始时, 即刻跟随动作出现一种辅助或帮助的提示信息。
 -   其中Balloon.Tooltip是简化版本，主要用于hover时显示简单文案，如果想让内容可被点击 可以设置`<Balloon.Tootip delay={100} />`
 
-### 使用注意
+## 如何使用
 
 -   对于trigger是自定义的React Component的情况，自定义的React Component 需要透传onMouseEnter/onMouseLeave/onClick 事件。
 -   若要使用无障碍的气泡提示，请传入id。推荐简单提示使用`<Tooltip>`、复杂交互使用`<Balloon triggerType="click">` 。 triggerType="focus"作为辅助状态用于组件内部，请用户不要直接使用此值。
@@ -72,11 +70,7 @@
 | id             | 弹层id, 传入值才会支持无障碍                                                                                                                                              | String       | -           |
 | delay          | 如果需要让 Tooltip 内容可被点击，可以设置这个参数，例如 100                                                                                                                          | Number       | 0           |
 
-## 已知问题
-
--   对于 disabled 的元素，onMouseLeave 事件在chrome下无法触发，此为chrome的bug，暂时无法绕过。
-
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明                              |
 | :---- | :------------------------------ |
