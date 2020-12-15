@@ -57,10 +57,7 @@ const getExpandedValue = (v, _v2n, _p2n) => {
     });
 
     return Object.keys(expandedMap).sort((prev, next) => {
-        return (
-            expandedMap[prev].split('-').length -
-            expandedMap[next].split('-').length
-        );
+        return expandedMap[prev].split('-').length - expandedMap[next].split('-').length;
     });
 };
 
@@ -92,17 +89,11 @@ class Cascader extends Component {
         /**
          * （非受控）默认值
          */
-        defaultValue: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * （受控）当前值
          */
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string),
-        ]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
         /**
          * 选中值改变时触发的回调函数
          * @param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组
@@ -212,9 +203,7 @@ class Cascader extends Component {
 
         const { v2n, p2n } = flatDataSource(dataSource);
 
-        let normalizedValue = normalizeValue(
-            typeof value === 'undefined' ? defaultValue : value
-        );
+        let normalizedValue = normalizeValue(typeof value === 'undefined' ? defaultValue : value);
 
         if (!loadData) {
             normalizedValue = normalizedValue.filter(v => v2n[v]);
@@ -241,13 +230,7 @@ class Cascader extends Component {
             _p2n: p2n,
         };
 
-        bindCtx(this, [
-            'handleMouseLeave',
-            'handleFocus',
-            'handleFold',
-            'getCascaderNode',
-            'onBlur',
-        ]);
+        bindCtx(this, ['handleMouseLeave', 'handleFocus', 'handleFold', 'getCascaderNode', 'onBlur']);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -266,11 +249,7 @@ class Cascader extends Component {
             }
 
             if (!state.expandedValue.length && !('expandedValue' in props)) {
-                states.expandedValue = getExpandedValue(
-                    states.value[0],
-                    v2n,
-                    p2n
-                );
+                states.expandedValue = getExpandedValue(states.value[0], v2n, p2n);
             }
         }
 
@@ -295,9 +274,7 @@ class Cascader extends Component {
     getCascaderNode(ref) {
         this.cascader = ref;
         if (this.cascader) {
-            this.cascaderInner = this.cascader.querySelector(
-                `.${this.props.prefix}cascader-inner`
-            );
+            this.cascaderInner = this.cascader.querySelector(`.${this.props.prefix}cascader-inner`);
         }
     }
 
@@ -305,11 +282,7 @@ class Cascader extends Component {
         if (!this.cascaderInner) {
             return;
         }
-        const menus = [].slice.call(
-            this.cascaderInner.querySelectorAll(
-                `.${this.props.prefix}cascader-menu-wrapper`
-            )
-        );
+        const menus = [].slice.call(this.cascaderInner.querySelectorAll(`.${this.props.prefix}cascader-menu-wrapper`));
         if (menus.length === 0) {
             return;
         }
@@ -439,29 +412,18 @@ class Cascader extends Component {
                 for (let j = 0; j < ps.length; j++) {
                     const p = ps[j];
                     const pnode = this.state._p2n[p];
-                    if (
-                        isSiblingOrSelf(currentPos, p) &&
-                        !pnode.disabled &&
-                        !pnode.checkboxDisabled
-                    ) {
+                    if (isSiblingOrSelf(currentPos, p) && !pnode.disabled && !pnode.checkboxDisabled) {
                         const k = pnode.value;
                         // eslint-disable-next-line max-depth
                         if (pnode.checkable === false) {
                             // eslint-disable-next-line max-depth
-                            if (
-                                !pnode.children ||
-                                pnode.children.length === 0
-                            ) {
+                            if (!pnode.children || pnode.children.length === 0) {
                                 continue;
                             }
                             // eslint-disable-next-line max-depth
                             for (let m = 0; m < pnode.children.length; m++) {
                                 // eslint-disable-next-line max-depth
-                                if (
-                                    !pnode.children.every(child =>
-                                        isNodeChecked(child, value)
-                                    )
-                                ) {
+                                if (!pnode.children.every(child => isNodeChecked(child, value))) {
                                     parentCheck = false;
                                     break;
                                 }
@@ -517,11 +479,7 @@ class Cascader extends Component {
 
         if (canExpand || expandedValue.length > level) {
             if (canExpand) {
-                expandedValue.splice(
-                    level,
-                    expandedValue.length - level,
-                    value
-                );
+                expandedValue.splice(level, expandedValue.length - level, value);
             } else {
                 expandedValue.splice(level);
             }
@@ -530,11 +488,9 @@ class Cascader extends Component {
                 this.setExpandValue(expandedValue);
 
                 if (focusedFirstChild) {
-                    const endExpandedValue =
-                        expandedValue[expandedValue.length - 1];
+                    const endExpandedValue = expandedValue[expandedValue.length - 1];
                     this.setState({
-                        focusedValue: this.state._v2n[endExpandedValue]
-                            .children[0].value,
+                        focusedValue: this.state._v2n[endExpandedValue].children[0].value,
                     });
                 }
             };
@@ -694,9 +650,7 @@ class Cascader extends Component {
             >
                 {data.map(item => {
                     const disabled = !!item.disabled;
-                    const canExpand =
-                        (!!item.children && !!item.children.length) ||
-                        (!!loadData && !item.isLeaf);
+                    const canExpand = (!!item.children && !!item.children.length) || (!!loadData && !item.isLeaf);
                     const expanded = expandedValue[level] === item.value;
                     const props = {
                         prefix,
@@ -704,12 +658,7 @@ class Cascader extends Component {
                         canExpand,
                         expanded,
                         expandTriggerType,
-                        onExpand: this.handleExpand.bind(
-                            this,
-                            item.value,
-                            level,
-                            canExpand
-                        ),
+                        onExpand: this.handleExpand.bind(this, item.value, level, canExpand),
                         onFold: this.handleFold,
                     };
 
@@ -719,22 +668,15 @@ class Cascader extends Component {
 
                     if (multiple) {
                         props.checkable = !(canOnlyCheckLeaf && canExpand);
-                        props.checked =
-                            value.indexOf(item.value) > -1 || !!item.checked;
+                        props.checked = value.indexOf(item.value) > -1 || !!item.checked;
                         props.indeterminate =
-                            (checkStrictly || canOnlyCheckLeaf
-                                ? false
-                                : this.indeterminate.indexOf(item.value) >
-                                  -1) || !!item.indeterminate;
+                            (checkStrictly || canOnlyCheckLeaf ? false : this.indeterminate.indexOf(item.value) > -1) ||
+                            !!item.indeterminate;
                         props.checkboxDisabled = !!item.checkboxDisabled;
                         props.onCheck = this.handleCheck.bind(this, item.value);
                     } else {
                         props.selected = value[0] === item.value;
-                        props.onSelect = this.handleSelect.bind(
-                            this,
-                            item.value,
-                            canExpand
-                        );
+                        props.onSelect = this.handleSelect.bind(this, item.value, canExpand);
                     }
 
                     return (
@@ -792,19 +734,13 @@ class Cascader extends Component {
             const { checkStrictly, canOnlyCheckLeaf } = this.props;
             props.checked = value.indexOf(lastItem.value) > -1;
             props.indeterminate =
-                !checkStrictly &&
-                !canOnlyCheckLeaf &&
-                this.indeterminate.indexOf(lastItem.value) > -1;
+                !checkStrictly && !canOnlyCheckLeaf && this.indeterminate.indexOf(lastItem.value) > -1;
             props.checkboxDisabled = lastItem.checkboxDisabled;
             props.onChange = this.handleCheck.bind(this, lastItem.value);
         } else {
             Item = Menu.Item;
             props.selected = value[0] === lastItem.value;
-            props.onSelect = this.handleSelect.bind(
-                this,
-                lastItem.value,
-                false
-            );
+            props.onSelect = this.handleSelect.bind(this, lastItem.value, false);
         }
 
         return <Item {...props} />;
@@ -865,9 +801,7 @@ class Cascader extends Component {
             <div {...props} ref={this.getCascaderNode}>
                 {!searchValue ? (
                     <div className={`${prefix}cascader-inner`}>
-                        {dataSource && dataSource.length
-                            ? this.renderMenus()
-                            : null}
+                        {dataSource && dataSource.length ? this.renderMenus() : null}
                     </div>
                 ) : (
                     this.renderFilteredList()
