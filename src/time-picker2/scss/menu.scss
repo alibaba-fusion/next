@@ -4,17 +4,17 @@
     padding: $s-2 0;
 
     &:not(:last-child) {
-        border-right: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
+        border-right: $line-1 $line-solid $color-line1-2;
     }
 
     &-title {
         cursor: default;
-        height: $time-picker-menu-title-height;
-        line-height: $time-picker-menu-title-height;
-        font-size: $time-picker-menu-title-font-size;
-        font-weight: $time-pikcer-menu-title-font-weight;
-        color: $time-picker-menu-title-color;
-        background: $time-picker-menu-title-background;
+        height: $s-7;
+        line-height: $s-7;
+        font-size: $font-size-caption;
+        font-weight: $font-weight-2;
+        color: $color-text1-2;
+        background: $color-white;
     }
 
     ul {
@@ -25,8 +25,8 @@
         margin: 0;
         width: 54px;
         padding: 0;
-        font-size: $time-picker-menu-item-font-size;
-        height: calc(#{$time-picker-menu-item-height} * 7);
+        font-size: $font-size-caption;
+        height: calc(#{$s-8} * 7);
         scrollbar-width: none; // firefox
         -ms-overflow-style: none; // ie
         &::-webkit-scrollbar {
@@ -37,23 +37,23 @@
         }
         &:after {
             display: block;
-            height: calc(#{$time-picker-menu-item-height} * 6);
+            height: calc(#{$s-8} * 6);
             content: "";
         }
         // &:before {
         //     display: block;
-        //     height: calc(#{$time-picker-menu-item-height} * 3);
+        //     height: calc(#{$s-8} * 3);
         //     content: "";
         // }
     }
 
     &-item {
         cursor: pointer;
-        height: $time-picker-menu-item-height;
-        line-height: $time-picker-menu-item-height;
+        height: $s-8;
+        line-height: $s-8;
         transition: background $motion-duration-immediately $motion-linear;
-        color: $time-picker-menu-item-color;
-        background: $time-picker-menu-item-background;
+        color: $color-text1-3;
+        background: $color-white;
         outline: none;
 
         -webkit-touch-callout: none;
@@ -64,20 +64,20 @@
         user-select: none;
 
         &:hover {
-            color: $time-picker-menu-item-color-hover;
-            background: $time-picker-menu-item-background-hover;
+            color: $color-text1-4;
+            background: $color-fill1-2;
         }
 
         &.#{$css-prefix}selected {
-            // font-weight: $time-picker-menu-item-font-weight-selected;
-            color: $time-picker-menu-item-color-selected;
-            background: $time-picker-menu-item-background-selected;
+            // font-weight: $font-weight-3;
+            color: $color-text1-3;
+            background: $color-brand1-1;
         }
 
         &.#{$css-prefix}disabled {
             cursor: not-allowed;
-            color: $time-picker-menu-item-color-disabled;
-            background: $time-picker-menu-item-background-disabled;
+            color: $color-text1-1;
+            background: $color-fill1-1;
         }
     }
 }

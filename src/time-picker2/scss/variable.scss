@@ -2,39 +2,3 @@
 
 $time-picker2-prefix: "." + $css-prefix + "time-picker2";
 
-// global
-$time-picker-panel-border-color: $popup-local-border-color;
-$time-picker-panel-corner: $popup-local-corner;
-$time-picker-panel-shadow: $popup-local-shadow;
-
-// 下拉面板
-// --------------------------------------------------
-$time-picker-panel-width: $s-42 !default;
-
-$time-picker-panel-background: $color-white !default;
-
-// 时间菜单
-// --------------------------------------------------
-
-$time-picker-menu-border-width: $line-1 !default;
-$time-picker-menu-title-font-size: $font-size-caption !default;
-$time-picker-menu-item-font-size: $font-size-caption !default;
-
-$time-picker-menu-title-height: $s-7 !default;
-$time-picker-menu-item-height: $s-8 !default;
-$time-picker-menu-item-width: $s-14 !default;
-
-$time-picker-menu-border-color: $color-line1-2 !default;
-$time-picker-menu-title-color: $color-text1-2 !default;
-$time-picker-menu-title-background: $color-white !default;
-$time-pikcer-menu-title-font-weight: $font-weight-2 !default;
-$time-picker-menu-item-color: $color-text1-3 !default;
-$time-picker-menu-item-color-hover: $color-text1-4 !default;
-$time-picker-menu-item-color-selected: $color-text1-3 !default;
-$time-picker-menu-item-color-disabled: $color-text1-1 !default;
-$time-picker-menu-item-background: $color-white !default;
-$time-picker-menu-item-background-hover: $color-fill1-2 !default;
-$time-picker-menu-item-background-selected: $color-brand1-1 !default;
-$time-picker-menu-item-background-disabled: $color-fill1-1 !default;
-$time-picker-menu-item-font-weight-selected: $font-weight-3 !default;
-$time-picker-clock-icon: $icon-content-clock !default;

@@ -3,7 +3,7 @@
         float: right;
         &:not(:last-child) {
             border-right: none;
-            border-left: $time-picker-menu-border-width $line-solid $time-picker-menu-border-color;
+            border-left: $line-1 $line-solid $color-line1-2;
         }
     }
 }
