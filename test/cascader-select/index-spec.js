@@ -329,6 +329,35 @@ describe('CascaderSelect', () => {
         assert(document.querySelector('.next-cascader-filtered-list em').textContent.trim() === '高陵');
     });
 
+    it('should ignore case when searching', () => {
+        const SpecialChars = '-[.+*?^$()[]{}|\\';
+        const dataSource = [
+            {
+                value: 'Aa',
+                label: 'Aa',
+                children: [
+                    {
+                        value: 'Bb',
+                        label: 'Bb',
+                    },
+                    {
+                        value: SpecialChars,
+                        label: SpecialChars,
+                    },
+                ],
+            },
+        ];
+        wrapper = mount(<CascaderSelect showSearch defaultVisible defaultValue="Aa" dataSource={dataSource} />);
+
+        const specialCharCases = SpecialChars.split('').map(c => [c, c]);
+
+        [['aa', 'Aa'], ['BB', 'Bb'], ...specialCharCases].forEach(([iptVal, excepted]) => {
+            wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: iptVal } });
+            wrapper.update();
+            assert(document.querySelector('.next-cascader-filtered-list em').textContent.trim() === excepted);
+        });
+    });
+
     it('should support keyborad', done => {
         wrapper = mount(<CascaderSelect dataSource={ChinaArea} />);
         wrapper.find('.next-select').simulate('click');

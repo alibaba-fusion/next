@@ -246,18 +246,28 @@ class CascaderSelect extends Component {
         checkStrictly: false,
         showSearch: false,
         filter: (searchValue, path) => {
-            return path.some(item => item.label.indexOf(searchValue) > -1);
+            return path.some(
+                item =>
+                    String(item.label)
+                        .toLowerCase()
+                        .indexOf(String(searchValue).toLowerCase()) > -1
+            );
         },
         resultRender: (searchValue, path) => {
             const parts = [];
             path.forEach((item, i) => {
-                const others = item.label.split(searchValue);
+                const reExp = searchValue.replace(/[-.+*?^$()[\]{}|\\]/g, v => `\\${v}`);
+
+                const re = new RegExp(reExp, 'gi');
+                const others = item.label.split(re);
+                const matches = item.label.match(re);
+
                 others.forEach((other, j) => {
                     if (other) {
                         parts.push(other);
                     }
                     if (j < others.length - 1) {
-                        parts.push(<em key={`${i}-${j}`}>{searchValue}</em>);
+                        parts.push(<em key={`${i}-${j}`}>{matches[j]}</em>);
                     }
                 });
                 if (i < path.length - 1) {
