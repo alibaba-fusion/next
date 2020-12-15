@@ -287,11 +287,11 @@
     }
     &-group {
         display: inline-block;
-        & #{$radio-prefix}-wrapper {
+        #{$radio-prefix}-wrapper {
             /* 表现为radio整体之间多一份间隔，checkbox表现一致 */
             margin-right: 12px;
         }
-        & #{$radio-prefix}-wrapper:last-child {
+        #{$radio-prefix}-wrapper:last-child {
             margin-right: 0;
         }
         #{$radio-prefix}-label {
@@ -301,6 +301,13 @@
             color: $radio-normal-font-color-disabled;
         }
     }
+
+    &-group#{$radio-prefix}-button {
+        #{$radio-prefix}-wrapper {
+            margin-right: 0;
+        }
+    }
+
     &-group-ver {
         #{$radio-prefix}-wrapper {
             display: block;
