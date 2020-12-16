@@ -28,6 +28,7 @@ const App = () => (
         <div><RangePicker onChange={onChange} /></div>
         <div><RangePicker placeholder={['开始月', '结束月']} mode="month" onChange={onChange}/></div>
         <div><RangePicker placeholder={['开始年', '结束年']} mode="year" onChange={onChange} /></div>
+        <div><RangePicker placeholder={['开始周', '结束周']} mode="week" onChange={onChange} /></div>
     </div>
 );
 
