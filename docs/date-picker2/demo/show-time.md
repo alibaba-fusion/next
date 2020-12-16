@@ -20,8 +20,8 @@ import { DatePicker2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker2;
-const onChange = (value) => console.log(value);
-const onOk = (value) => console.log('onOK:', value.format('YYYY-MM-DD HH:mm:ss'));
+const onChange = (value) => console.log('onChange: ', value);
+const onOk = (value) => console.log('onOK: ', value.format('YYYY-MM-DD HH:mm:ss'));
 const onRangeOk = (value) => console.log('onOk: [%s, %s]', ...value);
 
 const defaultTimeValue = dayjs('09:00:00', 'HH:mm:ss', true);

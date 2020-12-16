@@ -88,10 +88,6 @@ class DateInput extends React.Component {
         func.call(this.props, 'onInput', [v, eventType]);
     };
 
-    onChange = () => {
-        func.call(this.props, 'onChange', [this.props.value]);
-    };
-
     handleTypeChange = inputType => {
         if (inputType !== this.props.inputType) {
             func.call(this.props, 'onInputTypeChange', [inputType]);
@@ -146,6 +142,7 @@ class DateInput extends React.Component {
             disabled,
             inputProps,
             dateInputAriaLabel,
+            state,
             ...restProps
         } = this.props;
 
@@ -154,12 +151,12 @@ class DateInput extends React.Component {
 
         const sharedProps = {
             ...obj.pickProps(restProps, Input),
+            ...inputProps,
             size,
             htmlSize,
             readOnly,
             hasBorder: false,
             onChange: onInput,
-            ...inputProps,
         };
 
         let rangeProps;
@@ -190,6 +187,8 @@ class DateInput extends React.Component {
             }
         );
 
+        const calendarIcon = <Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />;
+
         return (
             <div className={className}>
                 {isRange ? (
@@ -201,21 +200,23 @@ class DateInput extends React.Component {
                         <div className={`${prefixCls}-separator`}>{separator}</div>
                         <Input
                             {...rangeProps[1]}
-                            hasClear={hasClear}
-                            hint={<Icon type="calendar" className={`${prefix}date-picker2-symbol-calendar-icon`} />}
+                            state={state}
+                            hasClear={!state && hasClear}
+                            hint={state ? null : calendarIcon}
                         />
                     </React.Fragment>
                 ) : (
                     <Input
                         {...sharedProps}
+                        state={state}
                         disabled={disabled}
-                        hasClear={hasClear}
+                        hasClear={!state && hasClear}
                         placeholder={placeholder}
                         autoFocus={autoFocus} // eslint-disable-line jsx-a11y/no-autofocus
                         ref={setInputRef}
                         aria-label={dateInputAriaLabel}
                         value={value || ''}
-                        hint="calendar"
+                        hint={state ? null : calendarIcon}
                     />
                 )}
             </div>

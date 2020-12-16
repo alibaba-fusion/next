@@ -11,7 +11,42 @@ const MODE2FORMAT = {
     [YEAR]: 'YYYY',
 };
 
-const ConfigPicker = ConfigProvider.config(Picker, { componentName: 'DatePicker' });
+const transform = (props, deprecated) => {
+    const { footerRender, onVisibleMonthChange, defaultVisibleMonth, ranges, ...resetProps } = props;
+    const newProps = resetProps;
+
+    delete newProps.formater;
+
+    if ('footerRender' in props) {
+        deprecated('footerRender', 'extraFooterRender', 'DatePicker');
+        newProps.extraFooterRender = footerRender;
+    }
+
+    if (typeof props.showTime === 'object') {
+        deprecated('showTime: object', 'showTime && timePanelProps', 'DatePicker');
+        newProps.timePanelProps = props.showTime;
+        newProps.showTime = true;
+    }
+
+    if (onVisibleMonthChange) {
+        deprecated('onVisibleMonthChange', 'onPanelChange', 'DatePicker');
+        newProps.onPanelChange = onVisibleMonthChange;
+    }
+
+    if (defaultVisibleMonth) {
+        deprecated('defaultVisibleMonth', 'onPanelChange', 'DatePicker');
+        newProps.onPanelChange = onVisibleMonthChange;
+    }
+
+    if ('ranges' in props) {
+        deprecated('ranges', 'preset: PT.oneOfType([PT.array, PT.object])', 'DatePicker');
+        newProps.preset = ranges;
+    }
+
+    return newProps;
+};
+
+const ConfigPicker = ConfigProvider.config(Picker, { componentName: 'DatePicker', transform });
 
 const DatePicker2 = props => <ConfigPicker format={props.showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'} {...props} />;
 DatePicker2.displayName = 'DatePicker2';

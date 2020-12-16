@@ -10,7 +10,6 @@ import { CALENDAR_MODE, CALENDAR_SHAPE, DATE_PANEL_MODE } from './constant';
 import HeaderPanel from './panels/header-panel';
 import DateTable from './panels/date-table';
 
-const { bindCtx } = func;
 const { pickProps } = obj;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
@@ -20,6 +19,10 @@ function getPanelMode(mode) {
 
 function isValueChanged(newVal, oldVal) {
     return newVal !== oldVal && !datejs(newVal).isSame(datejs(oldVal));
+}
+
+function mode2unit(mode) {
+    return mode === 'date' ? 'day' : mode;
 }
 
 class Calendar extends React.Component {
@@ -98,6 +101,7 @@ class Calendar extends React.Component {
         locale: defaultLocale.Calendar,
         shape: CALENDAR_SHAPE.FULLSCREEN,
         mode: CALENDAR_MODE.MONTH,
+        defaultPanelValue: datejs(),
     };
 
     constructor(props) {
@@ -106,8 +110,7 @@ class Calendar extends React.Component {
         const { defaultValue, mode } = props;
 
         const value = obj.get('value', props, defaultValue);
-        const defaultPanelValue = obj.get('defaultPanelValue', props, value || datejs());
-        const panelValue = datejs(obj.get('panelValue', props, defaultPanelValue));
+        const panelValue = datejs(obj.get('panelValue', props, value || props.defaultPanelValue));
         const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
 
         this.state = {
@@ -116,15 +119,6 @@ class Calendar extends React.Component {
             panelMode,
             panelValue: panelValue.isValid() ? panelValue : datejs(),
         };
-
-        bindCtx(this, [
-            'onPanelChange',
-            'onChange',
-            'onDateSelect',
-            'onModeChange',
-            'onPanelValueChange',
-            'onPanelModeChange',
-        ]);
 
         this.getFromPropOrState = obj.getFromPropOrState.bind(this);
     }
@@ -136,10 +130,7 @@ class Calendar extends React.Component {
 
         if ('value' in props && isValueChanged(props.value, state.value)) {
             value = props.value;
-
-            if (!('panelValue' in props)) {
-                panelValue = datejs(value);
-            }
+            panelValue = datejs(value);
         }
 
         if ('panelValue' in props) {
@@ -160,7 +151,7 @@ class Calendar extends React.Component {
         return newState;
     }
 
-    switchPanelMode(mode) {
+    switchPanelMode = mode => {
         const { MONTH, YEAR, DECADE } = DATE_PANEL_MODE;
         const originalPanelMode = this.props.panelMode || getPanelMode(mode);
 
@@ -172,7 +163,7 @@ class Calendar extends React.Component {
             default:
                 return originalPanelMode;
         }
-    }
+    };
 
     shouldSwitchPanelMode = () => {
         const { mode, shape } = this.props;
@@ -181,18 +172,20 @@ class Calendar extends React.Component {
         return shape === CALENDAR_SHAPE.PANEL && panelMode !== originalPanelMode;
     };
 
-    onDateSelect(value, e, { isCurrent }) {
-        if (this.shouldSwitchPanelMode()) {
-            this.onPanelChange(value, this.switchPanelMode(this.state.panelMode), 'DATESELECT_VALUE_SWITCH_MODE');
-        } else {
-            if (!isCurrent) {
-                this.onPanelValueChange(value, 'DATESELECT');
-            }
-            this.onChange(value);
-        }
-    }
+    onDateSelect = (value, _, { isCurrent }) => {
+        const { panelMode } = this.state;
 
-    onModeChange(mode, reason) {
+        if (this.shouldSwitchPanelMode()) {
+            this.onPanelChange(value, this.switchPanelMode(panelMode), 'DATESELECT_VALUE_SWITCH_MODE');
+        } else {
+            isCurrent || this.onPanelValueChange(value, 'DATESELECT');
+            value.isSame(this.state.value, mode2unit(panelMode)) || this.onChange(value);
+
+            func.call(this.props, 'onSelect', [value]);
+        }
+    };
+
+    onModeChange = (mode, reason) => {
         this.setState({
             mode,
         });
@@ -201,32 +194,32 @@ class Calendar extends React.Component {
         if (this.state.panelMode !== panelMode) {
             this.onPanelModeChange(panelMode, reason);
         }
-    }
+    };
 
-    onPanelValueChange(panelValue, reason) {
+    onPanelValueChange = (panelValue, reason) => {
         this.onPanelChange(panelValue, this.state.panelMode, reason);
-    }
+    };
 
-    onPanelModeChange(panelMode, reason) {
+    onPanelModeChange = (panelMode, reason) => {
         this.onPanelChange(this.state.panelValue, panelMode, reason);
-    }
+    };
 
-    onPanelChange(value, mode, reason) {
+    onPanelChange = (value, mode, reason) => {
         this.setState({
             panelMode: mode,
             panelValue: value,
         });
 
         func.call(this.props, 'onPanelChange', [value, mode, reason]);
-    }
+    };
 
-    onChange(value) {
+    onChange = value => {
         this.setState({
             value,
             panelValue: value,
         });
         func.call(this.props, 'onChange', [value]);
-    }
+    };
 
     render() {
         let { value } = this.getFromPropOrState(['value']);

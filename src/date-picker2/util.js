@@ -1,3 +1,5 @@
+import { DATE_INPUT_TYPE } from './constant';
+
 /**
  * @param {String | Array} key
  * @param {Object} obj
@@ -22,4 +24,13 @@ export function setTime(targetVal, sourceVal) {
             .millisecond(sourceVal.millisecond());
     }
     return targetVal;
+}
+
+export function switchInputType(inputType) {
+    const { BEGIN, END } = DATE_INPUT_TYPE;
+    return inputType === BEGIN ? END : BEGIN;
+}
+
+export function mode2unit(mode) {
+    return mode === 'date' ? 'day' : mode;
 }

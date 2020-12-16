@@ -76,13 +76,12 @@ class FooterPanel extends React.PureComponent {
 
     render() {
         const { prefixCls } = this;
-        const { showOk, locale, onOk, oKable, extraRender, footerRender } = this.props;
+        const { showOk, locale, onOk, oKable, extraRender } = this.props;
 
         const classNames = classnames(prefixCls, {
             [`${prefixCls}-with-actions`]: showOk,
         });
 
-        const footerNode = renderNode(footerRender);
         const extraNode = renderNode(extraRender);
 
         const rangesCls = classnames(`${prefixCls}-ranges`, {
@@ -91,21 +90,23 @@ class FooterPanel extends React.PureComponent {
 
         return (
             <div className={classNames}>
-                {footerNode ? (
-                    footerNode
-                ) : (
-                    <React.Fragment>
-                        {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
-                        <div className={rangesCls}>{this.renderRanges()}</div>
-                        {showOk ? (
-                            <div className={`${prefixCls}-actions`}>
-                                <Button size="small" disabled={!oKable} onClick={onOk} type="primary">
-                                    {locale.ok}
-                                </Button>
-                            </div>
-                        ) : null}
-                    </React.Fragment>
-                )}
+                <React.Fragment>
+                    {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
+                    <div className={rangesCls}>{this.renderRanges()}</div>
+                    {showOk ? (
+                        <div className={`${prefixCls}-actions`}>
+                            <Button
+                                size="small"
+                                disabled={!oKable}
+                                onClick={onOk}
+                                className={`${prefixCls}-ok`}
+                                type="primary"
+                            >
+                                {locale.ok}
+                            </Button>
+                        </div>
+                    ) : null}
+                </React.Fragment>
             </div>
         );
     }

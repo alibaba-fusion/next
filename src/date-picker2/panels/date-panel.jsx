@@ -30,49 +30,18 @@ class DatePanel extends React.Component {
         resetTime: false,
     };
 
-    constructor(props) {
-        super(props);
+    onTimeSelect = v => {
+        const { value } = this.props;
 
-        const { value, timePanelProps } = props;
-
-        this.state = {
-            timeValue: value || (timePanelProps && timePanelProps.defaultValue),
-        };
-    }
-
-    onTimeChange = v => {
-        const { value, timePanelProps } = this.props;
-
-        if (timePanelProps && 'value' in timePanelProps) {
-            return;
-        }
-
-        this.setState({ timeValue: v });
-
-        value && func.call(this.props, 'onChange', [setTime(this.props.value, v)]);
+        func.call(this.props, 'onSelect', [setTime(value || datejs(), v)]);
     };
 
-    getTimeValue = () => {
-        const { timePanelProps } = this.props;
-        let { timeValue } = this.state;
-
-        if (timePanelProps && 'value' in timePanelProps) {
-            timeValue = timePanelProps.value;
+    handleSelect = v => {
+        if (!this.props.resetTime) {
+            v = setTime(v, this.props.value || datejs());
         }
 
-        return timeValue;
-    };
-
-    handleChange = v => {
-        if (this.props.resetTime) {
-            this.setState({
-                timeValue: datejs('00:00:00', 'HH:mm:ss'),
-            });
-        } else {
-            v = setTime(v, this.getTimeValue());
-        }
-
-        func.call(this.props, 'onChange', [v]);
+        func.call(this.props, 'onSelect', [v]);
     };
 
     handlePanelChange = (v, mode) => {
@@ -97,19 +66,10 @@ class DatePanel extends React.Component {
             [`${prefix}date-time-picker2-panel`]: showTime,
         });
 
-        let { timeValue } = this.state;
         let _disabledTime;
 
-        if (showTime && mode === panelMode) {
-            if (value) {
-                timeValue = value;
-            } else if (timePanelProps && 'value' in timePanelProps) {
-                timeValue = timePanelProps.value;
-            }
-
-            if (disabledTime) {
-                _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
-            }
+        if (showTime && mode === panelMode && disabledTime) {
+            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
         }
 
         return (
@@ -120,7 +80,7 @@ class DatePanel extends React.Component {
                     value={value}
                     panelMode={mode}
                     colNum={showTime ? 6 : undefined}
-                    onChange={this.handleChange}
+                    onSelect={this.handleSelect}
                     onPanelChange={this.handlePanelChange}
                     disabledDate={disabledDate}
                     dateCellRender={dateCellRender}
@@ -128,8 +88,8 @@ class DatePanel extends React.Component {
                 {showTime && mode === panelMode ? (
                     <TimePanel
                         prefix={prefix}
-                        value={timeValue}
-                        onSelect={this.onTimeChange}
+                        value={value}
+                        onSelect={this.onTimeSelect}
                         disabledTime={disabledTime}
                         timePanelProps={{ ..._disabledTime, ...timePanelProps }}
                     />
