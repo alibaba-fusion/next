@@ -19,10 +19,6 @@ const { hasClass } = dom;
 const { Popup } = Overlay;
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 const scrollbarWidth = dom.scrollbar().width;
-const hasScroll = () => {
-    const doc = document.documentElement;
-    return doc.scrollHeight > doc.clientHeight && scrollbarWidth > 0;
-};
 
 const render = element => {
     let inc;
@@ -77,7 +73,7 @@ class OverlayControlDemo extends React.Component {
         const { children, ...others } = this.props;
 
         return (
-            <div>
+            <div style={{ height: '110vh' }}>
                 <button
                     onClick={this.onClick}
                     ref={ref => {
@@ -364,16 +360,12 @@ describe('Overlay', () => {
 
             simulateEvent.simulate(btn, 'click');
             assert(document.body.style.overflowY === 'hidden');
-            if (hasScroll()) {
-                assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
-            }
+            assert(document.body.style.paddingRight === `${scrollbarWidth}px`);
 
             simulateEvent.simulate(btn, 'click');
             yield delay(500);
             assert(!document.body.style.overflowY);
-            if (hasScroll()) {
-                assert(!document.body.style.paddingRight);
-            }
+            assert(!document.body.style.paddingRight);
         });
     });
 
