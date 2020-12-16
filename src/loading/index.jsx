@@ -55,6 +55,10 @@ class Loading extends React.Component {
          */
         fullScreen: PropTypes.bool,
         /**
+         * 是否禁用滚动，仅在 fullScreen 模式下生效
+         */
+        disableScroll: PropTypes.bool,
+        /**
          * 子元素
          */
         children: PropTypes.any,
@@ -73,6 +77,7 @@ class Loading extends React.Component {
         tipAlign: 'bottom',
         size: 'large',
         inline: true,
+        disableScroll: false,
     };
 
     render() {
@@ -86,6 +91,7 @@ class Loading extends React.Component {
             color,
             prefix,
             fullScreen,
+            disableScroll,
             onVisibleChange,
             tipAlign,
             size,
@@ -142,6 +148,7 @@ class Loading extends React.Component {
                     key="overlay"
                     hasMask
                     align="cc cc"
+                    disableScroll={disableScroll}
                     {...others}
                     className={className}
                     style={style}
@@ -149,16 +156,10 @@ class Loading extends React.Component {
                     onRequestClose={onVisibleChange}
                 >
                     <div className={tipCls}>
-                        <div className={`${prefix}loading-indicator`}>
-                            {indicatorDom}
-                        </div>
-                        <div className={`${prefix}loading-tip-content`}>
-                            {tip}
-                        </div>
+                        <div className={`${prefix}loading-indicator`}>{indicatorDom}</div>
+                        <div className={`${prefix}loading-tip-content`}>{tip}</div>
                         {/* 由于撑开问题 使用同样的两个DOM */}
-                        <div className={`${prefix}loading-tip-placeholder`}>
-                            {tip}
-                        </div>
+                        <div className={`${prefix}loading-tip-placeholder`}>{tip}</div>
                     </div>
                 </Overlay>,
             ]
@@ -166,21 +167,13 @@ class Loading extends React.Component {
             <div className={loadingCls} style={style} {...others}>
                 {visible ? (
                     <div className={tipCls}>
-                        <div className={`${prefix}loading-indicator`}>
-                            {indicatorDom}
-                        </div>
-                        <div className={`${prefix}loading-tip-content`}>
-                            {tip}
-                        </div>
-                        <div className={`${prefix}loading-tip-placeholder`}>
-                            {tip}
-                        </div>
+                        <div className={`${prefix}loading-indicator`}>{indicatorDom}</div>
+                        <div className={`${prefix}loading-tip-content`}>{tip}</div>
+                        <div className={`${prefix}loading-tip-placeholder`}>{tip}</div>
                     </div>
                 ) : null}
                 <div className={contentCls}>
-                    {visible ? (
-                        <div className={`${prefix}loading-masker`} />
-                    ) : null}
+                    {visible ? <div className={`${prefix}loading-masker`} /> : null}
                     {children}
                 </div>
             </div>
