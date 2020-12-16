@@ -507,7 +507,7 @@ class Overlay extends Component {
                     const style = {
                         overflow: bodyOverflow,
                     };
-                    if (hasScroll()) {
+                    if (bodyPaddingRight !== undefined) {
                         style.paddingRight = bodyPaddingRight;
                     }
 
