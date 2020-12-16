@@ -1,5 +1,5 @@
 export default {
-    momentLocale: 'pt-pt',
+    momentLocale: 'pt',
     Timeline: {
         expand: 'Desdobrar',
         fold: 'Jogue fora',
