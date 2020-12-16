@@ -56,10 +56,9 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <RadioGroup dataSource={list} size="small" value={this.state.value} onChange={this.onChange} />
+                <RadioGroup dataSource={list} value={this.state.value} onChange={this.onChange} />
                 <br/>
-                <br/>
-                <RadioGroup dataSource={list} shape="button" size="small" value={this.state.buttonValue} onChange={this.onButtonChange} />
+                <RadioGroup dataSource={list} shape="button" value={this.state.buttonValue} onChange={this.onButtonChange} />
             </div>
         );
     }
