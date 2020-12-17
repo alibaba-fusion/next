@@ -23,10 +23,7 @@ class Tab extends Component {
         /**
          * 初始化时被激活的选项卡的 key
          */
-        defaultActiveKey: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        defaultActiveKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 外观形态
          */
@@ -147,10 +144,7 @@ class Tab extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (
-            props.activeKey !== undefined &&
-            state.activeKey !== `${props.activeKey}`
-        ) {
+        if (props.activeKey !== undefined && state.activeKey !== `${props.activeKey}`) {
             return {
                 activeKey: `${props.activeKey}`,
             };
@@ -159,11 +153,24 @@ class Tab extends Component {
         return {};
     }
 
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.children.length !== 0 &&
+            this.props.children.length !== 0 &&
+            !('activeKey' in this.props) & !this.isActiveKeyExist(this.state.activeKey)
+        ) {
+            const activeKey = this.getDefaultActiveKey(this.props);
+            if (activeKey) {
+                // eslint-disable-next-line react/no-did-update-set-state
+                this.setState({
+                    activeKey,
+                });
+            }
+        }
+    }
+
     getDefaultActiveKey(props) {
-        let activeKey =
-            props.activeKey === undefined
-                ? props.defaultActiveKey
-                : props.activeKey;
+        let activeKey = props.activeKey === undefined ? props.defaultActiveKey : props.activeKey;
 
         if (activeKey === undefined) {
             React.Children.forEach(props.children, (child, index) => {
@@ -205,6 +212,22 @@ class Tab extends Component {
             }
         });
         return key;
+    }
+
+    isActiveKeyExist(activeKey) {
+        let exist = false;
+        React.Children.forEach(this.props.children, (child, index) => {
+            if (exist) return;
+            if (React.isValidElement(child)) {
+                if (!child.props.disabled) {
+                    const key = child.key || index;
+                    if (activeKey === `${key}`) {
+                        exist = true;
+                    }
+                }
+            }
+        });
+        return exist;
     }
 
     setActiveKey(key) {
@@ -291,9 +314,7 @@ class Tab extends Component {
             {
                 [`${prefix}tabs`]: true,
                 [`${prefix}tabs-${shape}`]: shape,
-                [`${prefix}tabs-vertical`]:
-                    shape === 'wrapped' &&
-                    ['left', 'right'].indexOf(tabPosition) >= 0,
+                [`${prefix}tabs-vertical`]: shape === 'wrapped' && ['left', 'right'].indexOf(tabPosition) >= 0,
                 [`${prefix}tabs-scrollable`]: isTouchable,
                 [`${prefix}tabs-${newPosition}`]: shape === 'wrapped',
                 [`${prefix + size}`]: size,
@@ -343,11 +364,7 @@ class Tab extends Component {
         }
 
         return (
-            <div
-                dir={rtl ? 'rtl' : undefined}
-                className={classNames}
-                {...obj.pickOthers(Tab.propTypes, others)}
-            >
+            <div dir={rtl ? 'rtl' : undefined} className={classNames} {...obj.pickOthers(Tab.propTypes, others)}>
                 {tabChildren}
             </div>
         );
