@@ -17,25 +17,13 @@ a basic way to use it.
 import { Loading } from '@alifd/next';
 
 ReactDOM.render(
-    <div>
-        <span className="demo-title-basic">LTR: </span>
-        <Loading tip="加载中...">
-            <div className="demo-basic">LTR</div>
-        </Loading>
-
-        <span className="demo-title-basic">RTL: </span>
-        <Loading tip="加载中..." rtl>
-            <div className="demo-basic">RTL</div>
-        </Loading>
-    </div>
+    <Loading tip="加载中...">
+        <div className="demo-basic">test</div>
+    </Loading>
     , mountNode);
 ````
 
 ````css
-.demo-title-basic {
-    margin: 0 60px 0 60px;
-}
-
 .demo-basic {
     width: 120px;
     text-align: center;
