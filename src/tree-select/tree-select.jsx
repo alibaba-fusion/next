@@ -87,7 +87,10 @@ const isSearched = (label, searchedValue) => {
     };
     loop(label);
 
-    if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
+    if (
+        labelString.length >= searchedValue.length &&
+        labelString.toLowerCase().indexOf(searchedValue.toLowerCase()) > -1
+    ) {
         return true;
     }
 
@@ -580,27 +583,6 @@ class TreeSelect extends Component {
 
             this.props.onChange(null, null);
         }
-    }
-
-    isSearched(label, searchedValue) {
-        let labelString = '';
-
-        searchedValue = String(searchedValue);
-
-        const loop = arg => {
-            if (isValidElement(arg) && arg.props.children) {
-                Children.forEach(arg.props.children, loop);
-            } else {
-                labelString += arg;
-            }
-        };
-        loop(label);
-
-        if (labelString.length >= searchedValue.length && labelString.indexOf(searchedValue) > -1) {
-            return true;
-        }
-
-        return false;
     }
 
     searchNodes(children) {

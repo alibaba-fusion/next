@@ -21,18 +21,12 @@ const ChinaArea = [
             {
                 value: '2974',
                 label: '西安',
-                children: [
-                    { value: '2975', label: '西安市' },
-                    { value: '2976', label: '高陵县' },
-                ],
+                children: [{ value: '2975', label: '西安市' }, { value: '2976', label: '高陵县' }],
             },
             {
                 value: '2980',
                 label: '铜川',
-                children: [
-                    { value: '2981', label: '铜川市' },
-                    { value: '2982', label: '宜君县' },
-                ],
+                children: [{ value: '2981', label: '铜川市' }, { value: '2982', label: '宜君县' }],
             },
         ],
     },
@@ -232,16 +226,9 @@ describe('Cascader', () => {
 
     it('could only check checkbox of leaf item when set canOnlyCheckLeaf to true', () => {
         wrapper = mount(
-            <Cascader
-                multiple
-                defaultExpandedValue={['2973', '2974']}
-                canOnlyCheckLeaf
-                dataSource={ChinaArea}
-            />
+            <Cascader multiple defaultExpandedValue={['2973', '2974']} canOnlyCheckLeaf dataSource={ChinaArea} />
         );
-        assert(
-            findItem(wrapper, 0, 0).find('label.next-checkbox').length === 0
-        );
+        assert(findItem(wrapper, 0, 0).find('label.next-checkbox').length === 0);
     });
 
     it('should expand menu by hover when set expandTriggerType to hover', () => {
@@ -339,8 +326,7 @@ describe('Cascader', () => {
         compareIndeterminate(item10);
         compareChecked(item20);
 
-        (value = ['2973']),
-            (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
+        (value = ['2973']), (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
         extra = {
             checked: true,
             currentData: { value: '2973', label: '陕西', pos: '0-0' },
@@ -361,15 +347,12 @@ describe('Cascader', () => {
         changeCalled = false;
 
         setTimeout(() => {
-            (value = ['2980']),
-                (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
+            (value = ['2980']), (data = [{ value: '2980', label: '铜川', pos: '0-0-1' }]);
             extra = {
                 checked: false,
                 currentData: { value: '2974', label: '西安', pos: '0-0-0' },
                 checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
-                indeterminateData: [
-                    { value: '2973', label: '陕西', pos: '0-0' },
-                ],
+                indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
             };
             checkItem(findItem(wrapper, 1, 0), false);
             compareIndeterminate(findItem(wrapper, 0, 0));
@@ -411,10 +394,7 @@ describe('Cascader', () => {
         compareChecked(item20);
 
         (value = ['2973', '2975']),
-            (data = [
-                { value: '2973', label: '陕西', pos: '0-0' },
-                { value: '2975', label: '西安市', pos: '0-0-0-0' },
-            ]);
+            (data = [{ value: '2973', label: '陕西', pos: '0-0' }, { value: '2975', label: '西安市', pos: '0-0-0-0' }]);
         extra = {
             checked: true,
             currentData: { value: '2973', label: '陕西', pos: '0-0' },
@@ -428,8 +408,7 @@ describe('Cascader', () => {
         assert(changeCalled);
         changeCalled = false;
 
-        (value = ['2973']),
-            (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
+        (value = ['2973']), (data = [{ value: '2973', label: '陕西', pos: '0-0' }]);
         extra = {
             checked: false,
             currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
@@ -441,9 +420,7 @@ describe('Cascader', () => {
     });
 
     it('should compute expanded value auto if set value but not set expanded value', () => {
-        wrapper = mount(
-            <Cascader defaultValue={['2975']} dataSource={ChinaArea} />
-        );
+        wrapper = mount(<Cascader defaultValue={['2975']} dataSource={ChinaArea} />);
         const item00 = findItem(wrapper, 0, 0);
         assert(item00.hasClass('next-cascader-menu-item'));
         const item10 = findItem(wrapper, 1, 0);
@@ -518,10 +495,7 @@ describe('Cascader', () => {
 
         const item00 = findItem(newWrapper, 0, 0);
         item00.simulate('click');
-        assert(
-            findItem(newWrapper, 0, 0).find('.next-cascader-menu-icon-loading')
-                .length > 0
-        );
+        assert(findItem(newWrapper, 0, 0).find('.next-cascader-menu-icon-loading').length > 0);
 
         setTimeout(() => {
             assert(
@@ -543,25 +517,15 @@ describe('Cascader', () => {
         document.body.appendChild(div);
 
         ReactDOM.render(
-            <Cascader
-                dataSource={ChinaArea}
-                listStyle={{ width: '400px', height: '400px' }}
-                listClassName="custom"
-            />,
+            <Cascader dataSource={ChinaArea} listStyle={{ width: '400px', height: '400px' }} listClassName="custom" />,
             div
         );
 
         const list = div.querySelector('.next-cascader-menu-wrapper');
         assert(list.style.width === '400px');
         assert(list.style.height === '400px');
-        assert(
-            window.getComputedStyle(list.querySelector('.next-cascader-menu'))
-                .width === '400px'
-        );
-        assert(
-            window.getComputedStyle(list.querySelector('.next-cascader-menu'))
-                .height === '400px'
-        );
+        assert(window.getComputedStyle(list.querySelector('.next-cascader-menu')).width === '400px');
+        assert(window.getComputedStyle(list.querySelector('.next-cascader-menu')).height === '400px');
         assert(list.className.indexOf('custom') !== -1);
 
         ReactDOM.unmountComponentAtNode(div);
@@ -603,15 +567,10 @@ describe('Cascader', () => {
             div
         );
 
-        const inner = document.querySelector(
-            '#cascader-style .next-cascader-inner'
-        );
+        const inner = document.querySelector('#cascader-style .next-cascader-inner');
         assert(inner.style.width === '600px');
         const lists = document.querySelectorAll('.next-cascader-menu-wrapper');
-        assert(
-            lists[lists.length - 1].className.indexOf('next-has-right-border') >
-                -1
-        );
+        assert(lists[lists.length - 1].className.indexOf('next-has-right-border') > -1);
 
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
@@ -718,9 +677,9 @@ function assertActiveElement() {
 }
 
 function findRealItem(listIndex, itemIndex) {
-    return document
-        .querySelectorAll('.next-cascader-menu')
-        [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
+    return document.querySelectorAll('.next-cascader-menu')[listIndex].querySelectorAll('.next-cascader-menu-item')[
+        itemIndex
+    ];
 }
 
 function filter$Source(data) {
