@@ -367,7 +367,8 @@ class Nav extends React.Component {
             const activeTabOffset = getOffsetLT(this.activeTab);
             const wrapperOffset = getOffsetLT(this.wrapper);
             const target = this.offset;
-            if (activeTabOffset >= wrapperOffset + wrapperWH || activeTabOffset + activeTabWH <= wrapperOffset) {
+
+            if (activeTabOffset + activeTabWH >= wrapperOffset + wrapperWH || activeTabOffset < wrapperOffset) {
                 this.setOffset(this.offset + wrapperOffset - activeTabOffset, true, true);
                 return;
             }
