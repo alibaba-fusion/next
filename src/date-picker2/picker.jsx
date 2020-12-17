@@ -128,7 +128,7 @@ class Picker extends React.Component {
             curValue: value, // 当前输入中的值
             inputValue: this.getInputValue(value),
             visible: 'defaultVisible' in props ? props.defaultVisible : false,
-            inputType: DATE_PICKER_TYPE.BEGIN,
+            inputType: DATE_INPUT_TYPE.BEGIN,
             justBeginInput: true,
             panelMode: props.mode,
         };
@@ -158,15 +158,14 @@ class Picker extends React.Component {
 
     // 返回日期字符串
     getInputValue = value => {
-        return Array.isArray(value) ? value.map(v => this.formater(v)) : this.formater(value);
+        return Array.isArray(value) ? value.map((v, idx) => this.formater(v, idx)) : this.formater(value);
     };
 
-    formater = v => {
-        const { format, isRange, inputType } = this.props;
-        let fmt = format;
+    formater = (v, idx) => {
+        let fmt = this.props.format;
 
-        if (isRange && Array.isArray(fmt)) {
-            fmt = fmt[inputType];
+        if (Array.isArray(fmt)) {
+            fmt = fmt[idx];
         }
 
         return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
@@ -199,22 +198,21 @@ class Picker extends React.Component {
     // 判断弹层是否显示
     handleVisibleChange = (visible, type) => {
         if (type === 'docClick') {
-            if (!visible) {
-                const { curValue, value } = this.state;
-                isValueChanged(curValue, value) && this.handleChange(value, 'VISIBLE_CHANGE');
-            }
+            visible || this.handleChange(this.state.curValue, 'VISIBLE_CHANGE');
+
             this.onVisibleChange(visible);
         }
     };
 
-    handleInputFocus = (inputType = this.state.inputType) => {
-        let input = this.dateInput && this.dateInput.input;
+    handleInputFocus = inputType => {
+        let inputEl = this.dateInput && this.dateInput.input;
 
-        if (input) {
+        if (inputEl) {
             if (this.state.isRange) {
-                input = input[inputType];
+                inputEl = inputEl[inputType];
             }
-            input && input.focus();
+
+            inputEl && inputEl.focus();
         }
     };
 
@@ -247,20 +245,13 @@ class Picker extends React.Component {
     }
 
     handleInput = (v, eventType) => {
-        this.setState({
-            inputValue: v,
-        });
-
         if (eventType === 'clear') {
-            this.handleChange(v, true, true);
-
-            if (this.state.isRange) {
-                // 因为input组件内部会让第二个输入框获得焦点
-                // 所以这里需要设置setTimeout才能让第一个input获得焦点
-                this.timeoutId = setTimeout(() => {
-                    this.handleInputFocus(0);
-                });
-            }
+            this.handleChange(v, 'INPUT_CLEAR');
+        } else {
+            this.setState({
+                inputValue: v,
+                visible: true,
+            });
         }
     };
 
@@ -279,28 +270,43 @@ class Picker extends React.Component {
             inputValue: this.getInputValue(v),
         });
 
-        if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'VISIBLE_CHANGE'].includes(eventType)) {
+        if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType)) {
             let shouldChange = true;
 
-            if (eventType !== 'VISIBLE_CHANGE' && isRange) {
-                let idx = v.indexOf(null);
+            if (isRange) {
+                // 清空输入
+                if (eventType === 'INPUT_CLEAR') {
+                    // 清空输入之后 input组件内部会让第二个输入框获得焦点
+                    // 所以这里需要设置setTimeout才能让第一个input获得焦点
+                    this.timeoutId = setTimeout(() => {
+                        this.handleInputFocus(0);
+                    });
 
-                if (idx === -1 && justBeginInput) {
-                    idx = switchInputType(inputType);
+                    this.setState({
+                        inputType: DATE_INPUT_TYPE.BEGIN,
+                    });
+                }
+                // 关闭弹层
+                else if (eventType !== 'VISIBLE_CHANGE') {
+                    let idx = v.indexOf(null);
+
+                    if (idx === -1 && justBeginInput) {
+                        idx = switchInputType(inputType);
+                    }
+
+                    if (idx !== -1) {
+                        this.onInputTypeChange(idx);
+                        this.handleInputFocus(idx);
+                        shouldChange = false;
+                    }
                 }
 
-                if (idx !== -1) {
-                    this.handleInputFocus(idx);
-                    shouldChange = false;
-                }
-            }
-
-            if (shouldChange) {
-                if (isRange && v.some(o => !o)) {
+                if (shouldChange && v.some(o => !o)) {
                     v = [null, null];
                 }
-                this.onChange(v);
             }
+
+            shouldChange && this.onChange(v);
         }
     };
 
@@ -308,8 +314,8 @@ class Picker extends React.Component {
         switch (e.keyCode) {
             case KEYCODE.ENTER: {
                 const { inputValue } = this.state;
-                this.handleChange(inputValue, 'KEYDOWN_ENTER');
                 this.onClick();
+                this.handleChange(inputValue, 'KEYDOWN_ENTER');
                 break;
             }
             default:
@@ -338,11 +344,11 @@ class Picker extends React.Component {
     };
 
     onOk = () => {
-        const { curValue, inputValue } = this.state;
+        const { inputValue } = this.state;
 
-        const result = func.call(this.props, 'onOk', [curValue, inputValue]);
+        const result = func.call(this.props, 'onOk', [this.checkAndRectify(inputValue), inputValue]);
 
-        result !== false && this.handleChange(curValue, 'CLICK_OK');
+        result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
 
     onInputTypeChange = v => {
@@ -358,18 +364,10 @@ class Picker extends React.Component {
 
     onClick = () => {
         const { visible, inputType } = this.state;
-        const { BEGIN, END } = DATE_INPUT_TYPE;
 
         if (!visible) {
             this.onVisibleChange(true);
-
-            if (![BEGIN, END].includes(inputType)) {
-                this.setState({
-                    inputType: BEGIN,
-                });
-
-                this.handleInputFocus(BEGIN);
-            }
+            this.handleInputFocus(inputType);
         }
     };
 
@@ -466,7 +464,7 @@ class Picker extends React.Component {
             inputType,
         };
 
-        // 渲染触发层
+        // 输入框
         const inputProps = {
             ...pickProps(restProps, DateInput),
             ...sharedProps,
@@ -486,7 +484,7 @@ class Picker extends React.Component {
 
         const triggerNode = renderNode(trigger, <DateInput {...inputProps} />);
 
-        // 渲染弹出层
+        // 日期
         const panelProps = {
             ...sharedProps,
             panelMode,

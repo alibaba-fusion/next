@@ -291,6 +291,22 @@ describe('Picker', () => {
             wrapper.find('.blank-content').simulate('click');
             wrapper.update();
         });
+
+        it('RangePicker & showTime', () => {
+            wrapper = mount(<RangePicker defaultPanelValue={defaultVal} defaultVisible showTime />);
+            clickDate('2020-12-12');
+            clickTime('12');
+            clickTime('12', 'minute');
+            clickTime('12', 'second');
+            assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '']);
+            clickOk();
+            clickDate('2020-12-13');
+            clickOk();
+            assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '2020-12-13 12:12:12']);
+            changeInput('2020-12-13 12:12:35', 1);
+            clickOk();
+            assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '2020-12-13 12:12:35']);
+        });
     });
 
     describe('event', () => {
@@ -361,7 +377,12 @@ describe('Picker', () => {
 
 function findInput(idx) {
     const input = wrapper.find('.next-input > input');
-    return idx !== undefined ? input[idx] : input;
+    return idx !== undefined ? input.at(idx) : input;
+}
+
+function changeInput(val, idx) {
+    debugger;
+    return findInput(idx).simulate('change', { target: { value: val } });
 }
 
 function clickDate(strVal, mode = 'date') {
@@ -369,6 +390,7 @@ function clickDate(strVal, mode = 'date') {
 }
 
 function clickTime(strVal, mode = 'hour') {
+    console.log(`.next-time-picker2-menu-${mode} [title=${strVal}]`);
     wrapper.find(`.next-time-picker2-menu-${mode} [title=${strVal}]`).simulate('click');
 }
 
