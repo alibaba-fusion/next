@@ -111,7 +111,7 @@
             $('.demo-index-item').on('click', function (event) {
                 const $target = $(event.currentTarget);
                 const id = $target.find('a').attr('href');
-                $('.demo-list-item').removeClass('active');
+                $('.next-demo-item').removeClass('active');
                 $(`${id}`).addClass('active');
             });
 
