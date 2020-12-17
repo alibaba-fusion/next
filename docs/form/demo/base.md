@@ -44,10 +44,10 @@ class Demo extends React.Component {
                 <FormItem label="Password:" required requiredMessage="Please input your password!">
                     <Input.Password name="basePass" placeholder="Please Enter Password"/>
                 </FormItem>
-                <FormItem label=" "  >
+                <FormItem label=" "  colon={false}>
                     <Checkbox name="agreement" defaultChecked>Agree</Checkbox>
                 </FormItem>
-                <FormItem label=" ">
+                <FormItem label=" " colon={false}>
                     <Form.Submit type="primary" validate onClick={this.handleSubmit} style={{marginRight: 8}}>Submit</Form.Submit>
                     <Form.Reset>Reset</Form.Reset>
                 </FormItem>

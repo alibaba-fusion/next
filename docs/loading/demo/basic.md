@@ -18,14 +18,8 @@ import { Loading } from '@alifd/next';
 
 ReactDOM.render(
     <div>
-        <span className="demo-title-basic">LTR: </span>
         <Loading tip="加载中...">
-            <div className="demo-basic">LTR</div>
-        </Loading>
-
-        <span className="demo-title-basic">RTL: </span>
-        <Loading tip="加载中..." rtl>
-            <div className="demo-basic">RTL</div>
+            <div className="demo-basic">basic usage</div>
         </Loading>
     </div>
     , mountNode);

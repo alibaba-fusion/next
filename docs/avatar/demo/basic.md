@@ -19,13 +19,13 @@ import { Avatar } from '@alifd/next';
 
 ReactDOM.render(
     <div>
-        <div>
+        <div className="avatar-demo">
             <Avatar size={64} icon="account" />
             <Avatar size="large" icon="account" />
             <Avatar size="medium" icon="account" />
             <Avatar size="small" icon="account" />
         </div>
-        <div>
+        <div className="avatar-demo">
             <Avatar shape="square" size={64} icon="account" />
             <Avatar shape="square" size="large" icon="account" />
             <Avatar shape="square" size="medium" icon="account" />
@@ -36,7 +36,7 @@ ReactDOM.render(
 ````
 
 ````css
-.next-avatar {
+.avatar-demo .next-avatar {
     margin: 20px 20px 0 0;
 }
 ````
