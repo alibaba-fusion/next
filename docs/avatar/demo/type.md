@@ -18,7 +18,7 @@ Image, Icon and letter are supported, and the latter two kinds of avatar can hav
 import { Avatar, Icon } from '@alifd/next';
 
 ReactDOM.render(
-    <div>
+    <div className="avatar-demo">
         <Avatar icon="account" />
         <Avatar icon={<Icon type="smile" />} />
         <Avatar>U</Avatar>
@@ -30,7 +30,7 @@ ReactDOM.render(
 ````
 
 ````css
-.next-avatar {
+.avatar-demo .next-avatar {
     margin-right: 12px;
 }
 ````
