@@ -175,10 +175,7 @@ class DateTable extends React.Component {
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
                         <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
-                            {renderNode(customRender, <div className={`${prefixCls}-value`}>{label}</div>, [
-                                value,
-                                mode,
-                            ])}
+                            {renderNode(customRender, <div className={`${prefixCls}-value`}>{label}</div>, [value])}
                         </div>
                     </td>
                 );
