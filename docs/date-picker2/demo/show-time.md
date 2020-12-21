@@ -2,7 +2,7 @@
 
 - order: 4
 
-如果需要同时选择时间，可以通过 `showTime` 属性开启，`timePanelProps` 支持传入 TimePickerPanel 的属性，例如 `format`, `defaultValue` 等。
+如果需要同时选择时间，可以通过 `showTime` 属性开启，`timePanelProps` 支持传入`TimePickerPanel`的属性，例如 `format`, `defaultValue` 等。
 
 :::lang=en-us
 # With time

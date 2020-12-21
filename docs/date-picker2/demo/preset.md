@@ -34,7 +34,7 @@ function App() {
     return (
         <div className="app">
             <div><DatePicker2 preset={datePreset} /></div>
-            <div><DatePicker2 preset={datePreset} showTime/></div>
+            <div><DatePicker2 preset={datePreset} showTime defaultVisible /></div>
             <div><RangePicker preset={RangePreset} /></div>
             <div><RangePicker preset={RangePreset} showTime /></div>
         </div>

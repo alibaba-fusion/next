@@ -12,7 +12,6 @@
 
 Using attribute `format` to change the displayed dates, it will be also used to check user inputs.
 
-
 :::
 
 ---

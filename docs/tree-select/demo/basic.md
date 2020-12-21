@@ -36,7 +36,6 @@ class Demo extends React.Component {
             <TreeSelect
                 treeDefaultExpandAll
                 onChange={this.handleChange}
-                isPreview
                 style={{ width: 200 }}
             >
                 <TreeNode key="1" value="1" label="Component">

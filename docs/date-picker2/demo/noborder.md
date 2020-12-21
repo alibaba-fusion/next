@@ -6,11 +6,11 @@
 
 :::lang=en-us
 
-# Basic
+# Borderless
 
 -   order: 7
 
-A no border case.
+borderless style.
 
 :::
 

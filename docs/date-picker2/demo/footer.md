@@ -1,13 +1,13 @@
 # 自定义面板页脚
 
-- order: 6
+- order: 9
 
 可以通过 `extraFooterRender` 自定义对面板页脚的定制。
 
 :::lang=en-us
 # Footer
 
-- order: 6
+- order: 9
 
 Passing custom footer with `extraFooterRender`.
 
@@ -15,16 +15,13 @@ Passing custom footer with `extraFooterRender`.
 
 ---
 
-
 ````jsx
 import { DatePicker2 } from '@alifd/next';
 
 const { RangePicker } = DatePicker2;
 
-
-
 function extraFooterRender() {
-    return <div className="extra-footer">额外页脚扩展区</div>
+    return <div className="extra-footer">额外页脚扩展区</div>;
 }
 
 ReactDOM.render(<div>
