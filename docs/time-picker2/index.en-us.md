@@ -54,7 +54,7 @@ By default, TimePicker using dayjs instance as input value, which is the suggest
 | followTrigger    | follow Trigger or not                | Boolean         | -                                         |
 | disabled         | Disable the picker  | Boolean   | false      |
 | hasBorder           | Whether the input has border | Boolean   | true       |
-| ranges           | Rreset values, shown below the time panel.<br>Can be object or array of object, with the following properties.<br>**properties**:<br>label: {String} shown text <br> name: {String} key of React element, can be empty, and index will become key instead <br> value: {String/dayjs instance} date value | Object/Array   | -       |
+| preset           | Rreset values, shown below the time panel.<br>Can be object or array of object, with the following properties.<br>**properties**:<br>label: {String} shown text <br> name: {String} key of React element, can be empty, and index will become key instead <br> value: {String/dayjs instance} date value | Object/Array   | -       |
 | onChange         | Callback when date changes<br><br>**signature**:<br>Function(value: Object/String) => void<br>**paramter**:<br>_value_: {Object/String} date value                                                                  | Function  | func.noop  |
 
 ## ARIA and KeyBoard

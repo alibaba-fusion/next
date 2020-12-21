@@ -18,7 +18,7 @@ const { Popup } = Overlay;
 const { noop } = func;
 const timePickerLocale = nextLocale.TimePicker;
 
-const rangePropType = PropTypes.shape({
+const presetPropType = PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.func, checkDateValue]),
     ...Button.propTypes,
@@ -179,7 +179,7 @@ class TimePicker2 extends Component {
         /**
          * 预设值，会显示在时间面板下面
          */
-        ranges: PropTypes.oneOfType([PropTypes.arrayOf(rangePropType), rangePropType]),
+        preset: PropTypes.oneOfType([PropTypes.arrayOf(presetPropType), presetPropType]),
         inputProps: PropTypes.shape(Input.propTypes),
         popupComponent: PropTypes.elementType,
     };
@@ -382,7 +382,7 @@ class TimePicker2 extends Component {
             locale,
             rtl,
             isPreview,
-            ranges,
+            preset,
             ...others
         } = this.props;
 
@@ -475,13 +475,14 @@ class TimePicker2 extends Component {
                     <div dir={others.dir} className={`${this.prefixCls}-wrapper`}>
                         <div className={`${this.prefixCls}-body`}>
                             <TimePickerPanel {...panelProps} />
-                            {ranges ? (
+                            {preset ? (
                                 <FooterPanel
                                     prefix={prefix}
+                                    className={`${this.prefixCls}-footer`}
                                     showTime
                                     showOk={false}
                                     onChange={this.onValueChange}
-                                    ranges={ranges}
+                                    preset={preset}
                                 />
                             ) : null}
                         </div>

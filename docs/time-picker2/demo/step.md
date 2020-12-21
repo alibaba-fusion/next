@@ -1,13 +1,13 @@
 # 步长
 
-- order: 5
+- order: 9
 
 可以通过 `hourStep`, `minuteStep`, `secondStep` 分别设置时分秒的选项间隔。
 
 :::lang=en-us
 # Time step
 
-- order: 5
+- order: 9
 
 Setting time interval by `hourStep`, `minuteStep`, `secondStep`.
 
