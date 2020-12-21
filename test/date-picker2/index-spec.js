@@ -5,14 +5,14 @@ import assert from 'power-assert';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import DatePicker from '../../src/date-picker2/index';
-// import { DATE_PANEL_MODE } from '../../src/date-picker2/constant';
+import { DATE_PICKER_MODE } from '../../src/date-picker2/constant';
 import { KEYCODE } from '../../src/util';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const { RangePicker, MonthPicker, YearPicker, WeekPicker } = DatePicker;
+const { RangePicker, MonthPicker, YearPicker, WeekPicker, QuarterPicker } = DatePicker;
 
-// const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PANEL_MODE;
+const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 
 let wrapper;
 const defaultVal = '2020-12-12';
@@ -73,15 +73,16 @@ describe('Picker', () => {
         });
 
         it('showTime', () => {
-            [DatePicker.RangePicker].forEach(Picker => {
+            [DatePicker, RangePicker].forEach(Picker => {
                 const defaultValue =
                     Picker === DatePicker ? '2020-12-12 12:12:12' : ['2020-12-12 12:12:12', '2020-12-13 13:13:12'];
 
                 wrapper = mount(<Picker defaultValue={defaultValue} showTime defaultVisible />);
 
                 assert.deepEqual(getStrValue(wrapper), defaultValue);
-                assert(wrapper.find('.next-time-picker2-panel').length === 1);
+                assert(showTimePanel());
                 assert(wrapper.find('.next-time-picker2-menu').length === 3);
+                wrapper.unmount();
             });
         });
 
@@ -97,6 +98,20 @@ describe('Picker', () => {
                 const timeTextSltor = '.next-date-time-picker-wrapper .next-calendar2-header-text-field';
                 assert(wrapper.find('.next-time-picker2-menu').length === 2);
                 assert(wrapper.find(timeTextSltor).instance().textContent === '12:12');
+                wrapper.unmount();
+            });
+        });
+
+        it('ignore showTime && timePanelProps', () => {
+            const callback = (Picker, mode) => {
+                wrapper = mount(<Picker mode={mode} showTime timePanelProps={{ format: 'HH:mm' }} />);
+                assert(!showTimePanel());
+                wrapper.unmount();
+            };
+
+            [MonthPicker, YearPicker, WeekPicker, QuarterPicker].forEach(Picker => callback(Picker));
+            [WEEK, MONTH, QUARTER, YEAR].forEach(mode => {
+                [DatePicker, RangePicker].forEach(Picker => callback(Picker, mode));
             });
         });
 
@@ -175,6 +190,32 @@ describe('Picker', () => {
             );
         });
 
+        it('default format', () => {
+            [
+                [DatePicker, 'YYYY-MM-DD'],
+                [MonthPicker, 'YYYY-MM'],
+                [YearPicker, 'YYYY'],
+                [WeekPicker, 'YYYY-wo'],
+                [QuarterPicker, 'YYYY-[Q]Q'],
+            ].forEach(([Picker, fmt]) => {
+                wrapper = mount(<Picker defaultValue={defaultVal} />);
+                assert(getStrValue() === dayjs(defaultVal).format(fmt));
+                wrapper.unmount();
+            });
+
+            [
+                [DATE, 'YYYY-MM-DD'],
+                [MONTH, 'YYYY-MM'],
+                [YEAR, 'YYYY'],
+                [WEEK, 'YYYY-wo'],
+                [QUARTER, 'YYYY-[Q]Q'],
+            ].forEach(([mode, fmt]) => {
+                wrapper = mount(<RangePicker mode={mode} defaultValue={defaultRangeVal} />);
+                assert.deepEqual(getStrValue(), defaultRangeVal.map(v => dayjs(v).format(fmt)));
+                wrapper.unmount();
+            });
+        });
+
         it('preview', () => {
             // DatePicker
             wrapper = mount(<DatePicker defaultValue={defaultVal} isPreview />);
@@ -245,20 +286,6 @@ describe('Picker', () => {
             assert(wrapper.find('.next-date-picker2-wrapper').length === 0);
             wrapper.setProps({ visible: true });
             assert(wrapper.find('.next-date-picker2-wrapper').length === 1);
-        });
-    });
-
-    describe('class props', () => {
-        it('displayName', () => {
-            [
-                [RangePicker, 'RangePicker2'],
-                [MonthPicker, 'MonthPicker2'],
-                [YearPicker, 'YearPicker2'],
-                [WeekPicker, 'WeekPicker2'],
-                [DatePicker, 'DatePicker2'],
-            ].forEach(([component, displayName]) => {
-                assert(component.displayName === displayName);
-            });
         });
     });
 
@@ -373,7 +400,23 @@ describe('Picker', () => {
             assert(visibleChanged);
         });
     });
+
+    describe('class props', () => {
+        it('displayName', () => {
+            [
+                [RangePicker, 'RangePicker2'],
+                [MonthPicker, 'MonthPicker2'],
+                [YearPicker, 'YearPicker2'],
+                [WeekPicker, 'WeekPicker2'],
+                [DatePicker, 'DatePicker2'],
+            ].forEach(([component, displayName]) => {
+                assert(component.displayName === displayName);
+            });
+        });
+    });
 });
+
+describe('Moment Compatible', () => {});
 
 function findInput(idx) {
     const input = wrapper.find('.next-input > input');
@@ -381,7 +424,6 @@ function findInput(idx) {
 }
 
 function changeInput(val, idx) {
-    debugger;
     return findInput(idx).simulate('change', { target: { value: val } });
 }
 
@@ -390,7 +432,6 @@ function clickDate(strVal, mode = 'date') {
 }
 
 function clickTime(strVal, mode = 'hour') {
-    console.log(`.next-time-picker2-menu-${mode} [title=${strVal}]`);
     wrapper.find(`.next-time-picker2-menu-${mode} [title=${strVal}]`).simulate('click');
 }
 
@@ -411,4 +452,13 @@ function hasClassNames(node, classNames) {
     const el = node.instance();
     classNames = Array.isArray(classNames) ? classNames : classNames.trim().split(/\s+/);
     return classNames.every(className => el.classList.contains(className));
+}
+
+function showTimePanel() {
+    return !!wrapper.find('.next-time-picker2-panel').length;
+}
+
+function isEqual(a, b) {
+    const gap = dayjs(a).unix() - dayjs(b).unix();
+    return gap < 200 && gap > -200;
 }

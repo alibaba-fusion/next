@@ -143,13 +143,19 @@
 
             &-table-month,
             &-table-year,
-            &-table-quarter,
             &-table-decade {
-                height: 144px;
+                height: 145px;
                 #{$calendar2-prefix}-cell-inner {
                     min-width: 56px;
                 }
             }
+            &-table-quarter {
+                height: 50px;
+                #{$calendar2-prefix}-cell-inner {
+                    min-width: 56px;
+                }
+            }
+
 
             &-table-decade {
                 #{$calendar2-prefix}-cell-inner {

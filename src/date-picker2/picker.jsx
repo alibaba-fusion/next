@@ -137,23 +137,14 @@ class Picker extends React.Component {
     }
 
     static getDerivedStateFromProps(props) {
-        // const isRange = props.type === DATE_PICKER_TYPE.RANGE;
-
         return {
             isRange: props.type === DATE_PICKER_TYPE.RANGE,
             showOk: !!(props.showOk || props.showTime),
         };
-
-        // if ('value' in props && isValueChanged(props.value, state.value)) {
-        //     const value = checkAndRectify(props.value, isRange);
-        //     newState.curValue = value;
-        //     newState.inputValue = getInputValue(value)
-        // }
-        // return newState;
     }
 
     componentWillUnmount() {
-        this.timeoutId && clearTimeout(this.timeoutId);
+        [this.clearTimeoutId, this.timeoutId].forEach(id => id && clearTimeout(id));
     }
 
     // 返回日期字符串
@@ -207,13 +198,11 @@ class Picker extends React.Component {
     handleInputFocus = inputType => {
         let inputEl = this.dateInput && this.dateInput.input;
 
-        if (inputEl) {
-            if (this.state.isRange) {
-                inputEl = inputEl[inputType];
-            }
-
-            inputEl && inputEl.focus();
+        if (this.state.isRange) {
+            inputEl = inputEl && inputEl[inputType];
         }
+
+        inputEl && inputEl.focus();
     };
 
     handleMouseDown = e => {
@@ -261,8 +250,36 @@ class Picker extends React.Component {
         });
     };
 
+    // 清空输入之后 input组件内部会让第二个输入框获得焦点
+    // 所以这里需要设置setTimeout才能让第一个input获得焦点
+    handleClear = () => {
+        this.clearTimeoutId = setTimeout(() => {
+            this.handleInputFocus(0);
+        });
+
+        this.setState({
+            inputType: DATE_INPUT_TYPE.BEGIN,
+        });
+    };
+
+    maySwitchInput = value => {
+        const { inputType, justBeginInput } = this.state;
+        let idx = value.indexOf(null);
+
+        if (idx === -1 && justBeginInput) {
+            idx = switchInputType(inputType);
+        }
+        if (idx !== -1) {
+            this.onInputTypeChange(idx);
+            this.handleInputFocus(idx);
+            return true;
+        }
+
+        return false;
+    };
+
     handleChange = (v, eventType) => {
-        const { value, isRange, inputType, justBeginInput, showOk } = this.state;
+        const { value, isRange, showOk } = this.state;
         v = this.checkAndRectify(v, value);
 
         this.setState({
@@ -271,42 +288,19 @@ class Picker extends React.Component {
         });
 
         if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType)) {
-            let shouldChange = true;
-
             if (isRange) {
-                // 清空输入
                 if (eventType === 'INPUT_CLEAR') {
-                    // 清空输入之后 input组件内部会让第二个输入框获得焦点
-                    // 所以这里需要设置setTimeout才能让第一个input获得焦点
-                    this.timeoutId = setTimeout(() => {
-                        this.handleInputFocus(0);
-                    });
-
-                    this.setState({
-                        inputType: DATE_INPUT_TYPE.BEGIN,
-                    });
-                }
-                // 关闭弹层
-                else if (eventType !== 'VISIBLE_CHANGE') {
-                    let idx = v.indexOf(null);
-
-                    if (idx === -1 && justBeginInput) {
-                        idx = switchInputType(inputType);
-                    }
-
-                    if (idx !== -1) {
-                        this.onInputTypeChange(idx);
-                        this.handleInputFocus(idx);
-                        shouldChange = false;
-                    }
+                    this.handleClear();
+                } else if (eventType !== 'VISIBLE_CHANGE' && this.maySwitchInput(v)) {
+                    return;
                 }
 
-                if (shouldChange && v.some(o => !o)) {
+                if (v.some(o => !o)) {
                     v = [null, null];
                 }
             }
 
-            shouldChange && this.onChange(v);
+            this.onChange(v);
         }
     };
 

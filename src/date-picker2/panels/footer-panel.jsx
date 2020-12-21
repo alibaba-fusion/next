@@ -34,7 +34,6 @@ class FooterPanel extends React.PureComponent {
         onOk: PT.func,
         oKable: PT.bool,
         extraRender: SharedPT.render,
-        footerRender: SharedPT.render,
     };
 
     static defaultProps = {
@@ -83,32 +82,25 @@ class FooterPanel extends React.PureComponent {
         });
 
         const extraNode = renderNode(extraRender);
+        const rangeNode = this.renderRanges();
+        const actionsNode = (
+            <Button size="small" disabled={!oKable} onClick={onOk} className={`${prefixCls}-ok`} type="primary">
+                {locale.ok}
+            </Button>
+        );
 
+        const showFooter = showOk || extraNode || rangeNode;
         const rangesCls = classnames(`${prefixCls}-ranges`, {
             [`${prefixCls}-ranges-only`]: !showOk && !extraNode,
         });
 
-        return (
+        return showFooter ? (
             <div className={classNames}>
-                <React.Fragment>
-                    {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
-                    <div className={rangesCls}>{this.renderRanges()}</div>
-                    {showOk ? (
-                        <div className={`${prefixCls}-actions`}>
-                            <Button
-                                size="small"
-                                disabled={!oKable}
-                                onClick={onOk}
-                                className={`${prefixCls}-ok`}
-                                type="primary"
-                            >
-                                {locale.ok}
-                            </Button>
-                        </div>
-                    ) : null}
-                </React.Fragment>
+                {extraNode ? <div className={`${prefixCls}-extra`}>{extraNode}</div> : null}
+                {rangeNode ? <div className={rangesCls}>{rangeNode}</div> : null}
+                {showOk ? <div className={`${prefixCls}-actions`}>{actionsNode}</div> : null}
             </div>
-        );
+        ) : null;
     }
 }
 

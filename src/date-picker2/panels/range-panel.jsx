@@ -159,7 +159,20 @@ class RangePanel extends React.Component {
 
     onTimeSelect = v => {
         const { value, inputType } = this.props;
-        this.handleSelect(setTime(value[inputType] || datejs(), v), true);
+        const [begin, end] = value;
+
+        let curDateVal = value[inputType];
+        if (!curDateVal) {
+            curDateVal =
+                inputType === BEGIN && end
+                    ? end.subtract(1, 'day')
+                    : inputType === END && begin
+                    ? begin.add(1, 'day')
+                    : datejs();
+        }
+        curDateVal = setTime(curDateVal, v);
+
+        this.handleSelect(curDateVal, true);
     };
 
     handleSelect = (v, fromTimeChange) => {
