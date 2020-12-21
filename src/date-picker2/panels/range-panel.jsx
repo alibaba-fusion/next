@@ -49,7 +49,7 @@ const isSamePanel = (a, b, mode) => {
 };
 
 const getPanelValue = ({ mode, inputType, value, showTime }, oldPanelValue) => {
-    let panelValue = oldPanelValue;
+    let panelValue = datejs(oldPanelValue);
 
     if (value && inputType !== null && value[inputType]) {
         const [begin, end] = value;
@@ -108,7 +108,7 @@ class RangePanel extends React.Component {
 
         this.state = {
             mode,
-            panelValue: getPanelValue(props, null),
+            panelValue: getPanelValue(props, props.defaultPanelValue),
             inputType: props.inputType,
             curHoverValue: null,
             timeValue,

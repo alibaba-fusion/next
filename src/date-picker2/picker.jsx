@@ -244,10 +244,11 @@ class Picker extends React.Component {
         }
     };
 
-    onPanelChange = (_, mode) => {
+    onPanelChange = (value, mode) => {
         this.setState({
             panelMode: mode,
         });
+        func.call(this.props, 'onPanelChange', [value, mode]);
     };
 
     // 清空输入之后 input组件内部会让第二个输入框获得焦点
