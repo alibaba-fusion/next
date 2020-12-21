@@ -65,6 +65,7 @@ export interface PickerProps extends HTMLAttributesWeak, CommonProps {
     size?: 'small' | 'medium' | 'large';
     hasBorder: boolean;
     inputProps?: InputProps;
+    inputReadOnly?: boolean;
     hasClear?: boolean;
     placeholder?: string;
 
