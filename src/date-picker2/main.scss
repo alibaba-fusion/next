@@ -36,7 +36,7 @@
         flex-wrap: wrap;
         position: relative;
 
-        &-ranges > .#{$css-prefix}btn {
+        &-preset > .#{$css-prefix}btn {
             margin-right: $s-2;
         }
 
@@ -44,7 +44,7 @@
             margin-left: auto;
         }
 
-        &-ranges-only {
+        &-preset-only {
             width: 100%;
         }
     }

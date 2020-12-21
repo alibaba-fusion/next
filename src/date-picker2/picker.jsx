@@ -287,11 +287,14 @@ class Picker extends React.Component {
             inputValue: this.getInputValue(v),
         });
 
-        if (!showOk || ['KEYDOWN_ENTER', 'CLICK_OK', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType)) {
+        if (
+            !showOk ||
+            ['KEYDOWN_ENTER', 'CLICK_OK', 'CLICK_PRESET', 'VISIBLE_CHANGE', 'INPUT_CLEAR'].includes(eventType)
+        ) {
             if (isRange) {
                 if (eventType === 'INPUT_CLEAR') {
                     this.handleClear();
-                } else if (eventType !== 'VISIBLE_CHANGE' && this.maySwitchInput(v)) {
+                } else if (!['VISIBLE_CHANGE', 'CLICK_PRESET'].includes(eventType) && this.maySwitchInput(v)) {
                     return;
                 }
 
@@ -397,8 +400,8 @@ class Picker extends React.Component {
 
         const {
             rtl,
-            prefix,
             locale,
+            prefix,
             inputReadOnly,
             showTime,
             preset,
@@ -543,6 +546,7 @@ class Picker extends React.Component {
 
         return (
             <PopupComp
+                rtl={rtl}
                 key="date-picker-popup"
                 visible={visible}
                 align={popupAlign}

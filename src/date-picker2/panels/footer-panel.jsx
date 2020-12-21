@@ -63,7 +63,10 @@ class FooterPanel extends React.PureComponent {
                     type={preset.length === 1 ? 'primary' : 'secondary'}
                     key={`${label}-${index}`}
                     onClick={() =>
-                        func.call(this.props, 'onChange', [typeof value === 'function' ? value() : value, true, true])
+                        func.call(this.props, 'onChange', [
+                            typeof value === 'function' ? value() : value,
+                            'CLICK_PRESET',
+                        ])
                     }
                     {...buttonProps}
                 >
@@ -90,8 +93,8 @@ class FooterPanel extends React.PureComponent {
         );
 
         const showFooter = showOk || extraNode || rangeNode;
-        const rangesCls = classnames(`${prefixCls}-ranges`, {
-            [`${prefixCls}-ranges-only`]: !showOk && !extraNode,
+        const rangesCls = classnames(`${prefixCls}-preset`, {
+            [`${prefixCls}-preset-only`]: !showOk && !extraNode,
         });
 
         return showFooter ? (
