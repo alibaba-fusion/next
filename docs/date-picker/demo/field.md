@@ -80,5 +80,6 @@ ReactDOM.render(<App/>, mountNode);
 .error-msg {
     color: #E72B00;
     font-size: 12px;
+    margin-left: 10px;
 }
 ````
