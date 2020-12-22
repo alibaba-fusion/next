@@ -1,13 +1,13 @@
 # 设置父子节点选中是否关联
 
-- order: 4
+- order: 8
 
-展示受控多选以及是否开启严格受控父子节点选中不再关联的用法。
+通过`checkStrictly`设置父子节点是否关联选中状态，仅在多选情况下有效。
 
 :::lang=en-us
-# Parent and child nodes checked is related
+# Set parent or child nodes to select whether to relate
 
-- order: 4
+- order: 8
 
 Demo whether parent and child nodes checked is related.
 :::
@@ -23,13 +23,9 @@ class Demo extends React.Component {
         super(props);
 
         this.state = {
-            value: [],
             data: [],
             checkStrictly: false
         };
-
-        this.handleCheck = this.handleCheck.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -39,29 +35,28 @@ class Demo extends React.Component {
             .catch(e => console.log(e));
     }
 
-    handleCheck() {
+    handleCheck = () => {
         this.setState({
             checkStrictly: !this.state.checkStrictly,
-            value: []
         });
     }
 
-    handleChange(value, data, extra) {
+    handleChange = (value, data, extra) => {
         console.log(value, data, extra);
-
-        this.setState({
-            value
-        });
     }
 
     render() {
         return (
             <div className="control-multiple-demo">
                 <label className="strictly-check">
-                    <Checkbox value={this.state.checkStrictly} onChange={this.handleCheck} />
+                    <Checkbox checked={this.state.checkStrictly} onChange={this.handleCheck} />
                     <span className="strictly-text">Enable checkStrictly</span>
                 </label>
-                <CascaderSelect style={{ width: '302px' }} multiple checkStrictly={this.state.checkStrictly} value={this.state.value} dataSource={this.state.data} onChange={this.handleChange} />
+                <CascaderSelect
+                    multiple
+                    checkStrictly={this.state.checkStrictly}
+                    dataSource={this.state.data}
+                    onChange={this.handleChange} />
             </div>
         );
     }

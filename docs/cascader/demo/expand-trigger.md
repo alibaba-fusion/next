@@ -54,10 +54,8 @@ class Demo extends React.Component {
         return (
             <div>
                 <div className="trigger-check">
-                    Expand trigger type:
-                    <RadioGroup dataSource={['click', 'hover']} value={this.state.triggerType} onChange={this.handleTriggerTypeChange} />
+                    <RadioGroup dataSource={['click', 'hover']} shape="button" value={this.state.triggerType} onChange={this.handleTriggerTypeChange} />
                 </div>
-
                 <Cascader expandTriggerType={this.state.triggerType} dataSource={this.state.data} onChange={this.handleChange} />
             </div>
         );
@@ -70,11 +68,5 @@ ReactDOM.render(<Demo />, mountNode);
 ```` css
 .trigger-check {
     margin-bottom: 10px;
-    font-size: 14px;
-    color: #666;
-}
-
-.trigger-check .next-radio-group {
-    margin-left: 10px;
 }
 ````
