@@ -1,15 +1,15 @@
 # 快捷调用
 
-- order: 5
+- order: 1
 
-Dialog 提供 alert 和 confirm 的快掉调用方式，以及更底层的 show 方式。
+`Dialog` 提供 `alert` 和 `confirm` 的快掉调用方式，以及更底层的 `show` 方式。
 
 :::lang=en-us
 # Quick call
 
-- order: 5
+- order: 1
 
-The Dialog provides quick methods called alert and confirm, as well as a lower-level show method.
+The `Dialog` provides quick methods called `alert` and `confirm`, as well as a lower-level `show` method.
 :::
 
 ---
