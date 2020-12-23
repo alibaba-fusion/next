@@ -17,7 +17,7 @@ http.createServer(function(req, res) {
     // console.log(req.headers)
 
     if (req.url.match('/upload.do')) {
-        res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
 

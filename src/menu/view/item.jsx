@@ -52,19 +52,17 @@ export default class Item extends Component {
             this.menuNode = findDOMNode(root);
             const { prefix, header, footer } = root.props;
             if (header || footer) {
-                this.menuNode = this.menuNode.querySelector(
-                    `.${prefix}menu-content`
-                );
+                this.menuNode = this.menuNode.querySelector(`.${prefix}menu-content`);
             }
         }
 
         this.setFocus();
     }
-
     componentDidUpdate() {
-        this.setFocus();
+        if (this.props.root.props.focusable) {
+            this.setFocus();
+        }
     }
-
     focusable() {
         const { root, type, disabled } = this.props;
         const { focusable } = root.props;
@@ -83,17 +81,11 @@ export default class Item extends Component {
             if (this.focusable()) {
                 this.itemNode.focus({ preventScroll: true });
             }
-            if (
-                this.menuNode &&
-                this.menuNode.scrollHeight > this.menuNode.clientHeight
-            ) {
-                const scrollBottom =
-                    this.menuNode.clientHeight + this.menuNode.scrollTop;
-                const itemBottom =
-                    this.itemNode.offsetTop + this.itemNode.offsetHeight;
+            if (this.menuNode && this.menuNode.scrollHeight > this.menuNode.clientHeight) {
+                const scrollBottom = this.menuNode.clientHeight + this.menuNode.scrollTop;
+                const itemBottom = this.itemNode.offsetTop + this.itemNode.offsetHeight;
                 if (itemBottom > scrollBottom) {
-                    this.menuNode.scrollTop =
-                        itemBottom - this.menuNode.clientHeight;
+                    this.menuNode.scrollTop = itemBottom - this.menuNode.clientHeight;
                 } else if (this.itemNode.offsetTop < this.menuNode.scrollTop) {
                     this.menuNode.scrollTop = this.itemNode.offsetTop;
                 }
@@ -157,13 +149,7 @@ export default class Item extends Component {
         } = this.props;
         const others = pickOthers(Object.keys(Item.propTypes), this.props);
 
-        const {
-            prefix,
-            focusable,
-            inlineIndent,
-            itemClassName,
-            rtl,
-        } = root.props;
+        const { prefix, focusable, inlineIndent, itemClassName, rtl } = root.props;
         const focused = this.getFocused();
 
         const newClassName = replaceClassName
@@ -182,17 +168,11 @@ export default class Item extends Component {
 
         others.tabIndex = root.state.tabbableKey === _key ? '0' : '-1';
 
-        if (
-            parentMode === 'inline' &&
-            inlineLevel > 1 &&
-            inlineIndent > 0 &&
-            needIndent
-        ) {
+        if (parentMode === 'inline' && inlineLevel > 1 && inlineIndent > 0 && needIndent) {
             const paddingProp = rtl ? 'paddingRight' : 'paddingLeft';
             others.style = {
                 ...(others.style || {}),
-                [paddingProp]: `${inlineLevel * inlineIndent -
-                    (groupIndent || 0) * 0.4 * inlineIndent}px`,
+                [paddingProp]: `${inlineLevel * inlineIndent - (groupIndent || 0) * 0.4 * inlineIndent}px`,
             };
         }
         const TagName = component;
