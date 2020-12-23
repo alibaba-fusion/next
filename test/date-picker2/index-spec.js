@@ -102,6 +102,22 @@ describe('Picker', () => {
             });
         });
 
+        it('preset', () => {
+            const now = dayjs();
+            const datePreset = {
+                此刻: () => now,
+            };
+
+            ['preset', 'ranges'].forEach(k => {
+                wrapper = mount(<DatePicker {...{ [k]: datePreset }} defaultVisible />);
+                assert(wrapper.find('.next-date-picker2-footer-preset-only').length === 1);
+                wrapper.find('.next-date-picker2-footer .next-btn').simulate('click');
+                assert(wrapper.find('.next-date-picker2-footer .next-btn').text() === '此刻');
+                assert(getStrValue() === now.format('YYYY-MM-DD'));
+                wrapper.unmount();
+            });
+        });
+
         it('ignore showTime && timePanelProps', () => {
             const callback = (Picker, mode) => {
                 wrapper = mount(<Picker mode={mode} showTime timePanelProps={{ format: 'HH:mm' }} />);
@@ -334,6 +350,114 @@ describe('Picker', () => {
             clickOk();
             assert.deepEqual(getStrValue(), ['2020-12-12 12:12:12', '2020-12-13 12:12:35']);
         });
+
+        it('RangePicker cell class names', done => {
+            wrapper = mount(<RangePicker defaultPanelValue={defaultVal} defaultVisible />);
+
+            clickDate('2020-12-13');
+            assert(
+                hasClassNames(
+                    findDate('2020-12-13'),
+                    'next-calendar2-cell-range-begin next-calendar2-cell-range-begin-single'
+                )
+            );
+            assert(hasClassNames(findDate('2020-12-12'), 'next-calendar2-cell-disabled'));
+
+            findDate('2020-12-15').simulate('mouseenter');
+            setTimeout(() => {
+                ['2020-12-13', '2020-12-14', '2020-12-15'].every(v =>
+                    assert(hasClassNames(findDate(v), 'next-calendar2-cell-hover'))
+                );
+                assert(hasClassNames(findDate('2020-12-15'), 'next-calendar2-cell-hover-end'));
+
+                findDate('2020-12-15').simulate('mouseleave');
+                setTimeout(() => {
+                    ['2020-12-13', '2020-12-14', '2020-12-15'].every(v =>
+                        assert(!hasClassNames(findDate(v), 'next-calendar2-cell-hover'))
+                    );
+                    done();
+                });
+            });
+        });
+
+        it('RangePicker panelValue', () => {
+            wrapper = mount(<RangePicker defaultValue={['2020-12-12', '2021-02-13']} defaultVisible />);
+            assert(findDate('2020-12-12').length);
+            assert(findDate('2021-01-12').length);
+            findInput(1).simulate('focus');
+            assert(findDate('2021-01-12').length);
+            assert(findDate('2021-02-12').length);
+            findInput(0).simulate('focus');
+            assert(findDate('2020-12-12').length);
+            assert(findDate('2021-01-12').length);
+        });
+
+        it('Switch PanelMode', () => {
+            let mode = 'date';
+            let panelValue;
+
+            wrapper = mount(
+                <DatePicker
+                    onPanelChange={(v, m) => {
+                        assert(v.format('YYYY-MM-DD') === panelValue);
+                        assert(m === mode);
+                    }}
+                    defaultValue={defaultVal}
+                    defaultVisible
+                />
+            );
+            let leftBtns = wrapper.find('button.next-calendar2-header-left-btn');
+            let rightBtns = wrapper.find('button.next-calendar2-header-right-btn');
+            panelValue = '2019-12-12';
+            leftBtns.at(0).simulate('click');
+            panelValue = '2019-11-12';
+            leftBtns.at(1).simulate('click');
+            panelValue = '2019-12-12';
+            rightBtns.at(0).simulate('click');
+            panelValue = '2020-12-12';
+            rightBtns.at(1).simulate('click');
+
+            mode = 'month';
+            wrapper
+                .find('.next-calendar2-header-text-field button')
+                .at(1)
+                .simulate('click');
+
+            mode = 'date';
+            panelValue = '2020-11-12';
+            clickDate('2020-11', 'month');
+
+            mode = 'year';
+            wrapper
+                .find('.next-calendar2-header-text-field button')
+                .at(0)
+                .simulate('click');
+            wrapper.unmount();
+
+            // RangePicker
+            wrapper = mount(
+                <RangePicker
+                    onPanelChange={(v, m) => {
+                        assert(v.format('YYYY-MM-DD') === panelValue);
+                        assert(m === mode);
+                    }}
+                    defaultValue={defaultRangeVal}
+                    defaultVisible
+                />
+            );
+            mode = 'date';
+            panelValue = defaultRangeVal[0];
+            leftBtns = wrapper.find('button.next-calendar2-header-left-btn');
+            rightBtns = wrapper.find('button.next-calendar2-header-right-btn');
+            panelValue = '2019-12-12';
+            leftBtns.at(0).simulate('click');
+            panelValue = '2019-11-12';
+            leftBtns.at(1).simulate('click');
+            panelValue = '2019-12-12';
+            rightBtns.at(2).simulate('click');
+            panelValue = '2020-12-12';
+            rightBtns.at(3).simulate('click');
+        });
     });
 
     describe('event', () => {
@@ -416,8 +540,6 @@ describe('Picker', () => {
     });
 });
 
-describe('Moment Compatible', () => {});
-
 function findInput(idx) {
     const input = wrapper.find('.next-input > input');
     return idx !== undefined ? input.at(idx) : input;
@@ -427,8 +549,12 @@ function changeInput(val, idx) {
     return findInput(idx).simulate('change', { target: { value: val } });
 }
 
+function findDate(strVal, mode = 'date') {
+    return wrapper.find(`.next-calendar2-table-${mode} [title="${strVal}"]`);
+}
+
 function clickDate(strVal, mode = 'date') {
-    wrapper.find(`.next-calendar2-table-${mode} [title="${strVal}"]`).simulate('click');
+    findDate(strVal, mode).simulate('click');
 }
 
 function clickTime(strVal, mode = 'hour') {
@@ -456,9 +582,4 @@ function hasClassNames(node, classNames) {
 
 function showTimePanel() {
     return !!wrapper.find('.next-time-picker2-panel').length;
-}
-
-function isEqual(a, b) {
-    const gap = dayjs(a).unix() - dayjs(b).unix();
-    return gap < 200 && gap > -200;
 }
