@@ -1,13 +1,15 @@
 # hover 打开子菜单
 
 - order: 3
+- debug: true
 
-可以设置 triggerType 为 'hover'，来 hover 打开子菜单，默认点击打开子菜单。
+可以设置 triggerType 为 `hover`，来 hover 打开子菜单，默认点击打开子菜单。
 
 :::lang=en-us
 # Open submenu by hover
 
 - order: 3
+- debug: true
 
 You can set the triggerType to 'hover' to hover to open the submenu. By default, click to open the submenu.
 :::

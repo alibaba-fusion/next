@@ -1,6 +1,7 @@
 # 弹出菜单
 
 - order: 2
+- debug: true
 
 展示弹出菜单的用法。
 
@@ -8,6 +9,7 @@
 # Pop up menu
 
 - order: 2
+- debug: true
 
 Demo the usage of the popup up menu.
 :::

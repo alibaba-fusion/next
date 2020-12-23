@@ -7,15 +7,12 @@
 
 ---
 
-## 开发指南
+下拉弹窗组件。
 
-### 何时使用
+## 何时使用
 
 当页面上的操作命令过多时，用此组件可以收纳操作元素。点击或移入触点，会出现一个下拉菜单。可在列表中进行选择，并执行相应的命令。
 
-### 使用注意
-
--   若要使用无障碍的Dropdown，推荐使用`<Dropdown triggerType={["click", "hover"]}>` (请勿使用triggerType="focus")。我们认为，菜单类元素需要由用户确认后再展开才是一种无障碍友好的实践。
 
 ## API
 
@@ -40,7 +37,7 @@
 | cache           | 隐藏时是否保留子节点                                                                                                                                                                                                                                        | Boolean        | false                                      |
 | animation       | 配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画                                                                                                                                                                   | Object/Boolean | { in: 'expandInDown', out: 'expandOutUp' } |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键          | 说明                                      |
 | :---------- | :-------------------------------------- |

@@ -1,6 +1,6 @@
 # 禁用步骤项
 
-- order: 3
+- order: 4
 
 可以通过在 `Step.Item` 上设置 `disabled` 属性来禁用某个步骤。
 

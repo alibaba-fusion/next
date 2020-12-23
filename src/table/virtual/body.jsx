@@ -14,10 +14,7 @@ export default class VirtualBody extends React.Component {
     };
 
     static contextTypes = {
-        maxBodyHeight: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-        ]),
+        maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         onBodyScroll: PropTypes.func,
         onFixedScrollSync: PropTypes.func,
         onVirtualScroll: PropTypes.func,
@@ -58,23 +55,13 @@ export default class VirtualBody extends React.Component {
     };
 
     render() {
-        const {
-            prefix,
-            className,
-            colGroup,
-            tableWidth,
-            ...others
-        } = this.props;
+        const { prefix, className, colGroup, tableWidth, ...others } = this.props;
         const { maxBodyHeight, bodyHeight, innerTop } = this.context;
         const style = {
             width: tableWidth,
         };
         return (
-            <div
-                style={{ maxHeight: maxBodyHeight }}
-                className={className}
-                onScroll={this.onScroll}
-            >
+            <div style={{ maxHeight: maxBodyHeight }} className={className} onScroll={this.onScroll}>
                 <div
                     style={{
                         height: bodyHeight,
@@ -84,9 +71,9 @@ export default class VirtualBody extends React.Component {
                 >
                     <div
                         style={{
-                            height: '100%',
                             position: 'relative',
                             transform: `translateY(${innerTop}px)`,
+                            willChange: 'transform',
                         }}
                     >
                         <table ref={this.tableRef} style={style}>

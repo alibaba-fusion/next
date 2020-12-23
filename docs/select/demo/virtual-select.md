@@ -43,7 +43,8 @@ function generateData(len, isOption) {
 ReactDOM.render(
     <div>
         <Select dataSource={generateData(100)} useVirtual onChange={onChange} defaultValue="option0" />
-        &nbsp;&nbsp;&nbsp;&nbsp;
+        <br/>
+        <br/>
         <Select useVirtual onChange={onChange} defaultValue="option50">
             {generateData(100, true)}
         </Select>

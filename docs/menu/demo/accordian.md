@@ -1,13 +1,13 @@
 # 内连菜单展开模式
 
-- order: 1
+- order: 2
 
-通过设置 openMode 为 'single'，可以让菜单同时只能展开一个内连子菜单，默认为可以同时展开多个。
+通过设置 openMode 为 `single`，可以让菜单同时只能展开一个内连子菜单，默认为可以同时展开多个。
 
 :::lang=en-us
 # Expand mode of inline menu
 
-- order: 1
+- order: 2
 
 You can make the inline menu expand only one submenu at the same time by setting openMode to 'single'. By default, you can expand more than one at a time.
 :::

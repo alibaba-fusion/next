@@ -1,13 +1,13 @@
-# 信息类型
+# 常用提示类型
 
-- order: 0
+- order: 1
 
-通过设置`type`调整信息类型
+通过设置`type`调整信息类型，包括成功、警告、错误、通知、帮助、加载。
 
 :::lang=en-us
 # Type
 
-- order: 0
+- order: 1
 
 You can control the type of message by setting the `type` property.
 :::
@@ -42,6 +42,7 @@ ReactDOM.render(
 
 ````css
 .message-type-demo .next-message {
-    margin-bottom: 10px;
+    display: inline-block;
+    margin: 10px;
 }
 ````

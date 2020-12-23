@@ -51,23 +51,13 @@ class App extends React.Component {
     render() {
         return (
             <div style={{width: '400px', margin: '50px'}}>
-                <h4>fixedWidth basic</h4>
                 <Range fixedWidth defaultValue={[20, 40]} style={style} />
-                <h4>fixedWidth basic with tooltipVisible</h4>
+                <h4>with tooltipVisible</h4>
                 <Range tooltipVisible fixedWidth defaultValue={[70, 90]} style={styleX3} />
-                <Range disabled tooltipVisible fixedWidth defaultValue={[70, 90]} style={style} />
-                <h4>fixedWidth with marks</h4>
+                <h4>with marks</h4>
                 <Range fixedWidth step={10} defaultValue={[20, 40]} marks={10} style={styleX3} />
-                <Range fixedWidth step={2} defaultValue={[60, 80]} marks={[0, 30, 100]} style={style} marksPosition="below" />
-                <h4>fixedWidth with 0.01 step</h4>
+                <h4>with 0.01 step</h4>
                 <Range fixedWidth defaultValue={[0.6, 0.7]} min={0.5} max={1} step={0.01}/>
-                <div style={{width: '400px', marginTop: '50px'}}>
-                    <p>range 0 ~ 1024</p>
-                    <Range fixedWidth value={this.state.value}
-                        onChange={this.onChange.bind(this)}
-                        onProcess={this.onProcess.bind(this)}
-                        min={0} max={1024} marks={[0, 1024]} />
-                </div>
             </div>
         );
     }

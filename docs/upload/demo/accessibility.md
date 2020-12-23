@@ -1,28 +1,15 @@
-# 无障碍
+# 无障碍支持
 
 - order: 16
 
-
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
-
-> 3. 请参考`ARIA and KeyBoard`。
+请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 :::lang=en-us
 # Accessibility
 
 - order: 16
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
-
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
-
-> 3. Please refer to `ARIA and KeyBoard`.
+Please refer to `ARIA and KeyBoard`.
 
 :::
 ---

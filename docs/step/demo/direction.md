@@ -19,8 +19,7 @@ While, type `arrows` do not support vertical mode.
 ---
 
 ````jsx
-import ReactDOM from 'react-dom';
-import React,{ useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button, Step, Radio } from '@alifd/next';
 
 const Step1Content=()=>{
@@ -68,7 +67,7 @@ const CreateDemo=()=>{
         </Radio.Group>
         <Step current={1} direction={direction} animation style={{ marginTop: 30 }}>
             <Step.Item title={"What would youlike to test?"} content={'test'} />
-            <Step.Item title={"What would youlike to test?"} content={<Step1Content conditions={conditions} addNewItem={createNewSelectItem} />} />
+            <Step.Item title={"What would youlike to test?"} content={<Step1Content />} />
             <Step.Item title={"A bit more on the background"} content={'test'} />
         </Step>
     </div>

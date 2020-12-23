@@ -1,13 +1,13 @@
 # 更新通知内容
 
-- order: 6
+- order: 5
 
-可以通过唯一的 key 来更新内容。
+可以通过唯一的 `key` 来更新内容。
 
 :::lang=en-us
 # Update Content
 
-- order: 6
+- order: 5
 
 Update content with unique key.
 

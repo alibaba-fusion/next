@@ -1,15 +1,15 @@
-# Loading动画尺寸
+# 动画尺寸
 
-- order: 6
+- order: 1
 
-设置Loading动画的尺寸,只对原生的indicator管用
+通过`size`设置Loading动画的尺寸，只对原生的动画指示符`indicator`有效。
 
 :::lang=en-us
-# Loading Animation Size
+# Animation Size
 
-- order: 6
+- order: 1
 
-Sets Loading animation size. it only works for default loading animation.
+Sets Loading animation size. It only works for default loading animation.
 :::
 
 ---
@@ -18,22 +18,21 @@ Sets Loading animation size. it only works for default loading animation.
 import { Loading } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Loading tip="normal(size default large)" >
-        <div className="demo">test</div>
+    <Loading tip={<span>default = large</span>} >
+        <div className="demo-size">test</div>
     </Loading>
     <Loading tip="large" size="large">
-        <div className="demo">test</div>
+        <div className="demo-size">test</div>
     </Loading>
     <Loading tip="medium" size="medium">
-        <div className="demo">test</div>
+        <div className="demo-size">test</div>
     </Loading>
 </div>, mountNode);
 ````
 
 ````css
-.demo {
-    width: 500px;
-    background-color: #F2F3F7;
+.demo-size {
+    width: 200px;
     text-align: center;
     padding:50px;
 }

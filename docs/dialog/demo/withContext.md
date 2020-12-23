@@ -57,7 +57,6 @@ const AfterFix = Dialog.withContext(({ contextDialog }) => {
 class Demo extends React.Component {
     render() {
         return (
-            <div>
                 <ConfigProvider
                     locale={{
                         Dialog: {
@@ -78,11 +77,11 @@ class Demo extends React.Component {
                         >
                         <div>
                             <BeforeFix />
+                            <br/>
                             <AfterFix />
                         </div>
                     </ConfigProvider>
                 </ConfigProvider>
-            </div>
         );
     }
 }

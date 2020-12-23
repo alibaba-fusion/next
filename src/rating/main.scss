@@ -30,6 +30,14 @@
 
     &-base-disabled {
         cursor: not-allowed;
+
+        #{$rating-prefix}-underlay #{$rating-prefix}-icon {
+            cursor: not-allowed;
+        }
+
+        #{$rating-prefix}-overlay #{$rating-prefix}-icon {
+            cursor: not-allowed;
+        }
     }
 
     &-symbol-icon::before {

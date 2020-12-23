@@ -2,9 +2,13 @@
 
 - order: 0
 
-简单的栅格布局展示，Fusion Next推荐以PC为主要开发场景，自适配平板、手机端。默认使用12栅格布局，
-你只需要将子元素按顺序排布，指定子元素所占的比例（默认为1，即1/12），并且配合屏幕大小（或ua信息）的改变设置device，
-页面内容就可以根据自适应，遵循 12-8-4 设计原则
+简单的栅格布局展示，Fusion Next推荐以PC为主要开发场景，自适配平板、手机端。默认使用12栅格布局。
+
+只需进行如下设置，页面内容就可以根据自适应，遵循 12-8-4 设计原则。
+
+- 将子元素按顺序排布；
+- 指定子元素所占的比例（默认为1，即1/12）；
+- 并配合屏幕大小（或ua信息）的改变设置device。
 
 :::lang=en-us
 # Basic Usage
@@ -65,7 +69,6 @@ ReactDOM.render(<Demo />, mountNode);
 }
 .list-item {
   position: relative;
-  background: #ddd;
   border: 1px solid #eee;
   margin-bottom: 20px;
 }
@@ -87,15 +90,15 @@ ReactDOM.render(<Demo />, mountNode);
   line-height: 40px;
 }
 .grid-12 {
-  background: red;
+  background: rgba(59, 154, 255, 0.25);
 }
 .grid-6 {
-  background: purple;
+  background: rgba(59, 154, 255, 1);
 }
 .grid-4 {
-  background: orange;
+  background: rgba(59, 154, 255, 0.25);
 }
 .grid-3 {
-  background: green;
+  background: rgba(59, 154, 255, 1);
 }
 ````

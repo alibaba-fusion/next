@@ -2,7 +2,7 @@
 
 - order: 5
 
-可以通过`Message.show`和`Message.hide`方法来方便的显示或隐藏反馈弹窗。
+信息提示的弹窗用法，可以通过`Message.show`和`Message.hide`方法来显示或隐藏。
 
 :::lang=en-us
 # Toast
@@ -30,8 +30,8 @@ const hide = () => Message.hide();
 
 ReactDOM.render(
     <div className="message-toast-demo">
-        <Button onClick={show}>Show</Button>
-        <Button onClick={hide}>Hide</Button>
+        <Button type="primary" onClick={show}>Show</Button>
+        <Button type="primary" onClick={hide}>Hide</Button>
     </div>, mountNode);
 ````
 

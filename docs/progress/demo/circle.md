@@ -16,12 +16,11 @@ A simple progress circle.
 ---
 
 ````jsx
-import { Progress, Icon } from '@alifd/next';
+import { Progress, Icon, Box } from '@alifd/next';
 
-ReactDOM.render(<div>
-    <Progress percent={30} shape="circle" /> &nbsp;&nbsp;
-    <Progress percent={50} shape="circle" /> &nbsp;&nbsp;
-    <Progress percent={80} shape="circle" textRender={() => ''}/>&nbsp;&nbsp;
+ReactDOM.render(<Box direction="row" spacing={20}>
+    <Progress percent={30} shape="circle" />
+    <Progress percent={80} shape="circle" textRender={() => ''}/>
     <Progress percent={100} shape="circle" textRender={() => <Icon type="select" size="xl" />} />
-</div>, mountNode);
+</Box>, mountNode);
 ````

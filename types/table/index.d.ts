@@ -301,7 +301,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, CommonPro
     /**
      * 设置额外渲染行的属性
      */
-    getExpandedColProps?: () => void;
+    getExpandedColProps?: <IRecord extends any = any>(record: IRecord, index: number) => object | Record<string | number, any>;
 
     /**
      * 在额外渲染行或者Tree展开或者收起的时候触发的事件

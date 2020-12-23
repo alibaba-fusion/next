@@ -1,8 +1,8 @@
-# 基本
+# 基础列表
 
 - order: 0
 
-简单的列表展示。
+最简单的用法。
 
 :::lang=en-us
 # Basic Usage

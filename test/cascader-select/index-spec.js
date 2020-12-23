@@ -21,18 +21,12 @@ const ChinaArea = [
             {
                 value: '2974',
                 label: '西安',
-                children: [
-                    { value: '2975', label: '西安市' },
-                    { value: '2976', label: '高陵县' },
-                ],
+                children: [{ value: '2975', label: '西安市' }, { value: '2976', label: '高陵县' }],
             },
             {
                 value: '2980',
                 label: '铜川',
-                children: [
-                    { value: '2981', label: '铜川市' },
-                    { value: '2982', label: '宜君县' },
-                ],
+                children: [{ value: '2981', label: '铜川市' }, { value: '2982', label: '宜君县' }],
             },
         ],
     },
@@ -53,9 +47,7 @@ describe('CascaderSelect', () => {
     });
 
     it('should show dropdown when set defaultVisible to true', () => {
-        wrapper = mount(
-            <CascaderSelect dataSource={ChinaArea} defaultVisible />
-        );
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} defaultVisible />);
         assert(document.querySelector('.next-cascader-select-dropdown'));
     });
 
@@ -76,12 +68,7 @@ describe('CascaderSelect', () => {
         };
 
         wrapper = mount(
-            <CascaderSelect
-                defaultVisible
-                defaultValue="2975"
-                dataSource={ChinaArea}
-                onChange={handleChange}
-            />
+            <CascaderSelect defaultVisible defaultValue="2975" dataSource={ChinaArea} onChange={handleChange} />
         );
         assert(
             wrapper
@@ -143,13 +130,7 @@ describe('CascaderSelect', () => {
     });
 
     it('should change select box display when expand item if set changeOnSelect to true', () => {
-        wrapper = mount(
-            <CascaderSelect
-                changeOnSelect
-                defaultVisible
-                dataSource={ChinaArea}
-            />
-        );
+        wrapper = mount(<CascaderSelect changeOnSelect defaultVisible dataSource={ChinaArea} />);
 
         const item00 = findItem(0, 0);
         ReactTestUtils.Simulate.click(item00);
@@ -224,9 +205,7 @@ describe('CascaderSelect', () => {
                 checked: false,
                 currentData: { value: '2975', label: '西安市', pos: '0-0-0-0' },
                 checkedData: [{ value: '2980', label: '铜川', pos: '0-0-1' }],
-                indeterminateData: [
-                    { value: '2973', label: '陕西', pos: '0-0' },
-                ],
+                indeterminateData: [{ value: '2973', label: '陕西', pos: '0-0' }],
             });
             changeCalled = true;
         };
@@ -316,42 +295,17 @@ describe('CascaderSelect', () => {
     });
 
     it('should support searching when it is a single cascader select', () => {
-        wrapper = mount(
-            <CascaderSelect
-                showSearch
-                defaultVisible
-                defaultValue="2975"
-                dataSource={ChinaArea}
-            />
-        );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '哈哈' } });
+        wrapper = mount(<CascaderSelect showSearch defaultVisible defaultValue="2975" dataSource={ChinaArea} />);
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
         wrapper.update();
-        assert(
-            document
-                .querySelector('.next-cascader-select-not-found')
-                .textContent.trim() === 'Not Found'
-        );
+        assert(document.querySelector('.next-cascader-select-not-found').textContent.trim() === 'Not Found');
 
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '高陵' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '高陵' } });
         wrapper.update();
-        assert(
-            document
-                .querySelector('.next-cascader-filtered-list')
-                .textContent.trim() === '陕西 / 西安 / 高陵县'
-        );
-        assert(
-            document
-                .querySelector('.next-cascader-filtered-list em')
-                .textContent.trim() === '高陵'
-        );
+        assert(document.querySelector('.next-cascader-filtered-list').textContent.trim() === '陕西 / 西安 / 高陵县');
+        assert(document.querySelector('.next-cascader-filtered-list em').textContent.trim() === '高陵');
 
-        ReactTestUtils.Simulate.click(
-            document.querySelector('.next-cascader-filtered-item')
-        );
+        ReactTestUtils.Simulate.click(document.querySelector('.next-cascader-filtered-item'));
         wrapper.update();
         assert(
             wrapper
@@ -363,44 +317,45 @@ describe('CascaderSelect', () => {
 
     it('should support searching when it is a multiple cascader select', () => {
         wrapper = mount(
-            <CascaderSelect
-                multiple
-                showSearch
-                defaultVisible
-                defaultValue="2975"
-                dataSource={ChinaArea}
-            />
+            <CascaderSelect multiple showSearch defaultVisible defaultValue="2975" dataSource={ChinaArea} />
         );
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '哈哈' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '哈哈' } });
         wrapper.update();
-        assert(
-            document
-                .querySelector('.next-cascader-select-not-found')
-                .textContent.trim() === 'Not Found'
-        );
+        assert(document.querySelector('.next-cascader-select-not-found').textContent.trim() === 'Not Found');
 
-        wrapper
-            .find('.next-select-trigger-search input')
-            .simulate('change', { target: { value: '高陵' } });
+        wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: '高陵' } });
         wrapper.update();
-        assert(
-            document
-                .querySelector('.next-cascader-filtered-list')
-                .textContent.trim() === '陕西 / 西安 / 高陵县'
-        );
-        assert(
-            document
-                .querySelector('.next-cascader-filtered-list em')
-                .textContent.trim() === '高陵'
-        );
+        assert(document.querySelector('.next-cascader-filtered-list').textContent.trim() === '陕西 / 西安 / 高陵县');
+        assert(document.querySelector('.next-cascader-filtered-list em').textContent.trim() === '高陵');
+    });
 
-        // const checkbox = document.querySelector('.next-cascader-filtered-item input');
-        // ReactTestUtils.Simulate.change(checkbox, { target: { checked: true } });
-        // wrapper.update();
+    it('should ignore case when searching', () => {
+        const SpecialChars = '-[.+*?^$()[]{}|\\';
+        const dataSource = [
+            {
+                value: 'Aa',
+                label: 'Aa',
+                children: [
+                    {
+                        value: 'Bb',
+                        label: 'Bb',
+                    },
+                    {
+                        value: SpecialChars,
+                        label: SpecialChars,
+                    },
+                ],
+            },
+        ];
+        wrapper = mount(<CascaderSelect showSearch defaultVisible defaultValue="Aa" dataSource={dataSource} />);
 
-        // assert.deepEqual(getLabels(wrapper), ['西安市', '高陵县']);
+        const specialCharCases = SpecialChars.split('').map(c => [c, c]);
+
+        [['aa', 'Aa'], ['BB', 'Bb'], ...specialCharCases].forEach(([iptVal, excepted]) => {
+            wrapper.find('.next-select-trigger-search input').simulate('change', { target: { value: iptVal } });
+            wrapper.update();
+            assert(document.querySelector('.next-cascader-filtered-list em').textContent.trim() === excepted);
+        });
     });
 
     it('should support keyborad', done => {
@@ -410,9 +365,7 @@ describe('CascaderSelect', () => {
             let cascader = document.querySelectorAll('.next-cascader');
             cascader = cascader[cascader.length - 1];
             assert(cascader);
-            wrapper
-                .find('.next-select-trigger-search input')
-                .simulate('keydown', { keyCode: KEYCODE.DOWN });
+            wrapper.find('.next-select-trigger-search input').simulate('keydown', { keyCode: KEYCODE.DOWN });
             assert(document.activeElement === findRealItem(cascader, 0, 0));
             done();
         }, 2000);
@@ -426,13 +379,7 @@ describe('CascaderSelect', () => {
             assert(item.value === VALUE);
             called = true;
         };
-        wrapper = mount(
-            <CascaderSelect
-                dataSource={ChinaArea}
-                defaultValue={VALUE}
-                valueRender={valueRender}
-            />
-        );
+        wrapper = mount(<CascaderSelect dataSource={ChinaArea} defaultValue={VALUE} valueRender={valueRender} />);
         assert(called);
     });
 
@@ -494,17 +441,9 @@ describe('CascaderSelect', () => {
             },
         ];
 
-        wrapper = mount(
-            <CascaderSelect
-                dataSource={dataSource}
-                isPreview
-                defaultValue={'2975'}
-            />
-        );
+        wrapper = mount(<CascaderSelect dataSource={dataSource} isPreview defaultValue={'2975'} />);
         assert(wrapper.find('.next-form-preview').length > 0);
-        assert(
-            wrapper.find('.next-form-preview').text() === '陕西 / 西安 / 西安市'
-        );
+        assert(wrapper.find('.next-form-preview').text() === '陕西 / 西安 / 西安市');
         wrapper.setProps({
             renderPreview: items => {
                 assert(items.length === 1);
@@ -569,9 +508,7 @@ describe('CascaderSelect', () => {
 });
 
 function findItem(menuIndex, itemIndex) {
-    return document.querySelectorAll('.next-cascader-menu')[menuIndex].children[
-        itemIndex
-    ];
+    return document.querySelectorAll('.next-cascader-menu')[menuIndex].children[itemIndex];
 }
 
 function getLabels(wrapper) {
@@ -579,7 +516,7 @@ function getLabels(wrapper) {
 }
 
 function findRealItem(cascader, listIndex, itemIndex) {
-    return cascader
-        .querySelectorAll('.next-cascader-menu')
-        [listIndex].querySelectorAll('.next-cascader-menu-item')[itemIndex];
+    return cascader.querySelectorAll('.next-cascader-menu')[listIndex].querySelectorAll('.next-cascader-menu-item')[
+        itemIndex
+    ];
 }

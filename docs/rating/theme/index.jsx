@@ -39,9 +39,9 @@ function render(i18n, lang) {
             <Demo title={i18n.readonly}>
                 <DemoHead cols={['L', 'M', 'S']} />
                 <DemoGroup label={i18n.normal}>
-                    <Rating value={3.2} showInfo disabled size="large" />
-                    <Rating value={3.2} showInfo disabled />
-                    <Rating value={3.2} showInfo disabled size="small"/>
+                    <Rating value={3.5} showInfo disabled size="large" />
+                    <Rating value={3.5} showInfo disabled />
+                    <Rating value={3.5} showInfo disabled size="small"/>
                 </DemoGroup>
             </Demo>
             <Demo title={i18n.normal}>

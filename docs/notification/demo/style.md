@@ -1,13 +1,13 @@
 # 自定义样式
 
-- order: 5
+- order: 6
 
-使用 style 和 className 来定义样式。
+使用 `style` 和 `className` 来定义样式。
 
 :::lang=en-us
 # Custom Style
 
-- order: 5
+- order: 6
 
 use `style` or `className` to custom style;
 

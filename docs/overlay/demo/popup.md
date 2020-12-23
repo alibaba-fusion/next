@@ -1,8 +1,8 @@
-# 触发的弹层
+# Popup弹层
 
 -   order: 2
 
-使用 Popup 弹出一个弹层。
+`Popup` 是对 `Overlay` 的封装，它接收某个节点作为触发节点，弹出一个浮层，这个浮层默认情况下使用这个节点作为定位的参照对象。
 
 :::lang=en-us
 
@@ -15,8 +15,8 @@ Use popup to pop up a overlay.
 
 ---
 
-```jsx
-import { Overlay } from '@alifd/next';
+````jsx
+import { Overlay, Button, Input } from '@alifd/next';
 
 const { Popup } = Overlay;
 
@@ -26,17 +26,22 @@ function App(props) {
 
 ReactDOM.render(
     <div>
-        <Popup trigger={<button>Open</button>} triggerType="click">
-            <span className="overlay-demo">Hello World From Popup!</span>
+        <Popup trigger={<Button>Open</Button>} triggerType="click">
+            <span className="overlay-demo">
+                Hello World From Popup!
+            </span>
         </Popup>
         <br />
-        <Popup trigger={<App />} triggerType="click" triggerClickKeycode={40}>
-            <span className="overlay-demo">Hello World From Popup!</span>
+        <br />
+        <Popup trigger={<Input placeholder="Use Down Arrow to open" />} triggerType="click" triggerClickKeycode={40}>
+            <span className="overlay-demo">
+                Hello World From Popup!
+            </span>
         </Popup>
     </div>,
     mountNode
 );
-```
+````
 
 ```css
 .overlay-demo {

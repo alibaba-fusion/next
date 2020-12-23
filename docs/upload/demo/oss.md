@@ -23,6 +23,7 @@ class App extends React.Component {
     beforeUpload = (file, options) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
+                // document: https://help.aliyun.com/document_detail/181756.html?#h2-u6D4Fu89C8u5668u7AEFu76F4u4F20u4EE3u78015
                 // mock ajax to get host/OSSAccessKeyId/policy/signature/key
                 const dataFormAjaxResponse = {
                     host: 'post-test.oss-cn-hangzhou.aliyuncs.com',

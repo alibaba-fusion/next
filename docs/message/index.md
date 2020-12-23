@@ -7,7 +7,12 @@
 
 ---
 
-## 开发指南
+全局展示操作反馈信息。
+
+## 何时使用
+
+- 可提供成功、警告和错误等反馈信息。
+- 顶部居中显示并自动消失，是一种不打断用户操作的轻量级提示方式。
 
 ## API
 
@@ -80,10 +85,10 @@ Message.success({
 
 ### Message.withContext
 
-建议通过这个HOC来获得命令式调起Message的API，而尽量不使用 `Message.[success|error|notice|help|loading|show|hide]`，能避免fusion config错误的bug，详细原因参考 `Dialog.withContext` 的文档。
+1.21.6加入，建议通过这个HOC来获得命令式调起Message的API，而尽量不使用 `Message.[success|error|notice|help|loading|show|hide]`，能避免fusion config错误的bug，详细原因参考 `Dialog.withContext` 的文档。
 
 <!-- api-extra-end -->
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
-`说明`： 此组件需要结合其他组件使用，才会有提示。参考上文`无障碍`。
+弹窗`Message`没有键盘操作，需要结合其他组件使用来聚焦提示，参考上文[#无障碍支持](#accessibility-container)。

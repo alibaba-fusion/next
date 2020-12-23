@@ -1,4 +1,4 @@
-# 无障碍
+# 无障碍支持
 
 - order: 8
 
@@ -31,7 +31,7 @@ const App = () => (
             <Input placeholder="Age" size="small" label="Age :" id="balloon-input-1" /><br /><br />
         </Balloon>
 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style={{marginRight: 20}} />
 
         <Balloon id="a11y-balloon" type="primary" autoFocus trigger={innerButton} triggerType="click">
             <Balloon id="inner-a11y-balloon" autoFocus trigger={<Button type="primary">Fill in sub-form</Button>} popupContainer={(trigger) => trigger.parentNode} triggerType="click">
@@ -43,7 +43,7 @@ const App = () => (
             <Input placeholder="Name" size="small" label="Name :" id="balloon-input-3" /><br /><br />
         </Balloon>
 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style={{marginRight: 20}} />
 
         <Tooltip trigger={triggerTooltip} id="aria-tooltip">
             <p>This is content for tooltip.</p>
@@ -56,7 +56,6 @@ ReactDOM.render(<App />, mountNode);
 
 ```css
 .container.nested {
-    margin-left: 100px;
-    margin-bottom: 50px;
+    margin-left: 30px;
 }
 ```

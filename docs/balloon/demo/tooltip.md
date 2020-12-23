@@ -34,7 +34,7 @@ const leftTop = <Button style={{margin: '5px'}} id="leftTop" className="btrigger
 const leftBottom = <Button style={{margin: '5px'}} id="leftBottom" className="btrigger">left bottom</Button>;
 
 const App = () => (
-    <div style={{paddingLeft: 220, paddingTop: 100}}>
+    <div style={{paddingLeft: 220}}>
         <div style={{marginLeft: 75}}>
             <Tooltip trigger={topLeft} align="tl">text text</Tooltip>
             <Tooltip trigger={top} align="t">text text</Tooltip>

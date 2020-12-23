@@ -33,7 +33,7 @@ function handleChange(value) {
 
 ReactDOM.render(
     <div>
-        <Select mode="multiple" showSearch defaultValue={['10001']} onChange={handleChange} dataSource={dataSource} style={{width: 300}} />
+        <Select mode="multiple" showSearch defaultValue={['10001']} onChange={handleChange} dataSource={dataSource} style={{width: 300, marginRight: 8}} />
     </div>
 , mountNode);
 ````
