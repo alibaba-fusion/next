@@ -1,13 +1,13 @@
 # 无边框
 
-- order: 7
+- order: 6
 
 无边框。
 
 :::lang=en-us
 # No Border
 
-- order: 7
+- order: 6
 
 without border
 

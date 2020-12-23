@@ -1,13 +1,13 @@
 # 前进后退按钮只显示箭头
 
--   order: 4
+-   order: 6
 
 可以通过指定 `shape` 属性来设置前进后退按钮箭头的显示方式。
 
 :::lang=en-us
 # Forward and Back Buttons Only Show Arrows
 
--   order: 4
+-   order: 6
 
 You can set the forward and back arrow arrows to display by specifying the `shape` property.
 

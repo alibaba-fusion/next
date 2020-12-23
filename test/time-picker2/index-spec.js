@@ -178,7 +178,7 @@ describe('TimePicker2', () => {
                     onChange={val => {
                         ret = val.format('HH:mm:ss');
                     }}
-                    ranges={[
+                    preset={[
                         {
                             label: 'now',
                             name: 'preset-key',
@@ -192,7 +192,7 @@ describe('TimePicker2', () => {
 
             wrapper.find('.next-time-picker2-input input').simulate('click');
 
-            wrapper.find('.next-picker-footer-ranges button').simulate('click');
+            wrapper.find('.next-time-picker2-footer button').simulate('click');
 
             assert(ret === '13:12:11');
         });

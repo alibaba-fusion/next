@@ -27,6 +27,7 @@ function normalizePreset(preset) {
 class FooterPanel extends React.PureComponent {
     static propTypes = {
         rtl: PT.bool,
+        className: PT.string,
         prefix: PT.string,
         locale: PT.object,
         showOk: PT.bool,
@@ -78,9 +79,9 @@ class FooterPanel extends React.PureComponent {
 
     render() {
         const { prefixCls } = this;
-        const { showOk, locale, onOk, oKable, extraRender } = this.props;
+        const { showOk, locale, onOk, oKable, extraRender, className } = this.props;
 
-        const classNames = classnames(prefixCls, {
+        const classNames = classnames(prefixCls, className, {
             [`${prefixCls}-with-actions`]: showOk,
         });
 

@@ -1,13 +1,13 @@
 # 自定义渲染时间选择菜单
 
-- order: 5
+- order: 7
 
 可以通过 `renderTimeMenuItems` 来自定义渲染下拉菜单每一项。
 
 :::lang=en-us
 # Custom Render Time Menu
 
-- order: 5
+- order: 7
 
 Render time menu by `renderTimeMenuItems`.
 

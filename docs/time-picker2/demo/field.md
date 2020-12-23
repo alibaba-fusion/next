@@ -1,13 +1,13 @@
 # 结合 Field 使用
 
-- order: 6
+- order: 10
 
 配合 Field 使用
 
 :::lang=en-us
 # With Field
 
-- order: 6
+- order: 10
 
 Use TimePicker2 with Field.
 
