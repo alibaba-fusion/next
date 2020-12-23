@@ -27,8 +27,8 @@ const transform = (props, deprecated) => {
     }
 
     if (defaultVisibleMonth) {
-        deprecated('defaultVisibleMonth', 'onPanelChange', 'DatePicker');
-        newProps.onPanelChange = onVisibleMonthChange;
+        deprecated('defaultVisibleMonth', 'defaultPanelValue', 'DatePicker');
+        newProps.defaultPanelValue = onVisibleMonthChange;
     }
 
     if ('ranges' in props) {
@@ -56,19 +56,19 @@ const ConfigPicker = ConfigProvider.config(Picker, { componentName: 'DatePicker'
 const DatePicker2 = props => <ConfigPicker {...props} />;
 DatePicker2.displayName = 'DatePicker2';
 
-DatePicker2.MonthPicker = props => <ConfigPicker mode={MONTH} {...props} />;
+DatePicker2.MonthPicker = props => <ConfigPicker {...props} mode={MONTH} />;
 DatePicker2.MonthPicker.displayName = 'MonthPicker2';
 
-DatePicker2.YearPicker = props => <ConfigPicker mode={YEAR} {...props} />;
+DatePicker2.YearPicker = props => <ConfigPicker {...props} mode={YEAR} />;
 DatePicker2.YearPicker.displayName = 'YearPicker2';
 
-DatePicker2.WeekPicker = props => <ConfigPicker mode={WEEK} {...props} />;
+DatePicker2.WeekPicker = props => <ConfigPicker {...props} mode={WEEK} />;
 DatePicker2.WeekPicker.displayName = 'WeekPicker2';
 
-DatePicker2.QuarterPicker = props => <ConfigPicker mode={QUARTER} {...props} />;
+DatePicker2.QuarterPicker = props => <ConfigPicker {...props} mode={QUARTER} />;
 DatePicker2.QuarterPicker.displayName = 'QuarterPicker2';
 
-DatePicker2.RangePicker = props => <ConfigPicker type="range" {...props} />;
+DatePicker2.RangePicker = props => <ConfigPicker {...props} type="range" />;
 DatePicker2.RangePicker.displayName = 'RangePicker2';
 
 export default DatePicker2;
