@@ -1,5 +1,5 @@
 
-# 遮罩
+# 遮罩层
 
 - order: 1
 
@@ -16,7 +16,7 @@ The overlay with mask.
 ---
 
 ````jsx
-import { Overlay } from '@alifd/next';
+import { Overlay, Button } from '@alifd/next';
 
 class Demo extends React.Component {
     constructor(props) {
@@ -42,11 +42,11 @@ class Demo extends React.Component {
     render() {
         return (
             <div>
-                <button onClick={this.onClick} ref={ref => {
+                <Button onClick={this.onClick} ref={ref => {
                     this.btn = ref;
                 }}>
                     Open
-                </button>
+                </Button>
                 <Overlay visible={this.state.visible}
                     safeNode={() => this.btn}
                     align="cc cc"
@@ -70,7 +70,7 @@ ReactDOM.render(<Demo />, mountNode);
     width: 300px;
     height: 100px;
     padding: 10px;
-    border: 1px solid #999999;
+    border: 1px solid #efefef;
     background: #FFFFFF;
     box-shadow: 2px 2px 20px rgba(0,0,0,0.15);
 }

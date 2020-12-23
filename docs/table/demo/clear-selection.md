@@ -90,6 +90,7 @@ class App extends React.Component {
                     <Button onClick={this.toggleLoading.bind(this)}>Toggle loading</Button>
                     <Button onClick={this.modifyDataSource.bind(this)}>Modify dataSource</Button>
                 </Box>
+                <br/>
                 <Table dataSource={this.state.dataSource}
                     loading={this.state.loading}
                     rowSelection={this.state.rowSelection}>

@@ -39,6 +39,7 @@ ReactDOM.render(<div>
     <DatePicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
     <MonthPicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
     <YearPicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
+
     <RangePicker disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
     <RangePicker type='month' disabledDate={disabledDate} onChange={val => console.log(val)} /><br /><br />
     <RangePicker type='year' disabledDate={disabledDate} onChange={val => console.log(val)} />
