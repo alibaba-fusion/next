@@ -13,16 +13,15 @@
 ## 开发指南
 ### 从 `DatePicker` 升级到 `DatePicker2`
 功能变化：
-- 交互重构，面板和输入框分离，支持预设日期，支持底部扩展等
+- 交互重构，面板和输入框分离，优化底部扩展等
 - 使用 `dayjs` 日期库替换了 `moment`
 - 新增`WeekPicker` 和 `QuarterPicker` 选择器
+- 新增了 `preset` 属性，支持预设日期
 
 API变化：
-- 移除了 `onVisibleMonthChange` 属性，请使用 `onPanelChange` 替代
-- 移除了 `defaultVisibleMonth` 属性，请使用 `defaultPanelValue` 替代
+- 移除了 `defaultVisibleMonth` 属性，请使用 `defaultPanelValue` 替代（仅名字替换）
 - 移除了 `footerRender` 属性，请使用 `extraFooterRender` 替代
-- 移除了 `ranges` 属性，请使用 `preset` 替代
-- `showTime` 属性类型为 `Boolean` 类型，使用 `timePanelProps` 传入时间选择的属性
+- `showTime` 属性类型为 `Boolean` 类型，不支持 `Object` 类型，使用 `timePanelProps` 传入时间选择的属性
 - `onChange` 和 `onOk` 等事件返回日期对象为 `Dayjs` 类型
 
 ### 国际化
