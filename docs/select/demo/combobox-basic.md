@@ -1,6 +1,7 @@
 # 自动完成大小
 
 - order: 10
+- debug: true
 
 `AutoComplete` 大小、disabled、清除
 

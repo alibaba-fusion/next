@@ -1,4 +1,4 @@
-# 基本
+# 基本用法
 
 - order: 0
 
@@ -6,7 +6,7 @@
 
 :::lang=en-us
 
-# Basic
+# Basic usage
 
 - order: 0
 

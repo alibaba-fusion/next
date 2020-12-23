@@ -105,15 +105,16 @@ export default class Body extends React.Component {
         } = this.props;
 
         const { Row = RowComponent, Cell = CellComponent } = components;
-        const empty = loading ? (
-            <span>&nbsp;</span>
-        ) : (
-            emptyContent || locale.empty
-        );
+        const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;
         let rows = (
             <tr>
                 <td colSpan={columns.length}>
-                    <div className={`${prefix}table-empty`}>{empty}</div>
+                    <div
+                        className={`${prefix}table-empty`}
+                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: tableOuterWidth - 2 }}
+                    >
+                        {empty}
+                    </div>
                 </td>
             </tr>
         );
@@ -128,15 +129,10 @@ export default class Body extends React.Component {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
                 // record may be a string
-                const rowIndex =
-                    typeof record === 'object' && '__rowIndex' in record
-                        ? record.__rowIndex
-                        : index;
+                const rowIndex = typeof record === 'object' && '__rowIndex' in record ? record.__rowIndex : index;
 
                 if (expandedIndexSimulate) {
-                    rowProps = record.__expanded
-                        ? {}
-                        : getRowProps(record, index / 2);
+                    rowProps = record.__expanded ? {} : getRowProps(record, index / 2);
                 } else {
                     rowProps = getRowProps(record, rowIndex);
                 }
@@ -152,10 +148,7 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] ||
-                            (record[primaryKey] === 0
-                                ? 0
-                                : rowIndex)}${expanded}`}
+                        key={`${record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)}${expanded}`}
                         {...rowProps}
                         ref={this.getRowRef.bind(this, rowIndex)}
                         colGroup={colGroup}

@@ -333,6 +333,7 @@ class Menu extends Component {
         onBlur: PropTypes.func,
         /**
          * 是否开启嵌入式模式，一般用于Layout的布局中，开启后没有默认背景、外层border、box-shadow，可以配合`<Menu style={{lineHeight: '100px'}}>` 自定义高度
+         * @version 1.18
          */
         embeddable: PropTypes.bool,
         onItemKeyDown: PropTypes.func,
@@ -434,13 +435,19 @@ class Menu extends Component {
 
         if ('openKeys' in nextProps) {
             state.openKeys = normalizeToArray(nextProps.openKeys);
+            // 从展开状态变为收起状态，才需要清空openKeys
+        } else if ('mode' in nextProps && nextProps.mode === 'popup' && prevState.lastMode === 'inline') {
+            state.openKeys = [];
         }
+
         if ('selectedKeys' in nextProps) {
             state.selectedKeys = normalizeToArray(nextProps.selectedKeys);
         }
         if ('focusedKey' in nextProps) {
             state.focusedKey = nextProps.focusedKey;
         }
+
+        state.lastMode = nextProps.mode;
 
         const { newChildren, _k2n, _p2n } = getNewChildren({
             root: prevState.root,

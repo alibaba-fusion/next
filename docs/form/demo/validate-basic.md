@@ -103,7 +103,7 @@ class BasicDemo extends React.Component {
                     required
                     requiredMessage="Really do not intend to write anything?"
                 >
-                    <Input.TextArea maxLength={20} hasLimitHint placeholder="Everything is ok!" name="valTextarea" />
+                    <Input.TextArea maxLength={20} showLimitHint placeholder="Everything is ok!" name="valTextarea" />
                 </FormItem>
 
                 <FormItem wrapperCol={{ offset: 6 }} >

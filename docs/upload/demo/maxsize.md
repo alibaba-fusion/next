@@ -1,23 +1,16 @@
-# 大小限制
+# 文件大小、长宽限制
 
 - order: 6
 
-提醒: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload`接口:
+设置图片最大宽度为 1200，最大占据磁盘空间大小为2M。思路是在 `beforeUpload` 这个阶段，获取到文件对象，判断文件对象是否符合要求。（注意IE9不支持File这个浏览器原生对象）
 
-
-> 1. 该接口仅作为测试使用,业务请勿使用
-
-> 2. 该接口仅支持图片上传,其他文件类型接口请自备
 :::lang=en-us
 # size limit
 
 - order: 6
 
-Waring: `https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload` API:
+set max width to 1200
 
-> 1. only for test & develop, Never Use in production enviroments
-
-> 2. only support upload images
 :::
 ---
 
@@ -27,7 +20,16 @@ import { Upload, Dialog, Button } from '@alifd/next';
 const beforeUpload = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => {
+        reader.onload = (e) => {
+            if (e.total > 2 * 1024 * 1024) {
+                Dialog.alert({
+                    content: `File size must be < 2M`,
+                    closable: false,
+                    title: 'Warning'
+                });
+                reject();
+                return;
+            }
             const img = new Image();
             img.onload = () => {
                 if (img.width <= 1200) {

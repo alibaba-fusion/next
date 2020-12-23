@@ -1,0 +1,283 @@
+<% include partials/header %>
+
+<script>
+    window.react = window.React;
+    window['react-live'] = window.ReactLive;
+    window['react-dom'] = window.ReactDOM;
+    window['prop-types'] = window.PropTypes;
+    window['react-dnd'] = window.ReactDnD;
+    window['react-dnd-html5-backend'] = window.ReactDnDHTML5Backend;
+    // window['@alife/next'] = window.Next;
+    // window['@alifd/next'] = window.Next;
+    // window.ConfigProvider = window.Next.ConfigProvider;
+    // window.customIcons = [];
+    // {% if themepkg.icon_extra %}
+    //     window.customIcons = "{% for iconname,val in themepkg.icon_extra %}{{iconname}},{% endfor %}".split(',').filter(key => !!key);
+    // {% endif %}
+
+    // 展开所有代码
+    function expandAll(op) {
+        switch (op) {
+            case 'FOLD': {
+                window.localStorage.foldAll = 'false';
+                $('#all-expanded')[0].style.display = "none";
+                $('#all-not-expand')[0].style.display = "";
+                document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
+                    el.style.display = "none";
+                })
+                document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
+                    el.style.display = "";
+                })
+                document.querySelectorAll('[id*="-body"]:not([id*="-live-body"])').forEach((el) => {
+                    el.style.display = "none";
+                })
+                return;
+            }
+            case 'EXPAND': {
+                window.localStorage['foldAll'] = 'true';
+                $('#all-not-expand')[0].style.display = "none";
+                $('#all-expanded')[0].style.display = "";
+                document.querySelectorAll('[id*="-icon-show"]').forEach((el) => {
+                    el.style.display = "none";
+                })
+                document.querySelectorAll('[id*="-icon-hide"]').forEach((el) => {
+                    el.style.display = "";
+                })
+                document.querySelectorAll('[id*="-body"]').forEach((el) => {
+                    el.style.display = "";
+                })
+                return;
+            }
+            default:
+                return;
+        }
+    }
+    // 切换react-live
+    function liveDemo(op, showMessage=true) {
+        function unmountAll() {
+            window.demoNames.forEach((demoName) => {
+                ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-body`));
+                ReactDOM.unmountComponentAtNode(document.getElementById(`${demoName}-mount`));
+            })
+        }
+        switch (op) {
+            case "LIVE": {
+                window.localStorage.liveDemo = 'true';
+                unmountAll();
+                window.renderFuncs.forEach((demoRender) => {
+                    demoRender("true");
+                });
+                $('#live-on')[0].style.display = "none";
+                $('#live-off')[0].style.display = "";
+                window.loadingRenderScript(false, showMessage);
+                return;
+            }
+            case "READONLY": {
+                window.localStorage.liveDemo = 'false';
+                unmountAll();
+                window.renderFuncs.forEach((demoRender) => {
+                    demoRender("false");
+                });
+                $('#live-off')[0].style.display = "none";
+                $('#live-on')[0].style.display = "";
+                window.loadingRenderScript(false, showMessage);
+                return;
+            }
+            default:
+                return;
+        }
+    }
+
+    (function () {
+
+        // // 设置 ConfigProvider 国际化语言
+        // ConfigProvider.initLocales(window.Next.locales);
+        // ConfigProvider.setLanguage('{{locale}}' ? '{{locale}}': 'zh-cn');
+        // 加载 代码展开按钮事件
+        $(function () {
+            $('#demo-list').on('click', '.demo-list-item-control-img', function (event) {
+                const $target = $(event.target);
+                const controlId = $target.data('control-id');
+                const $demoItemCode = $('#' + controlId);
+                $demoItemCode.toggleClass('expand');
+            });
+
+            $('.demo-list-item-header a').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                $('.demo-list-item').removeClass('active');
+                $target.parents('.demo-list-item').addClass('active');
+            });
+
+            $('.demo-index-item').on('click', function (event) {
+                const $target = $(event.currentTarget);
+                const id = $target.find('a').attr('href');
+                $('.next-demo-item').removeClass('active');
+                $(`${id}`).addClass('active');
+            });
+
+            $('.code-expand-icon-hide').on('click', function (event) {
+                const $target = $(event.currentTarget)[0];
+                const name = $target.id.replace('-icon-hide', '');
+                $(`#${name}-body`)[0].style.display = "none";
+                $(`#${name}-icon-hide`)[0].style.display = 'none';
+                $(`#${name}-icon-show`)[0].style.display = '';
+                $(`#${name}-operations`)[0].style.borderBottom = '';
+            });
+
+            $('.code-expand-icon-show').on('click', function (event) {
+                const $target = $(event.currentTarget)[0];
+                const name = $target.id.replace('-icon-show', '');
+                $(`#${name}-body`)[0].style.display = "";
+                $(`#${name}-icon-show`)[0].style.display = 'none';
+                $(`#${name}-icon-hide`)[0].style.display = '';
+                $(`#${name}-operations`)[0].style.borderBottom = 'dashed #EEE 1px';
+            });
+
+            $('#expand-all').on('click', function (event) {
+                if (window.localStorage.foldAll === 'true') {
+                    expandAll("FOLD");
+                    return;
+                }
+                expandAll('EXPAND');
+            });
+
+            $('#debug-demo').on('click', function (event) {
+                document.querySelectorAll('[debug=true]').forEach((el) => el.style.display = el.style.display ? "" : "none");
+                const a = $('#debug-hide')[0].style.display;
+                $('#debug-hide')[0].style.display = $('#debug-show')[0].style.display;
+                $('#debug-show')[0].style.display = a;
+            });
+
+            $('#live-demo').on('click', function (event) {
+                window.loadingRenderScript(true);
+                setTimeout(() => {
+                    if (window.localStorage.liveDemo === 'true') {
+                        liveDemo("READONLY");
+                        return;
+                    }
+                    liveDemo('LIVE');
+                }, 500)
+            });
+        });
+
+        $(window).scroll(function () {
+            var $sections = $('.scroll-count-item:not([style*="display: none"])'); // 获取所有的内容块
+            var currentScroll = $(this).scrollTop();  // winodw滚动的高度
+            var $currentSection;   //   当前内容块
+            $sections.each(function () {
+                var divPosition = $(this).offset().top;  // 获取到当前内容块具体页面顶部的距离
+                if (divPosition - 1 < currentScroll) {  //  通过条件判断匹配到当前滚动内容块
+                    $currentSection = $(this);
+                }
+                // 如果楼层最上端有其它的内容快需要加一个判断
+                if ($currentSection) {
+                    var id = $currentSection.attr('data-scroll-id');
+                    $('.demo-index-item').removeClass('active');
+                    $('.demo-index-item[data-id="' + id + '"]:not([style*="display: none"])').addClass('active');
+                }
+            });
+        });
+
+    })();
+</script>
+
+<script>
+    if (window.top !== window) {
+
+        window.addEventListener("hashchange", function () {
+            window.top.postMessage({
+                type: 'hashChange',
+                from: 'mc',
+                body: document.location.hash
+            }, '*');
+        }, false);
+        window.addEventListener("message", function (event) {
+            var data = event.data;
+            if (data && data.from === 'app' && data.type === 'hashChange' && data.body) {
+                changeHash(data.body);
+            }
+        }, false);
+    }
+
+    function changeHash(hash) {
+        window.location.hash = hash;
+    }
+
+</script>
+
+
+<div class="demo-wrapper pc">
+    <div class="demo-title markdown">
+        <h1>
+            <%= comp.name %>
+        </h1>
+    </div>
+    <div class="demo-index">
+        <span id="global-control" class="all-demo-box-controls">
+        </span>
+        <ul class="demo-index-list">
+            <li class="demo-index-item" data-id="demo-list"><a href="#demo-list">Example</a></li>
+            <% for(let i = 0; i<demosDoc.length; ++i){%>
+            <li class="demo-index-item demo-index-item-sub" data-id="<%=demosDoc[i].name%>-container"
+                debug="<%=demosDoc[i].debug==="true"%>" style="<%=demosDoc[i].debug==="true" ? 'display: none' : ''%>">
+                <a href="#<%=demosDoc[i].name%>-container"
+                    style="<%=demosDoc[i].debug==="true" ? 'color: #c41d7f' : ''%>"><%=demosDoc[i].title%></a>
+            </li>
+            <% } %>
+            <li class="demo-index-item" data-id="demo-api"><a href="#demo-api">API</a></li>
+        </ul>
+    </div>
+
+    <div class="demo-head" >
+        <div id="demo-area" class="next-demo-section">
+            <div id="md-area-former" class="markdown-body markdown">
+                <div id="demo-guide" class=" scroll-count-item active" data-scroll-id="demo-guide"></div>
+                <%- readmeFormer %>
+                <h2 id="demo-list" data-scroll-id="demo-list" class="scroll-count-item with-global-control-right">
+                        代码演示
+                        <a href='#demo-list' class="header-anchor"># </a>
+                </h2>
+            </div>
+
+            <div id="demo-loading-state"></div>
+
+            <% for(let i = 0; i<demosDoc.length; ++i){%>
+            <div id="<%=demosDoc[i].name%>-container" class='next-demo-item scroll-count-item'
+                debug="<%=demosDoc[i].debug==="true"%>" data-scroll-id="<%=demosDoc[i].name%>-container"
+                style="<%=demosDoc[i].debug==='true' ? 'display: none; border: 1px solid rgb(196, 29, 127, 0.45)' : ''%>">
+                <div id="<%=demosDoc[i].name%>-mount" class="next-demo-mount"></div>
+                <div id="<%=demosDoc[i].name%>-desc" class="demo-item-desc markdown">
+                    <h3 class="demo-item-desc-title">
+                        <%=demosDoc[i].title%>
+                        <a  class="header-anchor"
+                            href='#<%=demosDoc[i].name%>-container'
+                            style="<%=demosDoc[i].debug==="true" ? 'color: "#c41d7f"' : ''%>">
+                            # 
+                        </a>
+                    </h3>
+                    <%if(demosDoc[i].desc.replace(/[\r\n\s]/g,"")){%>
+                        <div class="demo-item-desc-body markdown"><%-demosDoc[i].desc%></div>
+                    <% } %>
+                </div>
+                <div id="<%=demosDoc[i].name%>-operations" class='demo-item-operations'>
+                </div>
+                <div id="<%=demosDoc[i].name%>-body" class='next-demo-body' style="display: none">
+                </div>
+                <!-- 线上增加 style标签放个组件style -->
+            </div>
+            <%}%>
+
+            <div id="md-area-latter" class="markdown-body markdown">
+                <div id="demo-api" data-scroll-id="demo-api" class=" scroll-count-item active" >
+                    <%- readmeLatter %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% scripts.forEach(function(src) { %>
+<script src="<%= src %>"></script>
+<% })%>
+
+<% include partials/footer %>

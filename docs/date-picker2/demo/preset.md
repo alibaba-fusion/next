@@ -10,7 +10,7 @@
 
 -   order: 5
 
-A ranges usage case.
+A preset usage case.
 
 :::
 

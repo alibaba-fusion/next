@@ -1,14 +1,14 @@
 
-# 无障碍
+# 无障碍支持
 
-- order: 16
+- order: 30
 
 对于必填项，在组件中要设置`aria-required`属性，并通过视觉设计上的高亮提示用户。 
 
 :::lang=en-us
 # Accessibility
 
-- order: 16
+- order: 30
   
 For required fields, set the `aria-required` attribute in the component and prompt the user with a visual design highlight.
 
@@ -98,9 +98,9 @@ class Demo extends React.Component {
                     <FormItem label="Note:">
                         <Input.TextArea placeholder="description" name="a11yRemark"/>
                     </FormItem>
-                    <FormItem wrapperCol={{offset: 5}}>
-                        <Form.Submit validate type="primary" onClick={this.submitHandle} style={{marginRight: 7}}>Submit</Form.Submit>
-                        <Form.Reset style={{marginLeft: 130}}>Reset</Form.Reset>
+                    <FormItem wrapperCol={{offset: 7}}>
+                        <Form.Submit validate type="primary" onClick={this.submitHandle} style={{marginRight: 10}}>Submit</Form.Submit>
+                        <Form.Reset >Reset</Form.Reset>
                     </FormItem>
                 </Form>
             </div>

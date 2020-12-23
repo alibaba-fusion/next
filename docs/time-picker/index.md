@@ -6,10 +6,9 @@
 -   type: 表单
 
 ---
+时间选择器。
 
-## Guide
-
-### 何时使用
+## 何时使用
 
 当用户需要输入一个时间，可以点击输入框，在弹出的时间选择面板上操作。时间选择面板仅支持 24 小时制。`format` 支持的时间格式如下：
 
@@ -57,7 +56,7 @@
 | renderPreview       | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: MomentObject) => void<br>**参数**:<br>_value_: {MomentObject} 时间                                                                                                                                                                                    | Function  | -          |
 | onChange            | 时间值改变时的回调<br><br>**签名**:<br>Function(value: Object/String) => void<br>**参数**:<br>_value_: {Object/String} 时间对象或时间字符串                                                                                                                                                                            | Function  | func.noop  |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键              | 说明                                                    |
 | :-------------- | :---------------------------------------------------- |

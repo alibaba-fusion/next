@@ -1,11 +1,11 @@
-# 搜索框
+# 远程搜索
 
 - order: 7
 
 使用 `showSearch` 显示搜索框，如果需要动态更新 dataSource，需要关闭 filterLocal
 
 :::lang=en-us
-# Search
+# Remote Search
 
 - order: 7
 
@@ -42,9 +42,7 @@ class Demo extends React.Component {
 
     render() {
         return (
-            <div className="demo-container">
-                <Select showSearch placeholder="select search" filterLocal={false} dataSource={this.state.dataSource} onSearch={this.handleSearch} style={{width: 200}}/>
-            </div>
+            <Select showSearch placeholder="input to search" filterLocal={false} dataSource={this.state.dataSource} onSearch={this.handleSearch} style={{width: 200}}/>
         );
     }
 }

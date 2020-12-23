@@ -21,7 +21,7 @@ const { Row, Col } = Grid;
 
 ReactDOM.render(
     <div className="offset-fixed-demo">
-        <div className="demo-title">Normal offset, set offset from 1 to 30</div>
+        <div className="grid-fixed-demo-title">Normal offset, set offset from 1 to 30</div>
         <Row>
             <Col fixedOffset="0">offset-fixed-0</Col>
         </Row>
@@ -35,7 +35,7 @@ ReactDOM.render(
             <Col fixedOffset="12">offset-fixed-12</Col>
         </Row>
 
-        <div className="demo-title">Adaptive offset</div>
+        <div className="grid-fixed-demo-title">Adaptive offset</div>
         <Row>
             <Col>col</Col>
             <Col fixedOffset="12">offset-fixed-12</Col>
@@ -45,7 +45,7 @@ ReactDOM.render(
 ````
 
 ````css
-.offset-fixed-demo .demo-title {
+.offset-fixed-demo .grid-fixed-demo-title {
     margin-left: 20px;
 }
 

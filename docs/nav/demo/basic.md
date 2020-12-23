@@ -1,8 +1,8 @@
-# 基本
+# 顶部导航
 
 - order: 0
 
-最简单的使用方式。
+水平的顶部导航菜单，四种样式模式可选。可以通过 `noIcon` 显示/隐藏下拉展开按钮
 
 :::lang=en-us
 # Basic
@@ -24,11 +24,17 @@ const header = <span className="fusion">FUSION</span>;
 const footer = <a className="login-in" href="javascript:;">Login in</a>;
 
 ReactDOM.render(
-    <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
+    <Nav className="basic-nav" mode="popup" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
         <Item key="home">Home</Item>
-        <SubNav label="Component">
-            <Item key="next">Next</Item>
-            <Item key="mext">Mext</Item>
+        <SubNav label="Component" noIcon>
+            <SubNav label="Next">
+                <Item key="next-design">Design</Item>
+                <Item key="next-doc">Document</Item>
+            </SubNav>
+            <SubNav label="Meet">
+                <Item key="meet-design">Design</Item>
+                <Item key="meet-doc">Document</Item>
+            </SubNav>
         </SubNav>
         <Item key="document">Document</Item>
     </Nav>
@@ -46,7 +52,5 @@ ReactDOM.render(
     margin: 0 20px;
     color: #FFFFFF;
 }
-.basic-nav .next-nav-item {
-    width: 120px;
-}
+
 ````

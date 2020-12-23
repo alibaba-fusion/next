@@ -15,7 +15,7 @@
 import { Input } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Input hasLimitHint
+    <Input showLimitHint
         addonTextBefore="http://"
         addonTextAfter=".com"
         size="large"

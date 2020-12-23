@@ -3,6 +3,8 @@ const _ = require('lodash');
 const getWebpackConfig = require('./webpack');
 const { getComPathName } = require('../utils');
 
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = function(config) {
     const { runAll, a11y } = config;
     const componentName = config.component ? getComPathName(config.component) : config.component;
@@ -80,8 +82,8 @@ module.exports = function(config) {
         ],
     };
 
-    if (process.env.TRAVIS) {
-        options.browsers = ['ChromeTravis'];
+    if (process.env.CI) {
+        options.browsers = ['ChromeHeadless'];
     }
     config.set(options);
 };

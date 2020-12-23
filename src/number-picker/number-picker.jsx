@@ -465,6 +465,10 @@ class NumberPicker extends React.Component {
         this.inputRef = ref;
     }
 
+    getInputNode() {
+        return this.inputRef;
+    }
+
     handleMouseDown(e) {
         e.preventDefault();
     }
@@ -492,8 +496,7 @@ class NumberPicker extends React.Component {
             hasTrigger,
             alwaysShowTrigger,
         } = this.props;
-
-        const type = device === 'phone' ? 'inline' : this.props.type;
+        const type = device === 'phone' || this.props.type === 'inline' ? 'inline' : 'normal';
 
         const prefixCls = `${prefix}number-picker`;
 

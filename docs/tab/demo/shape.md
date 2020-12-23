@@ -21,44 +21,31 @@ Change shape of Tab by `shape`.
 ---
 
 ````jsx
-import { Tab } from '@alifd/next';
+import { Tab, Radio } from '@alifd/next';
 
 function onChange(key) {
     console.log(key);
 }
 
-const tabs = [
-    { tab: 'Home', key: 'home', content: 'This is home page' },
-    { tab: 'Document', key: 'doc', content: 'This is document page' },
-    { tab: 'API', key: 'api', content: 'This is api page' },
-    { tab: 'Repo', key: 'repo', content: 'This ia repo link' }
-];
+const Demo = () => {
+    const [shape, setShape] = React.useState('pure');
 
-const shapes = ['pure', 'wrapped', 'text', 'capsule'];
-
-ReactDOM.render(
-    <div className="fusion-demo">
-        {
-            shapes.map(shape => (<div key={shape} className="fusion-demo-item">
-                <Tab shape={shape} onChange={onChange}>
-                    {
-                        tabs.map(tab => <Tab.Item title={tab.tab} key={tab.key}>{tab.content}</Tab.Item>)
-                    }
-                </Tab>
-            </div>))
-        }
+    return <div>
+        shape: <Radio.Group shape="button" value={shape} onChange={setShape}>
+            <Radio value="pure">pure</Radio>
+            <Radio value="wrapped">wrapped</Radio>
+            <Radio value="text">text</Radio>
+            <Radio value="capsule">capsule</Radio>
+        </Radio.Group>
+        <br/><br/>
+        <Tab shape={shape} onChange={onChange}>
+            <Tab.Item key="home" title="Home">This is home page</Tab.Item>
+            <Tab.Item key="document" title="Document">This is document page</Tab.Item>
+            <Tab.Item key="api" title="API">This is api page</Tab.Item>
+            <Tab.Item key="repo" title="Repo">This is repo link</Tab.Item>
+        </Tab>
     </div>
-    , mountNode);
-````
-
-````css
-.fusion-demo-item {
-    margin: 14px 0;
 }
 
-.next-tabs-content {
-    color: #333;
-    font-size: 12px;
-    padding: 12px;
-}
+ReactDOM.render(<Demo/>, mountNode);
 ````

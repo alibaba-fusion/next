@@ -2,14 +2,14 @@
 
 - order: 0
 
-最简单的用法,size可设置大小。
+最简单的用法
 
 :::lang=en-us
 # Basic
 
 - order: 0
 
-Basic usage where size is set.
+Basic usage.
 
 :::
 
@@ -24,11 +24,7 @@ function onChange(checked) {
 }
 
 ReactDOM.render(<div>
-    <Switch checkedChildren="on" onChange={onChange} unCheckedChildren="off" />
-    <br />
-    <Switch defaultChecked={false} onChange={onChange} size="small" />
-    <br />
-    <Switch className="large-width" checkedChildren="on" onChange={onChange} unCheckedChildren="off please" />
+    <Switch defaultChecked={false} onChange={onChange} />
 </div>,
 mountNode);
 ````

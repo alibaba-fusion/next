@@ -6,17 +6,14 @@
 -   type: 展示
 
 ---
-
-## Guide
-
 标签用于标记事物的属性和维度，或者可以使用标签来对一组事物分类。
 
-### 何时使用
+## 何时使用
 
 -   用于标记事物的属性和维度。
 -   进行分类。
 
-### 使用注意点
+## 如何使用
 
 1.  虽然可以设置 `size` 属性取值 `large`，但该值只是为了兼容表单场景，实际取值时 `large` 等同于 `medium`。
 2.  不建议在 Tag 中使用大段文本。
@@ -27,8 +24,8 @@
 
 | 参数          | 说明                                                                                                                       | 类型       | 默认值       |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
-| size        | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br><br>**可选值**:<br>'small', 'medium', 'large'                                      | Enum     | 'medium'  |
-| type        | 标签的类型<br><br>**可选值**:<br>'normal', 'primary'                                                                             | Enum     | 'normal'  |
+| size        | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br><br>**可选值**:<br>'small'(小)<br>'medium'(中)<br>'large'(大)                         | Enum     | 'medium'  |
+| type        | 标签的类型<br><br>**可选值**:<br>'normal'(普通)<br>'primary'(主要)                                                                   | Enum     | 'normal'  |
 | color       | 标签颜色, 目前支持：blue、 green、 orange、red、 turquoise、 yellow 和 hex 颜色值 （`color keywords`作为 Tag 组件的保留字，请勿直接使用 ）, `1.19.0` 以上版本生效 | String   | -         |
 | animation   | 是否开启动效                                                                                                                   | Boolean  | false     |
 | afterAppear | 标签出现动画结束后执行的回调<br><br>**签名**:<br>Function() => void                                                                      | Function | func.noop |
@@ -38,7 +35,7 @@
 
 | 参数         | 说明                                                                                                                                                                           | 类型       | 默认值 |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
-| closeArea  | closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮<br><br>**可选值**:<br>'tag', 'tail'                                                                                        | Enum     | -   |
+| closeArea  | closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮<br><br>**可选值**:<br>'tag'(标签)<br>'tail'(尾部icon)                                                                          | Enum     | -   |
 | size       | 标签的尺寸（large 尺寸为兼容表单场景 large = medium）<br><br>**可选值**:<br>'small', 'medium', 'large'                                                                                          | Enum     | -   |
 | onClose    | 点击关闭按钮时的回调<br><br>**签名**:<br>Function(from: String) => Boolean<br>**参数**:<br>_from_: {String} 事件来源, tag: 标签体点击, tail: 关闭按钮点击<br>**返回值**:<br>{Boolean} true则关闭, false阻止关闭<br> | Function | -   |
 | afterClose | 标签关闭后执行的回调<br><br>**签名**:<br>Function() => void                                                                                                                              | Function | -   |
@@ -53,7 +50,7 @@
 | onChange       | 选中状态变化时触发的事件<br><br>**签名**:<br>Function(checked: Boolean, e: Event) => void<br>**参数**:<br>_checked_: {Boolean} 是否选中<br>_e_: {Event} Dom 事件对象 | Function | func.noop |
 | disabled       | 标签是否被禁用                                                                                                                                      | Boolean  | -         |
 
-## ARIA and KeyBoard
+## 无障碍键盘操作指南
 
 | 按键    | 说明           |
 | :---- | :----------- |

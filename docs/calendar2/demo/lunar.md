@@ -17,7 +17,7 @@ A lunar calendar.
 
 ````jsx
 import { Calendar } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import solarLunar from 'solarlunar';
 
 function onDateChange(value) {
@@ -35,7 +35,7 @@ function dateCellRender(value) {
 
 
 ReactDOM.render(<div>
-    <Calendar onSelect={onDateChange} dateCellRender={dateCellRender} defaultValue={moment().add(1, 'days')} /></div>, mountNode);
+    <Calendar onSelect={onDateChange} dateCellRender={dateCellRender} defaultValue={dayjs().add(1, 'days')} /></div>, mountNode);
 ````
 
 ```css

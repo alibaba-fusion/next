@@ -1,11 +1,11 @@
-# 基本
+# 基本用法
 
 - order: 0
 
 最简单的用法。
 
 :::lang=en-us
-# Basic
+# Basic usage
 
 - order: 0
 

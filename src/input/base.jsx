@@ -41,7 +41,7 @@ class Base extends React.Component {
         /**
          * 是否展现最大长度样式
          */
-        hasLimitHint: PropTypes.bool,
+        showLimitHint: PropTypes.bool,
         /**
          * 当设置了maxLength时，是否截断超出字符串
          */
@@ -115,7 +115,7 @@ class Base extends React.Component {
         prefix: 'next-',
         size: 'medium',
         maxLength: null,
-        hasLimitHint: false,
+        showLimitHint: false,
         cutString: true,
         readOnly: false,
         isPreview: false,
@@ -188,9 +188,7 @@ class Base extends React.Component {
         if (
             maxLength > 0 &&
             (len > maxLength + 1 ||
-                ((len === maxLength || len === maxLength + 1) &&
-                    e.keyCode !== 8 &&
-                    e.keyCode !== 46))
+                ((len === maxLength || len === maxLength + 1) && e.keyCode !== 8 && e.keyCode !== 46))
         ) {
             opts.overMaxLength = true;
         }
@@ -213,11 +211,8 @@ class Base extends React.Component {
     }
 
     renderLength() {
-        const { maxLength, hasLimitHint, prefix, rtl } = this.props;
-        const len =
-            maxLength > 0 && this.state.value
-                ? this.getValueLength(this.state.value)
-                : 0;
+        const { maxLength, showLimitHint, prefix, rtl } = this.props;
+        const len = maxLength > 0 && this.state.value ? this.getValueLength(this.state.value) : 0;
 
         const classesLenWrap = classNames({
             [`${prefix}input-len`]: true,
@@ -226,19 +221,13 @@ class Base extends React.Component {
 
         const content = rtl ? `${maxLength}/${len}` : `${len}/${maxLength}`;
 
-        return maxLength && hasLimitHint ? (
-            <span className={classesLenWrap}>{content}</span>
-        ) : null;
+        return maxLength && showLimitHint ? <span className={classesLenWrap}>{content}</span> : null;
     }
 
     renderControl() {
         const lenWrap = this.renderLength();
 
-        return lenWrap ? (
-            <span className={`${this.props.prefix}input-control`}>
-                {lenWrap}
-            </span>
-        ) : null;
+        return lenWrap ? <span className={`${this.props.prefix}input-control`}>{lenWrap}</span> : null;
     }
 
     getClass() {
@@ -254,15 +243,7 @@ class Base extends React.Component {
     }
 
     getProps() {
-        const {
-            placeholder,
-            inputStyle,
-            disabled,
-            readOnly,
-            cutString,
-            maxLength,
-            name,
-        } = this.props;
+        const { placeholder, inputStyle, disabled, readOnly, cutString, maxLength, name } = this.props;
         const props = {
             style: inputStyle,
             placeholder,

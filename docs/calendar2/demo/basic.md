@@ -17,12 +17,12 @@ A basic calendar.
 
 ````jsx
 import { Calendar } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 function onDateChange(value) {
     console.log(value.format('L'));
 }
 
 ReactDOM.render(<div>
-    <Calendar onSelect={onDateChange} defaultValue={moment().add(1, 'days')} /></div>, mountNode);
+    <Calendar onSelect={onDateChange} defaultValue={dayjs().add(1, 'days')} /></div>, mountNode);
 ````

@@ -1,8 +1,8 @@
-# 无障碍
+# 无障碍支持
 
 - order: 13
 
-通过`aria-label`对`Input`组件进行描述。关于键盘操作请参考`ARIA and KeyBoard`。
+通过`aria-label`对`Input`组件进行描述。关于键盘操作请参考[#无障碍键盘操作指南](#无障碍键盘操作指南)。
 
 :::lang=en-us
 # Accessibility

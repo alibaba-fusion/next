@@ -8,19 +8,29 @@
 
 ---
 
-## 开发指南
+表单组件。
 
-### 何时使用
+## 何时使用
 
 表单布局、校验、数据提交操作时用到。 组件的设计思想可以看这篇文章 <a href="https://zhuanlan.zhihu.com/p/56280821" target="_blank">https&#x3A;//zhuanlan.zhihu.com/p/56280821</a>
 
-### 注意事项
+## 如何使用
 
 -   组件不要使用关键字 `nodeName` 作为 name、id
 -   Form 默认使用 `size=medium`, 并且会控制 FormItem 内所有组件的size。 如果想修改组件的size `<FormItem size="small" >`
 -   在垂直表单中如果文字（一般 `<p>` 标签）或者组件向上偏离，可以通过 `className="next-form-text-align"` 辅助调整
 -   必须是被 `<FormItem>`直接包裹的组件才能展示校验错误提示。如果界面不展示错误信息，请检查是否有多个层级。 比如 `<FormItem><div><Input/></div></FormItem>` 是无法展示校验信息的。
 -   可以通过 `<Form field={false}>` 来关闭数据获取，变成一个纯布局组件
+
+### 关于校验
+
+-   建议一个FormItem放一个组件, 方便错误提示跟随组件展示
+-   组件必须是FormItem的第一层子元素
+-   详细校验请查看 `Field` 组件文档的 rules
+
+### 复杂表单场景
+
+如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [formily](https://github.com/alibaba/formily)，formily已经封装了所有fusion组件，保证您开箱即用
 
 ## API
 
@@ -46,6 +56,7 @@
 | responsive              | 是否开启内置的响应式布局 （使用ResponsiveGrid）                                                                                                                                                                                                         | Boolean         | -                                                      |
 | isPreview               | 是否开启预览态                                                                                                                                                                                                                                 | Boolean         | -                                                      |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                                                                                                                                              | Boolean         | -                                                      |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                                                                                                                                      | Boolean         | false                                                  |
 
 ### Form.Item
 
@@ -95,6 +106,7 @@
 | isPreview               | 是否开启预览态                                                                                                                 | Boolean            | -     |
 | renderPreview           | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: any) => void<br>**参数**:<br>_value_: {any} 根据包裹的组件的 value 类型而决定            | Function           | -     |
 | useLabelForErrorMessage | 是否使用 label 替换校验信息的 name 字段                                                                                              | Boolean            | -     |
+| colon                   | 表示是否显示 label 后面的冒号                                                                                                      | Boolean            | -     |
 
 ### Form.Submit
 
@@ -127,12 +139,3 @@
 | field    | 自定义 field (在 Form 内不需要设置)                    | Object             | -   |
 | children | 自定义错误渲染, 可以是 node 或者 function(errors, state) | ReactNode/Function | -   |
 
-## 关于校验
-
--   建议一个FormItem放一个组件, 方便错误提示跟随组件展示
--   组件必须是FormItem的第一层子元素
--   详细校验请查看 `Field` 组件文档的 rules
-
-## 复杂表单场景
-
-如果您的表单场景非常复杂，比如动态渲染，大量字段，复杂数据结构，复杂联动校验，可以考虑使用 [formily](https://github.com/alibaba/formily)，formily已经封装了所有fusion组件，保证您开箱即用

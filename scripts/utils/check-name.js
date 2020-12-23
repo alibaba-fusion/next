@@ -2,7 +2,6 @@ const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const minimist = require('minimist');
-// const logger = require('./logger');
 const { logger, getComPathName } = require('./index');
 
 const cwd = process.cwd();
@@ -17,7 +16,6 @@ module.exports = function(runtest = false, withOtherArgs = false) {
     if (componentName) {
         // compatible with npm run dev -- Menu
         componentName = getComPathName(componentName);
-
         const file = runtest ? 'test' : 'docs';
         const components = fs.readdirSync(path.join(cwd, file));
         let name = componentName;

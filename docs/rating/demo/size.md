@@ -20,12 +20,12 @@ You can control the size of rating component by `size` attribute, and there are 
 import { Rating } from '@alifd/next';
 
 ReactDOM.render(<div>
-    <Rating defaultValue={3.2} size="small" />
+    <Rating defaultValue={3.5} size="small" />
     <br/>
     <br/>
-    <Rating defaultValue={3.2} />
+    <Rating defaultValue={3.5} />
     <br/>
     <br/>
-    <Rating defaultValue={3.2} size="large" />
+    <Rating defaultValue={3.5} size="large" />
 </div>, mountNode);
 ````

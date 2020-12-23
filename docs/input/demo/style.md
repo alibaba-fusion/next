@@ -34,13 +34,13 @@ ReactDOM.render(
         <Input
             placeholder="medium"
             maxLength={10}
-            hasLimitHint
+            showLimitHint
             style={{width: 400}} aria-label="style width 400" /><br/><br/>
 
         <Input
             placeholder="medium"
             hasClear maxLength={10}
-            hasLimitHint style={{width: 400}}
+            showLimitHint style={{width: 400}}
             className="my-input-class"
             state="success"
             aria-label="style width 400" /><br/><br/>

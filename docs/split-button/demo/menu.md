@@ -1,4 +1,4 @@
-# 复杂菜单
+# 复杂菜单展示
 
 - order: 3
 
@@ -20,7 +20,7 @@ import { SplitButton } from '@alifd/next';
 
 const { Item, Group, Divider } = SplitButton;
 
-ReactDOM.render(<SplitButton label="Edit Document" onItemClick={key => console.log(key)}>
+ReactDOM.render(<SplitButton type="primary" label="Edit Document" onItemClick={key => console.log(key)}>
     <Item>Undo</Item>
     <Item>Redo</Item>
     <Divider />

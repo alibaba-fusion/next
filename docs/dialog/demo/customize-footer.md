@@ -51,7 +51,9 @@ class Demo extends React.Component {
             <div>
                 <Button onClick={this.onOpenFullyCustomized} type="primary">
                     Fully Customized Footer
-                </Button> &nbsp;
+                </Button>
+                <br/>
+                <br/>
                 <Dialog
                     title="Welcome to Alibaba.com"
                     footer={<Button warning type="primary" onClick={this.onCloseFullyCustomized}>Customize footer</Button>}

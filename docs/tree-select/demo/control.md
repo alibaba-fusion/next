@@ -1,13 +1,14 @@
 # 受控
 
-- order: 3
+-   order: 4
 
 展示树选择受控的用法。
 
 :::lang=en-us
+
 # Control
 
-- order: 3
+-   order: 4
 
 Demo the control select usage.
 :::
@@ -17,35 +18,45 @@ Demo the control select usage.
 ````jsx
 import { TreeSelect } from '@alifd/next';
 
-const treeData = [{
-    label: 'Component',
-    value: '1',
-    children: [{
-        label: 'Form',
-        value: '2',
-        children: [{
-            label: 'Input',
-            value: '4'
-        }, {
-            label: 'Select',
-            value: '5'
-        }]
-    }, {
-        label: 'Display',
-        value: '3',
-        children: [{
-            label: 'Table',
-            value: '6'
-        }]
-    }]
-}];
+const treeData = [
+    {
+        label: 'Component',
+        value: '1',
+        children: [
+            {
+                label: 'Form',
+                value: '2',
+                children: [
+                    {
+                        label: 'Input',
+                        value: '4',
+                    },
+                    {
+                        label: 'Select',
+                        value: '5',
+                    },
+                ],
+            },
+            {
+                label: 'Display',
+                value: '3',
+                children: [
+                    {
+                        label: 'Table',
+                        value: '6',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 class Demo extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            value: ['4', '6']
+            value: ['4', '6'],
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -54,13 +65,20 @@ class Demo extends React.Component {
     handleChange(value, data) {
         console.log(value, data);
         this.setState({
-            value
+            value,
         });
     }
 
     render() {
         return (
-            <TreeSelect treeDefaultExpandAll treeCheckable dataSource={treeData} value={this.state.value} onChange={this.handleChange} style={{ width: 200 }} />
+            <TreeSelect
+                treeDefaultExpandAll
+                treeCheckable
+                dataSource={treeData}
+                value={this.state.value}
+                onChange={this.handleChange}
+                style={{ width: 200 }}
+            />
         );
     }
 }
