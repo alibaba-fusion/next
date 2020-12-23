@@ -1,13 +1,13 @@
 # 禁用时分秒
 
-- order: 3
+- order: 4
 
 禁用全部和禁用部分选择项
 
 :::lang=en-us
 # Disable cells
 
-- order: 3
+- order: 4
 
 Disable some time celles.
 
