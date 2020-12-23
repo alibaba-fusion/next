@@ -65,10 +65,12 @@ class Demo extends React.Component {
                     <Radio value={undefined}>单选不带符号(默认)</Radio>
                     <Radio value="multiple">多选</Radio>
                 </Radio.Group>
+                <br/>
+                {selectMode? 
                 <Checkbox checked={isSelectIconRight} onChange={this.handleIconDirectionChange}>
                     切换标记位置 (默认在左)
-                </Checkbox>
-
+                </Checkbox> : null}
+                <br/>
                 <Menu isSelectIconRight={isSelectIconRight} className="my-select-menu" defaultOpenKeys={['sub']} selectMode={selectMode} selectedKeys={selectedKeys} onSelect={this.handleSelect}>
                     <Item key="1">Option 1</Item>
                     <Item disabled key="2">Disabled option 2</Item>

@@ -2,7 +2,7 @@
 
 - order: 1
 
-可以通过 `defaultValue` 属性为日期选择器提供初值，所提供的初值必须为 moment 对象。
+可以通过 `defaultValue` 属性为日期选择器提供初值，所提供的初值必须为 `moment` 对象。
 
 :::lang=en-us
 # Default value
