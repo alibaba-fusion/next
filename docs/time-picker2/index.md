@@ -9,6 +9,17 @@
 
 ## Guide
 
+### 从 `TimePicker` 升级到 `TimePicker2`
+
+功能变化：
+- 交互重构，面板和输入框分离，支持预设日期，支持底部扩展等
+- 摆脱了对 `moment` 的依赖，使用 `dayjs`
+- 新增 `preset` 预设日期
+- 新增 `hasBorder` 支持去掉边框
+
+API变化：
+- `onChange` 和 `onOk` 等事件返回日期对象为 `Dayjs` 类型
+
 ### 何时使用
 
 当用户需要输入一个时间，可以点击输入框，在弹出的时间选择面板上操作。时间选择面板仅支持 24 小时制。`format` 支持的时间格式如下：
@@ -54,7 +65,7 @@
 | followTrigger       | 是否跟随滚动                                                                                                                                                                                                                                                                                        | Boolean   | -          |
 | disabled            | 是否禁用                                                                                                                                                                                                                                                                                          | Boolean   | false      |
 | hasBorder           | 输入框是否有边框                                                                                                                                                                                                                                                                                      | Boolean   | true       |
-| ranges           | 预设值，会显示在时间面板下面<br>可以是对象也可以是对象的数组，对象包含如下属性：<br>**属性**:<br>label: {String} 显示的文案 <br> name: {String} 组件的key，可为空，默认取index为key <br> value: {String/dayjs实例} 时间值 | Object/Array   | -       |
+| preset           | 预设值，会显示在时间面板下面<br>可以是对象也可以是对象的数组，对象包含如下属性：<br>**属性**:<br>label: {String} 显示的文案 <br> name: {String} 组件的key，可为空，默认取index为key <br> value: {String/dayjs实例} 时间值 | Object/Array   | -       |
 | isPreview           | 是否为预览态                                                                                                                                                                                                                                                                                        | Boolean   | -          |
 | renderPreview       | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: DayjsObject) => void<br>**参数**:<br>_value_: {DayjsObject} 时间                                                                                                                                                                                    | Function  | -          |
 | onChange            | 时间值改变时的回调<br><br>**签名**:<br>Function(dateString: Object/String, date: DayjsObject) => void<br>**参数**:<br>_dateString_: {Object/String} 时间对象或时间字符串<br>_date_: {DayjsObject} dayjs时间对象                                                                                                          | Function  | func.noop  |
