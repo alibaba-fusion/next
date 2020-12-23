@@ -10,55 +10,90 @@
 
 输入或选择日期的控件。当用户需要输入一个日期，可以点击标准输入框，弹出日期面板进行选择。
 
+## 开发指南
+### 从 `DatePicker` 升级到 `DatePicker2`
+功能变化：
+- 交互重构，面板和输入框分离，支持预设日期，支持底部扩展等
+- 使用 `dayjs` 日期库替换了 `moment`
+- 新增`WeekPicker` 和 `QuarterPicker` 选择器
+
+API变化：
+- 移除了 `onVisibleMonthChange` 属性，请使用 `onPanelChange` 替代
+- 移除了 `defaultVisibleMonth` 属性，请使用 `defaultPanelValue` 替代
+- 移除了 `footerRender` 属性，请使用 `extraFooterRender` 替代
+- 移除了 `ranges` 属性，请使用 `preset` 替代
+- `showTime` 属性类型为 `Boolean` 类型，使用 `timePanelProps` 传入时间选择的属性
+- `onChange` 和 `onOk` 等事件返回日期对象为 `Dayjs` 类型
+
+### 国际化
+日期的国际化包括组件的国际化跟[日期库`dayjs`的国际化](https://dayjs.gitee.io/docs/zh-CN/i18n/i18n)两部分。
+```jsx
+import { DatePicker2, ConfigProvider } from '@alifd/next';
+import 'dayjs/locale/en'; // 组件库国际化
+import en from '@alifd/next/lib/locale/en-us'; // 组件国际化
+
+function App() {
+    return (
+        <ConfigProvider locale={en}>
+          <DatePicker2 />
+        </ConfigProvider>
+    );
+}
+ReactDOM.render(<App />, mountNode);
+```
+
 ## API
-日期选择框分为`DatePicker`和`RangePicker`两种类型，分别又有`date`、`month`、`year`三种不同模式。
+日期选择框分为 `DatePicker` 和 `RangePicker` 两种类型，分别又有 `date`、`month`、`year`, `week`, `quarter` 五种不同模式。
 ### 公共API
 
 | 参数                  | 说明                                                                                                                                                                                                                                                                   | 类型             | 默认值          |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ |
-| mode                | 日期面板的状态<br><br>**可选值**:<br>`date`, `month`,`year`                                                                                                                                                                                                                  | Enum           | `date`     |
+| mode                | 日期面板的状态<br><br>**可选值**:<br>`date`、`month`、`year`, `week`, `quarter`                                                                                                                                                                                                                 | Enum           | `date`     |
+| disabledDate        | 禁用日期函数<br><br>**签名**:<br>Function(value: Dayjs, view: String) => Boolean<br>**参数**:<br>_value_: {Dayjs} 日期值<br>_mode_: {String} 当前视图类型<br>**返回值**:<br>{Boolean} 是否禁用<br>                                                       | Function       | () => false  |
+| dateCellRender      | 自定义日期渲染函数<br><br>**签名**:<br>Function(value: Object) => ReactNode<br>**参数**:<br>_value_: {Dayjs} 日期值<br>**返回值**:<br>{ReactNode} node节点<br>                                                                                                                   | Function       | -            |
+| onPanelChange       | 日历面板切换的回调<br><br>**签名**:<br>Function(value: Dayjs, mode: String) => void<br>**参数**:<br>_value_: {Dayjs} 日期对象                                                                                                                                                                                                                                              | Function        | -            |
 | showTime            | 是否使用时间控件                                                                                                                                                                                                          | Boolean | false        |
 | resetTime           | 每次选择日期时是否重置时间                                                                                                                                                                                                                                    | Boolean        | false        |
-| disabledDate        | 禁用日期函数<br><br>**签名**:<br>Function(日期值: Dayjs, view: String) => Boolean<br>**参数**:<br>_日期值_: {Dayjs} null<br>_view_: {String} 当前视图类型，year: 年， month: 月, date: 日<br>**返回值**:<br>{Boolean} 是否禁用<br>                                                       | Function       | () => false  |
-| extraFooterRender   | 自定义额外的页脚<br><br>**签名**:<br>Function() => Node<br>**返回值**:<br>{Node} 自定义的面板页脚组件<br>                                                                                                                                                                                    | Function       | () => null   |
+| preset              | 预设日期快捷选择                                                                                                      | Object       | -            |
+| extraFooterRender   | 自定义额外的页脚<br><br>**签名**:<br>Function() => ReactNode<br>**返回值**:<br>{ReactNode} 自定义的面板页脚组件<br>                                                                                                                                                                                    | Function       | () => null   |
 | disabled            | 是否禁用                                                                                                                                                                                                                                                                 | Boolean        | false            |
-| visible             | 弹层显示状态                                                                                                                                                                                                                                                               | Boolean        | -            |
-| defaultVisible      | 弹层默认是否显示                                                                                                                                                                                                                                                             | Boolean        | false        |
 | hasClear            | 是否显示清空按钮                                                                                                                                                                                                                                                             | Boolean        | true         |
 | size                | 输入框尺寸<br><br>**可选值**:<br>`small`, `medium`, `large`                                                                                                                                                                                                                  | Enum           | `medium`     |
+| inputReadOnly       | 只读                                                                                                                                                                                                                           | Boolean        | false     |
 | inputProps          | 输入框其他属性                                                                                                                                                                                                                                                              | Object         | -            |
+| visible             | 弹层显示状态                                                                                                                                                                                                                                                               | Boolean        | -            |
+| defaultVisible      | 弹层默认是否显示                                                                                                                                                                                                                                                             | Boolean        | false        |
+| onVisibleChange     | 弹层展示状态变化时的回调<br><br>**签名**:<br>Function(visible: Boolean) => void<br>**参数**:<br>_visible_: {Boolean} 弹层是否显示 | Function       | func.noop    |
+| popupTriggerType    | 弹层触发方式<br><br>**可选值**:<br>'click', 'hover'                                                                                                                                                                                                                           | Enum           | 'click'      |
+| popupAlign          | 弹层对齐方式,具体含义见 OverLay文档                                                                                                                                                                                                                                               | String         | 'tl tl'      |
+| popupContainer      | 弹层容器                                                                                                                                                                                                                                                                 | any            | -            |
+| popupStyle          | 弹层自定义样式                                                                                                                                                                                                                                                              | Object         | -            |
+| popupClassName      | 弹层自定义样式类                                                                                                                                                                                                                                                             | String         | -            |
 | popupProps          | 弹层其他属性                                                                                                                                                                                                                                                               | Object         | -            |
-| preset              | 预设日期快捷选择                                                                                                      | Object       | -            |
-| dateCellRender      | 自定义日期渲染函数<br><br>**签名**:<br>Function(value: Object) => ReactNode<br>**参数**:<br>_value_: {Object} 日期值（Dayjs）<br>**返回值**:<br>{ReactNode} null<br>                                                                                                                   | Function       | -            |
+| followTrigger       | 是否跟随滚动                                                                                                                                                                                                                                                               | Boolean        | -            |
+| popupProps          | 弹层其他属性                                                                                                                                                                                                                                                               | Object         | -            |
 | isPreview           | 是否为预览态                                                                                                                                                                                                                                                               | Boolean        | -            |
 | renderPreview       | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: Dayjs) => void<br>**参数**:<br>_value_: {Dayjs} 日期                                                                                                                                                         | Function       | -            |
-| onVisibleChange     | 弹层展示状态变化时的回调<br><br>**签名**:<br>Function(visible: Boolean, type: String) => void<br>**参数**:<br>_visible_: {Boolean} 弹层是否显示<br>_type_: {String} 触发弹层显示和隐藏的来源 calendarSelect 表示由日期表盘的选择触发； okBtnClick 表示由确认按钮触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发 | Function       | func.noop    |
-| onPanelChange       | 日历面板切换的回调<br><br>**签名**:<br>Function(Dayjs: Object, mode) => void<br>**参数**:<br>_Dayjs_: {Object} 日期对象<br>**返回值**:<br>{void} null<br>                                                                                                                                                                                                                                                               | Function        | -            |
 | dateInputAriaLabel  | 日期输入框的 aria-label 属性                                                                                                                                                                                                                                                 | String         | -            |
-| timeInputAriaLabel  | 时间输入框的 aria-label 属性                                                                                                                                                                                                                                                 | String         | -            |
 
-### DatePicker
+### DatePicker2
 
 | 参数                 | 说明                                                                                                                                                                                                                                             | 类型        | 默认值         |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------- |
 | placeholder        | 输入提示                                                                                                                                                                                                                                           | String    | -           |
-| value              | 日期值（受控                                                                                                                                                                                                                               | Dayjs/String    | -           |
+| value              | 日期值（受控）                                                                                                                                                                                                                               | Dayjs/String    | -           |
 | defaultValue       | 初始日期值                                                                                                                                                                                                                                | Dayjs/String    | -           |
-| format             | 日期值的格式（用于限定用户输入和展示）                                                                                                                                                                                                                            | String    | `YYYY-MM`   |
-| disabledDate       | 禁用日期函数<br><br>**签名**:<br>Function(日期值: Dayjs, mode: String) => Boolean<br>**参数**:<br>_日期值_: {Dayjs} null<br>_view_: {String} 当前视图模式，year: 年， month: 月, date: 日<br>**返回值**:<br>{Boolean} 是否禁用<br>                                 | Function  | () => false |
-| footerRender       | 自定义面板页脚<br><br>**签名**:<br>Function() => Node<br>**返回值**:<br>{Node} 自定义的面板页脚组件<br>                                                                                                                                                              | Function  | () => null  |
+| format             | 日期格式                                                                                                                                                                                                                            | String    | `YYYY-MM`   |
 | onChange           | 日期值改变时的回调<br><br>**签名**:<br>Function(value: Dayjs/String) => void<br>**参数**:<br>_value_: {Dayjs/String} 日期值                                                                                                                      | Function  | func.noop   |
-| onOk                    | 点击确认按钮时的回调 返回开始时间和结束时间`[ Dayjs|String, Dayjs|String ]`<br><br>**签名**:<br>Function() => Array<br>**返回值**:<br>{Array} 日期范围<br>                                                                                              | Function             | func.noop
+| onOk               | 点击确认按钮时的回调<br><br>**签名**:<br>Function() => Array<br>**返回值**:<br>{Array} 日期范围<br>                                                                                              | Function             | func.noop
 
 ### DatePicker2.RangePicker
 
 | 参数                      | 说明                                                                                                                                                                                                                                      | 类型                   | 默认值
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
-| value                   | 日期范围值数组                                                                                                                                                                                                                | [Dayjs, Dayjs]                | -    |
-| defaultValue            | 初始的日期范围值数组                                                                                                                                                                                                         | Array                | -    |
-| format                  | 日期格式                                                                                                                                                                                                                                    | String               | -         |
-| resetTime               | 每次选择是否重置时间（仅在 showTime 开启时有效）                                                                                                                                                                                                           | Boolean              | false       |
-| disabledDate            | 禁用日期函数<br><br>**签名**:<br>Function(日期值: Dayjs, mode: String) => Boolean<br>**参数**:<br>_日期值_: {Dayjs} null<br>_view_: {String} 当前视图类型，year: 年， month: 月, date: 日<br>**返回值**:<br>{Boolean} 是否禁用<br>                          | Function             | () => false        |
-| onChange                | 日期范围值改变时的回调 \[ Dayjs                                                                                                                                                                                                             | String, Dayjs | String ]<br><br>**签名**:<br>Function(value: Array) => void<br>**参数**:<br>_value_: {Array} 日期值 |
-| onOk                    | 点击确认按钮时的回调 返回开始时间和结束时间`[ Dayjs|String, Dayjs|String ]`<br><br>**签名**:<br>Function() => Array<br>**返回值**:<br>{Array} 日期范围<br>                                                                                              | Function             | func.noop
-| disabled                | 是否禁用                                                                                                                                                                                                                                    | Boolean              | -
+| placeholder        | 输入提示                                                                                                                                                                                                                                           | String | [String, String]    | -           |
+| value              | 日期值（受控）                                                                                                                                                                                                               | [Dayjs, Dayjs]                | -    |
+| defaultValue       | 初始日期值                                                                                                                                                                                                         | [Dayjs, Dayjs]                 | -    |
+| format             | 日期格式                                                                                                                                                                                                                                    | String/Function               | `YYYY-MM`         |
+| onChange           | 日期值改变时的回调<br><br>**签名**:<br>Function(value) => void<br>**参数**:<br>_value_: {[Dayjs, Dayjs]} 日期范围                                                                                                                      | Function  | func.noop   |
+| onOk               | 点击确认按钮时的回调<br><br>**签名**:<br>Function(value) => void<br>**参数**:<br>_value_: {[Dayjs, Dayjs]} 日期范围<br>                                                                                              | Function             | func.noop
