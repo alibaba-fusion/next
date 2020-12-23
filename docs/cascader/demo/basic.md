@@ -51,7 +51,7 @@ class Demo extends React.Component {
     render() {
         return (
             <div>
-                <div className="cascader-value">Select: {this.state.label}</div>
+                <div className="cascader-value">Selected: {this.state.label}</div>
                 <Cascader dataSource={this.state.data} onChange={this.handleChange} />
             </div>
         );
