@@ -1,8 +1,8 @@
-# Calendar
+# Calendar2
 
 -   category: Components
 -   family: DataDisplay
--   chinese: 日历
+-   chinese: 日历2
 -   type: 展示
 
 ---

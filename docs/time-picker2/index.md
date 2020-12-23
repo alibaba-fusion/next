@@ -1,8 +1,8 @@
-# TimePicker
+# TimePicker2
 
 -   category: Components
 -   family: DataEntry
--   chinese: 时间选择框
+-   chinese: 时间选择框2
 -   type: 表单
 
 ---
