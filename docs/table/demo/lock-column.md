@@ -66,11 +66,11 @@ class App extends React.Component {
         return (
             <div>
                 <p><Button onClick={this.reduceCol}>Reduce Cols</Button></p>
-                <Table dataSource={this.state.dataSource} onRowClick={onRowClick} fixedHeader loading={this.state.loading}>
+                <Table.StickyLock dataSource={this.state.dataSource} onRowClick={onRowClick} fixedHeader loading={this.state.loading}>
                     <Table.Column title="Id-Id-Id-Id-Id-Id-Id-Id-Id-Id-Id-Id" dataIndex="id" lock width={140}/>
                     {this.state.cols}
                     <Table.Column cell={render} width={200}/>
-                </Table>
+                </Table.StickyLock>
             </div>
         );
     }
