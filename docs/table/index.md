@@ -14,6 +14,15 @@
 - Table 负责将数据呈现为高度可定制和具备可访问性的 HTML 表格，其核心功能为将结构化的数据使用表格的方式展现；
 - 可以使用各种参数来向表格中加入一些特性，比如排序，过滤，滚动，锁列等。
 
+### Table.StickyLock
+这是 `1.21` 版本推出的子组件，它与 `Table` 用法、API完全一样，只是优化了锁列的实现，推荐升级。
+
+区分如下：
+- 旧版本锁列通过两层dom来模拟左、右锁列的列，因此滚动、行高的同步等都需要额外逻辑的，逻辑较重;
+- 新版本 `Table.StickyLock` 通过 `position: sticky` 来实现锁列，滚动、行高等行为都通过浏览器实现，逻辑轻量;
+
+建议用户在新的页面中使用 `Table.StickyLock`，如果没有深度的样式定制（例如选择到 `.next-table-lock-left` 这一层级）,也可以把现有的 `Table` 升级到 `Table.StickyLock`
+
 ## 如何使用
 
 基本的 Table 包含行和列，使用 Table.Column 来定义列的信息，使用传入的 dataSource 属性数据来创建行。
@@ -25,10 +34,10 @@ import { Table } from '@alifd/next';
 
 const dataSource = [{id: 1, time: '2016'}];
 ReactDOM.render(
-    <Table dataSource={dataSource}>
+    <Table.StickyLock dataSource={dataSource}>
         <Table.Column title="Id" dataIndex="id"/>
         <Table.Column title="Time" dataIndex="time"/>
-    </Table>, mountNode);
+    </Table.StickyLock>, mountNode);
 ```
 ### 列配置
 
