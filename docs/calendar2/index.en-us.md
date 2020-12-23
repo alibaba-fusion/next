@@ -17,12 +17,12 @@ Calendar could be used to display dates, such as schedules, timetables, price ca
 
 ### Values with locale
 
-Calendar use moment as a core part to manipulate and display time values. For real usage, it could be used with the latest `moment` package. Setting moment's locale by:
+Calendar use dayjs as a core part to manipulate and display time values. For real usage, it could be used with the latest `dayjs` package. Setting dayjs's locale by:
 
 ```js
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-moment.locale('zh-cn');
+dayjs.locale('zh-cn');
 ```
 
 ## API

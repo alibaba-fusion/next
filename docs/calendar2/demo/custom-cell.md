@@ -17,9 +17,9 @@ Render custom contents by `dateCellRender` and `monthCellRender`.
 
 ````jsx
 import { Calendar } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-const currentDate = moment();
+const currentDate = dayjs();
 const localeData = currentDate.clone().localeData();
 const monthLocale = localeData.monthsShort();
 

@@ -17,7 +17,7 @@ Change default visible month by `defaultVisibleMonth`.
 
 ````jsx
 import { Calendar } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 function onSelect(value) {
     console.log(value.format('L'));
@@ -27,5 +27,5 @@ function onVisibleMonthChange(value, reason) {
     console.log('Visible month changed to %s from <%s>', value.format('YYYY-MM'), reason);
 }
 
-ReactDOM.render(<Calendar onSelect={onSelect} defaultVisibleMonth={() => moment('2018-01', 'YYYY-MM', true)} onVisibleMonthChange={onVisibleMonthChange} />, mountNode);
+ReactDOM.render(<Calendar onSelect={onSelect} defaultVisibleMonth={() => dayjs('2018-01', 'YYYY-MM', true)} onVisibleMonthChange={onVisibleMonthChange} />, mountNode);
 ````

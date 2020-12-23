@@ -17,9 +17,9 @@ Disable specific dates by `disabledDate`.
 
 ````jsx
 import { Calendar } from '@alifd/next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-const currentDate = moment();
+const currentDate = dayjs();
 const disabledDate = function (date) {
     return date.valueOf() > currentDate.valueOf();
 };
