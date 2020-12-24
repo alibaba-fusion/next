@@ -78,15 +78,6 @@ export function promiseCall(ret, success, failure = noop) {
     return ret !== false ? success(ret) : failure(ret);
 }
 
-// /**
-//  * 判断是否是函数类型
-//  * @param {*} func
-//  * @return {Boolean}
-//  */
-// export function isFunction(func) {
-//     return typeof func === 'function';
-// }
-
 export function isNone(v) {
     return v === null || v === undefined;
 }
