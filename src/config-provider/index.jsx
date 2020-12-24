@@ -45,6 +45,10 @@ class ConfigProvider extends Component {
          */
         locale: PropTypes.object,
         /**
+         * 组件 API 的默认配置
+         */
+        defaultPropsConfig: PropTypes.object,
+        /**
          * 是否开启错误捕捉 errorBoundary
          * 如需自定义参数，请传入对象 对象接受参数列表如下：
          *
@@ -86,29 +90,25 @@ class ConfigProvider extends Component {
     static contextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
+        nextDefaultPropsConfig: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
-        nextErrorBoundary: PropTypes.oneOfType([
-            PropTypes.bool,
-            PropTypes.object,
-        ]),
+        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
     static childContextTypes = {
         nextPrefix: PropTypes.string,
         nextLocale: PropTypes.object,
+        nextDefaultPropsConfig: PropTypes.object,
         nextPure: PropTypes.bool,
         nextRtl: PropTypes.bool,
         nextWarning: PropTypes.bool,
         nextDevice: PropTypes.oneOf(['tablet', 'desktop', 'phone']),
         nextPopupContainer: PropTypes.any,
-        nextErrorBoundary: PropTypes.oneOfType([
-            PropTypes.bool,
-            PropTypes.object,
-        ]),
+        nextErrorBoundary: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     };
 
     /**
@@ -128,11 +128,7 @@ class ConfigProvider extends Component {
      * @returns {Object} 新的 context props
      */
     static getContextProps = (props, displayName) => {
-        return getContextProps(
-            props,
-            childContextCache.root() || {},
-            displayName
-        );
+        return getContextProps(props, childContextCache.root() || {}, displayName);
     };
 
     static initLocales = initLocales;
@@ -149,6 +145,7 @@ class ConfigProvider extends Component {
         const {
             nextPrefix,
             nextLocale,
+            nextDefaultPropsConfig,
             nextPure,
             nextRtl,
             nextWarning,
@@ -160,6 +157,7 @@ class ConfigProvider extends Component {
         return {
             prefix: nextPrefix,
             locale: nextLocale,
+            defaultPropsConfig: nextDefaultPropsConfig,
             pure: nextPure,
             rtl: nextRtl,
             warning: nextWarning,
@@ -171,14 +169,7 @@ class ConfigProvider extends Component {
 
     constructor(...args) {
         super(...args);
-        childContextCache.add(
-            this,
-            Object.assign(
-                {},
-                childContextCache.get(this, {}),
-                this.getChildContext()
-            )
-        );
+        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
 
         setMomentLocale(this.props.locale);
 
@@ -191,6 +182,7 @@ class ConfigProvider extends Component {
         const {
             prefix,
             locale,
+            defaultPropsConfig,
             pure,
             warning,
             rtl,
@@ -201,6 +193,7 @@ class ConfigProvider extends Component {
 
         const {
             nextPrefix,
+            nextDefaultPropsConfig,
             nextLocale,
             nextPure,
             nextRtl,
@@ -212,6 +205,7 @@ class ConfigProvider extends Component {
 
         return {
             nextPrefix: prefix || nextPrefix,
+            nextDefaultPropsConfig: defaultPropsConfig || nextDefaultPropsConfig,
             nextLocale: locale || nextLocale,
             nextPure: typeof pure === 'boolean' ? pure : nextPure,
             nextRtl: typeof rtl === 'boolean' ? rtl : nextRtl,
@@ -235,14 +229,7 @@ class ConfigProvider extends Component {
     }
 
     componentDidUpdate() {
-        childContextCache.add(
-            this,
-            Object.assign(
-                {},
-                childContextCache.get(this, {}),
-                this.getChildContext()
-            )
-        );
+        childContextCache.add(this, Object.assign({}, childContextCache.get(this, {}), this.getChildContext()));
     }
 
     componentWillUnmount() {
