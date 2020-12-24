@@ -12,6 +12,7 @@ const MODE2FORMAT = {
     [YEAR]: 'YYYY',
 };
 
+/* istanbul ignore next */
 const transform = (props, deprecated) => {
     const { footerRender, onVisibleMonthChange, defaultVisibleMonth, ranges, ...newProps } = props;
     const mode = props.mode || DATE;

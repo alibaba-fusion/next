@@ -21,7 +21,7 @@
 API变化：
 - 移除了 `defaultVisibleMonth` 属性，请使用 `defaultPanelValue` 替代（仅名字替换）
 - 移除了 `footerRender` 属性，请使用 `extraFooterRender` 替代
-- `showTime` 属性类型为 `Boolean` 类型，不支持 `Object` 类型，使用 `timePanelProps` 传入时间选择的属性
+- `showTime` 之前属性类型既支持 `Boolean` 也支持 `Object`；现升级为仅支持 `Boolean` 类型，使用 `timePanelProps` 来传入时分秒的时间选择属性
 - `onChange` 和 `onOk` 等事件返回日期对象为 `Dayjs` 类型
 
 ### 国际化
@@ -47,7 +47,6 @@ ReactDOM.render(<App />, mountNode);
 
 | 参数                  | 说明                                                                                                                                                                                                                                                                   | 类型             | 默认值          |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ |
-| mode                | 日期面板的状态<br><br>**可选值**:<br>`date`、`month`、`year`, `week`, `quarter`                                                                                                                                                                                                                 | Enum           | `date`     |
 | disabledDate        | 禁用日期函数<br><br>**签名**:<br>Function(value: Dayjs, view: String) => Boolean<br>**参数**:<br>_value_: {Dayjs} 日期值<br>_mode_: {String} 当前视图类型<br>**返回值**:<br>{Boolean} 是否禁用<br>                                                       | Function       | () => false  |
 | dateCellRender      | 自定义日期渲染函数<br><br>**签名**:<br>Function(value: Object) => ReactNode<br>**参数**:<br>_value_: {Dayjs} 日期值<br>**返回值**:<br>{ReactNode} node节点<br>                                                                                                                   | Function       | -            |
 | onPanelChange       | 日历面板切换的回调<br><br>**签名**:<br>Function(value: Dayjs, mode: String) => void<br>**参数**:<br>_value_: {Dayjs} 日期对象                                                                                                                                                                                                                                              | Function        | -            |
@@ -75,7 +74,7 @@ ReactDOM.render(<App />, mountNode);
 | renderPreview       | 预览态模式下渲染的内容<br><br>**签名**:<br>Function(value: Dayjs) => void<br>**参数**:<br>_value_: {Dayjs} 日期                                                                                                                                                         | Function       | -            |
 | dateInputAriaLabel  | 日期输入框的 aria-label 属性                                                                                                                                                                                                                                                 | String         | -            |
 
-### DatePicker2
+### DatePicker2 (YearPicker/MonthPicker/WeekPicker/QuarterPicker)
 
 | 参数                 | 说明                                                                                                                                                                                                                                             | 类型        | 默认值         |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------- |
@@ -90,6 +89,7 @@ ReactDOM.render(<App />, mountNode);
 
 | 参数                      | 说明                                                                                                                                                                                                                                      | 类型                   | 默认值
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| mode               | 日期面板的状态<br><br>**可选值**:<br>`date`、`month`、`year`, `week`, `quarter`                                                                                                                                                                    | Enum           | `date`     |
 | placeholder        | 输入提示                                                                                                                                                                                                                                           | String | [String, String]    | -           |
 | value              | 日期值（受控）                                                                                                                                                                                                               | [Dayjs, Dayjs]                | -    |
 | defaultValue       | 初始日期值                                                                                                                                                                                                         | [Dayjs, Dayjs]                 | -    |
