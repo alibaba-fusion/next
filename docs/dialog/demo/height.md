@@ -1,8 +1,8 @@
-# 定制底部按钮
+# 固定高度
 
 - order: 8
 
-使用 'height' 道具设置 Dialog 高度风格。还将页尾底部的位置。
+使用 `height` 属性设置 `Dialog` 整体高度。
 :::lang=en-us
 # Set fixed Dialog height
 
@@ -15,7 +15,6 @@ Use `height` prop to set Dialog height style. Will also position footer at botto
 
 ````jsx
 import { Button, Dialog } from '@alifd/next';
-
 
 class Demo extends React.Component {
     state = {
@@ -33,8 +32,6 @@ class Demo extends React.Component {
             visible: false
         });
     };
-
-
 
     render() {
         const { visible } = this.state;

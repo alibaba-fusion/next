@@ -1,6 +1,6 @@
-# 内容较多的对话框
+# 滚动条&isFullScreen
 
-当对话框高度超过浏览器视口高度时，默认会让对话框 Body 区域出现滚动条，以保证底部按钮可以直接出现在视口内，方便操作，如果你想不想出现滚动条，而是展示对话框内所有内容，请设置 isFullScreen 为 true。
+当对话框内容超出视窗时候，对话框会限制内容高度，显示滚动条，可以通过设置 `isFullScreen` 为 `true`，让对话框全屏显示不出现滚动条。注意，该属性仅在对话框垂直水平居中时生效，即 `align` 被设置为 `cc cc` 时。
 
 - order: 4
 
@@ -17,9 +17,8 @@ When the height of the dialog exceeds the viewport height of the browser, the de
 ````jsx
 import { Switch, Button, Dialog } from '@alifd/next';
 
-
-const largeContent = new Array(30).fill(
-    <p>Start your business here by searching a popular product</p>
+const largeContent = new Array(60).fill().map(
+    (_, index) => <p key={index}>Start your business here by searching a popular product</p>
 );
 
 class Demo extends React.Component {
