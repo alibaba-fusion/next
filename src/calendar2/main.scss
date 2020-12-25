@@ -33,7 +33,6 @@
     #{$calendar2-cell-inner} {
         color: $color-text1-1;
         outline: none;
-        border: 1px solid transparent;
         min-width: 24px;
         position: relative;
         transition: background-color .2s, border .2s;
@@ -49,8 +48,8 @@
     &-panel,
     &-card {
         #{$calendar2-prefix}-header {
-            padding-top: 12px;
-            padding-bottom: 12px;
+            // padding-top: 12px;
+            // padding-bottom: 12px;
             &-actions {
                 margin-left: auto;
             }
@@ -62,14 +61,9 @@
                 }
             }
 
+            &-select-year,
             &-select-month {
-                min-width: 70px;
-                .#{$css-prefix}input {
-                    min-width: 70px;
-                }
-            }
-            &-select-year {
-                min-width: 88px;
+                min-width: auto;
                 .#{$css-prefix}input {
                     min-width: 88px;
                 }
@@ -83,7 +77,6 @@
 
     &-card,
     &-panel {
-
         #{$calendar2-cell-inner} {
             z-index: 2;
             height: 24px;
@@ -227,7 +220,7 @@
             }
 
             &-table th {
-                padding: 0 8px 4px;
+                padding: 0 12px 5px 0;
             }
 
             &-cell-inner {
@@ -236,6 +229,11 @@
                 margin: 0 4px;
                 padding: 4px 8px 0;
             }
+        }
+
+        td #{$calendar2-prefix}-cell-inner {
+            height: 80px;
+            border-top: 2px solid #DCDFE6;
         }
 
         #{$calendar2-prefix}-cell-disabled #{$calendar2-cell-inner} {
@@ -277,22 +275,18 @@
     &-card {
         #{$calendar2-prefix} {
             &-header {
-                padding-right: 8px;
-                padding-left: 8px;
+                padding: 8px 8px;
+                border-bottom: 1px solid $color-line1-1;
             }
         }
     }
 
     &-panel {
-        #{$calendar2-prefix}-body {
-            width: 272px;
-        }
         #{$calendar2-prefix}-header {
             padding: 0 8px;
             display: flex;
             align-items: center;
             border-bottom: 1px solid $color-line1-1;
-
 
             &-btn {
                 min-width: 20px;

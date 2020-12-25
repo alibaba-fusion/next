@@ -4,6 +4,8 @@ import * as func from '../../src/util/func';
 
 window.Promise = window.Promise || ES6Promise.Promise;
 
+/* eslint-disable*/
+
 describe('src/func.js', function() {
     describe('#func.noop', function() {
         it('noop should be a function', function() {
@@ -27,9 +29,7 @@ describe('src/func.js', function() {
     describe('#func.makeChain', function() {
         it('makeChain should return a function', function() {
             assert(typeof func.makeChain() === 'function');
-            assert(
-                typeof func.makeChain(x => x + 1, y => y * y) === 'function'
-            );
+            assert(typeof func.makeChain(x => x + 1, y => y * y) === 'function');
         });
 
         it('makeChain(fn) should return fn', function() {
@@ -172,5 +172,13 @@ describe('src/func.js', function() {
                 done();
             }, 60);
         });
+    });
+
+    describe('#func.invoke', () => {
+        // undefined
+        [null, '', 0, undefined, {}, false].forEach(target => assert(func.invoke(target, 'method') === undefined));
+
+        // 返回函数调用结果
+        assert(func.invoke({ foo: (...args) => args.length === 1 }, 'foo', ['']));
     });
 });

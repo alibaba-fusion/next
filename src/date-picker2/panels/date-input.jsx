@@ -85,12 +85,12 @@ class DateInput extends React.Component {
             e.stopPropagation();
         }
 
-        func.call(this.props, 'onInput', [v, eventType]);
+        func.invoke(this.props, 'onInput', [v, eventType]);
     };
 
     handleTypeChange = inputType => {
         if (inputType !== this.props.inputType) {
-            func.call(this.props, 'onInputTypeChange', [inputType]);
+            func.invoke(this.props, 'onInputTypeChange', [inputType]);
         }
     };
 

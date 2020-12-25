@@ -6,7 +6,7 @@ import * as PT from 'prop-types';
 import SharedPT from './prop-types';
 import defaultLocale from '../locale/zh-cn';
 import { func, datejs, KEYCODE, obj } from '../util';
-import { getFromPropOrState, switchInputType } from './util';
+import { switchInputType } from './util';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 
 import { Popup } from '../overlay';
@@ -16,7 +16,7 @@ import RangePanel from './panels/range-panel';
 import FooterPanel from './panels/footer-panel';
 
 const { renderNode } = func;
-const { pickProps } = obj;
+const { pickProps, pickOthers } = obj;
 
 function isValueChanged(newValue, oldValue) {
     if (Array.isArray(newValue)) {
@@ -100,7 +100,6 @@ class Picker extends React.Component {
         type: DATE_PICKER_TYPE.DATE,
         mode: DATE_PICKER_MODE.DATE,
         format: 'YYYY-MM-DD',
-        triggerType: 'click',
     };
 
     constructor(props) {
@@ -132,8 +131,6 @@ class Picker extends React.Component {
             justBeginInput: true,
             panelMode: props.mode,
         };
-
-        this.getFromPropOrState = getFromPropOrState.bind(this);
     }
 
     static getDerivedStateFromProps(props) {
@@ -162,10 +159,12 @@ class Picker extends React.Component {
         return v ? (typeof fmt === 'function' ? fmt(v) : v.format(fmt)) : '';
     };
 
-    // 校验日期数据，范围选择模式下为数组 不合法的日期重置null值
+    // 校验日期数据，范围选择模式下为数组
+    // 不合法的日期重置null值
     checkAndRectify = value => {
         const check = v => {
-            // 因为datejs(undefined) === datejs() 但是这里期望的是一个空值
+            // 因为datejs(undefined) === datejs()
+            // 但是这里期望的是一个空值
             if (v === undefined) {
                 v = null;
             }
@@ -229,7 +228,7 @@ class Picker extends React.Component {
                 this.timeoutId = setTimeout(callback, 150);
             }
 
-            func.call(this.props, 'onVisibleChange', [visible]);
+            func.invoke(this.props, 'onVisibleChange', [visible]);
         }
     }
 
@@ -248,7 +247,7 @@ class Picker extends React.Component {
         this.setState({
             panelMode: mode,
         });
-        func.call(this.props, 'onPanelChange', [value, mode]);
+        func.invoke(this.props, 'onPanelChange', [value, mode]);
     };
 
     // 清空输入之后 input组件内部会让第二个输入框获得焦点
@@ -336,7 +335,7 @@ class Picker extends React.Component {
                 });
             }
 
-            func.call(this.props, 'onChange', [v, this.getInputValue(v)]);
+            func.invoke(this.props, 'onChange', [v, this.getInputValue(v)]);
         }
         this.onVisibleChange(false);
     };
@@ -344,7 +343,7 @@ class Picker extends React.Component {
     onOk = () => {
         const { inputValue } = this.state;
 
-        const result = func.call(this.props, 'onOk', [this.checkAndRectify(inputValue), inputValue]);
+        const result = func.invoke(this.props, 'onOk', [this.checkAndRectify(inputValue), inputValue]);
 
         result !== false && this.handleChange(inputValue, 'CLICK_OK');
     };
@@ -409,14 +408,12 @@ class Picker extends React.Component {
             mode,
             format,
             trigger,
-            hasBorder,
             disabledDate,
             extraFooterRender,
             timePanelProps,
             resetTime,
             placeholder,
             disabledTime,
-            hasClear,
             dateCellRender,
             disabled,
             isPreview,
@@ -449,7 +446,7 @@ class Picker extends React.Component {
             );
         }
 
-        const visible = this.getFromPropOrState('visible');
+        const visible = 'visible' in this.props ? this.props.visible : this.state.visible;
         const allDisabled = isRange && Array.isArray(disabled) ? disabled.every(v => v) : disabled;
 
         const sharedProps = {
@@ -464,12 +461,10 @@ class Picker extends React.Component {
 
         // 输入框
         const inputProps = {
-            ...pickProps(restProps, DateInput),
+            ...pickProps(DateInput.propTypes, restProps),
             ...sharedProps,
             value: inputValue,
             isRange,
-            hasClear,
-            hasBorder,
             disabled,
             placeholder,
             focus: visible,
@@ -524,8 +519,6 @@ class Picker extends React.Component {
             triggerProps = { onKeyDown, onClick };
         }
 
-        const triggerCls = classnames(className, prefixCls);
-
         // popup
         const {
             followTrigger,
@@ -546,41 +539,40 @@ class Picker extends React.Component {
         const PopupComp = popupComponent || Popup;
 
         return (
-            <PopupComp
-                rtl={rtl}
-                key="date-picker-popup"
-                visible={visible}
-                align={popupAlign}
-                container={popupContainer}
-                followTrigger={followTrigger}
-                triggerType={popupTriggerType}
-                style={popupStyle}
-                onVisibleChange={handleVisibleChange}
-                trigger={
-                    <div
-                        dir={rtl ? 'rtl' : undefined}
-                        {...triggerProps}
-                        role="button"
-                        tabIndex="0"
-                        className={triggerCls}
-                        style={this.props.style}
-                    >
-                        {triggerNode}
-                    </div>
-                }
-                onPosition={this.getCurrentAlign}
-                {...popupProps}
-                className={popupCls}
+            <div
+                {...pickOthers(Picker.propTypes, restProps)}
+                dir={rtl ? 'rtl' : undefined}
+                className={classnames(className, prefixCls)}
             >
-                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div onMouseDown={handleMouseDown}>
-                    <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`}>
-                        {isRange ? this.renderArrow() : null}
-                        {DateNode}
-                        {this.state.panelMode !== this.props.mode ? null : footerNode}
+                <PopupComp
+                    rtl={rtl}
+                    key="date-picker-popup"
+                    visible={visible}
+                    align={popupAlign}
+                    container={popupContainer}
+                    followTrigger={followTrigger}
+                    triggerType={popupTriggerType}
+                    style={popupStyle}
+                    onVisibleChange={handleVisibleChange}
+                    trigger={
+                        <div {...triggerProps} role="button" tabIndex="0" style={this.props.style}>
+                            {triggerNode}
+                        </div>
+                    }
+                    onPosition={this.getCurrentAlign}
+                    {...popupProps}
+                    className={popupCls}
+                >
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+                    <div onMouseDown={handleMouseDown}>
+                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`}>
+                            {isRange ? this.renderArrow() : null}
+                            {DateNode}
+                            {this.state.panelMode !== this.props.mode ? null : footerNode}
+                        </div>
                     </div>
-                </div>
-            </PopupComp>
+                </PopupComp>
+            </div>
         );
     }
 }

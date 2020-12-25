@@ -52,14 +52,14 @@ class TimePanel extends React.PureComponent {
         }
 
         return {
-            showHour: obj.get('showHour', props, showHour),
-            showMinute: obj.get('showMinute', props, showMinute),
-            showSecond: obj.get('showSecond', props, showSecond),
+            showHour: 'showHour' in props ? props.showHour : showHour,
+            showMinute: 'showMinute' in props ? props.showMinute : showMinute,
+            showSecond: 'showSecond' in props ? props.showSecond : showSecond,
         };
     };
 
     onSelect = v => {
-        func.call(this.props, 'onSelect', [v]);
+        func.invoke(this.props, 'onSelect', [v]);
     };
 
     render() {

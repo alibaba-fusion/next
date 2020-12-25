@@ -16,11 +16,11 @@ Locale of date values comes from `dayjs`, and you can set it to dispaly other la
 ---
 
 ````jsx
-import { Calendar } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 // Setting dayjs locale to Chinese
 dayjs.locale('zh-cn');
 
-ReactDOM.render(<Calendar />, mountNode);
+ReactDOM.render(<Calendar2 />, mountNode);
 ````

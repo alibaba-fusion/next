@@ -62,7 +62,7 @@ class DateTable extends React.Component {
     }
 
     handleSelect(v, e, args) {
-        func.call(this.props, 'onSelect', [v, e, args]);
+        func.invoke(this.props, 'onSelect', [v, e, args]);
     }
 
     handleKeyDown(v, e, args) {
@@ -77,11 +77,11 @@ class DateTable extends React.Component {
     }
 
     handleMouseEnter(v, e, args) {
-        func.call(this.props.cellProps, 'onMouseEnter', [v, e, args]);
+        func.invoke(this.props.cellProps, 'onMouseEnter', [v, e, args]);
     }
 
     handleMouseLeave(v, e, args) {
-        func.call(this.props.cellProps, 'onMouseLeave', [v, e, args]);
+        func.invoke(this.props.cellProps, 'onMouseLeave', [v, e, args]);
     }
 
     isSame(curDate, date, mode) {
@@ -174,7 +174,7 @@ class DateTable extends React.Component {
 
                 children.push(
                     <td key={key} title={key} {...onEvents} className={className}>
-                        <div role="cell" tabIndex="-1" className={`${prefixCls}-inner`}>
+                        <div className={`${prefixCls}-inner`}>
                             {renderNode(customRender, <div className={`${prefixCls}-value`}>{label}</div>, [value])}
                         </div>
                     </td>
@@ -192,21 +192,21 @@ class DateTable extends React.Component {
 
     // 星期几
     renderWeekdaysHead() {
-        let weekdaysShort = datejs.weekdaysShort();
+        let weekdaysMin = datejs.weekdaysMin();
         const firstDayOfWeek = datejs.localeData().firstDayOfWeek();
 
         // 默认一周的第一天是周日，否则需要调整
         if (firstDayOfWeek !== 0) {
-            weekdaysShort = weekdaysShort.slice(firstDayOfWeek).concat(weekdaysShort.slice(0, firstDayOfWeek));
+            weekdaysMin = weekdaysMin.slice(firstDayOfWeek).concat(weekdaysMin.slice(0, firstDayOfWeek));
         }
 
         return (
             <thead>
                 <tr>
-                    {this.props.mode === WEEK ? <td className={`${this.prefixCls}-cell-week`} /> : null}
-                    {weekdaysShort.map(d => {
-                        const day = d.replace('周', '');
-                        return <th key={day}>{day}</th>;
+                    {/* 占位 */}
+                    {this.props.mode === WEEK ? <th className={`${this.prefixCls}-cell-week`} /> : null}
+                    {weekdaysMin.map(d => {
+                        return <th key={d}>{d}</th>;
                     })}
                 </tr>
             </thead>
@@ -332,7 +332,7 @@ class DateTable extends React.Component {
         };
 
         return (
-            <table className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
+            <table rtl="rtl" className={`${this.prefixCls}-table ${this.prefixCls}-table-${mode}`}>
                 {[DATE, WEEK].includes(mode) ? this.renderWeekdaysHead() : null}
                 <tbody>{this.renderCellContent(mode2Data[mode]())}</tbody>
             </table>

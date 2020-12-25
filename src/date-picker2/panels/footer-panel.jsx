@@ -54,8 +54,8 @@ class FooterPanel extends React.PureComponent {
 
         const preset = normalizePreset(this.props.preset);
 
-        return preset.map(({ label, value, ...rest }, index) => {
-            const buttonProps = obj.pickProps(rest, Button);
+        return preset.map(({ label, value, ...restProps }, index) => {
+            const buttonProps = obj.pickProps(Button.propTypes, restProps);
 
             return (
                 <Button
@@ -64,7 +64,7 @@ class FooterPanel extends React.PureComponent {
                     type={preset.length === 1 ? 'primary' : 'secondary'}
                     key={`${label}-${index}`}
                     onClick={() =>
-                        func.call(this.props, 'onChange', [
+                        func.invoke(this.props, 'onChange', [
                             typeof value === 'function' ? value() : value,
                             'CLICK_PRESET',
                         ])

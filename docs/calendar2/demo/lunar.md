@@ -16,12 +16,12 @@ A lunar calendar.
 ---
 
 ````jsx
-import { Calendar } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 import solarLunar from 'solarlunar';
 
 function onDateChange(value) {
-    console.log(value.format('L'));
+    console.log(value.format());
 }
 
 function dateCellRender(value) {
@@ -35,7 +35,7 @@ function dateCellRender(value) {
 
 
 ReactDOM.render(<div>
-    <Calendar onSelect={onDateChange} dateCellRender={dateCellRender} defaultValue={dayjs().add(1, 'days')} /></div>, mountNode);
+    <Calendar2 onSelect={onDateChange} dateCellRender={dateCellRender} defaultValue={dayjs().add(1, 'days')} /></div>, mountNode);
 ````
 
 ```css

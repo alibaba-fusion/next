@@ -194,18 +194,27 @@ export function pickOthers(holdProps, props) {
     return others;
 }
 
-export function pickProps(object, Component) {
-    const newObj = Object.create(null);
+/**
+ * 过滤出需要的属性
+ * @param  {Object|Array} holdProps 过滤的参照对象，最终的结果只保留在参照对象中的key
+ * @param  {Object} props     被过滤的对象
+ * @return {Object}           others
+ *
+ * @example
+ * object.pickProps(FooComponent.propTypes, this.props);
+ * object.pickProps(['className', 'onChange'], this.props);
+ */
+export function pickProps(holdProps, props) {
+    const others = {};
+    const isArray = typeOf(holdProps) === 'Array';
 
-    if (Component && Component.propTypes) {
-        Object.keys(Component.propTypes).forEach(key => {
-            if (key in object) {
-                newObj[key] = object[key];
-            }
-        });
+    for (const key in props) {
+        if (_isInObj(key, holdProps, isArray)) {
+            others[key] = props[key];
+        }
     }
 
-    return newObj;
+    return others;
 }
 
 /**
@@ -307,20 +316,4 @@ export function isReactFragment(component) {
         return component.type === React.Fragment;
     }
     return component === React.Fragment;
-}
-
-export function get(key, targetObj, defaultValue) {
-    return key in targetObj ? targetObj[key] : defaultValue;
-}
-
-export function getFromPropOrState(key) {
-    const _get = k => get(k, this.props, this.state && this.state[k]);
-
-    if (Array.isArray(key)) {
-        const o = Object.create(null);
-        key.forEach(k => (o[k] = _get(k)));
-        return o;
-    } else {
-        return _get(key);
-    }
 }

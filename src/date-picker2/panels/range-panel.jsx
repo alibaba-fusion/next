@@ -194,7 +194,7 @@ class RangePanel extends React.Component {
             }
         }
 
-        func.call(this.props, 'onSelect', [[begin, end]]);
+        func.invoke(this.props, 'onSelect', [[begin, end]]);
     };
 
     handlePanelChange = (v, mode, idx) => {
@@ -204,7 +204,7 @@ class RangePanel extends React.Component {
             calendarIdx: idx,
         });
 
-        func.call(this.props, 'onPanelChange', [v, mode]);
+        func.invoke(this.props, 'onPanelChange', [v, mode]);
     };
 
     handleMouseEnter = value => {
@@ -397,7 +397,7 @@ class RangePanel extends React.Component {
         this.hasModeChanged = this.state.mode !== this.props.mode;
 
         let sharedProps = {
-            ...obj.pickProps(restProps, Calendar),
+            ...obj.pickProps(Calendar.propTypes, restProps),
             shape: 'panel',
             panelMode: mode,
             dateCellRender,

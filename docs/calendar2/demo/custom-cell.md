@@ -16,7 +16,7 @@ Render custom contents by `dateCellRender` and `monthCellRender`.
 ---
 
 ````jsx
-import { Calendar } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 const currentDate = dayjs();
@@ -74,7 +74,7 @@ function monthCellRender(date) {
     return monthLocale[date.month()];
 }
 
-ReactDOM.render(<Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />, mountNode);
+ReactDOM.render(<Calendar2 dateCellRender={dateCellRender} monthCellRender={monthCellRender} />, mountNode);
 ````
 
 ````css

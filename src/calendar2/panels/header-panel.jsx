@@ -116,7 +116,8 @@ class HeaderPanel extends React.PureComponent {
     };
 
     renderMonthSelect = () => {
-        const { panelValue, value, onPanelValueChange } = this.props;
+        const { prefixCls } = this;
+        const { panelValue, onPanelValueChange } = this.props;
 
         const curMonth = panelValue.month();
         const dataSource = datejs.monthsShort().map((label, value) => {
@@ -128,17 +129,18 @@ class HeaderPanel extends React.PureComponent {
 
         return (
             <Select
-                key="month-select"
+                className={`${prefixCls}-select-month`}
+                popupClassName={`${prefixCls}-select-month-popup`}
                 defaultValue={curMonth}
                 dataSource={dataSource}
-                onChange={v => onPanelValueChange(value.month(v))}
+                onChange={v => onPanelValueChange(panelValue.month(v))}
             />
         );
     };
 
     renderYearSelect() {
         const { prefixCls } = this;
-        const { validValue, panelValue, value, onPanelValueChange } = this.props;
+        const { validValue, panelValue, onPanelValueChange } = this.props;
         const curYear = panelValue.year();
 
         let beginYear;
@@ -168,7 +170,7 @@ class HeaderPanel extends React.PureComponent {
                 defaultValue={curYear}
                 dataSource={dataSource}
                 menuProps={{ hasSelectedIcon: false }}
-                onChange={v => onPanelValueChange(value.year(v))}
+                onChange={v => onPanelValueChange(panelValue.year(v))}
             />
         );
     }

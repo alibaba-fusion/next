@@ -1,12 +1,12 @@
 import assert from 'power-assert';
 import * as string from '../../src/util/string';
 
+/* eslint-disable */
+
 describe('src/string.js', function() {
     it('string.camelcase(str) should return correct string', function() {
         assert(string.camelcase('') === '');
-        assert(
-            string.camelcase('-webkit-transition-end') === 'WebkitTransitionEnd'
-        );
+        assert(string.camelcase('-webkit-transition-end') === 'WebkitTransitionEnd');
         assert(string.camelcase('animation-duration') === 'animationDuration');
     });
 
@@ -25,10 +25,7 @@ describe('src/string.js', function() {
     });
 
     it('camelcase can restore the result of hyphenate', function() {
-        assert(
-            string.camelcase(string.hyphenate('WebkitTransition')) ===
-                'WebkitTransition'
-        );
+        assert(string.camelcase(string.hyphenate('WebkitTransition')) === 'WebkitTransition');
     });
 
     it('string.template(tpl, obj) should return correct string', function() {

@@ -16,7 +16,7 @@ A basic calendar.
 ---
 
 ````jsx
-import { Calendar } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 function onDateChange(value) {
@@ -24,5 +24,5 @@ function onDateChange(value) {
 }
 
 ReactDOM.render(<div>
-    <Calendar onSelect={onDateChange} defaultValue={dayjs().add(1, 'days')} /></div>, mountNode);
+    <Calendar2 onSelect={onDateChange} defaultValue={dayjs().add(1, 'days')} /></div>, mountNode);
 ````

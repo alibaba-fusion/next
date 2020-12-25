@@ -92,18 +92,15 @@ export function isNone(v) {
 }
 
 /**
- * 函数调用，如果obj对象中存在名为methodName的方法则调用该方法，
- * 如果不存在，则从可选的defaultObj中找
- * 如果没有找到返回undefined
- * @param {Object} obj 目标对象
- * @param {string} methodName 方法
- * @param {Array} args 函数参数
- * @param {Object} defaultObj 默认对象
+ * 方法调用，如果obj对象中存在名为method的方法则调用该方法
+ * @param {Object} target 目标对象
+ * @param {string} method 方法名
+ * @param {Array} args 函数参数列表
+ * @returns {*} 函数返回值 如果不存在返回undefined
  */
-export function call(obj, methodName, args, defaultObj) {
-    const method = obj && methodName in obj ? obj[methodName] : defaultObj && defaultObj[methodName];
-
-    return method && method(...args);
+export function invoke(target, method, args) {
+    const func = target && method in target ? target[method] : undefined;
+    return func && func(...args);
 }
 
 export function renderNode(render, defaultRender, renderProps = []) {

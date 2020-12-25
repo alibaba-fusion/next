@@ -17,12 +17,12 @@ A panel calendar is usually used for embedding in a popup container.
 ---
 
 ```jsx
-import { Calendar } from '@alifd/next';
+import { Calendar2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 ReactDOM.render(
     <div>
-        <Calendar shape="panel" defaultValue={dayjs().add(1, 'days')} />
+        <Calendar2 shape="panel" defaultValue={dayjs().add(1, 'days')} />
     </div>,
     mountNode
 );

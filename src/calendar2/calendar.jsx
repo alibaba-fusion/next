@@ -10,7 +10,7 @@ import { CALENDAR_MODE, CALENDAR_SHAPE, DATE_PANEL_MODE } from './constant';
 import HeaderPanel from './panels/header-panel';
 import DateTable from './panels/date-table';
 
-const { pickProps } = obj;
+const { pickProps, pickOthers } = obj;
 
 // CALENDAR_MODE => DATE_PANEL_MODE
 function getPanelMode(mode) {
@@ -19,10 +19,6 @@ function getPanelMode(mode) {
 
 function isValueChanged(newVal, oldVal) {
     return newVal !== oldVal && !datejs(newVal).isSame(datejs(oldVal));
-}
-
-function mode2unit(mode) {
-    return mode === 'date' ? 'day' : mode;
 }
 
 class Calendar extends React.Component {
@@ -108,9 +104,8 @@ class Calendar extends React.Component {
         super(props);
 
         const { defaultValue, mode } = props;
-
-        const value = obj.get('value', props, defaultValue);
-        const panelValue = datejs(obj.get('panelValue', props, value || props.defaultPanelValue));
+        const value = 'value' in props ? props.value : defaultValue;
+        const panelValue = datejs('panelValue' in props ? props.panelValue : value || props.defaultPanelValue);
         const panelMode = props.panelMode || getPanelMode(mode) || DATE_PANEL_MODE.DATE;
 
         this.state = {
@@ -119,8 +114,6 @@ class Calendar extends React.Component {
             panelMode,
             panelValue: panelValue.isValid() ? panelValue : datejs(),
         };
-
-        this.getFromPropOrState = obj.getFromPropOrState.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -174,14 +167,15 @@ class Calendar extends React.Component {
 
     onDateSelect = (value, _, { isCurrent }) => {
         const { panelMode } = this.state;
+        const unit = panelMode === 'date' ? 'day' : panelMode;
 
         if (this.shouldSwitchPanelMode()) {
             this.onPanelChange(value, this.switchPanelMode(panelMode), 'DATESELECT_VALUE_SWITCH_MODE');
         } else {
             isCurrent || this.onPanelValueChange(value, 'DATESELECT');
-            value.isSame(this.state.value, mode2unit(panelMode)) || this.onChange(value);
+            value.isSame(this.state.value, unit) || this.onChange(value);
 
-            func.call(this.props, 'onSelect', [value]);
+            func.invoke(this.props, 'onSelect', [value]);
         }
     };
 
@@ -210,7 +204,7 @@ class Calendar extends React.Component {
             panelValue: value,
         });
 
-        func.call(this.props, 'onPanelChange', [value, mode, reason]);
+        func.invoke(this.props, 'onPanelChange', [value, mode, reason]);
     };
 
     onChange = value => {
@@ -218,18 +212,17 @@ class Calendar extends React.Component {
             value,
             panelValue: value,
         });
-        func.call(this.props, 'onChange', [value]);
+        func.invoke(this.props, 'onChange', [value]);
     };
 
     render() {
-        let { value } = this.getFromPropOrState(['value']);
+        const value = 'value' in this.props ? datejs(this.props.value) : this.state.value;
         const { panelMode, mode, panelValue } = this.state;
 
-        const { prefix, shape, className, ...restProps } = this.props;
-
-        value = datejs(value);
+        const { prefix, shape, rtl, className, ...restProps } = this.props;
 
         const sharedProps = {
+            rtl,
             prefix,
             shape,
             value,
@@ -237,7 +230,7 @@ class Calendar extends React.Component {
         };
 
         const headerPanelProps = {
-            ...pickProps(restProps, HeaderPanel),
+            ...pickProps(HeaderPanel.propTypes, restProps),
             ...sharedProps,
             mode,
             panelMode,
@@ -248,7 +241,7 @@ class Calendar extends React.Component {
         };
 
         const dateTableProps = {
-            ...pickProps(restProps, DateTable),
+            ...pickProps(DateTable.propTypes, restProps),
             ...sharedProps,
             mode: panelMode,
             onSelect: this.onDateSelect,
@@ -257,7 +250,7 @@ class Calendar extends React.Component {
         const classNames = classnames([`${prefix}calendar2`, `${prefix}calendar2-${shape}`, className]);
 
         return (
-            <div className={classNames}>
+            <div {...pickOthers(Calendar.propTypes, restProps)} dir={rtl ? 'rtl' : undefined} className={classNames}>
                 <HeaderPanel {...headerPanelProps} />
                 <div className={`${prefix}calendar2-body`}>
                     <DateTable {...dateTableProps} />

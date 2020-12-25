@@ -33,7 +33,7 @@ class DatePanel extends React.Component {
     onTimeSelect = v => {
         const { value } = this.props;
 
-        func.call(this.props, 'onSelect', [setTime(value || datejs(), v)]);
+        func.invoke(this.props, 'onSelect', [setTime(value || datejs(), v)]);
     };
 
     handleSelect = v => {
@@ -41,11 +41,11 @@ class DatePanel extends React.Component {
             v = setTime(v, this.props.value || datejs());
         }
 
-        func.call(this.props, 'onSelect', [v]);
+        func.invoke(this.props, 'onSelect', [v]);
     };
 
     handlePanelChange = (v, mode) => {
-        func.call(this.props, 'onPanelChange', [v, mode]);
+        func.invoke(this.props, 'onPanelChange', [v, mode]);
     };
 
     render() {
@@ -75,7 +75,7 @@ class DatePanel extends React.Component {
         return (
             <div className={className}>
                 <Calendar
-                    {...obj.pickProps(restProps, Calendar)}
+                    {...obj.pickProps(Calendar.propTypes, restProps)}
                     shape="panel"
                     value={value}
                     panelMode={mode}
