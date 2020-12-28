@@ -42,6 +42,14 @@
         color: $menu-btn-pure-text-primary-icon-color;
     }
 
+    &.#{$css-prefix}btn-inverse .#{$css-prefix}menu-btn-arrow {
+        color: $menu-btn-ghost-dark-icon-color;
+    }
+
+    &.#{$css-prefix}btn-primary.#{$css-prefix}btn-outline .#{$css-prefix}menu-btn-arrow {
+        color: $menu-btn-pure-text-secondary-icon-color;
+    }
+
     &.#{$css-prefix}btn-text.#{$css-prefix}btn-normal .#{$css-prefix}menu-btn-arrow {
         color: $menu-btn-text-text-normal-icon-color;
     }

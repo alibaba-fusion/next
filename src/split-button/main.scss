@@ -7,6 +7,12 @@
     position: relative;
 
     &-trigger {
+        &.next-btn-primary.next-btn {
+            border-left-color: inherit;
+            &:hover {
+                border-left-color: inherit;
+            }
+        }
         .#{$css-prefix}icon {
             transition: transform $motion-duration-immediately $motion-linear;
         }

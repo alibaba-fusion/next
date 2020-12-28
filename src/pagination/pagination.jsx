@@ -463,7 +463,7 @@ class Pagination extends Component {
                     return (
                         <Button
                             key={index}
-                            text
+                            model="text"
                             size={size}
                             className={classes}
                             onClick={pageSize !== currentPageSize ? this.onSelectSize.bind(this, pageSize) : null}

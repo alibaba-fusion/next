@@ -124,7 +124,7 @@ class TimelineItem extends Component {
         });
 
         const buttonProps = {
-            text: true,
+            model: 'text',
             size: 'small',
             type: 'primary',
             onClick: this.toggleFold.bind(this, folderIndex, total),
@@ -139,9 +139,7 @@ class TimelineItem extends Component {
                     }}
                 >
                     <div className={`${prefix}timeline-item-left-content`}>
-                        <p className={`${prefix}timeline-item-body`}>
-                            {timeLeft}
-                        </p>
+                        <p className={`${prefix}timeline-item-body`}>{timeLeft}</p>
                     </div>
                     <div className={`${prefix}timeline-item-timeline`}>
                         <div className={`${prefix}timeline-item-tail`}>
@@ -150,15 +148,9 @@ class TimelineItem extends Component {
                         <div className={itemNodeCls}>{finalItemNode}</div>
                     </div>
                     <div className={`${prefix}timeline-item-content`}>
-                        <div className={`${prefix}timeline-item-title`}>
-                            {title}
-                        </div>
-                        <div className={`${prefix}timeline-item-body`}>
-                            {content}
-                        </div>
-                        <div className={`${prefix}timeline-item-time`}>
-                            {time}
-                        </div>
+                        <div className={`${prefix}timeline-item-title`}>{title}</div>
+                        <div className={`${prefix}timeline-item-body`}>{content}</div>
+                        <div className={`${prefix}timeline-item-time`}>{time}</div>
                     </div>
                 </div>
             ) : null;
