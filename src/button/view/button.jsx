@@ -20,8 +20,14 @@ export default class Button extends Component {
         rtl: PropTypes.bool,
         /**
          * 按钮的类型
+         * normal、primary、warning、inverse
          */
-        type: PropTypes.oneOf(['primary', 'secondary', 'normal']),
+        type: PropTypes.oneOf(['normal', 'primary', 'warning', 'inverse']),
+        /**
+         * 按钮展示样式
+         * solid, outline, text
+         */
+        model: PropTypes.oneOf(['solid', 'outline', 'text']),
         /**
          * 按钮的尺寸
          */
@@ -56,14 +62,6 @@ export default class Button extends Component {
          */
         ghost: PropTypes.oneOf([true, false, 'light', 'dark']),
         /**
-         * 是否为文本按钮
-         */
-        text: PropTypes.bool,
-        /**
-         * 是否为警告按钮
-         */
-        warning: PropTypes.bool,
-        /**
          * 是否禁用
          */
         disabled: PropTypes.bool,
@@ -80,6 +78,7 @@ export default class Button extends Component {
     static defaultProps = {
         prefix: 'next-',
         type: 'normal',
+        model: 'solid',
         size: 'medium',
         icons: {},
         htmlType: 'button',
@@ -109,6 +108,7 @@ export default class Button extends Component {
             prefix,
             className,
             type,
+            model,
             size,
             htmlType,
             loading,
@@ -130,14 +130,12 @@ export default class Button extends Component {
             [`${prefix}btn`]: true,
             [`${prefix}${size}`]: size,
             [`${prefix}btn-${type}`]: type && !ghost,
-            [`${prefix}btn-text`]: text,
-            [`${prefix}btn-warning`]: warning,
+            [`${prefix}btn-${model}`]: model,
             [`${prefix}btn-loading`]: loading,
             [`${prefix}btn-ghost`]: ghost,
             [`${prefix}btn-${ghostType}`]: ghost,
             [className]: className,
         };
-
         let loadingIcon = null;
 
         // 如果传入了 loading 的 icons，使用该节点来渲染
