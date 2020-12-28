@@ -90,7 +90,7 @@ const popupConfirm = () => {
 ReactDOM.render(<div>
     <Demo />
     <br/>
-    <Button type="primary" warning onClick={popupConfirm}>Quick Confirm Promise</Button>
+    <Button type="warning" onClick={popupConfirm}>Quick Confirm Promise</Button>
 </div>
 , mountNode);
 ````

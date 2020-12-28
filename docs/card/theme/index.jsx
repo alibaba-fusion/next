@@ -47,7 +47,7 @@ const extendPlaceholderStyle = {
 function CardDemo({ locale, divider, noSubtitle, noLink, demoFunction, onFunctionChange }) {
     const commonProps = {
         subTitle: noSubtitle ? '' : locale.subTile,
-        extra: noLink ? '' : <Button text type="primary">{locale.link}</Button>,
+        extra: noLink ? '' : <Button model="text" type="primary">{locale.link}</Button>,
     };
 
     return (
@@ -61,8 +61,8 @@ function CardDemo({ locale, divider, noSubtitle, noLink, demoFunction, onFunctio
                     </Card.Content>
                     {divider && <Card.Divider inset={divider === 'inset'} />}
                     <Card.Actions>
-                        <Button text type="primary">Action 1</Button>
-                        <Button text type="primary">Action 2</Button>
+                        <Button model="text" type="primary">Action 1</Button>
+                        <Button model="text" type="primary">Action 2</Button>
                     </Card.Actions>
                 </Card>
             </DemoGroup>

@@ -20,8 +20,8 @@ import { Button, Icon } from '@alifd/next';
 
 ReactDOM.render(<div>
     <Button.Group style={{marginRight: 20}}>
-        <Button type="primary">OK</Button>
-        <Button type="secondary">Cancel</Button>
+        <Button type="primary" model="solid">OK</Button>
+        <Button type="primary" model="outline">Cancel</Button>
     </Button.Group>
     
     <Button.Group>
@@ -38,9 +38,9 @@ ReactDOM.render(<div>
     </Button.Group>
 
     <Button.Group>
-        <Button type="primary"><Icon type="prompt" /></Button>
-        <Button type="primary"><Icon type="clock" /></Button>
-        <Button type="primary"><Icon type="set" /></Button>
+        <Button type="warning" model="outline" ><Icon type="prompt" /></Button>
+        <Button type="warning" model="outline"><Icon type="clock" /></Button>
+        <Button type="warning" model="outline"><Icon type="set" /></Button>
     </Button.Group>
 </div>, mountNode);
 ````

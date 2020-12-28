@@ -40,7 +40,7 @@ class Demo extends React.Component {
                 </Button>
                 <Button
                     onClick={() => this.setState({ show: false })}
-                    warning
+                    type="warning"
                     style={{marginLeft: 4}}
                 >
                     delete
@@ -58,7 +58,7 @@ class Demo extends React.Component {
                 </Button>
                 <Button
                     onClick={() => this.setState({ show2: false })}
-                    warning
+                    type="warning"
                     style={{marginLeft: 4}}
                 >
                     delete

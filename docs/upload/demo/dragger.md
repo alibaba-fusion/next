@@ -38,7 +38,7 @@ ReactDOM.render((
         >
             <div className="next-upload-drag">
                 <p className="next-upload-drag-icon"><Icon type="upload"/></p>
-                <p className="next-upload-drag-text">click to <Button text onClick={handleClick}>download template</Button> or drag file here</p>
+                <p className="next-upload-drag-text">click to <Button model="text" onClick={handleClick}>download template</Button> or drag file here</p>
                 <p className="next-upload-drag-hint">supports docx, xls, PDF </p>
             </div>
         </Upload.Dragger>

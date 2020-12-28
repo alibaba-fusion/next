@@ -31,7 +31,7 @@ class Demo extends React.Component {
             <div className="custom-affix-container" ref={this._containerRefHandler.bind(this)}>
                 <div className="affix-wrapper">
                     <Affix container={() => this.container} offsetTop={0} useAbsolute>
-                        <Button type="secondary">Absolute Position Affixed</Button>
+                        <Button type="primary" model="outline">Absolute Position Affixed</Button>
                     </Affix>
                 </div>
             </div>

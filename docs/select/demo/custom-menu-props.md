@@ -58,7 +58,7 @@ class App extends React.Component {
             </div>,
             footer: <div style={{padding: '0 4px', textAlign:'center'}}>
                 <Divider style={{marginBottom:0, marginTop: 4}}/>
-                <Button text type="primary" onClick={this.loadMore}>Load More...</Button>
+                <Button model="text" type="primary" onClick={this.loadMore}>Load More...</Button>
             </div>
         };
         return (<Select hasSelectAll mode="multiple"  dataSource={this.state.dataSource} style={{width: 200}}

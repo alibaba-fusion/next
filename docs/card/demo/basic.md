@@ -20,7 +20,7 @@ import { Card, Button } from '@alifd/next';
 
 const commonProps = {
     subTitle: 'SubTitle',
-    extra: <Button text type="primary">Link</Button>
+    extra: <Button model="text" type="primary">Link</Button>
 };
 
 ReactDOM.render(<div>

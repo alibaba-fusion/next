@@ -34,8 +34,8 @@ ReactDOM.render(<Box direction="row" spacing={20}>
         </Card.Content>
         <Card.Divider />
         <Card.Actions>
-            <Button type="primary" key="action1" text>Action 1</Button>
-            <Button type="primary" key="action2" text>Action 2</Button>
+            <Button type="primary" key="action1" model="text">Action 1</Button>
+            <Button type="primary" key="action2" model="text">Action 2</Button>
         </Card.Actions>
     </Card>
     <Card free style={{width: 300}}>
@@ -46,8 +46,8 @@ ReactDOM.render(<Box direction="row" spacing={20}>
         </Card.Content>
         <Card.Divider inset />
         <Card.Actions>
-            <Button type="primary" key="action1" text>Action 1</Button>
-            <Button type="primary" key="action2" text>Action 2</Button>
+            <Button type="primary" key="action1" model="text">Action 1</Button>
+            <Button type="primary" key="action2" model="text">Action 2</Button>
         </Card.Actions>
     </Card>
 </Box>, mountNode);

@@ -20,6 +20,6 @@ import { Affix, Button } from '@alifd/next';
 
 ReactDOM.render(
     <Affix offsetBottom={0}>
-        <Button type="secondary">Custom Offset Affixed</Button>
+        <Button type="primary" model="outline">Custom Offset Affixed</Button>
     </Affix>, mountNode);
 ````

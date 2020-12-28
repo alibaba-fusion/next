@@ -35,8 +35,21 @@ class LoadingIcon extends React.Component {
 
     render() {
         return (<Box direction="row" spacing={20}>
-            <Button type="secondary" iconSize="xs" loading icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Custom loading icon</Button>
-            <Button type="primary" loading={this.state.loading} onClick={this.setLoading} icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>Click to loading and show loading icon</Button>
+            <Button
+                type="primary"
+                iconSize="xs" 
+                loading 
+                icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>
+                Custom loading icon
+            </Button>
+            <Button 
+                type="primary"
+                model="outline" 
+                loading={this.state.loading} 
+                onClick={this.setLoading} 
+                icons={{ loading: <Icon type="loading" style={{ color: 'orange' }} /> }}>
+                Click to loading and show loading icon
+            </Button>
         </Box>);
     }
 }
@@ -44,9 +57,9 @@ class LoadingIcon extends React.Component {
 ReactDOM.render(<div >
     <Box direction="row" spacing={20}>
         <Button ><Icon type="atm" /> ATM</Button>
-        <Button text><Icon type="atm" /> ATM</Button>
-        <Button warning><Icon type="atm" /> ATM</Button>
-        <Button iconSize="xxs"><Icon type="arrow-left" /> ARROW</Button>
+        <Button model="text"><Icon type="atm" /> ATM</Button>
+        <Button model="outline" iconSize="xxs"><Icon type="arrow-left" /> ARROW</Button>
+        <Button type="warning"><Icon type="atm" /> ATM</Button>
     </Box>
     <br/>
     <LoadingIcon />

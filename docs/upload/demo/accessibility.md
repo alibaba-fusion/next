@@ -26,7 +26,7 @@ ReactDOM.render([
         onChange={onChange}
         key="5"
     >
-        <Button type="secondary" style={{margin: '0 0 10px'}}>upload </Button>
+        <Button type="primary" model="outline" style={{margin: '0 0 10px'}}>upload </Button>
     </Upload>
 ], mountNode);
 function onChange(info) {

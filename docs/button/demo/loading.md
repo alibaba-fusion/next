@@ -33,8 +33,8 @@ class Demo extends React.Component {
 
     render() {
         return (<Box direction="row" spacing={20}>
-            <Button type="secondary" loading>Loading</Button>
-            <Button type="primary" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
+            <Button type="normal" loading>Loading</Button>
+            <Button type="primary" model="outline" loading={this.state.loading} onClick={this.setLoading}>Click to loading</Button>
         </Box>);
     }
 }

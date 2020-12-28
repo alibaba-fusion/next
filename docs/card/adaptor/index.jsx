@@ -46,7 +46,7 @@ export default {
 
         return (
             <Card free style={cardStyle} {...others}>
-                <Card.Header title={title} subTitle={subTitle} extra={<Button text type="primary">{extra}</Button>} />
+                <Card.Header title={title} subTitle={subTitle} extra={<Button model="text" type="primary">{extra}</Button>} />
                 {divider && <Card.Divider />}
                 <Card.Content>
                     {data}
