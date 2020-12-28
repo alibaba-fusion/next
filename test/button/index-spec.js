@@ -41,6 +41,100 @@ describe('Button', () => {
             assert(wrapper3.find('.next-btn-dark').length === 1);
         });
 
+        it('should render secondary as type=primary model=outline button', () => {
+            const wrapper = mount(<Button type="secondary">确定</Button>);
+
+            assert(wrapper.find('.next-btn-primary').length === 1);
+            assert(wrapper.find('.next-btn-outline').length === 1);
+        });
+
+        it('should render default type and model properly', () => {
+            const wrapper = mount(<Button>确定</Button>);
+            const wrapper2 = mount(<Button type="primary">确定</Button>);
+            const wrapper3 = mount(<Button model="outline">确定</Button>);
+
+            assert(wrapper.find('.next-btn-normal').length === 1);
+            assert(wrapper.find('.next-btn-solid').length === 1);
+            assert(wrapper2.find('.next-btn-solid').length === 1);
+            assert(wrapper3.find('.next-btn-normal').length === 1);
+        });
+
+        it('should render type and model properly', () => {
+            const wrapper2 = mount(
+            <Button type="normal" model="solid">
+                确定
+            </Button>
+            );
+            const wrapper3 = mount(
+                <Button type="normal" model="outline">
+                    确定
+                </Button>
+            );
+            const wrapper4 = mount(
+                <Button type="normal" model="text">
+                    确定
+                </Button>
+            );
+            const wrapper5 = mount(
+            <Button type="primary" model="solid">
+                确定
+            </Button>
+            );
+            const wrapper6 = mount(
+                <Button type="primary" model="outline">
+                    确定
+                </Button>
+            );
+            const wrapper7 = mount(
+                <Button type="primary" model="text">
+                    确定
+                </Button>
+            );
+            const wrapper8 = mount(
+            <Button type="warning" model="solid">
+                确定
+            </Button>
+            );
+            const wrapper9 = mount(
+                <Button type="warning" model="outline">
+                    确定
+                </Button>
+            );
+            const wrapper10 = mount(
+                <Button type="warning" model="text">
+                    确定
+                </Button>
+            );
+            const wrapper11 = mount(
+            <Button type="inverse" model="solid">
+                确定
+            </Button>
+            );
+            const wrapper12 = mount(
+                <Button type="inverse" model="outline">
+                    确定
+                </Button>
+            );
+            const wrapper13 = mount(
+                <Button type="inverse" model="text">
+                    确定
+                </Button>
+            );
+
+            assert(wrapper2.find('.next-btn').hasClass('next-btn-normal') && wrapper2.find('.next-btn').hasClass('next-btn-solid'));
+            assert(wrapper3.find('.next-btn').hasClass('next-btn-normal') && wrapper3.find('.next-btn').hasClass('next-btn-outline'));
+            assert(wrapper4.find('.next-btn').hasClass('next-btn-normal') && wrapper4.find('.next-btn').hasClass('next-btn-text'));
+            assert(wrapper5.find('.next-btn').hasClass('next-btn-primary') && wrapper5.find('.next-btn').hasClass('next-btn-solid'));
+            assert(wrapper6.find('.next-btn').hasClass('next-btn-primary') && wrapper6.find('.next-btn').hasClass('next-btn-outline'));
+            assert(wrapper7.find('.next-btn').hasClass('next-btn-primary') && wrapper7.find('.next-btn').hasClass('next-btn-text'));
+            assert(wrapper8.find('.next-btn').hasClass('next-btn-warning') && wrapper8.find('.next-btn').hasClass('next-btn-solid'));
+            assert(wrapper9.find('.next-btn').hasClass('next-btn-warning') && wrapper9.find('.next-btn').hasClass('next-btn-outline'));
+            assert(wrapper10.find('.next-btn').hasClass('next-btn-warning') && wrapper10.find('.next-btn').hasClass('next-btn-text'));
+            assert(wrapper11.find('.next-btn').hasClass('next-btn-inverse') && wrapper11.find('.next-btn').hasClass('next-btn-solid'));
+            assert(wrapper12.find('.next-btn').hasClass('next-btn-inverse') && wrapper12.find('.next-btn').hasClass('next-btn-outline'));
+            assert(wrapper13.find('.next-btn').hasClass('next-btn-inverse') && wrapper13.find('.next-btn').hasClass('next-btn-text'));
+        });
+
         it('should render loading button', () => {
             const wrapper = mount(<Button ghost loading>确定</Button>);
 
@@ -131,13 +225,11 @@ describe('ButtonGroup', () => {
             const wrapper = mount(
                 <Button.Group>
                     <Button type="primary">确定</Button>
-                    <Button type="secondary">取消</Button>
                 </Button.Group>
             );
 
             assert(wrapper.find('.next-btn-group').length === 1);
             assert(wrapper.find('.next-btn.next-btn-primary').length === 1);
-            assert(wrapper.find('.next-btn.next-btn-secondary').length === 1);
         });
 
         it('should render button by group size', () => {
