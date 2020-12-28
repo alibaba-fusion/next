@@ -26,7 +26,7 @@ ReactDOM.render(<div>
         label="Single" 
         selectMode="single" 
         onSelect={keys => console.log(keys)} 
-        type="secondary" 
+        type="primary" 
         style={{marginRight: 20}}>
         {menu}
     </MenuButton>
@@ -34,7 +34,7 @@ ReactDOM.render(<div>
         label="Multiple" 
         selectMode="multiple" 
         onSelect={keys => console.log(keys)} 
-        type="secondary">
+        type="primary">
         {menu}
     </MenuButton>
 </div>, mountNode);

@@ -42,7 +42,7 @@ class CompositeSplitButton extends React.Component {
 
     render() {
         const { visible, label } = this.state;
-        return (<SplitButton label={label} visible={visible} onVisibleChange={this.changeVisible} onItemClick={this.onSelect} type="secondary">{menu}</SplitButton>);
+        return (<SplitButton label={label} visible={visible} onVisibleChange={this.changeVisible} onItemClick={this.onSelect} type="primary">{menu}</SplitButton>);
     }
 }
 
