@@ -78,10 +78,6 @@ export function promiseCall(ret, success, failure = noop) {
     return ret !== false ? success(ret) : failure(ret);
 }
 
-export function isNone(v) {
-    return v === null || v === undefined;
-}
-
 /**
  * 方法调用，如果obj对象中存在名为method的方法则调用该方法
  * @param {Object} target 目标对象
